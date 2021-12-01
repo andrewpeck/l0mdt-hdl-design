@@ -124,6 +124,12 @@ begin
       );
 
     end generate;
+      
+    -- RAD2SLOPE: if c_SF_TYPE = '0' generate
+
+    -- else generate
+        
+    -- end generate RAD2SLOPE;
 
     -- o_Roi_win_valid <= dv_z and dv_mbar;
 

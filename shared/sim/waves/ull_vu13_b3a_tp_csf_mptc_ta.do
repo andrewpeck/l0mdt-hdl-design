@@ -1091,89 +1091,96 @@ add wave -noupdate -expand -group ULT -expand -group HPS_INN /ult_tp/ULT/logic_g
 add wave -noupdate -expand -group ULT -expand -group HPS_INN /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg2sf_ctrl_av
 add wave -noupdate -expand -group ULT -expand -group HPS_INN /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg2sfslc_av
 add wave -noupdate -expand -group ULT -expand -group HPS_INN /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg2sfhit_av
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/IS_ENDCAP
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/MDT_STATION
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/clk
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_seed
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_mdt_hit
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_eof
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_rst
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/SPYBUFFER_EN
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/SPYHIT_MEM_WIDTH
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/SPYHIT_EL_MEM_WIDTH
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/SPYSLC_MEM_WIDTH
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/SPYSLC_EL_MEM_WIDTH
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/SPYSEG_MEM_WIDTH
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/SPYSEG_EL_MEM_WIDTH
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/spy_clock
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyhit_fc_we
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyhit_fc_re
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyhit_freeze
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyhit_playback
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyhit_pb_we
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyhit_pb_wdata
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyhit_re
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyhit_meta_we
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyhit_addr
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyhit_meta_addr
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyhit_meta_wdata
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyslc_fc_we
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyslc_fc_re
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyslc_freeze
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyslc_playback
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyslc_pb_we
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyslc_pb_wdata
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyslc_re
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyslc_addr
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyslc_meta_we
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyslc_meta_addr
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyslc_meta_wdata
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyseg_fc_we
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyseg_fc_re
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyseg_freeze
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyseg_playback
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyseg_pb_we
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyseg_pb_wdata
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyseg_re
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyseg_addr
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyseg_meta_addr
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyseg_meta_we
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_spyseg_meta_wdata
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyhit_data
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyhit_meta_rdata
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyhit_af
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyhit_empty
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyslc_data
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyslc_meta_rdata
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyslc_af
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyslc_empty
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyseg_data
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyseg_meta_rdata
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyseg_af
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 -group spy /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_spyseg_empty
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/seed_i
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/seed
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/csf_seed
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/csf_mdt_hit
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mdt_hit
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mdt_hits
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/eof
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/histo_hit_max0
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/histo_hit_max1
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_hit_histo0
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_hit_histo1
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mfits
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/bfits
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_valids
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/nhits
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/chi2_segs
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/rst_chi2
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/coord_seed
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/output_segment
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/out_seg
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/globseg
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_seg
-add wave -noupdate -expand -group ULT -expand -group HPS_INN /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/o_sf2pt_av
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/IS_ENDCAP
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/MDT_STATION
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/clk
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_eof
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_mdt_hit
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_rst
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/seed_i
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mdt_hit
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mdt_hits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/coord_seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_hit_histo0
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_hit_histo1
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/histo_hit_max0
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/histo_hit_max1
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/nhits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mfits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/bfits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_valids
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/chi2_segs
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/out_seg
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/output_segment
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/globseg
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/csf_mdt_hit
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/csf_seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/eof
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/rst_chi2
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_seg
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/IS_ENDCAP
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/MDT_STATION
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/clk
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_eof
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_mdt_hit
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_rst
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/seed_i
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mdt_hit
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mdt_hits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/coord_seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_hit_histo0
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_hit_histo1
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/histo_hit_max0
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/histo_hit_max1
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/nhits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mfits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/bfits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_valids
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/chi2_segs
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/out_seg
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/output_segment
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/globseg
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/csf_mdt_hit
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/csf_seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/eof
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/rst_chi2
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF1 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(1)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_seg
+
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/IS_ENDCAP
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/MDT_STATION
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/clk
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_eof
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_mdt_hit
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_rst
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/i_seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/seed_i
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mdt_hit
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mdt_hits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/coord_seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_hit_histo0
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_hit_histo1
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/histo_hit_max0
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/histo_hit_max1
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/nhits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/mfits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/bfits
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/fit_valids
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/chi2_segs
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/out_seg
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/output_segment
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/globseg
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/csf_mdt_hit
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/csf_seed
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/eof
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/rst_chi2
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group SF0 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(0)/SF/EN_SF/SF_BP/SF_TYPE/CSF/o_seg
+
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/o_sf2pt_av
 add wave -noupdate -expand -group ULT -group OUT_HEG_1_HP_2_PC_R /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_OUT/HPS/heg_gen(1)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_R/g_STATION_RADIUS
 add wave -noupdate -expand -group ULT -group OUT_HEG_1_HP_2_PC_R /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_OUT/HPS/heg_gen(1)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_R/g_CHAMBER_IETA
 add wave -noupdate -expand -group ULT -group OUT_HEG_1_HP_2_PC_R /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_OUT/HPS/heg_gen(1)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_R/clk
@@ -1289,7 +1296,7 @@ add wave -noupdate -expand -group ULT -group MID_PC /ult_tp/ULT/logic_gen/H2S_GE
 add wave -noupdate -expand -group ULT -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/o_mon_t0_r
 add wave -noupdate -expand -group ULT -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/o_mon_tc_r
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {4513489209 fs} 0 Red default} {{Cursor 2} {4085937500 fs} 1}
+WaveRestoreCursors {{Cursor 1} {4527500536 fs} 0 Red default} {{Cursor 2} {4085937500 fs} 1}
 quietly wave cursor active 1
 configure wave -namecolwidth 244
 configure wave -valuecolwidth 261
