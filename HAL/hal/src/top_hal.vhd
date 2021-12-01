@@ -138,14 +138,21 @@ entity top_hal is
 end entity top_hal;
 architecture behavioral of top_hal is
 
+  attribute MAX_FANOUT : string;
+  attribute DONT_TOUCH : string;
+
   signal clock_ibufds : std_logic;
   signal clocks       : system_clocks_rt;
-  signal global_reset : std_logic;
+
+  signal global_reset       : std_logic;
+  signal userlogic_reset    : std_logic;
+  signal userlogic_reset_ff : std_logic;
+  signal reset              : std_logic;
+
+  attribute MAX_FANOUT of userlogic_reset : signal is "256";
 
   signal strobe_pipeline : std_logic;
   signal strobe_320      : std_logic;
-
-  signal reset : std_logic;
 
   signal felix_valid : std_logic;
 
@@ -220,8 +227,6 @@ architecture behavioral of top_hal is
   -- Attributes for synthesis
   --------------------------------------------------------------------------------
 
-  attribute DONT_TOUCH                    : string;
-  attribute MAX_FANOUT                    : string;
   attribute MAX_FANOUT of strobe_pipeline : signal is "20";
   attribute DONT_TOUCH of strobe_pipeline : signal is "true";
 
@@ -300,18 +305,20 @@ begin  -- architecture behavioral
       );
 
   rst_bit_synchronizer : xpm_cdc_sync_rst
-    generic map (DEST_SYNC_FF => 2, INIT => 1, INIT_SYNC_FF => 1)
+    generic map (DEST_SYNC_FF => 4, INIT => 1, INIT_SYNC_FF => 1)
     port map (
       dest_rst => reset,
       dest_clk => clocks.clock320,
       src_rst  => global_reset);
 
   pipeline_rst_bit_synchronizer : xpm_cdc_sync_rst
-    generic map (DEST_SYNC_FF => 2, INIT => 1, INIT_SYNC_FF => 1)
+    generic map (DEST_SYNC_FF => 5, INIT => 1, INIT_SYNC_FF => 1)
     port map (
-      dest_rst => clock_and_control_o.rst,
+      dest_rst => userlogic_reset,
       dest_clk => clocks.clock_pipeline,
       src_rst  => global_reset);
+
+  clock_and_control_o.rst <= userlogic_reset;
 
   clock_and_control_o.clk <= clocks.clock_pipeline;
   clock_and_control_o.bx  <= strobe_pipeline;
