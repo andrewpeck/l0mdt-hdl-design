@@ -159,7 +159,6 @@ architecture control_arch of top_control is
   signal mpl_ctrl_r, mpl_ctrl_rr           : MPL_CTRL_t;
   signal hal_ctrl_r, hal_ctrl_rr           : HAL_CTRL_t;
   signal hal_core_ctrl_r, hal_core_ctrl_rr : HAL_CORE_CTRL_t;
-  signal fm_ctrl_r, fm_ctrl_rr             : FM_CTRL_t;
 
   signal h2s_mon_r, h2s_mon_rr           : H2S_MON_t;
   signal tar_mon_r, tar_mon_rr           : TAR_MON_t;
@@ -207,7 +206,6 @@ begin
       tf_ctrl  <= tf_ctrl_rr;
       mpl_ctrl <= mpl_ctrl_rr;
       hal_ctrl <= hal_ctrl_rr;
-      fm_ctrl  <= fm_ctrl_rr;
 
       h2s_ctrl_rr <= h2s_ctrl_r;
       tar_ctrl_rr <= tar_ctrl_r;
@@ -217,7 +215,6 @@ begin
       tf_ctrl_rr  <= tf_ctrl_r;
       mpl_ctrl_rr <= mpl_ctrl_r;
       hal_ctrl_rr <= hal_ctrl_r;
-      fm_ctrl_rr  <= fm_ctrl_r;
 
     end if;
   end process;
@@ -655,6 +652,11 @@ begin
       ctrl => mpl_ctrl_r
       );
 
+  -- n.b. fast monitoring bram control interfaces can't be registered directly,
+  -- since they contain a clock if you ff the record then you create a weird
+  -- gated clock that is the ff'd version of itself which would run at 1/2 speed
+  -- for each ff stage
+
   fm_map_inst : entity ctrl_lib.FM_map
     port map (
       clk_axi         => clk40,
@@ -667,7 +669,7 @@ begin
       -- monitor signals in
       mon  => fm_mon_rr,
       -- control signals out
-      Ctrl => fm_ctrl_r
+      Ctrl => fm_ctrl
       );
 
   fw_info_map_inst : entity ctrl_lib.fw_info_map
