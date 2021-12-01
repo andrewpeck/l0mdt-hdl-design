@@ -558,9 +558,8 @@ begin  -- architecture behavioral
 
   felix_decoder_inst : entity work.felix_decoder
     port map (
-      clock320       => clocks.clock320,
-      clock40        => clocks.clock40,
-      clock_pipeline => clocks.clock_pipeline,
+      clock320 => clocks.clock320, -- felix downlink clock
+      clock40  => clocks.clock40, -- 40mhz system clock
 
       reset => global_reset,
 
@@ -570,10 +569,8 @@ begin  -- architecture behavioral
       strobe_pipeline => strobe_pipeline,
       strobe_320      => strobe_320,
 
-      l0mdt_ttc_40m      => ttc_commands, -- copies of outputs stable for 25ns
-    --l0mdt_ttc_320m     => open,         -- copies of outputs stable for 3.125ns
-    --l0mdt_ttc_pipeline => open,         -- copies of outputs stable for 1 pipeline clock
-      valid_o            => felix_valid
+      l0mdt_ttc_40m => ttc_commands, -- copies of outputs stable for 25ns
+      valid_o       => felix_valid
       );
 
   ttc_commands_o <= ttc_commands;
