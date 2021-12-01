@@ -1,5 +1,5 @@
 
-`include "l0mdt_buses_constants.svh"
+//`include "l0mdt_buses_constants.svh"
 import l0mdt_dataformats_svh::*;
 module compute_r_bins #(
 			parameter W_r = 22,

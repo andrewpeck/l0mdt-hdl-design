@@ -21,8 +21,8 @@ onbreak {
 if 0 {
     vdel -all
 }
-#set MSIM_INI /DFS-L/DATA/atlas/psundara/xilinx/compiled_libraries/v2019.1/modelsim.ini
-set MSIM_INI /home/psundara/xilinx/compiled_libraries/v2019.1/modelsim.ini
+set MSIM_INI /DFS-L/DATA/atlas/psundara/xilinx/compiled_libraries/v2020.2/modelsim.ini
+#set MSIM_INI /home/psundara/xilinx/compiled_libraries/v2019.1/modelsim.ini
 if {[file exist [file join $MSIM_INI]]} {
     vmap -c -modelsimini [file join $MSIM_INI]
 } else {
@@ -73,6 +73,8 @@ set SRC "$CWD/src"
 set TB "$CWD/tb"
 
 vlog -sv -work work "glbl.v"
+vlog -sv -work work "$CWD/../../dataformats/l0mdt_buses_constants.svh"
+
 #vlog -sv -work work "$GET_ROM_ADDR_HLS_IP/get_rom_addr.v"
 vlog -sv -work work "$GET_TRIG_VALS_HLS_IP/get_trig_vals_lut_tables_0.v"
 vlog -sv -work work "$GET_TRIG_VALS_HLS_IP/get_trig_vals_lut_tables_1.v"
@@ -122,7 +124,6 @@ vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyMemory.v"
 vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/asym_ram_tdp_read_first.v"
 vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyBuffer.v"
 vlog -sv -work work +incdir+$CWD/../../dataformats/ "$SRC/lsf_spybuffer_wrapper.sv"
-
 vlib shared_lib
 vcom -work shared_lib $CWD/../../shared/types/common_ieee_pkg.vhd
 vcom -work shared_lib $CWD/../../shared/types/l0mdt_constants_pkg.vhd
