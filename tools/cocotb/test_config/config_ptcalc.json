@@ -6,7 +6,7 @@
             "event_detail": false,
             "clock_period": 5,
             "clock_time_unit": "ns",
-            "ptcalc_ii": 24,
+            "ptcalc_ii": 40,
             "_COMMENT": "Environment variables XILINX_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
         },
         "run_config": {
@@ -26,14 +26,16 @@
                         "INN",
                         "MID",
                         "OUT"
-                    ]
+                    ],
+		    "thread_n": [0,0,0]
                 },
                 {
                     "tv_format": "PL2PTCALC",
                     "ports": 1,
                     "station_ID": [
                         ""
-                    ]
+                    ],
+		    "thread_n": [0]
                 }
             ],
             "outputs": [
@@ -45,7 +47,8 @@
                             "perc",
                             50.0
                         ]
-                    }
+                    },
+		    "thread_n":[0]
                 }
             ]
         }

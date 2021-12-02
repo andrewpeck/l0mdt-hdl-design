@@ -64,10 +64,6 @@ component lsf_spybuffer_wrapper
   end component;
 begin
   lsf_spybuffer_wrapper_inst: component lsf_spybuffer_wrapper
-  generic map (
-    LSF_SB_MEM_WIDTH    => LSF_SB_MEM_WIDTH,
-    LSF_SB_EL_MEM_WIDTH => LSF_SB_EL_MEM_WIDTH
-    )
   port map (
     clock         => clock,
     reset         => reset,
@@ -80,14 +76,7 @@ begin
     lsf_output    => lsf,
 
     i_eof         => i_eof,
-    histogram_accumulation_count  =>  hba_max_clocks,
-    sb_lsf_mdt_hits_freeze        => sb_lsf_mdt_hits_freeze,
-    sb_lsf_mdt_hits_re            => sb_lsf_mdt_hits_re,
-    sb_lsf_mdt_hits_raddr         => sb_lsf_mdt_hits_raddr,
-    sb_lsf_mdt_hits_rdata         => sb_lsf_mdt_hits_rdata
-    --    mdt_hit_af    => mdt_hit_af,
-    --    roi_af        => slc_roi_af,
-    --    lsf_output_re => lsf_re,
-    --   lsf_output_empty => lsf_empty,
+    histogram_accumulation_count  =>  hba_max_clocks
+
     );
   end architecture lsf_vhd_wrapper_arch;
