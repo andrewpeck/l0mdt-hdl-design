@@ -38,12 +38,16 @@
 		    "thread_n": [0]
                 }
             ],
-            "outputs": [
+           "outputs": [
                 {
                     "tv_format": "PTCALC2MTC_LSF",
                     "ports": 1,
                     "tolerance": {
                         "mdt_pt": [
+                            "perc",
+                            50.0
+                        ],
+                        "mdt_eta": [
                             "perc",
                             50.0
                         ]
