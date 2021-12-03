@@ -146,10 +146,7 @@ architecture behavioral of top_hal is
 
   signal global_reset       : std_logic;
   signal userlogic_reset    : std_logic;
-  signal userlogic_reset_ff : std_logic;
   signal reset              : std_logic;
-
-  attribute MAX_FANOUT of userlogic_reset : signal is "256";
 
   signal strobe_pipeline : std_logic;
   signal strobe_320      : std_logic;
@@ -318,7 +315,12 @@ begin  -- architecture behavioral
       dest_clk => clocks.clock_pipeline,
       src_rst  => global_reset);
 
-  clock_and_control_o.rst <= userlogic_reset;
+  -- insert a bufg into the reset for fanout
+  userlogic_bufg : BUFG
+    port map (
+      I => userlogic_reset,
+      O => clock_and_control_o.rst
+      );
 
   clock_and_control_o.clk <= clocks.clock_pipeline;
   clock_and_control_o.bx  <= strobe_pipeline;
