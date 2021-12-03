@@ -2,7 +2,7 @@
 -- Joakim Olsson, UC Irvine
 -- joakim.olsson@cern.ch
 -- created: 2020-04-12
--- last update: 2021-12-01
+-- last update: 2021-12-02
 -- ===========================================================
 
 library ieee;
@@ -42,6 +42,7 @@ architecture behav of top_upt is
     signal ptcalc2mtc_done  : std_logic;
     signal ptcalc_ap_start  : std_logic;
     signal ptcalc_ap_ready  : std_logic;
+    signal ptcalc_ap_idle     : std_logic;
     signal ptcalc_cnt       : std_logic_vector(2 downto 0):= (others => '0');
     signal ptcalc_slc       : pl2ptcalc_rvt;
     signal ptcalc_segment_i : sf2ptcalc_rvt;
@@ -66,8 +67,8 @@ architecture behav of top_upt is
             sf2ptcalc_out : in sf2ptcalc_rvt;
             ptcalc2mtc : out ptcalc2mtc_rvt;
             ptcalc2mtc_ap_vld : out std_logic;
-            is_C_side           : in std_logic;
-            ptcalc_debug        : out std_logic_vector(57 downto 0)
+            is_C_side           : in std_logic
+          --  ptcalc_debug        : out std_logic_vector(57 downto 0)
             );
     end component;
 
@@ -80,7 +81,7 @@ begin
         ap_rst => i_rst,
         ap_start        => ptcalc_ap_start, --i_slc(PL2PTCALC_LEN-1), -- hls control signal: goes high 1 clk after rst goes low
         ap_done         => ptcalc2mtc_done, -- hls control signal: probably not needed?
-        --ap_idle => const_ap_idle, -- hls control signal: inverted ap_start
+        ap_idle           => ptcalc_ap_idle, -- hls control signal: inverted ap_start
         ap_ready        => ptcalc_ap_ready, -- hls control signal: probably not needed?
         pl2ptcalc       => ptcalc_slc,
         sf2ptcalc_inn   => ptcalc_segment_i,
@@ -88,8 +89,8 @@ begin
         sf2ptcalc_out   => ptcalc_segment_o,
         ptcalc2mtc      => ptcalc2mtc_data,
         ptcalc2mtc_ap_vld   => ptcalc2mtc_valid, -- hls control signal: probably not needed?
-        is_C_side           => ap_const_logic_1,
-        ptcalc_debug        => ptcalc_debug
+        is_C_side           => ap_const_logic_1
+       -- ptcalc_debug        => ptcalc_debug
         );
 
     hls_ap_ready: process(clk)
