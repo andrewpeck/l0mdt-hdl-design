@@ -73,7 +73,7 @@ set SRC "$CWD/src"
 set TB "$CWD/tb"
 
 vlog -sv -work work "glbl.v"
-vlog -sv -work work "$CWD/../../dataformats/l0mdt_buses_constants.svh"
+#vlog -sv -work work "$CWD/../../dataformats/l0mdt_buses_constants.svh"
 
 #vlog -sv -work work "$GET_ROM_ADDR_HLS_IP/get_rom_addr.v"
 vlog -sv -work work "$GET_TRIG_VALS_HLS_IP/get_trig_vals_lut_tables_0.v"
@@ -129,8 +129,8 @@ vcom -work shared_lib $CWD/../../shared/types/common_ieee_pkg.vhd
 vcom -work shared_lib $CWD/../../shared/types/l0mdt_constants_pkg.vhd
 vcom -work shared_lib $CWD/../../shared/types/l0mdt_dataformats_pkg.vhd
 vcom -work lsf_lib "$SRC/lsf_wrapper.vhd"
-vlog -sv -work lsf_lib +incdir+$SRC +incdir+$CWD/../../dataformats "$SRC/get_rom_addr.sv"
 vlog -sv -work lsf_lib +incdir+$SRC +incdir+$CWD/../../dataformats "$SRC/compute_r_bins.sv"
+vlog -sv -work lsf_lib +incdir+$SRC +incdir+$CWD/../../dataformats "$SRC/get_rom_addr.sv"
 vlog -sv -work lsf_lib +incdir+$CWD/../../dataformats/ "$TB/lsf_sb_vhd_tb.v"
 
 

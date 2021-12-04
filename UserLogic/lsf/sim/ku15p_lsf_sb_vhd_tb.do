@@ -21,8 +21,8 @@ onbreak {
 if 0 {
     vdel -all
 }
-#set MSIM_INI /DFS-L/DATA/atlas/psundara/xilinx/compiled_libraries/v2019.1/modelsim.ini
-set MSIM_INI /home/psundara/xilinx/compiled_libraries/v2019.1/modelsim.ini
+set MSIM_INI /DFS-L/DATA/atlas/psundara/xilinx/compiled_libraries/v2020.2/modelsim.ini
+#set MSIM_INI /home/psundara/xilinx/compiled_libraries/v2019.1/modelsim.ini
 if {[file exist [file join $MSIM_INI]]} {
     vmap -c -modelsimini [file join $MSIM_INI]
 } else {
