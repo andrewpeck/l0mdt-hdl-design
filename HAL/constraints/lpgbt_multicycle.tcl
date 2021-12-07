@@ -66,3 +66,7 @@ proc set_lpgbt_multicycles {root_path} {
 
 set_lpgbt_multicycles "top_hal/*csm_gen*/lpgbt_links_inst"
 set_lpgbt_multicycles "top_hal/felix_decoder_inst"
+
+set_max_delay 3.1 \
+    -from [get_pins {top_hal/csm_gen*.csm_ifgen.mgt_tag*.csm_inst/lpgbt_links_inst/uplink_gen*.uplink_inst/rxgearbox_10g_gen.rxGearbox_10g24_inst/gbReset*/C}] \
+    -to   [get_pins {top_hal/csm_gen*.csm_ifgen.mgt_tag*.csm_inst/lpgbt_links_inst/uplink_gen*.uplink_inst/rxgearbox_10g_gen.rxGearbox_10g24_inst/reg*/CLR}]
