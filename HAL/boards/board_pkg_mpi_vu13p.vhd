@@ -14,6 +14,7 @@ package board_pkg is
   constant c_MGT_MAP : mgt_inst_array_t (c_NUM_MGTS-1 downto 0) := (
 
 -- mgt#    => (mgt_type         , refclk , gt_type, x , y)
+    -- SLR0
     0      => (MGT_SL          ,  0     , GTY    , 0 , 0)  , -- BANK 120
     1      => (MGT_SL          ,  0     , GTY    , 0 , 1)  , -- BANK 120
     2      => (MGT_SL          ,  0     , GTY    , 0 , 2)  , -- BANK 120
@@ -28,24 +29,25 @@ package board_pkg is
     11     => (MGT_SL          ,  2     , GTY    , 0 , 11) , -- BANK 122
     12     => (MGT_C2C         ,  3     , GTY    , 0 , 12) , -- BANK 123
     13     => (MGT_C2C         ,  3     , GTY    , 0 , 13) , -- BANK 123
-    14     => (MGT_C2C         ,  3     , GTY    , 0 , 14) , -- BANK 123
-    15     => (MGT_C2C         ,  3     , GTY    , 0 , 15) , -- BANK 123
-    16     => (MGT_LPGBT       ,  4     , GTY    , 0 , 16) , -- BANK 124
-    17     => (MGT_LPGBT       ,  4     , GTY    , 0 , 17) , -- BANK 124
-    18     => (MGT_LPGBT       ,  4     , GTY    , 0 , 18) , -- BANK 124
-    19     => (MGT_LPGBT       ,  4     , GTY    , 0 , 19) , -- BANK 124
-    20     => (MGT_LPGBT       ,  5     , GTY    , 0 , 20) , -- BANK 125
-    21     => (MGT_LPGBT       ,  5     , GTY    , 0 , 21) , -- BANK 125
-    22     => (MGT_LPGBT       ,  5     , GTY    , 0 , 22) , -- BANK 125
-    23     => (MGT_LPGBT       ,  5     , GTY    , 0 , 23) , -- BANK 125
-    24     => (MGT_LPGBT       ,  6     , GTY    , 0 , 24) , -- BANK 126
-    25     => (MGT_LPGBT       ,  6     , GTY    , 0 , 25) , -- BANK 126
-    26     => (MGT_LPGBT       ,  6     , GTY    , 0 , 26) , -- BANK 126
-    27     => (MGT_LPGBT       ,  6     , GTY    , 0 , 27) , -- BANK 126
-    28     => (MGT_LPGBT       ,  7     , GTY    , 0 , 28) , -- BANK 127
-    29     => (MGT_LPGBT       ,  7     , GTY    , 0 , 29) , -- BANK 127
-    30     => (MGT_LPGBT       ,  7     , GTY    , 0 , 30) , -- BANK 127
-    31     => (MGT_LPGBT       ,  7     , GTY    , 0 , 31) , -- BANK 127
+    14     => (MGT_FELIX_TXRX  ,  3     , GTY    , 0 , 14) , -- BANK 123
+    15     => (MGT_FELIX       ,  3     , GTY    , 0 , 15) , -- BANK 123
+    16     => (MGT_FELIX       ,  4     , GTY    , 0 , 16) , -- BANK 124
+    17     => (MGT_FELIX       ,  4     , GTY    , 0 , 17) , -- BANK 124
+    18     => (MGT_FELIX       ,  4     , GTY    , 0 , 18) , -- BANK 124
+    19     => (MGT_FELIX       ,  4     , GTY    , 0 , 19) , -- BANK 124
+    20     => (MGT_FELIX       ,  5     , GTY    , 0 , 20) , -- BANK 125
+    21     => (MGT_FELIX       ,  5     , GTY    , 0 , 21) , -- BANK 125
+    22     => (MGT_FELIX       ,  5     , GTY    , 0 , 22) , -- BANK 125
+    23     => (MGT_FELIX       ,  5     , GTY    , 0 , 23) , -- BANK 125
+    24     => (MGT_FELIX       ,  6     , GTY    , 0 , 24) , -- BANK 126
+    25     => (MGT_FELIX       ,  6     , GTY    , 0 , 25) , -- BANK 126
+    26     => (MGT_FELIX       ,  6     , GTY    , 0 , 26) , -- BANK 126
+    27     => (MGT_FELIX       ,  6     , GTY    , 0 , 27) , -- BANK 126
+    28     => (MGT_FELIX       ,  7     , GTY    , 0 , 28) , -- BANK 127
+    29     => (MGT_FELIX       ,  7     , GTY    , 0 , 29) , -- BANK 127
+    30     => (MGT_FELIX       ,  7     , GTY    , 0 , 30) , -- BANK 127
+    31     => (MGT_FELIX       ,  7     , GTY    , 0 , 31) , -- BANK 127
+    -- SLR1
     32     => (MGT_LPGBT       ,  8     , GTY    , 0 , 32) , -- BANK 128
     33     => (MGT_LPGBT       ,  8     , GTY    , 0 , 33) , -- BANK 128
     34     => (MGT_LPGBT       ,  8     , GTY    , 0 , 34) , -- BANK 128
@@ -78,6 +80,7 @@ package board_pkg is
     61     => (MGT_LPGBT       ,  15    , GTY    , 0 , 61) , -- BANK 135
     62     => (MGT_LPGBT       ,  15    , GTY    , 0 , 62) , -- BANK 135
     63     => (MGT_LPGBT       ,  15    , GTY    , 0 , 63) , -- BANK 135
+    -- SLR2
     64     => (MGT_LPGBT       ,  16    , GTY    , 1 , 0)  , -- BANK 220
     65     => (MGT_LPGBT       ,  16    , GTY    , 1 , 1)  , -- BANK 220
     66     => (MGT_LPGBT       ,  16    , GTY    , 1 , 2)  , -- BANK 220
@@ -110,6 +113,7 @@ package board_pkg is
     93     => (MGT_LPGBT       ,  23    , GTY    , 1 , 29) , -- BANK 227
     94     => (MGT_LPGBT       ,  23    , GTY    , 1 , 30) , -- BANK 227
     95     => (MGT_LPGBT       ,  23    , GTY    , 1 , 31) , -- BANK 227
+    -- SLR3
     96     => (MGT_LPGBT       ,  24    , GTY    , 1 , 32) , -- BANK 228
     97     => (MGT_LPGBT       ,  24    , GTY    , 1 , 33) , -- BANK 228
     98     => (MGT_LPGBT       ,  24    , GTY    , 1 , 34) , -- BANK 228
@@ -131,17 +135,17 @@ package board_pkg is
     114    => (MGT_LPGBT       ,  28    , GTY    , 1 , 50) , -- BANK 232
     115    => (MGT_LPGBT       ,  28    , GTY    , 1 , 51) , -- BANK 232
     116    => (MGT_LPGBT       ,  29    , GTY    , 1 , 52) , -- BANK 233
-    117    => (MGT_FELIX_TXRX  ,  30    , GTY    , 1 , 53) , -- BANK 233
-    118    => (MGT_FELIX       ,  31    , GTY    , 1 , 54) , -- BANK 233
-    119    => (MGT_FELIX       ,  31    , GTY    , 1 , 55) , -- BANK 233
-    120    => (MGT_FELIX       ,  31    , GTY    , 1 , 56) , -- BANK 234
-    121    => (MGT_FELIX       ,  31    , GTY    , 1 , 57) , -- BANK 234
-    122    => (MGT_FELIX       ,  31    , GTY    , 1 , 58) , -- BANK 234
-    123    => (MGT_FELIX       ,  31    , GTY    , 1 , 59) , -- BANK 234
-    124    => (MGT_FELIX       ,  31    , GTY    , 1 , 60) , -- BANK 235
-    125    => (MGT_FELIX       ,  31    , GTY    , 1 , 61) , -- BANK 235
-    126    => (MGT_FELIX       ,  31    , GTY    , 1 , 62) , -- BANK 235
-    127    => (MGT_FELIX       ,  31    , GTY    , 1 , 63) , -- BANK 235
+    117    => (MGT_LPGBT       ,  30    , GTY    , 1 , 53) , -- BANK 233
+    118    => (MGT_LPGBT       ,  31    , GTY    , 1 , 54) , -- BANK 233
+    119    => (MGT_LPGBT       ,  31    , GTY    , 1 , 55) , -- BANK 233
+    120    => (MGT_LPGBT       ,  31    , GTY    , 1 , 56) , -- BANK 234
+    121    => (MGT_LPGBT       ,  31    , GTY    , 1 , 57) , -- BANK 234
+    122    => (MGT_LPGBT       ,  31    , GTY    , 1 , 58) , -- BANK 234
+    123    => (MGT_LPGBT       ,  31    , GTY    , 1 , 59) , -- BANK 234
+    124    => (MGT_LPGBT       ,  31    , GTY    , 1 , 60) , -- BANK 235
+    125    => (MGT_LPGBT       ,  31    , GTY    , 1 , 61) , -- BANK 235
+    126    => (MGT_LPGBT       ,  31    , GTY    , 1 , 62) , -- BANK 235
+    127    => (MGT_LPGBT       ,  31    , GTY    , 1 , 63) , -- BANK 235
     others => MGT_NIL_MAP
     );
 
@@ -181,7 +185,7 @@ package board_pkg is
     27 => (FREQ => REF_SYNC320),
     28 => (FREQ => REF_SYNC320),
     29 => (FREQ => REF_SYNC320),
-    30 => (FREQ => REF_ASYNC320), -- need an async clock for clock recovery
+    30 => (FREQ => REF_SYNC320), -- need an async clock for clock recovery
     31 => (FREQ => REF_SYNC320),
 
     others => REFCLK_NIL_MAP
