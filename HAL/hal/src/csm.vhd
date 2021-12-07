@@ -27,7 +27,9 @@ entity csm is
     g_NUM_DOWNLINKS : integer := 1;
     g_NUM_UPLINKS   : integer := 2;
     g_CSM_ID        : integer := 0;
-    g_TDC_CNT       : integer := 18
+    g_TDC_CNT       : integer := 18;
+    g_ENABLE_MASK   : std_logic_vector;
+    g_LEGACY_FLAG   : std_logic_vector
     );
   port(
 
@@ -242,8 +244,8 @@ begin
   tdc_decoder_wrapper_inst : entity work.tdc_decoder_wrapper
     generic map (
       -- FIXME: some way of overriding enable at the sub-csm level?
-      g_ENABLE_MASK => c_MDT_CONFIG(g_CSM_ID).en,
-      g_LEGACY_FLAG => c_MDT_CONFIG(g_CSM_ID).legacy,
+      g_ENABLE_MASK => g_ENABLE_MASK,
+      g_LEGACY_FLAG => g_LEGACY_FLAG,
       g_CSM         => g_CSM_ID,
       g_NUM_TDCS    => g_TDC_CNT
       )

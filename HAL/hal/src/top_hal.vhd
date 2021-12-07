@@ -440,8 +440,10 @@ begin  -- architecture behavioral
 
         csm_inst : entity work.csm
           generic map (
-            g_CSM_ID  => c_MDT_CONFIG(I).csm_id,
-            g_TDC_CNT => tdc_cnt
+            g_CSM_ID      => c_MDT_CONFIG(I).csm_id,
+            g_TDC_CNT     => tdc_cnt,
+            g_ENABLE_MASK => c_MDT_CONFIG(I).en,
+            g_LEGACY_FLAG => c_MDT_CONFIG(I).legacy
             )
           port map (
             reset_i                      => global_reset,

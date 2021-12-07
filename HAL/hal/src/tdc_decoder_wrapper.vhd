@@ -56,9 +56,10 @@ begin
     tdc_gen : if (g_ENABLE_MASK(I)) generate
 
       -- d0 carries the odd bits, d1 carries the even bits
-      constant d1      : integer := elink_pair_map(I).ch2;
-      constant d0      : integer := elink_pair_map(I).ch1;
-      constant lpgbt   : integer := elink_pair_map(I).lpgbt;
+      constant d1    : integer := elink_pair_map(I).ch2;
+      constant d0    : integer := elink_pair_map(I).ch1;
+      constant lpgbt : integer := elink_pair_map(I).lpgbt;
+
       signal err       : std_logic;
       signal even_data : std_logic_vector (7 downto 0);
       signal odd_data  : std_logic_vector (7 downto 0);
