@@ -1063,7 +1063,7 @@ end
 		    gra_total_bins <= 0;
  	            histogram_reset_n  <= 1'h1;
 
-		    if(latency_count == hba_latency + HBA_MEM_LATENCY + DLY_HITS_PER_CLK)
+		    if(latency_count >= hba_latency + HBA_MEM_LATENCY + DLY_HITS_PER_CLK)
 		      begin
 			 hba_results_rdy      <= 1'b1;
 			 gra_resource_sharing <= 1'b1;
