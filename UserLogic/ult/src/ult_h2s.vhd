@@ -1,15 +1,15 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
+--  Project: ATLAS L0MDT Trigger
 --  Module: Muon Candidate Manager
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_misc.all;
@@ -34,6 +34,9 @@ use hps_lib.hps_pkg.all;
 library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;
 
+library fm_lib;
+use fm_lib.fm_ult_pkg.all;
+
 entity hits_to_segments is
   port (
     -- clock and control
@@ -41,7 +44,7 @@ entity hits_to_segments is
     ttc_commands      : in  l0mdt_ttc_rt;
     ctrl_v            : in  std_logic_vector;--H2S_CTRL_t;
     mon_v             : out std_logic_vector; --H2S_MON_t;
-
+    h2s_fm_data       : out fm_rt_array(0 to h2s_sb_all_station_n - 1);
     -- TDC Hits from Polmux
     i_inn_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
     i_mid_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
@@ -60,10 +63,10 @@ entity hits_to_segments is
     -- Segments Out to Neighbor
     o_plus_neighbor_segments_av  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
     o_minus_neighbor_segments_av : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0)
-    
+
     -- o_sump : out std_logic
   );
-  
+
 
 
 end entity hits_to_segments;
@@ -72,7 +75,7 @@ architecture beh of hits_to_segments is
   -- ctrl&mon signals
   signal ctrl_r : H2S_CTRL_t;
   signal mon_r  : H2S_MON_t;
-  -- 
+  --
   signal glob_en : std_logic;
 begin
 
@@ -80,6 +83,9 @@ begin
   mon_v <= vectorify(mon_r,mon_v);
 
   glob_en <= '1';
+
+  o_plus_neighbor_segments_av  <= (others => (others => '0'));
+  o_minus_neighbor_segments_av <= (others => (others => '0'));
 
   -- H2S_GEN : if c_H2S_ENABLED = '1' generate
 
@@ -91,7 +97,7 @@ begin
       signal mon_hps_r : H2S_HPS_MON_t;
       signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0);
     begin
-      
+
       ctrl_hps_r <=  ctrl_r.hps(0);
       ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
 
@@ -108,9 +114,9 @@ begin
         rst                 => clock_and_control.rst,
         glob_en             => glob_en,
 
-        ctrl_v => ctrl_hps_v,
-        mon_v => mon_hps_v,
-
+        ctrl_v              => ctrl_hps_v,
+        mon_v               => mon_hps_v,
+        h2s_fm_data         => h2s_fm_data(0 to h2s_sb_single_station_n-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
@@ -128,7 +134,7 @@ begin
       signal mon_hps_r : H2S_HPS_MON_t;
       signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0);
     begin
-      
+
       ctrl_hps_r <=  ctrl_r.hps(1);
       ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
 
@@ -137,7 +143,7 @@ begin
 
       HPS : entity hps_lib.hps
       generic map(
-        g_STATION_RADIUS    => 0,
+        g_STATION_RADIUS    => 1,
         g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_INN
       )
       port map(
@@ -145,9 +151,9 @@ begin
         rst                 => clock_and_control.rst,
         glob_en             => glob_en,
 
-        ctrl_v => ctrl_hps_v,
-        mon_v => mon_hps_v,
-
+        ctrl_v              => ctrl_hps_v,
+        mon_v               => mon_hps_v,
+        h2s_fm_data         => h2s_fm_data(h2s_sb_single_station_n to h2s_sb_single_station_n*2-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
@@ -165,7 +171,7 @@ begin
       signal mon_hps_r : H2S_HPS_MON_t;
       signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0);
     begin
-      
+
       ctrl_hps_r <=  ctrl_r.hps(2);
       ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
 
@@ -182,9 +188,9 @@ begin
         rst                 => clock_and_control.rst,
         glob_en             => glob_en,
 
-        ctrl_v => ctrl_hps_v,
-        mon_v => mon_hps_v,
-
+        ctrl_v              => ctrl_hps_v,
+        mon_v               => mon_hps_v,
+        h2s_fm_data         => h2s_fm_data(h2s_sb_single_station_n*2 to h2s_sb_single_station_n*3-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
@@ -202,7 +208,7 @@ begin
       signal mon_hps_r : H2S_HPS_MON_t;
       signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0);
     begin
-      
+
       ctrl_hps_r <=  ctrl_r.hps(3);
       ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
 
@@ -219,9 +225,9 @@ begin
         rst                 => clock_and_control.rst,
         glob_en             => glob_en,
 
-        ctrl_v => ctrl_hps_v,
-        mon_v => mon_hps_v,
-
+        ctrl_v              => ctrl_hps_v,
+        mon_v               => mon_hps_v,
+        h2s_fm_data         => h2s_fm_data(h2s_sb_single_station_n*4 to h2s_sb_single_station_n*5-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
@@ -283,7 +289,7 @@ begin
   --       slc_ext_loop : for I in 0 to c_NUM_THREADS-1 loop
   --         ext_slc_sump(I) <= xor_reduce(i_ext_slc(I));
   --       end loop;
-        
+
 
   --       o_sump <=   xor_reduce(inn_tar_hits_sump)
   --               xor xor_reduce(mid_tar_hits_sump)
@@ -296,6 +302,5 @@ begin
   --     end if;
   --   end process;
   -- end generate;
-  
-end architecture beh;
 
+end architecture beh;

@@ -72,13 +72,52 @@ available packages being given at [http://lcginfo.cern.ch](http://lcginfo.cern.c
 
 ## Custom python installation
 
-If you instead want to install python3 yourself, there are many places online showing
-how to do this. For example, [here](https://realpython.com/installing-python/).
 
-Additionally, you can find an installation script at [this repository](https://github.com/dantrim/danny_installs_python)
-that will install python for you. Beware, python compilation depends on external system libraries and so
-running the script at that repository straight out of the box may fail. Use it as a guide. It has been tested
-on MacOSX as well as CentOS7.
+If you need to install python3, there are many places online showing how to do this.
+For example, [here](https://realpython.com/installing-python/).
+
+One easy way to do it is by installing 'pyenv' and use 'pyenv' to install python3 for you.
+
+<!--
+ Additionally, you can find an installation script at [this repository](https://github.com/dantrim/danny_installs_python) that will install python for you. Beware, python compilation depends on external system libraries and so running the script at that repository straight out of the box may fail. Use it as a guide. It has been tested on MacOSX as well as CentOS7.
+ -->
+
+To install [pyenv](https://realpython.com/intro-to-pyenv/), follow [these instructions](https://github.com/pyenv/pyenv-installer).
+You can check that:
+```bash
+curl https://pyenv.run | bash
+```
+suceeded after you have added these lines to your `.bashrc` and re-source it:
+```bash
+export PATH="#HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+```
+then run:
+```bash
+pyenv --help
+```
+If this suceed, you are good to go to install python3
+```bash
+pyenv install -v 3.8.2
+pyenv global 3.8.2
+pyenv which python
+```
+
+If you will need 'libpython.so` (eg using cocoTB), in that case install python using:
+```bash
+env PYTHON_CONFIGURE_OPTS="--enable-shared"  pyenv install -v 3.8.2
+```
+
+You can add to your `.bashrc`:
+```bash
+alias python='$HOME/.pyenv/versions/3.8.2/bin/python'
+```
+Any additonal python packages (eg: tensorflow, keras, numpy, pandas, tables, matplotlib, hls4ml, jupyter etc...) can be install with:
+```bash
+python -m pip install <package_name>
+```
+
 
 
 For cocoTB, you will need to have `libpython.so`, in that case install python using:
@@ -120,8 +159,12 @@ If you have confirmed that you have `python3`, `Xilinx and Questa` tools on your
 ```bash
 #!/bin/bash
 export L0MDT_TESTVECTOR_DIR=<Test Vector Directory>
-export COCOTB_WORKAREA=${PWD}/l0mdt-hdl-design/tools/cocotb
 export XILINX_SIM_LIB=<Xilinx Vivado Compiled Libraries (Unisim)>
+#Run Xilinx setup scripts
+source /opt/tools/Xilinx/Vivado/2020.2/settings64.sh
+#Include Questa in Path
+PATH=/opt/tools/Questasim/QuestaSIM-10.7c/linux_x86_64:$PATH
+#Set up LM_LICENSE_PATH for Questa and Xilinx tools
 ```
 
 the only
@@ -131,14 +174,14 @@ testbenches is to run,
 $ source setup_env.sh -l $XILINX_SIM_LIB -t $L0MDT_TESTVECTOR_DIR -x $XILINX_VIVADO
 (env) $
 ```
-The -c and -t options are optional and help set environment variables COMPONENTS_LIB_DIR and L0MDT_TESTVECTOR_DIR which point to Xilinx compiled libraries for Questa and directory location of testvectors. The environment variables `COMPONENTS_LIB_DIR` and `L0MDT_TESTVECTOR_DIR` can also be setup manually. Simulation library locations in UCI machines
-uciatlaslab -  /opt/tools/Xilinx/compiled_libraries/v2019.2.1
-uclhc-2 - /DFS-L/DATA/atlas/psundara/xilinx/compiled_libraries/v2019.1/
+Simulation library locations in UCI machines
+uciatlaslab -  /opt/tools/Xilinx/compiled_libraries/v2020.2
+uclhc-2 - /DFS-L/DATA/atlas/psundara/xilinx/compiled_libraries/v2020.2/
 
 You should make sure that you are using compatible branches for cocotb and TV, IPs etc, ie that the test vector tag uses the same DataFormat version that was used to generate and now read the test vectors, and the IPs also use the same DataFormat.
 
 
-`source.sh` will install all dependencies (cocotb, third-party packages, etc...).
+`setup_env.sh` will install all dependencies (cocotb, third-party packages, etc...).
 The installation
 is handled by [pip](https://pypi.org/project/pip/) and [setuptools](https://pypi.org/project/setuptools/).
 You can inspect [setup.py](setup.py) to see the package and installation configuration.

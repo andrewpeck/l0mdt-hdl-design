@@ -102,6 +102,7 @@ def get_bitfield(
     if df_type == "SL":
         BF_list = (event.DF_SL[candidate].getBitFieldWord(bitfieldname, station_id))
     elif df_type == "MDT":
+        station_num = station_name_to_id(station_id)
         BF_list = event.DF_MDT[station_num].getBitFieldWord(bitfieldname, station_id)
 
     for BF in BF_list:
@@ -125,7 +126,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     pass_count         = 0
     fail_count         = 0
     RTL_DFSL           = DataFormat()
-    EXP_DF             = DataFormat()
+    EXP_DF             = []
     tv_format_val      = []
     tv_format_bf       = []
     comparison_data    = []
@@ -137,6 +138,11 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
 
 
+
+    if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
+        stationNum_internal = 0
+    else:
+        stationNum_internal = stationNum
 
     if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
         stationNum_internal = 0
@@ -157,14 +163,13 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
         else:
             print("\nEvent: ", ievent)
             for this_candidate in range(n_candidates):
-                #print ("events.py A: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent,"}")
                 if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=this_candidate):
                     EXP_DF.clear()
                     RTL_DFSL.clear()
                     tv_format_val.clear()
                     comparison_data.clear()
 
-                    EXP_DF = tv_bcid_list[ievent].DF_SL               #For comparing hits, will have to look at DF_MDT
+                    EXP_DF = tv_bcid_list[ievent].DF_SL.copy()               #For comparing hits, will have to look at DF_MDT
                     EXP_BF = EXP_DF[this_candidate].getBitFieldWord(tvformat, stationID)
 
 
@@ -181,6 +186,12 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     tv_format_val.append(tv_format_bf[0].get_bitwordvalue())
                     RTL_DFSL.fillBitFieldWord(tvformat, stationID, tv_format_val)
 
+                    RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID)
+                    RTL_BF[0].set_bitwordvalue(tv_format_val[0])
+                    #print("events.py: EXP_BF=",EXP_BF[0])
+                    #print("events.py: RTL_BF=",RTL_BF[0].print_bitFieldWord())
+                    #print("events.py ==== Calling DF Print:")
+                    #RTL_DFSL.print_summary()
 
                     RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID)
                     RTL_BF[0].set_bitwordvalue(tv_format_val[0])
@@ -201,8 +212,8 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
                     if results[0]:
                         cprint("\tThe 2 BitFieldWords are identical ", "green")
-                        print(tv_bcid_list[ievent].header.dump())
-                        print(tabulate(results[1], results[2], tablefmt="psql"))
+                        #print(tv_bcid_list[ievent].header.dump())
+                        #print(tabulate(results[1], results[2], tablefmt="psql"))
                         pass_count = pass_count + 1
                     else:
                         cprint("\tThe 2 BitFieldWords differ", "red")
@@ -247,6 +258,14 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     df_data.to_csv(df_file_name)
     print("Saving Comparison data to %s " % df_file_name)
 
+    df_data = pd.DataFrame(pp_comparison_list, columns = pd_columns_header)
+    Path(output_path).mkdir(parents=True, exist_ok=True)
+    if stationNum != -99:
+        df_file_name = output_path + "/DF_"+tvformat+"_"+stationID+".csv"
+    else:
+        df_file_name = output_path + "/DF_"+tvformat+".csv"
+    df_data.to_csv(df_file_name)
+    print("Saving Comparison data to %s " % df_file_name)
 
     return ret_val, pass_count, fail_count, tv_format_failure_cnt
 
@@ -292,10 +311,10 @@ def parse_tvlist(
                     this_station_ID = station_ID[my_port]
 
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_port, station_ID=this_station_ID):
-                    # print ("parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
-                    # tvtools.dump_event(events_list,ievent)
-                    # print(events_list[ievent].DF_SL[my_port].print_blocks())
-                    # print("Transaction %d, Candidate %d n_to_load %d tvformat=%s tv_type=%s" %(ievent,my_port,n_to_load,tvformat,tv_type))
+                    #print ("parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
+                    #tvtools.dump_event(events_list,ievent)
+                    #print(events_list[ievent].DF_SL[my_port].print_blocks())
+                    #print("Transaction %d, Candidate %d n_to_load %d tvformat=%s tv_type=%s" %(ievent,my_port,n_to_load,tvformat,tv_type))
 
                     event_found_for_port_interface = 1
                     tv[my_port][valid_events] = get_bitfield(

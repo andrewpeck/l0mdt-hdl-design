@@ -18,6 +18,7 @@ UserLogic/heg/heg_lib.src lib=heg_lib
 UserLogic/hps/hps_lib.src lib=hps_lib
 UserLogic/tar/tar_lib.src lib=tar_lib
 UserLogic/mtc/mtc_lib.src lib=mtc_lib
+UserLogic/fm/fm_lib.src lib=fm_lib
 UserLogic/daq/daq.src
 
 # segment finder

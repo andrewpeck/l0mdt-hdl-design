@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --
 --  Project: ATLAS L0MDT Trigger
 --  Module: Detector parameters
@@ -26,47 +26,6 @@ package detector_param_pkg is
 
   constant MAX_NUM_CHAMBER_POS : integer := 8;
 
-  -- -------------------------------------------------------------------------
-  -- -- Time & cycles constants
-  -- -------------------------------------------------------------------------
-  -- constant c_CLK_AXI_MULT       : integer := 5; 
-
-  -- --
-  -- constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
-
-  -- -- UCM 2 HPS LATENCY
-  -- constant UCM_2HPS_LATENCY     : integer := 50; -- cycles
-  -- -- TAR PIPELINE
-  -- constant TAR_PL_A_LATENCY     : integer := 397 + UCM_2HPS_LATENCY;  --397 --310; -- cycles => 968.75 ns
-  -- constant TDC_PL_A_LATENCY     : integer := 395 + UCM_2HPS_LATENCY;  --310; -- cycles => 968.75 ns
-  -- --
-  -- constant UCM_LATENCY_HPS_CH   : integer := 575 + UCM_2HPS_LATENCY; -- cycles => 1.796 us
-  -- --
-  -- constant HEG_CSF_START_DELAY  : integer := 5;
-  -- constant HEG_CSF_END_DELAY    : integer := 57;
-
-  -- constant HEG_LSF_START_DELAY  : integer := 18;
-  -- constant HEG_LSF_END_DELAY    : integer := 10;
-
-  -- constant HEG_BUSY_CLOCKS      : integer := UCM_LATENCY_HPS_CH;
-  -- --
-  -- constant CSF_POST_PROCESSING  : integer := 57;
-  -- constant LSF_POST_PROCESSING  : integer := 50;
-
-  -- --
-  -- constant HP_LATENCY           : integer := 3;
-  -- constant BM_MIN_LATENCY       : integer := 3;
-  -- --
-  -- constant HP_BCID_OFFSET_TIME  : real := 575.0; -- cycles
-  -- constant HP_BCID_OFFSET_TIME_078res  : integer := integer(HP_BCID_OFFSET_TIME / 0.78125); -- cycles
-
-  -- function get_sf_time ( SF_t : std_logic ; t_CSF , t_LSF : integer) return integer;
-  -- function get_pt_time ( PT_t : std_logic ; t_MPI , t_UCI : integer) return integer;
-
-  -- function get_heg_load_time(start_delay : integer) return integer;
-  -- function get_heg_busy_time(start_delay : integer) return integer;
-  -- function get_heg_unload_time(start_delay, end_delay : integer) return integer;
-  
   -------------------------------------------------------------------------
   -- Radius to RPC hit
   -------------------------------------------------------------------------

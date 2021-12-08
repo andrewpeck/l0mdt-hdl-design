@@ -269,7 +269,7 @@ package l0mdt_constants_pkg is
 
   constant SF2PTCALC_SEGANGLE_LEN : integer := 14;
 
-  constant SF2PTCALC_SEGANGLE_MULT : real := 4.0;
+  constant SF2PTCALC_SEGANGLE_MULT : real := 4096.0;
 
   constant SF2PTCALC_SEGQUALITY_LEN : integer := 1;
 

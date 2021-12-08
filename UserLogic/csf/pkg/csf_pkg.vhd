@@ -74,7 +74,7 @@ package csf_pkg is
     b : signed(CSF_SEG_B_LEN-1 downto 0);
     m : signed(CSF_SEG_M_LEN-1 downto 0);
     chi2 : unsigned(CSF_SEG_CHI2_LEN-1 downto 0);
-    ndof : unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
+    nhits : unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
   end record csf_locseg_rt;
   constant CSF_LOCSEG_LEN : integer := 48;
   subtype csf_locseg_rvt is std_logic_vector(CSF_LOCSEG_LEN-1 downto 0);
@@ -244,7 +244,7 @@ package body csf_pkg is
     y(46 downto 34)            := vectorify(x.b);
     y(33 downto 19)            := vectorify(x.m);
     y(18 downto 4)             := vectorify(x.chi2);
-    y(3 downto 0)              := vectorify(x.ndof);
+    y(3 downto 0)              := vectorify(x.nhits);
     return y;
   end function vectorify;
   function structify(x: csf_locseg_rvt) return csf_locseg_rt is
@@ -254,7 +254,7 @@ package body csf_pkg is
     y.b                        := structify(x(46 downto 34));
     y.m                        := structify(x(33 downto 19));
     y.chi2                     := structify(x(18 downto 4));
-    y.ndof                     := structify(x(3 downto 0));
+    y.nhits                    := structify(x(3 downto 0));
     return y;
   end function structify;
   function nullify(x: csf_locseg_rt) return csf_locseg_rt is
@@ -264,7 +264,7 @@ package body csf_pkg is
     y.b                        := nullify(x.b);
     y.m                        := nullify(x.m);
     y.chi2                     := nullify(x.chi2);
-    y.ndof                     := nullify(x.ndof);
+    y.nhits                    := nullify(x.nhits);
     return y;
   end function nullify;
 

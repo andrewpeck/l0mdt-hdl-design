@@ -101,5 +101,6 @@ HDL_Types:
 - ucm_proc_info_ch:
   - ch :        [ type: logic , length: 4 ]
   - processed:  [ type: logic]
+  - dv:         [ type: logic]
 
 - ucm_proc_info: [array: open , type: ucm_proc_info_ch ]

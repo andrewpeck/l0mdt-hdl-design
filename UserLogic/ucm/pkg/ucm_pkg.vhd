@@ -139,8 +139,9 @@ package ucm_pkg is
   type ucm_proc_info_ch_rt is record
     ch : std_logic_vector(4-1 downto 0);
     processed : std_logic;
+    dv : std_logic;
   end record ucm_proc_info_ch_rt;
-  constant UCM_PROC_INFO_CH_LEN : integer := 5;
+  constant UCM_PROC_INFO_CH_LEN : integer := 6;
   subtype ucm_proc_info_ch_rvt is std_logic_vector(UCM_PROC_INFO_CH_LEN-1 downto 0);
   function vectorify(x: ucm_proc_info_ch_rt) return ucm_proc_info_ch_rvt;
   function structify(x: ucm_proc_info_ch_rvt) return ucm_proc_info_ch_rt;
@@ -635,15 +636,17 @@ package body ucm_pkg is
   function vectorify(x: ucm_proc_info_ch_rt) return ucm_proc_info_ch_rvt is
     variable y : ucm_proc_info_ch_rvt;
   begin
-    y(4 downto 1)              := vectorify(x.ch);
-    y(0 downto 0)              := vectorify(x.processed);
+    y(5 downto 2)              := vectorify(x.ch);
+    y(1 downto 1)              := vectorify(x.processed);
+    y(0 downto 0)              := vectorify(x.dv);
     return y;
   end function vectorify;
   function structify(x: ucm_proc_info_ch_rvt) return ucm_proc_info_ch_rt is
     variable y : ucm_proc_info_ch_rt;
   begin
-    y.ch                       := structify(x(4 downto 1));
-    y.processed                := structify(x(0 downto 0));
+    y.ch                       := structify(x(5 downto 2));
+    y.processed                := structify(x(1 downto 1));
+    y.dv                       := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: ucm_proc_info_ch_rt) return ucm_proc_info_ch_rt is
@@ -651,6 +654,7 @@ package body ucm_pkg is
   begin
     y.ch                       := nullify(x.ch);
     y.processed                := nullify(x.processed);
+    y.dv                       := nullify(x.dv);
     return y;
   end function nullify;
 
@@ -663,12 +667,12 @@ package body ucm_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm_proc_info_at) return std_logic_vector is
-    variable msb : integer := x'length*5-1;
+    variable msb : integer := x'length*6-1;
     variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-5+1) := vectorify(x(i));
-      msb := msb - 5;
+      y(msb downto msb-6+1) := vectorify(x(i));
+      msb := msb - 6;
     end loop l;
     return y;
   end function vectorify;
@@ -685,8 +689,8 @@ package body ucm_pkg is
     variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-5+1));
-      msb := msb - 5;
+      y(i) := structify(x(msb downto msb-6+1));
+      msb := msb - 6;
     end loop l;
     return y;
   end function structify;

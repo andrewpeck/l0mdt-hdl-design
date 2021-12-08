@@ -1,0 +1,26 @@
+# yml2hdl v2
+# This file was auto-generated.
+# Modifications might be lost.
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee]
+
+hdl:
+
+- APB_MEM_SIG_MON_t:
+  - rd_rdy : [ type: logic ]
+  - freeze_ena : [ type: logic ]
+
+
+- APB_MEM_SIG_CTRL_t:
+  - wr_req : [ type: logic ]
+  - wr_ack : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - flush_req : [ type: logic ]
+  - freeze_req : [ type: logic ]
+  - mem_sel : [ type: logic, length: 3 ]
+
+

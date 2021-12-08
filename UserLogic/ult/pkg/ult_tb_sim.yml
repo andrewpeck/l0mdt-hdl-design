@@ -1,0 +1,88 @@
+__config__:
+    basic_convert_functions : off
+    packages:
+      shared_lib:
+        - common_ieee_pkg
+        - l0mdt_constants_pkg
+        - l0mdt_dataformats_pkg
+        - common_constants_pkg
+        - common_types_pkg
+      heg_lib:
+        - heg_pkg
+
+HDL_Types:
+
+- input_mdt:
+  - ToA         : [ type : unsigned , length : 64]
+  - station     : [ type : unsigned , length : 8]
+  - chamber     : [ type : unsigned , length : SLC_CHAMBER_LEN]
+  - event       : [ type : unsigned , length : 32]
+  - tdc         : [ type : tdcpolmux2tar ]
+
+- TB_TAR_FIFO_WIDTH:     [ qualifier: constant , type: integer , value: 32 ]
+
+- input_mdt_bus : [ array: TB_TAR_FIFO_WIDTH , type: input_mdt]
+- tar2hps_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tar2hps]
+- pol2tar_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tdcpolmux2tar]
+
+
+- input_slc:
+  - ToA         : [ type : unsigned , length : 64]
+  - event       : [ type : unsigned , length : 32]
+  - slc         : [ type : slc_rx]
+
+- TB_SLC_FIFO_WIDTH:     [ qualifier: constant , type: integer , value: 32 ]
+
+- input_slc_bus    : [ array: TB_SLC_FIFO_WIDTH , type: input_slc]
+
+- slc_tb    : [ array: TB_SLC_FIFO_WIDTH , type: slc_rx]
+
+#####################################################
+
+- out_heg_bm_hit_sim:
+  - ToA         : [ type : unsigned , length : 64]
+  - station     : [ type : unsigned , length : 4]
+  - thread      : [ type : unsigned , length : 4]
+  - data        : [ type : heg2sfhit]
+
+- out_heg_bm_slc_sim:
+  - ToA         : [ type : unsigned , length : 64]
+  - station     : [ type : unsigned , length : 4]
+  - thread      : [ type : unsigned , length : 4]
+  - data      : [ type : heg2sfslc]
+
+- out_heg_bm_ctrl_sim:
+  - ToA         : [ type : unsigned , length : 64]
+  - station     : [ type : unsigned , length : 4]
+  - thread      : [ type : unsigned , length : 4]
+  - heg_ctrl    : [ type : heg_ctrl2sf]
+  - data      : [ type : heg2sfslc]
+
+
+#####################################################
+
+- in_pt_pt2sf_sim:
+  - ToA         : [ type : unsigned , length : 64]
+  - station     : [ type : unsigned , length : 4]
+  - thread      : [ type : unsigned , length : 4]
+  - data      : [ type : sf2ptcalc]
+
+- in_pt_mpl_sim:
+  - ToA         : [ type : unsigned , length : 64]
+  # - station     : [ type : unsigned , length : 4]
+  - thread      : [ type : unsigned , length : 4]
+  - data      : [ type : pl2ptcalc]
+
+  #####################################################
+
+- in_mtc_pt_sim:
+  - ToA         : [ type : unsigned , length : 64]
+  # - station     : [ type : unsigned , length : 4]
+  - thread      : [ type : unsigned , length : 4]
+  - data      : [ type : ptcalc2mtc]
+
+- in_mtc_mpl_sim:
+  - ToA         : [ type : unsigned , length : 64]
+  # - station     : [ type : unsigned , length : 4]
+  - thread      : [ type : unsigned , length : 4]
+  - data      : [ type : pl2mtc]

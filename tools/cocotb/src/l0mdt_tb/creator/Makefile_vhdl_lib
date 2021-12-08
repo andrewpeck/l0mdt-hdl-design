@@ -1,10 +1,52 @@
+LOAD_LUTS_HLS_IP  = $(IP_REPO)/hls_load_luts/hdl/verilog
+GET_ROM_ADDR_HLS_IP = $(IP_REPO)/hls_get_rom_addr/hdl/verilog
+GET_TRIG_VALS_HLS_IP = $(IP_REPO)/hls_get_trig_vals/hdl/verilog
+GET_THETA_OFFSET_HLS_IP = $(IP_REPO)/hls_get_theta_offset/hdl/verilog
+GET_TRIG_ADDR_OFFSET_HLS_IP = $(IP_REPO)/hls_get_trig_addr_offsets/hdl/verilog
+COMPUTE_LE_RESULTS_HLS_IP = $(IP_REPO)/hls_ComputeLegendreResults/hdl/verilog
+HISTOGRAM_BIN_ACCUMULATION_HLS_IP = $(IP_REPO)/hls_histogram_bin_accumulation/hdl/verilog
+UPDATE_MAX_RBIN_HLS_IP = $(IP_REPO)/hls_update_max_rbin/hdl/verilog
+UPDATE_HISTOGRAM_HLS_IP = $(IP_REPO)/hls_update_histogram/hdl/verilog
+COMPUTE_RBINS_HLS_IP = $(IP_REPO)/hls_compute_r_bins/hdl/verilog
+SPYBUFFER_SRC = $(SHAREDDIR)/SpyBuffer
+# PLL_IP = $(LSFDIR)/xilinx_ip/v2019.1/pll_inst
+FIND_MAX_BIN_HLS_IP = $(IP_REPO)/hls_find_max_bin/hdl/verilog
+GET_LEGENDRE_SEGMENT_HLS_IP = $(IP_REPO)/hls_get_legendre_segment_endcap/hdl/verilog
+GET_LEGENDRE_SEGMENT_BARREL_HLS_IP = $(IP_REPO)/hls_get_legendre_segment_barrel/hdl/verilog
+CALC_LE_R_OFFSET_HLS_IP = $(IP_REPO)/hls_calc_LE_r_offset/hdl/verilog
+CALC_LE_R_OFFSET_BARREL_HLS_IP = $(IP_REPO)/hls_calc_LE_r_offset_barrel/hdl/verilog
+LOAD_LE_REFPOS = $(IP_REPO)/hls_load_LE_refPos/hdl/verilog
+HISTMEM_128x4 = $(LSFDIR)/../sim
+
+
+# Verilog source files
+VERILOG_SOURCES += \
+    $(DFDIR)/l0mdt_buses_constants.svh \
+    $(PWD)/$(TESTBENCH_TOPLEVEL).v \
+    $(SBDIR)/SpyBuffer.v \
+    $(SBDIR)/SpyController.v \
+    $(SBDIR)/SpyMemory.v \
+    $(SBDIR)/SpyPlayback.v \
+    $(SBDIR)/aFifo/aFifo.v \
+    $(SBDIR)/aFifo/fifomem.v \
+    $(SBDIR)/aFifo/rptr_empty.v \
+    $(SBDIR)/aFifo/sync_r2w.v \
+    $(SBDIR)/aFifo/sync_w2r.v \
+    $(SBDIR)/aFifo/wptr_full.v \
+    $(SBDIR)/asym_ram_tdp_read_first.v \
+    $(SHAREDDIR)/memories/src/rom.v
+
+VHDL_SOURCES_project_lib = \
+    $(PWD)/prj_cfg.vhd
+
+
 VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee.vhd \
 	$(SHAREDDIR)/types/l0mdt_constants_pkg.vhd \
 	$(SHAREDDIR)/types/l0mdt_dataformats_pkg.vhd \
-	$(SHAREDDIR)/types/common_constants_pkg.vhd \
+	$(SHAREDDIR)/types/yml2hdl_v1/common_constants_pkg.vhd \
 	$(SHAREDDIR)/types/common_types_pkg.vhd \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/detector_time_param_pkg.vhd \
@@ -24,6 +66,9 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/detector_parameters/mdt_tdc_mezz_map/tdc_mezz_mapping_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/mdt_tc/pkg/TC_B3A_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/mdt_t0/pkg/T0_B_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_large.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_small.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_pkg.vhd \
 	$(SHAREDDIR)/arithmetics/pkg/generic_pipelined_MATH_pkg.vhd \
 	$(SHAREDDIR)/arithmetics/src/generic_pipelined_MATH.vhd \
 	$(SHAREDDIR)/arithmetics/pkg/roi_atan_pkg.vhd \
@@ -37,11 +82,10 @@ VHDL_SOURCES_shared_lib = \
 VHDL_SOURCES_shared_cfg_def_lib = \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd
 
+
 VHDL_SOURCES_apbus_lib = \
     $(SHAREDDIR)/APBus/pkg/apb_pkg.vhd \
-    $(SHAREDDIR)/APBus/src/apb_main_sig.vhd \
-    $(SHAREDDIR)/APBus/src/apb_mem_int.vhd
-
+    $(SHAREDDIR)/APBus/src/apb_imem.vhd
 
 VHDL_SOURCES_vamc_lib = \
 	$(SHAREDDIR)/vamc/vamc-core/pkg/vamc_pkg.vhd \
@@ -51,13 +95,15 @@ VHDL_SOURCES_vamc_lib = \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_csw_out.vhd \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_ctrl_pl.vhd \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_ctrl_ext.vhd \
-	$(SHAREDDIR)/vamc/vamc-core/src/vamc_top.vhd \
-	$(SHAREDDIR)/vamc/vamc-core/src/vamc_spl.vhd
+	$(SHAREDDIR)/vamc/vamc-core/src/vamc_spl.vhd \
+	$(SHAREDDIR)/vamc/vamc-core/src/vamc_top.vhd
 
 
 
 VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/axi/types.vhd \
+	$(HAL)/ctrl/src/MEM_INT_8A16D/MEM_INT_8A16D_PKG.vhd \
+	$(HAL)/ctrl/src/MEM_INT_10A9D/MEM_INT_10A9D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_12A42D/MEM_INT_12A42D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_10A148D/MEM_INT_10A148D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_9A19D/MEM_INT_9A19D_PKG.vhd \
@@ -75,7 +121,10 @@ VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/UCM/UCM_map.vhd \
 	$(HAL)/ctrl/src/H2S/H2S_PKG.vhd \
 	$(HAL)/ctrl/src/H2S/H2S_PKG_DEF.vhd \
-	$(HAL)/ctrl/src/H2S/H2S_map.vhd
+	$(HAL)/ctrl/src/H2S/H2S_map.vhd \
+	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_PKG.vhd \
+	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_map.vhd 
 
 
 VHDL_SOURCES_xpm = \
@@ -114,10 +163,6 @@ VHDL_SOURCES_xpm = \
 
 #VHDL_SOURCES_hp_lib = \
 #    $(HPDIR)/../pkg/hp_pkg.vhd \
-#    $(HPDIR)/ROMs/hp_dt2r_large_mem.vhd \
-#    $(HPDIR)/ROMs/hp_dt2r_small_mem.vhd \
-#    $(HPDIR)/hp_calc_dt2r_large.vhd \
-#    $(HPDIR)/hp_calc_dt2r_small.vhd \
 #    $(HPDIR)/hp_calc_radius.vhd \
 #    $(HPDIR)/hp_calc_RoI_vect.vhd \
 #    $(HPDIR)/hp_hit_matching.vhd \
@@ -249,3 +294,18 @@ VHDL_SOURCES_mpl_lib = \
     $(MPLDIR)/mpl_supervisor.vhd \
     $(MPLDIR)/mpl_pl.vhd \
     $(MPLDIR)/mpl.vhd
+
+
+VHDL_LIB_ORDER = xpm \
+	shared_cfg_def_lib \
+	project_lib \
+	shared_lib \
+	ctrl_lib \
+	apbus_lib \
+	vamc_lib \
+	csf_lib \
+	ptc_lib \
+	lsf_lib \
+	upt_lib \
+	ucm_lib \
+	mpl_lib

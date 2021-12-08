@@ -1,0 +1,19 @@
+#################### LSF Project ###########################
+GEN:lsf:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/lsf
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+
+ 
+# SIM:lsf
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: lsf
+#    allow_failure: false
+#    tags:
+#      - questa
+#      - hog
+#      - "2020.2"

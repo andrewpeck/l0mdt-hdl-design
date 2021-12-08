@@ -18,7 +18,7 @@ shared/detector_parameters/detector_parameters_lib.src
 #---------------------------------
 shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 #---------------------------------
-# Boston University axi Bus Blocks
+# Apollo Platform axi Bus
 #---------------------------------
 shared/APBus/apbus_lib.src lib=apbus_lib
 #---------------------------------
@@ -61,3 +61,10 @@ shared/arithmetics/arithmetics_lib.src
 # shared/SpyBuffer/src/SpyBuffer.v
 
 shared/spybuffer_vhdl_wrapper/spybuffer_vhdl.vhd
+
+#---------------------------------
+# Simulation functions
+#---------------------------------
+shared/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd
+shared/vhdl_utilities/src/vhdl_utils_deserializer.vhd
+shared/vhdl_utilities/src/vhdl_utils_NinCounter.vhd

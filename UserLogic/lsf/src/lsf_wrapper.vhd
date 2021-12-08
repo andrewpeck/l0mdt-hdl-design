@@ -21,10 +21,7 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 
 entity lsf_vhd_wrapper IS
-   generic (
-    LSF_SB_MEM_WIDTH    : positive := 6;
-    LSF_SB_EL_MEM_WIDTH : positive := 4
-    );
+
   PORT(
     clock,reset   : in std_logic;
     slc_roi_valid : in std_logic;
@@ -40,13 +37,9 @@ entity lsf_vhd_wrapper IS
     hba_max_clocks: in std_logic_vector(9 downto 0);
     mdt_hit_af    : out std_logic;
     slc_roi_af    : out std_logic;
-    lsf_empty     : out std_logic;
+    lsf_empty     : out std_logic
 
-    --SpyBuffer Interface
-    sb_lsf_mdt_hits_freeze : in std_logic;
-    sb_lsf_mdt_hits_re     : in std_logic;
-    sb_lsf_mdt_hits_raddr  : in std_logic_vector (LSF_SB_MEM_WIDTH-1 downto 0);
-    sb_lsf_mdt_hits_rdata  : out std_logic_vector(HEG2SFHIT_LEN-1 downto 0)
+
     );
   end entity lsf_vhd_wrapper;
 
@@ -54,10 +47,7 @@ entity lsf_vhd_wrapper IS
 
 architecture lsf_vhd_wrapper_arch of lsf_vhd_wrapper IS
 component lsf_spybuffer_wrapper
-  generic (
-    LSF_SB_MEM_WIDTH    : positive;
-    LSF_SB_EL_MEM_WIDTH : positive
-    );
+
   PORT(
     clock         : in std_logic;
     reset         : in std_logic;
@@ -68,23 +58,8 @@ component lsf_spybuffer_wrapper
     lsf_output    : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
 --    lsf_output_re : in std_logic;
     i_eof         : in std_logic;
-    histogram_accumulation_count : in std_logic_vector(9 downto 0);
-    --SpyBuffer Interface
-    sb_lsf_mdt_hits_freeze         : in std_logic;
-  --  sb_lsf_mdt_hits_playback       : in std_logic;
-  --  sb_lsf_mdt_hits_playback_we    : in std_logic;
-  --  sb_lsf_mdt_hits_playback_wdata : in std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
-    sb_lsf_mdt_hits_re             : in std_logic;
-  --  sb_lsf_mdt_hits_meta_re        : in std_logic;
-    sb_lsf_mdt_hits_raddr          : in std_logic_vector (LSF_SB_MEM_WIDTH-1 downto 0);
-  --  sb_lsf_mdt_hits_meta_raddr     : in std_logic_vector (LSF_SB_EL_MEM_WIDTH-1 downto 0);
-  --  sb_lsf_mdt_hits_waddr          : in std_logic_vector (LSF_SB_MEM_WIDTH-1 downto 0);
-  --  sb_lsf_mdt_hits_meta_waddr     : in std_logic_vector (LSF_SB_EL_MEM_WIDTH-1 downto 0);
-    sb_lsf_mdt_hits_rdata          : out std_logic_vector(HEG2SFHIT_LEN-1 downto 0)
-  --  sb_lsf_mdt_hits_meta_rdata     : out std_logic_vector(LSF_SB_MEM_WIDTH-1 downto 0)
-  --  roi_af        : out std_logic;
- --   mdt_hit_af    : out std_logic;
---    lsf_output_empty: out std_logic
+    histogram_accumulation_count : in std_logic_vector(9 downto 0)
+
     );
   end component;
 begin

@@ -1,8 +1,0 @@
-#### project local configuration files ####
-Top/hp/prj_cfg.vhd 
-#### AXI SC ####
-
-#### top  ####
-UserLogic/hp/top_hp.vhd
-#### modules included ####
-UserLogic/hp/hp_lib.src lib=hp_lib

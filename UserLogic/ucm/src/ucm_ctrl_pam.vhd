@@ -45,7 +45,9 @@ entity ucm_ctrl_pam is
     i_pam_update        : in std_logic;
     --
     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
-    o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+    -- o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+    o_proc_info_av      : out ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
+    
     --
     o_cvp_rst           : out std_logic_vector(c_NUM_THREADS -1 downto 0);
     o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
@@ -65,7 +67,11 @@ architecture beh of ucm_ctrl_pam is
   
   signal ch_busy  : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
-  signal proc_info  : ucm_proc_info_at(c_NUM_THREADS -1 downto 0) := (others =>( (others => '0') , '0') );
+  constant proc_info_init  : ucm_proc_info_ch_rt := ( ch => (others => '0') ,
+                                                      processed => '0',
+                                                      dv => '0');
+  signal proc_info    : ucm_proc_info_at(c_NUM_THREADS -1 downto 0) := (others =>proc_info_init  );
+  signal o_proc_info  : ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
   
   type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
   signal ch_count     : ch_count_avt(c_NUM_THREADS -1 downto 0);
@@ -106,7 +112,9 @@ begin
 
         processed := 0;
         busy := 0;
-
+        for ch_i in c_NUM_THREADS -1 downto 0 loop
+          proc_info(ch_i).dv <= '0';
+        end loop;
         for ch_i in c_NUM_THREADS -1 downto 0 loop
           if ch_busy(ch_i) = '1' then
             -- proc_info(c_NUM_THREADS -1 - busy).ch <= (others => '0');
@@ -143,6 +151,9 @@ begin
             
           else
 
+            proc_info(ch_i).processed <= '0';
+
+
             -- for uc_i in c_NUM_THREADS loop
               
             -- end loop;
@@ -155,9 +166,11 @@ begin
                 buff_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(c_NUM_THREADS -1 - processed,4));
                 proc_info(c_NUM_THREADS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
                 proc_info(c_NUM_THREADS -1 - processed).processed <= '1';
+                proc_info(c_NUM_THREADS -1 - processed).dv <= '1';
                 ch_busy(ch_i) <= '1';
                 processed := processed + 1;
               else
+                -- proc_info(c_NUM_THREADS -1 - processed).dv <= '0';
               end if;
             else
               -- proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
@@ -215,7 +228,7 @@ begin
         ena         => ena,
         --
         i_data      => int_proc_info_v(th_i),
-        o_data      => o_proc_info_v(th_i)
+        o_data      => o_proc_info_av(th_i)
     );
     o_proc_info(th_i) <= structify(o_proc_info_v(th_i));
   
@@ -236,5 +249,7 @@ begin
     o_pam_ctrl(th_i) <= structify(o_pam_ctrl_v(th_i));
 
   end generate TH_GEN;
+
+    -- o_proc_info_av <= vectorify(o_proc_info)
   
 end architecture beh;

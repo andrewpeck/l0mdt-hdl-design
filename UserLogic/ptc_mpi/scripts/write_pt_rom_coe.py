@@ -51,7 +51,7 @@ def main():
 
     z_red_width = args.z_width - args.eta_shift
     divider_sagitta = 12
-    divider_dbeta = 17
+    divider_dbeta = 22
     dbeta_len = 14
     rec_sagitta_len = 10
 

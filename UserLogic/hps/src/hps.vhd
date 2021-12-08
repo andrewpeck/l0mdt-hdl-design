@@ -1,15 +1,15 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: 
+--  Project: ATLAS L0MDT Trigger
+--  Module:
 --  Description:
---  
+--
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -34,8 +34,10 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
--- use ctrl_lib.ctrl_constants_pkg.all;
 use ctrl_lib.H2S_CTRL.all;
+
+library fm_lib;
+use fm_lib.fm_ult_pkg.all;
 
 entity hps is
   generic(
@@ -48,15 +50,15 @@ entity hps is
     glob_en : in std_logic;
 
     -- control
-    ctrl_v  : in std_logic_vector;-- H2S_HPS_CTRL_t;
-    mon_v   : out std_logic_vector;--H2S_HPS_MON_t;
-
+    ctrl_v            : in std_logic_vector;-- H2S_HPS_CTRL_t;
+    mon_v             : out std_logic_vector;--H2S_HPS_MON_t;
+    h2s_fm_data       : out fm_rt_array(0 to h2s_sb_single_station_n - 1);
     -- SLc
-    i_uCM2hps_av : in  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+    i_uCM2hps_av      : in  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av : in  tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+    i_mdt_tar_av      : in  tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc
-    o_sf2pt_av   : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
+    o_sf2pt_av        : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
     );
 end entity hps;
 
@@ -64,6 +66,29 @@ architecture beh of hps is
 
   signal ctrl_r : H2S_HPS_CTRL_t;
   signal mon_r : H2S_HPS_MON_t;
+
+  -- signal ctrl_super_r : H2S_HPS_SUPER_CTRL_t;
+  -- signal mon_super_r  : H2S_HPS_SUPER_MON_t;
+  constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
+  constant SUPER_MON_LEN  : integer := len(mon_r.super);
+  signal ctrl_super_v : std_logic_vector(SUPER_CTRL_LEN -1 downto 0);
+  signal mon_super_v  : std_logic_vector(SUPER_MON_LEN -1 downto 0);
+
+
+  constant CSF_CTRL_LEN : integer := len(ctrl_r.csf.csf(0)); 
+  constant CSF_MON_LEN  : integer := len(mon_r.csf.csf(0));
+  constant LSF_CTRL_LEN : integer := len(ctrl_r.lsf.lsf(0));
+  constant LSF_MON_LEN  : integer := len(mon_r.lsf.lsf(0));
+
+  type csf_ctrl_avt is array (integer range <>) of std_logic_vector(CSF_CTRL_LEN -1 downto 0);
+  type csf_mon_avt  is array (integer range <>) of std_logic_vector(CSF_MON_LEN  -1 downto 0);
+  type lsf_ctrl_avt is array (integer range <>) of std_logic_vector(LSF_CTRL_LEN -1 downto 0);
+  type lsf_mon_avt  is array (integer range <>) of std_logic_vector(LSF_MON_LEN  -1 downto 0);
+
+  signal csf_ctrl_av : csf_ctrl_avt(c_NUM_THREADS -1 downto 0 );
+  signal csf_mon_av  : csf_mon_avt (c_NUM_THREADS -1 downto 0 );
+  signal lsf_ctrl_av : lsf_ctrl_avt(c_NUM_THREADS -1 downto 0 );
+  signal lsf_mon_av  : lsf_mon_avt (c_NUM_THREADS -1 downto 0 );
 
   signal pc_t0_ctrl_v  : std_logic_vector(len(ctrl_r.MDT_T0.MDT_T0)-1 downto 0);
   signal pc_tc_ctrl_v  : std_logic_vector(len(ctrl_r.MDT_TC.MDT_TC)-1 downto 0);
@@ -90,15 +115,35 @@ architecture beh of hps is
   signal heg2sfslc_av   : heg2sfslc_bus_avt(c_NUM_THREADS -1 downto 0);
   signal heg2sfhit_av   : heg2sfhit_bus_avt(c_NUM_THREADS -1 downto 0);
 
+
+  signal sf_fm_data_th  : sf_single_station_array;
 begin
 
   ctrl_r <= structify(ctrl_v,ctrl_r);
   mon_v <= vectorify(mon_r,mon_v);
 
+  ctrl_super_v <= convert(ctrl_r.super,ctrl_super_v);
+  mon_r.super <= convert(mon_super_v,mon_r.super);
+
   pc_t0_ctrl_v <= vectorify(ctrl_r.MDT_T0.MDT_T0,pc_t0_ctrl_v);
   pc_tc_ctrl_v <= vectorify(ctrl_r.MDT_TC.MDT_TC,pc_tc_ctrl_v);
   mon_r.MDT_T0.MDT_T0 <= structify(pc_t0_mon_v,mon_r.MDT_T0.MDT_T0);
   mon_r.MDT_TC.MDT_TC <= structify(pc_tc_mon_v,mon_r.MDT_TC.MDT_TC);
+
+  h2s_fm_gen: for th_i in c_NUM_THREADS -1 downto 0 generate
+    h2s_fm_data(th_i*sf_sb_n to (th_i+1)*sf_sb_n - 1)   <= sf_fm_data_th(th_i)(0 to sf_sb_n -1);
+  end generate h2s_fm_gen;
+  --h2s_fm_data(0 to sf_sb_n - 1)             <= sf_fm_data_th(0)(0 to sf_sb_n -1);
+  --h2s_fm_data( sf_sb_n to 2*sf_sb_n - 1)    <= sf_fm_data_th(1)(0 to sf_sb_n -1);
+  --h2s_fm_data(2* sf_sb_n to 3*sf_sb_n - 1)  <= sf_fm_data_th(2)(0 to sf_sb_n -1);
+
+
+  CM_for_gen: for th_i in c_NUM_THREADS -1 downto 0 generate
+    csf_ctrl_av(th_i)   <= convert(ctrl_r.csf.csf(th_i),csf_ctrl_av(th_i));
+    mon_r.csf.csf(th_i) <= convert(csf_mon_av(th_i),mon_r.csf.csf(th_i));
+    lsf_ctrl_av(th_i)   <= convert(ctrl_r.lsf.lsf(th_i),lsf_ctrl_av(th_i));
+    mon_r.lsf.lsf(th_i) <= convert(lsf_mon_av(th_i),mon_r.lsf.lsf(th_i));
+  end generate CM_for_gen;
 
   SUPER : entity hps_lib.hps_supervisor
   generic map(
@@ -109,9 +154,11 @@ begin
     rst         => rst,
     glob_en     => glob_en,
     --
-    i_actions   => ctrl_r.actions,
-    i_configs   => ctrl_r.configs,
-    o_status    => mon_r.status,
+    ctrl_v      => ctrl_super_v,
+    mon_v       => mon_super_v,
+    -- i_actions   => ctrl_r.actions,
+    -- i_configs   => ctrl_r.configs,
+    -- o_status    => mon_r.status,
     --
     o_local_rst => int_rst,
     o_local_en  => int_ena
@@ -138,11 +185,11 @@ begin
       o_mdt_full_data_v => mdt_full_data_av--(hp_i)
   );
 
-  heg_gen : for heg_i in c_NUM_THREADS -1 downto 0 generate
+  heg_gen : for th_i in c_NUM_THREADS -1 downto 0 generate
 
-    heg_ctrl_av(heg_i) <= vectorify(ctrl_r.heg.heg(heg_i),heg_ctrl_av(heg_i));
-    mon_r.heg.heg(heg_i) <= structify(heg_mon_av(heg_i),mon_r.heg.heg(heg_i));
-    
+    heg_ctrl_av(th_i) <= vectorify(ctrl_r.heg.heg(th_i),heg_ctrl_av(th_i));
+    mon_r.heg.heg(th_i) <= structify(heg_mon_av(th_i),mon_r.heg.heg(th_i));
+
     HEG : entity heg_lib.heg
       generic map(
         g_STATION_RADIUS => g_STATION_RADIUS,
@@ -150,19 +197,19 @@ begin
         )
       port map(
         clk                => clk,
-        rst                => int_rst, 
+        rst                => int_rst,
         glob_en            => int_ena,
-        --        
-        ctrl_v             => heg_ctrl_av(heg_i),
-        mon_v              => heg_mon_av(heg_i),
         --
-        i_uCM_data_v       => i_uCM2hps_av(heg_i),
+        ctrl_v             => heg_ctrl_av(th_i),
+        mon_v              => heg_mon_av(th_i),
+        --
+        i_uCM_data_v       => i_uCM2hps_av(th_i),
         -- MDT hit
         i_mdt_full_data_av => mdt_full_data_av,
         -- to Segment finder
-        o_sf_control_v     => heg2sf_ctrl_av(heg_i),
-        o_sf_slc_data_v    => heg2sfslc_av(heg_i),
-        o_sf_mdt_data_v    => heg2sfhit_av(heg_i)
+        o_sf_control_v     => heg2sf_ctrl_av(th_i),
+        o_sf_slc_data_v    => heg2sfslc_av(th_i),
+        o_sf_mdt_data_v    => heg2sfhit_av(th_i)
         );
 
     SF : entity hps_lib.hps_sf_wrap
@@ -174,18 +221,19 @@ begin
         rst           => int_rst,
         glob_en       => int_ena,
 
-        lsf_ctrl => ctrl_r.lsf.lsf(heg_i),
-        lsf_mon  => mon_r.lsf.lsf(heg_i),
+        lsf_ctrl_v => lsf_ctrl_av(th_i),--ctrl_r.lsf.lsf(th_i),
+        lsf_mon_v  => lsf_mon_av(th_i),--mon_r.lsf.lsf(th_i),
 
-        csf_ctrl => ctrl_r.csf.csf(heg_i),
-        csf_mon  => mon_r.csf.csf(heg_i),
+        csf_ctrl_v => csf_ctrl_av(th_i),--ctrl_r.csf.csf(th_i),
+        csf_mon_v  => csf_mon_av(th_i),--mon_r.csf.csf(th_i),
 
+        sf_fm_data => sf_fm_data_th(th_i),
         -- to Segment finder
-        i_control_v   => heg2sf_ctrl_av(heg_i),
-        i_slc_data_v  => heg2sfslc_av(heg_i),
-        i_mdt_data_v  => heg2sfhit_av(heg_i),
+        i_control_v   => heg2sf_ctrl_av(th_i),
+        i_slc_data_v  => heg2sfslc_av(th_i),
+        i_mdt_data_v  => heg2sfhit_av(th_i),
         --
-        o_sf_data_v   => o_sf2pt_av(heg_i)
+        o_sf_data_v   => o_sf2pt_av(th_i)
         );
 
   end generate;

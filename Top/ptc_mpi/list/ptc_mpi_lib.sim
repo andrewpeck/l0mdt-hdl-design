@@ -1,6 +1,0 @@
-#Simulator questa
-UserLogic/ptc_mpi/sim/pt_tb.vhd topsim=pt_tb
-UserLogic/ptc_mpi/sim/pt_tb_behav1.wcfg
-UserLogic/ptc_mpi/sim/sagitta_tb.vhd
-UserLogic/ptc_mpi/sim/sagitta_tb_behav.wcfg
-UserLogic/ptc_mpi/sim/eta_tb.vhd

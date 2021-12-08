@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
 --  Module: slc data Cross switch
@@ -36,7 +36,7 @@ entity ucm_csw is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    i_control           : in ucm_csw_control_at;
+    i_control_av        : in ucm_csw_control_avt;
     --
     i_data              : in slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
     o_data              : out slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0)
@@ -44,9 +44,14 @@ entity ucm_csw is
 end entity ucm_csw;
 
 architecture beh of ucm_csw is
+  signal control_ar : ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
+  
   signal o_data_ar : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
   signal i_data_ar : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
+
 begin
+
+  control_ar <= structify(i_control_av);
 
   generate_label: for sli in c_MAX_NUM_SL -1 downto 0 generate
     i_data_ar(sli) <= structify(i_data(sli));
@@ -60,8 +65,8 @@ begin
           o_data_ar(sli)  <= nullify(o_data_ar(sli));
         else
           -- for csw_i in c_MAX_NUM_SL -1 downto 0 loop
-            if i_control(sli).data_present = '1' then
-              o_data_ar(sli) <= i_data_ar(to_integer(unsigned(i_control(sli).addr_orig)));
+            if control_ar(sli).data_present = '1' then
+              o_data_ar(sli) <= i_data_ar(to_integer(unsigned(control_ar(sli).addr_orig)));
             else
               o_data_ar(sli).data_valid <= '0';-- (others => '0');
               -- o_data_ar(sli) <= nullify(o_data_ar(sli));
@@ -84,8 +89,8 @@ begin
         
   --     else
   --       for csw_i in c_MAX_NUM_SL -1 downto 0 loop
-  --         if i_control(csw_i).data_present = '1' then
-  --           o_data_ar(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_orig)));
+  --         if control_ar(csw_i).data_present = '1' then
+  --           o_data_ar(csw_i) <= i_data(to_integer(unsigned(control_ar(csw_i).addr_orig)));
   --         else
   --           o_data_ar(csw_i) <= (others => '0');
   --         end if;

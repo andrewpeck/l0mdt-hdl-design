@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
 --  Module: Configurable pipeline Multiplier 
@@ -50,7 +50,7 @@ package body generic_pipelined_MATH_pkg is
 
     if op = "*" then 
       OW := AW + BW;
-    elsif op = "-" then
+    elsif op = "-" OR  op = "--" then
       OW := max(AW,BW);
     elsif op = "/" then
       OW := max(AW,BW);

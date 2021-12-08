@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
 --  Module: Tube Adress Remap
@@ -64,11 +64,14 @@ architecture beh of tar_station is
   signal ctrl_r : TAR_PL_ST_PL_ST_CTRL_t;
   signal mon_r  : TAR_PL_ST_PL_ST_MON_t;
 
-  signal ctrl_apb_mem_r : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-  signal mon_apb_mem_r  : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; 
+  -- signal ctrl_apb_mem_r : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
+  -- signal mon_apb_mem_r  : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; 
 
-  type ctrl_apb_mem_avt is array (5 downto 0) of std_logic_vector(len(ctrl_apb_mem_r)-1  downto 0);
-  type mon_apb_mem_avt  is array (5 downto 0) of std_logic_vector(len(mon_apb_mem_r)-1  downto 0);
+  constant TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_LEN : integer := len(ctrl_r.PL_CHAMBER.PL_MEM(0));--71;
+  constant TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_LEN : integer := len(mon_r.PL_CHAMBER.PL_MEM(0));--43;
+
+  type ctrl_apb_mem_avt is array (5 downto 0) of std_logic_vector(TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_LEN-1  downto 0);
+  type mon_apb_mem_avt  is array (5 downto 0) of std_logic_vector(TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_LEN-1  downto 0);
 
   signal ctrl_apb_mem_av : ctrl_apb_mem_avt;
   signal mon_apb_mem_av  : mon_apb_mem_avt; 
@@ -110,10 +113,11 @@ begin
         g_PIPELINE_WIDTH    => i_tdc_hits_av(b_i)'length, -- necesario?
         g_PARALLEL_MEM      => 1,
         -- BU bus
-        g_APBUS_ENABLED    => '1',
-        g_XML_NODE_NAME    => "MEM_INT_12A42D",
-        g_APBUS_CTRL_WIDTH => ctrl_apb_mem_av(b_i)'length,--integer(len(ctrl)),
-        g_APBUS_MON_WIDTH  => mon_apb_mem_av(b_i)'length --integer(len(mon))
+        -- g_APBUS_ENABLED    => '1',
+        g_EXT_INT           => "APB",
+        g_XML_NODE_NAME    => "MEM_INT_12A42D"
+        -- g_APBUS_CTRL_WIDTH => ctrl_apb_mem_av(b_i)'length,--integer(len(ctrl)),
+        -- g_APBUS_MON_WIDTH  => mon_apb_mem_av(b_i)'length --integer(len(mon))
       ) 
       port map(
         clk         => clk,
@@ -121,8 +125,8 @@ begin
         ena         => glob_en,
         --
         -- Ctrl/Mon 
-        ctrl        => ctrl_apb_mem_av(b_i),
-        mon         => mon_apb_mem_av(b_i),
+        ctrl_v        => ctrl_apb_mem_av(b_i),
+        mon_v         => mon_apb_mem_av(b_i),
         i_freeze    => i_freeze,
         --
         i_data      => i_tdc_hits_av(b_i),

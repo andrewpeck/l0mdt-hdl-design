@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
 --  Module: TAR general supervisor
@@ -27,8 +27,9 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
 use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
 
-library apbus_lib;
+-- library apbus_lib;
 -- use TAR_lib.TAR_pkg.all;
  
 library tar_lib;
@@ -47,106 +48,90 @@ entity tar_supervisor is
     rst                 : in std_logic;
     glob_en             : in std_logic := '1';
     -- AXI to SoC
-    actions             : in  TAR_ACTIONS_CTRL_t;
-    configs             : in  TAR_CONFIGS_CTRL_t;
-    status              : out TAR_STATUS_MON_t;
+    i_actions             : in  TAR_ACTIONS_CTRL_t;
+    i_configs             : in  TAR_CONFIGS_CTRL_t;
+    o_status              : out TAR_STATUS_MON_t;
     --
 
     --
     i_freeze            : in std_logic := '0';
     o_freeze            : out std_logic;
     --
-    local_en            : out std_logic;
-    local_rst           : out std_logic
+    o_local_en            : out std_logic;
+    o_local_rst           : out std_logic
   );
 end entity tar_supervisor;
 
 architecture beh of tar_supervisor is
-  signal axi_rst      : std_logic;
-  signal clk_axi      : std_logic;
-  -- signal clk_axi_cnt  : integer;
-
-  signal int_en   : std_logic := '0';
-  signal int_rst  : std_logic := '1';
-  -- signal mem_rst  : std_logic;
+  signal local_rst : std_logic;
+  signal local_en  : std_logic;
   --
-  signal mem_flush_on_Reset : std_logic := '1';
-  signal rst_counter        : integer;
-  signal rst_trig           : std_logic;
-  -- constant RST_Latency      : integer := integer(ceil(log2(real(c_TAR_PL_A_LATENCY))));
-  signal rst_done           : std_logic;
-  signal rst_states         : std_logic_vector(3 downto 0);
+  signal int_en   : std_logic;
+  signal int_rst  : std_logic := '1';
 
-  signal apb_freeze : std_logic;
+  signal int_freeze : std_logic;
+
+  constant apb_clk_lat : integer := c_CLK_AXI_MULT;
+  signal  apb_clk_cnt : integer;
+  signal axi_cnt_reset    : std_logic;
+  signal axi_rep_clk      : std_logic;
 begin
-  --------------------------------------------
-  --    AXI CLK
-  --------------------------------------------
+  o_local_en <= local_en;
+  o_local_rst <= local_rst;
 
-    PL : entity apbus_lib.apbus_main_sig
-    port map(
-      clk           => clk,
-      rst           => rst,
-      ena           => glob_en,
-      --
-      o_axi_clk     => clk_axi,
-      o_axi_rst     => axi_rst
-    );
-
-  --------------------------------------------
-  --    CTRL
-  --------------------------------------------
   local_en <= glob_en and int_en;
   local_rst <= rst or int_rst;
 
-  SIG_PROC: process(clk_axi)
-    begin
-    if rising_edge(clk_axi) then
-      if axi_rst = '1' then
-        int_en <= glob_en;
-        int_rst <= '1';
-        apb_freeze <= '0';
-      else
-        if actions.reset = '1' then
-          int_rst <= '1';
-        else
-          int_rst <= '0';
-        end if;
-        if actions.enable = '1' then
-          int_en <= '1';
-        elsif actions.disable = '1' then
-          int_en <= '0';
-        end if;
-        if actions.freeze = '1' then
-          apb_freeze <= '1';
-        else
-          apb_freeze <= '0';
-        end if;
-      end if;
-    end if;
-  end process;
-  --------------------------------------------
-  --    INTERNAL CTRL
-  --------------------------------------------
-  o_freeze <= i_freeze or apb_freeze;
-  --------------------------------------------
-  --    status
-  --------------------------------------------
-  ST_PROC: process(clk_axi)
+  o_freeze <= i_freeze or int_freeze;
+
+  signaling: process(clk)
   begin
-    if rising_edge(clk_axi) then
+    if rising_edge(clk) then
       if rst = '1' then
-
+        int_en <= '1';
+        int_rst <= rst;
+        apb_clk_cnt <= 0;
       else
-        STATUS.ENABLED <= local_en;
-        STATUS.READY <= not local_rst;
-        STATUS.ERROR <= '0';
+        --------------------------------------------
+        --    AXI CLK CTRL
+        --------------------------------------------
+        if apb_clk_cnt < apb_clk_lat and axi_cnt_reset = '0' then
+          apb_clk_cnt <= apb_clk_cnt + 1;
+        else
+          apb_clk_cnt <= 0;
+          axi_rep_clk <= not axi_rep_clk;
+        end if;
+        --------------------------------------------
+        --    from apb
+        --------------------------------------------
+        -- if apb_clk_cnt = 0 then
+          if i_actions.reset = '1' then
+            int_rst <= '1';
+          else
+            int_rst <= '0';
+          end if;
+
+          if i_actions.enable = '1' then
+            int_en <= '1';
+          elsif i_actions.disable = '1' then
+            int_en <= '0';
+          end if;
+          
+          if i_actions.freeze = '1' then
+            int_freeze <= '1';
+          else
+            int_freeze <= '0';
+          end if;
+        -- else
+        -- end if;
+        --------------------------------------------
+        --    to apb
+        --------------------------------------------
+        o_status.ENABLED <= local_en;
+        o_status.READY <= not local_rst;
+        o_status.ERROR <= (others => '0');
+        o_status.FREEZED <= o_freeze;
       end if;
     end if;
   end process;
-
-
-  
-  
-  
 end architecture beh;

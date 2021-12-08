@@ -1,8 +1,12 @@
 `timescale 1ns/1ps
 
 
-`include "l0mdt_buses_constants.svh"
 
+`ifndef L0MDT_BUS_CONSTANTS
+`define L0MDT_BUS_CONSTANTS
+//`include "l0mdt_buses_constants.svh"
+import l0mdt_dataformats_svh::*;
+`endif
 
 
 
@@ -28,27 +32,18 @@ module legendreEngine_2clk #(
    //Settings for THETA_BINS = 64, RBINS = 64
    localparam THETA_BINS= 64; //64; //128;
    // localparam RBINS      = 128; //128;
-   localparam RBIN_WIDTH = 8; //RBIN=128 : 8; RBIN=64 : 7 //including sign
+   localparam RBIN_WIDTH = 7; //RBIN=128 : 7; RBIN=64 : 6
    localparam HBA_MEM_LATENCY = 4;//DMEM-4, REG-3; //4; //3;
 
    localparam W_r = 22;
    localparam W_r_DECB = 6;
    localparam W_OUT = 18;
-   localparam W_bin_number_a = 7;
+   //localparam W_bin_number_a = 7;
 
-//Settings for THETA_BINS = 64, RBINS = 64
-   /*
-   localparam THETA_BINS= 64; //128;
-   localparam RBINS      = 128;
-   localparam RBIN_WIDTH = 8; //including sign
-   localparam HBA_MEM_LATENCY = 4;//DMEM-4, REG-3; //4; //3;
-   */
-   //   const int TRIG_BITS= 24;
-   //  parameter HEG2SFSLC_VEC_ANG_LEN = 10; //TODO: FIX IN HEADER FILE:TALK TO KOSTAS
-   parameter HEG2SFSLC_VEC_ANG_PREC_LEN = HEG2SFSLC_VEC_ANG_LEN + 3; //7 ;
 
-   //CONSTANT FROM HLS(ANGLE_MAX_HALF_MRAD + HALF_PI_MRAD)
-//   parameter VEC_ANG_OFFSET = 1023+50265;  //typedef ap_fixed<W_slcproc_vec_ang+7, IW_slcproc_vec_ang+2> angle_t_mrad;
+  localparam HEG2SFSLC_VEC_ANG_PREC_LEN = HEG2SFSLC_VEC_ANG_LEN + 3; //7 ;
+
+
 
    logic [17:0] 		   hw_sin_val[THETA_BINS];
    logic [17:0] 		   hw_cos_val[THETA_BINS];
@@ -104,12 +99,7 @@ module legendreEngine_2clk #(
 
 
 
-/* -----\/----- EXCLUDED -----\/-----
-   logic [HEG2SFSLC_VEC_POS_LEN - 1:0] roi_offset_z[9];
-   logic [HEG2SFSLC_VEC_POS_LEN - 1:0] roi_offset_R[9];
-   logic [HEG2SFSLC_VEC_POS_LEN - 1:0] geo_pos_R;
-   logic [HEG2SFSLC_VEC_POS_LEN - 1:0] geo_pos_Z;
- -----/\----- EXCLUDED -----/\----- */
+
    logic [SLC_MUID_LEN-1:0] 			 slc_muid;
    logic [VEC_MDTID_LEN-1:0] 			 slc_mdtid;
    logic [SF2PTCALC_SEGQUALITY_LEN-1:0] 	 sf_segquality;
@@ -200,7 +190,7 @@ module legendreEngine_2clk #(
    logic 									    hba_update_max_rbin_ap_ready;
 
 
-   logic [W_bin_number_a:0] 							    r_bin[THETA_BINS];
+   logic [RBIN_WIDTH-1:0] 							    r_bin[THETA_BINS];
    logic 									    r_bin_vld[THETA_BINS];
    logic 									    r_bin_rdy[THETA_BINS];
 
@@ -242,10 +232,7 @@ module legendreEngine_2clk #(
    logic [1:0] 			   theta_offset_factor_sn;
    logic 			   theta_offset_factor_sn_vld;
 
-/* -----\/----- EXCLUDED -----\/-----
-   logic [14:0] 		   sin_rom_addr_reg;
-   logic [14:0] 		   cos_rom_addr_reg;
- -----/\----- EXCLUDED -----/\----- */
+
    logic 			   sin_rom_addr_vld_reg;
    logic 			   cos_rom_addr_vld_reg;
    logic [21:0] 		   theta_offset_factor_sn_reg;
@@ -326,8 +313,6 @@ module legendreEngine_2clk #(
    logic 		 hls_pos_R_vld;
 
 
-//`include "get_rom_addr_include.sv"
-//`include "compute_LE_interface.sv"
 
    assign theta_offset_factor_sn_vld_128 = theta_offset_factor_sn_vld | theta_offset_factor_sn_vld_127;
    assign get_first_hit               = get_first_hit_r;
@@ -342,257 +327,33 @@ module legendreEngine_2clk #(
    assign flush_pipeline       = (mdt_hit_re == 0) && latency_count_vld && (latency_count > 0) && (latency_count < hba_latency);
 
 
-   //   assign mdt_hit_internal      = ( mdt_hit_re)? mdt_hit : 0;
-   //   assign hba_ap_idle           = (compute_rbin_ap_idle[0] == 1 )? 1 : 0; //All bins have same latency, so look at only one
-   //   assign hba_ap_done           = (compute_rbin_ap_done == ~0 )? 1 : 0;
+
 
    assign hba_ap_ready          = (compute_rbin_ap_ready[0] == 1)? 1 : 0;//All bins have same latency, so look at only one
    assign hba_update_max_rbin_ap_ready          = ( update_max_rbin_ap_ready == ~0)? 1 : 0;
    assign mdt_radius[0]                         = (mdt_hit_internal[HEG2SFHIT_RADIUS_MSB:HEG2SFHIT_RADIUS_LSB] << (W_r_DECB - HEG2SFHIT_RADIUS_DECB));
    assign mdt_radius[1]                         = -(mdt_hit_internal[HEG2SFHIT_RADIUS_MSB:HEG2SFHIT_RADIUS_LSB] << (W_r_DECB - HEG2SFHIT_RADIUS_DECB));
 
-   // assign mdt_radius[0]                         = {mdt_hit_internal[HEG2SFHIT_RADIUS_MSB:HEG2SFHIT_RADIUS_LSB],1'b0};
-   // assign mdt_radius[1]                         = -{mdt_hit_internal[HEG2SFHIT_RADIUS_MSB:HEG2SFHIT_RADIUS_LSB],1'b0};
 
 
 
 
    assign gls_ap_start = gra_resource_sharing & (hw_sin_val_vld_sreg===3);
-//   assign gls_ap_start = gra_resource_sharing &  (hw_sin_val_vld_sreg===7); //(gtv_ap_done);
-`ifdef RUN_SIM
-   load_LE_refPos load_LE_refPos_inst(
-`else
-   hls_load_LE_refPos load_LE_refPos_inst(
-`endif
-				      .ap_clk(clk),
-				      .ap_rst(ap_rst_gra),
-				      .ap_start(roi_seed_theta_mrad_vld),
-				      .ap_done(ref_pos_vld),
-				      .ap_idle(ref_pos_idle),
-				      .ap_ready(ref_pos_ready),
-				      .mdtid(slc_mdtid),
-				      .slcvec_pos_ref(slcvec_pos_ref),
-				      .hewindow_pos_ref(hewindow_pos_ref)
-				      );
+
+
 
 
 assign hewindow_pos_Z = hewindow_pos >> (HEG2SFSLC_HEWINDOW_POS_DECB - SF2PTCALC_SEGPOS_DECB);
-`ifdef RUN_SIM
-     get_legendre_segment_barrel get_legendre_segment_barrel_inst(
-`else
-   hls_get_legendre_segment_barrel get_legendre_segment_barrel_inst(
-`endif
-								  .ap_clk(clk),
-								  .ap_rst(ap_rst),
-								  .ap_start(gls_ap_start),
-								  .ap_done(gls_ap_done),
-								  .ap_idle(gls_ap_idle),
-								  .ap_ready(gls_ap_ready),
-								  .hls_sin_val(hw_sin_val_gls),
-								  .hls_cos_val(hw_cos_val[0]),
-								  .hls_LT_r_global(r_global),
-
-								  .slcvec_pos_R(slcvec_pos_ref),
-								  .hewindow_pos_R(hewindow_pos_ref),
-								  .hewindow_pos_Z( hewindow_pos_Z),
-								  .hls_LT_theta_global(theta_global),
-								  .segpos(sf_segpos),
-								  .segpos_ap_vld(sf_segpos_vld)
-								 // .LE_output_V(le_results),
-								 // .LE_output_V_ap_vld(le_results_vld)
-								  );
 
    logic 		 cro_ap_done;
    logic 		 cro_ap_idle;
    logic 		 cro_ap_start;
    logic 		 cro_ap_ready;
 
-  // assign slcvec_pos_ref   = 18'h8d50; //18'he1a3;
- //  assign hewindow_pos_ref = 18'h8ab5; //18'hdda3;
+
    assign cro_ap_start     = (trig_val_counter_2 == 2);//3); //4);
    assign hewindow_pos_V_barrel = hewindow_pos; // << (HEG2SFSLC_HEWINDOW_POS_DECB - SF2PTCALC_SEGPOS_DECB);
    assign slcvec_pos_V_barrel = slcvec_pos << HEG2SFSLC_HEWINDOW_POS_DECB; //Adding precision bits
-if(RBINS == 128)
-begin: calc_LE_r_offset
-`ifdef RUN_SIM
-   calc_LE_r_offset_barrel calc_LE_r_offset_barrel (
-`else
-   hls_calc_LE_r_offset_barrel calc_LE_r_offset_barrel (
-`endif
-					     .ap_clk(clk),
-					     .ap_rst(ap_rst),
-					     .ap_start(cro_ap_start),
-					     .ap_done(cro_ap_done),
-					     .ap_idle(cro_ap_idle),
-					     .ap_ready(cro_ap_ready),
-					     .hw_sin_val(hw_sin_val[31]),
-					     .hw_cos_val(hw_cos_val[31]),
-					     .roi_seed_r(roi_seed_r),
-					     //.roi_seed_r_ap_vld(roi_seed_r_vld),
-					     .slcvec_pos(slcvec_pos_V_barrel),
-					     .slcvec_pos_ref(slcvec_pos_ref), //Rho for barrel
-					     .hewindow_pos(hewindow_pos_V_barrel),
-					     .hewindow_pos_ref(hewindow_pos_ref) //Rho for barrel
-					    /*endcap connection
-					     .slcvec_pos_Z_V(slcvec_pos_ref),
-					     .slcvec_pos_Rho_V(slcvec_pos),
-					     .hewindow_pos_Z_V(hewindow_pos_ref),
-					     .hewindow_pos_Rho_V(hewindow_pos)
-					     */
-					     );
-end
-else
-begin
-`ifdef RUN_SIM
-   calc_LE_r_offset_barrel_64 calc_LE_r_offset_barrel_64 (
-`else
-   hls_calc_LE_r_offset_barrel_64 calc_LE_r_offset_barrel_64 (
-`endif
-					     .ap_clk(clk),
-					     .ap_rst(ap_rst),
-					     .ap_start(cro_ap_start),
-					     .ap_done(cro_ap_done),
-					     .ap_idle(cro_ap_idle),
-					     .ap_ready(cro_ap_ready),
-					     .hw_sin_val_V(hw_sin_val[31]),
-					     .hw_cos_val_V(hw_cos_val[31]),
-					     .roi_seed_r_V(roi_seed_r),
-					     //.roi_seed_r_V_ap_vld(roi_seed_r_vld),
-					     .slcvec_pos_V(slcvec_pos_V_barrel),
-					     .slcvec_pos_ref_V(slcvec_pos_ref), //Rho for barrel
-					     .hewindow_pos_V(hewindow_pos_V_barrel),
-					     .hewindow_pos_ref_V(hewindow_pos_ref) //Rho for barrel
-					    /*endcap connection
-					     .slcvec_pos_Z_V(slcvec_pos_ref),
-					     .slcvec_pos_Rho_V(slcvec_pos),
-					     .hewindow_pos_Z_V(hewindow_pos_ref),
-					     .hewindow_pos_Rho_V(hewindow_pos)
-					     */
-					     );
-
-end
-
-
-
-   generate
-      for(genvar z=0;z<THETA_BINS;z++)
-	begin:theta_bins
-	   int k = z/16; // to reduce fanout of input signals
-	   int j = z/4; // increase fanout for hba_ap_start
-//if(RBINS == 128)
-//begin:compute_rbin_update_histogram
-/* -----\/----- EXCLUDED -----\/-----
-`ifdef RUN_SIM
-	   compute_r_bins compute_r_bins_inst(
-`else
-	   hls_compute_r_bins compute_r_bins_inst(
-`endif
-					      .ap_clk(clk),
-					      .ap_rst_n(ap_rst_n),
-					      .ap_start(hba_ap_start[j]),
-					      .ap_done(compute_rbin_ap_done[z]),
-					      .ap_idle(compute_rbin_ap_idle[z]),
-					      .ap_ready(compute_rbin_ap_ready[z]),
-
-					      .mdt_localx(mdt_local_x[k]),
-					      .mdt_localy(mdt_local_y[k]),
-					      .mdt_r_offset_TDATA({mdt_r_offset[k][W_r-1], mdt_r_offset[k][W_r-1], mdt_r_offset[k]}), //HLS tool adding extra bits for stream interface - to debug
-					      .mdt_r_offset_TVALID(mdt_hit_vld_internal_fo[k]),
-					      .mdt_r_offset_TREADY(),
-					      //.mdt_r_offset_1(mdt_r_offset[0][1]), //[k][1]),
-					      .hw_sin_val(hw_sin_val[z]),
-					      .hw_cos_val(hw_cos_val[z]),
-					      //.r_bin_TDATA(r_bin[z]),
-					      //.r_bin_TVALID(r_bin_vld[z]),
-					      .r_bin_TREADY(r_bin_rdy[z])
-
-					      );
- -----/\----- EXCLUDED -----/\----- */
-
-     compute_r_bins compute_r_bins_inst(
-		     .clk(clk),
-		     .rst_n(ap_rst_n),
-		     .mdt_localx(mdt_local_x[k]),
-		     .mdt_localy(mdt_local_y[k]),
-		     .mdt_r_offset( mdt_r_offset[k] ), //HLS tool adding extra bits for stream interface - to debug
-		     .hit_vld(mdt_hit_vld_internal_fo[k]),
-		     .hw_sin_val(hw_sin_val[z]),
-		     .hw_cos_val(hw_cos_val[z]),
-		     .r_bin(r_bin[z]),
-		     .r_bin_vld(r_bin_vld[z])
-		     );
-      //update_histogram_reg  #(
-      update_histogram_dmem  #(
-			  .RBINS(RBINS)
-				  )
-					      update_histogram_inst (
-						  .clk(clk),
-						  .rst_n(ap_rst_n),
-						  .r_bin_V_TVALID(r_bin_vld[z]),
-						  .r_bin_V_TDATA(r_bin[z]),
-						  .r_bin_V_TREADY(r_bin_rdy[z]),
-						  .enable_V(hba_mem_enable[j]), //1'b1),
-						  .local_max_count(max_bin_count_V[z]),
-						  .local_max_vld(max_bin_count_V_vld[z]),
-						  .local_max_rbin(max_bin_r_V[z]),
-						  .reset_rbins(hba_reset_fo[j])
-						  );
-
-
-/*end
-else
-begin : compute_rbin_update_histogram_64
-`ifdef RUN_SIM
-	   compute_r_bins_64 compute_r_bins_inst(
-`else
-	   hls_compute_r_bins_64 compute_r_bins_inst(
-`endif
-					      .ap_clk(clk),
-					      .ap_rst_n(ap_rst_n),
-					      .ap_start(hba_ap_start[j]),
-					      .ap_done(compute_rbin_ap_done[z]),
-					      .ap_idle(compute_rbin_ap_idle[z]),
-					      .ap_ready(compute_rbin_ap_ready[z]),
-
-					      .mdt_localx_V(mdt_local_x[k]),
-					      .mdt_localy_V(mdt_local_y[k]),
-					      .mdt_r_offset_V_TDATA(mdt_r_offset[k]),
-					      .mdt_r_offset_V_TVALID(mdt_hit_vld_internal_fo[k]),
-					      .mdt_r_offset_V_TREADY(),
-					      //.mdt_r_offset_1_V(mdt_r_offset[0][1]), //[k][1]),
-					      .hw_sin_val_V(hw_sin_val[z]),
-					      .hw_cos_val_V(hw_cos_val[z]),
-					      .r_bin_V_TDATA(r_bin[z]),
-					      .r_bin_V_TVALID(r_bin_vld[z]),
-					      .r_bin_V_TREADY(r_bin_rdy[z])
-					      );
-
-
-
-					      //update_histogram_reg  #(
-					      update_histogram_reg_2clk  #(
-								      .RBINS(RBINS),
-								      .RBIN_WIDTH(RBIN_WIDTH)
-								  )
-					      update_histogram_inst (
-						  .clk(clk),
-						  .rst_n(ap_rst_n),
-						  .r_bin_V_TVALID(r_bin_vld[z]),
-						  .r_bin_V_TDATA(r_bin[z]),
-						  .r_bin_V_TREADY(r_bin_rdy[z]),
-						  .enable_V(hba_mem_enable[j]), //1'b1),
-						  .local_max_count(max_bin_count_V[z]),
-						  .local_max_vld(max_bin_count_V_vld[z]),
-						  .local_max_rbin(max_bin_r_V[z]),
-						  .reset_rbins(hba_reset_fo[j])
-						  );
-
-end
- */
-      end // block: theta_bins
-
-   endgenerate
-
 
 
    always @ (posedge clk)
@@ -653,8 +414,7 @@ end
 
 
 
-//	     mdt_hit_vld_internal               <= ( mdt_hit_re) | hba_reset | ( ~mdt_hit_vld_internal & flush_pipeline );
-//  	     mdt_hit_vld_internal               <= ( mdt_hit_re) | ( ~mdt_hit_vld_internal & flush_pipeline );
+
              mdt_hit_vld_internal               <=  mdt_hit_re;
 	     mdt_hit_internal                   <=(flush_pipeline)? 0 : mdt_hit;
 
@@ -850,7 +610,7 @@ end
      end // always @ (posedge clk)
 
 
- always @ (posedge clk)
+   always @ (posedge clk)
      begin
 	if(rst && srst)
 	  begin
@@ -863,11 +623,10 @@ end
 	  end
 	else
 	  begin
-	     le_output_vld       <= sf_segpos_vld;
+
     	     le_tb_output_vld    <= sf_segpos_vld;
 	     if(sf_segpos_vld)
 	       begin
-//		  le_output    <= {1'b1,slc_muid,le_results,slc_mdtid};
 		  le_output[SF2PTCALC_MDTID_MSB:SF2PTCALC_MDTID_LSB]           <= slc_mdtid;
 		  le_output[SF2PTCALC_SEGQUALITY_MSB:SF2PTCALC_SEGQUALITY_LSB] <= sf_segquality;
 	          le_output[SF2PTCALC_SEGANGLE_MSB:SF2PTCALC_SEGANGLE_LSB]     <= theta_global;
@@ -875,12 +634,15 @@ end
 		  le_output[SF2PTCALC_MUID_MSB:SF2PTCALC_MUID_LSB]             <= slc_muid;
 		  le_output[SF2PTCALC_DATA_VALID_MSB]                          <= 1'b1;
 
-		//  le_output    <= {1'b1,slc_muid,sf_segpos,theta_global,sf_segquality,slc_mdtid};
-		  le_tb_output[63:0] = res_max_bin_count;
+
+		  le_tb_output[63:0]                                           <= res_max_bin_count;
+		  le_output_vld                                                <= 1'b1;
 		end // if (sf_segpos_vld)
 	     else
 	        begin
 		  le_output[SF2PTCALC_DATA_VALID_MSB]                          <= 1'b0;
+		  le_output_vld                                                <= 1'b0;
+
 		end
 	  end // else: !if(rst && srst)
      end // always @ (posedge clk)
@@ -934,8 +696,6 @@ end
 	     gtv_ap_idle_d2  <= gtv_ap_idle_d1;
 
 	     trig_vals_loaded <= ~gtv_ap_idle_d0 & gtv_ap_idle;
-	    // trig_vals_loaded <= ~gtv_ap_idle_d2 & gtv_ap_idle_d1;
-
 
 
 	     case(le_state)
@@ -1118,35 +878,17 @@ end
               	      histogram_reset_n <= 1'h0;
 		    end
 		  end
+	       default:
+		 begin
+		    //$display("Undefined le_state in legendre Engine");
+		    le_state <= IDLE;
+		 end
 	     endcase
 	  end
      end
 
 
-/* -----\/----- EXCLUDED -----\/-----
-`ifdef RUN_SIM
-get_rom_addr get_rom_addr_inst(
-`else
-hls_get_rom_addr get_rom_addr_inst(
-`endif
-				.ap_clk(clk),
-				.ap_rst(ap_rst_gra), //|hba_reset_fo[0]),
-				.ap_start(gra_ap_start),
-				.ap_done(gra_ap_done),
-				.ap_idle(gra_ap_idle),
-				.ap_ready(gra_ap_ready),
-			//	.theta_for_lut_V_ap_vld(gra_theta_vld),
-				.theta_for_lut(theta_global_gra),//gra_theta),
-				.rom_index(triglut_first_bank),
-			//	.rom_index_V_ap_vld(),
-				.lut_start_addr(triglut_start_addr),
-				//.lut_start_addr_V_ap_vld(),
-			        .lbins0_gbl1(gra_theta_vld),
-			       .slcvec_offset_angle_int(roi_seed_theta),
-			       .slcvec_angle_polar_offset_mrad(roi_seed_theta_mrad)
 
-				);
- -----/\----- EXCLUDED -----/\----- */
 
 get_rom_addr get_rom_addr_inst
 					      (
@@ -1804,6 +1546,158 @@ hls_find_max_bin_64 find_max_bin_64_inst(
 				  );
 				     end // block: find_max_bin_64
 				     end // block: find_max_bin_tb_64
+
+
+`ifdef RUN_SIM
+   load_LE_refPos load_LE_refPos_inst(
+`else
+   hls_load_LE_refPos load_LE_refPos_inst(
+`endif
+				      .ap_clk(clk),
+				      .ap_rst(ap_rst_gra),
+				      .ap_start(roi_seed_theta_mrad_vld),
+				      .ap_done(ref_pos_vld),
+				      .ap_idle(ref_pos_idle),
+				      .ap_ready(ref_pos_ready),
+				      .mdtid(slc_mdtid),
+				      .slcvec_pos_ref(slcvec_pos_ref),
+				      .hewindow_pos_ref(hewindow_pos_ref)
+				      );
+
+if(RBINS == 128)
+begin: calc_LE_r_offset
+`ifdef RUN_SIM
+   calc_LE_r_offset_barrel calc_LE_r_offset_barrel (
+`else
+   hls_calc_LE_r_offset_barrel calc_LE_r_offset_barrel (
+`endif
+					     .ap_clk(clk),
+					     .ap_rst(ap_rst),
+					     .ap_start(cro_ap_start),
+					     .ap_done(cro_ap_done),
+					     .ap_idle(cro_ap_idle),
+					     .ap_ready(cro_ap_ready),
+					     .hw_sin_val(hw_sin_val[31]),
+					     .hw_cos_val(hw_cos_val[31]),
+					     .roi_seed_r(roi_seed_r),
+					     //.roi_seed_r_ap_vld(roi_seed_r_vld),
+					     .slcvec_pos(slcvec_pos_V_barrel),
+					     .slcvec_pos_ref(slcvec_pos_ref), //Rho for barrel
+					     .hewindow_pos(hewindow_pos_V_barrel),
+					     .hewindow_pos_ref(hewindow_pos_ref) //Rho for barrel
+					    /*endcap connection
+					     .slcvec_pos_Z_V(slcvec_pos_ref),
+					     .slcvec_pos_Rho_V(slcvec_pos),
+					     .hewindow_pos_Z_V(hewindow_pos_ref),
+					     .hewindow_pos_Rho_V(hewindow_pos)
+					     */
+					     );
+end
+else
+begin
+`ifdef RUN_SIM
+   calc_LE_r_offset_barrel_64 calc_LE_r_offset_barrel_64 (
+`else
+   hls_calc_LE_r_offset_barrel_64 calc_LE_r_offset_barrel_64 (
+`endif
+					     .ap_clk(clk),
+					     .ap_rst(ap_rst),
+					     .ap_start(cro_ap_start),
+					     .ap_done(cro_ap_done),
+					     .ap_idle(cro_ap_idle),
+					     .ap_ready(cro_ap_ready),
+					     .hw_sin_val_V(hw_sin_val[31]),
+					     .hw_cos_val_V(hw_cos_val[31]),
+					     .roi_seed_r_V(roi_seed_r),
+					     //.roi_seed_r_V_ap_vld(roi_seed_r_vld),
+					     .slcvec_pos_V(slcvec_pos_V_barrel),
+					     .slcvec_pos_ref_V(slcvec_pos_ref), //Rho for barrel
+					     .hewindow_pos_V(hewindow_pos_V_barrel),
+					     .hewindow_pos_ref_V(hewindow_pos_ref) //Rho for barrel
+					    /*endcap connection
+					     .slcvec_pos_Z_V(slcvec_pos_ref),
+					     .slcvec_pos_Rho_V(slcvec_pos),
+					     .hewindow_pos_Z_V(hewindow_pos_ref),
+					     .hewindow_pos_Rho_V(hewindow_pos)
+					     */
+					     );
+
+end
+
+
+
+   generate
+      for(genvar z=0;z<THETA_BINS;z++)
+	begin:theta_bins
+	   int k = z/16; // to reduce fanout of input signals
+	   int j = z/4; // increase fanout for hba_ap_start
+
+
+     compute_r_bins  #(
+		       .W_bin_number_a(RBIN_WIDTH)
+		       )
+							  compute_r_bins_inst
+							  (
+							   .clk(clk),
+							   .rst_n(ap_rst_n),
+							   .mdt_localx(mdt_local_x[k]),
+							   .mdt_localy(mdt_local_y[k]),
+							   .mdt_r_offset( mdt_r_offset[k] ), //HLS tool adding extra bits for stream interface - to debug
+							   .hit_vld(mdt_hit_vld_internal_fo[k]),
+							   .hw_sin_val(hw_sin_val[z]),
+							   .hw_cos_val(hw_cos_val[z]),
+							   .r_bin(r_bin[z]),
+							   .r_bin_vld(r_bin_vld[z])
+							   );
+
+      update_histogram_dmem  #(
+			       .RBINS(RBINS),
+			       .W_bin_number_a(RBIN_WIDTH)
+			       )
+							  update_histogram_inst (
+										 .clk(clk),
+										 .rst_n(ap_rst_n),
+										 .r_bin_V_TVALID(r_bin_vld[z]),
+										 .r_bin_V_TDATA(r_bin[z]),
+										 .r_bin_V_TREADY(r_bin_rdy[z]),
+										 .enable_V(hba_mem_enable[j]), //1'b1),
+										 .local_max_count(max_bin_count_V[z]),
+										 .local_max_vld(max_bin_count_V_vld[z]),
+										 .local_max_rbin(max_bin_r_V[z]),
+										 .reset_rbins(hba_reset_fo[j])
+										 );
+
+
+
+      end // block: theta_bins
+
+   endgenerate
+
+
+							  `ifdef RUN_SIM
+     get_legendre_segment_barrel get_legendre_segment_barrel_inst(
+`else
+   hls_get_legendre_segment_barrel get_legendre_segment_barrel_inst(
+`endif
+								  .ap_clk(clk),
+								  .ap_rst(ap_rst),
+								  .ap_start(gls_ap_start),
+								  .ap_done(gls_ap_done),
+								  .ap_idle(gls_ap_idle),
+								  .ap_ready(gls_ap_ready),
+								  .hls_sin_val(hw_sin_val_gls),
+								  .hls_cos_val(hw_cos_val[0]),
+								  .hls_LT_r_global(r_global),
+
+								  .slcvec_pos_R(slcvec_pos_ref),
+								  .hewindow_pos_R(hewindow_pos_ref),
+								  .hewindow_pos_Z( hewindow_pos_Z),
+								  .hls_LT_theta_global(theta_global),
+								  .segpos(sf_segpos),
+								  .segpos_ap_vld(sf_segpos_vld)
+								 // .LE_output_V(le_results),
+								 // .LE_output_V_ap_vld(le_results_vld)
+								  );
 
 
   endmodule

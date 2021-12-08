@@ -16,7 +16,7 @@
 	url = ../../HPTD/tx_phase_aligner.git
 [submodule "HAL/lpgbt/src/gbt-sc"]
 	path = HAL/lpgbt/src/gbt-sc
-	url = ../gbt-sc.git
+	url = https://gitlab.cern.ch/gbtsc-fpga-support/gbt-sc.git
 [submodule "regmap"]
 	path = regmap
 	url = https://github.com/BU-Tools/uHAL_AXI_regmap.git
@@ -34,7 +34,7 @@
 	url = ../../gloustau/l0mdt-sim-comp.git
 [submodule "tools/simCheck"]
 	path = tools/simCheck
-	url = ../../umass-l0mdt/software/l0mdt-ov-analysis.git
+	url = ../l0mdt-ov-analysis.git
 [submodule "l0mdt-hls"]
 	path = l0mdt-hls
 	url = ../l0mdt-hls.git
@@ -44,6 +44,7 @@
 [submodule "shared/SpyBuffer"]
   path = shared/SpyBuffer
   url = ../../atlas-tdaq-p2-firmware/tdaq_shared_firmware/spybuffer.git
+  branch = master
 [submodule "shared/vamc/vamc-core"]
 	path = shared/vamc/vamc-core
 	url = https://gitlab.com/taquionbcn/vamc.git
@@ -55,4 +56,7 @@
 	url = ../../tcpaiva/atlas-ttc-core.git
 [submodule "HAL/ctrl/src/axi-vhdl-package"]
 	path = HAL/ctrl/src/axi-vhdl-package
-	url = https://gitlab.com/BU-EDF/axi-vhdl-package
+	url = https://gitlab.com/BU-EDF/axi-vhdl-package.git
+[submodule "shared/vhdl_utilities"]
+	path = shared/vhdl_utilities
+	url = https://gitlab.com/taquionbcn/vhdl-gldl-utilities.git

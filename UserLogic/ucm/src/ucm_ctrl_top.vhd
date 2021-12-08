@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
 --  Module: slc Control Sorting algorithm + PAM
@@ -36,9 +36,10 @@ entity ucm_ctrl_top is
     --
     i_prepro2ctrl_av    : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
     --
-    o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
+    o_csw_ctrl_av       : out ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
-    o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+    -- o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+    o_proc_info_av      : out ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
     --
     o_cvp_rst           : out std_logic_vector(c_NUM_THREADS -1 downto 0);
     o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
@@ -85,8 +86,12 @@ architecture beh of ucm_ctrl_top is
   signal num_cand          : unsigned(3 downto 0);
   signal pam_update        : std_logic;
 
+  signal o_csw_ctrl       :ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
+
 
 begin
+
+  o_csw_ctrl_av <= vectorify(o_csw_ctrl);
 
   MAIN_CTRL : entity ucm_lib.ucm_ctrl_main
   port map(
@@ -111,7 +116,7 @@ begin
     i_pam_update        => pam_update,
     --
     o_pam_ctrl          => o_pam_ctrl,
-    o_proc_info         => o_proc_info,
+    o_proc_info_av      => o_proc_info_av,
     --
     o_cvp_rst           => o_cvp_rst,
     o_cvp_ctrl          => o_cvp_ctrl
@@ -119,5 +124,7 @@ begin
     -- internals
 
   );
+
+  
 
 end beh;

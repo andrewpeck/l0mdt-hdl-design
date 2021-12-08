@@ -8,8 +8,7 @@ use ctrl_lib.HAL_CORE_CTRL.all;
 
 package HAL_CORE_CTRL_DEF is
   constant DEFAULT_HAL_CORE_CLOCKING_CTRL_t : HAL_CORE_CLOCKING_CTRL_t := (
-                                                                           RESET_MMCM => '0',
-                                                                           SELECT_FELIX_CLK => '0'
+                                                                           RESET_MMCM => '0'
                                                                           );
   constant DEFAULT_HAL_CORE_MGT_MGT_DRP_CTRL_t : HAL_CORE_MGT_MGT_DRP_CTRL_t := (
                                                                                  wr_en => '0',

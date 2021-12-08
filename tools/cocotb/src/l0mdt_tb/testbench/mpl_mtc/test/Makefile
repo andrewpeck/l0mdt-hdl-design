@@ -102,7 +102,7 @@ VERILOG_SOURCES = \
 
 # VHDL source files
 VHDL_SOURCES = \
-    $(MTCDIR)/../top_mtc.vhd \
+    $(MTCDIR)/../top_mtc_wrapper.vhd \
     $(PWD)/mpl_top_tb.vhd
 
 

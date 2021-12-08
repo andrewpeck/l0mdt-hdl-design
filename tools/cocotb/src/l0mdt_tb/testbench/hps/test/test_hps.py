@@ -25,7 +25,7 @@ from l0mdt_tb.testbench.hps.hps_ports import HpsPorts
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.hps.hps_block as hps_block
 
 from l0mdt_tb.utils import test_config
-from l0mdt_tb.utils import events, tb_diff, result_handler
+from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
 
@@ -84,6 +84,7 @@ def reset(dut):
     dut.reset_n <= 0
     yield ClockCycles(dut.clock, 10)
     dut.reset_n <= 1
+    yield ClockCycles(dut.clock, 50) #Wait for DUT to come out of reset
 
 
 ##

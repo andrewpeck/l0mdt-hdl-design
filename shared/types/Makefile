@@ -76,10 +76,13 @@ all:
 	python3 $(yml2hdl_v1) $(common) \
 	../../UserLogic/tar/pkg/tar.yml
 	# ULT simulation package
+
 	python3 $(yml2hdl_v1) $(common) \
 	-e ../../UserLogic/hp/pkg/hp.yml   \
 	-e ../../UserLogic/heg/pkg/heg.yml \
-	../../shared/sim/pkg/gldl_ult_tp_sim.yml
+	../../UserLogic/ult/pkg/ult_tb_sim.yml
+
+# ../../shared/sim/pkg/gldl_ult_tp_sim.yml
 
 
 

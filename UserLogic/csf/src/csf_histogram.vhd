@@ -88,15 +88,17 @@ ARCHITECTURE Behavioral OF csf_histogram IS
     := (OTHERS => '0');
     SIGNAL bplus_s, bminus_s,
     bplus_ss, bminus_ss,
-    bplus_sss, bminus_sss : unsigned(HISTO_LEN - 1 DOWNTO 0)
+    bplus_sss, bminus_sss, bplus_ssss, bminus_ssss : unsigned(HISTO_LEN - 1 DOWNTO 0)
     := (OTHERS => '0');
 
     -- Data Valid signals
-    SIGNAL dv0, dv1, dv2, dv3, dv4, dv5, dv6 : STD_LOGIC := '0';
+    SIGNAL dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7 : STD_LOGIC := '0';
     SIGNAL fill_minus, fill_plus : STD_LOGIC := '0';
+    SIGNAL fill_minus_s, fill_plus_s : STD_LOGIC := '0';
+
     SIGNAL eof0, eof1, eof2,
     eof3, eof4, eof5,
-    eof6, eof7, eof8 : STD_LOGIC := '0';
+    eof6, eof7, eof8, eof9 : STD_LOGIC := '0';
 
     -- Signals for histogram bins
     TYPE t_address_histo IS ARRAY (NATURAL RANGE <>)
@@ -191,7 +193,7 @@ ARCHITECTURE Behavioral OF csf_histogram IS
 
 BEGIN
 
-    mdt_hit <= structify(i_mdthit);
+
     seed <= structify(i_seed);
     --invsqrt_mbar : invsqrt_mbar_rom
     --PORT MAP (
@@ -263,6 +265,9 @@ BEGIN
                 mbar <= seed.vec_ang;
             END IF;
 
+            -- Delay the hits of two clocks for 
+            mdt_hit <= structify(i_mdthit);
+
             -- Clock 0
             dv0 <= mdt_hit.data_valid;
             dsp_squ_m_r <= shift_right(
@@ -315,11 +320,12 @@ BEGIN
             -- Clock 4
             dv4 <= dv3;
             fill_plus <= '0';
-            IF bplus >- 1 AND bplus < HISTO_LEN THEN
+            IF bplus > -1 AND bplus < 2**HISTO_LEN -1 and dv3 = '1' THEN
                 fill_plus <= '1';
             END IF;
 
-            IF bminus >- 1 AND bminus < HISTO_LEN THEN
+            fill_minus <= '0';
+            IF bminus > -1 AND bminus < 2**HISTO_LEN -1 and dv3 = '1' THEN
                 fill_minus <= '1';
             END IF;
 
@@ -337,60 +343,69 @@ BEGIN
 
             -- Clock 5
             dv5 <= dv4;
-            w_en <= (OTHERS => '0');
-            w_en(to_integer(bminus_s)) <= fill_minus;
-            w_hit_vec(to_integer(bminus_s)) <= vectorify(hit_minus);
-            w_en(to_integer(bplus_s)) <= fill_plus;
-            w_hit_vec(to_integer(bplus_s)) <= vectorify(hit_plus);
+            eof5 <= eof4;
+            hit_minus_s <= hit_minus;
+            hit_plus_s <= hit_plus;
             bplus_ss <= bplus_s;
             bminus_ss <= bminus_s;
-            eof5 <= eof4;
+            fill_minus_s <= fill_minus;
+            fill_plus_s <= fill_plus;
 
             -- Clock 6
-            IF dv5 = '1' THEN
-                w_addr(to_integer(bplus_ss)) <=
-                STD_LOGIC_VECTOR(
-                unsigned(w_addr(to_integer(bplus_ss))) + 1);
-                w_addr(to_integer(bminus_ss)) <=
-                STD_LOGIC_VECTOR(
-                unsigned(w_addr(to_integer(bminus_ss))) + 1);
-                counter_plus <= STD_LOGIC_VECTOR(
-                    unsigned(w_addr(to_integer(bplus_ss))) + 1);
-                counter_minus <= STD_LOGIC_VECTOR(
-                    unsigned(w_addr(to_integer(bminus_ss))) + 1);
-            END IF;
             dv6 <= dv5;
-            eof6 <= eof5;
-
+            w_en <= (OTHERS => '0');
+            w_en(to_integer(bminus_ss)) <= fill_minus_s;
+            w_hit_vec(to_integer(bminus_ss)) <= vectorify(hit_minus_s);
+            w_en(to_integer(bplus_ss)) <= fill_plus_s;
+            w_hit_vec(to_integer(bplus_ss)) <= vectorify(hit_plus_s);
             bplus_sss <= bplus_ss;
             bminus_sss <= bminus_ss;
+            eof6 <= eof5;
 
             -- Clock 7
             IF dv6 = '1' THEN
+                if w_en(to_integer(bplus_sss)) = '1' then
+                    w_addr(to_integer(bplus_sss)) <=  STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bplus_sss))) + 1);
+                    counter_plus <= STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bplus_sss))) + 1);
+                end if;
+
+                if w_en(to_integer(bminus_sss)) = '1' then
+                    w_addr(to_integer(bminus_sss)) <= STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bminus_sss))) + 1);
+                    counter_minus <= STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bminus_sss))) + 1);
+                end if;
+            END IF;
+            dv7 <= dv6;
+            eof7 <= eof6;
+
+            bplus_ssss <= bplus_sss;
+            bminus_ssss <= bminus_sss;
+
+            -- Clock 8
+            IF dv7 = '1' THEN
                 IF unsigned(counter_plus) > unsigned(max_counter_1) THEN
                     max_counter_1 <= counter_plus;
-                    max_bin1 <= bplus_sss;
-                    IF max_bin1 /= bplus_sss THEN
+                    max_bin1 <= bplus_ssss;
+                    IF max_bin1 /= bplus_ssss THEN
                         max_counter_2 <= max_counter_1;
                         max_bin2 <= max_bin1;
                     END IF;
                 ELSIF unsigned(counter_plus) > unsigned(max_counter_2) THEN
                     max_counter_2 <= counter_plus;
-                    max_bin2 <= bplus_sss;
+                    max_bin2 <= bplus_ssss;
                 END IF;
 
-                IF bplus_sss /= bminus_sss THEN
+                IF bplus_ssss /= bminus_ssss THEN
                     IF unsigned(counter_minus) > unsigned(max_counter_1) THEN
                         IF unsigned(counter_plus) >= unsigned(counter_minus) THEN
                             max_counter_2 <= counter_minus;
-                            max_bin2 <= bminus_sss;
+                            max_bin2 <= bminus_ssss;
                         ELSE
                             max_counter_1 <= counter_minus;
-                            max_bin1 <= bminus_sss;
+                            max_bin1 <= bminus_ssss;
                             IF unsigned(counter_plus) > unsigned(max_counter_1) THEN
                                 max_counter_2 <= counter_plus;
-                                max_bin2 <= bplus_sss;
-                            ELSIF max_bin1 /= bminus_sss THEN
+                                max_bin2 <= bplus_ssss;
+                            ELSIF max_bin1 /= bminus_ssss THEN
                                 max_counter_2 <= max_counter_1;
                                 max_bin2 <= max_bin1;
                             END IF;
@@ -398,30 +413,37 @@ BEGIN
                     ELSIF unsigned(counter_minus) > unsigned(max_counter_2) THEN
                         IF unsigned(counter_plus) < unsigned(counter_minus) THEN
                             max_counter_2 <= counter_minus;
-                            max_bin2 <= bminus_sss;
+                            max_bin2 <= bminus_ssss;
                         END IF;
                     END IF;
                 END IF;
             END IF;
-            eof7 <= eof6;
 
-            -- Clock 8
+            if eof7 = '1' then
+                w_addr <= (OTHERS => (OTHERS => '0'));
+                counter_minus <= (others => '0');
+                counter_plus <= (others => '0');
+            end if;
+
             eof8 <= eof7;
+
+            -- Clock 9
+            eof9 <= eof8;
             max_bin1_s <= max_bin1;
             max_bin2_s <= max_bin2;
 
-            -- Reading out hits in maxima
-            IF eof8 = '1' THEN
+            -- Reading out hits in maxima Clock 10
+            IF eof9 = '1' THEN
                 start_read <= '1';
                 has_max <= '0';
-                IF unsigned(max_counter_1) > 0 THEN
+
+                IF unsigned(max_counter_1) > 1 THEN
                     r_addr(to_integer(max_bin1_s)) <= (OTHERS => '0');
                     has_max <= '1';
                 END IF;
-                IF unsigned(max_counter_2) > 0 THEN
+                IF max_counter_2 = max_counter_1 and unsigned(max_counter_2) > 1 THEN
                     r_addr(to_integer(max_bin2_s)) <= (OTHERS => '0');
                 END IF;
-                mbar <= (OTHERS => '0');
             END IF;
 
             start_read0 <= start_read;
@@ -429,21 +451,20 @@ BEGIN
 
             IF start_read0 = '1' AND has_max = '1' THEN
                 IF unsigned(r_addr(to_integer(max_bin1))) < unsigned(max_counter_1) - 1
-                    AND unsigned(max_counter_1) > 0 THEN
+                    AND unsigned(max_counter_1) > 1 THEN
                     r_addr(to_integer(max_bin1)) <=
                     STD_LOGIC_VECTOR(unsigned(r_addr(to_integer(max_bin1))) + 1);
                 ELSE
                     r_addr(to_integer(max_bin2)) <= (OTHERS => '1');
                     start_read <= '0';
                     r_addr(to_integer(max_bin1)) <= (OTHERS => '1');
-                    w_addr <= (OTHERS => (OTHERS => '0'));
 
                     max_counter_1 <= (OTHERS => '0');
                     max_counter_2 <= (OTHERS => '0');
                 END IF;
 
                 IF unsigned(r_addr(to_integer(max_bin2))) < unsigned(max_counter_2) - 1
-                    AND unsigned(max_counter_2) > 0 THEN
+                    AND unsigned(max_counter_2) > 1 THEN
                     r_addr(to_integer(max_bin2)) <=
                     STD_LOGIC_VECTOR(unsigned(r_addr(to_integer(max_bin2))) + 1);
                 ELSE
@@ -451,7 +472,6 @@ BEGIN
                 END IF;
             ELSIF start_read0 = '1' THEN
                 start_read <= '0';
-                w_addr <= (OTHERS => (OTHERS => '0'));
                 max_counter_1 <= (OTHERS => '0');
                 max_counter_2 <= (OTHERS => '0');
             END IF;

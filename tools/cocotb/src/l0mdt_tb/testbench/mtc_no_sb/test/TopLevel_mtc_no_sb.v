@@ -22,6 +22,7 @@
 `default_nettype wire
 //`include "l0mdt_buses_constants.svh"
 
+  import l0mdt_dataformats_svh::*;
   module TopLevel_mtc_no_sb #(
 			parameter SLCPIPELINE_WIDTH = PL2MTC_LEN,
 			parameter PTCALC_LEN = PTCALC2MTC_LEN,
@@ -87,22 +88,23 @@
 
     //Verilog Model
    mtc_builder_verilog#(
-		   .PTCALC_WIDTH(PTCALC_LEN),
-		    .SLCPIPELINE_WIDTH(SLCPIPELINE_WIDTH),
-		    .TOTAL_PTCALC_BLKS(TOTAL_PTCALC_BLKS),
-        .n_PRIMARY_MTC(3)
-		    )
+			.PTCALC_WIDTH(PTCALC_LEN),
+			.SLCPIPELINE_WIDTH(SLCPIPELINE_WIDTH),
+			.c_NUM_THREADS(TOTAL_PTCALC_BLKS),
+			.c_MAX_NUM_SL(3),
+			.n_PRIMARY_MTC(3)
+			)
    mtc_builder_inst(
     		    .clock(clock),
 		    .rst(~reset_n),
 		    .srst(~reset_n),
 		    .ptcalc(ptcalc),
-		  //  .ptcalc_sel(ptcalc_sel),
+		    //  .ptcalc_sel(ptcalc_sel),
 		    .slcpipeline(slcpipeline),
-		  //  .slcpipeline_vld(slcpipeline_vld),
+		    //  .slcpipeline_vld(slcpipeline_vld),
 		    .mtc(mtc_out)
 		    //.mtc_valid(mtc_out_valid)
-//    output logic [MTC_WIDTH:0] 	      mtc
+		    //    output logic [MTC_WIDTH:0] 	      mtc
     );
 
 

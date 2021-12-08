@@ -162,7 +162,6 @@ architecture Behavioral of pt is
 
     signal combo_index : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0);
 
-
     ----------------------------------------------------------------------------
     -- COMPONENTS --------------------------------------------------------------
 
@@ -381,7 +380,6 @@ begin
     
     slc <= structify(i_SLC);
     o_mtc <= vectorify(mtc);
-
 
     pt_top_proc : process( clk )
     begin

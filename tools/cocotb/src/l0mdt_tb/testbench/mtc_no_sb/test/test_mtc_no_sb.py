@@ -20,7 +20,7 @@ from l0mdt_tb.testbench.mtc_no_sb.mtc_ports import MtcPorts
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.mtc.mtc_block as mtc_block
 
 from l0mdt_tb.utils import test_config
-from l0mdt_tb.utils import events, tb_diff, result_handler
+from l0mdt_tb.utils import events
 from l0mdt_tb.utils.mtc_builder_wrapper import mtc_builderDriver, mtc_builderMonitor
 
 
@@ -300,7 +300,8 @@ def mtc_test(dut):
             expected_output_events = exp_output_tv[n_oport] #output_tv_list[n_oport]
 
     #Multiple ports in this interface, need to lineup events across ports based on time
-    recvd_lineup = events.timebased_lineup(recvd_events_all_ports, recvd_time,num_events_to_process,MtcPorts.get_output_interface_ports(0))
+    #recvd_lineup = events.timebased_lineup(recvd_events_all_ports, recvd_time,num_events_to_process,MtcPorts.get_output_interface_ports(0))
+    recvd_lineup = recvd_events_all_ports
 
     ##
     ## perform test by comparison with expected testvectors

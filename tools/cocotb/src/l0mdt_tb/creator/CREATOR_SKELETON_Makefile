@@ -72,26 +72,9 @@ CALC_LE_R_OFFSET_BARREL_HLS_IP = $(IP_REPO)/hls_calc_LE_r_offset_barrel/hdl/veri
 LOAD_LE_REFPOS = $(IP_REPO)/hls_load_LE_refPos/hdl/verilog
 HISTMEM_128x4 = $(LSFDIR)/../sim
 
-# Verilog source files
-VERILOG_SOURCES = \
-    $(DFDIR)/l0mdt_buses_constants.svh \
-    $(PWD)/$(TESTBENCH_TOPLEVEL).v \
-    $(SBDIR)/SpyBuffer.v \
-    $(SBDIR)/SpyController.v \
-    $(SBDIR)/SpyMemory.v \
-    $(SBDIR)/SpyPlayback.v \
-    $(SBDIR)/aFifo/aFifo.v \
-    $(SBDIR)/aFifo/fifomem.v \
-    $(SBDIR)/aFifo/rptr_empty.v \
-    $(SBDIR)/aFifo/sync_r2w.v \
-    $(SBDIR)/aFifo/sync_w2r.v \
-    $(SBDIR)/aFifo/wptr_full.v \
-    $(SBDIR)/asym_ram_tdp_read_first.v
+# VHDL source files, required by CocoTB
+VHDL_SOURCES = $(CSFDIR)/csf.vhd
 
-# VHDL source files
-VHDL_SOURCES =
-
-VHDL_SOURCES_project_lib =
 
 include ../../../creator/Makefile_vhdl_lib
 

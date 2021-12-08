@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger
 --  Module: Hit Processor Segment finder parameter calculation
@@ -34,6 +34,9 @@ entity hp_paramCalc is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+    --
+    ctrl_v              : in std_logic_vector;
+    mon_v               : out std_logic_vector;
     -- SLc
     -- i_SLC_RoI_org       : in unsigned(MDT_TUBE_LEN-1 downto 0);
     i_SLc_data_v        : in std_logic_vector(HP_HEG2HP_SLC_LEN-1 downto 0);
@@ -84,7 +87,10 @@ begin
   port map(
     clk             => clk,
     rst             => rst,
-    glob_en         => glob_en,
+    ena             => glob_en,
+
+    ctrl_v          => ctrl_v,
+    mon_v           => mon_v , 
 
     i_SLc_BCID      => SLc_data_r.bcid,
     i_mdt_time_t0   => i_mdt_time_real,

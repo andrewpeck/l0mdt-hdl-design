@@ -7,6 +7,7 @@
 
 `timescale 1ns / 1ps
 `default_nettype wire
+import l0mdt_dataformats_svh::*;
 
 module TopLevel_mtc #(
     parameter DATA_WIDTH = 256, //65,
@@ -93,8 +94,9 @@ module TopLevel_mtc #(
    mtc_builder_verilog#(
 			.PTCALC_WIDTH(PTCALC_LEN),
 			.SLCPIPELINE_WIDTH(SLCPIPELINE_WIDTH),
-			.TOTAL_PTCALC_BLKS(TOTAL_PTCALC_BLKS),
-      .n_PRIMARY_MTC(3)
+			.c_NUM_THREADS(TOTAL_PTCALC_BLKS),
+			.n_PRIMARY_MTC(3),
+			.c_MAX_NUM_SL(3)
 			)
    mtc_builder_inst(
     		    .clock(clock),

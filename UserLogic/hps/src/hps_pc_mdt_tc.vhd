@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
 --  Module: HPS mdt parameters calculation
@@ -27,6 +27,10 @@ use shared_lib.config_pkg.all;
 use shared_lib.tdc_mezz_mapping_pkg.all;
 use shared_lib.TC_B3A_pkg.all;
 
+-- use shared_lib.vhdl_tb_utils_pkg.all;
+
+-- library project_lib;
+-- use project_lib.vhdl_tb_utils_pkg.all;
 -- library hp_lib;
 -- use hp_lib.hp_pkg.all;
 -- library heg_lib;
@@ -74,11 +78,17 @@ architecture beh of hps_pc_mdt_tc is
 
   type tcLUT_chamber_avt is array (0 to 1023) of std_logic_vector((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
 
-  function init_TC_MEM(r , s , tube_o , tube_n: integer)return tcLUT_chamber_avt is
+  impure function init_TC_MEM(s , r , c , tube_o , tube_n: integer)return tcLUT_chamber_avt is
     variable y : tcLUT_chamber_avt;
     variable index : unsigned(9 downto 0);
     variable value : std_logic_vector(37 downto 0);
   begin
+    -- puts("s : ",s);
+    -- puts("r : ",r);
+    -- puts("c : ",c);
+    -- puts("to : " ,tube_o);
+    -- puts("tn : " , tube_n);
+
     for it in 0 to tube_n - 1 loop
       if r = 0 then
         for il in 0 to 7 loop
@@ -107,7 +117,7 @@ architecture beh of hps_pc_mdt_tc is
     return y;
   end function;
 
-  signal mem : tcLUT_chamber_avt := init_TC_MEM(g_STATION_RADIUS,c_SECTOR_ID,csm_offset_mem,num_tubes_layer_chamber);
+  signal mem : tcLUT_chamber_avt := init_TC_MEM(c_SECTOR_ID,g_STATION_RADIUS,g_CHAMBER,csm_offset_mem,num_tubes_layer_chamber);
 
   signal local_layer : unsigned(TAR2HPS_LAYER_LEN-1 downto 0); 
   signal local_tube : std_logic_vector(9 downto 0);
@@ -121,48 +131,54 @@ architecture beh of hps_pc_mdt_tc is
   -- APB signals
   signal apb_rd_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
   signal apb_wr_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
-  signal apb_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
-  signal apb_dv_o         : std_logic;
-  signal apb_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
-  signal apb_dv_i         : std_logic;
+  signal apb_wr_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  signal apb_wr_dv_o         : std_logic;
+  signal apb_rd_dv_o         : std_logic;
+  signal apb_rd_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  signal apb_rd_dv_i         : std_logic;
 
 begin
 
   -- ctrl_v <= vectorify(ctrl,ctrl_v);
   -- mon <= structify(mon_v,mon);
 
-  apb_mem_interface : entity apbus_lib.apb_mem_int
-  generic map(
-    g_XML_NODE_NAME         => "MEM_INT_10A38D",
-    g_INTERNAL_CLK          => '1',
-    g_ADDR_WIDTH            => ADDR_WIDTH,
-    g_DATA_WIDTH            => DATA_WIDTH,
-    g_APBUS_CTRL_WIDTH      => ctrl_v'length,
-    g_APBUS_MON_WIDTH       => mon_v'length
-  )
-  port map (
-    clk           => clk,
-    rst           => rst,
-    ena           => ena,
-    --
-    ctrl          => ctrl_v,
-    mon           => mon_v,
-    --
-    -- i_axi_clk     => ,
-    -- i_axi_rst     => ,
-    --
-    -- i_freeze      => i_freeze,
-    -- o_freeze      => int_apb_freeze,
-    -- o_out_sel     => sel_out_mem,
-    -- o_freeze_1    => int_freeze(1),
-    --
-    o_rd_addr     => apb_rd_addr_o,  
-    o_wr_addr     => apb_wr_addr_o,  
-    o_data        => apb_data_o,   
-    o_dv          => apb_dv_o, 
-    i_data        => apb_data_i,  
-    i_dv          => apb_dv_i
-  );  
+  
+  apb_mem_interface : entity apbus_lib.apb_imem
+    generic map(
+      g_XML_NODE_NAME         => "MEM_INT_10A38D",
+      g_MEMORY_TYPE           => "distributed",
+      g_ADDR_WIDTH            => ADDR_WIDTH,
+      g_DATA_WIDTH            => DATA_WIDTH
+      -- g_CTRL_TYPE             => MEM_INT_12A148D_CTRL_t; 
+      -- g_MON_TYPE              => MEM_INT_12A148D_MON_t;   
+      -- g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
+      -- g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
+    )
+    port map (
+      clk           => clk,
+      rst           => rst,
+      ena           => ena,
+      --
+      ctrl_v        => ctrl_v,
+      mon_v         => mon_v,
+      --
+      -- i_axi_clk     => ,
+      -- i_axi_rst     => ,
+      --
+      -- i_freeze      => i_freeze,
+      -- o_freeze      => int_apb_freeze,
+      -- o_out_sel     => sel_out_mem,
+      -- o_freeze_1    => int_freeze(1),
+      --
+
+      o_rd_addr     => apb_rd_addr_o,  
+      o_wr_addr     => apb_wr_addr_o,  
+      o_wr_data     => apb_wr_data_o,   
+      o_rd_dv       => apb_rd_dv_o, 
+      o_wr_dv       => apb_wr_dv_o,  
+      i_rd_data     => apb_rd_data_i,  
+      i_rd_dv       => apb_rd_dv_i
+    );
 
   -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
   mem_index_std <= std_logic_vector(local_layer(2 downto 0)) & local_tube(6 downto 0);
@@ -179,34 +195,66 @@ begin
         -- o_time_tc <= (others => '0');
         o_dv <= '0';
         mem_out <= (others => '0');
-        apb_dv_i <= '0';
-        apb_data_i <= (others => '0');
+        apb_rd_dv_i <= '0';
+        apb_rd_data_i <= (others => '0');
       else
         local_tube_dv <= i_dv;
-        if i_dv = '1' then
-          -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
-          local_tube <= std_logic_vector(resize(i_tube,10) - to_unsigned(csm_offset_mem,10));
-          local_layer <= i_layer;
+
+        if apb_wr_dv_o = '1' or apb_rd_dv_o = '1' then
+          if apb_wr_dv_o = '1' then
+            -- apb_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
+            mem(to_integer(unsigned(apb_wr_addr_o))) <= apb_wr_data_o;
+            -- apb_dv_i <= '1';
+          else
+            -- apb_dv_i <= '0';
+          end if;
+  
+          if apb_rd_dv_o = '1' then
+            apb_rd_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
+            -- mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_data_o;
+            apb_rd_dv_i <= '1';
+          else
+            apb_rd_dv_i <= '0';
+          end if;
         else
-          local_tube <= (others => '0');
-          local_layer <= (others => '0');
+          if i_dv = '1' then
+            -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
+            local_tube <= std_logic_vector(resize(i_tube,10) - to_unsigned(csm_offset_mem,10));
+            local_layer <= i_layer;
+          else
+            local_tube <= (others => '0');
+            local_layer <= (others => '0');
+          end if;
+          if(local_tube_dv = '1') then
+            mem_out <= mem(mem_index_int);--to_integer(unsigned('0' & mem_index_std)));
+            o_dv <= '1';
+          else
+            mem_out <= (others => '0');
+            o_dv <= '0';
+          end if;
         end if;
 
-        if(local_tube_dv = '1') then
-          mem_out <= mem(mem_index_int);--to_integer(unsigned('0' & mem_index_std)));
-          o_dv <= '1';
-        else
-          mem_out <= (others => '0');
-          o_dv <= '0';
-        end if;
+
+
+
         
-        if apb_dv_o = '1' then
-          apb_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
-          mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_data_o;
-          apb_dv_i <= '1';
-        else
-          apb_dv_i <= '0';
-        end if;
+
+
+        -- if(local_tube_dv = '1') then
+        --   mem_out <= mem(mem_index_int);--to_integer(unsigned('0' & mem_index_std)));
+        --   o_dv <= '1';
+        -- else
+        --   mem_out <= (others => '0');
+        --   o_dv <= '0';
+        -- end if;
+        
+        -- if apb_dv_o = '1' then
+        --   apb_rd_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
+        --   mem(to_integer(unsigned(apb_wr_addr_o))) <= apb_wr_data_o;
+        --   apb_rd_dv_i <= '1';
+        -- else
+        --   apb_rd_dv_i <= '0';
+        -- end if;
       end if;
     end if ;
   end process;

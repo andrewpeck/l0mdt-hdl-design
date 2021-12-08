@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger
 --  Module: Test Bench Module for Logic Trigger Path
@@ -30,9 +30,18 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
+
+use shared_lib.vhdl_tb_utils_pkg.all;
+
+library project_lib;
+use project_lib.ult_tb_sim_pkg.all;
+use project_lib.ult_tb_sim_cstm_pkg.all;
+-- use project_lib.vhdl_tb_utils_pkg.all;
+use shared_lib.vhdl_textio_csv_pkg.all;
 
 library ult_lib;
--- library ult_lib_sim;
+-- use ult_lib.ult_tb_sim_pkg.all;
 
 library heg_lib;
 use heg_lib.heg_pkg.all;
@@ -47,6 +56,7 @@ use ctrl_lib.UCM_CTRL.all;
 use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
+use ctrl_lib.FM_CTRL.all;
 use ctrl_lib.MPL_CTRL_DEF.all;
 use ctrl_lib.UCM_CTRL_DEF.all;
 use ctrl_lib.H2S_CTRL_DEF.all;
@@ -54,21 +64,22 @@ use ctrl_lib.TAR_CTRL_DEF.all;
 use ctrl_lib.MTC_CTRL_DEF.all;
 use ctrl_lib.DAQ_CTRL_DEF.all;
 use ctrl_lib.TF_CTRL_DEF.all;
+use ctrl_lib.FM_CTRL_DEF.all;
 
-library project_lib;
-use project_lib.gldl_ult_tp_sim_pkg.all;
-use project_lib.gldl_l0mdt_textio_pkg.all;
+
+
 
 entity ult_tp is
   generic (
-    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
-    IN_HIT_FILE         : string  := "csm_TB_A3_Barrel_yt_v04.txt";
-    OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
-    OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv";
-    OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
-    OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv";
-    OUT_MTCIN_PT_FILE   : string  := "mtc_in_pt_A3_Barrel_yt_v04.csv";
-    OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
+    PRJ_INFO            : string  := "BA3";
+    IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
+    IN_HIT_FILE         : string  := "csm_A3_Barrel.csv";
+    -- OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
+    -- OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv";
+    -- OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
+    -- OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv";
+    -- OUT_MTCIN_PT_FILE   : string  := "mtc_in_pt_A3_Barrel_yt_v04.csv";
+    -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
     DUMMY               : boolean := false
     );
 end entity ult_tp;
@@ -100,6 +111,8 @@ architecture beh of ult_tp is
   signal tf_mon   :  TF_MON_t;
   signal mpl_ctrl :  MPL_CTRL_t := DEFAULT_MPL_CTRL_t;
   signal mpl_mon  :  MPL_MON_t;
+  signal fm_ctrl  :  FM_CTRL_t; --  := DEFAULT_FM_CTRL_t;
+  signal fm_mon   :  FM_MON_t;
 
   signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl)-1 downto 0);
   signal h2s_mon_v  : std_logic_vector(len(h2s_mon )-1 downto 0);
@@ -115,6 +128,8 @@ architecture beh of ult_tp is
   signal tf_mon_v   : std_logic_vector(len(tf_mon  )-1 downto 0);
   signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl)-1 downto 0);
   signal mpl_mon_v  : std_logic_vector(len(mpl_mon )-1 downto 0);
+  signal fm_ctrl_v  : std_logic_vector(len(fm_ctrl)-1 downto 0);
+  signal fm_mon_v   : std_logic_vector(len(fm_mon )-1 downto 0);
 
   -- TDC Hits from Polmux
   signal i_mdt_tdc_inn_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
@@ -129,10 +144,14 @@ architecture beh of ult_tp is
   -- signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   -- Sector Logic Candidates
-  signal i_main_primary_slc        : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
-  signal i_main_secondary_slc      : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
-  signal i_plus_neighbor_slc       : slc_rx_rvt := (others => '0');
-  signal i_minus_neighbor_slc      : slc_rx_rvt := (others => '0');
+  signal i_main_primary_slc       : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
+  signal i_main_secondary_slc     : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
+  signal i_plus_neighbor_slc      : slc_rx_rvt := (others => '0');
+  signal i_minus_neighbor_slc     : slc_rx_rvt := (others => '0');
+  signal slc_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
+
+  signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
+
   -- Segments in from neighbor
   signal i_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
   signal i_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
@@ -157,7 +176,7 @@ architecture beh of ult_tp is
   signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
   signal clk_axi_cnt  : integer;
-  constant c_CLK_AXI_MULT : integer := 5; 
+  -- constant c_CLK_AXI_MULT : integer := 5; 
   -- clk
   constant clk_time_period : time := 1 ns;  -- 1Ghz
   signal clk_time : std_logic := '0';
@@ -176,7 +195,6 @@ architecture beh of ult_tp is
   signal glob_en : std_logic := '1';
 
   signal bx : std_logic := '0';
-
 
 begin
 
@@ -211,6 +229,8 @@ begin
     tf_mon_v   => tf_mon_v,
     mpl_ctrl_v => mpl_ctrl_v,
     mpl_mon_v  => mpl_mon_v,
+    fm_ctrl_v  => fm_ctrl_v,
+    fm_mon_v   => fm_mon_v,
 
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av => i_mdt_tdc_inn_av,
@@ -263,6 +283,8 @@ begin
     mtc_mon <= structify(mtc_mon_v,mtc_mon);
     daq_ctrl_v <= vectorify(daq_ctrl,daq_ctrl_v);
     daq_mon <= structify(daq_mon_v,daq_mon);
+    fm_ctrl_v <= vectorify(fm_ctrl,fm_ctrl_v);
+    fm_mon    <= structify(fm_mon_v,fm_mon);
 
   -------------------------------------------------------------------------------------
 	-- clock Generator
@@ -341,51 +363,27 @@ begin
     end if;
   end process;
 
-
   -------------------------------------------------------------------------------------
-	-- hits
+	-- readers
   -------------------------------------------------------------------------------------
-  -- TAR_HIT : if c_EN_TAR_HITS = 1 generate -- TAR data injection
-  --   HIT : entity project_lib.ult_tb_reader_tar 
-  --   generic map (
-  --     IN_HIT_FILE => IN_HIT_FILE
-  --   )
-  --   port map(
-  --     clk => clk,
-  --     rst => rst,
-  --     enable => enable_mdt,
-  --     --
-  --     tb_curr_tdc_time => tb_curr_tdc_time,
-  --     -- TAR Hits for simulation
-  --     i_mdt_tar_inn_av => i_mdt_tar_inn_av,
-  --     i_mdt_tar_mid_av => i_mdt_tar_mid_av,
-  --     i_mdt_tar_out_av => i_mdt_tar_out_av,
-  --     i_mdt_tar_ext_av => i_mdt_tar_ext_av
-  --   );
-  -- end generate;
 
-  -- TDC_HIT : if c_EN_MDT_HITS = 1 generate -- TAR data injection
-    MDT : entity project_lib.ult_tb_reader_tdc 
-    generic map (
-      IN_HIT_FILE => IN_HIT_FILE
-    )
-    port map(
-      clk => clk,
-      rst => rst,
-      enable => enable_mdt,
-      --
-      tb_curr_tdc_time => tb_curr_tdc_time,
-      -- TAR Hits for simulation
-      i_mdt_tdc_inn_av => i_mdt_tdc_inn_av,
-      i_mdt_tdc_mid_av => i_mdt_tdc_mid_av,
-      i_mdt_tdc_out_av => i_mdt_tdc_out_av,
-      i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
-    );
-  -- end generate;
+  MDT : entity project_lib.ult_tb_reader_tdc 
+  generic map (
+    IN_HIT_FILE => IN_HIT_FILE
+  )
+  port map(
+    clk => clk,
+    rst => rst,
+    enable => enable_mdt,
+    --
+    tb_curr_tdc_time => tb_curr_tdc_time,
+    -- TAR Hits for simulation
+    i_mdt_tdc_inn_av => i_mdt_tdc_inn_av,
+    i_mdt_tdc_mid_av => i_mdt_tdc_mid_av,
+    i_mdt_tdc_out_av => i_mdt_tdc_out_av,
+    i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
+  );
 
- 	-------------------------------------------------------------------------------------
-	-- candidates
-  -------------------------------------------------------------------------------------
   SLC : entity project_lib.ult_tb_reader_slc 
   generic map (
     IN_SLC_FILE => IN_SLC_FILE
@@ -397,69 +395,154 @@ begin
     --
     tb_curr_tdc_time => tb_curr_tdc_time,
     -- TAR Hits for simulation
-    i_main_primary_slc    => i_main_primary_slc  ,
-    i_main_secondary_slc  => i_main_secondary_slc,
-    i_plus_neighbor_slc   => i_plus_neighbor_slc ,
-    i_minus_neighbor_slc  => i_minus_neighbor_slc
+    o_main_primary_slc    => i_main_primary_slc  ,
+    o_main_secondary_slc  => i_main_secondary_slc,
+    o_plus_neighbor_slc   => i_plus_neighbor_slc ,
+    o_minus_neighbor_slc  => i_minus_neighbor_slc
+    --
+    -- o_slc_event_ai            => slc_event_ai
+  );
+
+ 	-------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+	-- writers
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------------------
+	-- TAR2HPS
+  -------------------------------------------------------------------------------------
+  TAR : entity project_lib.ult_tb_writer_tar
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+    -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
+    -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time
+    -- i_hit_event_ai            => hit_event_ai
+
+  );
+  -------------------------------------------------------------------------------------
+	-- TAR2DAQ
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+	-- UCM2HPS & UCM2MPL
+  -------------------------------------------------------------------------------------
+  -- TB_UCM_GEN: if condition generate
+    
+  -- end generate TB_UCM_GEN;
+  UCM : entity project_lib.ult_tb_writer_ucm
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time
   );
 
   -------------------------------------------------------------------------------------
-	-- HEG_BM 2 SF
+	-- HPS : PC OUT
   -------------------------------------------------------------------------------------
-  HEG_2_SF_EN : if c_H2S_ENABLED = '1' generate
-    HEG_2_SF : entity project_lib.ult_tb_writer_heg2sf 
-    generic map (
-      IN_HIT_FILE => IN_HIT_FILE,
-      IN_SLC_FILE => IN_SLC_FILE,
-      OUT_HEG_BM_SLC_FILE => OUT_HEG_BM_SLC_FILE,
-      OUT_HEG_BM_HIT_FILE => OUT_HEG_BM_HIT_FILE
-    )
-    port map(
-      clk => clk,
-      rst => rst,
-      enable => enable_slc,
-      --
-      tb_curr_tdc_time => tb_curr_tdc_time
-    );
-  end generate;
+  HPS : entity project_lib.ult_tb_writer_hps
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time
+  );
+  -------------------------------------------------------------------------------------
+	-- HEG
+  -------------------------------------------------------------------------------------
+  HEG : entity project_lib.ult_tb_writer_heg
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time
+  );
+	-- SF IN
+  SF_IN : entity project_lib.ult_tb_writer_sf_in
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time
+  );
+  
+	-- SF OUT
   
   -------------------------------------------------------------------------------------
-	-- Input of PT CALC
+	-- MPL2PT
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+	-- SF2PT
   -------------------------------------------------------------------------------------
 
-  SF_2_PT : entity project_lib.ult_tb_writer_sf2pt 
-  generic map (
-    IN_HIT_FILE => IN_HIT_FILE,
-    IN_SLC_FILE => IN_SLC_FILE,
-    OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
-    OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
-  )
-  port map(
-    clk => clk,
-    rst => rst,
-    enable => enable_slc,
-    --
-    tb_curr_tdc_time => tb_curr_tdc_time
-  );
+  -- SF_2_PT : entity project_lib.ult_tb_writer_sf2pt 
+  -- generic map (
+  --   g_IN_HIT_FILE => IN_HIT_FILE,
+  --   g_IN_SLC_FILE => IN_SLC_FILE
+  --   -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
+  --   -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
+  -- )
+  -- port map(
+  --   clk => clk,
+  --   rst => rst,
+  --   enable => enable_slc,
+  --   --
+  --   tb_curr_tdc_time => tb_curr_tdc_time
+  -- );
+  -------------------------------------------------------------------------------------
+	-- MPL2MTCB
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+  -- PT2MTCB
+  -------------------------------------------------------------------------------------
 
-    -------------------------------------------------------------------------------------
-    -- Input of MTC Builder
-    -------------------------------------------------------------------------------------
-
-  PT_2_MTC : entity project_lib.ult_tb_writer_pt2mtcb
-  generic map (
-    IN_HIT_FILE => IN_HIT_FILE,
-    IN_SLC_FILE => IN_SLC_FILE,
-    OUT_MTCIN_PT_FILE  => OUT_MTCIN_PT_FILE,
-    OUT_MTCIN_MPL_FILE => OUT_MTCIN_MPL_FILE
-  )
-  port map(
-    clk => clk,
-    rst => rst,
-    enable => enable_slc,
-    --
-    tb_curr_tdc_time => tb_curr_tdc_time
-  );
+  -- PT_2_MTC : entity project_lib.ult_tb_writer_pt2mtcb
+  -- generic map (
+  --   g_IN_HIT_FILE => IN_HIT_FILE,
+  --   g_IN_SLC_FILE => IN_SLC_FILE
+  --   -- OUT_MTCIN_PT_FILE  => OUT_MTCIN_PT_FILE,
+  --   -- OUT_MTCIN_MPL_FILE => OUT_MTCIN_MPL_FILE
+  -- )
+  -- port map(
+  --   clk => clk,
+  --   rst => rst,
+  --   enable => enable_slc,
+  --   --
+  --   tb_curr_tdc_time => tb_curr_tdc_time
+  -- );
 
 
 

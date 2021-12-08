@@ -22,6 +22,8 @@ module TopLevel_hps #(
     input wire [DATA_WIDTH-1:0] input_data [9],
     output wire [DATA_WIDTH-1:0] output_data [3]
 );
+   localparam POLMUX_N    = 6;
+   localparam NUM_THREADS = 1;
 
     //
     // Here define the signals to connect the input and output Spy+FIFO
@@ -42,6 +44,10 @@ module TopLevel_hps #(
     wire BLOCK_output_almost_full [3];
     wire BLOCK_output_empty [3];
 
+
+   wire [TAR2HPS_LEN-1 : 0] tar2hps[POLMUX_N];
+   wire [UCM2HPS_LEN-1 : 0] ucm2hps[NUM_THREADS];
+   wire [SF2PTCALC_LEN-1 : 0] sf2ptcalc[NUM_THREADS];
     //
     // Input buffers
     //
@@ -74,12 +80,24 @@ module TopLevel_hps #(
     // Here place the DUT block(s)
     //
 
+   for(genvar i = 0; i < NUM_THREADS; i++)
+     begin
+	assign ucm2hps[i]           = BLOCK_input_data[i];
+	assign BLOCK_output_data[i] = sf2ptcalc[i];
+	assign BLOCK_output_write_enable[i] = sf2ptcalc[SF2PTCALC_DATA_VALID_MSB];
+
+     end
+
+   for(genvar i = 0; i < POLMUX_N; i++)
+     begin
+	assign tar2hps[i] = BLOCK_input_data[i+3];
+     end
    hps_top_tb hps_top_tb_inst(
 			      .clk(clock),
-			      .rst(rst),
+			      .rst(~reset_n),
 			      .glob_en(1'b1),
-			      .i_uCM2hps_av(),
-			      .i_mdt_tar_av(),
+			      .i_uCM2hps_av(ucm2hps),
+			      .i_mdt_tar_av(tar2hps),
 			      .o_sf2pt_av()
 			      );
 

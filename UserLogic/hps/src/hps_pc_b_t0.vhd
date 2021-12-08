@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
 --  Module: HPS T0 compensation ROM reader
@@ -74,11 +74,11 @@ architecture beh of hps_pc_b_t0 is
   begin
     for i in 0 to 7 loop
       if r = 0 then
-        y(i) := to_unsigned(c_BI_T0(s)(i),MDT_TIME_LEN);
+        y(i) := to_unsigned(c_BI_T0(s)(i),MDT_TIME_LEN) - 6;
       elsif r = 1 then
-        y(i) := to_unsigned(c_BM_T0(s)(i),MDT_TIME_LEN);
+        y(i) := to_unsigned(c_BM_T0(s)(i),MDT_TIME_LEN)  - 6;
       elsif r = 2 then
-        y(i) := to_unsigned(c_BO_T0(s)(i),MDT_TIME_LEN);
+        y(i) := to_unsigned(c_BO_T0(s)(i),MDT_TIME_LEN) - 6;
       -- else
   
       end if;
@@ -97,32 +97,32 @@ architecture beh of hps_pc_b_t0 is
 
   signal apb_rd_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
   signal apb_wr_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
-  signal apb_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
-  signal apb_dv_o         : std_logic;
-  signal apb_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
-  signal apb_dv_i         : std_logic;
+  signal apb_wr_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  signal apb_wr_dv_o         : std_logic;
+  signal apb_rd_dv_o         : std_logic;
+  signal apb_rd_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  signal apb_rd_dv_i         : std_logic;
 
 begin
 
-  -- ctrl_v <= vectorify(ctrl,ctrl_v);
-  -- mon <= structify(mon_v,mon);
-
-  apb_mem_interface : entity apbus_lib.apb_mem_int
+  apb_mem_interface : entity apbus_lib.apb_imem
   generic map(
     g_XML_NODE_NAME         => "MEM_INT_4A17D",
-    g_INTERNAL_CLK          => '1',
+    g_MEMORY_TYPE           => "distributed",
     g_ADDR_WIDTH            => ADDR_WIDTH,
-    g_DATA_WIDTH            => DATA_WIDTH,
-    g_APBUS_CTRL_WIDTH      => ctrl_v'length,
-    g_APBUS_MON_WIDTH       => mon_v'length
+    g_DATA_WIDTH            => DATA_WIDTH
+    -- g_CTRL_TYPE             => MEM_INT_12A148D_CTRL_t; 
+    -- g_MON_TYPE              => MEM_INT_12A148D_MON_t;   
+    -- g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
+    -- g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
   )
   port map (
     clk           => clk,
     rst           => rst,
     ena           => ena,
     --
-    ctrl          => ctrl_v,
-    mon           => mon_v,
+    ctrl_v        => ctrl_v,
+    mon_v         => mon_v,
     --
     -- i_axi_clk     => ,
     -- i_axi_rst     => ,
@@ -132,15 +132,17 @@ begin
     -- o_out_sel     => sel_out_mem,
     -- o_freeze_1    => int_freeze(1),
     --
+
     o_rd_addr     => apb_rd_addr_o,  
     o_wr_addr     => apb_wr_addr_o,  
-    o_data        => apb_data_o,   
-    o_dv          => apb_dv_o, 
-    i_data        => apb_data_i,  
-    i_dv          => apb_dv_i
-  );  
+    o_wr_data     => apb_wr_data_o,   
+    o_rd_dv       => apb_rd_dv_o, 
+    o_wr_dv       => apb_wr_dv_o,  
+    i_rd_data     => apb_rd_data_i,  
+    i_rd_dv       => apb_rd_dv_i
+  );
 
-  DT2R : process(clk)
+  T0_proc : process(clk)
 
   begin
     if rising_edge(clk) then
@@ -148,19 +150,26 @@ begin
         time_t0 <= (others => '0');
         time_t0_dv <= '0';
       else
-        if(i_dv = '1') then
-          time_t0 <= mem(to_integer(i_chamber));
-          time_t0_dv <= '1';
+        if apb_wr_dv_o = '1' or apb_rd_dv_o = '1' then
+          if apb_wr_dv_o = '1' then
+            mem(to_integer(unsigned(apb_wr_addr_o))) <= unsigned(apb_wr_data_o);
+          else
+          end if;
+  
+          if apb_rd_dv_o = '1' then
+            apb_rd_data_i <= std_logic_vector(mem(to_integer(unsigned(apb_rd_addr_o))));
+            apb_rd_dv_i <= '1';
+          else
+            apb_rd_dv_i <= '0';
+          end if;
         else
-          time_t0 <= (others => '0');
-          time_t0_dv <= '0';
-        end if;
-        if apb_dv_o = '1' then
-          apb_data_i <= std_logic_vector(mem(to_integer(unsigned(apb_rd_addr_o))));
-          mem(to_integer(unsigned(apb_rd_addr_o))) <= unsigned(apb_data_o);
-          apb_dv_i <= '1';
-        else
-          apb_dv_i <= '0';
+          if(i_dv = '1') then
+            time_t0 <= mem(to_integer(i_chamber));
+            time_t0_dv <= '1';
+          else
+            time_t0 <= (others => '0');
+            time_t0_dv <= '0';
+          end if;
         end if;
       end if;
     end if ;

@@ -21,8 +21,8 @@
   } UCM_SUPER_CONFIGS_CTRL_t;
 
   typedef struct packed {
-    logic [8-1:0] ENABLED;
-    logic [8-1:0] READY;
+    logic  ENABLED;
+    logic  READY;
     logic [8-1:0] ERROR;
   } UCM_SUPER_STATUS_MON_t;
 
@@ -38,17 +38,39 @@
 
   typedef struct packed {
     logic  rd_rdy;
-    logic [16-1:0] rd_data;
+    logic  freeze_ena;
+  } UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
+
+  typedef struct packed {
+    logic  wr_req;
+    logic  wr_ack;
+    logic  rd_req;
+    logic  rd_ack;
+    logic  flush_req;
+    logic  freeze_req;
+    logic [3-1:0] mem_sel;
+  } UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
+
+  typedef struct packed {
+    logic [16-1:0] wr_data_0;
+  } UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
+
+  typedef struct packed {
+    logic [16-1:0] rd_data_0;
+  } UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
+
+  typedef struct packed {
+    UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t   SIGNALS;
+    UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t   rd_data;
   } UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
 
   typedef UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t  [4-1:0] UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
 
   typedef struct packed {
-    logic  wr_req;
-    logic  rd_req;
+    UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t   SIGNALS;
     logic [8-1:0] wr_addr;
     logic [8-1:0] rd_addr;
-    logic [16-1:0] wr_data;
+    UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t   wr_data;
   } UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
 
   typedef UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t  [4-1:0] UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
@@ -63,17 +85,39 @@
 
   typedef struct packed {
     logic  rd_rdy;
-    logic [16-1:0] rd_data;
+    logic  freeze_ena;
+  } UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
+
+  typedef struct packed {
+    logic  wr_req;
+    logic  wr_ack;
+    logic  rd_req;
+    logic  rd_ack;
+    logic  flush_req;
+    logic  freeze_req;
+    logic [3-1:0] mem_sel;
+  } UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
+
+  typedef struct packed {
+    logic [16-1:0] wr_data_0;
+  } UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
+
+  typedef struct packed {
+    logic [16-1:0] rd_data_0;
+  } UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
+
+  typedef struct packed {
+    UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t   SIGNALS;
+    UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t   rd_data;
   } UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
 
   typedef UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t  [4-1:0] UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
 
   typedef struct packed {
-    logic  wr_req;
-    logic  rd_req;
+    UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t   SIGNALS;
     logic [8-1:0] wr_addr;
     logic [8-1:0] rd_addr;
-    logic [16-1:0] wr_data;
+    UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t   wr_data;
   } UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
 
   typedef UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t  [4-1:0] UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;

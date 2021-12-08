@@ -1,5 +1,6 @@
 import os
 import json
+import shutil
 from pathlib import Path
 from datetime import datetime
 
@@ -264,6 +265,16 @@ def create_test_wrapper(test_name):
         )
     return True, None
 
+def copy_prj_cfg_default(test_name):
+    p_test_dir = test_dir_from_test_name(test_name)
+    p_prj_cfg_dst =  p_test_dir / "test" / "prj_cfg.vhd"
+    p_creator_dir = creator_dir()
+    p_prj_cfg_src = p_creator_dir / "prj_cfg.vhd"
+    shutil.copy(p_prj_cfg_src, p_prj_cfg_dst)
+    file_ok = p_prj_cfg_dst.exists() and p_prj_cfg_dst.is_file()
+    if not file_ok:
+        return False, f'ERROR Could not copy test prj_cfg_default.vhd "{str(p_prj_cfg_dst)}"'
+    return True, None
 
 def create_test_makefile(test_name):
 
@@ -388,7 +399,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
     ## input_args
     ##
     config_input_args = {
-        "n_events": 2,
+        "n_events": 1,
         "event_detail": False,
         "clock_period": 5,
         "clock_time_unit": "ns",

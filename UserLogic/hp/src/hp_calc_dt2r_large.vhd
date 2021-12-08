@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------  
 --  Project: ATLAS L0MDT Trigger 
 --  Module: Hit Processor 
@@ -34,9 +34,12 @@ entity hp_calc_dt2r_large is
   -- );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
-    glob_en             : in std_logic;
-
+    rst                 : in std_logic;
+    ena                 : in std_logic;
+    --
+    ctrl_v              : in std_logic_vector;
+    mon_v               : out std_logic_vector;
+    --
     i_drift_time        : in unsigned(MDT_TIME_LEN -1 downto 0);
     i_data_valid        : in std_logic;
     o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0);
@@ -51,14 +54,14 @@ architecture beh of hp_calc_dt2r_large is
 
   signal mem : mem_array := mem_data;
 
-  attribute syn_rom_style : string;
-  attribute ROM_STYLE : string;
+  -- attribute syn_ram_style : string;
+  attribute RAM_STYLE : string;
   -- force rom to be in RAMB
-  -- attribute syn_rom_style of mem : signal is "block_rom";
-  -- attribute ROM_STYLE of mem : signal is "block";
+  -- attribute syn_ram_style of mem : signal is "block_rom";
+  -- attribute RAM_STYLE of mem : signal is "block";
   -- force rom to be in LUT ROMs
-  attribute syn_rom_style of mem : signal is "block_rom";
-  attribute ROM_STYLE of mem : signal is "distributed";
+  -- attribute syn_ram_style of mem : signal is "block_rom";
+  attribute RAM_STYLE of mem : signal is "distributed";
 begin
 
   dv_guard : process(i_data_valid) begin

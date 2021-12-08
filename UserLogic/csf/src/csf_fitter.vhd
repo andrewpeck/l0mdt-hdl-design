@@ -33,14 +33,6 @@ LIBRARY csf_lib;
 USE csf_lib.csf_pkg.ALL;
 USE csf_lib.csf_custom_pkg.ALL;
 
--- library ieee, csf_lib, shared_lib;
--- use ieee.std_logic_1164.all;
--- use ieee.numeric_std.all;
--- use ieee.math_real.all;
--- use csf_lib.csf_pkg.all;
--- use csf_lib.custom_types_csf_pkg.all;
--- use shared_lib.custom_types_davide_pkg.all;
-
 ENTITY csf_fitter IS
     PORT (
         clk : IN STD_LOGIC;
@@ -92,8 +84,8 @@ ARCHITECTURE Behavioral OF csf_fitter IS
 
     -- Numerator/Denominator constants
     CONSTANT SHIFT_NUM_M : INTEGER := 15;
-    CONSTANT SHIFT_NUM_B : INTEGER := 28;
-    CONSTANT SHIFT_DEN : INTEGER := 21;
+    CONSTANT SHIFT_NUM_B : INTEGER := 25;
+    CONSTANT SHIFT_DEN : INTEGER := 18;
     CONSTANT RECIPROCAL_LEN : INTEGER := 22;
     CONSTANT B_OVER_Z_MULTI_LEN : INTEGER
     := INTEGER(log2(CSF_SEG_B_MULT/HEG2SFHIT_LOCALX_MULT));
@@ -116,32 +108,19 @@ ARCHITECTURE Behavioral OF csf_fitter IS
     SIGNAL numerator_b : signed(NUM_B_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL denominator : unsigned(DEN_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL numerator_m_red, numerator_m_red_s,
-    numerator_m_red_ss, numerator_m_red_sss :
+    numerator_m_red_ss, numerator_m_red_sss, numerator_m_red_ssss :
     signed(NUM_M_LEN - SHIFT_NUM_M - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL numerator_b_red, numerator_b_red_s,
-    numerator_b_red_ss, numerator_b_red_sss :
+    numerator_b_red_ss, numerator_b_red_sss, numerator_b_red_ssss :
     signed(NUM_B_LEN - SHIFT_NUM_B - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL denominator_red : unsigned(DEN_LEN - SHIFT_DEN - 1 DOWNTO 0)
     := (OTHERS => '0');
     SIGNAL reciprocal_addr : STD_LOGIC_VECTOR(DEN_LEN - SHIFT_DEN - 1 DOWNTO 0)
     := (OTHERS => '0');
-    SIGNAL reciprocal_den, reciprocal_den_s : signed(RECIPROCAL_LEN DOWNTO 0)
+    SIGNAL reciprocal_den : STD_LOGIC_VECTOR(RECIPROCAL_LEN-1 downto 0);
+    SIGNAL reciprocal_den_s : signed(RECIPROCAL_LEN DOWNTO 0)
     := (OTHERS => '0');
-    TYPE t_reciprocalROM IS ARRAY (NATURAL RANGE <>) OF
-    STD_LOGIC_VECTOR(RECIPROCAL_LEN - 1 DOWNTO 0);
-    FUNCTION reciprocalROM RETURN t_reciprocalROM IS
-        VARIABLE temp : t_reciprocalROM(2 ** 16 - 1 DOWNTO 0)
-        := (OTHERS => (OTHERS => '0'));
-    BEGIN
-        FOR k IN 2 ** 16 - 1 DOWNTO 0 LOOP
-            temp(k) := STD_LOGIC_VECTOR(to_unsigned(
-            INTEGER(floor(
-            ((2.0 ** RECIPROCAL_LEN)) / (real(k) + 0.5)
-            )), RECIPROCAL_LEN));
-        END LOOP;
-        RETURN temp;
-    END FUNCTION;
-
+    
     -- Fit result widths
     CONSTANT MFIT_FULL_LEN : INTEGER := NUM_M_LEN - SHIFT_NUM_M + RECIPROCAL_LEN + 1;
     CONSTANT BFIT_FULL_LEN : INTEGER := NUM_B_LEN - SHIFT_NUM_B + RECIPROCAL_LEN + 1;
@@ -156,13 +135,43 @@ ARCHITECTURE Behavioral OF csf_fitter IS
     SIGNAL dsp_start, dsp_start_s : STD_LOGIC := '0';
     SIGNAL counter : INTEGER := 0;
     SIGNAL startCounter : STD_LOGIC := '0';
-    SIGNAL dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9 : STD_LOGIC := '0';
+    SIGNAL dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10 : STD_LOGIC := '0';
     SIGNAL event_valid : STD_LOGIC := '0';
+
+    ---COMPONENTS --------
+    COMPONENT rom
+        GENERIC (
+            MXADRB : INTEGER;
+            MXDATB : INTEGER;
+            ROM_FILE : STRING;
+            ROM_STYLE : STRING
+        );
+        PORT (
+            clka : IN STD_LOGIC;
+            ena : IN STD_LOGIC;
+            addra : IN STD_LOGIC_VECTOR;
+            douta : OUT STD_LOGIC_VECTOR
+        );
+    END COMPONENT;
 
 BEGIN
 
     hit1 <= structify(i_hit1);
     hit2 <= structify(i_hit2);
+
+    reciprocal_rom : rom
+    GENERIC MAP(
+        MXADRB => DEN_LEN - SHIFT_DEN,
+        MXDATB => RECIPROCAL_LEN,
+        ROM_FILE => "fitter_reciprocal.mem",
+        ROM_STYLE => "distributed"
+    )
+    PORT MAP(
+        ena => '1',
+        clka => clk,
+        addra => reciprocal_addr,
+        douta => reciprocal_den
+    );
 
     Fitter : PROCESS (clk)
     BEGIN
@@ -247,8 +256,6 @@ BEGIN
 
             -- Clock 6
             dv6 <= dv5;
-            reciprocal_den <= signed('0' &
-                reciprocalROM(to_integer(unsigned(reciprocal_addr))));
             numerator_b_red_ss <= numerator_b_red_s;
             numerator_m_red_ss <= numerator_m_red_s;
 
@@ -256,19 +263,25 @@ BEGIN
             dv7 <= dv6;
             numerator_b_red_sss <= numerator_b_red_ss;
             numerator_m_red_sss <= numerator_m_red_ss;
-            reciprocal_den_s <= reciprocal_den;
 
-            --Clock 8
+
+            -- Clock 8
             dv8 <= dv7;
-            mfit_full <= numerator_m_red_sss * signed(reciprocal_den_s);
-            bfit_full <= numerator_b_red_sss * signed(reciprocal_den_s);
+            numerator_b_red_ssss <= numerator_b_red_sss;
+            numerator_m_red_ssss <= numerator_m_red_sss;
+            reciprocal_den_s <= signed('0' & reciprocal_den);
 
-            --Clock 9
+            -- Clock 9
             dv9 <= dv8;
+            mfit_full <= numerator_m_red_sss * reciprocal_den_s;
+            bfit_full <= numerator_b_red_sss * reciprocal_den_s;
+
+            -- Clock 10
+            dv10 <= dv9;
             mfit_full_s <= mfit_full;
             bfit_full_s <= bfit_full;
 
-            o_fit_valid <= dv9;
+            o_fit_valid <= dv10;
             o_mfit <=
                 resize(
                 shift_right(
@@ -287,7 +300,7 @@ BEGIN
             o_nhits <= dsp_nhits;
 
             -- Reset
-            IF dv9 = '1' THEN
+            IF dv10 = '1' THEN
                 dsp_SumXY <= (OTHERS => '0');
                 dsp_SumY <= (OTHERS => '0');
                 dsp_SumX <= (OTHERS => '0');

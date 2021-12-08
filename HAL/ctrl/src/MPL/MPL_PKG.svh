@@ -24,8 +24,23 @@
   typedef struct packed {
     logic  ENABLED;
     logic  READY;
-    logic  ERROR;
+    logic [8-1:0] ERROR;
   } MPL_STATUS_MON_t;
+
+  typedef struct packed {
+    logic  rd_rdy;
+    logic  freeze_ena;
+  } MPL_PL_MEM_PL_MEM_SIGNALS_MON_t;
+
+  typedef struct packed {
+    logic  wr_req;
+    logic  wr_ack;
+    logic  rd_req;
+    logic  rd_ack;
+    logic  flush_req;
+    logic  freeze_req;
+    logic [3-1:0] mem_sel;
+  } MPL_PL_MEM_PL_MEM_SIGNALS_CTRL_t;
 
   typedef struct packed {
     logic [32-1:0] wr_data_0;
@@ -44,18 +59,14 @@
   } MPL_PL_MEM_PL_MEM_rd_data_MON_t;
 
   typedef struct packed {
-    logic  rd_rdy;
+    MPL_PL_MEM_PL_MEM_SIGNALS_MON_t   SIGNALS;
     MPL_PL_MEM_PL_MEM_rd_data_MON_t   rd_data;
   } MPL_PL_MEM_PL_MEM_MON_t;
 
   typedef MPL_PL_MEM_PL_MEM_MON_t  [5-1:0] MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
 
   typedef struct packed {
-    logic  wr_req;
-    logic  wr_ack;
-    logic  rd_req;
-    logic  rd_ack;
-    logic  flush_req;
+    MPL_PL_MEM_PL_MEM_SIGNALS_CTRL_t   SIGNALS;
     logic [12-1:0] wr_addr;
     logic [12-1:0] rd_addr;
     MPL_PL_MEM_PL_MEM_wr_data_CTRL_t   wr_data;

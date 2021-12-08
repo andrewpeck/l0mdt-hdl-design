@@ -29,7 +29,7 @@ from l0mdt_tb.testbench.ptcalc.ptcalc_ports import PtcalcPorts
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.ptcalc.ptcalc_block as ptcalc_block
 
 from l0mdt_tb.utils import test_config
-from l0mdt_tb.utils import events, tb_diff, result_handler
+from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
 
@@ -96,9 +96,6 @@ def reset(dut):
 ##
 @cocotb.test()
 def ptcalc_test(dut):
-
-
-    cprint('**************Test START************ ', 'green')
     ##
     ## first grab the testbench configuration
     ##
