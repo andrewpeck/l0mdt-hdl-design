@@ -290,27 +290,35 @@ def parse_tvlist(
         load_timing_info=False,
         station_ID=[""],
         tv_type="",
-        tv_df_type="SL"
+        tv_df_type="SL",
+        cnd_thrd_id =[0xabcd]
 ):
     events_list = tv_bcid_list
 
     # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
 
     tv = [["" for x in range(n_to_load)] for y in range(n_ports)]
+    my_cnd_thrd_id = [0 for x in range(n_ports)] 
     valid_events = 0
+
+    if cnd_thrd_id[0] == 0xabcd :
+        for my_port in range(n_ports):                
+            my_cnd_thrd_id[my_port] = my_port
+    else:
+        my_cnd_thrd_id = cnd_thrd_id
+    
 
     #    tv_reader_pkl.dump_event(events_list[0])
     for ievent in range(len(events_list)):  # range(n_to_load):
         if valid_events < n_to_load:
             event_found_for_port_interface = 0
-            for my_port in range(n_ports):
-                #print("tvformat = ",tvformat, " my_port = ", my_port)
+            for my_port in range(n_ports):                
                 if station_ID == [""]:
                         this_station_ID = ""
                 else:
                     this_station_ID = station_ID[my_port]
-
-                if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_port, station_ID=this_station_ID):
+                print("tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
+                if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_cnd_thrd_id[my_port], station_ID=this_station_ID):
                     #print ("parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
                     #tvtools.dump_event(events_list,ievent)
                     #print(events_list[ievent].DF_SL[my_port].print_blocks())
@@ -318,7 +326,7 @@ def parse_tvlist(
 
                     event_found_for_port_interface = 1
                     tv[my_port][valid_events] = get_bitfield(
-                        events_list[ievent], tvformat, my_port, this_station_ID, tv_type = tv_type , df_type=tv_df_type
+                        events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type
                     )
 
                     # print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])

@@ -48,18 +48,7 @@ shared/arithmetics/arithmetics_lib.src
 #---------------------------------
 # spybuffer
 #---------------------------------
-# shared/SpyBuffer/src/aFifo/aFifo.v
-# shared/SpyBuffer/src/aFifo/fifomem.v
-# shared/SpyBuffer/src/aFifo/rptr_empty.v
-# shared/SpyBuffer/src/aFifo/sync_r2w.v
-# shared/SpyBuffer/src/aFifo/sync_w2r.v
-# shared/SpyBuffer/src/aFifo/wptr_full.v
-# shared/SpyBuffer/src/SpyProtocol.vh
-# shared/SpyBuffer/src/SpyController.v
-# shared/SpyBuffer/src/SpyMemory.v
-# shared/SpyBuffer/src/SpyPlayback.v
-# shared/SpyBuffer/src/SpyBuffer.v
-
+shared/spybuffers.src
 shared/spybuffer_vhdl_wrapper/spybuffer_vhdl.vhd
 
 #---------------------------------

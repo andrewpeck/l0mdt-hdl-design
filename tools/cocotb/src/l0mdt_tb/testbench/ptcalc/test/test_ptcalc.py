@@ -115,35 +115,19 @@ def ptcalc_test(dut):
     testvector_config                = config["testvectors"]
     testvector_config_inputs         = testvector_config["inputs"]
     inputs_station_id= [["" for x in range(PtcalcPorts.get_input_interface_ports(y))]for y in range(PtcalcPorts.n_input_interfaces)]
+    inputs_thread_n= [[0 for x in range(PtcalcPorts.get_input_interface_ports(y))]for y in range(PtcalcPorts.n_input_interfaces)]
     ptcalc2mtc_lsf_tol = [["" for x in range(PtcalcPorts.get_output_interface_ports(y))]for y in range(PtcalcPorts.n_output_interfaces)]
+    ptcalc2mtc_lsf_thread_n= [[0 for x in range(PtcalcPorts.get_output_interface_ports(y))]for y in range(PtcalcPorts.n_output_interfaces)]
+
     for i in range(PtcalcPorts.n_input_interfaces):
         inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]
+        inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
 
     testvector_config_outputs         = testvector_config["outputs"]
     for i in range(PtcalcPorts.n_output_interfaces):
         ptcalc2mtc_lsf_tol[i]         =  testvector_config_outputs[i]["tolerance"]
 
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCK## start the software block instance
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCKptcalc_block_instance = ptcalc_block.ptcalcBlock(dut.clock, "ptcalcBlock")
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(PtcalcPorts.Inputs):
-    # CREATORSOFTWAREBLOCK    ptcalc_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.input_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{ptcalc_block_instance.name}_Input_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="in",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(PtcalcPorts.Outputs):
-    # CREATORSOFTWAREBLOCK    ptcalc_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.output_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{ptcalc_block_instance.name}_Output_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="out",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKptcalc_block_instance.start()
+  
 
 
 
@@ -223,10 +207,7 @@ def ptcalc_test(dut):
     #Read TV file
     tv_bcid_list = events.read_tv(
         filename=master_tv_file,
-        n_to_load=num_events_to_process,
-        region=0,#Barrel=0, Endcap=1, Any=2
-        side=1, # A=0, C=1, B=2, Any=3,
-        sector=3
+        n_to_load=num_events_to_process       
         )
 
     ###Get Input Test Vector List for Ports across all input interfaces##
@@ -240,7 +221,8 @@ def ptcalc_test(dut):
             tvformat=input_tvformats[n_ip_intf],
             n_ports = PtcalcPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
-            station_ID=inputs_station_id[n_ip_intf]
+            station_ID=inputs_station_id[n_ip_intf],
+            cnd_thrd_id = inputs_thread_n[n_ip_intf]
             ))
 
         single_interface_list_ii_delay = events.modify_tv(single_interface_list, ptcalc_ii)

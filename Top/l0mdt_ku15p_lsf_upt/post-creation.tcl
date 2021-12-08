@@ -17,7 +17,11 @@ set sources "${C2C_PATH}/createC2CSlaveInterconnect.tcl
              ${C2C_PATH}/slaves.yaml"
 set product ${BD_OUTPUT_PATH}/${BD_SUFFIX}/c2cSlave/c2cSlave.bd
 
-set bd_modification_time [file mtime $product]
+if { [file exist $product] } {
+	set bd_modification_time [file mtime $product]
+} else {
+  	set bd_modification_time -1
+}
 
 set needs_update 0
 set regenerate_svg 0

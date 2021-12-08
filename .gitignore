@@ -51,3 +51,4 @@ Projects/
 __init__.py
 *.vstf
 .nfs*
+kernel/
