@@ -51,6 +51,7 @@ entity mgt_wrapper is
     lpgbt_downlink_mgt_word_array_i : in std32_array_t (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
 
     -- 32 bits / clock from mgt
+    -- this is just an array of LPGBT uplink data *in mgt order*
     lpgbt_uplink_mgt_word_array_o : out std32_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
     --------------------------------------------------------------------------------

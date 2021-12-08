@@ -420,48 +420,71 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
   -- 0 to e.g. 17 CSM Boards
-  csm_gen : for I in c_MDT_CONFIG'range generate
-    constant hi      : integer := csm_hi_lo (I).hi;
-    constant lo      : integer := csm_hi_lo (I).lo;
-    constant tdc_cnt : integer := count_ones(c_MDT_CONFIG(I).en);
-    constant mgt_idx : integer := get_csm_mgt_num(I, c_MGT_MAP);
+  csm_gen : for CSM in c_MDT_CONFIG'range generate
+    constant hi       : integer := csm_hi_lo (CSM).hi;
+    constant lo       : integer := csm_hi_lo (CSM).lo;
+    constant tdc_cnt  : integer := count_ones(c_MDT_CONFIG(CSM).en);
+    constant mgt_idx  : integer := c_MDT_CONFIG(CSM).mgt_id_m;
+    constant mgt_id_m : integer := c_MDT_CONFIG(CSM).mgt_id_m;
+    constant mgt_id_s : integer := c_MDT_CONFIG(CSM).mgt_id_s;
   begin
-    csm_ifgen : if (I < c_NUM_CSMS_ACTIVE and tdc_cnt > 0) generate
+
+    csm_ifgen : if (CSM < c_NUM_CSMS_ACTIVE and tdc_cnt > 0) generate
     begin
+
+      assert c_MGT_MAP(mgt_id_m).mgt_type=MGT_LPGBT
+        report "CSM Master assigned to non-lpgbt link!" severity error;
+      assert c_MGT_MAP(mgt_id_s).mgt_type=MGT_LPGBT
+        report "CSM Servant assigned to non-lpgbt link!" severity error;
+      assert mgt_id_m = mgt_id_s-1
+        report "CSM Master and Servant are not adjacent, this is not supported right now... :(" severity error;
 
       mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
       begin
 
         assert false report
-          "Generating CSM #" & integer'image(I)
+          "Generating CSM #" & integer'image(CSM)
           & " bithi=" & integer'image(hi)
           & " bitlo=" & integer'image(lo)
           severity note;
 
         csm_inst : entity work.csm
           generic map (
-            g_CSM_ID      => c_MDT_CONFIG(I).csm_id,
+            g_CSM_ID      => c_MDT_CONFIG(CSM).csm_id,
             g_TDC_CNT     => tdc_cnt,
-            g_ENABLE_MASK => c_MDT_CONFIG(I).en,
-            g_LEGACY_FLAG => c_MDT_CONFIG(I).legacy
+            g_ENABLE_MASK => c_MDT_CONFIG(CSM).en,
+            g_LEGACY_FLAG => c_MDT_CONFIG(CSM).legacy
             )
           port map (
-            reset_i                      => global_reset,
-            trg_i                        => ttc_commands.l0a,
-            bcr_i                        => ttc_commands.bcr,
-            ecr_i                        => ttc_commands.ecr,
-            gsr_i                        => global_reset,     -- TODO: axi control
-            clk40                        => clocks.clock40,
-            strobe_320                   => strobe_320,
-            downlink_clk                 => clocks.clock320,  -- ZDM?
-            downlink_mgt_word_array_o(0) => lpgbt_downlink_mgt_word_array(I),
-            uplink_mgt_word_array_i      => lpgbt_uplink_mgt_word_array(I*2+1 downto I*2),
-            uplink_clk                   => clocks.clock320,  -- ZDM?
-            uplink_bitslip_o             => lpgbt_uplink_bitslip(I*2+1 downto I*2),
-            tdc_hits_to_polmux_o         => tdc_hits_to_polmux (hi downto lo),
-            read_done_from_polmux_i      => read_done_from_polmux (hi downto lo),
-            ctrl                         => ctrl.csm.csm(I),
-            mon                          => mon.csm.csm(I)
+            -- clock and reset
+            clk40      => clocks.clock40,
+            strobe_320 => strobe_320,
+            reset_i    => global_reset,
+
+            -- TTC signals
+            -- TODO: axi generation of TTC signals
+            trg_i => ttc_commands.l0a,
+            bcr_i => ttc_commands.bcr,
+            ecr_i => ttc_commands.ecr,
+            gsr_i => global_reset,
+
+            -- downlink
+            downlink_clk                 => clocks.clock320,
+            downlink_mgt_word_array_o(0) => lpgbt_downlink_mgt_word_array (lpgbt_downlink_idx_array(c_MDT_CONFIG(CSM).mgt_id_m)),
+
+            -- uplink clk &
+            -- master(0) + slave(1) uplink data/bitslips
+            uplink_clk                 => clocks.clock320,
+            uplink_mgt_word_array_i(0) => lpgbt_uplink_mgt_word_array(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_m)),
+            uplink_mgt_word_array_i(1) => lpgbt_uplink_mgt_word_array(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_s)),
+            uplink_bitslip_o(0)        => lpgbt_uplink_bitslip(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_m)),
+            uplink_bitslip_o(1)        => lpgbt_uplink_bitslip(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_s)),
+
+            -- outputs to polmux
+            tdc_hits_to_polmux_o    => tdc_hits_to_polmux (hi downto lo),
+            read_done_from_polmux_i => read_done_from_polmux (hi downto lo),
+            ctrl                    => ctrl.csm.csm(CSM),
+            mon                     => mon.csm.csm(CSM)
             );
 
       end generate;
@@ -469,16 +492,14 @@ begin  -- architecture behavioral
   end generate;
 
   -- 0 to 3, inner middle outer extra
-  station_gen : for I in 0 to 3 generate
+  station_gen : for STATION in 0 to 3 generate
     constant num_polmuxes :
-      int_array_t (0 to 3) := (c_NUM_POLMUX_INNER,
-                               c_NUM_POLMUX_MIDDLE,
-                               c_NUM_POLMUX_OUTER,
-                               c_NUM_POLMUX_EXTRA);
+      int_array_t (0 to 3) := (c_NUM_POLMUX_INNER, c_NUM_POLMUX_MIDDLE,
+                               c_NUM_POLMUX_OUTER, c_NUM_POLMUX_EXTRA);
   begin
 
-    polmux_gen : for J in 0 to num_polmuxes(I)-1 generate
-      constant id       : integer := get_polmux_global_id (c_MDT_CONFIG, J, stations(I));
+    polmux_gen : for POLMUX in 0 to num_polmuxes(STATION)-1 generate
+      constant id       : integer := get_polmux_global_id (c_MDT_CONFIG, POLMUX, stations(STATION));
       constant hi       : integer := polmux_hi_lo (id).hi;
       constant lo       : integer := polmux_hi_lo (id).lo;
       constant width    : integer := hi-lo+1;
@@ -495,8 +516,8 @@ begin  -- architecture behavioral
         generic map (
           g_WIDTH       => width,             -- number of tdcs
           g_ID          => id,
-          g_STATION     => stations(I),
-          g_STATION_STR => stations_str(I)
+          g_STATION     => stations(STATION),
+          g_STATION_STR => stations_str(STATION)
           )
         port map (
           clock          => clocks.clock320,  -- ZDM?
@@ -507,17 +528,17 @@ begin  -- architecture behavioral
           tdc_hits_o     => tdc_hits_o
           );
 
-      inner : if (I = 0) generate
-        tdc_hits_inner(J) <= tdc_hits_o;
+      inner : if (STATION = 0) generate
+        tdc_hits_inner(POLMUX) <= tdc_hits_o;
       end generate;
-      middle : if (I = 1) generate
-        tdc_hits_middle (J) <= tdc_hits_o;
+      middle : if (STATION = 1) generate
+        tdc_hits_middle (POLMUX) <= tdc_hits_o;
       end generate;
-      outer : if (I = 2) generate
-        tdc_hits_outer (J) <= tdc_hits_o;
+      outer : if (STATION = 2) generate
+        tdc_hits_outer (POLMUX) <= tdc_hits_o;
       end generate;
-      extra : if (I = 3) generate
-        tdc_hits_extra(J) <= tdc_hits_o;
+      extra : if (STATION = 3) generate
+        tdc_hits_extra(POLMUX) <= tdc_hits_o;
       end generate;
 
     end generate;
@@ -551,6 +572,7 @@ begin  -- architecture behavioral
       );
 
   -- FIXME: these mappings are totally made up for testing purposes...
+  -- probably want an arbitrary mapping here?? from some config file?
   main_primary_slc   <= sl_rx_data(2 downto 0);
   main_secondary_slc <= sl_rx_data(5 downto 3);
   plus_neighbor_slc  <= sl_rx_data(6);

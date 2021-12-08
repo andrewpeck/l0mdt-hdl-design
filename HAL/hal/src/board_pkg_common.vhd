@@ -28,12 +28,13 @@ package board_pkg_common is
   end record;
 
   -- nil type of mgt_inst_t
-  constant MGT_NIL_MAP : mgt_inst_t := (mgt_type => MGT_NIL,
-                                        refclk   => -1,
-                                        gt_type  => GT_NIL,
-                                        x_loc    => -1,
-                                        y_loc    => -1
-                                        );
+  constant MGT_NIL_MAP :
+    mgt_inst_t := (mgt_type => MGT_NIL,
+                   refclk   => -1,
+                   gt_type  => GT_NIL,
+                   x_loc    => -1,
+                   y_loc    => -1
+                   );
 
   -- array of mgt_inst
   type mgt_inst_array_t is array (integer range <>) of mgt_inst_t;
@@ -85,6 +86,8 @@ package board_pkg_common is
 
   type csm_config_t is record
     polmux_id  : integer;
+    mgt_id_m   : integer;
+    mgt_id_s   : integer;
     csm_id     : integer;
     en         : std_logic_vector (17 downto 0);
     legacy     : std_logic_vector (17 downto 0);
@@ -102,11 +105,14 @@ package board_pkg_common is
 
   function count_ones(slv : std_logic_vector) return natural;
 
-  function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t; i_mgt_type_alt : mgt_types_t)
+  function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
     return int_array_t;
 
-  --function func_fill_polmux_idx (tdc_cnt_max: integer; mdt_config : mdt_config_t; num_polmux : integer; station : station_id_t)
-  --  return int_array_t;
+  function func_fill_csm_downlink_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; csm_config : mdt_config_t)
+    return int_array_t;
+
+  function func_fill_csm_uplink_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; csm_config : mdt_config_t)
+    return int_array_t;
 
   function func_count_link_types (mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
     return integer;
@@ -156,13 +162,52 @@ package body board_pkg_common is
     return count;
   end func_count_tdc_links;
 
-  function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t; i_mgt_type_alt : mgt_types_t)
+  function func_fill_csm_uplink_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; csm_config : mdt_config_t)
+    return int_array_t is
+    variable count : integer                              := 0;
+    variable idx   : int_array_t (0 to mgt_list'length-1) := (others => -1);
+  begin
+    for MGT in 0 to mgt_list'length-1 loop
+      for CSM in 0 to csm_config'length-1 loop
+
+        if (count < cnt_max and
+            mgt_list(MGT).mgt_type = MGT_LPGBT
+            and (csm_config(CSM).mgt_id_m = MGT or csm_config(CSM).mgt_id_s = MGT)
+            ) then
+          idx(MGT) := count;
+          count  := count + 1;
+        end if;
+
+      end loop;
+    end loop;
+    return idx;
+  end func_fill_csm_uplink_idx;
+
+  function func_fill_csm_downlink_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; csm_config : mdt_config_t)
+    return int_array_t is
+    variable count : integer                              := 0;
+    variable idx   : int_array_t (0 to mgt_list'length-1) := (others => -1);
+  begin
+    for MGT in 0 to mgt_list'length-1 loop
+      for CSM in 0 to csm_config'length-1 loop
+
+        if (count < cnt_max and mgt_list(MGT).mgt_type = MGT_LPGBT and (csm_config(CSM).mgt_id_m = MGT)) then
+          idx(MGT) := count;
+          count  := count + 1;
+        end if;
+
+      end loop;
+    end loop;
+    return idx;
+  end func_fill_csm_downlink_idx;
+
+  function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
     return int_array_t is
     variable count : integer                              := 0;
     variable idx   : int_array_t (0 to mgt_list'length-1) := (others => -1);
   begin
     for I in 0 to mgt_list'length-1 loop
-      if (count < cnt_max and (mgt_list(I).mgt_type = i_mgt_type or mgt_list(I).mgt_type = i_mgt_type_alt)) then
+      if (count < cnt_max and mgt_list(I).mgt_type = i_mgt_type) then
         idx(I) := count;
         count  := count + 1;
       end if;
@@ -181,36 +226,6 @@ package body board_pkg_common is
     end loop;
     return count;
   end func_count_link_types;
-
-  --function func_fill_polmux_idx (tdc_cnt_max: integer; mdt_config : mdt_config_t; num_polmux : integer; station : station_id_t)
-  --  return int_array_t is
-  --  variable polmux_already_counted : bool_array_t (-1 to 99) := (others => false);
-  --  -- 99 is just a random large number, larger than the # of polmuxes we could ever want
-  --  variable tdc_cnt : integer := 0;
-  --  variable cnt     : integer := 0;
-  --  variable idx_arr : int_array_t (0 to num_polmux) := (others => -1);
-  --begin
-  --  assert false report "num_polmux=" & integer'image(num_polmux) severity note;
-  --  for I in 0 to mdt_config'length-1 loop
-
-  --    if (mdt_config(I).link_id /= -1) then
-  --      tdc_cnt := tdc_cnt + 1;
-  --    end if;
-
-  --    if (tdc_cnt < tdc_cnt_max and polmux_already_counted(mdt_config(I).polmux_id)=false) then
-  --      if (station = mdt_config(I).station_id) then
-  --        polmux_already_counted(mdt_config(I).polmux_id) := true;
-  --        idx_arr(mdt_config(I).polmux_id) := cnt;
-  --        if (cnt = num_polmux-1) then
-  --          return idx_arr;
-  --        else
-  --          cnt := cnt + 1;
-  --        end if;
-  --      end if;
-  --    end if;
-  --  end loop;
-  --  return idx_arr;
-  --end func_fill_polmux_idx;
 
   -- function to count number of polmuxes
   -- loop over the tdc link mapping and find how many polmuxes are needed for the
