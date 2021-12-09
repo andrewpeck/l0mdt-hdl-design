@@ -625,18 +625,25 @@ assign hewindow_pos_Z = hewindow_pos >> (HEG2SFSLC_HEWINDOW_POS_DECB - SF2PTCALC
 	  begin
 
     	     le_tb_output_vld    <= sf_segpos_vld;
+	     //PRIYA ADDING TEMPORARY LOGIC FOR segquality
+	     if(res_max_bin_count_vld == 1)
+	       sf_segquality <= (res_max_bin_count >= 3);
+	     else if (le_output_vld == 1)
+	       sf_segquality <= 0;
+
+	     
 	     if(sf_segpos_vld)
 	       begin
-		  le_output[SF2PTCALC_MDTID_MSB:SF2PTCALC_MDTID_LSB]           <= slc_mdtid;
+		  le_output[SF2PTCALC_MDTID_MSB:SF2PTCALC_MDTID_LSB]                      <= slc_mdtid;
 		  le_output[SF2PTCALC_SEGQUALITY_MSB:SF2PTCALC_SEGQUALITY_LSB] <= sf_segquality;
-	          le_output[SF2PTCALC_SEGANGLE_MSB:SF2PTCALC_SEGANGLE_LSB]     <= theta_global;
-		  le_output[SF2PTCALC_SEGPOS_MSB:SF2PTCALC_SEGPOS_LSB]         <= sf_segpos;
-		  le_output[SF2PTCALC_MUID_MSB:SF2PTCALC_MUID_LSB]             <= slc_muid;
-		  le_output[SF2PTCALC_DATA_VALID_MSB]                          <= 1'b1;
+	          le_output[SF2PTCALC_SEGANGLE_MSB:SF2PTCALC_SEGANGLE_LSB]      <= theta_global;
+		  le_output[SF2PTCALC_SEGPOS_MSB:SF2PTCALC_SEGPOS_LSB]               <= sf_segpos;
+		  le_output[SF2PTCALC_MUID_MSB:SF2PTCALC_MUID_LSB]                         <= slc_muid;
+		  le_output[SF2PTCALC_DATA_VALID_MSB]                                                    <= 1'b1;
 
 
 		  le_tb_output[63:0]                                           <= res_max_bin_count;
-		  le_output_vld                                                <= 1'b1;
+		  le_output_vld                                                   <= 1'b1;
 		end // if (sf_segpos_vld)
 	     else
 	        begin

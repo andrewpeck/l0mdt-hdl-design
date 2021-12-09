@@ -2,7 +2,7 @@
 -- Joakim Olsson, UC Irvine
 -- joakim.olsson@cern.ch
 -- created: 2020-04-12
--- last update: 2021-12-02
+-- last update: 2021-12-07
 -- ===========================================================
 
 library ieee;
@@ -15,6 +15,8 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 --use shared_lib.common_constants_pkg.all;
 --use shared_lib.common_types_pkg.all;
+--library upt_lib;
+--library xil_defaultlib;
 
 entity top_upt is
     generic (
@@ -76,7 +78,7 @@ begin
     o_mtc           <= ptcalc2mtc_done & ptcalc2mtc_data(PTCALC2MTC_LEN-2 downto 0);
     --ptcalc_ap_start <= ptcalc_ap_ready and i_slc(PL2PTCALC_LEN-1);
 
-    ptcalc_top_inst : hls_ptcalc_top port map (
+    ptcalc_top_inst : component hls_ptcalc_top port map (
         ap_clk => clk,
         ap_rst => i_rst,
         ap_start        => ptcalc_ap_start, --i_slc(PL2PTCALC_LEN-1), -- hls control signal: goes high 1 clk after rst goes low
@@ -96,36 +98,29 @@ begin
     hls_ap_ready: process(clk)
     begin
       if rising_edge (clk) then
+        ptcalc_segment_i   <= i_segment_i;
+        ptcalc_segment_m <= i_segment_m;
+        ptcalc_segment_o  <= i_segment_o;
+        ptcalc_slc               <= i_slc;
+        ptcalc_ap_start      <= i_slc(PL2PTCALC_LEN-1);
         if i_rst = '1' then
-          ptcalc_ap_start <= '0';
-          ptcalc_slc      <= (others =>'0');
-          ptcalc_segment_i<= (others =>'0');
-          ptcalc_segment_m<= (others =>'0');
-          ptcalc_segment_o<= (others =>'0');
-        elsif i_slc(PL2PTCALC_LEN-1) = '1' then
-          ptcalc_ap_start   <= '1';
-          ptcalc_slc        <= i_slc;
-          ptcalc_segment_i  <= i_segment_i;
-          ptcalc_segment_m  <= i_segment_m;
-          ptcalc_segment_o  <= i_segment_o;
-        elsif unsigned(ptcalc_cnt) = unsigned(ptcalc_hls_ii-1) then --or ptcalc_ap_ready = '1' then
-          ptcalc_ap_start <= '0';
+          ptcalc_ap_start <= '0';         
         end if;
-      end if;
-
+        end if;
+        
     end process;
 
-    ptcalc_cnt_process: process(clk)
-      begin
-       if rising_edge (clk) then
-        if i_slc(PL2PTCALC_LEN-1) = '1' or i_rst = '1' or ptcalc_ap_start = '0' then
-          ptcalc_cnt <= (others => '0');
-        elsif unsigned(ptcalc_cnt) < unsigned(ptcalc_hls_ii-1) then
-          ptcalc_cnt <= std_logic_vector(unsigned (ptcalc_cnt) + 1);
-        else
-          ptcalc_cnt <= (others => '0');
-        end if;
-       end if;
-    end process;
+    --ptcalc_cnt_process: process(clk)
+    --  begin
+    --   if rising_edge (clk) then
+    --    if i_slc(PL2PTCALC_LEN-1) = '1' or i_rst = '1' or ptcalc_ap_start = '0' then
+    --      ptcalc_cnt <= (others => '0');
+    --    elsif unsigned(ptcalc_cnt) < unsigned(ptcalc_hls_ii-1) then
+    --      ptcalc_cnt <= std_logic_vector(unsigned (ptcalc_cnt) + 1);
+    --    else
+    --      ptcalc_cnt <= (others => '0');
+    --    end if;
+    --   end if;
+    --end process;
 
 end behav;
