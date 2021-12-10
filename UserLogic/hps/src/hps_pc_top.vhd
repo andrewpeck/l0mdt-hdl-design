@@ -31,7 +31,7 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 entity hps_pc_top is
   generic(
@@ -48,10 +48,10 @@ entity hps_pc_top is
     rst                   : in std_logic;
     ena                   : in std_logic;
     -- configuration & control
-    i_ctrl_tc_v           : in  std_logic_vector; -- H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;  
-    o_mon_tc_v            : out std_logic_vector; -- H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
-    i_ctrl_t0_v           : in  std_logic_vector; -- H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;  
-    o_mon_t0_v            : out std_logic_vector; -- H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY;   
+    i_ctrl_tc_v           : in  std_logic_vector; -- HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
+    o_mon_tc_v            : out std_logic_vector; -- HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
+    i_ctrl_t0_v           : in  std_logic_vector; -- HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
+    o_mon_t0_v            : out std_logic_vector; -- HPS_MDT_T0_MDT_T0_MON_t_ARRAY;
     -- MDT hit
     i_mdt_tar_v           : in tar2hps_bus_avt(g_HPS_NUM_MDT_CH - 1 downto 0);
     o_mdt_full_data_v     : out heg_pc2heg_avt(g_HPS_NUM_MDT_CH - 1 downto 0)
@@ -60,10 +60,10 @@ end entity hps_pc_top;
 
 architecture beh of hps_pc_top is
 
-  signal i_ctrl_tc_r   : H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;  
-  signal o_mon_tc_r    : H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
-  signal i_ctrl_t0_r   : H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;  
-  signal o_mon_t0_r    : H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY; 
+  signal i_ctrl_tc_r   : HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
+  signal o_mon_tc_r    : HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
+  signal i_ctrl_t0_r   : HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
+  signal o_mon_t0_r    : HPS_MDT_T0_MDT_T0_MON_t_ARRAY;
 
   type ctrl_tc_avt is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(len(i_ctrl_tc_r(0))-1 downto 0);
   type mon_tc_avt  is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(len(o_mon_tc_r(0))-1 downto 0);

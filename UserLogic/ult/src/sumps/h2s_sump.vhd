@@ -32,15 +32,15 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 entity h2s_sump is
   port (
     -- clock and control
     -- clock_and_control : in  l0mdt_control_rt;
     -- ttc_commands      : in  l0mdt_ttc_rt;
-    -- ctrl              : in  H2S_CTRL_t;
-    -- mon               : out H2S_MON_t;
+    -- ctrl              : in  HPS_CTRL_t;
+    -- mon               : out HPS_MON_t;
 
     -- TDC Hits from Polmux
     i_inn_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);

@@ -13,8 +13,8 @@ module top_ult_verilog(
 			  input logic 						bx,
 			  
 			  input logic [SV_L0MDT_TTC_LEN-1:0] 			ttc_commands,
-	       //input logic 					       h2s_ctrl,
-	       //output logic 					       h2s_mon,
+	       //input logic 					       hps_ctrl,
+	       //output logic 					       hps_mon,
 			  input logic 						mtc_ctrl,
 			  output logic [1:0] 					mtc_mon, 
 			  input logic [SV_EN_MDT_HITS*SV_HPS_NUM_MDT_CH_INN -1:0] i_inner_tdc_hits,

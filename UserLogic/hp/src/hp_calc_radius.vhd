@@ -30,7 +30,7 @@ use shared_lib.mdt_dt2r_pkg.all;
 library apbus_lib;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -63,8 +63,8 @@ architecture beh of hp_calc_radius is
   -- signal axi_rst      : std_logic;
   -- signal axi_clk      : std_logic;
 
-  -- signal ctrl_r : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
-  -- signal mon_r : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t;
+  -- signal ctrl_r : HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
+  -- signal mon_r : HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t;
 
   constant ADDR_WIDTH : integer := 10;
   constant DATA_WIDTH : integer := 9;

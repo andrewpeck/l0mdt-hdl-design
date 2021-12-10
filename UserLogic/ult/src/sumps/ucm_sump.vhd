@@ -35,8 +35,8 @@ entity ucm_sump is
     -- clock and control
     -- clock_and_control : in  l0mdt_control_rt;
     -- ttc_commands      : in  l0mdt_ttc_rt;
-    -- ctrl              : in  H2S_CTRL_t;
-    -- mon               : out H2S_MON_t;
+    -- ctrl              : in  HPS_CTRL_t;
+    -- mon               : out HPS_MON_t;
 
     -- Sector Logic Candidates
     i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);

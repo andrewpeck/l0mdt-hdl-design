@@ -32,8 +32,6 @@ entity daq_sump is
     -- clock and control
     -- clock_and_control : in  l0mdt_control_rt;
     -- ttc_commands      : in  l0mdt_ttc_rt;
-    -- ctrl              : in  H2S_CTRL_t;
-    -- mon               : out H2S_MON_t;
 
     i_inn_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
     i_mid_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);

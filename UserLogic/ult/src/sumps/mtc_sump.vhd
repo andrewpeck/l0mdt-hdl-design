@@ -32,8 +32,8 @@ entity mtc_sump is
     -- clock and control
     -- clock_and_control : in  l0mdt_control_rt;
     -- ttc_commands      : in  l0mdt_ttc_rt;
-    -- ctrl              : in  H2S_CTRL_t;
-    -- mon               : out H2S_MON_t;
+    -- ctrl              : in  HPS_CTRL_t;
+    -- mon               : out HPS_MON_t;
 
     i_ptcalc          : in  tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
     i_pl2mtc          : in  pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);

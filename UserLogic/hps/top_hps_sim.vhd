@@ -32,7 +32,7 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 entity top_hps_tb is
   generic(
@@ -49,8 +49,8 @@ entity top_hps_tb is
     -- glob_en             : in std_logic := '1';
 
     -- -- control
-    -- ctrl_v              : in  H2S_HPS_CTRL_t;
-    -- mon_v               : out H2S_HPS_MON_t;
+    -- ctrl_v              : in  HPS_CTRL_t;
+    -- mon_v               : out HPS_MON_t;
 
     -- -- control
     -- -- SLc
@@ -68,8 +68,8 @@ architecture beh of top_hps_tb is
   signal clk                : std_logic;
   signal rst                : std_logic;
   signal glob_en            : std_logic := '1';
-  signal ctrl_v             : H2S_HPS_CTRL_t;
-  signal mon_v              : H2S_HPS_MON_t;
+  signal ctrl_v             : HPS_CTRL_t;
+  signal mon_v              : HPS_MON_t;
   signal i_uCM2hps_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   signal i_mdt_tar_av       : tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
   signal o_sf2pt_av         : sf2pt_bus_avt(c_NUM_THREADS -1 downto 0);

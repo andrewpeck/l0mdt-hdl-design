@@ -17,8 +17,8 @@ use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
-use ctrl_lib.H2S_CTRL.all;
-use ctrl_lib.H2S_Ctrl_DEF.all;
+use ctrl_lib.HPS_CTRL.all;
+use ctrl_lib.HPS_Ctrl_DEF.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
 use ctrl_lib.UCM_CTRL.all;
@@ -154,8 +154,15 @@ architecture structural of top_l0mdt is
 
   -- Control and Monitoring Records
 
-  signal h2s_mon_r  : H2S_MON_t;
-  signal h2s_ctrl_r : H2S_CTRL_t;
+  signal hps_inn_mon_r  : HPS_MON_t;
+  signal hps_inn_ctrl_r : HPS_CTRL_t;
+  signal hps_mid_mon_r  : HPS_MON_t;
+  signal hps_mid_ctrl_r : HPS_CTRL_t;
+  signal hps_out_mon_r  : HPS_MON_t;
+  signal hps_out_ctrl_r : HPS_CTRL_t;
+  signal hps_ext_mon_r  : HPS_MON_t;
+  signal hps_ext_ctrl_r : HPS_CTRL_t;
+
   signal tar_ctrl_r : TAR_CTRL_t;
   signal tar_mon_r  : TAR_MON_t;
   signal mtc_ctrl_r : MTC_CTRL_t;
@@ -169,11 +176,18 @@ architecture structural of top_l0mdt is
   signal mpl_mon_r  : MPL_MON_t;
   signal mpl_ctrl_r : MPL_CTRL_t;
 
-  signal fm_mon_r   : FM_MON_t;
-  signal fm_ctrl_r  : FM_CTRL_t;
+  signal fm_mon_r  : FM_MON_t;
+  signal fm_ctrl_r : FM_CTRL_t;
 
-  signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl_r) -1 downto 0);
-  signal h2s_mon_v  : std_logic_vector(len(h2s_mon_r) -1 downto 0);
+  signal hps_inn_ctrl_v : std_logic_vector(len(hps_inn_ctrl_r) -1 downto 0);
+  signal hps_inn_mon_v  : std_logic_vector(len(hps_inn_mon_r) -1 downto 0);
+  signal hps_mid_ctrl_v : std_logic_vector(len(hps_mid_ctrl_r) -1 downto 0);
+  signal hps_mid_mon_v  : std_logic_vector(len(hps_mid_mon_r) -1 downto 0);
+  signal hps_out_ctrl_v : std_logic_vector(len(hps_out_ctrl_r) -1 downto 0);
+  signal hps_out_mon_v  : std_logic_vector(len(hps_out_mon_r) -1 downto 0);
+  signal hps_ext_ctrl_v : std_logic_vector(len(hps_ext_ctrl_r) -1 downto 0);
+  signal hps_ext_mon_v  : std_logic_vector(len(hps_ext_mon_r) -1 downto 0);
+
   signal tar_ctrl_v : std_logic_vector(len(tar_ctrl_r) -1 downto 0);
   signal tar_mon_v  : std_logic_vector(len(tar_mon_r) -1 downto 0);
   signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl_r) -1 downto 0);
@@ -187,8 +201,8 @@ architecture structural of top_l0mdt is
   signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl_r) -1 downto 0);
   signal mpl_mon_v  : std_logic_vector(len(mpl_mon_r) -1 downto 0);
 
-  signal fm_mon_v   : std_logic_vector(len(fm_mon_r) -1 downto 0);
-  signal fm_ctrl_v  : std_logic_vector(len(fm_ctrl_r) -1 downto 0);
+  signal fm_mon_v  : std_logic_vector(len(fm_mon_r) -1 downto 0);
+  signal fm_ctrl_v : std_logic_vector(len(fm_ctrl_r) -1 downto 0);
   --
 
   signal hal_mon  : HAL_MON_t;
@@ -277,7 +291,7 @@ begin
 
   ult_inst : entity ult_lib.ult
     generic map (
-      DUMMY        => false
+      DUMMY => false
       )
     port map (
       clock_and_control => clock_and_control,
@@ -306,8 +320,15 @@ begin
 
       -- Control and Monitoring
 
-      h2s_ctrl_v => h2s_ctrl_v,
-      h2s_mon_v  => h2s_mon_v,
+      hps_inn_ctrl_v => hps_inn_ctrl_v,
+      hps_inn_mon_v  => hps_inn_mon_v,
+      hps_mid_ctrl_v => hps_mid_ctrl_v,
+      hps_mid_mon_v  => hps_mid_mon_v,
+      hps_out_ctrl_v => hps_out_ctrl_v,
+      hps_out_mon_v  => hps_out_mon_v,
+      hps_ext_ctrl_v => hps_ext_ctrl_v,
+      hps_ext_mon_v  => hps_ext_mon_v,
+
       tar_ctrl_v => tar_ctrl_v,
       tar_mon_v  => tar_mon_v,
       mtc_ctrl_v => mtc_ctrl_v,
@@ -328,22 +349,30 @@ begin
       );
 
   -- ctrl/mon
-  ucm_ctrl_v <= vectorify(ucm_ctrl_r, ucm_ctrl_v);
-  ucm_mon_r  <= structify(ucm_mon_v, ucm_mon_r);
-  tar_ctrl_v <= vectorify(tar_ctrl_r, tar_ctrl_v);
-  tar_mon_r  <= structify(tar_mon_v, tar_mon_r);
-  h2s_ctrl_v <= vectorify(h2s_ctrl_r, h2s_ctrl_v);
-  h2s_mon_r  <= structify(h2s_mon_v, h2s_mon_r);
-  mpl_ctrl_v <= vectorify(mpl_ctrl_r, mpl_ctrl_v);
-  mpl_mon_r  <= structify(mpl_mon_v, mpl_mon_r);
-  tf_ctrl_v  <= vectorify(tf_ctrl_r, tf_ctrl_v);
-  tf_mon_r   <= structify(tf_mon_v, tf_mon_r);
-  mtc_ctrl_v <= vectorify(mtc_ctrl_r, mtc_ctrl_v);
-  mtc_mon_r  <= structify(mtc_mon_v, mtc_mon_r);
-  daq_ctrl_v <= vectorify(daq_ctrl_r, daq_ctrl_v);
-  daq_mon_r  <= structify(daq_mon_v, daq_mon_r);
-  fm_ctrl_v  <= vectorify(fm_ctrl_r, fm_ctrl_v);
-  fm_mon_r   <= structify(fm_mon_v, fm_mon_r);
+  ucm_ctrl_v     <= vectorify(ucm_ctrl_r, ucm_ctrl_v);
+  ucm_mon_r      <= structify(ucm_mon_v, ucm_mon_r);
+  tar_ctrl_v     <= vectorify(tar_ctrl_r, tar_ctrl_v);
+  tar_mon_r      <= structify(tar_mon_v, tar_mon_r);
+
+  hps_inn_ctrl_v <= vectorify(hps_inn_ctrl_r, hps_inn_ctrl_v);
+  hps_inn_mon_r  <= structify(hps_inn_mon_v, hps_inn_mon_r);
+  hps_mid_ctrl_v <= vectorify(hps_mid_ctrl_r, hps_mid_ctrl_v);
+  hps_mid_mon_r  <= structify(hps_mid_mon_v, hps_mid_mon_r);
+  hps_out_ctrl_v <= vectorify(hps_out_ctrl_r, hps_out_ctrl_v);
+  hps_out_mon_r  <= structify(hps_out_mon_v, hps_out_mon_r);
+  hps_ext_ctrl_v <= vectorify(hps_ext_ctrl_r, hps_ext_ctrl_v);
+  hps_ext_mon_r  <= structify(hps_mon_v, hps_ext_mon_r);
+
+  mpl_ctrl_v     <= vectorify(mpl_ctrl_r, mpl_ctrl_v);
+  mpl_mon_r      <= structify(mpl_mon_v, mpl_mon_r);
+  tf_ctrl_v      <= vectorify(tf_ctrl_r, tf_ctrl_v);
+  tf_mon_r       <= structify(tf_mon_v, tf_mon_r);
+  mtc_ctrl_v     <= vectorify(mtc_ctrl_r, mtc_ctrl_v);
+  mtc_mon_r      <= structify(mtc_mon_v, mtc_mon_r);
+  daq_ctrl_v     <= vectorify(daq_ctrl_r, daq_ctrl_v);
+  daq_mon_r      <= structify(daq_mon_v, daq_mon_r);
+  fm_ctrl_v      <= vectorify(fm_ctrl_r, fm_ctrl_v);
+  fm_mon_r       <= structify(fm_mon_v, fm_mon_r);
 
   top_control_inst : entity work.top_control
     port map (
@@ -366,8 +395,15 @@ begin
 
       -- ULT Control
 
-      h2s_ctrl    => h2s_ctrl_r,
-      h2s_mon     => h2s_mon_r,
+      hps_inn_ctrl => hps_inn_ctrl_r,
+      hps_inn_mon  => hps_inn_mon_r,
+      hps_mid_ctrl => hps_mid_ctrl_r,
+      hps_mid_mon  => hps_mid_mon_r,
+      hps_out_ctrl => hps_out_ctrl_r,
+      hps_out_mon  => hps_out_mon_r,
+      hps_ext_ctrl => hps_ext_ctrl_r,
+      hps_ext_mon  => hps_ext_mon_r,
+
       tar_ctrl    => tar_ctrl_r,
       tar_mon     => tar_mon_r,
       mtc_ctrl    => mtc_ctrl_r,
@@ -393,8 +429,8 @@ begin
       reset_n                 => '1',
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
-    --sys_mgmt_scl            => sys_mgmt_scl,
-    --sys_mgmt_sda            => sys_mgmt_sda,
+      --sys_mgmt_scl            => sys_mgmt_scl,
+      --sys_mgmt_sda            => sys_mgmt_sda,
       sys_mgmt_vccaux_alarm   => open,
       sys_mgmt_vccint_alarm   => open
       );

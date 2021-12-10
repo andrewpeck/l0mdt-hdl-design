@@ -30,7 +30,7 @@ use shared_lib.detector_param_pkg.all;
 library ult_lib;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
 use ctrl_lib.UCM_CTRL.all;
@@ -44,7 +44,6 @@ entity top_ult is
   generic (
     DUMMY       : boolean := false
 
-    -- g_h2s_ctrl  : H2S_CTRL_t := nullify(g_h2s_ctrl);
     );
 
   port (
@@ -125,8 +124,15 @@ end entity top_ult;
 architecture behavioral of top_ult is
   signal clock_and_control     : l0mdt_control_rt;
 
-  signal h2s_ctrl_r            : H2S_CTRL_t;
-  signal h2s_mon_r             : H2S_MON_t;
+  signal hps_inn_mon_r  : HPS_MON_t;
+  signal hps_inn_ctrl_r : HPS_CTRL_t;
+  signal hps_mid_mon_r  : HPS_MON_t;
+  signal hps_mid_ctrl_r : HPS_CTRL_t;
+  signal hps_out_mon_r  : HPS_MON_t;
+  signal hps_out_ctrl_r : HPS_CTRL_t;
+  signal hps_ext_mon_r  : HPS_MON_t;
+  signal hps_ext_ctrl_r : HPS_CTRL_t;
+
   signal tar_ctrl_r            : TAR_CTRL_t;
   signal tar_mon_r             : TAR_MON_t;
   signal mtc_ctrl_r            : MTC_CTRL_t;
@@ -142,8 +148,15 @@ architecture behavioral of top_ult is
   signal fm_ctrl_r             : FM_CTRL_t;
   signal fm_mon_r              : FM_MON_t;
 
-  signal h2s_ctrl_v            : std_logic_vector(len(h2s_ctrl_r ) -1 downto 0);
-  signal h2s_mon_v             : std_logic_vector(len(h2s_mon_r  ) -1 downto 0);
+  signal hps_inn_ctrl_v : std_logic_vector(len(hps_inn_ctrl_r) -1 downto 0);
+  signal hps_inn_mon_v  : std_logic_vector(len(hps_inn_mon_r) -1 downto 0);
+  signal hps_mid_ctrl_v : std_logic_vector(len(hps_mid_ctrl_r) -1 downto 0);
+  signal hps_mid_mon_v  : std_logic_vector(len(hps_mid_mon_r) -1 downto 0);
+  signal hps_out_ctrl_v : std_logic_vector(len(hps_out_ctrl_r) -1 downto 0);
+  signal hps_out_mon_v  : std_logic_vector(len(hps_out_mon_r) -1 downto 0);
+  signal hps_ext_ctrl_v : std_logic_vector(len(hps_ext_ctrl_r) -1 downto 0);
+  signal hps_ext_mon_v  : std_logic_vector(len(hps_ext_mon_r) -1 downto 0);
+
   signal tar_ctrl_v            : std_logic_vector(len(tar_ctrl_r ) -1 downto 0);
   signal tar_mon_v             : std_logic_vector(len(tar_mon_r  ) -1 downto 0);
   signal mtc_ctrl_v            : std_logic_vector(len(mtc_ctrl_r ) -1 downto 0);
@@ -225,8 +238,12 @@ begin
 
   -- ser/Des
 
-  h2s_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(h2s_ctrl_r )) port map(clk,rst,h2s_ctrl_b,h2s_ctrl_v);
-  h2s_mon_b <= xor_reduce(h2s_mon_v);
+  hps_inn_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_inn_ctrl_r )) port map(clk,rst,h2s_ctrl_b,hps_inn_ctrl_v);
+  hps_mid_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_mid_ctrl_r )) port map(clk,rst,h2s_ctrl_b,hps_mid_ctrl_v);
+  hps_out_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_out_ctrl_r )) port map(clk,rst,h2s_ctrl_b,hps_out_ctrl_v);
+  hps_ext_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_ext_ctrl_r )) port map(clk,rst,h2s_ctrl_b,hps_ext_ctrl_v);
+  h2s_mon_b <= xor_reduce(hps_inn_mon_v) xor xor_reduce(hps_mid_mon_v) xor xor_reduce(hps_out_mon_v) xor xor_reduce(hps_ext_mon_v);
+
   tar_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(tar_ctrl_r )) port map(clk,rst,tar_ctrl_b,tar_ctrl_v);
   tar_mon_b <= xor_reduce(tar_mon_v);
   mtc_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(mtc_ctrl_r )) port map(clk,rst,mtc_ctrl_b,mtc_ctrl_v);
@@ -339,8 +356,15 @@ begin
 
       -- ULT Control
 
-      h2s_ctrl_v => h2s_ctrl_v,
-      h2s_mon_v  => h2s_mon_v,
+      hps_inn_ctrl_v => hps_inn_ctrl_v,
+      hps_inn_mon_v  => hps_inn_mon_v,
+      hps_mid_ctrl_v => hps_mid_ctrl_v,
+      hps_mid_mon_v  => hps_mid_mon_v,
+      hps_out_ctrl_v => hps_out_ctrl_v,
+      hps_out_mon_v  => hps_out_mon_v,
+      hps_ext_ctrl_v => hps_ext_ctrl_v,
+      hps_ext_mon_v  => hps_ext_mon_v,
+
       tar_ctrl_v => tar_ctrl_v,
       tar_mon_v  => tar_mon_v,
       mtc_ctrl_v => mtc_ctrl_v,

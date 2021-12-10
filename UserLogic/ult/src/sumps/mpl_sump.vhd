@@ -35,8 +35,8 @@ entity mpl_sump is
     -- clock and control
     -- clock_and_control : in  l0mdt_control_rt;
     -- ttc_commands      : in  l0mdt_ttc_rt;
-    -- ctrl              : in  H2S_CTRL_t;
-    -- mon               : out H2S_MON_t;
+    -- ctrl              : in  HPS_CTRL_t;
+    -- mon               : out HPS_MON_t;
 
     -- Sector Logic Candidates from uCM
     i_ucm2pl_av       : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
