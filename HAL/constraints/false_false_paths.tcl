@@ -43,3 +43,19 @@ set_false_path \
 set_false_path \
     -from [get_pins {ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_INN.HPS/heg_gen*.SF/EN_SF.SF_BP.SF_TYPE.CSF/b_e_generate.fitters*.fitter0/dsp_SumXY1/DSP_A_B_DATA_INST/CLK}] \
     -to   [get_pins {ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_INN.HPS/heg_gen*.SF/EN_SF.SF_BP.SF_TYPE.CSF/b_e_generate.fitters*.fitter0/dsp_SumXY0/DSP_OUTPUT_INST/ALU_OUT*}]
+
+# this path is a little bit tight, could use a FF stage. no combinatorial logic
+set_max_delay \
+    -from [get_pins {ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_*/PC/*PC*/VC/apb_mem_interface/*wr_addr_reg*/C}] \
+    -to   [get_pins {ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_*/PC/*PC*/VC/mem*/RAM*/WADR5}] 6.0
+
+set_max_delay \
+    -from [get_clocks -of_objects [get_pins top_hal/top_clocking_inst/framework_mmcm_inst/inst/mmcme4_adv_inst/CLKOUT1]] \
+    -to   [get_clocks -of_objects [get_pins top_hal/top_clocking_inst/framework_mmcm_inst/inst/mmcme4_adv_inst/CLKOUT0]] 10.0
+
+set_max_delay \
+    -to   [get_clocks -of_objects [get_pins top_hal/top_clocking_inst/framework_mmcm_inst/inst/mmcme4_adv_inst/CLKOUT1]] \
+    -from [get_clocks -of_objects [get_pins top_hal/top_clocking_inst/framework_mmcm_inst/inst/mmcme4_adv_inst/CLKOUT0]] 10.0
+
+set_false_path \
+    -from [get_pins {top_hal/pipeline_rst_bit_synchronizer/syncstages_ff_reg[4]/C}]
