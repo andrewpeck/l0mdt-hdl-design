@@ -105,3 +105,11 @@ set_false_path \
 ################################################################################
 
 # set_property DONT_TOUCH true [get_cells -hierarchical *]
+
+################################################################################
+# Max Fanouts
+################################################################################
+
+# this might be useful to keep.. it is a high fanout net (~2500) and has issues
+# so keep the fanout low to force replication
+set_property MAX_FANOUT 256 [get_cells -hier *int_rst_reg]
