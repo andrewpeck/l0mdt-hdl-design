@@ -133,7 +133,7 @@ proc assign_pblocks {min  max  side fpga} {
             }
             if {[string= "R" $side]} {
                 # RHS GTY quads numbered 0-15
-                set q [expr ($lRegId-64) / 4]
+                set q [expr $lRegId/4]
             }
         }
 
@@ -158,8 +158,18 @@ proc assign_pblocks {min  max  side fpga} {
 }
 
 if {[string= "xcvu13p" $fpga_short]} {
-    assign_pblocks 0  63  L $fpga_short
-    assign_pblocks 64 127 R $fpga_short
+    # slr0
+    assign_pblocks 0  15  L $fpga_short
+    assign_pblocks 16 31  R $fpga_short
+    # slr1
+    assign_pblocks 32 47  L $fpga_short
+    assign_pblocks 48 63  R $fpga_short
+    # slr2
+    assign_pblocks 64 79  L $fpga_short
+    assign_pblocks 80 95  R $fpga_short
+    # slr3
+    assign_pblocks 96  111 L $fpga_short
+    assign_pblocks 112 127 R $fpga_short
 }
 
 if {[string= "xcku15p" $fpga_short]} {
