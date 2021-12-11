@@ -6,6 +6,78 @@ proc string= {a b} {
     }
 }
 
+
+###############################################################################
+# User Logic Area Constraints
+###############################################################################
+
+set num_slrs 0
+
+set part [get_property part [current_project]]
+if {[regexp {xcvu13p.*} $part]} {
+    set num_slrs 4
+}
+
+if {$num_slrs > 0} {
+
+    # create pblocks 1/2/3/4
+    for {set i 0} {$i < $num_slrs} {incr i} {
+        set pblock PBLOCK_SLR_$i
+        delete_pblock -quiet [get_pblocks $pblock]
+        create_pblock $pblock
+        resize_pblock -add [get_slrs SLR$i] $pblock
+    }
+
+    set PBLOCK_INN PBLOCK_SLR_1
+    set PBLOCK_MID PBLOCK_SLR_2
+    set PBLOCK_OUT PBLOCK_SLR_3
+    set PBLOCK_EXT PBLOCK_SLR_0
+
+    # polmuxes
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_hal/station_gen[0].polmux_gen[.*].polmux_wrapper_inst"]] $PBLOCK_INN
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_hal/station_gen[1].polmux_gen[.*].polmux_wrapper_inst"]] $PBLOCK_MID
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_hal/station_gen[2].polmux_gen[.*].polmux_wrapper_inst"]] $PBLOCK_OUT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_hal/station_gen[3].polmux_gen[.*].polmux_wrapper_inst"]] $PBLOCK_EXT
+
+    # hit extraction groups
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_INN.HPS.*"]] $PBLOCK_INN
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_MID.HPS.*"]] $PBLOCK_MID
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_OUT.HPS.*"]] $PBLOCK_OUT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_EXT.HPS.*"]] $PBLOCK_EXT
+
+    # tar
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_INN.*"]] $PBLOCK_INN
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_MID.*"]] $PBLOCK_MID
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_OUT.*"]] $PBLOCK_OUT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_EXT.*"]] $PBLOCK_EXT
+
+    # ucm
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.UCM_GEN.ULT_UCM.*"]] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_control_inst/ucm_map_inst.*"]]      $PBLOCK_EXT
+
+    # mpl
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.MPL_GEN.ULT_MPL.*"]] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_control_inst/mpl_map_inst.*"]]      $PBLOCK_EXT
+
+    # pt
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.PT_GEN.ULT_PTCALC.*"]] $PBLOCK_EXT
+
+    # mtc
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.MTC_GEN.ULT_MTCB.*"]] $PBLOCK_EXT
+
+    # daq
+
+    # control
+    add_cells_to_pblock -quiet -cells \
+        [get_cells -hierarchical -regexp [list "top_control_inst/c2cslave_wrapper_inst.*"]] $PBLOCK_EXT
+
+}
+
+
+###############################################################################
+# MGT Area Constraints
+###############################################################################
+
 # get the FPGA model
 # fpga --> fpga_short
 # xcvu13p-flga2577-1-e --> xcvu13p
@@ -69,14 +141,17 @@ proc assign_pblocks {min  max  side fpga} {
 
         # gather up the cells for all the links in this quad
         set cells [concat \
-                       [get_cells -quiet "top_hal/*mgt*/*mgt_gen[$lRegId]*.MGT_INST"] \
-                       [get_cells -quiet "top_hal/*csm*mgt_tag*[$lRegId]*"] \
-                       [get_cells -quiet "top_hal/*sector_logic*/*mgt_tag[$lRegId]*"]]
+                       [get_cells -quiet -hierarchical -filter "NAME =~ top_hal/*mgt*/*mgt_gen[$lRegId]*.MGT_INST"] \
+                       [get_cells -quiet -hierarchical -filter "NAME =~ top_hal/*csm*mgt_tag*[$lRegId]*"] \
+                       [get_cells -quiet -hierarchical -filter "NAME =~ top_hal/*sector_logic*/*mgt_tag[$lRegId]*" ]]
 
         if {[string is space $cells] == 0} {
-            puts "Adding [llength $cells] cells to pblock $lQuadBlock with mgt #$lRegId"
+            puts "Adding [llength $cells] cells to pblock $lQuadBlock with mgt $side$q lRegId=#$lRegId"
             puts "   > quad_$side$q"
+            puts "   > $cells"
             add_cells_to_pblock $lQuadBlock $cells
+        } else {
+            puts "No cells in pblock $lQuadBlock with mgt #$lRegId"
         }
     }
     puts " > No cells in other pblocks"
