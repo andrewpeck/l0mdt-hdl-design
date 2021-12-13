@@ -142,7 +142,7 @@ proc assign_pblocks {min  max  side fpga} {
         # gather up the cells for all the links in this quad
         set cells [concat \
                        [get_cells -quiet -hierarchical -filter "NAME =~ top_hal/*mgt*/*mgt_gen[$lRegId]*.MGT_INST"] \
-                       [get_cells -quiet -hierarchical -filter "NAME =~ top_hal/*csm*mgt_tag*[$lRegId]*"] \
+                       [get_cells -quiet -hierarchical -filter "NAME =~ top_hal/*csm*mgt_tag[$lRegId]*"] \
                        [get_cells -quiet -hierarchical -filter "NAME =~ top_hal/*sector_logic*/*mgt_tag[$lRegId]*" ]]
 
         if {[string is space $cells] == 0} {
@@ -176,11 +176,3 @@ if {[string= "xcku15p" $fpga_short]} {
     assign_pblocks 0  31  L $fpga_short
     assign_pblocks 32 75  R $fpga_short
 }
-
-# Payload Area assignment
-#set lPayload [create_pblock payload]
-#set lPayloadRect [find_rects [get_sites -of [get_clock_regions] -f "RPM_X >= $lLeftBoundary && RPM_X <= $lRightBoundary"]]
-#add_rects_to_pblock $lPayload $lPayloadRect
-#
-#set lPayloadRect [find_rects [get_sites -of [get_clock_regions -f {ROW_INDEX>2}] -f "RPM_X >= $lLeftBoundary && RPM_X <= $lRightBoundary"]]
-#add_cells_to_pblock [get_pblocks payload] [get_cells -quiet datapath/rgen[*].pgen.*]
