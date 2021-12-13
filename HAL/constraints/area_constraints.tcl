@@ -32,44 +32,53 @@ if {$num_slrs > 0} {
     set PBLOCK_MID PBLOCK_SLR_2
     set PBLOCK_OUT PBLOCK_SLR_3
     set PBLOCK_EXT PBLOCK_SLR_0
+    set PBLOCK_FELIX $PBLOCK_EXT
+
+    # felix
+    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/*felix*"] $PBLOCK_FELIX
 
     # polmuxes
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_hal/station_gen[0].polmux_gen[.*].polmux_wrapper_inst"]] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_hal/station_gen[1].polmux_gen[.*].polmux_wrapper_inst"]] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_hal/station_gen[2].polmux_gen[.*].polmux_wrapper_inst"]] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_hal/station_gen[3].polmux_gen[.*].polmux_wrapper_inst"]] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/station_gen[0].polmux_gen[*].polmux_wrapper*"] $PBLOCK_INN
+    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/station_gen[1].polmux_gen[*].polmux_wrapper*"] $PBLOCK_MID
+    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/station_gen[2].polmux_gen[*].polmux_wrapper*"] $PBLOCK_OUT
+    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/station_gen[3].polmux_gen[*].polmux_wrapper*"] $PBLOCK_EXT
 
     # hit extraction groups
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_INN.HPS.*"]] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_MID.HPS.*"]] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_OUT.HPS.*"]] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_EXT.HPS.*"]] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_INN.HPS*"] $PBLOCK_INN
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_MID.HPS*"] $PBLOCK_MID
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_OUT.HPS*"] $PBLOCK_OUT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_EXT.HPS*"] $PBLOCK_EXT
 
     # tar
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_INN.*"]] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_MID.*"]] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_OUT.*"]] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_EXT.*"]] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_INN*"] $PBLOCK_INN
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_MID*"] $PBLOCK_MID
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_OUT*"] $PBLOCK_OUT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_EXT*"] $PBLOCK_EXT
 
     # ucm
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.UCM_GEN.ULT_UCM.*"]] $PBLOCK_EXT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_control_inst/ucm_map_inst.*"]]      $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.UCM_GEN.ULT_UCM*"] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/ucm_map_inst*"]      $PBLOCK_EXT
 
     # mpl
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.MPL_GEN.ULT_MPL.*"]] $PBLOCK_EXT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "top_control_inst/mpl_map_inst.*"]]      $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.MPL_GEN.ULT_MPL*"] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/mpl_map_inst*"]      $PBLOCK_EXT
 
     # pt
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.PT_GEN.ULT_PTCALC.*"]] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.PT_GEN.ULT_PTCALC*"] $PBLOCK_EXT
 
     # mtc
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -regexp [list "ult_inst/logic_gen.MTC_GEN.ULT_MTCB.*"]] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.MTC_GEN.ULT_MTCB*"] $PBLOCK_EXT
 
     # daq
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*inn*"] $PBLOCK_INN
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*mid*"] $PBLOCK_MID
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*out*"] $PBLOCK_OUT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*ext*"] $PBLOCK_EXT
 
     # control
-    add_cells_to_pblock -quiet -cells \
-        [get_cells -hierarchical -regexp [list "top_control_inst/c2cslave_wrapper_inst.*"]] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst*"] $PBLOCK_EXT
+
+    # fm
 
 }
 
