@@ -34,7 +34,7 @@ use hps_lib.hps_pkg.all;
 library csf_lib;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 library lsf_lib;
 use lsf_lib.all;

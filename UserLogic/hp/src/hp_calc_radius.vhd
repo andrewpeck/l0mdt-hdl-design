@@ -30,7 +30,7 @@ use shared_lib.mdt_dt2r_pkg.all;
 library apbus_lib;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
