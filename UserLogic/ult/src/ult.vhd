@@ -62,6 +62,14 @@ entity ult is
 
     tar_ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
     tar_mon_v             : out std_logic_vector;--  : out TAR_MON_t;
+    -- tar_inn_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    -- tar_inn_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    -- tar_mid_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    -- tar_mid_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    -- tar_out_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    -- tar_out_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    -- tar_ext_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    -- tar_ext_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
 
     mtc_ctrl_v            : in std_logic_vector; --  : in  MTC_CTRL_t;
     mtc_mon_v             : out std_logic_vector;--  : out MTC_MON_t;
