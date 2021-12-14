@@ -44,9 +44,9 @@ entity top_hal is
     -- Hardware clocking
     --------------------------------------------------------------------------------
 
-    -- 100MHz ASYNC clock
-    clock_100m_i_p : in std_logic;
-    clock_100m_i_n : in std_logic;
+    -- ASYNC ASYNC clock
+    clock_async_i_p : in std_logic;
+    clock_async_i_n : in std_logic;
 
     -- 320MHz ASYNC clock to MMCM
     clock_i_p : in std_logic;
@@ -264,14 +264,17 @@ begin  -- architecture behavioral
       );
 
   top_clocking_inst : entity hal.top_clocking
+    generic map (
+      CLK_FREQ => c_CLK_FREQ
+      )
     port map (
       --
       reset_i => core_ctrl.clocking.reset_mmcm,
 
       -- clock inputs
-      -- this is the 100MHz UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
-      clock_100m_i_p => clock_100m_i_p,
-      clock_100m_i_n => clock_100m_i_n,
+      -- this is the ASYNC UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
+      clock_async_i_p => clock_async_i_p,
+      clock_async_i_n => clock_async_i_n,
 
       -- 40MHz clock from Si synth, this is either free-running or locked onto
       -- the 40MHz clock that comes from FELIX (recovered through this FPGA)

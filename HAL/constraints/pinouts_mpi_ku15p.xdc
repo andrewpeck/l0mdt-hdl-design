@@ -81,10 +81,10 @@ create_clock -period 25 -name clock_in_lhc [get_ports clock_i_p]
 set_property -quiet PACKAGE_PIN AP29    [get_ports clock_i_p] ; # IN: async programmable clock ;; oscillator --> SI5341 (no zdm)
 set_property -quiet PACKAGE_PIN AP30    [get_ports clock_i_n] ; # IN: async programmable clock ;; oscillator --> SI5341 (no zdm)
 
-# 100M Oscillator
-set_property -quiet PACKAGE_PIN AY16    [get_ports clock_100m_i_p] ; # IN: oscillator clock, 100MHz, always on
-set_property -quiet PACKAGE_PIN AY15    [get_ports clock_100m_i_n] ; # IN: oscillator clock, 100MHz, always on
-create_clock -period 10.00 -name clock_100 [get_ports clock_100m_i_p]
+# ASYNC Oscillator
+set_property -quiet PACKAGE_PIN AY16    [get_ports clock_async_i_p] ; # IN: oscillator clock, ASYNC, always on
+set_property -quiet PACKAGE_PIN AY15    [get_ports clock_async_i_n] ; # IN: oscillator clock, ASYNC, always on
+create_clock -period 10.00 -name clock_async [get_ports clock_async_i_p]
 
 # LHC REF Output
 set_property -quiet PACKAGE_PIN AT23    [get_ports lhc_refclk_o_p] ; # OUT: recovered LHC Clock to synths

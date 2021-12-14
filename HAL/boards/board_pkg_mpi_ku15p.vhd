@@ -8,6 +8,8 @@ package board_pkg is
 
   constant c_NUM_MGTS                 : integer := 44 + 32;
 
+  constant c_CLK_FREQ                 : integer := 100;
+
   -- choose the nth felix RX link which should be used as the clock recovery source and connected to the LPGBT
   constant c_FELIX_RECCLK_SRC : integer := 0;
 
