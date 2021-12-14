@@ -34,7 +34,7 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 library fm_lib;
 use fm_lib.fm_ult_pkg.all;
@@ -50,8 +50,8 @@ entity hps is
     glob_en : in std_logic;
 
     -- control
-    ctrl_v            : in std_logic_vector;-- H2S_HPS_CTRL_t;
-    mon_v             : out std_logic_vector;--H2S_HPS_MON_t;
+    ctrl_v            : in std_logic_vector;-- HPS_CTRL_t;
+    mon_v             : out std_logic_vector;--HPS_MON_t;
     h2s_fm_data       : out fm_rt_array(0 to h2s_sb_single_station_n - 1);
     -- SLc
     i_uCM2hps_av      : in  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -64,11 +64,11 @@ end entity hps;
 
 architecture beh of hps is
 
-  signal ctrl_r : H2S_HPS_CTRL_t;
-  signal mon_r : H2S_HPS_MON_t;
+  signal ctrl_r : HPS_CTRL_t;
+  signal mon_r : HPS_MON_t;
 
-  -- signal ctrl_super_r : H2S_HPS_SUPER_CTRL_t;
-  -- signal mon_super_r  : H2S_HPS_SUPER_MON_t;
+  -- signal ctrl_super_r : HPS_SUPER_CTRL_t;
+  -- signal mon_super_r  : HPS_SUPER_MON_t;
   constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
   constant SUPER_MON_LEN  : integer := len(mon_r.super);
   signal ctrl_super_v : std_logic_vector(SUPER_CTRL_LEN -1 downto 0);
@@ -95,8 +95,8 @@ architecture beh of hps is
   signal pc_t0_mon_v  : std_logic_vector(len(mon_r.MDT_T0.MDT_T0)-1 downto 0);
   signal pc_tc_mon_v  : std_logic_vector(len(mon_r.MDT_TC.MDT_TC)-1 downto 0);
 
-  -- type heg_ctrl_at is array (0 to 3 ) of  H2S_HPS_HEG_HEG_CTRL_t;
-  -- type heg_mon_at is array (0 to 3 ) of  H2S_HPS_HEG_HEG_MON_t;
+  -- type heg_ctrl_at is array (0 to 3 ) of  HPS_HEG_HEG_CTRL_t;
+  -- type heg_mon_at is array (0 to 3 ) of  HPS_HEG_HEG_MON_t;
   type heg_ctrl_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(len(ctrl_r.heg.heg(0))-1 downto 0);
   type heg_mon_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(len(mon_r.heg.heg(0))-1 downto 0);
 

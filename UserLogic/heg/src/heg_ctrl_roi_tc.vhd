@@ -35,7 +35,7 @@ use shared_lib.TC_B3A_pkg.all;
 -- use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 library apbus_lib;
 
@@ -49,8 +49,8 @@ entity heg_ctrl_roi_tc is
     rst               : in std_logic;
     ena               : in std_logic;
     --
-    ctrl_v            : in std_logic_vector;  -- H2S_HPS_MDT_TC_MDT_TC_CTRL_t; 
-    mon_v             : out std_logic_vector; -- H2S_HPS_MDT_TC_MDT_TC_MON_t;
+    ctrl_v            : in std_logic_vector;  -- HPS_MDT_TC_MDT_TC_CTRL_t; 
+    mon_v             : out std_logic_vector; -- HPS_MDT_TC_MDT_TC_MON_t;
     --
     -- i_layer           : in unsigned(TAR2HPS_LAYER_LEN-1 downto 0);  -- 5
     i_tube            : in unsigned(TAR2HPS_TUBE_LEN-1 downto 0);   -- 9

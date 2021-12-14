@@ -32,7 +32,7 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 entity heg is
   generic(
@@ -44,8 +44,8 @@ entity heg is
     rst                 : in std_logic;
     glob_en             : in std_logic := '1';
     -- control
-    ctrl_v                : in  std_logic_vector; -- H2S_HPS_HEG_HEG_CTRL_t;
-    mon_v                 : out std_logic_vector; -- H2S_HPS_HEG_HEG_MON_t;
+    ctrl_v                : in  std_logic_vector; -- HPS_HEG_HEG_CTRL_t;
+    mon_v                 : out std_logic_vector; -- HPS_HEG_HEG_MON_t;
     -- configuration
     i_freeze            : in std_logic := '0';
     -- SLc
@@ -60,21 +60,21 @@ entity heg is
 end entity heg;
 
 architecture beh of heg is
-  signal ctrl_r           : H2S_HPS_HEG_HEG_CTRL_t;
-  signal mon_r            : H2S_HPS_HEG_HEG_MON_t;
+  signal ctrl_r           : HPS_HEG_HEG_CTRL_t;
+  signal mon_r            : HPS_HEG_HEG_MON_t;
   
   constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
   constant SUPER_MON_LEN  : integer := len(mon_r.super);
   signal ctrl_super_v : std_logic_vector(SUPER_CTRL_LEN -1 downto 0);
   signal mon_super_v  : std_logic_vector(SUPER_MON_LEN -1 downto 0);
 
-  signal heg_ctrl_ctrl_r  : H2S_HPS_HEG_HEG_CTRL_CTRL_t;
-  signal heg_ctrl_mon_r   : H2S_HPS_HEG_HEG_CTRL_MON_t;
+  signal heg_ctrl_ctrl_r  : HPS_HEG_HEG_CTRL_CTRL_t;
+  signal heg_ctrl_mon_r   : HPS_HEG_HEG_CTRL_MON_t;
   signal heg_ctrl_ctrl_v  : std_logic_vector(len(heg_ctrl_ctrl_r)-1 downto 0);
   signal heg_ctrl_mon_v   : std_logic_vector(len(heg_ctrl_mon_r)-1 downto 0);
 
-  signal ctrl_hp_ar : H2S_HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY ;
-  signal mon_hp_ar  : H2S_HPS_HEG_HEG_HP_HP_MON_t_ARRAY ;
+  signal ctrl_hp_ar : HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY ;
+  signal mon_hp_ar  : HPS_HEG_HEG_HP_HP_MON_t_ARRAY ;
 
   type ctrl_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(len(ctrl_hp_ar(0))-1 downto 0);
   type mon_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(len(mon_hp_ar(0))-1 downto 0);

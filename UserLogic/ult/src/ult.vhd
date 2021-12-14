@@ -28,7 +28,7 @@ library ult_lib;
 
 library ctrl_lib;
 -- use ctrl_lib.ctrl_constants_pkg.all;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
 use ctrl_lib.UCM_CTRL.all;
@@ -51,12 +51,25 @@ entity ult is
     ttc_commands      : in l0mdt_ttc_rt;
 
     -- control and monitoring
-
-    h2s_ctrl_v            : in std_logic_vector; -- : in  H2S_CTRL_t;
-    h2s_mon_v             : out std_logic_vector;--  : out H2S_MON_t;
+    hps_inn_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_inn_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_mid_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_mid_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_out_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_out_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_ext_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_ext_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
 
     tar_ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
     tar_mon_v             : out std_logic_vector;--  : out TAR_MON_t;
+    -- tar_inn_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    -- tar_inn_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    -- tar_mid_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    -- tar_mid_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    -- tar_out_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    -- tar_out_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    -- tar_ext_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    -- tar_ext_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
 
     mtc_ctrl_v            : in std_logic_vector; --  : in  MTC_CTRL_t;
     mtc_mon_v             : out std_logic_vector;--  : out MTC_MON_t;
@@ -165,10 +178,10 @@ architecture behavioral of ult is
   signal ext_segments_to_pt_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
 
   -- slc to pt (from pipeline)
-  signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-  signal middle_slc_to_pt : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-  signal outer_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-  signal extra_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  -- signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  -- signal middle_slc_to_pt : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  -- signal outer_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  -- signal extra_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
 
   -- slc to mtc (from pipeline)
   signal pl2pt_av  : pl2pt_bus_avt (c_NUM_THREADS-1 downto 0);
@@ -333,8 +346,16 @@ begin
         -- clock, control, and monitoring
         clock_and_control         => clock_and_control,
         ttc_commands              => ttc_commands,
-        ctrl_v                      => h2s_ctrl_v,
-        mon_V                       => h2s_mon_v,
+        --
+        inn_ctrl_v                => hps_inn_ctrl_v,
+        inn_mon_v                 => hps_inn_mon_v ,
+        mid_ctrl_v                => hps_mid_ctrl_v,
+        mid_mon_v                 => hps_mid_mon_v ,
+        out_ctrl_v                => hps_out_ctrl_v,
+        out_mon_v                 => hps_out_mon_v ,
+        ext_ctrl_v                => hps_ext_ctrl_v,
+        ext_mon_v                 => hps_ext_mon_v ,
+        --
         h2s_fm_data                 => h2s_fm_data,
         -- inputs from hal
         i_inn_tar_hits_av             => ult_inn_tar_hits_av,

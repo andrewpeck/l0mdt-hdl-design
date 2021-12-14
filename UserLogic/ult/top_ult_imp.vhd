@@ -30,7 +30,7 @@ use shared_lib.detector_param_pkg.all;
 library ult_lib;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
 use ctrl_lib.UCM_CTRL.all;
@@ -58,8 +58,14 @@ entity top_ult is
 
     -- axi control
 
-    h2s_ctrl_b            : in  std_logic;
-    h2s_mon_b             : out std_logic;
+    hps_inn_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_inn_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_mid_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_mid_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_out_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_out_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_ext_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_ext_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
 
     tar_ctrl_b            : in  std_logic;
     tar_mon_b             : out std_logic;
@@ -127,6 +133,7 @@ architecture behavioral of top_ult is
 
   signal h2s_ctrl_r            : H2S_CTRL_t;
   signal h2s_mon_r             : H2S_MON_t;
+
   signal tar_ctrl_r            : TAR_CTRL_t;
   signal tar_mon_r             : TAR_MON_t;
   signal mtc_ctrl_r            : MTC_CTRL_t;
@@ -144,6 +151,7 @@ architecture behavioral of top_ult is
 
   signal h2s_ctrl_v            : std_logic_vector(len(h2s_ctrl_r ) -1 downto 0);
   signal h2s_mon_v             : std_logic_vector(len(h2s_mon_r  ) -1 downto 0);
+  
   signal tar_ctrl_v            : std_logic_vector(len(tar_ctrl_r ) -1 downto 0);
   signal tar_mon_v             : std_logic_vector(len(tar_mon_r  ) -1 downto 0);
   signal mtc_ctrl_v            : std_logic_vector(len(mtc_ctrl_r ) -1 downto 0);
@@ -339,8 +347,14 @@ begin
 
       -- ULT Control
 
-      h2s_ctrl_v => h2s_ctrl_v,
-      h2s_mon_v  => h2s_mon_v,
+      hps_inn_ctrl_v => hps_inn_ctrl_v ,
+      hps_inn_mon_v  => hps_inn_mon_v  ,
+      hps_mid_ctrl_v => hps_mid_ctrl_v ,
+      hps_mid_mon_v  => hps_mid_mon_v  ,
+      hps_out_ctrl_v => hps_out_ctrl_v ,
+      hps_out_mon_v  => hps_out_mon_v  ,
+      hps_ext_ctrl_v => hps_ext_ctrl_v ,
+      hps_ext_mon_v  => hps_ext_mon_v  ,
       tar_ctrl_v => tar_ctrl_v,
       tar_mon_v  => tar_mon_v,
       mtc_ctrl_v => mtc_ctrl_v,

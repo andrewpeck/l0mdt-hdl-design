@@ -33,7 +33,7 @@ use hps_lib.hps_pkg.all;
 
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 library apbus_lib;
 
 entity hps_pc_b_t0 is
@@ -48,8 +48,8 @@ entity hps_pc_b_t0 is
     rst                 : in std_logic;
     ena                 : in std_logic;
     --
-    ctrl_v              : in std_logic_vector;--H2S_HPS_MDT_T0_MDT_T0_CTRL_t;  
-    mon_v               : out std_logic_vector;--H2S_HPS_MDT_T0_MDT_T0_MON_t;  
+    ctrl_v              : in std_logic_vector;--HPS_MDT_T0_MDT_T0_CTRL_t;  
+    mon_v               : out std_logic_vector;--HPS_MDT_T0_MDT_T0_MON_t;  
     --
     i_chamber           : in unsigned(SLC_CHAMBER_LEN-1 downto 0);
     i_dv                : in std_logic;
