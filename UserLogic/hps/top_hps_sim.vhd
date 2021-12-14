@@ -68,8 +68,10 @@ architecture beh of top_hps_tb is
   signal clk                : std_logic;
   signal rst                : std_logic;
   signal glob_en            : std_logic := '1';
-  signal ctrl_v             : HPS_CTRL_t;
-  signal mon_v              : HPS_MON_t;
+  signal ctrl_r             : HPS_CTRL_t;
+  signal mon_r              : HPS_MON_t;
+  signal ctrl_v             : std_logic_vector(len(ctrl_r) -1 downto 0);
+  signal mon_v              : std_logic_vector(len(mon_r) -1 downto 0);
   signal i_uCM2hps_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   signal i_mdt_tar_av       : tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
   signal o_sf2pt_av         : sf2pt_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -80,6 +82,9 @@ begin
   --   mdt_polmux_data_av(hp_i).polmux <= i_mdt_polmux_av(hp_i);
   --   mdt_polmux_data_av(hp_i).tar <= i_mdt_tar_av(hp_i);
   -- end generate;
+
+  ctrl_v <= convert(ctrl_r,ctrl_v);
+  mon_r <= convert(mon_v,mon_r);
 
   HPS : entity hps_lib.hps
     generic map(
