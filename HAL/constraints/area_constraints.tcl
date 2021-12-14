@@ -136,14 +136,7 @@ proc assign_pblocks {min  max  side fpga} {
         }
 
         if {[string= "xcvu13p" $fpga]} {
-            if {[string= "L" $side]} {
-                # LHS GTY quads  numbered 0-15
-                set q [expr $lRegId/4]
-            }
-            if {[string= "R" $side]} {
-                # RHS GTY quads numbered 0-15
-                set q [expr $lRegId/4]
-            }
+            set q [expr ($lRegId % 16)/4 + 4*($lRegId/32)]
         }
 
         set lQuadBlock [get_pblocks quad_$side$q]
