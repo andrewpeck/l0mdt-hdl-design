@@ -1,11 +1,16 @@
+# asynchronous clock for felix recovery
+create_clock -period 3.125 -name refclk_felix_rx [get_ports tc_clk_i_p]; # Bank 120 -- felix rx
+set_property PACKAGE_PIN BD39 [get_ports tc_clk_i_p]
+set_property PACKAGE_PIN BD40 [get_ports tc_clk_i_n]
+
 # SLR0 Left
-create_clock -period 4.166 -name refclk0  [get_ports refclk_i_p[0]]  ; # Bank 120
-create_clock -period 4.166 -name refclk1  [get_ports refclk_i_p[1]]  ; # Bank 121
-create_clock -period 4.166 -name refclk2  [get_ports refclk_i_p[2]]  ; # Bank 122
-create_clock -period 5.000 -name refclk3  [get_ports refclk_i_p[3]]  ; # Bank 123
+create_clock -period 3.125 -name refclk0  [get_ports refclk_i_p[0]]  ; # Bank 120 -- felix tx
+create_clock -period 4.166 -name refclk1  [get_ports refclk_i_p[1]]  ; # Bank 121 -- sl
+create_clock -period 4.166 -name refclk2  [get_ports refclk_i_p[2]]  ; # Bank 122 -- sl
+create_clock -period 4.166 -name refclk3  [get_ports refclk_i_p[3]]  ; # Bank 123 -- sl
 
 # SLR0 Right
-create_clock -period 3.125 -name refclk4  [get_ports refclk_i_p[4]]  ; # Bank 220
+create_clock -period 5.000 -name refclk4  [get_ports refclk_i_p[4]]  ; # Bank 220 -- c2c
 create_clock -period 3.125 -name refclk5  [get_ports refclk_i_p[5]]  ; # Bank 221
 create_clock -period 3.125 -name refclk6  [get_ports refclk_i_p[6]]  ; # Bank 222
 create_clock -period 3.125 -name refclk7  [get_ports refclk_i_p[7]]  ; # Bank 223
@@ -57,23 +62,29 @@ set_property -quiet PACKAGE_PIN AU16 [get_ports clock_async_i_n] ; # IN: oscilla
 create_clock -period 5.00 -name clock_100 [get_ports clock_async_i_p]
 
 # LHC REF Output
-set_property -quiet PACKAGE_PIN BH26 [get_ports lhc_refclk_o_p] ; # OUT: recovered LHC Clock to synths
-set_property -quiet PACKAGE_PIN BH27 [get_ports lhc_refclk_o_n] ; # OUT: recovered LHC Clock to synths
+set_property -quiet PACKAGE_PIN BH26 [get_ports tc_clk_o_p] ; # OUT: recovered LHC Clock to synths
+set_property -quiet PACKAGE_PIN BH27 [get_ports tc_clk_o_n] ; # OUT: recovered LHC Clock to synths
 
 # IO standards
 set_property IOSTANDARD LVDS [get_ports  clock_i*]
 set_property IOSTANDARD LVDS [get_ports  clock_100m_i*]
-set_property IOSTANDARD LVDS [get_ports  lhc_refclk_o*]
+set_property IOSTANDARD LVDS [get_ports  tc_clk_o*]
 
 set_property -quiet PACKAGE_PIN BJ28   [get_ports sump]
 set_property IOSTANDARD LVCMOS18       [get_ports sump]
-
-# set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_scl]
-# set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_sda]
-# set_property -quiet PACKAGE_PIN AL24     [get_ports sys_mgmt_scl] ;
-# set_property -quiet PACKAGE_PIN AL25     [get_ports sys_mgmt_sda];
 
 set_property PACKAGE_PIN BG20 [get_ports c2c_rxp]
 set_property PACKAGE_PIN BG19 [get_ports c2c_rxn]
 set_property PACKAGE_PIN BH13 [get_ports c2c_txp]
 set_property PACKAGE_PIN BG12 [get_ports c2c_txn]
+
+# set_property IOSTANDARD LVCMOS18 [get_ports led_o*]
+# set_property PACKAGE_PIN BA19 [get_ports led_o[0]]
+# set_property PACKAGE_PIN BA18 [get_ports led_o[1]]
+# set_property PACKAGE_PIN BC19 [get_ports led_o[2]]
+# set_property PACKAGE_PIN BC18 [get_ports led_o[3]]
+# set_property PACKAGE_PIN AV19 [get_ports led_o[4]]
+# set_property PACKAGE_PIN AW15 [get_ports led_o[5]]
+# set_property PACKAGE_PIN AY15 [get_ports led_o[6]]
+# set_property PACKAGE_PIN BA15 [get_ports led_o[7]]
+# set_property PACKAGE_PIN AU17 [get_ports led_o[8]]

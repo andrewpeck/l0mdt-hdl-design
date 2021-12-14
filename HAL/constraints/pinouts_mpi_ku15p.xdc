@@ -87,12 +87,12 @@ set_property -quiet PACKAGE_PIN AY15    [get_ports clock_async_i_n] ; # IN: osci
 create_clock -period 10.00 -name clock_async [get_ports clock_async_i_p]
 
 # LHC REF Output
-set_property -quiet PACKAGE_PIN AT23    [get_ports lhc_refclk_o_p] ; # OUT: recovered LHC Clock to synths
-set_property -quiet PACKAGE_PIN AU23    [get_ports lhc_refclk_o_n] ; # OUT: recovered LHC Clock to synths
+set_property -quiet PACKAGE_PIN AT23    [get_ports tc_clk_o_p] ; # OUT: recovered LHC Clock to synths
+set_property -quiet PACKAGE_PIN AU23    [get_ports tc_clk_o_n] ; # OUT: recovered LHC Clock to synths
 
 set_property IOSTANDARD LVDS [get_ports  clock_i*]
 set_property IOSTANDARD LVDS [get_ports  clock_100m_i*]
-set_property IOSTANDARD LVDS [get_ports  lhc_refclk_o*]
+set_property IOSTANDARD LVDS [get_ports  tc_clk_o*]
 
 set_property -quiet PACKAGE_PIN AU12   [get_ports sump]
 set_property IOSTANDARD LVCMOS18       [get_ports sump]
