@@ -113,3 +113,4 @@ set_false_path \
 # this might be useful to keep.. it is a high fanout net (~2500) and has issues
 # so keep the fanout low to force replication
 set_property MAX_FANOUT 256 [get_cells -hier *int_rst_reg]
+set_property MAX_FANOUT 256 [get_cells top_hal/pipeline_rst_bit_synchronizer/syncstages_ff_reg*]

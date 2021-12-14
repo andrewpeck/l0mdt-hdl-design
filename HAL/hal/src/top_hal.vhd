@@ -256,6 +256,7 @@ begin  -- architecture behavioral
   -- Common Clocking
   --------------------------------------------------------------------------------
 
+  -- FIXME: this should come from an ODDR
   lhc_refclk_OBUFDS_inst : OBUFDS
     port map (
       O  => lhc_refclk_o_p,             -- 1-bit output: Diff_p output (connect directly to top-level port)
@@ -318,13 +319,7 @@ begin  -- architecture behavioral
       dest_clk => clocks.clock_pipeline,
       src_rst  => global_reset);
 
-  -- insert a bufg into the reset for fanout
-  userlogic_bufg : BUFG
-    port map (
-      I => userlogic_reset,
-      O => clock_and_control_o.rst
-      );
-
+  clock_and_control_o.rst <= userlogic_reset;
   clock_and_control_o.clk <= clocks.clock_pipeline;
   clock_and_control_o.bx  <= strobe_pipeline;
 
