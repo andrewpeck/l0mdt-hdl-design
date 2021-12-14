@@ -51,9 +51,14 @@ entity ult is
     ttc_commands      : in l0mdt_ttc_rt;
 
     -- control and monitoring
-
-    h2s_ctrl_v            : in std_logic_vector; -- : in  H2S_CTRL_t;
-    h2s_mon_v             : out std_logic_vector;--  : out H2S_MON_t;
+    hps_inn_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_inn_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_mid_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_mid_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_out_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_out_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_ext_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
+    hps_ext_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
 
     tar_ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
     tar_mon_v             : out std_logic_vector;--  : out TAR_MON_t;
@@ -333,8 +338,16 @@ begin
         -- clock, control, and monitoring
         clock_and_control         => clock_and_control,
         ttc_commands              => ttc_commands,
-        ctrl_v                      => h2s_ctrl_v,
-        mon_V                       => h2s_mon_v,
+        --
+        inn_ctrl_v                => hps_inn_ctrl_v,
+        inn_mon_v                 => hps_inn_mon_v ,
+        mid_ctrl_v                => hps_mid_ctrl_v,
+        mid_mon_v                 => hps_mid_mon_v ,
+        out_ctrl_v                => hps_out_ctrl_v,
+        out_mon_v                 => hps_out_mon_v ,
+        ext_ctrl_v                => hps_ext_ctrl_v,
+        ext_mon_v                 => hps_ext_mon_v ,
+        --
         h2s_fm_data                 => h2s_fm_data,
         -- inputs from hal
         i_inn_tar_hits_av             => ult_inn_tar_hits_av,

@@ -40,10 +40,19 @@ use fm_lib.fm_ult_pkg.all;
 entity hits_to_segments is
   port (
     -- clock and control
+
     clock_and_control : in  l0mdt_control_rt;
     ttc_commands      : in  l0mdt_ttc_rt;
-    ctrl_v            : in  std_logic_vector;--H2S_CTRL_t;
-    mon_v             : out std_logic_vector; --H2S_MON_t;
+    --
+    inn_ctrl_v        : in  std_logic_vector; --H2S_CTRL_t;
+    inn_mon_v         : out std_logic_vector; --H2S_MON_t;
+    mid_ctrl_v        : in  std_logic_vector; --H2S_CTRL_t;
+    mid_mon_v         : out std_logic_vector; --H2S_MON_t;
+    out_ctrl_v        : in  std_logic_vector; --H2S_CTRL_t;
+    out_mon_v         : out std_logic_vector; --H2S_MON_t;
+    ext_ctrl_v        : in  std_logic_vector; --H2S_CTRL_t;
+    ext_mon_v         : out std_logic_vector; --H2S_MON_t;
+    --
     h2s_fm_data       : out fm_rt_array(0 to h2s_sb_all_station_n - 1);
     -- TDC Hits from Polmux
     i_inn_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
@@ -73,14 +82,14 @@ end entity hits_to_segments;
 
 architecture beh of hits_to_segments is
   -- ctrl&mon signals
-  signal ctrl_r : H2S_CTRL_t;
-  signal mon_r  : H2S_MON_t;
+  -- signal ctrl_r : H2S_CTRL_t;
+  -- signal mon_r  : H2S_MON_t;
   --
   signal glob_en : std_logic;
 begin
 
-  ctrl_r <= structify(ctrl_v,ctrl_r);
-  mon_v <= vectorify(mon_r,mon_v);
+  -- ctrl_r <= structify(ctrl_v,ctrl_r);
+  -- mon_v <= vectorify(mon_r,mon_v);
 
   glob_en <= '1';
 
@@ -92,17 +101,17 @@ begin
     -- o_sump <= '0';
 
     HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
-      signal ctrl_hps_r : H2S_HPS_CTRL_t;
-      signal ctrl_hps_v : std_logic_vector(len(ctrl_hps_r) -1 downto 0);
-      signal mon_hps_r : H2S_HPS_MON_t;
-      signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0);
+      -- signal ctrl_hps_r : HPS_CTRL_t;
+      -- signal ctrl_hps_v : std_logic_vector(len(ctrl_hps_r) -1 downto 0);
+      -- signal mon_hps_r : HPS_MON_t;
+      -- signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0);
     begin
 
-      ctrl_hps_r <=  ctrl_r.hps(0);
-      ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
+      -- ctrl_hps_r <=  ctrl_r.hps(0);
+      -- ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
 
-      mon_r.hps(0) <= mon_hps_r;
-      mon_hps_r <= structify(mon_hps_v,mon_hps_r);
+      -- mon_r.hps(0) <= mon_hps_r;
+      -- mon_hps_r <= structify(mon_hps_v,mon_hps_r);
 
       HPS : entity hps_lib.hps
       generic map(
@@ -114,8 +123,8 @@ begin
         rst                 => clock_and_control.rst,
         glob_en             => glob_en,
 
-        ctrl_v              => ctrl_hps_v,
-        mon_v               => mon_hps_v,
+        ctrl_v              => inn_ctrl_v,
+        mon_v               => inn_mon_v ,
         h2s_fm_data         => h2s_fm_data(0 to h2s_sb_single_station_n-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
@@ -129,17 +138,17 @@ begin
     end generate;
 
     HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
-      signal ctrl_hps_r : H2S_HPS_CTRL_t;
-      signal ctrl_hps_v : std_logic_vector(len(ctrl_hps_r) -1 downto 0);
-      signal mon_hps_r : H2S_HPS_MON_t;
-      signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0);
+      -- signal ctrl_hps_r : HPS_CTRL_t;
+      -- signal ctrl_hps_v : std_logic_vector(len(ctrl_hps_r) -1 downto 0);
+      -- signal mon_hps_r : HPS_MON_t;
+      -- signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0);
     begin
 
-      ctrl_hps_r <=  ctrl_r.hps(1);
-      ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
+      -- ctrl_hps_r <=  ctrl_r.hps(1);
+      -- ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
 
-      mon_r.hps(1) <= mon_hps_r;
-      mon_hps_r <= structify(mon_hps_v,mon_hps_r);
+      -- mon_r.hps(1) <= mon_hps_r;
+      -- mon_hps_r <= structify(mon_hps_v,mon_hps_r);
 
       HPS : entity hps_lib.hps
       generic map(
@@ -151,8 +160,8 @@ begin
         rst                 => clock_and_control.rst,
         glob_en             => glob_en,
 
-        ctrl_v              => ctrl_hps_v,
-        mon_v               => mon_hps_v,
+        ctrl_v              => mid_ctrl_v,
+        mon_v               => mid_mon_v ,
         h2s_fm_data         => h2s_fm_data(h2s_sb_single_station_n to h2s_sb_single_station_n*2-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
@@ -166,17 +175,17 @@ begin
     end generate;
 
     HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
-      signal ctrl_hps_r : H2S_HPS_CTRL_t;
-      signal ctrl_hps_v : std_logic_vector(len(ctrl_hps_r) -1 downto 0);
-      signal mon_hps_r : H2S_HPS_MON_t;
-      signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0);
+      -- signal ctrl_hps_r : HPS_CTRL_t;
+      -- signal ctrl_hps_v : std_logic_vector(len(ctrl_hps_r) -1 downto 0);
+      -- signal mon_hps_r : HPS_MON_t;
+      -- signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0);
     begin
 
-      ctrl_hps_r <=  ctrl_r.hps(2);
-      ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
+      -- ctrl_hps_r <=  ctrl_r.hps(2);
+      -- ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
 
-      mon_r.hps(2) <= mon_hps_r;
-      mon_hps_r <= structify(mon_hps_v,mon_hps_r);
+      -- mon_r.hps(2) <= mon_hps_r;
+      -- mon_hps_r <= structify(mon_hps_v,mon_hps_r);
 
       HPS : entity hps_lib.hps
       generic map(
@@ -188,8 +197,8 @@ begin
         rst                 => clock_and_control.rst,
         glob_en             => glob_en,
 
-        ctrl_v              => ctrl_hps_v,
-        mon_v               => mon_hps_v,
+        ctrl_v              => out_ctrl_v,
+        mon_v               => out_mon_v ,
         h2s_fm_data         => h2s_fm_data(h2s_sb_single_station_n*2 to h2s_sb_single_station_n*3-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
@@ -203,17 +212,17 @@ begin
     end generate;
 
     HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
-      signal ctrl_hps_r : H2S_HPS_CTRL_t;
-      signal ctrl_hps_v : std_logic_vector(len(ctrl_hps_r) -1 downto 0);
-      signal mon_hps_r : H2S_HPS_MON_t;
-      signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0) := (others => '0');
+      -- signal ctrl_hps_r : HPS_CTRL_t;
+      -- signal ctrl_hps_v : std_logic_vector(len(ctrl_hps_r) -1 downto 0);
+      -- signal mon_hps_r : HPS_MON_t;
+      -- signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0) := (others => '0');
     begin
 
-      ctrl_hps_r <=  ctrl_r.hps(3);
-      ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
+      -- ctrl_hps_r <=  ctrl_r.hps(3);
+      -- ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
 
-      mon_r.hps(3) <= mon_hps_r;
-      mon_hps_r <= structify(mon_hps_v,mon_hps_r);
+      -- mon_r.hps(3) <= mon_hps_r;
+      -- mon_hps_r <= structify(mon_hps_v,mon_hps_r);
 
       HPS : entity hps_lib.hps
       generic map(
@@ -225,8 +234,8 @@ begin
         rst                 => clock_and_control.rst,
         glob_en             => glob_en,
 
-        ctrl_v              => ctrl_hps_v,
-        mon_v               => mon_hps_v,
+        ctrl_v              => ext_ctrl_v,
+        mon_v               => ext_mon_v ,
         h2s_fm_data         => h2s_fm_data(h2s_sb_single_station_n*4 to h2s_sb_single_station_n*5-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
@@ -238,7 +247,7 @@ begin
         o_sf2pt_av          => o_ext_segments_av
       );
     else  generate
-      signal mon_hps_r : H2S_HPS_MON_t;
+      signal mon_hps_r : HPS_MON_t;
       signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0) := (others => '0');
     begin
       mon_r.hps(3) <= mon_hps_r;

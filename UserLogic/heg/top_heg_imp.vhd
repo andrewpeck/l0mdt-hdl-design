@@ -60,8 +60,8 @@ architecture beh of top_heg is
   -- variable g_HPS_NUM_MDT_CH    : integer := 6; 
 
 
-  signal ctrl_r             : H2S_HPS_HEG_HEG_CTRL_t;
-  signal mon_r              : H2S_HPS_HEG_HEG_MON_t;
+  signal ctrl_r             : HPS_HEG_HEG_CTRL_t;
+  signal mon_r              : HPS_HEG_HEG_MON_t;
   constant  c_CTRL_LEN      : integer := len(ctrl_r);
   constant c_MON_LEN        : integer := len(mon_r);
   signal ctrl_v             : std_logic_vector(c_CTRL_LEN -1 downto 0);

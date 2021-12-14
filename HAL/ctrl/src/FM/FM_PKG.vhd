@@ -26,6 +26,64 @@ package FM_CTRL is
   function nullify(t: FM_SPY_CTRL_CTRL_t) return FM_SPY_CTRL_CTRL_t;
   function zeroed(t: FM_SPY_CTRL_CTRL_t) return FM_SPY_CTRL_CTRL_t;
 
+  type FM_SB0_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB0_SB_MEM_MOSI_t;
+  function len(x: FM_SB0_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB0_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB0_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB0_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB0_SB_MEM_MOSI_t) return FM_SB0_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB0_SB_MEM_MOSI_t) return FM_SB0_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB0_SB_MEM_MOSI_t) return FM_SB0_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB0_SB_MEM_MOSI_t) return FM_SB0_SB_MEM_MOSI_t;
+
+  type FM_SB0_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB0_SB_MEM_MISO_t;
+  function len(x: FM_SB0_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB0_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB0_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB0_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB0_SB_MEM_MISO_t) return FM_SB0_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB0_SB_MEM_MISO_t) return FM_SB0_SB_MEM_MISO_t;
+  function nullify(t: FM_SB0_SB_MEM_MISO_t) return FM_SB0_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB0_SB_MEM_MISO_t) return FM_SB0_SB_MEM_MISO_t;
+
+  type FM_SB0_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB0_SB_META_MOSI_t;
+  function len(x: FM_SB0_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB0_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB0_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB0_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB0_SB_META_MOSI_t) return FM_SB0_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB0_SB_META_MOSI_t) return FM_SB0_SB_META_MOSI_t;
+  function nullify(t: FM_SB0_SB_META_MOSI_t) return FM_SB0_SB_META_MOSI_t;
+  function zeroed(t: FM_SB0_SB_META_MOSI_t) return FM_SB0_SB_META_MOSI_t;
+
+  type FM_SB0_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB0_SB_META_MISO_t;
+  function len(x: FM_SB0_SB_META_MISO_t) return natural;
+  function width(x: FM_SB0_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB0_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB0_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB0_SB_META_MISO_t) return FM_SB0_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB0_SB_META_MISO_t) return FM_SB0_SB_META_MISO_t;
+  function nullify(t: FM_SB0_SB_META_MISO_t) return FM_SB0_SB_META_MISO_t;
+  function zeroed(t: FM_SB0_SB_META_MISO_t) return FM_SB0_SB_META_MISO_t;
+
   type FM_SB0_MON_t is record
     SB_MEM : FM_SB0_SB_MEM_MISO_t;
     SB_META : FM_SB0_SB_META_MISO_t;
@@ -51,6 +109,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB0_CTRL_t) return FM_SB0_CTRL_t;
   function nullify(t: FM_SB0_CTRL_t) return FM_SB0_CTRL_t;
   function zeroed(t: FM_SB0_CTRL_t) return FM_SB0_CTRL_t;
+
+  type FM_SB1_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(10-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB1_SB_MEM_MOSI_t;
+  function len(x: FM_SB1_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB1_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB1_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB1_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB1_SB_MEM_MOSI_t) return FM_SB1_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB1_SB_MEM_MOSI_t) return FM_SB1_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB1_SB_MEM_MOSI_t) return FM_SB1_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB1_SB_MEM_MOSI_t) return FM_SB1_SB_MEM_MOSI_t;
+
+  type FM_SB1_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB1_SB_MEM_MISO_t;
+  function len(x: FM_SB1_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB1_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB1_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB1_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB1_SB_MEM_MISO_t) return FM_SB1_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB1_SB_MEM_MISO_t) return FM_SB1_SB_MEM_MISO_t;
+  function nullify(t: FM_SB1_SB_MEM_MISO_t) return FM_SB1_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB1_SB_MEM_MISO_t) return FM_SB1_SB_MEM_MISO_t;
+
+  type FM_SB1_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB1_SB_META_MOSI_t;
+  function len(x: FM_SB1_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB1_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB1_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB1_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB1_SB_META_MOSI_t) return FM_SB1_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB1_SB_META_MOSI_t) return FM_SB1_SB_META_MOSI_t;
+  function nullify(t: FM_SB1_SB_META_MOSI_t) return FM_SB1_SB_META_MOSI_t;
+  function zeroed(t: FM_SB1_SB_META_MOSI_t) return FM_SB1_SB_META_MOSI_t;
+
+  type FM_SB1_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB1_SB_META_MISO_t;
+  function len(x: FM_SB1_SB_META_MISO_t) return natural;
+  function width(x: FM_SB1_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB1_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB1_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB1_SB_META_MISO_t) return FM_SB1_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB1_SB_META_MISO_t) return FM_SB1_SB_META_MISO_t;
+  function nullify(t: FM_SB1_SB_META_MISO_t) return FM_SB1_SB_META_MISO_t;
+  function zeroed(t: FM_SB1_SB_META_MISO_t) return FM_SB1_SB_META_MISO_t;
 
   type FM_SB1_MON_t is record
     SB_MEM : FM_SB1_SB_MEM_MISO_t;
@@ -78,6 +194,64 @@ package FM_CTRL is
   function nullify(t: FM_SB1_CTRL_t) return FM_SB1_CTRL_t;
   function zeroed(t: FM_SB1_CTRL_t) return FM_SB1_CTRL_t;
 
+  type FM_SB2_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB2_SB_MEM_MOSI_t;
+  function len(x: FM_SB2_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB2_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB2_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB2_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB2_SB_MEM_MOSI_t) return FM_SB2_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB2_SB_MEM_MOSI_t) return FM_SB2_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB2_SB_MEM_MOSI_t) return FM_SB2_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB2_SB_MEM_MOSI_t) return FM_SB2_SB_MEM_MOSI_t;
+
+  type FM_SB2_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB2_SB_MEM_MISO_t;
+  function len(x: FM_SB2_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB2_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB2_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB2_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB2_SB_MEM_MISO_t) return FM_SB2_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB2_SB_MEM_MISO_t) return FM_SB2_SB_MEM_MISO_t;
+  function nullify(t: FM_SB2_SB_MEM_MISO_t) return FM_SB2_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB2_SB_MEM_MISO_t) return FM_SB2_SB_MEM_MISO_t;
+
+  type FM_SB2_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB2_SB_META_MOSI_t;
+  function len(x: FM_SB2_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB2_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB2_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB2_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB2_SB_META_MOSI_t) return FM_SB2_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB2_SB_META_MOSI_t) return FM_SB2_SB_META_MOSI_t;
+  function nullify(t: FM_SB2_SB_META_MOSI_t) return FM_SB2_SB_META_MOSI_t;
+  function zeroed(t: FM_SB2_SB_META_MOSI_t) return FM_SB2_SB_META_MOSI_t;
+
+  type FM_SB2_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB2_SB_META_MISO_t;
+  function len(x: FM_SB2_SB_META_MISO_t) return natural;
+  function width(x: FM_SB2_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB2_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB2_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB2_SB_META_MISO_t) return FM_SB2_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB2_SB_META_MISO_t) return FM_SB2_SB_META_MISO_t;
+  function nullify(t: FM_SB2_SB_META_MISO_t) return FM_SB2_SB_META_MISO_t;
+  function zeroed(t: FM_SB2_SB_META_MISO_t) return FM_SB2_SB_META_MISO_t;
+
   type FM_SB2_MON_t is record
     SB_MEM : FM_SB2_SB_MEM_MISO_t;
     SB_META : FM_SB2_SB_META_MISO_t;
@@ -103,6 +277,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB2_CTRL_t) return FM_SB2_CTRL_t;
   function nullify(t: FM_SB2_CTRL_t) return FM_SB2_CTRL_t;
   function zeroed(t: FM_SB2_CTRL_t) return FM_SB2_CTRL_t;
+
+  type FM_SB3_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB3_SB_MEM_MOSI_t;
+  function len(x: FM_SB3_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB3_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB3_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB3_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB3_SB_MEM_MOSI_t) return FM_SB3_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB3_SB_MEM_MOSI_t) return FM_SB3_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB3_SB_MEM_MOSI_t) return FM_SB3_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB3_SB_MEM_MOSI_t) return FM_SB3_SB_MEM_MOSI_t;
+
+  type FM_SB3_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB3_SB_MEM_MISO_t;
+  function len(x: FM_SB3_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB3_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB3_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB3_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB3_SB_MEM_MISO_t) return FM_SB3_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB3_SB_MEM_MISO_t) return FM_SB3_SB_MEM_MISO_t;
+  function nullify(t: FM_SB3_SB_MEM_MISO_t) return FM_SB3_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB3_SB_MEM_MISO_t) return FM_SB3_SB_MEM_MISO_t;
+
+  type FM_SB3_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB3_SB_META_MOSI_t;
+  function len(x: FM_SB3_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB3_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB3_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB3_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB3_SB_META_MOSI_t) return FM_SB3_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB3_SB_META_MOSI_t) return FM_SB3_SB_META_MOSI_t;
+  function nullify(t: FM_SB3_SB_META_MOSI_t) return FM_SB3_SB_META_MOSI_t;
+  function zeroed(t: FM_SB3_SB_META_MOSI_t) return FM_SB3_SB_META_MOSI_t;
+
+  type FM_SB3_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB3_SB_META_MISO_t;
+  function len(x: FM_SB3_SB_META_MISO_t) return natural;
+  function width(x: FM_SB3_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB3_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB3_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB3_SB_META_MISO_t) return FM_SB3_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB3_SB_META_MISO_t) return FM_SB3_SB_META_MISO_t;
+  function nullify(t: FM_SB3_SB_META_MISO_t) return FM_SB3_SB_META_MISO_t;
+  function zeroed(t: FM_SB3_SB_META_MISO_t) return FM_SB3_SB_META_MISO_t;
 
   type FM_SB3_MON_t is record
     SB_MEM : FM_SB3_SB_MEM_MISO_t;
@@ -130,6 +362,64 @@ package FM_CTRL is
   function nullify(t: FM_SB3_CTRL_t) return FM_SB3_CTRL_t;
   function zeroed(t: FM_SB3_CTRL_t) return FM_SB3_CTRL_t;
 
+  type FM_SB4_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(10-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB4_SB_MEM_MOSI_t;
+  function len(x: FM_SB4_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB4_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB4_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB4_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB4_SB_MEM_MOSI_t) return FM_SB4_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB4_SB_MEM_MOSI_t) return FM_SB4_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB4_SB_MEM_MOSI_t) return FM_SB4_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB4_SB_MEM_MOSI_t) return FM_SB4_SB_MEM_MOSI_t;
+
+  type FM_SB4_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB4_SB_MEM_MISO_t;
+  function len(x: FM_SB4_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB4_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB4_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB4_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB4_SB_MEM_MISO_t) return FM_SB4_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB4_SB_MEM_MISO_t) return FM_SB4_SB_MEM_MISO_t;
+  function nullify(t: FM_SB4_SB_MEM_MISO_t) return FM_SB4_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB4_SB_MEM_MISO_t) return FM_SB4_SB_MEM_MISO_t;
+
+  type FM_SB4_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB4_SB_META_MOSI_t;
+  function len(x: FM_SB4_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB4_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB4_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB4_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB4_SB_META_MOSI_t) return FM_SB4_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB4_SB_META_MOSI_t) return FM_SB4_SB_META_MOSI_t;
+  function nullify(t: FM_SB4_SB_META_MOSI_t) return FM_SB4_SB_META_MOSI_t;
+  function zeroed(t: FM_SB4_SB_META_MOSI_t) return FM_SB4_SB_META_MOSI_t;
+
+  type FM_SB4_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB4_SB_META_MISO_t;
+  function len(x: FM_SB4_SB_META_MISO_t) return natural;
+  function width(x: FM_SB4_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB4_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB4_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB4_SB_META_MISO_t) return FM_SB4_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB4_SB_META_MISO_t) return FM_SB4_SB_META_MISO_t;
+  function nullify(t: FM_SB4_SB_META_MISO_t) return FM_SB4_SB_META_MISO_t;
+  function zeroed(t: FM_SB4_SB_META_MISO_t) return FM_SB4_SB_META_MISO_t;
+
   type FM_SB4_MON_t is record
     SB_MEM : FM_SB4_SB_MEM_MISO_t;
     SB_META : FM_SB4_SB_META_MISO_t;
@@ -155,6 +445,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB4_CTRL_t) return FM_SB4_CTRL_t;
   function nullify(t: FM_SB4_CTRL_t) return FM_SB4_CTRL_t;
   function zeroed(t: FM_SB4_CTRL_t) return FM_SB4_CTRL_t;
+
+  type FM_SB5_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB5_SB_MEM_MOSI_t;
+  function len(x: FM_SB5_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB5_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB5_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB5_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB5_SB_MEM_MOSI_t) return FM_SB5_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB5_SB_MEM_MOSI_t) return FM_SB5_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB5_SB_MEM_MOSI_t) return FM_SB5_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB5_SB_MEM_MOSI_t) return FM_SB5_SB_MEM_MOSI_t;
+
+  type FM_SB5_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB5_SB_MEM_MISO_t;
+  function len(x: FM_SB5_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB5_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB5_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB5_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB5_SB_MEM_MISO_t) return FM_SB5_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB5_SB_MEM_MISO_t) return FM_SB5_SB_MEM_MISO_t;
+  function nullify(t: FM_SB5_SB_MEM_MISO_t) return FM_SB5_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB5_SB_MEM_MISO_t) return FM_SB5_SB_MEM_MISO_t;
+
+  type FM_SB5_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB5_SB_META_MOSI_t;
+  function len(x: FM_SB5_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB5_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB5_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB5_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB5_SB_META_MOSI_t) return FM_SB5_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB5_SB_META_MOSI_t) return FM_SB5_SB_META_MOSI_t;
+  function nullify(t: FM_SB5_SB_META_MOSI_t) return FM_SB5_SB_META_MOSI_t;
+  function zeroed(t: FM_SB5_SB_META_MOSI_t) return FM_SB5_SB_META_MOSI_t;
+
+  type FM_SB5_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB5_SB_META_MISO_t;
+  function len(x: FM_SB5_SB_META_MISO_t) return natural;
+  function width(x: FM_SB5_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB5_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB5_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB5_SB_META_MISO_t) return FM_SB5_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB5_SB_META_MISO_t) return FM_SB5_SB_META_MISO_t;
+  function nullify(t: FM_SB5_SB_META_MISO_t) return FM_SB5_SB_META_MISO_t;
+  function zeroed(t: FM_SB5_SB_META_MISO_t) return FM_SB5_SB_META_MISO_t;
 
   type FM_SB5_MON_t is record
     SB_MEM : FM_SB5_SB_MEM_MISO_t;
@@ -182,6 +530,64 @@ package FM_CTRL is
   function nullify(t: FM_SB5_CTRL_t) return FM_SB5_CTRL_t;
   function zeroed(t: FM_SB5_CTRL_t) return FM_SB5_CTRL_t;
 
+  type FM_SB6_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB6_SB_MEM_MOSI_t;
+  function len(x: FM_SB6_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB6_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB6_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB6_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB6_SB_MEM_MOSI_t) return FM_SB6_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB6_SB_MEM_MOSI_t) return FM_SB6_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB6_SB_MEM_MOSI_t) return FM_SB6_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB6_SB_MEM_MOSI_t) return FM_SB6_SB_MEM_MOSI_t;
+
+  type FM_SB6_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB6_SB_MEM_MISO_t;
+  function len(x: FM_SB6_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB6_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB6_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB6_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB6_SB_MEM_MISO_t) return FM_SB6_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB6_SB_MEM_MISO_t) return FM_SB6_SB_MEM_MISO_t;
+  function nullify(t: FM_SB6_SB_MEM_MISO_t) return FM_SB6_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB6_SB_MEM_MISO_t) return FM_SB6_SB_MEM_MISO_t;
+
+  type FM_SB6_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB6_SB_META_MOSI_t;
+  function len(x: FM_SB6_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB6_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB6_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB6_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB6_SB_META_MOSI_t) return FM_SB6_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB6_SB_META_MOSI_t) return FM_SB6_SB_META_MOSI_t;
+  function nullify(t: FM_SB6_SB_META_MOSI_t) return FM_SB6_SB_META_MOSI_t;
+  function zeroed(t: FM_SB6_SB_META_MOSI_t) return FM_SB6_SB_META_MOSI_t;
+
+  type FM_SB6_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB6_SB_META_MISO_t;
+  function len(x: FM_SB6_SB_META_MISO_t) return natural;
+  function width(x: FM_SB6_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB6_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB6_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB6_SB_META_MISO_t) return FM_SB6_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB6_SB_META_MISO_t) return FM_SB6_SB_META_MISO_t;
+  function nullify(t: FM_SB6_SB_META_MISO_t) return FM_SB6_SB_META_MISO_t;
+  function zeroed(t: FM_SB6_SB_META_MISO_t) return FM_SB6_SB_META_MISO_t;
+
   type FM_SB6_MON_t is record
     SB_MEM : FM_SB6_SB_MEM_MISO_t;
     SB_META : FM_SB6_SB_META_MISO_t;
@@ -207,6 +613,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB6_CTRL_t) return FM_SB6_CTRL_t;
   function nullify(t: FM_SB6_CTRL_t) return FM_SB6_CTRL_t;
   function zeroed(t: FM_SB6_CTRL_t) return FM_SB6_CTRL_t;
+
+  type FM_SB7_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(10-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB7_SB_MEM_MOSI_t;
+  function len(x: FM_SB7_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB7_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB7_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB7_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB7_SB_MEM_MOSI_t) return FM_SB7_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB7_SB_MEM_MOSI_t) return FM_SB7_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB7_SB_MEM_MOSI_t) return FM_SB7_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB7_SB_MEM_MOSI_t) return FM_SB7_SB_MEM_MOSI_t;
+
+  type FM_SB7_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB7_SB_MEM_MISO_t;
+  function len(x: FM_SB7_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB7_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB7_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB7_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB7_SB_MEM_MISO_t) return FM_SB7_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB7_SB_MEM_MISO_t) return FM_SB7_SB_MEM_MISO_t;
+  function nullify(t: FM_SB7_SB_MEM_MISO_t) return FM_SB7_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB7_SB_MEM_MISO_t) return FM_SB7_SB_MEM_MISO_t;
+
+  type FM_SB7_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB7_SB_META_MOSI_t;
+  function len(x: FM_SB7_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB7_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB7_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB7_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB7_SB_META_MOSI_t) return FM_SB7_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB7_SB_META_MOSI_t) return FM_SB7_SB_META_MOSI_t;
+  function nullify(t: FM_SB7_SB_META_MOSI_t) return FM_SB7_SB_META_MOSI_t;
+  function zeroed(t: FM_SB7_SB_META_MOSI_t) return FM_SB7_SB_META_MOSI_t;
+
+  type FM_SB7_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB7_SB_META_MISO_t;
+  function len(x: FM_SB7_SB_META_MISO_t) return natural;
+  function width(x: FM_SB7_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB7_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB7_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB7_SB_META_MISO_t) return FM_SB7_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB7_SB_META_MISO_t) return FM_SB7_SB_META_MISO_t;
+  function nullify(t: FM_SB7_SB_META_MISO_t) return FM_SB7_SB_META_MISO_t;
+  function zeroed(t: FM_SB7_SB_META_MISO_t) return FM_SB7_SB_META_MISO_t;
 
   type FM_SB7_MON_t is record
     SB_MEM : FM_SB7_SB_MEM_MISO_t;
@@ -234,6 +698,64 @@ package FM_CTRL is
   function nullify(t: FM_SB7_CTRL_t) return FM_SB7_CTRL_t;
   function zeroed(t: FM_SB7_CTRL_t) return FM_SB7_CTRL_t;
 
+  type FM_SB8_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB8_SB_MEM_MOSI_t;
+  function len(x: FM_SB8_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB8_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB8_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB8_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB8_SB_MEM_MOSI_t) return FM_SB8_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB8_SB_MEM_MOSI_t) return FM_SB8_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB8_SB_MEM_MOSI_t) return FM_SB8_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB8_SB_MEM_MOSI_t) return FM_SB8_SB_MEM_MOSI_t;
+
+  type FM_SB8_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB8_SB_MEM_MISO_t;
+  function len(x: FM_SB8_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB8_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB8_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB8_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB8_SB_MEM_MISO_t) return FM_SB8_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB8_SB_MEM_MISO_t) return FM_SB8_SB_MEM_MISO_t;
+  function nullify(t: FM_SB8_SB_MEM_MISO_t) return FM_SB8_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB8_SB_MEM_MISO_t) return FM_SB8_SB_MEM_MISO_t;
+
+  type FM_SB8_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB8_SB_META_MOSI_t;
+  function len(x: FM_SB8_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB8_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB8_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB8_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB8_SB_META_MOSI_t) return FM_SB8_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB8_SB_META_MOSI_t) return FM_SB8_SB_META_MOSI_t;
+  function nullify(t: FM_SB8_SB_META_MOSI_t) return FM_SB8_SB_META_MOSI_t;
+  function zeroed(t: FM_SB8_SB_META_MOSI_t) return FM_SB8_SB_META_MOSI_t;
+
+  type FM_SB8_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB8_SB_META_MISO_t;
+  function len(x: FM_SB8_SB_META_MISO_t) return natural;
+  function width(x: FM_SB8_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB8_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB8_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB8_SB_META_MISO_t) return FM_SB8_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB8_SB_META_MISO_t) return FM_SB8_SB_META_MISO_t;
+  function nullify(t: FM_SB8_SB_META_MISO_t) return FM_SB8_SB_META_MISO_t;
+  function zeroed(t: FM_SB8_SB_META_MISO_t) return FM_SB8_SB_META_MISO_t;
+
   type FM_SB8_MON_t is record
     SB_MEM : FM_SB8_SB_MEM_MISO_t;
     SB_META : FM_SB8_SB_META_MISO_t;
@@ -259,6 +781,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB8_CTRL_t) return FM_SB8_CTRL_t;
   function nullify(t: FM_SB8_CTRL_t) return FM_SB8_CTRL_t;
   function zeroed(t: FM_SB8_CTRL_t) return FM_SB8_CTRL_t;
+
+  type FM_SB9_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB9_SB_MEM_MOSI_t;
+  function len(x: FM_SB9_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB9_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB9_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB9_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB9_SB_MEM_MOSI_t) return FM_SB9_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB9_SB_MEM_MOSI_t) return FM_SB9_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB9_SB_MEM_MOSI_t) return FM_SB9_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB9_SB_MEM_MOSI_t) return FM_SB9_SB_MEM_MOSI_t;
+
+  type FM_SB9_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB9_SB_MEM_MISO_t;
+  function len(x: FM_SB9_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB9_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB9_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB9_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB9_SB_MEM_MISO_t) return FM_SB9_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB9_SB_MEM_MISO_t) return FM_SB9_SB_MEM_MISO_t;
+  function nullify(t: FM_SB9_SB_MEM_MISO_t) return FM_SB9_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB9_SB_MEM_MISO_t) return FM_SB9_SB_MEM_MISO_t;
+
+  type FM_SB9_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB9_SB_META_MOSI_t;
+  function len(x: FM_SB9_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB9_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB9_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB9_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB9_SB_META_MOSI_t) return FM_SB9_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB9_SB_META_MOSI_t) return FM_SB9_SB_META_MOSI_t;
+  function nullify(t: FM_SB9_SB_META_MOSI_t) return FM_SB9_SB_META_MOSI_t;
+  function zeroed(t: FM_SB9_SB_META_MOSI_t) return FM_SB9_SB_META_MOSI_t;
+
+  type FM_SB9_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB9_SB_META_MISO_t;
+  function len(x: FM_SB9_SB_META_MISO_t) return natural;
+  function width(x: FM_SB9_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB9_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB9_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB9_SB_META_MISO_t) return FM_SB9_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB9_SB_META_MISO_t) return FM_SB9_SB_META_MISO_t;
+  function nullify(t: FM_SB9_SB_META_MISO_t) return FM_SB9_SB_META_MISO_t;
+  function zeroed(t: FM_SB9_SB_META_MISO_t) return FM_SB9_SB_META_MISO_t;
 
   type FM_SB9_MON_t is record
     SB_MEM : FM_SB9_SB_MEM_MISO_t;
@@ -286,6 +866,64 @@ package FM_CTRL is
   function nullify(t: FM_SB9_CTRL_t) return FM_SB9_CTRL_t;
   function zeroed(t: FM_SB9_CTRL_t) return FM_SB9_CTRL_t;
 
+  type FM_SB10_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(10-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB10_SB_MEM_MOSI_t;
+  function len(x: FM_SB10_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB10_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB10_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB10_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB10_SB_MEM_MOSI_t) return FM_SB10_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB10_SB_MEM_MOSI_t) return FM_SB10_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB10_SB_MEM_MOSI_t) return FM_SB10_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB10_SB_MEM_MOSI_t) return FM_SB10_SB_MEM_MOSI_t;
+
+  type FM_SB10_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB10_SB_MEM_MISO_t;
+  function len(x: FM_SB10_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB10_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB10_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB10_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB10_SB_MEM_MISO_t) return FM_SB10_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB10_SB_MEM_MISO_t) return FM_SB10_SB_MEM_MISO_t;
+  function nullify(t: FM_SB10_SB_MEM_MISO_t) return FM_SB10_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB10_SB_MEM_MISO_t) return FM_SB10_SB_MEM_MISO_t;
+
+  type FM_SB10_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB10_SB_META_MOSI_t;
+  function len(x: FM_SB10_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB10_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB10_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB10_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB10_SB_META_MOSI_t) return FM_SB10_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB10_SB_META_MOSI_t) return FM_SB10_SB_META_MOSI_t;
+  function nullify(t: FM_SB10_SB_META_MOSI_t) return FM_SB10_SB_META_MOSI_t;
+  function zeroed(t: FM_SB10_SB_META_MOSI_t) return FM_SB10_SB_META_MOSI_t;
+
+  type FM_SB10_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB10_SB_META_MISO_t;
+  function len(x: FM_SB10_SB_META_MISO_t) return natural;
+  function width(x: FM_SB10_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB10_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB10_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB10_SB_META_MISO_t) return FM_SB10_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB10_SB_META_MISO_t) return FM_SB10_SB_META_MISO_t;
+  function nullify(t: FM_SB10_SB_META_MISO_t) return FM_SB10_SB_META_MISO_t;
+  function zeroed(t: FM_SB10_SB_META_MISO_t) return FM_SB10_SB_META_MISO_t;
+
   type FM_SB10_MON_t is record
     SB_MEM : FM_SB10_SB_MEM_MISO_t;
     SB_META : FM_SB10_SB_META_MISO_t;
@@ -311,6 +949,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB10_CTRL_t) return FM_SB10_CTRL_t;
   function nullify(t: FM_SB10_CTRL_t) return FM_SB10_CTRL_t;
   function zeroed(t: FM_SB10_CTRL_t) return FM_SB10_CTRL_t;
+
+  type FM_SB11_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB11_SB_MEM_MOSI_t;
+  function len(x: FM_SB11_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB11_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB11_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB11_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB11_SB_MEM_MOSI_t) return FM_SB11_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB11_SB_MEM_MOSI_t) return FM_SB11_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB11_SB_MEM_MOSI_t) return FM_SB11_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB11_SB_MEM_MOSI_t) return FM_SB11_SB_MEM_MOSI_t;
+
+  type FM_SB11_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB11_SB_MEM_MISO_t;
+  function len(x: FM_SB11_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB11_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB11_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB11_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB11_SB_MEM_MISO_t) return FM_SB11_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB11_SB_MEM_MISO_t) return FM_SB11_SB_MEM_MISO_t;
+  function nullify(t: FM_SB11_SB_MEM_MISO_t) return FM_SB11_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB11_SB_MEM_MISO_t) return FM_SB11_SB_MEM_MISO_t;
+
+  type FM_SB11_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB11_SB_META_MOSI_t;
+  function len(x: FM_SB11_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB11_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB11_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB11_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB11_SB_META_MOSI_t) return FM_SB11_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB11_SB_META_MOSI_t) return FM_SB11_SB_META_MOSI_t;
+  function nullify(t: FM_SB11_SB_META_MOSI_t) return FM_SB11_SB_META_MOSI_t;
+  function zeroed(t: FM_SB11_SB_META_MOSI_t) return FM_SB11_SB_META_MOSI_t;
+
+  type FM_SB11_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB11_SB_META_MISO_t;
+  function len(x: FM_SB11_SB_META_MISO_t) return natural;
+  function width(x: FM_SB11_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB11_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB11_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB11_SB_META_MISO_t) return FM_SB11_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB11_SB_META_MISO_t) return FM_SB11_SB_META_MISO_t;
+  function nullify(t: FM_SB11_SB_META_MISO_t) return FM_SB11_SB_META_MISO_t;
+  function zeroed(t: FM_SB11_SB_META_MISO_t) return FM_SB11_SB_META_MISO_t;
 
   type FM_SB11_MON_t is record
     SB_MEM : FM_SB11_SB_MEM_MISO_t;
@@ -338,6 +1034,64 @@ package FM_CTRL is
   function nullify(t: FM_SB11_CTRL_t) return FM_SB11_CTRL_t;
   function zeroed(t: FM_SB11_CTRL_t) return FM_SB11_CTRL_t;
 
+  type FM_SB12_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB12_SB_MEM_MOSI_t;
+  function len(x: FM_SB12_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB12_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB12_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB12_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB12_SB_MEM_MOSI_t) return FM_SB12_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB12_SB_MEM_MOSI_t) return FM_SB12_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB12_SB_MEM_MOSI_t) return FM_SB12_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB12_SB_MEM_MOSI_t) return FM_SB12_SB_MEM_MOSI_t;
+
+  type FM_SB12_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB12_SB_MEM_MISO_t;
+  function len(x: FM_SB12_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB12_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB12_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB12_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB12_SB_MEM_MISO_t) return FM_SB12_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB12_SB_MEM_MISO_t) return FM_SB12_SB_MEM_MISO_t;
+  function nullify(t: FM_SB12_SB_MEM_MISO_t) return FM_SB12_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB12_SB_MEM_MISO_t) return FM_SB12_SB_MEM_MISO_t;
+
+  type FM_SB12_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB12_SB_META_MOSI_t;
+  function len(x: FM_SB12_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB12_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB12_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB12_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB12_SB_META_MOSI_t) return FM_SB12_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB12_SB_META_MOSI_t) return FM_SB12_SB_META_MOSI_t;
+  function nullify(t: FM_SB12_SB_META_MOSI_t) return FM_SB12_SB_META_MOSI_t;
+  function zeroed(t: FM_SB12_SB_META_MOSI_t) return FM_SB12_SB_META_MOSI_t;
+
+  type FM_SB12_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB12_SB_META_MISO_t;
+  function len(x: FM_SB12_SB_META_MISO_t) return natural;
+  function width(x: FM_SB12_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB12_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB12_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB12_SB_META_MISO_t) return FM_SB12_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB12_SB_META_MISO_t) return FM_SB12_SB_META_MISO_t;
+  function nullify(t: FM_SB12_SB_META_MISO_t) return FM_SB12_SB_META_MISO_t;
+  function zeroed(t: FM_SB12_SB_META_MISO_t) return FM_SB12_SB_META_MISO_t;
+
   type FM_SB12_MON_t is record
     SB_MEM : FM_SB12_SB_MEM_MISO_t;
     SB_META : FM_SB12_SB_META_MISO_t;
@@ -363,6 +1117,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB12_CTRL_t) return FM_SB12_CTRL_t;
   function nullify(t: FM_SB12_CTRL_t) return FM_SB12_CTRL_t;
   function zeroed(t: FM_SB12_CTRL_t) return FM_SB12_CTRL_t;
+
+  type FM_SB13_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(10-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB13_SB_MEM_MOSI_t;
+  function len(x: FM_SB13_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB13_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB13_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB13_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB13_SB_MEM_MOSI_t) return FM_SB13_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB13_SB_MEM_MOSI_t) return FM_SB13_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB13_SB_MEM_MOSI_t) return FM_SB13_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB13_SB_MEM_MOSI_t) return FM_SB13_SB_MEM_MOSI_t;
+
+  type FM_SB13_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB13_SB_MEM_MISO_t;
+  function len(x: FM_SB13_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB13_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB13_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB13_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB13_SB_MEM_MISO_t) return FM_SB13_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB13_SB_MEM_MISO_t) return FM_SB13_SB_MEM_MISO_t;
+  function nullify(t: FM_SB13_SB_MEM_MISO_t) return FM_SB13_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB13_SB_MEM_MISO_t) return FM_SB13_SB_MEM_MISO_t;
+
+  type FM_SB13_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB13_SB_META_MOSI_t;
+  function len(x: FM_SB13_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB13_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB13_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB13_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB13_SB_META_MOSI_t) return FM_SB13_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB13_SB_META_MOSI_t) return FM_SB13_SB_META_MOSI_t;
+  function nullify(t: FM_SB13_SB_META_MOSI_t) return FM_SB13_SB_META_MOSI_t;
+  function zeroed(t: FM_SB13_SB_META_MOSI_t) return FM_SB13_SB_META_MOSI_t;
+
+  type FM_SB13_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB13_SB_META_MISO_t;
+  function len(x: FM_SB13_SB_META_MISO_t) return natural;
+  function width(x: FM_SB13_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB13_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB13_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB13_SB_META_MISO_t) return FM_SB13_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB13_SB_META_MISO_t) return FM_SB13_SB_META_MISO_t;
+  function nullify(t: FM_SB13_SB_META_MISO_t) return FM_SB13_SB_META_MISO_t;
+  function zeroed(t: FM_SB13_SB_META_MISO_t) return FM_SB13_SB_META_MISO_t;
 
   type FM_SB13_MON_t is record
     SB_MEM : FM_SB13_SB_MEM_MISO_t;
@@ -390,6 +1202,64 @@ package FM_CTRL is
   function nullify(t: FM_SB13_CTRL_t) return FM_SB13_CTRL_t;
   function zeroed(t: FM_SB13_CTRL_t) return FM_SB13_CTRL_t;
 
+  type FM_SB14_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB14_SB_MEM_MOSI_t;
+  function len(x: FM_SB14_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB14_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB14_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB14_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB14_SB_MEM_MOSI_t) return FM_SB14_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB14_SB_MEM_MOSI_t) return FM_SB14_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB14_SB_MEM_MOSI_t) return FM_SB14_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB14_SB_MEM_MOSI_t) return FM_SB14_SB_MEM_MOSI_t;
+
+  type FM_SB14_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB14_SB_MEM_MISO_t;
+  function len(x: FM_SB14_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB14_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB14_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB14_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB14_SB_MEM_MISO_t) return FM_SB14_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB14_SB_MEM_MISO_t) return FM_SB14_SB_MEM_MISO_t;
+  function nullify(t: FM_SB14_SB_MEM_MISO_t) return FM_SB14_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB14_SB_MEM_MISO_t) return FM_SB14_SB_MEM_MISO_t;
+
+  type FM_SB14_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB14_SB_META_MOSI_t;
+  function len(x: FM_SB14_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB14_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB14_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB14_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB14_SB_META_MOSI_t) return FM_SB14_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB14_SB_META_MOSI_t) return FM_SB14_SB_META_MOSI_t;
+  function nullify(t: FM_SB14_SB_META_MOSI_t) return FM_SB14_SB_META_MOSI_t;
+  function zeroed(t: FM_SB14_SB_META_MOSI_t) return FM_SB14_SB_META_MOSI_t;
+
+  type FM_SB14_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB14_SB_META_MISO_t;
+  function len(x: FM_SB14_SB_META_MISO_t) return natural;
+  function width(x: FM_SB14_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB14_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB14_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB14_SB_META_MISO_t) return FM_SB14_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB14_SB_META_MISO_t) return FM_SB14_SB_META_MISO_t;
+  function nullify(t: FM_SB14_SB_META_MISO_t) return FM_SB14_SB_META_MISO_t;
+  function zeroed(t: FM_SB14_SB_META_MISO_t) return FM_SB14_SB_META_MISO_t;
+
   type FM_SB14_MON_t is record
     SB_MEM : FM_SB14_SB_MEM_MISO_t;
     SB_META : FM_SB14_SB_META_MISO_t;
@@ -415,6 +1285,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB14_CTRL_t) return FM_SB14_CTRL_t;
   function nullify(t: FM_SB14_CTRL_t) return FM_SB14_CTRL_t;
   function zeroed(t: FM_SB14_CTRL_t) return FM_SB14_CTRL_t;
+
+  type FM_SB15_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB15_SB_MEM_MOSI_t;
+  function len(x: FM_SB15_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB15_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB15_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB15_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB15_SB_MEM_MOSI_t) return FM_SB15_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB15_SB_MEM_MOSI_t) return FM_SB15_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB15_SB_MEM_MOSI_t) return FM_SB15_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB15_SB_MEM_MOSI_t) return FM_SB15_SB_MEM_MOSI_t;
+
+  type FM_SB15_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB15_SB_MEM_MISO_t;
+  function len(x: FM_SB15_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB15_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB15_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB15_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB15_SB_MEM_MISO_t) return FM_SB15_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB15_SB_MEM_MISO_t) return FM_SB15_SB_MEM_MISO_t;
+  function nullify(t: FM_SB15_SB_MEM_MISO_t) return FM_SB15_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB15_SB_MEM_MISO_t) return FM_SB15_SB_MEM_MISO_t;
+
+  type FM_SB15_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB15_SB_META_MOSI_t;
+  function len(x: FM_SB15_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB15_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB15_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB15_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB15_SB_META_MOSI_t) return FM_SB15_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB15_SB_META_MOSI_t) return FM_SB15_SB_META_MOSI_t;
+  function nullify(t: FM_SB15_SB_META_MOSI_t) return FM_SB15_SB_META_MOSI_t;
+  function zeroed(t: FM_SB15_SB_META_MOSI_t) return FM_SB15_SB_META_MOSI_t;
+
+  type FM_SB15_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB15_SB_META_MISO_t;
+  function len(x: FM_SB15_SB_META_MISO_t) return natural;
+  function width(x: FM_SB15_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB15_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB15_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB15_SB_META_MISO_t) return FM_SB15_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB15_SB_META_MISO_t) return FM_SB15_SB_META_MISO_t;
+  function nullify(t: FM_SB15_SB_META_MISO_t) return FM_SB15_SB_META_MISO_t;
+  function zeroed(t: FM_SB15_SB_META_MISO_t) return FM_SB15_SB_META_MISO_t;
 
   type FM_SB15_MON_t is record
     SB_MEM : FM_SB15_SB_MEM_MISO_t;
@@ -442,6 +1370,64 @@ package FM_CTRL is
   function nullify(t: FM_SB15_CTRL_t) return FM_SB15_CTRL_t;
   function zeroed(t: FM_SB15_CTRL_t) return FM_SB15_CTRL_t;
 
+  type FM_SB16_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(10-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB16_SB_MEM_MOSI_t;
+  function len(x: FM_SB16_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB16_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB16_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB16_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB16_SB_MEM_MOSI_t) return FM_SB16_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB16_SB_MEM_MOSI_t) return FM_SB16_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB16_SB_MEM_MOSI_t) return FM_SB16_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB16_SB_MEM_MOSI_t) return FM_SB16_SB_MEM_MOSI_t;
+
+  type FM_SB16_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB16_SB_MEM_MISO_t;
+  function len(x: FM_SB16_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB16_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB16_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB16_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB16_SB_MEM_MISO_t) return FM_SB16_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB16_SB_MEM_MISO_t) return FM_SB16_SB_MEM_MISO_t;
+  function nullify(t: FM_SB16_SB_MEM_MISO_t) return FM_SB16_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB16_SB_MEM_MISO_t) return FM_SB16_SB_MEM_MISO_t;
+
+  type FM_SB16_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB16_SB_META_MOSI_t;
+  function len(x: FM_SB16_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB16_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB16_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB16_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB16_SB_META_MOSI_t) return FM_SB16_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB16_SB_META_MOSI_t) return FM_SB16_SB_META_MOSI_t;
+  function nullify(t: FM_SB16_SB_META_MOSI_t) return FM_SB16_SB_META_MOSI_t;
+  function zeroed(t: FM_SB16_SB_META_MOSI_t) return FM_SB16_SB_META_MOSI_t;
+
+  type FM_SB16_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB16_SB_META_MISO_t;
+  function len(x: FM_SB16_SB_META_MISO_t) return natural;
+  function width(x: FM_SB16_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB16_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB16_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB16_SB_META_MISO_t) return FM_SB16_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB16_SB_META_MISO_t) return FM_SB16_SB_META_MISO_t;
+  function nullify(t: FM_SB16_SB_META_MISO_t) return FM_SB16_SB_META_MISO_t;
+  function zeroed(t: FM_SB16_SB_META_MISO_t) return FM_SB16_SB_META_MISO_t;
+
   type FM_SB16_MON_t is record
     SB_MEM : FM_SB16_SB_MEM_MISO_t;
     SB_META : FM_SB16_SB_META_MISO_t;
@@ -467,6 +1453,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB16_CTRL_t) return FM_SB16_CTRL_t;
   function nullify(t: FM_SB16_CTRL_t) return FM_SB16_CTRL_t;
   function zeroed(t: FM_SB16_CTRL_t) return FM_SB16_CTRL_t;
+
+  type FM_SB17_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB17_SB_MEM_MOSI_t;
+  function len(x: FM_SB17_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB17_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB17_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB17_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB17_SB_MEM_MOSI_t) return FM_SB17_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB17_SB_MEM_MOSI_t) return FM_SB17_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB17_SB_MEM_MOSI_t) return FM_SB17_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB17_SB_MEM_MOSI_t) return FM_SB17_SB_MEM_MOSI_t;
+
+  type FM_SB17_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB17_SB_MEM_MISO_t;
+  function len(x: FM_SB17_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB17_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB17_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB17_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB17_SB_MEM_MISO_t) return FM_SB17_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB17_SB_MEM_MISO_t) return FM_SB17_SB_MEM_MISO_t;
+  function nullify(t: FM_SB17_SB_MEM_MISO_t) return FM_SB17_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB17_SB_MEM_MISO_t) return FM_SB17_SB_MEM_MISO_t;
+
+  type FM_SB17_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB17_SB_META_MOSI_t;
+  function len(x: FM_SB17_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB17_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB17_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB17_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB17_SB_META_MOSI_t) return FM_SB17_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB17_SB_META_MOSI_t) return FM_SB17_SB_META_MOSI_t;
+  function nullify(t: FM_SB17_SB_META_MOSI_t) return FM_SB17_SB_META_MOSI_t;
+  function zeroed(t: FM_SB17_SB_META_MOSI_t) return FM_SB17_SB_META_MOSI_t;
+
+  type FM_SB17_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB17_SB_META_MISO_t;
+  function len(x: FM_SB17_SB_META_MISO_t) return natural;
+  function width(x: FM_SB17_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB17_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB17_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB17_SB_META_MISO_t) return FM_SB17_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB17_SB_META_MISO_t) return FM_SB17_SB_META_MISO_t;
+  function nullify(t: FM_SB17_SB_META_MISO_t) return FM_SB17_SB_META_MISO_t;
+  function zeroed(t: FM_SB17_SB_META_MISO_t) return FM_SB17_SB_META_MISO_t;
 
   type FM_SB17_MON_t is record
     SB_MEM : FM_SB17_SB_MEM_MISO_t;
@@ -494,6 +1538,64 @@ package FM_CTRL is
   function nullify(t: FM_SB17_CTRL_t) return FM_SB17_CTRL_t;
   function zeroed(t: FM_SB17_CTRL_t) return FM_SB17_CTRL_t;
 
+  type FM_SB18_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB18_SB_MEM_MOSI_t;
+  function len(x: FM_SB18_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB18_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB18_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB18_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB18_SB_MEM_MOSI_t) return FM_SB18_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB18_SB_MEM_MOSI_t) return FM_SB18_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB18_SB_MEM_MOSI_t) return FM_SB18_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB18_SB_MEM_MOSI_t) return FM_SB18_SB_MEM_MOSI_t;
+
+  type FM_SB18_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB18_SB_MEM_MISO_t;
+  function len(x: FM_SB18_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB18_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB18_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB18_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB18_SB_MEM_MISO_t) return FM_SB18_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB18_SB_MEM_MISO_t) return FM_SB18_SB_MEM_MISO_t;
+  function nullify(t: FM_SB18_SB_MEM_MISO_t) return FM_SB18_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB18_SB_MEM_MISO_t) return FM_SB18_SB_MEM_MISO_t;
+
+  type FM_SB18_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB18_SB_META_MOSI_t;
+  function len(x: FM_SB18_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB18_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB18_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB18_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB18_SB_META_MOSI_t) return FM_SB18_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB18_SB_META_MOSI_t) return FM_SB18_SB_META_MOSI_t;
+  function nullify(t: FM_SB18_SB_META_MOSI_t) return FM_SB18_SB_META_MOSI_t;
+  function zeroed(t: FM_SB18_SB_META_MOSI_t) return FM_SB18_SB_META_MOSI_t;
+
+  type FM_SB18_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB18_SB_META_MISO_t;
+  function len(x: FM_SB18_SB_META_MISO_t) return natural;
+  function width(x: FM_SB18_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB18_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB18_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB18_SB_META_MISO_t) return FM_SB18_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB18_SB_META_MISO_t) return FM_SB18_SB_META_MISO_t;
+  function nullify(t: FM_SB18_SB_META_MISO_t) return FM_SB18_SB_META_MISO_t;
+  function zeroed(t: FM_SB18_SB_META_MISO_t) return FM_SB18_SB_META_MISO_t;
+
   type FM_SB18_MON_t is record
     SB_MEM : FM_SB18_SB_MEM_MISO_t;
     SB_META : FM_SB18_SB_META_MISO_t;
@@ -519,6 +1621,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB18_CTRL_t) return FM_SB18_CTRL_t;
   function nullify(t: FM_SB18_CTRL_t) return FM_SB18_CTRL_t;
   function zeroed(t: FM_SB18_CTRL_t) return FM_SB18_CTRL_t;
+
+  type FM_SB19_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(10-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB19_SB_MEM_MOSI_t;
+  function len(x: FM_SB19_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB19_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB19_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB19_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB19_SB_MEM_MOSI_t) return FM_SB19_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB19_SB_MEM_MOSI_t) return FM_SB19_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB19_SB_MEM_MOSI_t) return FM_SB19_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB19_SB_MEM_MOSI_t) return FM_SB19_SB_MEM_MOSI_t;
+
+  type FM_SB19_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB19_SB_MEM_MISO_t;
+  function len(x: FM_SB19_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB19_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB19_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB19_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB19_SB_MEM_MISO_t) return FM_SB19_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB19_SB_MEM_MISO_t) return FM_SB19_SB_MEM_MISO_t;
+  function nullify(t: FM_SB19_SB_MEM_MISO_t) return FM_SB19_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB19_SB_MEM_MISO_t) return FM_SB19_SB_MEM_MISO_t;
+
+  type FM_SB19_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB19_SB_META_MOSI_t;
+  function len(x: FM_SB19_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB19_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB19_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB19_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB19_SB_META_MOSI_t) return FM_SB19_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB19_SB_META_MOSI_t) return FM_SB19_SB_META_MOSI_t;
+  function nullify(t: FM_SB19_SB_META_MOSI_t) return FM_SB19_SB_META_MOSI_t;
+  function zeroed(t: FM_SB19_SB_META_MOSI_t) return FM_SB19_SB_META_MOSI_t;
+
+  type FM_SB19_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB19_SB_META_MISO_t;
+  function len(x: FM_SB19_SB_META_MISO_t) return natural;
+  function width(x: FM_SB19_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB19_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB19_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB19_SB_META_MISO_t) return FM_SB19_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB19_SB_META_MISO_t) return FM_SB19_SB_META_MISO_t;
+  function nullify(t: FM_SB19_SB_META_MISO_t) return FM_SB19_SB_META_MISO_t;
+  function zeroed(t: FM_SB19_SB_META_MISO_t) return FM_SB19_SB_META_MISO_t;
 
   type FM_SB19_MON_t is record
     SB_MEM : FM_SB19_SB_MEM_MISO_t;
@@ -546,6 +1706,64 @@ package FM_CTRL is
   function nullify(t: FM_SB19_CTRL_t) return FM_SB19_CTRL_t;
   function zeroed(t: FM_SB19_CTRL_t) return FM_SB19_CTRL_t;
 
+  type FM_SB20_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB20_SB_MEM_MOSI_t;
+  function len(x: FM_SB20_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB20_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB20_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB20_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB20_SB_MEM_MOSI_t) return FM_SB20_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB20_SB_MEM_MOSI_t) return FM_SB20_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB20_SB_MEM_MOSI_t) return FM_SB20_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB20_SB_MEM_MOSI_t) return FM_SB20_SB_MEM_MOSI_t;
+
+  type FM_SB20_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB20_SB_MEM_MISO_t;
+  function len(x: FM_SB20_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB20_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB20_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB20_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB20_SB_MEM_MISO_t) return FM_SB20_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB20_SB_MEM_MISO_t) return FM_SB20_SB_MEM_MISO_t;
+  function nullify(t: FM_SB20_SB_MEM_MISO_t) return FM_SB20_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB20_SB_MEM_MISO_t) return FM_SB20_SB_MEM_MISO_t;
+
+  type FM_SB20_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB20_SB_META_MOSI_t;
+  function len(x: FM_SB20_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB20_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB20_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB20_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB20_SB_META_MOSI_t) return FM_SB20_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB20_SB_META_MOSI_t) return FM_SB20_SB_META_MOSI_t;
+  function nullify(t: FM_SB20_SB_META_MOSI_t) return FM_SB20_SB_META_MOSI_t;
+  function zeroed(t: FM_SB20_SB_META_MOSI_t) return FM_SB20_SB_META_MOSI_t;
+
+  type FM_SB20_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB20_SB_META_MISO_t;
+  function len(x: FM_SB20_SB_META_MISO_t) return natural;
+  function width(x: FM_SB20_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB20_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB20_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB20_SB_META_MISO_t) return FM_SB20_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB20_SB_META_MISO_t) return FM_SB20_SB_META_MISO_t;
+  function nullify(t: FM_SB20_SB_META_MISO_t) return FM_SB20_SB_META_MISO_t;
+  function zeroed(t: FM_SB20_SB_META_MISO_t) return FM_SB20_SB_META_MISO_t;
+
   type FM_SB20_MON_t is record
     SB_MEM : FM_SB20_SB_MEM_MISO_t;
     SB_META : FM_SB20_SB_META_MISO_t;
@@ -571,6 +1789,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB20_CTRL_t) return FM_SB20_CTRL_t;
   function nullify(t: FM_SB20_CTRL_t) return FM_SB20_CTRL_t;
   function zeroed(t: FM_SB20_CTRL_t) return FM_SB20_CTRL_t;
+
+  type FM_SB21_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB21_SB_MEM_MOSI_t;
+  function len(x: FM_SB21_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB21_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB21_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB21_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB21_SB_MEM_MOSI_t) return FM_SB21_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB21_SB_MEM_MOSI_t) return FM_SB21_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB21_SB_MEM_MOSI_t) return FM_SB21_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB21_SB_MEM_MOSI_t) return FM_SB21_SB_MEM_MOSI_t;
+
+  type FM_SB21_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB21_SB_MEM_MISO_t;
+  function len(x: FM_SB21_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB21_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB21_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB21_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB21_SB_MEM_MISO_t) return FM_SB21_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB21_SB_MEM_MISO_t) return FM_SB21_SB_MEM_MISO_t;
+  function nullify(t: FM_SB21_SB_MEM_MISO_t) return FM_SB21_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB21_SB_MEM_MISO_t) return FM_SB21_SB_MEM_MISO_t;
+
+  type FM_SB21_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB21_SB_META_MOSI_t;
+  function len(x: FM_SB21_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB21_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB21_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB21_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB21_SB_META_MOSI_t) return FM_SB21_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB21_SB_META_MOSI_t) return FM_SB21_SB_META_MOSI_t;
+  function nullify(t: FM_SB21_SB_META_MOSI_t) return FM_SB21_SB_META_MOSI_t;
+  function zeroed(t: FM_SB21_SB_META_MOSI_t) return FM_SB21_SB_META_MOSI_t;
+
+  type FM_SB21_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB21_SB_META_MISO_t;
+  function len(x: FM_SB21_SB_META_MISO_t) return natural;
+  function width(x: FM_SB21_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB21_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB21_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB21_SB_META_MISO_t) return FM_SB21_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB21_SB_META_MISO_t) return FM_SB21_SB_META_MISO_t;
+  function nullify(t: FM_SB21_SB_META_MISO_t) return FM_SB21_SB_META_MISO_t;
+  function zeroed(t: FM_SB21_SB_META_MISO_t) return FM_SB21_SB_META_MISO_t;
 
   type FM_SB21_MON_t is record
     SB_MEM : FM_SB21_SB_MEM_MISO_t;
@@ -598,6 +1874,64 @@ package FM_CTRL is
   function nullify(t: FM_SB21_CTRL_t) return FM_SB21_CTRL_t;
   function zeroed(t: FM_SB21_CTRL_t) return FM_SB21_CTRL_t;
 
+  type FM_SB22_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(10-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB22_SB_MEM_MOSI_t;
+  function len(x: FM_SB22_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB22_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB22_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB22_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB22_SB_MEM_MOSI_t) return FM_SB22_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB22_SB_MEM_MOSI_t) return FM_SB22_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB22_SB_MEM_MOSI_t) return FM_SB22_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB22_SB_MEM_MOSI_t) return FM_SB22_SB_MEM_MOSI_t;
+
+  type FM_SB22_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB22_SB_MEM_MISO_t;
+  function len(x: FM_SB22_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB22_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB22_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB22_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB22_SB_MEM_MISO_t) return FM_SB22_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB22_SB_MEM_MISO_t) return FM_SB22_SB_MEM_MISO_t;
+  function nullify(t: FM_SB22_SB_MEM_MISO_t) return FM_SB22_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB22_SB_MEM_MISO_t) return FM_SB22_SB_MEM_MISO_t;
+
+  type FM_SB22_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB22_SB_META_MOSI_t;
+  function len(x: FM_SB22_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB22_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB22_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB22_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB22_SB_META_MOSI_t) return FM_SB22_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB22_SB_META_MOSI_t) return FM_SB22_SB_META_MOSI_t;
+  function nullify(t: FM_SB22_SB_META_MOSI_t) return FM_SB22_SB_META_MOSI_t;
+  function zeroed(t: FM_SB22_SB_META_MOSI_t) return FM_SB22_SB_META_MOSI_t;
+
+  type FM_SB22_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB22_SB_META_MISO_t;
+  function len(x: FM_SB22_SB_META_MISO_t) return natural;
+  function width(x: FM_SB22_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB22_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB22_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB22_SB_META_MISO_t) return FM_SB22_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB22_SB_META_MISO_t) return FM_SB22_SB_META_MISO_t;
+  function nullify(t: FM_SB22_SB_META_MISO_t) return FM_SB22_SB_META_MISO_t;
+  function zeroed(t: FM_SB22_SB_META_MISO_t) return FM_SB22_SB_META_MISO_t;
+
   type FM_SB22_MON_t is record
     SB_MEM : FM_SB22_SB_MEM_MISO_t;
     SB_META : FM_SB22_SB_META_MISO_t;
@@ -623,6 +1957,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB22_CTRL_t) return FM_SB22_CTRL_t;
   function nullify(t: FM_SB22_CTRL_t) return FM_SB22_CTRL_t;
   function zeroed(t: FM_SB22_CTRL_t) return FM_SB22_CTRL_t;
+
+  type FM_SB23_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB23_SB_MEM_MOSI_t;
+  function len(x: FM_SB23_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB23_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB23_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB23_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB23_SB_MEM_MOSI_t) return FM_SB23_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB23_SB_MEM_MOSI_t) return FM_SB23_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB23_SB_MEM_MOSI_t) return FM_SB23_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB23_SB_MEM_MOSI_t) return FM_SB23_SB_MEM_MOSI_t;
+
+  type FM_SB23_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB23_SB_MEM_MISO_t;
+  function len(x: FM_SB23_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB23_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB23_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB23_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB23_SB_MEM_MISO_t) return FM_SB23_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB23_SB_MEM_MISO_t) return FM_SB23_SB_MEM_MISO_t;
+  function nullify(t: FM_SB23_SB_MEM_MISO_t) return FM_SB23_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB23_SB_MEM_MISO_t) return FM_SB23_SB_MEM_MISO_t;
+
+  type FM_SB23_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB23_SB_META_MOSI_t;
+  function len(x: FM_SB23_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB23_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB23_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB23_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB23_SB_META_MOSI_t) return FM_SB23_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB23_SB_META_MOSI_t) return FM_SB23_SB_META_MOSI_t;
+  function nullify(t: FM_SB23_SB_META_MOSI_t) return FM_SB23_SB_META_MOSI_t;
+  function zeroed(t: FM_SB23_SB_META_MOSI_t) return FM_SB23_SB_META_MOSI_t;
+
+  type FM_SB23_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB23_SB_META_MISO_t;
+  function len(x: FM_SB23_SB_META_MISO_t) return natural;
+  function width(x: FM_SB23_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB23_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB23_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB23_SB_META_MISO_t) return FM_SB23_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB23_SB_META_MISO_t) return FM_SB23_SB_META_MISO_t;
+  function nullify(t: FM_SB23_SB_META_MISO_t) return FM_SB23_SB_META_MISO_t;
+  function zeroed(t: FM_SB23_SB_META_MISO_t) return FM_SB23_SB_META_MISO_t;
 
   type FM_SB23_MON_t is record
     SB_MEM : FM_SB23_SB_MEM_MISO_t;
@@ -650,6 +2042,64 @@ package FM_CTRL is
   function nullify(t: FM_SB23_CTRL_t) return FM_SB23_CTRL_t;
   function zeroed(t: FM_SB23_CTRL_t) return FM_SB23_CTRL_t;
 
+  type FM_SB24_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB24_SB_MEM_MOSI_t;
+  function len(x: FM_SB24_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB24_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB24_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB24_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB24_SB_MEM_MOSI_t) return FM_SB24_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB24_SB_MEM_MOSI_t) return FM_SB24_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB24_SB_MEM_MOSI_t) return FM_SB24_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB24_SB_MEM_MOSI_t) return FM_SB24_SB_MEM_MOSI_t;
+
+  type FM_SB24_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB24_SB_MEM_MISO_t;
+  function len(x: FM_SB24_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB24_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB24_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB24_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB24_SB_MEM_MISO_t) return FM_SB24_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB24_SB_MEM_MISO_t) return FM_SB24_SB_MEM_MISO_t;
+  function nullify(t: FM_SB24_SB_MEM_MISO_t) return FM_SB24_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB24_SB_MEM_MISO_t) return FM_SB24_SB_MEM_MISO_t;
+
+  type FM_SB24_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB24_SB_META_MOSI_t;
+  function len(x: FM_SB24_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB24_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB24_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB24_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB24_SB_META_MOSI_t) return FM_SB24_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB24_SB_META_MOSI_t) return FM_SB24_SB_META_MOSI_t;
+  function nullify(t: FM_SB24_SB_META_MOSI_t) return FM_SB24_SB_META_MOSI_t;
+  function zeroed(t: FM_SB24_SB_META_MOSI_t) return FM_SB24_SB_META_MOSI_t;
+
+  type FM_SB24_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB24_SB_META_MISO_t;
+  function len(x: FM_SB24_SB_META_MISO_t) return natural;
+  function width(x: FM_SB24_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB24_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB24_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB24_SB_META_MISO_t) return FM_SB24_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB24_SB_META_MISO_t) return FM_SB24_SB_META_MISO_t;
+  function nullify(t: FM_SB24_SB_META_MISO_t) return FM_SB24_SB_META_MISO_t;
+  function zeroed(t: FM_SB24_SB_META_MISO_t) return FM_SB24_SB_META_MISO_t;
+
   type FM_SB24_MON_t is record
     SB_MEM : FM_SB24_SB_MEM_MISO_t;
     SB_META : FM_SB24_SB_META_MISO_t;
@@ -676,6 +2126,64 @@ package FM_CTRL is
   function nullify(t: FM_SB24_CTRL_t) return FM_SB24_CTRL_t;
   function zeroed(t: FM_SB24_CTRL_t) return FM_SB24_CTRL_t;
 
+  type FM_SB25_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(10-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB25_SB_MEM_MOSI_t;
+  function len(x: FM_SB25_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB25_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB25_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB25_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB25_SB_MEM_MOSI_t) return FM_SB25_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB25_SB_MEM_MOSI_t) return FM_SB25_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB25_SB_MEM_MOSI_t) return FM_SB25_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB25_SB_MEM_MOSI_t) return FM_SB25_SB_MEM_MOSI_t;
+
+  type FM_SB25_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB25_SB_MEM_MISO_t;
+  function len(x: FM_SB25_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB25_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB25_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB25_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB25_SB_MEM_MISO_t) return FM_SB25_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB25_SB_MEM_MISO_t) return FM_SB25_SB_MEM_MISO_t;
+  function nullify(t: FM_SB25_SB_MEM_MISO_t) return FM_SB25_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB25_SB_MEM_MISO_t) return FM_SB25_SB_MEM_MISO_t;
+
+  type FM_SB25_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(4-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB25_SB_META_MOSI_t;
+  function len(x: FM_SB25_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB25_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB25_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB25_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB25_SB_META_MOSI_t) return FM_SB25_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB25_SB_META_MOSI_t) return FM_SB25_SB_META_MOSI_t;
+  function nullify(t: FM_SB25_SB_META_MOSI_t) return FM_SB25_SB_META_MOSI_t;
+  function zeroed(t: FM_SB25_SB_META_MOSI_t) return FM_SB25_SB_META_MOSI_t;
+
+  type FM_SB25_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB25_SB_META_MISO_t;
+  function len(x: FM_SB25_SB_META_MISO_t) return natural;
+  function width(x: FM_SB25_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB25_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB25_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB25_SB_META_MISO_t) return FM_SB25_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB25_SB_META_MISO_t) return FM_SB25_SB_META_MISO_t;
+  function nullify(t: FM_SB25_SB_META_MISO_t) return FM_SB25_SB_META_MISO_t;
+  function zeroed(t: FM_SB25_SB_META_MISO_t) return FM_SB25_SB_META_MISO_t;
+
   type FM_SB25_MON_t is record
     SB_MEM : FM_SB25_SB_MEM_MISO_t;
     SB_META : FM_SB25_SB_META_MISO_t;
@@ -701,6 +2209,64 @@ package FM_CTRL is
   function convert(x: in std_logic_vector; t: FM_SB25_CTRL_t) return FM_SB25_CTRL_t;
   function nullify(t: FM_SB25_CTRL_t) return FM_SB25_CTRL_t;
   function zeroed(t: FM_SB25_CTRL_t) return FM_SB25_CTRL_t;
+
+  type FM_SB26_SB_MEM_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB26_SB_MEM_MOSI_t;
+  function len(x: FM_SB26_SB_MEM_MOSI_t) return natural;
+  function width(x: FM_SB26_SB_MEM_MOSI_t) return natural;
+  function vectorify(x: FM_SB26_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB26_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB26_SB_MEM_MOSI_t) return FM_SB26_SB_MEM_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB26_SB_MEM_MOSI_t) return FM_SB26_SB_MEM_MOSI_t;
+  function nullify(t: FM_SB26_SB_MEM_MOSI_t) return FM_SB26_SB_MEM_MOSI_t;
+  function zeroed(t: FM_SB26_SB_MEM_MOSI_t) return FM_SB26_SB_MEM_MOSI_t;
+
+  type FM_SB26_SB_MEM_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB26_SB_MEM_MISO_t;
+  function len(x: FM_SB26_SB_MEM_MISO_t) return natural;
+  function width(x: FM_SB26_SB_MEM_MISO_t) return natural;
+  function vectorify(x: FM_SB26_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB26_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB26_SB_MEM_MISO_t) return FM_SB26_SB_MEM_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB26_SB_MEM_MISO_t) return FM_SB26_SB_MEM_MISO_t;
+  function nullify(t: FM_SB26_SB_MEM_MISO_t) return FM_SB26_SB_MEM_MISO_t;
+  function zeroed(t: FM_SB26_SB_MEM_MISO_t) return FM_SB26_SB_MEM_MISO_t;
+
+  type FM_SB26_SB_META_MOSI_t is record
+    clk : std_logic;
+    enable : std_logic;
+    wr_enable : std_logic;
+    address : std_logic_vector(5-1 downto 0);
+    wr_data : std_logic_vector(32-1 downto 0);
+  end record FM_SB26_SB_META_MOSI_t;
+  function len(x: FM_SB26_SB_META_MOSI_t) return natural;
+  function width(x: FM_SB26_SB_META_MOSI_t) return natural;
+  function vectorify(x: FM_SB26_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB26_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB26_SB_META_MOSI_t) return FM_SB26_SB_META_MOSI_t;
+  function convert(x: in std_logic_vector; t: FM_SB26_SB_META_MOSI_t) return FM_SB26_SB_META_MOSI_t;
+  function nullify(t: FM_SB26_SB_META_MOSI_t) return FM_SB26_SB_META_MOSI_t;
+  function zeroed(t: FM_SB26_SB_META_MOSI_t) return FM_SB26_SB_META_MOSI_t;
+
+  type FM_SB26_SB_META_MISO_t is record
+    rd_data : std_logic_vector(32-1 downto 0);
+    rd_data_valid : std_logic;
+  end record FM_SB26_SB_META_MISO_t;
+  function len(x: FM_SB26_SB_META_MISO_t) return natural;
+  function width(x: FM_SB26_SB_META_MISO_t) return natural;
+  function vectorify(x: FM_SB26_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: FM_SB26_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: FM_SB26_SB_META_MISO_t) return FM_SB26_SB_META_MISO_t;
+  function convert(x: in std_logic_vector; t: FM_SB26_SB_META_MISO_t) return FM_SB26_SB_META_MISO_t;
+  function nullify(t: FM_SB26_SB_META_MISO_t) return FM_SB26_SB_META_MISO_t;
+  function zeroed(t: FM_SB26_SB_META_MISO_t) return FM_SB26_SB_META_MISO_t;
 
   type FM_SB26_MON_t is record
     SB_MEM : FM_SB26_SB_MEM_MISO_t;
@@ -904,6 +2470,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB0_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB0_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB0_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB0_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB0_SB_MEM_MOSI_t) return FM_SB0_SB_MEM_MOSI_t is
+    variable y: FM_SB0_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB0_SB_MEM_MOSI_t) return FM_SB0_SB_MEM_MOSI_t is
+    variable y: FM_SB0_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB0_SB_MEM_MOSI_t) return FM_SB0_SB_MEM_MOSI_t is
+  variable y: FM_SB0_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB0_SB_MEM_MOSI_t) return FM_SB0_SB_MEM_MOSI_t is
+  variable y: FM_SB0_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB0_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB0_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB0_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB0_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB0_SB_MEM_MISO_t) return FM_SB0_SB_MEM_MISO_t is
+    variable y: FM_SB0_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB0_SB_MEM_MISO_t) return FM_SB0_SB_MEM_MISO_t is
+    variable y: FM_SB0_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB0_SB_MEM_MISO_t) return FM_SB0_SB_MEM_MISO_t is
+  variable y: FM_SB0_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB0_SB_MEM_MISO_t) return FM_SB0_SB_MEM_MISO_t is
+  variable y: FM_SB0_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB0_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB0_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB0_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB0_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB0_SB_META_MOSI_t) return FM_SB0_SB_META_MOSI_t is
+    variable y: FM_SB0_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB0_SB_META_MOSI_t) return FM_SB0_SB_META_MOSI_t is
+    variable y: FM_SB0_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB0_SB_META_MOSI_t) return FM_SB0_SB_META_MOSI_t is
+  variable y: FM_SB0_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB0_SB_META_MOSI_t) return FM_SB0_SB_META_MOSI_t is
+  variable y: FM_SB0_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB0_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB0_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB0_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB0_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB0_SB_META_MISO_t) return FM_SB0_SB_META_MISO_t is
+    variable y: FM_SB0_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB0_SB_META_MISO_t) return FM_SB0_SB_META_MISO_t is
+    variable y: FM_SB0_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB0_SB_META_MISO_t) return FM_SB0_SB_META_MISO_t is
+  variable y: FM_SB0_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB0_SB_META_MISO_t) return FM_SB0_SB_META_MISO_t is
+  variable y: FM_SB0_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB0_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -1079,6 +3121,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB1_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB1_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB1_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB1_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB1_SB_MEM_MOSI_t) return FM_SB1_SB_MEM_MOSI_t is
+    variable y: FM_SB1_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB1_SB_MEM_MOSI_t) return FM_SB1_SB_MEM_MOSI_t is
+    variable y: FM_SB1_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB1_SB_MEM_MOSI_t) return FM_SB1_SB_MEM_MOSI_t is
+  variable y: FM_SB1_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB1_SB_MEM_MOSI_t) return FM_SB1_SB_MEM_MOSI_t is
+  variable y: FM_SB1_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB1_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB1_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB1_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB1_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB1_SB_MEM_MISO_t) return FM_SB1_SB_MEM_MISO_t is
+    variable y: FM_SB1_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB1_SB_MEM_MISO_t) return FM_SB1_SB_MEM_MISO_t is
+    variable y: FM_SB1_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB1_SB_MEM_MISO_t) return FM_SB1_SB_MEM_MISO_t is
+  variable y: FM_SB1_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB1_SB_MEM_MISO_t) return FM_SB1_SB_MEM_MISO_t is
+  variable y: FM_SB1_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB1_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB1_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB1_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB1_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB1_SB_META_MOSI_t) return FM_SB1_SB_META_MOSI_t is
+    variable y: FM_SB1_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB1_SB_META_MOSI_t) return FM_SB1_SB_META_MOSI_t is
+    variable y: FM_SB1_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB1_SB_META_MOSI_t) return FM_SB1_SB_META_MOSI_t is
+  variable y: FM_SB1_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB1_SB_META_MOSI_t) return FM_SB1_SB_META_MOSI_t is
+  variable y: FM_SB1_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB1_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB1_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB1_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB1_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB1_SB_META_MISO_t) return FM_SB1_SB_META_MISO_t is
+    variable y: FM_SB1_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB1_SB_META_MISO_t) return FM_SB1_SB_META_MISO_t is
+    variable y: FM_SB1_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB1_SB_META_MISO_t) return FM_SB1_SB_META_MISO_t is
+  variable y: FM_SB1_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB1_SB_META_MISO_t) return FM_SB1_SB_META_MISO_t is
+  variable y: FM_SB1_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -1260,6 +3778,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB2_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB2_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB2_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB2_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB2_SB_MEM_MOSI_t) return FM_SB2_SB_MEM_MOSI_t is
+    variable y: FM_SB2_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB2_SB_MEM_MOSI_t) return FM_SB2_SB_MEM_MOSI_t is
+    variable y: FM_SB2_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB2_SB_MEM_MOSI_t) return FM_SB2_SB_MEM_MOSI_t is
+  variable y: FM_SB2_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB2_SB_MEM_MOSI_t) return FM_SB2_SB_MEM_MOSI_t is
+  variable y: FM_SB2_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB2_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB2_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB2_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB2_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB2_SB_MEM_MISO_t) return FM_SB2_SB_MEM_MISO_t is
+    variable y: FM_SB2_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB2_SB_MEM_MISO_t) return FM_SB2_SB_MEM_MISO_t is
+    variable y: FM_SB2_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB2_SB_MEM_MISO_t) return FM_SB2_SB_MEM_MISO_t is
+  variable y: FM_SB2_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB2_SB_MEM_MISO_t) return FM_SB2_SB_MEM_MISO_t is
+  variable y: FM_SB2_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB2_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB2_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB2_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB2_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB2_SB_META_MOSI_t) return FM_SB2_SB_META_MOSI_t is
+    variable y: FM_SB2_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB2_SB_META_MOSI_t) return FM_SB2_SB_META_MOSI_t is
+    variable y: FM_SB2_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB2_SB_META_MOSI_t) return FM_SB2_SB_META_MOSI_t is
+  variable y: FM_SB2_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB2_SB_META_MOSI_t) return FM_SB2_SB_META_MOSI_t is
+  variable y: FM_SB2_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB2_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB2_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB2_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB2_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB2_SB_META_MISO_t) return FM_SB2_SB_META_MISO_t is
+    variable y: FM_SB2_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB2_SB_META_MISO_t) return FM_SB2_SB_META_MISO_t is
+    variable y: FM_SB2_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB2_SB_META_MISO_t) return FM_SB2_SB_META_MISO_t is
+  variable y: FM_SB2_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB2_SB_META_MISO_t) return FM_SB2_SB_META_MISO_t is
+  variable y: FM_SB2_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB2_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -1435,6 +4429,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB3_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB3_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB3_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB3_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB3_SB_MEM_MOSI_t) return FM_SB3_SB_MEM_MOSI_t is
+    variable y: FM_SB3_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB3_SB_MEM_MOSI_t) return FM_SB3_SB_MEM_MOSI_t is
+    variable y: FM_SB3_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB3_SB_MEM_MOSI_t) return FM_SB3_SB_MEM_MOSI_t is
+  variable y: FM_SB3_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB3_SB_MEM_MOSI_t) return FM_SB3_SB_MEM_MOSI_t is
+  variable y: FM_SB3_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB3_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB3_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB3_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB3_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB3_SB_MEM_MISO_t) return FM_SB3_SB_MEM_MISO_t is
+    variable y: FM_SB3_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB3_SB_MEM_MISO_t) return FM_SB3_SB_MEM_MISO_t is
+    variable y: FM_SB3_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB3_SB_MEM_MISO_t) return FM_SB3_SB_MEM_MISO_t is
+  variable y: FM_SB3_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB3_SB_MEM_MISO_t) return FM_SB3_SB_MEM_MISO_t is
+  variable y: FM_SB3_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB3_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB3_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB3_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB3_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB3_SB_META_MOSI_t) return FM_SB3_SB_META_MOSI_t is
+    variable y: FM_SB3_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB3_SB_META_MOSI_t) return FM_SB3_SB_META_MOSI_t is
+    variable y: FM_SB3_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB3_SB_META_MOSI_t) return FM_SB3_SB_META_MOSI_t is
+  variable y: FM_SB3_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB3_SB_META_MOSI_t) return FM_SB3_SB_META_MOSI_t is
+  variable y: FM_SB3_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB3_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB3_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB3_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB3_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB3_SB_META_MISO_t) return FM_SB3_SB_META_MISO_t is
+    variable y: FM_SB3_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB3_SB_META_MISO_t) return FM_SB3_SB_META_MISO_t is
+    variable y: FM_SB3_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB3_SB_META_MISO_t) return FM_SB3_SB_META_MISO_t is
+  variable y: FM_SB3_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB3_SB_META_MISO_t) return FM_SB3_SB_META_MISO_t is
+  variable y: FM_SB3_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -1616,6 +5086,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB4_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB4_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB4_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB4_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB4_SB_MEM_MOSI_t) return FM_SB4_SB_MEM_MOSI_t is
+    variable y: FM_SB4_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB4_SB_MEM_MOSI_t) return FM_SB4_SB_MEM_MOSI_t is
+    variable y: FM_SB4_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB4_SB_MEM_MOSI_t) return FM_SB4_SB_MEM_MOSI_t is
+  variable y: FM_SB4_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB4_SB_MEM_MOSI_t) return FM_SB4_SB_MEM_MOSI_t is
+  variable y: FM_SB4_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB4_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB4_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB4_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB4_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB4_SB_MEM_MISO_t) return FM_SB4_SB_MEM_MISO_t is
+    variable y: FM_SB4_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB4_SB_MEM_MISO_t) return FM_SB4_SB_MEM_MISO_t is
+    variable y: FM_SB4_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB4_SB_MEM_MISO_t) return FM_SB4_SB_MEM_MISO_t is
+  variable y: FM_SB4_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB4_SB_MEM_MISO_t) return FM_SB4_SB_MEM_MISO_t is
+  variable y: FM_SB4_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB4_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB4_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB4_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB4_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB4_SB_META_MOSI_t) return FM_SB4_SB_META_MOSI_t is
+    variable y: FM_SB4_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB4_SB_META_MOSI_t) return FM_SB4_SB_META_MOSI_t is
+    variable y: FM_SB4_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB4_SB_META_MOSI_t) return FM_SB4_SB_META_MOSI_t is
+  variable y: FM_SB4_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB4_SB_META_MOSI_t) return FM_SB4_SB_META_MOSI_t is
+  variable y: FM_SB4_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB4_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB4_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB4_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB4_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB4_SB_META_MISO_t) return FM_SB4_SB_META_MISO_t is
+    variable y: FM_SB4_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB4_SB_META_MISO_t) return FM_SB4_SB_META_MISO_t is
+    variable y: FM_SB4_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB4_SB_META_MISO_t) return FM_SB4_SB_META_MISO_t is
+  variable y: FM_SB4_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB4_SB_META_MISO_t) return FM_SB4_SB_META_MISO_t is
+  variable y: FM_SB4_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB4_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -1791,6 +5737,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB5_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB5_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB5_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB5_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB5_SB_MEM_MOSI_t) return FM_SB5_SB_MEM_MOSI_t is
+    variable y: FM_SB5_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB5_SB_MEM_MOSI_t) return FM_SB5_SB_MEM_MOSI_t is
+    variable y: FM_SB5_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB5_SB_MEM_MOSI_t) return FM_SB5_SB_MEM_MOSI_t is
+  variable y: FM_SB5_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB5_SB_MEM_MOSI_t) return FM_SB5_SB_MEM_MOSI_t is
+  variable y: FM_SB5_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB5_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB5_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB5_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB5_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB5_SB_MEM_MISO_t) return FM_SB5_SB_MEM_MISO_t is
+    variable y: FM_SB5_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB5_SB_MEM_MISO_t) return FM_SB5_SB_MEM_MISO_t is
+    variable y: FM_SB5_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB5_SB_MEM_MISO_t) return FM_SB5_SB_MEM_MISO_t is
+  variable y: FM_SB5_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB5_SB_MEM_MISO_t) return FM_SB5_SB_MEM_MISO_t is
+  variable y: FM_SB5_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB5_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB5_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB5_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB5_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB5_SB_META_MOSI_t) return FM_SB5_SB_META_MOSI_t is
+    variable y: FM_SB5_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB5_SB_META_MOSI_t) return FM_SB5_SB_META_MOSI_t is
+    variable y: FM_SB5_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB5_SB_META_MOSI_t) return FM_SB5_SB_META_MOSI_t is
+  variable y: FM_SB5_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB5_SB_META_MOSI_t) return FM_SB5_SB_META_MOSI_t is
+  variable y: FM_SB5_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB5_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB5_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB5_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB5_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB5_SB_META_MISO_t) return FM_SB5_SB_META_MISO_t is
+    variable y: FM_SB5_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB5_SB_META_MISO_t) return FM_SB5_SB_META_MISO_t is
+    variable y: FM_SB5_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB5_SB_META_MISO_t) return FM_SB5_SB_META_MISO_t is
+  variable y: FM_SB5_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB5_SB_META_MISO_t) return FM_SB5_SB_META_MISO_t is
+  variable y: FM_SB5_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -1972,6 +6394,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB6_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB6_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB6_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB6_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB6_SB_MEM_MOSI_t) return FM_SB6_SB_MEM_MOSI_t is
+    variable y: FM_SB6_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB6_SB_MEM_MOSI_t) return FM_SB6_SB_MEM_MOSI_t is
+    variable y: FM_SB6_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB6_SB_MEM_MOSI_t) return FM_SB6_SB_MEM_MOSI_t is
+  variable y: FM_SB6_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB6_SB_MEM_MOSI_t) return FM_SB6_SB_MEM_MOSI_t is
+  variable y: FM_SB6_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB6_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB6_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB6_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB6_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB6_SB_MEM_MISO_t) return FM_SB6_SB_MEM_MISO_t is
+    variable y: FM_SB6_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB6_SB_MEM_MISO_t) return FM_SB6_SB_MEM_MISO_t is
+    variable y: FM_SB6_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB6_SB_MEM_MISO_t) return FM_SB6_SB_MEM_MISO_t is
+  variable y: FM_SB6_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB6_SB_MEM_MISO_t) return FM_SB6_SB_MEM_MISO_t is
+  variable y: FM_SB6_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB6_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB6_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB6_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB6_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB6_SB_META_MOSI_t) return FM_SB6_SB_META_MOSI_t is
+    variable y: FM_SB6_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB6_SB_META_MOSI_t) return FM_SB6_SB_META_MOSI_t is
+    variable y: FM_SB6_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB6_SB_META_MOSI_t) return FM_SB6_SB_META_MOSI_t is
+  variable y: FM_SB6_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB6_SB_META_MOSI_t) return FM_SB6_SB_META_MOSI_t is
+  variable y: FM_SB6_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB6_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB6_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB6_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB6_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB6_SB_META_MISO_t) return FM_SB6_SB_META_MISO_t is
+    variable y: FM_SB6_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB6_SB_META_MISO_t) return FM_SB6_SB_META_MISO_t is
+    variable y: FM_SB6_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB6_SB_META_MISO_t) return FM_SB6_SB_META_MISO_t is
+  variable y: FM_SB6_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB6_SB_META_MISO_t) return FM_SB6_SB_META_MISO_t is
+  variable y: FM_SB6_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB6_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -2147,6 +7045,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB7_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB7_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB7_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB7_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB7_SB_MEM_MOSI_t) return FM_SB7_SB_MEM_MOSI_t is
+    variable y: FM_SB7_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB7_SB_MEM_MOSI_t) return FM_SB7_SB_MEM_MOSI_t is
+    variable y: FM_SB7_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB7_SB_MEM_MOSI_t) return FM_SB7_SB_MEM_MOSI_t is
+  variable y: FM_SB7_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB7_SB_MEM_MOSI_t) return FM_SB7_SB_MEM_MOSI_t is
+  variable y: FM_SB7_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB7_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB7_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB7_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB7_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB7_SB_MEM_MISO_t) return FM_SB7_SB_MEM_MISO_t is
+    variable y: FM_SB7_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB7_SB_MEM_MISO_t) return FM_SB7_SB_MEM_MISO_t is
+    variable y: FM_SB7_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB7_SB_MEM_MISO_t) return FM_SB7_SB_MEM_MISO_t is
+  variable y: FM_SB7_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB7_SB_MEM_MISO_t) return FM_SB7_SB_MEM_MISO_t is
+  variable y: FM_SB7_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB7_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB7_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB7_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB7_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB7_SB_META_MOSI_t) return FM_SB7_SB_META_MOSI_t is
+    variable y: FM_SB7_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB7_SB_META_MOSI_t) return FM_SB7_SB_META_MOSI_t is
+    variable y: FM_SB7_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB7_SB_META_MOSI_t) return FM_SB7_SB_META_MOSI_t is
+  variable y: FM_SB7_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB7_SB_META_MOSI_t) return FM_SB7_SB_META_MOSI_t is
+  variable y: FM_SB7_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB7_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB7_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB7_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB7_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB7_SB_META_MISO_t) return FM_SB7_SB_META_MISO_t is
+    variable y: FM_SB7_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB7_SB_META_MISO_t) return FM_SB7_SB_META_MISO_t is
+    variable y: FM_SB7_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB7_SB_META_MISO_t) return FM_SB7_SB_META_MISO_t is
+  variable y: FM_SB7_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB7_SB_META_MISO_t) return FM_SB7_SB_META_MISO_t is
+  variable y: FM_SB7_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -2328,6 +7702,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB8_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB8_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB8_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB8_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB8_SB_MEM_MOSI_t) return FM_SB8_SB_MEM_MOSI_t is
+    variable y: FM_SB8_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB8_SB_MEM_MOSI_t) return FM_SB8_SB_MEM_MOSI_t is
+    variable y: FM_SB8_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB8_SB_MEM_MOSI_t) return FM_SB8_SB_MEM_MOSI_t is
+  variable y: FM_SB8_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB8_SB_MEM_MOSI_t) return FM_SB8_SB_MEM_MOSI_t is
+  variable y: FM_SB8_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB8_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB8_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB8_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB8_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB8_SB_MEM_MISO_t) return FM_SB8_SB_MEM_MISO_t is
+    variable y: FM_SB8_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB8_SB_MEM_MISO_t) return FM_SB8_SB_MEM_MISO_t is
+    variable y: FM_SB8_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB8_SB_MEM_MISO_t) return FM_SB8_SB_MEM_MISO_t is
+  variable y: FM_SB8_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB8_SB_MEM_MISO_t) return FM_SB8_SB_MEM_MISO_t is
+  variable y: FM_SB8_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB8_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB8_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB8_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB8_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB8_SB_META_MOSI_t) return FM_SB8_SB_META_MOSI_t is
+    variable y: FM_SB8_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB8_SB_META_MOSI_t) return FM_SB8_SB_META_MOSI_t is
+    variable y: FM_SB8_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB8_SB_META_MOSI_t) return FM_SB8_SB_META_MOSI_t is
+  variable y: FM_SB8_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB8_SB_META_MOSI_t) return FM_SB8_SB_META_MOSI_t is
+  variable y: FM_SB8_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB8_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB8_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB8_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB8_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB8_SB_META_MISO_t) return FM_SB8_SB_META_MISO_t is
+    variable y: FM_SB8_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB8_SB_META_MISO_t) return FM_SB8_SB_META_MISO_t is
+    variable y: FM_SB8_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB8_SB_META_MISO_t) return FM_SB8_SB_META_MISO_t is
+  variable y: FM_SB8_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB8_SB_META_MISO_t) return FM_SB8_SB_META_MISO_t is
+  variable y: FM_SB8_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB8_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -2503,6 +8353,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB9_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB9_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB9_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB9_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB9_SB_MEM_MOSI_t) return FM_SB9_SB_MEM_MOSI_t is
+    variable y: FM_SB9_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB9_SB_MEM_MOSI_t) return FM_SB9_SB_MEM_MOSI_t is
+    variable y: FM_SB9_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB9_SB_MEM_MOSI_t) return FM_SB9_SB_MEM_MOSI_t is
+  variable y: FM_SB9_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB9_SB_MEM_MOSI_t) return FM_SB9_SB_MEM_MOSI_t is
+  variable y: FM_SB9_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB9_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB9_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB9_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB9_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB9_SB_MEM_MISO_t) return FM_SB9_SB_MEM_MISO_t is
+    variable y: FM_SB9_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB9_SB_MEM_MISO_t) return FM_SB9_SB_MEM_MISO_t is
+    variable y: FM_SB9_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB9_SB_MEM_MISO_t) return FM_SB9_SB_MEM_MISO_t is
+  variable y: FM_SB9_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB9_SB_MEM_MISO_t) return FM_SB9_SB_MEM_MISO_t is
+  variable y: FM_SB9_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB9_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB9_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB9_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB9_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB9_SB_META_MOSI_t) return FM_SB9_SB_META_MOSI_t is
+    variable y: FM_SB9_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB9_SB_META_MOSI_t) return FM_SB9_SB_META_MOSI_t is
+    variable y: FM_SB9_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB9_SB_META_MOSI_t) return FM_SB9_SB_META_MOSI_t is
+  variable y: FM_SB9_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB9_SB_META_MOSI_t) return FM_SB9_SB_META_MOSI_t is
+  variable y: FM_SB9_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB9_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB9_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB9_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB9_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB9_SB_META_MISO_t) return FM_SB9_SB_META_MISO_t is
+    variable y: FM_SB9_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB9_SB_META_MISO_t) return FM_SB9_SB_META_MISO_t is
+    variable y: FM_SB9_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB9_SB_META_MISO_t) return FM_SB9_SB_META_MISO_t is
+  variable y: FM_SB9_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB9_SB_META_MISO_t) return FM_SB9_SB_META_MISO_t is
+  variable y: FM_SB9_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -2684,6 +9010,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB10_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB10_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB10_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB10_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB10_SB_MEM_MOSI_t) return FM_SB10_SB_MEM_MOSI_t is
+    variable y: FM_SB10_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB10_SB_MEM_MOSI_t) return FM_SB10_SB_MEM_MOSI_t is
+    variable y: FM_SB10_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB10_SB_MEM_MOSI_t) return FM_SB10_SB_MEM_MOSI_t is
+  variable y: FM_SB10_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB10_SB_MEM_MOSI_t) return FM_SB10_SB_MEM_MOSI_t is
+  variable y: FM_SB10_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB10_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB10_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB10_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB10_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB10_SB_MEM_MISO_t) return FM_SB10_SB_MEM_MISO_t is
+    variable y: FM_SB10_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB10_SB_MEM_MISO_t) return FM_SB10_SB_MEM_MISO_t is
+    variable y: FM_SB10_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB10_SB_MEM_MISO_t) return FM_SB10_SB_MEM_MISO_t is
+  variable y: FM_SB10_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB10_SB_MEM_MISO_t) return FM_SB10_SB_MEM_MISO_t is
+  variable y: FM_SB10_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB10_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB10_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB10_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB10_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB10_SB_META_MOSI_t) return FM_SB10_SB_META_MOSI_t is
+    variable y: FM_SB10_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB10_SB_META_MOSI_t) return FM_SB10_SB_META_MOSI_t is
+    variable y: FM_SB10_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB10_SB_META_MOSI_t) return FM_SB10_SB_META_MOSI_t is
+  variable y: FM_SB10_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB10_SB_META_MOSI_t) return FM_SB10_SB_META_MOSI_t is
+  variable y: FM_SB10_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB10_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB10_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB10_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB10_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB10_SB_META_MISO_t) return FM_SB10_SB_META_MISO_t is
+    variable y: FM_SB10_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB10_SB_META_MISO_t) return FM_SB10_SB_META_MISO_t is
+    variable y: FM_SB10_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB10_SB_META_MISO_t) return FM_SB10_SB_META_MISO_t is
+  variable y: FM_SB10_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB10_SB_META_MISO_t) return FM_SB10_SB_META_MISO_t is
+  variable y: FM_SB10_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB10_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -2859,6 +9661,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB11_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB11_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB11_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB11_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB11_SB_MEM_MOSI_t) return FM_SB11_SB_MEM_MOSI_t is
+    variable y: FM_SB11_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB11_SB_MEM_MOSI_t) return FM_SB11_SB_MEM_MOSI_t is
+    variable y: FM_SB11_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB11_SB_MEM_MOSI_t) return FM_SB11_SB_MEM_MOSI_t is
+  variable y: FM_SB11_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB11_SB_MEM_MOSI_t) return FM_SB11_SB_MEM_MOSI_t is
+  variable y: FM_SB11_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB11_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB11_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB11_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB11_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB11_SB_MEM_MISO_t) return FM_SB11_SB_MEM_MISO_t is
+    variable y: FM_SB11_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB11_SB_MEM_MISO_t) return FM_SB11_SB_MEM_MISO_t is
+    variable y: FM_SB11_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB11_SB_MEM_MISO_t) return FM_SB11_SB_MEM_MISO_t is
+  variable y: FM_SB11_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB11_SB_MEM_MISO_t) return FM_SB11_SB_MEM_MISO_t is
+  variable y: FM_SB11_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB11_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB11_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB11_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB11_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB11_SB_META_MOSI_t) return FM_SB11_SB_META_MOSI_t is
+    variable y: FM_SB11_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB11_SB_META_MOSI_t) return FM_SB11_SB_META_MOSI_t is
+    variable y: FM_SB11_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB11_SB_META_MOSI_t) return FM_SB11_SB_META_MOSI_t is
+  variable y: FM_SB11_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB11_SB_META_MOSI_t) return FM_SB11_SB_META_MOSI_t is
+  variable y: FM_SB11_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB11_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB11_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB11_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB11_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB11_SB_META_MISO_t) return FM_SB11_SB_META_MISO_t is
+    variable y: FM_SB11_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB11_SB_META_MISO_t) return FM_SB11_SB_META_MISO_t is
+    variable y: FM_SB11_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB11_SB_META_MISO_t) return FM_SB11_SB_META_MISO_t is
+  variable y: FM_SB11_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB11_SB_META_MISO_t) return FM_SB11_SB_META_MISO_t is
+  variable y: FM_SB11_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -3040,6 +10318,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB12_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB12_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB12_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB12_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB12_SB_MEM_MOSI_t) return FM_SB12_SB_MEM_MOSI_t is
+    variable y: FM_SB12_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB12_SB_MEM_MOSI_t) return FM_SB12_SB_MEM_MOSI_t is
+    variable y: FM_SB12_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB12_SB_MEM_MOSI_t) return FM_SB12_SB_MEM_MOSI_t is
+  variable y: FM_SB12_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB12_SB_MEM_MOSI_t) return FM_SB12_SB_MEM_MOSI_t is
+  variable y: FM_SB12_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB12_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB12_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB12_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB12_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB12_SB_MEM_MISO_t) return FM_SB12_SB_MEM_MISO_t is
+    variable y: FM_SB12_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB12_SB_MEM_MISO_t) return FM_SB12_SB_MEM_MISO_t is
+    variable y: FM_SB12_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB12_SB_MEM_MISO_t) return FM_SB12_SB_MEM_MISO_t is
+  variable y: FM_SB12_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB12_SB_MEM_MISO_t) return FM_SB12_SB_MEM_MISO_t is
+  variable y: FM_SB12_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB12_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB12_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB12_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB12_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB12_SB_META_MOSI_t) return FM_SB12_SB_META_MOSI_t is
+    variable y: FM_SB12_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB12_SB_META_MOSI_t) return FM_SB12_SB_META_MOSI_t is
+    variable y: FM_SB12_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB12_SB_META_MOSI_t) return FM_SB12_SB_META_MOSI_t is
+  variable y: FM_SB12_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB12_SB_META_MOSI_t) return FM_SB12_SB_META_MOSI_t is
+  variable y: FM_SB12_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB12_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB12_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB12_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB12_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB12_SB_META_MISO_t) return FM_SB12_SB_META_MISO_t is
+    variable y: FM_SB12_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB12_SB_META_MISO_t) return FM_SB12_SB_META_MISO_t is
+    variable y: FM_SB12_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB12_SB_META_MISO_t) return FM_SB12_SB_META_MISO_t is
+  variable y: FM_SB12_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB12_SB_META_MISO_t) return FM_SB12_SB_META_MISO_t is
+  variable y: FM_SB12_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB12_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -3215,6 +10969,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB13_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB13_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB13_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB13_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB13_SB_MEM_MOSI_t) return FM_SB13_SB_MEM_MOSI_t is
+    variable y: FM_SB13_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB13_SB_MEM_MOSI_t) return FM_SB13_SB_MEM_MOSI_t is
+    variable y: FM_SB13_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB13_SB_MEM_MOSI_t) return FM_SB13_SB_MEM_MOSI_t is
+  variable y: FM_SB13_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB13_SB_MEM_MOSI_t) return FM_SB13_SB_MEM_MOSI_t is
+  variable y: FM_SB13_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB13_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB13_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB13_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB13_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB13_SB_MEM_MISO_t) return FM_SB13_SB_MEM_MISO_t is
+    variable y: FM_SB13_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB13_SB_MEM_MISO_t) return FM_SB13_SB_MEM_MISO_t is
+    variable y: FM_SB13_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB13_SB_MEM_MISO_t) return FM_SB13_SB_MEM_MISO_t is
+  variable y: FM_SB13_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB13_SB_MEM_MISO_t) return FM_SB13_SB_MEM_MISO_t is
+  variable y: FM_SB13_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB13_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB13_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB13_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB13_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB13_SB_META_MOSI_t) return FM_SB13_SB_META_MOSI_t is
+    variable y: FM_SB13_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB13_SB_META_MOSI_t) return FM_SB13_SB_META_MOSI_t is
+    variable y: FM_SB13_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB13_SB_META_MOSI_t) return FM_SB13_SB_META_MOSI_t is
+  variable y: FM_SB13_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB13_SB_META_MOSI_t) return FM_SB13_SB_META_MOSI_t is
+  variable y: FM_SB13_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB13_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB13_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB13_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB13_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB13_SB_META_MISO_t) return FM_SB13_SB_META_MISO_t is
+    variable y: FM_SB13_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB13_SB_META_MISO_t) return FM_SB13_SB_META_MISO_t is
+    variable y: FM_SB13_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB13_SB_META_MISO_t) return FM_SB13_SB_META_MISO_t is
+  variable y: FM_SB13_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB13_SB_META_MISO_t) return FM_SB13_SB_META_MISO_t is
+  variable y: FM_SB13_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -3396,6 +11626,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB14_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB14_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB14_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB14_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB14_SB_MEM_MOSI_t) return FM_SB14_SB_MEM_MOSI_t is
+    variable y: FM_SB14_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB14_SB_MEM_MOSI_t) return FM_SB14_SB_MEM_MOSI_t is
+    variable y: FM_SB14_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB14_SB_MEM_MOSI_t) return FM_SB14_SB_MEM_MOSI_t is
+  variable y: FM_SB14_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB14_SB_MEM_MOSI_t) return FM_SB14_SB_MEM_MOSI_t is
+  variable y: FM_SB14_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB14_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB14_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB14_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB14_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB14_SB_MEM_MISO_t) return FM_SB14_SB_MEM_MISO_t is
+    variable y: FM_SB14_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB14_SB_MEM_MISO_t) return FM_SB14_SB_MEM_MISO_t is
+    variable y: FM_SB14_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB14_SB_MEM_MISO_t) return FM_SB14_SB_MEM_MISO_t is
+  variable y: FM_SB14_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB14_SB_MEM_MISO_t) return FM_SB14_SB_MEM_MISO_t is
+  variable y: FM_SB14_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB14_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB14_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB14_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB14_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB14_SB_META_MOSI_t) return FM_SB14_SB_META_MOSI_t is
+    variable y: FM_SB14_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB14_SB_META_MOSI_t) return FM_SB14_SB_META_MOSI_t is
+    variable y: FM_SB14_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB14_SB_META_MOSI_t) return FM_SB14_SB_META_MOSI_t is
+  variable y: FM_SB14_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB14_SB_META_MOSI_t) return FM_SB14_SB_META_MOSI_t is
+  variable y: FM_SB14_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB14_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB14_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB14_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB14_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB14_SB_META_MISO_t) return FM_SB14_SB_META_MISO_t is
+    variable y: FM_SB14_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB14_SB_META_MISO_t) return FM_SB14_SB_META_MISO_t is
+    variable y: FM_SB14_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB14_SB_META_MISO_t) return FM_SB14_SB_META_MISO_t is
+  variable y: FM_SB14_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB14_SB_META_MISO_t) return FM_SB14_SB_META_MISO_t is
+  variable y: FM_SB14_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB14_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -3571,6 +12277,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB15_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB15_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB15_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB15_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB15_SB_MEM_MOSI_t) return FM_SB15_SB_MEM_MOSI_t is
+    variable y: FM_SB15_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB15_SB_MEM_MOSI_t) return FM_SB15_SB_MEM_MOSI_t is
+    variable y: FM_SB15_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB15_SB_MEM_MOSI_t) return FM_SB15_SB_MEM_MOSI_t is
+  variable y: FM_SB15_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB15_SB_MEM_MOSI_t) return FM_SB15_SB_MEM_MOSI_t is
+  variable y: FM_SB15_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB15_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB15_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB15_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB15_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB15_SB_MEM_MISO_t) return FM_SB15_SB_MEM_MISO_t is
+    variable y: FM_SB15_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB15_SB_MEM_MISO_t) return FM_SB15_SB_MEM_MISO_t is
+    variable y: FM_SB15_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB15_SB_MEM_MISO_t) return FM_SB15_SB_MEM_MISO_t is
+  variable y: FM_SB15_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB15_SB_MEM_MISO_t) return FM_SB15_SB_MEM_MISO_t is
+  variable y: FM_SB15_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB15_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB15_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB15_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB15_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB15_SB_META_MOSI_t) return FM_SB15_SB_META_MOSI_t is
+    variable y: FM_SB15_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB15_SB_META_MOSI_t) return FM_SB15_SB_META_MOSI_t is
+    variable y: FM_SB15_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB15_SB_META_MOSI_t) return FM_SB15_SB_META_MOSI_t is
+  variable y: FM_SB15_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB15_SB_META_MOSI_t) return FM_SB15_SB_META_MOSI_t is
+  variable y: FM_SB15_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB15_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB15_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB15_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB15_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB15_SB_META_MISO_t) return FM_SB15_SB_META_MISO_t is
+    variable y: FM_SB15_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB15_SB_META_MISO_t) return FM_SB15_SB_META_MISO_t is
+    variable y: FM_SB15_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB15_SB_META_MISO_t) return FM_SB15_SB_META_MISO_t is
+  variable y: FM_SB15_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB15_SB_META_MISO_t) return FM_SB15_SB_META_MISO_t is
+  variable y: FM_SB15_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -3752,6 +12934,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB16_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB16_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB16_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB16_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB16_SB_MEM_MOSI_t) return FM_SB16_SB_MEM_MOSI_t is
+    variable y: FM_SB16_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB16_SB_MEM_MOSI_t) return FM_SB16_SB_MEM_MOSI_t is
+    variable y: FM_SB16_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB16_SB_MEM_MOSI_t) return FM_SB16_SB_MEM_MOSI_t is
+  variable y: FM_SB16_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB16_SB_MEM_MOSI_t) return FM_SB16_SB_MEM_MOSI_t is
+  variable y: FM_SB16_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB16_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB16_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB16_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB16_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB16_SB_MEM_MISO_t) return FM_SB16_SB_MEM_MISO_t is
+    variable y: FM_SB16_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB16_SB_MEM_MISO_t) return FM_SB16_SB_MEM_MISO_t is
+    variable y: FM_SB16_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB16_SB_MEM_MISO_t) return FM_SB16_SB_MEM_MISO_t is
+  variable y: FM_SB16_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB16_SB_MEM_MISO_t) return FM_SB16_SB_MEM_MISO_t is
+  variable y: FM_SB16_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB16_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB16_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB16_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB16_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB16_SB_META_MOSI_t) return FM_SB16_SB_META_MOSI_t is
+    variable y: FM_SB16_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB16_SB_META_MOSI_t) return FM_SB16_SB_META_MOSI_t is
+    variable y: FM_SB16_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB16_SB_META_MOSI_t) return FM_SB16_SB_META_MOSI_t is
+  variable y: FM_SB16_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB16_SB_META_MOSI_t) return FM_SB16_SB_META_MOSI_t is
+  variable y: FM_SB16_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB16_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB16_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB16_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB16_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB16_SB_META_MISO_t) return FM_SB16_SB_META_MISO_t is
+    variable y: FM_SB16_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB16_SB_META_MISO_t) return FM_SB16_SB_META_MISO_t is
+    variable y: FM_SB16_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB16_SB_META_MISO_t) return FM_SB16_SB_META_MISO_t is
+  variable y: FM_SB16_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB16_SB_META_MISO_t) return FM_SB16_SB_META_MISO_t is
+  variable y: FM_SB16_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB16_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -3927,6 +13585,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB17_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB17_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB17_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB17_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB17_SB_MEM_MOSI_t) return FM_SB17_SB_MEM_MOSI_t is
+    variable y: FM_SB17_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB17_SB_MEM_MOSI_t) return FM_SB17_SB_MEM_MOSI_t is
+    variable y: FM_SB17_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB17_SB_MEM_MOSI_t) return FM_SB17_SB_MEM_MOSI_t is
+  variable y: FM_SB17_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB17_SB_MEM_MOSI_t) return FM_SB17_SB_MEM_MOSI_t is
+  variable y: FM_SB17_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB17_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB17_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB17_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB17_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB17_SB_MEM_MISO_t) return FM_SB17_SB_MEM_MISO_t is
+    variable y: FM_SB17_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB17_SB_MEM_MISO_t) return FM_SB17_SB_MEM_MISO_t is
+    variable y: FM_SB17_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB17_SB_MEM_MISO_t) return FM_SB17_SB_MEM_MISO_t is
+  variable y: FM_SB17_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB17_SB_MEM_MISO_t) return FM_SB17_SB_MEM_MISO_t is
+  variable y: FM_SB17_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB17_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB17_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB17_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB17_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB17_SB_META_MOSI_t) return FM_SB17_SB_META_MOSI_t is
+    variable y: FM_SB17_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB17_SB_META_MOSI_t) return FM_SB17_SB_META_MOSI_t is
+    variable y: FM_SB17_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB17_SB_META_MOSI_t) return FM_SB17_SB_META_MOSI_t is
+  variable y: FM_SB17_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB17_SB_META_MOSI_t) return FM_SB17_SB_META_MOSI_t is
+  variable y: FM_SB17_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB17_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB17_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB17_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB17_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB17_SB_META_MISO_t) return FM_SB17_SB_META_MISO_t is
+    variable y: FM_SB17_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB17_SB_META_MISO_t) return FM_SB17_SB_META_MISO_t is
+    variable y: FM_SB17_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB17_SB_META_MISO_t) return FM_SB17_SB_META_MISO_t is
+  variable y: FM_SB17_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB17_SB_META_MISO_t) return FM_SB17_SB_META_MISO_t is
+  variable y: FM_SB17_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -4108,6 +14242,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB18_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB18_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB18_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB18_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB18_SB_MEM_MOSI_t) return FM_SB18_SB_MEM_MOSI_t is
+    variable y: FM_SB18_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB18_SB_MEM_MOSI_t) return FM_SB18_SB_MEM_MOSI_t is
+    variable y: FM_SB18_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB18_SB_MEM_MOSI_t) return FM_SB18_SB_MEM_MOSI_t is
+  variable y: FM_SB18_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB18_SB_MEM_MOSI_t) return FM_SB18_SB_MEM_MOSI_t is
+  variable y: FM_SB18_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB18_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB18_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB18_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB18_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB18_SB_MEM_MISO_t) return FM_SB18_SB_MEM_MISO_t is
+    variable y: FM_SB18_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB18_SB_MEM_MISO_t) return FM_SB18_SB_MEM_MISO_t is
+    variable y: FM_SB18_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB18_SB_MEM_MISO_t) return FM_SB18_SB_MEM_MISO_t is
+  variable y: FM_SB18_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB18_SB_MEM_MISO_t) return FM_SB18_SB_MEM_MISO_t is
+  variable y: FM_SB18_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB18_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB18_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB18_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB18_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB18_SB_META_MOSI_t) return FM_SB18_SB_META_MOSI_t is
+    variable y: FM_SB18_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB18_SB_META_MOSI_t) return FM_SB18_SB_META_MOSI_t is
+    variable y: FM_SB18_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB18_SB_META_MOSI_t) return FM_SB18_SB_META_MOSI_t is
+  variable y: FM_SB18_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB18_SB_META_MOSI_t) return FM_SB18_SB_META_MOSI_t is
+  variable y: FM_SB18_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB18_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB18_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB18_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB18_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB18_SB_META_MISO_t) return FM_SB18_SB_META_MISO_t is
+    variable y: FM_SB18_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB18_SB_META_MISO_t) return FM_SB18_SB_META_MISO_t is
+    variable y: FM_SB18_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB18_SB_META_MISO_t) return FM_SB18_SB_META_MISO_t is
+  variable y: FM_SB18_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB18_SB_META_MISO_t) return FM_SB18_SB_META_MISO_t is
+  variable y: FM_SB18_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB18_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -4283,6 +14893,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB19_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB19_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB19_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB19_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB19_SB_MEM_MOSI_t) return FM_SB19_SB_MEM_MOSI_t is
+    variable y: FM_SB19_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB19_SB_MEM_MOSI_t) return FM_SB19_SB_MEM_MOSI_t is
+    variable y: FM_SB19_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB19_SB_MEM_MOSI_t) return FM_SB19_SB_MEM_MOSI_t is
+  variable y: FM_SB19_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB19_SB_MEM_MOSI_t) return FM_SB19_SB_MEM_MOSI_t is
+  variable y: FM_SB19_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB19_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB19_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB19_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB19_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB19_SB_MEM_MISO_t) return FM_SB19_SB_MEM_MISO_t is
+    variable y: FM_SB19_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB19_SB_MEM_MISO_t) return FM_SB19_SB_MEM_MISO_t is
+    variable y: FM_SB19_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB19_SB_MEM_MISO_t) return FM_SB19_SB_MEM_MISO_t is
+  variable y: FM_SB19_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB19_SB_MEM_MISO_t) return FM_SB19_SB_MEM_MISO_t is
+  variable y: FM_SB19_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB19_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB19_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB19_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB19_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB19_SB_META_MOSI_t) return FM_SB19_SB_META_MOSI_t is
+    variable y: FM_SB19_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB19_SB_META_MOSI_t) return FM_SB19_SB_META_MOSI_t is
+    variable y: FM_SB19_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB19_SB_META_MOSI_t) return FM_SB19_SB_META_MOSI_t is
+  variable y: FM_SB19_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB19_SB_META_MOSI_t) return FM_SB19_SB_META_MOSI_t is
+  variable y: FM_SB19_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB19_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB19_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB19_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB19_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB19_SB_META_MISO_t) return FM_SB19_SB_META_MISO_t is
+    variable y: FM_SB19_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB19_SB_META_MISO_t) return FM_SB19_SB_META_MISO_t is
+    variable y: FM_SB19_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB19_SB_META_MISO_t) return FM_SB19_SB_META_MISO_t is
+  variable y: FM_SB19_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB19_SB_META_MISO_t) return FM_SB19_SB_META_MISO_t is
+  variable y: FM_SB19_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -4464,6 +15550,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB20_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB20_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB20_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB20_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB20_SB_MEM_MOSI_t) return FM_SB20_SB_MEM_MOSI_t is
+    variable y: FM_SB20_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB20_SB_MEM_MOSI_t) return FM_SB20_SB_MEM_MOSI_t is
+    variable y: FM_SB20_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB20_SB_MEM_MOSI_t) return FM_SB20_SB_MEM_MOSI_t is
+  variable y: FM_SB20_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB20_SB_MEM_MOSI_t) return FM_SB20_SB_MEM_MOSI_t is
+  variable y: FM_SB20_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB20_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB20_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB20_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB20_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB20_SB_MEM_MISO_t) return FM_SB20_SB_MEM_MISO_t is
+    variable y: FM_SB20_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB20_SB_MEM_MISO_t) return FM_SB20_SB_MEM_MISO_t is
+    variable y: FM_SB20_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB20_SB_MEM_MISO_t) return FM_SB20_SB_MEM_MISO_t is
+  variable y: FM_SB20_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB20_SB_MEM_MISO_t) return FM_SB20_SB_MEM_MISO_t is
+  variable y: FM_SB20_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB20_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB20_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB20_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB20_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB20_SB_META_MOSI_t) return FM_SB20_SB_META_MOSI_t is
+    variable y: FM_SB20_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB20_SB_META_MOSI_t) return FM_SB20_SB_META_MOSI_t is
+    variable y: FM_SB20_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB20_SB_META_MOSI_t) return FM_SB20_SB_META_MOSI_t is
+  variable y: FM_SB20_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB20_SB_META_MOSI_t) return FM_SB20_SB_META_MOSI_t is
+  variable y: FM_SB20_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB20_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB20_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB20_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB20_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB20_SB_META_MISO_t) return FM_SB20_SB_META_MISO_t is
+    variable y: FM_SB20_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB20_SB_META_MISO_t) return FM_SB20_SB_META_MISO_t is
+    variable y: FM_SB20_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB20_SB_META_MISO_t) return FM_SB20_SB_META_MISO_t is
+  variable y: FM_SB20_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB20_SB_META_MISO_t) return FM_SB20_SB_META_MISO_t is
+  variable y: FM_SB20_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB20_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -4639,6 +16201,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB21_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB21_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB21_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB21_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB21_SB_MEM_MOSI_t) return FM_SB21_SB_MEM_MOSI_t is
+    variable y: FM_SB21_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB21_SB_MEM_MOSI_t) return FM_SB21_SB_MEM_MOSI_t is
+    variable y: FM_SB21_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB21_SB_MEM_MOSI_t) return FM_SB21_SB_MEM_MOSI_t is
+  variable y: FM_SB21_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB21_SB_MEM_MOSI_t) return FM_SB21_SB_MEM_MOSI_t is
+  variable y: FM_SB21_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB21_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB21_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB21_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB21_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB21_SB_MEM_MISO_t) return FM_SB21_SB_MEM_MISO_t is
+    variable y: FM_SB21_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB21_SB_MEM_MISO_t) return FM_SB21_SB_MEM_MISO_t is
+    variable y: FM_SB21_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB21_SB_MEM_MISO_t) return FM_SB21_SB_MEM_MISO_t is
+  variable y: FM_SB21_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB21_SB_MEM_MISO_t) return FM_SB21_SB_MEM_MISO_t is
+  variable y: FM_SB21_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB21_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB21_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB21_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB21_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB21_SB_META_MOSI_t) return FM_SB21_SB_META_MOSI_t is
+    variable y: FM_SB21_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB21_SB_META_MOSI_t) return FM_SB21_SB_META_MOSI_t is
+    variable y: FM_SB21_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB21_SB_META_MOSI_t) return FM_SB21_SB_META_MOSI_t is
+  variable y: FM_SB21_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB21_SB_META_MOSI_t) return FM_SB21_SB_META_MOSI_t is
+  variable y: FM_SB21_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB21_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB21_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB21_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB21_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB21_SB_META_MISO_t) return FM_SB21_SB_META_MISO_t is
+    variable y: FM_SB21_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB21_SB_META_MISO_t) return FM_SB21_SB_META_MISO_t is
+    variable y: FM_SB21_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB21_SB_META_MISO_t) return FM_SB21_SB_META_MISO_t is
+  variable y: FM_SB21_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB21_SB_META_MISO_t) return FM_SB21_SB_META_MISO_t is
+  variable y: FM_SB21_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -4820,6 +16858,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB22_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB22_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB22_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB22_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB22_SB_MEM_MOSI_t) return FM_SB22_SB_MEM_MOSI_t is
+    variable y: FM_SB22_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB22_SB_MEM_MOSI_t) return FM_SB22_SB_MEM_MOSI_t is
+    variable y: FM_SB22_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB22_SB_MEM_MOSI_t) return FM_SB22_SB_MEM_MOSI_t is
+  variable y: FM_SB22_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB22_SB_MEM_MOSI_t) return FM_SB22_SB_MEM_MOSI_t is
+  variable y: FM_SB22_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB22_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB22_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB22_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB22_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB22_SB_MEM_MISO_t) return FM_SB22_SB_MEM_MISO_t is
+    variable y: FM_SB22_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB22_SB_MEM_MISO_t) return FM_SB22_SB_MEM_MISO_t is
+    variable y: FM_SB22_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB22_SB_MEM_MISO_t) return FM_SB22_SB_MEM_MISO_t is
+  variable y: FM_SB22_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB22_SB_MEM_MISO_t) return FM_SB22_SB_MEM_MISO_t is
+  variable y: FM_SB22_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB22_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB22_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB22_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB22_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB22_SB_META_MOSI_t) return FM_SB22_SB_META_MOSI_t is
+    variable y: FM_SB22_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB22_SB_META_MOSI_t) return FM_SB22_SB_META_MOSI_t is
+    variable y: FM_SB22_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB22_SB_META_MOSI_t) return FM_SB22_SB_META_MOSI_t is
+  variable y: FM_SB22_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB22_SB_META_MOSI_t) return FM_SB22_SB_META_MOSI_t is
+  variable y: FM_SB22_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB22_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB22_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB22_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB22_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB22_SB_META_MISO_t) return FM_SB22_SB_META_MISO_t is
+    variable y: FM_SB22_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB22_SB_META_MISO_t) return FM_SB22_SB_META_MISO_t is
+    variable y: FM_SB22_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB22_SB_META_MISO_t) return FM_SB22_SB_META_MISO_t is
+  variable y: FM_SB22_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB22_SB_META_MISO_t) return FM_SB22_SB_META_MISO_t is
+  variable y: FM_SB22_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB22_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -4995,6 +17509,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB23_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB23_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB23_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB23_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB23_SB_MEM_MOSI_t) return FM_SB23_SB_MEM_MOSI_t is
+    variable y: FM_SB23_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB23_SB_MEM_MOSI_t) return FM_SB23_SB_MEM_MOSI_t is
+    variable y: FM_SB23_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB23_SB_MEM_MOSI_t) return FM_SB23_SB_MEM_MOSI_t is
+  variable y: FM_SB23_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB23_SB_MEM_MOSI_t) return FM_SB23_SB_MEM_MOSI_t is
+  variable y: FM_SB23_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB23_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB23_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB23_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB23_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB23_SB_MEM_MISO_t) return FM_SB23_SB_MEM_MISO_t is
+    variable y: FM_SB23_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB23_SB_MEM_MISO_t) return FM_SB23_SB_MEM_MISO_t is
+    variable y: FM_SB23_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB23_SB_MEM_MISO_t) return FM_SB23_SB_MEM_MISO_t is
+  variable y: FM_SB23_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB23_SB_MEM_MISO_t) return FM_SB23_SB_MEM_MISO_t is
+  variable y: FM_SB23_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB23_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB23_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB23_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB23_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB23_SB_META_MOSI_t) return FM_SB23_SB_META_MOSI_t is
+    variable y: FM_SB23_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB23_SB_META_MOSI_t) return FM_SB23_SB_META_MOSI_t is
+    variable y: FM_SB23_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB23_SB_META_MOSI_t) return FM_SB23_SB_META_MOSI_t is
+  variable y: FM_SB23_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB23_SB_META_MOSI_t) return FM_SB23_SB_META_MOSI_t is
+  variable y: FM_SB23_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB23_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB23_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB23_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB23_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB23_SB_META_MISO_t) return FM_SB23_SB_META_MISO_t is
+    variable y: FM_SB23_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB23_SB_META_MISO_t) return FM_SB23_SB_META_MISO_t is
+    variable y: FM_SB23_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB23_SB_META_MISO_t) return FM_SB23_SB_META_MISO_t is
+  variable y: FM_SB23_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB23_SB_META_MISO_t) return FM_SB23_SB_META_MISO_t is
+  variable y: FM_SB23_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 
@@ -5176,6 +18166,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB24_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB24_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB24_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB24_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB24_SB_MEM_MOSI_t) return FM_SB24_SB_MEM_MOSI_t is
+    variable y: FM_SB24_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB24_SB_MEM_MOSI_t) return FM_SB24_SB_MEM_MOSI_t is
+    variable y: FM_SB24_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB24_SB_MEM_MOSI_t) return FM_SB24_SB_MEM_MOSI_t is
+  variable y: FM_SB24_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB24_SB_MEM_MOSI_t) return FM_SB24_SB_MEM_MOSI_t is
+  variable y: FM_SB24_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB24_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB24_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB24_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB24_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB24_SB_MEM_MISO_t) return FM_SB24_SB_MEM_MISO_t is
+    variable y: FM_SB24_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB24_SB_MEM_MISO_t) return FM_SB24_SB_MEM_MISO_t is
+    variable y: FM_SB24_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB24_SB_MEM_MISO_t) return FM_SB24_SB_MEM_MISO_t is
+  variable y: FM_SB24_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB24_SB_MEM_MISO_t) return FM_SB24_SB_MEM_MISO_t is
+  variable y: FM_SB24_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB24_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB24_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB24_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB24_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB24_SB_META_MOSI_t) return FM_SB24_SB_META_MOSI_t is
+    variable y: FM_SB24_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB24_SB_META_MOSI_t) return FM_SB24_SB_META_MOSI_t is
+    variable y: FM_SB24_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB24_SB_META_MOSI_t) return FM_SB24_SB_META_MOSI_t is
+  variable y: FM_SB24_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB24_SB_META_MOSI_t) return FM_SB24_SB_META_MOSI_t is
+  variable y: FM_SB24_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB24_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB24_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB24_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB24_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB24_SB_META_MISO_t) return FM_SB24_SB_META_MISO_t is
+    variable y: FM_SB24_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB24_SB_META_MISO_t) return FM_SB24_SB_META_MISO_t is
+    variable y: FM_SB24_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB24_SB_META_MISO_t) return FM_SB24_SB_META_MISO_t is
+  variable y: FM_SB24_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB24_SB_META_MISO_t) return FM_SB24_SB_META_MISO_t is
+  variable y: FM_SB24_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB24_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -5354,6 +18820,482 @@ package body FM_CTRL is
     return y;
   end function zeroed;
 
+  function len(x: FM_SB25_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB25_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB25_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB25_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB25_SB_MEM_MOSI_t) return FM_SB25_SB_MEM_MOSI_t is
+    variable y: FM_SB25_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB25_SB_MEM_MOSI_t) return FM_SB25_SB_MEM_MOSI_t is
+    variable y: FM_SB25_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB25_SB_MEM_MOSI_t) return FM_SB25_SB_MEM_MOSI_t is
+  variable y: FM_SB25_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB25_SB_MEM_MOSI_t) return FM_SB25_SB_MEM_MOSI_t is
+  variable y: FM_SB25_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB25_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB25_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB25_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB25_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB25_SB_MEM_MISO_t) return FM_SB25_SB_MEM_MISO_t is
+    variable y: FM_SB25_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB25_SB_MEM_MISO_t) return FM_SB25_SB_MEM_MISO_t is
+    variable y: FM_SB25_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB25_SB_MEM_MISO_t) return FM_SB25_SB_MEM_MISO_t is
+  variable y: FM_SB25_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB25_SB_MEM_MISO_t) return FM_SB25_SB_MEM_MISO_t is
+  variable y: FM_SB25_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB25_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB25_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB25_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB25_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB25_SB_META_MOSI_t) return FM_SB25_SB_META_MOSI_t is
+    variable y: FM_SB25_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB25_SB_META_MOSI_t) return FM_SB25_SB_META_MOSI_t is
+    variable y: FM_SB25_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB25_SB_META_MOSI_t) return FM_SB25_SB_META_MOSI_t is
+  variable y: FM_SB25_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB25_SB_META_MOSI_t) return FM_SB25_SB_META_MOSI_t is
+  variable y: FM_SB25_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB25_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB25_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB25_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB25_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB25_SB_META_MISO_t) return FM_SB25_SB_META_MISO_t is
+    variable y: FM_SB25_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB25_SB_META_MISO_t) return FM_SB25_SB_META_MISO_t is
+    variable y: FM_SB25_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB25_SB_META_MISO_t) return FM_SB25_SB_META_MISO_t is
+  variable y: FM_SB25_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB25_SB_META_MISO_t) return FM_SB25_SB_META_MISO_t is
+  variable y: FM_SB25_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
   function len(x: FM_SB25_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -5529,6 +19471,482 @@ package body FM_CTRL is
   begin
     y.SB_MEM := zeroed(t.SB_MEM);
     y.SB_META := zeroed(t.SB_META);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB26_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB26_SB_MEM_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB26_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB26_SB_MEM_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB26_SB_MEM_MOSI_t) return FM_SB26_SB_MEM_MOSI_t is
+    variable y: FM_SB26_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB26_SB_MEM_MOSI_t) return FM_SB26_SB_MEM_MOSI_t is
+    variable y: FM_SB26_SB_MEM_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB26_SB_MEM_MOSI_t) return FM_SB26_SB_MEM_MOSI_t is
+  variable y: FM_SB26_SB_MEM_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB26_SB_MEM_MOSI_t) return FM_SB26_SB_MEM_MOSI_t is
+  variable y: FM_SB26_SB_MEM_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB26_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB26_SB_MEM_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB26_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB26_SB_MEM_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB26_SB_MEM_MISO_t) return FM_SB26_SB_MEM_MISO_t is
+    variable y: FM_SB26_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB26_SB_MEM_MISO_t) return FM_SB26_SB_MEM_MISO_t is
+    variable y: FM_SB26_SB_MEM_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB26_SB_MEM_MISO_t) return FM_SB26_SB_MEM_MISO_t is
+  variable y: FM_SB26_SB_MEM_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB26_SB_MEM_MISO_t) return FM_SB26_SB_MEM_MISO_t is
+  variable y: FM_SB26_SB_MEM_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB26_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.clk);
+    l := l + len(x.enable);
+    l := l + len(x.wr_enable);
+    l := l + len(x.address);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function width(x: FM_SB26_SB_META_MOSI_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk);
+    l := l + width(x.enable);
+    l := l + width(x.wr_enable);
+    l := l + width(x.address);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB26_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), vectorify(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), vectorify(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), vectorify(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), vectorify(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), vectorify(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), vectorify(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB26_SB_META_MOSI_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.clk)-1), convert(x.clk, y(left to left+len(x.clk)-1)));
+      left := left + len(x.clk);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
+      left := left + len(x.enable);
+      assign(y(left to left+len(x.wr_enable)-1), convert(x.wr_enable, y(left to left+len(x.wr_enable)-1)));
+      left := left + len(x.wr_enable);
+      assign(y(left to left+len(x.address)-1), convert(x.address, y(left to left+len(x.address)-1)));
+      left := left + len(x.address);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.clk)+1), convert(x.clk, y(left downto left-len(x.clk)+1)));
+      left := left - len(x.clk);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
+      left := left - len(x.enable);
+      assign(y(left downto left-len(x.wr_enable)+1), convert(x.wr_enable, y(left downto left-len(x.wr_enable)+1)));
+      left := left - len(x.wr_enable);
+      assign(y(left downto left-len(x.address)+1), convert(x.address, y(left downto left-len(x.address)+1)));
+      left := left - len(x.address);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB26_SB_META_MOSI_t) return FM_SB26_SB_META_MOSI_t is
+    variable y: FM_SB26_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := structify(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := structify(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := structify(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := structify(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB26_SB_META_MOSI_t) return FM_SB26_SB_META_MOSI_t is
+    variable y: FM_SB26_SB_META_MOSI_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.clk := convert(x(left to left+len(y.clk)-1), y.clk);
+      left := left + len(y.clk);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
+      left := left + len(y.enable);
+      y.wr_enable := convert(x(left to left+len(y.wr_enable)-1), y.wr_enable);
+      left := left + len(y.wr_enable);
+      y.address := convert(x(left to left+len(y.address)-1), y.address);
+      left := left + len(y.address);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.clk := convert(x(left downto left-len(y.clk)+1), y.clk);
+      left := left - len(y.clk);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
+      left := left - len(y.enable);
+      y.wr_enable := convert(x(left downto left-len(y.wr_enable)+1), y.wr_enable);
+      left := left - len(y.wr_enable);
+      y.address := convert(x(left downto left-len(y.address)+1), y.address);
+      left := left - len(y.address);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB26_SB_META_MOSI_t) return FM_SB26_SB_META_MOSI_t is
+  variable y: FM_SB26_SB_META_MOSI_t;
+  begin
+    y.clk := nullify(t.clk);
+    y.enable := nullify(t.enable);
+    y.wr_enable := nullify(t.wr_enable);
+    y.address := nullify(t.address);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB26_SB_META_MOSI_t) return FM_SB26_SB_META_MOSI_t is
+  variable y: FM_SB26_SB_META_MOSI_t;
+  begin
+    y.clk := zeroed(t.clk);
+    y.enable := zeroed(t.enable);
+    y.wr_enable := zeroed(t.wr_enable);
+    y.address := zeroed(t.address);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
+
+  function len(x: FM_SB26_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data);
+    l := l + len(x.rd_data_valid);
+    return l;
+  end function len;
+  function width(x: FM_SB26_SB_META_MISO_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    l := l + width(x.rd_data_valid);
+    return l;
+  end function width;
+  function vectorify(x: FM_SB26_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), vectorify(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), vectorify(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: FM_SB26_SB_META_MISO_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+      left := left + len(x.rd_data);
+      assign(y(left to left+len(x.rd_data_valid)-1), convert(x.rd_data_valid, y(left to left+len(x.rd_data_valid)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+      left := left - len(x.rd_data);
+      assign(y(left downto left-len(x.rd_data_valid)+1), convert(x.rd_data_valid, y(left downto left-len(x.rd_data_valid)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: FM_SB26_SB_META_MISO_t) return FM_SB26_SB_META_MISO_t is
+    variable y: FM_SB26_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := structify(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := structify(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: FM_SB26_SB_META_MISO_t) return FM_SB26_SB_META_MISO_t is
+    variable y: FM_SB26_SB_META_MISO_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+      left := left + len(y.rd_data);
+      y.rd_data_valid := convert(x(left to left+len(y.rd_data_valid)-1), y.rd_data_valid);
+    else
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+      left := left - len(y.rd_data);
+      y.rd_data_valid := convert(x(left downto left-len(y.rd_data_valid)+1), y.rd_data_valid);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: FM_SB26_SB_META_MISO_t) return FM_SB26_SB_META_MISO_t is
+  variable y: FM_SB26_SB_META_MISO_t;
+  begin
+    y.rd_data := nullify(t.rd_data);
+    y.rd_data_valid := nullify(t.rd_data_valid);
+    return y;
+  end function nullify;
+  function zeroed(t: FM_SB26_SB_META_MISO_t) return FM_SB26_SB_META_MISO_t is
+  variable y: FM_SB26_SB_META_MISO_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    y.rd_data_valid := zeroed(t.rd_data_valid);
     return y;
   end function zeroed;
 

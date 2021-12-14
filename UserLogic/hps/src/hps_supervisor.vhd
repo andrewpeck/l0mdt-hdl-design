@@ -49,12 +49,12 @@ entity hps_supervisor is
     rst         : in std_logic;
     glob_en     : in std_logic;
     -- control
-    ctrl_v              : in  std_logic_vector; -- H2S_HPS_HEG_HEG_CTRL_t;
-    mon_v               : out std_logic_vector; -- H2S_HPS_HEG_HEG_MON_t;
+    ctrl_v              : in  std_logic_vector; -- HPS_HEG_HEG_CTRL_t;
+    mon_v               : out std_logic_vector; -- HPS_HEG_HEG_MON_t;
     --
-    -- ctrl_r.actions     : in H2S_HPS_ACTIONS_CTRL_t;
-    -- i_configs     : in H2S_HPS_CONFIGS_CTRL_t;
-    -- o_status      : out H2S_HPS_STATUS_MON_t;
+    -- ctrl_r.actions     : in HPS_ACTIONS_CTRL_t;
+    -- i_configs     : in HPS_CONFIGS_CTRL_t;
+    -- o_status      : out HPS_STATUS_MON_t;
     --
     i_freeze      : in std_logic := '0';
     o_freeze            : out std_logic;
@@ -65,8 +65,8 @@ entity hps_supervisor is
 end entity hps_supervisor;
 
 architecture beh of hps_supervisor is
-  signal ctrl_r : H2S_HPS_SUPER_CTRL_t;
-  signal mon_r  : H2S_HPS_SUPER_MON_t;
+  signal ctrl_r : HPS_SUPER_CTRL_t;
+  signal mon_r  : HPS_SUPER_MON_t;
   --
   signal local_rst : std_logic;
   signal local_en  : std_logic;

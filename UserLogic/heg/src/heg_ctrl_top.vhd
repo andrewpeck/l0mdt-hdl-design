@@ -62,10 +62,10 @@ end entity heg_ctrl_top;
 
 architecture beh of heg_ctrl_top is
 
-  signal ctrl_r           : H2S_HPS_HEG_HEG_CTRL_CTRL_t;
-  signal mon_r            : H2S_HPS_HEG_HEG_CTRL_MON_t;
-  signal ctrl_roi_tc_r    : H2S_HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t;
-  signal  mon_roi_tc_r    : H2S_HPS_HEG_HEG_CTRL_ROI_TC_MON_t;
+  signal ctrl_r           : HPS_HEG_HEG_CTRL_CTRL_t;
+  signal mon_r            : HPS_HEG_HEG_CTRL_MON_t;
+  signal ctrl_roi_tc_r    : HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t;
+  signal  mon_roi_tc_r    : HPS_HEG_HEG_CTRL_ROI_TC_MON_t;
   signal ctrl_roi_tc_v    : std_logic_vector(len(ctrl_roi_tc_r)-1 downto 0);
   signal  mon_roi_tc_v    : std_logic_vector(len(mon_roi_tc_r)-1 downto 0);
 
