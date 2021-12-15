@@ -59,20 +59,20 @@ architecture beh of top_tar_tb is
   signal mon_v               : std_logic_vector(len(mon_r) - 1 downto 0);--  : out TAR_MON_t;
   -- TDC Hits from Polmux
   signal i_inn_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_mid_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_out_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_ext_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  -- signal i_mid_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+  -- signal i_out_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+  -- signal i_ext_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
   -- TDC Hits from Tar
   -- TDC polmux from Tar
   signal o_inn_tdc_hits_av    : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal o_mid_tdc_hits_av    : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal o_out_tdc_hits_av    : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal o_ext_tdc_hits_av    : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  -- signal o_mid_tdc_hits_av    : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  -- signal o_out_tdc_hits_av    : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  -- signal o_ext_tdc_hits_av    : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
   -- TDC Hits from Tar
   signal o_inn_tar_hits_av    : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal o_mid_tar_hits_av    : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal o_out_tar_hits_av    : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal o_ext_tar_hits_av    : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  -- signal o_mid_tar_hits_av    : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  -- signal o_out_tar_hits_av    : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  -- signal o_ext_tar_hits_av    : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 begin
 
   TAR : entity tar_lib.tar
@@ -86,9 +86,9 @@ begin
     mon_v             => mon_v,
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av  => i_inn_tdc_hits_av,
-    i_mid_tdc_hits_av  => i_mid_tdc_hits_av,
-    i_out_tdc_hits_av  => i_out_tdc_hits_av,
-    i_ext_tdc_hits_av  => i_ext_tdc_hits_av,
+    -- i_mid_tdc_hits_av  => i_mid_tdc_hits_av,
+    -- i_out_tdc_hits_av  => i_out_tdc_hits_av,
+    -- i_ext_tdc_hits_av  => i_ext_tdc_hits_av,
     -- candidates in from hal
     -- i_inn_tar_hits_av  => i_inn_tar_hits,
     -- i_mid_tar_hits_av  => i_mid_tar_hits,
@@ -96,14 +96,14 @@ begin
     -- i_ext_tar_hits_av  => i_ext_tar_hits,
     -- to daq
     o_inn_tdc_hits_av  => o_inn_tdc_hits_av,
-    o_mid_tdc_hits_av  => o_mid_tdc_hits_av,
-    o_out_tdc_hits_av  => o_out_tdc_hits_av,
-    o_ext_tdc_hits_av  => o_ext_tdc_hits_av,
+    -- o_mid_tdc_hits_av  => o_mid_tdc_hits_av,
+    -- o_out_tdc_hits_av  => o_out_tdc_hits_av,
+    -- o_ext_tdc_hits_av  => o_ext_tdc_hits_av,
     -- outputs to h2s
-    o_inn_tar_hits_av  => o_inn_tar_hits_av,
-    o_mid_tar_hits_av  => o_mid_tar_hits_av,
-    o_out_tar_hits_av  => o_out_tar_hits_av,
-    o_ext_tar_hits_av  => o_ext_tar_hits_av
+    o_inn_tar_hits_av  => o_inn_tar_hits_av
+    -- o_mid_tar_hits_av  => o_mid_tar_hits_av,
+    -- o_out_tar_hits_av  => o_out_tar_hits_av,
+    -- o_ext_tar_hits_av  => o_ext_tar_hits_av
 
   );
 

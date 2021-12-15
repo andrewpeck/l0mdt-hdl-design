@@ -84,24 +84,24 @@ architecture beh of tar is
   -- signal ctrl_apb_mem_av : ctrl_apb_mem_avt;
   -- signal mon_apb_mem_av  : mon_apb_mem_avt; 
 
-  constant PL_ST_CTRL_LEN : integer := len(ctrl_r.PL_ST.PL_ST(0));--426;
-  constant PL_ST_MON_LEN : integer := len(mon_r.PL_ST.PL_ST(0));--258;
+  constant PL_ST_CTRL_LEN : integer := len(ctrl_r.PL_ST);--426;
+  constant PL_ST_MON_LEN : integer := len(mon_r.PL_ST);--258;
 
   signal ctrl_pl_inn_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(0))-1  downto 0);
-  signal ctrl_pl_mid_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(1))-1  downto 0);
-  signal ctrl_pl_out_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(2))-1  downto 0);
-  signal ctrl_pl_ext_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_STATION.PL_EXT)-1  downto 0);
+  -- signal ctrl_pl_mid_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(1))-1  downto 0);
+  -- signal ctrl_pl_out_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(2))-1  downto 0);
+  -- signal ctrl_pl_ext_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_STATION.PL_EXT)-1  downto 0);
   signal mon_pl_inn_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(0))-1  downto 0);
-  signal mon_pl_mid_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(1))-1  downto 0);
-  signal mon_pl_out_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(2))-1  downto 0);
-  signal mon_pl_ext_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_STATION.PL_EXT)-1  downto 0);
+  -- signal mon_pl_mid_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(1))-1  downto 0);
+  -- signal mon_pl_out_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(2))-1  downto 0);
+  -- signal mon_pl_ext_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_STATION.PL_EXT)-1  downto 0);
 
 
   -- TDC polmux from Tar
   signal i_inn_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_mid_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_out_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_ext_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_EXT -1 downto 0);
+  -- signal i_mid_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_MID -1 downto 0);
+  -- signal i_out_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_OUT -1 downto 0);
+  -- signal i_ext_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_EXT -1 downto 0);
   -- TDC polmux from Tar
   -- signal int_inn_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
   -- signal int_mid_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
@@ -119,17 +119,17 @@ architecture beh of tar is
 
 begin
 
-  ctrl_r <= structify(ctrl_v,ctrl_r);
-  mon_v <= vectorify(mon_r,mon_v);
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
 
-  ctrl_pl_inn_v <= convert(ctrl_r.PL_ST.PL_ST(0),ctrl_pl_inn_v);
-  ctrl_pl_mid_v <= convert(ctrl_r.PL_ST.PL_ST(1),ctrl_pl_mid_v);
-  ctrl_pl_out_v <= convert(ctrl_r.PL_ST.PL_ST(2),ctrl_pl_out_v);
+  ctrl_pl_inn_v <= convert(ctrl_r.PL_ST,ctrl_pl_inn_v);
+  -- ctrl_pl_mid_v <= convert(ctrl_r.PL_ST.PL_ST(1),ctrl_pl_mid_v);
+  -- ctrl_pl_out_v <= convert(ctrl_r.PL_ST.PL_ST(2),ctrl_pl_out_v);
 
-  mon_r.PL_ST.PL_ST(0) <= convert(mon_pl_inn_v,mon_r.PL_ST.PL_ST(0));
-  mon_r.PL_ST.PL_ST(1) <= convert(mon_pl_mid_v,mon_r.PL_ST.PL_ST(1));
-  mon_r.PL_ST.PL_ST(2) <= convert(mon_pl_out_v,mon_r.PL_ST.PL_ST(2));
-  mon_r.PL_ST.PL_ST(3) <= convert(mon_pl_ext_v,mon_r.PL_ST.PL_ST(3));
+  mon_r.PL_ST <= convert(mon_pl_inn_v,mon_r.PL_ST);
+  -- mon_r.PL_ST.PL_ST(1) <= convert(mon_pl_mid_v,mon_r.PL_ST.PL_ST(1));
+  -- mon_r.PL_ST.PL_ST(2) <= convert(mon_pl_out_v,mon_r.PL_ST.PL_ST(2));
+  -- mon_r.PL_ST.PL_ST(3) <= convert(mon_pl_ext_v,mon_r.PL_ST.PL_ST(3));
 
   SUPERVISOR : entity tar_lib.tar_supervisor
   port map(

@@ -2,21 +2,17 @@
 -- UMass , Physics Department
 -- Project: tar
 -- File: tar_station.vhd
--- Module: <<moduleName>>
+-- Module: TAR
 -- File PATH: /src/tar_station.vhd
 -- -----
 -- File Created: Tuesday, 23rd November 2021 2:24:35 pm
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
 -- -----
--- Last Modified: Wednesday, 15th December 2021 1:37:13 pm
+-- Last Modified: Wednesday, 15th December 2021 2:46:20 pm
 -- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
 -- -----
 -- HISTORY:
 --------------------------------------------------------------------------------
-
-
-
-
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -71,8 +67,8 @@ architecture beh of tar_station is
   -- signal ctrl_apb_mem_r : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
   -- signal mon_apb_mem_r  : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; 
 
-  constant CTRL_LEN : integer := len(ctrl_r.PL_CHAMBER.PL_MEM(0));--71;
-  constant MON_LEN : integer := len(mon_r.PL_CHAMBER.PL_MEM(0));--43;
+  constant CTRL_LEN : integer := len(ctrl_r.PL_MEM(0));--71;
+  constant MON_LEN : integer := len(mon_r.PL_MEM(0));--43;
 
   type ctrl_apb_mem_avt is array (5 downto 0) of std_logic_vector(CTRL_LEN-1  downto 0);
   type mon_apb_mem_avt  is array (5 downto 0) of std_logic_vector(MON_LEN-1  downto 0);
@@ -100,8 +96,8 @@ begin
   
   PL_ARRAY : for b_i in g_ARRAY_LEN -1 downto 0 generate
 
-    ctrl_apb_mem_av(b_i) <= convert(ctrl_r.PL_CHAMBER.PL_MEM(b_i),ctrl_apb_mem_av(b_i));
-    mon_r.PL_CHAMBER.PL_MEM(b_i) <= convert(mon_apb_mem_av(b_i),mon_r.PL_CHAMBER.PL_MEM(b_i));
+    ctrl_apb_mem_av(b_i) <= convert(ctrl_r.PL_MEM(b_i),ctrl_apb_mem_av(b_i));
+    mon_r.PL_MEM(b_i) <= convert(mon_apb_mem_av(b_i),mon_r.PL_MEM(b_i));
 
     POLMUX_EN : if c_HP_SECTOR_STATION(0)(b_i) = '1' generate
 
