@@ -39,10 +39,9 @@ library ctrl_lib;
 use ctrl_lib.TAR_CTRL.all;
 
 entity tar is
-  -- generic (
-  --   EN_TAR_HITS : integer := 0;
-  --   EN_MDT_HITS : integer := 1
-  --   );
+  generic(
+    c_HPS_MAX_HP : integer := 6
+  );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
@@ -51,25 +50,12 @@ entity tar is
     ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
     mon_v             : out std_logic_vector;--  : out TAR_MON_t;
     -- TDC Hits from Polmux
-    i_inn_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    -- i_mid_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    -- i_out_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    -- i_ext_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
-    -- TDC Hits from Tar
-    -- i_inn_tar_hits_av    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    -- i_mid_tar_hits_av    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    -- i_out_tar_hits_av    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    -- i_ext_tar_hits_av    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    i_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP -1 downto 0);
     -- TDC polmux from Tar
-    o_inn_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-    -- o_mid_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    -- o_out_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    -- o_ext_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+    o_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP -1 downto 0);
     -- TDC Hits from Tar
-    o_inn_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0)
-    -- o_mid_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    -- o_out_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    -- o_ext_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0)
+    o_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP -1 downto 0)
+
   );
 end entity tar;
 
@@ -87,31 +73,12 @@ architecture beh of tar is
   constant PL_ST_CTRL_LEN : integer := len(ctrl_r.PL_ST);--426;
   constant PL_ST_MON_LEN : integer := len(mon_r.PL_ST);--258;
 
-  signal ctrl_pl_inn_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(0))-1  downto 0);
-  -- signal ctrl_pl_mid_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(1))-1  downto 0);
-  -- signal ctrl_pl_out_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(2))-1  downto 0);
-  -- signal ctrl_pl_ext_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_STATION.PL_EXT)-1  downto 0);
-  signal mon_pl_inn_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(0))-1  downto 0);
-  -- signal mon_pl_mid_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(1))-1  downto 0);
-  -- signal mon_pl_out_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(2))-1  downto 0);
-  -- signal mon_pl_ext_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_STATION.PL_EXT)-1  downto 0);
+  signal ctrl_pl_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(0))-1  downto 0);
 
+  signal mon_pl_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(0))-1  downto 0);
 
   -- TDC polmux from Tar
-  signal i_inn_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_INN -1 downto 0);
-  -- signal i_mid_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_MID -1 downto 0);
-  -- signal i_out_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_OUT -1 downto 0);
-  -- signal i_ext_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_EXT -1 downto 0);
-  -- TDC polmux from Tar
-  -- signal int_inn_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  -- signal int_mid_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  -- signal int_out_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  -- signal int_ext_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
-  -- TDC Hits from Tar
-  -- signal int_inn_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  -- signal int_mid_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  -- signal int_out_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  -- signal int_ext_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP -1 downto 0);
 
   signal local_en : std_logic;
   signal local_rst : std_logic;
@@ -122,14 +89,9 @@ begin
   ctrl_r <= convert(ctrl_v,ctrl_r);
   mon_v <= convert(mon_r,mon_v);
 
-  ctrl_pl_inn_v <= convert(ctrl_r.PL_ST,ctrl_pl_inn_v);
-  -- ctrl_pl_mid_v <= convert(ctrl_r.PL_ST.PL_ST(1),ctrl_pl_mid_v);
-  -- ctrl_pl_out_v <= convert(ctrl_r.PL_ST.PL_ST(2),ctrl_pl_out_v);
+  ctrl_pl_v <= convert(ctrl_r.PL_ST,ctrl_pl_v);
 
-  mon_r.PL_ST <= convert(mon_pl_inn_v,mon_r.PL_ST);
-  -- mon_r.PL_ST.PL_ST(1) <= convert(mon_pl_mid_v,mon_r.PL_ST.PL_ST(1));
-  -- mon_r.PL_ST.PL_ST(2) <= convert(mon_pl_out_v,mon_r.PL_ST.PL_ST(2));
-  -- mon_r.PL_ST.PL_ST(3) <= convert(mon_pl_ext_v,mon_r.PL_ST.PL_ST(3));
+  mon_r.PL_ST <= convert(mon_pl_v,mon_r.PL_ST);
 
   SUPERVISOR : entity tar_lib.tar_supervisor
   port map(
@@ -149,7 +111,7 @@ begin
   
   -- TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
 
-    i_inn_tdc_hits_ar <= structify(i_inn_tdc_hits_av);
+    i_tdc_hits_ar <= structify(i_tdc_hits_av);
     -- i_mid_tdc_hits_ar <= structify(i_mid_tdc_hits_av);
     -- i_out_tdc_hits_ar <= structify(i_out_tdc_hits_av);
     -- i_ext_tdc_hits_ar <= structify(i_ext_tdc_hits_av);
@@ -158,7 +120,7 @@ begin
     -- INN_EN : if c_HPS_ENABLE_ST_INN = '1' generate
       TAR_INN : entity tar_lib.tar_station
         generic map(
-          g_ARRAY_LEN => c_HPS_MAX_HP_INN,
+          g_ARRAY_LEN => c_HPS_MAX_HP,
           g_STATION => 0
         )
         port map (
@@ -167,14 +129,14 @@ begin
           rst             => local_rst,
           glob_en         => local_en,
           -- ctrl/mon
-          ctrl_v          => ctrl_pl_inn_v,
-          mon_v           => mon_pl_inn_v,
+          ctrl_v          => ctrl_pl_v,
+          mon_v           => mon_pl_v,
           -- supervisor
           i_freeze        => int_freeze,
           -- data
-          i_tdc_hits_av   => i_inn_tdc_hits_av,
-          o_tdc_hits_av   => o_inn_tdc_hits_av,
-          o_tar_hits_av   =>  o_inn_tar_hits_av
+          i_tdc_hits_av   => i_tdc_hits_av,
+          o_tdc_hits_av   => o_tdc_hits_av,
+          o_tar_hits_av   =>  o_tar_hits_av
         );
     -- end generate;
 
