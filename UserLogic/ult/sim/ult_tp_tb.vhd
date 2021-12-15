@@ -66,7 +66,8 @@ use ctrl_lib.DAQ_CTRL_DEF.all;
 use ctrl_lib.TF_CTRL_DEF.all;
 use ctrl_lib.FM_CTRL_DEF.all;
 
-
+library fm_lib;
+use fm_lib.fm_ult_pkg.all;
 
 
 entity ult_tp is

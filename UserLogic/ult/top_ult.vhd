@@ -39,6 +39,9 @@ use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.FM_CTRL.all;
 
+library fm_lib;
+use fm_lib.fm_ult_pkg.all;
+
 
 entity top_ult is
   generic (
