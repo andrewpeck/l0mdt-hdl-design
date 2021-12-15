@@ -26,10 +26,15 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
-library hp_lib;
-use hp_lib.hp_pkg.all;
+--library hp_lib;
+--use hp_lib.hp_pkg.all;
+
+library hegtypes_lib;
+use hegtypes_lib.hp_pkg.all;
+use hegtypes_lib.heg_pkg.all;
 library heg_lib;
-use heg_lib.heg_pkg.all;
+--use heg_lib.heg_pkg.all;
+
 
 library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;

@@ -1,4 +1,4 @@
-UserLogic/hp/pkg/hp_pkg.vhd
+#UserLogic/hp/pkg/hp_pkg.vhd
 # UserLogic/hp/src/ROMs/hp_dt2r_large_mem.vhd
 # UserLogic/hp/src/ROMs/hp_dt2r_small_mem.vhd
 # UserLogic/hp/src/hp_calc_dt2r_large.vhd

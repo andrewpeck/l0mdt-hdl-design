@@ -51,6 +51,7 @@ SHAREDDIR = $(SRCDIR)/shared
 HAL       = $(SRCDIR)/HAL
 IP_REPO   = $(HLS)/IPs/vu13p
 LSFSIMDIR = $(USERLOGIC)/lsf/sim
+FMDIR        = $(USERLOGIC)/fm/src
 
 
 # VHDL source files, required by CocoTB
