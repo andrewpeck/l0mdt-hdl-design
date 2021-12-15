@@ -29,7 +29,7 @@ import l0mdt_dataformats_svh::*;
     (
      input logic 		   clock,
      input logic 		   rst,
-     input logic [MTC2SL_LEN-1:0]  mtc_in[c_MAX_NUM_SL],
+     input logic [MTC2SL_LEN-1:0]  mtc_in[c_MAX_NUM_SL-1:0],
      output logic [MTC2SL_LEN-1:0] mtc2sl
      );
 
@@ -76,16 +76,16 @@ import l0mdt_dataformats_svh::*;
       logic [7:0]   commacomma;
    } SL_TRAILER_rt;
    
-   logic [MTC2SL_LEN-1:0] mtc_in_d[c_MAX_NUM_SL];   
-   MTC2SL_rt           mtc_in_rt[c_MAX_NUM_SL];
-   SLC_COMMON_rt mtc_slc_common[c_MAX_NUM_SL];
-   SL_TRAILER_rt     mtc_sl_trailer[c_MAX_NUM_SL];
+   logic [MTC2SL_LEN-1:0] mtc_in_d[c_MAX_NUM_SL-1:0];   
+   MTC2SL_rt           mtc_in_rt[c_MAX_NUM_SL-1:0];
+   SLC_COMMON_rt mtc_slc_common[c_MAX_NUM_SL-1:0];
+   SL_TRAILER_rt     mtc_sl_trailer[c_MAX_NUM_SL-1:0];
 
    logic [c_MAX_NUM_SL-1:0] 		 link_valid_map;
    logic [$bits(c_MAX_NUM_SL)+1 : 0] 	 valid_mtc;
    genvar 				 i;
    logic [$bits(c_MAX_NUM_SL)-1:0] 	 j;
-   logic 				 mtc_in_vld[c_MAX_NUM_SL];
+   logic 				 mtc_in_vld[c_MAX_NUM_SL-1:0];
    
      
    for( i = 0; i < c_MAX_NUM_SL; i = i+1)

@@ -19,27 +19,27 @@ import l0mdt_dataformats_svh::*;
 
  
 module mtc_builder_verilog#(
-			    parameter PTCALC_WIDTH=PTCALC2MTC_LEN,
-			    parameter SLCPIPELINE_WIDTH=PL2MTC_LEN ,
+			   // parameter PTCALC_WIDTH=PTCALC2MTC_LEN,
+			    //parameter SLCPIPELINE_WIDTH=PL2MTC_LEN ,
 			    parameter c_NUM_THREADS=3,
 			    parameter c_MAX_NUM_SL = 3,
 	 		    parameter n_PRIMARY_MTC = 3
 			    )
    (
-    input logic 			clock,
-    input logic 			rst,
-    input logic 			srst,
-    input logic [PTCALC_WIDTH-1:0] 	ptcalc[c_NUM_THREADS],
-    input logic [SLCPIPELINE_WIDTH-1:0] slcpipeline[c_MAX_NUM_SL],
-    output logic [MTC2SL_LEN-1:0] 	mtc[n_PRIMARY_MTC]    
+    input logic 		     clock,
+    input logic 		     rst,
+    input logic 		     srst,
+    input logic [PTCALC2MTC_LEN-1:0] ptcalc[c_NUM_THREADS-1:0],
+    input logic [PL2MTC_LEN-1:0]     slcpipeline[c_MAX_NUM_SL-1:0],
+    output logic [MTC2SL_LEN-1:0]    mtc[n_PRIMARY_MTC-1:0]    
     );
    localparam MTC_PKT_WIDTH = MTC2SL_LEN-1;
-   logic [PL2MTC_PROCESS_CH_LEN-1:0]   ptcalc_sel[c_MAX_NUM_SL];
-   logic [MTC_PKT_WIDTH-1:0] 	       mtc_inter[c_MAX_NUM_SL];//c_NUM_THREADS];
-   logic 			       slcpipeline_vld[c_MAX_NUM_SL];
-   logic [c_MAX_NUM_SL-1:0] 	       mtc_inter_valid;
-   logic [PTCALC_WIDTH-1:0] 	       ptcalc_internal[c_MAX_NUM_SL];
-   logic [MTC2SL_LEN-1:0]      	       mtc_not_mapped[c_MAX_NUM_SL] ;
+   logic [PL2MTC_PROCESS_CH_LEN-1:0] ptcalc_sel[c_MAX_NUM_SL-1 : 0];
+   logic [MTC_PKT_WIDTH-1:0] 	     mtc_inter[c_MAX_NUM_SL-1 : 0];//c_NUM_THREADS];
+   logic 			     slcpipeline_vld[c_MAX_NUM_SL-1 : 0];
+   logic [c_MAX_NUM_SL-1:0] 	     mtc_inter_valid;
+   logic [PTCALC2MTC_LEN-1:0] 	     ptcalc_internal[c_MAX_NUM_SL-1 : 0];
+   logic [MTC2SL_LEN-1:0] 	     mtc_not_mapped[c_MAX_NUM_SL-1 : 0] ;
    
    logic [$bits(c_MAX_NUM_SL)-1:0]     j;
    genvar 			       p;
@@ -53,8 +53,8 @@ module mtc_builder_verilog#(
 	   
 	   
 	   format_mtc_pkt #(
-			    .PTCALC_WIDTH(PTCALC_WIDTH),
-			    .SLCPIPELINE_WIDTH(SLCPIPELINE_WIDTH),
+			    .PTCALC_WIDTH(PTCALC2MTC_LEN),
+			    .SLCPIPELINE_WIDTH(PL2MTC_LEN),
 			    .MTC_PKT_WIDTH(MTC_PKT_WIDTH)
 			    )
 	   format_mtc_pkt_inst (
