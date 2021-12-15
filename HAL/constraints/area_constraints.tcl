@@ -51,9 +51,9 @@ if {$num_slrs > 0} {
 
     # tar
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_INN*"] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_MID*"] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_OUT*"] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_EXT*"] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/MID_EN.TAR_MID*"] $PBLOCK_MID
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/OUT_EN.TAR_OUT*"] $PBLOCK_OUT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/EXT_EN.TAR_EXT*"] $PBLOCK_EXT
 
     # ucm
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.UCM_GEN.ULT_UCM*"] $PBLOCK_EXT
