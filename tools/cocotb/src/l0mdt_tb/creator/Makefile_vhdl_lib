@@ -121,9 +121,9 @@ VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/UCM/UCM_PKG.vhd \
 	$(HAL)/ctrl/src/UCM/UCM_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/UCM/UCM_map.vhd \
-	$(HAL)/ctrl/src/H2S/H2S_PKG.vhd \
-	$(HAL)/ctrl/src/H2S/H2S_PKG_DEF.vhd \
-	$(HAL)/ctrl/src/H2S/H2S_map.vhd \
+	$(HAL)/ctrl/src/HPS/HPS_PKG.vhd \
+	$(HAL)/ctrl/src/HPS/HPS_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/HPS/HPS_map.vhd \
 	$(HAL)/ctrl/src/TF/TF_PKG.vhd \
 	$(HAL)/ctrl/src/TF/TF_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/TF/TF_map.vhd \
