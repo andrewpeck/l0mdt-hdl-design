@@ -64,9 +64,6 @@ architecture beh of tar_station is
   signal ctrl_r : TAR_PL_ST_CTRL_t;
   signal mon_r  : TAR_PL_ST_MON_t;
 
-  -- signal ctrl_apb_mem_r : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-  -- signal mon_apb_mem_r  : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; 
-
   constant CTRL_LEN : integer := len(ctrl_r.PL_MEM(0));--71;
   constant MON_LEN : integer := len(mon_r.PL_MEM(0));--43;
 
@@ -79,14 +76,7 @@ architecture beh of tar_station is
   signal i_tdc_hits_ar : mdt_polmux_bus_at(g_ARRAY_LEN -1 downto 0);
   signal int_tdc_hits_av : mdt_polmux_bus_avt(g_ARRAY_LEN -1 downto 0);
 
-  -- signal i_freeze : std_logic :=  '0';
 
-  -- signal apb_ctr_v : std_logic_vector(len(ctrl) - 1 downto 0);
-  -- signal apb_mon_v : std_logic_vector(len(mon) - 1 downto 0);
-
-  -- signal apb_ctrl_mem_v : std_logic_vector(len(ctrl) - 1 downto 0); 
-  -- signal apb_mon_mem_v  : std_logic_vector(len(mon) - 1 downto 0);
-  
 begin
 
   ctrl_r <= convert(ctrl_v,ctrl_r);
