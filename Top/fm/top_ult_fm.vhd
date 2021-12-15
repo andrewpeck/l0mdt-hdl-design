@@ -1,5 +1,4 @@
 library ieee;
-use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
@@ -11,9 +10,6 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-
-library project_lib;
-use project_lib.prj_cfg.all;
 
 library ult_lib;
 use ult_lib.all;
@@ -34,10 +30,11 @@ use ult_lib.all;
 entity top_ult_fm is
   port(
    clock_and_control : in  l0mdt_control_rt;
-   ttc_commands      : in  l0mdt_ttc_rt;
-   fm_ctrl_v         : in std_logic_vector(1023 downto 0); --M_CTRL_t;
-   fm_mon_v          : out std_logic_vector(1023 downto 0); --FM_MON_t;
-   ult_fm_data       : in fm_rt_array ( 0 to total_sb-1)
+   ttc_commands       : in  l0mdt_ttc_rt;
+   fm_ctrl_v                : in std_logic_vector(1023 downto 0); --M_CTRL_t;
+   fm_mon_v              : out std_logic_vector(1023 downto 0) --FM_MON_t;
+   h2s_fm_data          : in fm_rt_array(0  to h2s_sb_all_station_n -1)
+   --ult_fm_data       : in fm_rt_array ( 0 to total_sb-1)
     );
   end entity top_ult_fm;
 
@@ -54,8 +51,8 @@ entity top_ult_fm is
        clock_and_control => clock_and_control,
        ttc_commands     => ttc_commands,
        ctrl_v           => fm_ctrl_v,
-       mon_v            => fm_mon_v,
-       ult_fm_data      => ult_fm_data
+       mon_v            => fm_mon_v
+       h2s_fm_data      => h2s_fm_data
        );
 
     end behavioral;
