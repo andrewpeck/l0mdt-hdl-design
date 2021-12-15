@@ -134,8 +134,14 @@ end entity top_ult;
 architecture behavioral of top_ult is
   signal clock_and_control     : l0mdt_control_rt;
 
-  signal hps_ctrl_r            : HPS_CTRL_t;
-  signal hps_mon_r             : HPS_MON_t;
+  signal hps_inn_ctrl_r            : HPS_CTRL_t;
+  signal hps_inn_mon_r             : HPS_MON_t;
+  signal hps_mid_ctrl_r            : HPS_CTRL_t;
+  signal hps_mid_mon_r             : HPS_MON_t;
+  signal hps_out_ctrl_r            : HPS_CTRL_t;
+  signal hps_out_mon_r             : HPS_MON_t;
+  signal hps_ext_ctrl_r            : HPS_CTRL_t;
+  signal hps_ext_mon_r             : HPS_MON_t;
 
   signal tar_ctrl_r            : TAR_CTRL_t;
   signal tar_mon_r             : TAR_MON_t;
@@ -154,14 +160,14 @@ architecture behavioral of top_ult is
 
   -- signal h2s_ctrl_v            : std_logic_vector(len(h2s_ctrl_r ) -1 downto 0);
   -- signal h2s_mon_v             : std_logic_vector(len(h2s_mon_r  ) -1 downto 0);
-  signal hps_inn_ctrl_v        : std_logic_vector(len(hps_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
-  signal hps_inn_mon_v         : std_logic_vector(len(hps_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
-  signal hps_mid_ctrl_v        : std_logic_vector(len(hps_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
-  signal hps_mid_mon_v         : std_logic_vector(len(hps_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
-  signal hps_out_ctrl_v        : std_logic_vector(len(hps_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
-  signal hps_out_mon_v         : std_logic_vector(len(hps_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
-  signal hps_ext_ctrl_v        : std_logic_vector(len(hps_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
-  signal hps_ext_mon_v         : std_logic_vector(len(hps_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
+  signal hps_inn_ctrl_v        : std_logic_vector(len(hps_inn_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
+  signal hps_inn_mon_v         : std_logic_vector(len(hps_inn_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
+  signal hps_mid_ctrl_v        : std_logic_vector(len(hps_mid_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
+  signal hps_mid_mon_v         : std_logic_vector(len(hps_mid_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
+  signal hps_out_ctrl_v        : std_logic_vector(len(hps_out_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
+  signal hps_out_mon_v         : std_logic_vector(len(hps_out_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
+  signal hps_ext_ctrl_v        : std_logic_vector(len(hps_ext_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
+  signal hps_ext_mon_v         : std_logic_vector(len(hps_ext_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
   
   signal tar_ctrl_v            : std_logic_vector(len(tar_ctrl_r ) -1 downto 0);
   signal tar_mon_v             : std_logic_vector(len(tar_mon_r  ) -1 downto 0);
