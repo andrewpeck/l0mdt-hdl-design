@@ -361,7 +361,7 @@ begin
   hps_out_ctrl_v <= vectorify(hps_out_ctrl_r, hps_out_ctrl_v);
   hps_out_mon_r  <= structify(hps_out_mon_v, hps_out_mon_r);
   hps_ext_ctrl_v <= vectorify(hps_ext_ctrl_r, hps_ext_ctrl_v);
-  hps_ext_mon_r  <= structify(hps_mon_v, hps_ext_mon_r);
+  hps_ext_mon_r  <= structify(hps_ext_mon_v, hps_ext_mon_r);
 
   mpl_ctrl_v     <= vectorify(mpl_ctrl_r, mpl_ctrl_v);
   mpl_mon_r      <= structify(mpl_mon_v, mpl_mon_r);
