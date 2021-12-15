@@ -59,7 +59,7 @@ use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.FM_CTRL.all;
 use ctrl_lib.MPL_CTRL_DEF.all;
 use ctrl_lib.UCM_CTRL_DEF.all;
-use ctrl_lib.H2S_CTRL_DEF.all;
+use ctrl_lib.HPS_CTRL_DEF.all;
 use ctrl_lib.TAR_CTRL_DEF.all;
 use ctrl_lib.MTC_CTRL_DEF.all;
 use ctrl_lib.DAQ_CTRL_DEF.all;
@@ -98,14 +98,14 @@ architecture beh of ult_tp is
   signal ttc_commands      : l0mdt_ttc_rt;
   -- axi control
 
-  signal hps_inn_ctrl :  H2S_CTRL_t := DEFAULT_H2S_CTRL_t;
-  signal hps_inn_mon  :  H2S_MON_t;
-  signal hps_mid_ctrl :  H2S_CTRL_t := DEFAULT_H2S_CTRL_t;
-  signal hps_mid_mon  :  H2S_MON_t;
-  signal hps_out_ctrl :  H2S_CTRL_t := DEFAULT_H2S_CTRL_t;
-  signal hps_out_mon  :  H2S_MON_t;
-  signal hps_ext_ctrl :  H2S_CTRL_t := DEFAULT_H2S_CTRL_t;
-  signal hps_ext_mon  :  H2S_MON_t;
+  signal hps_inn_ctrl :  HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
+  signal hps_inn_mon  :  HPS_MON_t;
+  signal hps_mid_ctrl :  HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
+  signal hps_mid_mon  :  HPS_MON_t;
+  signal hps_out_ctrl :  HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
+  signal hps_out_mon  :  HPS_MON_t;
+  signal hps_ext_ctrl :  HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
+  signal hps_ext_mon  :  HPS_MON_t;
   signal tar_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
   signal tar_mon  :  TAR_MON_t ;
   signal mtc_ctrl :  MTC_CTRL_t := DEFAULT_MTC_CTRL_t;

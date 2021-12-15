@@ -247,11 +247,12 @@ begin
         o_sf2pt_av          => o_ext_segments_av
       );
     else  generate
-      signal mon_hps_r : HPS_MON_t;
-      signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0) := (others => '0');
+      -- signal mon_hps_r : HPS_MON_t;
+      -- signal mon_hps_v : std_logic_vector(len(mon_hps_r) -1 downto 0) := (others => '0');
     begin
-      mon_r.hps(3) <= mon_hps_r;
-      mon_hps_r <= structify(mon_hps_v,mon_hps_r);
+      ext_mon_v <= (ext_mon_v'length - 1 downto 0 => '0');
+      -- mon_r.hps(3) <= mon_hps_r;
+      -- mon_hps_r <= structify(mon_hps_v,mon_hps_r);
       o_ext_segments_av <= (others => ( others => '0'));
     end generate;
 

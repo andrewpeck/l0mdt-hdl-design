@@ -243,9 +243,15 @@ begin
   clock_and_control.bx  <= bx;
 
   -- ser/Des
+  hps_inn : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_inn_ctrl_r )) port map(clk,rst,hps_inn_ctrl_b,hps_inn_ctrl_v);
+  hps_inn_mon_b <= xor_reduce(hps_inn_mon_v);
+  hps_mid : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_mid_ctrl_r )) port map(clk,rst,hps_mid_ctrl_b,hps_mid_ctrl_v);
+  hps_mid_mon_b <= xor_reduce(hps_mid_mon_v);
+  hps_out : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_out_ctrl_r )) port map(clk,rst,hps_out_ctrl_b,hps_out_ctrl_v);
+  hps_out_mon_b <= xor_reduce(hps_out_mon_v);
+  hps_ext : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_ext_ctrl_r )) port map(clk,rst,hps_ext_ctrl_b,hps_ext_ctrl_v);
+  hps_ext_mon_b <= xor_reduce(hps_ext_mon_v);
 
-  h2s_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(h2s_ctrl_r )) port map(clk,rst,h2s_ctrl_b,h2s_ctrl_v);
-  h2s_mon_b <= xor_reduce(h2s_mon_v);
   tar_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(tar_ctrl_r )) port map(clk,rst,tar_ctrl_b,tar_ctrl_v);
   tar_mon_b <= xor_reduce(tar_mon_v);
   mtc_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(mtc_ctrl_r )) port map(clk,rst,mtc_ctrl_b,mtc_ctrl_v);

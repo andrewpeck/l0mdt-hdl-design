@@ -52,24 +52,24 @@ entity ult is
 
     -- control and monitoring
     hps_inn_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    hps_inn_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_inn_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
     hps_mid_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    hps_mid_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_mid_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
     hps_out_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    hps_out_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_out_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
     hps_ext_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    hps_ext_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    hps_ext_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
 
     tar_ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
     tar_mon_v             : out std_logic_vector;--  : out TAR_MON_t;
     -- tar_inn_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    -- tar_inn_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    -- tar_inn_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
     -- tar_mid_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    -- tar_mid_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    -- tar_mid_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
     -- tar_out_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    -- tar_out_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    -- tar_out_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
     -- tar_ext_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    -- tar_ext_mon_v         : out std_logic_vector;--  : out H2S_MON_t;
+    -- tar_ext_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
 
     mtc_ctrl_v            : in std_logic_vector; --  : in  MTC_CTRL_t;
     mtc_mon_v             : out std_logic_vector;--  : out MTC_MON_t;
@@ -381,7 +381,10 @@ begin
       );
     else generate
 
-      h2s_mon_v <= (h2s_mon_v'length - 1 downto 0 => '0');
+      hps_inn_mon_v <= (hps_inn_mon_v'length - 1 downto 0 => '0');
+      hps_mid_mon_v <= (hps_mid_mon_v'length - 1 downto 0 => '0');
+      hps_out_mon_v <= (hps_out_mon_v'length - 1 downto 0 => '0');
+      hps_ext_mon_v <= (hps_ext_mon_v'length - 1 downto 0 => '0');
 
       SUMP_H2S : entity ult_lib.h2s_sump
       port map (
