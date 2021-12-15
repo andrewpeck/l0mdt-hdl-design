@@ -70,12 +70,27 @@ end entity top_ucm_tb;
 
 architecture beh of top_ucm_tb is
 
-  -- signal o_uCM2hps_inn_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- signal o_uCM2hps_mid_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- signal o_uCM2hps_out_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- signal o_uCM2hps_ext_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- -- pipeline
-  -- signal o_uCM2pl_av           : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal clk                     : std_logic;
+  signal rst                     : std_logic;
+  signal glob_en                 : std_logic;
+  signal ttc_commands            : l0mdt_ttc_rt;
+  -- configuration, control & Monitoring
+  signal ctrl_r              : UCM_CTRL_t;
+  signal mon_r               : UCM_MON_t;
+  signal ctrl_v              : std_logic_vector(len(ctrl_r)-1 downto 0);--UCM_CTRL_t;
+  signal mon_v               : std_logic_vector(len(mon_r )-1 downto 0);--UCM_MON_t;
+  -- SLc in
+  signal i_slc_data_mainA_av     : slc_rx_bus_avt(2 downto 0);
+  signal i_slc_data_mainB_av     : slc_rx_bus_avt(2 downto 0);
+  signal i_slc_data_neighborA_v  : slc_rx_rvt;
+  signal i_slc_data_neighborB_v  : slc_rx_rvt;
+  -- to hps
+  signal o_uCM2hps_inn_av        : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_av        : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_av        : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_av        : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  -- pipeline
+  signal o_uCM2pl_av             : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
 begin
 
@@ -86,8 +101,8 @@ begin
     glob_en                 => glob_en,
     ttc_commands            => ttc_commands, 
     -- configuration, control & Monitoring
-    ctrl                    => ctrl,
-    mon                     => mon,
+    ctrl_v                    => ctrl_v,
+    mon_v                     => mon_v,
     -- SLc in
     i_slc_data_mainA_av     => i_slc_data_mainA_av,
     i_slc_data_mainB_av     => i_slc_data_mainB_av,
