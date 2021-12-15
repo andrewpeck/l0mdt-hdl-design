@@ -1,17 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: ATLAS L0MDT Trigger
+-- File: tar.vhd
+-- File PATH: /UserLogic/tar/src/tar.vhd
+-- -----
+-- File Created: Tuesday, 23rd November 2021 2:24:35 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Wednesday, 15th December 2021 1:32:07 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: Tube Adress Remap
---  Description: aplies the fiber mapping to identify the origin of the hits
---
---------------------------------------------------------------------------------
---  Revisions: 
---    v0  - 2020.08.23 creation
---      
---------------------------------------------------------------------------------
+
+
 
 
 library ieee;
@@ -50,9 +52,9 @@ entity tar is
     mon_v             : out std_logic_vector;--  : out TAR_MON_t;
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    -- i_mid_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    -- i_out_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    -- i_ext_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
     -- i_inn_tar_hits_av    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
     -- i_mid_tar_hits_av    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
@@ -60,14 +62,14 @@ entity tar is
     -- i_ext_tar_hits_av    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC polmux from Tar
     o_inn_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-    o_mid_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    o_out_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    o_ext_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+    -- o_mid_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    -- o_out_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    -- o_ext_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
-    o_inn_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-    o_mid_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    o_out_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    o_ext_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0)
+    o_inn_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0)
+    -- o_mid_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    -- o_out_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    -- o_ext_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0)
   );
 end entity tar;
 
@@ -148,12 +150,12 @@ begin
   -- TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
 
     i_inn_tdc_hits_ar <= structify(i_inn_tdc_hits_av);
-    i_mid_tdc_hits_ar <= structify(i_mid_tdc_hits_av);
-    i_out_tdc_hits_ar <= structify(i_out_tdc_hits_av);
-    i_ext_tdc_hits_ar <= structify(i_ext_tdc_hits_av);
+    -- i_mid_tdc_hits_ar <= structify(i_mid_tdc_hits_av);
+    -- i_out_tdc_hits_ar <= structify(i_out_tdc_hits_av);
+    -- i_ext_tdc_hits_ar <= structify(i_ext_tdc_hits_av);
 
     -- pipelines
-    INN_EN : if c_HPS_ENABLE_ST_INN = '1' generate
+    -- INN_EN : if c_HPS_ENABLE_ST_INN = '1' generate
       TAR_INN : entity tar_lib.tar_station
         generic map(
           g_ARRAY_LEN => c_HPS_MAX_HP_INN,
@@ -174,77 +176,77 @@ begin
           o_tdc_hits_av   => o_inn_tdc_hits_av,
           o_tar_hits_av   =>  o_inn_tar_hits_av
         );
-    end generate;
+    -- end generate;
 
-    MID_EN : if c_HPS_ENABLE_ST_MID = '1' generate
-      TAR_MID : entity tar_lib.tar_station
-        generic map(
-          g_ARRAY_LEN => c_HPS_MAX_HP_MID,
-          g_STATION => 1
-        )
-        port map (
-          -- clock, control, and monitoring
-          clk             => clk,
-          rst             => local_rst,
-          glob_en         => local_en,
-          -- ctrl/mon
-          ctrl_v            => ctrl_pl_mid_v,
-          mon_v             => mon_pl_mid_v,
-          -- supervisor
-          i_freeze        => int_freeze,
-          -- data
-          i_tdc_hits_av   => i_mid_tdc_hits_av,
-          o_tdc_hits_av   => o_mid_tdc_hits_av,
-          o_tar_hits_av   =>  o_mid_tar_hits_av
-        );
-    end generate;
+    -- MID_EN : if c_HPS_ENABLE_ST_MID = '1' generate
+    --   TAR_MID : entity tar_lib.tar_station
+    --     generic map(
+    --       g_ARRAY_LEN => c_HPS_MAX_HP_MID,
+    --       g_STATION => 1
+    --     )
+    --     port map (
+    --       -- clock, control, and monitoring
+    --       clk             => clk,
+    --       rst             => local_rst,
+    --       glob_en         => local_en,
+    --       -- ctrl/mon
+    --       ctrl_v            => ctrl_pl_mid_v,
+    --       mon_v             => mon_pl_mid_v,
+    --       -- supervisor
+    --       i_freeze        => int_freeze,
+    --       -- data
+    --       i_tdc_hits_av   => i_mid_tdc_hits_av,
+    --       o_tdc_hits_av   => o_mid_tdc_hits_av,
+    --       o_tar_hits_av   =>  o_mid_tar_hits_av
+    --     );
+    -- end generate;
 
-    OUT_EN : if c_HPS_ENABLE_ST_OUT = '1' generate
-      TAR_OUT : entity tar_lib.tar_station
-        generic map(
-          g_ARRAY_LEN => c_HPS_MAX_HP_OUT,
-          g_STATION => 2
-        )
-        port map (
-          -- clock, control, and monitoring
-          clk             => clk,
-          rst             => local_rst,
-          glob_en         => local_en,
-          -- ctrl/mon
-          ctrl_v            => ctrl_pl_out_v,
-          mon_v             => mon_pl_out_v,
-          -- supervisor
-          i_freeze        => int_freeze,
-          -- data
-          i_tdc_hits_av   => i_out_tdc_hits_av,
-          o_tdc_hits_av   => o_out_tdc_hits_av,
-          o_tar_hits_av   =>  o_out_tar_hits_av
-        );
-    end generate;
+    -- OUT_EN : if c_HPS_ENABLE_ST_OUT = '1' generate
+    --   TAR_OUT : entity tar_lib.tar_station
+    --     generic map(
+    --       g_ARRAY_LEN => c_HPS_MAX_HP_OUT,
+    --       g_STATION => 2
+    --     )
+    --     port map (
+    --       -- clock, control, and monitoring
+    --       clk             => clk,
+    --       rst             => local_rst,
+    --       glob_en         => local_en,
+    --       -- ctrl/mon
+    --       ctrl_v            => ctrl_pl_out_v,
+    --       mon_v             => mon_pl_out_v,
+    --       -- supervisor
+    --       i_freeze        => int_freeze,
+    --       -- data
+    --       i_tdc_hits_av   => i_out_tdc_hits_av,
+    --       o_tdc_hits_av   => o_out_tdc_hits_av,
+    --       o_tar_hits_av   =>  o_out_tar_hits_av
+    --     );
+    -- end generate;
 
-    EXT_EN : if c_HPS_ENABLE_ST_EXT = '1' generate
-      -- TAR_EXT : entity tar_lib.tar_station
-      --   generic map(
-      --     g_ARRAY_LEN => c_HPS_MAX_HP_EXT,
-      --     g_STATION => 3
-      --   )
-      --   port map (
-      --     -- clock, control, and monitoring
-      --     clk             => clk,
-      --     rst             => local_rst,
-      --     glob_en         => local_en,
-      --     -- ctrl/mon
-      --     ctrl_v            => ctrl_pl_ext_v,
-      --     mon_v             => mon_pl_ext_v,
-      --     -- data
-      --     i_tdc_hits_av   => i_ext_tdc_hits_av,
-      --     o_tdc_hits_av   => o_ext_tdc_hits_av,
-      --     o_tar_hits_av   =>  o_ext_tar_hits_av
-      --   );
-      else generate
-        o_ext_tdc_hits_av <= (others => (others => '0'));
-        o_ext_tar_hits_av <= (others => (others => '0'));
-        mon_pl_ext_v <= (others  => '0');
-    end generate;
+    -- EXT_EN : if c_HPS_ENABLE_ST_EXT = '1' generate
+    --   -- TAR_EXT : entity tar_lib.tar_station
+    --   --   generic map(
+    --   --     g_ARRAY_LEN => c_HPS_MAX_HP_EXT,
+    --   --     g_STATION => 3
+    --   --   )
+    --   --   port map (
+    --   --     -- clock, control, and monitoring
+    --   --     clk             => clk,
+    --   --     rst             => local_rst,
+    --   --     glob_en         => local_en,
+    --   --     -- ctrl/mon
+    --   --     ctrl_v            => ctrl_pl_ext_v,
+    --   --     mon_v             => mon_pl_ext_v,
+    --   --     -- data
+    --   --     i_tdc_hits_av   => i_ext_tdc_hits_av,
+    --   --     o_tdc_hits_av   => o_ext_tdc_hits_av,
+    --   --     o_tar_hits_av   =>  o_ext_tar_hits_av
+    --   --   );
+    --   else generate
+    --     o_ext_tdc_hits_av <= (others => (others => '0'));
+    --     o_ext_tar_hits_av <= (others => (others => '0'));
+    --     mon_pl_ext_v <= (others  => '0');
+    -- end generate;
   
 end architecture beh;

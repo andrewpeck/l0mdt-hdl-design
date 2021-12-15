@@ -1,17 +1,21 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: tar
+-- File: tar_station.vhd
+-- Module: <<moduleName>>
+-- File PATH: /src/tar_station.vhd
+-- -----
+-- File Created: Tuesday, 23rd November 2021 2:24:35 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Wednesday, 15th December 2021 1:37:13 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: Tube Adress Remap
---  Description: aplies the fiber mapping to identify the origin of the hits
---
---------------------------------------------------------------------------------
---  Revisions: 
---    v0  - 2020.08.23 creation
---      
---------------------------------------------------------------------------------
+
+
+
 
 
 library ieee;
@@ -61,17 +65,17 @@ end entity tar_station;
 
 architecture beh of tar_station is
 
-  signal ctrl_r : TAR_PL_ST_PL_ST_CTRL_t;
-  signal mon_r  : TAR_PL_ST_PL_ST_MON_t;
+  signal ctrl_r : TAR_PL_ST_CTRL_t;
+  signal mon_r  : TAR_PL_ST_MON_t;
 
   -- signal ctrl_apb_mem_r : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
   -- signal mon_apb_mem_r  : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; 
 
-  constant TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_LEN : integer := len(ctrl_r.PL_CHAMBER.PL_MEM(0));--71;
-  constant TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_LEN : integer := len(mon_r.PL_CHAMBER.PL_MEM(0));--43;
+  constant CTRL_LEN : integer := len(ctrl_r.PL_CHAMBER.PL_MEM(0));--71;
+  constant MON_LEN : integer := len(mon_r.PL_CHAMBER.PL_MEM(0));--43;
 
-  type ctrl_apb_mem_avt is array (5 downto 0) of std_logic_vector(TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_LEN-1  downto 0);
-  type mon_apb_mem_avt  is array (5 downto 0) of std_logic_vector(TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_LEN-1  downto 0);
+  type ctrl_apb_mem_avt is array (5 downto 0) of std_logic_vector(CTRL_LEN-1  downto 0);
+  type mon_apb_mem_avt  is array (5 downto 0) of std_logic_vector(MON_LEN-1  downto 0);
 
   signal ctrl_apb_mem_av : ctrl_apb_mem_avt;
   signal mon_apb_mem_av  : mon_apb_mem_avt; 
