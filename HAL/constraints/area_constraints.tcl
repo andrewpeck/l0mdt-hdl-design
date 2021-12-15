@@ -76,7 +76,13 @@ if {$num_slrs > 0} {
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*ext*"] $PBLOCK_EXT
 
     # control
+
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst*"] $PBLOCK_EXT
+
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/hps_inn_map*"] $PBLOCK_INN
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/hps_mid_map*"] $PBLOCK_MID
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/hps_out_map*"] $PBLOCK_OUT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/hps_ext_map*"] $PBLOCK_EXT
 
     # fm
 
