@@ -37,7 +37,7 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 entity hps_pc is
   generic(
@@ -53,10 +53,10 @@ entity hps_pc is
     rst                   : in std_logic;
     ena                   : in std_logic;
     -- configuration & control
-    i_ctrl_tc_v             : in  std_logic_vector;--H2S_HPS_MDT_TC_MDT_TC_CTRL_t;  
-    o_mon_tc_v              : out std_logic_vector;-- H2S_HPS_MDT_TC_MDT_TC_MON_t;
-    i_ctrl_t0_v             : in  std_logic_vector;--H2S_HPS_MDT_T0_MDT_T0_CTRL_t;  
-    o_mon_t0_v              : out std_logic_vector;-- H2S_HPS_MDT_T0_MDT_T0_MON_t;   
+    i_ctrl_tc_v             : in  std_logic_vector;--HPS_MDT_TC_MDT_TC_CTRL_t;  
+    o_mon_tc_v              : out std_logic_vector;-- HPS_MDT_TC_MDT_TC_MON_t;
+    i_ctrl_t0_v             : in  std_logic_vector;--HPS_MDT_T0_MDT_T0_CTRL_t;  
+    o_mon_t0_v              : out std_logic_vector;-- HPS_MDT_T0_MDT_T0_MON_t;   
     -- MDT hit
     i_mdt_tar_v           : in tar2hps_rvt;
     o_mdt_full_data_v     : out hp_hpsPc2hp_rvt

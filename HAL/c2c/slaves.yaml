@@ -43,14 +43,6 @@ AXI_SLAVES:
         offset: "0x83c48000"
         range: "4K"
 
-  H2S:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_LHC_CTRL}"
-      addr:
-        offset: "0x83c49000"
-        range: "4K"
-
   MTC:
     TCL_CALL:
       command: "AXI_PL_DEV_CONNECT"
@@ -106,3 +98,35 @@ AXI_SLAVES:
       addr:
         offset: "0x83c50000"
         range: "8K"
+
+  HPS_INN:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c60000"
+        range: "4K"
+
+  HPS_MID:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c70000"
+        range: "4K"
+
+  HPS_OUT:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c80000"
+        range: "4K"
+
+  HPS_EXT:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c90000"
+        range: "4K"

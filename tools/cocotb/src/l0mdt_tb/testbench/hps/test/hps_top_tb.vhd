@@ -36,7 +36,7 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 entity hps_top_tb is
   generic(
@@ -63,8 +63,8 @@ end entity hps_top_tb;
 
 architecture beh of hps_top_tb is
     -- control
-    signal ctrl              :  H2S_HPS_CTRL_t;
-    signal mon               :  H2S_HPS_MON_t;
+    signal ctrl              :  HPS_CTRL_t;
+    signal mon               :  HPS_MON_t;
     signal ttc_commands      : l0mdt_ttc_rt;
     signal ctrl_len : natural;
     signal ctrl_v : std_logic_vector(len(ctrl)-1 downto 0) := (others => '0');

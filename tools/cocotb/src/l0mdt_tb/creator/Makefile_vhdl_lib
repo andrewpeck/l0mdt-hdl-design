@@ -132,6 +132,9 @@ VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/FM/FM_PKG.vhd \
 	$(HAL)/ctrl/src/FM/FM_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/FM/FM_map.vhd \
+	$(HAL)/ctrl/src/HPS/HPS_PKG.vhd \
+	$(HAL)/ctrl/src/HPS/HPS_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/HPS/HPS_map.vhd \
 	$(HAL)/ctrl/src/TF/TF_PKG.vhd \
 	$(HAL)/ctrl/src/TF/TF_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/TF/TF_map.vhd \
@@ -340,3 +343,4 @@ VHDL_LIB_ORDER = xpm \
 	hp_lib \
 	heg_lib \
 	hps_lib
+

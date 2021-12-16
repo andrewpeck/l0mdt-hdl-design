@@ -21,9 +21,10 @@ entity FM_map is
     slave_readMISO   : out AXIReadMISO  := DefaultAXIReadMISO;
     slave_writeMOSI  : in  AXIWriteMOSI;
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
-    Mon              : in FM_Mon_t;
+    
+    Mon              : in  FM_Mon_t;
     Ctrl             : out FM_Ctrl_t
-
+        
     );
 end entity FM_map;
 architecture behavioral of FM_map is
@@ -36,7 +37,7 @@ architecture behavioral of FM_map is
   signal localRdAck         : std_logic;
   signal regRdAck           : std_logic;
 
-
+  
   constant BRAM_COUNT       : integer := 54;
 --  signal latchBRAM          : std_logic_vector(BRAM_COUNT-1 downto 0);
 --  signal delayLatchBRAM          : std_logic_vector(BRAM_COUNT-1 downto 0);
@@ -150,14 +151,14 @@ architecture behavioral of FM_map is
 ,			53 => x"00004620");
   signal BRAM_MOSI          : BRAMPortMOSI_array_t(0 to BRAM_COUNT-1);
   signal BRAM_MISO          : BRAMPortMISO_array_t(0 to BRAM_COUNT-1);
-
-
+  
+  
   signal reg_data :  slv32_array_t(integer range 0 to 17984);
   constant Default_reg_data : slv32_array_t(integer range 0 to 17984) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
-  -- AXI
+  -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
   AXIRegBridge : entity work.axiLiteRegBlocking
@@ -189,7 +190,7 @@ begin  -- architecture behavioral
       localRdAck <= '0';
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       localRdAck <= '0';
-
+      
       if regRdAck = '1' then
         localRdData_latch <= localRdData;
         localRdAck <= '1';
@@ -360,7 +361,7 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
     end if;
   end process latch_reads;
 
-
+  
   reads: process (clk_axi,reset_axi_n) is
   begin  -- process latch_reads
     if reset_axi_n = '0' then
@@ -371,7 +372,7 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
       if localRdReq = '1' then
         regRdAck  <= '1';
         case to_integer(unsigned(localAddress(14 downto 0))) is
-
+          
 
 
           when others =>
@@ -402,22 +403,22 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
       Ctrl.FREEZE_MASK_1 <= (others => '0');
       Ctrl.PLAYBACK_MASK_0 <= (others => '0');
       Ctrl.PLAYBACK_MASK_1 <= (others => '0');
+      
 
-
-
+      
       if localWrEn = '1' then
         case to_integer(unsigned(localAddress(14 downto 0))) is
         when 0 => --0x0
-          Ctrl.SPY_CTRL.GLOBAL_FREEZE         <=  localWrData( 0);
-          Ctrl.SPY_CTRL.GLOBAL_PLAYBACK_MODE  <=  localWrData( 2 downto  1);
+          Ctrl.SPY_CTRL.GLOBAL_FREEZE         <=  localWrData( 0);               
+          Ctrl.SPY_CTRL.GLOBAL_PLAYBACK_MODE  <=  localWrData( 2 downto  1);     
         when 1 => --0x1
-          Ctrl.FREEZE_MASK_0                  <=  localWrData(31 downto  0);
+          Ctrl.FREEZE_MASK_0                  <=  localWrData(31 downto  0);     
         when 2 => --0x2
-          Ctrl.FREEZE_MASK_1                  <=  localWrData(31 downto  0);
+          Ctrl.FREEZE_MASK_1                  <=  localWrData(31 downto  0);     
         when 5 => --0x5
-          Ctrl.PLAYBACK_MASK_0                <=  localWrData(31 downto  0);
+          Ctrl.PLAYBACK_MASK_0                <=  localWrData(31 downto  0);     
         when 6 => --0x6
-          Ctrl.PLAYBACK_MASK_1                <=  localWrData(31 downto  0);
+          Ctrl.PLAYBACK_MASK_1                <=  localWrData(31 downto  0);     
 
           when others => null;
         end case;
@@ -427,7 +428,7 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
 
 
 
-
+  
   -------------------------------------------------------------------------------
   -- BRAM decoding
   -------------------------------------------------------------------------------
@@ -458,7 +459,7 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
     BRAM_MOSI(iBRAM).clk     <= clk_axi;
     BRAM_MOSI(iBRAM).wr_data <= localWrData;
   end generate BRAM_asyncs;
-
+  
   Ctrl.SB0.SB_MEM.clk       <=  BRAM_MOSI(0).clk;
   Ctrl.SB0.SB_MEM.enable    <=  BRAM_MOSI(0).enable;
   Ctrl.SB0.SB_MEM.wr_enable <=  BRAM_MOSI(0).wr_enable;
@@ -1000,10 +1001,10 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
   BRAM_MISO(53).rd_data(31 downto 32) <= (others => '0');
   BRAM_MISO(53).rd_data_valid <= Mon.SB26.SB_META.rd_data_valid;
 
-
+    
 
   BRAM_writes: for iBRAM in 0 to BRAM_COUNT-1 generate
-    BRAM_write: process (clk_axi,reset_axi_n) is
+    BRAM_write: process (clk_axi,reset_axi_n) is    
     begin  -- process BRAM_reads
       if reset_axi_n = '0' then
         BRAM_MOSI(iBRAM).wr_enable   <= '0';
@@ -1017,5 +1018,5 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
   end generate BRAM_writes;
 
 
-
+  
 end architecture behavioral;

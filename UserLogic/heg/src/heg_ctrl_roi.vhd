@@ -129,9 +129,6 @@ begin
 
     end generate;
 
-    -- o_Roi_win_valid <= dv_z and dv_mbar;
-
-
     WIN_GEN: process(clk)
     begin
       if rising_edge(clk) then

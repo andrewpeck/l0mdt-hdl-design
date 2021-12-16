@@ -38,7 +38,7 @@ use hps_lib.hps_pkg.all;
 library csf_lib;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 library lsf_lib;
 use lsf_lib.all;
@@ -57,11 +57,11 @@ entity hps_sf_wrap is
     glob_en : in std_logic;
 
     -- control
-    csf_ctrl_v : in std_logic_vector;--  H2S_HPS_CSF_CSF_CTRL_t;
-    csf_mon_v  : out std_logic_vector;--H2S_HPS_CSF_CSF_MON_t;
+    csf_ctrl_v : in std_logic_vector;--  HPS_CSF_CSF_CTRL_t;
+    csf_mon_v  : out std_logic_vector;--HPS_CSF_CSF_MON_t;
 
-    lsf_ctrl_v : in  std_logic_vector;--H2S_HPS_LSF_LSF_CTRL_t;
-    lsf_mon_v  : out std_logic_vector;--H2S_HPS_LSF_LSF_MON_t;
+    lsf_ctrl_v : in  std_logic_vector;--HPS_LSF_LSF_CTRL_t;
+    lsf_mon_v  : out std_logic_vector;--HPS_LSF_LSF_MON_t;
 
     sf_fm_data : out fm_rt_array( 0 to sf_sb_n - 1);
     -- configuration
@@ -76,10 +76,10 @@ end entity hps_sf_wrap;
 architecture beh of hps_sf_wrap is
   signal i_control_r : heg_ctrl2sf_rt;
 
-  signal csf_ctrl_r : H2S_HPS_CSF_CSF_CTRL_t;
-  signal csf_mon_r  : H2S_HPS_CSF_CSF_MON_t;
-  signal lsf_ctrl_r : H2S_HPS_LSF_LSF_CTRL_t;
-  signal lsf_mon_r  : H2S_HPS_LSF_LSF_MON_t;
+  signal csf_ctrl_r : HPS_CSF_CSF_CTRL_t;
+  signal csf_mon_r  : HPS_CSF_CSF_MON_t;
+  signal lsf_ctrl_r : HPS_LSF_LSF_CTRL_t;
+  signal lsf_mon_r  : HPS_LSF_LSF_MON_t;
 
   signal sf_data_v : std_logic_vector(o_sf_data_v'length -1 downto 0);
 
