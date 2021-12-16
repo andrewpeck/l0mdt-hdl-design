@@ -106,8 +106,14 @@ architecture beh of ult_tp is
   signal hps_out_mon  :  HPS_MON_t;
   signal hps_ext_ctrl :  HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
   signal hps_ext_mon  :  HPS_MON_t;
-  signal tar_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
-  signal tar_mon  :  TAR_MON_t ;
+  signal tar_inn_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_inn_mon  :  TAR_MON_t ;
+  signal tar_mid_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_mid_mon  :  TAR_MON_t ;
+  signal tar_out_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_out_mon  :  TAR_MON_t ;
+  signal tar_ext_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_ext_mon  :  TAR_MON_t ;
   signal mtc_ctrl :  MTC_CTRL_t := DEFAULT_MTC_CTRL_t;
   signal mtc_mon  :  MTC_MON_t;
   signal ucm_ctrl :  UCM_CTRL_t := DEFAULT_UCM_CTRL_t;
@@ -132,8 +138,15 @@ architecture beh of ult_tp is
   signal hps_ext_ctrl_v : std_logic_vector(len(hps_ext_ctrl)-1 downto 0);
   signal hps_ext_mon_v  : std_logic_vector(len(hps_ext_mon )-1 downto 0);
 
-  signal tar_ctrl_v : std_logic_vector(len(tar_ctrl)-1 downto 0);
-  signal tar_mon_v  : std_logic_vector(len(tar_mon )-1 downto 0);
+  signal tar_inn_ctrl_v : std_logic_vector(len(tar_inn_ctrl)-1 downto 0);
+  signal tar_inn_mon_v  : std_logic_vector(len(tar_inn_mon )-1 downto 0);
+  signal tar_mid_ctrl_v : std_logic_vector(len(tar_mid_ctrl)-1 downto 0);
+  signal tar_mid_mon_v  : std_logic_vector(len(tar_mid_mon )-1 downto 0);
+  signal tar_out_ctrl_v : std_logic_vector(len(tar_out_ctrl)-1 downto 0);
+  signal tar_out_mon_v  : std_logic_vector(len(tar_out_mon )-1 downto 0);
+  signal tar_ext_ctrl_v : std_logic_vector(len(tar_ext_ctrl)-1 downto 0);
+  signal tar_ext_mon_v  : std_logic_vector(len(tar_ext_mon )-1 downto 0);
+
   signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl)-1 downto 0);
   signal mtc_mon_v  : std_logic_vector(len(mtc_mon )-1 downto 0);
   signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl)-1 downto 0);
@@ -242,8 +255,15 @@ begin
     hps_ext_ctrl_v  => hps_ext_ctrl_v,
     hps_ext_mon_v   => hps_ext_mon_v ,
 
-    tar_ctrl_v => tar_ctrl_v,
-    tar_mon_v  => tar_mon_v,
+    tar_inn_ctrl_v => tar_inn_ctrl_v,
+    tar_inn_mon_v  => tar_inn_mon_v ,
+    tar_mid_ctrl_v => tar_mid_ctrl_v,
+    tar_mid_mon_v  => tar_mid_mon_v ,
+    tar_out_ctrl_v => tar_out_ctrl_v,
+    tar_out_mon_v  => tar_out_mon_v ,
+    tar_ext_ctrl_v => tar_ext_ctrl_v,
+    tar_ext_mon_v  => tar_ext_mon_v ,
+
     mtc_ctrl_v => mtc_ctrl_v,
     mtc_mon_v  => mtc_mon_v,
     ucm_ctrl_v => ucm_ctrl_v,
@@ -305,8 +325,15 @@ begin
     --
     ucm_ctrl_v <= vectorify(ucm_ctrl,ucm_ctrl_v);
     ucm_mon <= structify(ucm_mon_v,ucm_mon);
-    tar_ctrl_v <= vectorify(tar_ctrl,tar_ctrl_v);
-    tar_mon <= structify(tar_mon_v,tar_mon);
+
+    tar_inn_ctrl_v  <= vectorify(tar_inn_ctrl ,tar_inn_ctrl_v);
+    tar_inn_mon     <= structify(tar_inn_mon_v,tar_inn_mon);
+    tar_mid_ctrl_v  <= vectorify(tar_mid_ctrl ,tar_mid_ctrl_v);
+    tar_mid_mon     <= structify(tar_mid_mon_v,tar_mid_mon);
+    tar_out_ctrl_v  <= vectorify(tar_out_ctrl ,tar_out_ctrl_v);
+    tar_out_mon     <= structify(tar_out_mon_v,tar_out_mon);
+    tar_ext_ctrl_v  <= vectorify(tar_ext_ctrl ,tar_ext_ctrl_v);
+    tar_ext_mon     <= structify(tar_ext_mon_v,tar_ext_mon);
     -- h2s_ctrl_v <= vectorify(h2s_ctrl,h2s_ctrl_v);
     -- h2s_mon <= structify(h2s_mon_v,h2s_mon);
     mpl_ctrl_v <= vectorify(mpl_ctrl,mpl_ctrl_v);

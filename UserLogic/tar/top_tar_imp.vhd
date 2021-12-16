@@ -102,8 +102,6 @@ begin
 
     -- outputs to h2s
     o_tar_hits_av  => o_tar_hits_av
-
-
   );
 
 
