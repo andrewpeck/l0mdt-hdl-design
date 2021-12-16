@@ -104,6 +104,10 @@ module legendreEngine_2clk #(
    logic [VEC_MDTID_LEN-1:0] 			 slc_mdtid;
    logic [SF2PTCALC_SEGQUALITY_LEN-1:0] 	 sf_segquality;
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 		 sf_segpos;
+   logic [SF2PTCALC_SEGQUALITY_LEN-1:0] 	 hls_sf_segquality;
+   logic 					 hls_sf_segquality_vld;
+   
+
    logic 					 sf_segpos_vld;
 
 
@@ -626,10 +630,9 @@ assign hewindow_pos_Z = hewindow_pos >> (HEG2SFSLC_HEWINDOW_POS_DECB - SF2PTCALC
 
     	     le_tb_output_vld    <= sf_segpos_vld;
 	     //PRIYA ADDING TEMPORARY LOGIC FOR segquality
-	     if(res_max_bin_count_vld == 1)
-	       sf_segquality <= (res_max_bin_count >= 3);
-	     else if (le_output_vld == 1)
-	       sf_segquality <= 0;
+	     if(hls_sf_segquality_vld == 1)
+	       sf_segquality <= hls_sf_segquality;
+	  
 
 	     
 	     if(sf_segpos_vld)
@@ -1548,7 +1551,9 @@ hls_find_max_bin_64 find_max_bin_64_inst(
 				  .res_max_bin_theta_V(res_max_bin_theta),
 				  .res_max_bin_theta_V_ap_vld(rest_max_bin_theta_vld),
 				  .res_max_bin_r_V(res_max_bin_r),
-				  .res_max_bin_r_V_ap_vld(res_max_bin_r_vld)
+				  .res_max_bin_r_V_ap_vld(res_max_bin_r_vld),
+					 .segquality( hls_sf_segquality),
+					 .segquality_ap_vld( hls_sf_segquality_vld)
 				  );
 				     end // block: find_max_bin_64
 				     end // block: find_max_bin_tb_64
