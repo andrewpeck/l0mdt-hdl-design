@@ -35,10 +35,16 @@ entity mdt_tar is
     -- pipeline clock
     clock_and_control : in  l0mdt_control_rt;
     --
-    ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
-    mon_v             : out std_logic_vector;--  : out TAR_MON_t;
+    tar_inn_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    tar_inn_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
+    tar_mid_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    tar_mid_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
+    tar_out_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    tar_out_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
+    tar_ext_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    tar_ext_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
     -- ttc
-    ttc_commands      : in  l0mdt_ttc_rt;
+    -- ttc_commands      : in  l0mdt_ttc_rt;
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
     i_mid_tdc_hits_av : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
@@ -73,38 +79,119 @@ architecture beh of mdt_tar is
   signal glob_en : std_logic := '1';
 begin
 
+  HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
+    TAR : entity tar_lib.tar
+    generic map(c_HPS_MAX_HP_INN)
+    port map (
+      -- clock, control, and monitoring
+      clk             => clock_and_control.clk,
+      rst             => clock_and_control.rst,
+      glob_en         => glob_en,
+      --
+      ctrl_v            => tar_inn_ctrl_v,
+      mon_v             => tar_inn_mon_v ,
+      -- TDC Hits from Polmux
+      i_tdc_hits_av  => i_inn_tdc_hits_av,
+      -- to daq
+      o_tdc_hits_av  => o_inn_tdc_hits_av,
+  
+      -- outputs to h2s
+      o_tar_hits_av  => o_inn_tar_hits_av
+    );
+  end generate;
+  HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
+    TAR : entity tar_lib.tar
+    generic map(c_HPS_MAX_HP_MID)
+    port map (
+      -- clock, control, and monitoring
+      clk             => clock_and_control.clk,
+      rst             => clock_and_control.rst,
+      glob_en         => glob_en,
+      --
+      ctrl_v            => tar_mid_ctrl_v,
+      mon_v             => tar_mid_mon_v ,
+      -- TDC Hits from Polmux
+      i_tdc_hits_av  => i_mid_tdc_hits_av,
+      -- to daq
+      o_tdc_hits_av  => o_mid_tdc_hits_av,
+  
+      -- outputs to h2s
+      o_tar_hits_av  => o_mid_tar_hits_av
+    );
+  end generate;
+  HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
+    TAR : entity tar_lib.tar
+    generic map(c_HPS_MAX_HP_OUT)
+    port map (
+      -- clock, control, and monitoring
+      clk             => clock_and_control.clk,
+      rst             => clock_and_control.rst,
+      glob_en         => glob_en,
+      --
+      ctrl_v            => tar_out_ctrl_v,
+      mon_v             => tar_out_mon_v ,
+      -- TDC Hits from Polmux
+      i_tdc_hits_av  => i_out_tdc_hits_av,
+      -- to daq
+      o_tdc_hits_av  => o_out_tdc_hits_av,
+  
+      -- outputs to h2s
+      o_tar_hits_av  => o_out_tar_hits_av
+    );
+  end generate;
+  HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
+    TAR : entity tar_lib.tar
+    generic map(c_HPS_MAX_HP_EXT)
+    port map (
+      -- clock, control, and monitoring
+      clk             => clock_and_control.clk,
+      rst             => clock_and_control.rst,
+      glob_en         => glob_en,
+      --
+      ctrl_v            => tar_ext_ctrl_v,
+      mon_v             => tar_ext_mon_v ,
+      -- TDC Hits from Polmux
+      i_tdc_hits_av  => i_ext_tdc_hits_av,
+      -- to daq
+      o_tdc_hits_av  => o_ext_tdc_hits_av,
+  
+      -- outputs to h2s
+      o_tar_hits_av  => o_ext_tar_hits_av
+    );
+  end generate;
+
   o_sump <= glob_en;
   
-      TAR : entity tar_lib.tar
-      port map (
-        -- clock, control, and monitoring
-        clk             => clock_and_control.clk,
-        rst             => clock_and_control.rst,
-        glob_en         => glob_en,
-        --
-        ctrl_v            => ctrl_v,
-        mon_v             => mon_v,
-        -- TDC Hits from Polmux
-        i_inn_tdc_hits_av  => i_inn_tdc_hits_av,
-        i_mid_tdc_hits_av  => i_mid_tdc_hits_av,
-        i_out_tdc_hits_av  => i_out_tdc_hits_av,
-        i_ext_tdc_hits_av  => i_ext_tdc_hits_av,
-        -- candidates in from hal
-        -- i_inn_tar_hits_av  => i_inn_tar_hits,
-        -- i_mid_tar_hits_av  => i_mid_tar_hits,
-        -- i_out_tar_hits_av  => i_out_tar_hits,
-        -- i_ext_tar_hits_av  => i_ext_tar_hits,
-        -- to daq
-        o_inn_tdc_hits_av  => o_inn_tdc_hits_av,
-        o_mid_tdc_hits_av  => o_mid_tdc_hits_av,
-        o_out_tdc_hits_av  => o_out_tdc_hits_av,
-        o_ext_tdc_hits_av  => o_ext_tdc_hits_av,
-        -- outputs to h2s
-        o_inn_tar_hits_av  => o_inn_tar_hits_av,
-        o_mid_tar_hits_av  => o_mid_tar_hits_av,
-        o_out_tar_hits_av  => o_out_tar_hits_av,
-        o_ext_tar_hits_av  => o_ext_tar_hits_av
+      -- TAR : entity tar_lib.tar
+      -- port map (
+      --   -- clock, control, and monitoring
+      --   clk             => clock_and_control.clk,
+      --   rst             => clock_and_control.rst,
+      --   glob_en         => glob_en,
+      --   --
+      --   ctrl_v            => ctrl_v,
+      --   mon_v             => mon_v,
+      --   -- TDC Hits from Polmux
+      --   i_inn_tdc_hits_av  => i_inn_tdc_hits_av,
+      --   i_mid_tdc_hits_av  => i_mid_tdc_hits_av,
+      --   i_out_tdc_hits_av  => i_out_tdc_hits_av,
+      --   i_ext_tdc_hits_av  => i_ext_tdc_hits_av,
+      --   -- candidates in from hal
+      --   -- i_inn_tar_hits_av  => i_inn_tar_hits,
+      --   -- i_mid_tar_hits_av  => i_mid_tar_hits,
+      --   -- i_out_tar_hits_av  => i_out_tar_hits,
+      --   -- i_ext_tar_hits_av  => i_ext_tar_hits,
+      --   -- to daq
+      --   o_inn_tdc_hits_av  => o_inn_tdc_hits_av,
+      --   o_mid_tdc_hits_av  => o_mid_tdc_hits_av,
+      --   o_out_tdc_hits_av  => o_out_tdc_hits_av,
+      --   o_ext_tdc_hits_av  => o_ext_tdc_hits_av,
+      --   -- outputs to h2s
+      --   o_inn_tar_hits_av  => o_inn_tar_hits_av,
+      --   o_mid_tar_hits_av  => o_mid_tar_hits_av,
+      --   o_out_tar_hits_av  => o_out_tar_hits_av,
+      --   o_ext_tar_hits_av  => o_ext_tar_hits_av
   
-      );
+      -- );
 
 end architecture beh;

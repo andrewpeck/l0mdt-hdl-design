@@ -29,7 +29,7 @@ library hp_lib;
 use hp_lib.hp_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 
 entity top_hp_tb is
@@ -57,8 +57,8 @@ architecture beh of top_hp_tb is
 
   constant c_CTRL_LEN     : integer := 41;--len(ctrl_r)
   constant c_MON_LEN      : integer := 10;--len(mon_r)
-  signal ctrl_r           : H2S_HPS_HEG_HEG_HP_HP_CTRL_t;
-  signal mon_r            : H2S_HPS_HEG_HEG_HP_HP_MON_t;
+  signal ctrl_r           : HPS_HEG_HEG_HP_HP_CTRL_t;
+  signal mon_r            : HPS_HEG_HEG_HP_HP_MON_t;
   signal ctrl_v           : std_logic_vector(c_CTRL_LEN - 1 downto 0);
   signal mon_v            : std_logic_vector(c_MON_LEN - 1 downto 0);
 

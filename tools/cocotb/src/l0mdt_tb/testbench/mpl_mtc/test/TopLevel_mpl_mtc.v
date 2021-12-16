@@ -47,10 +47,10 @@ module TopLevel_mpl_mtc #(
 
 
 
-   wire [PL2MTC_LEN-1:0] pl2mtc [TB_c_MAX_NUM_SL];
-   wire [MTC2SL_LEN-1:0] mtc2sl [TB_c_NUM_MTC];
-   wire [UCM2PL_LEN-1:0] ucm2pl [TB_c_MAX_NUM_SL];
-   wire [PTCALC2MTC_LEN-1:0] ptcalc2mtc[TB_c_NUM_THREADS];
+   wire [PL2MTC_LEN-1:0] pl2mtc [TB_c_MAX_NUM_SL-1:0];
+   wire [MTC2SL_LEN-1:0] mtc2sl [TB_c_NUM_MTC-1:0];
+   wire [UCM2PL_LEN-1:0] ucm2pl [TB_c_MAX_NUM_SL-1:0];
+   wire [PTCALC2MTC_LEN-1:0] ptcalc2mtc[TB_c_NUM_THREADS-1:0];
    wire [PL2PTCALC_LEN-1:0]  pl2ptcalc[TB_c_NUM_THREADS-1:0];
 
    typedef struct 	     {

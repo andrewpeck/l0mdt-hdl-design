@@ -45,8 +45,8 @@ entity heg_supervisor is
     rst                 : in std_logic;
     glob_en             : in std_logic := '1';
     -- control
-    ctrl_v              : in  std_logic_vector; -- H2S_HPS_HEG_HEG_CTRL_t;
-    mon_v               : out std_logic_vector; -- H2S_HPS_HEG_HEG_MON_t;
+    ctrl_v              : in  std_logic_vector; -- HPS_HEG_HEG_CTRL_t;
+    mon_v               : out std_logic_vector; -- HPS_HEG_HEG_MON_t;
     -- superior entity ctrls
     i_freeze            : in std_logic := '0';
     o_freeze            : out std_logic;

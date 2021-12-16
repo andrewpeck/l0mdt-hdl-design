@@ -87,6 +87,7 @@ VHDL_SOURCES_apbus_lib = \
     $(SHAREDDIR)/APBus/pkg/apb_pkg.vhd \
     $(SHAREDDIR)/APBus/src/apb_imem.vhd
 
+
 VHDL_SOURCES_vamc_lib = \
 	$(SHAREDDIR)/vamc/vamc-core/pkg/vamc_pkg.vhd \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_rb.vhd \
@@ -96,7 +97,8 @@ VHDL_SOURCES_vamc_lib = \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_ctrl_pl.vhd \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_ctrl_ext.vhd \
 	$(SHAREDDIR)/vamc/vamc-core/src/vamc_spl.vhd \
-	$(SHAREDDIR)/vamc/vamc-core/src/vamc_top.vhd
+	$(SHAREDDIR)/vamc/vamc-core/src/vamc_top.vhd 
+
 
 
 
@@ -122,6 +124,9 @@ VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/H2S/H2S_PKG.vhd \
 	$(HAL)/ctrl/src/H2S/H2S_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/H2S/H2S_map.vhd \
+	$(HAL)/ctrl/src/TF/TF_PKG.vhd \
+	$(HAL)/ctrl/src/TF/TF_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/TF/TF_map.vhd \
 	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_PKG.vhd \
 	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_map.vhd 
@@ -195,6 +200,7 @@ VHDL_SOURCES_lsf_lib = \
     $(LSFDIR)/../top_lsf.vhd
 
 VHDL_SOURCES_upt_lib = \
+	$(USERLOGIC)/upt/IP/vu13p/hls_ptcalc_top_inst/sim/hls_ptcalc_top.vhd \
 	$(USERLOGIC)/upt/top_upt.vhd
 
 VERILOG_SOURCES_lsf_lib = \
@@ -259,22 +265,23 @@ VERILOG_SOURCES_upt_lib = \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_inv_table_V.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_30ns_24s_45_5_1.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_33ns_35ns_65_6_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_13s_13s_26_4_1.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_16ns_16ns_31_4_1.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_16s_26ns_42_4_1.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_19s_12s_31_4_1.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_21s_12s_33_4_1.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_22s_7ns_29_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_12s_36_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_13s_37_4_1.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_15ns_39_4_1.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_28s_16ns_44_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_14s_38_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_14s_14s_28_4_1.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_a_2s_table_V.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_a_3s_table_V.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_e_2s_table_V.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_e_3s_table_V.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_p_2s_table_V.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_p_3s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_ptthresh_2s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_ptthresh_3s_table_V.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_rsp_table_V.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top.v \
 
@@ -295,7 +302,9 @@ VHDL_SOURCES_mpl_lib = \
     $(MPLDIR)/mpl_pl.vhd \
     $(MPLDIR)/mpl.vhd
 
-
+VHDL_SOURCES_ult_lib = \
+    $(ULTDIR)/ult_pt.vhd
+		       
 VHDL_LIB_ORDER = xpm \
 	shared_cfg_def_lib \
 	project_lib \
@@ -308,4 +317,5 @@ VHDL_LIB_ORDER = xpm \
 	lsf_lib \
 	upt_lib \
 	ucm_lib \
-	mpl_lib
+	mpl_lib \
+	ult_lib

@@ -254,7 +254,7 @@ begin
           end if;
           -----------------------------------------------
           if g_PARALLEL_MEM > 0 then
-            o_mem_sel <= apb_ctrl_r.mem_sel;
+            o_mem_sel <= std_logic_vector(resize(unsigned(apb_ctrl_r.mem_sel),4));
           end if;
           -----------------------------------------------
           case int_wr_status is

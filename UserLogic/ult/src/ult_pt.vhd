@@ -96,9 +96,9 @@ begin
       upt_loop : for I in 0 to c_NUM_THREADS-1 generate
 
         upt : entity upt_lib.top_upt
-          generic map (
-            FLAVOUR => 0,
-            SECTOR  => I)
+        --  generic map (
+        --    FLAVOUR => 0,
+        --    SECTOR  => I)
           port map (
             clk         => clock_and_control.clk,
             i_rst       => clock_and_control.rst,

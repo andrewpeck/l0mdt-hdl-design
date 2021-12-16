@@ -103,16 +103,24 @@ def CREATORTESTNAME_test(dut):
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
     inputs_station_id= [["" for x in range(CREATORCLASSNAMEPorts.get_input_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_input_interfaces)]
+    inputs_thread_n= [[0 for x in range(CREATORCLASSNAMEPorts.get_input_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_input_interfaces)]
     outputs_station_id= [["" for x in range(CREATORCLASSNAMEPorts.get_output_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_output_interfaces)]
     tolerance= [["" for x in range(CREATORCLASSNAMEPorts.get_output_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_output_interfaces)]
+    outputs_thread_n= [[0 for x in range(CREATORCLASSNAMEPorts.get_output_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_output_interfaces)]
     for i in range(CREATORCLASSNAMEPorts.n_input_interfaces):
         if "station_ID" in testvector_config_inputs[i] :
             inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+        if "thread_n" in testvector_config_inputs[i]:
+            inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
     for i in range(CREATORCLASSNAMEPorts.n_output_interfaces):
         if "station_ID" in testvector_config_outputs[i] :
             outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
         else :
             outputs_station_id[i] = ['NONE']
+
+        if "thread_n" in testvector_config_outputs[i]:
+            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]
+ 
 
         if "tolerance" in testvector_config_outputs[i] :
             tolerance[i] = testvector_config_outputs[i]["tolerance"]
@@ -235,7 +243,8 @@ def CREATORTESTNAME_test(dut):
             n_ports = CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
             station_ID=inputs_station_id[n_ip_intf],
-            tv_type=input_tvtype[n_ip_intf]
+            tv_type=input_tvtype[n_ip_intf],
+            cnd_thrd_id = inputs_thread_n[n_ip_intf]
             ))
         for io in range(CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
@@ -250,7 +259,8 @@ def CREATORTESTNAME_test(dut):
             n_ports = CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf),
             n_to_load=num_events_to_process,
             station_ID=outputs_station_id[n_op_intf],
-            tv_type="value"
+            tv_type="value",
+            cnd_thrd_id = outputs_thread_n[n_op_intf]
             ))
         output_tv_list.append(single_interface_list)
 

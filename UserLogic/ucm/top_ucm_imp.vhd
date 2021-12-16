@@ -60,12 +60,12 @@ end entity top_ucm;
 
 architecture beh of top_ucm is
 
-  constant  c_CTRL_LEN :  integer := 394;
-  constant c_MON_LEN : integer := 184;
   signal ctrl_r            : UCM_CTRL_t;
   signal mon_r             : UCM_MON_t;
-  signal ctrl_v            : std_logic_vector(c_CTRL_LEN -1 downto 0);
-  signal mon_v             : std_logic_vector(c_MON_LEN -1 downto 0);
+  -- constant  c_CTRL_LEN :  integer := len(ctrl_r);--394;
+  -- constant c_MON_LEN : integer := len(mon_r);--184;
+  signal ctrl_v            : std_logic_vector(len(ctrl_r) -1 downto 0);
+  signal mon_v             : std_logic_vector(len(mon_r) -1 downto 0);
 
   signal i_slc_data_mainA_av     : slc_rx_bus_avt(2 downto 0);
   signal i_slc_data_mainB_av     : slc_rx_bus_avt(2 downto 0);
@@ -79,7 +79,7 @@ architecture beh of top_ucm is
 
 begin
 
-  ctrl : entity shared_lib.vhdl_utils_deserializer generic map (c_CTRL_LEN) port map(clk,rst,ctrl_b,ctrl_v);
+  ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(ctrl_r)) port map(clk,rst,ctrl_b,ctrl_v);
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
   slc_mp: for i_h in 2 downto 0 generate
