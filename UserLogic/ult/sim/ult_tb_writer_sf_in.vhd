@@ -42,10 +42,12 @@ library vamc_lib;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
-library heg_lib;
-use heg_lib.heg_pkg.all;
+--library heg_lib;
+--use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+library hegtypes_lib;
+use hegtypes_lib.heg_pkg.all;
 
 entity ult_tb_writer_sf_in is
   generic(

@@ -27,9 +27,10 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
-library heg_lib;
-use heg_lib.heg_pkg.all;
-
+--library heg_lib;
+--use heg_lib.heg_pkg.all;
+library hegtypes_lib;
+use hegtypes_lib.heg_pkg.all;
 
 package ult_tb_sim_cstm_pkg is
   

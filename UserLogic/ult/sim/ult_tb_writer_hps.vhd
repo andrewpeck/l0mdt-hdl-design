@@ -43,10 +43,14 @@ library vamc_lib;
 
 library hps_lib;
 use hps_lib.hps_pkg.all;
-library heg_lib;
-use heg_lib.heg_pkg.all;
-library hp_lib;
-use hp_lib.hp_pkg.all;
+--library heg_lib;
+--use heg_lib.heg_pkg.all;
+--library hp_lib;
+--use hp_lib.hp_pkg.all;
+
+library hegtypes_lib;
+use hegtypes_lib.hp_pkg.all;
+use hegtypes_lib.heg_pkg.all;
 
 entity ult_tb_writer_hps is
   generic(
