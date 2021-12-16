@@ -19,11 +19,18 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.std_logic_misc.all;
+use ieee.math_real.all;
+
+package apb_pkg is
+  
+  constant c_DUMMY : integer := 0;
+  
+  
+end package apb_pkg;
 
 package body apb_pkg is
   
-  constant c_DUMMY : integer := 0;
+  
   
   
 end package body apb_pkg;
