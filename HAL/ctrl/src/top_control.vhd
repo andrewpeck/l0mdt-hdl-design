@@ -9,7 +9,7 @@ library ctrl_lib;
 use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
 use ctrl_lib.UCM_CTRL.all;
@@ -45,11 +45,29 @@ entity top_control is
 
     -- control
 
-    h2s_ctrl : out H2S_CTRL_t;
-    h2s_mon  : in  H2S_MON_t;
+    hps_inn_ctrl : out HPS_CTRL_t;
+    hps_inn_mon  : in  HPS_MON_t;
 
-    tar_ctrl : out TAR_CTRL_t;
-    tar_mon  : in  TAR_MON_t;
+    hps_mid_ctrl : out HPS_CTRL_t;
+    hps_mid_mon  : in  HPS_MON_t;
+
+    hps_out_ctrl : out HPS_CTRL_t;
+    hps_out_mon  : in  HPS_MON_t;
+
+    hps_ext_ctrl : out HPS_CTRL_t;
+    hps_ext_mon  : in  HPS_MON_t;
+
+    tar_inn_ctrl : out TAR_CTRL_t;
+    tar_inn_mon  : in  TAR_MON_t;
+
+    tar_mid_ctrl : out TAR_CTRL_t;
+    tar_mid_mon  : in  TAR_MON_t;
+
+    tar_out_ctrl : out TAR_CTRL_t;
+    tar_out_mon  : in  TAR_MON_t;
+
+    tar_ext_ctrl : out TAR_CTRL_t;
+    tar_ext_mon  : in  TAR_MON_t;
 
     mtc_ctrl : out MTC_CTRL_t;
     mtc_mon  : in  MTC_MON_t;
@@ -74,8 +92,8 @@ entity top_control is
 
     fw_info_mon : in FW_INFO_MON_t;
 
-    fm_mon      : in FM_MON_t;
-    fm_ctrl     : out FM_CTRL_t;
+    fm_mon  : in  FM_MON_t;
+    fm_ctrl : out FM_CTRL_t;
 
     -- system management
     --sys_mgmt_scl            : inout std_logic;
@@ -110,10 +128,25 @@ architecture control_arch of top_control is
   signal hal_writemosi : axiwritemosi;
   signal hal_writemiso : axiwritemiso;
 
-  signal h2s_readmosi  : axireadmosi;
-  signal h2s_readmiso  : axireadmiso;
-  signal h2s_writemosi : axiwritemosi;
-  signal h2s_writemiso : axiwritemiso;
+  signal hps_inn_readmosi  : axireadmosi;
+  signal hps_inn_readmiso  : axireadmiso;
+  signal hps_inn_writemosi : axiwritemosi;
+  signal hps_inn_writemiso : axiwritemiso;
+
+  signal hps_mid_readmosi  : axireadmosi;
+  signal hps_mid_readmiso  : axireadmiso;
+  signal hps_mid_writemosi : axiwritemosi;
+  signal hps_mid_writemiso : axiwritemiso;
+
+  signal hps_out_readmosi  : axireadmosi;
+  signal hps_out_readmiso  : axireadmiso;
+  signal hps_out_writemosi : axiwritemosi;
+  signal hps_out_writemiso : axiwritemiso;
+
+  signal hps_ext_readmosi  : axireadmosi;
+  signal hps_ext_readmiso  : axireadmiso;
+  signal hps_ext_writemosi : axiwritemosi;
+  signal hps_ext_writemiso : axiwritemiso;
 
   signal mtc_readmosi  : axireadmosi;
   signal mtc_readmiso  : axireadmiso;
@@ -135,10 +168,25 @@ architecture control_arch of top_control is
   signal daq_writemosi : axiwritemosi;
   signal daq_writemiso : axiwritemiso;
 
-  signal tar_readmosi  : axireadmosi;
-  signal tar_readmiso  : axireadmiso;
-  signal tar_writemosi : axiwritemosi;
-  signal tar_writemiso : axiwritemiso;
+  signal tar_inn_readmosi  : axireadmosi;
+  signal tar_inn_readmiso  : axireadmiso;
+  signal tar_inn_writemosi : axiwritemosi;
+  signal tar_inn_writemiso : axiwritemiso;
+
+  signal tar_mid_readmosi  : axireadmosi;
+  signal tar_mid_readmiso  : axireadmiso;
+  signal tar_mid_writemosi : axiwritemosi;
+  signal tar_mid_writemiso : axiwritemiso;
+
+  signal tar_out_readmosi  : axireadmosi;
+  signal tar_out_readmiso  : axireadmiso;
+  signal tar_out_writemosi : axiwritemosi;
+  signal tar_out_writemiso : axiwritemiso;
+
+  signal tar_ext_readmosi  : axireadmosi;
+  signal tar_ext_readmiso  : axireadmiso;
+  signal tar_ext_writemosi : axiwritemosi;
+  signal tar_ext_writemiso : axiwritemiso;
 
   signal mpl_readmosi  : axireadmosi;
   signal mpl_readmiso  : axireadmiso;
@@ -150,8 +198,14 @@ architecture control_arch of top_control is
   signal fm_writemosi : axiwritemosi;
   signal fm_writemiso : axiwritemiso;
 
-  signal h2s_ctrl_reg      : H2S_CTRL_t;
-  signal tar_ctrl_reg      : TAR_CTRL_t;
+  signal hps_inn_ctrl_reg  : HPS_CTRL_t;
+  signal hps_mid_ctrl_reg  : HPS_CTRL_t;
+  signal hps_out_ctrl_reg  : HPS_CTRL_t;
+  signal hps_ext_ctrl_reg  : HPS_CTRL_t;
+  signal tar_inn_ctrl_reg  : TAR_CTRL_t;
+  signal tar_mid_ctrl_reg  : TAR_CTRL_t;
+  signal tar_out_ctrl_reg  : TAR_CTRL_t;
+  signal tar_ext_ctrl_reg  : TAR_CTRL_t;
   signal mtc_ctrl_reg      : MTC_CTRL_t;
   signal ucm_ctrl_reg      : UCM_CTRL_t;
   signal daq_ctrl_reg      : DAQ_CTRL_t;
@@ -161,8 +215,16 @@ architecture control_arch of top_control is
   signal hal_core_ctrl_reg : HAL_CORE_CTRL_t;
   signal fm_ctrl_reg       : FM_CTRL_t;
 
-  signal h2s_mon_reg      : H2S_MON_t;
-  signal tar_mon_reg      : TAR_MON_t;
+  signal hps_inn_mon_reg : HPS_MON_t;
+  signal hps_mid_mon_reg : HPS_MON_t;
+  signal hps_out_mon_reg : HPS_MON_t;
+  signal hps_ext_mon_reg : HPS_MON_t;
+
+  signal tar_inn_mon_reg : TAR_MON_t;
+  signal tar_mid_mon_reg : TAR_MON_t;
+  signal tar_out_mon_reg : TAR_MON_t;
+  signal tar_ext_mon_reg : TAR_MON_t;
+
   signal mtc_mon_reg      : MTC_MON_t;
   signal ucm_mon_reg      : UCM_MON_t;
   signal daq_mon_reg      : DAQ_MON_t;
@@ -179,25 +241,41 @@ begin
   begin
     if (rising_edge(clk40)) then
       -- inputs
-      h2s_mon_reg <= h2s_mon;
-      tar_mon_reg <= tar_mon;
-      mtc_mon_reg <= mtc_mon;
-      ucm_mon_reg <= ucm_mon;
-      daq_mon_reg <= daq_mon;
-      tf_mon_reg  <= tf_mon;
-      mpl_mon_reg <= mpl_mon;
-      hal_mon_reg <= hal_mon;
-      fm_mon_reg  <= fm_mon;
+      hps_inn_mon_reg <= hps_inn_mon;
+      hps_mid_mon_reg <= hps_mid_mon;
+      hps_out_mon_reg <= hps_out_mon;
+      hps_ext_mon_reg <= hps_ext_mon;
+
+      tar_inn_mon_reg <= tar_inn_mon;
+      tar_mid_mon_reg <= tar_mid_mon;
+      tar_out_mon_reg <= tar_out_mon;
+      tar_ext_mon_reg <= tar_ext_mon;
+
+      mtc_mon_reg     <= mtc_mon;
+      ucm_mon_reg     <= ucm_mon;
+      daq_mon_reg     <= daq_mon;
+      tf_mon_reg      <= tf_mon;
+      mpl_mon_reg     <= mpl_mon;
+      hal_mon_reg     <= hal_mon;
+      fm_mon_reg      <= fm_mon;
       -- outputs
-      h2s_ctrl <= h2s_ctrl_reg;
-      tar_ctrl <= tar_ctrl_reg;
-      mtc_ctrl <= mtc_ctrl_reg;
-      ucm_ctrl <= ucm_ctrl_reg;
-      daq_ctrl <= daq_ctrl_reg;
-      tf_ctrl  <= tf_ctrl_reg;
-      mpl_ctrl <= mpl_ctrl_reg;
-      hal_ctrl <= hal_ctrl_reg;
-      fm_ctrl  <= fm_ctrl_reg;
+      hps_inn_ctrl    <= hps_inn_ctrl_reg;
+      hps_mid_ctrl    <= hps_mid_ctrl_reg;
+      hps_out_ctrl    <= hps_out_ctrl_reg;
+      hps_ext_ctrl    <= hps_ext_ctrl_reg;
+
+      tar_inn_ctrl    <= tar_inn_ctrl_reg;
+      tar_mid_ctrl    <= tar_mid_ctrl_reg;
+      tar_out_ctrl    <= tar_out_ctrl_reg;
+      tar_ext_ctrl    <= tar_ext_ctrl_reg;
+
+      mtc_ctrl        <= mtc_ctrl_reg;
+      ucm_ctrl        <= ucm_ctrl_reg;
+      daq_ctrl        <= daq_ctrl_reg;
+      tf_ctrl         <= tf_ctrl_reg;
+      mpl_ctrl        <= mpl_ctrl_reg;
+      hal_ctrl        <= hal_ctrl_reg;
+      fm_ctrl         <= fm_ctrl_reg;
     end if;
   end process;
 
@@ -320,45 +398,166 @@ begin
       -- User Logic
       --------------------------------------------------------------------------------
 
-      h2s_araddr  => h2s_readmosi.address,
-      h2s_arprot  => h2s_readmosi.protection_type,
-      h2s_arready => h2s_readmiso.ready_for_address,
-      h2s_arvalid => h2s_readmosi.address_valid,
-      h2s_awaddr  => h2s_writemosi.address,
-      h2s_awprot  => h2s_writemosi.protection_type,
-      h2s_awready => h2s_writemiso.ready_for_address,
-      h2s_awvalid => h2s_writemosi.address_valid,
-      h2s_bready  => h2s_writemosi.ready_for_response,
-      h2s_bresp   => h2s_writemiso.response,
-      h2s_bvalid  => h2s_writemiso.response_valid,
-      h2s_rdata   => h2s_readmiso.data,
-      h2s_rready  => h2s_readmosi.ready_for_data,
-      h2s_rresp   => h2s_readmiso.response,
-      h2s_rvalid  => h2s_readmiso.data_valid,
-      h2s_wdata   => h2s_writemosi.data,
-      h2s_wready  => h2s_writemiso.ready_for_data,
-      h2s_wstrb   => h2s_writemosi.data_write_strobe,
-      h2s_wvalid  => h2s_writemosi.data_valid,
+      hps_inn_araddr  => hps_inn_readmosi.address,
+      hps_inn_arprot  => hps_inn_readmosi.protection_type,
+      hps_inn_arready => hps_inn_readmiso.ready_for_address,
+      hps_inn_arvalid => hps_inn_readmosi.address_valid,
+      hps_inn_awaddr  => hps_inn_writemosi.address,
+      hps_inn_awprot  => hps_inn_writemosi.protection_type,
+      hps_inn_awready => hps_inn_writemiso.ready_for_address,
+      hps_inn_awvalid => hps_inn_writemosi.address_valid,
+      hps_inn_bready  => hps_inn_writemosi.ready_for_response,
+      hps_inn_bresp   => hps_inn_writemiso.response,
+      hps_inn_bvalid  => hps_inn_writemiso.response_valid,
+      hps_inn_rdata   => hps_inn_readmiso.data,
+      hps_inn_rready  => hps_inn_readmosi.ready_for_data,
+      hps_inn_rresp   => hps_inn_readmiso.response,
+      hps_inn_rvalid  => hps_inn_readmiso.data_valid,
+      hps_inn_wdata   => hps_inn_writemosi.data,
+      hps_inn_wready  => hps_inn_writemiso.ready_for_data,
+      hps_inn_wstrb   => hps_inn_writemosi.data_write_strobe,
+      hps_inn_wvalid  => hps_inn_writemosi.data_valid,
 
-      tar_araddr  => tar_readmosi.address,
-      tar_arprot  => tar_readmosi.protection_type,
-      tar_arready => tar_readmiso.ready_for_address,
-      tar_arvalid => tar_readmosi.address_valid,
-      tar_awaddr  => tar_writemosi.address,
-      tar_awprot  => tar_writemosi.protection_type,
-      tar_awready => tar_writemiso.ready_for_address,
-      tar_awvalid => tar_writemosi.address_valid,
-      tar_bready  => tar_writemosi.ready_for_response,
-      tar_bresp   => tar_writemiso.response,
-      tar_bvalid  => tar_writemiso.response_valid,
-      tar_rdata   => tar_readmiso.data,
-      tar_rready  => tar_readmosi.ready_for_data,
-      tar_rresp   => tar_readmiso.response,
-      tar_rvalid  => tar_readmiso.data_valid,
-      tar_wdata   => tar_writemosi.data,
-      tar_wready  => tar_writemiso.ready_for_data,
-      tar_wstrb   => tar_writemosi.data_write_strobe,
-      tar_wvalid  => tar_writemosi.data_valid,
+      hps_mid_araddr  => hps_mid_readmosi.address,
+      hps_mid_arprot  => hps_mid_readmosi.protection_type,
+      hps_mid_arready => hps_mid_readmiso.ready_for_address,
+      hps_mid_arvalid => hps_mid_readmosi.address_valid,
+      hps_mid_awaddr  => hps_mid_writemosi.address,
+      hps_mid_awprot  => hps_mid_writemosi.protection_type,
+      hps_mid_awready => hps_mid_writemiso.ready_for_address,
+      hps_mid_awvalid => hps_mid_writemosi.address_valid,
+      hps_mid_bready  => hps_mid_writemosi.ready_for_response,
+      hps_mid_bresp   => hps_mid_writemiso.response,
+      hps_mid_bvalid  => hps_mid_writemiso.response_valid,
+      hps_mid_rdata   => hps_mid_readmiso.data,
+      hps_mid_rready  => hps_mid_readmosi.ready_for_data,
+      hps_mid_rresp   => hps_mid_readmiso.response,
+      hps_mid_rvalid  => hps_mid_readmiso.data_valid,
+      hps_mid_wdata   => hps_mid_writemosi.data,
+      hps_mid_wready  => hps_mid_writemiso.ready_for_data,
+      hps_mid_wstrb   => hps_mid_writemosi.data_write_strobe,
+      hps_mid_wvalid  => hps_mid_writemosi.data_valid,
+
+      hps_out_araddr  => hps_out_readmosi.address,
+      hps_out_arprot  => hps_out_readmosi.protection_type,
+      hps_out_arready => hps_out_readmiso.ready_for_address,
+      hps_out_arvalid => hps_out_readmosi.address_valid,
+      hps_out_awaddr  => hps_out_writemosi.address,
+      hps_out_awprot  => hps_out_writemosi.protection_type,
+      hps_out_awready => hps_out_writemiso.ready_for_address,
+      hps_out_awvalid => hps_out_writemosi.address_valid,
+      hps_out_bready  => hps_out_writemosi.ready_for_response,
+      hps_out_bresp   => hps_out_writemiso.response,
+      hps_out_bvalid  => hps_out_writemiso.response_valid,
+      hps_out_rdata   => hps_out_readmiso.data,
+      hps_out_rready  => hps_out_readmosi.ready_for_data,
+      hps_out_rresp   => hps_out_readmiso.response,
+      hps_out_rvalid  => hps_out_readmiso.data_valid,
+      hps_out_wdata   => hps_out_writemosi.data,
+      hps_out_wready  => hps_out_writemiso.ready_for_data,
+      hps_out_wstrb   => hps_out_writemosi.data_write_strobe,
+      hps_out_wvalid  => hps_out_writemosi.data_valid,
+
+      tar_ext_araddr  => tar_ext_readmosi.address,
+      tar_ext_arprot  => tar_ext_readmosi.protection_type,
+      tar_ext_arready => tar_ext_readmiso.ready_for_address,
+      tar_ext_arvalid => tar_ext_readmosi.address_valid,
+      tar_ext_awaddr  => tar_ext_writemosi.address,
+      tar_ext_awprot  => tar_ext_writemosi.protection_type,
+      tar_ext_awready => tar_ext_writemiso.ready_for_address,
+      tar_ext_awvalid => tar_ext_writemosi.address_valid,
+      tar_ext_bready  => tar_ext_writemosi.ready_for_response,
+      tar_ext_bresp   => tar_ext_writemiso.response,
+      tar_ext_bvalid  => tar_ext_writemiso.response_valid,
+      tar_ext_rdata   => tar_ext_readmiso.data,
+      tar_ext_rready  => tar_ext_readmosi.ready_for_data,
+      tar_ext_rresp   => tar_ext_readmiso.response,
+      tar_ext_rvalid  => tar_ext_readmiso.data_valid,
+      tar_ext_wdata   => tar_ext_writemosi.data,
+      tar_ext_wready  => tar_ext_writemiso.ready_for_data,
+      tar_ext_wstrb   => tar_ext_writemosi.data_write_strobe,
+      tar_ext_wvalid  => tar_ext_writemosi.data_valid,
+
+
+      tar_inn_araddr  => tar_inn_readmosi.address,
+      tar_inn_arprot  => tar_inn_readmosi.protection_type,
+      tar_inn_arready => tar_inn_readmiso.ready_for_address,
+      tar_inn_arvalid => tar_inn_readmosi.address_valid,
+      tar_inn_awaddr  => tar_inn_writemosi.address,
+      tar_inn_awprot  => tar_inn_writemosi.protection_type,
+      tar_inn_awready => tar_inn_writemiso.ready_for_address,
+      tar_inn_awvalid => tar_inn_writemosi.address_valid,
+      tar_inn_bready  => tar_inn_writemosi.ready_for_response,
+      tar_inn_bresp   => tar_inn_writemiso.response,
+      tar_inn_bvalid  => tar_inn_writemiso.response_valid,
+      tar_inn_rdata   => tar_inn_readmiso.data,
+      tar_inn_rready  => tar_inn_readmosi.ready_for_data,
+      tar_inn_rresp   => tar_inn_readmiso.response,
+      tar_inn_rvalid  => tar_inn_readmiso.data_valid,
+      tar_inn_wdata   => tar_inn_writemosi.data,
+      tar_inn_wready  => tar_inn_writemiso.ready_for_data,
+      tar_inn_wstrb   => tar_inn_writemosi.data_write_strobe,
+      tar_inn_wvalid  => tar_inn_writemosi.data_valid,
+
+      tar_mid_araddr  => tar_mid_readmosi.address,
+      tar_mid_arprot  => tar_mid_readmosi.protection_type,
+      tar_mid_arready => tar_mid_readmiso.ready_for_address,
+      tar_mid_arvalid => tar_mid_readmosi.address_valid,
+      tar_mid_awaddr  => tar_mid_writemosi.address,
+      tar_mid_awprot  => tar_mid_writemosi.protection_type,
+      tar_mid_awready => tar_mid_writemiso.ready_for_address,
+      tar_mid_awvalid => tar_mid_writemosi.address_valid,
+      tar_mid_bready  => tar_mid_writemosi.ready_for_response,
+      tar_mid_bresp   => tar_mid_writemiso.response,
+      tar_mid_bvalid  => tar_mid_writemiso.response_valid,
+      tar_mid_rdata   => tar_mid_readmiso.data,
+      tar_mid_rready  => tar_mid_readmosi.ready_for_data,
+      tar_mid_rresp   => tar_mid_readmiso.response,
+      tar_mid_rvalid  => tar_mid_readmiso.data_valid,
+      tar_mid_wdata   => tar_mid_writemosi.data,
+      tar_mid_wready  => tar_mid_writemiso.ready_for_data,
+      tar_mid_wstrb   => tar_mid_writemosi.data_write_strobe,
+      tar_mid_wvalid  => tar_mid_writemosi.data_valid,
+
+      tar_out_araddr  => tar_out_readmosi.address,
+      tar_out_arprot  => tar_out_readmosi.protection_type,
+      tar_out_arready => tar_out_readmiso.ready_for_address,
+      tar_out_arvalid => tar_out_readmosi.address_valid,
+      tar_out_awaddr  => tar_out_writemosi.address,
+      tar_out_awprot  => tar_out_writemosi.protection_type,
+      tar_out_awready => tar_out_writemiso.ready_for_address,
+      tar_out_awvalid => tar_out_writemosi.address_valid,
+      tar_out_bready  => tar_out_writemosi.ready_for_response,
+      tar_out_bresp   => tar_out_writemiso.response,
+      tar_out_bvalid  => tar_out_writemiso.response_valid,
+      tar_out_rdata   => tar_out_readmiso.data,
+      tar_out_rready  => tar_out_readmosi.ready_for_data,
+      tar_out_rresp   => tar_out_readmiso.response,
+      tar_out_rvalid  => tar_out_readmiso.data_valid,
+      tar_out_wdata   => tar_out_writemosi.data,
+      tar_out_wready  => tar_out_writemiso.ready_for_data,
+      tar_out_wstrb   => tar_out_writemosi.data_write_strobe,
+      tar_out_wvalid  => tar_out_writemosi.data_valid,
+
+      tar_ext_araddr  => tar_ext_readmosi.address,
+      tar_ext_arprot  => tar_ext_readmosi.protection_type,
+      tar_ext_arready => tar_ext_readmiso.ready_for_address,
+      tar_ext_arvalid => tar_ext_readmosi.address_valid,
+      tar_ext_awaddr  => tar_ext_writemosi.address,
+      tar_ext_awprot  => tar_ext_writemosi.protection_type,
+      tar_ext_awready => tar_ext_writemiso.ready_for_address,
+      tar_ext_awvalid => tar_ext_writemosi.address_valid,
+      tar_ext_bready  => tar_ext_writemosi.ready_for_response,
+      tar_ext_bresp   => tar_ext_writemiso.response,
+      tar_ext_bvalid  => tar_ext_writemiso.response_valid,
+      tar_ext_rdata   => tar_ext_readmiso.data,
+      tar_ext_rready  => tar_ext_readmosi.ready_for_data,
+      tar_ext_rresp   => tar_ext_readmiso.response,
+      tar_ext_rvalid  => tar_ext_readmiso.data_valid,
+      tar_ext_wdata   => tar_ext_writemosi.data,
+      tar_ext_wready  => tar_ext_writemiso.ready_for_data,
+      tar_ext_wstrb   => tar_ext_writemosi.data_write_strobe,
+      tar_ext_wvalid  => tar_ext_writemosi.data_valid,
 
       mtc_araddr  => mtc_readmosi.address,
       mtc_arprot  => mtc_readmosi.protection_type,
@@ -527,34 +726,124 @@ begin
       ctrl => hal_ctrl_reg
       );
 
-  h2s_map_inst : entity ctrl_lib.H2S_map
+  hps_inn_map_inst : entity ctrl_lib.HPS_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
-      slave_readmosi  => h2s_readmosi,
-      slave_readmiso  => h2s_readmiso,
-      slave_writemosi => h2s_writemosi,
-      slave_writemiso => h2s_writemiso,
+      slave_readmosi  => hps_inn_readmosi,
+      slave_readmiso  => hps_inn_readmiso,
+      slave_writemosi => hps_inn_writemosi,
+      slave_writemiso => hps_inn_writemiso,
 
       -- monitor signals in
-      mon  => h2s_mon_reg,
+      mon  => hps_inn_mon_reg,
       -- control signals out
-      ctrl => h2s_ctrl_reg
+      ctrl => hps_inn_ctrl_reg
       );
 
-  tar_map_inst : entity ctrl_lib.TAR_map
+  hps_mid_map_inst : entity ctrl_lib.HPS_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
-      slave_readmosi  => tar_readmosi,
-      slave_readmiso  => tar_readmiso,
-      slave_writemosi => tar_writemosi,
-      slave_writemiso => tar_writemiso,
+      slave_readmosi  => hps_mid_readmosi,
+      slave_readmiso  => hps_mid_readmiso,
+      slave_writemosi => hps_mid_writemosi,
+      slave_writemiso => hps_mid_writemiso,
 
       -- monitor signals in
-      mon  => tar_mon_reg,
+      mon  => hps_mid_mon_reg,
       -- control signals out
-      ctrl => tar_ctrl_reg
+      ctrl => hps_mid_ctrl_reg
+      );
+
+  hps_out_map_inst : entity ctrl_lib.HPS_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => hps_out_readmosi,
+      slave_readmiso  => hps_out_readmiso,
+      slave_writemosi => hps_out_writemosi,
+      slave_writemiso => hps_out_writemiso,
+
+      -- monitor signals in
+      mon  => hps_out_mon_reg,
+      -- control signals out
+      ctrl => hps_out_ctrl_reg
+      );
+
+  hps_ext_map_inst : entity ctrl_lib.HPS_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => hps_ext_readmosi,
+      slave_readmiso  => hps_ext_readmiso,
+      slave_writemosi => hps_ext_writemosi,
+      slave_writemiso => hps_ext_writemiso,
+
+      -- monitor signals in
+      mon  => hps_ext_mon_reg,
+      -- control signals out
+      ctrl => hps_ext_ctrl_reg
+      );
+
+  tar_inn_map_inst : entity ctrl_lib.TAR_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => tar_inn_readmosi,
+      slave_readmiso  => tar_inn_readmiso,
+      slave_writemosi => tar_inn_writemosi,
+      slave_writemiso => tar_inn_writemiso,
+
+      -- monitor signals in
+      mon  => tar_inn_mon_reg,
+      -- control signals out
+      ctrl => tar_inn_ctrl_reg
+      );
+
+  tar_mid_map_inst : entity ctrl_lib.TAR_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => tar_mid_readmosi,
+      slave_readmiso  => tar_mid_readmiso,
+      slave_writemosi => tar_mid_writemosi,
+      slave_writemiso => tar_mid_writemiso,
+
+      -- monitor signals in
+      mon  => tar_mid_mon_reg,
+      -- control signals out
+      ctrl => tar_mid_ctrl_reg
+      );
+
+  tar_out_map_inst : entity ctrl_lib.TAR_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => tar_out_readmosi,
+      slave_readmiso  => tar_out_readmiso,
+      slave_writemosi => tar_out_writemosi,
+      slave_writemiso => tar_out_writemiso,
+
+      -- monitor signals in
+      mon  => tar_out_mon_reg,
+      -- control signals out
+      ctrl => tar_out_ctrl_reg
+      );
+
+  tar_ext_map_inst : entity ctrl_lib.TAR_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => tar_ext_readmosi,
+      slave_readmiso  => tar_ext_readmiso,
+      slave_writemosi => tar_ext_writemosi,
+      slave_writemiso => tar_ext_writemiso,
+
+      -- monitor signals in
+      mon  => tar_ext_mon_reg,
+      -- control signals out
+      ctrl => tar_ext_ctrl_reg
       );
 
   mtc_map_inst : entity ctrl_lib.MTC_map
@@ -632,7 +921,7 @@ begin
       ctrl => mpl_ctrl_reg
       );
 
-   fm_map_inst : entity ctrl_lib.FM_map
+  fm_map_inst : entity ctrl_lib.FM_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
