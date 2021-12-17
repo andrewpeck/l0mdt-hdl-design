@@ -86,10 +86,29 @@ architecture beh of hits_to_segments is
   -- signal mon_r  : H2S_MON_t;
   --
   signal glob_en : std_logic;
+
+  signal inn_reset : std_logic := '0';
+  signal mid_reset : std_logic := '0';
+  signal out_reset : std_logic := '0';
+  signal ext_reset : std_logic := '0';
+
+  attribute MAX_FANOUT              : string;
+  attribute MAX_FANOUT of inn_reset : signal is "256";
+  attribute MAX_FANOUT of mid_reset : signal is "256";
+  attribute MAX_FANOUT of out_reset : signal is "256";
+  attribute MAX_FANOUT of ext_reset : signal is "256";
+
 begin
 
-  -- ctrl_r <= structify(ctrl_v,ctrl_r);
-  -- mon_v <= vectorify(mon_r,mon_v);
+  process (clock_and_control.clk) is
+  begin
+    if (rising_edge(clock_and_control.clk)) then
+      inn_reset <= clock_and_control.rst;
+      mid_reset <= clock_and_control.rst;
+      out_reset <= clock_and_control.rst;
+      ext_reset <= clock_and_control.rst;
+    end if;
+  end process;
 
   glob_en <= '1';
 
@@ -119,9 +138,9 @@ begin
         g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_INN
       )
       port map(
-        clk                 => clock_and_control.clk,
-        rst                 => clock_and_control.rst,
-        glob_en             => glob_en,
+        clk     => clock_and_control.clk,
+        rst     => inn_reset,
+        glob_en => glob_en,
 
         ctrl_v              => inn_ctrl_v,
         mon_v               => inn_mon_v ,
@@ -156,9 +175,9 @@ begin
         g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_INN
       )
       port map(
-        clk                 => clock_and_control.clk,
-        rst                 => clock_and_control.rst,
-        glob_en             => glob_en,
+        clk     => clock_and_control.clk,
+        rst     => mid_reset,
+        glob_en => glob_en,
 
         ctrl_v              => mid_ctrl_v,
         mon_v               => mid_mon_v ,
@@ -193,9 +212,9 @@ begin
         g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_INN
       )
       port map(
-        clk                 => clock_and_control.clk,
-        rst                 => clock_and_control.rst,
-        glob_en             => glob_en,
+        clk     => clock_and_control.clk,
+        rst     => out_reset,
+        glob_en => glob_en,
 
         ctrl_v              => out_ctrl_v,
         mon_v               => out_mon_v ,
@@ -230,9 +249,9 @@ begin
         g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_INN
       )
       port map(
-        clk                 => clock_and_control.clk,
-        rst                 => clock_and_control.rst,
-        glob_en             => glob_en,
+        clk     => clock_and_control.clk,
+        rst     => ext_reset,
+        glob_en => glob_en,
 
         ctrl_v              => ext_ctrl_v,
         mon_v               => ext_mon_v ,
