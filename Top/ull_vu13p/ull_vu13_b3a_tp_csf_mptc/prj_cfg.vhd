@@ -51,6 +51,7 @@ package body prj_cfg is
     proj_cfg.PT_TYPE                  := '0';   -- 0:MPI_PTC 1:UCI_PTC
     proj_cfg.ENABLE_DAQ               := '0';
     proj_cfg.ENABLE_MTC               := '1';
+    proj_cfg.ENABLE_FM                := '0';
 
  
     return proj_cfg;

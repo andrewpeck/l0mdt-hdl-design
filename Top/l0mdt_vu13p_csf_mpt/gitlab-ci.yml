@@ -4,7 +4,6 @@ GEN:l0mdt_vu13p_csf_mpt:
     variables:
       extends: .vars
       PROJECT_NAME: l0mdt_vu13p_csf_mpt
-      HOG_NO_RESET_BD: 1 #Regenerate BD
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       HOG_CHECK_SYNTAX : 0
     tags:

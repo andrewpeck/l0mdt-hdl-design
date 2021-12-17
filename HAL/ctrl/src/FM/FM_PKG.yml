@@ -1,13 +1,13 @@
-# yml2hdl v1
+# yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-__config__:
-    basic_convert_functions : off
-    packages:
-    shared_lib:
-        - common_ieee_pkg
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee]
 
-HDL_Types:
+hdl:
 
 - FM_SPY_CTRL_CTRL_t:
   - GLOBAL_FREEZE : [ type: logic ]
@@ -941,3 +941,5 @@ HDL_Types:
   - SB24 : [ type: FM_SB24_CTRL_t ]
   - SB25 : [ type: FM_SB25_CTRL_t ]
   - SB26 : [ type: FM_SB26_CTRL_t ]
+
+
