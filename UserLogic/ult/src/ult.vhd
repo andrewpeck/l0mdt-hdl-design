@@ -153,10 +153,10 @@ architecture behavioral of ult is
   -- signal mpl_mon_v  : std_logic_vector(len(mpl_mon) - 1 downto 0);
 
   -- outputs from candidate manager
-  signal inn_slc_to_h2s_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal mid_slc_to_h2s_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal out_slc_to_h2s_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal ext_slc_to_h2s_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_slc_to_h2s_av,  inn_slc_to_h2s_av_reg  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal mid_slc_to_h2s_av,  mid_slc_to_h2s_av_reg  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal out_slc_to_h2s_av,  out_slc_to_h2s_av_reg  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal ext_slc_to_h2s_av,  ext_slc_to_h2s_av_reg  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
   signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   -- TDC Hits from tar 2 hps
@@ -301,6 +301,18 @@ begin
       );
     end generate;
 
+    process (clock_and_control.clk) is
+    begin
+      if (rising_edge(clock_and_control.clk)) then
+
+        inn_slc_to_h2s_av_reg <= inn_slc_to_h2s_av;
+        mid_slc_to_h2s_av_reg <= mid_slc_to_h2s_av;
+        out_slc_to_h2s_av_reg <= out_slc_to_h2s_av;
+        ext_slc_to_h2s_av_reg <= ext_slc_to_h2s_av;
+
+      end if;
+    end process;
+
     UCM_GEN : if c_UCM_ENABLED = '1' generate
 
       -- block
@@ -409,10 +421,10 @@ begin
         i_out_tar_hits_av            => ult_out_tar_hits_av,
         i_ext_tar_hits_av            => ult_ext_tar_hits_av,
         -- Sector Logic Candidates from uCM
-        i_inn_slc_av                 => inn_slc_to_h2s_av,
-        i_mid_slc_av                 => mid_slc_to_h2s_av,
-        i_out_slc_av                 => out_slc_to_h2s_av,
-        i_ext_slc_av                 => ext_slc_to_h2s_av,
+        i_inn_slc_av                 => inn_slc_to_h2s_av_reg,
+        i_mid_slc_av                 => mid_slc_to_h2s_av_reg,
+        i_out_slc_av                 => out_slc_to_h2s_av_reg,
+        i_ext_slc_av                 => ext_slc_to_h2s_av_reg,
         -- Segments Out to pt calculation
         o_inn_segments_av            => inn_segments_to_pt_av,
         o_mid_segments_av            => mid_segments_to_pt_av,
