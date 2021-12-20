@@ -35,7 +35,7 @@ if {$num_slrs > 0} {
     set PBLOCK_FELIX $PBLOCK_EXT
 
     # felix
-    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/*felix*"] $PBLOCK_FELIX
+    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/*felix_decoder*/*uplink*"] $PBLOCK_FELIX
 
     # polmuxes
     add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/station_gen[0].polmux_gen[*].polmux_wrapper*"] $PBLOCK_INN
@@ -48,6 +48,12 @@ if {$num_slrs > 0} {
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_MID.HPS*"] $PBLOCK_MID
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_OUT.HPS*"] $PBLOCK_OUT
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_EXT.HPS*"] $PBLOCK_EXT
+
+    # hit extraction groups reset fanout
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/inn_reset*"] $PBLOCK_INN
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/mid_reset*"] $PBLOCK_MID
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/out_reset*"] $PBLOCK_OUT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/ext_reset*"] $PBLOCK_EXT
 
     # tar
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_INN*"] $PBLOCK_INN
@@ -88,6 +94,8 @@ if {$num_slrs > 0} {
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mid_ctrl_reg*"] $PBLOCK_MID
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_out_ctrl_reg*"] $PBLOCK_OUT
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ext_ctrl_reg*"] $PBLOCK_EXT
+
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ucm_ctrl_reg*"] $PBLOCK_EXT
 
     # fm
 
