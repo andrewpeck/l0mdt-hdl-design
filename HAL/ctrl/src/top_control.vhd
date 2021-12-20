@@ -242,10 +242,10 @@ architecture control_arch of top_control is
   attribute async_reg : string;
 
   attribute async_reg of
-    hps_inn_mon_r, hps_mid_mon_r, hps_out_mon_r, hps_ext_mon_r,
-    tar_inn_mon_r, tar_mid_mon_r, tar_out_mon_r, tar_ext_mon_r,
-    mtc_mon_r, ucm_mon_r, daq_mon_r, tf_mon_r,
-    mpl_mon_r, hal_mon_r, hal_core_mon_r, fm_mon_r
+    hps_inn_mon_rr, hps_mid_mon_rr, hps_out_mon_rr, hps_ext_mon_rr,
+    tar_inn_mon_rr, tar_mid_mon_rr, tar_out_mon_rr, tar_ext_mon_rr,
+    mtc_mon_rr, ucm_mon_rr, daq_mon_rr, tf_mon_rr,
+    mpl_mon_rr, hal_mon_rr, hal_core_mon_rr, fm_mon_rr
     : signal is "true";
 
   attribute async_reg of
@@ -257,46 +257,11 @@ architecture control_arch of top_control is
 
 begin
 
-  process (clk40) is
+  -- ctrl/mon from 320 to 320 for routing
+
+  process (clk320) is
   begin
-    if (rising_edge(clk40)) then
-      -- inputs
-
-      hps_inn_mon_r <= hps_inn_mon;
-      hps_mid_mon_r <= hps_mid_mon;
-      hps_out_mon_r <= hps_out_mon;
-      hps_ext_mon_r <= hps_ext_mon;
-
-      tar_inn_mon_r <= tar_inn_mon;
-      tar_mid_mon_r <= tar_mid_mon;
-      tar_out_mon_r <= tar_out_mon;
-      tar_ext_mon_r <= tar_ext_mon;
-
-      mtc_mon_r <= mtc_mon;
-      ucm_mon_r <= ucm_mon;
-      daq_mon_r <= daq_mon;
-      tf_mon_r  <= tf_mon;
-      mpl_mon_r <= mpl_mon;
-      hal_mon_r <= hal_mon;
-      fm_mon_r  <= fm_mon;
-
-      hps_inn_mon_rr <= hps_inn_mon_r;
-      hps_mid_mon_rr <= hps_mid_mon_r;
-      hps_out_mon_rr <= hps_out_mon_r;
-      hps_ext_mon_rr <= hps_ext_mon_r;
-
-      tar_inn_mon_rr <= tar_inn_mon_r;
-      tar_mid_mon_rr <= tar_mid_mon_r;
-      tar_out_mon_rr <= tar_out_mon_r;
-      tar_ext_mon_rr <= tar_ext_mon_r;
-
-      mtc_mon_rr <= mtc_mon_r;
-      ucm_mon_rr <= ucm_mon_r;
-      daq_mon_rr <= daq_mon_r;
-      tf_mon_rr  <= tf_mon_r;
-      mpl_mon_rr <= mpl_mon_r;
-      hal_mon_rr <= hal_mon_r;
-      fm_mon_rr  <= fm_mon_r;
+    if (rising_edge(clk320)) then
 
       -- outputs
       hps_inn_ctrl <= hps_inn_ctrl_rr;
@@ -315,6 +280,39 @@ begin
       tf_ctrl  <= tf_ctrl_rr;
       mpl_ctrl <= mpl_ctrl_rr;
       hal_ctrl <= hal_ctrl_rr;
+    end if;
+  end process;
+
+  process (clk320) is
+  begin
+    if (rising_edge(clk320)) then
+
+      -- inputs
+      hps_inn_mon_r <= hps_inn_mon;
+      hps_mid_mon_r <= hps_mid_mon;
+      hps_out_mon_r <= hps_out_mon;
+      hps_ext_mon_r <= hps_ext_mon;
+
+      tar_inn_mon_r <= tar_inn_mon;
+      tar_mid_mon_r <= tar_mid_mon;
+      tar_out_mon_r <= tar_out_mon;
+      tar_ext_mon_r <= tar_ext_mon;
+
+      mtc_mon_r <= mtc_mon;
+      ucm_mon_r <= ucm_mon;
+      daq_mon_r <= daq_mon;
+      tf_mon_r  <= tf_mon;
+      mpl_mon_r <= mpl_mon;
+      hal_mon_r <= hal_mon;
+      fm_mon_r  <= fm_mon;
+
+    end if;
+  end process;
+
+  -- ctrl from 40 to 320
+  process (clk320) is
+  begin
+    if (rising_edge(clk320)) then
 
       hps_inn_ctrl_rr <= hps_inn_ctrl_r;
       hps_mid_ctrl_rr <= hps_mid_ctrl_r;
@@ -332,6 +330,34 @@ begin
       tf_ctrl_rr  <= tf_ctrl_r;
       mpl_ctrl_rr <= mpl_ctrl_r;
       hal_ctrl_rr <= hal_ctrl_r;
+
+    end if;
+  end process;
+
+  -- mon from 320 to 40
+
+  process (clk40) is
+  begin
+    if (rising_edge(clk40)) then
+      -- inputs
+
+      hps_inn_mon_rr <= hps_inn_mon_r;
+      hps_mid_mon_rr <= hps_mid_mon_r;
+      hps_out_mon_rr <= hps_out_mon_r;
+      hps_ext_mon_rr <= hps_ext_mon_r;
+
+      tar_inn_mon_rr <= tar_inn_mon_r;
+      tar_mid_mon_rr <= tar_mid_mon_r;
+      tar_out_mon_rr <= tar_out_mon_r;
+      tar_ext_mon_rr <= tar_ext_mon_r;
+
+      mtc_mon_rr <= mtc_mon_r;
+      ucm_mon_rr <= ucm_mon_r;
+      daq_mon_rr <= daq_mon_r;
+      tf_mon_rr  <= tf_mon_r;
+      mpl_mon_rr <= mpl_mon_r;
+      hal_mon_rr <= hal_mon_r;
+      fm_mon_rr  <= fm_mon_r;
 
     end if;
   end process;
