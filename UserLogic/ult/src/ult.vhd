@@ -172,10 +172,10 @@ architecture behavioral of ult is
   signal ult_ext_tdc_hits_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- outputs from hits to segments
-  signal inn_segments_to_pt_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal mid_segments_to_pt_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal out_segments_to_pt_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal ext_segments_to_pt_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_segments_to_pt_av,  inn_segments_to_pt_av_reg  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal mid_segments_to_pt_av,  mid_segments_to_pt_av_reg  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal out_segments_to_pt_av,  out_segments_to_pt_av_reg  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal ext_segments_to_pt_av,  ext_segments_to_pt_av_reg  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
 
   -- slc to pt (from pipeline)
   -- signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
@@ -385,10 +385,10 @@ begin
         i_out_tar_hits_av             => ult_out_tar_hits_av,
         i_ext_tar_hits_av             => ult_ext_tar_hits_av,
         -- Sector Logic Candidates from uCM
-        i_inn_slc_av                  => inn_slc_to_h2s_av,
-        i_mid_slc_av                  => mid_slc_to_h2s_av,
-        i_out_slc_av                  => out_slc_to_h2s_av,
-        i_ext_slc_av                  => ext_slc_to_h2s_av,
+        i_inn_slc_av                  => inn_slc_to_h2s_av_reg,
+        i_mid_slc_av                  => mid_slc_to_h2s_av_reg,
+        i_out_slc_av                  => out_slc_to_h2s_av_reg,
+        i_ext_slc_av                  => ext_slc_to_h2s_av_reg,
         -- Segments Out to pt calculation
         o_inn_segments_av             => inn_segments_to_pt_av,
         o_mid_segments_av             => mid_segments_to_pt_av,
@@ -479,6 +479,17 @@ begin
     end generate;
 
     PT_GEN : if c_PT_ENABLED = '1' generate
+
+      process (clock_and_control.clk) is
+      begin
+        if (rising_edge(clock_and_control.clk)) then
+          inn_segments_to_pt_av_reg <= inn_segments_to_pt_av;
+          mid_segments_to_pt_av_reg <= mid_segments_to_pt_av;
+          out_segments_to_pt_av_reg <= out_segments_to_pt_av;
+          ext_segments_to_pt_av_reg <= ext_segments_to_pt_av;
+        end if;
+      end process;
+
       ULT_PTCALC : entity ult_lib.ptcalc
       port map (
         -- clock, control, and monitoring
@@ -490,10 +501,10 @@ begin
         i_plus_neighbor_segments  => i_plus_neighbor_segments,
         i_minus_neighbor_segments => i_minus_neighbor_segments,
         -- segments from hps
-        i_inn_segments            => inn_segments_to_pt_av,
-        i_mid_segments            => mid_segments_to_pt_av,
-        i_out_segments            => out_segments_to_pt_av,
-        i_ext_segments            => ext_segments_to_pt_av,
+        i_inn_segments            => inn_segments_to_pt_av_reg,
+        i_mid_segments            => mid_segments_to_pt_av_reg,
+        i_out_segments            => out_segments_to_pt_av_reg,
+        i_ext_segments            => ext_segments_to_pt_av_reg,
         -- from pipeline
         i_pl2pt_av                => pl2pt_av,
         -- to mtc
