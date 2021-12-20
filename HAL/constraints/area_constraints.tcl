@@ -112,8 +112,8 @@ if {[string= "xcku15p" $fpga_short]} {
     set lRightQuadWidth [expr 500]
 }
 if {[string= "xcvu13p" $fpga_short]} {
-    set lLeftQuadWidth  [expr 600]
-    set lRightQuadWidth [expr 600]
+    set lLeftQuadWidth  [expr 900]
+    set lRightQuadWidth [expr 900]
 }
 
 set lClkBounds [get_XY_bounds [get_clock_regions]]
