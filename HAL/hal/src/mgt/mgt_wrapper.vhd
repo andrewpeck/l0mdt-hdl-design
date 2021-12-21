@@ -280,7 +280,7 @@ begin
 
       signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0) := (others => '0');
 
-      signal rxslide  : std_logic_vector (3 downto 0);
+      signal rxslide  : std_logic_vector (3 downto 0) := (others => '0');
       signal rxoutclk : std_logic_vector (3 downto 0) := (others => '0');
 
       -- data
@@ -428,11 +428,11 @@ begin
           -- FELIX Recovered Clock
           --
           tx_data(LINK_0_TO_3)  <= felix_uplink_mgt_word_array_i(downlink_idx+LINK_0_TO_3);
-          rxslide (LINK_0_TO_3) <= felix_ttc_bitslip_i;
 
           recclk_out_gen : if (downlink_idx + LINK_0_TO_3 = c_FELIX_RECCLK_SRC) generate
-            recclk               <= rxoutclk(LINK_0_TO_3);
-            felix_ttc_mgt_word_o <= rx_data(LINK_0_TO_3);
+            rxslide (LINK_0_TO_3) <= felix_ttc_bitslip_i;
+            recclk                <= rxoutclk(LINK_0_TO_3);
+            felix_ttc_mgt_word_o  <= rx_data(LINK_0_TO_3);
           end generate;
 
         end generate;
