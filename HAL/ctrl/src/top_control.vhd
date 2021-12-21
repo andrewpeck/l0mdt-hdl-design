@@ -257,6 +257,18 @@ architecture control_arch of top_control is
 
 begin
 
+  -- hal just runs on 40M
+
+  process (clk40) is
+  begin
+    if (rising_edge(clk40)) then
+      hal_mon_rr  <= hal_mon_r;
+      hal_mon_r   <= hal_mon;
+      hal_ctrl    <= hal_ctrl_rr;
+      hal_ctrl_rr <= hal_ctrl_r;
+    end if;
+  end process;
+
   -- ctrl/mon from 320 to 320 for routing
 
   process (clk320) is
@@ -279,7 +291,6 @@ begin
       daq_ctrl <= daq_ctrl_rr;
       tf_ctrl  <= tf_ctrl_rr;
       mpl_ctrl <= mpl_ctrl_rr;
-      hal_ctrl <= hal_ctrl_rr;
     end if;
   end process;
 
@@ -303,7 +314,6 @@ begin
       daq_mon_r <= daq_mon;
       tf_mon_r  <= tf_mon;
       mpl_mon_r <= mpl_mon;
-      hal_mon_r <= hal_mon;
       fm_mon_r  <= fm_mon;
 
     end if;
@@ -329,7 +339,6 @@ begin
       daq_ctrl_rr <= daq_ctrl_r;
       tf_ctrl_rr  <= tf_ctrl_r;
       mpl_ctrl_rr <= mpl_ctrl_r;
-      hal_ctrl_rr <= hal_ctrl_r;
 
     end if;
   end process;
@@ -356,7 +365,6 @@ begin
       daq_mon_rr <= daq_mon_r;
       tf_mon_rr  <= tf_mon_r;
       mpl_mon_rr <= mpl_mon_r;
-      hal_mon_rr <= hal_mon_r;
       fm_mon_rr  <= fm_mon_r;
 
     end if;
