@@ -1,3 +1,4 @@
+# -*- mode: vivado -*-
 ################################################################################
 # These are false false paths for known bad issues in the timing
 ################################################################################
@@ -59,3 +60,23 @@ set_max_delay \
 
 set_false_path \
     -from [get_pins {top_hal/pipeline_rst_bit_synchronizer/syncstages_ff_reg[4]/C}]
+
+# this is bc of SLR crossings
+set_max_delay 8.0 \
+    -from [get_pins {ult_inst/logic_gen.UCM_GEN.ULT_UCM/UCM/SLC_VP_A[*].SLC_VP/ucm2hps_ar*/C}]
+
+# fm needs to be split, it is crossing slrs
+set_max_delay 8.0 \
+    -from [get_pins {ult_inst/logic_gen.FM_GEN.ult_fm_data*/C}]
+
+# asynchronous relationship between TXOUTCLKPCS and TX/RXOUTCLK
+foreach clock_b \
+    [concat \
+         [get_clocks *TXOUTCLKPCS*]] {
+             foreach clock_a [concat \
+                                  [get_clocks *RXOUTCLK\[*] \
+                                  [get_clocks *TXOUTCLK\[*]] {
+                 set_clock_groups \
+                     -group [get_clocks $clock_a] \
+                     -group [get_clocks $clock_b] \
+                     -asynchronous}}
