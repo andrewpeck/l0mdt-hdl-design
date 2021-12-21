@@ -153,10 +153,11 @@ architecture behavioral of ult is
   -- signal mpl_mon_v  : std_logic_vector(len(mpl_mon) - 1 downto 0);
 
   -- outputs from candidate manager
-  signal inn_slc_to_h2s_av,  inn_slc_to_h2s_av_reg  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal mid_slc_to_h2s_av,  mid_slc_to_h2s_av_reg  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal out_slc_to_h2s_av,  out_slc_to_h2s_av_reg  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal ext_slc_to_h2s_av,  ext_slc_to_h2s_av_reg  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_slc_to_h2s_av, inn_slc_to_h2s_av_r1, inn_slc_to_h2s_av_r2 : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal mid_slc_to_h2s_av, mid_slc_to_h2s_av_r1, mid_slc_to_h2s_av_r2 : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal out_slc_to_h2s_av, out_slc_to_h2s_av_r1, out_slc_to_h2s_av_r2 : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal ext_slc_to_h2s_av, ext_slc_to_h2s_av_r1, ext_slc_to_h2s_av_r2 : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+
   signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   -- TDC Hits from tar 2 hps
@@ -172,10 +173,10 @@ architecture behavioral of ult is
   signal ult_ext_tdc_hits_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- outputs from hits to segments
-  signal inn_segments_to_pt_av,  inn_segments_to_pt_av_reg  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal mid_segments_to_pt_av,  mid_segments_to_pt_av_reg  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal out_segments_to_pt_av,  out_segments_to_pt_av_reg  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal ext_segments_to_pt_av,  ext_segments_to_pt_av_reg  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_segments_to_pt_av,  inn_segments_to_pt_av_r1, inn_segments_to_pt_av_r2 : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal mid_segments_to_pt_av,  mid_segments_to_pt_av_r1, mid_segments_to_pt_av_r2 : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal out_segments_to_pt_av,  out_segments_to_pt_av_r1, out_segments_to_pt_av_r2 : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal ext_segments_to_pt_av,  ext_segments_to_pt_av_r1, ext_segments_to_pt_av_r2 : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
 
   -- slc to pt (from pipeline)
   -- signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
@@ -305,10 +306,15 @@ begin
     begin
       if (rising_edge(clock_and_control.clk)) then
 
-        inn_slc_to_h2s_av_reg <= inn_slc_to_h2s_av;
-        mid_slc_to_h2s_av_reg <= mid_slc_to_h2s_av;
-        out_slc_to_h2s_av_reg <= out_slc_to_h2s_av;
-        ext_slc_to_h2s_av_reg <= ext_slc_to_h2s_av;
+        inn_slc_to_h2s_av_r1 <= inn_slc_to_h2s_av;
+        mid_slc_to_h2s_av_r1 <= mid_slc_to_h2s_av;
+        out_slc_to_h2s_av_r1 <= out_slc_to_h2s_av;
+        ext_slc_to_h2s_av_r1 <= ext_slc_to_h2s_av;
+
+        inn_slc_to_h2s_av_r2 <= inn_slc_to_h2s_av_r1;
+        mid_slc_to_h2s_av_r2 <= mid_slc_to_h2s_av_r1;
+        out_slc_to_h2s_av_r2 <= out_slc_to_h2s_av_r1;
+        ext_slc_to_h2s_av_r2 <= ext_slc_to_h2s_av_r1;
 
       end if;
     end process;
@@ -385,10 +391,10 @@ begin
         i_out_tar_hits_av             => ult_out_tar_hits_av,
         i_ext_tar_hits_av             => ult_ext_tar_hits_av,
         -- Sector Logic Candidates from uCM
-        i_inn_slc_av                  => inn_slc_to_h2s_av_reg,
-        i_mid_slc_av                  => mid_slc_to_h2s_av_reg,
-        i_out_slc_av                  => out_slc_to_h2s_av_reg,
-        i_ext_slc_av                  => ext_slc_to_h2s_av_reg,
+        i_inn_slc_av                  => inn_slc_to_h2s_av_r2,
+        i_mid_slc_av                  => mid_slc_to_h2s_av_r2,
+        i_out_slc_av                  => out_slc_to_h2s_av_r2,
+        i_ext_slc_av                  => ext_slc_to_h2s_av_r2,
         -- Segments Out to pt calculation
         o_inn_segments_av             => inn_segments_to_pt_av,
         o_mid_segments_av             => mid_segments_to_pt_av,
@@ -421,10 +427,10 @@ begin
         i_out_tar_hits_av            => ult_out_tar_hits_av,
         i_ext_tar_hits_av            => ult_ext_tar_hits_av,
         -- Sector Logic Candidates from uCM
-        i_inn_slc_av                 => inn_slc_to_h2s_av_reg,
-        i_mid_slc_av                 => mid_slc_to_h2s_av_reg,
-        i_out_slc_av                 => out_slc_to_h2s_av_reg,
-        i_ext_slc_av                 => ext_slc_to_h2s_av_reg,
+        i_inn_slc_av                 => inn_slc_to_h2s_av_r2,
+        i_mid_slc_av                 => mid_slc_to_h2s_av_r2,
+        i_out_slc_av                 => out_slc_to_h2s_av_r2,
+        i_ext_slc_av                 => ext_slc_to_h2s_av_r2,
         -- Segments Out to pt calculation
         o_inn_segments_av            => inn_segments_to_pt_av,
         o_mid_segments_av            => mid_segments_to_pt_av,
@@ -483,10 +489,15 @@ begin
       process (clock_and_control.clk) is
       begin
         if (rising_edge(clock_and_control.clk)) then
-          inn_segments_to_pt_av_reg <= inn_segments_to_pt_av;
-          mid_segments_to_pt_av_reg <= mid_segments_to_pt_av;
-          out_segments_to_pt_av_reg <= out_segments_to_pt_av;
-          ext_segments_to_pt_av_reg <= ext_segments_to_pt_av;
+          inn_segments_to_pt_av_r1 <= inn_segments_to_pt_av;
+          mid_segments_to_pt_av_r1 <= mid_segments_to_pt_av;
+          out_segments_to_pt_av_r1 <= out_segments_to_pt_av;
+          ext_segments_to_pt_av_r1 <= ext_segments_to_pt_av;
+
+          inn_segments_to_pt_av_r2 <= inn_segments_to_pt_av_r1;
+          mid_segments_to_pt_av_r2 <= mid_segments_to_pt_av_r1;
+          out_segments_to_pt_av_r2 <= out_segments_to_pt_av_r1;
+          ext_segments_to_pt_av_r2 <= ext_segments_to_pt_av_r1;
         end if;
       end process;
 
@@ -501,10 +512,10 @@ begin
         i_plus_neighbor_segments  => i_plus_neighbor_segments,
         i_minus_neighbor_segments => i_minus_neighbor_segments,
         -- segments from hps
-        i_inn_segments            => inn_segments_to_pt_av_reg,
-        i_mid_segments            => mid_segments_to_pt_av_reg,
-        i_out_segments            => out_segments_to_pt_av_reg,
-        i_ext_segments            => ext_segments_to_pt_av_reg,
+        i_inn_segments            => inn_segments_to_pt_av_r2,
+        i_mid_segments            => mid_segments_to_pt_av_r2,
+        i_out_segments            => out_segments_to_pt_av_r2,
+        i_ext_segments            => ext_segments_to_pt_av_r2,
         -- from pipeline
         i_pl2pt_av                => pl2pt_av,
         -- to mtc
