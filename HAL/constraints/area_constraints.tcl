@@ -87,7 +87,12 @@ if {$num_slrs > 0} {
 
     # control
 
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst*"] $PBLOCK_EXT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_INN*"] $PBLOCK_INN
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_MID*"] $PBLOCK_MID
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_OUT*"] $PBLOCK_OUT
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_EXT*"] $PBLOCK_EXT
+
+    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst*/K_C2C*"] $PBLOCK_EXT
 
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_inn_map*"] $PBLOCK_INN
     add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mid_map*"] $PBLOCK_MID
