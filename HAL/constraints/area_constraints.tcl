@@ -34,6 +34,10 @@ if {$num_slrs > 0} {
     set PBLOCK_EXT PBLOCK_SLR_0
     set PBLOCK_FELIX $PBLOCK_EXT
 
+    # sll crossings
+    set_property USER_SLL_REG True [get_cells "ult_inst/*segments_to_pt_av_r*"]
+    set_property USER_SLL_REG True [get_cells "ult_inst/*slc_to_h2s_av_r*"]
+
     # felix
     add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/*felix_decoder*/*uplink*"] $PBLOCK_FELIX
 
