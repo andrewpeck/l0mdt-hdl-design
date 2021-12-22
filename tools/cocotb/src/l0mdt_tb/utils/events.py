@@ -190,15 +190,15 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     tv_format_failure_cnt = {}
 
     RTL_DFSL.build_data_format()
-    EXP_DF.build_data_format()
+    # EXP_DF.build_data_format()
 
 
 
 
-    if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
-        stationNum_internal = 0
-    else:
-        stationNum_internal = stationNum
+    # if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
+    #     stationNum_internal = 0
+    # else:
+    #     stationNum_internal = stationNum
 
     if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
         stationNum_internal = 0
@@ -241,13 +241,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     tv_format_bf[0].set_bitwordvalue(rtl_tv_i)
                     tv_format_val.append(tv_format_bf[0].get_bitwordvalue())
                     RTL_DFSL.fillBitFieldWord(tvformat, stationID, tv_format_val)
-
-                    RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID)
-                    RTL_BF[0].set_bitwordvalue(tv_format_val[0])
-                    #print("events.py: EXP_BF=",EXP_BF[0])
-                    #print("events.py: RTL_BF=",RTL_BF[0].print_bitFieldWord())
-                    #print("events.py ==== Calling DF Print:")
-                    #RTL_DFSL.print_summary()
 
                     RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID)
                     RTL_BF[0].set_bitwordvalue(tv_format_val[0])
@@ -304,15 +297,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     EXP_BF.clear()
                     RTL_BF.clear()
 
-
-    df_data = pd.DataFrame(pp_comparison_list, columns = pd_columns_header)
-    Path(output_path).mkdir(parents=True, exist_ok=True)
-    if stationNum != -99:
-        df_file_name = output_path + "/DF_"+tvformat+"_"+stationID+".csv"
-    else:
-        df_file_name = output_path + "/DF_"+tvformat+".csv"
-    df_data.to_csv(df_file_name)
-    print("Saving Comparison data to %s " % df_file_name)
 
     df_data = pd.DataFrame(pp_comparison_list, columns = pd_columns_header)
     Path(output_path).mkdir(parents=True, exist_ok=True)

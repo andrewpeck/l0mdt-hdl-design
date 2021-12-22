@@ -200,7 +200,7 @@ VHDL_SOURCES_lsf_lib = \
     $(LSFDIR)/../top_lsf.vhd
 
 VHDL_SOURCES_upt_lib = \
-	$(USERLOGIC)/upt/IP/vu13p/hls_ptcalc_top_inst/sim/hls_ptcalc_top.vhd \
+    $(USERLOGIC)/upt/IP/vu13p/hls_ptcalc_top_inst/sim/hls_ptcalc_top.vhd \
 	$(USERLOGIC)/upt/top_upt.vhd
 
 VERILOG_SOURCES_lsf_lib = \

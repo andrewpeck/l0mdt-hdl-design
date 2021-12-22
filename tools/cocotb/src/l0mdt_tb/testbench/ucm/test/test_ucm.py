@@ -128,11 +128,8 @@ def ucm_test(dut):
         else:
             tolerance[i] = {"": ["",""]}
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> devel
     # CREATORSOFTWAREBLOCK##
     # CREATORSOFTWAREBLOCK## start the software block instance
     # CREATORSOFTWAREBLOCK##
