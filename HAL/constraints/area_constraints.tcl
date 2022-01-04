@@ -37,18 +37,21 @@ if {$num_slrs > 0} {
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_FELIX [get_cells -hier -filter "NAME =~ top_hal/*felix_decoder*rx*"]
 
     # polmuxes
+    puts "Applying area constraints to polmux"
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hier -filter "NAME =~ top_hal/station_gen[0].polmux_gen[*].polmux_wrapper*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hier -filter "NAME =~ top_hal/station_gen[1].polmux_gen[*].polmux_wrapper*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hier -filter "NAME =~ top_hal/station_gen[2].polmux_gen[*].polmux_wrapper*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hier -filter "NAME =~ top_hal/station_gen[3].polmux_gen[*].polmux_wrapper*"]
 
     # hit extraction groups
+    puts "Applying area constraints to HPS"
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_INN.HPS*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_MID.HPS*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_OUT.HPS*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_EXT.HPS*"]
 
     # hit extraction groups reset fanout
+    puts "Applying area constraints to H2S reset"
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/inn_reset*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/mid_reset*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/out_reset*"]
@@ -56,27 +59,33 @@ if {$num_slrs > 0} {
 
     # tar
     puts "Applying area constraints to TAR"
-
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_INN.TAR*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_MID.TAR*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_OUT.TAR*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_EXT.TAR*"]
 
     # ucm
+    puts "Applying area constraints to UCM"
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.UCM_GEN.ULT_UCM*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/ucm_map_inst*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ucm_ctrl*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ucm_mon*"]
 
     # mpl
+    puts "Applying area constraints to MPL"
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.MPL_GEN.ULT_MPL*"] 
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/mpl_map_inst*"]      
 
     # pt
+    puts "Applying area constraints to PT Calc"
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.PT_GEN.ULT_PTCALC*"] 
 
     # mtc
+    puts "Applying area constraints to MTC"
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.MTC_GEN.ULT_MTCB*"] 
 
     # daq
+    puts "Applying area constraints to DAQ"
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*inn*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*mid*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*out*"]
@@ -84,12 +93,21 @@ if {$num_slrs > 0} {
 
     # control
 
+    puts "Applying area constraints to AXI Interconnects"
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_INN*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_MID*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_OUT*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_EXT*"]
 
+    puts "Applying area constraints to C2C"
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst*/K_C2C*"]
+
+    puts "Applying area constraints to maps"
+
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_inn_mon*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mid_mon*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_out_mon*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ext_mon*"]
 
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_inn_map*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mid_map*"]
@@ -100,8 +118,6 @@ if {$num_slrs > 0} {
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mid_ctrl*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_out_ctrl*"]
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ext_ctrl*"]
-
-    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ucm_ctrl*"]
 
     # fm
 
