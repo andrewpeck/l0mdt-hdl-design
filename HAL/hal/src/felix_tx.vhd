@@ -57,7 +57,7 @@ begin
         mgt_tx_ready_i           => not reset_i,
         mgt_tx_data_o            => mgt_word_array_o(I),
         tx_data_i(66 downto 0)   => daq_streams(I)(66 downto 0),
-        tx_data_i(223 downto 67) => (others => '1'),
+        tx_data_i(233 downto 67) => (others => '1'),
         tx_ready_o               => ready_o(I),
         tx_had_not_ready_o       => was_not_ready_o(I)
         );

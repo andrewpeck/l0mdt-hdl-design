@@ -27,7 +27,11 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
 
-use work.lpgbtfpga_package.all;
+library lpgbt_fpga;
+use lpgbt_fpga.lpgbtfpga_package.all;
+
+library lpgbt_emul;
+use lpgbt_emul.all;
 
 entity lpgbt_10g_tx is
     generic(
@@ -162,12 +166,11 @@ begin
 
     --------- TX gearbox ---------
 
-    i_tx_gearbox: entity work.txGearbox
+    i_tx_gearbox: entity lpgbt_emul.txGearbox
         generic map (
             c_clockRatio                  => g_TXUSRCLK_TO_TTC40_RATIO,
             c_inputWidth                  => 256,
-            c_outputWidth                 => g_MGT_TX_BUS_WIDTH,
-            c_reset_dly                   => 4
+            c_outputWidth                 => g_MGT_TX_BUS_WIDTH
         )
         port map (
             -- Clock and reset
