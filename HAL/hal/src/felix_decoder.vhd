@@ -84,7 +84,7 @@ architecture behavioral of felix_decoder is
 
 begin
 
-  uplink_inst : entity lpgbt_fpga.lpgbtfpga_uplink
+  felix_10_gbps_rx_inst : entity lpgbt_fpga.lpgbtfpga_uplink
 
     generic map (
       datarate                  => DATARATE_10G24,
