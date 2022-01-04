@@ -20,91 +20,86 @@ if {[regexp {xcvu13p.*} $part]} {
 
 if {$num_slrs > 0} {
 
-    # create pblocks 1/2/3/4
-    for {set i 0} {$i < $num_slrs} {incr i} {
-        set pblock PBLOCK_SLR_$i
-        delete_pblock -quiet [get_pblocks $pblock]
-        create_pblock $pblock
-        resize_pblock -add [get_slrs SLR$i] $pblock
-    }
+    set SLR_INN SLR1
+    set SLR_MID SLR2
+    set SLR_OUT SLR3
+    set SLR_EXT SLR0
 
-    set PBLOCK_INN PBLOCK_SLR_1
-    set PBLOCK_MID PBLOCK_SLR_2
-    set PBLOCK_OUT PBLOCK_SLR_3
-    set PBLOCK_EXT PBLOCK_SLR_0
-    set PBLOCK_FELIX $PBLOCK_EXT
+    set SLR_FELIX $SLR_EXT
+
+    # https://www.xilinx.com/publications/events/developer-forum/2018-frankfurt/timing-closure-tips-and-tricks.pdf
 
     # sll crossings
     set_property USER_SLL_REG True [get_cells "ult_inst/*segments_to_pt_av_r*"]
     set_property USER_SLL_REG True [get_cells "ult_inst/*slc_to_h2s_av_r*"]
 
     # felix
-    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/*felix_decoder*/*uplink*"] $PBLOCK_FELIX
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_FELIX [get_cells -hier -filter "NAME =~ top_hal/*felix_decoder*rx*"]
 
     # polmuxes
-    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/station_gen[0].polmux_gen[*].polmux_wrapper*"] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/station_gen[1].polmux_gen[*].polmux_wrapper*"] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/station_gen[2].polmux_gen[*].polmux_wrapper*"] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ top_hal/station_gen[3].polmux_gen[*].polmux_wrapper*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hier -filter "NAME =~ top_hal/station_gen[0].polmux_gen[*].polmux_wrapper*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hier -filter "NAME =~ top_hal/station_gen[1].polmux_gen[*].polmux_wrapper*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hier -filter "NAME =~ top_hal/station_gen[2].polmux_gen[*].polmux_wrapper*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hier -filter "NAME =~ top_hal/station_gen[3].polmux_gen[*].polmux_wrapper*"]
 
     # hit extraction groups
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_INN.HPS*"] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_MID.HPS*"] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_OUT.HPS*"] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_EXT.HPS*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_INN.HPS*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_MID.HPS*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_OUT.HPS*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_EXT.HPS*"]
 
     # hit extraction groups reset fanout
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/inn_reset*"] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/mid_reset*"] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/out_reset*"] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/ext_reset*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/inn_reset*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/mid_reset*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/out_reset*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/ext_reset*"]
 
     # tar
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_INN*"] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/MID_EN.TAR_MID*"] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/OUT_EN.TAR_OUT*"] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/EXT_EN.TAR_EXT*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_INN*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/MID_EN.TAR_MID*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/OUT_EN.TAR_OUT*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/EXT_EN.TAR_EXT*"]
 
     # ucm
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.UCM_GEN.ULT_UCM*"] $PBLOCK_EXT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/ucm_map_inst*"]      $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.UCM_GEN.ULT_UCM*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/ucm_map_inst*"]
 
     # mpl
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.MPL_GEN.ULT_MPL*"] $PBLOCK_EXT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/mpl_map_inst*"]      $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.MPL_GEN.ULT_MPL*"] 
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/mpl_map_inst*"]      
 
     # pt
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.PT_GEN.ULT_PTCALC*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.PT_GEN.ULT_PTCALC*"] 
 
     # mtc
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.MTC_GEN.ULT_MTCB*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.MTC_GEN.ULT_MTCB*"] 
 
     # daq
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*inn*"] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*mid*"] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*out*"] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*ext*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*inn*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*mid*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*out*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*ext*"]
 
     # control
 
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_INN*"] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_MID*"] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_OUT*"] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_EXT*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_INN*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_MID*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_OUT*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_EXT*"]
 
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst*/K_C2C*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/c2cslave_wrapper_inst*/K_C2C*"]
 
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_inn_map*"] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mid_map*"] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_out_map*"] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ext_map*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_inn_map*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mid_map*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_out_map*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ext_map*"]
 
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_inn_ctrl_reg*"] $PBLOCK_INN
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mid_ctrl_reg*"] $PBLOCK_MID
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_out_ctrl_reg*"] $PBLOCK_OUT
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ext_ctrl_reg*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_inn_ctrl*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mid_ctrl*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_out_ctrl*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ext_ctrl*"]
 
-    add_cells_to_pblock -quiet -cells [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ucm_ctrl_reg*"] $PBLOCK_EXT
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ucm_ctrl*"]
 
     # fm
 
