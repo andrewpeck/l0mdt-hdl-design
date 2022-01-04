@@ -11,7 +11,6 @@ HAL/hal/src/board_pkg_common.vhd
 HAL/hal/src/constants_pkg.vhd
 HAL/hal/src/system_types_pkg.vhd
 HAL/hal/src/sync_cdc.vhd
-HAL/hal/src/felix_decoder.vhd
 HAL/hal/src/polmux_wrapper.vhd
 HAL/hal/src/tdc_decoder_wrapper.vhd
 HAL/hal/src/csm.vhd
@@ -39,3 +38,8 @@ HAL/lpgbt/list/lpgbt_fpga.src lib=lpgbt_fpga
 HAL/sl/src/sector_logic_link_wrapper.vhd
 HAL/sl/src/sector_logic_pkg.vhd
 HAL/sl/list/sl.src lib=sl
+
+# FELIX
+HAL/hal/src/felix_decoder.vhd
+HAL/hal/src/felix_tx.vhd
+HAL/lpgbt/src/lpgbt_10g_tx.vhd

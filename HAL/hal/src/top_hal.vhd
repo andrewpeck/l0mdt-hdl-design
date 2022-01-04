@@ -577,8 +577,10 @@ begin  -- architecture behavioral
   minus_neighbor_slc <= sl_rx_data(7);
 
   --------------------------------------------------------------------------------
-  -- Felix Receiver
+  -- Felix
   --------------------------------------------------------------------------------
+
+  -- Felix Receiver
 
   felix_decoder_inst : entity work.felix_decoder
     port map (
@@ -599,9 +601,22 @@ begin  -- architecture behavioral
 
   ttc_commands_o <= ttc_commands;
 
-  --------------------------------------------------------------------------------
   -- Felix Transmitter
-  --------------------------------------------------------------------------------
+
+  felix_tx_1: entity work.felix_tx
+    generic map (
+      g_NUM_UPLINKS => c_NUM_DAQ_STREAMS
+      )
+    port map (
+      clk320           => clocks.clock320,
+      clk40            => clocks.clock40,
+      reset_i          => global_reset,
+      daq_streams      => daq_streams,
+      mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
+      ready_o          => open,
+      was_not_ready_o  => open,
+      strobe_320       => strobe_320
+      );
 
   --------------------------------------------------------------------------------
   -- Sumps to prevent trimming... TODO remove later once actual logic is connected
