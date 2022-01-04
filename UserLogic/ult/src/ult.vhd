@@ -158,6 +158,16 @@ architecture behavioral of ult is
   signal out_slc_to_h2s_av, out_slc_to_h2s_av_r1, out_slc_to_h2s_av_r2 : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
   signal ext_slc_to_h2s_av, ext_slc_to_h2s_av_r1, ext_slc_to_h2s_av_r2 : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
 
+  attribute shreg_extract : string;
+  attribute shreg_extract of inn_slc_to_h2s_av_r1 : signal is "no";
+  attribute shreg_extract of mid_slc_to_h2s_av_r1 : signal is "no";
+  attribute shreg_extract of out_slc_to_h2s_av_r1 : signal is "no";
+  attribute shreg_extract of ext_slc_to_h2s_av_r1 : signal is "no";
+  attribute shreg_extract of inn_slc_to_h2s_av_r2 : signal is "no";
+  attribute shreg_extract of mid_slc_to_h2s_av_r2 : signal is "no";
+  attribute shreg_extract of out_slc_to_h2s_av_r2 : signal is "no";
+  attribute shreg_extract of ext_slc_to_h2s_av_r2 : signal is "no";
+
   signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   -- TDC Hits from tar 2 hps
@@ -177,6 +187,15 @@ architecture behavioral of ult is
   signal mid_segments_to_pt_av,  mid_segments_to_pt_av_r1, mid_segments_to_pt_av_r2 : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
   signal out_segments_to_pt_av,  out_segments_to_pt_av_r1, out_segments_to_pt_av_r2 : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
   signal ext_segments_to_pt_av,  ext_segments_to_pt_av_r1, ext_segments_to_pt_av_r2 : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+
+  attribute shreg_extract of inn_segments_to_pt_av_r1 : signal is "no";
+  attribute shreg_extract of mid_segments_to_pt_av_r1 : signal is "no";
+  attribute shreg_extract of out_segments_to_pt_av_r1 : signal is "no";
+  attribute shreg_extract of ext_segments_to_pt_av_r1 : signal is "no";
+  attribute shreg_extract of inn_segments_to_pt_av_r2 : signal is "no";
+  attribute shreg_extract of mid_segments_to_pt_av_r2 : signal is "no";
+  attribute shreg_extract of out_segments_to_pt_av_r2 : signal is "no";
+  attribute shreg_extract of ext_segments_to_pt_av_r2 : signal is "no";
 
   -- slc to pt (from pipeline)
   -- signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
