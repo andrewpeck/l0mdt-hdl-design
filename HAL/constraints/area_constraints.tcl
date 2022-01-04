@@ -55,10 +55,12 @@ if {$num_slrs > 0} {
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.H2S_GEN.ULT_H2S/ext_reset*"]
 
     # tar
-    set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/INN_EN.TAR_INN*"]
-    set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/MID_EN.TAR_MID*"]
-    set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/OUT_EN.TAR_OUT*"]
-    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/TAR/EXT_EN.TAR_EXT*"]
+    puts "Applying area constraints to TAR"
+
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_INN [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_INN.TAR*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_MID [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_MID.TAR*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_OUT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_OUT.TAR*"]
+    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_EXT.TAR*"]
 
     # ucm
     set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells -hierarchical -filter "NAME =~ ult_inst/logic_gen.UCM_GEN.ULT_UCM*"]
