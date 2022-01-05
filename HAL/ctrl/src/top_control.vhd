@@ -1,6 +1,8 @@
 -- TODO: generate this file from a template
 -- it is so tedious to update manually...
 -- it can use the slaves.yml
+-- use a template file and then just spew in the rest of it...
+-- can use the code inserter from gems
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -8,6 +10,8 @@ use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
 
 library xil_defaultlib;
+
+library hal;
 
 library ctrl_lib;
 use ctrl_lib.FW_INFO_CTRL.all;
@@ -49,6 +53,7 @@ entity top_control is
 
     -- control
 
+    -- START: ULT_IO :: DO NOT EDIT
     hps_inn_ctrl : out HPS_CTRL_t;
     hps_inn_mon  : in  HPS_MON_t;
 
@@ -87,6 +92,8 @@ entity top_control is
 
     mpl_ctrl : out MPL_CTRL_t;
     mpl_mon  : in  MPL_MON_t;
+
+    -- END: ULT_IO :: DO NOT EDIT
 
     hal_mon  : in  HAL_MON_t;
     hal_ctrl : out HAL_CTRL_t;
@@ -132,256 +139,192 @@ architecture control_arch of top_control is
   signal hal_writemosi : axiwritemosi;
   signal hal_writemiso : axiwritemiso;
 
-  signal hps_inn_readmosi  : axireadmosi;
-  signal hps_inn_readmiso  : axireadmiso;
-  signal hps_inn_writemosi : axiwritemosi;
-  signal hps_inn_writemiso : axiwritemiso;
-
-  signal hps_mid_readmosi  : axireadmosi;
-  signal hps_mid_readmiso  : axireadmiso;
-  signal hps_mid_writemosi : axiwritemosi;
-  signal hps_mid_writemiso : axiwritemiso;
-
-  signal hps_out_readmosi  : axireadmosi;
-  signal hps_out_readmiso  : axireadmiso;
-  signal hps_out_writemosi : axiwritemosi;
-  signal hps_out_writemiso : axiwritemiso;
-
-  signal hps_ext_readmosi  : axireadmosi;
-  signal hps_ext_readmiso  : axireadmiso;
-  signal hps_ext_writemosi : axiwritemosi;
-  signal hps_ext_writemiso : axiwritemiso;
-
-  signal mtc_readmosi  : axireadmosi;
-  signal mtc_readmiso  : axireadmiso;
-  signal mtc_writemosi : axiwritemosi;
-  signal mtc_writemiso : axiwritemiso;
-
-  signal tf_readmosi  : axireadmosi;
-  signal tf_readmiso  : axireadmiso;
-  signal tf_writemosi : axiwritemosi;
-  signal tf_writemiso : axiwritemiso;
-
-  signal ucm_readmosi  : axireadmosi;
-  signal ucm_readmiso  : axireadmiso;
-  signal ucm_writemosi : axiwritemosi;
-  signal ucm_writemiso : axiwritemiso;
-
-  signal daq_readmosi  : axireadmosi;
-  signal daq_readmiso  : axireadmiso;
-  signal daq_writemosi : axiwritemosi;
-  signal daq_writemiso : axiwritemiso;
-
-  signal tar_inn_readmosi  : axireadmosi;
-  signal tar_inn_readmiso  : axireadmiso;
-  signal tar_inn_writemosi : axiwritemosi;
-  signal tar_inn_writemiso : axiwritemiso;
-
-  signal tar_mid_readmosi  : axireadmosi;
-  signal tar_mid_readmiso  : axireadmiso;
-  signal tar_mid_writemosi : axiwritemosi;
-  signal tar_mid_writemiso : axiwritemiso;
-
-  signal tar_out_readmosi  : axireadmosi;
-  signal tar_out_readmiso  : axireadmiso;
-  signal tar_out_writemosi : axiwritemosi;
-  signal tar_out_writemiso : axiwritemiso;
-
-  signal tar_ext_readmosi  : axireadmosi;
-  signal tar_ext_readmiso  : axireadmiso;
-  signal tar_ext_writemosi : axiwritemosi;
-  signal tar_ext_writemiso : axiwritemiso;
-
-  signal mpl_readmosi  : axireadmosi;
-  signal mpl_readmiso  : axireadmiso;
-  signal mpl_writemosi : axiwritemosi;
-  signal mpl_writemiso : axiwritemiso;
-
   signal fm_readmosi  : axireadmosi;
   signal fm_readmiso  : axireadmiso;
   signal fm_writemosi : axiwritemosi;
   signal fm_writemiso : axiwritemiso;
 
-  signal hps_inn_ctrl_r, hps_inn_ctrl_rr : HPS_CTRL_t;
-  signal hps_mid_ctrl_r, hps_mid_ctrl_rr : HPS_CTRL_t;
-  signal hps_out_ctrl_r, hps_out_ctrl_rr : HPS_CTRL_t;
-  signal hps_ext_ctrl_r, hps_ext_ctrl_rr : HPS_CTRL_t;
+  -- START: ULT_AXI_SIGNALS :: DO NOT EDIT
+  signal hps_inn_readmosi  : axireadmosi;
+  signal hps_inn_readmiso  : axireadmiso;
+  signal hps_inn_writemosi : axiwritemosi;
+  signal hps_inn_writemiso : axiwritemiso;
+  signal hps_inn_ctrl_r    : HPS_CTRL_t;
+  signal hps_inn_mon_r     : HPS_MON_t;
 
-  signal tar_inn_ctrl_r, tar_inn_ctrl_rr : TAR_CTRL_t;
-  signal tar_mid_ctrl_r, tar_mid_ctrl_rr : TAR_CTRL_t;
-  signal tar_out_ctrl_r, tar_out_ctrl_rr : TAR_CTRL_t;
-  signal tar_ext_ctrl_r, tar_ext_ctrl_rr : TAR_CTRL_t;
+  signal hps_mid_readmosi  : axireadmosi;
+  signal hps_mid_readmiso  : axireadmiso;
+  signal hps_mid_writemosi : axiwritemosi;
+  signal hps_mid_writemiso : axiwritemiso;
+  signal hps_mid_ctrl_r    : HPS_CTRL_t;
+  signal hps_mid_mon_r     : HPS_MON_t;
 
-  signal mtc_ctrl_r, mtc_ctrl_rr           : MTC_CTRL_t;
-  signal ucm_ctrl_r, ucm_ctrl_rr           : UCM_CTRL_t;
-  signal daq_ctrl_r, daq_ctrl_rr           : DAQ_CTRL_t;
-  signal tf_ctrl_r, tf_ctrl_rr             : TF_CTRL_t;
-  signal mpl_ctrl_r, mpl_ctrl_rr           : MPL_CTRL_t;
-  signal hal_ctrl_r, hal_ctrl_rr           : HAL_CTRL_t;
-  signal hal_core_ctrl_r, hal_core_ctrl_rr : HAL_CORE_CTRL_t;
+  signal hps_out_readmosi  : axireadmosi;
+  signal hps_out_readmiso  : axireadmiso;
+  signal hps_out_writemosi : axiwritemosi;
+  signal hps_out_writemiso : axiwritemiso;
+  signal hps_out_ctrl_r    : HPS_CTRL_t;
+  signal hps_out_mon_r     : HPS_MON_t;
 
-  signal hps_inn_mon_r, hps_inn_mon_rr : HPS_MON_t;
-  signal hps_mid_mon_r, hps_mid_mon_rr : HPS_MON_t;
-  signal hps_out_mon_r, hps_out_mon_rr : HPS_MON_t;
-  signal hps_ext_mon_r, hps_ext_mon_rr : HPS_MON_t;
+  signal hps_ext_readmosi  : axireadmosi;
+  signal hps_ext_readmiso  : axireadmiso;
+  signal hps_ext_writemosi : axiwritemosi;
+  signal hps_ext_writemiso : axiwritemiso;
+  signal hps_ext_ctrl_r    : HPS_CTRL_t;
+  signal hps_ext_mon_r     : HPS_MON_t;
 
-  signal tar_inn_mon_r, tar_inn_mon_rr : TAR_MON_t;
-  signal tar_mid_mon_r, tar_mid_mon_rr : TAR_MON_t;
-  signal tar_out_mon_r, tar_out_mon_rr : TAR_MON_t;
-  signal tar_ext_mon_r, tar_ext_mon_rr : TAR_MON_t;
+  signal tar_inn_readmosi  : axireadmosi;
+  signal tar_inn_readmiso  : axireadmiso;
+  signal tar_inn_writemosi : axiwritemosi;
+  signal tar_inn_writemiso : axiwritemiso;
+  signal tar_inn_ctrl_r    : TAR_CTRL_t;
+  signal tar_inn_mon_r     : TAR_MON_t;
 
-  signal mtc_mon_r, mtc_mon_rr           : MTC_MON_t;
-  signal ucm_mon_r, ucm_mon_rr           : UCM_MON_t;
-  signal daq_mon_r, daq_mon_rr           : DAQ_MON_t;
-  signal tf_mon_r, tf_mon_rr             : TF_MON_t;
-  signal mpl_mon_r, mpl_mon_rr           : MPL_MON_t;
-  signal hal_mon_r, hal_mon_rr           : HAL_MON_t;
-  signal hal_core_mon_r, hal_core_mon_rr : HAL_CORE_MON_t;
-  signal fm_mon_r, fm_mon_rr             : FM_MON_t;
+  signal tar_mid_readmosi  : axireadmosi;
+  signal tar_mid_readmiso  : axireadmiso;
+  signal tar_mid_writemosi : axiwritemosi;
+  signal tar_mid_writemiso : axiwritemiso;
+  signal tar_mid_ctrl_r    : TAR_CTRL_t;
+  signal tar_mid_mon_r     : TAR_MON_t;
 
-  attribute async_reg : string;
+  signal tar_out_readmosi  : axireadmosi;
+  signal tar_out_readmiso  : axireadmiso;
+  signal tar_out_writemosi : axiwritemosi;
+  signal tar_out_writemiso : axiwritemiso;
+  signal tar_out_ctrl_r    : TAR_CTRL_t;
+  signal tar_out_mon_r     : TAR_MON_t;
 
-  attribute async_reg of
-    hps_inn_mon_rr, hps_mid_mon_rr, hps_out_mon_rr, hps_ext_mon_rr,
-    tar_inn_mon_rr, tar_mid_mon_rr, tar_out_mon_rr, tar_ext_mon_rr,
-    mtc_mon_rr, ucm_mon_rr, daq_mon_rr, tf_mon_rr,
-    mpl_mon_rr, hal_mon_rr, hal_core_mon_rr, fm_mon_rr
-    : signal is "true";
+  signal tar_ext_readmosi  : axireadmosi;
+  signal tar_ext_readmiso  : axireadmiso;
+  signal tar_ext_writemosi : axiwritemosi;
+  signal tar_ext_writemiso : axiwritemiso;
+  signal tar_ext_ctrl_r    : TAR_CTRL_t;
+  signal tar_ext_mon_r     : TAR_MON_t;
 
-  attribute async_reg of
-    hps_inn_ctrl_rr, hps_mid_ctrl_rr, hps_out_ctrl_rr, hps_ext_ctrl_rr,
-    tar_inn_ctrl_rr, tar_mid_ctrl_rr, tar_out_ctrl_rr, tar_ext_ctrl_rr,
-    mtc_ctrl_rr, ucm_ctrl_rr, daq_ctrl_rr, tf_ctrl_rr,
-    mpl_ctrl_rr, hal_ctrl_rr, hal_core_ctrl_rr
-    : signal is "true";
+  signal mtc_readmosi  : axireadmosi;
+  signal mtc_readmiso  : axireadmiso;
+  signal mtc_writemosi : axiwritemosi;
+  signal mtc_writemiso : axiwritemiso;
+  signal mtc_ctrl_r    : MTC_CTRL_t;
+  signal mtc_mon_r     : MTC_MON_t;
+
+  signal ucm_readmosi  : axireadmosi;
+  signal ucm_readmiso  : axireadmiso;
+  signal ucm_writemosi : axiwritemosi;
+  signal ucm_writemiso : axiwritemiso;
+  signal ucm_ctrl_r    : UCM_CTRL_t;
+  signal ucm_mon_r     : UCM_MON_t;
+
+  signal daq_readmosi  : axireadmosi;
+  signal daq_readmiso  : axireadmiso;
+  signal daq_writemosi : axiwritemosi;
+  signal daq_writemiso : axiwritemiso;
+  signal daq_ctrl_r    : DAQ_CTRL_t;
+  signal daq_mon_r     : DAQ_MON_t;
+
+  signal tf_readmosi  : axireadmosi;
+  signal tf_readmiso  : axireadmiso;
+  signal tf_writemosi : axiwritemosi;
+  signal tf_writemiso : axiwritemiso;
+  signal tf_ctrl_r    : TF_CTRL_t;
+  signal tf_mon_r     : TF_MON_t;
+
+  signal mpl_readmosi  : axireadmosi;
+  signal mpl_readmiso  : axireadmiso;
+  signal mpl_writemosi : axiwritemosi;
+  signal mpl_writemiso : axiwritemiso;
+  signal mpl_ctrl_r    : MPL_CTRL_t;
+  signal mpl_mon_r     : MPL_MON_t;
+
+  -- END: ULT_AXI_SIGNALS :: DO NOT EDIT
+
+  signal hal_ctrl_r      : HAL_CTRL_t;
+  signal hal_core_ctrl_r : HAL_CORE_CTRL_t;
+  signal fm_ctrl_r       : FM_CTRL_t;
+
+  signal hal_mon_r      : HAL_MON_t;
+  signal hal_core_mon_r : HAL_CORE_MON_t;
+  signal fm_mon_r       : FM_MON_t;
+
+  signal strobe : std_logic;
 
 begin
 
-  -- hal just runs on 40M
+  clock_strobe_ult : entity hal.clock_strobe
+    generic map (RATIO => 8)
+    port map (
+      fast_clk_i => clkpipe,
+      slow_clk_i => clk40,
+      strobe_o   => strobe
+      );
+
+  -- hal just runs on 40M, but add a ff for fanout
 
   process (clk40) is
   begin
     if (rising_edge(clk40)) then
-      hal_mon_rr  <= hal_mon_r;
-      hal_mon_r   <= hal_mon;
-      hal_ctrl    <= hal_ctrl_rr;
-      hal_ctrl_rr <= hal_ctrl_r;
-    end if;
-  end process;
-
-  -- ctrl/mon from 320 to 320 for routing
-
-  process (clk320) is
-  begin
-    if (rising_edge(clk320)) then
-
-      -- outputs
-      hps_inn_ctrl <= hps_inn_ctrl_rr;
-      hps_mid_ctrl <= hps_mid_ctrl_rr;
-      hps_out_ctrl <= hps_out_ctrl_rr;
-      hps_ext_ctrl <= hps_ext_ctrl_rr;
-
-      tar_inn_ctrl <= tar_inn_ctrl_rr;
-      tar_mid_ctrl <= tar_mid_ctrl_rr;
-      tar_out_ctrl <= tar_out_ctrl_rr;
-      tar_ext_ctrl <= tar_ext_ctrl_rr;
-
-      mtc_ctrl <= mtc_ctrl_rr;
-      ucm_ctrl <= ucm_ctrl_rr;
-      daq_ctrl <= daq_ctrl_rr;
-      tf_ctrl  <= tf_ctrl_rr;
-      mpl_ctrl <= mpl_ctrl_rr;
-    end if;
-  end process;
-
-  process (clk320) is
-  begin
-    if (rising_edge(clk320)) then
-
-      -- inputs
-      hps_inn_mon_r <= hps_inn_mon;
-      hps_mid_mon_r <= hps_mid_mon;
-      hps_out_mon_r <= hps_out_mon;
-      hps_ext_mon_r <= hps_ext_mon;
-
-      tar_inn_mon_r <= tar_inn_mon;
-      tar_mid_mon_r <= tar_mid_mon;
-      tar_out_mon_r <= tar_out_mon;
-      tar_ext_mon_r <= tar_ext_mon;
-
-      mtc_mon_r <= mtc_mon;
-      ucm_mon_r <= ucm_mon;
-      daq_mon_r <= daq_mon;
-      tf_mon_r  <= tf_mon;
-      mpl_mon_r <= mpl_mon;
-      fm_mon_r  <= fm_mon;
-
-    end if;
-  end process;
-
-  -- ctrl from 40 to 320
-  process (clk320) is
-  begin
-    if (rising_edge(clk320)) then
-
-      hps_inn_ctrl_rr <= hps_inn_ctrl_r;
-      hps_mid_ctrl_rr <= hps_mid_ctrl_r;
-      hps_out_ctrl_rr <= hps_out_ctrl_r;
-      hps_ext_ctrl_rr <= hps_ext_ctrl_r;
-
-      tar_inn_ctrl_rr <= tar_inn_ctrl_r;
-      tar_mid_ctrl_rr <= tar_mid_ctrl_r;
-      tar_out_ctrl_rr <= tar_out_ctrl_r;
-      tar_ext_ctrl_rr <= tar_ext_ctrl_r;
-
-      mtc_ctrl_rr <= mtc_ctrl_r;
-      ucm_ctrl_rr <= ucm_ctrl_r;
-      daq_ctrl_rr <= daq_ctrl_r;
-      tf_ctrl_rr  <= tf_ctrl_r;
-      mpl_ctrl_rr <= mpl_ctrl_r;
-
-    end if;
-  end process;
-
-  -- mon from 320 to 40
-
-  process (clk40) is
-  begin
-    if (rising_edge(clk40)) then
-      -- inputs
-
-      hps_inn_mon_rr <= hps_inn_mon_r;
-      hps_mid_mon_rr <= hps_mid_mon_r;
-      hps_out_mon_rr <= hps_out_mon_r;
-      hps_ext_mon_rr <= hps_ext_mon_r;
-
-      tar_inn_mon_rr <= tar_inn_mon_r;
-      tar_mid_mon_rr <= tar_mid_mon_r;
-      tar_out_mon_rr <= tar_out_mon_r;
-      tar_ext_mon_rr <= tar_ext_mon_r;
-
-      mtc_mon_rr <= mtc_mon_r;
-      ucm_mon_rr <= ucm_mon_r;
-      daq_mon_rr <= daq_mon_r;
-      tf_mon_rr  <= tf_mon_r;
-      mpl_mon_rr <= mpl_mon_r;
-      fm_mon_rr  <= fm_mon_r;
-
+      hal_mon_r <= hal_mon;
+      hal_ctrl  <= hal_ctrl_r;
     end if;
   end process;
 
   process (axi_clk) is
   begin
     if (rising_edge(axi_clk)) then
+      hal_core_mon_r <= hal_core_mon;     -- inputs
+      hal_core_ctrl  <= hal_core_ctrl_r;  -- outputs
+    end if;
+  end process;
 
-      -- inputs
-      hal_core_mon_r  <= hal_core_mon;
-      hal_core_mon_rr <= hal_core_mon_r;
+  process (clkpipe) is
+  begin
+    if (rising_edge(clkpipe)) then
+      -- ctrl outputs, 40 --> 320
+      if (strobe = '1') then
+        hps_inn_ctrl <= hps_inn_ctrl_r;
+        hps_mid_ctrl <= hps_mid_ctrl_r;
+        hps_out_ctrl <= hps_out_ctrl_r;
+        hps_ext_ctrl <= hps_ext_ctrl_r;
 
-      -- outputs
-      hal_core_ctrl    <= hal_core_ctrl_rr;
-      hal_core_ctrl_rr <= hal_core_ctrl_r;
+        tar_inn_ctrl <= tar_inn_ctrl_r;
+        tar_mid_ctrl <= tar_mid_ctrl_r;
+        tar_out_ctrl <= tar_out_ctrl_r;
+        tar_ext_ctrl <= tar_ext_ctrl_r;
 
+        mtc_ctrl <= mtc_ctrl_r;
+        ucm_ctrl <= ucm_ctrl_r;
+        daq_ctrl <= daq_ctrl_r;
+        tf_ctrl  <= tf_ctrl_r;
+        mpl_ctrl <= mpl_ctrl_r;
+      end if;
+    end if;
+  end process;
+
+  -- every 8th clock cycle, copy the control signals from the 320MHz pipeline
+  -- clock to a 8 clock stable version
+  process (clkpipe) is
+  begin
+    if (rising_edge(clkpipe)) then
+      -- mon inputs, 320 --> 40
+      if (strobe = '1') then
+        hps_inn_mon_r <= hps_inn_mon;
+        hps_mid_mon_r <= hps_mid_mon;
+        hps_out_mon_r <= hps_out_mon;
+        hps_ext_mon_r <= hps_ext_mon;
+
+        tar_inn_mon_r <= tar_inn_mon;
+        tar_mid_mon_r <= tar_mid_mon;
+        tar_out_mon_r <= tar_out_mon;
+        tar_ext_mon_r <= tar_ext_mon;
+
+        mtc_mon_r <= mtc_mon;
+        ucm_mon_r <= ucm_mon;
+        daq_mon_r <= daq_mon;
+        tf_mon_r  <= tf_mon;
+        mpl_mon_r <= mpl_mon;
+        fm_mon_r  <= fm_mon;
+
+      end if;
     end if;
   end process;
 
@@ -491,6 +434,7 @@ begin
       -- User Logic
       --------------------------------------------------------------------------------
 
+      -- START: ULT_PORTS :: DO NOT EDIT
       hps_inn_araddr  => hps_inn_readmosi.address,
       hps_inn_arprot  => hps_inn_readmosi.protection_type,
       hps_inn_arready => hps_inn_readmiso.ready_for_address,
@@ -659,18 +603,17 @@ begin
       mtc_awprot  => mtc_writemosi.protection_type,
       mtc_awready => mtc_writemiso.ready_for_address,
       mtc_awvalid => mtc_writemosi.address_valid,
-
-      mtc_bready => mtc_writemosi.ready_for_response,
-      mtc_bresp  => mtc_writemiso.response,
-      mtc_bvalid => mtc_writemiso.response_valid,
-      mtc_rdata  => mtc_readmiso.data,
-      mtc_rready => mtc_readmosi.ready_for_data,
-      mtc_rresp  => mtc_readmiso.response,
-      mtc_rvalid => mtc_readmiso.data_valid,
-      mtc_wdata  => mtc_writemosi.data,
-      mtc_wready => mtc_writemiso.ready_for_data,
-      mtc_wstrb  => mtc_writemosi.data_write_strobe,
-      mtc_wvalid => mtc_writemosi.data_valid,
+      mtc_bready  => mtc_writemosi.ready_for_response,
+      mtc_bresp   => mtc_writemiso.response,
+      mtc_bvalid  => mtc_writemiso.response_valid,
+      mtc_rdata   => mtc_readmiso.data,
+      mtc_rready  => mtc_readmosi.ready_for_data,
+      mtc_rresp   => mtc_readmiso.response,
+      mtc_rvalid  => mtc_readmiso.data_valid,
+      mtc_wdata   => mtc_writemosi.data,
+      mtc_wready  => mtc_writemiso.ready_for_data,
+      mtc_wstrb   => mtc_writemosi.data_write_strobe,
+      mtc_wvalid  => mtc_writemosi.data_valid,
 
       ucm_araddr  => ucm_readmosi.address,
       ucm_arprot  => ucm_readmosi.protection_type,
@@ -752,6 +695,8 @@ begin
       mpl_wstrb   => mpl_writemosi.data_write_strobe,
       mpl_wvalid  => mpl_writemosi.data_valid,
 
+      -- END: ULT_PORTS :: DO NOT EDIT
+
 
       fm_araddr  => fm_readmosi.address,
       fm_arprot  => fm_readmosi.protection_type,
@@ -818,7 +763,8 @@ begin
       ctrl => hal_ctrl_r
       );
 
-  hps_inn_map_inst : entity ctrl_lib.HPS_map
+      -- START: ULT_SLAVES :: DO NOT EDIT
+    hps_inn_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -826,14 +772,13 @@ begin
       slave_readmiso  => hps_inn_readmiso,
       slave_writemosi => hps_inn_writemosi,
       slave_writemiso => hps_inn_writemiso,
-
       -- monitor signals in
       mon  => hps_inn_mon_r,
       -- control signals out
       ctrl => hps_inn_ctrl_r
       );
 
-  hps_mid_map_inst : entity ctrl_lib.HPS_map
+    hps_mid_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -841,14 +786,13 @@ begin
       slave_readmiso  => hps_mid_readmiso,
       slave_writemosi => hps_mid_writemosi,
       slave_writemiso => hps_mid_writemiso,
-
       -- monitor signals in
       mon  => hps_mid_mon_r,
       -- control signals out
       ctrl => hps_mid_ctrl_r
       );
 
-  hps_out_map_inst : entity ctrl_lib.HPS_map
+    hps_out_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -856,14 +800,13 @@ begin
       slave_readmiso  => hps_out_readmiso,
       slave_writemosi => hps_out_writemosi,
       slave_writemiso => hps_out_writemiso,
-
       -- monitor signals in
       mon  => hps_out_mon_r,
       -- control signals out
       ctrl => hps_out_ctrl_r
       );
 
-  hps_ext_map_inst : entity ctrl_lib.HPS_map
+    hps_ext_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -871,14 +814,13 @@ begin
       slave_readmiso  => hps_ext_readmiso,
       slave_writemosi => hps_ext_writemosi,
       slave_writemiso => hps_ext_writemiso,
-
       -- monitor signals in
       mon  => hps_ext_mon_r,
       -- control signals out
       ctrl => hps_ext_ctrl_r
       );
 
-  tar_inn_map_inst : entity ctrl_lib.TAR_map
+    tar_inn_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -886,14 +828,13 @@ begin
       slave_readmiso  => tar_inn_readmiso,
       slave_writemosi => tar_inn_writemosi,
       slave_writemiso => tar_inn_writemiso,
-
       -- monitor signals in
       mon  => tar_inn_mon_r,
       -- control signals out
       ctrl => tar_inn_ctrl_r
       );
 
-  tar_mid_map_inst : entity ctrl_lib.TAR_map
+    tar_mid_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -901,14 +842,13 @@ begin
       slave_readmiso  => tar_mid_readmiso,
       slave_writemosi => tar_mid_writemosi,
       slave_writemiso => tar_mid_writemiso,
-
       -- monitor signals in
       mon  => tar_mid_mon_r,
       -- control signals out
       ctrl => tar_mid_ctrl_r
       );
 
-  tar_out_map_inst : entity ctrl_lib.TAR_map
+    tar_out_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -916,14 +856,13 @@ begin
       slave_readmiso  => tar_out_readmiso,
       slave_writemosi => tar_out_writemosi,
       slave_writemiso => tar_out_writemiso,
-
       -- monitor signals in
       mon  => tar_out_mon_r,
       -- control signals out
       ctrl => tar_out_ctrl_r
       );
 
-  tar_ext_map_inst : entity ctrl_lib.TAR_map
+    tar_ext_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -931,14 +870,13 @@ begin
       slave_readmiso  => tar_ext_readmiso,
       slave_writemosi => tar_ext_writemosi,
       slave_writemiso => tar_ext_writemiso,
-
       -- monitor signals in
       mon  => tar_ext_mon_r,
       -- control signals out
       ctrl => tar_ext_ctrl_r
       );
 
-  mtc_map_inst : entity ctrl_lib.MTC_map
+    mtc_map_inst : entity ctrl_lib.mtc_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -946,14 +884,13 @@ begin
       slave_readmiso  => mtc_readmiso,
       slave_writemosi => mtc_writemosi,
       slave_writemiso => mtc_writemiso,
-
       -- monitor signals in
-      mon  => mtc_mon_rr,
+      mon  => mtc_mon_r,
       -- control signals out
       ctrl => mtc_ctrl_r
       );
 
-  ucm_map_inst : entity ctrl_lib.UCM_map
+    ucm_map_inst : entity ctrl_lib.ucm_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -961,14 +898,13 @@ begin
       slave_readmiso  => ucm_readmiso,
       slave_writemosi => ucm_writemosi,
       slave_writemiso => ucm_writemiso,
-
       -- monitor signals in
-      mon  => ucm_mon_rr,
+      mon  => ucm_mon_r,
       -- control signals out
       ctrl => ucm_ctrl_r
       );
 
-  daq_map_inst : entity ctrl_lib.DAQ_map
+    daq_map_inst : entity ctrl_lib.daq_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -976,14 +912,13 @@ begin
       slave_readmiso  => daq_readmiso,
       slave_writemosi => daq_writemosi,
       slave_writemiso => daq_writemiso,
-
       -- monitor signals in
-      mon  => daq_mon_rr,
+      mon  => daq_mon_r,
       -- control signals out
       ctrl => daq_ctrl_r
       );
 
-  tf_map_inst : entity ctrl_lib.TF_map
+    tf_map_inst : entity ctrl_lib.tf_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -991,14 +926,13 @@ begin
       slave_readmiso  => tf_readmiso,
       slave_writemosi => tf_writemosi,
       slave_writemiso => tf_writemiso,
-
       -- monitor signals in
-      mon  => tf_mon_rr,
+      mon  => tf_mon_r,
       -- control signals out
       ctrl => tf_ctrl_r
       );
 
-  mpl_map_inst : entity ctrl_lib.MPL_map
+    mpl_map_inst : entity ctrl_lib.mpl_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -1006,12 +940,13 @@ begin
       slave_readmiso  => mpl_readmiso,
       slave_writemosi => mpl_writemosi,
       slave_writemiso => mpl_writemiso,
-
       -- monitor signals in
-      mon  => mpl_mon_rr,
+      mon  => mpl_mon_r,
       -- control signals out
       ctrl => mpl_ctrl_r
       );
+
+  -- END: ULT_SLAVES :: DO NOT EDIT
 
   -- n.b. fast monitoring bram control interfaces can't be registered directly,
   -- since they contain a clock if you ff the record then you create a weird
@@ -1028,7 +963,7 @@ begin
       slave_writemiso => fm_writemiso,
 
       -- monitor signals in
-      mon  => fm_mon_rr,
+      mon  => fm_mon_r,
       -- control signals out
       Ctrl => fm_ctrl
       );
@@ -1048,3 +983,8 @@ begin
 
 
 end control_arch;
+
+-- Local Variables:
+-- eval: (make-variable-buffer-local 'after-save-hook)
+-- eval: (add-hook 'after-save-hook (lambda () (progn (start-process "update-slaves" nil "python" "update_control.py") (revert-buffer))) nil 'local)
+-- End:
