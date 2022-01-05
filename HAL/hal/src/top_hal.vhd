@@ -603,7 +603,7 @@ begin  -- architecture behavioral
 
   -- Felix Transmitter
 
-  felix_tx_1: entity work.felix_tx
+  felix_tx_inst : entity work.felix_tx
     generic map (
       g_NUM_UPLINKS => c_NUM_DAQ_STREAMS
       )
