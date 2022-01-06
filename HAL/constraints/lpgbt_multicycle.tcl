@@ -1,3 +1,4 @@
+# -*- mode: vivado -*-
 # Multicycle constraints: ease the timing constraints
 # Uplink constraints: Values depend on the c_multicyleDelay. Shall be the same one for setup time and -1 for the hold time
 # retiming changes register names and prevents multicycle path setting on the lpgbt cores
