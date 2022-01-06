@@ -112,3 +112,14 @@ set_false_path \
 set_property MAX_FANOUT 256 [get_cells -hier "*int_rst_reg"]
 set_property MAX_FANOUT 256 [get_cells "top_hal/pipeline_rst_bit_synchronizer/syncstages_ff_reg*"]
 set_property MAX_FANOUT 256 [get_cells "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_*.HPS/PC/pc_gen*.pc_en.PC/VC/apb_mem_interface/MEM_TYPE.o_wr_addr_reg*"]
+
+################################################################################
+# Ctrl & Mon
+################################################################################
+
+set_max_delay 12.5 \
+    -from [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mon_r_reg*"]
+
+set_max_delay 12.5 \
+    -from [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_map_inst/*reg_data_reg*"] \
+    -to   [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ctrl_reg*"]
