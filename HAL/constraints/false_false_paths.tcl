@@ -1,7 +1,11 @@
 # -*- mode: vivado -*-
-################################################################################
+
+#-------------------------------------------------------------------------------
 # These are false false paths for known bad issues in the timing
-################################################################################
+#
+# they need to be removed eventually but for now collect them here as a list of
+# issues with timing in the design
+#-------------------------------------------------------------------------------
 
 set_false_path \
     -from [get_pins {ult_inst/logic_gen.UCM_GEN.ULT_UCM/UCM/SLC_VP_A*/BARREL.SLOPE_CALC/b_div_ent/IN_PL_GEN.mul_in_pipe*/C}]
@@ -80,3 +84,43 @@ foreach clock_b \
                      -group [get_clocks $clock_a] \
                      -group [get_clocks $clock_b] \
                      -asynchronous}}
+
+# this damn reset is the source of endless problems.. its fanout is way too high
+# and set_max_fanout doesn't placate it... I could try putting it on a BUFG or
+# just try to reduce the fanout through some more pipeline stages
+set_max_delay 8.0 \
+    -from [get_pins -hierarchical -filter "NAME =~ *int_rst_reg/C"]
+
+#
+set_max_delay 8.0 \
+    -from [get_pins "ult_inst/logic_gen.H2S_GEN.ULT_H2S/*_reset_reg/C"]
+
+# this is a bram control signal that has a huge fanout
+set_max_delay 8.0 \
+    -from [get_pins -hierarchical -filter "NAME =~ */apb_mem_interface/MEM_TYPE.o_wr_addr_reg*/C"]
+
+# I think there might be a multicycle path or something that is appropriate here but need to look into it more
+set_max_delay 5.0 \
+    -from [get_pins "top_hal/felix_tx*/felix_tx_gen*.felix_tx_inst/txdatapath_inst/UPS/*/scrambledData_reg*/C"]
+
+# the spybuffers need to be split up into different slrs etc, coming from different axi slaves
+set_max_delay 8.0 \
+    -from [get_pins {ult_inst/logic_gen.FM_GEN.ULT_FM/fm_inst/fm_data_inst/l0mdt_spybuffers*/CLKARDCLK}]
+
+set_max_delay 8.0 \
+    -from [get_pins {ult_inst/logic_gen.FM_GEN.ULT_FM/fm_inst/*/*/C}]
+
+set_max_delay 8.0 \
+    -from [get_pins {top_control_inst/fm_mon_r_reg*/C}]
+
+set_max_delay 8.0 \
+    -to [get_pins {top_control_inst/fm_mon_r_reg*/D}]
+
+################################################################################
+# Ctrl & Mon
+################################################################################
+
+# the apb is clocked by 320MHz clock but controlled by 40MHz control signals so
+# some propagation delay is allowed? need to be careful about this
+set_max_delay 12.5 \
+    -from [get_pins -hierarchical -filter "NAME =~ ult_inst/*apb_mem_interface*/C"]
