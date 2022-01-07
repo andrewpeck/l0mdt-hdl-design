@@ -246,9 +246,9 @@ architecture control_arch of top_control is
   signal hal_core_mon_r : HAL_CORE_MON_t;
   signal fm_mon_r       : FM_MON_t;
 
-  attribute MAX_FANOUT : string;
-  attribute MAX_FANOUT of strobe_pipeline : signal is "16";
   signal strobe : std_logic;
+  attribute MAX_FANOUT : string;
+  attribute MAX_FANOUT of strobe : signal is "16";
 
 begin
 
