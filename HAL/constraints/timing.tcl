@@ -121,5 +121,4 @@ set_max_delay 12.5 \
     -from [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mon_r_reg*"]
 
 set_max_delay 12.5 \
-    -from [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_map_inst/*reg_data_reg*"] \
-    -to   [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_ctrl_reg*"]
+    -to   [get_cells "top_control_inst/*_ctrl_reg*"]
