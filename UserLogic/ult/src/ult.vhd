@@ -152,21 +152,26 @@ architecture behavioral of ult is
   -- signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl) - 1 downto 0);
   -- signal mpl_mon_v  : std_logic_vector(len(mpl_mon) - 1 downto 0);
 
+  -- "Xilinx recommends using at least three pipeline stages to cross an SLR:
+  -- one at the top, one at the bottom, and one in the middle of the SL"
+  --
+  -- UG949 7 pipeline stages to cross the whole device for a 3 SLR device at 250
+  -- MHz
+  constant SLR_PIPELINE_DEPTH : integer := 12;
+
   -- outputs from candidate manager
-  signal inn_slc_to_h2s_av, inn_slc_to_h2s_av_r1, inn_slc_to_h2s_av_r2 : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal mid_slc_to_h2s_av, mid_slc_to_h2s_av_r1, mid_slc_to_h2s_av_r2 : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal out_slc_to_h2s_av, out_slc_to_h2s_av_r1, out_slc_to_h2s_av_r2 : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal ext_slc_to_h2s_av, ext_slc_to_h2s_av_r1, ext_slc_to_h2s_av_r2 : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  type ucm2hps_bus_array_t is array (integer range 0 to SLR_PIPELINE_DEPTH)
+    of ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
+  signal mid_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
+  signal out_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
+  signal ext_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
 
   attribute shreg_extract : string;
-  attribute shreg_extract of inn_slc_to_h2s_av_r1 : signal is "no";
-  attribute shreg_extract of mid_slc_to_h2s_av_r1 : signal is "no";
-  attribute shreg_extract of out_slc_to_h2s_av_r1 : signal is "no";
-  attribute shreg_extract of ext_slc_to_h2s_av_r1 : signal is "no";
-  attribute shreg_extract of inn_slc_to_h2s_av_r2 : signal is "no";
-  attribute shreg_extract of mid_slc_to_h2s_av_r2 : signal is "no";
-  attribute shreg_extract of out_slc_to_h2s_av_r2 : signal is "no";
-  attribute shreg_extract of ext_slc_to_h2s_av_r2 : signal is "no";
+  attribute shreg_extract of inn_slc_to_h2s_pipeline : signal is "no";
+  attribute shreg_extract of mid_slc_to_h2s_pipeline : signal is "no";
+  attribute shreg_extract of out_slc_to_h2s_pipeline : signal is "no";
+  attribute shreg_extract of ext_slc_to_h2s_pipeline : signal is "no";
 
   signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
@@ -183,19 +188,18 @@ architecture behavioral of ult is
   signal ult_ext_tdc_hits_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- outputs from hits to segments
-  signal inn_segments_to_pt_av,  inn_segments_to_pt_av_r1, inn_segments_to_pt_av_r2 : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal mid_segments_to_pt_av,  mid_segments_to_pt_av_r1, mid_segments_to_pt_av_r2 : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal out_segments_to_pt_av,  out_segments_to_pt_av_r1, out_segments_to_pt_av_r2 : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal ext_segments_to_pt_av,  ext_segments_to_pt_av_r1, ext_segments_to_pt_av_r2 : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
 
-  attribute shreg_extract of inn_segments_to_pt_av_r1 : signal is "no";
-  attribute shreg_extract of mid_segments_to_pt_av_r1 : signal is "no";
-  attribute shreg_extract of out_segments_to_pt_av_r1 : signal is "no";
-  attribute shreg_extract of ext_segments_to_pt_av_r1 : signal is "no";
-  attribute shreg_extract of inn_segments_to_pt_av_r2 : signal is "no";
-  attribute shreg_extract of mid_segments_to_pt_av_r2 : signal is "no";
-  attribute shreg_extract of out_segments_to_pt_av_r2 : signal is "no";
-  attribute shreg_extract of ext_segments_to_pt_av_r2 : signal is "no";
+  type sf2pt_bus_array_t is array (integer range 0 to SLR_PIPELINE_DEPTH)
+    of sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_segments_to_pt_pipeline : sf2pt_bus_array_t;
+  signal mid_segments_to_pt_pipeline : sf2pt_bus_array_t;
+  signal out_segments_to_pt_pipeline : sf2pt_bus_array_t;
+  signal ext_segments_to_pt_pipeline : sf2pt_bus_array_t;
+
+  attribute shreg_extract of inn_segments_to_pt_pipeline : signal is "no";
+  attribute shreg_extract of mid_segments_to_pt_pipeline : signal is "no";
+  attribute shreg_extract of out_segments_to_pt_pipeline : signal is "no";
+  attribute shreg_extract of ext_segments_to_pt_pipeline : signal is "no";
 
   -- slc to pt (from pipeline)
   -- signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
@@ -325,15 +329,12 @@ begin
     begin
       if (rising_edge(clock_and_control.clk)) then
 
-        inn_slc_to_h2s_av_r1 <= inn_slc_to_h2s_av;
-        mid_slc_to_h2s_av_r1 <= mid_slc_to_h2s_av;
-        out_slc_to_h2s_av_r1 <= out_slc_to_h2s_av;
-        ext_slc_to_h2s_av_r1 <= ext_slc_to_h2s_av;
-
-        inn_slc_to_h2s_av_r2 <= inn_slc_to_h2s_av_r1;
-        mid_slc_to_h2s_av_r2 <= mid_slc_to_h2s_av_r1;
-        out_slc_to_h2s_av_r2 <= out_slc_to_h2s_av_r1;
-        ext_slc_to_h2s_av_r2 <= ext_slc_to_h2s_av_r1;
+        for I in 1 to SLR_PIPELINE_DEPTH loop
+          inn_slc_to_h2s_pipeline(I) <= inn_slc_to_h2s_pipeline(I-1);
+          mid_slc_to_h2s_pipeline(I) <= mid_slc_to_h2s_pipeline(I-1);
+          out_slc_to_h2s_pipeline(I) <= out_slc_to_h2s_pipeline(I-1);
+          ext_slc_to_h2s_pipeline(I) <= ext_slc_to_h2s_pipeline(I-1);
+        end loop;
 
       end if;
     end process;
@@ -354,10 +355,10 @@ begin
         i_slc_data_neighborA_v => i_plus_neighbor_slc,
         i_slc_data_neighborB_v => i_minus_neighbor_slc,
         -- outputs to ucm
-        o_uCM2hps_inn_av        => inn_slc_to_h2s_av,
-        o_uCM2hps_mid_av        => mid_slc_to_h2s_av,
-        o_uCM2hps_out_av        => out_slc_to_h2s_av,
-        o_uCM2hps_ext_av        => ext_slc_to_h2s_av,
+        o_uCM2hps_inn_av        => inn_slc_to_h2s_pipeline(0),
+        o_uCM2hps_mid_av        => mid_slc_to_h2s_pipeline(0),
+        o_uCM2hps_out_av        => out_slc_to_h2s_pipeline(0),
+        o_uCM2hps_ext_av        => ext_slc_to_h2s_pipeline(0),
         -- pipeline
         o_uCM2pl_av             => ucm2pl_av
       );
@@ -376,10 +377,10 @@ begin
         i_slc_data_neighborA_v => i_plus_neighbor_slc,
         i_slc_data_neighborB_v => i_minus_neighbor_slc,
         -- outputs to ucm
-        o_uCM2hps_inn_av        => inn_slc_to_h2s_av,
-        o_uCM2hps_mid_av        => mid_slc_to_h2s_av,
-        o_uCM2hps_out_av        => out_slc_to_h2s_av,
-        o_uCM2hps_ext_av        => ext_slc_to_h2s_av,
+        o_uCM2hps_inn_av        => inn_slc_to_h2s_pipeline(0),
+        o_uCM2hps_mid_av        => mid_slc_to_h2s_pipeline(0),
+        o_uCM2hps_out_av        => out_slc_to_h2s_pipeline(0),
+        o_uCM2hps_ext_av        => ext_slc_to_h2s_pipeline(0),
         -- pipeline
         o_uCM2pl_av             => ucm2pl_av,
         o_sump                  => ucm_sump
@@ -410,15 +411,15 @@ begin
         i_out_tar_hits_av             => ult_out_tar_hits_av,
         i_ext_tar_hits_av             => ult_ext_tar_hits_av,
         -- Sector Logic Candidates from uCM
-        i_inn_slc_av                  => inn_slc_to_h2s_av_r2,
-        i_mid_slc_av                  => mid_slc_to_h2s_av_r2,
-        i_out_slc_av                  => out_slc_to_h2s_av_r2,
-        i_ext_slc_av                  => ext_slc_to_h2s_av_r2,
+        i_inn_slc_av                  => inn_slc_to_h2s_pipeline(SLR_PIPELINE_DEPTH),
+        i_mid_slc_av                  => mid_slc_to_h2s_pipeline(SLR_PIPELINE_DEPTH),
+        i_out_slc_av                  => out_slc_to_h2s_pipeline(SLR_PIPELINE_DEPTH),
+        i_ext_slc_av                  => ext_slc_to_h2s_pipeline(SLR_PIPELINE_DEPTH),
         -- Segments Out to pt calculation
-        o_inn_segments_av             => inn_segments_to_pt_av,
-        o_mid_segments_av             => mid_segments_to_pt_av,
-        o_out_segments_av             => out_segments_to_pt_av,
-        o_ext_segments_av             => ext_segments_to_pt_av,
+        o_inn_segments_av             => inn_segments_to_pt_pipeline(0),
+        o_mid_segments_av             => mid_segments_to_pt_pipeline(0),
+        o_out_segments_av             => out_segments_to_pt_pipeline(0),
+        o_ext_segments_av             => ext_segments_to_pt_pipeline(0),
         -- Segment outputs to HA  L
         o_plus_neighbor_segments_av   => o_plus_neighbor_segments_av,
         o_minus_neighbor_segments_av  => o_minus_neighbor_segments_av
@@ -446,15 +447,15 @@ begin
         i_out_tar_hits_av            => ult_out_tar_hits_av,
         i_ext_tar_hits_av            => ult_ext_tar_hits_av,
         -- Sector Logic Candidates from uCM
-        i_inn_slc_av                 => inn_slc_to_h2s_av_r2,
-        i_mid_slc_av                 => mid_slc_to_h2s_av_r2,
-        i_out_slc_av                 => out_slc_to_h2s_av_r2,
-        i_ext_slc_av                 => ext_slc_to_h2s_av_r2,
+        i_inn_slc_av                 => inn_slc_to_h2s_pipeline(SLR_PIPELINE_DEPTH),
+        i_mid_slc_av                 => mid_slc_to_h2s_pipeline(SLR_PIPELINE_DEPTH),
+        i_out_slc_av                 => out_slc_to_h2s_pipeline(SLR_PIPELINE_DEPTH),
+        i_ext_slc_av                 => ext_slc_to_h2s_pipeline(SLR_PIPELINE_DEPTH),
         -- Segments Out to pt calculation
-        o_inn_segments_av            => inn_segments_to_pt_av,
-        o_mid_segments_av            => mid_segments_to_pt_av,
-        o_out_segments_av            => out_segments_to_pt_av,
-        o_ext_segments_av            => ext_segments_to_pt_av,
+        o_inn_segments_av            => inn_segments_to_pt_pipeline(0),
+        o_mid_segments_av            => mid_segments_to_pt_pipeline(0),
+        o_out_segments_av            => out_segments_to_pt_pipeline(0),
+        o_ext_segments_av            => ext_segments_to_pt_pipeline(0),
         -- Segment outputs to HAL
         o_plus_neighbor_segments_av  => o_plus_neighbor_segments_av,
         o_minus_neighbor_segments_av => o_minus_neighbor_segments_av,
@@ -508,15 +509,14 @@ begin
       process (clock_and_control.clk) is
       begin
         if (rising_edge(clock_and_control.clk)) then
-          inn_segments_to_pt_av_r1 <= inn_segments_to_pt_av;
-          mid_segments_to_pt_av_r1 <= mid_segments_to_pt_av;
-          out_segments_to_pt_av_r1 <= out_segments_to_pt_av;
-          ext_segments_to_pt_av_r1 <= ext_segments_to_pt_av;
 
-          inn_segments_to_pt_av_r2 <= inn_segments_to_pt_av_r1;
-          mid_segments_to_pt_av_r2 <= mid_segments_to_pt_av_r1;
-          out_segments_to_pt_av_r2 <= out_segments_to_pt_av_r1;
-          ext_segments_to_pt_av_r2 <= ext_segments_to_pt_av_r1;
+          for I in 1 to SLR_PIPELINE_DEPTH loop
+            inn_segments_to_pt_pipeline(I) <= inn_segments_to_pt_pipeline(I-1);
+            mid_segments_to_pt_pipeline(I) <= mid_segments_to_pt_pipeline(I-1);
+            out_segments_to_pt_pipeline(I) <= out_segments_to_pt_pipeline(I-1);
+            ext_segments_to_pt_pipeline(I) <= ext_segments_to_pt_pipeline(I-1);
+          end loop;
+
         end if;
       end process;
 
@@ -531,10 +531,10 @@ begin
         i_plus_neighbor_segments  => i_plus_neighbor_segments,
         i_minus_neighbor_segments => i_minus_neighbor_segments,
         -- segments from hps
-        i_inn_segments            => inn_segments_to_pt_av_r2,
-        i_mid_segments            => mid_segments_to_pt_av_r2,
-        i_out_segments            => out_segments_to_pt_av_r2,
-        i_ext_segments            => ext_segments_to_pt_av_r2,
+        i_inn_segments            => inn_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
+        i_mid_segments            => mid_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
+        i_out_segments            => out_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
+        i_ext_segments            => ext_segments_to_pt_pipeline(SLR_PIPELINE_DEPTH),
         -- from pipeline
         i_pl2pt_av                => pl2pt_av,
         -- to mtc
@@ -556,10 +556,10 @@ begin
         i_plus_neighbor_segments  => i_plus_neighbor_segments,
         i_minus_neighbor_segments => i_minus_neighbor_segments,
         -- segments from hps
-        i_inn_segments            => inn_segments_to_pt_av,
-        i_mid_segments            => mid_segments_to_pt_av,
-        i_out_segments            => out_segments_to_pt_av,
-        i_ext_segments            => ext_segments_to_pt_av,
+        i_inn_segments            => inn_segments_to_pt_pipeline(0),
+        i_mid_segments            => mid_segments_to_pt_pipeline(0),
+        i_out_segments            => out_segments_to_pt_pipeline(0),
+        i_ext_segments            => ext_segments_to_pt_pipeline(0),
         -- from pipeline
         i_pl2pt_av                => pl2pt_av,
         -- to mtc

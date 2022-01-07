@@ -35,14 +35,8 @@ if {$num_slrs > 0} {
     # SLR Crossings
     #-------------------------------------------------------------------------------
 
-    set_property USER_SLL_REG True [get_cells "ult_inst/*segments_to_pt_av_r*"]
-    set_property USER_SLL_REG True [get_cells "ult_inst/*slc_to_h2s_av_r*"]
-    set_property USER_SLL_REG True [get_cells "ult_inst/logic_gen.PT_GEN.ULT_PTCALC/PT_EN.PT_TYPE.mpt_loop*.mpt/segment_O_v_reg*"]
-
-    # put this laguna cell in the final slr where the extra logic is, otherwise
-    # vivado seems kind of dumb and does not distribute the pipelines stages
-    # well
-    set_property -quiet USER_SLR_ASSIGNMENT $SLR_EXT [get_cells "ult_inst/*av_r2_reg*"]
+    set_property USER_SLL_REG True [get_cells "ult_inst/*segments_to_pt_pipeline*"]
+    set_property USER_SLL_REG True [get_cells "ult_inst/*slc_to_h2s_pipeline*"]
 
     #-------------------------------------------------------------------------------
     # SLR Placements
