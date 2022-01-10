@@ -9,6 +9,7 @@
 `include <ttc_defs.svh>
 
 `include <daq_config_defs.svh>
+`include <daq_defs.svh>
 
 
   typedef struct packed {
@@ -19,26 +20,27 @@
     daq_stream_rt   stream_1;
     daq_stream_rt   stream_2;
     daq_stream_rt   stream_3;
-    daq_stream_rt   stream_4;
-    daq_stream_rt   stream_5;
-    daq_stream_rt   stream_6;
-    daq_stream_rt   stream_7;
-    daq_stream_rt   stream_8;
     felix_to_daq_rt   f2e0;
     felix_to_daq_rt   f2e1;
-  } daq_data_irt;
+    felix_to_daq_rt   f2e2;
+    felix_to_daq_rt   f2e3;
+  } daq_data_path_irt;
 
   typedef struct packed {
     daq_to_status_rt   status0;
-    daq_to_status_rt   status1;
     daq_to_felix_rt   f2e0;
+    daq_to_status_rt   status1;
     daq_to_felix_rt   f2e1;
-  } daq_data_ort;
+    daq_to_status_rt   status2;
+    daq_to_felix_rt   f2e2;
+    daq_to_status_rt   status3;
+    daq_to_felix_rt   f2e3;
+  } daq_data_path_ort;
 
   typedef struct packed {
-    daq_data_irt   i;
-    daq_data_ort   o;
-  } daq_data_ert;
+    daq_data_path_irt   i;
+    daq_data_path_ort   o;
+  } daq_data_path_ert;
 
 
 

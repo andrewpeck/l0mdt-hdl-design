@@ -15,7 +15,7 @@ package daq_config_defs is
 
   constant DAQ_MAX_BRANCHES : integer := 6;
 
-  constant DAQ_PIPELINES : integer := 40;
+  constant DAQ_PIPELINES : integer := 10;
 
   constant DAQ_MAX_COUNTER_WIDTH : integer := 32;
 
