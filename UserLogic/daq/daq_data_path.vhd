@@ -48,7 +48,7 @@ begin
   ttc_er.i.data <= data_path_ir.ttc;
 
   u_daq_branch: entity daq_lib.daq_branch
-    generic map (G =>  (PIPELINES       => 6,
+    generic map (G =>  (PIPELINES       => 40,
                         BRANCHES_MASK   => (1, 1, 1, 1, others => 0),
                         BRANCHES_STRUCT => (
                           ((42, 1024), others => (0, 0)),

@@ -246,9 +246,9 @@ package daq_defs is
   function zeroed(t: backward_rt) return backward_rt;
 
   type row_to_mngt_rt is record
-    data_ready : std_logic_vector(DAQ_PIPELINES-1 downto 0);
-    nempty : std_logic_vector(DAQ_PIPELINES-1 downto 0);
-    err : std_logic_vector(DAQ_PIPELINES-1 downto 0);
+    data_ready : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
+    nempty : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
+    err : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
   end record row_to_mngt_rt;
   function len(x: row_to_mngt_rt) return natural;
   function width(x: row_to_mngt_rt) return natural;
@@ -260,7 +260,7 @@ package daq_defs is
   function zeroed(t: row_to_mngt_rt) return row_to_mngt_rt;
 
   type mngt_to_row_rt is record
-    en : std_logic_vector(0 to DAQ_PIPELINES-1);
+    en : std_logic_vector(0 to DAQ_MAX_PIPELINES-1);
     rd_en : natural;
   end record mngt_to_row_rt;
   function len(x: mngt_to_row_rt) return natural;
@@ -580,11 +580,11 @@ package daq_defs is
   function nullify(t: daq_data_row_ert) return daq_data_row_ert;
   function zeroed(t: daq_data_row_ert) return daq_data_row_ert;
 
-  subtype daq_header_row_ivt is std_logic_vector(162-1 downto 0);
+  subtype daq_header_row_ivt is std_logic_vector(192-1 downto 0);
 
-  subtype daq_data_row_ivt is std_logic_vector(339-1 downto 0);
+  subtype daq_data_row_ivt is std_logic_vector(369-1 downto 0);
 
-  subtype daq_row_ovt is std_logic_vector(288-1 downto 0);
+  subtype daq_row_ovt is std_logic_vector(378-1 downto 0);
 
   type daq_pbldr_grt is record
     DATA_WIDTH : natural;
@@ -684,7 +684,7 @@ package daq_defs is
   type daq_mngt_ort is record
     row : mngt_to_row_rt;
     pbldr : mngt_to_pbldr_rt;
-    err : std_logic_vector(DAQ_PIPELINES-1 downto 0);
+    err : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
     debug : std_logic_vector(2-1 downto 0);
   end record daq_mngt_ort;
   function len(x: daq_mngt_ort) return natural;
@@ -709,9 +709,9 @@ package daq_defs is
   function nullify(t: daq_mngt_ert) return daq_mngt_ert;
   function zeroed(t: daq_mngt_ert) return daq_mngt_ert;
 
-  subtype daq_mngt_ivt is std_logic_vector(293-1 downto 0);
+  subtype daq_mngt_ivt is std_logic_vector(923-1 downto 0);
 
-  subtype daq_mngt_ovt is std_logic_vector(55-1 downto 0);
+  subtype daq_mngt_ovt is std_logic_vector(115-1 downto 0);
 
   type daq_algo_grt is record
     PIPELINES : natural;
