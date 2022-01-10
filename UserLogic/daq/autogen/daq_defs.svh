@@ -104,13 +104,13 @@
   } backward_rt;
 
   typedef struct packed {
-    logic [DAQ_PIPELINES-1:0] data_ready;
-    logic [DAQ_PIPELINES-1:0] nempty;
-    logic [DAQ_PIPELINES-1:0] err;
+    logic [DAQ_MAX_PIPELINES-1:0] data_ready;
+    logic [DAQ_MAX_PIPELINES-1:0] nempty;
+    logic [DAQ_MAX_PIPELINES-1:0] err;
   } row_to_mngt_rt;
 
   typedef struct packed {
-    logic [0:DAQ_PIPELINES-1] en;
+    logic [0:DAQ_MAX_PIPELINES-1] en;
     int  rd_en;
   } mngt_to_row_rt;
 
@@ -294,7 +294,7 @@
   typedef struct packed {
     mngt_to_row_rt   row;
     mngt_to_pbldr_rt   pbldr;
-    logic [DAQ_PIPELINES-1:0] err;
+    logic [DAQ_MAX_PIPELINES-1:0] err;
     logic [2-1:0] debug;
   } daq_mngt_ort;
 
