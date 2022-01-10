@@ -82,7 +82,7 @@ architecture behavioral of daq is
       end if;
     end loop;
     return y;
-  end function get_branches_struct;
+  end function get_branches_mask;
   
   signal inner_er  : daq_branch_ert;
   signal middle_er : daq_branch_ert;
@@ -174,7 +174,7 @@ begin
     gen_daq_middle : if   c_HPS_ENABLE_ST_MID = '1' generate
       u_daq_middle: entity daq_lib.daq_branch
         generic map (G => (PIPELINES       => 40,
-                           BRANCHES_MASK   => get_branches_map(c_HPS_MAX_HP_MID),
+                           BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_MID),
                            BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_MID),
                            COUNTER_WIDTH     => 32,
                            OUTPUT_DATA_WIDTH => TDCPOLMUX2TAR_LEN))
