@@ -6,7 +6,7 @@
 
 - DAQ_FELIX_STREAM_WIDTH: [qualifier: constant, type: integer, value: 64]
 
-- DAQ_PIPELINES: [qualifier: constant, type: integer, value: 40]
+- DAQ_PIPELINES: [qualifier: constant, type: integer, value: 10]
 
 
 

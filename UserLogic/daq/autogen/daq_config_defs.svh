@@ -11,7 +11,7 @@
 
   parameter int  DAQ_MAX_BRANCHES = 6;
 
-  parameter int  DAQ_PIPELINES = 40;
+  parameter int  DAQ_PIPELINES = 10;
 
   parameter int  DAQ_MAX_COUNTER_WIDTH = 32;
 
