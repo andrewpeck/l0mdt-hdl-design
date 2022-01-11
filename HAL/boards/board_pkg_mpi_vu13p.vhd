@@ -17,7 +17,7 @@ package board_pkg is
 
 -- mgt#    => (mgt_type         , refclk , gt_type, x , y)
     -- SLR0 Left
-    0      => (MGT_FELIX       ,  0     , GTY    , 0 ,  0) , -- BANK 120 ; felix tclink
+    0      => (MGT_TTC         ,  0     , GTY    , 0 ,  0) , -- BANK 120 ; tclink
     1      => (MGT_NIL         ,  0     , GTY    , 0 ,  1) , -- BANK 120 ; debug
     2      => (MGT_NIL         ,  0     , GTY    , 0 ,  2) , -- BANK 120 ; debug
     3      => (MGT_NIL         ,  0     , GTY    , 0 ,  3) , -- BANK 120 ; debug

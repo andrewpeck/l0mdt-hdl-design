@@ -58,8 +58,7 @@ package constants_pkg is
   constant c_MAX_DAQ_LINKS : integer := func_count_link_types (c_MGT_MAP, MGT_FELIX);
   constant c_NUM_DAQ_LINKS : integer := 0;
 
-  constant c_NUM_FELIX_UPLINKS : integer := func_count_link_types (c_MGT_MAP, MGT_FELIX)
-                                            + func_count_link_types (c_MGT_MAP, MGT_FELIX_TXRX);
+  constant c_NUM_FELIX_UPLINKS : integer := func_count_link_types (c_MGT_MAP, MGT_FELIX);
   constant c_NUM_FELIX_DOWNLINKS : integer := 1;
 
   --------------------------------------------------------------------------------
@@ -152,9 +151,9 @@ package constants_pkg is
   constant felix_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
     func_fill_subtype_idx (c_NUM_FELIX_UPLINKS, c_MGT_MAP, MGT_FELIX);
 
-  -- list of felix mgts
-  constant felix_txrx_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
-    func_fill_subtype_idx (c_NUM_FELIX_UPLINKS, c_MGT_MAP, MGT_FELIX);
+  -- list of ttc mgts
+  constant ttc_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
+    func_fill_subtype_idx (1, c_MGT_MAP, MGT_TTC);
 
   type hi_lo_t is record
     hi : integer;

@@ -16,7 +16,7 @@ package board_pkg_common is
 
   -- types of Links
   type mgt_types_t is (MGT_NIL, MGT_LPGBT_SIMPLEX, MGT_LPGBT, MGT_LPGBT_EMUL,
-                       MGT_C2C, MGT_SL, MGT_FELIX_TXRX, MGT_FELIX);
+                       MGT_C2C, MGT_SL, MGT_TTC, MGT_FELIX);
 
   -- parameters needed to specify location + type of a serdes
   type mgt_inst_t is record
