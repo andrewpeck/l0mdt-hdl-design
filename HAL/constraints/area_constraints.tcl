@@ -19,15 +19,30 @@ if {[regexp {xcvu13p.*} $part]} {
 }
 
 proc set_hier_slr_assignment {slr name} {
-    set_property -quiet USER_SLR_ASSIGNMENT $slr [get_cells -hier -filter "NAME =~ $name"]
+     # polmuxes
+    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ $name"] $slr
+    #set_property -quiet USER_SLR_ASSIGNMENT $slr [get_cells -hier -filter "NAME =~ $name"]
 }
 
 if {$num_slrs > 0} {
 
-    set SLR_INN SLR1
-    set SLR_MID SLR2
-    set SLR_OUT SLR3
-    set SLR_EXT SLR0
+    # set SLR_INN SLR1
+    # set SLR_MID SLR2
+    # set SLR_OUT SLR3
+    # set SLR_EXT SLR0
+
+    # create pblocks 1/2/3/4
+    for {set i 0} {$i < $num_slrs} {incr i} {
+        set pblock PBLOCK_SLR_$i
+        delete_pblock -quiet [get_pblocks $pblock]
+        create_pblock $pblock
+        resize_pblock -add [get_slrs SLR$i] $pblock
+    }
+
+    set SLR_INN PBLOCK_SLR_1
+    set SLR_MID PBLOCK_SLR_2
+    set SLR_OUT PBLOCK_SLR_3
+    set SLR_EXT PBLOCK_SLR_0
 
     # https://www.xilinx.com/publications/events/developer-forum/2018-frankfurt/timing-closure-tips-and-tricks.pdf
 
