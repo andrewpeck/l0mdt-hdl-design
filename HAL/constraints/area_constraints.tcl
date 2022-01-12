@@ -116,10 +116,10 @@ if {$num_slrs > 0} {
 
     # daq
     puts "Applying area constraints to DAQ"
-    set_hier_slr_assignment $SLR_INN "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*inn*"
-    set_hier_slr_assignment $SLR_MID "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*mid*"
-    set_hier_slr_assignment $SLR_OUT "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*out*"
-    set_hier_slr_assignment $SLR_EXT "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*ext*"
+    set_hier_slr_assignment $SLR_INN "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_inner*"
+    set_hier_slr_assignment $SLR_MID "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_middle*"
+    set_hier_slr_assignment $SLR_OUT "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_outer*"
+    set_hier_slr_assignment $SLR_EXT "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_extra*"
 
     # control
 
