@@ -138,11 +138,11 @@ begin
     gen_daq_inner : if   c_HPS_ENABLE_ST_INN = '1' generate
 
       u_daq_inner: entity daq_lib.daq_branch
-        generic map (G => (PIPELINES       => 40,
-                           BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_INN),
-                           BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_INN),
-                           COUNTER_WIDTH     => 32,
-                           OUTPUT_DATA_WIDTH => TDCPOLMUX2TAR_LEN))
+        generic map (PIPELINES         => 40,
+                     BRANCHES_MASK     => get_branches_mask(c_HPS_MAX_HP_INN),
+                     BRANCHES_STRUCT   => get_branches_struct(c_HPS_MAX_HP_INN),
+                     COUNTER_WIDTH     => 32,
+                     OUTPUT_DATA_WIDTH => TDCPOLMUX2TAR_LEN)
         port map (branch_ir => inner_er.i, branch_or =>  inner_er.o);
    
       inner_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
@@ -173,11 +173,11 @@ begin
       
     gen_daq_middle : if   c_HPS_ENABLE_ST_MID = '1' generate
       u_daq_middle: entity daq_lib.daq_branch
-        generic map (G => (PIPELINES       => 40,
-                           BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_MID),
-                           BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_MID),
-                           COUNTER_WIDTH     => 32,
-                           OUTPUT_DATA_WIDTH => TDCPOLMUX2TAR_LEN))
+        generic map (PIPELINES       => 40,
+                     BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_MID),
+                     BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_MID),
+                     COUNTER_WIDTH     => 32,
+                     OUTPUT_DATA_WIDTH => TDCPOLMUX2TAR_LEN)
         port map (branch_ir => middle_er.i, branch_or =>  middle_er.o);
    
       middle_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
@@ -208,11 +208,11 @@ begin
       
     gen_daq_outer : if   c_HPS_ENABLE_ST_OUT = '1' generate
       u_daq_outer: entity daq_lib.daq_branch
-        generic map (G => (PIPELINES       => 40,
-                           BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_OUT),
-                           BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_OUT),
-                           COUNTER_WIDTH     => 32,
-                           OUTPUT_DATA_WIDTH => TDCPOLMUX2TAR_LEN))
+        generic map (PIPELINES       => 40,
+                     BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_OUT),
+                     BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_OUT),
+                     COUNTER_WIDTH     => 32,
+                     OUTPUT_DATA_WIDTH => TDCPOLMUX2TAR_LEN)
         port map (branch_ir => outer_er.i, branch_or =>  outer_er.o);
    
       outer_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
