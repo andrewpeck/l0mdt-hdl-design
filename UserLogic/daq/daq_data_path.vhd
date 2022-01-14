@@ -48,16 +48,16 @@ begin
   ttc_er.i.data <= data_path_ir.ttc;
 
   u_daq_branch: entity daq_lib.daq_branch
-    generic map (G =>  (PIPELINES       => 40,
-                        BRANCHES_MASK   => (1, 1, 1, 1, others => 0),
-                        BRANCHES_STRUCT => (
-                          ((42, 1024), others => (0, 0)),
-                          ((42, 1024), others => (0, 0)),
-                          ((42, 1024), others => (0, 0)),
-                          ((42, 1024), others => (0, 0)),
-                          others => (others => (0, 0))),
-                        COUNTER_WIDTH     => 32,
-                        OUTPUT_DATA_WIDTH => 16))
+    generic map (PIPELINES       => 40,
+                 BRANCHES_MASK   => (1, 1, 1, 1, others => 0),
+                 BRANCHES_STRUCT => (
+                   ((42, 1024), others => (0, 0)),
+                   ((42, 1024), others => (0, 0)),
+                   ((42, 1024), others => (0, 0)),
+                   ((42, 1024), others => (0, 0)),
+                   others => (others => (0, 0))),
+                 COUNTER_WIDTH     => 32,
+                 OUTPUT_DATA_WIDTH => 16)
     port map (branch_ir => branch_er.i, branch_or =>  branch_er.o);
 
   branch_er.i.sys.clk320 <= data_path_ir.sys.clk320;
