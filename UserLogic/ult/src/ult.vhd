@@ -60,16 +60,16 @@ entity ult is
     hps_ext_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
     hps_ext_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
 
-    tar_ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
-    tar_mon_v             : out std_logic_vector;--  : out TAR_MON_t;
-    -- tar_inn_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    -- tar_inn_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
-    -- tar_mid_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    -- tar_mid_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
-    -- tar_out_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    -- tar_out_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
-    -- tar_ext_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
-    -- tar_ext_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
+    -- tar_ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
+    -- tar_mon_v             : out std_logic_vector;--  : out TAR_MON_t;
+    tar_inn_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    tar_inn_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
+    tar_mid_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    tar_mid_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
+    tar_out_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    tar_out_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
+    tar_ext_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    tar_ext_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
 
     mtc_ctrl_v            : in std_logic_vector; --  : in  MTC_CTRL_t;
     mtc_mon_v             : out std_logic_vector;--  : out MTC_MON_t;
@@ -226,9 +226,15 @@ begin
       port map (
         -- clock, control, and monitoring
         clock_and_control => clock_and_control,  --
-        ttc_commands      => ttc_commands,       --
-        ctrl_v              => tar_ctrl_v,
-        mon_v               => tar_mon_v,
+        -- ttc_commands      => ttc_commands,       --
+        tar_inn_ctrl_v => tar_inn_ctrl_v,
+        tar_inn_mon_v  => tar_inn_mon_v ,
+        tar_mid_ctrl_v => tar_mid_ctrl_v,
+        tar_mid_mon_v  => tar_mid_mon_v ,
+        tar_out_ctrl_v => tar_out_ctrl_v,
+        tar_out_mon_v  => tar_out_mon_v ,
+        tar_ext_ctrl_v => tar_ext_ctrl_v,
+        tar_ext_mon_v  => tar_ext_mon_v ,
         -- TDC Hits from Polmux
         i_inn_tdc_hits_av  => i_inn_tdc_hits_av,
         i_mid_tdc_hits_av  => i_mid_tdc_hits_av,
@@ -256,7 +262,11 @@ begin
       );
     else generate
 
-      tar_mon_v <= (tar_mon_v'length - 1 downto 0 => '0');
+      tar_inn_mon_v <= (tar_inn_mon_v'length - 1 downto 0 => '0');
+      tar_mid_mon_v <= (tar_mid_mon_v'length - 1 downto 0 => '0');
+      tar_out_mon_v <= (tar_out_mon_v'length - 1 downto 0 => '0');
+      tar_ext_mon_v <= (tar_ext_mon_v'length - 1 downto 0 => '0');
+    
       SUMP_TAR : entity ult_lib.tar_sump
       port map (
         -- clock, control, and monitoring
