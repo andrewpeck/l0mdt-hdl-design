@@ -148,15 +148,13 @@
     req_to_row_extra_rt   extra;
   } req_to_row_rt;
 
-  typedef logic [DAQ_MAX_DATA_WIDTH-1:0] felix_data_t;
-
   typedef struct packed {
     logic  hfull;
   } felix_to_daq_rt;
 
   typedef struct packed {
     logic  wr_en;
-    felix_data_t   data;
+    logic [DAQ_MAX_DATA_WIDTH-1:0] data;
   } daq_to_felix_rt;
 
   typedef struct packed {

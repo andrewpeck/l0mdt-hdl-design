@@ -354,8 +354,6 @@ package daq_defs is
   function nullify(t: req_to_row_rt) return req_to_row_rt;
   function zeroed(t: req_to_row_rt) return req_to_row_rt;
 
-  subtype felix_data_t is std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
-
   type felix_to_daq_rt is record
     hfull : std_logic;
   end record felix_to_daq_rt;
@@ -370,7 +368,7 @@ package daq_defs is
 
   type daq_to_felix_rt is record
     wr_en : std_logic;
-    data : felix_data_t;
+    data : std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
   end record daq_to_felix_rt;
   function len(x: daq_to_felix_rt) return natural;
   function width(x: daq_to_felix_rt) return natural;
