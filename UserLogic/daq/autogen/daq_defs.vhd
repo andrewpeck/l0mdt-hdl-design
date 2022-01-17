@@ -245,118 +245,10 @@ package daq_defs is
   function nullify(t: backward_rt) return backward_rt;
   function zeroed(t: backward_rt) return backward_rt;
 
-  type src_to_node_fifo_rt is record
-    wr_en : std_logic;
-    data : std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
-  end record src_to_node_fifo_rt;
-  function len(x: src_to_node_fifo_rt) return natural;
-  function width(x: src_to_node_fifo_rt) return natural;
-  function vectorify(x: src_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: src_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: src_to_node_fifo_rt) return src_to_node_fifo_rt;
-  function convert(x: in std_logic_vector; t: src_to_node_fifo_rt) return src_to_node_fifo_rt;
-  function nullify(t: src_to_node_fifo_rt) return src_to_node_fifo_rt;
-  function zeroed(t: src_to_node_fifo_rt) return src_to_node_fifo_rt;
-
-  type node_fifo_to_src_rt is record
-    full : std_logic;
-  end record node_fifo_to_src_rt;
-  function len(x: node_fifo_to_src_rt) return natural;
-  function width(x: node_fifo_to_src_rt) return natural;
-  function vectorify(x: node_fifo_to_src_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: node_fifo_to_src_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: node_fifo_to_src_rt) return node_fifo_to_src_rt;
-  function convert(x: in std_logic_vector; t: node_fifo_to_src_rt) return node_fifo_to_src_rt;
-  function nullify(t: node_fifo_to_src_rt) return node_fifo_to_src_rt;
-  function zeroed(t: node_fifo_to_src_rt) return node_fifo_to_src_rt;
-
-  subtype node_fifo_cnt_t is std_logic_vector(DAQ_MAX_COUNTER_WIDTH-1 downto 0);
-
-  type node_fifo_to_dst_rt is record
-    data : daq_stream_data_t;
-    count : node_fifo_cnt_t;
-    nempty : std_logic;
-  end record node_fifo_to_dst_rt;
-  function len(x: node_fifo_to_dst_rt) return natural;
-  function width(x: node_fifo_to_dst_rt) return natural;
-  function vectorify(x: node_fifo_to_dst_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: node_fifo_to_dst_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt;
-  function convert(x: in std_logic_vector; t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt;
-  function nullify(t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt;
-  function zeroed(t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt;
-
-  type dst_to_node_fifo_rt is record
-    rd_en : std_logic;
-  end record dst_to_node_fifo_rt;
-  function len(x: dst_to_node_fifo_rt) return natural;
-  function width(x: dst_to_node_fifo_rt) return natural;
-  function vectorify(x: dst_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: dst_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt;
-  function convert(x: in std_logic_vector; t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt;
-  function nullify(t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt;
-  function zeroed(t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt;
-
-  type daq_node_fifo_irt is record
-    sys : daq_sys_rt;
-    src : src_to_node_fifo_rt;
-    dst : dst_to_node_fifo_rt;
-  end record daq_node_fifo_irt;
-  function len(x: daq_node_fifo_irt) return natural;
-  function width(x: daq_node_fifo_irt) return natural;
-  function vectorify(x: daq_node_fifo_irt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_node_fifo_irt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_node_fifo_irt) return daq_node_fifo_irt;
-  function convert(x: in std_logic_vector; t: daq_node_fifo_irt) return daq_node_fifo_irt;
-  function nullify(t: daq_node_fifo_irt) return daq_node_fifo_irt;
-  function zeroed(t: daq_node_fifo_irt) return daq_node_fifo_irt;
-
-  type daq_node_fifo_ort is record
-    src : node_fifo_to_src_rt;
-    dst : node_fifo_to_dst_rt;
-  end record daq_node_fifo_ort;
-  function len(x: daq_node_fifo_ort) return natural;
-  function width(x: daq_node_fifo_ort) return natural;
-  function vectorify(x: daq_node_fifo_ort; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_node_fifo_ort; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_node_fifo_ort) return daq_node_fifo_ort;
-  function convert(x: in std_logic_vector; t: daq_node_fifo_ort) return daq_node_fifo_ort;
-  function nullify(t: daq_node_fifo_ort) return daq_node_fifo_ort;
-  function zeroed(t: daq_node_fifo_ort) return daq_node_fifo_ort;
-
-  type daq_node_fifo_ert is record
-    i : daq_node_fifo_irt;
-    o : daq_node_fifo_ort;
-  end record daq_node_fifo_ert;
-  function len(x: daq_node_fifo_ert) return natural;
-  function width(x: daq_node_fifo_ert) return natural;
-  function vectorify(x: daq_node_fifo_ert; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_node_fifo_ert; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_node_fifo_ert) return daq_node_fifo_ert;
-  function convert(x: in std_logic_vector; t: daq_node_fifo_ert) return daq_node_fifo_ert;
-  function nullify(t: daq_node_fifo_ert) return daq_node_fifo_ert;
-  function zeroed(t: daq_node_fifo_ert) return daq_node_fifo_ert;
-
-  type daq_node_fifo_grt is record
-    WRITE_DATA_WIDTH : integer;
-    READ_DATA_WIDTH : integer;
-    READ_COUNT_WIDTH : integer;
-    FIFO_DEPTH : integer;
-  end record daq_node_fifo_grt;
-  function len(x: daq_node_fifo_grt) return natural;
-  function width(x: daq_node_fifo_grt) return natural;
-  function vectorify(x: daq_node_fifo_grt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_node_fifo_grt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_node_fifo_grt) return daq_node_fifo_grt;
-  function convert(x: in std_logic_vector; t: daq_node_fifo_grt) return daq_node_fifo_grt;
-  function nullify(t: daq_node_fifo_grt) return daq_node_fifo_grt;
-  function zeroed(t: daq_node_fifo_grt) return daq_node_fifo_grt;
-
   type row_to_mngt_rt is record
-    done : std_logic_vector(DAQ_PIPELINES-1 downto 0);
-    nempty : std_logic_vector(DAQ_PIPELINES-1 downto 0);
-    err : std_logic_vector(DAQ_PIPELINES-1 downto 0);
+    data_ready : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
+    nempty : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
+    err : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
   end record row_to_mngt_rt;
   function len(x: row_to_mngt_rt) return natural;
   function width(x: row_to_mngt_rt) return natural;
@@ -368,8 +260,8 @@ package daq_defs is
   function zeroed(t: row_to_mngt_rt) return row_to_mngt_rt;
 
   type mngt_to_row_rt is record
-    en : std_logic_vector(0 to DAQ_PIPELINES-1);
-    rd_en : std_logic_vector(0 to DAQ_PIPELINES-1);
+    en : std_logic_vector(0 to DAQ_MAX_PIPELINES-1);
+    rd_en : natural;
   end record mngt_to_row_rt;
   function len(x: mngt_to_row_rt) return natural;
   function width(x: mngt_to_row_rt) return natural;
@@ -404,68 +296,29 @@ package daq_defs is
   function nullify(t: pbldr_to_mngt_rt) return pbldr_to_mngt_rt;
   function zeroed(t: pbldr_to_mngt_rt) return pbldr_to_mngt_rt;
 
-  type pbldr_forward_rt is record
-    nempty : std_logic;
-    data : std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
-  end record pbldr_forward_rt;
-  function len(x: pbldr_forward_rt) return natural;
-  function width(x: pbldr_forward_rt) return natural;
-  function vectorify(x: pbldr_forward_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: pbldr_forward_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: pbldr_forward_rt) return pbldr_forward_rt;
-  function convert(x: in std_logic_vector; t: pbldr_forward_rt) return pbldr_forward_rt;
-  function nullify(t: pbldr_forward_rt) return pbldr_forward_rt;
-  function zeroed(t: pbldr_forward_rt) return pbldr_forward_rt;
+  subtype row_to_pbldr_rt is forward_rt;
 
-  type pbldr_backward_rt is record
-    rd_strb : std_logic;
-  end record pbldr_backward_rt;
-  function len(x: pbldr_backward_rt) return natural;
-  function width(x: pbldr_backward_rt) return natural;
-  function vectorify(x: pbldr_backward_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: pbldr_backward_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: pbldr_backward_rt) return pbldr_backward_rt;
-  function convert(x: in std_logic_vector; t: pbldr_backward_rt) return pbldr_backward_rt;
-  function nullify(t: pbldr_backward_rt) return pbldr_backward_rt;
-  function zeroed(t: pbldr_backward_rt) return pbldr_backward_rt;
+  type rows_to_pbldr_rt is array(DAQ_MAX_ROWS-1 downto 0) of row_to_pbldr_rt;
+  function len(x: rows_to_pbldr_rt) return natural;
+  function width(x: rows_to_pbldr_rt) return natural;
+  function vectorify(x: rows_to_pbldr_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: rows_to_pbldr_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: rows_to_pbldr_rt) return rows_to_pbldr_rt;
+  function convert(x: std_logic_vector; t: rows_to_pbldr_rt) return rows_to_pbldr_rt;
+  function nullify(x: rows_to_pbldr_rt) return rows_to_pbldr_rt;
+  function zeroed(x: rows_to_pbldr_rt) return rows_to_pbldr_rt;
 
-  type row_to_pbldr_rt is record
-    payload : pbldr_forward_rt;
-  end record row_to_pbldr_rt;
-  function len(x: row_to_pbldr_rt) return natural;
-  function width(x: row_to_pbldr_rt) return natural;
-  function vectorify(x: row_to_pbldr_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: row_to_pbldr_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: row_to_pbldr_rt) return row_to_pbldr_rt;
-  function convert(x: in std_logic_vector; t: row_to_pbldr_rt) return row_to_pbldr_rt;
-  function nullify(t: row_to_pbldr_rt) return row_to_pbldr_rt;
-  function zeroed(t: row_to_pbldr_rt) return row_to_pbldr_rt;
+  subtype pbldr_to_row_rt is backward_rt;
 
-  type pbldr_to_row_rt is record
-    payload : pbldr_backward_rt;
-    sel : std_logic;
-  end record pbldr_to_row_rt;
-  function len(x: pbldr_to_row_rt) return natural;
-  function width(x: pbldr_to_row_rt) return natural;
-  function vectorify(x: pbldr_to_row_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: pbldr_to_row_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: pbldr_to_row_rt) return pbldr_to_row_rt;
-  function convert(x: in std_logic_vector; t: pbldr_to_row_rt) return pbldr_to_row_rt;
-  function nullify(t: pbldr_to_row_rt) return pbldr_to_row_rt;
-  function zeroed(t: pbldr_to_row_rt) return pbldr_to_row_rt;
-
-  type pbldr_to_rows_rt is record
-    payload : pbldr_backward_rt;
-    sel : std_logic_vector(0 to DAQ_MAX_ROWS-1);
-  end record pbldr_to_rows_rt;
+  type pbldr_to_rows_rt is array(DAQ_MAX_ROWS-1 downto 0) of pbldr_to_row_rt;
   function len(x: pbldr_to_rows_rt) return natural;
   function width(x: pbldr_to_rows_rt) return natural;
   function vectorify(x: pbldr_to_rows_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: pbldr_to_rows_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
-  function convert(x: in std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
-  function nullify(t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
-  function zeroed(t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
+  function structify(x: std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
+  function convert(x: std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
+  function nullify(x: pbldr_to_rows_rt) return pbldr_to_rows_rt;
+  function zeroed(x: pbldr_to_rows_rt) return pbldr_to_rows_rt;
 
   type req_to_row_common_rt is record
     strb : std_logic;
@@ -621,71 +474,41 @@ package daq_defs is
 
   subtype daq_req_ovt is std_logic_vector(120-1 downto 0);
 
-  type daq_hrow_grt is record
+  type daq_header_row_grt is record
     PIPELINES : natural;
     INPUT_DATA_WIDTH : natural;
     OUTPUT_DATA_WIDTH : natural;
     COUNTER_WIDTH : natural;
-  end record daq_hrow_grt;
-  function len(x: daq_hrow_grt) return natural;
-  function width(x: daq_hrow_grt) return natural;
-  function vectorify(x: daq_hrow_grt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_hrow_grt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_hrow_grt) return daq_hrow_grt;
-  function convert(x: in std_logic_vector; t: daq_hrow_grt) return daq_hrow_grt;
-  function nullify(t: daq_hrow_grt) return daq_hrow_grt;
-  function zeroed(t: daq_hrow_grt) return daq_hrow_grt;
+  end record daq_header_row_grt;
+  function len(x: daq_header_row_grt) return natural;
+  function width(x: daq_header_row_grt) return natural;
+  function vectorify(x: daq_header_row_grt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_header_row_grt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_header_row_grt) return daq_header_row_grt;
+  function convert(x: in std_logic_vector; t: daq_header_row_grt) return daq_header_row_grt;
+  function nullify(t: daq_header_row_grt) return daq_header_row_grt;
+  function zeroed(t: daq_header_row_grt) return daq_header_row_grt;
 
-  type daq_drow_grt is record
+  type daq_data_row_grt is record
     PIPELINES : natural;
     INPUT_DATA_WIDTH : natural;
     OUTPUT_DATA_WIDTH : natural;
     COUNTER_WIDTH : natural;
     FIFO_DEPTH : natural;
-  end record daq_drow_grt;
-  function len(x: daq_drow_grt) return natural;
-  function width(x: daq_drow_grt) return natural;
-  function vectorify(x: daq_drow_grt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_drow_grt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_drow_grt) return daq_drow_grt;
-  function convert(x: in std_logic_vector; t: daq_drow_grt) return daq_drow_grt;
-  function nullify(t: daq_drow_grt) return daq_drow_grt;
-  function zeroed(t: daq_drow_grt) return daq_drow_grt;
-
-  type daq_hrow_irt is record
-    sys : daq_sys_rt;
-    mngt : mngt_to_row_rt;
-    req : req_to_row_rt;
-    pbldr : pbldr_to_row_rt;
-  end record daq_hrow_irt;
-  function len(x: daq_hrow_irt) return natural;
-  function width(x: daq_hrow_irt) return natural;
-  function vectorify(x: daq_hrow_irt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_hrow_irt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_hrow_irt) return daq_hrow_irt;
-  function convert(x: in std_logic_vector; t: daq_hrow_irt) return daq_hrow_irt;
-  function nullify(t: daq_hrow_irt) return daq_hrow_irt;
-  function zeroed(t: daq_hrow_irt) return daq_hrow_irt;
-
-  type daq_drow_irt is record
-    sys : daq_sys_rt;
-    mngt : mngt_to_row_rt;
-    req : req_to_row_common_rt;
-    stream : daq_stream_rt;
-    pbldr : pbldr_to_row_rt;
-  end record daq_drow_irt;
-  function len(x: daq_drow_irt) return natural;
-  function width(x: daq_drow_irt) return natural;
-  function vectorify(x: daq_drow_irt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_drow_irt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_drow_irt) return daq_drow_irt;
-  function convert(x: in std_logic_vector; t: daq_drow_irt) return daq_drow_irt;
-  function nullify(t: daq_drow_irt) return daq_drow_irt;
-  function zeroed(t: daq_drow_irt) return daq_drow_irt;
+  end record daq_data_row_grt;
+  function len(x: daq_data_row_grt) return natural;
+  function width(x: daq_data_row_grt) return natural;
+  function vectorify(x: daq_data_row_grt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_data_row_grt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_data_row_grt) return daq_data_row_grt;
+  function convert(x: in std_logic_vector; t: daq_data_row_grt) return daq_data_row_grt;
+  function nullify(t: daq_data_row_grt) return daq_data_row_grt;
+  function zeroed(t: daq_data_row_grt) return daq_data_row_grt;
 
   type daq_row_ort is record
     mngt : row_to_mngt_rt;
     pbldr : row_to_pbldr_rt;
+    debug : std_logic;
   end record daq_row_ort;
   function len(x: daq_row_ort) return natural;
   function width(x: daq_row_ort) return natural;
@@ -696,40 +519,76 @@ package daq_defs is
   function nullify(t: daq_row_ort) return daq_row_ort;
   function zeroed(t: daq_row_ort) return daq_row_ort;
 
-  type daq_hrow_ert is record
-    i : daq_hrow_irt;
-    o : daq_row_ort;
-  end record daq_hrow_ert;
-  function len(x: daq_hrow_ert) return natural;
-  function width(x: daq_hrow_ert) return natural;
-  function vectorify(x: daq_hrow_ert; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_hrow_ert; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_hrow_ert) return daq_hrow_ert;
-  function convert(x: in std_logic_vector; t: daq_hrow_ert) return daq_hrow_ert;
-  function nullify(t: daq_hrow_ert) return daq_hrow_ert;
-  function zeroed(t: daq_hrow_ert) return daq_hrow_ert;
+  type daq_header_row_irt is record
+    sys : daq_sys_rt;
+    mngt : mngt_to_row_rt;
+    req : req_to_row_rt;
+    pbldr : pbldr_to_row_rt;
+  end record daq_header_row_irt;
+  function len(x: daq_header_row_irt) return natural;
+  function width(x: daq_header_row_irt) return natural;
+  function vectorify(x: daq_header_row_irt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_header_row_irt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_header_row_irt) return daq_header_row_irt;
+  function convert(x: in std_logic_vector; t: daq_header_row_irt) return daq_header_row_irt;
+  function nullify(t: daq_header_row_irt) return daq_header_row_irt;
+  function zeroed(t: daq_header_row_irt) return daq_header_row_irt;
 
-  type daq_drow_ert is record
-    i : daq_drow_irt;
-    o : daq_row_ort;
-  end record daq_drow_ert;
-  function len(x: daq_drow_ert) return natural;
-  function width(x: daq_drow_ert) return natural;
-  function vectorify(x: daq_drow_ert; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_drow_ert; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_drow_ert) return daq_drow_ert;
-  function convert(x: in std_logic_vector; t: daq_drow_ert) return daq_drow_ert;
-  function nullify(t: daq_drow_ert) return daq_drow_ert;
-  function zeroed(t: daq_drow_ert) return daq_drow_ert;
+  subtype daq_header_row_ort is daq_row_ort;
 
-  subtype daq_hrow_ivt is std_logic_vector(201-1 downto 0);
+  type daq_header_row_ert is record
+    i : daq_header_row_irt;
+    o : daq_header_row_ort;
+  end record daq_header_row_ert;
+  function len(x: daq_header_row_ert) return natural;
+  function width(x: daq_header_row_ert) return natural;
+  function vectorify(x: daq_header_row_ert; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_header_row_ert; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_header_row_ert) return daq_header_row_ert;
+  function convert(x: in std_logic_vector; t: daq_header_row_ert) return daq_header_row_ert;
+  function nullify(t: daq_header_row_ert) return daq_header_row_ert;
+  function zeroed(t: daq_header_row_ert) return daq_header_row_ert;
 
-  subtype daq_drow_ivt is std_logic_vector(378-1 downto 0);
+  type daq_data_row_irt is record
+    sys : daq_sys_rt;
+    mngt : mngt_to_row_rt;
+    req : req_to_row_common_rt;
+    stream : daq_stream_rt;
+    pbldr : pbldr_to_row_rt;
+  end record daq_data_row_irt;
+  function len(x: daq_data_row_irt) return natural;
+  function width(x: daq_data_row_irt) return natural;
+  function vectorify(x: daq_data_row_irt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_data_row_irt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_data_row_irt) return daq_data_row_irt;
+  function convert(x: in std_logic_vector; t: daq_data_row_irt) return daq_data_row_irt;
+  function nullify(t: daq_data_row_irt) return daq_data_row_irt;
+  function zeroed(t: daq_data_row_irt) return daq_data_row_irt;
 
-  subtype daq_row_ovt is std_logic_vector(185-1 downto 0);
+  subtype daq_data_row_ort is daq_row_ort;
+
+  type daq_data_row_ert is record
+    i : daq_data_row_irt;
+    o : daq_data_row_ort;
+  end record daq_data_row_ert;
+  function len(x: daq_data_row_ert) return natural;
+  function width(x: daq_data_row_ert) return natural;
+  function vectorify(x: daq_data_row_ert; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_data_row_ert; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_data_row_ert) return daq_data_row_ert;
+  function convert(x: in std_logic_vector; t: daq_data_row_ert) return daq_data_row_ert;
+  function nullify(t: daq_data_row_ert) return daq_data_row_ert;
+  function zeroed(t: daq_data_row_ert) return daq_data_row_ert;
+
+  subtype daq_header_row_ivt is std_logic_vector(192-1 downto 0);
+
+  subtype daq_data_row_ivt is std_logic_vector(369-1 downto 0);
+
+  subtype daq_row_ovt is std_logic_vector(378-1 downto 0);
 
   type daq_pbldr_grt is record
     DATA_WIDTH : natural;
+    STREAMS : natural;
   end record daq_pbldr_grt;
   function len(x: daq_pbldr_grt) return natural;
   function width(x: daq_pbldr_grt) return natural;
@@ -743,7 +602,7 @@ package daq_defs is
   type daq_pbldr_irt is record
     sys : daq_sys_rt;
     mngt : mngt_to_pbldr_rt;
-    row : row_to_pbldr_rt;
+    rows : rows_to_pbldr_rt;
     f2e : felix_to_daq_rt;
   end record daq_pbldr_irt;
   function len(x: daq_pbldr_irt) return natural;
@@ -756,7 +615,7 @@ package daq_defs is
   function zeroed(t: daq_pbldr_irt) return daq_pbldr_irt;
 
   type daq_pbldr_ort is record
-    row : pbldr_to_rows_rt;
+    rows : pbldr_to_rows_rt;
     f2e : daq_to_felix_rt;
   end record daq_pbldr_ort;
   function len(x: daq_pbldr_ort) return natural;
@@ -781,9 +640,19 @@ package daq_defs is
   function nullify(t: daq_pbldr_ert) return daq_pbldr_ert;
   function zeroed(t: daq_pbldr_ert) return daq_pbldr_ert;
 
-  subtype daq_pbldr_ivt is std_logic_vector(69-1 downto 0);
+  subtype daq_pbldr_ivt is std_logic_vector(1803-1 downto 0);
 
-  subtype daq_pbldr_ovt is std_logic_vector(75-1 downto 0);
+  subtype daq_pbldr_ovt is std_logic_vector(74-1 downto 0);
+
+  type rows_to_mngt_rt is array(DAQ_MAX_STREAMS+1-1 downto 0) of row_to_mngt_rt;
+  function len(x: rows_to_mngt_rt) return natural;
+  function width(x: rows_to_mngt_rt) return natural;
+  function vectorify(x: rows_to_mngt_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: rows_to_mngt_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: rows_to_mngt_rt) return rows_to_mngt_rt;
+  function convert(x: std_logic_vector; t: rows_to_mngt_rt) return rows_to_mngt_rt;
+  function nullify(x: rows_to_mngt_rt) return rows_to_mngt_rt;
+  function zeroed(x: rows_to_mngt_rt) return rows_to_mngt_rt;
 
   type daq_mngt_grt is record
     STREAMS : natural;
@@ -801,7 +670,7 @@ package daq_defs is
   type daq_mngt_irt is record
     sys : daq_sys_rt;
     ttc : ttc_ort;
-    row : row_to_mngt_rt;
+    rows : rows_to_mngt_rt;
   end record daq_mngt_irt;
   function len(x: daq_mngt_irt) return natural;
   function width(x: daq_mngt_irt) return natural;
@@ -815,7 +684,8 @@ package daq_defs is
   type daq_mngt_ort is record
     row : mngt_to_row_rt;
     pbldr : mngt_to_pbldr_rt;
-    err : std_logic_vector(DAQ_PIPELINES-1 downto 0);
+    err : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
+    debug : std_logic_vector(2-1 downto 0);
   end record daq_mngt_ort;
   function len(x: daq_mngt_ort) return natural;
   function width(x: daq_mngt_ort) return natural;
@@ -839,9 +709,9 @@ package daq_defs is
   function nullify(t: daq_mngt_ert) return daq_mngt_ert;
   function zeroed(t: daq_mngt_ert) return daq_mngt_ert;
 
-  subtype daq_mngt_ivt is std_logic_vector(203-1 downto 0);
+  subtype daq_mngt_ivt is std_logic_vector(923-1 downto 0);
 
-  subtype daq_mngt_ovt is std_logic_vector(121-1 downto 0);
+  subtype daq_mngt_ovt is std_logic_vector(115-1 downto 0);
 
   type daq_algo_grt is record
     PIPELINES : natural;
@@ -2863,762 +2733,10 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: src_to_node_fifo_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_en);
-    l := l + len(x.data);
-    return l;
-  end function len;
-  function width(x: src_to_node_fifo_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.wr_en);
-    l := l + width(x.data);
-    return l;
-  end function width;
-  function vectorify(x: src_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_en)-1), vectorify(x.wr_en, y(left to left+len(x.wr_en)-1)));
-      left := left + len(x.wr_en);
-      assign(y(left to left+len(x.data)-1), vectorify(x.data, y(left to left+len(x.data)-1)));
-    else
-      assign(y(left downto left-len(x.wr_en)+1), vectorify(x.wr_en, y(left downto left-len(x.wr_en)+1)));
-      left := left - len(x.wr_en);
-      assign(y(left downto left-len(x.data)+1), vectorify(x.data, y(left downto left-len(x.data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: src_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_en)-1), convert(x.wr_en, y(left to left+len(x.wr_en)-1)));
-      left := left + len(x.wr_en);
-      assign(y(left to left+len(x.data)-1), convert(x.data, y(left to left+len(x.data)-1)));
-    else
-      assign(y(left downto left-len(x.wr_en)+1), convert(x.wr_en, y(left downto left-len(x.wr_en)+1)));
-      left := left - len(x.wr_en);
-      assign(y(left downto left-len(x.data)+1), convert(x.data, y(left downto left-len(x.data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: src_to_node_fifo_rt) return src_to_node_fifo_rt is
-    variable y: src_to_node_fifo_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_en := structify(x(left to left+len(y.wr_en)-1), y.wr_en);
-      left := left + len(y.wr_en);
-      y.data := structify(x(left to left+len(y.data)-1), y.data);
-    else
-      y.wr_en := structify(x(left downto left-len(y.wr_en)+1), y.wr_en);
-      left := left - len(y.wr_en);
-      y.data := structify(x(left downto left-len(y.data)+1), y.data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: src_to_node_fifo_rt) return src_to_node_fifo_rt is
-    variable y: src_to_node_fifo_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_en := convert(x(left to left+len(y.wr_en)-1), y.wr_en);
-      left := left + len(y.wr_en);
-      y.data := convert(x(left to left+len(y.data)-1), y.data);
-    else
-      y.wr_en := convert(x(left downto left-len(y.wr_en)+1), y.wr_en);
-      left := left - len(y.wr_en);
-      y.data := convert(x(left downto left-len(y.data)+1), y.data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: src_to_node_fifo_rt) return src_to_node_fifo_rt is
-  variable y: src_to_node_fifo_rt;
-  begin
-    y.wr_en := nullify(t.wr_en);
-    y.data := nullify(t.data);
-    return y;
-  end function nullify;
-  function zeroed(t: src_to_node_fifo_rt) return src_to_node_fifo_rt is
-  variable y: src_to_node_fifo_rt;
-  begin
-    y.wr_en := zeroed(t.wr_en);
-    y.data := zeroed(t.data);
-    return y;
-  end function zeroed;
-
-  function len(x: node_fifo_to_src_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.full);
-    return l;
-  end function len;
-  function width(x: node_fifo_to_src_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.full);
-    return l;
-  end function width;
-  function vectorify(x: node_fifo_to_src_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.full)-1), vectorify(x.full, y(left to left+len(x.full)-1)));
-    else
-      assign(y(left downto left-len(x.full)+1), vectorify(x.full, y(left downto left-len(x.full)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: node_fifo_to_src_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.full)-1), convert(x.full, y(left to left+len(x.full)-1)));
-    else
-      assign(y(left downto left-len(x.full)+1), convert(x.full, y(left downto left-len(x.full)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: node_fifo_to_src_rt) return node_fifo_to_src_rt is
-    variable y: node_fifo_to_src_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.full := structify(x(left to left+len(y.full)-1), y.full);
-    else
-      y.full := structify(x(left downto left-len(y.full)+1), y.full);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: node_fifo_to_src_rt) return node_fifo_to_src_rt is
-    variable y: node_fifo_to_src_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.full := convert(x(left to left+len(y.full)-1), y.full);
-    else
-      y.full := convert(x(left downto left-len(y.full)+1), y.full);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: node_fifo_to_src_rt) return node_fifo_to_src_rt is
-  variable y: node_fifo_to_src_rt;
-  begin
-    y.full := nullify(t.full);
-    return y;
-  end function nullify;
-  function zeroed(t: node_fifo_to_src_rt) return node_fifo_to_src_rt is
-  variable y: node_fifo_to_src_rt;
-  begin
-    y.full := zeroed(t.full);
-    return y;
-  end function zeroed;
-
-  function len(x: node_fifo_to_dst_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.data);
-    l := l + len(x.count);
-    l := l + len(x.nempty);
-    return l;
-  end function len;
-  function width(x: node_fifo_to_dst_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.data);
-    l := l + width(x.count);
-    l := l + width(x.nempty);
-    return l;
-  end function width;
-  function vectorify(x: node_fifo_to_dst_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.data)-1), vectorify(x.data, y(left to left+len(x.data)-1)));
-      left := left + len(x.data);
-      assign(y(left to left+len(x.count)-1), vectorify(x.count, y(left to left+len(x.count)-1)));
-      left := left + len(x.count);
-      assign(y(left to left+len(x.nempty)-1), vectorify(x.nempty, y(left to left+len(x.nempty)-1)));
-    else
-      assign(y(left downto left-len(x.data)+1), vectorify(x.data, y(left downto left-len(x.data)+1)));
-      left := left - len(x.data);
-      assign(y(left downto left-len(x.count)+1), vectorify(x.count, y(left downto left-len(x.count)+1)));
-      left := left - len(x.count);
-      assign(y(left downto left-len(x.nempty)+1), vectorify(x.nempty, y(left downto left-len(x.nempty)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: node_fifo_to_dst_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.data)-1), convert(x.data, y(left to left+len(x.data)-1)));
-      left := left + len(x.data);
-      assign(y(left to left+len(x.count)-1), convert(x.count, y(left to left+len(x.count)-1)));
-      left := left + len(x.count);
-      assign(y(left to left+len(x.nempty)-1), convert(x.nempty, y(left to left+len(x.nempty)-1)));
-    else
-      assign(y(left downto left-len(x.data)+1), convert(x.data, y(left downto left-len(x.data)+1)));
-      left := left - len(x.data);
-      assign(y(left downto left-len(x.count)+1), convert(x.count, y(left downto left-len(x.count)+1)));
-      left := left - len(x.count);
-      assign(y(left downto left-len(x.nempty)+1), convert(x.nempty, y(left downto left-len(x.nempty)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt is
-    variable y: node_fifo_to_dst_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.data := structify(x(left to left+len(y.data)-1), y.data);
-      left := left + len(y.data);
-      y.count := structify(x(left to left+len(y.count)-1), y.count);
-      left := left + len(y.count);
-      y.nempty := structify(x(left to left+len(y.nempty)-1), y.nempty);
-    else
-      y.data := structify(x(left downto left-len(y.data)+1), y.data);
-      left := left - len(y.data);
-      y.count := structify(x(left downto left-len(y.count)+1), y.count);
-      left := left - len(y.count);
-      y.nempty := structify(x(left downto left-len(y.nempty)+1), y.nempty);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt is
-    variable y: node_fifo_to_dst_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.data := convert(x(left to left+len(y.data)-1), y.data);
-      left := left + len(y.data);
-      y.count := convert(x(left to left+len(y.count)-1), y.count);
-      left := left + len(y.count);
-      y.nempty := convert(x(left to left+len(y.nempty)-1), y.nempty);
-    else
-      y.data := convert(x(left downto left-len(y.data)+1), y.data);
-      left := left - len(y.data);
-      y.count := convert(x(left downto left-len(y.count)+1), y.count);
-      left := left - len(y.count);
-      y.nempty := convert(x(left downto left-len(y.nempty)+1), y.nempty);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt is
-  variable y: node_fifo_to_dst_rt;
-  begin
-    y.data := nullify(t.data);
-    y.count := nullify(t.count);
-    y.nempty := nullify(t.nempty);
-    return y;
-  end function nullify;
-  function zeroed(t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt is
-  variable y: node_fifo_to_dst_rt;
-  begin
-    y.data := zeroed(t.data);
-    y.count := zeroed(t.count);
-    y.nempty := zeroed(t.nempty);
-    return y;
-  end function zeroed;
-
-  function len(x: dst_to_node_fifo_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_en);
-    return l;
-  end function len;
-  function width(x: dst_to_node_fifo_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.rd_en);
-    return l;
-  end function width;
-  function vectorify(x: dst_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_en)-1), vectorify(x.rd_en, y(left to left+len(x.rd_en)-1)));
-    else
-      assign(y(left downto left-len(x.rd_en)+1), vectorify(x.rd_en, y(left downto left-len(x.rd_en)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: dst_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_en)-1), convert(x.rd_en, y(left to left+len(x.rd_en)-1)));
-    else
-      assign(y(left downto left-len(x.rd_en)+1), convert(x.rd_en, y(left downto left-len(x.rd_en)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt is
-    variable y: dst_to_node_fifo_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_en := structify(x(left to left+len(y.rd_en)-1), y.rd_en);
-    else
-      y.rd_en := structify(x(left downto left-len(y.rd_en)+1), y.rd_en);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt is
-    variable y: dst_to_node_fifo_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_en := convert(x(left to left+len(y.rd_en)-1), y.rd_en);
-    else
-      y.rd_en := convert(x(left downto left-len(y.rd_en)+1), y.rd_en);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt is
-  variable y: dst_to_node_fifo_rt;
-  begin
-    y.rd_en := nullify(t.rd_en);
-    return y;
-  end function nullify;
-  function zeroed(t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt is
-  variable y: dst_to_node_fifo_rt;
-  begin
-    y.rd_en := zeroed(t.rd_en);
-    return y;
-  end function zeroed;
-
-  function len(x: daq_node_fifo_irt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.sys);
-    l := l + len(x.src);
-    l := l + len(x.dst);
-    return l;
-  end function len;
-  function width(x: daq_node_fifo_irt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.sys);
-    l := l + width(x.src);
-    l := l + width(x.dst);
-    return l;
-  end function width;
-  function vectorify(x: daq_node_fifo_irt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.sys)-1), vectorify(x.sys, y(left to left+len(x.sys)-1)));
-      left := left + len(x.sys);
-      assign(y(left to left+len(x.src)-1), vectorify(x.src, y(left to left+len(x.src)-1)));
-      left := left + len(x.src);
-      assign(y(left to left+len(x.dst)-1), vectorify(x.dst, y(left to left+len(x.dst)-1)));
-    else
-      assign(y(left downto left-len(x.sys)+1), vectorify(x.sys, y(left downto left-len(x.sys)+1)));
-      left := left - len(x.sys);
-      assign(y(left downto left-len(x.src)+1), vectorify(x.src, y(left downto left-len(x.src)+1)));
-      left := left - len(x.src);
-      assign(y(left downto left-len(x.dst)+1), vectorify(x.dst, y(left downto left-len(x.dst)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_node_fifo_irt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.sys)-1), convert(x.sys, y(left to left+len(x.sys)-1)));
-      left := left + len(x.sys);
-      assign(y(left to left+len(x.src)-1), convert(x.src, y(left to left+len(x.src)-1)));
-      left := left + len(x.src);
-      assign(y(left to left+len(x.dst)-1), convert(x.dst, y(left to left+len(x.dst)-1)));
-    else
-      assign(y(left downto left-len(x.sys)+1), convert(x.sys, y(left downto left-len(x.sys)+1)));
-      left := left - len(x.sys);
-      assign(y(left downto left-len(x.src)+1), convert(x.src, y(left downto left-len(x.src)+1)));
-      left := left - len(x.src);
-      assign(y(left downto left-len(x.dst)+1), convert(x.dst, y(left downto left-len(x.dst)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_node_fifo_irt) return daq_node_fifo_irt is
-    variable y: daq_node_fifo_irt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.sys := structify(x(left to left+len(y.sys)-1), y.sys);
-      left := left + len(y.sys);
-      y.src := structify(x(left to left+len(y.src)-1), y.src);
-      left := left + len(y.src);
-      y.dst := structify(x(left to left+len(y.dst)-1), y.dst);
-    else
-      y.sys := structify(x(left downto left-len(y.sys)+1), y.sys);
-      left := left - len(y.sys);
-      y.src := structify(x(left downto left-len(y.src)+1), y.src);
-      left := left - len(y.src);
-      y.dst := structify(x(left downto left-len(y.dst)+1), y.dst);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_node_fifo_irt) return daq_node_fifo_irt is
-    variable y: daq_node_fifo_irt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.sys := convert(x(left to left+len(y.sys)-1), y.sys);
-      left := left + len(y.sys);
-      y.src := convert(x(left to left+len(y.src)-1), y.src);
-      left := left + len(y.src);
-      y.dst := convert(x(left to left+len(y.dst)-1), y.dst);
-    else
-      y.sys := convert(x(left downto left-len(y.sys)+1), y.sys);
-      left := left - len(y.sys);
-      y.src := convert(x(left downto left-len(y.src)+1), y.src);
-      left := left - len(y.src);
-      y.dst := convert(x(left downto left-len(y.dst)+1), y.dst);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_node_fifo_irt) return daq_node_fifo_irt is
-  variable y: daq_node_fifo_irt;
-  begin
-    y.sys := nullify(t.sys);
-    y.src := nullify(t.src);
-    y.dst := nullify(t.dst);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_node_fifo_irt) return daq_node_fifo_irt is
-  variable y: daq_node_fifo_irt;
-  begin
-    y.sys := zeroed(t.sys);
-    y.src := zeroed(t.src);
-    y.dst := zeroed(t.dst);
-    return y;
-  end function zeroed;
-
-  function len(x: daq_node_fifo_ort) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.src);
-    l := l + len(x.dst);
-    return l;
-  end function len;
-  function width(x: daq_node_fifo_ort) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.src);
-    l := l + width(x.dst);
-    return l;
-  end function width;
-  function vectorify(x: daq_node_fifo_ort; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.src)-1), vectorify(x.src, y(left to left+len(x.src)-1)));
-      left := left + len(x.src);
-      assign(y(left to left+len(x.dst)-1), vectorify(x.dst, y(left to left+len(x.dst)-1)));
-    else
-      assign(y(left downto left-len(x.src)+1), vectorify(x.src, y(left downto left-len(x.src)+1)));
-      left := left - len(x.src);
-      assign(y(left downto left-len(x.dst)+1), vectorify(x.dst, y(left downto left-len(x.dst)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_node_fifo_ort; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.src)-1), convert(x.src, y(left to left+len(x.src)-1)));
-      left := left + len(x.src);
-      assign(y(left to left+len(x.dst)-1), convert(x.dst, y(left to left+len(x.dst)-1)));
-    else
-      assign(y(left downto left-len(x.src)+1), convert(x.src, y(left downto left-len(x.src)+1)));
-      left := left - len(x.src);
-      assign(y(left downto left-len(x.dst)+1), convert(x.dst, y(left downto left-len(x.dst)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_node_fifo_ort) return daq_node_fifo_ort is
-    variable y: daq_node_fifo_ort;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.src := structify(x(left to left+len(y.src)-1), y.src);
-      left := left + len(y.src);
-      y.dst := structify(x(left to left+len(y.dst)-1), y.dst);
-    else
-      y.src := structify(x(left downto left-len(y.src)+1), y.src);
-      left := left - len(y.src);
-      y.dst := structify(x(left downto left-len(y.dst)+1), y.dst);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_node_fifo_ort) return daq_node_fifo_ort is
-    variable y: daq_node_fifo_ort;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.src := convert(x(left to left+len(y.src)-1), y.src);
-      left := left + len(y.src);
-      y.dst := convert(x(left to left+len(y.dst)-1), y.dst);
-    else
-      y.src := convert(x(left downto left-len(y.src)+1), y.src);
-      left := left - len(y.src);
-      y.dst := convert(x(left downto left-len(y.dst)+1), y.dst);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_node_fifo_ort) return daq_node_fifo_ort is
-  variable y: daq_node_fifo_ort;
-  begin
-    y.src := nullify(t.src);
-    y.dst := nullify(t.dst);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_node_fifo_ort) return daq_node_fifo_ort is
-  variable y: daq_node_fifo_ort;
-  begin
-    y.src := zeroed(t.src);
-    y.dst := zeroed(t.dst);
-    return y;
-  end function zeroed;
-
-  function len(x: daq_node_fifo_ert) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.i);
-    l := l + len(x.o);
-    return l;
-  end function len;
-  function width(x: daq_node_fifo_ert) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.i);
-    l := l + width(x.o);
-    return l;
-  end function width;
-  function vectorify(x: daq_node_fifo_ert; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.i)-1), vectorify(x.i, y(left to left+len(x.i)-1)));
-      left := left + len(x.i);
-      assign(y(left to left+len(x.o)-1), vectorify(x.o, y(left to left+len(x.o)-1)));
-    else
-      assign(y(left downto left-len(x.i)+1), vectorify(x.i, y(left downto left-len(x.i)+1)));
-      left := left - len(x.i);
-      assign(y(left downto left-len(x.o)+1), vectorify(x.o, y(left downto left-len(x.o)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_node_fifo_ert; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.i)-1), convert(x.i, y(left to left+len(x.i)-1)));
-      left := left + len(x.i);
-      assign(y(left to left+len(x.o)-1), convert(x.o, y(left to left+len(x.o)-1)));
-    else
-      assign(y(left downto left-len(x.i)+1), convert(x.i, y(left downto left-len(x.i)+1)));
-      left := left - len(x.i);
-      assign(y(left downto left-len(x.o)+1), convert(x.o, y(left downto left-len(x.o)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_node_fifo_ert) return daq_node_fifo_ert is
-    variable y: daq_node_fifo_ert;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.i := structify(x(left to left+len(y.i)-1), y.i);
-      left := left + len(y.i);
-      y.o := structify(x(left to left+len(y.o)-1), y.o);
-    else
-      y.i := structify(x(left downto left-len(y.i)+1), y.i);
-      left := left - len(y.i);
-      y.o := structify(x(left downto left-len(y.o)+1), y.o);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_node_fifo_ert) return daq_node_fifo_ert is
-    variable y: daq_node_fifo_ert;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.i := convert(x(left to left+len(y.i)-1), y.i);
-      left := left + len(y.i);
-      y.o := convert(x(left to left+len(y.o)-1), y.o);
-    else
-      y.i := convert(x(left downto left-len(y.i)+1), y.i);
-      left := left - len(y.i);
-      y.o := convert(x(left downto left-len(y.o)+1), y.o);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_node_fifo_ert) return daq_node_fifo_ert is
-  variable y: daq_node_fifo_ert;
-  begin
-    y.i := nullify(t.i);
-    y.o := nullify(t.o);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_node_fifo_ert) return daq_node_fifo_ert is
-  variable y: daq_node_fifo_ert;
-  begin
-    y.i := zeroed(t.i);
-    y.o := zeroed(t.o);
-    return y;
-  end function zeroed;
-
-  function len(x: daq_node_fifo_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.WRITE_DATA_WIDTH);
-    l := l + len(x.READ_DATA_WIDTH);
-    l := l + len(x.READ_COUNT_WIDTH);
-    l := l + len(x.FIFO_DEPTH);
-    return l;
-  end function len;
-  function width(x: daq_node_fifo_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.WRITE_DATA_WIDTH);
-    l := l + width(x.READ_DATA_WIDTH);
-    l := l + width(x.READ_COUNT_WIDTH);
-    l := l + width(x.FIFO_DEPTH);
-    return l;
-  end function width;
-  function vectorify(x: daq_node_fifo_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.WRITE_DATA_WIDTH)-1), vectorify(x.WRITE_DATA_WIDTH, y(left to left+len(x.WRITE_DATA_WIDTH)-1)));
-      left := left + len(x.WRITE_DATA_WIDTH);
-      assign(y(left to left+len(x.READ_DATA_WIDTH)-1), vectorify(x.READ_DATA_WIDTH, y(left to left+len(x.READ_DATA_WIDTH)-1)));
-      left := left + len(x.READ_DATA_WIDTH);
-      assign(y(left to left+len(x.READ_COUNT_WIDTH)-1), vectorify(x.READ_COUNT_WIDTH, y(left to left+len(x.READ_COUNT_WIDTH)-1)));
-      left := left + len(x.READ_COUNT_WIDTH);
-      assign(y(left to left+len(x.FIFO_DEPTH)-1), vectorify(x.FIFO_DEPTH, y(left to left+len(x.FIFO_DEPTH)-1)));
-    else
-      assign(y(left downto left-len(x.WRITE_DATA_WIDTH)+1), vectorify(x.WRITE_DATA_WIDTH, y(left downto left-len(x.WRITE_DATA_WIDTH)+1)));
-      left := left - len(x.WRITE_DATA_WIDTH);
-      assign(y(left downto left-len(x.READ_DATA_WIDTH)+1), vectorify(x.READ_DATA_WIDTH, y(left downto left-len(x.READ_DATA_WIDTH)+1)));
-      left := left - len(x.READ_DATA_WIDTH);
-      assign(y(left downto left-len(x.READ_COUNT_WIDTH)+1), vectorify(x.READ_COUNT_WIDTH, y(left downto left-len(x.READ_COUNT_WIDTH)+1)));
-      left := left - len(x.READ_COUNT_WIDTH);
-      assign(y(left downto left-len(x.FIFO_DEPTH)+1), vectorify(x.FIFO_DEPTH, y(left downto left-len(x.FIFO_DEPTH)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_node_fifo_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.WRITE_DATA_WIDTH)-1), convert(x.WRITE_DATA_WIDTH, y(left to left+len(x.WRITE_DATA_WIDTH)-1)));
-      left := left + len(x.WRITE_DATA_WIDTH);
-      assign(y(left to left+len(x.READ_DATA_WIDTH)-1), convert(x.READ_DATA_WIDTH, y(left to left+len(x.READ_DATA_WIDTH)-1)));
-      left := left + len(x.READ_DATA_WIDTH);
-      assign(y(left to left+len(x.READ_COUNT_WIDTH)-1), convert(x.READ_COUNT_WIDTH, y(left to left+len(x.READ_COUNT_WIDTH)-1)));
-      left := left + len(x.READ_COUNT_WIDTH);
-      assign(y(left to left+len(x.FIFO_DEPTH)-1), convert(x.FIFO_DEPTH, y(left to left+len(x.FIFO_DEPTH)-1)));
-    else
-      assign(y(left downto left-len(x.WRITE_DATA_WIDTH)+1), convert(x.WRITE_DATA_WIDTH, y(left downto left-len(x.WRITE_DATA_WIDTH)+1)));
-      left := left - len(x.WRITE_DATA_WIDTH);
-      assign(y(left downto left-len(x.READ_DATA_WIDTH)+1), convert(x.READ_DATA_WIDTH, y(left downto left-len(x.READ_DATA_WIDTH)+1)));
-      left := left - len(x.READ_DATA_WIDTH);
-      assign(y(left downto left-len(x.READ_COUNT_WIDTH)+1), convert(x.READ_COUNT_WIDTH, y(left downto left-len(x.READ_COUNT_WIDTH)+1)));
-      left := left - len(x.READ_COUNT_WIDTH);
-      assign(y(left downto left-len(x.FIFO_DEPTH)+1), convert(x.FIFO_DEPTH, y(left downto left-len(x.FIFO_DEPTH)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_node_fifo_grt) return daq_node_fifo_grt is
-    variable y: daq_node_fifo_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.WRITE_DATA_WIDTH := structify(x(left to left+len(y.WRITE_DATA_WIDTH)-1), y.WRITE_DATA_WIDTH);
-      left := left + len(y.WRITE_DATA_WIDTH);
-      y.READ_DATA_WIDTH := structify(x(left to left+len(y.READ_DATA_WIDTH)-1), y.READ_DATA_WIDTH);
-      left := left + len(y.READ_DATA_WIDTH);
-      y.READ_COUNT_WIDTH := structify(x(left to left+len(y.READ_COUNT_WIDTH)-1), y.READ_COUNT_WIDTH);
-      left := left + len(y.READ_COUNT_WIDTH);
-      y.FIFO_DEPTH := structify(x(left to left+len(y.FIFO_DEPTH)-1), y.FIFO_DEPTH);
-    else
-      y.WRITE_DATA_WIDTH := structify(x(left downto left-len(y.WRITE_DATA_WIDTH)+1), y.WRITE_DATA_WIDTH);
-      left := left - len(y.WRITE_DATA_WIDTH);
-      y.READ_DATA_WIDTH := structify(x(left downto left-len(y.READ_DATA_WIDTH)+1), y.READ_DATA_WIDTH);
-      left := left - len(y.READ_DATA_WIDTH);
-      y.READ_COUNT_WIDTH := structify(x(left downto left-len(y.READ_COUNT_WIDTH)+1), y.READ_COUNT_WIDTH);
-      left := left - len(y.READ_COUNT_WIDTH);
-      y.FIFO_DEPTH := structify(x(left downto left-len(y.FIFO_DEPTH)+1), y.FIFO_DEPTH);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_node_fifo_grt) return daq_node_fifo_grt is
-    variable y: daq_node_fifo_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.WRITE_DATA_WIDTH := convert(x(left to left+len(y.WRITE_DATA_WIDTH)-1), y.WRITE_DATA_WIDTH);
-      left := left + len(y.WRITE_DATA_WIDTH);
-      y.READ_DATA_WIDTH := convert(x(left to left+len(y.READ_DATA_WIDTH)-1), y.READ_DATA_WIDTH);
-      left := left + len(y.READ_DATA_WIDTH);
-      y.READ_COUNT_WIDTH := convert(x(left to left+len(y.READ_COUNT_WIDTH)-1), y.READ_COUNT_WIDTH);
-      left := left + len(y.READ_COUNT_WIDTH);
-      y.FIFO_DEPTH := convert(x(left to left+len(y.FIFO_DEPTH)-1), y.FIFO_DEPTH);
-    else
-      y.WRITE_DATA_WIDTH := convert(x(left downto left-len(y.WRITE_DATA_WIDTH)+1), y.WRITE_DATA_WIDTH);
-      left := left - len(y.WRITE_DATA_WIDTH);
-      y.READ_DATA_WIDTH := convert(x(left downto left-len(y.READ_DATA_WIDTH)+1), y.READ_DATA_WIDTH);
-      left := left - len(y.READ_DATA_WIDTH);
-      y.READ_COUNT_WIDTH := convert(x(left downto left-len(y.READ_COUNT_WIDTH)+1), y.READ_COUNT_WIDTH);
-      left := left - len(y.READ_COUNT_WIDTH);
-      y.FIFO_DEPTH := convert(x(left downto left-len(y.FIFO_DEPTH)+1), y.FIFO_DEPTH);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_node_fifo_grt) return daq_node_fifo_grt is
-  variable y: daq_node_fifo_grt;
-  begin
-    y.WRITE_DATA_WIDTH := nullify(t.WRITE_DATA_WIDTH);
-    y.READ_DATA_WIDTH := nullify(t.READ_DATA_WIDTH);
-    y.READ_COUNT_WIDTH := nullify(t.READ_COUNT_WIDTH);
-    y.FIFO_DEPTH := nullify(t.FIFO_DEPTH);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_node_fifo_grt) return daq_node_fifo_grt is
-  variable y: daq_node_fifo_grt;
-  begin
-    y.WRITE_DATA_WIDTH := zeroed(t.WRITE_DATA_WIDTH);
-    y.READ_DATA_WIDTH := zeroed(t.READ_DATA_WIDTH);
-    y.READ_COUNT_WIDTH := zeroed(t.READ_COUNT_WIDTH);
-    y.FIFO_DEPTH := zeroed(t.FIFO_DEPTH);
-    return y;
-  end function zeroed;
-
   function len(x: row_to_mngt_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.done);
+    l := l + len(x.data_ready);
     l := l + len(x.nempty);
     l := l + len(x.err);
     return l;
@@ -3626,7 +2744,7 @@ package body daq_defs is
   function width(x: row_to_mngt_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.done);
+    l := l + width(x.data_ready);
     l := l + width(x.nempty);
     l := l + width(x.err);
     return l;
@@ -3636,14 +2754,14 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.done)-1), vectorify(x.done, y(left to left+len(x.done)-1)));
-      left := left + len(x.done);
+      assign(y(left to left+len(x.data_ready)-1), vectorify(x.data_ready, y(left to left+len(x.data_ready)-1)));
+      left := left + len(x.data_ready);
       assign(y(left to left+len(x.nempty)-1), vectorify(x.nempty, y(left to left+len(x.nempty)-1)));
       left := left + len(x.nempty);
       assign(y(left to left+len(x.err)-1), vectorify(x.err, y(left to left+len(x.err)-1)));
     else
-      assign(y(left downto left-len(x.done)+1), vectorify(x.done, y(left downto left-len(x.done)+1)));
-      left := left - len(x.done);
+      assign(y(left downto left-len(x.data_ready)+1), vectorify(x.data_ready, y(left downto left-len(x.data_ready)+1)));
+      left := left - len(x.data_ready);
       assign(y(left downto left-len(x.nempty)+1), vectorify(x.nempty, y(left downto left-len(x.nempty)+1)));
       left := left - len(x.nempty);
       assign(y(left downto left-len(x.err)+1), vectorify(x.err, y(left downto left-len(x.err)+1)));
@@ -3655,14 +2773,14 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.done)-1), convert(x.done, y(left to left+len(x.done)-1)));
-      left := left + len(x.done);
+      assign(y(left to left+len(x.data_ready)-1), convert(x.data_ready, y(left to left+len(x.data_ready)-1)));
+      left := left + len(x.data_ready);
       assign(y(left to left+len(x.nempty)-1), convert(x.nempty, y(left to left+len(x.nempty)-1)));
       left := left + len(x.nempty);
       assign(y(left to left+len(x.err)-1), convert(x.err, y(left to left+len(x.err)-1)));
     else
-      assign(y(left downto left-len(x.done)+1), convert(x.done, y(left downto left-len(x.done)+1)));
-      left := left - len(x.done);
+      assign(y(left downto left-len(x.data_ready)+1), convert(x.data_ready, y(left downto left-len(x.data_ready)+1)));
+      left := left - len(x.data_ready);
       assign(y(left downto left-len(x.nempty)+1), convert(x.nempty, y(left downto left-len(x.nempty)+1)));
       left := left - len(x.nempty);
       assign(y(left downto left-len(x.err)+1), convert(x.err, y(left downto left-len(x.err)+1)));
@@ -3674,14 +2792,14 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.done := structify(x(left to left+len(y.done)-1), y.done);
-      left := left + len(y.done);
+      y.data_ready := structify(x(left to left+len(y.data_ready)-1), y.data_ready);
+      left := left + len(y.data_ready);
       y.nempty := structify(x(left to left+len(y.nempty)-1), y.nempty);
       left := left + len(y.nempty);
       y.err := structify(x(left to left+len(y.err)-1), y.err);
     else
-      y.done := structify(x(left downto left-len(y.done)+1), y.done);
-      left := left - len(y.done);
+      y.data_ready := structify(x(left downto left-len(y.data_ready)+1), y.data_ready);
+      left := left - len(y.data_ready);
       y.nempty := structify(x(left downto left-len(y.nempty)+1), y.nempty);
       left := left - len(y.nempty);
       y.err := structify(x(left downto left-len(y.err)+1), y.err);
@@ -3693,14 +2811,14 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.done := convert(x(left to left+len(y.done)-1), y.done);
-      left := left + len(y.done);
+      y.data_ready := convert(x(left to left+len(y.data_ready)-1), y.data_ready);
+      left := left + len(y.data_ready);
       y.nempty := convert(x(left to left+len(y.nempty)-1), y.nempty);
       left := left + len(y.nempty);
       y.err := convert(x(left to left+len(y.err)-1), y.err);
     else
-      y.done := convert(x(left downto left-len(y.done)+1), y.done);
-      left := left - len(y.done);
+      y.data_ready := convert(x(left downto left-len(y.data_ready)+1), y.data_ready);
+      left := left - len(y.data_ready);
       y.nempty := convert(x(left downto left-len(y.nempty)+1), y.nempty);
       left := left - len(y.nempty);
       y.err := convert(x(left downto left-len(y.err)+1), y.err);
@@ -3710,7 +2828,7 @@ package body daq_defs is
   function nullify(t: row_to_mngt_rt) return row_to_mngt_rt is
   variable y: row_to_mngt_rt;
   begin
-    y.done := nullify(t.done);
+    y.data_ready := nullify(t.data_ready);
     y.nempty := nullify(t.nempty);
     y.err := nullify(t.err);
     return y;
@@ -3718,7 +2836,7 @@ package body daq_defs is
   function zeroed(t: row_to_mngt_rt) return row_to_mngt_rt is
   variable y: row_to_mngt_rt;
   begin
-    y.done := zeroed(t.done);
+    y.data_ready := zeroed(t.data_ready);
     y.nempty := zeroed(t.nempty);
     y.err := zeroed(t.err);
     return y;
@@ -3951,408 +3069,229 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: pbldr_forward_rt) return natural is
+  function len(x: rows_to_pbldr_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.nempty);
-    l := l + len(x.data);
+    l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: pbldr_forward_rt) return natural is
+  function width(x: rows_to_pbldr_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.nempty);
-    l := l + width(x.data);
+    l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: pbldr_forward_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
+  function vectorify(x: rows_to_pbldr_rt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
   begin
     if t'ascending then
-      assign(y(left to left+len(x.nempty)-1), vectorify(x.nempty, y(left to left+len(x.nempty)-1)));
-      left := left + len(x.nempty);
-      assign(y(left to left+len(x.data)-1), vectorify(x.data, y(left to left+len(x.data)-1)));
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
     else
-      assign(y(left downto left-len(x.nempty)+1), vectorify(x.nempty, y(left downto left-len(x.nempty)+1)));
-      left := left - len(x.nempty);
-      assign(y(left downto left-len(x.data)+1), vectorify(x.data, y(left downto left-len(x.data)+1)));
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
     end if;
     return y;
   end function vectorify;
-  function convert(x: pbldr_forward_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
+  function convert(x: rows_to_pbldr_rt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
   begin
     if t'ascending then
-      assign(y(left to left+len(x.nempty)-1), convert(x.nempty, y(left to left+len(x.nempty)-1)));
-      left := left + len(x.nempty);
-      assign(y(left to left+len(x.data)-1), convert(x.data, y(left to left+len(x.data)-1)));
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
     else
-      assign(y(left downto left-len(x.nempty)+1), convert(x.nempty, y(left downto left-len(x.nempty)+1)));
-      left := left - len(x.nempty);
-      assign(y(left downto left-len(x.data)+1), convert(x.data, y(left downto left-len(x.data)+1)));
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: pbldr_forward_rt) return pbldr_forward_rt is
-    variable y: pbldr_forward_rt;
-    variable left : natural := x'left;
+  function structify(x: std_logic_vector; t: rows_to_pbldr_rt) return rows_to_pbldr_rt is
+    variable y : rows_to_pbldr_rt;
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
   begin
     if x'ascending then
-      y.nempty := structify(x(left to left+len(y.nempty)-1), y.nempty);
-      left := left + len(y.nempty);
-      y.data := structify(x(left to left+len(y.data)-1), y.data);
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
     else
-      y.nempty := structify(x(left downto left-len(y.nempty)+1), y.nempty);
-      left := left - len(y.nempty);
-      y.data := structify(x(left downto left-len(y.data)+1), y.data);
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: pbldr_forward_rt) return pbldr_forward_rt is
-    variable y: pbldr_forward_rt;
-    variable left : natural := x'left;
+  function convert(x: std_logic_vector; t: rows_to_pbldr_rt) return rows_to_pbldr_rt is
+    variable y : rows_to_pbldr_rt;
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
   begin
     if x'ascending then
-      y.nempty := convert(x(left to left+len(y.nempty)-1), y.nempty);
-      left := left + len(y.nempty);
-      y.data := convert(x(left to left+len(y.data)-1), y.data);
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
     else
-      y.nempty := convert(x(left downto left-len(y.nempty)+1), y.nempty);
-      left := left - len(y.nempty);
-      y.data := convert(x(left downto left-len(y.data)+1), y.data);
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
     end if;
     return y;
   end function convert;
-  function nullify(t: pbldr_forward_rt) return pbldr_forward_rt is
-  variable y: pbldr_forward_rt;
+  function nullify(x: rows_to_pbldr_rt) return rows_to_pbldr_rt is
+    variable y : rows_to_pbldr_rt;
   begin
-    y.nempty := nullify(t.nempty);
-    y.data := nullify(t.data);
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
     return y;
   end function nullify;
-  function zeroed(t: pbldr_forward_rt) return pbldr_forward_rt is
-  variable y: pbldr_forward_rt;
+  function zeroed(x: rows_to_pbldr_rt) return rows_to_pbldr_rt is
+    variable y : rows_to_pbldr_rt;
   begin
-    y.nempty := zeroed(t.nempty);
-    y.data := zeroed(t.data);
-    return y;
-  end function zeroed;
-
-  function len(x: pbldr_backward_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_strb);
-    return l;
-  end function len;
-  function width(x: pbldr_backward_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.rd_strb);
-    return l;
-  end function width;
-  function vectorify(x: pbldr_backward_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_strb)-1), vectorify(x.rd_strb, y(left to left+len(x.rd_strb)-1)));
-    else
-      assign(y(left downto left-len(x.rd_strb)+1), vectorify(x.rd_strb, y(left downto left-len(x.rd_strb)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: pbldr_backward_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_strb)-1), convert(x.rd_strb, y(left to left+len(x.rd_strb)-1)));
-    else
-      assign(y(left downto left-len(x.rd_strb)+1), convert(x.rd_strb, y(left downto left-len(x.rd_strb)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: pbldr_backward_rt) return pbldr_backward_rt is
-    variable y: pbldr_backward_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_strb := structify(x(left to left+len(y.rd_strb)-1), y.rd_strb);
-    else
-      y.rd_strb := structify(x(left downto left-len(y.rd_strb)+1), y.rd_strb);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: pbldr_backward_rt) return pbldr_backward_rt is
-    variable y: pbldr_backward_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_strb := convert(x(left to left+len(y.rd_strb)-1), y.rd_strb);
-    else
-      y.rd_strb := convert(x(left downto left-len(y.rd_strb)+1), y.rd_strb);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: pbldr_backward_rt) return pbldr_backward_rt is
-  variable y: pbldr_backward_rt;
-  begin
-    y.rd_strb := nullify(t.rd_strb);
-    return y;
-  end function nullify;
-  function zeroed(t: pbldr_backward_rt) return pbldr_backward_rt is
-  variable y: pbldr_backward_rt;
-  begin
-    y.rd_strb := zeroed(t.rd_strb);
-    return y;
-  end function zeroed;
-
-  function len(x: row_to_pbldr_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.payload);
-    return l;
-  end function len;
-  function width(x: row_to_pbldr_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.payload);
-    return l;
-  end function width;
-  function vectorify(x: row_to_pbldr_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.payload)-1), vectorify(x.payload, y(left to left+len(x.payload)-1)));
-    else
-      assign(y(left downto left-len(x.payload)+1), vectorify(x.payload, y(left downto left-len(x.payload)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: row_to_pbldr_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.payload)-1), convert(x.payload, y(left to left+len(x.payload)-1)));
-    else
-      assign(y(left downto left-len(x.payload)+1), convert(x.payload, y(left downto left-len(x.payload)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: row_to_pbldr_rt) return row_to_pbldr_rt is
-    variable y: row_to_pbldr_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.payload := structify(x(left to left+len(y.payload)-1), y.payload);
-    else
-      y.payload := structify(x(left downto left-len(y.payload)+1), y.payload);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: row_to_pbldr_rt) return row_to_pbldr_rt is
-    variable y: row_to_pbldr_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.payload := convert(x(left to left+len(y.payload)-1), y.payload);
-    else
-      y.payload := convert(x(left downto left-len(y.payload)+1), y.payload);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: row_to_pbldr_rt) return row_to_pbldr_rt is
-  variable y: row_to_pbldr_rt;
-  begin
-    y.payload := nullify(t.payload);
-    return y;
-  end function nullify;
-  function zeroed(t: row_to_pbldr_rt) return row_to_pbldr_rt is
-  variable y: row_to_pbldr_rt;
-  begin
-    y.payload := zeroed(t.payload);
-    return y;
-  end function zeroed;
-
-  function len(x: pbldr_to_row_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.payload);
-    l := l + len(x.sel);
-    return l;
-  end function len;
-  function width(x: pbldr_to_row_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.payload);
-    l := l + width(x.sel);
-    return l;
-  end function width;
-  function vectorify(x: pbldr_to_row_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.payload)-1), vectorify(x.payload, y(left to left+len(x.payload)-1)));
-      left := left + len(x.payload);
-      assign(y(left to left+len(x.sel)-1), vectorify(x.sel, y(left to left+len(x.sel)-1)));
-    else
-      assign(y(left downto left-len(x.payload)+1), vectorify(x.payload, y(left downto left-len(x.payload)+1)));
-      left := left - len(x.payload);
-      assign(y(left downto left-len(x.sel)+1), vectorify(x.sel, y(left downto left-len(x.sel)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: pbldr_to_row_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.payload)-1), convert(x.payload, y(left to left+len(x.payload)-1)));
-      left := left + len(x.payload);
-      assign(y(left to left+len(x.sel)-1), convert(x.sel, y(left to left+len(x.sel)-1)));
-    else
-      assign(y(left downto left-len(x.payload)+1), convert(x.payload, y(left downto left-len(x.payload)+1)));
-      left := left - len(x.payload);
-      assign(y(left downto left-len(x.sel)+1), convert(x.sel, y(left downto left-len(x.sel)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: pbldr_to_row_rt) return pbldr_to_row_rt is
-    variable y: pbldr_to_row_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.payload := structify(x(left to left+len(y.payload)-1), y.payload);
-      left := left + len(y.payload);
-      y.sel := structify(x(left to left+len(y.sel)-1), y.sel);
-    else
-      y.payload := structify(x(left downto left-len(y.payload)+1), y.payload);
-      left := left - len(y.payload);
-      y.sel := structify(x(left downto left-len(y.sel)+1), y.sel);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: pbldr_to_row_rt) return pbldr_to_row_rt is
-    variable y: pbldr_to_row_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.payload := convert(x(left to left+len(y.payload)-1), y.payload);
-      left := left + len(y.payload);
-      y.sel := convert(x(left to left+len(y.sel)-1), y.sel);
-    else
-      y.payload := convert(x(left downto left-len(y.payload)+1), y.payload);
-      left := left - len(y.payload);
-      y.sel := convert(x(left downto left-len(y.sel)+1), y.sel);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: pbldr_to_row_rt) return pbldr_to_row_rt is
-  variable y: pbldr_to_row_rt;
-  begin
-    y.payload := nullify(t.payload);
-    y.sel := nullify(t.sel);
-    return y;
-  end function nullify;
-  function zeroed(t: pbldr_to_row_rt) return pbldr_to_row_rt is
-  variable y: pbldr_to_row_rt;
-  begin
-    y.payload := zeroed(t.payload);
-    y.sel := zeroed(t.sel);
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
     return y;
   end function zeroed;
 
   function len(x: pbldr_to_rows_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.payload);
-    l := l + len(x.sel);
+    l := x'length * len(x(x'left));
     return l;
   end function len;
   function width(x: pbldr_to_rows_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.payload);
-    l := l + width(x.sel);
+    l := x'length * width(x(x'left));
     return l;
   end function width;
   function vectorify(x: pbldr_to_rows_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
   begin
     if t'ascending then
-      assign(y(left to left+len(x.payload)-1), vectorify(x.payload, y(left to left+len(x.payload)-1)));
-      left := left + len(x.payload);
-      assign(y(left to left+len(x.sel)-1), vectorify(x.sel, y(left to left+len(x.sel)-1)));
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
     else
-      assign(y(left downto left-len(x.payload)+1), vectorify(x.payload, y(left downto left-len(x.payload)+1)));
-      left := left - len(x.payload);
-      assign(y(left downto left-len(x.sel)+1), vectorify(x.sel, y(left downto left-len(x.sel)+1)));
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
     end if;
     return y;
   end function vectorify;
   function convert(x: pbldr_to_rows_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
   begin
     if t'ascending then
-      assign(y(left to left+len(x.payload)-1), convert(x.payload, y(left to left+len(x.payload)-1)));
-      left := left + len(x.payload);
-      assign(y(left to left+len(x.sel)-1), convert(x.sel, y(left to left+len(x.sel)-1)));
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
     else
-      assign(y(left downto left-len(x.payload)+1), convert(x.payload, y(left downto left-len(x.payload)+1)));
-      left := left - len(x.payload);
-      assign(y(left downto left-len(x.sel)+1), convert(x.sel, y(left downto left-len(x.sel)+1)));
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt is
-    variable y: pbldr_to_rows_rt;
-    variable left : natural := x'left;
+  function structify(x: std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt is
+    variable y : pbldr_to_rows_rt;
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
   begin
     if x'ascending then
-      y.payload := structify(x(left to left+len(y.payload)-1), y.payload);
-      left := left + len(y.payload);
-      y.sel := structify(x(left to left+len(y.sel)-1), y.sel);
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
     else
-      y.payload := structify(x(left downto left-len(y.payload)+1), y.payload);
-      left := left - len(y.payload);
-      y.sel := structify(x(left downto left-len(y.sel)+1), y.sel);
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt is
-    variable y: pbldr_to_rows_rt;
-    variable left : natural := x'left;
+  function convert(x: std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt is
+    variable y : pbldr_to_rows_rt;
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
   begin
     if x'ascending then
-      y.payload := convert(x(left to left+len(y.payload)-1), y.payload);
-      left := left + len(y.payload);
-      y.sel := convert(x(left to left+len(y.sel)-1), y.sel);
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
     else
-      y.payload := convert(x(left downto left-len(y.payload)+1), y.payload);
-      left := left - len(y.payload);
-      y.sel := convert(x(left downto left-len(y.sel)+1), y.sel);
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
     end if;
     return y;
   end function convert;
-  function nullify(t: pbldr_to_rows_rt) return pbldr_to_rows_rt is
-  variable y: pbldr_to_rows_rt;
+  function nullify(x: pbldr_to_rows_rt) return pbldr_to_rows_rt is
+    variable y : pbldr_to_rows_rt;
   begin
-    y.payload := nullify(t.payload);
-    y.sel := nullify(t.sel);
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
     return y;
   end function nullify;
-  function zeroed(t: pbldr_to_rows_rt) return pbldr_to_rows_rt is
-  variable y: pbldr_to_rows_rt;
+  function zeroed(x: pbldr_to_rows_rt) return pbldr_to_rows_rt is
+    variable y : pbldr_to_rows_rt;
   begin
-    y.payload := zeroed(t.payload);
-    y.sel := zeroed(t.sel);
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
     return y;
   end function zeroed;
 
@@ -5435,7 +4374,7 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: daq_hrow_grt) return natural is
+  function len(x: daq_header_row_grt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.PIPELINES);
@@ -5444,7 +4383,7 @@ package body daq_defs is
     l := l + len(x.COUNTER_WIDTH);
     return l;
   end function len;
-  function width(x: daq_hrow_grt) return natural is
+  function width(x: daq_header_row_grt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.PIPELINES);
@@ -5453,7 +4392,7 @@ package body daq_defs is
     l := l + width(x.COUNTER_WIDTH);
     return l;
   end function width;
-  function vectorify(x: daq_hrow_grt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_header_row_grt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -5476,7 +4415,7 @@ package body daq_defs is
     end if;
     return y;
   end function vectorify;
-  function convert(x: daq_hrow_grt; t: std_logic_vector) return std_logic_vector is
+  function convert(x: daq_header_row_grt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -5499,8 +4438,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: daq_hrow_grt) return daq_hrow_grt is
-    variable y: daq_hrow_grt;
+  function structify(x: in std_logic_vector; t: daq_header_row_grt) return daq_header_row_grt is
+    variable y: daq_header_row_grt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -5522,8 +4461,8 @@ package body daq_defs is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: daq_hrow_grt) return daq_hrow_grt is
-    variable y: daq_hrow_grt;
+  function convert(x: in std_logic_vector; t: daq_header_row_grt) return daq_header_row_grt is
+    variable y: daq_header_row_grt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -5545,8 +4484,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function nullify(t: daq_hrow_grt) return daq_hrow_grt is
-  variable y: daq_hrow_grt;
+  function nullify(t: daq_header_row_grt) return daq_header_row_grt is
+  variable y: daq_header_row_grt;
   begin
     y.PIPELINES := nullify(t.PIPELINES);
     y.INPUT_DATA_WIDTH := nullify(t.INPUT_DATA_WIDTH);
@@ -5554,8 +4493,8 @@ package body daq_defs is
     y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;
   end function nullify;
-  function zeroed(t: daq_hrow_grt) return daq_hrow_grt is
-  variable y: daq_hrow_grt;
+  function zeroed(t: daq_header_row_grt) return daq_header_row_grt is
+  variable y: daq_header_row_grt;
   begin
     y.PIPELINES := zeroed(t.PIPELINES);
     y.INPUT_DATA_WIDTH := zeroed(t.INPUT_DATA_WIDTH);
@@ -5564,7 +4503,7 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: daq_drow_grt) return natural is
+  function len(x: daq_data_row_grt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.PIPELINES);
@@ -5574,7 +4513,7 @@ package body daq_defs is
     l := l + len(x.FIFO_DEPTH);
     return l;
   end function len;
-  function width(x: daq_drow_grt) return natural is
+  function width(x: daq_data_row_grt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.PIPELINES);
@@ -5584,7 +4523,7 @@ package body daq_defs is
     l := l + width(x.FIFO_DEPTH);
     return l;
   end function width;
-  function vectorify(x: daq_drow_grt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_data_row_grt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -5611,7 +4550,7 @@ package body daq_defs is
     end if;
     return y;
   end function vectorify;
-  function convert(x: daq_drow_grt; t: std_logic_vector) return std_logic_vector is
+  function convert(x: daq_data_row_grt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -5638,8 +4577,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: daq_drow_grt) return daq_drow_grt is
-    variable y: daq_drow_grt;
+  function structify(x: in std_logic_vector; t: daq_data_row_grt) return daq_data_row_grt is
+    variable y: daq_data_row_grt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -5665,8 +4604,8 @@ package body daq_defs is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: daq_drow_grt) return daq_drow_grt is
-    variable y: daq_drow_grt;
+  function convert(x: in std_logic_vector; t: daq_data_row_grt) return daq_data_row_grt is
+    variable y: daq_data_row_grt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -5692,8 +4631,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function nullify(t: daq_drow_grt) return daq_drow_grt is
-  variable y: daq_drow_grt;
+  function nullify(t: daq_data_row_grt) return daq_data_row_grt is
+  variable y: daq_data_row_grt;
   begin
     y.PIPELINES := nullify(t.PIPELINES);
     y.INPUT_DATA_WIDTH := nullify(t.INPUT_DATA_WIDTH);
@@ -5702,8 +4641,8 @@ package body daq_defs is
     y.FIFO_DEPTH := nullify(t.FIFO_DEPTH);
     return y;
   end function nullify;
-  function zeroed(t: daq_drow_grt) return daq_drow_grt is
-  variable y: daq_drow_grt;
+  function zeroed(t: daq_data_row_grt) return daq_data_row_grt is
+  variable y: daq_data_row_grt;
   begin
     y.PIPELINES := zeroed(t.PIPELINES);
     y.INPUT_DATA_WIDTH := zeroed(t.INPUT_DATA_WIDTH);
@@ -5713,7 +4652,116 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: daq_hrow_irt) return natural is
+  function len(x: daq_row_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.mngt);
+    l := l + len(x.pbldr);
+    l := l + len(x.debug);
+    return l;
+  end function len;
+  function width(x: daq_row_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.mngt);
+    l := l + width(x.pbldr);
+    l := l + width(x.debug);
+    return l;
+  end function width;
+  function vectorify(x: daq_row_ort; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.mngt)-1), vectorify(x.mngt, y(left to left+len(x.mngt)-1)));
+      left := left + len(x.mngt);
+      assign(y(left to left+len(x.pbldr)-1), vectorify(x.pbldr, y(left to left+len(x.pbldr)-1)));
+      left := left + len(x.pbldr);
+      assign(y(left to left+len(x.debug)-1), vectorify(x.debug, y(left to left+len(x.debug)-1)));
+    else
+      assign(y(left downto left-len(x.mngt)+1), vectorify(x.mngt, y(left downto left-len(x.mngt)+1)));
+      left := left - len(x.mngt);
+      assign(y(left downto left-len(x.pbldr)+1), vectorify(x.pbldr, y(left downto left-len(x.pbldr)+1)));
+      left := left - len(x.pbldr);
+      assign(y(left downto left-len(x.debug)+1), vectorify(x.debug, y(left downto left-len(x.debug)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: daq_row_ort; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.mngt)-1), convert(x.mngt, y(left to left+len(x.mngt)-1)));
+      left := left + len(x.mngt);
+      assign(y(left to left+len(x.pbldr)-1), convert(x.pbldr, y(left to left+len(x.pbldr)-1)));
+      left := left + len(x.pbldr);
+      assign(y(left to left+len(x.debug)-1), convert(x.debug, y(left to left+len(x.debug)-1)));
+    else
+      assign(y(left downto left-len(x.mngt)+1), convert(x.mngt, y(left downto left-len(x.mngt)+1)));
+      left := left - len(x.mngt);
+      assign(y(left downto left-len(x.pbldr)+1), convert(x.pbldr, y(left downto left-len(x.pbldr)+1)));
+      left := left - len(x.pbldr);
+      assign(y(left downto left-len(x.debug)+1), convert(x.debug, y(left downto left-len(x.debug)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: daq_row_ort) return daq_row_ort is
+    variable y: daq_row_ort;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.mngt := structify(x(left to left+len(y.mngt)-1), y.mngt);
+      left := left + len(y.mngt);
+      y.pbldr := structify(x(left to left+len(y.pbldr)-1), y.pbldr);
+      left := left + len(y.pbldr);
+      y.debug := structify(x(left to left+len(y.debug)-1), y.debug);
+    else
+      y.mngt := structify(x(left downto left-len(y.mngt)+1), y.mngt);
+      left := left - len(y.mngt);
+      y.pbldr := structify(x(left downto left-len(y.pbldr)+1), y.pbldr);
+      left := left - len(y.pbldr);
+      y.debug := structify(x(left downto left-len(y.debug)+1), y.debug);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: daq_row_ort) return daq_row_ort is
+    variable y: daq_row_ort;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.mngt := convert(x(left to left+len(y.mngt)-1), y.mngt);
+      left := left + len(y.mngt);
+      y.pbldr := convert(x(left to left+len(y.pbldr)-1), y.pbldr);
+      left := left + len(y.pbldr);
+      y.debug := convert(x(left to left+len(y.debug)-1), y.debug);
+    else
+      y.mngt := convert(x(left downto left-len(y.mngt)+1), y.mngt);
+      left := left - len(y.mngt);
+      y.pbldr := convert(x(left downto left-len(y.pbldr)+1), y.pbldr);
+      left := left - len(y.pbldr);
+      y.debug := convert(x(left downto left-len(y.debug)+1), y.debug);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: daq_row_ort) return daq_row_ort is
+  variable y: daq_row_ort;
+  begin
+    y.mngt := nullify(t.mngt);
+    y.pbldr := nullify(t.pbldr);
+    y.debug := nullify(t.debug);
+    return y;
+  end function nullify;
+  function zeroed(t: daq_row_ort) return daq_row_ort is
+  variable y: daq_row_ort;
+  begin
+    y.mngt := zeroed(t.mngt);
+    y.pbldr := zeroed(t.pbldr);
+    y.debug := zeroed(t.debug);
+    return y;
+  end function zeroed;
+
+  function len(x: daq_header_row_irt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.sys);
@@ -5722,7 +4770,7 @@ package body daq_defs is
     l := l + len(x.pbldr);
     return l;
   end function len;
-  function width(x: daq_hrow_irt) return natural is
+  function width(x: daq_header_row_irt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.sys);
@@ -5731,7 +4779,7 @@ package body daq_defs is
     l := l + width(x.pbldr);
     return l;
   end function width;
-  function vectorify(x: daq_hrow_irt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_header_row_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -5754,7 +4802,7 @@ package body daq_defs is
     end if;
     return y;
   end function vectorify;
-  function convert(x: daq_hrow_irt; t: std_logic_vector) return std_logic_vector is
+  function convert(x: daq_header_row_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -5777,8 +4825,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: daq_hrow_irt) return daq_hrow_irt is
-    variable y: daq_hrow_irt;
+  function structify(x: in std_logic_vector; t: daq_header_row_irt) return daq_header_row_irt is
+    variable y: daq_header_row_irt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -5800,8 +4848,8 @@ package body daq_defs is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: daq_hrow_irt) return daq_hrow_irt is
-    variable y: daq_hrow_irt;
+  function convert(x: in std_logic_vector; t: daq_header_row_irt) return daq_header_row_irt is
+    variable y: daq_header_row_irt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -5823,8 +4871,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function nullify(t: daq_hrow_irt) return daq_hrow_irt is
-  variable y: daq_hrow_irt;
+  function nullify(t: daq_header_row_irt) return daq_header_row_irt is
+  variable y: daq_header_row_irt;
   begin
     y.sys := nullify(t.sys);
     y.mngt := nullify(t.mngt);
@@ -5832,8 +4880,8 @@ package body daq_defs is
     y.pbldr := nullify(t.pbldr);
     return y;
   end function nullify;
-  function zeroed(t: daq_hrow_irt) return daq_hrow_irt is
-  variable y: daq_hrow_irt;
+  function zeroed(t: daq_header_row_irt) return daq_header_row_irt is
+  variable y: daq_header_row_irt;
   begin
     y.sys := zeroed(t.sys);
     y.mngt := zeroed(t.mngt);
@@ -5842,7 +4890,96 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: daq_drow_irt) return natural is
+  function len(x: daq_header_row_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.i);
+    l := l + len(x.o);
+    return l;
+  end function len;
+  function width(x: daq_header_row_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
+  function vectorify(x: daq_header_row_ert; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.i)-1), vectorify(x.i, y(left to left+len(x.i)-1)));
+      left := left + len(x.i);
+      assign(y(left to left+len(x.o)-1), vectorify(x.o, y(left to left+len(x.o)-1)));
+    else
+      assign(y(left downto left-len(x.i)+1), vectorify(x.i, y(left downto left-len(x.i)+1)));
+      left := left - len(x.i);
+      assign(y(left downto left-len(x.o)+1), vectorify(x.o, y(left downto left-len(x.o)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: daq_header_row_ert; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.i)-1), convert(x.i, y(left to left+len(x.i)-1)));
+      left := left + len(x.i);
+      assign(y(left to left+len(x.o)-1), convert(x.o, y(left to left+len(x.o)-1)));
+    else
+      assign(y(left downto left-len(x.i)+1), convert(x.i, y(left downto left-len(x.i)+1)));
+      left := left - len(x.i);
+      assign(y(left downto left-len(x.o)+1), convert(x.o, y(left downto left-len(x.o)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: daq_header_row_ert) return daq_header_row_ert is
+    variable y: daq_header_row_ert;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.i := structify(x(left to left+len(y.i)-1), y.i);
+      left := left + len(y.i);
+      y.o := structify(x(left to left+len(y.o)-1), y.o);
+    else
+      y.i := structify(x(left downto left-len(y.i)+1), y.i);
+      left := left - len(y.i);
+      y.o := structify(x(left downto left-len(y.o)+1), y.o);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: daq_header_row_ert) return daq_header_row_ert is
+    variable y: daq_header_row_ert;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.i := convert(x(left to left+len(y.i)-1), y.i);
+      left := left + len(y.i);
+      y.o := convert(x(left to left+len(y.o)-1), y.o);
+    else
+      y.i := convert(x(left downto left-len(y.i)+1), y.i);
+      left := left - len(y.i);
+      y.o := convert(x(left downto left-len(y.o)+1), y.o);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: daq_header_row_ert) return daq_header_row_ert is
+  variable y: daq_header_row_ert;
+  begin
+    y.i := nullify(t.i);
+    y.o := nullify(t.o);
+    return y;
+  end function nullify;
+  function zeroed(t: daq_header_row_ert) return daq_header_row_ert is
+  variable y: daq_header_row_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
+
+  function len(x: daq_data_row_irt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.sys);
@@ -5852,7 +4989,7 @@ package body daq_defs is
     l := l + len(x.pbldr);
     return l;
   end function len;
-  function width(x: daq_drow_irt) return natural is
+  function width(x: daq_data_row_irt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.sys);
@@ -5862,7 +4999,7 @@ package body daq_defs is
     l := l + width(x.pbldr);
     return l;
   end function width;
-  function vectorify(x: daq_drow_irt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_data_row_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -5889,7 +5026,7 @@ package body daq_defs is
     end if;
     return y;
   end function vectorify;
-  function convert(x: daq_drow_irt; t: std_logic_vector) return std_logic_vector is
+  function convert(x: daq_data_row_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -5916,8 +5053,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: daq_drow_irt) return daq_drow_irt is
-    variable y: daq_drow_irt;
+  function structify(x: in std_logic_vector; t: daq_data_row_irt) return daq_data_row_irt is
+    variable y: daq_data_row_irt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -5943,8 +5080,8 @@ package body daq_defs is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: daq_drow_irt) return daq_drow_irt is
-    variable y: daq_drow_irt;
+  function convert(x: in std_logic_vector; t: daq_data_row_irt) return daq_data_row_irt is
+    variable y: daq_data_row_irt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -5970,8 +5107,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function nullify(t: daq_drow_irt) return daq_drow_irt is
-  variable y: daq_drow_irt;
+  function nullify(t: daq_data_row_irt) return daq_data_row_irt is
+  variable y: daq_data_row_irt;
   begin
     y.sys := nullify(t.sys);
     y.mngt := nullify(t.mngt);
@@ -5980,8 +5117,8 @@ package body daq_defs is
     y.pbldr := nullify(t.pbldr);
     return y;
   end function nullify;
-  function zeroed(t: daq_drow_irt) return daq_drow_irt is
-  variable y: daq_drow_irt;
+  function zeroed(t: daq_data_row_irt) return daq_data_row_irt is
+  variable y: daq_data_row_irt;
   begin
     y.sys := zeroed(t.sys);
     y.mngt := zeroed(t.mngt);
@@ -5991,110 +5128,21 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: daq_row_ort) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.mngt);
-    l := l + len(x.pbldr);
-    return l;
-  end function len;
-  function width(x: daq_row_ort) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.mngt);
-    l := l + width(x.pbldr);
-    return l;
-  end function width;
-  function vectorify(x: daq_row_ort; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.mngt)-1), vectorify(x.mngt, y(left to left+len(x.mngt)-1)));
-      left := left + len(x.mngt);
-      assign(y(left to left+len(x.pbldr)-1), vectorify(x.pbldr, y(left to left+len(x.pbldr)-1)));
-    else
-      assign(y(left downto left-len(x.mngt)+1), vectorify(x.mngt, y(left downto left-len(x.mngt)+1)));
-      left := left - len(x.mngt);
-      assign(y(left downto left-len(x.pbldr)+1), vectorify(x.pbldr, y(left downto left-len(x.pbldr)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_row_ort; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.mngt)-1), convert(x.mngt, y(left to left+len(x.mngt)-1)));
-      left := left + len(x.mngt);
-      assign(y(left to left+len(x.pbldr)-1), convert(x.pbldr, y(left to left+len(x.pbldr)-1)));
-    else
-      assign(y(left downto left-len(x.mngt)+1), convert(x.mngt, y(left downto left-len(x.mngt)+1)));
-      left := left - len(x.mngt);
-      assign(y(left downto left-len(x.pbldr)+1), convert(x.pbldr, y(left downto left-len(x.pbldr)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_row_ort) return daq_row_ort is
-    variable y: daq_row_ort;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.mngt := structify(x(left to left+len(y.mngt)-1), y.mngt);
-      left := left + len(y.mngt);
-      y.pbldr := structify(x(left to left+len(y.pbldr)-1), y.pbldr);
-    else
-      y.mngt := structify(x(left downto left-len(y.mngt)+1), y.mngt);
-      left := left - len(y.mngt);
-      y.pbldr := structify(x(left downto left-len(y.pbldr)+1), y.pbldr);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_row_ort) return daq_row_ort is
-    variable y: daq_row_ort;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.mngt := convert(x(left to left+len(y.mngt)-1), y.mngt);
-      left := left + len(y.mngt);
-      y.pbldr := convert(x(left to left+len(y.pbldr)-1), y.pbldr);
-    else
-      y.mngt := convert(x(left downto left-len(y.mngt)+1), y.mngt);
-      left := left - len(y.mngt);
-      y.pbldr := convert(x(left downto left-len(y.pbldr)+1), y.pbldr);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_row_ort) return daq_row_ort is
-  variable y: daq_row_ort;
-  begin
-    y.mngt := nullify(t.mngt);
-    y.pbldr := nullify(t.pbldr);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_row_ort) return daq_row_ort is
-  variable y: daq_row_ort;
-  begin
-    y.mngt := zeroed(t.mngt);
-    y.pbldr := zeroed(t.pbldr);
-    return y;
-  end function zeroed;
-
-  function len(x: daq_hrow_ert) return natural is
+  function len(x: daq_data_row_ert) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.i);
     l := l + len(x.o);
     return l;
   end function len;
-  function width(x: daq_hrow_ert) return natural is
+  function width(x: daq_data_row_ert) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.i);
     l := l + width(x.o);
     return l;
   end function width;
-  function vectorify(x: daq_hrow_ert; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_data_row_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -6109,7 +5157,7 @@ package body daq_defs is
     end if;
     return y;
   end function vectorify;
-  function convert(x: daq_hrow_ert; t: std_logic_vector) return std_logic_vector is
+  function convert(x: daq_data_row_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -6124,8 +5172,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: daq_hrow_ert) return daq_hrow_ert is
-    variable y: daq_hrow_ert;
+  function structify(x: in std_logic_vector; t: daq_data_row_ert) return daq_data_row_ert is
+    variable y: daq_data_row_ert;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -6139,8 +5187,8 @@ package body daq_defs is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: daq_hrow_ert) return daq_hrow_ert is
-    variable y: daq_hrow_ert;
+  function convert(x: in std_logic_vector; t: daq_data_row_ert) return daq_data_row_ert is
+    variable y: daq_data_row_ert;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -6154,104 +5202,15 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function nullify(t: daq_hrow_ert) return daq_hrow_ert is
-  variable y: daq_hrow_ert;
+  function nullify(t: daq_data_row_ert) return daq_data_row_ert is
+  variable y: daq_data_row_ert;
   begin
     y.i := nullify(t.i);
     y.o := nullify(t.o);
     return y;
   end function nullify;
-  function zeroed(t: daq_hrow_ert) return daq_hrow_ert is
-  variable y: daq_hrow_ert;
-  begin
-    y.i := zeroed(t.i);
-    y.o := zeroed(t.o);
-    return y;
-  end function zeroed;
-
-  function len(x: daq_drow_ert) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.i);
-    l := l + len(x.o);
-    return l;
-  end function len;
-  function width(x: daq_drow_ert) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.i);
-    l := l + width(x.o);
-    return l;
-  end function width;
-  function vectorify(x: daq_drow_ert; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.i)-1), vectorify(x.i, y(left to left+len(x.i)-1)));
-      left := left + len(x.i);
-      assign(y(left to left+len(x.o)-1), vectorify(x.o, y(left to left+len(x.o)-1)));
-    else
-      assign(y(left downto left-len(x.i)+1), vectorify(x.i, y(left downto left-len(x.i)+1)));
-      left := left - len(x.i);
-      assign(y(left downto left-len(x.o)+1), vectorify(x.o, y(left downto left-len(x.o)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_drow_ert; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.i)-1), convert(x.i, y(left to left+len(x.i)-1)));
-      left := left + len(x.i);
-      assign(y(left to left+len(x.o)-1), convert(x.o, y(left to left+len(x.o)-1)));
-    else
-      assign(y(left downto left-len(x.i)+1), convert(x.i, y(left downto left-len(x.i)+1)));
-      left := left - len(x.i);
-      assign(y(left downto left-len(x.o)+1), convert(x.o, y(left downto left-len(x.o)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_drow_ert) return daq_drow_ert is
-    variable y: daq_drow_ert;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.i := structify(x(left to left+len(y.i)-1), y.i);
-      left := left + len(y.i);
-      y.o := structify(x(left to left+len(y.o)-1), y.o);
-    else
-      y.i := structify(x(left downto left-len(y.i)+1), y.i);
-      left := left - len(y.i);
-      y.o := structify(x(left downto left-len(y.o)+1), y.o);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_drow_ert) return daq_drow_ert is
-    variable y: daq_drow_ert;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.i := convert(x(left to left+len(y.i)-1), y.i);
-      left := left + len(y.i);
-      y.o := convert(x(left to left+len(y.o)-1), y.o);
-    else
-      y.i := convert(x(left downto left-len(y.i)+1), y.i);
-      left := left - len(y.i);
-      y.o := convert(x(left downto left-len(y.o)+1), y.o);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_drow_ert) return daq_drow_ert is
-  variable y: daq_drow_ert;
-  begin
-    y.i := nullify(t.i);
-    y.o := nullify(t.o);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_drow_ert) return daq_drow_ert is
-  variable y: daq_drow_ert;
+  function zeroed(t: daq_data_row_ert) return daq_data_row_ert is
+  variable y: daq_data_row_ert;
   begin
     y.i := zeroed(t.i);
     y.o := zeroed(t.o);
@@ -6262,12 +5221,14 @@ package body daq_defs is
     variable l : natural := 0;
   begin
     l := l + len(x.DATA_WIDTH);
+    l := l + len(x.STREAMS);
     return l;
   end function len;
   function width(x: daq_pbldr_grt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.DATA_WIDTH);
+    l := l + width(x.STREAMS);
     return l;
   end function width;
   function vectorify(x: daq_pbldr_grt; t: std_logic_vector) return std_logic_vector is
@@ -6276,8 +5237,12 @@ package body daq_defs is
   begin
     if t'ascending then
       assign(y(left to left+len(x.DATA_WIDTH)-1), vectorify(x.DATA_WIDTH, y(left to left+len(x.DATA_WIDTH)-1)));
+      left := left + len(x.DATA_WIDTH);
+      assign(y(left to left+len(x.STREAMS)-1), vectorify(x.STREAMS, y(left to left+len(x.STREAMS)-1)));
     else
       assign(y(left downto left-len(x.DATA_WIDTH)+1), vectorify(x.DATA_WIDTH, y(left downto left-len(x.DATA_WIDTH)+1)));
+      left := left - len(x.DATA_WIDTH);
+      assign(y(left downto left-len(x.STREAMS)+1), vectorify(x.STREAMS, y(left downto left-len(x.STREAMS)+1)));
     end if;
     return y;
   end function vectorify;
@@ -6287,8 +5252,12 @@ package body daq_defs is
   begin
     if t'ascending then
       assign(y(left to left+len(x.DATA_WIDTH)-1), convert(x.DATA_WIDTH, y(left to left+len(x.DATA_WIDTH)-1)));
+      left := left + len(x.DATA_WIDTH);
+      assign(y(left to left+len(x.STREAMS)-1), convert(x.STREAMS, y(left to left+len(x.STREAMS)-1)));
     else
       assign(y(left downto left-len(x.DATA_WIDTH)+1), convert(x.DATA_WIDTH, y(left downto left-len(x.DATA_WIDTH)+1)));
+      left := left - len(x.DATA_WIDTH);
+      assign(y(left downto left-len(x.STREAMS)+1), convert(x.STREAMS, y(left downto left-len(x.STREAMS)+1)));
     end if;
     return y;
   end function convert;
@@ -6298,8 +5267,12 @@ package body daq_defs is
   begin
     if x'ascending then
       y.DATA_WIDTH := structify(x(left to left+len(y.DATA_WIDTH)-1), y.DATA_WIDTH);
+      left := left + len(y.DATA_WIDTH);
+      y.STREAMS := structify(x(left to left+len(y.STREAMS)-1), y.STREAMS);
     else
       y.DATA_WIDTH := structify(x(left downto left-len(y.DATA_WIDTH)+1), y.DATA_WIDTH);
+      left := left - len(y.DATA_WIDTH);
+      y.STREAMS := structify(x(left downto left-len(y.STREAMS)+1), y.STREAMS);
     end if;
     return y;
   end function structify;
@@ -6309,8 +5282,12 @@ package body daq_defs is
   begin
     if x'ascending then
       y.DATA_WIDTH := convert(x(left to left+len(y.DATA_WIDTH)-1), y.DATA_WIDTH);
+      left := left + len(y.DATA_WIDTH);
+      y.STREAMS := convert(x(left to left+len(y.STREAMS)-1), y.STREAMS);
     else
       y.DATA_WIDTH := convert(x(left downto left-len(y.DATA_WIDTH)+1), y.DATA_WIDTH);
+      left := left - len(y.DATA_WIDTH);
+      y.STREAMS := convert(x(left downto left-len(y.STREAMS)+1), y.STREAMS);
     end if;
     return y;
   end function convert;
@@ -6318,12 +5295,14 @@ package body daq_defs is
   variable y: daq_pbldr_grt;
   begin
     y.DATA_WIDTH := nullify(t.DATA_WIDTH);
+    y.STREAMS := nullify(t.STREAMS);
     return y;
   end function nullify;
   function zeroed(t: daq_pbldr_grt) return daq_pbldr_grt is
   variable y: daq_pbldr_grt;
   begin
     y.DATA_WIDTH := zeroed(t.DATA_WIDTH);
+    y.STREAMS := zeroed(t.STREAMS);
     return y;
   end function zeroed;
 
@@ -6332,7 +5311,7 @@ package body daq_defs is
   begin
     l := l + len(x.sys);
     l := l + len(x.mngt);
-    l := l + len(x.row);
+    l := l + len(x.rows);
     l := l + len(x.f2e);
     return l;
   end function len;
@@ -6341,7 +5320,7 @@ package body daq_defs is
   begin
     l := l + width(x.sys);
     l := l + width(x.mngt);
-    l := l + width(x.row);
+    l := l + width(x.rows);
     l := l + width(x.f2e);
     return l;
   end function width;
@@ -6354,16 +5333,16 @@ package body daq_defs is
       left := left + len(x.sys);
       assign(y(left to left+len(x.mngt)-1), vectorify(x.mngt, y(left to left+len(x.mngt)-1)));
       left := left + len(x.mngt);
-      assign(y(left to left+len(x.row)-1), vectorify(x.row, y(left to left+len(x.row)-1)));
-      left := left + len(x.row);
+      assign(y(left to left+len(x.rows)-1), vectorify(x.rows, y(left to left+len(x.rows)-1)));
+      left := left + len(x.rows);
       assign(y(left to left+len(x.f2e)-1), vectorify(x.f2e, y(left to left+len(x.f2e)-1)));
     else
       assign(y(left downto left-len(x.sys)+1), vectorify(x.sys, y(left downto left-len(x.sys)+1)));
       left := left - len(x.sys);
       assign(y(left downto left-len(x.mngt)+1), vectorify(x.mngt, y(left downto left-len(x.mngt)+1)));
       left := left - len(x.mngt);
-      assign(y(left downto left-len(x.row)+1), vectorify(x.row, y(left downto left-len(x.row)+1)));
-      left := left - len(x.row);
+      assign(y(left downto left-len(x.rows)+1), vectorify(x.rows, y(left downto left-len(x.rows)+1)));
+      left := left - len(x.rows);
       assign(y(left downto left-len(x.f2e)+1), vectorify(x.f2e, y(left downto left-len(x.f2e)+1)));
     end if;
     return y;
@@ -6377,16 +5356,16 @@ package body daq_defs is
       left := left + len(x.sys);
       assign(y(left to left+len(x.mngt)-1), convert(x.mngt, y(left to left+len(x.mngt)-1)));
       left := left + len(x.mngt);
-      assign(y(left to left+len(x.row)-1), convert(x.row, y(left to left+len(x.row)-1)));
-      left := left + len(x.row);
+      assign(y(left to left+len(x.rows)-1), convert(x.rows, y(left to left+len(x.rows)-1)));
+      left := left + len(x.rows);
       assign(y(left to left+len(x.f2e)-1), convert(x.f2e, y(left to left+len(x.f2e)-1)));
     else
       assign(y(left downto left-len(x.sys)+1), convert(x.sys, y(left downto left-len(x.sys)+1)));
       left := left - len(x.sys);
       assign(y(left downto left-len(x.mngt)+1), convert(x.mngt, y(left downto left-len(x.mngt)+1)));
       left := left - len(x.mngt);
-      assign(y(left downto left-len(x.row)+1), convert(x.row, y(left downto left-len(x.row)+1)));
-      left := left - len(x.row);
+      assign(y(left downto left-len(x.rows)+1), convert(x.rows, y(left downto left-len(x.rows)+1)));
+      left := left - len(x.rows);
       assign(y(left downto left-len(x.f2e)+1), convert(x.f2e, y(left downto left-len(x.f2e)+1)));
     end if;
     return y;
@@ -6400,16 +5379,16 @@ package body daq_defs is
       left := left + len(y.sys);
       y.mngt := structify(x(left to left+len(y.mngt)-1), y.mngt);
       left := left + len(y.mngt);
-      y.row := structify(x(left to left+len(y.row)-1), y.row);
-      left := left + len(y.row);
+      y.rows := structify(x(left to left+len(y.rows)-1), y.rows);
+      left := left + len(y.rows);
       y.f2e := structify(x(left to left+len(y.f2e)-1), y.f2e);
     else
       y.sys := structify(x(left downto left-len(y.sys)+1), y.sys);
       left := left - len(y.sys);
       y.mngt := structify(x(left downto left-len(y.mngt)+1), y.mngt);
       left := left - len(y.mngt);
-      y.row := structify(x(left downto left-len(y.row)+1), y.row);
-      left := left - len(y.row);
+      y.rows := structify(x(left downto left-len(y.rows)+1), y.rows);
+      left := left - len(y.rows);
       y.f2e := structify(x(left downto left-len(y.f2e)+1), y.f2e);
     end if;
     return y;
@@ -6423,16 +5402,16 @@ package body daq_defs is
       left := left + len(y.sys);
       y.mngt := convert(x(left to left+len(y.mngt)-1), y.mngt);
       left := left + len(y.mngt);
-      y.row := convert(x(left to left+len(y.row)-1), y.row);
-      left := left + len(y.row);
+      y.rows := convert(x(left to left+len(y.rows)-1), y.rows);
+      left := left + len(y.rows);
       y.f2e := convert(x(left to left+len(y.f2e)-1), y.f2e);
     else
       y.sys := convert(x(left downto left-len(y.sys)+1), y.sys);
       left := left - len(y.sys);
       y.mngt := convert(x(left downto left-len(y.mngt)+1), y.mngt);
       left := left - len(y.mngt);
-      y.row := convert(x(left downto left-len(y.row)+1), y.row);
-      left := left - len(y.row);
+      y.rows := convert(x(left downto left-len(y.rows)+1), y.rows);
+      left := left - len(y.rows);
       y.f2e := convert(x(left downto left-len(y.f2e)+1), y.f2e);
     end if;
     return y;
@@ -6442,7 +5421,7 @@ package body daq_defs is
   begin
     y.sys := nullify(t.sys);
     y.mngt := nullify(t.mngt);
-    y.row := nullify(t.row);
+    y.rows := nullify(t.rows);
     y.f2e := nullify(t.f2e);
     return y;
   end function nullify;
@@ -6451,7 +5430,7 @@ package body daq_defs is
   begin
     y.sys := zeroed(t.sys);
     y.mngt := zeroed(t.mngt);
-    y.row := zeroed(t.row);
+    y.rows := zeroed(t.rows);
     y.f2e := zeroed(t.f2e);
     return y;
   end function zeroed;
@@ -6459,14 +5438,14 @@ package body daq_defs is
   function len(x: daq_pbldr_ort) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.row);
+    l := l + len(x.rows);
     l := l + len(x.f2e);
     return l;
   end function len;
   function width(x: daq_pbldr_ort) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.row);
+    l := l + width(x.rows);
     l := l + width(x.f2e);
     return l;
   end function width;
@@ -6475,12 +5454,12 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.row)-1), vectorify(x.row, y(left to left+len(x.row)-1)));
-      left := left + len(x.row);
+      assign(y(left to left+len(x.rows)-1), vectorify(x.rows, y(left to left+len(x.rows)-1)));
+      left := left + len(x.rows);
       assign(y(left to left+len(x.f2e)-1), vectorify(x.f2e, y(left to left+len(x.f2e)-1)));
     else
-      assign(y(left downto left-len(x.row)+1), vectorify(x.row, y(left downto left-len(x.row)+1)));
-      left := left - len(x.row);
+      assign(y(left downto left-len(x.rows)+1), vectorify(x.rows, y(left downto left-len(x.rows)+1)));
+      left := left - len(x.rows);
       assign(y(left downto left-len(x.f2e)+1), vectorify(x.f2e, y(left downto left-len(x.f2e)+1)));
     end if;
     return y;
@@ -6490,12 +5469,12 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.row)-1), convert(x.row, y(left to left+len(x.row)-1)));
-      left := left + len(x.row);
+      assign(y(left to left+len(x.rows)-1), convert(x.rows, y(left to left+len(x.rows)-1)));
+      left := left + len(x.rows);
       assign(y(left to left+len(x.f2e)-1), convert(x.f2e, y(left to left+len(x.f2e)-1)));
     else
-      assign(y(left downto left-len(x.row)+1), convert(x.row, y(left downto left-len(x.row)+1)));
-      left := left - len(x.row);
+      assign(y(left downto left-len(x.rows)+1), convert(x.rows, y(left downto left-len(x.rows)+1)));
+      left := left - len(x.rows);
       assign(y(left downto left-len(x.f2e)+1), convert(x.f2e, y(left downto left-len(x.f2e)+1)));
     end if;
     return y;
@@ -6505,12 +5484,12 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.row := structify(x(left to left+len(y.row)-1), y.row);
-      left := left + len(y.row);
+      y.rows := structify(x(left to left+len(y.rows)-1), y.rows);
+      left := left + len(y.rows);
       y.f2e := structify(x(left to left+len(y.f2e)-1), y.f2e);
     else
-      y.row := structify(x(left downto left-len(y.row)+1), y.row);
-      left := left - len(y.row);
+      y.rows := structify(x(left downto left-len(y.rows)+1), y.rows);
+      left := left - len(y.rows);
       y.f2e := structify(x(left downto left-len(y.f2e)+1), y.f2e);
     end if;
     return y;
@@ -6520,12 +5499,12 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.row := convert(x(left to left+len(y.row)-1), y.row);
-      left := left + len(y.row);
+      y.rows := convert(x(left to left+len(y.rows)-1), y.rows);
+      left := left + len(y.rows);
       y.f2e := convert(x(left to left+len(y.f2e)-1), y.f2e);
     else
-      y.row := convert(x(left downto left-len(y.row)+1), y.row);
-      left := left - len(y.row);
+      y.rows := convert(x(left downto left-len(y.rows)+1), y.rows);
+      left := left - len(y.rows);
       y.f2e := convert(x(left downto left-len(y.f2e)+1), y.f2e);
     end if;
     return y;
@@ -6533,14 +5512,14 @@ package body daq_defs is
   function nullify(t: daq_pbldr_ort) return daq_pbldr_ort is
   variable y: daq_pbldr_ort;
   begin
-    y.row := nullify(t.row);
+    y.rows := nullify(t.rows);
     y.f2e := nullify(t.f2e);
     return y;
   end function nullify;
   function zeroed(t: daq_pbldr_ort) return daq_pbldr_ort is
   variable y: daq_pbldr_ort;
   begin
-    y.row := zeroed(t.row);
+    y.rows := zeroed(t.rows);
     y.f2e := zeroed(t.f2e);
     return y;
   end function zeroed;
@@ -6631,6 +5610,119 @@ package body daq_defs is
   begin
     y.i := zeroed(t.i);
     y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
+
+  function len(x: rows_to_mngt_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: rows_to_mngt_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: rows_to_mngt_rt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: rows_to_mngt_rt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: rows_to_mngt_rt) return rows_to_mngt_rt is
+    variable y : rows_to_mngt_rt;
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: rows_to_mngt_rt) return rows_to_mngt_rt is
+    variable y : rows_to_mngt_rt;
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: rows_to_mngt_rt) return rows_to_mngt_rt is
+    variable y : rows_to_mngt_rt;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: rows_to_mngt_rt) return rows_to_mngt_rt is
+    variable y : rows_to_mngt_rt;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
     return y;
   end function zeroed;
 
@@ -6728,7 +5820,7 @@ package body daq_defs is
   begin
     l := l + len(x.sys);
     l := l + len(x.ttc);
-    l := l + len(x.row);
+    l := l + len(x.rows);
     return l;
   end function len;
   function width(x: daq_mngt_irt) return natural is
@@ -6736,7 +5828,7 @@ package body daq_defs is
   begin
     l := l + width(x.sys);
     l := l + width(x.ttc);
-    l := l + width(x.row);
+    l := l + width(x.rows);
     return l;
   end function width;
   function vectorify(x: daq_mngt_irt; t: std_logic_vector) return std_logic_vector is
@@ -6748,13 +5840,13 @@ package body daq_defs is
       left := left + len(x.sys);
       assign(y(left to left+len(x.ttc)-1), vectorify(x.ttc, y(left to left+len(x.ttc)-1)));
       left := left + len(x.ttc);
-      assign(y(left to left+len(x.row)-1), vectorify(x.row, y(left to left+len(x.row)-1)));
+      assign(y(left to left+len(x.rows)-1), vectorify(x.rows, y(left to left+len(x.rows)-1)));
     else
       assign(y(left downto left-len(x.sys)+1), vectorify(x.sys, y(left downto left-len(x.sys)+1)));
       left := left - len(x.sys);
       assign(y(left downto left-len(x.ttc)+1), vectorify(x.ttc, y(left downto left-len(x.ttc)+1)));
       left := left - len(x.ttc);
-      assign(y(left downto left-len(x.row)+1), vectorify(x.row, y(left downto left-len(x.row)+1)));
+      assign(y(left downto left-len(x.rows)+1), vectorify(x.rows, y(left downto left-len(x.rows)+1)));
     end if;
     return y;
   end function vectorify;
@@ -6767,13 +5859,13 @@ package body daq_defs is
       left := left + len(x.sys);
       assign(y(left to left+len(x.ttc)-1), convert(x.ttc, y(left to left+len(x.ttc)-1)));
       left := left + len(x.ttc);
-      assign(y(left to left+len(x.row)-1), convert(x.row, y(left to left+len(x.row)-1)));
+      assign(y(left to left+len(x.rows)-1), convert(x.rows, y(left to left+len(x.rows)-1)));
     else
       assign(y(left downto left-len(x.sys)+1), convert(x.sys, y(left downto left-len(x.sys)+1)));
       left := left - len(x.sys);
       assign(y(left downto left-len(x.ttc)+1), convert(x.ttc, y(left downto left-len(x.ttc)+1)));
       left := left - len(x.ttc);
-      assign(y(left downto left-len(x.row)+1), convert(x.row, y(left downto left-len(x.row)+1)));
+      assign(y(left downto left-len(x.rows)+1), convert(x.rows, y(left downto left-len(x.rows)+1)));
     end if;
     return y;
   end function convert;
@@ -6786,13 +5878,13 @@ package body daq_defs is
       left := left + len(y.sys);
       y.ttc := structify(x(left to left+len(y.ttc)-1), y.ttc);
       left := left + len(y.ttc);
-      y.row := structify(x(left to left+len(y.row)-1), y.row);
+      y.rows := structify(x(left to left+len(y.rows)-1), y.rows);
     else
       y.sys := structify(x(left downto left-len(y.sys)+1), y.sys);
       left := left - len(y.sys);
       y.ttc := structify(x(left downto left-len(y.ttc)+1), y.ttc);
       left := left - len(y.ttc);
-      y.row := structify(x(left downto left-len(y.row)+1), y.row);
+      y.rows := structify(x(left downto left-len(y.rows)+1), y.rows);
     end if;
     return y;
   end function structify;
@@ -6805,13 +5897,13 @@ package body daq_defs is
       left := left + len(y.sys);
       y.ttc := convert(x(left to left+len(y.ttc)-1), y.ttc);
       left := left + len(y.ttc);
-      y.row := convert(x(left to left+len(y.row)-1), y.row);
+      y.rows := convert(x(left to left+len(y.rows)-1), y.rows);
     else
       y.sys := convert(x(left downto left-len(y.sys)+1), y.sys);
       left := left - len(y.sys);
       y.ttc := convert(x(left downto left-len(y.ttc)+1), y.ttc);
       left := left - len(y.ttc);
-      y.row := convert(x(left downto left-len(y.row)+1), y.row);
+      y.rows := convert(x(left downto left-len(y.rows)+1), y.rows);
     end if;
     return y;
   end function convert;
@@ -6820,7 +5912,7 @@ package body daq_defs is
   begin
     y.sys := nullify(t.sys);
     y.ttc := nullify(t.ttc);
-    y.row := nullify(t.row);
+    y.rows := nullify(t.rows);
     return y;
   end function nullify;
   function zeroed(t: daq_mngt_irt) return daq_mngt_irt is
@@ -6828,7 +5920,7 @@ package body daq_defs is
   begin
     y.sys := zeroed(t.sys);
     y.ttc := zeroed(t.ttc);
-    y.row := zeroed(t.row);
+    y.rows := zeroed(t.rows);
     return y;
   end function zeroed;
 
@@ -6838,6 +5930,7 @@ package body daq_defs is
     l := l + len(x.row);
     l := l + len(x.pbldr);
     l := l + len(x.err);
+    l := l + len(x.debug);
     return l;
   end function len;
   function width(x: daq_mngt_ort) return natural is
@@ -6846,6 +5939,7 @@ package body daq_defs is
     l := l + width(x.row);
     l := l + width(x.pbldr);
     l := l + width(x.err);
+    l := l + width(x.debug);
     return l;
   end function width;
   function vectorify(x: daq_mngt_ort; t: std_logic_vector) return std_logic_vector is
@@ -6858,12 +5952,16 @@ package body daq_defs is
       assign(y(left to left+len(x.pbldr)-1), vectorify(x.pbldr, y(left to left+len(x.pbldr)-1)));
       left := left + len(x.pbldr);
       assign(y(left to left+len(x.err)-1), vectorify(x.err, y(left to left+len(x.err)-1)));
+      left := left + len(x.err);
+      assign(y(left to left+len(x.debug)-1), vectorify(x.debug, y(left to left+len(x.debug)-1)));
     else
       assign(y(left downto left-len(x.row)+1), vectorify(x.row, y(left downto left-len(x.row)+1)));
       left := left - len(x.row);
       assign(y(left downto left-len(x.pbldr)+1), vectorify(x.pbldr, y(left downto left-len(x.pbldr)+1)));
       left := left - len(x.pbldr);
       assign(y(left downto left-len(x.err)+1), vectorify(x.err, y(left downto left-len(x.err)+1)));
+      left := left - len(x.err);
+      assign(y(left downto left-len(x.debug)+1), vectorify(x.debug, y(left downto left-len(x.debug)+1)));
     end if;
     return y;
   end function vectorify;
@@ -6877,12 +5975,16 @@ package body daq_defs is
       assign(y(left to left+len(x.pbldr)-1), convert(x.pbldr, y(left to left+len(x.pbldr)-1)));
       left := left + len(x.pbldr);
       assign(y(left to left+len(x.err)-1), convert(x.err, y(left to left+len(x.err)-1)));
+      left := left + len(x.err);
+      assign(y(left to left+len(x.debug)-1), convert(x.debug, y(left to left+len(x.debug)-1)));
     else
       assign(y(left downto left-len(x.row)+1), convert(x.row, y(left downto left-len(x.row)+1)));
       left := left - len(x.row);
       assign(y(left downto left-len(x.pbldr)+1), convert(x.pbldr, y(left downto left-len(x.pbldr)+1)));
       left := left - len(x.pbldr);
       assign(y(left downto left-len(x.err)+1), convert(x.err, y(left downto left-len(x.err)+1)));
+      left := left - len(x.err);
+      assign(y(left downto left-len(x.debug)+1), convert(x.debug, y(left downto left-len(x.debug)+1)));
     end if;
     return y;
   end function convert;
@@ -6896,12 +5998,16 @@ package body daq_defs is
       y.pbldr := structify(x(left to left+len(y.pbldr)-1), y.pbldr);
       left := left + len(y.pbldr);
       y.err := structify(x(left to left+len(y.err)-1), y.err);
+      left := left + len(y.err);
+      y.debug := structify(x(left to left+len(y.debug)-1), y.debug);
     else
       y.row := structify(x(left downto left-len(y.row)+1), y.row);
       left := left - len(y.row);
       y.pbldr := structify(x(left downto left-len(y.pbldr)+1), y.pbldr);
       left := left - len(y.pbldr);
       y.err := structify(x(left downto left-len(y.err)+1), y.err);
+      left := left - len(y.err);
+      y.debug := structify(x(left downto left-len(y.debug)+1), y.debug);
     end if;
     return y;
   end function structify;
@@ -6915,12 +6021,16 @@ package body daq_defs is
       y.pbldr := convert(x(left to left+len(y.pbldr)-1), y.pbldr);
       left := left + len(y.pbldr);
       y.err := convert(x(left to left+len(y.err)-1), y.err);
+      left := left + len(y.err);
+      y.debug := convert(x(left to left+len(y.debug)-1), y.debug);
     else
       y.row := convert(x(left downto left-len(y.row)+1), y.row);
       left := left - len(y.row);
       y.pbldr := convert(x(left downto left-len(y.pbldr)+1), y.pbldr);
       left := left - len(y.pbldr);
       y.err := convert(x(left downto left-len(y.err)+1), y.err);
+      left := left - len(y.err);
+      y.debug := convert(x(left downto left-len(y.debug)+1), y.debug);
     end if;
     return y;
   end function convert;
@@ -6930,6 +6040,7 @@ package body daq_defs is
     y.row := nullify(t.row);
     y.pbldr := nullify(t.pbldr);
     y.err := nullify(t.err);
+    y.debug := nullify(t.debug);
     return y;
   end function nullify;
   function zeroed(t: daq_mngt_ort) return daq_mngt_ort is
@@ -6938,6 +6049,7 @@ package body daq_defs is
     y.row := zeroed(t.row);
     y.pbldr := zeroed(t.pbldr);
     y.err := zeroed(t.err);
+    y.debug := zeroed(t.debug);
     return y;
   end function zeroed;
 

@@ -1,0 +1,5 @@
+UserLogic/daq/autogen/daq_config_defs.vhd
+UserLogic/daq/autogen/daq_defs.vhd
+UserLogic/daq/autogen/daq_row_defs.vhd
+UserLogic/daq/autogen/daq_data_path_defs.vhd
+UserLogic/daq/autogen/daq_trigger_path_defs.vhd
