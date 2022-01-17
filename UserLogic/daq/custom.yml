@@ -4,8 +4,6 @@
 
 - DAQ_MAX_DATA_WIDTH: [qualifier: constant, type: integer, value: 256]
 
-- DAQ_FELIX_STREAM_WIDTH: [qualifier: constant, type: integer, value: 64]
-
 - DAQ_MAX_PIPELINES: [qualifier: constant, type: integer, value: 40]
 
 

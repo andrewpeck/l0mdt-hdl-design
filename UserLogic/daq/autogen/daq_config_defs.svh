@@ -13,11 +13,17 @@
 
   parameter int  DAQ_MAX_PIPELINES = 40;
 
-  parameter int  DAQ_MAX_COUNTER_WIDTH = 32;
-
   parameter int  DAQ_MAX_DATA_WIDTH = 256;
 
-  parameter int  DAQ_FELIX_STREAM_WIDTH = 64;
+  parameter int  DAQ_DEFAULT_FIFO_DEPTH = 1024;
+
+  parameter int  DAQ_DEFAULT_COUNTER_WIDTH = 32;
+
+  parameter int  DAQ_DEFAULT_LOWER_WINDOW_SIZE;
+
+  parameter int  DAQ_DEFAULT_UPPER_WINDOW_SIZE;
+
+  parameter int  DAQ_DEFAULT_WINDOW_LATENCY;
 
 
 

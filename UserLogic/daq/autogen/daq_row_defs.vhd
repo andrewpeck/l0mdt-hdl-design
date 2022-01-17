@@ -214,7 +214,7 @@ package daq_row_defs is
   function nullify(t: data_node_ert) return data_node_ert;
   function zeroed(t: data_node_ert) return data_node_ert;
 
-  subtype data_node_ivt is std_logic_vector(299-1 downto 0);
+  subtype data_node_ivt is std_logic_vector(300-1 downto 0);
 
   type header_node_grt is record
     COUNTER_WIDTH : natural;

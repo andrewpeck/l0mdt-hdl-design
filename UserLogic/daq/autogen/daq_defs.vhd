@@ -17,16 +17,6 @@ use daq_def.daq_config_defs.all;
 
 package daq_defs is
 
-  type daq_integer_at is array(integer range <>) of integer;
-  function len(x: daq_integer_at) return natural;
-  function width(x: daq_integer_at) return natural;
-  function vectorify(x: daq_integer_at; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_integer_at; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: daq_integer_at) return daq_integer_at;
-  function convert(x: std_logic_vector; t: daq_integer_at) return daq_integer_at;
-  function nullify(x: daq_integer_at) return daq_integer_at;
-  function zeroed(x: daq_integer_at) return daq_integer_at;
-
   subtype daq_bcid_t is unsigned(12-1 downto 0);
 
   constant DAQ_MAX_ROWS : integer := DAQ_MAX_STREAMS + 1;
@@ -37,6 +27,7 @@ package daq_defs is
     bcid : daq_bcid_t;
     valid : std_logic;
     data : daq_stream_data_t;
+    enable : std_logic;
   end record daq_stream_rt;
   function len(x: daq_stream_rt) return natural;
   function width(x: daq_stream_rt) return natural;
@@ -70,15 +61,15 @@ package daq_defs is
   function nullify(t: daq_stream_struct_t) return daq_stream_struct_t;
   function zeroed(t: daq_stream_struct_t) return daq_stream_struct_t;
 
-  type daq_branch_struct_t is array(0 to DAQ_MAX_STREAMS-1) of daq_stream_struct_t;
-  function len(x: daq_branch_struct_t) return natural;
-  function width(x: daq_branch_struct_t) return natural;
-  function vectorify(x: daq_branch_struct_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_branch_struct_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: daq_branch_struct_t) return daq_branch_struct_t;
-  function convert(x: std_logic_vector; t: daq_branch_struct_t) return daq_branch_struct_t;
-  function nullify(x: daq_branch_struct_t) return daq_branch_struct_t;
-  function zeroed(x: daq_branch_struct_t) return daq_branch_struct_t;
+  type daq_branch_struct_at is array(0 to DAQ_MAX_STREAMS-1) of daq_stream_struct_t;
+  function len(x: daq_branch_struct_at) return natural;
+  function width(x: daq_branch_struct_at) return natural;
+  function vectorify(x: daq_branch_struct_at; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_branch_struct_at; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: daq_branch_struct_at) return daq_branch_struct_at;
+  function convert(x: std_logic_vector; t: daq_branch_struct_at) return daq_branch_struct_at;
+  function nullify(x: daq_branch_struct_at) return daq_branch_struct_at;
+  function zeroed(x: daq_branch_struct_at) return daq_branch_struct_at;
 
   type daq_branches_t is array(DAQ_MAX_BRANCHES-1 downto 0) of daq_branch_t;
   function len(x: daq_branches_t) return natural;
@@ -100,7 +91,7 @@ package daq_defs is
   function nullify(x: daq_branches_mask_at) return daq_branches_mask_at;
   function zeroed(x: daq_branches_mask_at) return daq_branches_mask_at;
 
-  type daq_branches_map_at is array(0 to DAQ_MAX_BRANCHES-1) of daq_branch_struct_t;
+  type daq_branches_map_at is array(0 to DAQ_MAX_BRANCHES-1) of daq_branch_struct_at;
   function len(x: daq_branches_map_at) return natural;
   function width(x: daq_branches_map_at) return natural;
   function vectorify(x: daq_branches_map_at; t: std_logic_vector) return std_logic_vector;
@@ -143,12 +134,12 @@ package daq_defs is
 
   type daq_hdr_extra_rt is record
     daq_bcid : daq_bcid_t;
-    win_start : daq_bcid_t;
-    win_width : daq_bcid_t;
-    latency_ref : daq_bcid_t;
-    win_lower_ref : daq_bcid_t;
-    win_upper_ref : daq_bcid_t;
-    bcid : daq_bcid_t;
+    window_start : daq_bcid_t;
+    window_width : daq_bcid_t;
+    window_latency : daq_bcid_t;
+    lower_window_size : daq_bcid_t;
+    upper_window_size : daq_bcid_t;
+    sys_bcid : daq_bcid_t;
   end record daq_hdr_extra_rt;
   function len(x: daq_hdr_extra_rt) return natural;
   function width(x: daq_hdr_extra_rt) return natural;
@@ -174,23 +165,39 @@ package daq_defs is
 
   subtype daq_hdr_vt is std_logic_vector(148-1 downto 0);
 
-  type daq_cnt_rt is record
+  type daq_counters_rt is record
     daq_bcid : daq_bcid_t;
-    win_start : daq_bcid_t;
-  end record daq_cnt_rt;
-  function len(x: daq_cnt_rt) return natural;
-  function width(x: daq_cnt_rt) return natural;
-  function vectorify(x: daq_cnt_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_cnt_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_cnt_rt) return daq_cnt_rt;
-  function convert(x: in std_logic_vector; t: daq_cnt_rt) return daq_cnt_rt;
-  function nullify(t: daq_cnt_rt) return daq_cnt_rt;
-  function zeroed(t: daq_cnt_rt) return daq_cnt_rt;
+    sys_bcid : daq_bcid_t;
+    lower_window_limit : daq_bcid_t;
+    upper_window_limit : daq_bcid_t;
+  end record daq_counters_rt;
+  function len(x: daq_counters_rt) return natural;
+  function width(x: daq_counters_rt) return natural;
+  function vectorify(x: daq_counters_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_counters_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_counters_rt) return daq_counters_rt;
+  function convert(x: in std_logic_vector; t: daq_counters_rt) return daq_counters_rt;
+  function nullify(t: daq_counters_rt) return daq_counters_rt;
+  function zeroed(t: daq_counters_rt) return daq_counters_rt;
+
+  type daq_window_params_rt is record
+    lower_size : daq_bcid_t;
+    upper_size : daq_bcid_t;
+    latency : daq_bcid_t;
+  end record daq_window_params_rt;
+  function len(x: daq_window_params_rt) return natural;
+  function width(x: daq_window_params_rt) return natural;
+  function vectorify(x: daq_window_params_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_window_params_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_window_params_rt) return daq_window_params_rt;
+  function convert(x: in std_logic_vector; t: daq_window_params_rt) return daq_window_params_rt;
+  function nullify(t: daq_window_params_rt) return daq_window_params_rt;
+  function zeroed(t: daq_window_params_rt) return daq_window_params_rt;
 
   type stability_rt is record
-    win_upper : std_logic;
-    win_lower : std_logic;
-    latency : std_logic;
+    upper_window_limit : std_logic;
+    lower_window_limit : std_logic;
+    daq_bcid : std_logic;
   end record stability_rt;
   function len(x: stability_rt) return natural;
   function width(x: stability_rt) return natural;
@@ -202,23 +209,6 @@ package daq_defs is
   function zeroed(t: stability_rt) return stability_rt;
 
   subtype stability_vt is std_logic_vector(3-1 downto 0);
-
-  type daq_win_rt is record
-    upper : daq_bcid_t;
-    lower : daq_bcid_t;
-    latency : daq_bcid_t;
-    width : daq_bcid_t;
-  end record daq_win_rt;
-  function len(x: daq_win_rt) return natural;
-  function width(x: daq_win_rt) return natural;
-  function vectorify(x: daq_win_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_win_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_win_rt) return daq_win_rt;
-  function convert(x: in std_logic_vector; t: daq_win_rt) return daq_win_rt;
-  function nullify(t: daq_win_rt) return daq_win_rt;
-  function zeroed(t: daq_win_rt) return daq_win_rt;
-
-  subtype pbldr_payload_t is std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
 
   type forward_rt is record
     nempty : std_logic;
@@ -298,32 +288,32 @@ package daq_defs is
 
   subtype row_to_pbldr_rt is forward_rt;
 
-  type rows_to_pbldr_rt is array(DAQ_MAX_ROWS-1 downto 0) of row_to_pbldr_rt;
-  function len(x: rows_to_pbldr_rt) return natural;
-  function width(x: rows_to_pbldr_rt) return natural;
-  function vectorify(x: rows_to_pbldr_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: rows_to_pbldr_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: rows_to_pbldr_rt) return rows_to_pbldr_rt;
-  function convert(x: std_logic_vector; t: rows_to_pbldr_rt) return rows_to_pbldr_rt;
-  function nullify(x: rows_to_pbldr_rt) return rows_to_pbldr_rt;
-  function zeroed(x: rows_to_pbldr_rt) return rows_to_pbldr_rt;
+  type rows_to_pbldr_at is array(DAQ_MAX_ROWS-1 downto 0) of row_to_pbldr_rt;
+  function len(x: rows_to_pbldr_at) return natural;
+  function width(x: rows_to_pbldr_at) return natural;
+  function vectorify(x: rows_to_pbldr_at; t: std_logic_vector) return std_logic_vector;
+  function convert(x: rows_to_pbldr_at; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: rows_to_pbldr_at) return rows_to_pbldr_at;
+  function convert(x: std_logic_vector; t: rows_to_pbldr_at) return rows_to_pbldr_at;
+  function nullify(x: rows_to_pbldr_at) return rows_to_pbldr_at;
+  function zeroed(x: rows_to_pbldr_at) return rows_to_pbldr_at;
 
   subtype pbldr_to_row_rt is backward_rt;
 
-  type pbldr_to_rows_rt is array(DAQ_MAX_ROWS-1 downto 0) of pbldr_to_row_rt;
-  function len(x: pbldr_to_rows_rt) return natural;
-  function width(x: pbldr_to_rows_rt) return natural;
-  function vectorify(x: pbldr_to_rows_rt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: pbldr_to_rows_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
-  function convert(x: std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
-  function nullify(x: pbldr_to_rows_rt) return pbldr_to_rows_rt;
-  function zeroed(x: pbldr_to_rows_rt) return pbldr_to_rows_rt;
+  type pbldr_to_rows_at is array(DAQ_MAX_ROWS-1 downto 0) of pbldr_to_row_rt;
+  function len(x: pbldr_to_rows_at) return natural;
+  function width(x: pbldr_to_rows_at) return natural;
+  function vectorify(x: pbldr_to_rows_at; t: std_logic_vector) return std_logic_vector;
+  function convert(x: pbldr_to_rows_at; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: pbldr_to_rows_at) return pbldr_to_rows_at;
+  function convert(x: std_logic_vector; t: pbldr_to_rows_at) return pbldr_to_rows_at;
+  function nullify(x: pbldr_to_rows_at) return pbldr_to_rows_at;
+  function zeroed(x: pbldr_to_rows_at) return pbldr_to_rows_at;
 
   type req_to_row_common_rt is record
-    strb : std_logic;
-    win_start : daq_bcid_t;
-    win_width : daq_bcid_t;
+    req_strb : std_logic;
+    window_start : daq_bcid_t;
+    window_width : daq_bcid_t;
   end record req_to_row_common_rt;
   function len(x: req_to_row_common_rt) return natural;
   function width(x: req_to_row_common_rt) return natural;
@@ -335,11 +325,11 @@ package daq_defs is
   function zeroed(t: req_to_row_common_rt) return req_to_row_common_rt;
 
   type req_to_row_extra_rt is record
-    latency : daq_bcid_t;
-    win_lower : daq_bcid_t;
-    win_upper : daq_bcid_t;
+    window_latency : daq_bcid_t;
+    lower_window_size : daq_bcid_t;
+    upper_window_size : daq_bcid_t;
     daq_bcid : daq_bcid_t;
-    bcid : daq_bcid_t;
+    sys_bcid : daq_bcid_t;
     evid : ttc_evid_t;
   end record req_to_row_extra_rt;
   function len(x: req_to_row_extra_rt) return natural;
@@ -376,11 +366,9 @@ package daq_defs is
   function nullify(t: felix_to_daq_rt) return felix_to_daq_rt;
   function zeroed(t: felix_to_daq_rt) return felix_to_daq_rt;
 
-  subtype felix_data_t is std_logic_vector(DAQ_FELIX_STREAM_WIDTH+2-1 downto 0);
-
   type daq_to_felix_rt is record
     wr_en : std_logic;
-    data : felix_data_t;
+    data : std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
   end record daq_to_felix_rt;
   function len(x: daq_to_felix_rt) return natural;
   function width(x: daq_to_felix_rt) return natural;
@@ -393,9 +381,9 @@ package daq_defs is
 
   type ctrl_to_daq_rt is record
     wr_en : std_logic;
-    latency : daq_bcid_t;
-    win_lower : daq_bcid_t;
-    win_upper : daq_bcid_t;
+    window_latency : daq_bcid_t;
+    lower_window_size : daq_bcid_t;
+    upper_window_size : daq_bcid_t;
   end record ctrl_to_daq_rt;
   function len(x: ctrl_to_daq_rt) return natural;
   function width(x: ctrl_to_daq_rt) return natural;
@@ -474,37 +462,6 @@ package daq_defs is
 
   subtype daq_req_ovt is std_logic_vector(120-1 downto 0);
 
-  type daq_header_row_grt is record
-    PIPELINES : natural;
-    INPUT_DATA_WIDTH : natural;
-    OUTPUT_DATA_WIDTH : natural;
-    COUNTER_WIDTH : natural;
-  end record daq_header_row_grt;
-  function len(x: daq_header_row_grt) return natural;
-  function width(x: daq_header_row_grt) return natural;
-  function vectorify(x: daq_header_row_grt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_header_row_grt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_header_row_grt) return daq_header_row_grt;
-  function convert(x: in std_logic_vector; t: daq_header_row_grt) return daq_header_row_grt;
-  function nullify(t: daq_header_row_grt) return daq_header_row_grt;
-  function zeroed(t: daq_header_row_grt) return daq_header_row_grt;
-
-  type daq_data_row_grt is record
-    PIPELINES : natural;
-    INPUT_DATA_WIDTH : natural;
-    OUTPUT_DATA_WIDTH : natural;
-    COUNTER_WIDTH : natural;
-    FIFO_DEPTH : natural;
-  end record daq_data_row_grt;
-  function len(x: daq_data_row_grt) return natural;
-  function width(x: daq_data_row_grt) return natural;
-  function vectorify(x: daq_data_row_grt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_data_row_grt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_data_row_grt) return daq_data_row_grt;
-  function convert(x: in std_logic_vector; t: daq_data_row_grt) return daq_data_row_grt;
-  function nullify(t: daq_data_row_grt) return daq_data_row_grt;
-  function zeroed(t: daq_data_row_grt) return daq_data_row_grt;
-
   type daq_row_ort is record
     mngt : row_to_mngt_rt;
     pbldr : row_to_pbldr_rt;
@@ -582,27 +539,14 @@ package daq_defs is
 
   subtype daq_header_row_ivt is std_logic_vector(192-1 downto 0);
 
-  subtype daq_data_row_ivt is std_logic_vector(369-1 downto 0);
+  subtype daq_data_row_ivt is std_logic_vector(370-1 downto 0);
 
   subtype daq_row_ovt is std_logic_vector(378-1 downto 0);
-
-  type daq_pbldr_grt is record
-    DATA_WIDTH : natural;
-    STREAMS : natural;
-  end record daq_pbldr_grt;
-  function len(x: daq_pbldr_grt) return natural;
-  function width(x: daq_pbldr_grt) return natural;
-  function vectorify(x: daq_pbldr_grt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_pbldr_grt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_pbldr_grt) return daq_pbldr_grt;
-  function convert(x: in std_logic_vector; t: daq_pbldr_grt) return daq_pbldr_grt;
-  function nullify(t: daq_pbldr_grt) return daq_pbldr_grt;
-  function zeroed(t: daq_pbldr_grt) return daq_pbldr_grt;
 
   type daq_pbldr_irt is record
     sys : daq_sys_rt;
     mngt : mngt_to_pbldr_rt;
-    rows : rows_to_pbldr_rt;
+    rows : rows_to_pbldr_at;
     f2e : felix_to_daq_rt;
   end record daq_pbldr_irt;
   function len(x: daq_pbldr_irt) return natural;
@@ -615,7 +559,7 @@ package daq_defs is
   function zeroed(t: daq_pbldr_irt) return daq_pbldr_irt;
 
   type daq_pbldr_ort is record
-    rows : pbldr_to_rows_rt;
+    rows : pbldr_to_rows_at;
     f2e : daq_to_felix_rt;
   end record daq_pbldr_ort;
   function len(x: daq_pbldr_ort) return natural;
@@ -642,7 +586,7 @@ package daq_defs is
 
   subtype daq_pbldr_ivt is std_logic_vector(1803-1 downto 0);
 
-  subtype daq_pbldr_ovt is std_logic_vector(74-1 downto 0);
+  subtype daq_pbldr_ovt is std_logic_vector(264-1 downto 0);
 
   type rows_to_mngt_rt is array(DAQ_MAX_STREAMS+1-1 downto 0) of row_to_mngt_rt;
   function len(x: rows_to_mngt_rt) return natural;
@@ -653,19 +597,6 @@ package daq_defs is
   function convert(x: std_logic_vector; t: rows_to_mngt_rt) return rows_to_mngt_rt;
   function nullify(x: rows_to_mngt_rt) return rows_to_mngt_rt;
   function zeroed(x: rows_to_mngt_rt) return rows_to_mngt_rt;
-
-  type daq_mngt_grt is record
-    STREAMS : natural;
-    PIPELINES : natural;
-  end record daq_mngt_grt;
-  function len(x: daq_mngt_grt) return natural;
-  function width(x: daq_mngt_grt) return natural;
-  function vectorify(x: daq_mngt_grt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_mngt_grt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_mngt_grt) return daq_mngt_grt;
-  function convert(x: in std_logic_vector; t: daq_mngt_grt) return daq_mngt_grt;
-  function nullify(t: daq_mngt_grt) return daq_mngt_grt;
-  function zeroed(t: daq_mngt_grt) return daq_mngt_grt;
 
   type daq_mngt_irt is record
     sys : daq_sys_rt;
@@ -713,21 +644,6 @@ package daq_defs is
 
   subtype daq_mngt_ovt is std_logic_vector(115-1 downto 0);
 
-  type daq_algo_grt is record
-    PIPELINES : natural;
-    BRANCH_STRUCT : daq_branch_struct_t;
-    COUNTER_WIDTH : natural;
-    OUTPUT_DATA_WIDTH : natural;
-  end record daq_algo_grt;
-  function len(x: daq_algo_grt) return natural;
-  function width(x: daq_algo_grt) return natural;
-  function vectorify(x: daq_algo_grt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_algo_grt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_algo_grt) return daq_algo_grt;
-  function convert(x: in std_logic_vector; t: daq_algo_grt) return daq_algo_grt;
-  function nullify(t: daq_algo_grt) return daq_algo_grt;
-  function zeroed(t: daq_algo_grt) return daq_algo_grt;
-
   type daq_algo_irt is record
     sys : daq_sys_rt;
     ttc : ttc_ort;
@@ -770,11 +686,9 @@ package daq_defs is
   function nullify(t: daq_algo_ert) return daq_algo_ert;
   function zeroed(t: daq_algo_ert) return daq_algo_ert;
 
-  subtype daq_algo_gvt is std_logic_vector(480-1 downto 0);
+  subtype daq_algo_ivt is std_logic_vector(1741-1 downto 0);
 
-  subtype daq_algo_ivt is std_logic_vector(1735-1 downto 0);
-
-  subtype daq_algo_ovt is std_logic_vector(70-1 downto 0);
+  subtype daq_algo_ovt is std_logic_vector(260-1 downto 0);
 
   type mfelix_to_branch_at is array(0 to DAQ_MAX_BRANCHES-1) of felix_to_daq_rt;
   function len(x: mfelix_to_branch_at) return natural;
@@ -805,22 +719,6 @@ package daq_defs is
   function convert(x: std_logic_vector; t: top_to_status_at) return top_to_status_at;
   function nullify(x: top_to_status_at) return top_to_status_at;
   function zeroed(x: top_to_status_at) return top_to_status_at;
-
-  type daq_branch_grt is record
-    PIPELINES : natural;
-    BRANCHES_MASK : daq_branches_mask_at;
-    BRANCHES_STRUCT : daq_branches_map_at;
-    OUTPUT_DATA_WIDTH : natural;
-    COUNTER_WIDTH : natural;
-  end record daq_branch_grt;
-  function len(x: daq_branch_grt) return natural;
-  function width(x: daq_branch_grt) return natural;
-  function vectorify(x: daq_branch_grt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_branch_grt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_branch_grt) return daq_branch_grt;
-  function convert(x: in std_logic_vector; t: daq_branch_grt) return daq_branch_grt;
-  function nullify(t: daq_branch_grt) return daq_branch_grt;
-  function zeroed(t: daq_branch_grt) return daq_branch_grt;
 
   type daq_branch_irt is record
     sys : daq_sys_rt;
@@ -864,11 +762,9 @@ package daq_defs is
   function nullify(t: daq_branch_ert) return daq_branch_ert;
   function zeroed(t: daq_branch_ert) return daq_branch_ert;
 
-  subtype daq_branch_gvt is std_logic_vector(2592-1 downto 0);
+  subtype daq_branch_ivt is std_logic_vector(9846-1 downto 0);
 
-  subtype daq_branch_ivt is std_logic_vector(9810-1 downto 0);
-
-  subtype daq_branch_ovt is std_logic_vector(420-1 downto 0);
+  subtype daq_branch_ovt is std_logic_vector(1560-1 downto 0);
 
 end package daq_defs;
 
@@ -876,125 +772,13 @@ end package daq_defs;
 
 package body daq_defs is
 
-  function len(x: daq_integer_at) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * 32;
-    return l;
-  end function len;
-  function width(x: daq_integer_at) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * 32;
-    return l;
-  end function width;
-  function vectorify(x: daq_integer_at; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l : integer := 32;
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), vectorify(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), vectorify(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_integer_at; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l : integer := 32;
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), convert(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), convert(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function structify(x: std_logic_vector; t: daq_integer_at) return daq_integer_at is
-    variable y : daq_integer_at(t'range);
-    constant l : integer := 32;
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := structify(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := structify(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function structify;
-  function convert(x: std_logic_vector; t: daq_integer_at) return daq_integer_at is
-    variable y : daq_integer_at(t'range);
-    constant l : integer := 32;
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := convert(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := convert(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function nullify(x: daq_integer_at) return daq_integer_at is
-    variable y : daq_integer_at(x'range);
-  begin
-    l: for i in y'range loop
-      y(i) := nullify(y(i));
-    end loop l;
-    return y;
-  end function nullify;
-  function zeroed(x: daq_integer_at) return daq_integer_at is
-    variable y : daq_integer_at(x'range);
-  begin
-    l: for i in y'range loop
-      y(i) := zeroed(y(i));
-    end loop l;
-    return y;
-  end function zeroed;
-
   function len(x: daq_stream_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.bcid);
     l := l + len(x.valid);
     l := l + len(x.data);
+    l := l + len(x.enable);
     return l;
   end function len;
   function width(x: daq_stream_rt) return natural is
@@ -1003,6 +787,7 @@ package body daq_defs is
     l := l + width(x.bcid);
     l := l + width(x.valid);
     l := l + width(x.data);
+    l := l + width(x.enable);
     return l;
   end function width;
   function vectorify(x: daq_stream_rt; t: std_logic_vector) return std_logic_vector is
@@ -1015,12 +800,16 @@ package body daq_defs is
       assign(y(left to left+len(x.valid)-1), vectorify(x.valid, y(left to left+len(x.valid)-1)));
       left := left + len(x.valid);
       assign(y(left to left+len(x.data)-1), vectorify(x.data, y(left to left+len(x.data)-1)));
+      left := left + len(x.data);
+      assign(y(left to left+len(x.enable)-1), vectorify(x.enable, y(left to left+len(x.enable)-1)));
     else
       assign(y(left downto left-len(x.bcid)+1), vectorify(x.bcid, y(left downto left-len(x.bcid)+1)));
       left := left - len(x.bcid);
       assign(y(left downto left-len(x.valid)+1), vectorify(x.valid, y(left downto left-len(x.valid)+1)));
       left := left - len(x.valid);
       assign(y(left downto left-len(x.data)+1), vectorify(x.data, y(left downto left-len(x.data)+1)));
+      left := left - len(x.data);
+      assign(y(left downto left-len(x.enable)+1), vectorify(x.enable, y(left downto left-len(x.enable)+1)));
     end if;
     return y;
   end function vectorify;
@@ -1034,12 +823,16 @@ package body daq_defs is
       assign(y(left to left+len(x.valid)-1), convert(x.valid, y(left to left+len(x.valid)-1)));
       left := left + len(x.valid);
       assign(y(left to left+len(x.data)-1), convert(x.data, y(left to left+len(x.data)-1)));
+      left := left + len(x.data);
+      assign(y(left to left+len(x.enable)-1), convert(x.enable, y(left to left+len(x.enable)-1)));
     else
       assign(y(left downto left-len(x.bcid)+1), convert(x.bcid, y(left downto left-len(x.bcid)+1)));
       left := left - len(x.bcid);
       assign(y(left downto left-len(x.valid)+1), convert(x.valid, y(left downto left-len(x.valid)+1)));
       left := left - len(x.valid);
       assign(y(left downto left-len(x.data)+1), convert(x.data, y(left downto left-len(x.data)+1)));
+      left := left - len(x.data);
+      assign(y(left downto left-len(x.enable)+1), convert(x.enable, y(left downto left-len(x.enable)+1)));
     end if;
     return y;
   end function convert;
@@ -1053,12 +846,16 @@ package body daq_defs is
       y.valid := structify(x(left to left+len(y.valid)-1), y.valid);
       left := left + len(y.valid);
       y.data := structify(x(left to left+len(y.data)-1), y.data);
+      left := left + len(y.data);
+      y.enable := structify(x(left to left+len(y.enable)-1), y.enable);
     else
       y.bcid := structify(x(left downto left-len(y.bcid)+1), y.bcid);
       left := left - len(y.bcid);
       y.valid := structify(x(left downto left-len(y.valid)+1), y.valid);
       left := left - len(y.valid);
       y.data := structify(x(left downto left-len(y.data)+1), y.data);
+      left := left - len(y.data);
+      y.enable := structify(x(left downto left-len(y.enable)+1), y.enable);
     end if;
     return y;
   end function structify;
@@ -1072,12 +869,16 @@ package body daq_defs is
       y.valid := convert(x(left to left+len(y.valid)-1), y.valid);
       left := left + len(y.valid);
       y.data := convert(x(left to left+len(y.data)-1), y.data);
+      left := left + len(y.data);
+      y.enable := convert(x(left to left+len(y.enable)-1), y.enable);
     else
       y.bcid := convert(x(left downto left-len(y.bcid)+1), y.bcid);
       left := left - len(y.bcid);
       y.valid := convert(x(left downto left-len(y.valid)+1), y.valid);
       left := left - len(y.valid);
       y.data := convert(x(left downto left-len(y.data)+1), y.data);
+      left := left - len(y.data);
+      y.enable := convert(x(left downto left-len(y.enable)+1), y.enable);
     end if;
     return y;
   end function convert;
@@ -1087,6 +888,7 @@ package body daq_defs is
     y.bcid := nullify(t.bcid);
     y.valid := nullify(t.valid);
     y.data := nullify(t.data);
+    y.enable := nullify(t.enable);
     return y;
   end function nullify;
   function zeroed(t: daq_stream_rt) return daq_stream_rt is
@@ -1095,6 +897,7 @@ package body daq_defs is
     y.bcid := zeroed(t.bcid);
     y.valid := zeroed(t.valid);
     y.data := zeroed(t.data);
+    y.enable := zeroed(t.enable);
     return y;
   end function zeroed;
 
@@ -1300,19 +1103,19 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: daq_branch_struct_t) return natural is
+  function len(x: daq_branch_struct_at) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: daq_branch_struct_t) return natural is
+  function width(x: daq_branch_struct_at) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: daq_branch_struct_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_branch_struct_at; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -1333,7 +1136,7 @@ package body daq_defs is
     end if;
     return y;
   end function vectorify;
-  function convert(x: daq_branch_struct_t; t: std_logic_vector) return std_logic_vector is
+  function convert(x: daq_branch_struct_at; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -1354,8 +1157,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: daq_branch_struct_t) return daq_branch_struct_t is
-    variable y : daq_branch_struct_t;
+  function structify(x: std_logic_vector; t: daq_branch_struct_at) return daq_branch_struct_at is
+    variable y : daq_branch_struct_at;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1375,8 +1178,8 @@ package body daq_defs is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: daq_branch_struct_t) return daq_branch_struct_t is
-    variable y : daq_branch_struct_t;
+  function convert(x: std_logic_vector; t: daq_branch_struct_at) return daq_branch_struct_at is
+    variable y : daq_branch_struct_at;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1396,16 +1199,16 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function nullify(x: daq_branch_struct_t) return daq_branch_struct_t is
-    variable y : daq_branch_struct_t;
+  function nullify(x: daq_branch_struct_at) return daq_branch_struct_at is
+    variable y : daq_branch_struct_at;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: daq_branch_struct_t) return daq_branch_struct_t is
-    variable y : daq_branch_struct_t;
+  function zeroed(x: daq_branch_struct_at) return daq_branch_struct_at is
+    variable y : daq_branch_struct_at;
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -1974,24 +1777,24 @@ package body daq_defs is
     variable l : natural := 0;
   begin
     l := l + len(x.daq_bcid);
-    l := l + len(x.win_start);
-    l := l + len(x.win_width);
-    l := l + len(x.latency_ref);
-    l := l + len(x.win_lower_ref);
-    l := l + len(x.win_upper_ref);
-    l := l + len(x.bcid);
+    l := l + len(x.window_start);
+    l := l + len(x.window_width);
+    l := l + len(x.window_latency);
+    l := l + len(x.lower_window_size);
+    l := l + len(x.upper_window_size);
+    l := l + len(x.sys_bcid);
     return l;
   end function len;
   function width(x: daq_hdr_extra_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.daq_bcid);
-    l := l + width(x.win_start);
-    l := l + width(x.win_width);
-    l := l + width(x.latency_ref);
-    l := l + width(x.win_lower_ref);
-    l := l + width(x.win_upper_ref);
-    l := l + width(x.bcid);
+    l := l + width(x.window_start);
+    l := l + width(x.window_width);
+    l := l + width(x.window_latency);
+    l := l + width(x.lower_window_size);
+    l := l + width(x.upper_window_size);
+    l := l + width(x.sys_bcid);
     return l;
   end function width;
   function vectorify(x: daq_hdr_extra_rt; t: std_logic_vector) return std_logic_vector is
@@ -2001,31 +1804,31 @@ package body daq_defs is
     if t'ascending then
       assign(y(left to left+len(x.daq_bcid)-1), vectorify(x.daq_bcid, y(left to left+len(x.daq_bcid)-1)));
       left := left + len(x.daq_bcid);
-      assign(y(left to left+len(x.win_start)-1), vectorify(x.win_start, y(left to left+len(x.win_start)-1)));
-      left := left + len(x.win_start);
-      assign(y(left to left+len(x.win_width)-1), vectorify(x.win_width, y(left to left+len(x.win_width)-1)));
-      left := left + len(x.win_width);
-      assign(y(left to left+len(x.latency_ref)-1), vectorify(x.latency_ref, y(left to left+len(x.latency_ref)-1)));
-      left := left + len(x.latency_ref);
-      assign(y(left to left+len(x.win_lower_ref)-1), vectorify(x.win_lower_ref, y(left to left+len(x.win_lower_ref)-1)));
-      left := left + len(x.win_lower_ref);
-      assign(y(left to left+len(x.win_upper_ref)-1), vectorify(x.win_upper_ref, y(left to left+len(x.win_upper_ref)-1)));
-      left := left + len(x.win_upper_ref);
-      assign(y(left to left+len(x.bcid)-1), vectorify(x.bcid, y(left to left+len(x.bcid)-1)));
+      assign(y(left to left+len(x.window_start)-1), vectorify(x.window_start, y(left to left+len(x.window_start)-1)));
+      left := left + len(x.window_start);
+      assign(y(left to left+len(x.window_width)-1), vectorify(x.window_width, y(left to left+len(x.window_width)-1)));
+      left := left + len(x.window_width);
+      assign(y(left to left+len(x.window_latency)-1), vectorify(x.window_latency, y(left to left+len(x.window_latency)-1)));
+      left := left + len(x.window_latency);
+      assign(y(left to left+len(x.lower_window_size)-1), vectorify(x.lower_window_size, y(left to left+len(x.lower_window_size)-1)));
+      left := left + len(x.lower_window_size);
+      assign(y(left to left+len(x.upper_window_size)-1), vectorify(x.upper_window_size, y(left to left+len(x.upper_window_size)-1)));
+      left := left + len(x.upper_window_size);
+      assign(y(left to left+len(x.sys_bcid)-1), vectorify(x.sys_bcid, y(left to left+len(x.sys_bcid)-1)));
     else
       assign(y(left downto left-len(x.daq_bcid)+1), vectorify(x.daq_bcid, y(left downto left-len(x.daq_bcid)+1)));
       left := left - len(x.daq_bcid);
-      assign(y(left downto left-len(x.win_start)+1), vectorify(x.win_start, y(left downto left-len(x.win_start)+1)));
-      left := left - len(x.win_start);
-      assign(y(left downto left-len(x.win_width)+1), vectorify(x.win_width, y(left downto left-len(x.win_width)+1)));
-      left := left - len(x.win_width);
-      assign(y(left downto left-len(x.latency_ref)+1), vectorify(x.latency_ref, y(left downto left-len(x.latency_ref)+1)));
-      left := left - len(x.latency_ref);
-      assign(y(left downto left-len(x.win_lower_ref)+1), vectorify(x.win_lower_ref, y(left downto left-len(x.win_lower_ref)+1)));
-      left := left - len(x.win_lower_ref);
-      assign(y(left downto left-len(x.win_upper_ref)+1), vectorify(x.win_upper_ref, y(left downto left-len(x.win_upper_ref)+1)));
-      left := left - len(x.win_upper_ref);
-      assign(y(left downto left-len(x.bcid)+1), vectorify(x.bcid, y(left downto left-len(x.bcid)+1)));
+      assign(y(left downto left-len(x.window_start)+1), vectorify(x.window_start, y(left downto left-len(x.window_start)+1)));
+      left := left - len(x.window_start);
+      assign(y(left downto left-len(x.window_width)+1), vectorify(x.window_width, y(left downto left-len(x.window_width)+1)));
+      left := left - len(x.window_width);
+      assign(y(left downto left-len(x.window_latency)+1), vectorify(x.window_latency, y(left downto left-len(x.window_latency)+1)));
+      left := left - len(x.window_latency);
+      assign(y(left downto left-len(x.lower_window_size)+1), vectorify(x.lower_window_size, y(left downto left-len(x.lower_window_size)+1)));
+      left := left - len(x.lower_window_size);
+      assign(y(left downto left-len(x.upper_window_size)+1), vectorify(x.upper_window_size, y(left downto left-len(x.upper_window_size)+1)));
+      left := left - len(x.upper_window_size);
+      assign(y(left downto left-len(x.sys_bcid)+1), vectorify(x.sys_bcid, y(left downto left-len(x.sys_bcid)+1)));
     end if;
     return y;
   end function vectorify;
@@ -2036,31 +1839,31 @@ package body daq_defs is
     if t'ascending then
       assign(y(left to left+len(x.daq_bcid)-1), convert(x.daq_bcid, y(left to left+len(x.daq_bcid)-1)));
       left := left + len(x.daq_bcid);
-      assign(y(left to left+len(x.win_start)-1), convert(x.win_start, y(left to left+len(x.win_start)-1)));
-      left := left + len(x.win_start);
-      assign(y(left to left+len(x.win_width)-1), convert(x.win_width, y(left to left+len(x.win_width)-1)));
-      left := left + len(x.win_width);
-      assign(y(left to left+len(x.latency_ref)-1), convert(x.latency_ref, y(left to left+len(x.latency_ref)-1)));
-      left := left + len(x.latency_ref);
-      assign(y(left to left+len(x.win_lower_ref)-1), convert(x.win_lower_ref, y(left to left+len(x.win_lower_ref)-1)));
-      left := left + len(x.win_lower_ref);
-      assign(y(left to left+len(x.win_upper_ref)-1), convert(x.win_upper_ref, y(left to left+len(x.win_upper_ref)-1)));
-      left := left + len(x.win_upper_ref);
-      assign(y(left to left+len(x.bcid)-1), convert(x.bcid, y(left to left+len(x.bcid)-1)));
+      assign(y(left to left+len(x.window_start)-1), convert(x.window_start, y(left to left+len(x.window_start)-1)));
+      left := left + len(x.window_start);
+      assign(y(left to left+len(x.window_width)-1), convert(x.window_width, y(left to left+len(x.window_width)-1)));
+      left := left + len(x.window_width);
+      assign(y(left to left+len(x.window_latency)-1), convert(x.window_latency, y(left to left+len(x.window_latency)-1)));
+      left := left + len(x.window_latency);
+      assign(y(left to left+len(x.lower_window_size)-1), convert(x.lower_window_size, y(left to left+len(x.lower_window_size)-1)));
+      left := left + len(x.lower_window_size);
+      assign(y(left to left+len(x.upper_window_size)-1), convert(x.upper_window_size, y(left to left+len(x.upper_window_size)-1)));
+      left := left + len(x.upper_window_size);
+      assign(y(left to left+len(x.sys_bcid)-1), convert(x.sys_bcid, y(left to left+len(x.sys_bcid)-1)));
     else
       assign(y(left downto left-len(x.daq_bcid)+1), convert(x.daq_bcid, y(left downto left-len(x.daq_bcid)+1)));
       left := left - len(x.daq_bcid);
-      assign(y(left downto left-len(x.win_start)+1), convert(x.win_start, y(left downto left-len(x.win_start)+1)));
-      left := left - len(x.win_start);
-      assign(y(left downto left-len(x.win_width)+1), convert(x.win_width, y(left downto left-len(x.win_width)+1)));
-      left := left - len(x.win_width);
-      assign(y(left downto left-len(x.latency_ref)+1), convert(x.latency_ref, y(left downto left-len(x.latency_ref)+1)));
-      left := left - len(x.latency_ref);
-      assign(y(left downto left-len(x.win_lower_ref)+1), convert(x.win_lower_ref, y(left downto left-len(x.win_lower_ref)+1)));
-      left := left - len(x.win_lower_ref);
-      assign(y(left downto left-len(x.win_upper_ref)+1), convert(x.win_upper_ref, y(left downto left-len(x.win_upper_ref)+1)));
-      left := left - len(x.win_upper_ref);
-      assign(y(left downto left-len(x.bcid)+1), convert(x.bcid, y(left downto left-len(x.bcid)+1)));
+      assign(y(left downto left-len(x.window_start)+1), convert(x.window_start, y(left downto left-len(x.window_start)+1)));
+      left := left - len(x.window_start);
+      assign(y(left downto left-len(x.window_width)+1), convert(x.window_width, y(left downto left-len(x.window_width)+1)));
+      left := left - len(x.window_width);
+      assign(y(left downto left-len(x.window_latency)+1), convert(x.window_latency, y(left downto left-len(x.window_latency)+1)));
+      left := left - len(x.window_latency);
+      assign(y(left downto left-len(x.lower_window_size)+1), convert(x.lower_window_size, y(left downto left-len(x.lower_window_size)+1)));
+      left := left - len(x.lower_window_size);
+      assign(y(left downto left-len(x.upper_window_size)+1), convert(x.upper_window_size, y(left downto left-len(x.upper_window_size)+1)));
+      left := left - len(x.upper_window_size);
+      assign(y(left downto left-len(x.sys_bcid)+1), convert(x.sys_bcid, y(left downto left-len(x.sys_bcid)+1)));
     end if;
     return y;
   end function convert;
@@ -2071,31 +1874,31 @@ package body daq_defs is
     if x'ascending then
       y.daq_bcid := structify(x(left to left+len(y.daq_bcid)-1), y.daq_bcid);
       left := left + len(y.daq_bcid);
-      y.win_start := structify(x(left to left+len(y.win_start)-1), y.win_start);
-      left := left + len(y.win_start);
-      y.win_width := structify(x(left to left+len(y.win_width)-1), y.win_width);
-      left := left + len(y.win_width);
-      y.latency_ref := structify(x(left to left+len(y.latency_ref)-1), y.latency_ref);
-      left := left + len(y.latency_ref);
-      y.win_lower_ref := structify(x(left to left+len(y.win_lower_ref)-1), y.win_lower_ref);
-      left := left + len(y.win_lower_ref);
-      y.win_upper_ref := structify(x(left to left+len(y.win_upper_ref)-1), y.win_upper_ref);
-      left := left + len(y.win_upper_ref);
-      y.bcid := structify(x(left to left+len(y.bcid)-1), y.bcid);
+      y.window_start := structify(x(left to left+len(y.window_start)-1), y.window_start);
+      left := left + len(y.window_start);
+      y.window_width := structify(x(left to left+len(y.window_width)-1), y.window_width);
+      left := left + len(y.window_width);
+      y.window_latency := structify(x(left to left+len(y.window_latency)-1), y.window_latency);
+      left := left + len(y.window_latency);
+      y.lower_window_size := structify(x(left to left+len(y.lower_window_size)-1), y.lower_window_size);
+      left := left + len(y.lower_window_size);
+      y.upper_window_size := structify(x(left to left+len(y.upper_window_size)-1), y.upper_window_size);
+      left := left + len(y.upper_window_size);
+      y.sys_bcid := structify(x(left to left+len(y.sys_bcid)-1), y.sys_bcid);
     else
       y.daq_bcid := structify(x(left downto left-len(y.daq_bcid)+1), y.daq_bcid);
       left := left - len(y.daq_bcid);
-      y.win_start := structify(x(left downto left-len(y.win_start)+1), y.win_start);
-      left := left - len(y.win_start);
-      y.win_width := structify(x(left downto left-len(y.win_width)+1), y.win_width);
-      left := left - len(y.win_width);
-      y.latency_ref := structify(x(left downto left-len(y.latency_ref)+1), y.latency_ref);
-      left := left - len(y.latency_ref);
-      y.win_lower_ref := structify(x(left downto left-len(y.win_lower_ref)+1), y.win_lower_ref);
-      left := left - len(y.win_lower_ref);
-      y.win_upper_ref := structify(x(left downto left-len(y.win_upper_ref)+1), y.win_upper_ref);
-      left := left - len(y.win_upper_ref);
-      y.bcid := structify(x(left downto left-len(y.bcid)+1), y.bcid);
+      y.window_start := structify(x(left downto left-len(y.window_start)+1), y.window_start);
+      left := left - len(y.window_start);
+      y.window_width := structify(x(left downto left-len(y.window_width)+1), y.window_width);
+      left := left - len(y.window_width);
+      y.window_latency := structify(x(left downto left-len(y.window_latency)+1), y.window_latency);
+      left := left - len(y.window_latency);
+      y.lower_window_size := structify(x(left downto left-len(y.lower_window_size)+1), y.lower_window_size);
+      left := left - len(y.lower_window_size);
+      y.upper_window_size := structify(x(left downto left-len(y.upper_window_size)+1), y.upper_window_size);
+      left := left - len(y.upper_window_size);
+      y.sys_bcid := structify(x(left downto left-len(y.sys_bcid)+1), y.sys_bcid);
     end if;
     return y;
   end function structify;
@@ -2106,31 +1909,31 @@ package body daq_defs is
     if x'ascending then
       y.daq_bcid := convert(x(left to left+len(y.daq_bcid)-1), y.daq_bcid);
       left := left + len(y.daq_bcid);
-      y.win_start := convert(x(left to left+len(y.win_start)-1), y.win_start);
-      left := left + len(y.win_start);
-      y.win_width := convert(x(left to left+len(y.win_width)-1), y.win_width);
-      left := left + len(y.win_width);
-      y.latency_ref := convert(x(left to left+len(y.latency_ref)-1), y.latency_ref);
-      left := left + len(y.latency_ref);
-      y.win_lower_ref := convert(x(left to left+len(y.win_lower_ref)-1), y.win_lower_ref);
-      left := left + len(y.win_lower_ref);
-      y.win_upper_ref := convert(x(left to left+len(y.win_upper_ref)-1), y.win_upper_ref);
-      left := left + len(y.win_upper_ref);
-      y.bcid := convert(x(left to left+len(y.bcid)-1), y.bcid);
+      y.window_start := convert(x(left to left+len(y.window_start)-1), y.window_start);
+      left := left + len(y.window_start);
+      y.window_width := convert(x(left to left+len(y.window_width)-1), y.window_width);
+      left := left + len(y.window_width);
+      y.window_latency := convert(x(left to left+len(y.window_latency)-1), y.window_latency);
+      left := left + len(y.window_latency);
+      y.lower_window_size := convert(x(left to left+len(y.lower_window_size)-1), y.lower_window_size);
+      left := left + len(y.lower_window_size);
+      y.upper_window_size := convert(x(left to left+len(y.upper_window_size)-1), y.upper_window_size);
+      left := left + len(y.upper_window_size);
+      y.sys_bcid := convert(x(left to left+len(y.sys_bcid)-1), y.sys_bcid);
     else
       y.daq_bcid := convert(x(left downto left-len(y.daq_bcid)+1), y.daq_bcid);
       left := left - len(y.daq_bcid);
-      y.win_start := convert(x(left downto left-len(y.win_start)+1), y.win_start);
-      left := left - len(y.win_start);
-      y.win_width := convert(x(left downto left-len(y.win_width)+1), y.win_width);
-      left := left - len(y.win_width);
-      y.latency_ref := convert(x(left downto left-len(y.latency_ref)+1), y.latency_ref);
-      left := left - len(y.latency_ref);
-      y.win_lower_ref := convert(x(left downto left-len(y.win_lower_ref)+1), y.win_lower_ref);
-      left := left - len(y.win_lower_ref);
-      y.win_upper_ref := convert(x(left downto left-len(y.win_upper_ref)+1), y.win_upper_ref);
-      left := left - len(y.win_upper_ref);
-      y.bcid := convert(x(left downto left-len(y.bcid)+1), y.bcid);
+      y.window_start := convert(x(left downto left-len(y.window_start)+1), y.window_start);
+      left := left - len(y.window_start);
+      y.window_width := convert(x(left downto left-len(y.window_width)+1), y.window_width);
+      left := left - len(y.window_width);
+      y.window_latency := convert(x(left downto left-len(y.window_latency)+1), y.window_latency);
+      left := left - len(y.window_latency);
+      y.lower_window_size := convert(x(left downto left-len(y.lower_window_size)+1), y.lower_window_size);
+      left := left - len(y.lower_window_size);
+      y.upper_window_size := convert(x(left downto left-len(y.upper_window_size)+1), y.upper_window_size);
+      left := left - len(y.upper_window_size);
+      y.sys_bcid := convert(x(left downto left-len(y.sys_bcid)+1), y.sys_bcid);
     end if;
     return y;
   end function convert;
@@ -2138,24 +1941,24 @@ package body daq_defs is
   variable y: daq_hdr_extra_rt;
   begin
     y.daq_bcid := nullify(t.daq_bcid);
-    y.win_start := nullify(t.win_start);
-    y.win_width := nullify(t.win_width);
-    y.latency_ref := nullify(t.latency_ref);
-    y.win_lower_ref := nullify(t.win_lower_ref);
-    y.win_upper_ref := nullify(t.win_upper_ref);
-    y.bcid := nullify(t.bcid);
+    y.window_start := nullify(t.window_start);
+    y.window_width := nullify(t.window_width);
+    y.window_latency := nullify(t.window_latency);
+    y.lower_window_size := nullify(t.lower_window_size);
+    y.upper_window_size := nullify(t.upper_window_size);
+    y.sys_bcid := nullify(t.sys_bcid);
     return y;
   end function nullify;
   function zeroed(t: daq_hdr_extra_rt) return daq_hdr_extra_rt is
   variable y: daq_hdr_extra_rt;
   begin
     y.daq_bcid := zeroed(t.daq_bcid);
-    y.win_start := zeroed(t.win_start);
-    y.win_width := zeroed(t.win_width);
-    y.latency_ref := zeroed(t.latency_ref);
-    y.win_lower_ref := zeroed(t.win_lower_ref);
-    y.win_upper_ref := zeroed(t.win_upper_ref);
-    y.bcid := zeroed(t.bcid);
+    y.window_start := zeroed(t.window_start);
+    y.window_width := zeroed(t.window_width);
+    y.window_latency := zeroed(t.window_latency);
+    y.lower_window_size := zeroed(t.lower_window_size);
+    y.upper_window_size := zeroed(t.upper_window_size);
+    y.sys_bcid := zeroed(t.sys_bcid);
     return y;
   end function zeroed;
 
@@ -2248,109 +2051,258 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: daq_cnt_rt) return natural is
+  function len(x: daq_counters_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.daq_bcid);
-    l := l + len(x.win_start);
+    l := l + len(x.sys_bcid);
+    l := l + len(x.lower_window_limit);
+    l := l + len(x.upper_window_limit);
     return l;
   end function len;
-  function width(x: daq_cnt_rt) return natural is
+  function width(x: daq_counters_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.daq_bcid);
-    l := l + width(x.win_start);
+    l := l + width(x.sys_bcid);
+    l := l + width(x.lower_window_limit);
+    l := l + width(x.upper_window_limit);
     return l;
   end function width;
-  function vectorify(x: daq_cnt_rt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_counters_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
       assign(y(left to left+len(x.daq_bcid)-1), vectorify(x.daq_bcid, y(left to left+len(x.daq_bcid)-1)));
       left := left + len(x.daq_bcid);
-      assign(y(left to left+len(x.win_start)-1), vectorify(x.win_start, y(left to left+len(x.win_start)-1)));
+      assign(y(left to left+len(x.sys_bcid)-1), vectorify(x.sys_bcid, y(left to left+len(x.sys_bcid)-1)));
+      left := left + len(x.sys_bcid);
+      assign(y(left to left+len(x.lower_window_limit)-1), vectorify(x.lower_window_limit, y(left to left+len(x.lower_window_limit)-1)));
+      left := left + len(x.lower_window_limit);
+      assign(y(left to left+len(x.upper_window_limit)-1), vectorify(x.upper_window_limit, y(left to left+len(x.upper_window_limit)-1)));
     else
       assign(y(left downto left-len(x.daq_bcid)+1), vectorify(x.daq_bcid, y(left downto left-len(x.daq_bcid)+1)));
       left := left - len(x.daq_bcid);
-      assign(y(left downto left-len(x.win_start)+1), vectorify(x.win_start, y(left downto left-len(x.win_start)+1)));
+      assign(y(left downto left-len(x.sys_bcid)+1), vectorify(x.sys_bcid, y(left downto left-len(x.sys_bcid)+1)));
+      left := left - len(x.sys_bcid);
+      assign(y(left downto left-len(x.lower_window_limit)+1), vectorify(x.lower_window_limit, y(left downto left-len(x.lower_window_limit)+1)));
+      left := left - len(x.lower_window_limit);
+      assign(y(left downto left-len(x.upper_window_limit)+1), vectorify(x.upper_window_limit, y(left downto left-len(x.upper_window_limit)+1)));
     end if;
     return y;
   end function vectorify;
-  function convert(x: daq_cnt_rt; t: std_logic_vector) return std_logic_vector is
+  function convert(x: daq_counters_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
       assign(y(left to left+len(x.daq_bcid)-1), convert(x.daq_bcid, y(left to left+len(x.daq_bcid)-1)));
       left := left + len(x.daq_bcid);
-      assign(y(left to left+len(x.win_start)-1), convert(x.win_start, y(left to left+len(x.win_start)-1)));
+      assign(y(left to left+len(x.sys_bcid)-1), convert(x.sys_bcid, y(left to left+len(x.sys_bcid)-1)));
+      left := left + len(x.sys_bcid);
+      assign(y(left to left+len(x.lower_window_limit)-1), convert(x.lower_window_limit, y(left to left+len(x.lower_window_limit)-1)));
+      left := left + len(x.lower_window_limit);
+      assign(y(left to left+len(x.upper_window_limit)-1), convert(x.upper_window_limit, y(left to left+len(x.upper_window_limit)-1)));
     else
       assign(y(left downto left-len(x.daq_bcid)+1), convert(x.daq_bcid, y(left downto left-len(x.daq_bcid)+1)));
       left := left - len(x.daq_bcid);
-      assign(y(left downto left-len(x.win_start)+1), convert(x.win_start, y(left downto left-len(x.win_start)+1)));
+      assign(y(left downto left-len(x.sys_bcid)+1), convert(x.sys_bcid, y(left downto left-len(x.sys_bcid)+1)));
+      left := left - len(x.sys_bcid);
+      assign(y(left downto left-len(x.lower_window_limit)+1), convert(x.lower_window_limit, y(left downto left-len(x.lower_window_limit)+1)));
+      left := left - len(x.lower_window_limit);
+      assign(y(left downto left-len(x.upper_window_limit)+1), convert(x.upper_window_limit, y(left downto left-len(x.upper_window_limit)+1)));
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: daq_cnt_rt) return daq_cnt_rt is
-    variable y: daq_cnt_rt;
+  function structify(x: in std_logic_vector; t: daq_counters_rt) return daq_counters_rt is
+    variable y: daq_counters_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
       y.daq_bcid := structify(x(left to left+len(y.daq_bcid)-1), y.daq_bcid);
       left := left + len(y.daq_bcid);
-      y.win_start := structify(x(left to left+len(y.win_start)-1), y.win_start);
+      y.sys_bcid := structify(x(left to left+len(y.sys_bcid)-1), y.sys_bcid);
+      left := left + len(y.sys_bcid);
+      y.lower_window_limit := structify(x(left to left+len(y.lower_window_limit)-1), y.lower_window_limit);
+      left := left + len(y.lower_window_limit);
+      y.upper_window_limit := structify(x(left to left+len(y.upper_window_limit)-1), y.upper_window_limit);
     else
       y.daq_bcid := structify(x(left downto left-len(y.daq_bcid)+1), y.daq_bcid);
       left := left - len(y.daq_bcid);
-      y.win_start := structify(x(left downto left-len(y.win_start)+1), y.win_start);
+      y.sys_bcid := structify(x(left downto left-len(y.sys_bcid)+1), y.sys_bcid);
+      left := left - len(y.sys_bcid);
+      y.lower_window_limit := structify(x(left downto left-len(y.lower_window_limit)+1), y.lower_window_limit);
+      left := left - len(y.lower_window_limit);
+      y.upper_window_limit := structify(x(left downto left-len(y.upper_window_limit)+1), y.upper_window_limit);
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: daq_cnt_rt) return daq_cnt_rt is
-    variable y: daq_cnt_rt;
+  function convert(x: in std_logic_vector; t: daq_counters_rt) return daq_counters_rt is
+    variable y: daq_counters_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
       y.daq_bcid := convert(x(left to left+len(y.daq_bcid)-1), y.daq_bcid);
       left := left + len(y.daq_bcid);
-      y.win_start := convert(x(left to left+len(y.win_start)-1), y.win_start);
+      y.sys_bcid := convert(x(left to left+len(y.sys_bcid)-1), y.sys_bcid);
+      left := left + len(y.sys_bcid);
+      y.lower_window_limit := convert(x(left to left+len(y.lower_window_limit)-1), y.lower_window_limit);
+      left := left + len(y.lower_window_limit);
+      y.upper_window_limit := convert(x(left to left+len(y.upper_window_limit)-1), y.upper_window_limit);
     else
       y.daq_bcid := convert(x(left downto left-len(y.daq_bcid)+1), y.daq_bcid);
       left := left - len(y.daq_bcid);
-      y.win_start := convert(x(left downto left-len(y.win_start)+1), y.win_start);
+      y.sys_bcid := convert(x(left downto left-len(y.sys_bcid)+1), y.sys_bcid);
+      left := left - len(y.sys_bcid);
+      y.lower_window_limit := convert(x(left downto left-len(y.lower_window_limit)+1), y.lower_window_limit);
+      left := left - len(y.lower_window_limit);
+      y.upper_window_limit := convert(x(left downto left-len(y.upper_window_limit)+1), y.upper_window_limit);
     end if;
     return y;
   end function convert;
-  function nullify(t: daq_cnt_rt) return daq_cnt_rt is
-  variable y: daq_cnt_rt;
+  function nullify(t: daq_counters_rt) return daq_counters_rt is
+  variable y: daq_counters_rt;
   begin
     y.daq_bcid := nullify(t.daq_bcid);
-    y.win_start := nullify(t.win_start);
+    y.sys_bcid := nullify(t.sys_bcid);
+    y.lower_window_limit := nullify(t.lower_window_limit);
+    y.upper_window_limit := nullify(t.upper_window_limit);
     return y;
   end function nullify;
-  function zeroed(t: daq_cnt_rt) return daq_cnt_rt is
-  variable y: daq_cnt_rt;
+  function zeroed(t: daq_counters_rt) return daq_counters_rt is
+  variable y: daq_counters_rt;
   begin
     y.daq_bcid := zeroed(t.daq_bcid);
-    y.win_start := zeroed(t.win_start);
+    y.sys_bcid := zeroed(t.sys_bcid);
+    y.lower_window_limit := zeroed(t.lower_window_limit);
+    y.upper_window_limit := zeroed(t.upper_window_limit);
+    return y;
+  end function zeroed;
+
+  function len(x: daq_window_params_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.lower_size);
+    l := l + len(x.upper_size);
+    l := l + len(x.latency);
+    return l;
+  end function len;
+  function width(x: daq_window_params_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.lower_size);
+    l := l + width(x.upper_size);
+    l := l + width(x.latency);
+    return l;
+  end function width;
+  function vectorify(x: daq_window_params_rt; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.lower_size)-1), vectorify(x.lower_size, y(left to left+len(x.lower_size)-1)));
+      left := left + len(x.lower_size);
+      assign(y(left to left+len(x.upper_size)-1), vectorify(x.upper_size, y(left to left+len(x.upper_size)-1)));
+      left := left + len(x.upper_size);
+      assign(y(left to left+len(x.latency)-1), vectorify(x.latency, y(left to left+len(x.latency)-1)));
+    else
+      assign(y(left downto left-len(x.lower_size)+1), vectorify(x.lower_size, y(left downto left-len(x.lower_size)+1)));
+      left := left - len(x.lower_size);
+      assign(y(left downto left-len(x.upper_size)+1), vectorify(x.upper_size, y(left downto left-len(x.upper_size)+1)));
+      left := left - len(x.upper_size);
+      assign(y(left downto left-len(x.latency)+1), vectorify(x.latency, y(left downto left-len(x.latency)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: daq_window_params_rt; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.lower_size)-1), convert(x.lower_size, y(left to left+len(x.lower_size)-1)));
+      left := left + len(x.lower_size);
+      assign(y(left to left+len(x.upper_size)-1), convert(x.upper_size, y(left to left+len(x.upper_size)-1)));
+      left := left + len(x.upper_size);
+      assign(y(left to left+len(x.latency)-1), convert(x.latency, y(left to left+len(x.latency)-1)));
+    else
+      assign(y(left downto left-len(x.lower_size)+1), convert(x.lower_size, y(left downto left-len(x.lower_size)+1)));
+      left := left - len(x.lower_size);
+      assign(y(left downto left-len(x.upper_size)+1), convert(x.upper_size, y(left downto left-len(x.upper_size)+1)));
+      left := left - len(x.upper_size);
+      assign(y(left downto left-len(x.latency)+1), convert(x.latency, y(left downto left-len(x.latency)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: daq_window_params_rt) return daq_window_params_rt is
+    variable y: daq_window_params_rt;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.lower_size := structify(x(left to left+len(y.lower_size)-1), y.lower_size);
+      left := left + len(y.lower_size);
+      y.upper_size := structify(x(left to left+len(y.upper_size)-1), y.upper_size);
+      left := left + len(y.upper_size);
+      y.latency := structify(x(left to left+len(y.latency)-1), y.latency);
+    else
+      y.lower_size := structify(x(left downto left-len(y.lower_size)+1), y.lower_size);
+      left := left - len(y.lower_size);
+      y.upper_size := structify(x(left downto left-len(y.upper_size)+1), y.upper_size);
+      left := left - len(y.upper_size);
+      y.latency := structify(x(left downto left-len(y.latency)+1), y.latency);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: daq_window_params_rt) return daq_window_params_rt is
+    variable y: daq_window_params_rt;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.lower_size := convert(x(left to left+len(y.lower_size)-1), y.lower_size);
+      left := left + len(y.lower_size);
+      y.upper_size := convert(x(left to left+len(y.upper_size)-1), y.upper_size);
+      left := left + len(y.upper_size);
+      y.latency := convert(x(left to left+len(y.latency)-1), y.latency);
+    else
+      y.lower_size := convert(x(left downto left-len(y.lower_size)+1), y.lower_size);
+      left := left - len(y.lower_size);
+      y.upper_size := convert(x(left downto left-len(y.upper_size)+1), y.upper_size);
+      left := left - len(y.upper_size);
+      y.latency := convert(x(left downto left-len(y.latency)+1), y.latency);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: daq_window_params_rt) return daq_window_params_rt is
+  variable y: daq_window_params_rt;
+  begin
+    y.lower_size := nullify(t.lower_size);
+    y.upper_size := nullify(t.upper_size);
+    y.latency := nullify(t.latency);
+    return y;
+  end function nullify;
+  function zeroed(t: daq_window_params_rt) return daq_window_params_rt is
+  variable y: daq_window_params_rt;
+  begin
+    y.lower_size := zeroed(t.lower_size);
+    y.upper_size := zeroed(t.upper_size);
+    y.latency := zeroed(t.latency);
     return y;
   end function zeroed;
 
   function len(x: stability_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.win_upper);
-    l := l + len(x.win_lower);
-    l := l + len(x.latency);
+    l := l + len(x.upper_window_limit);
+    l := l + len(x.lower_window_limit);
+    l := l + len(x.daq_bcid);
     return l;
   end function len;
   function width(x: stability_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.win_upper);
-    l := l + width(x.win_lower);
-    l := l + width(x.latency);
+    l := l + width(x.upper_window_limit);
+    l := l + width(x.lower_window_limit);
+    l := l + width(x.daq_bcid);
     return l;
   end function width;
   function vectorify(x: stability_rt; t: std_logic_vector) return std_logic_vector is
@@ -2358,17 +2310,17 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.win_upper)-1), vectorify(x.win_upper, y(left to left+len(x.win_upper)-1)));
-      left := left + len(x.win_upper);
-      assign(y(left to left+len(x.win_lower)-1), vectorify(x.win_lower, y(left to left+len(x.win_lower)-1)));
-      left := left + len(x.win_lower);
-      assign(y(left to left+len(x.latency)-1), vectorify(x.latency, y(left to left+len(x.latency)-1)));
+      assign(y(left to left+len(x.upper_window_limit)-1), vectorify(x.upper_window_limit, y(left to left+len(x.upper_window_limit)-1)));
+      left := left + len(x.upper_window_limit);
+      assign(y(left to left+len(x.lower_window_limit)-1), vectorify(x.lower_window_limit, y(left to left+len(x.lower_window_limit)-1)));
+      left := left + len(x.lower_window_limit);
+      assign(y(left to left+len(x.daq_bcid)-1), vectorify(x.daq_bcid, y(left to left+len(x.daq_bcid)-1)));
     else
-      assign(y(left downto left-len(x.win_upper)+1), vectorify(x.win_upper, y(left downto left-len(x.win_upper)+1)));
-      left := left - len(x.win_upper);
-      assign(y(left downto left-len(x.win_lower)+1), vectorify(x.win_lower, y(left downto left-len(x.win_lower)+1)));
-      left := left - len(x.win_lower);
-      assign(y(left downto left-len(x.latency)+1), vectorify(x.latency, y(left downto left-len(x.latency)+1)));
+      assign(y(left downto left-len(x.upper_window_limit)+1), vectorify(x.upper_window_limit, y(left downto left-len(x.upper_window_limit)+1)));
+      left := left - len(x.upper_window_limit);
+      assign(y(left downto left-len(x.lower_window_limit)+1), vectorify(x.lower_window_limit, y(left downto left-len(x.lower_window_limit)+1)));
+      left := left - len(x.lower_window_limit);
+      assign(y(left downto left-len(x.daq_bcid)+1), vectorify(x.daq_bcid, y(left downto left-len(x.daq_bcid)+1)));
     end if;
     return y;
   end function vectorify;
@@ -2377,17 +2329,17 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.win_upper)-1), convert(x.win_upper, y(left to left+len(x.win_upper)-1)));
-      left := left + len(x.win_upper);
-      assign(y(left to left+len(x.win_lower)-1), convert(x.win_lower, y(left to left+len(x.win_lower)-1)));
-      left := left + len(x.win_lower);
-      assign(y(left to left+len(x.latency)-1), convert(x.latency, y(left to left+len(x.latency)-1)));
+      assign(y(left to left+len(x.upper_window_limit)-1), convert(x.upper_window_limit, y(left to left+len(x.upper_window_limit)-1)));
+      left := left + len(x.upper_window_limit);
+      assign(y(left to left+len(x.lower_window_limit)-1), convert(x.lower_window_limit, y(left to left+len(x.lower_window_limit)-1)));
+      left := left + len(x.lower_window_limit);
+      assign(y(left to left+len(x.daq_bcid)-1), convert(x.daq_bcid, y(left to left+len(x.daq_bcid)-1)));
     else
-      assign(y(left downto left-len(x.win_upper)+1), convert(x.win_upper, y(left downto left-len(x.win_upper)+1)));
-      left := left - len(x.win_upper);
-      assign(y(left downto left-len(x.win_lower)+1), convert(x.win_lower, y(left downto left-len(x.win_lower)+1)));
-      left := left - len(x.win_lower);
-      assign(y(left downto left-len(x.latency)+1), convert(x.latency, y(left downto left-len(x.latency)+1)));
+      assign(y(left downto left-len(x.upper_window_limit)+1), convert(x.upper_window_limit, y(left downto left-len(x.upper_window_limit)+1)));
+      left := left - len(x.upper_window_limit);
+      assign(y(left downto left-len(x.lower_window_limit)+1), convert(x.lower_window_limit, y(left downto left-len(x.lower_window_limit)+1)));
+      left := left - len(x.lower_window_limit);
+      assign(y(left downto left-len(x.daq_bcid)+1), convert(x.daq_bcid, y(left downto left-len(x.daq_bcid)+1)));
     end if;
     return y;
   end function convert;
@@ -2396,17 +2348,17 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.win_upper := structify(x(left to left+len(y.win_upper)-1), y.win_upper);
-      left := left + len(y.win_upper);
-      y.win_lower := structify(x(left to left+len(y.win_lower)-1), y.win_lower);
-      left := left + len(y.win_lower);
-      y.latency := structify(x(left to left+len(y.latency)-1), y.latency);
+      y.upper_window_limit := structify(x(left to left+len(y.upper_window_limit)-1), y.upper_window_limit);
+      left := left + len(y.upper_window_limit);
+      y.lower_window_limit := structify(x(left to left+len(y.lower_window_limit)-1), y.lower_window_limit);
+      left := left + len(y.lower_window_limit);
+      y.daq_bcid := structify(x(left to left+len(y.daq_bcid)-1), y.daq_bcid);
     else
-      y.win_upper := structify(x(left downto left-len(y.win_upper)+1), y.win_upper);
-      left := left - len(y.win_upper);
-      y.win_lower := structify(x(left downto left-len(y.win_lower)+1), y.win_lower);
-      left := left - len(y.win_lower);
-      y.latency := structify(x(left downto left-len(y.latency)+1), y.latency);
+      y.upper_window_limit := structify(x(left downto left-len(y.upper_window_limit)+1), y.upper_window_limit);
+      left := left - len(y.upper_window_limit);
+      y.lower_window_limit := structify(x(left downto left-len(y.lower_window_limit)+1), y.lower_window_limit);
+      left := left - len(y.lower_window_limit);
+      y.daq_bcid := structify(x(left downto left-len(y.daq_bcid)+1), y.daq_bcid);
     end if;
     return y;
   end function structify;
@@ -2415,163 +2367,34 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.win_upper := convert(x(left to left+len(y.win_upper)-1), y.win_upper);
-      left := left + len(y.win_upper);
-      y.win_lower := convert(x(left to left+len(y.win_lower)-1), y.win_lower);
-      left := left + len(y.win_lower);
-      y.latency := convert(x(left to left+len(y.latency)-1), y.latency);
+      y.upper_window_limit := convert(x(left to left+len(y.upper_window_limit)-1), y.upper_window_limit);
+      left := left + len(y.upper_window_limit);
+      y.lower_window_limit := convert(x(left to left+len(y.lower_window_limit)-1), y.lower_window_limit);
+      left := left + len(y.lower_window_limit);
+      y.daq_bcid := convert(x(left to left+len(y.daq_bcid)-1), y.daq_bcid);
     else
-      y.win_upper := convert(x(left downto left-len(y.win_upper)+1), y.win_upper);
-      left := left - len(y.win_upper);
-      y.win_lower := convert(x(left downto left-len(y.win_lower)+1), y.win_lower);
-      left := left - len(y.win_lower);
-      y.latency := convert(x(left downto left-len(y.latency)+1), y.latency);
+      y.upper_window_limit := convert(x(left downto left-len(y.upper_window_limit)+1), y.upper_window_limit);
+      left := left - len(y.upper_window_limit);
+      y.lower_window_limit := convert(x(left downto left-len(y.lower_window_limit)+1), y.lower_window_limit);
+      left := left - len(y.lower_window_limit);
+      y.daq_bcid := convert(x(left downto left-len(y.daq_bcid)+1), y.daq_bcid);
     end if;
     return y;
   end function convert;
   function nullify(t: stability_rt) return stability_rt is
   variable y: stability_rt;
   begin
-    y.win_upper := nullify(t.win_upper);
-    y.win_lower := nullify(t.win_lower);
-    y.latency := nullify(t.latency);
+    y.upper_window_limit := nullify(t.upper_window_limit);
+    y.lower_window_limit := nullify(t.lower_window_limit);
+    y.daq_bcid := nullify(t.daq_bcid);
     return y;
   end function nullify;
   function zeroed(t: stability_rt) return stability_rt is
   variable y: stability_rt;
   begin
-    y.win_upper := zeroed(t.win_upper);
-    y.win_lower := zeroed(t.win_lower);
-    y.latency := zeroed(t.latency);
-    return y;
-  end function zeroed;
-
-  function len(x: daq_win_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.upper);
-    l := l + len(x.lower);
-    l := l + len(x.latency);
-    l := l + len(x.width);
-    return l;
-  end function len;
-  function width(x: daq_win_rt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.upper);
-    l := l + width(x.lower);
-    l := l + width(x.latency);
-    l := l + width(x.width);
-    return l;
-  end function width;
-  function vectorify(x: daq_win_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.upper)-1), vectorify(x.upper, y(left to left+len(x.upper)-1)));
-      left := left + len(x.upper);
-      assign(y(left to left+len(x.lower)-1), vectorify(x.lower, y(left to left+len(x.lower)-1)));
-      left := left + len(x.lower);
-      assign(y(left to left+len(x.latency)-1), vectorify(x.latency, y(left to left+len(x.latency)-1)));
-      left := left + len(x.latency);
-      assign(y(left to left+len(x.width)-1), vectorify(x.width, y(left to left+len(x.width)-1)));
-    else
-      assign(y(left downto left-len(x.upper)+1), vectorify(x.upper, y(left downto left-len(x.upper)+1)));
-      left := left - len(x.upper);
-      assign(y(left downto left-len(x.lower)+1), vectorify(x.lower, y(left downto left-len(x.lower)+1)));
-      left := left - len(x.lower);
-      assign(y(left downto left-len(x.latency)+1), vectorify(x.latency, y(left downto left-len(x.latency)+1)));
-      left := left - len(x.latency);
-      assign(y(left downto left-len(x.width)+1), vectorify(x.width, y(left downto left-len(x.width)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_win_rt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.upper)-1), convert(x.upper, y(left to left+len(x.upper)-1)));
-      left := left + len(x.upper);
-      assign(y(left to left+len(x.lower)-1), convert(x.lower, y(left to left+len(x.lower)-1)));
-      left := left + len(x.lower);
-      assign(y(left to left+len(x.latency)-1), convert(x.latency, y(left to left+len(x.latency)-1)));
-      left := left + len(x.latency);
-      assign(y(left to left+len(x.width)-1), convert(x.width, y(left to left+len(x.width)-1)));
-    else
-      assign(y(left downto left-len(x.upper)+1), convert(x.upper, y(left downto left-len(x.upper)+1)));
-      left := left - len(x.upper);
-      assign(y(left downto left-len(x.lower)+1), convert(x.lower, y(left downto left-len(x.lower)+1)));
-      left := left - len(x.lower);
-      assign(y(left downto left-len(x.latency)+1), convert(x.latency, y(left downto left-len(x.latency)+1)));
-      left := left - len(x.latency);
-      assign(y(left downto left-len(x.width)+1), convert(x.width, y(left downto left-len(x.width)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_win_rt) return daq_win_rt is
-    variable y: daq_win_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.upper := structify(x(left to left+len(y.upper)-1), y.upper);
-      left := left + len(y.upper);
-      y.lower := structify(x(left to left+len(y.lower)-1), y.lower);
-      left := left + len(y.lower);
-      y.latency := structify(x(left to left+len(y.latency)-1), y.latency);
-      left := left + len(y.latency);
-      y.width := structify(x(left to left+len(y.width)-1), y.width);
-    else
-      y.upper := structify(x(left downto left-len(y.upper)+1), y.upper);
-      left := left - len(y.upper);
-      y.lower := structify(x(left downto left-len(y.lower)+1), y.lower);
-      left := left - len(y.lower);
-      y.latency := structify(x(left downto left-len(y.latency)+1), y.latency);
-      left := left - len(y.latency);
-      y.width := structify(x(left downto left-len(y.width)+1), y.width);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_win_rt) return daq_win_rt is
-    variable y: daq_win_rt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.upper := convert(x(left to left+len(y.upper)-1), y.upper);
-      left := left + len(y.upper);
-      y.lower := convert(x(left to left+len(y.lower)-1), y.lower);
-      left := left + len(y.lower);
-      y.latency := convert(x(left to left+len(y.latency)-1), y.latency);
-      left := left + len(y.latency);
-      y.width := convert(x(left to left+len(y.width)-1), y.width);
-    else
-      y.upper := convert(x(left downto left-len(y.upper)+1), y.upper);
-      left := left - len(y.upper);
-      y.lower := convert(x(left downto left-len(y.lower)+1), y.lower);
-      left := left - len(y.lower);
-      y.latency := convert(x(left downto left-len(y.latency)+1), y.latency);
-      left := left - len(y.latency);
-      y.width := convert(x(left downto left-len(y.width)+1), y.width);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_win_rt) return daq_win_rt is
-  variable y: daq_win_rt;
-  begin
-    y.upper := nullify(t.upper);
-    y.lower := nullify(t.lower);
-    y.latency := nullify(t.latency);
-    y.width := nullify(t.width);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_win_rt) return daq_win_rt is
-  variable y: daq_win_rt;
-  begin
-    y.upper := zeroed(t.upper);
-    y.lower := zeroed(t.lower);
-    y.latency := zeroed(t.latency);
-    y.width := zeroed(t.width);
+    y.upper_window_limit := zeroed(t.upper_window_limit);
+    y.lower_window_limit := zeroed(t.lower_window_limit);
+    y.daq_bcid := zeroed(t.daq_bcid);
     return y;
   end function zeroed;
 
@@ -3069,19 +2892,19 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: rows_to_pbldr_rt) return natural is
+  function len(x: rows_to_pbldr_at) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: rows_to_pbldr_rt) return natural is
+  function width(x: rows_to_pbldr_at) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: rows_to_pbldr_rt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: rows_to_pbldr_at; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -3102,7 +2925,7 @@ package body daq_defs is
     end if;
     return y;
   end function vectorify;
-  function convert(x: rows_to_pbldr_rt; t: std_logic_vector) return std_logic_vector is
+  function convert(x: rows_to_pbldr_at; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -3123,8 +2946,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: rows_to_pbldr_rt) return rows_to_pbldr_rt is
-    variable y : rows_to_pbldr_rt;
+  function structify(x: std_logic_vector; t: rows_to_pbldr_at) return rows_to_pbldr_at is
+    variable y : rows_to_pbldr_at;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -3144,8 +2967,8 @@ package body daq_defs is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: rows_to_pbldr_rt) return rows_to_pbldr_rt is
-    variable y : rows_to_pbldr_rt;
+  function convert(x: std_logic_vector; t: rows_to_pbldr_at) return rows_to_pbldr_at is
+    variable y : rows_to_pbldr_at;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -3165,16 +2988,16 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function nullify(x: rows_to_pbldr_rt) return rows_to_pbldr_rt is
-    variable y : rows_to_pbldr_rt;
+  function nullify(x: rows_to_pbldr_at) return rows_to_pbldr_at is
+    variable y : rows_to_pbldr_at;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: rows_to_pbldr_rt) return rows_to_pbldr_rt is
-    variable y : rows_to_pbldr_rt;
+  function zeroed(x: rows_to_pbldr_at) return rows_to_pbldr_at is
+    variable y : rows_to_pbldr_at;
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -3182,19 +3005,19 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: pbldr_to_rows_rt) return natural is
+  function len(x: pbldr_to_rows_at) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: pbldr_to_rows_rt) return natural is
+  function width(x: pbldr_to_rows_at) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: pbldr_to_rows_rt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: pbldr_to_rows_at; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -3215,7 +3038,7 @@ package body daq_defs is
     end if;
     return y;
   end function vectorify;
-  function convert(x: pbldr_to_rows_rt; t: std_logic_vector) return std_logic_vector is
+  function convert(x: pbldr_to_rows_at; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -3236,8 +3059,8 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt is
-    variable y : pbldr_to_rows_rt;
+  function structify(x: std_logic_vector; t: pbldr_to_rows_at) return pbldr_to_rows_at is
+    variable y : pbldr_to_rows_at;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -3257,8 +3080,8 @@ package body daq_defs is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt is
-    variable y : pbldr_to_rows_rt;
+  function convert(x: std_logic_vector; t: pbldr_to_rows_at) return pbldr_to_rows_at is
+    variable y : pbldr_to_rows_at;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -3278,16 +3101,16 @@ package body daq_defs is
     end if;
     return y;
   end function convert;
-  function nullify(x: pbldr_to_rows_rt) return pbldr_to_rows_rt is
-    variable y : pbldr_to_rows_rt;
+  function nullify(x: pbldr_to_rows_at) return pbldr_to_rows_at is
+    variable y : pbldr_to_rows_at;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: pbldr_to_rows_rt) return pbldr_to_rows_rt is
-    variable y : pbldr_to_rows_rt;
+  function zeroed(x: pbldr_to_rows_at) return pbldr_to_rows_at is
+    variable y : pbldr_to_rows_at;
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -3298,17 +3121,17 @@ package body daq_defs is
   function len(x: req_to_row_common_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.strb);
-    l := l + len(x.win_start);
-    l := l + len(x.win_width);
+    l := l + len(x.req_strb);
+    l := l + len(x.window_start);
+    l := l + len(x.window_width);
     return l;
   end function len;
   function width(x: req_to_row_common_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.strb);
-    l := l + width(x.win_start);
-    l := l + width(x.win_width);
+    l := l + width(x.req_strb);
+    l := l + width(x.window_start);
+    l := l + width(x.window_width);
     return l;
   end function width;
   function vectorify(x: req_to_row_common_rt; t: std_logic_vector) return std_logic_vector is
@@ -3316,17 +3139,17 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.strb)-1), vectorify(x.strb, y(left to left+len(x.strb)-1)));
-      left := left + len(x.strb);
-      assign(y(left to left+len(x.win_start)-1), vectorify(x.win_start, y(left to left+len(x.win_start)-1)));
-      left := left + len(x.win_start);
-      assign(y(left to left+len(x.win_width)-1), vectorify(x.win_width, y(left to left+len(x.win_width)-1)));
+      assign(y(left to left+len(x.req_strb)-1), vectorify(x.req_strb, y(left to left+len(x.req_strb)-1)));
+      left := left + len(x.req_strb);
+      assign(y(left to left+len(x.window_start)-1), vectorify(x.window_start, y(left to left+len(x.window_start)-1)));
+      left := left + len(x.window_start);
+      assign(y(left to left+len(x.window_width)-1), vectorify(x.window_width, y(left to left+len(x.window_width)-1)));
     else
-      assign(y(left downto left-len(x.strb)+1), vectorify(x.strb, y(left downto left-len(x.strb)+1)));
-      left := left - len(x.strb);
-      assign(y(left downto left-len(x.win_start)+1), vectorify(x.win_start, y(left downto left-len(x.win_start)+1)));
-      left := left - len(x.win_start);
-      assign(y(left downto left-len(x.win_width)+1), vectorify(x.win_width, y(left downto left-len(x.win_width)+1)));
+      assign(y(left downto left-len(x.req_strb)+1), vectorify(x.req_strb, y(left downto left-len(x.req_strb)+1)));
+      left := left - len(x.req_strb);
+      assign(y(left downto left-len(x.window_start)+1), vectorify(x.window_start, y(left downto left-len(x.window_start)+1)));
+      left := left - len(x.window_start);
+      assign(y(left downto left-len(x.window_width)+1), vectorify(x.window_width, y(left downto left-len(x.window_width)+1)));
     end if;
     return y;
   end function vectorify;
@@ -3335,17 +3158,17 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.strb)-1), convert(x.strb, y(left to left+len(x.strb)-1)));
-      left := left + len(x.strb);
-      assign(y(left to left+len(x.win_start)-1), convert(x.win_start, y(left to left+len(x.win_start)-1)));
-      left := left + len(x.win_start);
-      assign(y(left to left+len(x.win_width)-1), convert(x.win_width, y(left to left+len(x.win_width)-1)));
+      assign(y(left to left+len(x.req_strb)-1), convert(x.req_strb, y(left to left+len(x.req_strb)-1)));
+      left := left + len(x.req_strb);
+      assign(y(left to left+len(x.window_start)-1), convert(x.window_start, y(left to left+len(x.window_start)-1)));
+      left := left + len(x.window_start);
+      assign(y(left to left+len(x.window_width)-1), convert(x.window_width, y(left to left+len(x.window_width)-1)));
     else
-      assign(y(left downto left-len(x.strb)+1), convert(x.strb, y(left downto left-len(x.strb)+1)));
-      left := left - len(x.strb);
-      assign(y(left downto left-len(x.win_start)+1), convert(x.win_start, y(left downto left-len(x.win_start)+1)));
-      left := left - len(x.win_start);
-      assign(y(left downto left-len(x.win_width)+1), convert(x.win_width, y(left downto left-len(x.win_width)+1)));
+      assign(y(left downto left-len(x.req_strb)+1), convert(x.req_strb, y(left downto left-len(x.req_strb)+1)));
+      left := left - len(x.req_strb);
+      assign(y(left downto left-len(x.window_start)+1), convert(x.window_start, y(left downto left-len(x.window_start)+1)));
+      left := left - len(x.window_start);
+      assign(y(left downto left-len(x.window_width)+1), convert(x.window_width, y(left downto left-len(x.window_width)+1)));
     end if;
     return y;
   end function convert;
@@ -3354,17 +3177,17 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.strb := structify(x(left to left+len(y.strb)-1), y.strb);
-      left := left + len(y.strb);
-      y.win_start := structify(x(left to left+len(y.win_start)-1), y.win_start);
-      left := left + len(y.win_start);
-      y.win_width := structify(x(left to left+len(y.win_width)-1), y.win_width);
+      y.req_strb := structify(x(left to left+len(y.req_strb)-1), y.req_strb);
+      left := left + len(y.req_strb);
+      y.window_start := structify(x(left to left+len(y.window_start)-1), y.window_start);
+      left := left + len(y.window_start);
+      y.window_width := structify(x(left to left+len(y.window_width)-1), y.window_width);
     else
-      y.strb := structify(x(left downto left-len(y.strb)+1), y.strb);
-      left := left - len(y.strb);
-      y.win_start := structify(x(left downto left-len(y.win_start)+1), y.win_start);
-      left := left - len(y.win_start);
-      y.win_width := structify(x(left downto left-len(y.win_width)+1), y.win_width);
+      y.req_strb := structify(x(left downto left-len(y.req_strb)+1), y.req_strb);
+      left := left - len(y.req_strb);
+      y.window_start := structify(x(left downto left-len(y.window_start)+1), y.window_start);
+      left := left - len(y.window_start);
+      y.window_width := structify(x(left downto left-len(y.window_width)+1), y.window_width);
     end if;
     return y;
   end function structify;
@@ -3373,56 +3196,56 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.strb := convert(x(left to left+len(y.strb)-1), y.strb);
-      left := left + len(y.strb);
-      y.win_start := convert(x(left to left+len(y.win_start)-1), y.win_start);
-      left := left + len(y.win_start);
-      y.win_width := convert(x(left to left+len(y.win_width)-1), y.win_width);
+      y.req_strb := convert(x(left to left+len(y.req_strb)-1), y.req_strb);
+      left := left + len(y.req_strb);
+      y.window_start := convert(x(left to left+len(y.window_start)-1), y.window_start);
+      left := left + len(y.window_start);
+      y.window_width := convert(x(left to left+len(y.window_width)-1), y.window_width);
     else
-      y.strb := convert(x(left downto left-len(y.strb)+1), y.strb);
-      left := left - len(y.strb);
-      y.win_start := convert(x(left downto left-len(y.win_start)+1), y.win_start);
-      left := left - len(y.win_start);
-      y.win_width := convert(x(left downto left-len(y.win_width)+1), y.win_width);
+      y.req_strb := convert(x(left downto left-len(y.req_strb)+1), y.req_strb);
+      left := left - len(y.req_strb);
+      y.window_start := convert(x(left downto left-len(y.window_start)+1), y.window_start);
+      left := left - len(y.window_start);
+      y.window_width := convert(x(left downto left-len(y.window_width)+1), y.window_width);
     end if;
     return y;
   end function convert;
   function nullify(t: req_to_row_common_rt) return req_to_row_common_rt is
   variable y: req_to_row_common_rt;
   begin
-    y.strb := nullify(t.strb);
-    y.win_start := nullify(t.win_start);
-    y.win_width := nullify(t.win_width);
+    y.req_strb := nullify(t.req_strb);
+    y.window_start := nullify(t.window_start);
+    y.window_width := nullify(t.window_width);
     return y;
   end function nullify;
   function zeroed(t: req_to_row_common_rt) return req_to_row_common_rt is
   variable y: req_to_row_common_rt;
   begin
-    y.strb := zeroed(t.strb);
-    y.win_start := zeroed(t.win_start);
-    y.win_width := zeroed(t.win_width);
+    y.req_strb := zeroed(t.req_strb);
+    y.window_start := zeroed(t.window_start);
+    y.window_width := zeroed(t.window_width);
     return y;
   end function zeroed;
 
   function len(x: req_to_row_extra_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.latency);
-    l := l + len(x.win_lower);
-    l := l + len(x.win_upper);
+    l := l + len(x.window_latency);
+    l := l + len(x.lower_window_size);
+    l := l + len(x.upper_window_size);
     l := l + len(x.daq_bcid);
-    l := l + len(x.bcid);
+    l := l + len(x.sys_bcid);
     l := l + len(x.evid);
     return l;
   end function len;
   function width(x: req_to_row_extra_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.latency);
-    l := l + width(x.win_lower);
-    l := l + width(x.win_upper);
+    l := l + width(x.window_latency);
+    l := l + width(x.lower_window_size);
+    l := l + width(x.upper_window_size);
     l := l + width(x.daq_bcid);
-    l := l + width(x.bcid);
+    l := l + width(x.sys_bcid);
     l := l + width(x.evid);
     return l;
   end function width;
@@ -3431,28 +3254,28 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.latency)-1), vectorify(x.latency, y(left to left+len(x.latency)-1)));
-      left := left + len(x.latency);
-      assign(y(left to left+len(x.win_lower)-1), vectorify(x.win_lower, y(left to left+len(x.win_lower)-1)));
-      left := left + len(x.win_lower);
-      assign(y(left to left+len(x.win_upper)-1), vectorify(x.win_upper, y(left to left+len(x.win_upper)-1)));
-      left := left + len(x.win_upper);
+      assign(y(left to left+len(x.window_latency)-1), vectorify(x.window_latency, y(left to left+len(x.window_latency)-1)));
+      left := left + len(x.window_latency);
+      assign(y(left to left+len(x.lower_window_size)-1), vectorify(x.lower_window_size, y(left to left+len(x.lower_window_size)-1)));
+      left := left + len(x.lower_window_size);
+      assign(y(left to left+len(x.upper_window_size)-1), vectorify(x.upper_window_size, y(left to left+len(x.upper_window_size)-1)));
+      left := left + len(x.upper_window_size);
       assign(y(left to left+len(x.daq_bcid)-1), vectorify(x.daq_bcid, y(left to left+len(x.daq_bcid)-1)));
       left := left + len(x.daq_bcid);
-      assign(y(left to left+len(x.bcid)-1), vectorify(x.bcid, y(left to left+len(x.bcid)-1)));
-      left := left + len(x.bcid);
+      assign(y(left to left+len(x.sys_bcid)-1), vectorify(x.sys_bcid, y(left to left+len(x.sys_bcid)-1)));
+      left := left + len(x.sys_bcid);
       assign(y(left to left+len(x.evid)-1), vectorify(x.evid, y(left to left+len(x.evid)-1)));
     else
-      assign(y(left downto left-len(x.latency)+1), vectorify(x.latency, y(left downto left-len(x.latency)+1)));
-      left := left - len(x.latency);
-      assign(y(left downto left-len(x.win_lower)+1), vectorify(x.win_lower, y(left downto left-len(x.win_lower)+1)));
-      left := left - len(x.win_lower);
-      assign(y(left downto left-len(x.win_upper)+1), vectorify(x.win_upper, y(left downto left-len(x.win_upper)+1)));
-      left := left - len(x.win_upper);
+      assign(y(left downto left-len(x.window_latency)+1), vectorify(x.window_latency, y(left downto left-len(x.window_latency)+1)));
+      left := left - len(x.window_latency);
+      assign(y(left downto left-len(x.lower_window_size)+1), vectorify(x.lower_window_size, y(left downto left-len(x.lower_window_size)+1)));
+      left := left - len(x.lower_window_size);
+      assign(y(left downto left-len(x.upper_window_size)+1), vectorify(x.upper_window_size, y(left downto left-len(x.upper_window_size)+1)));
+      left := left - len(x.upper_window_size);
       assign(y(left downto left-len(x.daq_bcid)+1), vectorify(x.daq_bcid, y(left downto left-len(x.daq_bcid)+1)));
       left := left - len(x.daq_bcid);
-      assign(y(left downto left-len(x.bcid)+1), vectorify(x.bcid, y(left downto left-len(x.bcid)+1)));
-      left := left - len(x.bcid);
+      assign(y(left downto left-len(x.sys_bcid)+1), vectorify(x.sys_bcid, y(left downto left-len(x.sys_bcid)+1)));
+      left := left - len(x.sys_bcid);
       assign(y(left downto left-len(x.evid)+1), vectorify(x.evid, y(left downto left-len(x.evid)+1)));
     end if;
     return y;
@@ -3462,28 +3285,28 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.latency)-1), convert(x.latency, y(left to left+len(x.latency)-1)));
-      left := left + len(x.latency);
-      assign(y(left to left+len(x.win_lower)-1), convert(x.win_lower, y(left to left+len(x.win_lower)-1)));
-      left := left + len(x.win_lower);
-      assign(y(left to left+len(x.win_upper)-1), convert(x.win_upper, y(left to left+len(x.win_upper)-1)));
-      left := left + len(x.win_upper);
+      assign(y(left to left+len(x.window_latency)-1), convert(x.window_latency, y(left to left+len(x.window_latency)-1)));
+      left := left + len(x.window_latency);
+      assign(y(left to left+len(x.lower_window_size)-1), convert(x.lower_window_size, y(left to left+len(x.lower_window_size)-1)));
+      left := left + len(x.lower_window_size);
+      assign(y(left to left+len(x.upper_window_size)-1), convert(x.upper_window_size, y(left to left+len(x.upper_window_size)-1)));
+      left := left + len(x.upper_window_size);
       assign(y(left to left+len(x.daq_bcid)-1), convert(x.daq_bcid, y(left to left+len(x.daq_bcid)-1)));
       left := left + len(x.daq_bcid);
-      assign(y(left to left+len(x.bcid)-1), convert(x.bcid, y(left to left+len(x.bcid)-1)));
-      left := left + len(x.bcid);
+      assign(y(left to left+len(x.sys_bcid)-1), convert(x.sys_bcid, y(left to left+len(x.sys_bcid)-1)));
+      left := left + len(x.sys_bcid);
       assign(y(left to left+len(x.evid)-1), convert(x.evid, y(left to left+len(x.evid)-1)));
     else
-      assign(y(left downto left-len(x.latency)+1), convert(x.latency, y(left downto left-len(x.latency)+1)));
-      left := left - len(x.latency);
-      assign(y(left downto left-len(x.win_lower)+1), convert(x.win_lower, y(left downto left-len(x.win_lower)+1)));
-      left := left - len(x.win_lower);
-      assign(y(left downto left-len(x.win_upper)+1), convert(x.win_upper, y(left downto left-len(x.win_upper)+1)));
-      left := left - len(x.win_upper);
+      assign(y(left downto left-len(x.window_latency)+1), convert(x.window_latency, y(left downto left-len(x.window_latency)+1)));
+      left := left - len(x.window_latency);
+      assign(y(left downto left-len(x.lower_window_size)+1), convert(x.lower_window_size, y(left downto left-len(x.lower_window_size)+1)));
+      left := left - len(x.lower_window_size);
+      assign(y(left downto left-len(x.upper_window_size)+1), convert(x.upper_window_size, y(left downto left-len(x.upper_window_size)+1)));
+      left := left - len(x.upper_window_size);
       assign(y(left downto left-len(x.daq_bcid)+1), convert(x.daq_bcid, y(left downto left-len(x.daq_bcid)+1)));
       left := left - len(x.daq_bcid);
-      assign(y(left downto left-len(x.bcid)+1), convert(x.bcid, y(left downto left-len(x.bcid)+1)));
-      left := left - len(x.bcid);
+      assign(y(left downto left-len(x.sys_bcid)+1), convert(x.sys_bcid, y(left downto left-len(x.sys_bcid)+1)));
+      left := left - len(x.sys_bcid);
       assign(y(left downto left-len(x.evid)+1), convert(x.evid, y(left downto left-len(x.evid)+1)));
     end if;
     return y;
@@ -3493,28 +3316,28 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.latency := structify(x(left to left+len(y.latency)-1), y.latency);
-      left := left + len(y.latency);
-      y.win_lower := structify(x(left to left+len(y.win_lower)-1), y.win_lower);
-      left := left + len(y.win_lower);
-      y.win_upper := structify(x(left to left+len(y.win_upper)-1), y.win_upper);
-      left := left + len(y.win_upper);
+      y.window_latency := structify(x(left to left+len(y.window_latency)-1), y.window_latency);
+      left := left + len(y.window_latency);
+      y.lower_window_size := structify(x(left to left+len(y.lower_window_size)-1), y.lower_window_size);
+      left := left + len(y.lower_window_size);
+      y.upper_window_size := structify(x(left to left+len(y.upper_window_size)-1), y.upper_window_size);
+      left := left + len(y.upper_window_size);
       y.daq_bcid := structify(x(left to left+len(y.daq_bcid)-1), y.daq_bcid);
       left := left + len(y.daq_bcid);
-      y.bcid := structify(x(left to left+len(y.bcid)-1), y.bcid);
-      left := left + len(y.bcid);
+      y.sys_bcid := structify(x(left to left+len(y.sys_bcid)-1), y.sys_bcid);
+      left := left + len(y.sys_bcid);
       y.evid := structify(x(left to left+len(y.evid)-1), y.evid);
     else
-      y.latency := structify(x(left downto left-len(y.latency)+1), y.latency);
-      left := left - len(y.latency);
-      y.win_lower := structify(x(left downto left-len(y.win_lower)+1), y.win_lower);
-      left := left - len(y.win_lower);
-      y.win_upper := structify(x(left downto left-len(y.win_upper)+1), y.win_upper);
-      left := left - len(y.win_upper);
+      y.window_latency := structify(x(left downto left-len(y.window_latency)+1), y.window_latency);
+      left := left - len(y.window_latency);
+      y.lower_window_size := structify(x(left downto left-len(y.lower_window_size)+1), y.lower_window_size);
+      left := left - len(y.lower_window_size);
+      y.upper_window_size := structify(x(left downto left-len(y.upper_window_size)+1), y.upper_window_size);
+      left := left - len(y.upper_window_size);
       y.daq_bcid := structify(x(left downto left-len(y.daq_bcid)+1), y.daq_bcid);
       left := left - len(y.daq_bcid);
-      y.bcid := structify(x(left downto left-len(y.bcid)+1), y.bcid);
-      left := left - len(y.bcid);
+      y.sys_bcid := structify(x(left downto left-len(y.sys_bcid)+1), y.sys_bcid);
+      left := left - len(y.sys_bcid);
       y.evid := structify(x(left downto left-len(y.evid)+1), y.evid);
     end if;
     return y;
@@ -3524,28 +3347,28 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.latency := convert(x(left to left+len(y.latency)-1), y.latency);
-      left := left + len(y.latency);
-      y.win_lower := convert(x(left to left+len(y.win_lower)-1), y.win_lower);
-      left := left + len(y.win_lower);
-      y.win_upper := convert(x(left to left+len(y.win_upper)-1), y.win_upper);
-      left := left + len(y.win_upper);
+      y.window_latency := convert(x(left to left+len(y.window_latency)-1), y.window_latency);
+      left := left + len(y.window_latency);
+      y.lower_window_size := convert(x(left to left+len(y.lower_window_size)-1), y.lower_window_size);
+      left := left + len(y.lower_window_size);
+      y.upper_window_size := convert(x(left to left+len(y.upper_window_size)-1), y.upper_window_size);
+      left := left + len(y.upper_window_size);
       y.daq_bcid := convert(x(left to left+len(y.daq_bcid)-1), y.daq_bcid);
       left := left + len(y.daq_bcid);
-      y.bcid := convert(x(left to left+len(y.bcid)-1), y.bcid);
-      left := left + len(y.bcid);
+      y.sys_bcid := convert(x(left to left+len(y.sys_bcid)-1), y.sys_bcid);
+      left := left + len(y.sys_bcid);
       y.evid := convert(x(left to left+len(y.evid)-1), y.evid);
     else
-      y.latency := convert(x(left downto left-len(y.latency)+1), y.latency);
-      left := left - len(y.latency);
-      y.win_lower := convert(x(left downto left-len(y.win_lower)+1), y.win_lower);
-      left := left - len(y.win_lower);
-      y.win_upper := convert(x(left downto left-len(y.win_upper)+1), y.win_upper);
-      left := left - len(y.win_upper);
+      y.window_latency := convert(x(left downto left-len(y.window_latency)+1), y.window_latency);
+      left := left - len(y.window_latency);
+      y.lower_window_size := convert(x(left downto left-len(y.lower_window_size)+1), y.lower_window_size);
+      left := left - len(y.lower_window_size);
+      y.upper_window_size := convert(x(left downto left-len(y.upper_window_size)+1), y.upper_window_size);
+      left := left - len(y.upper_window_size);
       y.daq_bcid := convert(x(left downto left-len(y.daq_bcid)+1), y.daq_bcid);
       left := left - len(y.daq_bcid);
-      y.bcid := convert(x(left downto left-len(y.bcid)+1), y.bcid);
-      left := left - len(y.bcid);
+      y.sys_bcid := convert(x(left downto left-len(y.sys_bcid)+1), y.sys_bcid);
+      left := left - len(y.sys_bcid);
       y.evid := convert(x(left downto left-len(y.evid)+1), y.evid);
     end if;
     return y;
@@ -3553,22 +3376,22 @@ package body daq_defs is
   function nullify(t: req_to_row_extra_rt) return req_to_row_extra_rt is
   variable y: req_to_row_extra_rt;
   begin
-    y.latency := nullify(t.latency);
-    y.win_lower := nullify(t.win_lower);
-    y.win_upper := nullify(t.win_upper);
+    y.window_latency := nullify(t.window_latency);
+    y.lower_window_size := nullify(t.lower_window_size);
+    y.upper_window_size := nullify(t.upper_window_size);
     y.daq_bcid := nullify(t.daq_bcid);
-    y.bcid := nullify(t.bcid);
+    y.sys_bcid := nullify(t.sys_bcid);
     y.evid := nullify(t.evid);
     return y;
   end function nullify;
   function zeroed(t: req_to_row_extra_rt) return req_to_row_extra_rt is
   variable y: req_to_row_extra_rt;
   begin
-    y.latency := zeroed(t.latency);
-    y.win_lower := zeroed(t.win_lower);
-    y.win_upper := zeroed(t.win_upper);
+    y.window_latency := zeroed(t.window_latency);
+    y.lower_window_size := zeroed(t.lower_window_size);
+    y.upper_window_size := zeroed(t.upper_window_size);
     y.daq_bcid := zeroed(t.daq_bcid);
-    y.bcid := zeroed(t.bcid);
+    y.sys_bcid := zeroed(t.sys_bcid);
     y.evid := zeroed(t.evid);
     return y;
   end function zeroed;
@@ -3824,18 +3647,18 @@ package body daq_defs is
     variable l : natural := 0;
   begin
     l := l + len(x.wr_en);
-    l := l + len(x.latency);
-    l := l + len(x.win_lower);
-    l := l + len(x.win_upper);
+    l := l + len(x.window_latency);
+    l := l + len(x.lower_window_size);
+    l := l + len(x.upper_window_size);
     return l;
   end function len;
   function width(x: ctrl_to_daq_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.wr_en);
-    l := l + width(x.latency);
-    l := l + width(x.win_lower);
-    l := l + width(x.win_upper);
+    l := l + width(x.window_latency);
+    l := l + width(x.lower_window_size);
+    l := l + width(x.upper_window_size);
     return l;
   end function width;
   function vectorify(x: ctrl_to_daq_rt; t: std_logic_vector) return std_logic_vector is
@@ -3845,19 +3668,19 @@ package body daq_defs is
     if t'ascending then
       assign(y(left to left+len(x.wr_en)-1), vectorify(x.wr_en, y(left to left+len(x.wr_en)-1)));
       left := left + len(x.wr_en);
-      assign(y(left to left+len(x.latency)-1), vectorify(x.latency, y(left to left+len(x.latency)-1)));
-      left := left + len(x.latency);
-      assign(y(left to left+len(x.win_lower)-1), vectorify(x.win_lower, y(left to left+len(x.win_lower)-1)));
-      left := left + len(x.win_lower);
-      assign(y(left to left+len(x.win_upper)-1), vectorify(x.win_upper, y(left to left+len(x.win_upper)-1)));
+      assign(y(left to left+len(x.window_latency)-1), vectorify(x.window_latency, y(left to left+len(x.window_latency)-1)));
+      left := left + len(x.window_latency);
+      assign(y(left to left+len(x.lower_window_size)-1), vectorify(x.lower_window_size, y(left to left+len(x.lower_window_size)-1)));
+      left := left + len(x.lower_window_size);
+      assign(y(left to left+len(x.upper_window_size)-1), vectorify(x.upper_window_size, y(left to left+len(x.upper_window_size)-1)));
     else
       assign(y(left downto left-len(x.wr_en)+1), vectorify(x.wr_en, y(left downto left-len(x.wr_en)+1)));
       left := left - len(x.wr_en);
-      assign(y(left downto left-len(x.latency)+1), vectorify(x.latency, y(left downto left-len(x.latency)+1)));
-      left := left - len(x.latency);
-      assign(y(left downto left-len(x.win_lower)+1), vectorify(x.win_lower, y(left downto left-len(x.win_lower)+1)));
-      left := left - len(x.win_lower);
-      assign(y(left downto left-len(x.win_upper)+1), vectorify(x.win_upper, y(left downto left-len(x.win_upper)+1)));
+      assign(y(left downto left-len(x.window_latency)+1), vectorify(x.window_latency, y(left downto left-len(x.window_latency)+1)));
+      left := left - len(x.window_latency);
+      assign(y(left downto left-len(x.lower_window_size)+1), vectorify(x.lower_window_size, y(left downto left-len(x.lower_window_size)+1)));
+      left := left - len(x.lower_window_size);
+      assign(y(left downto left-len(x.upper_window_size)+1), vectorify(x.upper_window_size, y(left downto left-len(x.upper_window_size)+1)));
     end if;
     return y;
   end function vectorify;
@@ -3868,19 +3691,19 @@ package body daq_defs is
     if t'ascending then
       assign(y(left to left+len(x.wr_en)-1), convert(x.wr_en, y(left to left+len(x.wr_en)-1)));
       left := left + len(x.wr_en);
-      assign(y(left to left+len(x.latency)-1), convert(x.latency, y(left to left+len(x.latency)-1)));
-      left := left + len(x.latency);
-      assign(y(left to left+len(x.win_lower)-1), convert(x.win_lower, y(left to left+len(x.win_lower)-1)));
-      left := left + len(x.win_lower);
-      assign(y(left to left+len(x.win_upper)-1), convert(x.win_upper, y(left to left+len(x.win_upper)-1)));
+      assign(y(left to left+len(x.window_latency)-1), convert(x.window_latency, y(left to left+len(x.window_latency)-1)));
+      left := left + len(x.window_latency);
+      assign(y(left to left+len(x.lower_window_size)-1), convert(x.lower_window_size, y(left to left+len(x.lower_window_size)-1)));
+      left := left + len(x.lower_window_size);
+      assign(y(left to left+len(x.upper_window_size)-1), convert(x.upper_window_size, y(left to left+len(x.upper_window_size)-1)));
     else
       assign(y(left downto left-len(x.wr_en)+1), convert(x.wr_en, y(left downto left-len(x.wr_en)+1)));
       left := left - len(x.wr_en);
-      assign(y(left downto left-len(x.latency)+1), convert(x.latency, y(left downto left-len(x.latency)+1)));
-      left := left - len(x.latency);
-      assign(y(left downto left-len(x.win_lower)+1), convert(x.win_lower, y(left downto left-len(x.win_lower)+1)));
-      left := left - len(x.win_lower);
-      assign(y(left downto left-len(x.win_upper)+1), convert(x.win_upper, y(left downto left-len(x.win_upper)+1)));
+      assign(y(left downto left-len(x.window_latency)+1), convert(x.window_latency, y(left downto left-len(x.window_latency)+1)));
+      left := left - len(x.window_latency);
+      assign(y(left downto left-len(x.lower_window_size)+1), convert(x.lower_window_size, y(left downto left-len(x.lower_window_size)+1)));
+      left := left - len(x.lower_window_size);
+      assign(y(left downto left-len(x.upper_window_size)+1), convert(x.upper_window_size, y(left downto left-len(x.upper_window_size)+1)));
     end if;
     return y;
   end function convert;
@@ -3891,19 +3714,19 @@ package body daq_defs is
     if x'ascending then
       y.wr_en := structify(x(left to left+len(y.wr_en)-1), y.wr_en);
       left := left + len(y.wr_en);
-      y.latency := structify(x(left to left+len(y.latency)-1), y.latency);
-      left := left + len(y.latency);
-      y.win_lower := structify(x(left to left+len(y.win_lower)-1), y.win_lower);
-      left := left + len(y.win_lower);
-      y.win_upper := structify(x(left to left+len(y.win_upper)-1), y.win_upper);
+      y.window_latency := structify(x(left to left+len(y.window_latency)-1), y.window_latency);
+      left := left + len(y.window_latency);
+      y.lower_window_size := structify(x(left to left+len(y.lower_window_size)-1), y.lower_window_size);
+      left := left + len(y.lower_window_size);
+      y.upper_window_size := structify(x(left to left+len(y.upper_window_size)-1), y.upper_window_size);
     else
       y.wr_en := structify(x(left downto left-len(y.wr_en)+1), y.wr_en);
       left := left - len(y.wr_en);
-      y.latency := structify(x(left downto left-len(y.latency)+1), y.latency);
-      left := left - len(y.latency);
-      y.win_lower := structify(x(left downto left-len(y.win_lower)+1), y.win_lower);
-      left := left - len(y.win_lower);
-      y.win_upper := structify(x(left downto left-len(y.win_upper)+1), y.win_upper);
+      y.window_latency := structify(x(left downto left-len(y.window_latency)+1), y.window_latency);
+      left := left - len(y.window_latency);
+      y.lower_window_size := structify(x(left downto left-len(y.lower_window_size)+1), y.lower_window_size);
+      left := left - len(y.lower_window_size);
+      y.upper_window_size := structify(x(left downto left-len(y.upper_window_size)+1), y.upper_window_size);
     end if;
     return y;
   end function structify;
@@ -3914,19 +3737,19 @@ package body daq_defs is
     if x'ascending then
       y.wr_en := convert(x(left to left+len(y.wr_en)-1), y.wr_en);
       left := left + len(y.wr_en);
-      y.latency := convert(x(left to left+len(y.latency)-1), y.latency);
-      left := left + len(y.latency);
-      y.win_lower := convert(x(left to left+len(y.win_lower)-1), y.win_lower);
-      left := left + len(y.win_lower);
-      y.win_upper := convert(x(left to left+len(y.win_upper)-1), y.win_upper);
+      y.window_latency := convert(x(left to left+len(y.window_latency)-1), y.window_latency);
+      left := left + len(y.window_latency);
+      y.lower_window_size := convert(x(left to left+len(y.lower_window_size)-1), y.lower_window_size);
+      left := left + len(y.lower_window_size);
+      y.upper_window_size := convert(x(left to left+len(y.upper_window_size)-1), y.upper_window_size);
     else
       y.wr_en := convert(x(left downto left-len(y.wr_en)+1), y.wr_en);
       left := left - len(y.wr_en);
-      y.latency := convert(x(left downto left-len(y.latency)+1), y.latency);
-      left := left - len(y.latency);
-      y.win_lower := convert(x(left downto left-len(y.win_lower)+1), y.win_lower);
-      left := left - len(y.win_lower);
-      y.win_upper := convert(x(left downto left-len(y.win_upper)+1), y.win_upper);
+      y.window_latency := convert(x(left downto left-len(y.window_latency)+1), y.window_latency);
+      left := left - len(y.window_latency);
+      y.lower_window_size := convert(x(left downto left-len(y.lower_window_size)+1), y.lower_window_size);
+      left := left - len(y.lower_window_size);
+      y.upper_window_size := convert(x(left downto left-len(y.upper_window_size)+1), y.upper_window_size);
     end if;
     return y;
   end function convert;
@@ -3934,18 +3757,18 @@ package body daq_defs is
   variable y: ctrl_to_daq_rt;
   begin
     y.wr_en := nullify(t.wr_en);
-    y.latency := nullify(t.latency);
-    y.win_lower := nullify(t.win_lower);
-    y.win_upper := nullify(t.win_upper);
+    y.window_latency := nullify(t.window_latency);
+    y.lower_window_size := nullify(t.lower_window_size);
+    y.upper_window_size := nullify(t.upper_window_size);
     return y;
   end function nullify;
   function zeroed(t: ctrl_to_daq_rt) return ctrl_to_daq_rt is
   variable y: ctrl_to_daq_rt;
   begin
     y.wr_en := zeroed(t.wr_en);
-    y.latency := zeroed(t.latency);
-    y.win_lower := zeroed(t.win_lower);
-    y.win_upper := zeroed(t.win_upper);
+    y.window_latency := zeroed(t.window_latency);
+    y.lower_window_size := zeroed(t.lower_window_size);
+    y.upper_window_size := zeroed(t.upper_window_size);
     return y;
   end function zeroed;
 
@@ -4371,284 +4194,6 @@ package body daq_defs is
   begin
     y.i := zeroed(t.i);
     y.o := zeroed(t.o);
-    return y;
-  end function zeroed;
-
-  function len(x: daq_header_row_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.PIPELINES);
-    l := l + len(x.INPUT_DATA_WIDTH);
-    l := l + len(x.OUTPUT_DATA_WIDTH);
-    l := l + len(x.COUNTER_WIDTH);
-    return l;
-  end function len;
-  function width(x: daq_header_row_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.PIPELINES);
-    l := l + width(x.INPUT_DATA_WIDTH);
-    l := l + width(x.OUTPUT_DATA_WIDTH);
-    l := l + width(x.COUNTER_WIDTH);
-    return l;
-  end function width;
-  function vectorify(x: daq_header_row_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PIPELINES)-1), vectorify(x.PIPELINES, y(left to left+len(x.PIPELINES)-1)));
-      left := left + len(x.PIPELINES);
-      assign(y(left to left+len(x.INPUT_DATA_WIDTH)-1), vectorify(x.INPUT_DATA_WIDTH, y(left to left+len(x.INPUT_DATA_WIDTH)-1)));
-      left := left + len(x.INPUT_DATA_WIDTH);
-      assign(y(left to left+len(x.OUTPUT_DATA_WIDTH)-1), vectorify(x.OUTPUT_DATA_WIDTH, y(left to left+len(x.OUTPUT_DATA_WIDTH)-1)));
-      left := left + len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left to left+len(x.COUNTER_WIDTH)-1), vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1)));
-    else
-      assign(y(left downto left-len(x.PIPELINES)+1), vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1)));
-      left := left - len(x.PIPELINES);
-      assign(y(left downto left-len(x.INPUT_DATA_WIDTH)+1), vectorify(x.INPUT_DATA_WIDTH, y(left downto left-len(x.INPUT_DATA_WIDTH)+1)));
-      left := left - len(x.INPUT_DATA_WIDTH);
-      assign(y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1), vectorify(x.OUTPUT_DATA_WIDTH, y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1)));
-      left := left - len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left downto left-len(x.COUNTER_WIDTH)+1), vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_header_row_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PIPELINES)-1), convert(x.PIPELINES, y(left to left+len(x.PIPELINES)-1)));
-      left := left + len(x.PIPELINES);
-      assign(y(left to left+len(x.INPUT_DATA_WIDTH)-1), convert(x.INPUT_DATA_WIDTH, y(left to left+len(x.INPUT_DATA_WIDTH)-1)));
-      left := left + len(x.INPUT_DATA_WIDTH);
-      assign(y(left to left+len(x.OUTPUT_DATA_WIDTH)-1), convert(x.OUTPUT_DATA_WIDTH, y(left to left+len(x.OUTPUT_DATA_WIDTH)-1)));
-      left := left + len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left to left+len(x.COUNTER_WIDTH)-1), convert(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1)));
-    else
-      assign(y(left downto left-len(x.PIPELINES)+1), convert(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1)));
-      left := left - len(x.PIPELINES);
-      assign(y(left downto left-len(x.INPUT_DATA_WIDTH)+1), convert(x.INPUT_DATA_WIDTH, y(left downto left-len(x.INPUT_DATA_WIDTH)+1)));
-      left := left - len(x.INPUT_DATA_WIDTH);
-      assign(y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1), convert(x.OUTPUT_DATA_WIDTH, y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1)));
-      left := left - len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left downto left-len(x.COUNTER_WIDTH)+1), convert(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_header_row_grt) return daq_header_row_grt is
-    variable y: daq_header_row_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PIPELINES := structify(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-      left := left + len(y.PIPELINES);
-      y.INPUT_DATA_WIDTH := structify(x(left to left+len(y.INPUT_DATA_WIDTH)-1), y.INPUT_DATA_WIDTH);
-      left := left + len(y.INPUT_DATA_WIDTH);
-      y.OUTPUT_DATA_WIDTH := structify(x(left to left+len(y.OUTPUT_DATA_WIDTH)-1), y.OUTPUT_DATA_WIDTH);
-      left := left + len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
-    else
-      y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-      left := left - len(y.PIPELINES);
-      y.INPUT_DATA_WIDTH := structify(x(left downto left-len(y.INPUT_DATA_WIDTH)+1), y.INPUT_DATA_WIDTH);
-      left := left - len(y.INPUT_DATA_WIDTH);
-      y.OUTPUT_DATA_WIDTH := structify(x(left downto left-len(y.OUTPUT_DATA_WIDTH)+1), y.OUTPUT_DATA_WIDTH);
-      left := left - len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_header_row_grt) return daq_header_row_grt is
-    variable y: daq_header_row_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PIPELINES := convert(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-      left := left + len(y.PIPELINES);
-      y.INPUT_DATA_WIDTH := convert(x(left to left+len(y.INPUT_DATA_WIDTH)-1), y.INPUT_DATA_WIDTH);
-      left := left + len(y.INPUT_DATA_WIDTH);
-      y.OUTPUT_DATA_WIDTH := convert(x(left to left+len(y.OUTPUT_DATA_WIDTH)-1), y.OUTPUT_DATA_WIDTH);
-      left := left + len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := convert(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
-    else
-      y.PIPELINES := convert(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-      left := left - len(y.PIPELINES);
-      y.INPUT_DATA_WIDTH := convert(x(left downto left-len(y.INPUT_DATA_WIDTH)+1), y.INPUT_DATA_WIDTH);
-      left := left - len(y.INPUT_DATA_WIDTH);
-      y.OUTPUT_DATA_WIDTH := convert(x(left downto left-len(y.OUTPUT_DATA_WIDTH)+1), y.OUTPUT_DATA_WIDTH);
-      left := left - len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := convert(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_header_row_grt) return daq_header_row_grt is
-  variable y: daq_header_row_grt;
-  begin
-    y.PIPELINES := nullify(t.PIPELINES);
-    y.INPUT_DATA_WIDTH := nullify(t.INPUT_DATA_WIDTH);
-    y.OUTPUT_DATA_WIDTH := nullify(t.OUTPUT_DATA_WIDTH);
-    y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_header_row_grt) return daq_header_row_grt is
-  variable y: daq_header_row_grt;
-  begin
-    y.PIPELINES := zeroed(t.PIPELINES);
-    y.INPUT_DATA_WIDTH := zeroed(t.INPUT_DATA_WIDTH);
-    y.OUTPUT_DATA_WIDTH := zeroed(t.OUTPUT_DATA_WIDTH);
-    y.COUNTER_WIDTH := zeroed(t.COUNTER_WIDTH);
-    return y;
-  end function zeroed;
-
-  function len(x: daq_data_row_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.PIPELINES);
-    l := l + len(x.INPUT_DATA_WIDTH);
-    l := l + len(x.OUTPUT_DATA_WIDTH);
-    l := l + len(x.COUNTER_WIDTH);
-    l := l + len(x.FIFO_DEPTH);
-    return l;
-  end function len;
-  function width(x: daq_data_row_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.PIPELINES);
-    l := l + width(x.INPUT_DATA_WIDTH);
-    l := l + width(x.OUTPUT_DATA_WIDTH);
-    l := l + width(x.COUNTER_WIDTH);
-    l := l + width(x.FIFO_DEPTH);
-    return l;
-  end function width;
-  function vectorify(x: daq_data_row_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PIPELINES)-1), vectorify(x.PIPELINES, y(left to left+len(x.PIPELINES)-1)));
-      left := left + len(x.PIPELINES);
-      assign(y(left to left+len(x.INPUT_DATA_WIDTH)-1), vectorify(x.INPUT_DATA_WIDTH, y(left to left+len(x.INPUT_DATA_WIDTH)-1)));
-      left := left + len(x.INPUT_DATA_WIDTH);
-      assign(y(left to left+len(x.OUTPUT_DATA_WIDTH)-1), vectorify(x.OUTPUT_DATA_WIDTH, y(left to left+len(x.OUTPUT_DATA_WIDTH)-1)));
-      left := left + len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left to left+len(x.COUNTER_WIDTH)-1), vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1)));
-      left := left + len(x.COUNTER_WIDTH);
-      assign(y(left to left+len(x.FIFO_DEPTH)-1), vectorify(x.FIFO_DEPTH, y(left to left+len(x.FIFO_DEPTH)-1)));
-    else
-      assign(y(left downto left-len(x.PIPELINES)+1), vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1)));
-      left := left - len(x.PIPELINES);
-      assign(y(left downto left-len(x.INPUT_DATA_WIDTH)+1), vectorify(x.INPUT_DATA_WIDTH, y(left downto left-len(x.INPUT_DATA_WIDTH)+1)));
-      left := left - len(x.INPUT_DATA_WIDTH);
-      assign(y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1), vectorify(x.OUTPUT_DATA_WIDTH, y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1)));
-      left := left - len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left downto left-len(x.COUNTER_WIDTH)+1), vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1)));
-      left := left - len(x.COUNTER_WIDTH);
-      assign(y(left downto left-len(x.FIFO_DEPTH)+1), vectorify(x.FIFO_DEPTH, y(left downto left-len(x.FIFO_DEPTH)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_data_row_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PIPELINES)-1), convert(x.PIPELINES, y(left to left+len(x.PIPELINES)-1)));
-      left := left + len(x.PIPELINES);
-      assign(y(left to left+len(x.INPUT_DATA_WIDTH)-1), convert(x.INPUT_DATA_WIDTH, y(left to left+len(x.INPUT_DATA_WIDTH)-1)));
-      left := left + len(x.INPUT_DATA_WIDTH);
-      assign(y(left to left+len(x.OUTPUT_DATA_WIDTH)-1), convert(x.OUTPUT_DATA_WIDTH, y(left to left+len(x.OUTPUT_DATA_WIDTH)-1)));
-      left := left + len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left to left+len(x.COUNTER_WIDTH)-1), convert(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1)));
-      left := left + len(x.COUNTER_WIDTH);
-      assign(y(left to left+len(x.FIFO_DEPTH)-1), convert(x.FIFO_DEPTH, y(left to left+len(x.FIFO_DEPTH)-1)));
-    else
-      assign(y(left downto left-len(x.PIPELINES)+1), convert(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1)));
-      left := left - len(x.PIPELINES);
-      assign(y(left downto left-len(x.INPUT_DATA_WIDTH)+1), convert(x.INPUT_DATA_WIDTH, y(left downto left-len(x.INPUT_DATA_WIDTH)+1)));
-      left := left - len(x.INPUT_DATA_WIDTH);
-      assign(y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1), convert(x.OUTPUT_DATA_WIDTH, y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1)));
-      left := left - len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left downto left-len(x.COUNTER_WIDTH)+1), convert(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1)));
-      left := left - len(x.COUNTER_WIDTH);
-      assign(y(left downto left-len(x.FIFO_DEPTH)+1), convert(x.FIFO_DEPTH, y(left downto left-len(x.FIFO_DEPTH)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_data_row_grt) return daq_data_row_grt is
-    variable y: daq_data_row_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PIPELINES := structify(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-      left := left + len(y.PIPELINES);
-      y.INPUT_DATA_WIDTH := structify(x(left to left+len(y.INPUT_DATA_WIDTH)-1), y.INPUT_DATA_WIDTH);
-      left := left + len(y.INPUT_DATA_WIDTH);
-      y.OUTPUT_DATA_WIDTH := structify(x(left to left+len(y.OUTPUT_DATA_WIDTH)-1), y.OUTPUT_DATA_WIDTH);
-      left := left + len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
-      left := left + len(y.COUNTER_WIDTH);
-      y.FIFO_DEPTH := structify(x(left to left+len(y.FIFO_DEPTH)-1), y.FIFO_DEPTH);
-    else
-      y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-      left := left - len(y.PIPELINES);
-      y.INPUT_DATA_WIDTH := structify(x(left downto left-len(y.INPUT_DATA_WIDTH)+1), y.INPUT_DATA_WIDTH);
-      left := left - len(y.INPUT_DATA_WIDTH);
-      y.OUTPUT_DATA_WIDTH := structify(x(left downto left-len(y.OUTPUT_DATA_WIDTH)+1), y.OUTPUT_DATA_WIDTH);
-      left := left - len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
-      left := left - len(y.COUNTER_WIDTH);
-      y.FIFO_DEPTH := structify(x(left downto left-len(y.FIFO_DEPTH)+1), y.FIFO_DEPTH);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_data_row_grt) return daq_data_row_grt is
-    variable y: daq_data_row_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PIPELINES := convert(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-      left := left + len(y.PIPELINES);
-      y.INPUT_DATA_WIDTH := convert(x(left to left+len(y.INPUT_DATA_WIDTH)-1), y.INPUT_DATA_WIDTH);
-      left := left + len(y.INPUT_DATA_WIDTH);
-      y.OUTPUT_DATA_WIDTH := convert(x(left to left+len(y.OUTPUT_DATA_WIDTH)-1), y.OUTPUT_DATA_WIDTH);
-      left := left + len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := convert(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
-      left := left + len(y.COUNTER_WIDTH);
-      y.FIFO_DEPTH := convert(x(left to left+len(y.FIFO_DEPTH)-1), y.FIFO_DEPTH);
-    else
-      y.PIPELINES := convert(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-      left := left - len(y.PIPELINES);
-      y.INPUT_DATA_WIDTH := convert(x(left downto left-len(y.INPUT_DATA_WIDTH)+1), y.INPUT_DATA_WIDTH);
-      left := left - len(y.INPUT_DATA_WIDTH);
-      y.OUTPUT_DATA_WIDTH := convert(x(left downto left-len(y.OUTPUT_DATA_WIDTH)+1), y.OUTPUT_DATA_WIDTH);
-      left := left - len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := convert(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
-      left := left - len(y.COUNTER_WIDTH);
-      y.FIFO_DEPTH := convert(x(left downto left-len(y.FIFO_DEPTH)+1), y.FIFO_DEPTH);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_data_row_grt) return daq_data_row_grt is
-  variable y: daq_data_row_grt;
-  begin
-    y.PIPELINES := nullify(t.PIPELINES);
-    y.INPUT_DATA_WIDTH := nullify(t.INPUT_DATA_WIDTH);
-    y.OUTPUT_DATA_WIDTH := nullify(t.OUTPUT_DATA_WIDTH);
-    y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
-    y.FIFO_DEPTH := nullify(t.FIFO_DEPTH);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_data_row_grt) return daq_data_row_grt is
-  variable y: daq_data_row_grt;
-  begin
-    y.PIPELINES := zeroed(t.PIPELINES);
-    y.INPUT_DATA_WIDTH := zeroed(t.INPUT_DATA_WIDTH);
-    y.OUTPUT_DATA_WIDTH := zeroed(t.OUTPUT_DATA_WIDTH);
-    y.COUNTER_WIDTH := zeroed(t.COUNTER_WIDTH);
-    y.FIFO_DEPTH := zeroed(t.FIFO_DEPTH);
     return y;
   end function zeroed;
 
@@ -5217,95 +4762,6 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: daq_pbldr_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.DATA_WIDTH);
-    l := l + len(x.STREAMS);
-    return l;
-  end function len;
-  function width(x: daq_pbldr_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.DATA_WIDTH);
-    l := l + width(x.STREAMS);
-    return l;
-  end function width;
-  function vectorify(x: daq_pbldr_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.DATA_WIDTH)-1), vectorify(x.DATA_WIDTH, y(left to left+len(x.DATA_WIDTH)-1)));
-      left := left + len(x.DATA_WIDTH);
-      assign(y(left to left+len(x.STREAMS)-1), vectorify(x.STREAMS, y(left to left+len(x.STREAMS)-1)));
-    else
-      assign(y(left downto left-len(x.DATA_WIDTH)+1), vectorify(x.DATA_WIDTH, y(left downto left-len(x.DATA_WIDTH)+1)));
-      left := left - len(x.DATA_WIDTH);
-      assign(y(left downto left-len(x.STREAMS)+1), vectorify(x.STREAMS, y(left downto left-len(x.STREAMS)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_pbldr_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.DATA_WIDTH)-1), convert(x.DATA_WIDTH, y(left to left+len(x.DATA_WIDTH)-1)));
-      left := left + len(x.DATA_WIDTH);
-      assign(y(left to left+len(x.STREAMS)-1), convert(x.STREAMS, y(left to left+len(x.STREAMS)-1)));
-    else
-      assign(y(left downto left-len(x.DATA_WIDTH)+1), convert(x.DATA_WIDTH, y(left downto left-len(x.DATA_WIDTH)+1)));
-      left := left - len(x.DATA_WIDTH);
-      assign(y(left downto left-len(x.STREAMS)+1), convert(x.STREAMS, y(left downto left-len(x.STREAMS)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_pbldr_grt) return daq_pbldr_grt is
-    variable y: daq_pbldr_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.DATA_WIDTH := structify(x(left to left+len(y.DATA_WIDTH)-1), y.DATA_WIDTH);
-      left := left + len(y.DATA_WIDTH);
-      y.STREAMS := structify(x(left to left+len(y.STREAMS)-1), y.STREAMS);
-    else
-      y.DATA_WIDTH := structify(x(left downto left-len(y.DATA_WIDTH)+1), y.DATA_WIDTH);
-      left := left - len(y.DATA_WIDTH);
-      y.STREAMS := structify(x(left downto left-len(y.STREAMS)+1), y.STREAMS);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_pbldr_grt) return daq_pbldr_grt is
-    variable y: daq_pbldr_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.DATA_WIDTH := convert(x(left to left+len(y.DATA_WIDTH)-1), y.DATA_WIDTH);
-      left := left + len(y.DATA_WIDTH);
-      y.STREAMS := convert(x(left to left+len(y.STREAMS)-1), y.STREAMS);
-    else
-      y.DATA_WIDTH := convert(x(left downto left-len(y.DATA_WIDTH)+1), y.DATA_WIDTH);
-      left := left - len(y.DATA_WIDTH);
-      y.STREAMS := convert(x(left downto left-len(y.STREAMS)+1), y.STREAMS);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_pbldr_grt) return daq_pbldr_grt is
-  variable y: daq_pbldr_grt;
-  begin
-    y.DATA_WIDTH := nullify(t.DATA_WIDTH);
-    y.STREAMS := nullify(t.STREAMS);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_pbldr_grt) return daq_pbldr_grt is
-  variable y: daq_pbldr_grt;
-  begin
-    y.DATA_WIDTH := zeroed(t.DATA_WIDTH);
-    y.STREAMS := zeroed(t.STREAMS);
-    return y;
-  end function zeroed;
-
   function len(x: daq_pbldr_irt) return natural is
     variable l : natural := 0;
   begin
@@ -5726,95 +5182,6 @@ package body daq_defs is
     return y;
   end function zeroed;
 
-  function len(x: daq_mngt_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.STREAMS);
-    l := l + len(x.PIPELINES);
-    return l;
-  end function len;
-  function width(x: daq_mngt_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.STREAMS);
-    l := l + width(x.PIPELINES);
-    return l;
-  end function width;
-  function vectorify(x: daq_mngt_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.STREAMS)-1), vectorify(x.STREAMS, y(left to left+len(x.STREAMS)-1)));
-      left := left + len(x.STREAMS);
-      assign(y(left to left+len(x.PIPELINES)-1), vectorify(x.PIPELINES, y(left to left+len(x.PIPELINES)-1)));
-    else
-      assign(y(left downto left-len(x.STREAMS)+1), vectorify(x.STREAMS, y(left downto left-len(x.STREAMS)+1)));
-      left := left - len(x.STREAMS);
-      assign(y(left downto left-len(x.PIPELINES)+1), vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_mngt_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.STREAMS)-1), convert(x.STREAMS, y(left to left+len(x.STREAMS)-1)));
-      left := left + len(x.STREAMS);
-      assign(y(left to left+len(x.PIPELINES)-1), convert(x.PIPELINES, y(left to left+len(x.PIPELINES)-1)));
-    else
-      assign(y(left downto left-len(x.STREAMS)+1), convert(x.STREAMS, y(left downto left-len(x.STREAMS)+1)));
-      left := left - len(x.STREAMS);
-      assign(y(left downto left-len(x.PIPELINES)+1), convert(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_mngt_grt) return daq_mngt_grt is
-    variable y: daq_mngt_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.STREAMS := structify(x(left to left+len(y.STREAMS)-1), y.STREAMS);
-      left := left + len(y.STREAMS);
-      y.PIPELINES := structify(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-    else
-      y.STREAMS := structify(x(left downto left-len(y.STREAMS)+1), y.STREAMS);
-      left := left - len(y.STREAMS);
-      y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_mngt_grt) return daq_mngt_grt is
-    variable y: daq_mngt_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.STREAMS := convert(x(left to left+len(y.STREAMS)-1), y.STREAMS);
-      left := left + len(y.STREAMS);
-      y.PIPELINES := convert(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-    else
-      y.STREAMS := convert(x(left downto left-len(y.STREAMS)+1), y.STREAMS);
-      left := left - len(y.STREAMS);
-      y.PIPELINES := convert(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_mngt_grt) return daq_mngt_grt is
-  variable y: daq_mngt_grt;
-  begin
-    y.STREAMS := nullify(t.STREAMS);
-    y.PIPELINES := nullify(t.PIPELINES);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_mngt_grt) return daq_mngt_grt is
-  variable y: daq_mngt_grt;
-  begin
-    y.STREAMS := zeroed(t.STREAMS);
-    y.PIPELINES := zeroed(t.PIPELINES);
-    return y;
-  end function zeroed;
-
   function len(x: daq_mngt_irt) return natural is
     variable l : natural := 0;
   begin
@@ -6139,135 +5506,6 @@ package body daq_defs is
   begin
     y.i := zeroed(t.i);
     y.o := zeroed(t.o);
-    return y;
-  end function zeroed;
-
-  function len(x: daq_algo_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.PIPELINES);
-    l := l + len(x.BRANCH_STRUCT);
-    l := l + len(x.COUNTER_WIDTH);
-    l := l + len(x.OUTPUT_DATA_WIDTH);
-    return l;
-  end function len;
-  function width(x: daq_algo_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.PIPELINES);
-    l := l + width(x.BRANCH_STRUCT);
-    l := l + width(x.COUNTER_WIDTH);
-    l := l + width(x.OUTPUT_DATA_WIDTH);
-    return l;
-  end function width;
-  function vectorify(x: daq_algo_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PIPELINES)-1), vectorify(x.PIPELINES, y(left to left+len(x.PIPELINES)-1)));
-      left := left + len(x.PIPELINES);
-      assign(y(left to left+len(x.BRANCH_STRUCT)-1), vectorify(x.BRANCH_STRUCT, y(left to left+len(x.BRANCH_STRUCT)-1)));
-      left := left + len(x.BRANCH_STRUCT);
-      assign(y(left to left+len(x.COUNTER_WIDTH)-1), vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1)));
-      left := left + len(x.COUNTER_WIDTH);
-      assign(y(left to left+len(x.OUTPUT_DATA_WIDTH)-1), vectorify(x.OUTPUT_DATA_WIDTH, y(left to left+len(x.OUTPUT_DATA_WIDTH)-1)));
-    else
-      assign(y(left downto left-len(x.PIPELINES)+1), vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1)));
-      left := left - len(x.PIPELINES);
-      assign(y(left downto left-len(x.BRANCH_STRUCT)+1), vectorify(x.BRANCH_STRUCT, y(left downto left-len(x.BRANCH_STRUCT)+1)));
-      left := left - len(x.BRANCH_STRUCT);
-      assign(y(left downto left-len(x.COUNTER_WIDTH)+1), vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1)));
-      left := left - len(x.COUNTER_WIDTH);
-      assign(y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1), vectorify(x.OUTPUT_DATA_WIDTH, y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_algo_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PIPELINES)-1), convert(x.PIPELINES, y(left to left+len(x.PIPELINES)-1)));
-      left := left + len(x.PIPELINES);
-      assign(y(left to left+len(x.BRANCH_STRUCT)-1), convert(x.BRANCH_STRUCT, y(left to left+len(x.BRANCH_STRUCT)-1)));
-      left := left + len(x.BRANCH_STRUCT);
-      assign(y(left to left+len(x.COUNTER_WIDTH)-1), convert(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1)));
-      left := left + len(x.COUNTER_WIDTH);
-      assign(y(left to left+len(x.OUTPUT_DATA_WIDTH)-1), convert(x.OUTPUT_DATA_WIDTH, y(left to left+len(x.OUTPUT_DATA_WIDTH)-1)));
-    else
-      assign(y(left downto left-len(x.PIPELINES)+1), convert(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1)));
-      left := left - len(x.PIPELINES);
-      assign(y(left downto left-len(x.BRANCH_STRUCT)+1), convert(x.BRANCH_STRUCT, y(left downto left-len(x.BRANCH_STRUCT)+1)));
-      left := left - len(x.BRANCH_STRUCT);
-      assign(y(left downto left-len(x.COUNTER_WIDTH)+1), convert(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1)));
-      left := left - len(x.COUNTER_WIDTH);
-      assign(y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1), convert(x.OUTPUT_DATA_WIDTH, y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_algo_grt) return daq_algo_grt is
-    variable y: daq_algo_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PIPELINES := structify(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-      left := left + len(y.PIPELINES);
-      y.BRANCH_STRUCT := structify(x(left to left+len(y.BRANCH_STRUCT)-1), y.BRANCH_STRUCT);
-      left := left + len(y.BRANCH_STRUCT);
-      y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
-      left := left + len(y.COUNTER_WIDTH);
-      y.OUTPUT_DATA_WIDTH := structify(x(left to left+len(y.OUTPUT_DATA_WIDTH)-1), y.OUTPUT_DATA_WIDTH);
-    else
-      y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-      left := left - len(y.PIPELINES);
-      y.BRANCH_STRUCT := structify(x(left downto left-len(y.BRANCH_STRUCT)+1), y.BRANCH_STRUCT);
-      left := left - len(y.BRANCH_STRUCT);
-      y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
-      left := left - len(y.COUNTER_WIDTH);
-      y.OUTPUT_DATA_WIDTH := structify(x(left downto left-len(y.OUTPUT_DATA_WIDTH)+1), y.OUTPUT_DATA_WIDTH);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_algo_grt) return daq_algo_grt is
-    variable y: daq_algo_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PIPELINES := convert(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-      left := left + len(y.PIPELINES);
-      y.BRANCH_STRUCT := convert(x(left to left+len(y.BRANCH_STRUCT)-1), y.BRANCH_STRUCT);
-      left := left + len(y.BRANCH_STRUCT);
-      y.COUNTER_WIDTH := convert(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
-      left := left + len(y.COUNTER_WIDTH);
-      y.OUTPUT_DATA_WIDTH := convert(x(left to left+len(y.OUTPUT_DATA_WIDTH)-1), y.OUTPUT_DATA_WIDTH);
-    else
-      y.PIPELINES := convert(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-      left := left - len(y.PIPELINES);
-      y.BRANCH_STRUCT := convert(x(left downto left-len(y.BRANCH_STRUCT)+1), y.BRANCH_STRUCT);
-      left := left - len(y.BRANCH_STRUCT);
-      y.COUNTER_WIDTH := convert(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
-      left := left - len(y.COUNTER_WIDTH);
-      y.OUTPUT_DATA_WIDTH := convert(x(left downto left-len(y.OUTPUT_DATA_WIDTH)+1), y.OUTPUT_DATA_WIDTH);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_algo_grt) return daq_algo_grt is
-  variable y: daq_algo_grt;
-  begin
-    y.PIPELINES := nullify(t.PIPELINES);
-    y.BRANCH_STRUCT := nullify(t.BRANCH_STRUCT);
-    y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
-    y.OUTPUT_DATA_WIDTH := nullify(t.OUTPUT_DATA_WIDTH);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_algo_grt) return daq_algo_grt is
-  variable y: daq_algo_grt;
-  begin
-    y.PIPELINES := zeroed(t.PIPELINES);
-    y.BRANCH_STRUCT := zeroed(t.BRANCH_STRUCT);
-    y.COUNTER_WIDTH := zeroed(t.COUNTER_WIDTH);
-    y.OUTPUT_DATA_WIDTH := zeroed(t.OUTPUT_DATA_WIDTH);
     return y;
   end function zeroed;
 
@@ -6934,155 +6172,6 @@ package body daq_defs is
     l: for i in y'range loop
       y(i) := zeroed(y(i));
     end loop l;
-    return y;
-  end function zeroed;
-
-  function len(x: daq_branch_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.PIPELINES);
-    l := l + len(x.BRANCHES_MASK);
-    l := l + len(x.BRANCHES_STRUCT);
-    l := l + len(x.OUTPUT_DATA_WIDTH);
-    l := l + len(x.COUNTER_WIDTH);
-    return l;
-  end function len;
-  function width(x: daq_branch_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.PIPELINES);
-    l := l + width(x.BRANCHES_MASK);
-    l := l + width(x.BRANCHES_STRUCT);
-    l := l + width(x.OUTPUT_DATA_WIDTH);
-    l := l + width(x.COUNTER_WIDTH);
-    return l;
-  end function width;
-  function vectorify(x: daq_branch_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PIPELINES)-1), vectorify(x.PIPELINES, y(left to left+len(x.PIPELINES)-1)));
-      left := left + len(x.PIPELINES);
-      assign(y(left to left+len(x.BRANCHES_MASK)-1), vectorify(x.BRANCHES_MASK, y(left to left+len(x.BRANCHES_MASK)-1)));
-      left := left + len(x.BRANCHES_MASK);
-      assign(y(left to left+len(x.BRANCHES_STRUCT)-1), vectorify(x.BRANCHES_STRUCT, y(left to left+len(x.BRANCHES_STRUCT)-1)));
-      left := left + len(x.BRANCHES_STRUCT);
-      assign(y(left to left+len(x.OUTPUT_DATA_WIDTH)-1), vectorify(x.OUTPUT_DATA_WIDTH, y(left to left+len(x.OUTPUT_DATA_WIDTH)-1)));
-      left := left + len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left to left+len(x.COUNTER_WIDTH)-1), vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1)));
-    else
-      assign(y(left downto left-len(x.PIPELINES)+1), vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1)));
-      left := left - len(x.PIPELINES);
-      assign(y(left downto left-len(x.BRANCHES_MASK)+1), vectorify(x.BRANCHES_MASK, y(left downto left-len(x.BRANCHES_MASK)+1)));
-      left := left - len(x.BRANCHES_MASK);
-      assign(y(left downto left-len(x.BRANCHES_STRUCT)+1), vectorify(x.BRANCHES_STRUCT, y(left downto left-len(x.BRANCHES_STRUCT)+1)));
-      left := left - len(x.BRANCHES_STRUCT);
-      assign(y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1), vectorify(x.OUTPUT_DATA_WIDTH, y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1)));
-      left := left - len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left downto left-len(x.COUNTER_WIDTH)+1), vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: daq_branch_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PIPELINES)-1), convert(x.PIPELINES, y(left to left+len(x.PIPELINES)-1)));
-      left := left + len(x.PIPELINES);
-      assign(y(left to left+len(x.BRANCHES_MASK)-1), convert(x.BRANCHES_MASK, y(left to left+len(x.BRANCHES_MASK)-1)));
-      left := left + len(x.BRANCHES_MASK);
-      assign(y(left to left+len(x.BRANCHES_STRUCT)-1), convert(x.BRANCHES_STRUCT, y(left to left+len(x.BRANCHES_STRUCT)-1)));
-      left := left + len(x.BRANCHES_STRUCT);
-      assign(y(left to left+len(x.OUTPUT_DATA_WIDTH)-1), convert(x.OUTPUT_DATA_WIDTH, y(left to left+len(x.OUTPUT_DATA_WIDTH)-1)));
-      left := left + len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left to left+len(x.COUNTER_WIDTH)-1), convert(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1)));
-    else
-      assign(y(left downto left-len(x.PIPELINES)+1), convert(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1)));
-      left := left - len(x.PIPELINES);
-      assign(y(left downto left-len(x.BRANCHES_MASK)+1), convert(x.BRANCHES_MASK, y(left downto left-len(x.BRANCHES_MASK)+1)));
-      left := left - len(x.BRANCHES_MASK);
-      assign(y(left downto left-len(x.BRANCHES_STRUCT)+1), convert(x.BRANCHES_STRUCT, y(left downto left-len(x.BRANCHES_STRUCT)+1)));
-      left := left - len(x.BRANCHES_STRUCT);
-      assign(y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1), convert(x.OUTPUT_DATA_WIDTH, y(left downto left-len(x.OUTPUT_DATA_WIDTH)+1)));
-      left := left - len(x.OUTPUT_DATA_WIDTH);
-      assign(y(left downto left-len(x.COUNTER_WIDTH)+1), convert(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: daq_branch_grt) return daq_branch_grt is
-    variable y: daq_branch_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PIPELINES := structify(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-      left := left + len(y.PIPELINES);
-      y.BRANCHES_MASK := structify(x(left to left+len(y.BRANCHES_MASK)-1), y.BRANCHES_MASK);
-      left := left + len(y.BRANCHES_MASK);
-      y.BRANCHES_STRUCT := structify(x(left to left+len(y.BRANCHES_STRUCT)-1), y.BRANCHES_STRUCT);
-      left := left + len(y.BRANCHES_STRUCT);
-      y.OUTPUT_DATA_WIDTH := structify(x(left to left+len(y.OUTPUT_DATA_WIDTH)-1), y.OUTPUT_DATA_WIDTH);
-      left := left + len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
-    else
-      y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-      left := left - len(y.PIPELINES);
-      y.BRANCHES_MASK := structify(x(left downto left-len(y.BRANCHES_MASK)+1), y.BRANCHES_MASK);
-      left := left - len(y.BRANCHES_MASK);
-      y.BRANCHES_STRUCT := structify(x(left downto left-len(y.BRANCHES_STRUCT)+1), y.BRANCHES_STRUCT);
-      left := left - len(y.BRANCHES_STRUCT);
-      y.OUTPUT_DATA_WIDTH := structify(x(left downto left-len(y.OUTPUT_DATA_WIDTH)+1), y.OUTPUT_DATA_WIDTH);
-      left := left - len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: daq_branch_grt) return daq_branch_grt is
-    variable y: daq_branch_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PIPELINES := convert(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-      left := left + len(y.PIPELINES);
-      y.BRANCHES_MASK := convert(x(left to left+len(y.BRANCHES_MASK)-1), y.BRANCHES_MASK);
-      left := left + len(y.BRANCHES_MASK);
-      y.BRANCHES_STRUCT := convert(x(left to left+len(y.BRANCHES_STRUCT)-1), y.BRANCHES_STRUCT);
-      left := left + len(y.BRANCHES_STRUCT);
-      y.OUTPUT_DATA_WIDTH := convert(x(left to left+len(y.OUTPUT_DATA_WIDTH)-1), y.OUTPUT_DATA_WIDTH);
-      left := left + len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := convert(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
-    else
-      y.PIPELINES := convert(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-      left := left - len(y.PIPELINES);
-      y.BRANCHES_MASK := convert(x(left downto left-len(y.BRANCHES_MASK)+1), y.BRANCHES_MASK);
-      left := left - len(y.BRANCHES_MASK);
-      y.BRANCHES_STRUCT := convert(x(left downto left-len(y.BRANCHES_STRUCT)+1), y.BRANCHES_STRUCT);
-      left := left - len(y.BRANCHES_STRUCT);
-      y.OUTPUT_DATA_WIDTH := convert(x(left downto left-len(y.OUTPUT_DATA_WIDTH)+1), y.OUTPUT_DATA_WIDTH);
-      left := left - len(y.OUTPUT_DATA_WIDTH);
-      y.COUNTER_WIDTH := convert(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: daq_branch_grt) return daq_branch_grt is
-  variable y: daq_branch_grt;
-  begin
-    y.PIPELINES := nullify(t.PIPELINES);
-    y.BRANCHES_MASK := nullify(t.BRANCHES_MASK);
-    y.BRANCHES_STRUCT := nullify(t.BRANCHES_STRUCT);
-    y.OUTPUT_DATA_WIDTH := nullify(t.OUTPUT_DATA_WIDTH);
-    y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
-    return y;
-  end function nullify;
-  function zeroed(t: daq_branch_grt) return daq_branch_grt is
-  variable y: daq_branch_grt;
-  begin
-    y.PIPELINES := zeroed(t.PIPELINES);
-    y.BRANCHES_MASK := zeroed(t.BRANCHES_MASK);
-    y.BRANCHES_STRUCT := zeroed(t.BRANCHES_STRUCT);
-    y.OUTPUT_DATA_WIDTH := zeroed(t.OUTPUT_DATA_WIDTH);
-    y.COUNTER_WIDTH := zeroed(t.COUNTER_WIDTH);
     return y;
   end function zeroed;
 

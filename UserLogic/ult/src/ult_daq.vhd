@@ -120,7 +120,7 @@ architecture behavioral of daq is
     variable y : felix_stream_rt;
   begin
     y.valid := x.wr_en;
-    y.data := x.data;
+    y.data := x.data(y.data'range);
     return y;
   end function outputify;
 
@@ -138,11 +138,11 @@ begin
     gen_daq_inner : if   c_HPS_ENABLE_ST_INN = '1' generate
 
       u_daq_inner: entity daq_lib.daq_branch
-        generic map (G => (PIPELINES       => 40,
-                           BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_INN),
-                           BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_INN),
-                           COUNTER_WIDTH     => 32,
-                           OUTPUT_DATA_WIDTH => TDCPOLMUX2TAR_LEN))
+        generic map (PIPELINES         => 18,
+                     BRANCHES_MASK     => get_branches_mask(c_HPS_MAX_HP_INN),
+                     BRANCHES_STRUCT   => get_branches_struct(c_HPS_MAX_HP_INN),
+                     COUNTER_WIDTH     => 32,
+                     OUTPUT_DATA_WIDTH => felix_data_t'length)
         port map (branch_ir => inner_er.i, branch_or =>  inner_er.o);
    
       inner_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
@@ -173,11 +173,11 @@ begin
       
     gen_daq_middle : if   c_HPS_ENABLE_ST_MID = '1' generate
       u_daq_middle: entity daq_lib.daq_branch
-        generic map (G => (PIPELINES       => 40,
-                           BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_MID),
-                           BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_MID),
-                           COUNTER_WIDTH     => 32,
-                           OUTPUT_DATA_WIDTH => TDCPOLMUX2TAR_LEN))
+        generic map (PIPELINES       => 18,
+                     BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_MID),
+                     BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_MID),
+                     COUNTER_WIDTH     => 32,
+                     OUTPUT_DATA_WIDTH => felix_data_t'length)
         port map (branch_ir => middle_er.i, branch_or =>  middle_er.o);
    
       middle_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
@@ -208,11 +208,11 @@ begin
       
     gen_daq_outer : if   c_HPS_ENABLE_ST_OUT = '1' generate
       u_daq_outer: entity daq_lib.daq_branch
-        generic map (G => (PIPELINES       => 40,
-                           BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_OUT),
-                           BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_OUT),
-                           COUNTER_WIDTH     => 32,
-                           OUTPUT_DATA_WIDTH => TDCPOLMUX2TAR_LEN))
+        generic map (PIPELINES       => 18,
+                     BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_OUT),
+                     BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_OUT),
+                     COUNTER_WIDTH     => 32,
+                     OUTPUT_DATA_WIDTH => felix_data_t'length)
         port map (branch_ir => outer_er.i, branch_or =>  outer_er.o);
    
       outer_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
@@ -244,11 +244,11 @@ begin
       
     -- gen_daq_extra : if   c_HPS_ENABLE_ST_EXT = '1' generate
     --   u_daq_extra: entity daq_lib.daq_branch
-    --     generic map (G => (PIPELINES       => 40,
+    --     generic map (G => (PIPELINES       => 18,
     --                        BRANCHES_MASK   => (others => 1),
     --                        BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_EXT),
     --                        COUNTER_WIDTH     => 32,
-    --                        OUTPUT_DATA_WIDTH => TDCPOLMUX2TAR_LEN))
+    --                        OUTPUT_DATA_WIDTH => felix_data_t'length))
     --     port map (branch_ir => extra_er.i, branch_or =>  extra_er.o);
     -- 
     --   extra_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
