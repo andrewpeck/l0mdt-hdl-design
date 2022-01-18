@@ -293,7 +293,7 @@ HDL_Types:
 # - felix_to_usr:
 #     - hfull: [type: logic]
 
-- felix_data: [type: logic, length: 66]
+- felix_data: [type: logic, length: 250]
 
 - felix_stream:
     - valid: [type: logic]
