@@ -333,6 +333,21 @@ begin
       );
     end generate;
 
+
+      SLC_IN_PL : entity vamc_lib.vamc_spl
+      generic map(
+        g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
+        g_PIPELINE_WIDTH    => prepro_data_v'length
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => ena,
+        --
+        i_data      => prepro_data_v,
+        o_data      => o_prepro_data_v
+      );
+      
     process (clock_and_control.clk) is
     begin
       if (rising_edge(clock_and_control.clk)) then
