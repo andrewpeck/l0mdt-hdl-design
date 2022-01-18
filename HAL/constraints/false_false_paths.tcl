@@ -121,6 +121,33 @@ set_max_delay 8.0 \
 ################################################################################
 
 # the apb is clocked by 320MHz clock but controlled by 40MHz control signals so
-# some propagation delay is allowed? need to be careful about this
+# some propagation delay is allowed? need to be careful about this.. probably
+# need to make sure data is only transferred on the strobe
+
 set_max_delay 12.5 \
     -from [get_pins -hierarchical -filter "NAME =~ ult_inst/*apb_mem_interface*/C"]
+
+set_max_delay 12.5 \
+    -to [get_pins -hierarchical -filter "NAME =~ ult_inst/*apb_mem_interface*/D"]
+
+################################################################################
+# DAQ
+################################################################################
+
+# the daq delay blocks have HUGE paths, 12 logic levels with high fanout and create
+# > 3ns negative slack
+
+set_max_delay 8.0 \
+    -from [get_pins -hier -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_*.gen_daq_conn_*.u_daq_*_delay/RING_GEN.ring_mem/TOPOLOGY.rd_index_reg[*]/C"] \
+    -to   [get_pins -hier -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_*.gen_daq_conn_*.u_daq_*_delay/RING_GEN.ring_mem/TOPOLOGY.mem_reg*/EN*WREN"]
+
+set_max_delay 8.0 \
+    -from [get_pins -hier -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_*.gen_daq_conn_*.u_daq_*_delay/RING_GEN.ring_mem/TOPOLOGY.rd_index_reg[*]/C"] \
+    -to   [get_pins -hier -filter "NAME =~ ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_*.gen_daq_conn_*.u_daq_*_delay/RING_GEN.ring_mem/TOPOLOGY.mem_reg*/RSTRAM*"]
+
+set_max_delay 8.0 \
+    -from [get_pins {ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_*.u_daq_*/gen_daq_algo_mask[*].gen_daq_algo_map.u_daq_algo/gen_data_rows[*].u_data_row/data_nodes[*].u_data_node/data_fifo_u/xpm_fifo_sync_inst/xpm_fifo_base_inst/gen_fwft.empty_fwft_i_reg/C}] \
+    -to   [get_pins {ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_*.u_daq_*/gen_daq_algo_mask[*].gen_daq_algo_map.u_daq_algo/u_daq_mngt/col_en_v_reg*/D}]
+
+set_max_delay 8.0 \
+    -to   [get_pins {ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_*.u_daq_*/gen_daq_algo_mask[*].gen_daq_algo_map.u_daq_algo/u_daq_mngt/col_en_v_reg*/D}]
