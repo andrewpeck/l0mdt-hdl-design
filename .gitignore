@@ -1,4 +1,3 @@
-package.json
 vivado*
 *.jou
 *.o
@@ -53,3 +52,5 @@ __init__.py
 *.vstf
 .nfs*
 kernel/
+package.json
+*/package.json
