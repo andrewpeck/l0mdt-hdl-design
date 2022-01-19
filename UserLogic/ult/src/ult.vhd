@@ -171,18 +171,18 @@ architecture behavioral of ult is
   signal out_slc_to_h2s_plout_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
   signal ext_slc_to_h2s_plout_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
 
-  type ucm2hps_bus_array_t is array (integer range 0 to SLR_PIPELINE_DEPTH)
-    of ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal inn_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
-  signal mid_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
-  signal out_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
-  signal ext_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
+  -- type ucm2hps_bus_array_t is array (integer range 0 to SLR_PIPELINE_DEPTH)
+  --   of ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  -- signal inn_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
+  -- signal mid_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
+  -- signal out_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
+  -- signal ext_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
 
-  attribute shreg_extract : string;
-  attribute shreg_extract of inn_slc_to_h2s_pipeline : signal is "no";
-  attribute shreg_extract of mid_slc_to_h2s_pipeline : signal is "no";
-  attribute shreg_extract of out_slc_to_h2s_pipeline : signal is "no";
-  attribute shreg_extract of ext_slc_to_h2s_pipeline : signal is "no";
+  -- attribute shreg_extract : string;
+  -- attribute shreg_extract of inn_slc_to_h2s_pipeline : signal is "no";
+  -- attribute shreg_extract of mid_slc_to_h2s_pipeline : signal is "no";
+  -- attribute shreg_extract of out_slc_to_h2s_pipeline : signal is "no";
+  -- attribute shreg_extract of ext_slc_to_h2s_pipeline : signal is "no";
 
   signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
@@ -445,6 +445,10 @@ begin
         o_uCM2hps_mid_av        => mid_slc_to_h2s_plin_av,
         o_uCM2hps_out_av        => out_slc_to_h2s_plin_av,
         o_uCM2hps_ext_av        => ext_slc_to_h2s_plin_av,
+        -- o_uCM2hps_inn_av        => inn_slc_to_h2s_plin_av,
+        -- o_uCM2hps_mid_av        => mid_slc_to_h2s_plin_av,
+        -- o_uCM2hps_out_av        => out_slc_to_h2s_plin_av,
+        -- o_uCM2hps_ext_av        => ext_slc_to_h2s_plin_av,
         -- pipeline
         o_uCM2pl_av             => ucm2pl_av
       );
@@ -506,10 +510,14 @@ begin
         i_out_slc_av                  => out_slc_to_h2s_plout_av,
         i_ext_slc_av                  => ext_slc_to_h2s_plout_av,
         -- Segments Out to pt calculation
-        o_inn_segments_av             => inn_segments_to_pt_pipeline(0),
-        o_mid_segments_av             => mid_segments_to_pt_pipeline(0),
-        o_out_segments_av             => out_segments_to_pt_pipeline(0),
-        o_ext_segments_av             => ext_segments_to_pt_pipeline(0),
+        -- o_inn_segments_av             => inn_segments_to_pt_pipeline(0),
+        -- o_mid_segments_av             => mid_segments_to_pt_pipeline(0),
+        -- o_out_segments_av             => out_segments_to_pt_pipeline(0),
+        -- o_ext_segments_av             => ext_segments_to_pt_pipeline(0),
+        o_inn_segments_av            => inn_segments_to_pt_plin_av,
+        o_mid_segments_av            => mid_segments_to_pt_plin_av,
+        o_out_segments_av            => out_segments_to_pt_plin_av,
+        o_ext_segments_av            => ext_segments_to_pt_plin_av,
         -- Segment outputs to HA  L
         o_plus_neighbor_segments_av   => o_plus_neighbor_segments_av,
         o_minus_neighbor_segments_av  => o_minus_neighbor_segments_av
@@ -546,6 +554,10 @@ begin
         i_out_slc_av                 => out_slc_to_h2s_plout_av,
         i_ext_slc_av                 => ext_slc_to_h2s_plout_av,
         -- Segments Out to pt calculation
+        -- o_inn_segments_av             => inn_segments_to_pt_pipeline(0),
+        -- o_mid_segments_av             => mid_segments_to_pt_pipeline(0),
+        -- o_out_segments_av             => out_segments_to_pt_pipeline(0),
+        -- o_ext_segments_av             => ext_segments_to_pt_pipeline(0),
         o_inn_segments_av            => inn_segments_to_pt_plin_av,
         o_mid_segments_av            => mid_segments_to_pt_plin_av,
         o_out_segments_av            => out_segments_to_pt_plin_av,

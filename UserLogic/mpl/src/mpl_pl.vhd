@@ -43,8 +43,10 @@ entity mpl_pl is
     rst                 : in std_logic;
     enable              : in std_logic;
     -- AXI to SoC
-    ctrl_r                : in  MPL_PL_MEM_PL_MEM_CTRL_t;
-    mon_r                 : out MPL_PL_MEM_PL_MEM_MON_t;
+    -- ctrl_r                : in  MPL_PL_MEM_PL_MEM_CTRL_t;
+    -- mon_r                 : out MPL_PL_MEM_PL_MEM_MON_t;
+    ctrl_v              : in  std_logic_vector;
+    mon_v               : out std_logic_vector;
     --
     i_freeze            : in std_logic := '0';
     --
@@ -56,10 +58,11 @@ entity mpl_pl is
 end entity mpl_pl;
 
 architecture beh of mpl_pl is
-  
+  -- signal ctrl_r                : MPL_PL_MEM_PL_MEM_CTRL_t;
+  -- signal mon_r                 : MPL_PL_MEM_PL_MEM_MON_t;
 
-  signal apb_ctr_v : std_logic_vector(len(ctrl_r) - 1 downto 0);
-  signal apb_mon_v : std_logic_vector(len(mon_r) - 1 downto 0);
+  -- signal apb_ctr_v : std_logic_vector(len(ctrl_r) - 1 downto 0);
+  -- signal apb_mon_v : std_logic_vector(len(mon_r) - 1 downto 0);
 
   signal i_uCM2pl_r : ucm2pl_rt;
   signal pl2pl_v    : ucm2pl_rvt;
@@ -68,14 +71,14 @@ architecture beh of mpl_pl is
   signal pl2mtc_r   : pl2mtc_rt;
   signal pl2mtc_v   : pl2mtc_rvt;
 
-  signal apb_ctrl_mem_v : std_logic_vector(len(ctrl_r) - 1 downto 0); 
-  signal apb_mon_mem_v  : std_logic_vector(len(mon_r) - 1 downto 0);
+  -- signal apb_ctrl_mem_v : std_logic_vector(len(ctrl_r) - 1 downto 0); 
+  -- signal apb_mon_mem_v  : std_logic_vector(len(mon_r) - 1 downto 0);
 
   
 begin
 
-  apb_ctrl_mem_v <= vectorify(ctrl_r,apb_ctrl_mem_v);
-  mon_r <= structify(apb_mon_mem_v,mon_r);
+  -- apb_ctrl_mem_v <= vectorify(ctrl_r,apb_ctrl_mem_v);
+  -- mon_r <= structify(apb_mon_mem_v,mon_r);
 
   i_uCM2pl_r <= structify(i_uCM2pl_v);
 
@@ -102,8 +105,8 @@ begin
         rst         => rst,
         ena         => enable,
         -- Ctrl/Mon 
-        ctrl_v  => apb_ctrl_mem_v,
-        mon_v   => apb_mon_mem_v,
+        ctrl_v  => ctrl_v,--apb_ctrl_mem_v,
+        mon_v   => mon_v,--apb_mon_mem_v,
         i_freeze    => i_freeze,
 
         --

@@ -13,49 +13,75 @@ use shared_lib.common_ieee.all;
 
 package MPL_CTRL is
 
-  type MPL_ACTIONS_CTRL_t is record
+  type MPL_SUPER_ACTIONS_CTRL_t is record
     RESET : std_logic;
     ENABLE : std_logic;
     DISABLE : std_logic;
     FREEZE : std_logic;
-  end record MPL_ACTIONS_CTRL_t;
-  function len(x: MPL_ACTIONS_CTRL_t) return natural;
-  function width(x: MPL_ACTIONS_CTRL_t) return natural;
-  function vectorify(x: MPL_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: MPL_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t;
-  function convert(x: in std_logic_vector; t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t;
-  function nullify(t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t;
-  function zeroed(t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t;
+  end record MPL_SUPER_ACTIONS_CTRL_t;
+  function len(x: MPL_SUPER_ACTIONS_CTRL_t) return natural;
+  function width(x: MPL_SUPER_ACTIONS_CTRL_t) return natural;
+  function vectorify(x: MPL_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: MPL_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: MPL_SUPER_ACTIONS_CTRL_t) return MPL_SUPER_ACTIONS_CTRL_t;
+  function convert(x: in std_logic_vector; t: MPL_SUPER_ACTIONS_CTRL_t) return MPL_SUPER_ACTIONS_CTRL_t;
+  function nullify(t: MPL_SUPER_ACTIONS_CTRL_t) return MPL_SUPER_ACTIONS_CTRL_t;
+  function zeroed(t: MPL_SUPER_ACTIONS_CTRL_t) return MPL_SUPER_ACTIONS_CTRL_t;
 
-  type MPL_CONFIGS_CTRL_t is record
+  type MPL_SUPER_CONFIGS_CTRL_t is record
     THREADS : std_logic_vector(4-1 downto 0);
     INPUT_EN : std_logic;
     OUTPUT_EN : std_logic;
     FLUSH_MEM_RESET : std_logic;
-  end record MPL_CONFIGS_CTRL_t;
-  function len(x: MPL_CONFIGS_CTRL_t) return natural;
-  function width(x: MPL_CONFIGS_CTRL_t) return natural;
-  function vectorify(x: MPL_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: MPL_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t;
-  function convert(x: in std_logic_vector; t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t;
-  function nullify(t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t;
-  function zeroed(t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t;
+  end record MPL_SUPER_CONFIGS_CTRL_t;
+  function len(x: MPL_SUPER_CONFIGS_CTRL_t) return natural;
+  function width(x: MPL_SUPER_CONFIGS_CTRL_t) return natural;
+  function vectorify(x: MPL_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: MPL_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: MPL_SUPER_CONFIGS_CTRL_t) return MPL_SUPER_CONFIGS_CTRL_t;
+  function convert(x: in std_logic_vector; t: MPL_SUPER_CONFIGS_CTRL_t) return MPL_SUPER_CONFIGS_CTRL_t;
+  function nullify(t: MPL_SUPER_CONFIGS_CTRL_t) return MPL_SUPER_CONFIGS_CTRL_t;
+  function zeroed(t: MPL_SUPER_CONFIGS_CTRL_t) return MPL_SUPER_CONFIGS_CTRL_t;
 
-  type MPL_STATUS_MON_t is record
+  type MPL_SUPER_STATUS_MON_t is record
     ENABLED : std_logic;
     READY : std_logic;
+    FREEZED : std_logic;
     ERROR : std_logic_vector(8-1 downto 0);
-  end record MPL_STATUS_MON_t;
-  function len(x: MPL_STATUS_MON_t) return natural;
-  function width(x: MPL_STATUS_MON_t) return natural;
-  function vectorify(x: MPL_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: MPL_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t;
-  function convert(x: in std_logic_vector; t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t;
-  function nullify(t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t;
-  function zeroed(t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t;
+  end record MPL_SUPER_STATUS_MON_t;
+  function len(x: MPL_SUPER_STATUS_MON_t) return natural;
+  function width(x: MPL_SUPER_STATUS_MON_t) return natural;
+  function vectorify(x: MPL_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: MPL_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: MPL_SUPER_STATUS_MON_t) return MPL_SUPER_STATUS_MON_t;
+  function convert(x: in std_logic_vector; t: MPL_SUPER_STATUS_MON_t) return MPL_SUPER_STATUS_MON_t;
+  function nullify(t: MPL_SUPER_STATUS_MON_t) return MPL_SUPER_STATUS_MON_t;
+  function zeroed(t: MPL_SUPER_STATUS_MON_t) return MPL_SUPER_STATUS_MON_t;
+
+  type MPL_SUPER_MON_t is record
+    STATUS : MPL_SUPER_STATUS_MON_t;
+  end record MPL_SUPER_MON_t;
+  function len(x: MPL_SUPER_MON_t) return natural;
+  function width(x: MPL_SUPER_MON_t) return natural;
+  function vectorify(x: MPL_SUPER_MON_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: MPL_SUPER_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: MPL_SUPER_MON_t) return MPL_SUPER_MON_t;
+  function convert(x: in std_logic_vector; t: MPL_SUPER_MON_t) return MPL_SUPER_MON_t;
+  function nullify(t: MPL_SUPER_MON_t) return MPL_SUPER_MON_t;
+  function zeroed(t: MPL_SUPER_MON_t) return MPL_SUPER_MON_t;
+
+  type MPL_SUPER_CTRL_t is record
+    ACTIONS : MPL_SUPER_ACTIONS_CTRL_t;
+    CONFIGS : MPL_SUPER_CONFIGS_CTRL_t;
+  end record MPL_SUPER_CTRL_t;
+  function len(x: MPL_SUPER_CTRL_t) return natural;
+  function width(x: MPL_SUPER_CTRL_t) return natural;
+  function vectorify(x: MPL_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: MPL_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: MPL_SUPER_CTRL_t) return MPL_SUPER_CTRL_t;
+  function convert(x: in std_logic_vector; t: MPL_SUPER_CTRL_t) return MPL_SUPER_CTRL_t;
+  function nullify(t: MPL_SUPER_CTRL_t) return MPL_SUPER_CTRL_t;
+  function zeroed(t: MPL_SUPER_CTRL_t) return MPL_SUPER_CTRL_t;
 
   type MPL_PL_MEM_PL_MEM_SIGNALS_MON_t is record
     rd_rdy : std_logic;
@@ -193,7 +219,7 @@ package MPL_CTRL is
   function zeroed(t: MPL_PL_MEM_CTRL_t) return MPL_PL_MEM_CTRL_t;
 
   type MPL_MON_t is record
-    STATUS : MPL_STATUS_MON_t;
+    SUPER : MPL_SUPER_MON_t;
     PL_MEM : MPL_PL_MEM_MON_t;
   end record MPL_MON_t;
   function len(x: MPL_MON_t) return natural;
@@ -206,8 +232,7 @@ package MPL_CTRL is
   function zeroed(t: MPL_MON_t) return MPL_MON_t;
 
   type MPL_CTRL_t is record
-    ACTIONS : MPL_ACTIONS_CTRL_t;
-    CONFIGS : MPL_CONFIGS_CTRL_t;
+    SUPER : MPL_SUPER_CTRL_t;
     PL_MEM : MPL_PL_MEM_CTRL_t;
   end record MPL_CTRL_t;
   function len(x: MPL_CTRL_t) return natural;
@@ -225,7 +250,7 @@ end package MPL_CTRL;
 
 package body MPL_CTRL is
 
-  function len(x: MPL_ACTIONS_CTRL_t) return natural is
+  function len(x: MPL_SUPER_ACTIONS_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.RESET);
@@ -234,7 +259,7 @@ package body MPL_CTRL is
     l := l + len(x.FREEZE);
     return l;
   end function len;
-  function width(x: MPL_ACTIONS_CTRL_t) return natural is
+  function width(x: MPL_SUPER_ACTIONS_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.RESET);
@@ -243,7 +268,7 @@ package body MPL_CTRL is
     l := l + width(x.FREEZE);
     return l;
   end function width;
-  function vectorify(x: MPL_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: MPL_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -266,7 +291,7 @@ package body MPL_CTRL is
     end if;
     return y;
   end function vectorify;
-  function convert(x: MPL_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function convert(x: MPL_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -289,8 +314,8 @@ package body MPL_CTRL is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t is
-    variable y: MPL_ACTIONS_CTRL_t;
+  function structify(x: in std_logic_vector; t: MPL_SUPER_ACTIONS_CTRL_t) return MPL_SUPER_ACTIONS_CTRL_t is
+    variable y: MPL_SUPER_ACTIONS_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -312,8 +337,8 @@ package body MPL_CTRL is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t is
-    variable y: MPL_ACTIONS_CTRL_t;
+  function convert(x: in std_logic_vector; t: MPL_SUPER_ACTIONS_CTRL_t) return MPL_SUPER_ACTIONS_CTRL_t is
+    variable y: MPL_SUPER_ACTIONS_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -335,8 +360,8 @@ package body MPL_CTRL is
     end if;
     return y;
   end function convert;
-  function nullify(t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t is
-  variable y: MPL_ACTIONS_CTRL_t;
+  function nullify(t: MPL_SUPER_ACTIONS_CTRL_t) return MPL_SUPER_ACTIONS_CTRL_t is
+  variable y: MPL_SUPER_ACTIONS_CTRL_t;
   begin
     y.RESET := nullify(t.RESET);
     y.ENABLE := nullify(t.ENABLE);
@@ -344,8 +369,8 @@ package body MPL_CTRL is
     y.FREEZE := nullify(t.FREEZE);
     return y;
   end function nullify;
-  function zeroed(t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t is
-  variable y: MPL_ACTIONS_CTRL_t;
+  function zeroed(t: MPL_SUPER_ACTIONS_CTRL_t) return MPL_SUPER_ACTIONS_CTRL_t is
+  variable y: MPL_SUPER_ACTIONS_CTRL_t;
   begin
     y.RESET := zeroed(t.RESET);
     y.ENABLE := zeroed(t.ENABLE);
@@ -354,7 +379,7 @@ package body MPL_CTRL is
     return y;
   end function zeroed;
 
-  function len(x: MPL_CONFIGS_CTRL_t) return natural is
+  function len(x: MPL_SUPER_CONFIGS_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.THREADS);
@@ -363,7 +388,7 @@ package body MPL_CTRL is
     l := l + len(x.FLUSH_MEM_RESET);
     return l;
   end function len;
-  function width(x: MPL_CONFIGS_CTRL_t) return natural is
+  function width(x: MPL_SUPER_CONFIGS_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.THREADS);
@@ -372,7 +397,7 @@ package body MPL_CTRL is
     l := l + width(x.FLUSH_MEM_RESET);
     return l;
   end function width;
-  function vectorify(x: MPL_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: MPL_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -395,7 +420,7 @@ package body MPL_CTRL is
     end if;
     return y;
   end function vectorify;
-  function convert(x: MPL_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function convert(x: MPL_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -418,8 +443,8 @@ package body MPL_CTRL is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t is
-    variable y: MPL_CONFIGS_CTRL_t;
+  function structify(x: in std_logic_vector; t: MPL_SUPER_CONFIGS_CTRL_t) return MPL_SUPER_CONFIGS_CTRL_t is
+    variable y: MPL_SUPER_CONFIGS_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -441,8 +466,8 @@ package body MPL_CTRL is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t is
-    variable y: MPL_CONFIGS_CTRL_t;
+  function convert(x: in std_logic_vector; t: MPL_SUPER_CONFIGS_CTRL_t) return MPL_SUPER_CONFIGS_CTRL_t is
+    variable y: MPL_SUPER_CONFIGS_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -464,8 +489,8 @@ package body MPL_CTRL is
     end if;
     return y;
   end function convert;
-  function nullify(t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t is
-  variable y: MPL_CONFIGS_CTRL_t;
+  function nullify(t: MPL_SUPER_CONFIGS_CTRL_t) return MPL_SUPER_CONFIGS_CTRL_t is
+  variable y: MPL_SUPER_CONFIGS_CTRL_t;
   begin
     y.THREADS := nullify(t.THREADS);
     y.INPUT_EN := nullify(t.INPUT_EN);
@@ -473,8 +498,8 @@ package body MPL_CTRL is
     y.FLUSH_MEM_RESET := nullify(t.FLUSH_MEM_RESET);
     return y;
   end function nullify;
-  function zeroed(t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t is
-  variable y: MPL_CONFIGS_CTRL_t;
+  function zeroed(t: MPL_SUPER_CONFIGS_CTRL_t) return MPL_SUPER_CONFIGS_CTRL_t is
+  variable y: MPL_SUPER_CONFIGS_CTRL_t;
   begin
     y.THREADS := zeroed(t.THREADS);
     y.INPUT_EN := zeroed(t.INPUT_EN);
@@ -483,23 +508,25 @@ package body MPL_CTRL is
     return y;
   end function zeroed;
 
-  function len(x: MPL_STATUS_MON_t) return natural is
+  function len(x: MPL_SUPER_STATUS_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.ENABLED);
     l := l + len(x.READY);
+    l := l + len(x.FREEZED);
     l := l + len(x.ERROR);
     return l;
   end function len;
-  function width(x: MPL_STATUS_MON_t) return natural is
+  function width(x: MPL_SUPER_STATUS_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.ENABLED);
     l := l + width(x.READY);
+    l := l + width(x.FREEZED);
     l := l + width(x.ERROR);
     return l;
   end function width;
-  function vectorify(x: MPL_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: MPL_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -508,17 +535,21 @@ package body MPL_CTRL is
       left := left + len(x.ENABLED);
       assign(y(left to left+len(x.READY)-1), vectorify(x.READY, y(left to left+len(x.READY)-1)));
       left := left + len(x.READY);
+      assign(y(left to left+len(x.FREEZED)-1), vectorify(x.FREEZED, y(left to left+len(x.FREEZED)-1)));
+      left := left + len(x.FREEZED);
       assign(y(left to left+len(x.ERROR)-1), vectorify(x.ERROR, y(left to left+len(x.ERROR)-1)));
     else
       assign(y(left downto left-len(x.ENABLED)+1), vectorify(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
       left := left - len(x.ENABLED);
       assign(y(left downto left-len(x.READY)+1), vectorify(x.READY, y(left downto left-len(x.READY)+1)));
       left := left - len(x.READY);
+      assign(y(left downto left-len(x.FREEZED)+1), vectorify(x.FREEZED, y(left downto left-len(x.FREEZED)+1)));
+      left := left - len(x.FREEZED);
       assign(y(left downto left-len(x.ERROR)+1), vectorify(x.ERROR, y(left downto left-len(x.ERROR)+1)));
     end if;
     return y;
   end function vectorify;
-  function convert(x: MPL_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
+  function convert(x: MPL_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -527,18 +558,22 @@ package body MPL_CTRL is
       left := left + len(x.ENABLED);
       assign(y(left to left+len(x.READY)-1), convert(x.READY, y(left to left+len(x.READY)-1)));
       left := left + len(x.READY);
+      assign(y(left to left+len(x.FREEZED)-1), convert(x.FREEZED, y(left to left+len(x.FREEZED)-1)));
+      left := left + len(x.FREEZED);
       assign(y(left to left+len(x.ERROR)-1), convert(x.ERROR, y(left to left+len(x.ERROR)-1)));
     else
       assign(y(left downto left-len(x.ENABLED)+1), convert(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
       left := left - len(x.ENABLED);
       assign(y(left downto left-len(x.READY)+1), convert(x.READY, y(left downto left-len(x.READY)+1)));
       left := left - len(x.READY);
+      assign(y(left downto left-len(x.FREEZED)+1), convert(x.FREEZED, y(left downto left-len(x.FREEZED)+1)));
+      left := left - len(x.FREEZED);
       assign(y(left downto left-len(x.ERROR)+1), convert(x.ERROR, y(left downto left-len(x.ERROR)+1)));
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t is
-    variable y: MPL_STATUS_MON_t;
+  function structify(x: in std_logic_vector; t: MPL_SUPER_STATUS_MON_t) return MPL_SUPER_STATUS_MON_t is
+    variable y: MPL_SUPER_STATUS_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -546,18 +581,22 @@ package body MPL_CTRL is
       left := left + len(y.ENABLED);
       y.READY := structify(x(left to left+len(y.READY)-1), y.READY);
       left := left + len(y.READY);
+      y.FREEZED := structify(x(left to left+len(y.FREEZED)-1), y.FREEZED);
+      left := left + len(y.FREEZED);
       y.ERROR := structify(x(left to left+len(y.ERROR)-1), y.ERROR);
     else
       y.ENABLED := structify(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
       left := left - len(y.ENABLED);
       y.READY := structify(x(left downto left-len(y.READY)+1), y.READY);
       left := left - len(y.READY);
+      y.FREEZED := structify(x(left downto left-len(y.FREEZED)+1), y.FREEZED);
+      left := left - len(y.FREEZED);
       y.ERROR := structify(x(left downto left-len(y.ERROR)+1), y.ERROR);
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t is
-    variable y: MPL_STATUS_MON_t;
+  function convert(x: in std_logic_vector; t: MPL_SUPER_STATUS_MON_t) return MPL_SUPER_STATUS_MON_t is
+    variable y: MPL_SUPER_STATUS_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -565,30 +604,194 @@ package body MPL_CTRL is
       left := left + len(y.ENABLED);
       y.READY := convert(x(left to left+len(y.READY)-1), y.READY);
       left := left + len(y.READY);
+      y.FREEZED := convert(x(left to left+len(y.FREEZED)-1), y.FREEZED);
+      left := left + len(y.FREEZED);
       y.ERROR := convert(x(left to left+len(y.ERROR)-1), y.ERROR);
     else
       y.ENABLED := convert(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
       left := left - len(y.ENABLED);
       y.READY := convert(x(left downto left-len(y.READY)+1), y.READY);
       left := left - len(y.READY);
+      y.FREEZED := convert(x(left downto left-len(y.FREEZED)+1), y.FREEZED);
+      left := left - len(y.FREEZED);
       y.ERROR := convert(x(left downto left-len(y.ERROR)+1), y.ERROR);
     end if;
     return y;
   end function convert;
-  function nullify(t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t is
-  variable y: MPL_STATUS_MON_t;
+  function nullify(t: MPL_SUPER_STATUS_MON_t) return MPL_SUPER_STATUS_MON_t is
+  variable y: MPL_SUPER_STATUS_MON_t;
   begin
     y.ENABLED := nullify(t.ENABLED);
     y.READY := nullify(t.READY);
+    y.FREEZED := nullify(t.FREEZED);
     y.ERROR := nullify(t.ERROR);
     return y;
   end function nullify;
-  function zeroed(t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t is
-  variable y: MPL_STATUS_MON_t;
+  function zeroed(t: MPL_SUPER_STATUS_MON_t) return MPL_SUPER_STATUS_MON_t is
+  variable y: MPL_SUPER_STATUS_MON_t;
   begin
     y.ENABLED := zeroed(t.ENABLED);
     y.READY := zeroed(t.READY);
+    y.FREEZED := zeroed(t.FREEZED);
     y.ERROR := zeroed(t.ERROR);
+    return y;
+  end function zeroed;
+
+  function len(x: MPL_SUPER_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.STATUS);
+    return l;
+  end function len;
+  function width(x: MPL_SUPER_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.STATUS);
+    return l;
+  end function width;
+  function vectorify(x: MPL_SUPER_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.STATUS)-1), vectorify(x.STATUS, y(left to left+len(x.STATUS)-1)));
+    else
+      assign(y(left downto left-len(x.STATUS)+1), vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: MPL_SUPER_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.STATUS)-1), convert(x.STATUS, y(left to left+len(x.STATUS)-1)));
+    else
+      assign(y(left downto left-len(x.STATUS)+1), convert(x.STATUS, y(left downto left-len(x.STATUS)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: MPL_SUPER_MON_t) return MPL_SUPER_MON_t is
+    variable y: MPL_SUPER_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.STATUS := structify(x(left to left+len(y.STATUS)-1), y.STATUS);
+    else
+      y.STATUS := structify(x(left downto left-len(y.STATUS)+1), y.STATUS);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: MPL_SUPER_MON_t) return MPL_SUPER_MON_t is
+    variable y: MPL_SUPER_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.STATUS := convert(x(left to left+len(y.STATUS)-1), y.STATUS);
+    else
+      y.STATUS := convert(x(left downto left-len(y.STATUS)+1), y.STATUS);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: MPL_SUPER_MON_t) return MPL_SUPER_MON_t is
+  variable y: MPL_SUPER_MON_t;
+  begin
+    y.STATUS := nullify(t.STATUS);
+    return y;
+  end function nullify;
+  function zeroed(t: MPL_SUPER_MON_t) return MPL_SUPER_MON_t is
+  variable y: MPL_SUPER_MON_t;
+  begin
+    y.STATUS := zeroed(t.STATUS);
+    return y;
+  end function zeroed;
+
+  function len(x: MPL_SUPER_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.ACTIONS);
+    l := l + len(x.CONFIGS);
+    return l;
+  end function len;
+  function width(x: MPL_SUPER_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.ACTIONS);
+    l := l + width(x.CONFIGS);
+    return l;
+  end function width;
+  function vectorify(x: MPL_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.ACTIONS)-1), vectorify(x.ACTIONS, y(left to left+len(x.ACTIONS)-1)));
+      left := left + len(x.ACTIONS);
+      assign(y(left to left+len(x.CONFIGS)-1), vectorify(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
+    else
+      assign(y(left downto left-len(x.ACTIONS)+1), vectorify(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
+      left := left - len(x.ACTIONS);
+      assign(y(left downto left-len(x.CONFIGS)+1), vectorify(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: MPL_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.ACTIONS)-1), convert(x.ACTIONS, y(left to left+len(x.ACTIONS)-1)));
+      left := left + len(x.ACTIONS);
+      assign(y(left to left+len(x.CONFIGS)-1), convert(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
+    else
+      assign(y(left downto left-len(x.ACTIONS)+1), convert(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
+      left := left - len(x.ACTIONS);
+      assign(y(left downto left-len(x.CONFIGS)+1), convert(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: MPL_SUPER_CTRL_t) return MPL_SUPER_CTRL_t is
+    variable y: MPL_SUPER_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.ACTIONS := structify(x(left to left+len(y.ACTIONS)-1), y.ACTIONS);
+      left := left + len(y.ACTIONS);
+      y.CONFIGS := structify(x(left to left+len(y.CONFIGS)-1), y.CONFIGS);
+    else
+      y.ACTIONS := structify(x(left downto left-len(y.ACTIONS)+1), y.ACTIONS);
+      left := left - len(y.ACTIONS);
+      y.CONFIGS := structify(x(left downto left-len(y.CONFIGS)+1), y.CONFIGS);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: MPL_SUPER_CTRL_t) return MPL_SUPER_CTRL_t is
+    variable y: MPL_SUPER_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.ACTIONS := convert(x(left to left+len(y.ACTIONS)-1), y.ACTIONS);
+      left := left + len(y.ACTIONS);
+      y.CONFIGS := convert(x(left to left+len(y.CONFIGS)-1), y.CONFIGS);
+    else
+      y.ACTIONS := convert(x(left downto left-len(y.ACTIONS)+1), y.ACTIONS);
+      left := left - len(y.ACTIONS);
+      y.CONFIGS := convert(x(left downto left-len(y.CONFIGS)+1), y.CONFIGS);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: MPL_SUPER_CTRL_t) return MPL_SUPER_CTRL_t is
+  variable y: MPL_SUPER_CTRL_t;
+  begin
+    y.ACTIONS := nullify(t.ACTIONS);
+    y.CONFIGS := nullify(t.CONFIGS);
+    return y;
+  end function nullify;
+  function zeroed(t: MPL_SUPER_CTRL_t) return MPL_SUPER_CTRL_t is
+  variable y: MPL_SUPER_CTRL_t;
+  begin
+    y.ACTIONS := zeroed(t.ACTIONS);
+    y.CONFIGS := zeroed(t.CONFIGS);
     return y;
   end function zeroed;
 
@@ -1753,14 +1956,14 @@ package body MPL_CTRL is
   function len(x: MPL_MON_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.STATUS);
+    l := l + len(x.SUPER);
     l := l + len(x.PL_MEM);
     return l;
   end function len;
   function width(x: MPL_MON_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.STATUS);
+    l := l + width(x.SUPER);
     l := l + width(x.PL_MEM);
     return l;
   end function width;
@@ -1769,12 +1972,12 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.STATUS)-1), vectorify(x.STATUS, y(left to left+len(x.STATUS)-1)));
-      left := left + len(x.STATUS);
+      assign(y(left to left+len(x.SUPER)-1), vectorify(x.SUPER, y(left to left+len(x.SUPER)-1)));
+      left := left + len(x.SUPER);
       assign(y(left to left+len(x.PL_MEM)-1), vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
     else
-      assign(y(left downto left-len(x.STATUS)+1), vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1)));
-      left := left - len(x.STATUS);
+      assign(y(left downto left-len(x.SUPER)+1), vectorify(x.SUPER, y(left downto left-len(x.SUPER)+1)));
+      left := left - len(x.SUPER);
       assign(y(left downto left-len(x.PL_MEM)+1), vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
     end if;
     return y;
@@ -1784,12 +1987,12 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.STATUS)-1), convert(x.STATUS, y(left to left+len(x.STATUS)-1)));
-      left := left + len(x.STATUS);
+      assign(y(left to left+len(x.SUPER)-1), convert(x.SUPER, y(left to left+len(x.SUPER)-1)));
+      left := left + len(x.SUPER);
       assign(y(left to left+len(x.PL_MEM)-1), convert(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
     else
-      assign(y(left downto left-len(x.STATUS)+1), convert(x.STATUS, y(left downto left-len(x.STATUS)+1)));
-      left := left - len(x.STATUS);
+      assign(y(left downto left-len(x.SUPER)+1), convert(x.SUPER, y(left downto left-len(x.SUPER)+1)));
+      left := left - len(x.SUPER);
       assign(y(left downto left-len(x.PL_MEM)+1), convert(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
     end if;
     return y;
@@ -1799,12 +2002,12 @@ package body MPL_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.STATUS := structify(x(left to left+len(y.STATUS)-1), y.STATUS);
-      left := left + len(y.STATUS);
+      y.SUPER := structify(x(left to left+len(y.SUPER)-1), y.SUPER);
+      left := left + len(y.SUPER);
       y.PL_MEM := structify(x(left to left+len(y.PL_MEM)-1), y.PL_MEM);
     else
-      y.STATUS := structify(x(left downto left-len(y.STATUS)+1), y.STATUS);
-      left := left - len(y.STATUS);
+      y.SUPER := structify(x(left downto left-len(y.SUPER)+1), y.SUPER);
+      left := left - len(y.SUPER);
       y.PL_MEM := structify(x(left downto left-len(y.PL_MEM)+1), y.PL_MEM);
     end if;
     return y;
@@ -1814,12 +2017,12 @@ package body MPL_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.STATUS := convert(x(left to left+len(y.STATUS)-1), y.STATUS);
-      left := left + len(y.STATUS);
+      y.SUPER := convert(x(left to left+len(y.SUPER)-1), y.SUPER);
+      left := left + len(y.SUPER);
       y.PL_MEM := convert(x(left to left+len(y.PL_MEM)-1), y.PL_MEM);
     else
-      y.STATUS := convert(x(left downto left-len(y.STATUS)+1), y.STATUS);
-      left := left - len(y.STATUS);
+      y.SUPER := convert(x(left downto left-len(y.SUPER)+1), y.SUPER);
+      left := left - len(y.SUPER);
       y.PL_MEM := convert(x(left downto left-len(y.PL_MEM)+1), y.PL_MEM);
     end if;
     return y;
@@ -1827,14 +2030,14 @@ package body MPL_CTRL is
   function nullify(t: MPL_MON_t) return MPL_MON_t is
   variable y: MPL_MON_t;
   begin
-    y.STATUS := nullify(t.STATUS);
+    y.SUPER := nullify(t.SUPER);
     y.PL_MEM := nullify(t.PL_MEM);
     return y;
   end function nullify;
   function zeroed(t: MPL_MON_t) return MPL_MON_t is
   variable y: MPL_MON_t;
   begin
-    y.STATUS := zeroed(t.STATUS);
+    y.SUPER := zeroed(t.SUPER);
     y.PL_MEM := zeroed(t.PL_MEM);
     return y;
   end function zeroed;
@@ -1842,16 +2045,14 @@ package body MPL_CTRL is
   function len(x: MPL_CTRL_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.ACTIONS);
-    l := l + len(x.CONFIGS);
+    l := l + len(x.SUPER);
     l := l + len(x.PL_MEM);
     return l;
   end function len;
   function width(x: MPL_CTRL_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.ACTIONS);
-    l := l + width(x.CONFIGS);
+    l := l + width(x.SUPER);
     l := l + width(x.PL_MEM);
     return l;
   end function width;
@@ -1860,16 +2061,12 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.ACTIONS)-1), vectorify(x.ACTIONS, y(left to left+len(x.ACTIONS)-1)));
-      left := left + len(x.ACTIONS);
-      assign(y(left to left+len(x.CONFIGS)-1), vectorify(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
-      left := left + len(x.CONFIGS);
+      assign(y(left to left+len(x.SUPER)-1), vectorify(x.SUPER, y(left to left+len(x.SUPER)-1)));
+      left := left + len(x.SUPER);
       assign(y(left to left+len(x.PL_MEM)-1), vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
     else
-      assign(y(left downto left-len(x.ACTIONS)+1), vectorify(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
-      left := left - len(x.ACTIONS);
-      assign(y(left downto left-len(x.CONFIGS)+1), vectorify(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
-      left := left - len(x.CONFIGS);
+      assign(y(left downto left-len(x.SUPER)+1), vectorify(x.SUPER, y(left downto left-len(x.SUPER)+1)));
+      left := left - len(x.SUPER);
       assign(y(left downto left-len(x.PL_MEM)+1), vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
     end if;
     return y;
@@ -1879,16 +2076,12 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.ACTIONS)-1), convert(x.ACTIONS, y(left to left+len(x.ACTIONS)-1)));
-      left := left + len(x.ACTIONS);
-      assign(y(left to left+len(x.CONFIGS)-1), convert(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
-      left := left + len(x.CONFIGS);
+      assign(y(left to left+len(x.SUPER)-1), convert(x.SUPER, y(left to left+len(x.SUPER)-1)));
+      left := left + len(x.SUPER);
       assign(y(left to left+len(x.PL_MEM)-1), convert(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
     else
-      assign(y(left downto left-len(x.ACTIONS)+1), convert(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
-      left := left - len(x.ACTIONS);
-      assign(y(left downto left-len(x.CONFIGS)+1), convert(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
-      left := left - len(x.CONFIGS);
+      assign(y(left downto left-len(x.SUPER)+1), convert(x.SUPER, y(left downto left-len(x.SUPER)+1)));
+      left := left - len(x.SUPER);
       assign(y(left downto left-len(x.PL_MEM)+1), convert(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
     end if;
     return y;
@@ -1898,16 +2091,12 @@ package body MPL_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.ACTIONS := structify(x(left to left+len(y.ACTIONS)-1), y.ACTIONS);
-      left := left + len(y.ACTIONS);
-      y.CONFIGS := structify(x(left to left+len(y.CONFIGS)-1), y.CONFIGS);
-      left := left + len(y.CONFIGS);
+      y.SUPER := structify(x(left to left+len(y.SUPER)-1), y.SUPER);
+      left := left + len(y.SUPER);
       y.PL_MEM := structify(x(left to left+len(y.PL_MEM)-1), y.PL_MEM);
     else
-      y.ACTIONS := structify(x(left downto left-len(y.ACTIONS)+1), y.ACTIONS);
-      left := left - len(y.ACTIONS);
-      y.CONFIGS := structify(x(left downto left-len(y.CONFIGS)+1), y.CONFIGS);
-      left := left - len(y.CONFIGS);
+      y.SUPER := structify(x(left downto left-len(y.SUPER)+1), y.SUPER);
+      left := left - len(y.SUPER);
       y.PL_MEM := structify(x(left downto left-len(y.PL_MEM)+1), y.PL_MEM);
     end if;
     return y;
@@ -1917,16 +2106,12 @@ package body MPL_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.ACTIONS := convert(x(left to left+len(y.ACTIONS)-1), y.ACTIONS);
-      left := left + len(y.ACTIONS);
-      y.CONFIGS := convert(x(left to left+len(y.CONFIGS)-1), y.CONFIGS);
-      left := left + len(y.CONFIGS);
+      y.SUPER := convert(x(left to left+len(y.SUPER)-1), y.SUPER);
+      left := left + len(y.SUPER);
       y.PL_MEM := convert(x(left to left+len(y.PL_MEM)-1), y.PL_MEM);
     else
-      y.ACTIONS := convert(x(left downto left-len(y.ACTIONS)+1), y.ACTIONS);
-      left := left - len(y.ACTIONS);
-      y.CONFIGS := convert(x(left downto left-len(y.CONFIGS)+1), y.CONFIGS);
-      left := left - len(y.CONFIGS);
+      y.SUPER := convert(x(left downto left-len(y.SUPER)+1), y.SUPER);
+      left := left - len(y.SUPER);
       y.PL_MEM := convert(x(left downto left-len(y.PL_MEM)+1), y.PL_MEM);
     end if;
     return y;
@@ -1934,16 +2119,14 @@ package body MPL_CTRL is
   function nullify(t: MPL_CTRL_t) return MPL_CTRL_t is
   variable y: MPL_CTRL_t;
   begin
-    y.ACTIONS := nullify(t.ACTIONS);
-    y.CONFIGS := nullify(t.CONFIGS);
+    y.SUPER := nullify(t.SUPER);
     y.PL_MEM := nullify(t.PL_MEM);
     return y;
   end function nullify;
   function zeroed(t: MPL_CTRL_t) return MPL_CTRL_t is
   variable y: MPL_CTRL_t;
   begin
-    y.ACTIONS := zeroed(t.ACTIONS);
-    y.CONFIGS := zeroed(t.CONFIGS);
+    y.SUPER := zeroed(t.SUPER);
     y.PL_MEM := zeroed(t.PL_MEM);
     return y;
   end function zeroed;

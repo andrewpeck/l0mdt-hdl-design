@@ -53,6 +53,20 @@ architecture beh of mpl is
 
   signal ctrl_r           : MPL_CTRL_t;
   signal mon_r            : MPL_MON_t;
+  --
+  signal super_ctrl_r : MPL_SUPER_CTRL_t;
+  signal super_mon_r  : MPL_SUPER_MON_t;
+  signal super_ctrl_v : std_logic_vector(len(super_ctrl_r) - 1 downto 0);
+  signal super_mon_v  : std_logic_vector(len(super_mon_r) - 1 downto 0);
+  --
+  signal mpl_ctrl_r : MPL_PL_MEM_PL_MEM_CTRL_t;
+  signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl_r) - 1 downto 0);
+  type   mpl_ctrl_avt is array (0 to c_MAX_NUM_SL - 1)of std_logic_vector(len(mpl_ctrl_r) -1 downto 0);
+  signal mpl_ctrl_av  : mpl_ctrl_avt;
+  
+  signal mpl_mon_r  : MPL_PL_MEM_PL_MEM_MON_t;
+  type   mpl_mon_avt is array (0 to c_MAX_NUM_SL - 1)of std_logic_vector(len(mpl_mon_r) -1 downto 0);
+  signal mpl_mon_av  : mpl_mon_avt;
 
   signal local_en         :  std_logic;
   signal local_rst        :  std_logic;
@@ -76,15 +90,28 @@ begin
   ctrl_r <= structify(ctrl_v,ctrl_r);
   mon_v <= vectorify(mon_r,mon_v);
 
+  -- super_ctrl_r <= ctrl_r.super;
+  -- mon_r.super <= super_mon_r;
+
+  super_ctrl_v <= convert(ctrl_r.super,super_ctrl_v);
+  mon_r.super  <= convert(super_mon_v,mon_r.super);
+
+  -- mon_arrays: for sl_i in 0 to c_MAX_NUM_SL - 1 generate
+  --   mpl_ctrl_av(sl_i) <= vectorify(ctrl_r.PL_MEM.PL_MEM(sl_i),mpl_ctrl_av(sl_i));
+  --   mon_r.PL_MEM.PL_MEM(sl_i) <= structify(mpl_mon_av(sl_i),mon_r.PL_MEM.PL_MEM(sl_i));
+  -- end generate mon_arrays;
+
   MPL_SUPERVISOR : entity mpl_lib.mpl_supervisor
   port map(
     clk               => clk,
     rst               => rst,
     glob_en           => glob_en,      
     -- AXI to SoC
-    i_actions           => ctrl_r.actions,
-    i_configs           => ctrl_r.configs,
-    o_status            => mon_r.status ,
+    ctrl_v              => super_ctrl_v,
+    mon_v               => super_mon_v,
+    -- i_actions           => ctrl_r.actions,
+    -- i_configs           => ctrl_r.configs,
+    -- o_status            => mon_r.status ,
     --
     o_freeze          => int_freeze,
     -- 
@@ -94,14 +121,17 @@ begin
 
   MPL_PL : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
 
+    mpl_ctrl_av(sl_i) <= convert(ctrl_r.PL_MEM.PL_MEM(sl_i),mpl_ctrl_av(sl_i));
+    mon_r.PL_MEM.PL_MEM(sl_i) <= convert(mpl_mon_av(sl_i),mon_r.PL_MEM.PL_MEM(sl_i));
+
     PL : entity mpl_lib.mpl_pl
     port map(
       clk           => clk,
       rst           => local_rst,
       enable        => local_en,
       --
-      ctrl_r          => ctrl_r.PL_MEM.PL_MEM(sl_i),
-      mon_r           => mon_r.PL_MEM.PL_MEM(sl_i),
+      ctrl_v          => mpl_ctrl_av(sl_i),
+      mon_v           => mpl_mon_av(sl_i),
       --
       i_freeze      => int_freeze,
       --
