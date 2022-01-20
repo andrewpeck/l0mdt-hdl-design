@@ -50,8 +50,7 @@ if {$num_slrs > 0} {
     # SLR Crossings
     #-------------------------------------------------------------------------------
 
-    set_property USER_SLL_REG True [get_cells "ult_inst/*segments_to_pt_pipeline*"]
-    set_property USER_SLL_REG True [get_cells "ult_inst/*slc_to_h2s_pipeline*"]
+    set_property USER_SLL_REG True [get_cells "ult_inst/*_PL/SHIFT_GEN.data_pl_reg*"]
 
     #-------------------------------------------------------------------------------
     # SLR Placements
