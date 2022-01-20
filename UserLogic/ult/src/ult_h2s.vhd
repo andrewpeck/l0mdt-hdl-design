@@ -154,9 +154,9 @@ begin
   begin
     HPS : entity hps_lib.hps
       generic map(
-        g_STATION_RADIUS => 1,
-        g_HPS_NUM_MDT_CH => c_HPS_MAX_HP_INN
-        )
+        g_STATION_RADIUS    => 1,
+        g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_MID
+      )
       port map(
         clk     => clock_and_control.clk,
         rst     => mid_reset,
@@ -189,9 +189,9 @@ begin
 
     HPS : entity hps_lib.hps
       generic map(
-        g_STATION_RADIUS => 2,
-        g_HPS_NUM_MDT_CH => c_HPS_MAX_HP_OUT
-        )
+        g_STATION_RADIUS    => 2,
+        g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_OUT
+      )
       port map(
         clk     => clock_and_control.clk,
         rst     => out_reset,
@@ -224,9 +224,9 @@ begin
 
     HPS : entity hps_lib.hps
       generic map(
-        g_STATION_RADIUS => 3,
-        g_HPS_NUM_MDT_CH => c_HPS_MAX_HP_EXT
-        )
+        g_STATION_RADIUS    => 3,
+        g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_EXT
+      )
       port map(
         clk     => clock_and_control.clk,
         rst     => ext_reset,

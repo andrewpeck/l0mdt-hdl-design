@@ -378,7 +378,7 @@ begin
       end generate;
       -------------------------------------
       HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
-        SLC2HPS_INN_PL : entity vamc_lib.vamc_spl
+        SLC2HPS_OUT_PL : entity vamc_lib.vamc_spl
           generic map(
             g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
             g_PIPELINE_WIDTH    => out_slc_to_h2s_plin_av(th_i)'length
@@ -394,7 +394,7 @@ begin
       end generate;
       -------------------------------------
       HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
-        SLC2HPS_INN_PL : entity vamc_lib.vamc_spl
+        SLC2HPS_EXT_PL : entity vamc_lib.vamc_spl
           generic map(
             g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
             g_PIPELINE_WIDTH    => ext_slc_to_h2s_plin_av(th_i)'length
@@ -647,20 +647,20 @@ begin
           SLC2HPS_MID_PL : entity vamc_lib.vamc_spl
             generic map(
               g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-              g_PIPELINE_WIDTH    => mid_slc_to_h2s_plin_av(th_i)'length
+              g_PIPELINE_WIDTH    => mid_segments_to_pt_plin_av(th_i)'length
             )
             port map(
               clk         => clock_and_control.clk,
               rst         => clock_and_control.rst,
               ena         => '1',
               --
-              i_data      => mid_slc_to_h2s_plin_av(th_i),
-              o_data      => mid_slc_to_h2s_plout_av(th_i)
+              i_data      => mid_segments_to_pt_plin_av(th_i),
+              o_data      => mid_segments_to_pt_plout_av(th_i)
           );
         end generate;
         -------------------------------------
         HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
-          SLC2HPS_INN_PL : entity vamc_lib.vamc_spl
+          SLC2HPS_OUT_PL : entity vamc_lib.vamc_spl
             generic map(
               g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
               g_PIPELINE_WIDTH    => out_segments_to_pt_plin_av(th_i)'length
@@ -676,7 +676,7 @@ begin
         end generate;
         -------------------------------------
         HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
-          SLC2HPS_INN_PL : entity vamc_lib.vamc_spl
+          SLC2HPS_EXT_PL : entity vamc_lib.vamc_spl
             generic map(
               g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
               g_PIPELINE_WIDTH    => ext_segments_to_pt_plin_av(th_i)'length
