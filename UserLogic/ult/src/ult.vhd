@@ -159,7 +159,15 @@ architecture behavioral of ult is
   --
   -- UG949 7 pipeline stages to cross the whole device for a 3 SLR device at 250
   -- MHz
+
+  signal int_inn_tdc_hits_av : mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+  signal int_mid_tdc_hits_av : mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+  signal int_out_tdc_hits_av : mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+  signal int_ext_tdc_hits_av : mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+
   constant SLR_PIPELINE_DEPTH : integer := 12;
+
+  
 
   -- outputs from candidate manager
   signal inn_slc_to_h2s_plin_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
@@ -187,16 +195,23 @@ architecture behavioral of ult is
   signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   -- TDC Hits from tar 2 hps
-  signal ult_inn_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal ult_mid_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal ult_out_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal ult_ext_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
-
+  signal ult_inn_tar_hits_in_av  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal ult_mid_tar_hits_in_av  : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal ult_out_tar_hits_in_av  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ult_ext_tar_hits_in_av  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal ult_inn_tar_hits_out_av  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal ult_mid_tar_hits_out_av  : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal ult_out_tar_hits_out_av  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ult_ext_tar_hits_out_av  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
   -- TDC Hits from tar 2 daq
-  signal ult_inn_tdc_hits_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal ult_mid_tdc_hits_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal ult_out_tdc_hits_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal ult_ext_tdc_hits_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal ult_inn_tdc_hits_out_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal ult_mid_tdc_hits_out_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal ult_out_tdc_hits_out_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ult_ext_tdc_hits_out_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal ult_inn_tdc_hits_in_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal ult_mid_tdc_hits_in_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal ult_out_tdc_hits_in_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ult_ext_tdc_hits_in_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- outputs from hits to segments
   signal inn_segments_to_pt_plin_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
@@ -279,10 +294,10 @@ begin
         tar_ext_ctrl_v => tar_ext_ctrl_v,
         tar_ext_mon_v  => tar_ext_mon_v ,
         -- TDC Hits from Polmux
-        i_inn_tdc_hits_av  => i_inn_tdc_hits_av,
-        i_mid_tdc_hits_av  => i_mid_tdc_hits_av,
-        i_out_tdc_hits_av  => i_out_tdc_hits_av,
-        i_ext_tdc_hits_av  => i_ext_tdc_hits_av,
+        i_inn_tdc_hits_av  => int_inn_tdc_hits_av,
+        i_mid_tdc_hits_av  => int_mid_tdc_hits_av,
+        i_out_tdc_hits_av  => int_out_tdc_hits_av,
+        i_ext_tdc_hits_av  => int_ext_tdc_hits_av,
 
         -- candidates in from hal
         -- i_inn_tar_hits_av  => i_inner_tar_hits,
@@ -290,15 +305,15 @@ begin
         -- i_out_tar_hits  => i_outer_tar_hits,
         -- i_ext_tar_hits_av  => i_extra_tar_hits,
         --
-        o_inn_tdc_hits_av  => ult_inn_tdc_hits_av,
-        o_mid_tdc_hits_av  => ult_mid_tdc_hits_av,
-        o_out_tdc_hits_av  => ult_out_tdc_hits_av,
-        o_ext_tdc_hits_av  => ult_ext_tdc_hits_av,
-        -- outputs to h2s
-        o_inn_tar_hits_av  => ult_inn_tar_hits_av,
-        o_mid_tar_hits_av  => ult_mid_tar_hits_av,
-        o_out_tar_hits_av  => ult_out_tar_hits_av,
-        o_ext_tar_hits_av  => ult_ext_tar_hits_av
+        o_inn_tdc_hits_av  => ult_inn_tdc_hits_out_av,
+        o_mid_tdc_hits_av  => ult_mid_tdc_hits_out_av,
+        o_out_tdc_hits_av  => ult_out_tdc_hits_out_av,
+        o_ext_tdc_hits_av  => ult_ext_tdc_hits_out_av,
+        -- outputs to h2s_out
+        o_inn_tar_hits_av  => ult_inn_tar_hits_out_av,
+        o_mid_tar_hits_av  => ult_mid_tar_hits_out_av,
+        o_out_tar_hits_av  => ult_out_tar_hits_out_av,
+        o_ext_tar_hits_av  => ult_ext_tar_hits_out_av
 
         -- o_sump          => tar_sump
 
@@ -318,10 +333,10 @@ begin
         -- ctrl              => tar_ctrl,
         -- mon               => tar_mon,
         -- TDC Hits from Polmux
-        i_inn_tdc_hits_av  => i_inn_tdc_hits_av,
-        i_mid_tdc_hits_av  => i_mid_tdc_hits_av,
-        i_out_tdc_hits_av  => i_out_tdc_hits_av,
-        i_ext_tdc_hits_av  => i_ext_tdc_hits_av,
+        i_inn_tdc_hits_av  => int_inn_tdc_hits_av,
+        i_mid_tdc_hits_av  => int_mid_tdc_hits_av,
+        i_out_tdc_hits_av  => int_out_tdc_hits_av,
+        i_ext_tdc_hits_av  => int_ext_tdc_hits_av,
 
         -- candidates in from hal
         -- i_inn_tar_hits_av  => i_inner_tar_hits,
@@ -329,101 +344,47 @@ begin
         -- i_out_tar_hits  => i_outer_tar_hits,
         -- i_ext_tar_hits_av  => i_extra_tar_hits,
         --
-        o_inn_tdc_hits_av  => ult_inn_tdc_hits_av,
-        o_mid_tdc_hits_av  => ult_mid_tdc_hits_av,
-        o_out_tdc_hits_av  => ult_out_tdc_hits_av,
-        o_ext_tdc_hits_av  => ult_ext_tdc_hits_av,
-        -- outputs to ucm
-        o_inn_tar_hits_av  => ult_inn_tar_hits_av,
-        o_mid_tar_hits_av  => ult_mid_tar_hits_av,
-        o_out_tar_hits_av  => ult_out_tar_hits_av,
-        o_ext_tar_hits_av  => ult_ext_tar_hits_av,
+        o_inn_tdc_hits_av  => ult_inn_tdc_hits_out_av,
+        o_mid_tdc_hits_av  => ult_mid_tdc_hits_out_av,
+        o_out_tdc_hits_av  => ult_out_tdc_hits_out_av,
+        o_ext_tdc_hits_av  => ult_ext_tdc_hits_out_av,
+        -- outputs to h2s_out
+        o_inn_tar_hits_av  => ult_inn_tar_hits_out_av,
+        o_mid_tar_hits_av  => ult_mid_tar_hits_out_av,
+        o_out_tar_hits_av  => ult_out_tar_hits_out_av,
+        o_ext_tar_hits_av  => ult_ext_tar_hits_out_av,
 
         o_sump          => tar_sump
 
       );
     end generate;
+      
+      
+      
 
-    slc2hps_loop: for th_i in c_NUM_THREADS -1 downto 0 generate
       HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
-        SLC2HPS_INN_PL : entity vamc_lib.vamc_spl
-          generic map(
-            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => inn_slc_to_h2s_plin_av(th_i)'length
-          )
-          port map(
-            clk         => clock_and_control.clk,
-            rst         => clock_and_control.rst,
-            ena         => '1',
-            --
-            i_data      => inn_slc_to_h2s_plin_av(th_i),
-            o_data      => inn_slc_to_h2s_plout_av(th_i)
-        );
+        int_inn_tdc_hits_av <= i_inn_tdc_hits_av;
+        ult_inn_tdc_hits_in_av <= ult_inn_tdc_hits_out_av;
+        ult_inn_tar_hits_in_av <= ult_inn_tar_hits_out_av;
       end generate;
       -------------------------------------
       HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
-        SLC2HPS_MID_PL : entity vamc_lib.vamc_spl
-          generic map(
-            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => mid_slc_to_h2s_plin_av(th_i)'length
-          )
-          port map(
-            clk         => clock_and_control.clk,
-            rst         => clock_and_control.rst,
-            ena         => '1',
-            --
-            i_data      => mid_slc_to_h2s_plin_av(th_i),
-            o_data      => mid_slc_to_h2s_plout_av(th_i)
-        );
+        int_mid_tdc_hits_av <= i_mid_tdc_hits_av;
+        ult_mid_tdc_hits_in_av <= ult_mid_tdc_hits_out_av;
+        ult_mid_tar_hits_in_av <= ult_mid_tar_hits_out_av;
       end generate;
       -------------------------------------
       HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
-        SLC2HPS_OUT_PL : entity vamc_lib.vamc_spl
-          generic map(
-            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => out_slc_to_h2s_plin_av(th_i)'length
-          )
-          port map(
-            clk         => clock_and_control.clk,
-            rst         => clock_and_control.rst,
-            ena         => '1',
-            --
-            i_data      => out_slc_to_h2s_plin_av(th_i),
-            o_data      => out_slc_to_h2s_plout_av(th_i)
-        );
+        int_out_tdc_hits_av <= i_out_tdc_hits_av;
+        ult_out_tdc_hits_in_av <= ult_out_tdc_hits_out_av;
+        ult_out_tar_hits_in_av <= ult_out_tar_hits_out_av;
       end generate;
       -------------------------------------
       HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
-        SLC2HPS_EXT_PL : entity vamc_lib.vamc_spl
-          generic map(
-            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => ext_slc_to_h2s_plin_av(th_i)'length
-          )
-          port map(
-            clk         => clock_and_control.clk,
-            rst         => clock_and_control.rst,
-            ena         => '1',
-            --
-            i_data      => ext_slc_to_h2s_plin_av(th_i),
-            o_data      => ext_slc_to_h2s_plout_av(th_i)
-        );
+        int_ext_tdc_hits_av <= i_ext_tdc_hits_av;
+        ult_ext_tdc_hits_in_av <= ult_ext_tdc_hits_out_av;
+        ult_ext_tar_hits_in_av <= ult_ext_tar_hits_out_av;
       end generate;
-    end generate;
-
-      
-    -- process (clock_and_control.clk) is
-    -- begin
-    --   if (rising_edge(clock_and_control.clk)) then
-
-    --     for I in 1 to SLR_PIPELINE_DEPTH loop
-    --       inn_slc_to_h2s_pipeline(I) <= inn_slc_to_h2s_pipeline(I-1);
-    --       mid_slc_to_h2s_pipeline(I) <= mid_slc_to_h2s_pipeline(I-1);
-    --       out_slc_to_h2s_pipeline(I) <= out_slc_to_h2s_pipeline(I-1);
-    --       ext_slc_to_h2s_pipeline(I) <= ext_slc_to_h2s_pipeline(I-1);
-    --     end loop;
-
-    --   end if;
-    -- end process;
 
     UCM_GEN : if c_UCM_ENABLED = '1' generate
 
@@ -478,6 +439,97 @@ begin
       );
     end generate;
 
+    slc2hps_loop: for th_i in c_NUM_THREADS -1 downto 0 generate
+      HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
+        SLC2HPS_INN_PL : entity vamc_lib.vamc_spl
+          generic map(
+            g_SHREG_EXTRACT     => "no",
+            g_PIPELINE_TYPE     => "shift_reg",
+            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
+            g_PIPELINE_WIDTH    => inn_slc_to_h2s_plin_av(th_i)'length
+          )
+          port map(
+            clk         => clock_and_control.clk,
+            rst         => clock_and_control.rst,
+            ena         => '1',
+            --
+            i_data      => inn_slc_to_h2s_plin_av(th_i),
+            o_data      => inn_slc_to_h2s_plout_av(th_i)
+        );
+      end generate;
+      -------------------------------------
+      HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
+        SLC2HPS_MID_PL : entity vamc_lib.vamc_spl
+          generic map(
+            g_SHREG_EXTRACT     => "no",
+            g_PIPELINE_TYPE     => "shift_reg",
+            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
+            g_PIPELINE_WIDTH    => mid_slc_to_h2s_plin_av(th_i)'length
+          )
+          port map(
+            clk         => clock_and_control.clk,
+            rst         => clock_and_control.rst,
+            ena         => '1',
+            --
+            i_data      => mid_slc_to_h2s_plin_av(th_i),
+            o_data      => mid_slc_to_h2s_plout_av(th_i)
+        );
+      end generate;
+      -------------------------------------
+      HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
+        SLC2HPS_OUT_PL : entity vamc_lib.vamc_spl
+          generic map(
+            g_SHREG_EXTRACT     => "no",
+            g_PIPELINE_TYPE     => "shift_reg",
+            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
+            g_PIPELINE_WIDTH    => out_slc_to_h2s_plin_av(th_i)'length
+          )
+          port map(
+            clk         => clock_and_control.clk,
+            rst         => clock_and_control.rst,
+            ena         => '1',
+            --
+            i_data      => out_slc_to_h2s_plin_av(th_i),
+            o_data      => out_slc_to_h2s_plout_av(th_i)
+        );
+      end generate;
+      -------------------------------------
+      HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
+        SLC2HPS_EXT_PL : entity vamc_lib.vamc_spl
+          generic map(
+            g_SHREG_EXTRACT     => "no",
+            g_PIPELINE_TYPE     => "shift_reg",
+            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
+            g_PIPELINE_WIDTH    => ext_slc_to_h2s_plin_av(th_i)'length
+          )
+          port map(
+            clk         => clock_and_control.clk,
+            rst         => clock_and_control.rst,
+            ena         => '1',
+            --
+            i_data      => ext_slc_to_h2s_plin_av(th_i),
+            o_data      => ext_slc_to_h2s_plout_av(th_i)
+        );
+      end generate;
+    end generate;
+
+      
+    -- process (clock_and_control.clk) is
+    -- begin
+    --   if (rising_edge(clock_and_control.clk)) then
+
+    --     for I in 1 to SLR_PIPELINE_DEPTH loop
+    --       inn_slc_to_h2s_pipeline(I) <= inn_slc_to_h2s_pipeline(I-1);
+    --       mid_slc_to_h2s_pipeline(I) <= mid_slc_to_h2s_pipeline(I-1);
+    --       out_slc_to_h2s_pipeline(I) <= out_slc_to_h2s_pipeline(I-1);
+    --       ext_slc_to_h2s_pipeline(I) <= ext_slc_to_h2s_pipeline(I-1);
+    --     end loop;
+
+    --   end if;
+    -- end process;
+
+
+
     H2S_GEN : if c_H2S_ENABLED = '1' generate
       ULT_H2S : entity ult_lib.hits_to_segments
       port map (
@@ -496,10 +548,10 @@ begin
         --
         h2s_fm_data                 => h2s_fm_data,
         -- inputs from hal
-        i_inn_tar_hits_av             => ult_inn_tar_hits_av,
-        i_mid_tar_hits_av             => ult_mid_tar_hits_av,
-        i_out_tar_hits_av             => ult_out_tar_hits_av,
-        i_ext_tar_hits_av             => ult_ext_tar_hits_av,
+        i_inn_tar_hits_av             => ult_inn_tar_hits_in_av,
+        i_mid_tar_hits_av             => ult_mid_tar_hits_in_av,
+        i_out_tar_hits_av             => ult_out_tar_hits_in_av,
+        i_ext_tar_hits_av             => ult_ext_tar_hits_in_av,
         -- Sector Logic Candidates from uCM
         -- i_inn_slc_av                  => inn_slc_to_h2s_av,
         -- i_mid_slc_av                  => mid_slc_to_h2s_av,
@@ -540,10 +592,10 @@ begin
         -- ctrl                      => h2s_ctrl,
         -- mon                       => h2s_mon,
         -- inputs from hal
-        i_inn_tar_hits_av            => ult_inn_tar_hits_av,
-        i_mid_tar_hits_av            => ult_mid_tar_hits_av,
-        i_out_tar_hits_av            => ult_out_tar_hits_av,
-        i_ext_tar_hits_av            => ult_ext_tar_hits_av,
+        i_inn_tar_hits_av            => ult_inn_tar_hits_in_av,
+        i_mid_tar_hits_av            => ult_mid_tar_hits_in_av,
+        i_out_tar_hits_av            => ult_out_tar_hits_in_av,
+        i_ext_tar_hits_av            => ult_ext_tar_hits_in_av,
         -- Sector Logic Candidates from uCM
         -- i_inn_slc_av                 => inn_slc_to_h2s_av,
         -- i_mid_slc_av                 => mid_slc_to_h2s_av,
@@ -610,88 +662,95 @@ begin
       );
     end generate;
 
-    PT_GEN : if c_PT_ENABLED = '1' generate
+    -- process (clock_and_control.clk) is
+    -- begin
+    --   if (rising_edge(clock_and_control.clk)) then
 
-      -- process (clock_and_control.clk) is
-      -- begin
-      --   if (rising_edge(clock_and_control.clk)) then
+    --     for I in 1 to SLR_PIPELINE_DEPTH loop
+    --       inn_segments_to_pt_pipeline(I) <= inn_segments_to_pt_pipeline(I-1);
+    --       mid_segments_to_pt_pipeline(I) <= mid_segments_to_pt_pipeline(I-1);
+    --       out_segments_to_pt_pipeline(I) <= out_segments_to_pt_pipeline(I-1);
+    --       ext_segments_to_pt_pipeline(I) <= ext_segments_to_pt_pipeline(I-1);
+    --     end loop;
 
-      --     for I in 1 to SLR_PIPELINE_DEPTH loop
-      --       inn_segments_to_pt_pipeline(I) <= inn_segments_to_pt_pipeline(I-1);
-      --       mid_segments_to_pt_pipeline(I) <= mid_segments_to_pt_pipeline(I-1);
-      --       out_segments_to_pt_pipeline(I) <= out_segments_to_pt_pipeline(I-1);
-      --       ext_segments_to_pt_pipeline(I) <= ext_segments_to_pt_pipeline(I-1);
-      --     end loop;
+    --   end if;
+    -- end process;
 
-      --   end if;
-      -- end process;
-
-      hps2pt_loop: for th_i in c_NUM_THREADS -1 downto 0 generate
-        HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
-          SLC2HPS_INN_PL : entity vamc_lib.vamc_spl
-            generic map(
-              g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-              g_PIPELINE_WIDTH    => inn_segments_to_pt_plin_av(th_i)'length
-            )
-            port map(
-              clk         => clock_and_control.clk,
-              rst         => clock_and_control.rst,
-              ena         => '1',
-              --
-              i_data      => inn_segments_to_pt_plin_av(th_i),
-              o_data      => inn_segments_to_pt_plout_av(th_i)
-          );
-        end generate;
-        -------------------------------------
-        HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
-          SLC2HPS_MID_PL : entity vamc_lib.vamc_spl
-            generic map(
-              g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-              g_PIPELINE_WIDTH    => mid_segments_to_pt_plin_av(th_i)'length
-            )
-            port map(
-              clk         => clock_and_control.clk,
-              rst         => clock_and_control.rst,
-              ena         => '1',
-              --
-              i_data      => mid_segments_to_pt_plin_av(th_i),
-              o_data      => mid_segments_to_pt_plout_av(th_i)
-          );
-        end generate;
-        -------------------------------------
-        HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
-          SLC2HPS_OUT_PL : entity vamc_lib.vamc_spl
-            generic map(
-              g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-              g_PIPELINE_WIDTH    => out_segments_to_pt_plin_av(th_i)'length
-            )
-            port map(
-              clk         => clock_and_control.clk,
-              rst         => clock_and_control.rst,
-              ena         => '1',
-              --
-              i_data      => out_segments_to_pt_plin_av(th_i),
-              o_data      => out_segments_to_pt_plout_av(th_i)
-          );
-        end generate;
-        -------------------------------------
-        HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
-          SLC2HPS_EXT_PL : entity vamc_lib.vamc_spl
-            generic map(
-              g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-              g_PIPELINE_WIDTH    => ext_segments_to_pt_plin_av(th_i)'length
-            )
-            port map(
-              clk         => clock_and_control.clk,
-              rst         => clock_and_control.rst,
-              ena         => '1',
-              --
-              i_data      => ext_segments_to_pt_plin_av(th_i),
-              o_data      => ext_segments_to_pt_plout_av(th_i)
-          );
-        end generate;
+    hps2pt_loop: for th_i in c_NUM_THREADS -1 downto 0 generate
+      HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
+        SLC2HPS_INN_PL : entity vamc_lib.vamc_spl
+          generic map(
+            g_SHREG_EXTRACT     => "no",
+            g_PIPELINE_TYPE     => "shift_reg",
+            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
+            g_PIPELINE_WIDTH    => inn_segments_to_pt_plin_av(th_i)'length
+          )
+          port map(
+            clk         => clock_and_control.clk,
+            rst         => clock_and_control.rst,
+            ena         => '1',
+            --
+            i_data      => inn_segments_to_pt_plin_av(th_i),
+            o_data      => inn_segments_to_pt_plout_av(th_i)
+        );
       end generate;
+      -------------------------------------
+      HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
+        SLC2HPS_MID_PL : entity vamc_lib.vamc_spl
+          generic map(
+            g_SHREG_EXTRACT     => "no",
+            g_PIPELINE_TYPE     => "shift_reg",
+            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
+            g_PIPELINE_WIDTH    => mid_segments_to_pt_plin_av(th_i)'length
+          )
+          port map(
+            clk         => clock_and_control.clk,
+            rst         => clock_and_control.rst,
+            ena         => '1',
+            --
+            i_data      => mid_segments_to_pt_plin_av(th_i),
+            o_data      => mid_segments_to_pt_plout_av(th_i)
+        );
+      end generate;
+      -------------------------------------
+      HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
+        SLC2HPS_OUT_PL : entity vamc_lib.vamc_spl
+          generic map(
+            g_SHREG_EXTRACT     => "no",
+            g_PIPELINE_TYPE     => "shift_reg",
+            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
+            g_PIPELINE_WIDTH    => out_segments_to_pt_plin_av(th_i)'length
+          )
+          port map(
+            clk         => clock_and_control.clk,
+            rst         => clock_and_control.rst,
+            ena         => '1',
+            --
+            i_data      => out_segments_to_pt_plin_av(th_i),
+            o_data      => out_segments_to_pt_plout_av(th_i)
+        );
+      end generate;
+      -------------------------------------
+      HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
+        SLC2HPS_EXT_PL : entity vamc_lib.vamc_spl
+          generic map(
+            g_SHREG_EXTRACT     => "no",
+            g_PIPELINE_TYPE     => "shift_reg",
+            g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
+            g_PIPELINE_WIDTH    => ext_segments_to_pt_plin_av(th_i)'length
+          )
+          port map(
+            clk         => clock_and_control.clk,
+            rst         => clock_and_control.rst,
+            ena         => '1',
+            --
+            i_data      => ext_segments_to_pt_plin_av(th_i),
+            o_data      => ext_segments_to_pt_plout_av(th_i)
+        );
+      end generate;
+    end generate;
 
+    PT_GEN : if c_PT_ENABLED = '1' generate
       ULT_PTCALC : entity ult_lib.ptcalc
       port map (
         -- clock, control, and monitoring
@@ -798,10 +857,10 @@ begin
           mon_v               => daq_mon_v,
 
           -- TDC Hits from Polmux
-          i_inn_tdc_hits_av  => ult_inn_tdc_hits_av,
-          i_mid_tdc_hits_av  => ult_mid_tdc_hits_av,
-          i_out_tdc_hits_av  => ult_out_tdc_hits_av,
-          i_ext_tdc_hits_av  => ult_ext_tdc_hits_av,
+          i_inn_tdc_hits_av  => ult_inn_tdc_hits_in_av,
+          i_mid_tdc_hits_av  => ult_mid_tdc_hits_in_av,
+          i_out_tdc_hits_av  => ult_out_tdc_hits_in_av,
+          i_ext_tdc_hits_av  => ult_ext_tdc_hits_in_av,
 
           -- Tracks from MTC
           -- ???
@@ -826,10 +885,10 @@ begin
           -- mon               => daq_mon,
 
           -- TDC Hits from Polmux
-          i_inn_tdc_hits_av  => ult_inn_tdc_hits_av,
-          i_mid_tdc_hits_av  => ult_mid_tdc_hits_av,
-          i_out_tdc_hits_av  => ult_out_tdc_hits_av,
-          i_ext_tdc_hits_av  => ult_ext_tdc_hits_av,
+          i_inn_tdc_hits_av  => ult_inn_tdc_hits_in_av,
+          i_mid_tdc_hits_av  => ult_mid_tdc_hits_in_av,
+          i_out_tdc_hits_av  => ult_out_tdc_hits_in_av,
+          i_ext_tdc_hits_av  => ult_ext_tdc_hits_in_av,
 
           -- Tracks from MTC
           -- ???
@@ -871,7 +930,7 @@ begin
 
     sump <= tar_sump xor ucm_sump xor h2s_sump xor pt_sump xor mtc_sump xor daq_sump xor mpl_sump;
 
-  end generate;
+    else generate
 
 
 
@@ -881,7 +940,7 @@ begin
 
 
 
-  dummy_gen : if (DUMMY) generate
+  -- dummy_gen : if (DUMMY) generate
     signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
     signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
     signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);

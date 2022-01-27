@@ -40,7 +40,8 @@ use ctrl_lib.TAR_CTRL.all;
 
 entity tar is
   generic(
-    c_HPS_MAX_HP : integer := 6
+    c_HPS_MAX_HP : integer := 6;
+    g_STATION :   integer := 0
   );
   port (
     clk                 : in std_logic;
@@ -110,7 +111,7 @@ begin
   TAR_PL : entity tar_lib.tar_station
     generic map(
       g_ARRAY_LEN => c_HPS_MAX_HP,
-      g_STATION => 0
+      g_STATION => g_STATION
     )
     port map (
       -- clock, control, and monitoring
