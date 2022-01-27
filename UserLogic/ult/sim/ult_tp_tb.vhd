@@ -430,7 +430,8 @@ begin
 
   MDT : entity project_lib.ult_tb_reader_tdc 
   generic map (
-    IN_HIT_FILE => IN_HIT_FILE
+    IN_HIT_FILE => IN_HIT_FILE,
+    g_verbose => 2
   )
   port map(
     clk => clk,
@@ -447,7 +448,8 @@ begin
 
   SLC : entity project_lib.ult_tb_reader_slc 
   generic map (
-    IN_SLC_FILE => IN_SLC_FILE
+    IN_SLC_FILE => IN_SLC_FILE,
+    g_verbose => 2
   )
   port map(
     clk => clk,
