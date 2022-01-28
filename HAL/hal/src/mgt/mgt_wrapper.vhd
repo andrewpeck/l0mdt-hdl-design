@@ -30,8 +30,6 @@ entity mgt_wrapper is
     -- Reset
     reset : in std_logic;
 
-    recclk_o : out std_logic;
-
     -- AXI Control
     ctrl : in  HAL_CORE_MGT_CTRL_t;
     mon  : out HAL_CORE_MGT_MON_t;
@@ -51,6 +49,7 @@ entity mgt_wrapper is
     lpgbt_downlink_mgt_word_array_i : in std32_array_t (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
 
     -- 32 bits / clock from mgt
+    -- this is just an array of LPGBT uplink data *in mgt order*
     lpgbt_uplink_mgt_word_array_o : out std32_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
     --------------------------------------------------------------------------------
@@ -67,15 +66,18 @@ entity mgt_wrapper is
     lpgbt_emul_uplink_mgt_word_array_i : in std32_array_t (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
 
     --------------------------------------------------------------------------------
-    -- FELIX
+    -- TTC
     --------------------------------------------------------------------------------
 
     -- Rxslide from LPGBT rx core
-    felix_ttc_bitslip_i : in std_logic;
+    ttc_bitslip_i  : in  std_logic;
+    ttc_mgt_word_i : in  std_logic_vector (31 downto 0);
+    ttc_mgt_word_o : out std_logic_vector (31 downto 0);
+    ttc_recclk_o   : out std_logic;
 
-    -- -- 32 bits / clock from mgt
-    felix_ttc_mgt_word_o : out std_logic_vector (31 downto 0);
-    felix_mgt_rxusrclk_o : out std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
+    --------------------------------------------------------------------------------
+    -- Felix
+    --------------------------------------------------------------------------------
 
     -- 32 bits / clock to mgt
     felix_uplink_mgt_word_array_i : in  std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
@@ -151,8 +153,8 @@ begin
 
    recclk_BUFG_inst : BUFG
    port map (
-      O => recclk_o, -- 1-bit output: Clock output
-      I => recclk    -- 1-bit input: Clock input
+     O => ttc_recclk_o,                 -- 1-bit output: Clock output
+     I => recclk                        -- 1-bit input: Clock input
    );
 
   --------------------------------------------------------------------------------
@@ -267,7 +269,9 @@ begin
     --------------------------------------------------------------------------------
 
     lpgbt_gen : if ((I mod 4 = 0) and
-                    (lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or felix_idx_array(I) /= -1))
+                    (ttc_idx_array(I) /= -1 or ttc_idx_array(I+1) /= -1 or
+                     ttc_idx_array(I+2) /= -1 or ttc_idx_array(I+3) /= -1 or
+                     lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or felix_idx_array(I) /= -1))
     generate
 
       attribute X_LOC             : integer;
@@ -279,7 +283,7 @@ begin
 
       signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0) := (others => '0');
 
-      signal rxslide  : std_logic_vector (3 downto 0);
+      signal rxslide  : std_logic_vector (3 downto 0) := (others => '0');
       signal rxoutclk : std_logic_vector (3 downto 0) := (others => '0');
 
       -- data
@@ -420,18 +424,16 @@ begin
         -- FELIX LPGBT
         --------------------------------------------------------------------------------
 
-        felix_gen : if (felix_idx_array(I) /= -1) generate
-          constant downlink_idx : integer := felix_idx_array(I);
+        felix_gen : if (ttc_idx_array(I) /= -1) generate
+          constant downlink_idx : integer := ttc_idx_array(I);
         begin
 
           -- FELIX Recovered Clock
-          --
-          tx_data(LINK_0_TO_3)  <= felix_uplink_mgt_word_array_i(downlink_idx+LINK_0_TO_3);
-          rxslide (LINK_0_TO_3) <= felix_ttc_bitslip_i;
-
+          tx_data(LINK_0_TO_3)  <= ttc_mgt_word_i;
           recclk_out_gen : if (downlink_idx + LINK_0_TO_3 = c_FELIX_RECCLK_SRC) generate
-            recclk               <= rxoutclk(LINK_0_TO_3);
-            felix_ttc_mgt_word_o <= rx_data(LINK_0_TO_3);
+            rxslide (LINK_0_TO_3) <= ttc_bitslip_i;
+            recclk                <= rxoutclk(LINK_0_TO_3);
+            ttc_mgt_word_o        <= rx_data(LINK_0_TO_3);
           end generate;
 
         end generate;

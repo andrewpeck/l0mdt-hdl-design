@@ -19,15 +19,30 @@ if {[regexp {xcvu13p.*} $part]} {
 }
 
 proc set_hier_slr_assignment {slr name} {
-    set_property -quiet USER_SLR_ASSIGNMENT $slr [get_cells -hier -filter "NAME =~ $name"]
+     # polmuxes
+    add_cells_to_pblock -quiet -cells [get_cells -hier -filter "NAME =~ $name"] $slr
+    #set_property -quiet USER_SLR_ASSIGNMENT $slr [get_cells -hier -filter "NAME =~ $name"]
 }
 
 if {$num_slrs > 0} {
 
-    set SLR_INN SLR1
-    set SLR_MID SLR2
-    set SLR_OUT SLR3
-    set SLR_EXT SLR0
+    # set SLR_INN SLR1
+    # set SLR_MID SLR2
+    # set SLR_OUT SLR3
+    # set SLR_EXT SLR0
+
+    # create pblocks 1/2/3/4
+    for {set i 0} {$i < $num_slrs} {incr i} {
+        set pblock PBLOCK_SLR_$i
+        delete_pblock -quiet [get_pblocks $pblock]
+        create_pblock $pblock
+        resize_pblock -add [get_slrs SLR$i] $pblock
+    }
+
+    set SLR_INN PBLOCK_SLR_1
+    set SLR_MID PBLOCK_SLR_2
+    set SLR_OUT PBLOCK_SLR_3
+    set SLR_EXT PBLOCK_SLR_0
 
     # https://www.xilinx.com/publications/events/developer-forum/2018-frankfurt/timing-closure-tips-and-tricks.pdf
 
@@ -35,8 +50,7 @@ if {$num_slrs > 0} {
     # SLR Crossings
     #-------------------------------------------------------------------------------
 
-    set_property USER_SLL_REG True [get_cells "ult_inst/*segments_to_pt_pipeline*"]
-    set_property USER_SLL_REG True [get_cells "ult_inst/*slc_to_h2s_pipeline*"]
+    set_property USER_SLL_REG True [get_cells "ult_inst/*_PL/SHIFT_GEN.data_pl_reg*"]
 
     #-------------------------------------------------------------------------------
     # SLR Placements
@@ -101,10 +115,10 @@ if {$num_slrs > 0} {
 
     # daq
     puts "Applying area constraints to DAQ"
-    set_hier_slr_assignment $SLR_INN "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*inn*"
-    set_hier_slr_assignment $SLR_MID "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*mid*"
-    set_hier_slr_assignment $SLR_OUT "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*out*"
-    set_hier_slr_assignment $SLR_EXT "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/*ext*"
+    set_hier_slr_assignment $SLR_INN "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_inner*"
+    set_hier_slr_assignment $SLR_MID "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_middle*"
+    set_hier_slr_assignment $SLR_OUT "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_outer*"
+    set_hier_slr_assignment $SLR_EXT "ult_inst/logic_gen.DAQ_GEN.ULT_DAQ/DAQ_GEN.gen_daq_extra*"
 
     # control
 
@@ -157,8 +171,8 @@ if {[string= "xcku15p" $fpga_short]} {
     set lRightQuadWidth [expr 500]
 }
 if {[string= "xcvu13p" $fpga_short]} {
-    set lLeftQuadWidth  [expr 1500]
-    set lRightQuadWidth [expr 1500]
+    set lLeftQuadWidth  [expr 1000]
+    set lRightQuadWidth [expr 1000]
 }
 
 set lClkBounds [get_XY_bounds [get_clock_regions]]
@@ -192,47 +206,45 @@ proc assign_pblocks {min  max  side fpga} {
         }
 
         if {[string= "xcvu13p" $fpga]} {
-            if {[string= "L" $side]} {
-                # LHS GTY quads  numbered 0-15
-                set q [expr $lRegId/4]
-            }
-            if {[string= "R" $side]} {
-                # RHS GTY quads numbered 0-15
-                set q [expr ($lRegId-64) / 4]
-            }
+            set q [expr ($lRegId % 16)/4 + 4*($lRegId/32)]
         }
 
         set lQuadBlock [get_pblocks quad_$side$q]
 
         # gather up the cells for all the links in this quad
         set cells [concat \
-                       [get_cells -quiet "top_hal/*mgt*/*mgt_gen[$lRegId]*.MGT_INST"] \
-                       [get_cells -quiet "top_hal/*csm*mgt_tag*[$lRegId]*"] \
-                       [get_cells -quiet "top_hal/*sector_logic*/*mgt_tag[$lRegId]*"]]
+                       [get_cells -quiet -hierarchical -filter "NAME =~ top_hal/*mgt*/*mgt_gen[$lRegId]*.MGT_INST"] \
+                       [get_cells -quiet -hierarchical -filter "NAME =~ top_hal/*csm*mgt_tag[$lRegId]*"] \
+                       [get_cells -quiet -hierarchical -filter "NAME =~ top_hal/*sector_logic*/*mgt_tag[$lRegId]*" ]]
 
         if {[string is space $cells] == 0} {
-            puts "Adding [llength $cells] cells to pblock $lQuadBlock with mgt #$lRegId"
+            puts "Adding [llength $cells] cells to pblock $lQuadBlock with mgt $side$q lRegId=#$lRegId"
             puts "   > quad_$side$q"
+            puts "   > $cells"
             add_cells_to_pblock $lQuadBlock $cells
+        } else {
+            puts "No cells in pblock $lQuadBlock with mgt #$lRegId"
         }
     }
     puts " > No cells in other pblocks"
 }
 
 if {[string= "xcvu13p" $fpga_short]} {
-    assign_pblocks 0  63  L $fpga_short
-    assign_pblocks 64 127 R $fpga_short
+    # slr0
+    assign_pblocks 0  15  L $fpga_short
+    assign_pblocks 16 31  R $fpga_short
+    # slr1
+    assign_pblocks 32 47  L $fpga_short
+    assign_pblocks 48 63  R $fpga_short
+    # slr2
+    assign_pblocks 64 79  L $fpga_short
+    assign_pblocks 80 95  R $fpga_short
+    # slr3
+    assign_pblocks 96  111 L $fpga_short
+    assign_pblocks 112 127 R $fpga_short
 }
 
 if {[string= "xcku15p" $fpga_short]} {
     assign_pblocks 0  31  L $fpga_short
     assign_pblocks 32 75  R $fpga_short
 }
-
-# Payload Area assignment
-#set lPayload [create_pblock payload]
-#set lPayloadRect [find_rects [get_sites -of [get_clock_regions] -f "RPM_X >= $lLeftBoundary && RPM_X <= $lRightBoundary"]]
-#add_rects_to_pblock $lPayload $lPayloadRect
-#
-#set lPayloadRect [find_rects [get_sites -of [get_clock_regions -f {ROW_INDEX>2}] -f "RPM_X >= $lLeftBoundary && RPM_X <= $lRightBoundary"]]
-#add_cells_to_pblock [get_pblocks payload] [get_cells -quiet datapath/rgen[*].pgen.*]

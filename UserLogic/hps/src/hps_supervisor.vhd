@@ -81,6 +81,10 @@ architecture beh of hps_supervisor is
   signal axi_cnt_reset    : std_logic;
   signal axi_rep_clk      : std_logic;
 
+  attribute MAX_FANOUT              : string;
+  attribute MAX_FANOUT of int_rst   : signal is "256";
+  attribute MAX_FANOUT of local_rst : signal is "256";
+
 begin
   ctrl_r <= convert(ctrl_v,ctrl_r);
   mon_v <= convert(mon_r,mon_v);

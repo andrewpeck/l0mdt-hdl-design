@@ -6,16 +6,16 @@
   <node id="RESET_COUNTERS"  address="0x2" mask="0x1" permission="w" description="Resets counters"/>
 
   <node id="CSM" address="0x0010">
-    <node id="CSM_0"  address="0x00" fwinfo="type=array" module="file://CSM.xml"/>
-    <node id="CSM_1"  address="0x40" fwinfo="type=array" module="file://CSM.xml"/>
-    <node id="CSM_2"  address="0x80" fwinfo="type=array" module="file://CSM.xml"/>
-    <node id="CSM_3"  address="0xC0" fwinfo="type=array" module="file://CSM.xml"/>
-    <node id="CSM_4"  address="0x100" fwinfo="type=array" module="file://CSM.xml"/>
-    <node id="CSM_5"  address="0x140" fwinfo="type=array" module="file://CSM.xml"/>
-    <node id="CSM_6"  address="0x180" fwinfo="type=array" module="file://CSM.xml"/>
-    <node id="CSM_7"  address="0x1C0" fwinfo="type=array" module="file://CSM.xml"/>
-    <node id="CSM_8"  address="0x200" fwinfo="type=array" module="file://CSM.xml"/>
-    <node id="CSM_9"  address="0x240" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_0"   address="0x000" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_1"   address="0x040" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_2"   address="0x080" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_3"   address="0x0C0" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_4"   address="0x100" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_5"   address="0x140" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_6"   address="0x180" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_7"   address="0x1C0" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_8"   address="0x200" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_9"   address="0x240" fwinfo="type=array" module="file://CSM.xml"/>
     <node id="CSM_10"  address="0x280" fwinfo="type=array" module="file://CSM.xml"/>
     <node id="CSM_11"  address="0x2C0" fwinfo="type=array" module="file://CSM.xml"/>
     <node id="CSM_12"  address="0x300" fwinfo="type=array" module="file://CSM.xml"/>
@@ -24,5 +24,23 @@
     <node id="CSM_15"  address="0x3C0" fwinfo="type=array" module="file://CSM.xml"/>
     <node id="CSM_16"  address="0x400" fwinfo="type=array" module="file://CSM.xml"/>
     <node id="CSM_17"  address="0x440" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_18"  address="0x480" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_19"  address="0x4c0" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_20"  address="0x500" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_21"  address="0x540" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_22"  address="0x580" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_23"  address="0x5c0" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_24"  address="0x600" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_25"  address="0x640" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_26"  address="0x680" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_27"  address="0x6c0" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_28"  address="0x700" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_29"  address="0x740" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_30"  address="0x780" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_31"  address="0x7c0" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_32"  address="0x800" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_33"  address="0x840" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_34"  address="0x880" fwinfo="type=array" module="file://CSM.xml"/>
+    <node id="CSM_35"  address="0x8c0" fwinfo="type=array" module="file://CSM.xml"/>
   </node> <!-- CSM -->
 </node> <!-- HAL -->

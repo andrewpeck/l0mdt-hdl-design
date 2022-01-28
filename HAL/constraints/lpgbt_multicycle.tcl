@@ -1,10 +1,11 @@
+# -*- mode: vivado -*-
 # Multicycle constraints: ease the timing constraints
 # Uplink constraints: Values depend on the c_multicyleDelay. Shall be the same one for setup time and -1 for the hold time
 # retiming changes register names and prevents multicycle path setting on the lpgbt cores
 
 # valid output is high fanout
 # force its replication early
-set_property MAX_FANOUT 25 \
+set_property -quiet MAX_FANOUT 25 \
     [get_cells -quiet -hierarchical -filter {NAME =~ *lpgbtlatch.uplink_data_o_reg[0][valid]*}]
 
 # Prevent these reset registers from getting merged across different LPGBT instances...
@@ -22,7 +23,7 @@ proc set_lpgbt_multicycles {root_path} {
 
     set link_wrapper_cell [get_cells -quiet "${root_path}"]
     if {[string is space $link_wrapper_cell] == 0} {
-        set_property BLOCK_SYNTH.RETIMING false  $link_wrapper_cell
+        set_property -quiet BLOCK_SYNTH.RETIMING false  $link_wrapper_cell
     }
 
     puts "Setting LPGBT Uplink Pipeline Multicycle Path"
@@ -66,3 +67,8 @@ proc set_lpgbt_multicycles {root_path} {
 
 set_lpgbt_multicycles "top_hal/*csm_gen*/lpgbt_links_inst"
 set_lpgbt_multicycles "top_hal/felix_decoder_inst"
+
+# constrain asynchronous reset/clear
+set_max_delay 3.1 \
+    -from [get_pins {top_hal/csm_gen*.csm_ifgen.mgt_tag*.csm_inst/lpgbt_links_inst/uplink_gen*.uplink_inst/rxgearbox_10g_gen.rxGearbox_10g24_inst/gbReset*/C}] \
+    -to   [get_pins {top_hal/csm_gen*.csm_ifgen.mgt_tag*.csm_inst/lpgbt_links_inst/uplink_gen*.uplink_inst/rxgearbox_10g_gen.rxGearbox_10g24_inst/reg*/CLR}]

@@ -46,8 +46,8 @@ package body display_board_cfg_pkg is
     --end loop;
 
     --for I in 0 to c_NUM_MGTS-1 loop
-    --  assert false report "FELIX_TXRX_IDX_ARRAY(" & integer'image(I) & ") = "
-    --    & integer'image(felix_txrx_idx_array(I)) severity note;
+    --  assert false report "TTC_IDX_ARRAY(" & integer'image(I) & ") = "
+    --    & integer'image(ttc_idx_array(I)) severity note;
     --end loop;
 
     --for I in 0 to c_NUM_MGTS-1 loop

@@ -71,16 +71,18 @@ entity top_l0mdt is
     clock_i_p : in std_logic;
     clock_i_n : in std_logic;
 
-    lhc_refclk_o_p : out std_logic;
-    lhc_refclk_o_n : out std_logic;
+    tc_clk_o_p : out std_logic;
+    tc_clk_o_n : out std_logic;
+
+    tc_clk_i_p : in std_logic;
+    tc_clk_i_n : in std_logic;
 
     --------------------------------------------------------------------------------
     -- AXI C2C
     --------------------------------------------------------------------------------
 
-    clock_100m_i_p : in std_logic;
-    clock_100m_i_n : in std_logic;
-
+    clock_async_i_p : in std_logic;
+    clock_async_i_n : in std_logic;
 
     c2c_rxn : in  std_logic;
     c2c_rxp : in  std_logic;
@@ -249,14 +251,14 @@ begin
     port map (
 
       -- clock io
-      clock_i_p      => clock_i_p,
-      clock_i_n      => clock_i_n,
-      clock_100m_i_p => clock_100m_i_p,
-      clock_100m_i_n => clock_100m_i_n,
-      lhc_refclk_o_p => lhc_refclk_o_p,
-      lhc_refclk_o_n => lhc_refclk_o_n,
-      refclk_i_p     => refclk_i_p,
-      refclk_i_n     => refclk_i_n,
+      clock_i_p       => clock_i_p,
+      clock_i_n       => clock_i_n,
+      clock_async_i_p => clock_async_i_p,
+      clock_async_i_n => clock_async_i_n,
+      lhc_refclk_o_p  => tc_clk_o_p,
+      lhc_refclk_o_n  => tc_clk_o_n,
+      refclk_i_p      => refclk_i_p,
+      refclk_i_n      => refclk_i_n,
 
       -- clocks to user logic
       clock_and_control_o => clock_and_control,

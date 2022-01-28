@@ -155,14 +155,14 @@
     HAL_CSM_CSM_SC_MON_t   SC;
   } HAL_CSM_CSM_MON_t;
 
-  typedef HAL_CSM_CSM_MON_t  [18-1:0] HAL_CSM_CSM_MON_t_ARRAY;
+  typedef HAL_CSM_CSM_MON_t  [36-1:0] HAL_CSM_CSM_MON_t_ARRAY;
 
   typedef struct packed {
     HAL_CSM_CSM_LPGBT_CTRL_t   LPGBT;
     HAL_CSM_CSM_SC_CTRL_t   SC;
   } HAL_CSM_CSM_CTRL_t;
 
-  typedef HAL_CSM_CSM_CTRL_t  [18-1:0] HAL_CSM_CSM_CTRL_t_ARRAY;
+  typedef HAL_CSM_CSM_CTRL_t  [36-1:0] HAL_CSM_CSM_CTRL_t_ARRAY;
 
   typedef struct packed {
     HAL_CSM_CSM_MON_t_ARRAY   CSM;
