@@ -443,10 +443,16 @@ begin
       HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
         SLC2HPS_INN_PL : entity vamc_lib.vamc_spl
           generic map(
-            g_SHREG_EXTRACT     => "no",
+            
             g_PIPELINE_TYPE     => "shift_reg",
             g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => inn_slc_to_h2s_plin_av(th_i)'length
+            g_PIPELINE_WIDTH    => inn_slc_to_h2s_plin_av(th_i)'length,
+            --
+            g_PL_DV             => '0',
+            g_PL_ENABLE_ENA     => '0',
+            g_PL_ENABLE_RST     => '0',
+            --
+            g_SHREG_EXTRACT     => "no"
           )
           port map(
             clk         => clock_and_control.clk,
@@ -461,10 +467,16 @@ begin
       HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
         SLC2HPS_MID_PL : entity vamc_lib.vamc_spl
           generic map(
-            g_SHREG_EXTRACT     => "no",
+            
             g_PIPELINE_TYPE     => "shift_reg",
             g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => mid_slc_to_h2s_plin_av(th_i)'length
+            g_PIPELINE_WIDTH    => mid_slc_to_h2s_plin_av(th_i)'length,
+            --
+            g_PL_DV             => '0',
+            g_PL_ENABLE_ENA     => '0',
+            g_PL_ENABLE_RST     => '0',
+            --
+            g_SHREG_EXTRACT     => "no"
           )
           port map(
             clk         => clock_and_control.clk,
@@ -479,10 +491,16 @@ begin
       HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
         SLC2HPS_OUT_PL : entity vamc_lib.vamc_spl
           generic map(
-            g_SHREG_EXTRACT     => "no",
+            
             g_PIPELINE_TYPE     => "shift_reg",
             g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => out_slc_to_h2s_plin_av(th_i)'length
+            g_PIPELINE_WIDTH    => out_slc_to_h2s_plin_av(th_i)'length,
+            --
+            g_PL_DV             => '0',
+            g_PL_ENABLE_ENA     => '0',
+            g_PL_ENABLE_RST     => '0',
+            --
+            g_SHREG_EXTRACT     => "no"
           )
           port map(
             clk         => clock_and_control.clk,
@@ -497,10 +515,16 @@ begin
       HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
         SLC2HPS_EXT_PL : entity vamc_lib.vamc_spl
           generic map(
-            g_SHREG_EXTRACT     => "no",
+            
             g_PIPELINE_TYPE     => "shift_reg",
             g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => ext_slc_to_h2s_plin_av(th_i)'length
+            g_PIPELINE_WIDTH    => ext_slc_to_h2s_plin_av(th_i)'length,
+            --
+            g_PL_DV             => '0',
+            g_PL_ENABLE_ENA     => '0',
+            g_PL_ENABLE_RST     => '0',
+            --
+            g_SHREG_EXTRACT     => "no"
           )
           port map(
             clk         => clock_and_control.clk,
@@ -680,10 +704,16 @@ begin
       HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
         SLC2HPS_INN_PL : entity vamc_lib.vamc_spl
           generic map(
-            g_SHREG_EXTRACT     => "no",
+            
             g_PIPELINE_TYPE     => "shift_reg",
             g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => inn_segments_to_pt_plin_av(th_i)'length
+            g_PIPELINE_WIDTH    => inn_segments_to_pt_plin_av(th_i)'length,
+            --
+            g_PL_DV             => '0',
+            g_PL_ENABLE_ENA     => '0',
+            g_PL_ENABLE_RST     => '0',
+            --
+            g_SHREG_EXTRACT     => "no"
           )
           port map(
             clk         => clock_and_control.clk,
@@ -698,10 +728,16 @@ begin
       HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
         SLC2HPS_MID_PL : entity vamc_lib.vamc_spl
           generic map(
-            g_SHREG_EXTRACT     => "no",
+            
             g_PIPELINE_TYPE     => "shift_reg",
             g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => mid_segments_to_pt_plin_av(th_i)'length
+            g_PIPELINE_WIDTH    => mid_segments_to_pt_plin_av(th_i)'length,
+            --
+            g_PL_DV             => '0',
+            g_PL_ENABLE_ENA     => '0',
+            g_PL_ENABLE_RST     => '0',
+            --
+            g_SHREG_EXTRACT     => "no"
           )
           port map(
             clk         => clock_and_control.clk,
@@ -716,10 +752,16 @@ begin
       HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
         SLC2HPS_OUT_PL : entity vamc_lib.vamc_spl
           generic map(
-            g_SHREG_EXTRACT     => "no",
+            
             g_PIPELINE_TYPE     => "shift_reg",
             g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => out_segments_to_pt_plin_av(th_i)'length
+            g_PIPELINE_WIDTH    => out_segments_to_pt_plin_av(th_i)'length,
+            --
+            g_PL_DV             => '0',
+            g_PL_ENABLE_ENA     => '0',
+            g_PL_ENABLE_RST     => '0',
+            --
+            g_SHREG_EXTRACT     => "no"
           )
           port map(
             clk         => clock_and_control.clk,
@@ -734,10 +776,16 @@ begin
       HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
         SLC2HPS_EXT_PL : entity vamc_lib.vamc_spl
           generic map(
-            g_SHREG_EXTRACT     => "no",
+            
             g_PIPELINE_TYPE     => "shift_reg",
             g_DELAY_CYCLES      => SLR_PIPELINE_DEPTH,
-            g_PIPELINE_WIDTH    => ext_segments_to_pt_plin_av(th_i)'length
+            g_PIPELINE_WIDTH    => ext_segments_to_pt_plin_av(th_i)'length,
+            --
+            g_PL_DV             => '0',
+            g_PL_ENABLE_ENA     => '0',
+            g_PL_ENABLE_RST     => '0',
+            --
+            g_SHREG_EXTRACT     => "no"
           )
           port map(
             clk         => clock_and_control.clk,
