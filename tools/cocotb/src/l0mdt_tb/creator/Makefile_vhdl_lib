@@ -1,3 +1,39 @@
+
+# Location of HDL source files
+SRCDIR = $(PWD)/../../../../../../../
+SBDIR = $(SRCDIR)/shared/SpyBuffer/src
+IPDIR = $(SRCDIR)/IP
+USERLOGIC = $(SRCDIR)/UserLogic
+HLS       = $(SRCDIR)/l0mdt-hls
+
+
+
+# Specify TopLevel language for cocotb
+TOPLEVEL_LANG=verilog
+DFDIR     = $(SRCDIR)/dataformats
+MTCDIR    = $(USERLOGIC)/mtc/src
+LSFDIR    = $(USERLOGIC)/lsf/src
+CSFDIR    = $(USERLOGIC)/csf/src
+MPTDIR    = $(USERLOGIC)/ptc_mpi/src
+HPSDIR    = $(USERLOGIC)/hps/src
+HPDIR     = $(USERLOGIC)/hp/src
+HEGDIR    = $(USERLOGIC)/heg/src
+MPLDIR    = $(USERLOGIC)/mpl/src
+SLDIR     = $(USERLOGIC)/sl/src
+TARDIR    = $(USERLOGIC)/tar/src
+TDCDIR    = $(USERLOGIC)/tdc/src
+UCMDIR    = $(USERLOGIC)/ucm/src
+UCMHPSDIR = $(USERLOGIC)/ucm_hps/src
+ULTDIR    = $(USERLOGIC)/ult/src
+UPTDIR    = $(USERLOGIC)/upt/src
+SHAREDDIR = $(SRCDIR)/shared
+HAL       = $(SRCDIR)/HAL
+IP_REPO   = $(SRCDIR)/IP_repository/vu13p
+IP_REPO   = $(HLS)/IPs/vu13p
+FMDIR     = $(USERLOGIC)/fm/src
+LSFSIMDIR = $(USERLOGIC)/lsf/sim
+
+
 LOAD_LUTS_HLS_IP  = $(IP_REPO)/hls_load_luts/hdl/verilog
 GET_ROM_ADDR_HLS_IP = $(IP_REPO)/hls_get_rom_addr/hdl/verilog
 GET_TRIG_VALS_HLS_IP = $(IP_REPO)/hls_get_trig_vals/hdl/verilog
@@ -123,9 +159,6 @@ VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/UCM/UCM_PKG.vhd \
 	$(HAL)/ctrl/src/UCM/UCM_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/UCM/UCM_map.vhd \
-	$(HAL)/ctrl/src/H2S/H2S_PKG.vhd \
-	$(HAL)/ctrl/src/H2S/H2S_PKG_DEF.vhd \
-	$(HAL)/ctrl/src/H2S/H2S_map.vhd \
 	$(HAL)/ctrl/src/HEG/HEG_PKG.vhd \
 	$(HAL)/ctrl/src/HEG/HEG_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/HEG/HEG_map.vhd \
@@ -209,7 +242,7 @@ VHDL_SOURCES_lsf_lib = \
     $(LSFDIR)/../top_lsf.vhd
 
 VHDL_SOURCES_upt_lib = \
-	$(USERLOGIC)/upt/IP/vu13p/hls_ptcalc_top_inst/sim/hls_ptcalc_top.vhd \
+	$(USERLOGIC)/upt/IP/vu13p/hls_ptcalc_top_inst/synth/hls_ptcalc_top.vhd \
 	$(USERLOGIC)/upt/top_upt.vhd
 
 VERILOG_SOURCES_lsf_lib = \
@@ -242,7 +275,7 @@ VERILOG_SOURCES_lsf_lib = \
     $(LOAD_LE_REFPOS)/load_LE_refPos.v \
     $(LSFDIR)/legendreEngine.sv \
     $(LSFDIR)/legendreEngine_2clk.sv \
-    $(LSFDIR)/lsf_spybuffer_wrapper.sv
+    $(LSFDIR)/lsf_spybuffer_wrapper.sv 
 
 VHDL_SOURCES_ucm_lib = \
     $(PWD)/prj_cfg.vhd \
@@ -295,6 +328,7 @@ VERILOG_SOURCES_upt_lib = \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top.v \
 
 VERILOG_SOURCES_fm_lib = \
+    $(HAL)/ctrl/src/FM/FM_PKG.svh \
     $(FMDIR)/fm_sb_pkg.sv \
     $(FMDIR)/fm_sb_ctrl.sv \
     $(FMDIR)/fm_data.sv \
@@ -318,7 +352,7 @@ VHDL_SOURCES_mpl_lib = \
     $(MPLDIR)/mpl.vhd
 
 VHDL_SOURCES_ult_lib = \
-    $(FMDIR)/fm_ult_pkg.vhd
+    $(ULTDIR)/ult_pt.vhd
 
 VHDL_SOURCES_fm_lib = \
     $(FMDIR)/fm_ult_pkg.vhd
