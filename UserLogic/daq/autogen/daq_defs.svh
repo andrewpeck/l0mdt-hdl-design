@@ -11,8 +11,6 @@
 `include <daq_config_defs.svh>
 
 
-  typedef int   daq_integer_at;
-
   typedef logic unsigned [12-1:0] daq_bcid_t;
 
   parameter int  DAQ_MAX_ROWS = DAQ_MAX_STREAMS + 1;
@@ -23,6 +21,7 @@
     daq_bcid_t   bcid;
     logic  valid;
     daq_stream_data_t   data;
+    logic  enable;
   } daq_stream_rt;
 
   typedef daq_stream_rt  [DAQ_MAX_STREAMS-1:0] daq_branch_t;
@@ -32,13 +31,13 @@
     int  DEPTH;
   } daq_stream_struct_t;
 
-  typedef daq_stream_struct_t  daq_branch_struct_t [0:DAQ_MAX_STREAMS-1];
+  typedef daq_stream_struct_t  daq_branch_struct_at [0:DAQ_MAX_STREAMS-1];
 
   typedef daq_branch_t  [DAQ_MAX_BRANCHES-1:0] daq_branches_t;
 
   typedef int  daq_branches_mask_at [0:DAQ_MAX_BRANCHES-1];
 
-  typedef daq_branch_struct_t  daq_branches_map_at [0:DAQ_MAX_BRANCHES-1];
+  typedef daq_branch_struct_at  daq_branches_map_at [0:DAQ_MAX_BRANCHES-1];
 
   typedef struct packed {
     logic  clk320;
@@ -57,12 +56,12 @@
 
   typedef struct packed {
     daq_bcid_t   daq_bcid;
-    daq_bcid_t   win_start;
-    daq_bcid_t   win_width;
-    daq_bcid_t   latency_ref;
-    daq_bcid_t   win_lower_ref;
-    daq_bcid_t   win_upper_ref;
-    daq_bcid_t   bcid;
+    daq_bcid_t   window_start;
+    daq_bcid_t   window_width;
+    daq_bcid_t   window_latency;
+    daq_bcid_t   lower_window_size;
+    daq_bcid_t   upper_window_size;
+    daq_bcid_t   sys_bcid;
   } daq_hdr_extra_rt;
 
   typedef struct packed {
@@ -74,25 +73,24 @@
 
   typedef struct packed {
     daq_bcid_t   daq_bcid;
-    daq_bcid_t   win_start;
-  } daq_cnt_rt;
+    daq_bcid_t   sys_bcid;
+    daq_bcid_t   lower_window_limit;
+    daq_bcid_t   upper_window_limit;
+  } daq_counters_rt;
 
   typedef struct packed {
-    logic  win_upper;
-    logic  win_lower;
-    logic  latency;
+    daq_bcid_t   lower_size;
+    daq_bcid_t   upper_size;
+    daq_bcid_t   latency;
+  } daq_window_params_rt;
+
+  typedef struct packed {
+    logic  upper_window_limit;
+    logic  lower_window_limit;
+    logic  daq_bcid;
   } stability_rt;
 
   typedef logic [$bits(stability_rt)-1:0] stability_vt;
-
-  typedef struct packed {
-    daq_bcid_t   upper;
-    daq_bcid_t   lower;
-    daq_bcid_t   latency;
-    daq_bcid_t   width;
-  } daq_win_rt;
-
-  typedef logic [DAQ_FELIX_STREAM_WIDTH-1:0] pbldr_payload_t;
 
   typedef struct packed {
     logic  nempty;
@@ -104,58 +102,14 @@
   } backward_rt;
 
   typedef struct packed {
-    logic  wr_en;
-    logic [DAQ_MAX_DATA_WIDTH-1:0] data;
-  } src_to_node_fifo_rt;
-
-  typedef struct packed {
-    logic  full;
-  } node_fifo_to_src_rt;
-
-  typedef logic [DAQ_MAX_COUNTER_WIDTH-1:0] node_fifo_cnt_t;
-
-  typedef struct packed {
-    daq_stream_data_t   data;
-    node_fifo_cnt_t   count;
-    logic  nempty;
-  } node_fifo_to_dst_rt;
-
-  typedef struct packed {
-    logic  rd_en;
-  } dst_to_node_fifo_rt;
-
-  typedef struct packed {
-    daq_sys_rt   sys;
-    src_to_node_fifo_rt   src;
-    dst_to_node_fifo_rt   dst;
-  } daq_node_fifo_irt;
-
-  typedef struct packed {
-    node_fifo_to_src_rt   src;
-    node_fifo_to_dst_rt   dst;
-  } daq_node_fifo_ort;
-
-  typedef struct packed {
-    daq_node_fifo_irt   i;
-    daq_node_fifo_ort   o;
-  } daq_node_fifo_ert;
-
-  typedef struct packed {
-    int  WRITE_DATA_WIDTH;
-    int  READ_DATA_WIDTH;
-    int  READ_COUNT_WIDTH;
-    int  FIFO_DEPTH;
-  } daq_node_fifo_grt;
-
-  typedef struct packed {
-    logic [DAQ_PIPELINES-1:0] done;
-    logic [DAQ_PIPELINES-1:0] nempty;
-    logic [DAQ_PIPELINES-1:0] err;
+    logic [DAQ_MAX_PIPELINES-1:0] data_ready;
+    logic [DAQ_MAX_PIPELINES-1:0] nempty;
+    logic [DAQ_MAX_PIPELINES-1:0] err;
   } row_to_mngt_rt;
 
   typedef struct packed {
-    logic [0:DAQ_PIPELINES-1] en;
-    logic [0:DAQ_PIPELINES-1] rd_en;
+    logic [0:DAQ_MAX_PIPELINES-1] en;
+    int  rd_en;
   } mngt_to_row_rt;
 
   typedef struct packed {
@@ -166,41 +120,26 @@
     logic  done;
   } pbldr_to_mngt_rt;
 
-  typedef struct packed {
-    logic  nempty;
-    logic [DAQ_FELIX_STREAM_WIDTH-1:0] data;
-  } pbldr_forward_rt;
+  typedef forward_rt   row_to_pbldr_rt;
+
+  typedef row_to_pbldr_rt  [DAQ_MAX_ROWS-1:0] rows_to_pbldr_at;
+
+  typedef backward_rt   pbldr_to_row_rt;
+
+  typedef pbldr_to_row_rt  [DAQ_MAX_ROWS-1:0] pbldr_to_rows_at;
 
   typedef struct packed {
-    logic  rd_strb;
-  } pbldr_backward_rt;
-
-  typedef struct packed {
-    pbldr_forward_rt   payload;
-  } row_to_pbldr_rt;
-
-  typedef struct packed {
-    pbldr_backward_rt   payload;
-    logic  sel;
-  } pbldr_to_row_rt;
-
-  typedef struct packed {
-    pbldr_backward_rt   payload;
-    logic [0:DAQ_MAX_ROWS-1] sel;
-  } pbldr_to_rows_rt;
-
-  typedef struct packed {
-    logic  strb;
-    daq_bcid_t   win_start;
-    daq_bcid_t   win_width;
+    logic  req_strb;
+    daq_bcid_t   window_start;
+    daq_bcid_t   window_width;
   } req_to_row_common_rt;
 
   typedef struct packed {
-    daq_bcid_t   latency;
-    daq_bcid_t   win_lower;
-    daq_bcid_t   win_upper;
+    daq_bcid_t   window_latency;
+    daq_bcid_t   lower_window_size;
+    daq_bcid_t   upper_window_size;
     daq_bcid_t   daq_bcid;
-    daq_bcid_t   bcid;
+    daq_bcid_t   sys_bcid;
     ttc_evid_t   evid;
   } req_to_row_extra_rt;
 
@@ -213,18 +152,16 @@
     logic  hfull;
   } felix_to_daq_rt;
 
-  typedef logic [DAQ_FELIX_STREAM_WIDTH+2-1:0] felix_data_t;
-
   typedef struct packed {
     logic  wr_en;
-    felix_data_t   data;
+    logic [DAQ_MAX_DATA_WIDTH-1:0] data;
   } daq_to_felix_rt;
 
   typedef struct packed {
     logic  wr_en;
-    daq_bcid_t   latency;
-    daq_bcid_t   win_lower;
-    daq_bcid_t   win_upper;
+    daq_bcid_t   window_latency;
+    daq_bcid_t   lower_window_size;
+    daq_bcid_t   upper_window_size;
   } ctrl_to_daq_rt;
 
   typedef struct packed {
@@ -256,26 +193,24 @@
   typedef logic [$bits(daq_req_ort)-1:0] daq_req_ovt;
 
   typedef struct packed {
-    int  PIPELINES;
-    int  INPUT_DATA_WIDTH;
-    int  OUTPUT_DATA_WIDTH;
-    int  COUNTER_WIDTH;
-  } daq_hrow_grt;
-
-  typedef struct packed {
-    int  PIPELINES;
-    int  INPUT_DATA_WIDTH;
-    int  OUTPUT_DATA_WIDTH;
-    int  COUNTER_WIDTH;
-    int  FIFO_DEPTH;
-  } daq_drow_grt;
+    row_to_mngt_rt   mngt;
+    row_to_pbldr_rt   pbldr;
+    logic  debug;
+  } daq_row_ort;
 
   typedef struct packed {
     daq_sys_rt   sys;
     mngt_to_row_rt   mngt;
     req_to_row_rt   req;
     pbldr_to_row_rt   pbldr;
-  } daq_hrow_irt;
+  } daq_header_row_irt;
+
+  typedef daq_row_ort   daq_header_row_ort;
+
+  typedef struct packed {
+    daq_header_row_irt   i;
+    daq_header_row_ort   o;
+  } daq_header_row_ert;
 
   typedef struct packed {
     daq_sys_rt   sys;
@@ -283,42 +218,30 @@
     req_to_row_common_rt   req;
     daq_stream_rt   stream;
     pbldr_to_row_rt   pbldr;
-  } daq_drow_irt;
+  } daq_data_row_irt;
+
+  typedef daq_row_ort   daq_data_row_ort;
 
   typedef struct packed {
-    row_to_mngt_rt   mngt;
-    row_to_pbldr_rt   pbldr;
-  } daq_row_ort;
+    daq_data_row_irt   i;
+    daq_data_row_ort   o;
+  } daq_data_row_ert;
 
-  typedef struct packed {
-    daq_hrow_irt   i;
-    daq_row_ort   o;
-  } daq_hrow_ert;
+  typedef logic [$bits(daq_header_row_irt)-1:0] daq_header_row_ivt;
 
-  typedef struct packed {
-    daq_drow_irt   i;
-    daq_row_ort   o;
-  } daq_drow_ert;
-
-  typedef logic [$bits(daq_hrow_irt)-1:0] daq_hrow_ivt;
-
-  typedef logic [$bits(daq_drow_irt)-1:0] daq_drow_ivt;
+  typedef logic [$bits(daq_data_row_irt)-1:0] daq_data_row_ivt;
 
   typedef logic [$bits(daq_row_ort)-1:0] daq_row_ovt;
 
   typedef struct packed {
-    int  DATA_WIDTH;
-  } daq_pbldr_grt;
-
-  typedef struct packed {
     daq_sys_rt   sys;
     mngt_to_pbldr_rt   mngt;
-    row_to_pbldr_rt   row;
+    rows_to_pbldr_at   rows;
     felix_to_daq_rt   f2e;
   } daq_pbldr_irt;
 
   typedef struct packed {
-    pbldr_to_rows_rt   row;
+    pbldr_to_rows_at   rows;
     daq_to_felix_rt   f2e;
   } daq_pbldr_ort;
 
@@ -331,21 +254,19 @@
 
   typedef logic [$bits(daq_pbldr_ort)-1:0] daq_pbldr_ovt;
 
-  typedef struct packed {
-    int  STREAMS;
-    int  PIPELINES;
-  } daq_mngt_grt;
+  typedef row_to_mngt_rt  [DAQ_MAX_STREAMS+1-1:0] rows_to_mngt_rt;
 
   typedef struct packed {
     daq_sys_rt   sys;
     ttc_ort   ttc;
-    row_to_mngt_rt   row;
+    rows_to_mngt_rt   rows;
   } daq_mngt_irt;
 
   typedef struct packed {
     mngt_to_row_rt   row;
     mngt_to_pbldr_rt   pbldr;
-    logic [DAQ_PIPELINES-1:0] err;
+    logic [DAQ_MAX_PIPELINES-1:0] err;
+    logic [2-1:0] debug;
   } daq_mngt_ort;
 
   typedef struct packed {
@@ -356,13 +277,6 @@
   typedef logic [$bits(daq_mngt_irt)-1:0] daq_mngt_ivt;
 
   typedef logic [$bits(daq_mngt_ort)-1:0] daq_mngt_ovt;
-
-  typedef struct {
-    int  PIPELINES;
-    daq_branch_struct_t   BRANCH_STRUCT;
-    int  COUNTER_WIDTH;
-    int  OUTPUT_DATA_WIDTH;
-  } daq_algo_grt;
 
   typedef struct packed {
     daq_sys_rt   sys;
@@ -382,8 +296,6 @@
     daq_algo_ort   o;
   } daq_algo_ert;
 
-  typedef logic [$bits(daq_algo_grt)-1:0] daq_algo_gvt;
-
   typedef logic [$bits(daq_algo_irt)-1:0] daq_algo_ivt;
 
   typedef logic [$bits(daq_algo_ort)-1:0] daq_algo_ovt;
@@ -393,14 +305,6 @@
   typedef daq_to_felix_rt  [0:DAQ_MAX_BRANCHES-1] top_to_mfelix_at;
 
   typedef daq_to_status_rt  [DAQ_MAX_BRANCHES-1:0] top_to_status_at;
-
-  typedef struct {
-    int  PIPELINES;
-    daq_branches_mask_at   BRANCHES_MASK;
-    daq_branches_map_at   BRANCHES_STRUCT;
-    int  OUTPUT_DATA_WIDTH;
-    int  COUNTER_WIDTH;
-  } daq_branch_grt;
 
   typedef struct packed {
     daq_sys_rt   sys;
@@ -419,8 +323,6 @@
     daq_branch_irt   i;
     daq_branch_ort   o;
   } daq_branch_ert;
-
-  typedef logic [$bits(daq_branch_grt)-1:0] daq_branch_gvt;
 
   typedef logic [$bits(daq_branch_irt)-1:0] daq_branch_ivt;
 

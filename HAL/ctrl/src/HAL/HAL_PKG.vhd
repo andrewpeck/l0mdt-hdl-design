@@ -353,7 +353,7 @@ package HAL_CTRL is
   function nullify(t: HAL_CSM_CSM_MON_t) return HAL_CSM_CSM_MON_t;
   function zeroed(t: HAL_CSM_CSM_MON_t) return HAL_CSM_CSM_MON_t;
 
-  type HAL_CSM_CSM_MON_t_ARRAY is array(18-1 downto 0) of HAL_CSM_CSM_MON_t;
+  type HAL_CSM_CSM_MON_t_ARRAY is array(36-1 downto 0) of HAL_CSM_CSM_MON_t;
   function len(x: HAL_CSM_CSM_MON_t_ARRAY) return natural;
   function width(x: HAL_CSM_CSM_MON_t_ARRAY) return natural;
   function vectorify(x: HAL_CSM_CSM_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
@@ -376,7 +376,7 @@ package HAL_CTRL is
   function nullify(t: HAL_CSM_CSM_CTRL_t) return HAL_CSM_CSM_CTRL_t;
   function zeroed(t: HAL_CSM_CSM_CTRL_t) return HAL_CSM_CSM_CTRL_t;
 
-  type HAL_CSM_CSM_CTRL_t_ARRAY is array(18-1 downto 0) of HAL_CSM_CSM_CTRL_t;
+  type HAL_CSM_CSM_CTRL_t_ARRAY is array(36-1 downto 0) of HAL_CSM_CSM_CTRL_t;
   function len(x: HAL_CSM_CSM_CTRL_t_ARRAY) return natural;
   function width(x: HAL_CSM_CSM_CTRL_t_ARRAY) return natural;
   function vectorify(x: HAL_CSM_CSM_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;

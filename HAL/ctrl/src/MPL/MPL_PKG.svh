@@ -12,20 +12,30 @@
     logic  ENABLE;
     logic  DISABLE;
     logic  FREEZE;
-  } MPL_ACTIONS_CTRL_t;
+  } MPL_SUPER_ACTIONS_CTRL_t;
 
   typedef struct packed {
     logic [4-1:0] THREADS;
     logic  INPUT_EN;
     logic  OUTPUT_EN;
     logic  FLUSH_MEM_RESET;
-  } MPL_CONFIGS_CTRL_t;
+  } MPL_SUPER_CONFIGS_CTRL_t;
 
   typedef struct packed {
     logic  ENABLED;
     logic  READY;
+    logic  FREEZED;
     logic [8-1:0] ERROR;
-  } MPL_STATUS_MON_t;
+  } MPL_SUPER_STATUS_MON_t;
+
+  typedef struct packed {
+    MPL_SUPER_STATUS_MON_t   STATUS;
+  } MPL_SUPER_MON_t;
+
+  typedef struct packed {
+    MPL_SUPER_ACTIONS_CTRL_t   ACTIONS;
+    MPL_SUPER_CONFIGS_CTRL_t   CONFIGS;
+  } MPL_SUPER_CTRL_t;
 
   typedef struct packed {
     logic  rd_rdy;
@@ -83,13 +93,12 @@
   } MPL_PL_MEM_CTRL_t;
 
   typedef struct packed {
-    MPL_STATUS_MON_t   STATUS;
+    MPL_SUPER_MON_t   SUPER;
     MPL_PL_MEM_MON_t   PL_MEM;
   } MPL_MON_t;
 
   typedef struct packed {
-    MPL_ACTIONS_CTRL_t   ACTIONS;
-    MPL_CONFIGS_CTRL_t   CONFIGS;
+    MPL_SUPER_CTRL_t   SUPER;
     MPL_PL_MEM_CTRL_t   PL_MEM;
   } MPL_CTRL_t;
 

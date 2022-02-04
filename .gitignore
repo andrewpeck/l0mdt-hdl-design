@@ -52,3 +52,5 @@ __init__.py
 *.vstf
 .nfs*
 kernel/
+package.json
+*/package.json

@@ -9,24 +9,34 @@ config:
 
 hdl:
 
-- MPL_ACTIONS_CTRL_t:
+- MPL_SUPER_ACTIONS_CTRL_t:
   - RESET : [ type: logic ]
   - ENABLE : [ type: logic ]
   - DISABLE : [ type: logic ]
   - FREEZE : [ type: logic ]
 
 
-- MPL_CONFIGS_CTRL_t:
+- MPL_SUPER_CONFIGS_CTRL_t:
   - THREADS : [ type: logic, length: 4 ]
   - INPUT_EN : [ type: logic ]
   - OUTPUT_EN : [ type: logic ]
   - FLUSH_MEM_RESET : [ type: logic ]
 
 
-- MPL_STATUS_MON_t:
+- MPL_SUPER_STATUS_MON_t:
   - ENABLED : [ type: logic ]
   - READY : [ type: logic ]
+  - FREEZED : [ type: logic ]
   - ERROR : [ type: logic, length: 8 ]
+
+
+- MPL_SUPER_MON_t:
+  - STATUS : [ type: MPL_SUPER_STATUS_MON_t ]
+
+
+- MPL_SUPER_CTRL_t:
+  - ACTIONS : [ type: MPL_SUPER_ACTIONS_CTRL_t ]
+  - CONFIGS : [ type: MPL_SUPER_CONFIGS_CTRL_t ]
 
 
 - MPL_PL_MEM_PL_MEM_SIGNALS_MON_t:
@@ -83,13 +93,12 @@ hdl:
 
 
 - MPL_MON_t:
-  - STATUS : [ type: MPL_STATUS_MON_t ]
+  - SUPER : [ type: MPL_SUPER_MON_t ]
   - PL_MEM : [ type: MPL_PL_MEM_MON_t ]
 
 
 - MPL_CTRL_t:
-  - ACTIONS : [ type: MPL_ACTIONS_CTRL_t ]
-  - CONFIGS : [ type: MPL_CONFIGS_CTRL_t ]
+  - SUPER : [ type: MPL_SUPER_CTRL_t ]
   - PL_MEM : [ type: MPL_PL_MEM_CTRL_t ]
 
 

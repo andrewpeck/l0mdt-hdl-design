@@ -1,0 +1,24 @@
+* HAL Board Packages
+
+These "board packages" describe board specific information needed by the
+hardware abstraction layer.
+
+Specifically, it specifies:
+1. The number of MGTs connected
+2. The source of the recovered clock
+3. A mapping of the MGT links, including their:
+   1. Designation (Felix, Sector logic, CSM, etc)
+   2. REFCLK source
+   3. GT type (GTH vs. GTY)
+   4. X/Y location in the chip
+4. Information about the reference clocks
+   1. Which REFCLK is used for the C2C link
+   2. The "type" of each reference clock (LHC 320/240MHz MHz, AXI C2C, etc)
+
+** Customization of constants
+*** c_NUM_MGTS
+*** c_FELIX_RECCLK_SRC
+*** c_MGT_MAP
+*** c_NUM_REFCLKS
+*** C2C_REFCLK_SRC
+*** c_REFCLK_MAP

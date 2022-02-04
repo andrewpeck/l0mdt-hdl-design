@@ -21,6 +21,9 @@ architecture behavioral of clock_strobe is
 
   signal delay_line : std_logic_vector (RATIO-1 downto 0);
 
+  attribute SHREG_EXTRACT               : string;
+  attribute SHREG_EXTRACT of delay_line : signal is "NO";
+
 begin
 
   assert RATIO/=0 report "Clock strobe must have its ratio set, can't be zero"

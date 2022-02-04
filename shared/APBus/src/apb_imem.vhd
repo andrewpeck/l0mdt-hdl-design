@@ -121,8 +121,8 @@ architecture beh of apb_imem is
   signal mon_12A42D_r     : MEM_INT_12A42D_MON_t;
   signal ctrl_12A148D_r   : MEM_INT_12A148D_CTRL_t;
   signal mon_12A148D_r    : MEM_INT_12A148D_MON_t;  
-  signal ctrl_8A16D_r   : MEM_INT_8A16D_CTRL_t;
-  signal mon_8A16D_r    : MEM_INT_8A16D_MON_t;
+  signal ctrl_8A16D_r     : MEM_INT_8A16D_CTRL_t;
+  signal mon_8A16D_r      : MEM_INT_8A16D_MON_t;
 
   signal axi_rep_clk      : std_logic;
   signal axi_cnt_wait     : std_logic;
@@ -254,7 +254,7 @@ begin
           end if;
           -----------------------------------------------
           if g_PARALLEL_MEM > 0 then
-            o_mem_sel <= apb_ctrl_r.mem_sel;
+            o_mem_sel <= std_logic_vector(resize(unsigned(apb_ctrl_r.mem_sel),4));
           end if;
           -----------------------------------------------
           case int_wr_status is

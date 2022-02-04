@@ -61,6 +61,7 @@ python3 "$YML2HDL" -v -d "$DEST"          \
 	-a shared_lib.common_ieee         \
 	-a ttc_def.ttc_defs               \
 	-a daq_def.daq_config_defs        \
+	-a daq_def.daq_defs               \
         "daq_data_path_defs.yml"
 
 echo "trigger_defs.yml ------------------------------------"

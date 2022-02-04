@@ -235,10 +235,6 @@ begin
         g_MEMORY_TYPE           => "distributed",
         g_ADDR_WIDTH            => 8,
         g_DATA_WIDTH            => 16
-        -- g_CTRL_TYPE             => MEM_INT_12A148D_CTRL_t; 
-        -- g_MON_TYPE              => MEM_INT_12A148D_MON_t;   
-        -- g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
-        -- g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
       )
       port map (
         clk           => clk,
@@ -351,10 +347,6 @@ begin
         g_MEMORY_TYPE           => "distributed",
         g_ADDR_WIDTH            => 8,
         g_DATA_WIDTH            => 16
-        -- g_CTRL_TYPE             => MEM_INT_12A148D_CTRL_t; 
-        -- g_MON_TYPE              => MEM_INT_12A148D_MON_t;   
-        -- g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
-        -- g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
       )
       port map (
         clk           => clk,

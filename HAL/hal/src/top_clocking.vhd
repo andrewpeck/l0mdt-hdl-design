@@ -44,14 +44,16 @@ library xpm;
 use xpm.vcomponents.all;
 
 entity top_clocking is
-  generic (SYNC_40M : boolean := true);
+  generic (
+    CLK_FREQ : integer := 200
+    );
   port (
 
     reset_i : in std_logic;
 
-    -- 100MHz ASYNC clock to BUFG
-    clock_100m_i_p : in std_logic;
-    clock_100m_i_n : in std_logic;
+    -- ASYNC clock to BUFG
+    clock_async_i_p : in std_logic;
+    clock_async_i_n : in std_logic;
 
     -- 40MHz programmable ASYNC clock
     clock_i_p : in std_logic;
@@ -78,7 +80,7 @@ architecture behavioral of top_clocking is
   signal clk50, clk100, clk40, clk320, clkpipe : std_logic;
   signal mmcm_locked                           : std_logic;
 
-  signal clock_100m_ibufds : std_logic;
+  signal clock_async_ibufds : std_logic;
 
   component framework_mmcm
     port (
@@ -109,38 +111,43 @@ begin  -- architecture behavioral
   locked_o                <= mmcm_locked;
 
   --------------------------------------------------------------------------------
-  -- 100MHz + 50MHz free-running clocks
+  -- ASYNC + 50MHz free-running clocks
   --------------------------------------------------------------------------------
 
-  clock_100m_in_ibufds : IBUFDS
+  clock_async_in_ibufds : IBUFDS
     generic map(
       DIFF_TERM    => true,             --DifferentialTermination
       IBUF_LOW_PWR => false,            --Lowpower(TRUE)vs.performance(FALSE)
       IOSTANDARD   => "LVDS")
     port map(
-      O  => clock_100m_ibufds,
-      I  => clock_100m_i_p,
-      IB => clock_100m_i_n
+      O  => clock_async_ibufds,
+      I  => clock_async_i_p,
+      IB => clock_async_i_n
       );
 
   -- create a freerunnning clock for
   -- initialization of the mgts, AXI, etc.
   -- this could be put on a PLL / MMCM if the frequency needs to change
-  -- or just a BUFG_DIV if we want to go from 100M to 50M for example
+  -- or just a BUFG_DIV if we want to go from ASYNC to 50M for example
 
-  BUFG_freeclk_inst : BUFG
+  BUFG_clk100_inst : BUFGCE_DIV
+    generic map (
+      BUFGCE_DIVIDE => CLK_FREQ/100
+      )
     port map (
-      I => clock_100m_ibufds,
-      O => clk100
+      I   => clock_async_ibufds,
+      CLR => '0',
+      CE  => '1',
+      O   => clk100
       );
 
   -- 50MHz divided copy for AXI  (should increase this later)
   BUFG_clk50_inst : BUFGCE_DIV
     generic map (
-      BUFGCE_DIVIDE => 2
+      BUFGCE_DIVIDE => CLK_FREQ/50
       )
     port map (
-      I   => clock_100m_ibufds,
+      I   => clock_async_ibufds,
       CLR => '0',
       CE  => '1',
       O   => clk50

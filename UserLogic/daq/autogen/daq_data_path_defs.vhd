@@ -14,10 +14,11 @@ use ttc_def.ttc_defs.all;
 
 library daq_def;
 use daq_def.daq_config_defs.all;
+use daq_def.daq_defs.all;
 
 package daq_data_path_defs is
 
-  type daq_data_irt is record
+  type daq_data_path_irt is record
     sys : ttc_sys_rt;
     ttc : ttc_fmt_vt;
     ctrl : ctrl_to_daq_rt;
@@ -25,50 +26,51 @@ package daq_data_path_defs is
     stream_1 : daq_stream_rt;
     stream_2 : daq_stream_rt;
     stream_3 : daq_stream_rt;
-    stream_4 : daq_stream_rt;
-    stream_5 : daq_stream_rt;
-    stream_6 : daq_stream_rt;
-    stream_7 : daq_stream_rt;
-    stream_8 : daq_stream_rt;
     f2e0 : felix_to_daq_rt;
     f2e1 : felix_to_daq_rt;
-  end record daq_data_irt;
-  function len(x: daq_data_irt) return natural;
-  function width(x: daq_data_irt) return natural;
-  function vectorify(x: daq_data_irt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_data_irt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_data_irt) return daq_data_irt;
-  function convert(x: in std_logic_vector; t: daq_data_irt) return daq_data_irt;
-  function nullify(t: daq_data_irt) return daq_data_irt;
-  function zeroed(t: daq_data_irt) return daq_data_irt;
+    f2e2 : felix_to_daq_rt;
+    f2e3 : felix_to_daq_rt;
+  end record daq_data_path_irt;
+  function len(x: daq_data_path_irt) return natural;
+  function width(x: daq_data_path_irt) return natural;
+  function vectorify(x: daq_data_path_irt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_data_path_irt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_data_path_irt) return daq_data_path_irt;
+  function convert(x: in std_logic_vector; t: daq_data_path_irt) return daq_data_path_irt;
+  function nullify(t: daq_data_path_irt) return daq_data_path_irt;
+  function zeroed(t: daq_data_path_irt) return daq_data_path_irt;
 
-  type daq_data_ort is record
+  type daq_data_path_ort is record
     status0 : daq_to_status_rt;
-    status1 : daq_to_status_rt;
     f2e0 : daq_to_felix_rt;
+    status1 : daq_to_status_rt;
     f2e1 : daq_to_felix_rt;
-  end record daq_data_ort;
-  function len(x: daq_data_ort) return natural;
-  function width(x: daq_data_ort) return natural;
-  function vectorify(x: daq_data_ort; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_data_ort; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_data_ort) return daq_data_ort;
-  function convert(x: in std_logic_vector; t: daq_data_ort) return daq_data_ort;
-  function nullify(t: daq_data_ort) return daq_data_ort;
-  function zeroed(t: daq_data_ort) return daq_data_ort;
+    status2 : daq_to_status_rt;
+    f2e2 : daq_to_felix_rt;
+    status3 : daq_to_status_rt;
+    f2e3 : daq_to_felix_rt;
+  end record daq_data_path_ort;
+  function len(x: daq_data_path_ort) return natural;
+  function width(x: daq_data_path_ort) return natural;
+  function vectorify(x: daq_data_path_ort; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_data_path_ort; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_data_path_ort) return daq_data_path_ort;
+  function convert(x: in std_logic_vector; t: daq_data_path_ort) return daq_data_path_ort;
+  function nullify(t: daq_data_path_ort) return daq_data_path_ort;
+  function zeroed(t: daq_data_path_ort) return daq_data_path_ort;
 
-  type daq_data_ert is record
-    i : daq_data_irt;
-    o : daq_data_ort;
-  end record daq_data_ert;
-  function len(x: daq_data_ert) return natural;
-  function width(x: daq_data_ert) return natural;
-  function vectorify(x: daq_data_ert; t: std_logic_vector) return std_logic_vector;
-  function convert(x: daq_data_ert; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_data_ert) return daq_data_ert;
-  function convert(x: in std_logic_vector; t: daq_data_ert) return daq_data_ert;
-  function nullify(t: daq_data_ert) return daq_data_ert;
-  function zeroed(t: daq_data_ert) return daq_data_ert;
+  type daq_data_path_ert is record
+    i : daq_data_path_irt;
+    o : daq_data_path_ort;
+  end record daq_data_path_ert;
+  function len(x: daq_data_path_ert) return natural;
+  function width(x: daq_data_path_ert) return natural;
+  function vectorify(x: daq_data_path_ert; t: std_logic_vector) return std_logic_vector;
+  function convert(x: daq_data_path_ert; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_data_path_ert) return daq_data_path_ert;
+  function convert(x: in std_logic_vector; t: daq_data_path_ert) return daq_data_path_ert;
+  function nullify(t: daq_data_path_ert) return daq_data_path_ert;
+  function zeroed(t: daq_data_path_ert) return daq_data_path_ert;
 
 end package daq_data_path_defs;
 
@@ -76,7 +78,7 @@ end package daq_data_path_defs;
 
 package body daq_data_path_defs is
 
-  function len(x: daq_data_irt) return natural is
+  function len(x: daq_data_path_irt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.sys);
@@ -86,16 +88,13 @@ package body daq_data_path_defs is
     l := l + len(x.stream_1);
     l := l + len(x.stream_2);
     l := l + len(x.stream_3);
-    l := l + len(x.stream_4);
-    l := l + len(x.stream_5);
-    l := l + len(x.stream_6);
-    l := l + len(x.stream_7);
-    l := l + len(x.stream_8);
     l := l + len(x.f2e0);
     l := l + len(x.f2e1);
+    l := l + len(x.f2e2);
+    l := l + len(x.f2e3);
     return l;
   end function len;
-  function width(x: daq_data_irt) return natural is
+  function width(x: daq_data_path_irt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.sys);
@@ -105,16 +104,13 @@ package body daq_data_path_defs is
     l := l + width(x.stream_1);
     l := l + width(x.stream_2);
     l := l + width(x.stream_3);
-    l := l + width(x.stream_4);
-    l := l + width(x.stream_5);
-    l := l + width(x.stream_6);
-    l := l + width(x.stream_7);
-    l := l + width(x.stream_8);
     l := l + width(x.f2e0);
     l := l + width(x.f2e1);
+    l := l + width(x.f2e2);
+    l := l + width(x.f2e3);
     return l;
   end function width;
-  function vectorify(x: daq_data_irt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_data_path_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -133,19 +129,13 @@ package body daq_data_path_defs is
       left := left + len(x.stream_2);
       assign(y(left to left+len(x.stream_3)-1), vectorify(x.stream_3, y(left to left+len(x.stream_3)-1)));
       left := left + len(x.stream_3);
-      assign(y(left to left+len(x.stream_4)-1), vectorify(x.stream_4, y(left to left+len(x.stream_4)-1)));
-      left := left + len(x.stream_4);
-      assign(y(left to left+len(x.stream_5)-1), vectorify(x.stream_5, y(left to left+len(x.stream_5)-1)));
-      left := left + len(x.stream_5);
-      assign(y(left to left+len(x.stream_6)-1), vectorify(x.stream_6, y(left to left+len(x.stream_6)-1)));
-      left := left + len(x.stream_6);
-      assign(y(left to left+len(x.stream_7)-1), vectorify(x.stream_7, y(left to left+len(x.stream_7)-1)));
-      left := left + len(x.stream_7);
-      assign(y(left to left+len(x.stream_8)-1), vectorify(x.stream_8, y(left to left+len(x.stream_8)-1)));
-      left := left + len(x.stream_8);
       assign(y(left to left+len(x.f2e0)-1), vectorify(x.f2e0, y(left to left+len(x.f2e0)-1)));
       left := left + len(x.f2e0);
       assign(y(left to left+len(x.f2e1)-1), vectorify(x.f2e1, y(left to left+len(x.f2e1)-1)));
+      left := left + len(x.f2e1);
+      assign(y(left to left+len(x.f2e2)-1), vectorify(x.f2e2, y(left to left+len(x.f2e2)-1)));
+      left := left + len(x.f2e2);
+      assign(y(left to left+len(x.f2e3)-1), vectorify(x.f2e3, y(left to left+len(x.f2e3)-1)));
     else
       assign(y(left downto left-len(x.sys)+1), vectorify(x.sys, y(left downto left-len(x.sys)+1)));
       left := left - len(x.sys);
@@ -161,23 +151,17 @@ package body daq_data_path_defs is
       left := left - len(x.stream_2);
       assign(y(left downto left-len(x.stream_3)+1), vectorify(x.stream_3, y(left downto left-len(x.stream_3)+1)));
       left := left - len(x.stream_3);
-      assign(y(left downto left-len(x.stream_4)+1), vectorify(x.stream_4, y(left downto left-len(x.stream_4)+1)));
-      left := left - len(x.stream_4);
-      assign(y(left downto left-len(x.stream_5)+1), vectorify(x.stream_5, y(left downto left-len(x.stream_5)+1)));
-      left := left - len(x.stream_5);
-      assign(y(left downto left-len(x.stream_6)+1), vectorify(x.stream_6, y(left downto left-len(x.stream_6)+1)));
-      left := left - len(x.stream_6);
-      assign(y(left downto left-len(x.stream_7)+1), vectorify(x.stream_7, y(left downto left-len(x.stream_7)+1)));
-      left := left - len(x.stream_7);
-      assign(y(left downto left-len(x.stream_8)+1), vectorify(x.stream_8, y(left downto left-len(x.stream_8)+1)));
-      left := left - len(x.stream_8);
       assign(y(left downto left-len(x.f2e0)+1), vectorify(x.f2e0, y(left downto left-len(x.f2e0)+1)));
       left := left - len(x.f2e0);
       assign(y(left downto left-len(x.f2e1)+1), vectorify(x.f2e1, y(left downto left-len(x.f2e1)+1)));
+      left := left - len(x.f2e1);
+      assign(y(left downto left-len(x.f2e2)+1), vectorify(x.f2e2, y(left downto left-len(x.f2e2)+1)));
+      left := left - len(x.f2e2);
+      assign(y(left downto left-len(x.f2e3)+1), vectorify(x.f2e3, y(left downto left-len(x.f2e3)+1)));
     end if;
     return y;
   end function vectorify;
-  function convert(x: daq_data_irt; t: std_logic_vector) return std_logic_vector is
+  function convert(x: daq_data_path_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -196,19 +180,13 @@ package body daq_data_path_defs is
       left := left + len(x.stream_2);
       assign(y(left to left+len(x.stream_3)-1), convert(x.stream_3, y(left to left+len(x.stream_3)-1)));
       left := left + len(x.stream_3);
-      assign(y(left to left+len(x.stream_4)-1), convert(x.stream_4, y(left to left+len(x.stream_4)-1)));
-      left := left + len(x.stream_4);
-      assign(y(left to left+len(x.stream_5)-1), convert(x.stream_5, y(left to left+len(x.stream_5)-1)));
-      left := left + len(x.stream_5);
-      assign(y(left to left+len(x.stream_6)-1), convert(x.stream_6, y(left to left+len(x.stream_6)-1)));
-      left := left + len(x.stream_6);
-      assign(y(left to left+len(x.stream_7)-1), convert(x.stream_7, y(left to left+len(x.stream_7)-1)));
-      left := left + len(x.stream_7);
-      assign(y(left to left+len(x.stream_8)-1), convert(x.stream_8, y(left to left+len(x.stream_8)-1)));
-      left := left + len(x.stream_8);
       assign(y(left to left+len(x.f2e0)-1), convert(x.f2e0, y(left to left+len(x.f2e0)-1)));
       left := left + len(x.f2e0);
       assign(y(left to left+len(x.f2e1)-1), convert(x.f2e1, y(left to left+len(x.f2e1)-1)));
+      left := left + len(x.f2e1);
+      assign(y(left to left+len(x.f2e2)-1), convert(x.f2e2, y(left to left+len(x.f2e2)-1)));
+      left := left + len(x.f2e2);
+      assign(y(left to left+len(x.f2e3)-1), convert(x.f2e3, y(left to left+len(x.f2e3)-1)));
     else
       assign(y(left downto left-len(x.sys)+1), convert(x.sys, y(left downto left-len(x.sys)+1)));
       left := left - len(x.sys);
@@ -224,24 +202,18 @@ package body daq_data_path_defs is
       left := left - len(x.stream_2);
       assign(y(left downto left-len(x.stream_3)+1), convert(x.stream_3, y(left downto left-len(x.stream_3)+1)));
       left := left - len(x.stream_3);
-      assign(y(left downto left-len(x.stream_4)+1), convert(x.stream_4, y(left downto left-len(x.stream_4)+1)));
-      left := left - len(x.stream_4);
-      assign(y(left downto left-len(x.stream_5)+1), convert(x.stream_5, y(left downto left-len(x.stream_5)+1)));
-      left := left - len(x.stream_5);
-      assign(y(left downto left-len(x.stream_6)+1), convert(x.stream_6, y(left downto left-len(x.stream_6)+1)));
-      left := left - len(x.stream_6);
-      assign(y(left downto left-len(x.stream_7)+1), convert(x.stream_7, y(left downto left-len(x.stream_7)+1)));
-      left := left - len(x.stream_7);
-      assign(y(left downto left-len(x.stream_8)+1), convert(x.stream_8, y(left downto left-len(x.stream_8)+1)));
-      left := left - len(x.stream_8);
       assign(y(left downto left-len(x.f2e0)+1), convert(x.f2e0, y(left downto left-len(x.f2e0)+1)));
       left := left - len(x.f2e0);
       assign(y(left downto left-len(x.f2e1)+1), convert(x.f2e1, y(left downto left-len(x.f2e1)+1)));
+      left := left - len(x.f2e1);
+      assign(y(left downto left-len(x.f2e2)+1), convert(x.f2e2, y(left downto left-len(x.f2e2)+1)));
+      left := left - len(x.f2e2);
+      assign(y(left downto left-len(x.f2e3)+1), convert(x.f2e3, y(left downto left-len(x.f2e3)+1)));
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: daq_data_irt) return daq_data_irt is
-    variable y: daq_data_irt;
+  function structify(x: in std_logic_vector; t: daq_data_path_irt) return daq_data_path_irt is
+    variable y: daq_data_path_irt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -259,19 +231,13 @@ package body daq_data_path_defs is
       left := left + len(y.stream_2);
       y.stream_3 := structify(x(left to left+len(y.stream_3)-1), y.stream_3);
       left := left + len(y.stream_3);
-      y.stream_4 := structify(x(left to left+len(y.stream_4)-1), y.stream_4);
-      left := left + len(y.stream_4);
-      y.stream_5 := structify(x(left to left+len(y.stream_5)-1), y.stream_5);
-      left := left + len(y.stream_5);
-      y.stream_6 := structify(x(left to left+len(y.stream_6)-1), y.stream_6);
-      left := left + len(y.stream_6);
-      y.stream_7 := structify(x(left to left+len(y.stream_7)-1), y.stream_7);
-      left := left + len(y.stream_7);
-      y.stream_8 := structify(x(left to left+len(y.stream_8)-1), y.stream_8);
-      left := left + len(y.stream_8);
       y.f2e0 := structify(x(left to left+len(y.f2e0)-1), y.f2e0);
       left := left + len(y.f2e0);
       y.f2e1 := structify(x(left to left+len(y.f2e1)-1), y.f2e1);
+      left := left + len(y.f2e1);
+      y.f2e2 := structify(x(left to left+len(y.f2e2)-1), y.f2e2);
+      left := left + len(y.f2e2);
+      y.f2e3 := structify(x(left to left+len(y.f2e3)-1), y.f2e3);
     else
       y.sys := structify(x(left downto left-len(y.sys)+1), y.sys);
       left := left - len(y.sys);
@@ -287,24 +253,18 @@ package body daq_data_path_defs is
       left := left - len(y.stream_2);
       y.stream_3 := structify(x(left downto left-len(y.stream_3)+1), y.stream_3);
       left := left - len(y.stream_3);
-      y.stream_4 := structify(x(left downto left-len(y.stream_4)+1), y.stream_4);
-      left := left - len(y.stream_4);
-      y.stream_5 := structify(x(left downto left-len(y.stream_5)+1), y.stream_5);
-      left := left - len(y.stream_5);
-      y.stream_6 := structify(x(left downto left-len(y.stream_6)+1), y.stream_6);
-      left := left - len(y.stream_6);
-      y.stream_7 := structify(x(left downto left-len(y.stream_7)+1), y.stream_7);
-      left := left - len(y.stream_7);
-      y.stream_8 := structify(x(left downto left-len(y.stream_8)+1), y.stream_8);
-      left := left - len(y.stream_8);
       y.f2e0 := structify(x(left downto left-len(y.f2e0)+1), y.f2e0);
       left := left - len(y.f2e0);
       y.f2e1 := structify(x(left downto left-len(y.f2e1)+1), y.f2e1);
+      left := left - len(y.f2e1);
+      y.f2e2 := structify(x(left downto left-len(y.f2e2)+1), y.f2e2);
+      left := left - len(y.f2e2);
+      y.f2e3 := structify(x(left downto left-len(y.f2e3)+1), y.f2e3);
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: daq_data_irt) return daq_data_irt is
-    variable y: daq_data_irt;
+  function convert(x: in std_logic_vector; t: daq_data_path_irt) return daq_data_path_irt is
+    variable y: daq_data_path_irt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -322,19 +282,13 @@ package body daq_data_path_defs is
       left := left + len(y.stream_2);
       y.stream_3 := convert(x(left to left+len(y.stream_3)-1), y.stream_3);
       left := left + len(y.stream_3);
-      y.stream_4 := convert(x(left to left+len(y.stream_4)-1), y.stream_4);
-      left := left + len(y.stream_4);
-      y.stream_5 := convert(x(left to left+len(y.stream_5)-1), y.stream_5);
-      left := left + len(y.stream_5);
-      y.stream_6 := convert(x(left to left+len(y.stream_6)-1), y.stream_6);
-      left := left + len(y.stream_6);
-      y.stream_7 := convert(x(left to left+len(y.stream_7)-1), y.stream_7);
-      left := left + len(y.stream_7);
-      y.stream_8 := convert(x(left to left+len(y.stream_8)-1), y.stream_8);
-      left := left + len(y.stream_8);
       y.f2e0 := convert(x(left to left+len(y.f2e0)-1), y.f2e0);
       left := left + len(y.f2e0);
       y.f2e1 := convert(x(left to left+len(y.f2e1)-1), y.f2e1);
+      left := left + len(y.f2e1);
+      y.f2e2 := convert(x(left to left+len(y.f2e2)-1), y.f2e2);
+      left := left + len(y.f2e2);
+      y.f2e3 := convert(x(left to left+len(y.f2e3)-1), y.f2e3);
     else
       y.sys := convert(x(left downto left-len(y.sys)+1), y.sys);
       left := left - len(y.sys);
@@ -350,24 +304,18 @@ package body daq_data_path_defs is
       left := left - len(y.stream_2);
       y.stream_3 := convert(x(left downto left-len(y.stream_3)+1), y.stream_3);
       left := left - len(y.stream_3);
-      y.stream_4 := convert(x(left downto left-len(y.stream_4)+1), y.stream_4);
-      left := left - len(y.stream_4);
-      y.stream_5 := convert(x(left downto left-len(y.stream_5)+1), y.stream_5);
-      left := left - len(y.stream_5);
-      y.stream_6 := convert(x(left downto left-len(y.stream_6)+1), y.stream_6);
-      left := left - len(y.stream_6);
-      y.stream_7 := convert(x(left downto left-len(y.stream_7)+1), y.stream_7);
-      left := left - len(y.stream_7);
-      y.stream_8 := convert(x(left downto left-len(y.stream_8)+1), y.stream_8);
-      left := left - len(y.stream_8);
       y.f2e0 := convert(x(left downto left-len(y.f2e0)+1), y.f2e0);
       left := left - len(y.f2e0);
       y.f2e1 := convert(x(left downto left-len(y.f2e1)+1), y.f2e1);
+      left := left - len(y.f2e1);
+      y.f2e2 := convert(x(left downto left-len(y.f2e2)+1), y.f2e2);
+      left := left - len(y.f2e2);
+      y.f2e3 := convert(x(left downto left-len(y.f2e3)+1), y.f2e3);
     end if;
     return y;
   end function convert;
-  function nullify(t: daq_data_irt) return daq_data_irt is
-  variable y: daq_data_irt;
+  function nullify(t: daq_data_path_irt) return daq_data_path_irt is
+  variable y: daq_data_path_irt;
   begin
     y.sys := nullify(t.sys);
     y.ttc := nullify(t.ttc);
@@ -376,17 +324,14 @@ package body daq_data_path_defs is
     y.stream_1 := nullify(t.stream_1);
     y.stream_2 := nullify(t.stream_2);
     y.stream_3 := nullify(t.stream_3);
-    y.stream_4 := nullify(t.stream_4);
-    y.stream_5 := nullify(t.stream_5);
-    y.stream_6 := nullify(t.stream_6);
-    y.stream_7 := nullify(t.stream_7);
-    y.stream_8 := nullify(t.stream_8);
     y.f2e0 := nullify(t.f2e0);
     y.f2e1 := nullify(t.f2e1);
+    y.f2e2 := nullify(t.f2e2);
+    y.f2e3 := nullify(t.f2e3);
     return y;
   end function nullify;
-  function zeroed(t: daq_data_irt) return daq_data_irt is
-  variable y: daq_data_irt;
+  function zeroed(t: daq_data_path_irt) return daq_data_path_irt is
+  variable y: daq_data_path_irt;
   begin
     y.sys := zeroed(t.sys);
     y.ttc := zeroed(t.ttc);
@@ -395,160 +340,237 @@ package body daq_data_path_defs is
     y.stream_1 := zeroed(t.stream_1);
     y.stream_2 := zeroed(t.stream_2);
     y.stream_3 := zeroed(t.stream_3);
-    y.stream_4 := zeroed(t.stream_4);
-    y.stream_5 := zeroed(t.stream_5);
-    y.stream_6 := zeroed(t.stream_6);
-    y.stream_7 := zeroed(t.stream_7);
-    y.stream_8 := zeroed(t.stream_8);
     y.f2e0 := zeroed(t.f2e0);
     y.f2e1 := zeroed(t.f2e1);
+    y.f2e2 := zeroed(t.f2e2);
+    y.f2e3 := zeroed(t.f2e3);
     return y;
   end function zeroed;
 
-  function len(x: daq_data_ort) return natural is
+  function len(x: daq_data_path_ort) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.status0);
-    l := l + len(x.status1);
     l := l + len(x.f2e0);
+    l := l + len(x.status1);
     l := l + len(x.f2e1);
+    l := l + len(x.status2);
+    l := l + len(x.f2e2);
+    l := l + len(x.status3);
+    l := l + len(x.f2e3);
     return l;
   end function len;
-  function width(x: daq_data_ort) return natural is
+  function width(x: daq_data_path_ort) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.status0);
-    l := l + width(x.status1);
     l := l + width(x.f2e0);
+    l := l + width(x.status1);
     l := l + width(x.f2e1);
+    l := l + width(x.status2);
+    l := l + width(x.f2e2);
+    l := l + width(x.status3);
+    l := l + width(x.f2e3);
     return l;
   end function width;
-  function vectorify(x: daq_data_ort; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_data_path_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
       assign(y(left to left+len(x.status0)-1), vectorify(x.status0, y(left to left+len(x.status0)-1)));
       left := left + len(x.status0);
-      assign(y(left to left+len(x.status1)-1), vectorify(x.status1, y(left to left+len(x.status1)-1)));
-      left := left + len(x.status1);
       assign(y(left to left+len(x.f2e0)-1), vectorify(x.f2e0, y(left to left+len(x.f2e0)-1)));
       left := left + len(x.f2e0);
+      assign(y(left to left+len(x.status1)-1), vectorify(x.status1, y(left to left+len(x.status1)-1)));
+      left := left + len(x.status1);
       assign(y(left to left+len(x.f2e1)-1), vectorify(x.f2e1, y(left to left+len(x.f2e1)-1)));
+      left := left + len(x.f2e1);
+      assign(y(left to left+len(x.status2)-1), vectorify(x.status2, y(left to left+len(x.status2)-1)));
+      left := left + len(x.status2);
+      assign(y(left to left+len(x.f2e2)-1), vectorify(x.f2e2, y(left to left+len(x.f2e2)-1)));
+      left := left + len(x.f2e2);
+      assign(y(left to left+len(x.status3)-1), vectorify(x.status3, y(left to left+len(x.status3)-1)));
+      left := left + len(x.status3);
+      assign(y(left to left+len(x.f2e3)-1), vectorify(x.f2e3, y(left to left+len(x.f2e3)-1)));
     else
       assign(y(left downto left-len(x.status0)+1), vectorify(x.status0, y(left downto left-len(x.status0)+1)));
       left := left - len(x.status0);
-      assign(y(left downto left-len(x.status1)+1), vectorify(x.status1, y(left downto left-len(x.status1)+1)));
-      left := left - len(x.status1);
       assign(y(left downto left-len(x.f2e0)+1), vectorify(x.f2e0, y(left downto left-len(x.f2e0)+1)));
       left := left - len(x.f2e0);
+      assign(y(left downto left-len(x.status1)+1), vectorify(x.status1, y(left downto left-len(x.status1)+1)));
+      left := left - len(x.status1);
       assign(y(left downto left-len(x.f2e1)+1), vectorify(x.f2e1, y(left downto left-len(x.f2e1)+1)));
+      left := left - len(x.f2e1);
+      assign(y(left downto left-len(x.status2)+1), vectorify(x.status2, y(left downto left-len(x.status2)+1)));
+      left := left - len(x.status2);
+      assign(y(left downto left-len(x.f2e2)+1), vectorify(x.f2e2, y(left downto left-len(x.f2e2)+1)));
+      left := left - len(x.f2e2);
+      assign(y(left downto left-len(x.status3)+1), vectorify(x.status3, y(left downto left-len(x.status3)+1)));
+      left := left - len(x.status3);
+      assign(y(left downto left-len(x.f2e3)+1), vectorify(x.f2e3, y(left downto left-len(x.f2e3)+1)));
     end if;
     return y;
   end function vectorify;
-  function convert(x: daq_data_ort; t: std_logic_vector) return std_logic_vector is
+  function convert(x: daq_data_path_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
       assign(y(left to left+len(x.status0)-1), convert(x.status0, y(left to left+len(x.status0)-1)));
       left := left + len(x.status0);
-      assign(y(left to left+len(x.status1)-1), convert(x.status1, y(left to left+len(x.status1)-1)));
-      left := left + len(x.status1);
       assign(y(left to left+len(x.f2e0)-1), convert(x.f2e0, y(left to left+len(x.f2e0)-1)));
       left := left + len(x.f2e0);
+      assign(y(left to left+len(x.status1)-1), convert(x.status1, y(left to left+len(x.status1)-1)));
+      left := left + len(x.status1);
       assign(y(left to left+len(x.f2e1)-1), convert(x.f2e1, y(left to left+len(x.f2e1)-1)));
+      left := left + len(x.f2e1);
+      assign(y(left to left+len(x.status2)-1), convert(x.status2, y(left to left+len(x.status2)-1)));
+      left := left + len(x.status2);
+      assign(y(left to left+len(x.f2e2)-1), convert(x.f2e2, y(left to left+len(x.f2e2)-1)));
+      left := left + len(x.f2e2);
+      assign(y(left to left+len(x.status3)-1), convert(x.status3, y(left to left+len(x.status3)-1)));
+      left := left + len(x.status3);
+      assign(y(left to left+len(x.f2e3)-1), convert(x.f2e3, y(left to left+len(x.f2e3)-1)));
     else
       assign(y(left downto left-len(x.status0)+1), convert(x.status0, y(left downto left-len(x.status0)+1)));
       left := left - len(x.status0);
-      assign(y(left downto left-len(x.status1)+1), convert(x.status1, y(left downto left-len(x.status1)+1)));
-      left := left - len(x.status1);
       assign(y(left downto left-len(x.f2e0)+1), convert(x.f2e0, y(left downto left-len(x.f2e0)+1)));
       left := left - len(x.f2e0);
+      assign(y(left downto left-len(x.status1)+1), convert(x.status1, y(left downto left-len(x.status1)+1)));
+      left := left - len(x.status1);
       assign(y(left downto left-len(x.f2e1)+1), convert(x.f2e1, y(left downto left-len(x.f2e1)+1)));
+      left := left - len(x.f2e1);
+      assign(y(left downto left-len(x.status2)+1), convert(x.status2, y(left downto left-len(x.status2)+1)));
+      left := left - len(x.status2);
+      assign(y(left downto left-len(x.f2e2)+1), convert(x.f2e2, y(left downto left-len(x.f2e2)+1)));
+      left := left - len(x.f2e2);
+      assign(y(left downto left-len(x.status3)+1), convert(x.status3, y(left downto left-len(x.status3)+1)));
+      left := left - len(x.status3);
+      assign(y(left downto left-len(x.f2e3)+1), convert(x.f2e3, y(left downto left-len(x.f2e3)+1)));
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: daq_data_ort) return daq_data_ort is
-    variable y: daq_data_ort;
+  function structify(x: in std_logic_vector; t: daq_data_path_ort) return daq_data_path_ort is
+    variable y: daq_data_path_ort;
     variable left : natural := x'left;
   begin
     if x'ascending then
       y.status0 := structify(x(left to left+len(y.status0)-1), y.status0);
       left := left + len(y.status0);
-      y.status1 := structify(x(left to left+len(y.status1)-1), y.status1);
-      left := left + len(y.status1);
       y.f2e0 := structify(x(left to left+len(y.f2e0)-1), y.f2e0);
       left := left + len(y.f2e0);
+      y.status1 := structify(x(left to left+len(y.status1)-1), y.status1);
+      left := left + len(y.status1);
       y.f2e1 := structify(x(left to left+len(y.f2e1)-1), y.f2e1);
+      left := left + len(y.f2e1);
+      y.status2 := structify(x(left to left+len(y.status2)-1), y.status2);
+      left := left + len(y.status2);
+      y.f2e2 := structify(x(left to left+len(y.f2e2)-1), y.f2e2);
+      left := left + len(y.f2e2);
+      y.status3 := structify(x(left to left+len(y.status3)-1), y.status3);
+      left := left + len(y.status3);
+      y.f2e3 := structify(x(left to left+len(y.f2e3)-1), y.f2e3);
     else
       y.status0 := structify(x(left downto left-len(y.status0)+1), y.status0);
       left := left - len(y.status0);
-      y.status1 := structify(x(left downto left-len(y.status1)+1), y.status1);
-      left := left - len(y.status1);
       y.f2e0 := structify(x(left downto left-len(y.f2e0)+1), y.f2e0);
       left := left - len(y.f2e0);
+      y.status1 := structify(x(left downto left-len(y.status1)+1), y.status1);
+      left := left - len(y.status1);
       y.f2e1 := structify(x(left downto left-len(y.f2e1)+1), y.f2e1);
+      left := left - len(y.f2e1);
+      y.status2 := structify(x(left downto left-len(y.status2)+1), y.status2);
+      left := left - len(y.status2);
+      y.f2e2 := structify(x(left downto left-len(y.f2e2)+1), y.f2e2);
+      left := left - len(y.f2e2);
+      y.status3 := structify(x(left downto left-len(y.status3)+1), y.status3);
+      left := left - len(y.status3);
+      y.f2e3 := structify(x(left downto left-len(y.f2e3)+1), y.f2e3);
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: daq_data_ort) return daq_data_ort is
-    variable y: daq_data_ort;
+  function convert(x: in std_logic_vector; t: daq_data_path_ort) return daq_data_path_ort is
+    variable y: daq_data_path_ort;
     variable left : natural := x'left;
   begin
     if x'ascending then
       y.status0 := convert(x(left to left+len(y.status0)-1), y.status0);
       left := left + len(y.status0);
-      y.status1 := convert(x(left to left+len(y.status1)-1), y.status1);
-      left := left + len(y.status1);
       y.f2e0 := convert(x(left to left+len(y.f2e0)-1), y.f2e0);
       left := left + len(y.f2e0);
+      y.status1 := convert(x(left to left+len(y.status1)-1), y.status1);
+      left := left + len(y.status1);
       y.f2e1 := convert(x(left to left+len(y.f2e1)-1), y.f2e1);
+      left := left + len(y.f2e1);
+      y.status2 := convert(x(left to left+len(y.status2)-1), y.status2);
+      left := left + len(y.status2);
+      y.f2e2 := convert(x(left to left+len(y.f2e2)-1), y.f2e2);
+      left := left + len(y.f2e2);
+      y.status3 := convert(x(left to left+len(y.status3)-1), y.status3);
+      left := left + len(y.status3);
+      y.f2e3 := convert(x(left to left+len(y.f2e3)-1), y.f2e3);
     else
       y.status0 := convert(x(left downto left-len(y.status0)+1), y.status0);
       left := left - len(y.status0);
-      y.status1 := convert(x(left downto left-len(y.status1)+1), y.status1);
-      left := left - len(y.status1);
       y.f2e0 := convert(x(left downto left-len(y.f2e0)+1), y.f2e0);
       left := left - len(y.f2e0);
+      y.status1 := convert(x(left downto left-len(y.status1)+1), y.status1);
+      left := left - len(y.status1);
       y.f2e1 := convert(x(left downto left-len(y.f2e1)+1), y.f2e1);
+      left := left - len(y.f2e1);
+      y.status2 := convert(x(left downto left-len(y.status2)+1), y.status2);
+      left := left - len(y.status2);
+      y.f2e2 := convert(x(left downto left-len(y.f2e2)+1), y.f2e2);
+      left := left - len(y.f2e2);
+      y.status3 := convert(x(left downto left-len(y.status3)+1), y.status3);
+      left := left - len(y.status3);
+      y.f2e3 := convert(x(left downto left-len(y.f2e3)+1), y.f2e3);
     end if;
     return y;
   end function convert;
-  function nullify(t: daq_data_ort) return daq_data_ort is
-  variable y: daq_data_ort;
+  function nullify(t: daq_data_path_ort) return daq_data_path_ort is
+  variable y: daq_data_path_ort;
   begin
     y.status0 := nullify(t.status0);
-    y.status1 := nullify(t.status1);
     y.f2e0 := nullify(t.f2e0);
+    y.status1 := nullify(t.status1);
     y.f2e1 := nullify(t.f2e1);
+    y.status2 := nullify(t.status2);
+    y.f2e2 := nullify(t.f2e2);
+    y.status3 := nullify(t.status3);
+    y.f2e3 := nullify(t.f2e3);
     return y;
   end function nullify;
-  function zeroed(t: daq_data_ort) return daq_data_ort is
-  variable y: daq_data_ort;
+  function zeroed(t: daq_data_path_ort) return daq_data_path_ort is
+  variable y: daq_data_path_ort;
   begin
     y.status0 := zeroed(t.status0);
-    y.status1 := zeroed(t.status1);
     y.f2e0 := zeroed(t.f2e0);
+    y.status1 := zeroed(t.status1);
     y.f2e1 := zeroed(t.f2e1);
+    y.status2 := zeroed(t.status2);
+    y.f2e2 := zeroed(t.f2e2);
+    y.status3 := zeroed(t.status3);
+    y.f2e3 := zeroed(t.f2e3);
     return y;
   end function zeroed;
 
-  function len(x: daq_data_ert) return natural is
+  function len(x: daq_data_path_ert) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.i);
     l := l + len(x.o);
     return l;
   end function len;
-  function width(x: daq_data_ert) return natural is
+  function width(x: daq_data_path_ert) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.i);
     l := l + width(x.o);
     return l;
   end function width;
-  function vectorify(x: daq_data_ert; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_data_path_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -563,7 +585,7 @@ package body daq_data_path_defs is
     end if;
     return y;
   end function vectorify;
-  function convert(x: daq_data_ert; t: std_logic_vector) return std_logic_vector is
+  function convert(x: daq_data_path_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -578,8 +600,8 @@ package body daq_data_path_defs is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: daq_data_ert) return daq_data_ert is
-    variable y: daq_data_ert;
+  function structify(x: in std_logic_vector; t: daq_data_path_ert) return daq_data_path_ert is
+    variable y: daq_data_path_ert;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -593,8 +615,8 @@ package body daq_data_path_defs is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: daq_data_ert) return daq_data_ert is
-    variable y: daq_data_ert;
+  function convert(x: in std_logic_vector; t: daq_data_path_ert) return daq_data_path_ert is
+    variable y: daq_data_path_ert;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -608,15 +630,15 @@ package body daq_data_path_defs is
     end if;
     return y;
   end function convert;
-  function nullify(t: daq_data_ert) return daq_data_ert is
-  variable y: daq_data_ert;
+  function nullify(t: daq_data_path_ert) return daq_data_path_ert is
+  variable y: daq_data_path_ert;
   begin
     y.i := nullify(t.i);
     y.o := nullify(t.o);
     return y;
   end function nullify;
-  function zeroed(t: daq_data_ert) return daq_data_ert is
-  variable y: daq_data_ert;
+  function zeroed(t: daq_data_path_ert) return daq_data_path_ert is
+  variable y: daq_data_path_ert;
   begin
     y.i := zeroed(t.i);
     y.o := zeroed(t.o);

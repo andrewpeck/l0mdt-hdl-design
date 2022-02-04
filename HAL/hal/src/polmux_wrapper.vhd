@@ -50,6 +50,7 @@ architecture behavioral of polmux_wrapper is
   signal polmux_o  : tdcpolmux2tar_rt;
   signal read_done : std_logic_vector (g_WIDTH-1 downto 0);
   signal valid     : std_logic := '0';
+  signal tdc_hits  : tdcpolmux2tar_rvt;
 begin
 
   -- polmux_inst
@@ -75,7 +76,15 @@ begin
   -- only
 
   sync_gen : if (not ASYNC_FIFO) generate
-    tdc_hits_o <= vectorify(polmux_o);
+
+    process (pipeline_clock) is
+    begin
+      if (rising_edge(pipeline_clock)) then
+        tdc_hits   <= vectorify(polmux_o);
+        tdc_hits_o <= tdc_hits;
+      end if;
+    end process;
+
   end generate;
 
   async_gen : if (ASYNC_FIFO) generate
@@ -109,8 +118,9 @@ begin
     process (pipeline_clock) is
     begin
       if (rising_edge(pipeline_clock)) then
-        tdc_hits_o <= fifo_dout when
-                      valid='1' else (others => '0');
+        tdc_hits <= fifo_dout when
+                    valid = '1' else (others => '0');
+        tdc_hits_o <= tdc_hits;
       end if;
     end process;
   end generate;
