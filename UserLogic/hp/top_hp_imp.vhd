@@ -31,6 +31,7 @@ use hegtypes_lib.hp_pkg.all;
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
 
+library hp_lib;
 
 entity top_hp is
   generic(
