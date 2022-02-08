@@ -1,3 +1,39 @@
+
+# Location of HDL source files
+SRCDIR = $(PWD)/../../../../../../../
+SBDIR = $(SRCDIR)/shared/SpyBuffer/src
+IPDIR = $(SRCDIR)/IP
+USERLOGIC = $(SRCDIR)/UserLogic
+HLS       = $(SRCDIR)/l0mdt-hls
+
+
+
+# Specify TopLevel language for cocotb
+TOPLEVEL_LANG=verilog
+DFDIR     = $(SRCDIR)/dataformats
+MTCDIR    = $(USERLOGIC)/mtc/src
+LSFDIR    = $(USERLOGIC)/lsf/src
+CSFDIR    = $(USERLOGIC)/csf/src
+MPTDIR    = $(USERLOGIC)/ptc_mpi/src
+HPSDIR    = $(USERLOGIC)/hps/src
+HPDIR     = $(USERLOGIC)/hp/src
+HEGDIR    = $(USERLOGIC)/heg/src
+MPLDIR    = $(USERLOGIC)/mpl/src
+SLDIR     = $(USERLOGIC)/sl/src
+TARDIR    = $(USERLOGIC)/tar/src
+TDCDIR    = $(USERLOGIC)/tdc/src
+UCMDIR    = $(USERLOGIC)/ucm/src
+UCMHPSDIR = $(USERLOGIC)/ucm_hps/src
+ULTDIR    = $(USERLOGIC)/ult/src
+UPTDIR    = $(USERLOGIC)/upt/src
+SHAREDDIR = $(SRCDIR)/shared
+HAL       = $(SRCDIR)/HAL
+IP_REPO   = $(SRCDIR)/IP_repository/vu13p
+IP_REPO   = $(HLS)/IPs/vu13p
+FMDIR     = $(USERLOGIC)/fm/src
+LSFSIMDIR = $(USERLOGIC)/lsf/sim
+
+
 LOAD_LUTS_HLS_IP  = $(IP_REPO)/hls_load_luts/hdl/verilog
 GET_ROM_ADDR_HLS_IP = $(IP_REPO)/hls_get_rom_addr/hdl/verilog
 GET_TRIG_VALS_HLS_IP = $(IP_REPO)/hls_get_trig_vals/hdl/verilog
@@ -34,8 +70,8 @@ VERILOG_SOURCES += \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
     $(SBDIR)/asym_ram_tdp_read_first.v \
-    $(SHAREDDIR)/memories/src/rom.v
-
+    $(SHAREDDIR)/memories/src/rom.v 
+ 
 VHDL_SOURCES_project_lib = \
     $(PWD)/prj_cfg.vhd
 
@@ -75,8 +111,9 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/arithmetics/src/roi_atan.vhd \
 	$(SHAREDDIR)/arithmetics/pkg/roi_tan_pkg.vhd \
 	$(SHAREDDIR)/arithmetics/src/roi_tan.vhd \
-
-
+	$(SHAREDDIR)/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd \
+	$(SHAREDDIR)/vhdl_utilities/src/vhdl_utils_deserializer.vhd \
+	$(SHAREDDIR)/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
 
 
 VHDL_SOURCES_shared_cfg_def_lib = \
@@ -104,6 +141,7 @@ VHDL_SOURCES_vamc_lib = \
 
 VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/axi/types.vhd \
+	$(HAL)/ctrl/src/axi-vhdl-package/bramPortPkg.vhd \
 	$(HAL)/ctrl/src/MEM_INT_8A16D/MEM_INT_8A16D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_10A9D/MEM_INT_10A9D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_12A42D/MEM_INT_12A42D_PKG.vhd \
@@ -121,6 +159,12 @@ VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/UCM/UCM_PKG.vhd \
 	$(HAL)/ctrl/src/UCM/UCM_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/UCM/UCM_map.vhd \
+	$(HAL)/ctrl/src/HEG/HEG_PKG.vhd \
+	$(HAL)/ctrl/src/HEG/HEG_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/HEG/HEG_map.vhd \
+	$(HAL)/ctrl/src/FM/FM_PKG.vhd \
+	$(HAL)/ctrl/src/FM/FM_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/FM/FM_map.vhd \
 	$(HAL)/ctrl/src/HPS/HPS_PKG.vhd \
 	$(HAL)/ctrl/src/HPS/HPS_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/HPS/HPS_map.vhd \
@@ -135,54 +179,52 @@ VHDL_SOURCES_ctrl_lib = \
 VHDL_SOURCES_xpm = \
 	$(XILINX_HOME)/data/ip/xpm/xpm_VCOMP.vhd
 
+VHDL_SOURCES_hegtypes_lib = \
+   $(HPDIR)/../pkg/hp_pkg.vhd \
+   $(HEGDIR)/../pkg/heg_pkg.vhd 
 
-#VHDL_SOURCES_heg_roi_lib = \
-#   $(HEGDIR)/../pkg/heg_pkg.vhd \
-#   $(HEGDIR)/ROMs/roi_types_pkg.vhd \
-#   $(HEGDIR)/ROMs/roi_lut_BILA3.vhd \
-#   $(HEGDIR)/ROMs/roi_lut_BMLA3.vhd \
-#   $(HEGDIR)/ROMs/roi_lut_BOLA3.vhd \
-#   $(HEGDIR)/ROMs/roi_lut_BILA3_angle.vhd \
-#   $(HEGDIR)/ROMs/roi_lut_BMLA3_angle.vhd \
-#   $(HEGDIR)/ROMs/roi_lut_BOLA3_angle.vhd \
-#   $(HEGDIR)/ROMs/roi_lut_functions.vhd
+VHDL_SOURCES_heg_roi_lib = \
+   $(HEGDIR)/ROMs/roi_types_pkg.vhd \
+   $(HEGDIR)/ROMs/roi_lut_BILA3.vhd \
+   $(HEGDIR)/ROMs/roi_lut_BMLA3.vhd \
+   $(HEGDIR)/ROMs/roi_lut_BOLA3.vhd \
+   $(HEGDIR)/ROMs/roi_lut_BILA3_angle.vhd \
+   $(HEGDIR)/ROMs/roi_lut_BMLA3_angle.vhd \
+   $(HEGDIR)/ROMs/roi_lut_BOLA3_angle.vhd \
+   $(HEGDIR)/ROMs/roi_lut_functions.vhd
 
 
-#VHDL_SOURCES_heg_lib = \
-#   $(HPDIR)/../pkg/hp_pkg.vhd \
-#   $(HEGDIR)/ROMs/heg_rom_b_zholes_pkg.vhd \
-#   $(HEGDIR)/../pkg/heg_pkg.vhd \
-#   $(HEGDIR)/../pkg/heg_custom_pkg.vhd \
-#   $(HEGDIR)/heg_bm.vhd \
-#   $(HEGDIR)/heg_ctrl_sig.vhd \
-#   $(HEGDIR)/heg_ctrl_roi_b_z.vhd \
-#   $(HEGDIR)/heg_ctrl_roi_b_slope_6l.vhd \
-#   $(HEGDIR)/heg_ctrl_roi_b_slope_8l.vhd \
-#   $(HEGDIR)/heg_ctrl_roi_tc.vhd \
-#   $(HEGDIR)/heg_ctrl_roi.vhd \
-#   $(HEGDIR)/heg_ctrl_top.vhd \
-#   $(HEGDIR)/heg_ctrl_roi_b_z.vhd \
-#   $(HEGDIR)/heg_ctrl_roi_b_slope_6l.vhd \
-#   $(HEGDIR)/heg_ctrl_roi_b_slope_8l.vhd \
-#   $(HEGDIR)/heg.vhd
+VHDL_SOURCES_heg_lib = \
+   $(HEGDIR)/ROMs/heg_rom_b_zholes_pkg.vhd \
+   $(HEGDIR)/../pkg/heg_pkg.vhd \
+   $(HEGDIR)/../pkg/heg_custom_pkg.vhd \
+   $(HEGDIR)/heg_bm.vhd \
+   $(HEGDIR)/heg_ctrl_sig.vhd \
+   $(HEGDIR)/heg_ctrl_roi_b_z.vhd \
+   $(HEGDIR)/heg_ctrl_roi_b_slope_6l.vhd \
+   $(HEGDIR)/heg_ctrl_roi_b_slope_8l.vhd \
+   $(HEGDIR)/heg_ctrl_roi_tc.vhd \
+   $(HEGDIR)/heg_ctrl_roi.vhd \
+   $(HEGDIR)/heg_ctrl_top.vhd \
+   $(HEGDIR)/heg_supervisor.vhd \
+   $(HEGDIR)/heg.vhd
 
-#VHDL_SOURCES_hp_lib = \
-#    $(HPDIR)/../pkg/hp_pkg.vhd \
-#    $(HPDIR)/hp_calc_radius.vhd \
-#    $(HPDIR)/hp_calc_RoI_vect.vhd \
-#    $(HPDIR)/hp_hit_matching.vhd \
-#    $(HPDIR)/hp_param_calc.vhd \
-#    $(HPDIR)/hp.vhd
+VHDL_SOURCES_hp_lib = \
+    $(HPDIR)/hp_calc_radius.vhd \
+    $(HPDIR)/hp_calc_RoI_vect.vhd \
+    $(HPDIR)/hp_hit_matching.vhd \
+    $(HPDIR)/hp_param_calc.vhd \
+    $(HPDIR)/hp.vhd
 
-#VHDL_SOURCES_hps_lib = \
-#    $(HPSDIR)/../pkg/hps_pkg.vhd \
-#    $(HPSDIR)/hps_sf_wrap.vhd \
-#    $(HPSDIR)/hps_pc_b_t0.vhd \
-#    $(HPSDIR)/hps_pc_mdt_tc.vhd \
-#    $(HPSDIR)/hps_supervisor.vhd \
-#    $(HPSDIR)/hps_pc.vhd \
-#    $(HPSDIR)/hps_pc_top.vhd \
-#    $(HPSDIR)/hps.vhd
+VHDL_SOURCES_hps_lib = \
+    $(HPSDIR)/../pkg/hps_pkg.vhd \
+    $(HPSDIR)/hps_sf_wrap.vhd \
+    $(HPSDIR)/hps_pc_b_t0.vhd \
+    $(HPSDIR)/hps_pc_mdt_tc.vhd \
+    $(HPSDIR)/hps_supervisor.vhd \
+    $(HPSDIR)/hps_pc.vhd \
+    $(HPSDIR)/hps_pc_top.vhd \
+    $(HPSDIR)/hps.vhd
 
 
 
@@ -200,7 +242,7 @@ VHDL_SOURCES_lsf_lib = \
     $(LSFDIR)/../top_lsf.vhd
 
 VHDL_SOURCES_upt_lib = \
-	$(USERLOGIC)/upt/IP/vu13p/hls_ptcalc_top_inst/sim/hls_ptcalc_top.vhd \
+	$(USERLOGIC)/upt/IP/vu13p/hls_ptcalc_top_inst/synth/hls_ptcalc_top.vhd \
 	$(USERLOGIC)/upt/top_upt.vhd
 
 VERILOG_SOURCES_lsf_lib = \
@@ -233,7 +275,7 @@ VERILOG_SOURCES_lsf_lib = \
     $(LOAD_LE_REFPOS)/load_LE_refPos.v \
     $(LSFDIR)/legendreEngine.sv \
     $(LSFDIR)/legendreEngine_2clk.sv \
-    $(LSFDIR)/lsf_spybuffer_wrapper.sv
+    $(LSFDIR)/lsf_spybuffer_wrapper.sv 
 
 VHDL_SOURCES_ucm_lib = \
     $(PWD)/prj_cfg.vhd \
@@ -285,6 +327,13 @@ VERILOG_SOURCES_upt_lib = \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_rsp_table_V.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top.v \
 
+VERILOG_SOURCES_fm_lib = \
+    $(HAL)/ctrl/src/FM/FM_PKG.svh \
+    $(FMDIR)/fm_sb_pkg.sv \
+    $(FMDIR)/fm_sb_ctrl.sv \
+    $(FMDIR)/fm_data.sv \
+    $(FMDIR)/fm.sv
+
 VHDL_SOURCES_ptc_lib = \
     $(MPTDIR)/../pkg/pt_pkg.vhd \
     $(MPTDIR)/../pkg/pt_params_pkg.vhd \
@@ -304,7 +353,10 @@ VHDL_SOURCES_mpl_lib = \
 
 VHDL_SOURCES_ult_lib = \
     $(ULTDIR)/ult_pt.vhd
-		       
+
+VHDL_SOURCES_fm_lib = \
+    $(FMDIR)/fm_ult_pkg.vhd
+	       
 VHDL_LIB_ORDER = xpm \
 	shared_cfg_def_lib \
 	project_lib \
@@ -318,4 +370,11 @@ VHDL_LIB_ORDER = xpm \
 	upt_lib \
 	ucm_lib \
 	mpl_lib \
-	ult_lib
+	ult_lib \
+	fm_lib \
+	hegtypes_lib \
+	heg_roi_lib \
+	hp_lib \
+	heg_lib \
+	hps_lib
+

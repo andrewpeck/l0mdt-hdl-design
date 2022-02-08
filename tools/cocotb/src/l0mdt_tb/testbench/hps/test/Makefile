@@ -61,6 +61,7 @@ SHAREDDIR = $(SRCDIR)/shared
 HAL       = $(SRCDIR)/HAL
 IP_REPO   = $(HLS)/IPs/vu13p
 LSFSIMDIR = $(USERLOGIC)/lsf/sim
+FMDIR        = $(USERLOGIC)/fm/src
 
 LOAD_LUTS_HLS_IP  = $(IP_REPO)/hls_load_luts/hdl/verilog
 GET_ROM_ADDR_HLS_IP = $(IP_REPO)/hls_get_rom_addr/hdl/verilog
@@ -116,7 +117,7 @@ include ../../../creator/Makefile_vhdl_lib
 
 
 # Set the include path and compilation flags for CocoTB
-EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/work +incdir+$(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP) +incdir+$(GET_TRIG_VALS_HLS_IP) +define+RUN_SIM
+EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/work +incdir+$(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP) +incdir+$(GET_TRIG_VALS_HLS_IP)   +incdir+$(HAL)/ctrl/src/FM  +define+RUN_SIM
 VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
 VCOM_ARGS  += -2008
 

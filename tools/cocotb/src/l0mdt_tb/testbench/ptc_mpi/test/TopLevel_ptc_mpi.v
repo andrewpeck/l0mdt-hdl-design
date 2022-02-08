@@ -9,6 +9,7 @@
 
 `timescale 1ns / 1ps
 `default_nettype wire
+import l0mdt_dataformats_svh::*;
 
 module TopLevel_ptc_mpi #(
     parameter DATA_WIDTH = 256, //65,

@@ -1,2 +1,2 @@
-UserLogic/upt/IP/vu13p/hls_ptcalc_top_inst/hls_ptcalc_top.xci
-UserLogic/upt/top_upt.vhd
+UserLogic/upt/IP/vu13p/hls_ptcalc_top_inst/hls_ptcalc_top.xci lib=upt_lib
+UserLogic/upt/top_upt.vhd lib=upt_lib
