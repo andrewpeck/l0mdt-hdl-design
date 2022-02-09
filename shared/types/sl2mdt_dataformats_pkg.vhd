@@ -7,7 +7,7 @@ use shared_lib.common_ieee.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.sl2mdt_constants_pkg.all;
 
-package sl2mdt_dataformats is
+package sl2mdt_dataformats_pkg is
 
   type SL2MDT_header is record
     h_reserved : std_logic_vector(SL2MDT_HEADER_H_RESERVED_LEN-1 downto 0);
@@ -189,11 +189,11 @@ package sl2mdt_dataformats is
   function nullify(x: sl2mdt_mtc_out_bus) return sl2mdt_mtc_out_bus;
   function zeroed(x: sl2mdt_mtc_out_bus) return sl2mdt_mtc_out_bus;
 
-end package sl2mdt_dataformats;
+end package sl2mdt_dataformats_pkg;
 
 ------------------------------------------------------------
 
-package body sl2mdt_dataformats is
+package body sl2mdt_dataformats_pkg is
 
   function len(x: SL2MDT_header) return natural is
     variable l : natural := 0;
@@ -1995,4 +1995,4 @@ package body sl2mdt_dataformats is
     return y;
   end function zeroed;
 
-end package body sl2mdt_dataformats;
+end package body sl2mdt_dataformats_pkg;

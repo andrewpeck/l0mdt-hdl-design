@@ -5,7 +5,7 @@ library shared_lib;
 
 use shared_lib.common_ieee.all;
 
-package sl2mdt_constants is
+package sl2mdt_constants_pkg is
 
   constant SL2MDT_HEADER_H_RESERVED_LEN : integer := 10;
 
@@ -235,11 +235,11 @@ package sl2mdt_constants is
   function len(x: real) return integer;
   function width(x: real) return integer;
 
-end package sl2mdt_constants;
+end package sl2mdt_constants_pkg;
 
 ------------------------------------------------------------
 
-package body sl2mdt_constants is
+package body sl2mdt_constants_pkg is
 
   function len(x: real) return integer is
   begin
@@ -545,4 +545,4 @@ package body sl2mdt_constants is
   begin
     return 32;
   end function width;
-end package body sl2mdt_constants;
+end package body sl2mdt_constants_pkg;

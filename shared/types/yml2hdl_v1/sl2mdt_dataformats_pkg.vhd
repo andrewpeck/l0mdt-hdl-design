@@ -8,6 +8,7 @@ use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.sl2mdt_constants_pkg.all;
 
 package sl2mdt_dataformats_pkg is
@@ -126,14 +127,41 @@ package sl2mdt_dataformats_pkg is
   function nullify(x: SL2MDT_slc_muid_rt) return SL2MDT_slc_muid_rt;
 
   type vec_mdtid_rt is record
-    chamber_id : unsigned(VEC_MDTID_CHAMBER_ID_LEN-1 downto 0);
-    chamber_ieta : unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
+    chamber_id : unsigned(SL2MDT_VEC_MDTID_CHAMBER_ID_LEN-1 downto 0);
+    chamber_ieta : unsigned(SL2MDT_VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
   end record vec_mdtid_rt;
   constant VEC_MDTID_LEN : integer := 9;
   subtype vec_mdtid_rvt is std_logic_vector(VEC_MDTID_LEN-1 downto 0);
   function vectorify(x: vec_mdtid_rt) return vec_mdtid_rvt;
   function structify(x: vec_mdtid_rvt) return vec_mdtid_rt;
   function nullify(x: vec_mdtid_rt) return vec_mdtid_rt;
+
+  type sl2mdt_mtc2sl_rt is record
+    data_valid : std_logic;
+    common : slc_common_rt;
+    mdt_eta : signed(PTCALC2MTC_MDT_ETA_LEN-1 downto 0);
+    mdt_pt : unsigned(PTCALC2MTC_MDT_PT_LEN-1 downto 0);
+    mdt_ptthresh : unsigned(PTCALC2MTC_MDT_PTTHRESH_LEN-1 downto 0);
+    mdt_charge : std_logic;
+    mdt_procflags : std_logic_vector(SL2MDT_MTC2SL_MDT_PROCFLAGS_LEN-1 downto 0);
+    mdt_nsegments : unsigned(PTCALC2MTC_MDT_NSEGMENTS_LEN-1 downto 0);
+    mdt_quality : std_logic_vector(PTCALC2MTC_MDT_QUALITY_LEN-1 downto 0);
+    m_reserved : std_logic_vector(SL2MDT_MTC2SL_M_RESERVED_LEN-1 downto 0);
+  end record sl2mdt_mtc2sl_rt;
+  constant SL2MDT_MTC2SL_LEN : integer := 193;
+  subtype sl2mdt_mtc2sl_rvt is std_logic_vector(SL2MDT_MTC2SL_LEN-1 downto 0);
+  function vectorify(x: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rvt;
+  function structify(x: sl2mdt_mtc2sl_rvt) return sl2mdt_mtc2sl_rt;
+  function nullify(x: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt;
+
+  type sl2mdt_mtc_out_bus_at is array(integer range <>) of sl2mdt_mtc2sl_rt;
+  type sl2mdt_mtc_out_bus_avt is array(integer range <>) of sl2mdt_mtc2sl_rvt;
+  function vectorify(x: sl2mdt_mtc_out_bus_at) return sl2mdt_mtc_out_bus_avt;
+  function vectorify(x: sl2mdt_mtc_out_bus_at) return std_logic_vector;
+  function structify(x: sl2mdt_mtc_out_bus_avt) return sl2mdt_mtc_out_bus_at;
+  function structify(x: std_logic_vector) return sl2mdt_mtc_out_bus_at;
+  function nullify(x: sl2mdt_mtc_out_bus_at) return sl2mdt_mtc_out_bus_at;
+  function nullify(x: sl2mdt_mtc_out_bus_avt) return sl2mdt_mtc_out_bus_avt;
 
 end package sl2mdt_dataformats_pkg;
 
@@ -495,6 +523,105 @@ package body sl2mdt_dataformats_pkg is
   begin
     y.chamber_id               := nullify(x.chamber_id);
     y.chamber_ieta             := nullify(x.chamber_ieta);
+    return y;
+  end function nullify;
+
+  function vectorify(x: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rvt is
+    variable y : sl2mdt_mtc2sl_rvt;
+  begin
+    y(192 downto 192)          := vectorify(x.data_valid);
+    y(191 downto 85)           := vectorify(x.common);
+    y(84 downto 71)            := vectorify(x.mdt_eta);
+    y(70 downto 63)            := vectorify(x.mdt_pt);
+    y(62 downto 59)            := vectorify(x.mdt_ptthresh);
+    y(58 downto 58)            := vectorify(x.mdt_charge);
+    y(57 downto 54)            := vectorify(x.mdt_procflags);
+    y(53 downto 52)            := vectorify(x.mdt_nsegments);
+    y(51 downto 49)            := vectorify(x.mdt_quality);
+    y(48 downto 0)             := vectorify(x.m_reserved);
+    return y;
+  end function vectorify;
+  function structify(x: sl2mdt_mtc2sl_rvt) return sl2mdt_mtc2sl_rt is
+    variable y : sl2mdt_mtc2sl_rt;
+  begin
+    y.data_valid               := structify(x(192 downto 192));
+    y.common                   := structify(x(191 downto 85));
+    y.mdt_eta                  := structify(x(84 downto 71));
+    y.mdt_pt                   := structify(x(70 downto 63));
+    y.mdt_ptthresh             := structify(x(62 downto 59));
+    y.mdt_charge               := structify(x(58 downto 58));
+    y.mdt_procflags            := structify(x(57 downto 54));
+    y.mdt_nsegments            := structify(x(53 downto 52));
+    y.mdt_quality              := structify(x(51 downto 49));
+    y.m_reserved               := structify(x(48 downto 0));
+    return y;
+  end function structify;
+  function nullify(x: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt is
+    variable y : sl2mdt_mtc2sl_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.common                   := nullify(x.common);
+    y.mdt_eta                  := nullify(x.mdt_eta);
+    y.mdt_pt                   := nullify(x.mdt_pt);
+    y.mdt_ptthresh             := nullify(x.mdt_ptthresh);
+    y.mdt_charge               := nullify(x.mdt_charge);
+    y.mdt_procflags            := nullify(x.mdt_procflags);
+    y.mdt_nsegments            := nullify(x.mdt_nsegments);
+    y.mdt_quality              := nullify(x.mdt_quality);
+    y.m_reserved               := nullify(x.m_reserved);
+    return y;
+  end function nullify;
+
+  function vectorify(x: sl2mdt_mtc_out_bus_at) return sl2mdt_mtc_out_bus_avt is
+    variable y :  sl2mdt_mtc_out_bus_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: sl2mdt_mtc_out_bus_at) return std_logic_vector is
+    variable msb : integer := x'length*193-1;
+    variable y : std_logic_vector(msb downto 0);
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-193+1) := vectorify(x(i));
+      msb := msb - 193;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: sl2mdt_mtc_out_bus_avt) return sl2mdt_mtc_out_bus_at is
+    variable y :  sl2mdt_mtc_out_bus_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return sl2mdt_mtc_out_bus_at is
+    variable y :  sl2mdt_mtc_out_bus_at(x'range);
+    variable msb : integer := x'left;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-193+1));
+      msb := msb - 193;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: sl2mdt_mtc_out_bus_at) return sl2mdt_mtc_out_bus_at is
+    variable y :  sl2mdt_mtc_out_bus_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: sl2mdt_mtc_out_bus_avt) return sl2mdt_mtc_out_bus_avt is
+    variable y :  sl2mdt_mtc_out_bus_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
     return y;
   end function nullify;
 
