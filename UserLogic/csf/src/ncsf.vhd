@@ -18,130 +18,127 @@
 --
 ----------------------------------------------------------------------------------
 
-library ieee;
-  use ieee.std_logic_1164.ALL;
-  use ieee.numeric_std.ALL;
-  use ieee.math_real.ALL;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+USE ieee.math_real.ALL;
 
-library shared_lib;
-  use shared_lib.common_ieee_pkg.ALL;
-  use shared_lib.l0mdt_constants_pkg.ALL;
-  use shared_lib.l0mdt_dataformats_pkg.ALL;
-  use shared_lib.common_constants_pkg.ALL;
-  use shared_lib.common_types_pkg.ALL;
+LIBRARY shared_lib;
+USE shared_lib.common_ieee_pkg.ALL;
+USE shared_lib.l0mdt_constants_pkg.ALL;
+USE shared_lib.l0mdt_dataformats_pkg.ALL;
+USE shared_lib.common_constants_pkg.ALL;
+USE shared_lib.common_types_pkg.ALL;
 
-library csf_lib;
-  use csf_lib.csf_pkg.ALL;
-  use csf_lib.csf_custom_pkg.ALL;
-
-  
-entity csf is
-  generic (
-    IS_ENDCAP           : integer := 0;
-    MDT_STATION         : integer := 0; -- Station 0: Inner, 1: Middle, 2: Outer
-    SPYBUFFER_EN        : integer := 0;
-    SPYHIT_MEM_WIDTH    : integer := 10;
-    SPYHIT_EL_MEM_WIDTH : integer := 10;
-    SPYSLC_MEM_WIDTH    : integer := 10;
-    SPYSLC_EL_MEM_WIDTH : integer := 10;
-    SPYSEG_MEM_WIDTH    : integer := 10;
-    SPYSEG_EL_MEM_WIDTH : integer := 10;
-    SPY_META_DATA_WIDTH : integer := 8
+LIBRARY csf_lib;
+USE csf_lib.csf_pkg.ALL;
+USE csf_lib.csf_custom_pkg.ALL;
+ENTITY csf IS
+  GENERIC (
+    IS_ENDCAP : INTEGER := 0;
+    MDT_STATION : INTEGER := 0; -- Station 0: Inner, 1: Middle, 2: Outer
+    SPYBUFFER_EN : INTEGER := 0;
+    SPYHIT_MEM_WIDTH : INTEGER := 10;
+    SPYHIT_EL_MEM_WIDTH : INTEGER := 10;
+    SPYSLC_MEM_WIDTH : INTEGER := 10;
+    SPYSLC_EL_MEM_WIDTH : INTEGER := 10;
+    SPYSEG_MEM_WIDTH : INTEGER := 10;
+    SPYSEG_EL_MEM_WIDTH : INTEGER := 10;
+    SPY_META_DATA_WIDTH : INTEGER := 8
   );
-  port (
-    clk       : in    std_logic;
-    i_seed    : in    heg2sfslc_rvt;
-    i_mdt_hit : in    heg2sfhit_rvt;
-    i_eof     : in    std_logic;
-    i_rst     : in    std_logic;
-    o_seg     : out   sf2ptcalc_rvt
+  PORT (
+    clk : IN STD_LOGIC;
+    i_seed : IN heg2sfslc_rvt;
+    i_mdt_hit : IN heg2sfhit_rvt;
+    i_eof : IN STD_LOGIC;
+    i_rst : IN STD_LOGIC;
+    o_seg : OUT sf2ptcalc_rvt;
+    --SpuBuffer -- TODO - This block has been moved to FM block - Can be removed here
+    spy_clock : IN STD_LOGIC;
+    -- Hit Spybuffer
+    i_spyhit_fc_we : IN STD_LOGIC;
+    i_spyhit_fc_re : IN STD_LOGIC;
+    i_spyhit_freeze : IN STD_LOGIC;
+    i_spyhit_playback : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+    i_spyhit_pb_we : IN STD_LOGIC;
+    i_spyhit_pb_wdata : IN heg2sfhit_rvt;
+    i_spyhit_re : IN STD_LOGIC; --this should be enable signal in
+    --new Spybuffer interface
+    i_spyhit_meta_we : IN STD_LOGIC;
+    i_spyhit_addr : IN STD_LOGIC_VECTOR(SPYHIT_MEM_WIDTH - 1 DOWNTO 0);
+    i_spyhit_meta_addr : IN STD_LOGIC_VECTOR(SPYHIT_EL_MEM_WIDTH - 1 DOWNTO 0);
+    o_spyhit_data : OUT heg2sfhit_rvt;
+    o_spyhit_meta_rdata : OUT STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
+    i_spyhit_meta_wdata : IN STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
+    o_spyhit_af : OUT STD_LOGIC;
+    o_spyhit_empty : OUT STD_LOGIC;
 
-    ----SpuBuffer -- TODO - This block has been moved to FM block - Can be removed here
-    --spy_clock           : in    std_logic;
-    ---- Hit Spybuffer
-    --i_spyhit_fc_we      : in    std_logic;
-    --i_spyhit_fc_re      : in    std_logic;
-    --i_spyhit_freeze     : in    std_logic;
-    --i_spyhit_playback   : in    std_logic_vector(1 downto 0);
-    --i_spyhit_pb_we      : in    std_logic;
-    --i_spyhit_pb_wdata   : in    heg2sfhit_rvt;
-    --i_spyhit_re         : in    std_logic; --this should be enable signal in
-    --                                       --new Spybuffer interface
-    --i_spyhit_meta_we    : in    std_logic;
-    --i_spyhit_addr       : in    std_logic_vector(SPYHIT_MEM_WIDTH - 1 downto 0);
-    --i_spyhit_meta_addr  : in   std_logic_vector(SPYHIT_EL_MEM_WIDTH - 1 downto 0);
-    --o_spyhit_data       : out   heg2sfhit_rvt;
-    --o_spyhit_meta_rdata : out   std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
-    --i_spyhit_meta_wdata : in    std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
-    --o_spyhit_af         : out   std_logic;
-    --o_spyhit_empty      : out   std_logic;
+    -- SLC Spybuffer
+    i_spyslc_fc_we : IN STD_LOGIC;
+    i_spyslc_fc_re : IN STD_LOGIC;
+    i_spyslc_freeze : IN STD_LOGIC;
+    i_spyslc_playback : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+    i_spyslc_pb_we : IN STD_LOGIC;
+    i_spyslc_pb_wdata : IN heg2sfslc_rvt;
+    i_spyslc_re : IN STD_LOGIC; --this should be enable signal in
+    --new Spybuffer interface
+    i_spyslc_addr : IN STD_LOGIC_VECTOR(SPYSLC_MEM_WIDTH - 1 DOWNTO 0);
+    i_spyslc_meta_we : IN STD_LOGIC;
+    i_spyslc_meta_addr : IN STD_LOGIC_VECTOR(SPYSLC_EL_MEM_WIDTH - 1 DOWNTO 0);
+    o_spyslc_data : OUT heg2sfslc_rvt;
+    o_spyslc_meta_rdata : OUT STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
+    i_spyslc_meta_wdata : IN STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
+    o_spyslc_af : OUT STD_LOGIC;
+    o_spyslc_empty : OUT STD_LOGIC;
 
-    ---- SLC Spybuffer
-    --i_spyslc_fc_we      : in    std_logic;
-    --i_spyslc_fc_re      : in    std_logic;
-    --i_spyslc_freeze     : in    std_logic;
-    --i_spyslc_playback   : in    std_logic_vector(1 downto 0);
-    --i_spyslc_pb_we      : in    std_logic;
-    --i_spyslc_pb_wdata   : in    heg2sfslc_rvt;
-    --i_spyslc_re         : in    std_logic; --this should be enable signal in
-    --                                       --new Spybuffer interface
-    --i_spyslc_addr       : in    std_logic_vector(SPYSLC_MEM_WIDTH - 1 downto 0);
-    --i_spyslc_meta_we    : in    std_logic;
-    --i_spyslc_meta_addr  : in    std_logic_vector(SPYSLC_EL_MEM_WIDTH - 1 downto 0);
-    --o_spyslc_data       : out   heg2sfslc_rvt;
-    --o_spyslc_meta_rdata : out   std_logic_vector( SPY_META_DATA_WIDTH -1 downto 0);
-    --i_spyslc_meta_wdata : in    std_logic_vector( SPY_META_DATA_WIDTH -1 downto 0);
-    --o_spyslc_af         : out   std_logic;
-    --o_spyslc_empty      : out   std_logic;
-
-    ---- Segment Spybuffer
-    --i_spyseg_fc_we      : in    std_logic;
-    --i_spyseg_fc_re      : in    std_logic;
-    --i_spyseg_freeze     : in    std_logic;
-    --i_spyseg_playback   : in    std_logic_vector(1 downto 0);
-    --i_spyseg_pb_we      : in    std_logic;
-    --i_spyseg_pb_wdata   : in    sf2ptcalc_rvt;
-    --i_spyseg_re         : in    std_logic; --this should be enable signal in
-    --                                       --new Spybuffer interface
-    --i_spyseg_addr       : in    std_logic_vector(SPYSEG_MEM_WIDTH - 1 downto 0);
-    --i_spyseg_meta_addr  : in    std_logic_vector(SPYSEG_EL_MEM_WIDTH - 1 downto 0);
-    --i_spyseg_meta_we    : in    std_logic;
-    --o_spyseg_data       : out   sf2ptcalc_rvt;
-    --o_spyseg_meta_rdata : out   std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
-    --i_spyseg_meta_wdata : in    std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
-    --o_spyseg_af         : out   std_logic;
-    --o_spyseg_empty      : out   std_logic
+    -- Segment Spybuffer
+    i_spyseg_fc_we : IN STD_LOGIC;
+    i_spyseg_fc_re : IN STD_LOGIC;
+    i_spyseg_freeze : IN STD_LOGIC;
+    i_spyseg_playback : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+    i_spyseg_pb_we : IN STD_LOGIC;
+    i_spyseg_pb_wdata : IN sf2ptcalc_rvt;
+    i_spyseg_re : IN STD_LOGIC; --this should be enable signal in
+    --new Spybuffer interface
+    i_spyseg_addr : IN STD_LOGIC_VECTOR(SPYSEG_MEM_WIDTH - 1 DOWNTO 0);
+    i_spyseg_meta_addr : IN STD_LOGIC_VECTOR(SPYSEG_EL_MEM_WIDTH - 1 DOWNTO 0);
+    i_spyseg_meta_we : IN STD_LOGIC;
+    o_spyseg_data : OUT sf2ptcalc_rvt;
+    o_spyseg_meta_rdata : OUT STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
+    i_spyseg_meta_wdata : IN STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
+    o_spyseg_af : OUT STD_LOGIC;
+    o_spyseg_empty : OUT STD_LOGIC
   );
-end entity csf;
+END ENTITY csf;
 
-architecture behavioral of csf is
+ARCHITECTURE behavioral OF csf IS
 
   -- Input RoI
-  signal seed_i   : heg2sfslc_rt;
-  signal seed     : heg2sfslc_rvt;
-  signal csf_seed : heg2sfslc_rvt;
+  SIGNAL seed_i : heg2sfslc_rt;
+  SIGNAL seed : heg2sfslc_rvt;
+  SIGNAL csf_seed : heg2sfslc_rvt;
 
   -- Input signals
-  signal csf_mdt_hit : heg2sfhit_rvt;
-  signal mdt_hit     : heg2sfhit_rt;
-  signal mdt_hits    : heg2sfhit_bus_avt (1 downto 0);
-  signal eof         : std_logic;
+  SIGNAL csf_mdt_hit : heg2sfhit_rvt;
+  SIGNAL mdt_hit : heg2sfhit_rt;
+  SIGNAL mdt_hits : heg2sfhit_bus_avt (1 DOWNTO 0);
+  SIGNAL eof : STD_LOGIC;
 
   -- Clustering signals
-  signal cluster_hits : csf_hit_a_avt(CSF_MAX_CLUSTERS-1 DOWNTO 0);
-  signal fitter_en : std_logic_vector(CSF_MAX_CLUSTERS-1 DOWNTO 0);
+  SIGNAL cluster_hits : csf_hit_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+  SIGNAL fitter_en : STD_LOGIC_VECTOR(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
 
   -- Fitters Signals
-  signal sums    : csf_sums_a_avt(CSF_MAX_CLUSTERS-1 downto 0);
-  signal locseg  : csf_locseg_rvt;
+  SIGNAL sums : csf_sums_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+  SIGNAL locseg : csf_locseg_rvt;
 
   ---- Coordinate transformation
-  signal coord_seed     : heg2sfslc_rvt;
+  SIGNAL coord_seed : heg2sfslc_rvt;
 
   -- Output signal
-  signal output_segment : csf_locseg_rvt;
-  signal out_seg        : csf_locseg_rt;
-  signal globseg        : sf2ptcalc_rvt;
+  SIGNAL output_segment : csf_locseg_rvt;
+  SIGNAL out_seg : csf_locseg_rt;
+  SIGNAL globseg : sf2ptcalc_rvt;
 
   -- Components
   --component spybuffer is
@@ -191,11 +188,7 @@ architecture behavioral of csf is
   --  );
   --end component spybuffer;
 
-begin
-
-
-
-
+BEGIN
   -- SpyBuffers Generate
 
   ----spybuffer_generate : IF SPYBUFFER_EN = 1 GENERATE
@@ -232,7 +225,7 @@ begin
   ----      spy_en                => i_spyhit_re, 
   ----      spy_data              => o_spyhit_data,
   ----      spy_clock_meta        => spy_clock,
- 	----      spy_meta_en           => '0',
+  ----      spy_meta_en           => '0',
   ----      spy_meta_addr         => i_spyhit_meta_addr,
   ----      spy_meta_read_data    => o_spyhit_meta_rdata,
   ----      spy_meta_write_data   => i_spyhit_meta_wdata,
@@ -277,8 +270,6 @@ begin
   ----      spy_meta_read_data    => o_spyslc_meta_rdata,
   ----      spy_meta_write_data   => i_spyslc_meta_wdata,
   ----      spy_meta_wen          => i_spyslc_meta_we
-
-
   ----    );
 
   ----  seg_spybuffer : component spybuffer
@@ -321,24 +312,17 @@ begin
 
   ----    );
 
-  --  mdt_hit <= structify(csf_mdt_hit);
-  --  seed_i  <= structify(csf_seed);
-
-  --ELSE GENERATE
-  --  mdt_hit <= structify(i_mdt_hit);
-    seed_i  <= structify(i_seed);
-    o_seg   <= globseg;
-  --end generate spybuffer_generate;
-
+  seed_i <= structify(i_seed);
+  o_seg <= globseg;
 
   -- Clustering
 
-  Cluster : entity csf_lib.csf_clustering
-    generic map (
+  Cluster : ENTITY csf_lib.csf_clustering
+    GENERIC MAP(
       MAX_HITS_PER_CLUSTER => real(CSF_MAXHITS_SEG),
-      MAX_CLUSTERS => CSF_MAX_CLUSTERS  
+      MAX_CLUSTERS => CSF_MAX_CLUSTERS
     )
-    port map (
+    PORT MAP(
       clk => clk,
       i_mdthit => i_mdt_hit,
       i_seed => i_seed,
@@ -346,59 +330,55 @@ begin
       o_cluster_hits => cluster_hits,
       o_fitter_en => fitter_en
     );
-
- 
-  SUMMING : FOR i IN 0 to CSF_MAX_CLUSTERS - 1 GENERATE
-    BEGIN
-      CSF_SUM : entity csf_lib.ncsf_sums
-      port map (
+  SUMMING : FOR i IN 0 TO CSF_MAX_CLUSTERS - 1 GENERATE
+  BEGIN
+    CSF_SUM : ENTITY csf_lib.ncsf_sums
+      PORT MAP(
         clk => clk,
         i_hit => cluster_hits(i),
         i_fit_en => fitter_en(i),
         o_sums => sums(i)
       );
-  end generate SUMMING;
+  END GENERATE SUMMING;
 
-  Fitter : entity csf_lib.ncsf_fit
-  port map(
-    clk => clk,
-    i_sums => sums,
-    o_seg => locseg
-  );
+  Fitter : ENTITY csf_lib.ncsf_fit
+    PORT MAP(
+      clk => clk,
+      i_sums => sums,
+      o_seg => locseg
+    );
 
   ---- Coordinate transformation
-  coordtransform : entity csf_lib.seg_coord_transform
-    generic map (
+  coordtransform : ENTITY csf_lib.seg_coord_transform
+    GENERIC MAP(
       IS_ENDCAP => IS_ENDCAP,
       MDT_STATION => MDT_STATION
     )
-    port map (
-      clk       => clk,
-      i_locseg  => locseg,
-      i_seed    => coord_seed,
+    PORT MAP(
+      clk => clk,
+      i_locseg => locseg,
+      i_seed => coord_seed,
       o_globseg => o_seg
     );
+  csf_proc : PROCESS (clk) IS
+  BEGIN
 
+    IF (clk'event AND clk = '1') THEN
 
-  csf_proc : process (clk) is
-  begin
-
-    if (clk'event and clk = '1') then
-
-      if (seed_i.data_valid = '1') then
+      IF (seed_i.data_valid = '1') THEN
         seed <= i_seed;
-      end if;
+      END IF;
 
-      if i_eof = '1' then
+      IF i_eof = '1' THEN
         coord_seed <= seed;
-      end if;
+      END IF;
 
       -- Reset the Chi2 and Output
-      if (i_rst = '1') then
+      IF (i_rst = '1') THEN
         seed <= (OTHERS => '0');
-      end if;
-    end if;
+      END IF;
+    END IF;
 
-  end process csf_proc;
+  END PROCESS csf_proc;
 
-end architecture behavioral;
+END ARCHITECTURE behavioral;
