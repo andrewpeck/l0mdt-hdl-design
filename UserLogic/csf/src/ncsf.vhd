@@ -1,20 +1,21 @@
 ----------------------------------------------------------------------------------
--- Company: Max-Planck-Institut fuer Physik - Munich
+-- Company: Max-Planck-Institut für Physik - Munich
 -- Engineer: Davide Cieri - davide.cieri@cern.ch
 --
--- Create Date: 02/08/2019 11:31:09 AM
+-- Create Date: 09/02/2022
 -- Design Name: Compact Segment Finder
--- Module Name: csf_top - Behavioral
--- Project Name:
--- Target Devices:
--- Tool Versions: 2018.3
+-- Module Name: csf - Behavioral
+-- Project Name: ncsf
+-- Target Devices: VU13P - xcvu13p-flga2577-2-e
+-- Tool Versions: 2020.2
 -- Description: Compact Segment Finder top module
 --
 -- Dependencies: csf_pkg
 --
 -- Revision:
--- Revision 19.10.18
--- Additional Comments:
+-- Revision 09.02.2022
+-- Additional Comments: New version of CSF using a clustering algorithm instead
+-- of the previous 1D histogram 
 --
 ----------------------------------------------------------------------------------
 
