@@ -1,14 +1,14 @@
 #################### ull_vu13_b3a_tp_csf_mptc Project ###########################
-GEN:ull_vu13_b3a_tp_csf_mptc:
-    extends: .generate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
-      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-      # HOG_CHECK_SYNTAX : 0
-    tags:
-      - heavy-duty
-      - hog
+# GEN:ull_vu13_b3a_tp_csf_mptc:
+#     extends: .generate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
+#       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+#       # HOG_CHECK_SYNTAX : 0
+#     tags:
+#       - heavy-duty
+#       - hog
 
 SIM:ull_vu13_b3a_tp_csf_mptc:
     extends: .simulate_project
