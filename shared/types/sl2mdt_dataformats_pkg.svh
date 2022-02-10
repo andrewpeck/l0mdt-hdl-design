@@ -3,7 +3,7 @@
 
 `ifndef SL2MDT_DATAFORMATS_PKG_SVH
 `define SL2MDT_DATAFORMATS_PKG_SVH
-`include <common_ieee.svh>
+`include <common_ieee_pkg.svh>
 `include <l0mdt_constants_pkg.svh>
 `include <sl2mdt_constants_pkg.svh>
 

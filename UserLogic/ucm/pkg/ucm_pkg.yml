@@ -1,9 +1,11 @@
 # yml2hdl v2
+# module ucm
+
 config:
   basic_convert_functions : off
   packages:
     - ieee: [std_logic_1164, numeric_std, math_real]
-    - shared_lib: [common_ieee,common_constants,common_types,l0mdt_constants,l0mdt_dataformats]
+    - shared_lib: [common_ieee_pkg,common_constants_pkg,common_types_pkg,l0mdt_constants_pkg,l0mdt_dataformats_pkg]
 
 hdl:
 

@@ -4,11 +4,11 @@
 `ifndef UCM_PKG_SVH
 `define UCM_PKG_SVH
 
-`include <common_ieee.svh>
-`include <common_constants.svh>
-`include <common_types.svh>
-`include <l0mdt_constants.svh>
-`include <l0mdt_dataformats.svh>
+`include <common_ieee_pkg.svh>
+`include <common_constants_pkg.svh>
+`include <common_types_pkg.svh>
+`include <l0mdt_constants_pkg.svh>
+`include <l0mdt_dataformats_pkg.svh>
 
 
   parameter int  SLC_SPECIFIC_LEN = 48;

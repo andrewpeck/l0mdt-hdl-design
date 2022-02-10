@@ -3,7 +3,7 @@
 
 library shared_lib;
 
-use shared_lib.common_ieee.all;
+use shared_lib.common_ieee_pkg.all;
 
 package sl2mdt_constants_pkg is
 

@@ -3,7 +3,7 @@
 
 library shared_lib;
 
-use shared_lib.common_ieee.all;
+use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.sl2mdt_constants_pkg.all;
 

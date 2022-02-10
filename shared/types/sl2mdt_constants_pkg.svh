@@ -3,7 +3,7 @@
 
 `ifndef SL2MDT_CONSTANTS_PKG_SVH
 `define SL2MDT_CONSTANTS_PKG_SVH
-`include <common_ieee.svh>
+`include <common_ieee_pkg.svh>
 
 
   parameter int  SL2MDT_HEADER_H_RESERVED_LEN = 10;
