@@ -12,11 +12,8 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
---library hp_lib;
---use hp_lib.hp_pkg.all;
-library hegtypes_lib;
-use hegtypes_lib.hp_pkg.all;
-
+library hp_lib;
+use hp_lib.hp_pkg.all;
 
 package heg_pkg is
 

@@ -169,6 +169,7 @@ PACKAGE BODY hp_pkg IS
   END FUNCTION structify;
   FUNCTION structify(x : STD_LOGIC_VECTOR) RETURN hp_heg2hp_window_at IS
     VARIABLE y : hp_heg2hp_window_at(x'left/18 DOWNTO 0);
+
     VARIABLE msb : INTEGER := x'left;
   BEGIN
     l : FOR i IN y'RANGE LOOP

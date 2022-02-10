@@ -12,10 +12,8 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
---library heg_lib;
---use heg_lib.heg_pkg.all;
-library hegtypes_lib;
-use hegtypes_lib.heg_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
 
 package ult_tb_sim_pkg is
 
