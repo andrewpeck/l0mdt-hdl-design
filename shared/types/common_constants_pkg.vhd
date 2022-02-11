@@ -2,7 +2,6 @@
 -- https://gitlab.com/tcpaiva/yml2hdl
 
 library shared_lib;
-
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 
@@ -11,26 +10,18 @@ package common_constants_pkg is
   constant MDT_GLOBAL_AXI_LEN : integer := 19;
 
   constant MDT_GLOBAL_AXI_MULT : real := 32.0;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant MDT_LOCAL_X_LEN : integer := HEG2SFHIT_LOCALX_LEN;
 
   constant MDT_LOCAL_X_MULT : real := HEG2SFHIT_LOCALX_MULT;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant MDT_LOCAL_Y_LEN : integer := HEG2SFHIT_LOCALY_LEN;
 
   constant MDT_LOCAL_Y_MULT : real := HEG2SFHIT_LOCALY_MULT;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant MDT_RADIUS_LEN : integer := HEG2SFHIT_RADIUS_LEN;
 
   constant MDT_RADIUS_MULT : real := 32.0;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant BCID_LEN : integer := SL_HEADER_BCID_LEN;
 
@@ -39,8 +30,6 @@ package common_constants_pkg is
   constant SLC_Z_RPC_LEN : integer := SLC_BARREL_RPC0_POSZ_LEN;
 
   constant SLC_Z_RPC_MULT : real := SLC_BARREL_RPC0_POSZ_MULT;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant MDT_FIBER_LEN : integer := 5;
 
@@ -59,14 +48,10 @@ package common_constants_pkg is
   constant UCM_Z_ROI_LEN : integer := UCM2HPS_VEC_POS_LEN;
 
   constant UCM_Z_ROI_MULT : real := UCM2HPS_VEC_POS_MULT;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant MDT_LOCAL_AXI_LEN : integer := 14;
 
   constant MDT_LOCAL_AXI_MULT : real := 16.0;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant CSF_X_OFFSET : integer := 0;
 
@@ -75,14 +60,10 @@ package common_constants_pkg is
   constant SF_SEG_POS_LEN : integer := SF2PTCALC_SEGPOS_LEN;
 
   constant SF_SEG_POS_MULTI : real := 16.0;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant SF_SEG_ANG_LEN : integer := SF2PTCALC_SEGANGLE_LEN;
 
   constant SF_SEG_ANG_MULTI : real := 4096.0;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant SF_SEG_ANG_MULTI_LEN : integer := 12;
 
@@ -93,8 +74,6 @@ package common_constants_pkg is
   constant MTC_PT_LEN : integer := PTCALC2MTC_MDT_PT_LEN;
 
   constant MTC_PT_MULT : real := PTCALC2MTC_MDT_PT_MULT;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant MTC_PTTHR_LEN : integer := PTCALC2MTC_MDT_PTTHRESH_LEN;
 
@@ -103,28 +82,16 @@ package common_constants_pkg is
   constant MTC_QUALITY_LEN : integer := PTCALC2MTC_MDT_QUALITY_LEN;
 
   constant BIL_SEC3_RHO_CORNER : real := 4755.91;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant BML_SEC3_RHO_CORNER : real := 6898.44;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant BOL_SEC3_RHO_CORNER : real := 9259.44;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant BIL_SEC3_RHO : real := 4948.979;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant BML_SEC3_RHO : real := 7138.999;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
   constant BOL_SEC3_RHO : real := 9499.998;
-  function len(x: real) return integer;
-  function width(x: real) return integer;
 
 end package common_constants_pkg;
 
@@ -132,132 +99,4 @@ end package common_constants_pkg;
 
 package body common_constants_pkg is
 
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
-  function len(x: real) return integer is
-  begin
-    return 32;
-  end function len;
-  function width(x: real) return integer is
-  begin
-    return 32;
-  end function width;
 end package body common_constants_pkg;

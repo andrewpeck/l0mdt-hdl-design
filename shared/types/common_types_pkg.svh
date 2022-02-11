@@ -3,6 +3,7 @@
 
 `ifndef COMMON_TYPES_PKG_SVH
 `define COMMON_TYPES_PKG_SVH
+
 `include <common_ieee_pkg.svh>
 `include <l0mdt_constants_pkg.svh>
 `include <l0mdt_dataformats_pkg.svh>

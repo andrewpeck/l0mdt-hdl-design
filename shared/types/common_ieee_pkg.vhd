@@ -2,7 +2,6 @@
 -- https://gitlab.com/tcpaiva/yml2hdl
 
 library ieee;
-
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
@@ -19,6 +18,8 @@ package common_ieee_pkg is
   function len(x: unsigned) return natural;
   function len(x: signed) return natural;
   function len(x: natural) return natural;
+  function len(x: integer_vector) return natural;
+  function width(x: integer_vector) return natural;
   function width(x: std_logic) return natural;
   function width(x: std_logic_vector) return natural;
   function width(x: unsigned) return natural;
@@ -30,6 +31,8 @@ package common_ieee_pkg is
   function structify(x: std_logic_vector; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: integer) return integer;
   function structify(x: std_logic_vector; t: std_logic) return std_logic;
+  function structify(x: std_logic_vector; t: integer_vector) return integer_vector;
+  function convert(x: std_logic_vector; t: integer_vector) return integer_vector;
   function convert(x: std_logic_vector; t: signed) return signed;
   function convert(x: std_logic_vector; t: unsigned) return unsigned;
   function convert(x: std_logic_vector; t: integer) return integer;
@@ -40,6 +43,8 @@ package common_ieee_pkg is
   function vectorify(x: std_logic_vector; t: std_logic_vector) return std_logic_vector;
   function vectorify(x: integer; t: std_logic_vector) return std_logic_vector;
   function vectorify(x: std_logic; t: std_logic_vector) return std_logic_vector;
+  function vectorify(x: integer_vector; t: std_logic_vector) return std_logic_vector;
+  function convert(x: integer_vector; t: std_logic_vector) return std_logic_vector;
   function convert(x: signed; t: std_logic_vector) return std_logic_vector;
   function convert(x: unsigned; t: std_logic_vector) return std_logic_vector;
   function convert(x: integer; t: std_logic_vector) return std_logic_vector;
@@ -50,6 +55,8 @@ package common_ieee_pkg is
   function nullify(y: unsigned) return unsigned;
   function nullify(y: signed) return signed;
   function nullify(y: integer) return integer;
+  function nullify(x: integer_vector) return integer_vector;
+  function zeroed(x: integer_vector) return integer_vector;
   function zeroed(y: std_logic) return std_logic;
   function zeroed(y: std_logic_vector) return std_logic_vector;
   function zeroed(y: unsigned) return unsigned;
@@ -97,6 +104,14 @@ package body common_ieee_pkg is
   begin
     return 32;
   end function len;
+  function len(x: integer_vector) return natural is
+  begin
+    return x'length;
+  end function len;
+  function width(x: integer_vector) return natural is
+  begin
+    return x'length;
+  end function width;
   function width(x: std_logic) return natural is
   begin
     return 1;
@@ -148,6 +163,26 @@ package body common_ieee_pkg is
     y := x(x'low);
     return y;
   end function structify;
+  function structify(x: std_logic_vector; t: integer_vector) return integer_vector is
+    constant l: integer := x'length / 32;
+    variable y: integer_vector(l-1 downto 0);
+    variable lsb: natural := t'low;
+  begin
+    for j in y'range loop
+      y(j) := to_integer(unsigned(x((j+1)*32-1 downto j*32)));
+    end loop;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: integer_vector) return integer_vector is
+    constant l: integer := x'length / 32;
+    variable y: integer_vector(l-1 downto 0);
+    variable lsb: natural := t'low;
+  begin
+    for j in y'range loop
+      y(j) := to_integer(unsigned(x((j+1)*32-1 downto j*32)));
+    end loop;
+    return y;
+  end function convert;
   function convert(x: std_logic_vector; t: signed) return signed is
     variable y: signed(t'range);
   begin
@@ -199,6 +234,26 @@ package body common_ieee_pkg is
     y(y'low) := x;
     return y;
   end function vectorify;
+  function vectorify(x: integer_vector; t: std_logic_vector) return std_logic_vector is
+    variable y: std_logic_vector(t'range);
+    variable lsb: natural := t'low;
+  begin
+    for j in x'range loop
+      assign(y(lsb+32-1 downto lsb), vectorify(x(j), (lsb+32-1 downto lsb => '0')));
+      lsb := lsb + 32;
+    end loop;
+    return y;
+  end function vectorify;
+  function convert(x: integer_vector; t: std_logic_vector) return std_logic_vector is
+    variable y: std_logic_vector(t'range);
+    variable lsb: natural := t'low;
+  begin
+    for j in x'range loop
+      assign(y(lsb+32-1 downto lsb), convert(x(j), (lsb+32-1 downto lsb => '0')));
+      lsb := lsb + 32;
+    end loop;
+    return y;
+  end function convert;
   function convert(x: signed; t: std_logic_vector) return std_logic_vector is
   begin
     return std_logic_vector(x);
@@ -240,6 +295,14 @@ package body common_ieee_pkg is
   begin
     return 0;
   end function nullify;
+  function nullify(x: integer_vector) return integer_vector is
+  begin
+    return (x'range => 0);
+  end function nullify;
+  function zeroed(x: integer_vector) return integer_vector is
+  begin
+    return (x'range => 0);
+  end function zeroed;
   function zeroed(y: std_logic) return std_logic is
   begin
       return '0';

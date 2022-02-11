@@ -9,19 +9,19 @@
 
   parameter int  MDT_GLOBAL_AXI_LEN = 19;
 
-  parameter typedef real   MDT_GLOBAL_AXI_MULT = 32.0;
+  parameter float  MDT_GLOBAL_AXI_MULT = 32.0;
 
   parameter int  MDT_LOCAL_X_LEN = HEG2SFHIT_LOCALX_LEN;
 
-  parameter typedef real   MDT_LOCAL_X_MULT = HEG2SFHIT_LOCALX_MULT;
+  parameter float  MDT_LOCAL_X_MULT = HEG2SFHIT_LOCALX_MULT;
 
   parameter int  MDT_LOCAL_Y_LEN = HEG2SFHIT_LOCALY_LEN;
 
-  parameter typedef real   MDT_LOCAL_Y_MULT = HEG2SFHIT_LOCALY_MULT;
+  parameter float  MDT_LOCAL_Y_MULT = HEG2SFHIT_LOCALY_MULT;
 
   parameter int  MDT_RADIUS_LEN = HEG2SFHIT_RADIUS_LEN;
 
-  parameter typedef real   MDT_RADIUS_MULT = 32.0;
+  parameter float  MDT_RADIUS_MULT = 32.0;
 
   parameter int  BCID_LEN = SL_HEADER_BCID_LEN;
 
@@ -29,7 +29,7 @@
 
   parameter int  SLC_Z_RPC_LEN = SLC_BARREL_RPC0_POSZ_LEN;
 
-  parameter typedef real   SLC_Z_RPC_MULT = SLC_BARREL_RPC0_POSZ_MULT;
+  parameter float  SLC_Z_RPC_MULT = SLC_BARREL_RPC0_POSZ_MULT;
 
   parameter int  MDT_FIBER_LEN = 5;
 
@@ -47,11 +47,11 @@
 
   parameter int  UCM_Z_ROI_LEN = UCM2HPS_VEC_POS_LEN;
 
-  parameter typedef real   UCM_Z_ROI_MULT = UCM2HPS_VEC_POS_MULT;
+  parameter float  UCM_Z_ROI_MULT = UCM2HPS_VEC_POS_MULT;
 
   parameter int  MDT_LOCAL_AXI_LEN = 14;
 
-  parameter typedef real   MDT_LOCAL_AXI_MULT = 16.0;
+  parameter float  MDT_LOCAL_AXI_MULT = 16.0;
 
   parameter int  CSF_X_OFFSET;
 
@@ -59,11 +59,11 @@
 
   parameter int  SF_SEG_POS_LEN = SF2PTCALC_SEGPOS_LEN;
 
-  parameter typedef real   SF_SEG_POS_MULTI = 16.0;
+  parameter float  SF_SEG_POS_MULTI = 16.0;
 
   parameter int  SF_SEG_ANG_LEN = SF2PTCALC_SEGANGLE_LEN;
 
-  parameter typedef real   SF_SEG_ANG_MULTI = 4096.0;
+  parameter float  SF_SEG_ANG_MULTI = 4096.0;
 
   parameter int  SF_SEG_ANG_MULTI_LEN = 12;
 
@@ -73,7 +73,7 @@
 
   parameter int  MTC_PT_LEN = PTCALC2MTC_MDT_PT_LEN;
 
-  parameter typedef real   MTC_PT_MULT = PTCALC2MTC_MDT_PT_MULT;
+  parameter float  MTC_PT_MULT = PTCALC2MTC_MDT_PT_MULT;
 
   parameter int  MTC_PTTHR_LEN = PTCALC2MTC_MDT_PTTHRESH_LEN;
 
@@ -81,17 +81,17 @@
 
   parameter int  MTC_QUALITY_LEN = PTCALC2MTC_MDT_QUALITY_LEN;
 
-  parameter typedef real   BIL_SEC3_RHO_CORNER = 4755.91;
+  parameter float  BIL_SEC3_RHO_CORNER = 4755.91;
 
-  parameter typedef real   BML_SEC3_RHO_CORNER = 6898.44;
+  parameter float  BML_SEC3_RHO_CORNER = 6898.44;
 
-  parameter typedef real   BOL_SEC3_RHO_CORNER = 9259.44;
+  parameter float  BOL_SEC3_RHO_CORNER = 9259.44;
 
-  parameter typedef real   BIL_SEC3_RHO = 4948.979;
+  parameter float  BIL_SEC3_RHO = 4948.979;
 
-  parameter typedef real   BML_SEC3_RHO = 7138.999;
+  parameter float  BML_SEC3_RHO = 7138.999;
 
-  parameter typedef real   BOL_SEC3_RHO = 9499.998;
+  parameter float  BOL_SEC3_RHO = 9499.998;
 
 
 
