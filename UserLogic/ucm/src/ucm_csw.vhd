@@ -44,18 +44,18 @@ entity ucm_csw is
 end entity ucm_csw;
 
 architecture beh of ucm_csw is
-  signal control_ar : ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
+  signal control_ar : ucm_csw_control_art(c_MAX_NUM_SL -1 downto 0);
   
-  signal o_data_ar : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal i_data_ar : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal o_data_ar : slc_rx_bus_art(c_MAX_NUM_SL -1 downto 0);
+  signal i_data_ar : slc_rx_bus_art(c_MAX_NUM_SL -1 downto 0);
 
 begin
 
-  control_ar <= structify(i_control_av);
+  control_ar <= convert(i_control_av,control_ar);
 
   generate_label: for sli in c_MAX_NUM_SL -1 downto 0 generate
-    i_data_ar(sli) <= structify(i_data(sli));
-    o_data(sli) <= vectorify(o_data_ar(sli));
+    i_data_ar(sli) <= convert(i_data(sli),i_data_ar(sli));
+    o_data(sli) <= convert(o_data_ar(sli),o_data(sli));
 
     UCM_MAIN_CSW : process(rst,clk) begin
       if rising_edge(clk) then

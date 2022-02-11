@@ -15,15 +15,19 @@
 
   parameter int  UCM_CDE2CVP_PHIMOD_LEN = 5;
 
-  parameter typedef real   UCM_CDE2CVP_PHIMOD_MULT = 12.0;
+  parameter float  UCM_CDE2CVP_PHIMOD_MULT = 12.0;
 
   parameter int  UCM_PHIMOD_LEN = 5;
 
   typedef struct packed {
     logic  data_valid;
-  } ucm_prepro2ctrl;
+  } ucm_prepro2ctrl_rt;
 
-  typedef ucm_prepro2ctrl   ucm_prepro2ctrl_bus;
+  typedef logic [$bits(ucm_prepro2ctrl_rt)-1:0] ucm_prepro2ctrl_vt;
+
+  typedef ucm_prepro2ctrl_rt   ucm_prepro2ctrl_bus_art;
+
+  typedef ucm_prepro2ctrl_vt   ucm_prepro2ctrl_bus_avt;
 
   typedef logic [SLC_Z_RPC_LEN-1:0] ucm_rpc_r;
 
@@ -31,7 +35,7 @@
 
   typedef logic [UCM_Z_ROI_LEN-1:0] ucm_mdt_r;
 
-  typedef ucm_mdt_r   ucm_mdt_r_bus;
+  typedef ucm_mdt_r   ucm_mdt_r_bus_ar;
 
   typedef logic unsigned [4-1:0] chamb_ieta_rpc;
 
@@ -45,31 +49,39 @@
     logic [UCM_CDE2CVP_PHIMOD_LEN-1:0] phimod;
     logic [SLC_SPECIFIC_LEN-1:0] specific;
     logic  data_valid;
-  } ucm_cde;
+  } ucm_cde_rt;
 
-  typedef ucm_cde   ucm_cde_bus;
-
-  typedef struct packed {
-    logic  data_present;
-    logic [4-1:0] addr_orig;
-  } ucm_csw_ch_control;
-
-  typedef ucm_csw_ch_control   ucm_csw_control;
+  typedef ucm_cde_rt   ucm_cde_bus_art;
 
   typedef struct packed {
     logic  data_present;
     logic [4-1:0] addr_orig;
-  } ucm_pam_ch_control;
+  } ucm_csw_ch_control_rt;
 
-  typedef ucm_pam_ch_control   ucm_pam_control;
+  typedef ucm_csw_ch_control_rt   ucm_csw_control_art;
+
+  typedef struct packed {
+    logic  data_present;
+    logic [4-1:0] addr_orig;
+  } ucm_pam_control_rt;
+
+  typedef logic [$bits(ucm_pam_control_rt)-1:0] ucm_pam_control_vt;
+
+  typedef ucm_pam_control_rt   ucm_pam_control_art;
+
+  typedef ucm_pam_control_vt   ucm_pam_control_avt;
 
   typedef struct packed {
     logic [4-1:0] ch;
     logic  processed;
     logic  dv;
-  } ucm_proc_info_ch;
+  } ucm_proc_info_rt;
 
-  typedef ucm_proc_info_ch   ucm_proc_info;
+  typedef logic [$bits(ucm_proc_info_rt)-1:0] ucm_proc_info_vt;
+
+  typedef ucm_proc_info_rt   ucm_proc_info_art;
+
+  typedef ucm_proc_info_vt   ucm_proc_info_avt;
 
 
 

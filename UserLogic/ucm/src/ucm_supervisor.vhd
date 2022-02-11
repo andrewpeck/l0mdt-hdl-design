@@ -119,8 +119,8 @@ architecture beh of ucm_supervisor is
   signal cvp_z0_mon_r : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
 begin
 
-  ctrl_r <= structify(ctrl_v,ctrl_r);
-  mon_v <= vectorify(mon_r,mon_v);
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
   
   o_local_en <= local_en;
   o_local_rst <= local_rst;
@@ -226,8 +226,8 @@ begin
     signal cde_z0_apb_rd_dv_i         : std_logic;
   begin
 
-    cde_z0_ctrl_v <= vectorify(cde_z0_ctrl_r(st_i),cde_z0_ctrl_v);
-    cde_z0_mon_r(st_i) <= structify(cde_z0_mon_v,cde_z0_mon_r(st_i));
+    cde_z0_ctrl_v <= convert(cde_z0_ctrl_r(st_i),cde_z0_ctrl_v);
+    cde_z0_mon_r(st_i) <= convert(cde_z0_mon_v,cde_z0_mon_r(st_i));
 
     apb_mem_interface : entity apbus_lib.apb_imem
       generic map(
@@ -306,7 +306,7 @@ begin
     --       if cde_z0_apb_wr_dv_o = '1' then
     --         cde_ch_z0_org(st_i)(to_integer(unsigned(cde_z0_apb_wr_addr_o))) <=resize(unsigned(cde_z0_apb_wr_data_o),cde_ch_z0_org(st_i)(0)'length);
     --       else
-    --         o_cde_chamber_z_org_bus(st_i) <= vectorify(cde_ch_z0_org(st_i));
+    --         o_cde_chamber_z_org_bus(st_i) <= convert(cde_ch_z0_org(st_i));
     --       end if;
 
     --     end if;
@@ -338,8 +338,8 @@ begin
     signal cvp_z0_apb_rd_dv_i         : std_logic;
   begin
 
-    cvp_z0_ctrl_v <= vectorify(cvp_z0_ctrl_r(st_i),cvp_z0_ctrl_v);
-    cvp_z0_mon_r(st_i) <= structify(cvp_z0_mon_v,cvp_z0_mon_r(st_i));
+    cvp_z0_ctrl_v <= convert(cvp_z0_ctrl_r(st_i),cvp_z0_ctrl_v);
+    cvp_z0_mon_r(st_i) <= convert(cvp_z0_mon_v,cvp_z0_mon_r(st_i));
 
     apb_mem_interface : entity apbus_lib.apb_imem
       generic map(
@@ -418,7 +418,7 @@ begin
   --           cvp_ch_z0_org(st_i)(to_integer(unsigned(CVP_Z0_CTRL(st_i).wr_addr))) <=resize(unsigned(CVP_Z0_CTRL(st_i).wr_data),cvp_ch_z0_org(st_i)(0)'length);
   --         end if;
   --       end if;
-  --       o_cvp_chamber_z_org_bus(st_i) <= vectorify(cvp_ch_z0_org(st_i));
+  --       o_cvp_chamber_z_org_bus(st_i) <= convert(cvp_ch_z0_org(st_i));
   --     end if;
   --   end process;
   -- end generate;

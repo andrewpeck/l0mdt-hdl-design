@@ -41,7 +41,7 @@ entity ucm_cvp_b_slope is
     rst           : in std_logic;
     ena           : in std_logic;
     --
-    i_rpc_rad_a   : in ucm_rpc_r_bus_at(g_NUM_RPC_LAYERS -1 downto 0);
+    i_rpc_rad_a   : in ucm_rpc_r_bus_art(g_NUM_RPC_LAYERS -1 downto 0);
     i_cointype    : in std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
     i_data_v      : in std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
     i_data_valid  : in std_logic;
@@ -58,23 +58,23 @@ architecture beh of ucm_cvp_b_slope is
   signal barrel_r   : slc_barrel_rt;
   signal coin : integer;
 
-  -- type num_at is array ( 0 to 16) of integer;
-  signal num_h_i : integer := 0;--num_at;
+  -- type num_art is array ( 0 to 16) of integer;
+  signal num_h_i : integer := 0;--num_art;
   -- signal num_h_std : std_logic_vector(2 downto 0);
 
-  type rpc_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
-  signal rpc_a : rpc_at;
-  type rad_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
-  signal rad_a : rad_at;
-  -- signal rad_comp_a : rad_at;
+  type rpc_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
+  signal rpc_a : rpc_art;
+  type rad_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
+  signal rad_a : rad_art;
+  -- signal rad_comp_a : rad_art;
   -- signal rad_comp_dv : std_logic;
 
   signal set_data_dv : std_logic;
 
-  type mult_zy_at is array ( 0 to 3) of std_logic_vector((SLC_Z_RPC_LEN * 2) - 1 downto 0);
-  signal mult_zy    : mult_zy_at;
+  type mult_zy_art is array ( 0 to 3) of std_logic_vector((SLC_Z_RPC_LEN * 2) - 1 downto 0);
+  signal mult_zy    : mult_zy_art;
   signal mult_zy_dv : std_logic_vector(3 downto 0);
-  signal mult_zz    : mult_zy_at;
+  signal mult_zz    : mult_zy_art;
   signal mult_zz_dv : std_logic_vector(3 downto 0);
 
   signal sum_z      : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0);
@@ -149,7 +149,7 @@ architecture beh of ucm_cvp_b_slope is
 
 begin
 
-  barrel_r <= structify(i_data_v);
+  barrel_r <= convert(i_data_v,barrel_r);
 
   coin <= to_integer(unsigned(i_cointype));
   

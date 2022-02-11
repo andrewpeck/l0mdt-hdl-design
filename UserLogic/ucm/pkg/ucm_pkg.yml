@@ -16,21 +16,24 @@ hdl:
 
 - UCM_PHIMOD_LEN : [ qualifier: constant , type: integer , value: 5 ]
 
-- ucm_prepro2ctrl:
+- ucm_prepro2ctrl_rt:
   - data_valid  : [type: logic]
 
-- ucm_prepro2ctrl_bus : [array: open , type: ucm_prepro2ctrl]
+- ucm_prepro2ctrl_vt : [type: logic, length: ucm_prepro2ctrl_rt]
+
+- ucm_prepro2ctrl_bus_art : [array: open , type: ucm_prepro2ctrl_rt]
+- ucm_prepro2ctrl_bus_avt : [array: open , type: ucm_prepro2ctrl_vt]
 
 - ucm_rpc_r : [type : logic , length : SLC_Z_RPC_LEN]
 - ucm_rpc_r_bus : [array : open , type : ucm_rpc_r]
 
 - ucm_mdt_r : [type : logic , length : UCM_Z_ROI_LEN]
-- ucm_mdt_r_bus : [array : open , type : ucm_mdt_r]
+- ucm_mdt_r_bus_ar : [array : open , type : ucm_mdt_r]
 
 - chamb_ieta_rpc : [type : unsigned , length : 4]
 - chamb_ieta_rpc_bus : [array : 4 , type : chamb_ieta_rpc]
 
-- ucm_cde:
+- ucm_cde_rt:
   - muid        : [type : slc_muid]
   # - mdtid       : [type : vec_mdtid]
   - chamb_ieta  : [type : chamb_ieta_rpc_bus]
@@ -40,23 +43,26 @@ hdl:
   - specific    : [type : logic , length: SLC_SPECIFIC_LEN]
   - data_valid  : [type : logic]
 
-- ucm_cde_bus : [array: open , type: ucm_cde]
+- ucm_cde_bus_art : [array: open , type: ucm_cde_rt]
 
-- ucm_csw_ch_control:
+- ucm_csw_ch_control_rt:
   - data_present: [ type: logic ]
   - addr_orig:    [ type: logic, length: 4]
 
-- ucm_csw_control: [array: open , type: ucm_csw_ch_control]
+- ucm_csw_control_art: [array: open , type: ucm_csw_ch_control_rt]
 
-- ucm_pam_ch_control:
+- ucm_pam_control_rt:
   - data_present: [ type: logic]
   - addr_orig:    [ type: logic, length: 4]
+- ucm_pam_control_vt : [type: logic, length: ucm_pam_control_rt]
+- ucm_pam_control_art: [ array: open, type: ucm_pam_control_rt]
+- ucm_pam_control_avt: [ array: open, type: ucm_pam_control_vt]
 
-- ucm_pam_control: [ array: open, type: ucm_pam_ch_control]
-
-- ucm_proc_info_ch:
+- ucm_proc_info_rt:
   - ch :        [ type: logic , length: 4 ]
   - processed:  [ type: logic]
   - dv:         [ type: logic]
+- ucm_proc_info_vt : [type: logic, length: ucm_proc_info_rt]
+- ucm_proc_info_art: [array: open , type: ucm_proc_info_rt ]
+- ucm_proc_info_avt: [array: open , type: ucm_proc_info_vt ]
 
-- ucm_proc_info: [array: open , type: ucm_proc_info_ch ]

@@ -49,7 +49,7 @@ entity ucm_cde is
     i_phicenter           : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_chamber_z_org_bus   : in b_chamber_z_origin_station_avt;
     -- PAM
-    i_proc_info_v         : in ucm_proc_info_ch_rvt := (others => '0');
+    i_proc_info_v         : in ucm_proc_info_rvt := (others => '0');
     -- SLc in
     i_slc_data_v          : in slc_rx_rvt;
     -- pam out
@@ -65,7 +65,7 @@ end entity ucm_cde;
 architecture beh of ucm_cde is
 
     
-  signal i_proc_info_r           : ucm_proc_info_ch_rt;
+  signal i_proc_info_r           : ucm_proc_info_rt;
   
   signal i_slc_data_r     : slc_rx_rt;
 
@@ -81,10 +81,10 @@ architecture beh of ucm_cde is
 
   signal dv_bus : std_logic_vector(3 downto 0);
 
-  type rpc_z_at is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
-  signal rpc_z_a : rpc_z_at;
+  type rpc_z_art is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
+  signal rpc_z_a : rpc_z_art;
 
-  signal  int_chamb_ieta : chamb_ieta_rpc_bus_at;
+  signal  int_chamb_ieta : chamb_ieta_rpc_bus_art;
 
   -- constant phicenter : std_logic_vector
 
@@ -100,10 +100,10 @@ architecture beh of ucm_cde is
 
 begin
 
-  i_proc_info_r <= structify(i_proc_info_v);
+  i_proc_info_r <= convert(i_proc_info_v,i_proc_info_r);
   
-  i_slc_data_r <= structify(i_slc_data_v);
-  o_cde_data_v <= vectorify(o_cde_data_r);
+  i_slc_data_r <= convert(i_slc_data_v,i_slc_data_r);
+  o_cde_data_v <= convert(o_cde_data_r,o_cde_data_v);
   -- o_phimod <= int_phimod;
 
   PL_in : entity vamc_lib.vamc_spl
@@ -127,7 +127,7 @@ begin
 
     B_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
 
-      barrel_r <= structify(i_slc_data_r.specific);
+      barrel_r <= convert(i_slc_data_r.specific,barrel_r);
 
       rpc_z_a <= (
         unsigned(barrel_r.rpc3_posz),
@@ -207,7 +207,7 @@ begin
 
 
 
-      int_slc_data_r <= structify(int_slc_data_v);
+      int_slc_data_r <= convert(int_slc_data_v,int_slc_data_r);
 
       IETA_INN : entity ucm_lib.ucm_ieta_calc
         generic map(
@@ -373,7 +373,7 @@ begin
     );
 
 
-    int2_slc_data_r <= structify(int2_slc_data_v);
+    int2_slc_data_r <= convert(int2_slc_data_v,int2_slc_data_r);
 
     UCM_CDE2CVP_PROC : process(rst,clk) 
       variable ch_i : integer;
@@ -413,7 +413,7 @@ begin
       end if;
     end process;
 
-    o_uCM2pl_v <= vectorify(o_uCM2pl_r);
+    o_uCM2pl_v <= convert(o_uCM2pl_r,o_uCM2pl_v);
   end generate BYPASS_GEN;
 
   
