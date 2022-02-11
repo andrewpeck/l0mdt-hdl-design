@@ -15,7 +15,7 @@
     logic unsigned [SL_HEADER_NMTC_MDT_LEN-1:0] nmtc_mdt;
     logic unsigned [SL_HEADER_NSLC_LEN-1:0] nslc;
     logic unsigned [SL_HEADER_BCID_LEN-1:0] bcid;
-  } sl_header;
+  } sl_header_rt;
 
   typedef struct packed {
     logic [SL_TRAILER_T_RESERVED_LEN-1:0] t_reserved;
@@ -23,10 +23,10 @@
     logic unsigned [SL_TRAILER_FIBERID_LEN-1:0] fiberid;
     logic unsigned [SL_TRAILER_SLID_LEN-1:0] slid;
     logic [SL_TRAILER_COMMA_LEN-1:0] comma;
-  } sl_trailer;
+  } sl_trailer_rt;
 
   typedef struct packed {
-    sl_header   header;
+    sl_header_rt   header;
     logic unsigned [SLC_COMMON_SLCID_LEN-1:0] slcid;
     logic  tcsent;
     logic signed [SLC_COMMON_POSETA_LEN-1:0] poseta;
@@ -35,8 +35,8 @@
     logic unsigned [SLC_COMMON_SL_PTTHRESH_LEN-1:0] sl_ptthresh;
     logic  sl_charge;
     logic [SLC_COMMON_COINTYPE_LEN-1:0] cointype;
-    sl_trailer   trailer;
-  } slc_common;
+    sl_trailer_rt   trailer;
+  } slc_common_rt;
 
   typedef struct packed {
     logic [SLC_ENDCAP_E_RESERVED_LEN-1:0] e_reserved;
@@ -46,18 +46,18 @@
     logic unsigned [SLC_ENDCAP_NSWSEG_POSETA_LEN-1:0] nswseg_poseta;
     logic signed [SLC_ENDCAP_SEG_ANGDPHI_LEN-1:0] seg_angdphi;
     logic signed [SLC_ENDCAP_SEG_ANGDTHETA_LEN-1:0] seg_angdtheta;
-  } slc_endcap;
+  } slc_endcap_rt;
 
   typedef struct packed {
     logic signed [SLC_BARREL_RPC3_POSZ_LEN-1:0] rpc3_posz;
     logic signed [SLC_BARREL_RPC2_POSZ_LEN-1:0] rpc2_posz;
     logic signed [SLC_BARREL_RPC1_POSZ_LEN-1:0] rpc1_posz;
     logic signed [SLC_BARREL_RPC0_POSZ_LEN-1:0] rpc0_posz;
-  } slc_barrel;
+  } slc_barrel_rt;
 
   typedef struct packed {
     logic  data_valid;
-    slc_common   common;
+    slc_common_rt   common;
     logic [SLC_RX_SPECIFIC_LEN-1:0] specific;
   } slc_rx_rt;
 
@@ -65,12 +65,12 @@
     logic unsigned [SLC_COMMON_SLCID_LEN-1:0] slcid;
     logic unsigned [SL_TRAILER_SLID_LEN-1:0] slid;
     logic unsigned [SL_HEADER_BCID_LEN-1:0] bcid;
-  } slc_muid;
+  } slc_muid_rt;
 
   typedef struct packed {
     logic unsigned [VEC_MDTID_CHAMBER_ID_LEN-1:0] chamber_id;
     logic unsigned [VEC_MDTID_CHAMBER_IETA_LEN-1:0] chamber_ieta;
-  } vec_mdtid;
+  } vec_mdtid_rt;
 
   typedef struct packed {
     logic unsigned [TDC_CHANID_LEN-1:0] chanid;
@@ -78,44 +78,44 @@
     logic unsigned [TDC_COARSETIME_LEN-1:0] coarsetime;
     logic unsigned [TDC_FINETIME_LEN-1:0] finetime;
     logic unsigned [TDC_PULSEWIDTH_LEN-1:0] pulsewidth;
-  } tdc;
+  } tdc_rt;
 
   typedef struct packed {
     logic  data_valid;
     logic  busy;
     logic [UCM2PL_PROCESS_CH_LEN-1:0] process_ch;
-    slc_common   common;
+    slc_common_rt   common;
     logic signed [UCM2PL_PHIMOD_LEN-1:0] phimod;
     logic signed [SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN-1:0] nswseg_angdtheta;
     logic unsigned [SLC_ENDCAP_NSWSEG_POSPHI_LEN-1:0] nswseg_posphi;
     logic unsigned [SLC_ENDCAP_NSWSEG_POSETA_LEN-1:0] nswseg_poseta;
-  } ucm2pl;
+  } ucm2pl_rt;
 
   typedef struct packed {
     logic  data_valid;
-    tdc   tdc;
+    tdc_rt   tdc;
     logic unsigned [TDCPOLMUX2TAR_CSMID_LEN-1:0] csmid;
     logic unsigned [TDCPOLMUX2TAR_TDCID_LEN-1:0] tdcid;
-  } tdcpolmux2tar;
+  } tdcpolmux2tar_rt;
 
   typedef struct packed {
     logic  data_valid;
-    slc_muid   muid;
+    slc_muid_rt   muid;
     logic [UCM2HPS_MDTSEG_DEST_LEN-1:0] mdtseg_dest;
-    vec_mdtid   mdtid;
+    vec_mdtid_rt   mdtid;
     logic unsigned [UCM2HPS_VEC_POS_LEN-1:0] vec_pos;
     logic unsigned [UCM2HPS_VEC_ANG_LEN-1:0] vec_ang;
-  } ucm2hps;
+  } ucm2hps_rt;
 
   typedef struct packed {
     logic  data_valid;
-    slc_muid   muid;
+    slc_muid_rt   muid;
     logic [HEG2SFSLC_MDTSEG_DEST_LEN-1:0] mdtseg_dest;
-    vec_mdtid   mdtid;
+    vec_mdtid_rt   mdtid;
     logic unsigned [UCM2HPS_VEC_POS_LEN-1:0] vec_pos;
     logic unsigned [UCM2HPS_VEC_ANG_LEN-1:0] vec_ang;
     logic unsigned [HEG2SFSLC_HEWINDOW_POS_LEN-1:0] hewindow_pos;
-  } heg2sfslc;
+  } heg2sfslc_rt;
 
   typedef struct packed {
     logic  data_valid;
@@ -123,7 +123,7 @@
     logic unsigned [TAR2HPS_LAYER_LEN-1:0] layer;
     logic unsigned [TAR2HPS_TUBE_LEN-1:0] tube;
     logic unsigned [TAR2HPS_TIME_LEN-1:0] time;
-  } tar2hps;
+  } tar2hps_rt;
 
   typedef struct packed {
     logic  data_valid;
@@ -131,48 +131,48 @@
     logic unsigned [HEG2SFHIT_LOCALX_LEN-1:0] localx;
     logic unsigned [HEG2SFHIT_LOCALY_LEN-1:0] localy;
     logic unsigned [HEG2SFHIT_RADIUS_LEN-1:0] radius;
-  } heg2sfhit;
+  } heg2sfhit_rt;
 
   typedef struct packed {
     logic  data_valid;
-    slc_muid   muid;
+    slc_muid_rt   muid;
     logic signed [UCM2PL_PHIMOD_LEN-1:0] phimod;
     logic  sl_charge;
     logic unsigned [SLC_ENDCAP_NSWSEG_POSETA_LEN-1:0] nswseg_poseta;
     logic unsigned [SLC_ENDCAP_NSWSEG_POSPHI_LEN-1:0] nswseg_posphi;
     logic signed [SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN-1:0] nswseg_angdtheta;
-  } pl2ptcalc;
+  } pl2ptcalc_rt;
 
   typedef struct packed {
     logic  data_valid;
-    slc_muid   muid;
+    slc_muid_rt   muid;
     logic unsigned [SF2PTCALC_SEGPOS_LEN-1:0] segpos;
     logic unsigned [SF2PTCALC_SEGANGLE_LEN-1:0] segangle;
     logic  segquality;
-    vec_mdtid   mdtid;
-  } sf2ptcalc;
+    vec_mdtid_rt   mdtid;
+  } sf2ptcalc_rt;
 
   typedef struct packed {
     logic  data_valid;
-    slc_muid   muid;
+    slc_muid_rt   muid;
     logic signed [PTCALC2MTC_MDT_ETA_LEN-1:0] mdt_eta;
     logic unsigned [PTCALC2MTC_MDT_PT_LEN-1:0] mdt_pt;
     logic unsigned [PTCALC2MTC_MDT_PTTHRESH_LEN-1:0] mdt_ptthresh;
     logic  mdt_charge;
     logic unsigned [PTCALC2MTC_MDT_NSEGMENTS_LEN-1:0] mdt_nsegments;
     logic [PTCALC2MTC_MDT_QUALITY_LEN-1:0] mdt_quality;
-  } ptcalc2mtc;
+  } ptcalc2mtc_rt;
 
   typedef struct packed {
     logic  data_valid;
     logic  busy;
     logic [UCM2PL_PROCESS_CH_LEN-1:0] process_ch;
-    slc_common   common;
-  } pl2mtc;
+    slc_common_rt   common;
+  } pl2mtc_rt;
 
   typedef struct packed {
     logic  data_valid;
-    slc_common   common;
+    slc_common_rt   common;
     logic signed [PTCALC2MTC_MDT_ETA_LEN-1:0] mdt_eta;
     logic unsigned [PTCALC2MTC_MDT_PT_LEN-1:0] mdt_pt;
     logic unsigned [PTCALC2MTC_MDT_PTTHRESH_LEN-1:0] mdt_ptthresh;
@@ -181,7 +181,7 @@
     logic unsigned [PTCALC2MTC_MDT_NSEGMENTS_LEN-1:0] mdt_nsegments;
     logic [PTCALC2MTC_MDT_QUALITY_LEN-1:0] mdt_quality;
     logic [MTC2SL_M_RESERVED_LEN-1:0] m_reserved;
-  } mtc2sl;
+  } mtc2sl_rt;
 
 
 

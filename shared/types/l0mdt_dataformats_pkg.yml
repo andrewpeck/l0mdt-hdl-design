@@ -14,7 +14,7 @@ config:
 hdl:
 
 # SL_HEADER
-- sl_header:
+- sl_header_rt:
   - h_reserved:  [type : logic , length : SL_HEADER_H_RESERVED_LEN]
   - tcoverflow:  [type : logic]
   - nmtc_sl:  [type : unsigned , length : SL_HEADER_NMTC_SL_LEN]
@@ -23,7 +23,7 @@ hdl:
   - bcid:  [type : unsigned , length : SL_HEADER_BCID_LEN]
 
 # SL_TRAILER
-- sl_trailer:
+- sl_trailer_rt:
   - t_reserved:  [type : logic , length : SL_TRAILER_T_RESERVED_LEN]
   - crc:  [type : logic , length : SL_TRAILER_CRC_LEN]
   - fiberid:  [type : unsigned , length : SL_TRAILER_FIBERID_LEN]
@@ -31,8 +31,8 @@ hdl:
   - comma:  [type : logic , length : SL_TRAILER_COMMA_LEN]
 
 # SLC_COMMON
-- slc_common:
-  - header:  [type : sl_header]
+- slc_common_rt:
+  - header:  [type : sl_header_rt]
   - slcid:  [type : unsigned , length : SLC_COMMON_SLCID_LEN]
   - tcsent:  [type : logic]
   - poseta:  [type : signed , length : SLC_COMMON_POSETA_LEN]
@@ -41,10 +41,10 @@ hdl:
   - sl_ptthresh:  [type : unsigned , length : SLC_COMMON_SL_PTTHRESH_LEN]
   - sl_charge:  [type : logic]
   - cointype:  [type : logic , length : SLC_COMMON_COINTYPE_LEN]
-  - trailer:  [type : sl_trailer]
+  - trailer:  [type : sl_trailer_rt]
 
 # SLC_ENDCAP
-- slc_endcap:
+- slc_endcap_rt:
   - e_reserved:  [type : logic , length : SLC_ENDCAP_E_RESERVED_LEN]
   - nswseg_mon:  [type : logic]
   - nswseg_angdtheta:  [type : signed , length : SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN]
@@ -54,7 +54,7 @@ hdl:
   - seg_angdtheta:  [type : signed , length : SLC_ENDCAP_SEG_ANGDTHETA_LEN]
 
 # SLC_BARREL
-- slc_barrel:
+- slc_barrel_rt:
   - rpc3_posz:  [type : signed , length : SLC_BARREL_RPC3_POSZ_LEN]
   - rpc2_posz:  [type : signed , length : SLC_BARREL_RPC2_POSZ_LEN]
   - rpc1_posz:  [type : signed , length : SLC_BARREL_RPC1_POSZ_LEN]
@@ -63,22 +63,22 @@ hdl:
 # SLC_RX
 - slc_rx_rt:
   - data_valid:  [type : logic]
-  - common:  [type : slc_common]
+  - common:  [type : slc_common_rt]
   - specific:  [type : logic , length : SLC_RX_SPECIFIC_LEN]
 
 # SLC_MUID
-- slc_muid:
+- slc_muid_rt:
   - slcid:  [type : unsigned , length : SLC_COMMON_SLCID_LEN]
   - slid:  [type : unsigned , length : SL_TRAILER_SLID_LEN]
   - bcid:  [type : unsigned , length : SL_HEADER_BCID_LEN]
 
 # VEC_MDTID
-- vec_mdtid:
+- vec_mdtid_rt:
   - chamber_id:  [type : unsigned , length : VEC_MDTID_CHAMBER_ID_LEN]
   - chamber_ieta:  [type : unsigned , length : VEC_MDTID_CHAMBER_IETA_LEN]
 
 # TDC
-- tdc:
+- tdc_rt:
   - chanid:  [type : unsigned , length : TDC_CHANID_LEN]
   - edgemode:  [type : logic , length : TDC_EDGEMODE_LEN]
   - coarsetime:  [type : unsigned , length : TDC_COARSETIME_LEN]
@@ -86,44 +86,44 @@ hdl:
   - pulsewidth:  [type : unsigned , length : TDC_PULSEWIDTH_LEN]
 
 # UCM2PL
-- ucm2pl:
+- ucm2pl_rt:
   - data_valid:  [type : logic]
   - busy:  [type : logic]
   - process_ch:  [type : logic , length : UCM2PL_PROCESS_CH_LEN]
-  - common:  [type : slc_common]
+  - common:  [type : slc_common_rt]
   - phimod:  [type : signed , length : UCM2PL_PHIMOD_LEN]
   - nswseg_angdtheta:  [type : signed , length : SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN]
   - nswseg_posphi:  [type : unsigned , length : SLC_ENDCAP_NSWSEG_POSPHI_LEN]
   - nswseg_poseta:  [type : unsigned , length : SLC_ENDCAP_NSWSEG_POSETA_LEN]
 
 # TDCPOLMUX2TAR
-- tdcpolmux2tar:
+- tdcpolmux2tar_rt:
   - data_valid:  [type : logic]
-  - tdc:  [type : tdc]
+  - tdc:  [type : tdc_rt]
   - csmid:  [type : unsigned , length : TDCPOLMUX2TAR_CSMID_LEN]
   - tdcid:  [type : unsigned , length : TDCPOLMUX2TAR_TDCID_LEN]
 
 # UCM2HPS
-- ucm2hps:
+- ucm2hps_rt:
   - data_valid:  [type : logic]
-  - muid:  [type : slc_muid]
+  - muid:  [type : slc_muid_rt]
   - mdtseg_dest:  [type : logic , length : UCM2HPS_MDTSEG_DEST_LEN]
-  - mdtid:  [type : vec_mdtid]
+  - mdtid:  [type : vec_mdtid_rt]
   - vec_pos:  [type : unsigned , length : UCM2HPS_VEC_POS_LEN]
   - vec_ang:  [type : unsigned , length : UCM2HPS_VEC_ANG_LEN]
 
 # HEG2SFSLC
-- heg2sfslc:
+- heg2sfslc_rt:
   - data_valid:  [type : logic]
-  - muid:  [type : slc_muid]
+  - muid:  [type : slc_muid_rt]
   - mdtseg_dest:  [type : logic , length : HEG2SFSLC_MDTSEG_DEST_LEN]
-  - mdtid:  [type : vec_mdtid]
+  - mdtid:  [type : vec_mdtid_rt]
   - vec_pos:  [type : unsigned , length : UCM2HPS_VEC_POS_LEN]
   - vec_ang:  [type : unsigned , length : UCM2HPS_VEC_ANG_LEN]
   - hewindow_pos:  [type : unsigned , length : HEG2SFSLC_HEWINDOW_POS_LEN]
 
 # TAR2HPS
-- tar2hps:
+- tar2hps_rt:
   - data_valid:  [type : logic]
   - chamber_ieta:  [type : unsigned , length : VEC_MDTID_CHAMBER_IETA_LEN]
   - layer:  [type : unsigned , length : TAR2HPS_LAYER_LEN]
@@ -131,7 +131,7 @@ hdl:
   - time:  [type : unsigned , length : TAR2HPS_TIME_LEN]
 
 # HEG2SFHIT
-- heg2sfhit:
+- heg2sfhit_rt:
   - data_valid:  [type : logic]
   - mlayer:  [type : logic]
   - localx:  [type : unsigned , length : HEG2SFHIT_LOCALX_LEN]
@@ -139,9 +139,9 @@ hdl:
   - radius:  [type : unsigned , length : HEG2SFHIT_RADIUS_LEN]
 
 # PL2PTCALC
-- pl2ptcalc:
+- pl2ptcalc_rt:
   - data_valid:  [type : logic]
-  - muid:  [type : slc_muid]
+  - muid:  [type : slc_muid_rt]
   - phimod:  [type : signed , length : UCM2PL_PHIMOD_LEN]
   - sl_charge:  [type : logic]
   - nswseg_poseta:  [type : unsigned , length : SLC_ENDCAP_NSWSEG_POSETA_LEN]
@@ -149,18 +149,18 @@ hdl:
   - nswseg_angdtheta:  [type : signed , length : SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN]
 
 # SF2PTCALC
-- sf2ptcalc:
+- sf2ptcalc_rt:
   - data_valid:  [type : logic]
-  - muid:  [type : slc_muid]
+  - muid:  [type : slc_muid_rt]
   - segpos:  [type : unsigned , length : SF2PTCALC_SEGPOS_LEN]
   - segangle:  [type : unsigned , length : SF2PTCALC_SEGANGLE_LEN]
   - segquality:  [type : logic]
-  - mdtid:  [type : vec_mdtid]
+  - mdtid:  [type : vec_mdtid_rt]
 
 # PTCALC2MTC
-- ptcalc2mtc:
+- ptcalc2mtc_rt:
   - data_valid:  [type : logic]
-  - muid:  [type : slc_muid]
+  - muid:  [type : slc_muid_rt]
   - mdt_eta:  [type : signed , length : PTCALC2MTC_MDT_ETA_LEN]
   - mdt_pt:  [type : unsigned , length : PTCALC2MTC_MDT_PT_LEN]
   - mdt_ptthresh:  [type : unsigned , length : PTCALC2MTC_MDT_PTTHRESH_LEN]
@@ -169,16 +169,16 @@ hdl:
   - mdt_quality:  [type : logic , length : PTCALC2MTC_MDT_QUALITY_LEN]
 
 # PL2MTC
-- pl2mtc:
+- pl2mtc_rt:
   - data_valid:  [type : logic]
   - busy:  [type : logic]
   - process_ch:  [type : logic , length : UCM2PL_PROCESS_CH_LEN]
-  - common:  [type : slc_common]
+  - common:  [type : slc_common_rt]
 
 # MTC2SL
-- mtc2sl:
+- mtc2sl_rt:
   - data_valid:  [type : logic]
-  - common:  [type : slc_common]
+  - common:  [type : slc_common_rt]
   - mdt_eta:  [type : signed , length : PTCALC2MTC_MDT_ETA_LEN]
   - mdt_pt:  [type : unsigned , length : PTCALC2MTC_MDT_PT_LEN]
   - mdt_ptthresh:  [type : unsigned , length : PTCALC2MTC_MDT_PTTHRESH_LEN]

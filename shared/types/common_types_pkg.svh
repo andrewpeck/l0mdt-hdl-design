@@ -41,31 +41,31 @@
 
   typedef slc_rx_vt   slc_rx_avt;
 
-  typedef slc_endcap   slc_endcap_bus;
+  typedef typedef slc_endcap    slc_endcap_bus;
 
-  typedef tdcpolmux2tar   mdt_polmux_bus;
+  typedef typedef tdcpolmux2tar    mdt_polmux_bus;
 
-  typedef tar2hps   tar2hps_bus;
+  typedef typedef tar2hps    tar2hps_bus;
 
-  typedef ucm2hps   ucm2hps_bus;
+  typedef typedef ucm2hps    ucm2hps_bus;
 
-  typedef heg2sfslc   heg2sfslc_bus;
+  typedef typedef heg2sfslc    heg2sfslc_bus;
 
-  typedef heg2sfhit   heg2sfhit_bus;
+  typedef typedef heg2sfhit    heg2sfhit_bus;
 
-  typedef sf2ptcalc   sf2pt_bus;
+  typedef typedef sf2ptcalc    sf2pt_bus;
 
-  typedef ucm2pl   ucm2pl_bus;
+  typedef typedef ucm2pl    ucm2pl_bus;
 
-  typedef pl2ptcalc   pl2pt_bus;
+  typedef typedef pl2ptcalc    pl2pt_bus;
 
-  typedef pl2mtc   pl2mtc_bus;
+  typedef typedef pl2mtc    pl2mtc_bus;
 
-  typedef ptcalc2mtc   tf2mtc_bus;
+  typedef typedef ptcalc2mtc    tf2mtc_bus;
 
-  typedef mtc2sl   mtc_out_bus;
+  typedef typedef mtc2sl    mtc_out_bus;
 
-  typedef mtc2sl   mtc2nsp_bus;
+  typedef typedef mtc2sl    mtc2nsp_bus;
 
   typedef logic [250-1:0] felix_data;
 
