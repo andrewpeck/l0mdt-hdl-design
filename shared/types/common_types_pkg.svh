@@ -35,7 +35,11 @@
     orid   orid;
   } l0mdt_ttc;
 
-  typedef slc_rx   slc_rx_bus;
+  typedef logic [$bits(slc_rx_rt)-1:0] slc_rx_vt;
+
+  typedef slc_rx_rt   slc_rx_art;
+
+  typedef slc_rx_vt   slc_rx_avt;
 
   typedef slc_endcap   slc_endcap_bus;
 
