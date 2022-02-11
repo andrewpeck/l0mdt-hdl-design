@@ -9,7 +9,7 @@ use ieee.math_real.all;
 
 library shared_lib;
 
-use shared_lib.common_ieee.all;
+use shared_lib.common_ieee_pkg.all;
 
 package MEM_INT_10A9D_CTRL is
 

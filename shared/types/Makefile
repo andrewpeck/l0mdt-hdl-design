@@ -1,7 +1,7 @@
 yml2hdl_v1 := ../../tools/yml2hdl_v1/yml2hdl.py
 yml2hdl_v2 := ../../tools/yml2hdl/yml2hdl.py
 
-common := -e yml2hdl_v1/common_ieee.yml            \
+common := -e yml2hdl_v1/common_ieee_pkg.yml            \
 	-e ../../dataformats/l0mdt_constants.yml   \
 	-e yml2hdl_v1/common_constants.yml         \
 	-e ../../dataformats/l0mdt_dataformats.yml \
@@ -9,26 +9,26 @@ common := -e yml2hdl_v1/common_ieee.yml            \
 # new version l0mdt files in dataformat folder
 all:
 ##### common ieee
-	python3 $(yml2hdl_v1)  yml2hdl_v1/common_ieee.yml
+	python3 $(yml2hdl_v1)  yml2hdl_v1/common_ieee_pkg.yml
 ##### l0mdt constants dataformat folder
 	python3 $(yml2hdl_v1)  \
-	-e yml2hdl_v1/common_ieee.yml  \
+	-e yml2hdl_v1/common_ieee_pkg.yml  \
 	-o ../../shared/types \
 	../../dataformats/l0mdt_constants.yml
 ##### l0mdt dataformats dataformat folder
 	python3 $(yml2hdl_v1)     \
-	-e yml2hdl_v1/common_ieee.yml     \
+	-e yml2hdl_v1/common_ieee_pkg.yml     \
 	-e ../../dataformats/l0mdt_constants.yml \
 	-o ../../shared/types \
 	../../dataformats/l0mdt_dataformats.yml
 ##### common constants
 	python3 $(yml2hdl_v1)     \
-	-e yml2hdl_v1/common_ieee.yml     \
+	-e yml2hdl_v1/common_ieee_pkg.yml     \
 	-e ../../dataformats/l0mdt_constants.yml \
 	yml2hdl_v1/common_constants.yml
 ##### common types
 	python3 $(yml2hdl_v1)       \
-	-e yml2hdl_v1/common_ieee.yml       \
+	-e yml2hdl_v1/common_ieee_pkg.yml       \
 	-e ../../dataformats/l0mdt_constants.yml \
 	-e yml2hdl_v1/common_constants.yml  \
 	-e ../../dataformats/l0mdt_dataformats.yml \
@@ -36,14 +36,14 @@ all:
 
 # #### SL-MDT Interface
 # # common ieee
-# 	python3 $(yml2hdl_v1)  yml2hdl_v1/common_ieee.yml
+# 	python3 $(yml2hdl_v1)  yml2hdl_v1/common_ieee_pkg.yml
 # ##### l0mdt constants dataformat folder
 # 	python3 $(yml2hdl_v1)  \
-# 	-e yml2hdl_v1/common_ieee.yml  \
+# 	-e yml2hdl_v1/common_ieee_pkg.yml  \
 # 	yml2hdl_v1/sl2mdt_constants.yml
 # # l0mdt dataformats dataformat folder
 # 	python3 $(yml2hdl_v1)     \
-# 	-e yml2hdl_v1/common_ieee.yml     \
+# 	-e yml2hdl_v1/common_ieee_pkg.yml     \
 # 	-e yml2hdl_v1/sl2mdt_constants.yml \
 # 	yml2hdl_v1/sl2mdt_dataformats.yml
 
@@ -89,24 +89,24 @@ all:
 # new version l0mdt files in dataformat folder
 all2:
 ##### common ieee
-	python3 $(yml2hdl_v2)  common_ieee.yml
+	python3 $(yml2hdl_v2)  common_ieee_pkg.yml
 #a ##### l0mdt constants dataformat folder
 #a 	python3 $(yml2hdl_v2) -d "./"            \
-#a 	-e common_ieee.yml            \
+#a 	-e common_ieee_pkg.yml            \
 #a 	../../dataformats/l0mdt_constants.yml
 #a ##### l0mdt dataformats dataformat folder
 #a 	python3 $(yml2hdl_v2) -d "./"            \
-#a 	-e common_ieee.yml            \
+#a 	-e common_ieee_pkg.yml            \
 #a 	-e ../../dataformats/l0mdt_constants.yml \
 #a 	../../dataformats/l0mdt_dataformats.yml
 #a ##### common constants
 #a 	python3 $(yml2hdl_v2) -d "./"            \
-#a 	-e common_ieee.yml            \
+#a 	-e common_ieee_pkg.yml            \
 #a 	-e ../../dataformats/l0mdt_constants.yml \
 #a 	common_constants.yml
 #a ##### common types
 #a 	python3 $(yml2hdl_v2)       \
-#a 	-e common_ieee.yml       \
+#a 	-e common_ieee_pkg.yml       \
 #a 	-e ../../dataformats/l0mdt_constants.yml \
 #a 	-e common_constants.yml  \
 #a 	-e ../../dataformats/l0mdt_dataformats.yml \
@@ -116,31 +116,31 @@ all2:
 # old version all main files in shared folder
 # all:
 # 	##### common ieee
-# 	python3 $(yml2hdl_v1)  common_ieee.yml
+# 	python3 $(yml2hdl_v1)  common_ieee_pkg.yml
 # 	##### l0mdt constants shared folder
 # 	python3 $(yml2hdl_v1)  \
-# 	-e common_ieee.yml  \
+# 	-e common_ieee_pkg.yml  \
 # 	l0mdt_constants.yml
 # 	##### l0mdt dataformats shared folder
 # 	python3 $(yml2hdl_v1)     \
-# 	-e common_ieee.yml     \
+# 	-e common_ieee_pkg.yml     \
 # 	-e l0mdt_constants.yml \
 # 	l0mdt_dataformats.yml
 # 	##### common constants
 # 	python3 $(yml2hdl_v1)     \
-# 	-e common_ieee.yml     \
+# 	-e common_ieee_pkg.yml     \
 # 	-e l0mdt_constants.yml \
 # 	common_constants.yml
 # 	##### common types
 # 	python3 $(yml2hdl_v1)       \
-# 	-e common_ieee.yml       \
+# 	-e common_ieee_pkg.yml       \
 # 	-e l0mdt_constants.yml   \
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats.yml \
 # 	common_types.yml
 # 	##### ucm
 # 	python3 $(yml2hdl_v1)       \
-# 	-e common_ieee.yml       \
+# 	-e common_ieee_pkg.yml       \
 # 	-e l0mdt_constants.yml   \
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats.yml \
@@ -148,7 +148,7 @@ all2:
 # 	../../ucm/pkg/ucm.yml
 # 	# hp
 # 	python3 $(yml2hdl_v1)       \
-# 	-e common_ieee.yml       \
+# 	-e common_ieee_pkg.yml       \
 # 	-e l0mdt_constants.yml   \
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats.yml \
@@ -156,7 +156,7 @@ all2:
 # 	../../hp/pkg/hp.yml
 # 	# heg
 # 	python3 $(yml2hdl_v1)       \
-# 	-e common_ieee.yml       \
+# 	-e common_ieee_pkg.yml       \
 # 	-e l0mdt_constants.yml   \
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats.yml \
@@ -165,7 +165,7 @@ all2:
 # 	../../heg/pkg/heg.yml
 # 	# hps
 # 	python3 $(yml2hdl_v1)       \
-# 	-e common_ieee.yml       \
+# 	-e common_ieee_pkg.yml       \
 # 	-e l0mdt_constants.yml   \
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats.yml \
@@ -175,7 +175,7 @@ all2:
 # 	../../hps/pkg/hps.yml
 # 	# ucm_hps
 # 	python3 $(yml2hdl_v1)       \
-# 	-e common_ieee.yml       \
+# 	-e common_ieee_pkg.yml       \
 # 	-e l0mdt_constants.yml   \
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats.yml \
@@ -183,7 +183,7 @@ all2:
 # 	../../ucm_hps/pkg/ucm_hps.yml
 # 	# main pipeline
 # 	python3 $(yml2hdl_v1)       \
-# 	-e common_ieee.yml       \
+# 	-e common_ieee_pkg.yml       \
 # 	-e l0mdt_constants.yml   \
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats.yml \
@@ -191,7 +191,7 @@ all2:
 # 	../../mpl/pkg/mpl.yml
 # 	# csf
 # 	python3 $(yml2hdl_v1)       \
-# 	-e common_ieee.yml       \
+# 	-e common_ieee_pkg.yml       \
 # 	-e l0mdt_constants.yml   \
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats.yml \
@@ -199,7 +199,7 @@ all2:
 # 	../../csf/pkg/csf.yml
 # 	# TAR
 # 	python3 $(yml2hdl_v1)       \
-# 	-e common_ieee.yml       \
+# 	-e common_ieee_pkg.yml       \
 # 	-e l0mdt_constants.yml   \
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats.yml \
@@ -207,7 +207,7 @@ all2:
 # 	../../tar/pkg/tar.yml
 # 		# ULT simulation package
 # 	python3 $(yml2hdl_v1)       \
-# 	-e common_ieee.yml       \
+# 	-e common_ieee_pkg.yml       \
 # 	-e l0mdt_constants.yml   \
 # 	-e common_constants.yml  \
 # 	-e l0mdt_dataformats.yml \
