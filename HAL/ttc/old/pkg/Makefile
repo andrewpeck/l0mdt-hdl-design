@@ -5,8 +5,8 @@ types:
 	cd $(mkfile_dir) &&                                            \
 		python3 ../../../tools/yml2hdl/yml2hdl.py -v           \
 		-e ../../../shared/types/common_ieee_pkg.yml               \
-		-e ../../../dataformats/l0mdt_constants.yml            \
-		-e ../../../dataformats/l0mdt_dataformats.yml          \
+		-e ../../../dataformats/l0mdt_constants_pkg.yml            \
+		-e ../../../dataformats/l0mdt_dataformats_pkg.yml          \
 		-e ../../../UserLogic/daq/daq-core/pkg/common_defs.yml \
 		ttc_defs.yml
 
