@@ -85,7 +85,7 @@ package common_types_pkg is
   function nullify(x: slc_rx_avt) return slc_rx_avt;
   function zeroed(x: slc_rx_avt) return slc_rx_avt;
 
-  type slc_endcap_bus is array(integer range <>) of slc_endcap;
+  type slc_endcap_bus is array(integer range <>) of slc_endcap_rt;
   function len(x: slc_endcap_bus) return natural;
   function width(x: slc_endcap_bus) return natural;
   function vectorify(x: slc_endcap_bus; t: std_logic_vector) return std_logic_vector;
@@ -95,7 +95,7 @@ package common_types_pkg is
   function nullify(x: slc_endcap_bus) return slc_endcap_bus;
   function zeroed(x: slc_endcap_bus) return slc_endcap_bus;
 
-  type mdt_polmux_bus is array(integer range <>) of tdcpolmux2tar;
+  type mdt_polmux_bus is array(integer range <>) of tdcpolmux2tar_rt;
   function len(x: mdt_polmux_bus) return natural;
   function width(x: mdt_polmux_bus) return natural;
   function vectorify(x: mdt_polmux_bus; t: std_logic_vector) return std_logic_vector;
@@ -105,7 +105,7 @@ package common_types_pkg is
   function nullify(x: mdt_polmux_bus) return mdt_polmux_bus;
   function zeroed(x: mdt_polmux_bus) return mdt_polmux_bus;
 
-  type tar2hps_bus is array(integer range <>) of tar2hps;
+  type tar2hps_bus is array(integer range <>) of tar2hps_rt;
   function len(x: tar2hps_bus) return natural;
   function width(x: tar2hps_bus) return natural;
   function vectorify(x: tar2hps_bus; t: std_logic_vector) return std_logic_vector;
@@ -115,7 +115,7 @@ package common_types_pkg is
   function nullify(x: tar2hps_bus) return tar2hps_bus;
   function zeroed(x: tar2hps_bus) return tar2hps_bus;
 
-  type ucm2hps_bus is array(integer range <>) of ucm2hps;
+  type ucm2hps_bus is array(integer range <>) of ucm2hps_rt;
   function len(x: ucm2hps_bus) return natural;
   function width(x: ucm2hps_bus) return natural;
   function vectorify(x: ucm2hps_bus; t: std_logic_vector) return std_logic_vector;
@@ -125,7 +125,7 @@ package common_types_pkg is
   function nullify(x: ucm2hps_bus) return ucm2hps_bus;
   function zeroed(x: ucm2hps_bus) return ucm2hps_bus;
 
-  type heg2sfslc_bus is array(integer range <>) of heg2sfslc;
+  type heg2sfslc_bus is array(integer range <>) of heg2sfslc_rt;
   function len(x: heg2sfslc_bus) return natural;
   function width(x: heg2sfslc_bus) return natural;
   function vectorify(x: heg2sfslc_bus; t: std_logic_vector) return std_logic_vector;
@@ -135,7 +135,7 @@ package common_types_pkg is
   function nullify(x: heg2sfslc_bus) return heg2sfslc_bus;
   function zeroed(x: heg2sfslc_bus) return heg2sfslc_bus;
 
-  type heg2sfhit_bus is array(integer range <>) of heg2sfhit;
+  type heg2sfhit_bus is array(integer range <>) of heg2sfhit_rt;
   function len(x: heg2sfhit_bus) return natural;
   function width(x: heg2sfhit_bus) return natural;
   function vectorify(x: heg2sfhit_bus; t: std_logic_vector) return std_logic_vector;
@@ -145,7 +145,7 @@ package common_types_pkg is
   function nullify(x: heg2sfhit_bus) return heg2sfhit_bus;
   function zeroed(x: heg2sfhit_bus) return heg2sfhit_bus;
 
-  type sf2pt_bus is array(integer range <>) of sf2ptcalc;
+  type sf2pt_bus is array(integer range <>) of sf2ptcalc_rt;
   function len(x: sf2pt_bus) return natural;
   function width(x: sf2pt_bus) return natural;
   function vectorify(x: sf2pt_bus; t: std_logic_vector) return std_logic_vector;
@@ -155,7 +155,9 @@ package common_types_pkg is
   function nullify(x: sf2pt_bus) return sf2pt_bus;
   function zeroed(x: sf2pt_bus) return sf2pt_bus;
 
-  type ucm2pl_bus is array(integer range <>) of ucm2pl;
+  subtype ucm2pl_vt is std_logic_vector(148-1 downto 0);
+
+  type ucm2pl_bus is array(integer range <>) of ucm2pl_rt;
   function len(x: ucm2pl_bus) return natural;
   function width(x: ucm2pl_bus) return natural;
   function vectorify(x: ucm2pl_bus; t: std_logic_vector) return std_logic_vector;
@@ -165,7 +167,7 @@ package common_types_pkg is
   function nullify(x: ucm2pl_bus) return ucm2pl_bus;
   function zeroed(x: ucm2pl_bus) return ucm2pl_bus;
 
-  type pl2pt_bus is array(integer range <>) of pl2ptcalc;
+  type pl2pt_bus is array(integer range <>) of pl2ptcalc_rt;
   function len(x: pl2pt_bus) return natural;
   function width(x: pl2pt_bus) return natural;
   function vectorify(x: pl2pt_bus; t: std_logic_vector) return std_logic_vector;
@@ -175,7 +177,7 @@ package common_types_pkg is
   function nullify(x: pl2pt_bus) return pl2pt_bus;
   function zeroed(x: pl2pt_bus) return pl2pt_bus;
 
-  type pl2mtc_bus is array(integer range <>) of pl2mtc;
+  type pl2mtc_bus is array(integer range <>) of pl2mtc_rt;
   function len(x: pl2mtc_bus) return natural;
   function width(x: pl2mtc_bus) return natural;
   function vectorify(x: pl2mtc_bus; t: std_logic_vector) return std_logic_vector;
@@ -185,7 +187,7 @@ package common_types_pkg is
   function nullify(x: pl2mtc_bus) return pl2mtc_bus;
   function zeroed(x: pl2mtc_bus) return pl2mtc_bus;
 
-  type tf2mtc_bus is array(integer range <>) of ptcalc2mtc;
+  type tf2mtc_bus is array(integer range <>) of ptcalc2mtc_rt;
   function len(x: tf2mtc_bus) return natural;
   function width(x: tf2mtc_bus) return natural;
   function vectorify(x: tf2mtc_bus; t: std_logic_vector) return std_logic_vector;
@@ -195,7 +197,7 @@ package common_types_pkg is
   function nullify(x: tf2mtc_bus) return tf2mtc_bus;
   function zeroed(x: tf2mtc_bus) return tf2mtc_bus;
 
-  type mtc_out_bus is array(integer range <>) of mtc2sl;
+  type mtc_out_bus is array(integer range <>) of mtc2sl_rt;
   function len(x: mtc_out_bus) return natural;
   function width(x: mtc_out_bus) return natural;
   function vectorify(x: mtc_out_bus; t: std_logic_vector) return std_logic_vector;
@@ -205,7 +207,7 @@ package common_types_pkg is
   function nullify(x: mtc_out_bus) return mtc_out_bus;
   function zeroed(x: mtc_out_bus) return mtc_out_bus;
 
-  type mtc2nsp_bus is array(integer range <>) of mtc2sl;
+  type mtc2nsp_bus is array(integer range <>) of mtc2sl_rt;
   function len(x: mtc2nsp_bus) return natural;
   function width(x: mtc2nsp_bus) return natural;
   function vectorify(x: mtc2nsp_bus; t: std_logic_vector) return std_logic_vector;

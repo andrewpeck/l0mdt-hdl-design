@@ -86,12 +86,13 @@ architecture beh of ucm_ctrl_top is
   signal num_cand          : unsigned(3 downto 0);
   signal pam_update        : std_logic;
 
-  signal o_csw_ctrl       :ucm_csw_control_art(c_MAX_NUM_SL -1 downto 0);
+  signal o_csw_ctrl_ar       :ucm_csw_control_art(c_MAX_NUM_SL -1 downto 0);
 
 
 begin
-
-  o_csw_ctrl_av <= convert(o_csw_ctrl,o_csw_ctrl_av);
+  o_csw_loop : for isl in 0 to c_MAX_NUM_SL-1 generate
+    o_csw_ctrl_av(isl) <= convert(o_csw_ctrl_ar(isl),o_csw_ctrl_av(isl));
+  end generate ; -- o_csw_loop
 
   MAIN_CTRL : entity ucm_lib.ucm_ctrl_main
   port map(
@@ -100,7 +101,7 @@ begin
     ena             => ena,
     -- extrnals
     i_data              => i_prepro2ctrl_av,
-    o_csw_ctrl          => o_csw_ctrl,
+    o_csw_ctrl          => o_csw_ctrl_ar,
     -- internals
     o_num_cand          => num_cand,
     o_pam_update        => pam_update

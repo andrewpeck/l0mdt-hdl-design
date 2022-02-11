@@ -34,7 +34,7 @@ hdl:
 - chamb_ieta_rpc_bus : [array : 4 , type : chamb_ieta_rpc]
 
 - ucm_cde_rt:
-  - muid        : [type : slc_muid]
+  - muid        : [type : slc_muid_rt]
   # - mdtid       : [type : vec_mdtid]
   - chamb_ieta  : [type : chamb_ieta_rpc_bus]
   - cointype    : [type : logic , length : SLC_COMMON_COINTYPE_LEN]
@@ -42,14 +42,16 @@ hdl:
   - phimod      : [type : logic , length : UCM_CDE2CVP_PHIMOD_LEN]
   - specific    : [type : logic , length: SLC_SPECIFIC_LEN]
   - data_valid  : [type : logic]
+- ucm_cde_vt : [type: logic, length: ucm_cde_rt]
+- ucm_cde_art: [array: open ,  type: ucm_cde_rt]
+- ucm_cde_avt: [ array: open,  type: ucm_cde_vt]
 
-- ucm_cde_bus_art : [array: open , type: ucm_cde_rt]
-
-- ucm_csw_ch_control_rt:
+- ucm_csw_control_rt:
   - data_present: [ type: logic ]
   - addr_orig:    [ type: logic, length: 4]
-
-- ucm_csw_control_art: [array: open , type: ucm_csw_ch_control_rt]
+- ucm_csw_control_vt : [type: logic, length: ucm_csw_control_rt]
+- ucm_csw_control_art: [array: open , type: ucm_csw_control_rt]
+- ucm_csw_control_avt: [ array: open, type: ucm_csw_control_vt]
 
 - ucm_pam_control_rt:
   - data_present: [ type: logic]

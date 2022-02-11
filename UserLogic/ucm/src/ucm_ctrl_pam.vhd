@@ -60,7 +60,7 @@ architecture beh of ucm_ctrl_pam is
   signal int_proc_info_ar   : ucm_proc_info_art(c_NUM_THREADS -1 downto 0);
 
   signal int_pam_ctrl_av  , o_pam_ctrl_av   : ucm_pam_control_avt(c_NUM_THREADS -1 downto 0);
-  signal int_proc_info_av , o_proc_info_av  : ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
+  signal int_proc_info_av : ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
 
   signal int_cvp_rst_v           : std_logic_vector(c_NUM_THREADS -1 downto 0);
   signal int_cvp_ctrl_v          : std_logic_vector(c_NUM_THREADS -1 downto 0);

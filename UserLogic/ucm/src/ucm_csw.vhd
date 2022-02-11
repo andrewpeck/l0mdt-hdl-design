@@ -36,24 +36,28 @@ entity ucm_csw is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    i_control_av        : in ucm_csw_control_avt;
+    i_control_av        : in ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
     --
-    i_data              : in slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
-    o_data              : out slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0)
+    i_data              : in slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
+    o_data              : out slc_rx_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity ucm_csw;
 
 architecture beh of ucm_csw is
   signal control_ar : ucm_csw_control_art(c_MAX_NUM_SL -1 downto 0);
   
-  signal o_data_ar : slc_rx_bus_art(c_MAX_NUM_SL -1 downto 0);
-  signal i_data_ar : slc_rx_bus_art(c_MAX_NUM_SL -1 downto 0);
+  signal o_data_ar : slc_rx_art(c_MAX_NUM_SL -1 downto 0);
+  signal i_data_ar : slc_rx_art(c_MAX_NUM_SL -1 downto 0);
 
 begin
-
-  control_ar <= convert(i_control_av,control_ar);
+  
+  -- control_ar <= convert(i_control_av,control_ar);
 
   generate_label: for sli in c_MAX_NUM_SL -1 downto 0 generate
+
+    control_ar(sli) <= convert(i_control_av(sli),control_ar(sli));
+
+
     i_data_ar(sli) <= convert(i_data(sli),i_data_ar(sli));
     o_data(sli) <= convert(o_data_ar(sli),o_data(sli));
 

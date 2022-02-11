@@ -36,7 +36,7 @@ A   chamb_ieta_rpc_bus (4 chamb_ieta_rpc)
 E      chamb_ieta_rpc (unsigned 4)
 
 R   ucm_cde_rt
-E      muid (slc_muid)
+E      muid (slc_muid_rt)
 E         slcid (unsigned SLC_COMMON_SLCID_LEN)
 E         slid (unsigned SL_TRAILER_SLID_LEN)
 E         bcid (unsigned SL_HEADER_BCID_LEN)
@@ -49,8 +49,10 @@ E      phimod (logic UCM_CDE2CVP_PHIMOD_LEN)
 E      specific (logic SLC_SPECIFIC_LEN)
 E      data_valid (logic)
 
-A   ucm_cde_bus_art (open ucm_cde_rt)
-E      muid (slc_muid)
+E   ucm_cde_vt (logic ucm_cde_rt)
+
+A   ucm_cde_art (open ucm_cde_rt)
+E      muid (slc_muid_rt)
 E         slcid (unsigned SLC_COMMON_SLCID_LEN)
 E         slid (unsigned SL_TRAILER_SLID_LEN)
 E         bcid (unsigned SL_HEADER_BCID_LEN)
@@ -63,13 +65,21 @@ E      phimod (logic UCM_CDE2CVP_PHIMOD_LEN)
 E      specific (logic SLC_SPECIFIC_LEN)
 E      data_valid (logic)
 
-R   ucm_csw_ch_control_rt
+A   ucm_cde_avt (open ucm_cde_vt)
+E      ucm_cde_vt (logic ucm_cde_rt)
+
+R   ucm_csw_control_rt
 E      data_present (logic)
 E      addr_orig (logic 4)
 
-A   ucm_csw_control_art (open ucm_csw_ch_control_rt)
+E   ucm_csw_control_vt (logic ucm_csw_control_rt)
+
+A   ucm_csw_control_art (open ucm_csw_control_rt)
 E      data_present (logic)
 E      addr_orig (logic 4)
+
+A   ucm_csw_control_avt (open ucm_csw_control_vt)
+E      ucm_csw_control_vt (logic ucm_csw_control_rt)
 
 R   ucm_pam_control_rt
 E      data_present (logic)

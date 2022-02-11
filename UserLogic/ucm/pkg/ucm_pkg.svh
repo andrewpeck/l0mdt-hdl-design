@@ -42,7 +42,7 @@
   typedef chamb_ieta_rpc  [4-1:0] chamb_ieta_rpc_bus;
 
   typedef struct packed {
-    slc_muid   muid;
+    slc_muid_rt   muid;
     chamb_ieta_rpc_bus   chamb_ieta;
     logic [SLC_COMMON_COINTYPE_LEN-1:0] cointype;
     logic unsigned [SLC_COMMON_POSPHI_LEN-1:0] posphi;
@@ -51,14 +51,22 @@
     logic  data_valid;
   } ucm_cde_rt;
 
-  typedef ucm_cde_rt   ucm_cde_bus_art;
+  typedef logic [$bits(ucm_cde_rt)-1:0] ucm_cde_vt;
+
+  typedef ucm_cde_rt   ucm_cde_art;
+
+  typedef ucm_cde_vt   ucm_cde_avt;
 
   typedef struct packed {
     logic  data_present;
     logic [4-1:0] addr_orig;
-  } ucm_csw_ch_control_rt;
+  } ucm_csw_control_rt;
 
-  typedef ucm_csw_ch_control_rt   ucm_csw_control_art;
+  typedef logic [$bits(ucm_csw_control_rt)-1:0] ucm_csw_control_vt;
+
+  typedef ucm_csw_control_rt   ucm_csw_control_art;
+
+  typedef ucm_csw_control_vt   ucm_csw_control_avt;
 
   typedef struct packed {
     logic  data_present;

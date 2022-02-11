@@ -51,38 +51,41 @@ hdl:
 - slc_rx_art: [array: open ,  type: slc_rx_rt]
 - slc_rx_avt: [ array: open,  type: slc_rx_vt]
 
-- slc_endcap_bus: [array: open , type: slc_endcap]
-
+- slc_endcap_bus: [array: open , type: slc_endcap_rt]
+# - slc_endcap_vt : [type: logic, length: slc_endcap_rt]
+# - slc_endcap_art: [array: open ,  type: slc_endcap_rt]
+# - slc_endcap_avt: [ array: open,  type: slc_endcap_vt]
 # -----------------------------------------------------------
 #   MDT tdc, polmux & TAR
 # -----------------------------------------------------------
 
-- mdt_polmux_bus: [array: open , type: tdcpolmux2tar]
+- mdt_polmux_bus: [array: open , type: tdcpolmux2tar_rt]
 
-- tar2hps_bus      : [array: open , type: tar2hps]
+- tar2hps_bus      : [array: open , type: tar2hps_rt]
 
 #############################################################
 # INTERBLOCK TYPES
 #############################################################
 
-- ucm2hps_bus     : [array: open , type: ucm2hps]
+- ucm2hps_bus     : [array: open , type: ucm2hps_rt]
 
-- heg2sfslc_bus : [ array : open , type : heg2sfslc]
-- heg2sfhit_bus : [ array : open , type : heg2sfhit]
+- heg2sfslc_bus : [ array : open , type : heg2sfslc_rt]
+- heg2sfhit_bus : [ array : open , type : heg2sfhit_rt]
 
-- sf2pt_bus: [ array: open , type : sf2ptcalc]
+- sf2pt_bus: [ array: open , type : sf2ptcalc_rt]
 
-- ucm2pl_bus: [array: open , type: ucm2pl]
+- ucm2pl_vt : [type: logic, length: ucm2pl_rt]
+- ucm2pl_bus: [array: open , type: ucm2pl_rt]
 
-- pl2pt_bus: [array: open , type: pl2ptcalc]
+- pl2pt_bus: [array: open , type: pl2ptcalc_rt]
 
-- pl2mtc_bus: [array: open , type: pl2mtc]
+- pl2mtc_bus: [array: open , type: pl2mtc_rt]
 
-- tf2mtc_bus: [array: open , type: ptcalc2mtc]
+- tf2mtc_bus: [array: open , type: ptcalc2mtc_rt]
 
-- mtc_out_bus: [array: open , type: mtc2sl]
+- mtc_out_bus: [array: open , type: mtc2sl_rt]
 
-- mtc2nsp_bus: [array: open , type: mtc2sl]
+- mtc2nsp_bus: [array: open , type: mtc2sl_rt]
 
 - felix_data: [type: logic, length: 250]
 

@@ -100,7 +100,7 @@ begin
 
       else
 
-        chamber_z_org_a <= convert(i_chamber_z_org_bus,chamber_z_org_a);
+        chamber_z_org_a <= structify(i_chamber_z_org_bus);
 
         o_ieta_dv <= i_z_dv;
         if i_z_dv = '1' then

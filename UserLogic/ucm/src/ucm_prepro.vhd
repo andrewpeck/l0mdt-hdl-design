@@ -40,22 +40,22 @@ entity ucm_prepro is
     ena                   : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_v          : in slc_rx_rvt;
+    i_slc_data_v          : in slc_rx_vt;
     -- ctrl out
-    o_prepro2ctrl_v       : out ucm_prepro2ctrl_rvt;
+    o_prepro2ctrl_v       : out ucm_prepro2ctrl_vt;
     -- data out
-    o_prepro_data_v       : out slc_rx_rvt
+    o_prepro_data_v       : out slc_rx_vt
   );
 end entity ucm_prepro;
 
 architecture beh of ucm_prepro is
   
   signal i_slc_data_r     : slc_rx_rt;
-  signal prepro_data_r  : slc_rx_rt;
+  signal prepro_data_r    : slc_rx_rt;
   signal i_barrel         : slc_barrel_rt;
   signal o_barrel         : slc_barrel_rt;
 
-  signal prepro_data_v    : slc_rx_rvt;
+  signal prepro_data_v    : slc_rx_vt;
     
 
   signal o_prepro2ctrl_r  : ucm_prepro2ctrl_rt;

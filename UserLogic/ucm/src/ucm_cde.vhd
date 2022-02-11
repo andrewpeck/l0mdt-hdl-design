@@ -49,16 +49,16 @@ entity ucm_cde is
     i_phicenter           : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_chamber_z_org_bus   : in b_chamber_z_origin_station_avt;
     -- PAM
-    i_proc_info_v         : in ucm_proc_info_rvt := (others => '0');
+    i_proc_info_v         : in ucm_proc_info_vt := (others => '0');
     -- SLc in
-    i_slc_data_v          : in slc_rx_rvt;
+    i_slc_data_v          : in slc_rx_vt;
     -- pam out
-    o_cde_data_v          : out ucm_cde_rvt;
+    o_cde_data_v          : out ucm_cde_vt;
     -- to pipeline
     o_pl_phimod           : out std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
     o_pl_phimod_dv        : out std_logic;
 
-    o_ucm2pl_v            : out ucm2pl_rvt
+    o_ucm2pl_v            : out ucm2pl_vt
   );
 end entity ucm_cde;
 
