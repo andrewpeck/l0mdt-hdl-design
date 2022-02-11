@@ -350,7 +350,7 @@ BEGIN
 
             -- Clock 9
             o_fitter_en <= (others => '0');
-            if eof_v(4) <= '1' then
+            if eof_v(MAX_CLUSTERS/2) <= '1' then
                 o_fitter_en(to_integer(out_cluster)) <= '1';
             end if;
 

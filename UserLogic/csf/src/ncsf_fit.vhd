@@ -36,15 +36,16 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY ncsf_fit IS
     PORT (
         clk : IN STD_LOGIC;
-        i_sums : csf_sums_a_avt(CSF_MAX_CLUSTERS-1 downto 0);
+        i_sums_ml0 : csf_sums_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+        i_sums_ml1 : csf_sums_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
         o_seg : OUT csf_locseg_rvt
     );
 END ncsf_fit;
 
 ARCHITECTURE Behavioral OF ncsf_fit IS
     -- Input sums
-    signal sums : csf_sums_a_at(CSF_MAX_CLUSTERS-1 downto 0);
-    signal sums_s : csf_sums_rt;
+    SIGNAL sums_ml0, sums_ml1 : csf_sums_a_at(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+    SIGNAL sums_ml0_s, sums_ml1_s, sums : csf_sums_rt;
     -- Numerator/Denominator widths
     CONSTANT NSUM_XY_LEN : INTEGER := SUM_XY_LEN + CSF_MAXHITS_SEG_LEN;
     CONSTANT SUM_Y_SUM_X_LEN : INTEGER := SUM_Y_LEN + SUM_X_LEN;
@@ -91,10 +92,10 @@ ARCHITECTURE Behavioral OF ncsf_fit IS
     := (OTHERS => '0');
     SIGNAL reciprocal_addr : STD_LOGIC_VECTOR(DEN_LEN - SHIFT_DEN - 1 DOWNTO 0)
     := (OTHERS => '0');
-    SIGNAL reciprocal_den : STD_LOGIC_VECTOR(RECIPROCAL_LEN-1 downto 0);
+    SIGNAL reciprocal_den : STD_LOGIC_VECTOR(RECIPROCAL_LEN - 1 DOWNTO 0);
     SIGNAL reciprocal_den_s : signed(RECIPROCAL_LEN DOWNTO 0)
     := (OTHERS => '0');
-    
+
     -- Fit result widths
     CONSTANT MFIT_FULL_LEN : INTEGER := NUM_M_LEN - SHIFT_NUM_M + RECIPROCAL_LEN + 1;
     CONSTANT BFIT_FULL_LEN : INTEGER := NUM_B_LEN - SHIFT_NUM_B + RECIPROCAL_LEN + 1;
@@ -111,8 +112,6 @@ ARCHITECTURE Behavioral OF ncsf_fit IS
     SIGNAL startCounter : STD_LOGIC := '0';
     SIGNAL dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10 : STD_LOGIC := '0';
     SIGNAL event_valid : STD_LOGIC := '0';
-
-
     -- Output segment
     SIGNAL output_seg : csf_locseg_rt;
 
@@ -148,7 +147,8 @@ BEGIN
         douta => reciprocal_den
     );
 
-    sums <= structify(i_sums);
+    sums_ml0 <= structify(i_sums_ml0);
+    sums_ml1 <= structify(i_sums_ml1);
     o_seg <= vectorify(output_seg);
 
     Fitter : PROCESS (clk)
@@ -157,20 +157,32 @@ BEGIN
 
             -- Clock 0        
             dsp_start <= '0';
-            sum_loop : for i in 0 to CSF_MAX_CLUSTERS-1 loop
-                if sums(i).valid = '1' then
-                    dsp_start <= sums(i).valid;
-                    sums_s <= sums(i);
-                end if;
-            end loop;
-            
-            dv0 <= dsp_start;
-            dsp_NSumXY <= sums_s.n * sums_s.xy;
-            dsp_SumYSumX <= sums_s.y * sums_s.x;
-            dsp_SumYSumX2 <= sums_s.y * sums_s.x2;
-            dsp_SumXYSumX <= sums_s.xy * sums_s.x;
-            dsp_NSumX2 <= sums_s.n * sums_s.x2;
-            dsp_SumXSumX <= sums_s.x * sums_s.x;
+            sums <= nullify(sums);
+            sum_loop : FOR i IN 0 TO CSF_MAX_CLUSTERS - 1 LOOP
+                IF sums_ml0(i).valid = '1' THEN
+                    dsp_start <= sums_ml0(i).valid;
+                    sums_ml0_s <= sums_ml0(i);
+                END IF;
+                IF sums_ml1(i).valid = '1' THEN
+                    dsp_start <= sums_ml1(i).valid;
+                    sums_ml1_s <= sums_ml1(i);
+                END IF;
+            END LOOP;
+
+            sums.valid <= dsp_start;
+            sums.n <= sums_ml0_s.n + sums_ml1_s.n;
+            sums.xy <= sums_ml0_s.xy + sums_ml1_s.xy;
+            sums.x <= sums_ml0_s.x + sums_ml1_s.x;
+            sums.y <= sums_ml0_s.y + sums_ml1_s.y;
+            sums.x2 <= sums_ml0_s.x2 + sums_ml1_s.x2;
+
+            dv0 <= sums.valid;
+            dsp_NSumXY <= sums.n * sums.xy;
+            dsp_SumYSumX <= sums.y * sums.x;
+            dsp_SumYSumX2 <= sums.y * sums.x2;
+            dsp_SumXYSumX <= sums.xy * sums.x;
+            dsp_NSumX2 <= sums.n * sums.x2;
+            dsp_SumXSumX <= sums.x * sums.x;
 
             -- Clock 1
             dv1 <= dv0;
@@ -219,8 +231,6 @@ BEGIN
             dv7 <= dv6;
             numerator_b_red_sss <= numerator_b_red_ss;
             numerator_m_red_sss <= numerator_m_red_ss;
-
-
             -- Clock 8
             dv8 <= dv7;
             numerator_b_red_ssss <= numerator_b_red_sss;
@@ -240,20 +250,20 @@ BEGIN
             -- Clock 11
             output_seg.valid <= dv10;
             output_seg.m <=
-                resize(
-                shift_right(
-                mfit_full_s,
-                RECIPROCAL_LEN + SHIFT_DEN - SHIFT_NUM_M - MFIT_MULTI_LEN
-                ),
-                CSF_SEG_M_LEN);
+            resize(
+            shift_right(
+            mfit_full_s,
+            RECIPROCAL_LEN + SHIFT_DEN - SHIFT_NUM_M - MFIT_MULTI_LEN
+            ),
+            CSF_SEG_M_LEN);
 
             output_seg.b <=
-                resize(
-                shift_right(
-                bfit_full_s,
-                RECIPROCAL_LEN + SHIFT_DEN - SHIFT_NUM_B - B_OVER_Z_MULTI_LEN
-                ),
-                CSF_SEG_B_LEN);
+            resize(
+            shift_right(
+            bfit_full_s,
+            RECIPROCAL_LEN + SHIFT_DEN - SHIFT_NUM_B - B_OVER_Z_MULTI_LEN
+            ),
+            CSF_SEG_B_LEN);
 
         END IF;
     END PROCESS; -- Fitter
