@@ -25,14 +25,18 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
-library hp_lib;
-use hp_lib.hp_pkg.all;
+--library hp_lib;
+--use hp_lib.hp_pkg.all;
 library heg_lib;
-use heg_lib.heg_pkg.all;
+--use heg_lib.heg_pkg.all;
 use heg_lib.heg_custom_pkg.all;
 library heg_roi_lib;
 use heg_roi_lib.roi_types_pkg.all;
 use heg_roi_lib.roi_func_pkg.all;
+
+library hegtypes_lib;
+use hegtypes_lib.hp_pkg.all;
+use hegtypes_lib.heg_pkg.all;
 
 entity b_z2roi is
   generic(

@@ -28,7 +28,9 @@ use shared_lib.config_pkg.all;
 library vamc_lib;
 
 library hp_lib;
-use hp_lib.hp_pkg.all;
+--use hp_lib.hp_pkg.all;
+library hegtypes_lib;
+use hegtypes_lib.hp_pkg.all;
 
 entity hit_processor is
   generic(

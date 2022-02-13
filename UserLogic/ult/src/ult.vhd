@@ -258,7 +258,7 @@ architecture behavioral of ult is
   signal mpl_sump : std_logic := '1';
 
   --FAST MONITORING
-  signal ult_fm_data : fm_rt_array(0  to total_sb-1);
+--  signal ult_fm_data : fm_rt_array(0  to total_sb-1);
   signal h2s_fm_data : fm_rt_array(0  to h2s_sb_all_station_n -1);
 begin
 
@@ -950,15 +950,7 @@ begin
 
       --Fast Monitoring
     FM_GEN : if c_FM_ENABLED = '1' generate
-      FM_PROC : process (clock_and_control.clk) is
-        begin
-          if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
-            H2S_SPYBUFFERS : for I in 0 to h2s_sb_all_station_n-1 loop
-              ult_fm_data(I).fm_data <= h2s_fm_data(I).fm_data;
-              ult_fm_data(I).fm_vld  <= h2s_fm_data(I).fm_vld;
-            end loop;
-          end if;
-      end process;
+    
 
       ULT_FM : entity ult_lib.ult_fm
       port map (
@@ -968,7 +960,8 @@ begin
         ctrl_v            => fm_ctrl_v,
         mon_v             => fm_mon_v,
         --  inputs
-        ult_fm_data      => ult_fm_data
+        h2s_fm_data   => h2s_fm_data
+--        ult_fm_data      => ult_fm_data
       );
     else generate
       SUMP_FM:

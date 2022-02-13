@@ -101,7 +101,7 @@ ARCHITECTURE Behavioral OF csf_chi2 IS
     SIGNAL start_read : STD_LOGIC := '0';
     SIGNAL nhits_s : unsigned(CSF_MAXHITS_SEG_LEN - 1 DOWNTO 0)
     := (OTHERS => '0');
-    SIGNAL dsp_chi : unsigned(CSF_SEG_CHI2_LEN * 2 - 1 DOWNTO 0)
+    SIGNAL dsp_chi : unsigned(RES_LEN - 1 DOWNTO 0)
     := (OTHERS => '0');
     SIGNAL counter : INTEGER := 0;
     SIGNAL startCounter : STD_LOGIC := '0';
@@ -213,29 +213,29 @@ BEGIN
                 shift_right(dsp_b_y_2 - dsp_mx2, SIGMA_LEN - CHI2_MULT_LEN/2),
                 RES_LEN);
 
+            ---- Clock 2
+            --dv2_1 <= dv1_1;
+            --dv2_2 <= dv1_2;
+            --dsp_res2_1 <= resize(unsigned(dsp_res_1 * dsp_res_1),
+            --    CSF_SEG_CHI2_LEN * 2);
+            --dsp_res2_2 <= resize(unsigned(dsp_res_2 * dsp_res_2),
+            --    CSF_SEG_CHI2_LEN * 2);
+
+            ---- Clock 3
+            --dv3_1 <= dv2_1;
+            --dv3_2 <= dv2_2;
+            --dsp_res2_1_s <= dsp_res2_1;
+            --dsp_res2_2_s <= dsp_res2_2;
+
             -- Clock 2
-            dv2_1 <= dv1_1;
-            dv2_2 <= dv1_2;
-            dsp_res2_1 <= resize(unsigned(dsp_res_1 * dsp_res_1),
-                CSF_SEG_CHI2_LEN * 2);
-            dsp_res2_2 <= resize(unsigned(dsp_res_2 * dsp_res_2),
-                CSF_SEG_CHI2_LEN * 2);
-
-            -- Clock 3
-            dv3_1 <= dv2_1;
-            dv3_2 <= dv2_2;
-            dsp_res2_1_s <= dsp_res2_1;
-            dsp_res2_2_s <= dsp_res2_2;
-
-            -- Clock 4
-            IF dv3_1 = '1' AND dv3_2 = '1' THEN
-                dsp_chi <= dsp_chi + dsp_res2_1_s + dsp_res2_2_s;
+            IF dv1_1 = '1' AND dv1_2 = '1' THEN
+                dsp_chi <= dsp_chi + unsigned(abs(dsp_res_1)) + unsigned(abs(dsp_res_2));
                 startCounter <= '1';
-            ELSIF dv3_1 = '1' THEN
-                dsp_chi <= dsp_chi + dsp_res2_1_s;
+            ELSIF dv1_1 = '1' THEN
+                dsp_chi <= dsp_chi + unsigned(abs(dsp_res_1));
                 startCounter <= '1';
-            ELSIF dv3_2 = '1' THEN
-                dsp_chi <= dsp_chi + dsp_res2_2_s;
+            ELSIF dv1_2 = '1' THEN
+                dsp_chi <= dsp_chi + unsigned(abs(dsp_res_2));
                 startCounter <= '1';
             END IF;
 

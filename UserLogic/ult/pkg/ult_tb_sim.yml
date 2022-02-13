@@ -7,7 +7,7 @@ __config__:
         - l0mdt_dataformats_pkg
         - common_constants_pkg
         - common_types_pkg
-      heg_lib:
+      hegtypes_lib:
         - heg_pkg
 
 HDL_Types:

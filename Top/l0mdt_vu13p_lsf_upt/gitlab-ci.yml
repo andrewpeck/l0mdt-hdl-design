@@ -4,7 +4,7 @@ GEN:l0mdt_vu13p_lsf_upt:
     variables:
       extends: .vars
       PROJECT_NAME: l0mdt_vu13p_lsf_upt
-      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
       HOG_CHECK_SYNTAX : 0
     tags:
       - heavy-duty

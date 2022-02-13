@@ -35,6 +35,16 @@ package csf_pkg is
 
   constant CSF_MAXHITS_ML_LEN : integer := 3;
 
+  constant CSF_MAX_CLUSTERS : integer := 10;
+
+  constant SUM_XY_LEN : integer := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN * 2;
+
+  constant SUM_Y_LEN : integer := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN;
+
+  constant SUM_X_LEN : integer := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN;
+
+  constant SUM_X2_LEN : integer := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN*2;
+
   type csf_seed_rt is record
     muid : slc_muid_rt;
     mbar : unsigned(UCM_VEC_ANG_LEN-1 downto 0);
@@ -90,6 +100,29 @@ package csf_pkg is
   function structify(x: std_logic_vector) return csf_locseg_a_at;
   function nullify(x: csf_locseg_a_at) return csf_locseg_a_at;
   function nullify(x: csf_locseg_a_avt) return csf_locseg_a_avt;
+
+  type csf_sums_rt is record
+    valid : std_logic;
+    xy : unsigned(SUM_XY_LEN-1 downto 0);
+    y : unsigned(SUM_Y_LEN-1 downto 0);
+    x : unsigned(SUM_X_LEN-1 downto 0);
+    x2 : unsigned(SUM_X2_LEN-1 downto 0);
+    n : unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
+  end record csf_sums_rt;
+  constant CSF_SUMS_LEN : integer := 111;
+  subtype csf_sums_rvt is std_logic_vector(CSF_SUMS_LEN-1 downto 0);
+  function vectorify(x: csf_sums_rt) return csf_sums_rvt;
+  function structify(x: csf_sums_rvt) return csf_sums_rt;
+  function nullify(x: csf_sums_rt) return csf_sums_rt;
+
+  type csf_sums_a_at is array(integer range <>) of csf_sums_rt;
+  type csf_sums_a_avt is array(integer range <>) of csf_sums_rvt;
+  function vectorify(x: csf_sums_a_at) return csf_sums_a_avt;
+  function vectorify(x: csf_sums_a_at) return std_logic_vector;
+  function structify(x: csf_sums_a_avt) return csf_sums_a_at;
+  function structify(x: std_logic_vector) return csf_sums_a_at;
+  function nullify(x: csf_sums_a_at) return csf_sums_a_at;
+  function nullify(x: csf_sums_a_avt) return csf_sums_a_avt;
 
   type sf_seg_data_barrel_rt is record
     data_valid : std_logic;
@@ -314,6 +347,93 @@ package body csf_pkg is
   end function nullify;
   function nullify(x: csf_locseg_a_avt) return csf_locseg_a_avt is
     variable y :  csf_locseg_a_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: csf_sums_rt) return csf_sums_rvt is
+    variable y : csf_sums_rvt;
+  begin
+    y(110 downto 110)          := vectorify(x.valid);
+    y(109 downto 76)           := vectorify(x.xy);
+    y(75 downto 57)            := vectorify(x.y);
+    y(56 downto 38)            := vectorify(x.x);
+    y(37 downto 4)             := vectorify(x.x2);
+    y(3 downto 0)              := vectorify(x.n);
+    return y;
+  end function vectorify;
+  function structify(x: csf_sums_rvt) return csf_sums_rt is
+    variable y : csf_sums_rt;
+  begin
+    y.valid                    := structify(x(110 downto 110));
+    y.xy                       := structify(x(109 downto 76));
+    y.y                        := structify(x(75 downto 57));
+    y.x                        := structify(x(56 downto 38));
+    y.x2                       := structify(x(37 downto 4));
+    y.n                        := structify(x(3 downto 0));
+    return y;
+  end function structify;
+  function nullify(x: csf_sums_rt) return csf_sums_rt is
+    variable y : csf_sums_rt;
+  begin
+    y.valid                    := nullify(x.valid);
+    y.xy                       := nullify(x.xy);
+    y.y                        := nullify(x.y);
+    y.x                        := nullify(x.x);
+    y.x2                       := nullify(x.x2);
+    y.n                        := nullify(x.n);
+    return y;
+  end function nullify;
+
+  function vectorify(x: csf_sums_a_at) return csf_sums_a_avt is
+    variable y :  csf_sums_a_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: csf_sums_a_at) return std_logic_vector is
+    variable msb : integer := x'length*111-1;
+    variable y : std_logic_vector(msb downto 0);
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-111+1) := vectorify(x(i));
+      msb := msb - 111;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: csf_sums_a_avt) return csf_sums_a_at is
+    variable y :  csf_sums_a_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return csf_sums_a_at is
+    variable y :  csf_sums_a_at(x'range);
+    variable msb : integer := x'left;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-111+1));
+      msb := msb - 111;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: csf_sums_a_at) return csf_sums_a_at is
+    variable y :  csf_sums_a_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: csf_sums_a_avt) return csf_sums_a_avt is
+    variable y :  csf_sums_a_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));

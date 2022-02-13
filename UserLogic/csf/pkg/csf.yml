@@ -23,6 +23,12 @@ HDL_Types:
 - CSF_MAXHITS_SEG     : [ qualifier: constant, type: integer, value: 16]
 - CSF_MAXHITS_SEG_LEN : [qualifier: constant, type: integer, value: 4]
 - CSF_MAXHITS_ML_LEN  : [qualifier: constant, type: integer, value: 3]
+- CSF_MAX_CLUSTERS        : [qualifier: constant, type: integer, value: 10]
+- SUM_XY_LEN : [qualifier : constant, type: integer, value: CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN * 2]
+- SUM_Y_LEN : [qualifier : constant, type: integer, value: CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN]
+- SUM_X_LEN : [qualifier : constant, type: integer, value: CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN]
+- SUM_X2_LEN :  [qualifier : constant, type: integer, value: CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN*2]
+
 
 - csf_seed:
   - muid          : [ type: slc_muid]
@@ -48,6 +54,16 @@ HDL_Types:
   - nhits  : [type : unsigned, length: CSF_MAXHITS_SEG_LEN]
 
 - csf_locseg_a: [array: open , type: csf_locseg]
+
+- csf_sums:
+  - valid : [type: logic]
+  - xy : [type: unsigned, length: SUM_XY_LEN]
+  - y : [type: unsigned, length: SUM_Y_LEN]
+  - x : [type: unsigned, length: SUM_X_LEN]
+  - x2 : [type: unsigned, length: SUM_X2_LEN]
+  - n : [type: unsigned, length: CSF_MAXHITS_SEG_LEN]
+
+- csf_sums_a: [array: open, type: csf_sums]
 
 # - SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
 # - SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]

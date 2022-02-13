@@ -43,8 +43,10 @@ use shared_lib.vhdl_textio_csv_pkg.all;
 library ult_lib;
 -- use ult_lib.ult_tb_sim_pkg.all;
 
-library heg_lib;
-use heg_lib.heg_pkg.all;
+--library heg_lib;
+--use heg_lib.heg_pkg.all;
+library hegtypes_lib;
+use hegtypes_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
 

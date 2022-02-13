@@ -7,7 +7,7 @@ variables:
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'v5.6.0'
+      ref: 'Hog2022.1'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -20,6 +20,7 @@ include:
     # - local: '/Top/hal/gitlab-ci.yml'
     # - local: '/Top/base_l0mdt/gitlab-ci.yml'
     - local: '/Top/l0mdt_vu13p_csf_mpt/gitlab-ci.yml'
+    - local: '/Top/l0mdt_vu13p_ncsf_mpt/gitlab-ci.yml'
     - local: '/Top/l0mdt_vu13p_lsf_upt/gitlab-ci.yml'
     #---------------------------------------------
     #         Modules
@@ -88,6 +89,7 @@ include:
     - local: '/Top/MainBlocks/hps_lsf.1/gitlab-ci.yml'
     - local: '/Top/MainBlocks/hps_lsf.2/gitlab-ci.yml'
     - local: '/Top/MainBlocks/csf.0/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/ncsf/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
     - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
     - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'

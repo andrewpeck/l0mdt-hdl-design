@@ -214,7 +214,7 @@ BEGIN
         MXADRB => UCM_MBAR_LEN,
         MXDATB => INV_SQRT_M_LEN,
         ROM_FILE => "invsqrt_mbar.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "block"
     )
     PORT MAP(
         ena => '1',
@@ -228,7 +228,7 @@ BEGIN
         MXADRB => UCM_MBAR_LEN,
         MXDATB => SQU_M_LEN,
         ROM_FILE => "sqrt_mbar.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "block"
     )
     PORT MAP(
         ena => '1',
