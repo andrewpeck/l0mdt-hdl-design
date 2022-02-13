@@ -14,7 +14,7 @@ E      clk (logic)
 E      rst (logic)
 E      bx (logic)
 
-R   l0mdt_ttc
+R   l0mdt_ttc_rt
 E      bcr (logic)
 E      ocr (logic)
 E      ecr (logic)
@@ -23,6 +23,8 @@ E      l1a (logic)
 E      bcid (bcid)
 E      evid (evid)
 E      orid (orid)
+
+E   l0mdt_ttc_vt (logic l0mdt_ttc_rt)
 
 E   slc_rx_vt (logic slc_rx_rt)
 
@@ -55,7 +57,9 @@ E      specific (logic SLC_RX_SPECIFIC_LEN)
 A   slc_rx_avt (open slc_rx_vt)
 E      slc_rx_vt (logic slc_rx_rt)
 
-A   slc_endcap_bus (open slc_endcap_rt)
+E   slc_endcap_vt (logic slc_endcap_rt)
+
+A   slc_endcap_art (open slc_endcap_rt)
 E      e_reserved (logic SLC_ENDCAP_E_RESERVED_LEN)
 E      nswseg_mon (logic)
 E      nswseg_angdtheta (signed SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN)
@@ -63,6 +67,9 @@ E      nswseg_posphi (unsigned SLC_ENDCAP_NSWSEG_POSPHI_LEN)
 E      nswseg_poseta (unsigned SLC_ENDCAP_NSWSEG_POSETA_LEN)
 E      seg_angdphi (signed SLC_ENDCAP_SEG_ANGDPHI_LEN)
 E      seg_angdtheta (signed SLC_ENDCAP_SEG_ANGDTHETA_LEN)
+
+A   slc_endcap_avt (open slc_endcap_vt)
+E      slc_endcap_vt (logic slc_endcap_rt)
 
 A   mdt_polmux_bus (open tdcpolmux2tar_rt)
 E      data_valid (logic)
@@ -82,7 +89,9 @@ E      layer (unsigned TAR2HPS_LAYER_LEN)
 E      tube (unsigned TAR2HPS_TUBE_LEN)
 E      time (unsigned TAR2HPS_TIME_LEN)
 
-A   ucm2hps_bus (open ucm2hps_rt)
+E   ucm2hps_vt (logic ucm2hps_rt)
+
+A   ucm2hps_art (open ucm2hps_rt)
 E      data_valid (logic)
 E      muid (slc_muid_rt)
 E         slcid (unsigned SLC_COMMON_SLCID_LEN)
@@ -94,6 +103,9 @@ E         chamber_id (unsigned VEC_MDTID_CHAMBER_ID_LEN)
 E         chamber_ieta (unsigned VEC_MDTID_CHAMBER_IETA_LEN)
 E      vec_pos (unsigned UCM2HPS_VEC_POS_LEN)
 E      vec_ang (unsigned UCM2HPS_VEC_ANG_LEN)
+
+A   ucm2hps_avt (open ucm2hps_vt)
+E      ucm2hps_vt (logic ucm2hps_rt)
 
 A   heg2sfslc_bus (open heg2sfslc_rt)
 E      data_valid (logic)
@@ -131,7 +143,7 @@ E         chamber_ieta (unsigned VEC_MDTID_CHAMBER_IETA_LEN)
 
 E   ucm2pl_vt (logic ucm2pl_rt)
 
-A   ucm2pl_bus (open ucm2pl_rt)
+A   ucm2pl_art (open ucm2pl_rt)
 E      data_valid (logic)
 E      busy (logic)
 E      process_ch (logic UCM2PL_PROCESS_CH_LEN)
@@ -161,6 +173,9 @@ E      phimod (signed UCM2PL_PHIMOD_LEN)
 E      nswseg_angdtheta (signed SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN)
 E      nswseg_posphi (unsigned SLC_ENDCAP_NSWSEG_POSPHI_LEN)
 E      nswseg_poseta (unsigned SLC_ENDCAP_NSWSEG_POSETA_LEN)
+
+A   ucm2pl_avt (open ucm2pl_vt)
+E      ucm2pl_vt (logic ucm2pl_rt)
 
 A   pl2pt_bus (open pl2ptcalc_rt)
 E      data_valid (logic)

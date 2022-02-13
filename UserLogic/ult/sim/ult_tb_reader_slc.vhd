@@ -50,8 +50,8 @@ entity ult_tb_reader_slc is
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0');
     -- Sector Logic Candidates
-    o_main_primary_slc    : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
-    o_main_secondary_slc  : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
+    o_main_primary_slc    : out slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
+    o_main_secondary_slc  : out slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
     o_plus_neighbor_slc   : out slc_rx_rvt := (others => '0');
     o_minus_neighbor_slc  : out slc_rx_rvt := (others => '0')
 

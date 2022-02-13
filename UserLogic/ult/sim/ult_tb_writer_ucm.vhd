@@ -81,10 +81,10 @@ architecture sim of ult_tb_writer_ucm is
 
   alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
 
-  alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_plin_av : ucm2hps_bus_avt >>;
-  alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_plin_av : ucm2hps_bus_avt >>;
-  alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_plin_av : ucm2hps_bus_avt >>;
-  alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_plin_av : ucm2hps_bus_avt >>;
+  alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_plin_av : ucm2hps_avt >>;
 
   alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_bus_avt >>;
   signal ucm2pl_ar : ucm2pl_bus_at(c_MAX_NUM_SL-1 downto 0);

@@ -29,7 +29,7 @@ hdl:
   - rst       : [type: logic]
   - bx        : [type: logic]
 
-- l0mdt_ttc:
+- l0mdt_ttc_rt:
   - bcr       : [type: logic]
   - ocr       : [type: logic]
   - ecr       : [type: logic]
@@ -38,7 +38,7 @@ hdl:
   - bcid      : [type: bcid]
   - evid      : [type: evid]
   - orid      : [type: orid]
-
+- l0mdt_ttc_vt : [type: logic, length: l0mdt_ttc_rt]
 #############################################################
 # INTERFACES TYPES
 #############################################################
@@ -51,10 +51,10 @@ hdl:
 - slc_rx_art: [array: open ,  type: slc_rx_rt]
 - slc_rx_avt: [ array: open,  type: slc_rx_vt]
 
-- slc_endcap_bus: [array: open , type: slc_endcap_rt]
-# - slc_endcap_vt : [type: logic, length: slc_endcap_rt]
-# - slc_endcap_art: [array: open ,  type: slc_endcap_rt]
-# - slc_endcap_avt: [ array: open,  type: slc_endcap_vt]
+# - slc_endcap_bus: [array: open , type: slc_endcap_rt]
+- slc_endcap_vt : [type: logic, length: slc_endcap_rt]
+- slc_endcap_art: [array: open ,  type: slc_endcap_rt]
+- slc_endcap_avt: [ array: open,  type: slc_endcap_vt]
 # -----------------------------------------------------------
 #   MDT tdc, polmux & TAR
 # -----------------------------------------------------------
@@ -67,15 +67,21 @@ hdl:
 # INTERBLOCK TYPES
 #############################################################
 
-- ucm2hps_bus     : [array: open , type: ucm2hps_rt]
+# - ucm2hps_art     : [array: open , type: ucm2hps_rt]
+- ucm2hps_vt : [type: logic, length: ucm2hps_rt]
+- ucm2hps_art: [array: open ,  type: ucm2hps_rt]
+- ucm2hps_avt: [ array: open,  type: ucm2hps_vt]
 
 - heg2sfslc_bus : [ array : open , type : heg2sfslc_rt]
 - heg2sfhit_bus : [ array : open , type : heg2sfhit_rt]
 
 - sf2pt_bus: [ array: open , type : sf2ptcalc_rt]
 
+# - ucm2pl_vt : [type: logic, length: ucm2pl_rt]
+# - ucm2pl_bus: [array: open , type: ucm2pl_rt]
 - ucm2pl_vt : [type: logic, length: ucm2pl_rt]
-- ucm2pl_bus: [array: open , type: ucm2pl_rt]
+- ucm2pl_art: [array: open ,  type: ucm2pl_rt]
+- ucm2pl_avt: [ array: open,  type: ucm2pl_vt]
 
 - pl2pt_bus: [array: open , type: pl2ptcalc_rt]
 

@@ -18,25 +18,23 @@ hdl:
 
 - ucm_prepro2ctrl_rt:
   - data_valid  : [type: logic]
-
 - ucm_prepro2ctrl_vt : [type: logic, length: ucm_prepro2ctrl_rt]
+- ucm_prepro2ctrl_art : [array: open , type: ucm_prepro2ctrl_rt]
+- ucm_prepro2ctrl_avt : [array: open , type: ucm_prepro2ctrl_vt]
 
-- ucm_prepro2ctrl_bus_art : [array: open , type: ucm_prepro2ctrl_rt]
-- ucm_prepro2ctrl_bus_avt : [array: open , type: ucm_prepro2ctrl_vt]
+- ucm_rpc_lt : [type : logic , length : SLC_Z_RPC_LEN]
+- ucm_rpc_r_alt : [array : open , type : ucm_rpc_lt]
 
-- ucm_rpc_r : [type : logic , length : SLC_Z_RPC_LEN]
-- ucm_rpc_r_bus : [array : open , type : ucm_rpc_r]
+- ucm_mdt_lt : [type : logic , length : UCM_Z_ROI_LEN]
+- ucm_mdt_r_alt : [array : open , type : ucm_mdt_lt]
 
-- ucm_mdt_r : [type : logic , length : UCM_Z_ROI_LEN]
-- ucm_mdt_r_bus_ar : [array : open , type : ucm_mdt_r]
-
-- chamb_ieta_rpc : [type : unsigned , length : 4]
-- chamb_ieta_rpc_bus : [array : 4 , type : chamb_ieta_rpc]
+- chamb_ieta_rpc_ut : [type : unsigned , length : 4]
+- chamb_ieta_rpc_aut : [array : 4 , type : chamb_ieta_rpc_ut]
 
 - ucm_cde_rt:
   - muid        : [type : slc_muid_rt]
   # - mdtid       : [type : vec_mdtid]
-  - chamb_ieta  : [type : chamb_ieta_rpc_bus]
+  - chamb_ieta  : [type : chamb_ieta_rpc_aut]
   - cointype    : [type : logic , length : SLC_COMMON_COINTYPE_LEN]
   - posphi      : [type : unsigned , length : SLC_COMMON_POSPHI_LEN]
   - phimod      : [type : logic , length : UCM_CDE2CVP_PHIMOD_LEN]

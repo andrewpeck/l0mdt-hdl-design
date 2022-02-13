@@ -41,15 +41,15 @@ architecture beh of ucm_tb is
   signal glob_en : std_logic := '1';
 
   -- SLc in
-  signal i_slc_data_mainA_av     : slc_rx_bus_avt(2 downto 0);
-  signal i_slc_data_mainB_av     : slc_rx_bus_avt(2 downto 0);
-  signal i_slc_data_neighborA_v : slc_rx_rvt;
-  signal i_slc_data_neighborB_v : slc_rx_rvt;
+  signal i_slc_data_mainA_av     : slc_rx_avt(2 downto 0);
+  signal i_slc_data_mainB_av     : slc_rx_avt(2 downto 0);
+  signal i_slc_data_neighborA_v : slc_rx_vt;
+  signal i_slc_data_neighborB_v : slc_rx_vt;
   -- to hps
-  signal o_uCM2hps_inn_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_mid_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_out_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_ext_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_inn_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
   signal o_uCM2pl_av            : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
 

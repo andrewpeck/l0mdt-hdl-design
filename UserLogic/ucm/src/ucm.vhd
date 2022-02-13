@@ -44,17 +44,17 @@ entity ucm is
     ctrl_v              : in  std_logic_vector;--UCM_CTRL_t;
     mon_v               : out std_logic_vector;--UCM_MON_t;
     -- SLc in
-    i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
-    i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
-    i_slc_data_neighborA_v  : in slc_rx_rvt;
-    i_slc_data_neighborB_v  : in slc_rx_rvt;
+    i_slc_data_mainA_av     : in slc_rx_avt(2 downto 0);
+    i_slc_data_mainB_av     : in slc_rx_avt(2 downto 0);
+    i_slc_data_neighborA_v  : in slc_rx_vt;
+    i_slc_data_neighborB_v  : in slc_rx_vt;
     -- to hps
-    o_uCM2hps_inn_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_mid_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_out_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_ext_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_inn_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_mid_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_out_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_ext_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- pipeline
-    o_uCM2pl_av             : out ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0)
+    o_uCM2pl_av             : out ucm2pl_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity ucm;
 
@@ -108,31 +108,31 @@ architecture beh of ucm is
 
   -- signals
 
-  signal i_slc_data_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal i_slc_data_av        : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
   --
-  signal prepro2ctrl_av       : ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal prepro2ctrl_av       : ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
   --
-  -- signal ucm_prepro_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal ucm_prepro_av        : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
-  signal csw_main_in_av       : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  -- signal csw_main_out_ar      : slc_rx_bus_art(c_MAX_NUM_SL -1 downto 0);
-  signal csw_main_out_av      : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal csw_main_in_av       : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal csw_main_out_ar      : slc_rx_art(c_MAX_NUM_SL -1 downto 0);
+  signal csw_main_out_av      : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
 
-  signal slc_endcap_ar        : slc_endcap_bus_art(c_MAX_NUM_SL -1 downto 0);
+  signal slc_endcap_ar        : slc_endcap_art(c_MAX_NUM_SL -1 downto 0);
 
-  -- signal cde_in_av            : slc_rx_bus_avt(c_NUM_THREADS -1 downto 0);
+  -- signal cde_in_av            : slc_rx_avt(c_NUM_THREADS -1 downto 0);
 
-  -- signal int_uCM2pl_av        : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  -- signal int_uCM2pl_ar        : ucm2pl_bus_art(c_MAX_NUM_SL -1 downto 0);
-  -- signal o_uCM2pl_ar          : ucm2pl_bus_art(c_MAX_NUM_SL -1 downto 0);
-  -- signal pl_o_uCM2pl_ar       : ucm2pl_bus_art(c_MAX_NUM_SL -1 downto 0);
-  -- signal pl_o_uCM2pl_av       : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal int_uCM2pl_av        : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal int_uCM2pl_ar        : ucm2plart(c_MAX_NUM_SL -1 downto 0);
+  -- signal o_uCM2pl_ar          : ucm2plart(c_MAX_NUM_SL -1 downto 0);
+  -- signal pl_o_uCM2pl_ar       : ucm2plart(c_MAX_NUM_SL -1 downto 0);
+  -- signal pl_o_uCM2pl_av       : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal o_uCM2pl_av          : pipeline_avt;
 
-  signal cpam_in_av           : ucm_cde_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal cpam_out_av          : ucm_cde_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal cpam_in_av           : ucm_cde_avt(c_NUM_THREADS -1 downto 0);
+  signal cpam_out_av          : ucm_cde_avt(c_NUM_THREADS -1 downto 0);
 
-  signal uCM2pl_av            : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
   signal csw_control_av       : ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
   signal pam_CSW_control      : ucm_pam_control_art(c_NUM_THREADS -1 downto 0);
@@ -146,7 +146,7 @@ architecture beh of ucm is
   -- signal cde_phimod_dv        : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
   -- signal int_slc_data        : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
-  type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
+  type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
   signal uCM2hps_data           : ucm2hps_aavt;
 
   signal cde_chamber_z_org_bus  : b_chamber_z_origin_station_avt;

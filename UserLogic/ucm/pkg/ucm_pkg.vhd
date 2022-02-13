@@ -37,65 +37,65 @@ package ucm_pkg is
 
   subtype ucm_prepro2ctrl_vt is std_logic_vector(1-1 downto 0);
 
-  type ucm_prepro2ctrl_bus_art is array(integer range <>) of ucm_prepro2ctrl_rt;
-  function len(x: ucm_prepro2ctrl_bus_art) return natural;
-  function width(x: ucm_prepro2ctrl_bus_art) return natural;
-  function vectorify(x: ucm_prepro2ctrl_bus_art; t: std_logic_vector) return std_logic_vector;
-  function convert(x: ucm_prepro2ctrl_bus_art; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: ucm_prepro2ctrl_bus_art) return ucm_prepro2ctrl_bus_art;
-  function convert(x: std_logic_vector; t: ucm_prepro2ctrl_bus_art) return ucm_prepro2ctrl_bus_art;
-  function nullify(x: ucm_prepro2ctrl_bus_art) return ucm_prepro2ctrl_bus_art;
-  function zeroed(x: ucm_prepro2ctrl_bus_art) return ucm_prepro2ctrl_bus_art;
+  type ucm_prepro2ctrl_art is array(integer range <>) of ucm_prepro2ctrl_rt;
+  function len(x: ucm_prepro2ctrl_art) return natural;
+  function width(x: ucm_prepro2ctrl_art) return natural;
+  function vectorify(x: ucm_prepro2ctrl_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: ucm_prepro2ctrl_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: ucm_prepro2ctrl_art) return ucm_prepro2ctrl_art;
+  function convert(x: std_logic_vector; t: ucm_prepro2ctrl_art) return ucm_prepro2ctrl_art;
+  function nullify(x: ucm_prepro2ctrl_art) return ucm_prepro2ctrl_art;
+  function zeroed(x: ucm_prepro2ctrl_art) return ucm_prepro2ctrl_art;
 
-  type ucm_prepro2ctrl_bus_avt is array(integer range <>) of ucm_prepro2ctrl_vt;
-  function len(x: ucm_prepro2ctrl_bus_avt) return natural;
-  function width(x: ucm_prepro2ctrl_bus_avt) return natural;
-  function vectorify(x: ucm_prepro2ctrl_bus_avt; t: std_logic_vector) return std_logic_vector;
-  function convert(x: ucm_prepro2ctrl_bus_avt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: ucm_prepro2ctrl_bus_avt) return ucm_prepro2ctrl_bus_avt;
-  function convert(x: std_logic_vector; t: ucm_prepro2ctrl_bus_avt) return ucm_prepro2ctrl_bus_avt;
-  function nullify(x: ucm_prepro2ctrl_bus_avt) return ucm_prepro2ctrl_bus_avt;
-  function zeroed(x: ucm_prepro2ctrl_bus_avt) return ucm_prepro2ctrl_bus_avt;
+  type ucm_prepro2ctrl_avt is array(integer range <>) of ucm_prepro2ctrl_vt;
+  function len(x: ucm_prepro2ctrl_avt) return natural;
+  function width(x: ucm_prepro2ctrl_avt) return natural;
+  function vectorify(x: ucm_prepro2ctrl_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: ucm_prepro2ctrl_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt;
+  function convert(x: std_logic_vector; t: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt;
+  function nullify(x: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt;
+  function zeroed(x: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt;
 
-  subtype ucm_rpc_r is std_logic_vector(SLC_Z_RPC_LEN-1 downto 0);
+  subtype ucm_rpc_lt is std_logic_vector(SLC_Z_RPC_LEN-1 downto 0);
 
-  type ucm_rpc_r_bus is array(integer range <>) of ucm_rpc_r;
-  function len(x: ucm_rpc_r_bus) return natural;
-  function width(x: ucm_rpc_r_bus) return natural;
-  function vectorify(x: ucm_rpc_r_bus; t: std_logic_vector) return std_logic_vector;
-  function convert(x: ucm_rpc_r_bus; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: ucm_rpc_r_bus) return ucm_rpc_r_bus;
-  function convert(x: std_logic_vector; t: ucm_rpc_r_bus) return ucm_rpc_r_bus;
-  function nullify(x: ucm_rpc_r_bus) return ucm_rpc_r_bus;
-  function zeroed(x: ucm_rpc_r_bus) return ucm_rpc_r_bus;
+  type ucm_rpc_r_alt is array(integer range <>) of ucm_rpc_lt;
+  function len(x: ucm_rpc_r_alt) return natural;
+  function width(x: ucm_rpc_r_alt) return natural;
+  function vectorify(x: ucm_rpc_r_alt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: ucm_rpc_r_alt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: ucm_rpc_r_alt) return ucm_rpc_r_alt;
+  function convert(x: std_logic_vector; t: ucm_rpc_r_alt) return ucm_rpc_r_alt;
+  function nullify(x: ucm_rpc_r_alt) return ucm_rpc_r_alt;
+  function zeroed(x: ucm_rpc_r_alt) return ucm_rpc_r_alt;
 
-  subtype ucm_mdt_r is std_logic_vector(UCM_Z_ROI_LEN-1 downto 0);
+  subtype ucm_mdt_lt is std_logic_vector(UCM_Z_ROI_LEN-1 downto 0);
 
-  type ucm_mdt_r_bus_ar is array(integer range <>) of ucm_mdt_r;
-  function len(x: ucm_mdt_r_bus_ar) return natural;
-  function width(x: ucm_mdt_r_bus_ar) return natural;
-  function vectorify(x: ucm_mdt_r_bus_ar; t: std_logic_vector) return std_logic_vector;
-  function convert(x: ucm_mdt_r_bus_ar; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: ucm_mdt_r_bus_ar) return ucm_mdt_r_bus_ar;
-  function convert(x: std_logic_vector; t: ucm_mdt_r_bus_ar) return ucm_mdt_r_bus_ar;
-  function nullify(x: ucm_mdt_r_bus_ar) return ucm_mdt_r_bus_ar;
-  function zeroed(x: ucm_mdt_r_bus_ar) return ucm_mdt_r_bus_ar;
+  type ucm_mdt_r_alt is array(integer range <>) of ucm_mdt_lt;
+  function len(x: ucm_mdt_r_alt) return natural;
+  function width(x: ucm_mdt_r_alt) return natural;
+  function vectorify(x: ucm_mdt_r_alt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: ucm_mdt_r_alt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: ucm_mdt_r_alt) return ucm_mdt_r_alt;
+  function convert(x: std_logic_vector; t: ucm_mdt_r_alt) return ucm_mdt_r_alt;
+  function nullify(x: ucm_mdt_r_alt) return ucm_mdt_r_alt;
+  function zeroed(x: ucm_mdt_r_alt) return ucm_mdt_r_alt;
 
-  subtype chamb_ieta_rpc is unsigned(4-1 downto 0);
+  subtype chamb_ieta_rpc_ut is unsigned(4-1 downto 0);
 
-  type chamb_ieta_rpc_bus is array(4-1 downto 0) of chamb_ieta_rpc;
-  function len(x: chamb_ieta_rpc_bus) return natural;
-  function width(x: chamb_ieta_rpc_bus) return natural;
-  function vectorify(x: chamb_ieta_rpc_bus; t: std_logic_vector) return std_logic_vector;
-  function convert(x: chamb_ieta_rpc_bus; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: chamb_ieta_rpc_bus) return chamb_ieta_rpc_bus;
-  function convert(x: std_logic_vector; t: chamb_ieta_rpc_bus) return chamb_ieta_rpc_bus;
-  function nullify(x: chamb_ieta_rpc_bus) return chamb_ieta_rpc_bus;
-  function zeroed(x: chamb_ieta_rpc_bus) return chamb_ieta_rpc_bus;
+  type chamb_ieta_rpc_aut is array(4-1 downto 0) of chamb_ieta_rpc_ut;
+  function len(x: chamb_ieta_rpc_aut) return natural;
+  function width(x: chamb_ieta_rpc_aut) return natural;
+  function vectorify(x: chamb_ieta_rpc_aut; t: std_logic_vector) return std_logic_vector;
+  function convert(x: chamb_ieta_rpc_aut; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: chamb_ieta_rpc_aut) return chamb_ieta_rpc_aut;
+  function convert(x: std_logic_vector; t: chamb_ieta_rpc_aut) return chamb_ieta_rpc_aut;
+  function nullify(x: chamb_ieta_rpc_aut) return chamb_ieta_rpc_aut;
+  function zeroed(x: chamb_ieta_rpc_aut) return chamb_ieta_rpc_aut;
 
   type ucm_cde_rt is record
     muid : slc_muid_rt;
-    chamb_ieta : chamb_ieta_rpc_bus;
+    chamb_ieta : chamb_ieta_rpc_aut;
     cointype : std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
     posphi : unsigned(SLC_COMMON_POSPHI_LEN-1 downto 0);
     phimod : std_logic_vector(UCM_CDE2CVP_PHIMOD_LEN-1 downto 0);
@@ -314,19 +314,19 @@ package body ucm_pkg is
     return y;
   end function zeroed;
 
-  function len(x: ucm_prepro2ctrl_bus_art) return natural is
+  function len(x: ucm_prepro2ctrl_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: ucm_prepro2ctrl_bus_art) return natural is
+  function width(x: ucm_prepro2ctrl_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: ucm_prepro2ctrl_bus_art; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: ucm_prepro2ctrl_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -347,7 +347,7 @@ package body ucm_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: ucm_prepro2ctrl_bus_art; t: std_logic_vector) return std_logic_vector is
+  function convert(x: ucm_prepro2ctrl_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -368,8 +368,8 @@ package body ucm_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: ucm_prepro2ctrl_bus_art) return ucm_prepro2ctrl_bus_art is
-    variable y : ucm_prepro2ctrl_bus_art(t'range);
+  function structify(x: std_logic_vector; t: ucm_prepro2ctrl_art) return ucm_prepro2ctrl_art is
+    variable y : ucm_prepro2ctrl_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -389,8 +389,8 @@ package body ucm_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: ucm_prepro2ctrl_bus_art) return ucm_prepro2ctrl_bus_art is
-    variable y : ucm_prepro2ctrl_bus_art(t'range);
+  function convert(x: std_logic_vector; t: ucm_prepro2ctrl_art) return ucm_prepro2ctrl_art is
+    variable y : ucm_prepro2ctrl_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -410,16 +410,16 @@ package body ucm_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: ucm_prepro2ctrl_bus_art) return ucm_prepro2ctrl_bus_art is
-    variable y : ucm_prepro2ctrl_bus_art(x'range);
+  function nullify(x: ucm_prepro2ctrl_art) return ucm_prepro2ctrl_art is
+    variable y : ucm_prepro2ctrl_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: ucm_prepro2ctrl_bus_art) return ucm_prepro2ctrl_bus_art is
-    variable y : ucm_prepro2ctrl_bus_art(x'range);
+  function zeroed(x: ucm_prepro2ctrl_art) return ucm_prepro2ctrl_art is
+    variable y : ucm_prepro2ctrl_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -427,19 +427,19 @@ package body ucm_pkg is
     return y;
   end function zeroed;
 
-  function len(x: ucm_prepro2ctrl_bus_avt) return natural is
+  function len(x: ucm_prepro2ctrl_avt) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: ucm_prepro2ctrl_bus_avt) return natural is
+  function width(x: ucm_prepro2ctrl_avt) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: ucm_prepro2ctrl_bus_avt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: ucm_prepro2ctrl_avt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -460,7 +460,7 @@ package body ucm_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: ucm_prepro2ctrl_bus_avt; t: std_logic_vector) return std_logic_vector is
+  function convert(x: ucm_prepro2ctrl_avt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -481,8 +481,8 @@ package body ucm_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: ucm_prepro2ctrl_bus_avt) return ucm_prepro2ctrl_bus_avt is
-    variable y : ucm_prepro2ctrl_bus_avt(t'range);
+  function structify(x: std_logic_vector; t: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt is
+    variable y : ucm_prepro2ctrl_avt(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -502,8 +502,8 @@ package body ucm_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: ucm_prepro2ctrl_bus_avt) return ucm_prepro2ctrl_bus_avt is
-    variable y : ucm_prepro2ctrl_bus_avt(t'range);
+  function convert(x: std_logic_vector; t: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt is
+    variable y : ucm_prepro2ctrl_avt(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -523,16 +523,16 @@ package body ucm_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: ucm_prepro2ctrl_bus_avt) return ucm_prepro2ctrl_bus_avt is
-    variable y : ucm_prepro2ctrl_bus_avt(x'range);
+  function nullify(x: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt is
+    variable y : ucm_prepro2ctrl_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: ucm_prepro2ctrl_bus_avt) return ucm_prepro2ctrl_bus_avt is
-    variable y : ucm_prepro2ctrl_bus_avt(x'range);
+  function zeroed(x: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt is
+    variable y : ucm_prepro2ctrl_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -540,19 +540,19 @@ package body ucm_pkg is
     return y;
   end function zeroed;
 
-  function len(x: ucm_rpc_r_bus) return natural is
+  function len(x: ucm_rpc_r_alt) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: ucm_rpc_r_bus) return natural is
+  function width(x: ucm_rpc_r_alt) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: ucm_rpc_r_bus; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: ucm_rpc_r_alt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -573,7 +573,7 @@ package body ucm_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: ucm_rpc_r_bus; t: std_logic_vector) return std_logic_vector is
+  function convert(x: ucm_rpc_r_alt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -594,8 +594,8 @@ package body ucm_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: ucm_rpc_r_bus) return ucm_rpc_r_bus is
-    variable y : ucm_rpc_r_bus(t'range);
+  function structify(x: std_logic_vector; t: ucm_rpc_r_alt) return ucm_rpc_r_alt is
+    variable y : ucm_rpc_r_alt(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -615,8 +615,8 @@ package body ucm_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: ucm_rpc_r_bus) return ucm_rpc_r_bus is
-    variable y : ucm_rpc_r_bus(t'range);
+  function convert(x: std_logic_vector; t: ucm_rpc_r_alt) return ucm_rpc_r_alt is
+    variable y : ucm_rpc_r_alt(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -636,16 +636,16 @@ package body ucm_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: ucm_rpc_r_bus) return ucm_rpc_r_bus is
-    variable y : ucm_rpc_r_bus(x'range);
+  function nullify(x: ucm_rpc_r_alt) return ucm_rpc_r_alt is
+    variable y : ucm_rpc_r_alt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: ucm_rpc_r_bus) return ucm_rpc_r_bus is
-    variable y : ucm_rpc_r_bus(x'range);
+  function zeroed(x: ucm_rpc_r_alt) return ucm_rpc_r_alt is
+    variable y : ucm_rpc_r_alt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -653,19 +653,19 @@ package body ucm_pkg is
     return y;
   end function zeroed;
 
-  function len(x: ucm_mdt_r_bus_ar) return natural is
+  function len(x: ucm_mdt_r_alt) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: ucm_mdt_r_bus_ar) return natural is
+  function width(x: ucm_mdt_r_alt) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: ucm_mdt_r_bus_ar; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: ucm_mdt_r_alt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -686,7 +686,7 @@ package body ucm_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: ucm_mdt_r_bus_ar; t: std_logic_vector) return std_logic_vector is
+  function convert(x: ucm_mdt_r_alt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -707,8 +707,8 @@ package body ucm_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: ucm_mdt_r_bus_ar) return ucm_mdt_r_bus_ar is
-    variable y : ucm_mdt_r_bus_ar(t'range);
+  function structify(x: std_logic_vector; t: ucm_mdt_r_alt) return ucm_mdt_r_alt is
+    variable y : ucm_mdt_r_alt(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -728,8 +728,8 @@ package body ucm_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: ucm_mdt_r_bus_ar) return ucm_mdt_r_bus_ar is
-    variable y : ucm_mdt_r_bus_ar(t'range);
+  function convert(x: std_logic_vector; t: ucm_mdt_r_alt) return ucm_mdt_r_alt is
+    variable y : ucm_mdt_r_alt(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -749,16 +749,16 @@ package body ucm_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: ucm_mdt_r_bus_ar) return ucm_mdt_r_bus_ar is
-    variable y : ucm_mdt_r_bus_ar(x'range);
+  function nullify(x: ucm_mdt_r_alt) return ucm_mdt_r_alt is
+    variable y : ucm_mdt_r_alt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: ucm_mdt_r_bus_ar) return ucm_mdt_r_bus_ar is
-    variable y : ucm_mdt_r_bus_ar(x'range);
+  function zeroed(x: ucm_mdt_r_alt) return ucm_mdt_r_alt is
+    variable y : ucm_mdt_r_alt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -766,19 +766,19 @@ package body ucm_pkg is
     return y;
   end function zeroed;
 
-  function len(x: chamb_ieta_rpc_bus) return natural is
+  function len(x: chamb_ieta_rpc_aut) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: chamb_ieta_rpc_bus) return natural is
+  function width(x: chamb_ieta_rpc_aut) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: chamb_ieta_rpc_bus; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: chamb_ieta_rpc_aut; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -799,7 +799,7 @@ package body ucm_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: chamb_ieta_rpc_bus; t: std_logic_vector) return std_logic_vector is
+  function convert(x: chamb_ieta_rpc_aut; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -820,8 +820,8 @@ package body ucm_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: chamb_ieta_rpc_bus) return chamb_ieta_rpc_bus is
-    variable y : chamb_ieta_rpc_bus;
+  function structify(x: std_logic_vector; t: chamb_ieta_rpc_aut) return chamb_ieta_rpc_aut is
+    variable y : chamb_ieta_rpc_aut;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -841,8 +841,8 @@ package body ucm_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: chamb_ieta_rpc_bus) return chamb_ieta_rpc_bus is
-    variable y : chamb_ieta_rpc_bus;
+  function convert(x: std_logic_vector; t: chamb_ieta_rpc_aut) return chamb_ieta_rpc_aut is
+    variable y : chamb_ieta_rpc_aut;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -862,16 +862,16 @@ package body ucm_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: chamb_ieta_rpc_bus) return chamb_ieta_rpc_bus is
-    variable y : chamb_ieta_rpc_bus;
+  function nullify(x: chamb_ieta_rpc_aut) return chamb_ieta_rpc_aut is
+    variable y : chamb_ieta_rpc_aut;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: chamb_ieta_rpc_bus) return chamb_ieta_rpc_bus is
-    variable y : chamb_ieta_rpc_bus;
+  function zeroed(x: chamb_ieta_rpc_aut) return chamb_ieta_rpc_aut is
+    variable y : chamb_ieta_rpc_aut;
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));

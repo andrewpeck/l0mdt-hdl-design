@@ -41,7 +41,7 @@ entity ucm_cvp_b_slope is
     rst           : in std_logic;
     ena           : in std_logic;
     --
-    i_rpc_rad_a   : in ucm_rpc_r_bus_art(g_NUM_RPC_LAYERS -1 downto 0);
+    i_rpc_rad_a   : in ucm_rpc_r_alt(g_NUM_RPC_LAYERS -1 downto 0);
     i_cointype    : in std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
     i_data_v      : in std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
     i_data_valid  : in std_logic;

@@ -33,7 +33,9 @@
     bcid   bcid;
     evid   evid;
     orid   orid;
-  } l0mdt_ttc;
+  } l0mdt_ttc_rt;
+
+  typedef logic [$bits(l0mdt_ttc_rt)-1:0] l0mdt_ttc_vt;
 
   typedef logic [$bits(slc_rx_rt)-1:0] slc_rx_vt;
 
@@ -41,13 +43,21 @@
 
   typedef slc_rx_vt   slc_rx_avt;
 
-  typedef slc_endcap_rt   slc_endcap_bus;
+  typedef logic [$bits(slc_endcap_rt)-1:0] slc_endcap_vt;
+
+  typedef slc_endcap_rt   slc_endcap_art;
+
+  typedef slc_endcap_vt   slc_endcap_avt;
 
   typedef tdcpolmux2tar_rt   mdt_polmux_bus;
 
   typedef tar2hps_rt   tar2hps_bus;
 
-  typedef ucm2hps_rt   ucm2hps_bus;
+  typedef logic [$bits(ucm2hps_rt)-1:0] ucm2hps_vt;
+
+  typedef ucm2hps_rt   ucm2hps_art;
+
+  typedef ucm2hps_vt   ucm2hps_avt;
 
   typedef heg2sfslc_rt   heg2sfslc_bus;
 
@@ -57,7 +67,9 @@
 
   typedef logic [$bits(ucm2pl_rt)-1:0] ucm2pl_vt;
 
-  typedef ucm2pl_rt   ucm2pl_bus;
+  typedef ucm2pl_rt   ucm2pl_art;
+
+  typedef ucm2pl_vt   ucm2pl_avt;
 
   typedef pl2ptcalc_rt   pl2pt_bus;
 

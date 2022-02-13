@@ -111,8 +111,8 @@ entity top_ult is
     -- i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates
-    i_main_primary_slc_ab        : in std_logic_vector(2 downto 0);--slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-    i_main_secondary_slc_ab      : in std_logic_vector(2 downto 0);--slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
+    i_main_primary_slc_ab        : in std_logic_vector(2 downto 0);--slc_rx_avt(2 downto 0);  -- is the main SL used
+    i_main_secondary_slc_ab      : in std_logic_vector(2 downto 0);--slc_rx_avt(2 downto 0);  -- only used in the big endcap
     i_plus_neighbor_slc_b       : in std_logic;--slc_rx_rvt;
     i_minus_neighbor_slc_b      : in std_logic;--slc_rx_rvt;
     -- Segments in from neighbor
@@ -218,8 +218,8 @@ architecture behavioral of top_ult is
 
   
 
-  signal i_main_primary_slc        :slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-  signal i_main_secondary_slc      :slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
+  signal i_main_primary_slc        :slc_rx_avt(2 downto 0);  -- is the main SL used
+  signal i_main_secondary_slc      :slc_rx_avt(2 downto 0);  -- only used in the big endcap
   signal i_plus_neighbor_slc       :slc_rx_rvt;
   signal i_minus_neighbor_slc      :slc_rx_rvt;
 

@@ -104,8 +104,8 @@ entity ult is
     -- i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates
-    i_main_primary_slc        : in  slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-    i_main_secondary_slc      : in  slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
+    i_main_primary_slc        : in  slc_rx_avt(2 downto 0);  -- is the main SL used
+    i_main_secondary_slc      : in  slc_rx_avt(2 downto 0);  -- only used in the big endcap
     i_plus_neighbor_slc       : in  slc_rx_rvt;
     i_minus_neighbor_slc      : in  slc_rx_rvt;
 
@@ -170,17 +170,17 @@ architecture behavioral of ult is
   
 
   -- outputs from candidate manager
-  signal inn_slc_to_h2s_plin_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal mid_slc_to_h2s_plin_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal out_slc_to_h2s_plin_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal ext_slc_to_h2s_plin_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal inn_slc_to_h2s_plout_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal mid_slc_to_h2s_plout_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal out_slc_to_h2s_plout_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal ext_slc_to_h2s_plout_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  signal mid_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  signal out_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  signal ext_slc_to_h2s_plin_av  : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_slc_to_h2s_plout_av  : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  signal mid_slc_to_h2s_plout_av  : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  signal out_slc_to_h2s_plout_av  : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  signal ext_slc_to_h2s_plout_av  : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
 
   -- type ucm2hps_bus_array_t is array (integer range 0 to SLR_PIPELINE_DEPTH)
-  --   of ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  --   of ucm2hps_avt(c_NUM_THREADS-1 downto 0);
   -- signal inn_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
   -- signal mid_slc_to_h2s_pipeline : ucm2hps_bus_array_t;
   -- signal out_slc_to_h2s_pipeline : ucm2hps_bus_array_t;

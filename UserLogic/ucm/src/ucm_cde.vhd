@@ -69,8 +69,8 @@ architecture beh of ucm_cde is
   
   signal i_slc_data_r     : slc_rx_rt;
 
-  signal int_slc_data_v   : slc_rx_rvt;
-  signal int2_slc_data_v   : slc_rx_rvt;
+  signal int_slc_data_v   : slc_rx_vt;
+  signal int2_slc_data_v   : slc_rx_vt;
   signal int_slc_data_r   : slc_rx_rt;
   signal int2_slc_data_r   : slc_rx_rt;
 
@@ -84,7 +84,7 @@ architecture beh of ucm_cde is
   type rpc_z_art is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   signal rpc_z_a : rpc_z_art;
 
-  signal  int_chamb_ieta : chamb_ieta_rpc_bus_art;
+  signal  int_chamb_ieta : chamb_ieta_rpc_aut;
 
   -- constant phicenter : std_logic_vector
 

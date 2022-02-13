@@ -38,8 +38,8 @@ entity ucm_pam_csw is
     --
     i_control           : in ucm_pam_control_art;
     --
-    i_data              : in  ucm_cde_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_data              : out ucm_cde_bus_avt(c_NUM_THREADS -1 downto 0)
+    i_data              : in  ucm_cde_avt(c_NUM_THREADS -1 downto 0);
+    o_data              : out ucm_cde_avt(c_NUM_THREADS -1 downto 0)
   );
 end entity ucm_pam_csw;
 

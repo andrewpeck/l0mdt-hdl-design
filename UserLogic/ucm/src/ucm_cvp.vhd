@@ -54,10 +54,10 @@ entity ucm_cvp is
     i_local_rst         : in std_logic;
     i_in_en             : in std_logic;
     --
-    i_data_v            : in ucm_cde_rvt;
+    i_data_v            : in ucm_cde_vt;
     --
     -- o_phimod            : out signed(UCM2PL_PHIMOD_LEN -1 downto 0);
-    o_ucm2hps_av        : out ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0)
+    o_ucm2hps_av        : out ucm2hps_avt(c_MAX_POSSIBLE_HPS -1 downto 0)
       
   );
 end entity ucm_cvp;
@@ -82,10 +82,10 @@ architecture beh of ucm_cvp is
 
   --
 
-  signal rpc_radius_av  : ucm_rpc_r_bus_art(4 - 1 downto 0);
+  signal rpc_radius_av  : ucm_rpc_r_alt(4 - 1 downto 0);
   signal rpc_radius_dv  : std_logic;
 
-  signal mdt_radius_av  : ucm_mdt_r_bus_art(3 - 1 downto 0);
+  signal mdt_radius_av  : ucm_rpc_r_alt(3 - 1 downto 0);
   signal mdt_radius_dv  : std_logic;
 
   -- 
@@ -93,21 +93,21 @@ architecture beh of ucm_cvp is
   signal local_rst : std_logic;
 
   signal int_data_r     : ucm_cde_rt;
-  signal int_data_v     : ucm_cde_rvt;
+  signal int_data_v     : ucm_cde_vt;
   signal barrel_r       : slc_barrel_rt;
   
-  signal data_v       : ucm_cde_rvt;
+  signal data_v       : ucm_cde_vt;
   signal data_r       : ucm_cde_rt;
 
-  signal data_v_2     : ucm_cde_rvt;
+  signal data_v_2     : ucm_cde_vt;
   signal data_r_2       : ucm_cde_rt;
   
-  signal ucm2hps_buff_ar   : ucm2hps_bus_art(c_MAX_NUM_HPS -1 downto 0);
-  signal ucm2hps_ar   : ucm2hps_bus_art(c_MAX_NUM_HPS -1 downto 0);
+  signal ucm2hps_buff_ar   : ucm2hps_art(c_MAX_NUM_HPS -1 downto 0);
+  signal ucm2hps_ar   : ucm2hps_art(c_MAX_NUM_HPS -1 downto 0);
 
 
   -- signal chamber_ieta_v : std_logic_vector(15 downto 0);
-  signal chamber_ieta_r : chamb_ieta_rpc_bus_art;
+  signal chamber_ieta_r : chamb_ieta_rpc_aut;
 
   type new_chamb_ieta_art is array(c_MAX_NUM_HPS -1 downto 0) of unsigned(4-1 downto 0);
   signal new_chamb_ieta_a : new_chamb_ieta_art;

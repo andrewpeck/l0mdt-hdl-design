@@ -58,7 +58,7 @@ entity hps is
     mon_v             : out std_logic_vector;--HPS_MON_t;
     h2s_fm_data       : out fm_rt_array(0 to h2s_sb_single_station_n - 1);
     -- SLc
-    i_uCM2hps_av      : in  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+    i_uCM2hps_av      : in  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- MDT hit
     i_mdt_tar_av      : in  tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc

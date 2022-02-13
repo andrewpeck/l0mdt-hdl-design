@@ -34,7 +34,7 @@ entity ucm_ctrl_top is
     rst                 : in std_logic;
     ena             : in std_logic;
     --
-    i_prepro2ctrl_av    : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    i_prepro2ctrl_av    : in ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
     --
     o_csw_ctrl_av       : out ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
     o_pam_ctrl          : out ucm_pam_control_art(c_NUM_THREADS -1 downto 0);
@@ -55,7 +55,7 @@ architecture beh of ucm_ctrl_top is
   --     rst                 : in std_logic;
   --     ena             : in std_logic;
   --     -- extrnals
-  --     i_data              : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  --     i_data              : in ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
   --     o_csw_ctrl          : out ucm_csw_control_art;
   --     -- internals
   --     o_num_cand          : out unsigned(3 downto 0);

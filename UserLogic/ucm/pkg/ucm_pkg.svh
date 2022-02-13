@@ -25,25 +25,25 @@
 
   typedef logic [$bits(ucm_prepro2ctrl_rt)-1:0] ucm_prepro2ctrl_vt;
 
-  typedef ucm_prepro2ctrl_rt   ucm_prepro2ctrl_bus_art;
+  typedef ucm_prepro2ctrl_rt   ucm_prepro2ctrl_art;
 
-  typedef ucm_prepro2ctrl_vt   ucm_prepro2ctrl_bus_avt;
+  typedef ucm_prepro2ctrl_vt   ucm_prepro2ctrl_avt;
 
-  typedef logic [SLC_Z_RPC_LEN-1:0] ucm_rpc_r;
+  typedef logic [SLC_Z_RPC_LEN-1:0] ucm_rpc_lt;
 
-  typedef ucm_rpc_r   ucm_rpc_r_bus;
+  typedef ucm_rpc_lt   ucm_rpc_r_alt;
 
-  typedef logic [UCM_Z_ROI_LEN-1:0] ucm_mdt_r;
+  typedef logic [UCM_Z_ROI_LEN-1:0] ucm_mdt_lt;
 
-  typedef ucm_mdt_r   ucm_mdt_r_bus_ar;
+  typedef ucm_mdt_lt   ucm_mdt_r_alt;
 
-  typedef logic unsigned [4-1:0] chamb_ieta_rpc;
+  typedef logic unsigned [4-1:0] chamb_ieta_rpc_ut;
 
-  typedef chamb_ieta_rpc  [4-1:0] chamb_ieta_rpc_bus;
+  typedef chamb_ieta_rpc_ut  [4-1:0] chamb_ieta_rpc_aut;
 
   typedef struct packed {
     slc_muid_rt   muid;
-    chamb_ieta_rpc_bus   chamb_ieta;
+    chamb_ieta_rpc_aut   chamb_ieta;
     logic [SLC_COMMON_COINTYPE_LEN-1:0] cointype;
     logic unsigned [SLC_COMMON_POSPHI_LEN-1:0] posphi;
     logic [UCM_CDE2CVP_PHIMOD_LEN-1:0] phimod;

@@ -67,10 +67,10 @@ entity hits_to_segments is
     i_ext_tar_hits_av : in tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates from uCM
-    i_inn_slc_av : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_mid_slc_av : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_out_slc_av : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_ext_slc_av : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_inn_slc_av : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+    i_mid_slc_av : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+    i_out_slc_av : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+    i_ext_slc_av : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
 
     -- Segments Out
     o_inn_segments_av : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);

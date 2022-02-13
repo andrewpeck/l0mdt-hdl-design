@@ -44,7 +44,7 @@ package common_types_pkg is
   function nullify(t: l0mdt_control) return l0mdt_control;
   function zeroed(t: l0mdt_control) return l0mdt_control;
 
-  type l0mdt_ttc is record
+  type l0mdt_ttc_rt is record
     bcr : std_logic;
     ocr : std_logic;
     ecr : std_logic;
@@ -53,15 +53,17 @@ package common_types_pkg is
     bcid : bcid;
     evid : evid;
     orid : orid;
-  end record l0mdt_ttc;
-  function len(x: l0mdt_ttc) return natural;
-  function width(x: l0mdt_ttc) return natural;
-  function vectorify(x: l0mdt_ttc; t: std_logic_vector) return std_logic_vector;
-  function convert(x: l0mdt_ttc; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: l0mdt_ttc) return l0mdt_ttc;
-  function convert(x: in std_logic_vector; t: l0mdt_ttc) return l0mdt_ttc;
-  function nullify(t: l0mdt_ttc) return l0mdt_ttc;
-  function zeroed(t: l0mdt_ttc) return l0mdt_ttc;
+  end record l0mdt_ttc_rt;
+  function len(x: l0mdt_ttc_rt) return natural;
+  function width(x: l0mdt_ttc_rt) return natural;
+  function vectorify(x: l0mdt_ttc_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: l0mdt_ttc_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: l0mdt_ttc_rt) return l0mdt_ttc_rt;
+  function convert(x: in std_logic_vector; t: l0mdt_ttc_rt) return l0mdt_ttc_rt;
+  function nullify(t: l0mdt_ttc_rt) return l0mdt_ttc_rt;
+  function zeroed(t: l0mdt_ttc_rt) return l0mdt_ttc_rt;
+
+  subtype l0mdt_ttc_vt is std_logic_vector(81-1 downto 0);
 
   subtype slc_rx_vt is std_logic_vector(156-1 downto 0);
 
@@ -85,15 +87,27 @@ package common_types_pkg is
   function nullify(x: slc_rx_avt) return slc_rx_avt;
   function zeroed(x: slc_rx_avt) return slc_rx_avt;
 
-  type slc_endcap_bus is array(integer range <>) of slc_endcap_rt;
-  function len(x: slc_endcap_bus) return natural;
-  function width(x: slc_endcap_bus) return natural;
-  function vectorify(x: slc_endcap_bus; t: std_logic_vector) return std_logic_vector;
-  function convert(x: slc_endcap_bus; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: slc_endcap_bus) return slc_endcap_bus;
-  function convert(x: std_logic_vector; t: slc_endcap_bus) return slc_endcap_bus;
-  function nullify(x: slc_endcap_bus) return slc_endcap_bus;
-  function zeroed(x: slc_endcap_bus) return slc_endcap_bus;
+  subtype slc_endcap_vt is std_logic_vector(48-1 downto 0);
+
+  type slc_endcap_art is array(integer range <>) of slc_endcap_rt;
+  function len(x: slc_endcap_art) return natural;
+  function width(x: slc_endcap_art) return natural;
+  function vectorify(x: slc_endcap_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: slc_endcap_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: slc_endcap_art) return slc_endcap_art;
+  function convert(x: std_logic_vector; t: slc_endcap_art) return slc_endcap_art;
+  function nullify(x: slc_endcap_art) return slc_endcap_art;
+  function zeroed(x: slc_endcap_art) return slc_endcap_art;
+
+  type slc_endcap_avt is array(integer range <>) of slc_endcap_vt;
+  function len(x: slc_endcap_avt) return natural;
+  function width(x: slc_endcap_avt) return natural;
+  function vectorify(x: slc_endcap_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: slc_endcap_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: slc_endcap_avt) return slc_endcap_avt;
+  function convert(x: std_logic_vector; t: slc_endcap_avt) return slc_endcap_avt;
+  function nullify(x: slc_endcap_avt) return slc_endcap_avt;
+  function zeroed(x: slc_endcap_avt) return slc_endcap_avt;
 
   type mdt_polmux_bus is array(integer range <>) of tdcpolmux2tar_rt;
   function len(x: mdt_polmux_bus) return natural;
@@ -115,15 +129,27 @@ package common_types_pkg is
   function nullify(x: tar2hps_bus) return tar2hps_bus;
   function zeroed(x: tar2hps_bus) return tar2hps_bus;
 
-  type ucm2hps_bus is array(integer range <>) of ucm2hps_rt;
-  function len(x: ucm2hps_bus) return natural;
-  function width(x: ucm2hps_bus) return natural;
-  function vectorify(x: ucm2hps_bus; t: std_logic_vector) return std_logic_vector;
-  function convert(x: ucm2hps_bus; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: ucm2hps_bus) return ucm2hps_bus;
-  function convert(x: std_logic_vector; t: ucm2hps_bus) return ucm2hps_bus;
-  function nullify(x: ucm2hps_bus) return ucm2hps_bus;
-  function zeroed(x: ucm2hps_bus) return ucm2hps_bus;
+  subtype ucm2hps_vt is std_logic_vector(58-1 downto 0);
+
+  type ucm2hps_art is array(integer range <>) of ucm2hps_rt;
+  function len(x: ucm2hps_art) return natural;
+  function width(x: ucm2hps_art) return natural;
+  function vectorify(x: ucm2hps_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: ucm2hps_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: ucm2hps_art) return ucm2hps_art;
+  function convert(x: std_logic_vector; t: ucm2hps_art) return ucm2hps_art;
+  function nullify(x: ucm2hps_art) return ucm2hps_art;
+  function zeroed(x: ucm2hps_art) return ucm2hps_art;
+
+  type ucm2hps_avt is array(integer range <>) of ucm2hps_vt;
+  function len(x: ucm2hps_avt) return natural;
+  function width(x: ucm2hps_avt) return natural;
+  function vectorify(x: ucm2hps_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: ucm2hps_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: ucm2hps_avt) return ucm2hps_avt;
+  function convert(x: std_logic_vector; t: ucm2hps_avt) return ucm2hps_avt;
+  function nullify(x: ucm2hps_avt) return ucm2hps_avt;
+  function zeroed(x: ucm2hps_avt) return ucm2hps_avt;
 
   type heg2sfslc_bus is array(integer range <>) of heg2sfslc_rt;
   function len(x: heg2sfslc_bus) return natural;
@@ -157,15 +183,25 @@ package common_types_pkg is
 
   subtype ucm2pl_vt is std_logic_vector(148-1 downto 0);
 
-  type ucm2pl_bus is array(integer range <>) of ucm2pl_rt;
-  function len(x: ucm2pl_bus) return natural;
-  function width(x: ucm2pl_bus) return natural;
-  function vectorify(x: ucm2pl_bus; t: std_logic_vector) return std_logic_vector;
-  function convert(x: ucm2pl_bus; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: ucm2pl_bus) return ucm2pl_bus;
-  function convert(x: std_logic_vector; t: ucm2pl_bus) return ucm2pl_bus;
-  function nullify(x: ucm2pl_bus) return ucm2pl_bus;
-  function zeroed(x: ucm2pl_bus) return ucm2pl_bus;
+  type ucm2pl_art is array(integer range <>) of ucm2pl_rt;
+  function len(x: ucm2pl_art) return natural;
+  function width(x: ucm2pl_art) return natural;
+  function vectorify(x: ucm2pl_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: ucm2pl_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: ucm2pl_art) return ucm2pl_art;
+  function convert(x: std_logic_vector; t: ucm2pl_art) return ucm2pl_art;
+  function nullify(x: ucm2pl_art) return ucm2pl_art;
+  function zeroed(x: ucm2pl_art) return ucm2pl_art;
+
+  type ucm2pl_avt is array(integer range <>) of ucm2pl_vt;
+  function len(x: ucm2pl_avt) return natural;
+  function width(x: ucm2pl_avt) return natural;
+  function vectorify(x: ucm2pl_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: ucm2pl_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: ucm2pl_avt) return ucm2pl_avt;
+  function convert(x: std_logic_vector; t: ucm2pl_avt) return ucm2pl_avt;
+  function nullify(x: ucm2pl_avt) return ucm2pl_avt;
+  function zeroed(x: ucm2pl_avt) return ucm2pl_avt;
 
   type pl2pt_bus is array(integer range <>) of pl2ptcalc_rt;
   function len(x: pl2pt_bus) return natural;
@@ -470,7 +506,7 @@ package body common_types_pkg is
     return y;
   end function zeroed;
 
-  function len(x: l0mdt_ttc) return natural is
+  function len(x: l0mdt_ttc_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.bcr);
@@ -483,7 +519,7 @@ package body common_types_pkg is
     l := l + len(x.orid);
     return l;
   end function len;
-  function width(x: l0mdt_ttc) return natural is
+  function width(x: l0mdt_ttc_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.bcr);
@@ -496,7 +532,7 @@ package body common_types_pkg is
     l := l + width(x.orid);
     return l;
   end function width;
-  function vectorify(x: l0mdt_ttc; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: l0mdt_ttc_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -535,7 +571,7 @@ package body common_types_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: l0mdt_ttc; t: std_logic_vector) return std_logic_vector is
+  function convert(x: l0mdt_ttc_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -574,8 +610,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: l0mdt_ttc) return l0mdt_ttc is
-    variable y: l0mdt_ttc;
+  function structify(x: in std_logic_vector; t: l0mdt_ttc_rt) return l0mdt_ttc_rt is
+    variable y: l0mdt_ttc_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -613,8 +649,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: l0mdt_ttc) return l0mdt_ttc is
-    variable y: l0mdt_ttc;
+  function convert(x: in std_logic_vector; t: l0mdt_ttc_rt) return l0mdt_ttc_rt is
+    variable y: l0mdt_ttc_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -652,8 +688,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: l0mdt_ttc) return l0mdt_ttc is
-  variable y: l0mdt_ttc;
+  function nullify(t: l0mdt_ttc_rt) return l0mdt_ttc_rt is
+  variable y: l0mdt_ttc_rt;
   begin
     y.bcr := nullify(t.bcr);
     y.ocr := nullify(t.ocr);
@@ -665,8 +701,8 @@ package body common_types_pkg is
     y.orid := nullify(t.orid);
     return y;
   end function nullify;
-  function zeroed(t: l0mdt_ttc) return l0mdt_ttc is
-  variable y: l0mdt_ttc;
+  function zeroed(t: l0mdt_ttc_rt) return l0mdt_ttc_rt is
+  variable y: l0mdt_ttc_rt;
   begin
     y.bcr := zeroed(t.bcr);
     y.ocr := zeroed(t.ocr);
@@ -905,19 +941,19 @@ package body common_types_pkg is
     return y;
   end function zeroed;
 
-  function len(x: slc_endcap_bus) return natural is
+  function len(x: slc_endcap_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: slc_endcap_bus) return natural is
+  function width(x: slc_endcap_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: slc_endcap_bus; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: slc_endcap_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -938,7 +974,7 @@ package body common_types_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: slc_endcap_bus; t: std_logic_vector) return std_logic_vector is
+  function convert(x: slc_endcap_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -959,8 +995,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: slc_endcap_bus) return slc_endcap_bus is
-    variable y : slc_endcap_bus(t'range);
+  function structify(x: std_logic_vector; t: slc_endcap_art) return slc_endcap_art is
+    variable y : slc_endcap_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -980,8 +1016,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: slc_endcap_bus) return slc_endcap_bus is
-    variable y : slc_endcap_bus(t'range);
+  function convert(x: std_logic_vector; t: slc_endcap_art) return slc_endcap_art is
+    variable y : slc_endcap_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1001,16 +1037,129 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: slc_endcap_bus) return slc_endcap_bus is
-    variable y : slc_endcap_bus(x'range);
+  function nullify(x: slc_endcap_art) return slc_endcap_art is
+    variable y : slc_endcap_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: slc_endcap_bus) return slc_endcap_bus is
-    variable y : slc_endcap_bus(x'range);
+  function zeroed(x: slc_endcap_art) return slc_endcap_art is
+    variable y : slc_endcap_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: slc_endcap_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: slc_endcap_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: slc_endcap_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: slc_endcap_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: slc_endcap_avt) return slc_endcap_avt is
+    variable y : slc_endcap_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: slc_endcap_avt) return slc_endcap_avt is
+    variable y : slc_endcap_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: slc_endcap_avt) return slc_endcap_avt is
+    variable y : slc_endcap_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: slc_endcap_avt) return slc_endcap_avt is
+    variable y : slc_endcap_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -1244,19 +1393,19 @@ package body common_types_pkg is
     return y;
   end function zeroed;
 
-  function len(x: ucm2hps_bus) return natural is
+  function len(x: ucm2hps_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: ucm2hps_bus) return natural is
+  function width(x: ucm2hps_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: ucm2hps_bus; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: ucm2hps_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -1277,7 +1426,7 @@ package body common_types_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: ucm2hps_bus; t: std_logic_vector) return std_logic_vector is
+  function convert(x: ucm2hps_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -1298,8 +1447,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: ucm2hps_bus) return ucm2hps_bus is
-    variable y : ucm2hps_bus(t'range);
+  function structify(x: std_logic_vector; t: ucm2hps_art) return ucm2hps_art is
+    variable y : ucm2hps_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1319,8 +1468,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: ucm2hps_bus) return ucm2hps_bus is
-    variable y : ucm2hps_bus(t'range);
+  function convert(x: std_logic_vector; t: ucm2hps_art) return ucm2hps_art is
+    variable y : ucm2hps_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1340,16 +1489,129 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: ucm2hps_bus) return ucm2hps_bus is
-    variable y : ucm2hps_bus(x'range);
+  function nullify(x: ucm2hps_art) return ucm2hps_art is
+    variable y : ucm2hps_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: ucm2hps_bus) return ucm2hps_bus is
-    variable y : ucm2hps_bus(x'range);
+  function zeroed(x: ucm2hps_art) return ucm2hps_art is
+    variable y : ucm2hps_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: ucm2hps_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: ucm2hps_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: ucm2hps_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: ucm2hps_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: ucm2hps_avt) return ucm2hps_avt is
+    variable y : ucm2hps_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: ucm2hps_avt) return ucm2hps_avt is
+    variable y : ucm2hps_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: ucm2hps_avt) return ucm2hps_avt is
+    variable y : ucm2hps_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: ucm2hps_avt) return ucm2hps_avt is
+    variable y : ucm2hps_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -1696,19 +1958,19 @@ package body common_types_pkg is
     return y;
   end function zeroed;
 
-  function len(x: ucm2pl_bus) return natural is
+  function len(x: ucm2pl_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: ucm2pl_bus) return natural is
+  function width(x: ucm2pl_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: ucm2pl_bus; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: ucm2pl_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -1729,7 +1991,7 @@ package body common_types_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: ucm2pl_bus; t: std_logic_vector) return std_logic_vector is
+  function convert(x: ucm2pl_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -1750,8 +2012,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: ucm2pl_bus) return ucm2pl_bus is
-    variable y : ucm2pl_bus(t'range);
+  function structify(x: std_logic_vector; t: ucm2pl_art) return ucm2pl_art is
+    variable y : ucm2pl_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1771,8 +2033,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: ucm2pl_bus) return ucm2pl_bus is
-    variable y : ucm2pl_bus(t'range);
+  function convert(x: std_logic_vector; t: ucm2pl_art) return ucm2pl_art is
+    variable y : ucm2pl_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1792,16 +2054,129 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: ucm2pl_bus) return ucm2pl_bus is
-    variable y : ucm2pl_bus(x'range);
+  function nullify(x: ucm2pl_art) return ucm2pl_art is
+    variable y : ucm2pl_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: ucm2pl_bus) return ucm2pl_bus is
-    variable y : ucm2pl_bus(x'range);
+  function zeroed(x: ucm2pl_art) return ucm2pl_art is
+    variable y : ucm2pl_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: ucm2pl_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: ucm2pl_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: ucm2pl_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: ucm2pl_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: ucm2pl_avt) return ucm2pl_avt is
+    variable y : ucm2pl_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: ucm2pl_avt) return ucm2pl_avt is
+    variable y : ucm2pl_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: ucm2pl_avt) return ucm2pl_avt is
+    variable y : ucm2pl_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: ucm2pl_avt) return ucm2pl_avt is
+    variable y : ucm2pl_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));

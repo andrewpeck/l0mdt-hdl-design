@@ -54,17 +54,17 @@ entity top_ucm_tb is
   --   ctrl                    : in  UCM_CTRL_t;
   --   mon                     : out UCM_MON_t;
   --   -- SLc in
-  --   i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
-  --   i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
-  --   i_slc_data_neighborA_v  : in slc_rx_rvt;
-  --   i_slc_data_neighborB_v  : in slc_rx_rvt;
+  --   i_slc_data_mainA_av     : in slc_rx_avt(2 downto 0);
+  --   i_slc_data_mainB_av     : in slc_rx_avt(2 downto 0);
+  --   i_slc_data_neighborA_v  : in slc_rx_vt;
+  --   i_slc_data_neighborB_v  : in slc_rx_vt;
   --   -- to hps
-  --   o_uCM2hps_inn_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  --   o_uCM2hps_mid_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  --   o_uCM2hps_out_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  --   o_uCM2hps_ext_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  --   o_uCM2hps_inn_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  --   o_uCM2hps_mid_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  --   o_uCM2hps_out_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  --   o_uCM2hps_ext_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   --   -- pipeline
-  --   o_uCM2pl_av             : out ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0)
+  --   o_uCM2pl_av             : out ucm2pl_avt(c_MAX_NUM_SL -1 downto 0)
   -- );
 end entity top_ucm_tb;
 
@@ -80,17 +80,17 @@ architecture beh of top_ucm_tb is
   signal ctrl_v              : std_logic_vector(len(ctrl_r)-1 downto 0);--UCM_CTRL_t;
   signal mon_v               : std_logic_vector(len(mon_r )-1 downto 0);--UCM_MON_t;
   -- SLc in
-  signal i_slc_data_mainA_av     : slc_rx_bus_avt(2 downto 0);
-  signal i_slc_data_mainB_av     : slc_rx_bus_avt(2 downto 0);
-  signal i_slc_data_neighborA_v  : slc_rx_rvt;
-  signal i_slc_data_neighborB_v  : slc_rx_rvt;
+  signal i_slc_data_mainA_av     : slc_rx_avt(2 downto 0);
+  signal i_slc_data_mainB_av     : slc_rx_avt(2 downto 0);
+  signal i_slc_data_neighborA_v  : slc_rx_vt;
+  signal i_slc_data_neighborB_v  : slc_rx_vt;
   -- to hps
-  signal o_uCM2hps_inn_av        : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_mid_av        : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_out_av        : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_ext_av        : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_inn_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
-  signal o_uCM2pl_av             : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal o_uCM2pl_av             : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
 begin
 
