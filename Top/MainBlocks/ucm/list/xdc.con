@@ -1,2 +1,3 @@
-# shared/constraints/l0mdt_dev_con.xdc
-create_clock -period 3.125 -name clk [get_ports clk] ;
+shared/constraints/gldl_dev_con.xdc
+
+
