@@ -65,12 +65,12 @@ architecture beh of top_tar is
   signal ctrl_v             : std_logic_vector(c_CTRL_LEN -1 downto 0);
   signal mon_v              : std_logic_vector(c_MON_LEN -1 downto 0);
 
-  signal i_tdc_hits_av    : mdt_polmux_bus_avt (g_HPS_MAX_HP -1 downto 0);
+  signal i_tdc_hits_av    : tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0);
   -- TDC polmux from Tar
-  signal o_tdc_hits_av    : mdt_polmux_bus_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tdc_hits_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
 
   -- TDC Hits from Tar
-  signal o_tar_hits_av    : tar2hps_bus_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tar_hits_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
 
 
 begin

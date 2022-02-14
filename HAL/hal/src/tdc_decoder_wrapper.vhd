@@ -35,7 +35,7 @@ entity tdc_decoder_wrapper is
 
 
     -- TDC hits from CSM
-    tdc_hits_o  : out mdt_polmux_bus_avt (g_NUM_TDCS-1 downto 0);
+    tdc_hits_o  : out tdcpolmux2tar_avt (g_NUM_TDCS-1 downto 0);
     err_cnt_o   : out std16_array_t (g_NUM_TDCS-1 downto 0);
     synced_o    : out std_logic_vector (g_NUM_TDCS-1 downto 0);
     read_done_i : in  std_logic_vector (g_NUM_TDCS-1 downto 0)

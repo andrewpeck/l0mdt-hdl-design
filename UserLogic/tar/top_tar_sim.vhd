@@ -65,11 +65,11 @@ architecture beh of tar_tb is
   signal ctrl_v              : std_logic_vector(len(ctrl_r) - 1 downto 0); --  : in  TAR_CTRL_t;
   signal mon_v               : std_logic_vector(len(mon_r) - 1 downto 0);--  : out TAR_MON_t;
   -- TDC Hits from Polmux
-  signal i_tdc_hits_av    : mdt_polmux_bus_avt (g_HPS_MAX_HP -1 downto 0):= (others => (others => '0'));
+  signal i_tdc_hits_av    : tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0):= (others => (others => '0'));
   -- TDC polmux from Tar
-  signal o_tdc_hits_av    : mdt_polmux_bus_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tdc_hits_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
   -- TDC Hits from Tar
-  signal o_tar_hits_av    : tar2hps_bus_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tar_hits_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
 
 begin
 

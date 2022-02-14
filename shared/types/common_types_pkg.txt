@@ -71,7 +71,9 @@ E      seg_angdtheta (signed SLC_ENDCAP_SEG_ANGDTHETA_LEN)
 A   slc_endcap_avt (open slc_endcap_vt)
 E      slc_endcap_vt (logic slc_endcap_rt)
 
-A   mdt_polmux_bus (open tdcpolmux2tar_rt)
+E   tdcpolmux2tar_vt (logic tdcpolmux2tar_rt)
+
+A   tdcpolmux2tar_art (open tdcpolmux2tar_rt)
 E      data_valid (logic)
 E      tdc (tdc_rt)
 E         chanid (unsigned TDC_CHANID_LEN)
@@ -82,12 +84,20 @@ E         pulsewidth (unsigned TDC_PULSEWIDTH_LEN)
 E      csmid (unsigned TDCPOLMUX2TAR_CSMID_LEN)
 E      tdcid (unsigned TDCPOLMUX2TAR_TDCID_LEN)
 
-A   tar2hps_bus (open tar2hps_rt)
+A   tdcpolmux2tar_avt (open tdcpolmux2tar_vt)
+E      tdcpolmux2tar_vt (logic tdcpolmux2tar_rt)
+
+E   tar2hps_vt (logic tar2hps_rt)
+
+A   tar2hps_art (open tar2hps_rt)
 E      data_valid (logic)
 E      chamber_ieta (unsigned VEC_MDTID_CHAMBER_IETA_LEN)
 E      layer (unsigned TAR2HPS_LAYER_LEN)
 E      tube (unsigned TAR2HPS_TUBE_LEN)
 E      time (unsigned TAR2HPS_TIME_LEN)
+
+A   tar2hps_avt (open tar2hps_vt)
+E      tar2hps_vt (logic tar2hps_rt)
 
 E   ucm2hps_vt (logic ucm2hps_rt)
 

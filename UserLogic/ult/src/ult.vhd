@@ -92,16 +92,16 @@ entity ult is
     fm_mon_v              : out std_logic_vector;
 
     -- TDC Hits from Polmux
-    i_inn_tdc_hits_av : in mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits_av : in mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits_av : in mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits_av : in mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tdc_hits_av : in tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tdc_hits_av : in tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tdc_hits_av : in tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tdc_hits_av : in tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- TDC Hits from Tar
-    -- i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    -- i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    -- i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    -- i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    -- i_inner_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+    -- i_middle_tar_hits : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+    -- i_outer_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+    -- i_extra_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates
     i_main_primary_slc        : in  slc_rx_avt(2 downto 0);  -- is the main SL used
@@ -160,10 +160,10 @@ architecture behavioral of ult is
   -- UG949 7 pipeline stages to cross the whole device for a 3 SLR device at 250
   -- MHz
 
-  signal int_inn_tdc_hits_av : mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-  signal int_mid_tdc_hits_av : mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-  signal int_out_tdc_hits_av : mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-  signal int_ext_tdc_hits_av : mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  signal int_inn_tdc_hits_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
+  signal int_mid_tdc_hits_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
+  signal int_out_tdc_hits_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+  signal int_ext_tdc_hits_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
   constant SLR_PIPELINE_DEPTH : integer := 12;
 
@@ -195,23 +195,23 @@ architecture behavioral of ult is
   signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   -- TDC Hits from tar 2 hps
-  signal ult_inn_tar_hits_in_av  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal ult_mid_tar_hits_in_av  : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal ult_out_tar_hits_in_av  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal ult_ext_tar_hits_in_av  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
-  signal ult_inn_tar_hits_out_av  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal ult_mid_tar_hits_out_av  : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal ult_out_tar_hits_out_av  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal ult_ext_tar_hits_out_av  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal ult_inn_tar_hits_in_av  : tar2hps_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal ult_mid_tar_hits_in_av  : tar2hps_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal ult_out_tar_hits_in_av  : tar2hps_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ult_ext_tar_hits_in_av  : tar2hps_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal ult_inn_tar_hits_out_av  : tar2hps_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal ult_mid_tar_hits_out_av  : tar2hps_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal ult_out_tar_hits_out_av  : tar2hps_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ult_ext_tar_hits_out_av  : tar2hps_avt(c_HPS_MAX_HP_EXT -1 downto 0);
   -- TDC Hits from tar 2 daq
-  signal ult_inn_tdc_hits_out_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal ult_mid_tdc_hits_out_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal ult_out_tdc_hits_out_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal ult_ext_tdc_hits_out_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
-  signal ult_inn_tdc_hits_in_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal ult_mid_tdc_hits_in_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal ult_out_tdc_hits_in_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal ult_ext_tdc_hits_in_av  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal ult_inn_tdc_hits_out_av  : tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal ult_mid_tdc_hits_out_av  : tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal ult_out_tdc_hits_out_av  : tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ult_ext_tdc_hits_out_av  : tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal ult_inn_tdc_hits_in_av  : tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal ult_mid_tdc_hits_in_av  : tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal ult_out_tdc_hits_in_av  : tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ult_ext_tdc_hits_in_av  : tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- outputs from hits to segments
   signal inn_segments_to_pt_plin_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);

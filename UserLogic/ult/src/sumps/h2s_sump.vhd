@@ -47,10 +47,10 @@ entity h2s_sump is
     -- mon               : out H2S_MON_t;
 
     -- TDC Hits from Polmux
-    i_inn_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- Sector Logic Candidates from uCM
     i_inn_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
     i_mid_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);

@@ -42,7 +42,7 @@ package ult_tb_sim_pkg is
   function nullify(x: input_mdt_bus_avt) return input_mdt_bus_avt;
 
   type tar2hps_tb_at is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tar2hps_rt;
-  type tar2hps_tb_avt is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tar2hps_rvt;
+  type tar2hps_tb_avt is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tar2hps_vt;
   function vectorify(x: tar2hps_tb_at) return tar2hps_tb_avt;
   function vectorify(x: tar2hps_tb_at) return std_logic_vector;
   function structify(x: tar2hps_tb_avt) return tar2hps_tb_at;
@@ -51,7 +51,7 @@ package ult_tb_sim_pkg is
   function nullify(x: tar2hps_tb_avt) return tar2hps_tb_avt;
 
   type pol2tar_tb_at is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tdcpolmux2tar_rt;
-  type pol2tar_tb_avt is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tdcpolmux2tar_rvt;
+  type pol2tar_tb_avt is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tdcpolmux2tar_vt;
   function vectorify(x: pol2tar_tb_at) return pol2tar_tb_avt;
   function vectorify(x: pol2tar_tb_at) return std_logic_vector;
   function structify(x: pol2tar_tb_avt) return pol2tar_tb_at;

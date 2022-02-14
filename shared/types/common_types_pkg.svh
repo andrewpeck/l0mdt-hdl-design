@@ -49,9 +49,17 @@
 
   typedef slc_endcap_vt   slc_endcap_avt;
 
-  typedef tdcpolmux2tar_rt   mdt_polmux_bus;
+  typedef logic [$bits(tdcpolmux2tar_rt)-1:0] tdcpolmux2tar_vt;
 
-  typedef tar2hps_rt   tar2hps_bus;
+  typedef tdcpolmux2tar_rt   tdcpolmux2tar_art;
+
+  typedef tdcpolmux2tar_vt   tdcpolmux2tar_avt;
+
+  typedef logic [$bits(tar2hps_rt)-1:0] tar2hps_vt;
+
+  typedef tar2hps_rt   tar2hps_art;
+
+  typedef tar2hps_vt   tar2hps_avt;
 
   typedef logic [$bits(ucm2hps_rt)-1:0] ucm2hps_vt;
 

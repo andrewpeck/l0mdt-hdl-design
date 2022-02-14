@@ -58,14 +58,14 @@ entity hps_pc is
     i_ctrl_t0_v             : in  std_logic_vector;--HPS_MDT_T0_MDT_T0_CTRL_t;  
     o_mon_t0_v              : out std_logic_vector;-- HPS_MDT_T0_MDT_T0_MON_t;   
     -- MDT hit
-    i_mdt_tar_v           : in tar2hps_rvt;
+    i_mdt_tar_v           : in tar2hps_vt;
     o_mdt_full_data_v     : out hp_hpsPc2hp_rvt
   );
 end entity hps_pc;
 
 architecture beh of hps_pc is
   signal i_mdt_tar_r : tar2hps_rt;
-  signal pl_mdt_tar_v  : tar2hps_rvt;
+  signal pl_mdt_tar_v  : tar2hps_vt;
   signal pl_mdt_tar_r  : tar2hps_rt;
   signal pl_mdt_tar_dv : std_logic;
 

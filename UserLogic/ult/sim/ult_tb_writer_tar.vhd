@@ -68,10 +68,10 @@ architecture sim of ult_tb_writer_tar is
   shared variable csv_file_1: csv_file_type;
   constant g_OUT_FILE_1     : string  := "ov_tar2hps_" & g_PRJ_INFO & ".csv";
 
-  alias ult_inn_tar_hits_av is  << signal.ult_tp.ULT.ult_inn_tar_hits_out_av : tar2hps_bus_avt >>;
-  alias ult_mid_tar_hits_av is  << signal.ult_tp.ULT.ult_mid_tar_hits_out_av : tar2hps_bus_avt >>;
-  alias ult_out_tar_hits_av is  << signal.ult_tp.ULT.ult_out_tar_hits_out_av : tar2hps_bus_avt >>;
-  alias ult_ext_tar_hits_av is  << signal.ult_tp.ULT.ult_ext_tar_hits_out_av : tar2hps_bus_avt >>;
+  alias ult_inn_tar_hits_av is  << signal.ult_tp.ULT.ult_inn_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_mid_tar_hits_av is  << signal.ult_tp.ULT.ult_mid_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_out_tar_hits_av is  << signal.ult_tp.ULT.ult_out_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_ext_tar_hits_av is  << signal.ult_tp.ULT.ult_ext_tar_hits_out_av : tar2hps_avt >>;
 
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
 

@@ -32,10 +32,10 @@ entity daq is
     ctrl_v            : in std_logic_vector; -- : in  DAQ_CTRL_t;
     mon_v             : out std_logic_vector;-- : out DAQ_MON_t;
 
-    i_inn_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
     o_daq_streams     : out felix_stream_bus_avt (c_HPS_MAX_HP_INN     
                                                   + c_HPS_MAX_HP_MID   
                                                   + c_HPS_MAX_HP_OUT - 1 downto 0)
@@ -93,21 +93,21 @@ architecture behavioral of daq is
   type trunk_t is array(stations) of daq_branches_t;
   signal trunk : trunk_t;
 
-  signal inner_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal middle_tdc_hits_v : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal outer_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal extra_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal inner_tdc_hits_v  : tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal middle_tdc_hits_v : tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal outer_tdc_hits_v  : tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal extra_tdc_hits_v  : tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
   
-  signal inner_tdc_hits  : mdt_polmux_bus_at(c_HPS_MAX_HP_INN-1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_bus_at(c_HPS_MAX_HP_MID-1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_bus_at(c_HPS_MAX_HP_OUT-1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_bus_at(c_HPS_MAX_HP_EXT-1 downto 0);
+  signal inner_tdc_hits  : tdcpolmux2tar_art(c_HPS_MAX_HP_INN-1 downto 0);
+  signal middle_tdc_hits : tdcpolmux2tar_art(c_HPS_MAX_HP_MID-1 downto 0);
+  signal outer_tdc_hits  : tdcpolmux2tar_art(c_HPS_MAX_HP_OUT-1 downto 0);
+  signal extra_tdc_hits  : tdcpolmux2tar_art(c_HPS_MAX_HP_EXT-1 downto 0);
   signal daq_streams     : felix_stream_bus_at (c_HPS_MAX_HP_INN
                                                 + c_HPS_MAX_HP_MID
                                                 + c_HPS_MAX_HP_OUT - 1 downto 0);
 
   function streamify (x: tdcpolmux2tar_rt;
-                      v: tdcpolmux2tar_rvt) return daq_stream_rt is
+                      v: tdcpolmux2tar_vt) return daq_stream_rt is
     variable y : daq_stream_rt;
   begin
     y.bcid := x.tdc.coarsetime;

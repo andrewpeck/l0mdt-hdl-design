@@ -60,7 +60,7 @@ entity hps is
     -- SLc
     i_uCM2hps_av      : in  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av      : in  tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+    i_mdt_tar_av      : in  tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc
     o_sf2pt_av        : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
     );

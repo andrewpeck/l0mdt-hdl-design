@@ -75,10 +75,10 @@ entity top_hal is
     --------------------------------------------------------------------------------
 
     -- TDC hits from CSM
-    tdc_hits_inner  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
-    tdc_hits_middle : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
-    tdc_hits_outer  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
-    tdc_hits_extra  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
+    tdc_hits_inner  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+    tdc_hits_middle : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+    tdc_hits_outer  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+    tdc_hits_extra  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- SLC
@@ -182,7 +182,7 @@ architecture behavioral of top_hal is
   -- TDC Glue
   --------------------------------------------------------------------------------
 
-  signal tdc_hits_to_polmux    : mdt_polmux_bus_avt (c_NUM_TDC_INPUTS-1 downto 0);
+  signal tdc_hits_to_polmux    : tdcpolmux2tar_avt (c_NUM_TDC_INPUTS-1 downto 0);
   signal read_done_from_polmux : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
 
   --------------------------------------------------------------------------------
@@ -503,7 +503,7 @@ begin  -- architecture behavioral
       constant hi       : integer := polmux_hi_lo (id).hi;
       constant lo       : integer := polmux_hi_lo (id).lo;
       constant width    : integer := hi-lo+1;
-      signal tdc_hits_o : tdcpolmux2tar_rvt;
+      signal tdc_hits_o : tdcpolmux2tar_vt;
     begin
 
       assert false report "Generating PolMux #" & integer'image(id)

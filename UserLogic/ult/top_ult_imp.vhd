@@ -99,16 +99,16 @@ entity top_ult is
     
 
     -- TDC Hits from Polmux
-    i_inn_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- TDC Hits from Tar
-    -- i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    -- i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    -- i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    -- i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    -- i_inner_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+    -- i_middle_tar_hits : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+    -- i_outer_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+    -- i_extra_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates
     i_main_primary_slc_ab        : in std_logic_vector(2 downto 0);--slc_rx_avt(2 downto 0);  -- is the main SL used
@@ -204,10 +204,10 @@ architecture behavioral of top_ult is
   signal fm_ctrl_v             : std_logic_vector(len(fm_ctrl_r ) -1 downto 0);
   signal fm_mon_v              : std_logic_vector(len(fm_mon_r  ) -1 downto 0);
 
-  signal i_inner_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_middle_tdc_hits : mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_outer_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_extra_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_inner_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
+  signal i_middle_tdc_hits : tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
+  signal i_outer_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+  signal i_extra_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
   type mdt_polmux_bus_std_avt is array(integer range <>) of std_logic_vector(TDCPOLMUX2TAR_LEN - 1 downto 0);
 

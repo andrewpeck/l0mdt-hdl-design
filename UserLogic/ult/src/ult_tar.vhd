@@ -46,25 +46,25 @@ entity mdt_tar is
     -- ttc
     -- ttc_commands      : in  l0mdt_ttc_rt;
     -- TDC Hits from Polmux
-    i_inn_tdc_hits_av : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits_av : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits_av : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits_av : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tdc_hits_av : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tdc_hits_av : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tdc_hits_av : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tdc_hits_av : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
-    -- i_inn_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    -- i_mid_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    -- i_out_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    -- i_ext_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    -- i_inn_tar_hits    : in  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+    -- i_mid_tar_hits    : in  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+    -- i_out_tar_hits    : in  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+    -- i_ext_tar_hits    : in  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
     -- to DAQ
-    o_inn_tdc_hits_av  : out mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-    o_mid_tdc_hits_av  : out mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    o_out_tdc_hits_av  : out mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    o_ext_tdc_hits_av  : out mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+    o_inn_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
+    o_mid_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    o_out_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    o_ext_tdc_hits_av  : out tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
     -- outputs to h2s Tar
-    o_inn_tar_hits_av  : out tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-    o_mid_tar_hits_av  : out tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    o_out_tar_hits_av  : out tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    o_ext_tar_hits_av  : out tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+    o_inn_tar_hits_av  : out tar2hps_avt(c_HPS_MAX_HP_INN -1 downto 0);
+    o_mid_tar_hits_av  : out tar2hps_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    o_out_tar_hits_av  : out tar2hps_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    o_ext_tar_hits_av  : out tar2hps_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
     o_sump            : out std_logic
 

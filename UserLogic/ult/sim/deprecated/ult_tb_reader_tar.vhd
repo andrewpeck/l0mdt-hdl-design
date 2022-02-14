@@ -47,10 +47,10 @@ entity ult_tb_reader_tar is
     --
     tb_curr_tdc_time  : in unsigned(63 downto 0) := (others => '0');
     -- Hits from Tar
-    i_mdt_tar_inn_av  : out tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-    i_mdt_tar_mid_av  : out tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-    i_mdt_tar_out_av  : out tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-    i_mdt_tar_ext_av  : out tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'))
+    i_mdt_tar_inn_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+    i_mdt_tar_mid_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+    i_mdt_tar_out_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+    i_mdt_tar_ext_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'))
 
   );
 end entity ult_tb_reader_tar;

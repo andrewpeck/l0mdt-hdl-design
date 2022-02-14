@@ -59,9 +59,15 @@ hdl:
 #   MDT tdc, polmux & TAR
 # -----------------------------------------------------------
 
-- mdt_polmux_bus: [array: open , type: tdcpolmux2tar_rt]
+# - mdt_polmux_bus: [array: open , type: tdcpolmux2tar_rt]
+- tdcpolmux2tar_vt : [type: logic, length: tdcpolmux2tar_rt]
+- tdcpolmux2tar_art: [array: open ,  type: tdcpolmux2tar_rt]
+- tdcpolmux2tar_avt: [ array: open,  type: tdcpolmux2tar_vt]
 
-- tar2hps_bus      : [array: open , type: tar2hps_rt]
+# - tar2hps_bus      : [array: open , type: tar2hps_rt]
+- tar2hps_vt : [type: logic, length: tar2hps_rt]
+- tar2hps_art: [array: open ,  type: tar2hps_rt]
+- tar2hps_avt: [ array: open,  type: tar2hps_vt]
 
 #############################################################
 # INTERBLOCK TYPES

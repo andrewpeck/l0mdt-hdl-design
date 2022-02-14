@@ -61,10 +61,10 @@ entity hits_to_segments is
     h2s_fm_data : out fm_rt_array(0 to h2s_sb_all_station_n - 1);
 
     -- TDC Hits from Polmux
-    i_inn_tar_hits_av : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tar_hits_av : in tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tar_hits_av : in tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tar_hits_av : in tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tar_hits_av : in tar2hps_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tar_hits_av : in tar2hps_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tar_hits_av : in tar2hps_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tar_hits_av : in tar2hps_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates from uCM
     i_inn_slc_av : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);

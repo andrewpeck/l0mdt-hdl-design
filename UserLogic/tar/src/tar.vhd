@@ -51,11 +51,11 @@ entity tar is
     ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
     mon_v             : out std_logic_vector;--  : out TAR_MON_t;
     -- TDC Hits from Polmux
-    i_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP -1 downto 0);
+    i_tdc_hits_av    : in  tdcpolmux2tar_avt (c_HPS_MAX_HP -1 downto 0);
     -- TDC polmux from Tar
-    o_tdc_hits_av    : out mdt_polmux_bus_avt(c_HPS_MAX_HP -1 downto 0);
+    o_tdc_hits_av    : out tdcpolmux2tar_avt(c_HPS_MAX_HP -1 downto 0);
     -- TDC Hits from Tar
-    o_tar_hits_av    : out tar2hps_bus_avt(c_HPS_MAX_HP -1 downto 0)
+    o_tar_hits_av    : out tar2hps_avt(c_HPS_MAX_HP -1 downto 0)
 
   );
 end entity tar;
@@ -73,7 +73,7 @@ architecture beh of tar is
   signal mon_pl_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(0))-1  downto 0);
 
   -- TDC polmux from Tar
-  signal i_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP -1 downto 0);
+  signal i_tdc_hits_ar : tdcpolmux2tar_art(c_HPS_MAX_HP -1 downto 0);
 
   signal local_en : std_logic;
   signal local_rst : std_logic;
@@ -106,7 +106,7 @@ begin
   
   -- TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
 
-  i_tdc_hits_ar <= structify(i_tdc_hits_av);
+  i_tdc_hits_ar <= convert(i_tdc_hits_av,i_tdc_hits_ar);
 
   TAR_PL : entity tar_lib.tar_station
     generic map(

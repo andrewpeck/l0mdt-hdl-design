@@ -38,10 +38,10 @@ entity polmux_wrapper is
     pipeline_clock : in std_logic;
     reset          : in std_logic;
 
-    tdc_hits_i  : in  mdt_polmux_bus_avt (g_WIDTH-1 downto 0);
+    tdc_hits_i  : in  tdcpolmux2tar_avt (g_WIDTH-1 downto 0);
     read_done_o : out std_logic_vector (g_WIDTH-1 downto 0);
 
-    tdc_hits_o : out tdcpolmux2tar_rvt
+    tdc_hits_o : out tdcpolmux2tar_vt
 
     );
 end polmux_wrapper;
@@ -50,7 +50,7 @@ architecture behavioral of polmux_wrapper is
   signal polmux_o  : tdcpolmux2tar_rt;
   signal read_done : std_logic_vector (g_WIDTH-1 downto 0);
   signal valid     : std_logic := '0';
-  signal tdc_hits  : tdcpolmux2tar_rvt;
+  signal tdc_hits  : tdcpolmux2tar_vt;
 begin
 
   -- polmux_inst

@@ -73,7 +73,7 @@ architecture beh of top_hps is
   signal mon_v              : std_logic_vector(c_MON_LEN -1 downto 0);
 
   signal i_uCM2hps_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal i_mdt_tar_av        : tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+  signal i_mdt_tar_av        : tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
   signal o_sf2pt_av          : sf2pt_bus_avt(c_NUM_THREADS -1 downto 0);
 
 begin
