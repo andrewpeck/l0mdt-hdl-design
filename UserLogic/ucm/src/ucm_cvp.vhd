@@ -85,7 +85,7 @@ architecture beh of ucm_cvp is
   signal rpc_radius_av  : ucm_rpc_r_alt(4 - 1 downto 0);
   signal rpc_radius_dv  : std_logic;
 
-  signal mdt_radius_av  : ucm_rpc_r_alt(3 - 1 downto 0);
+  signal mdt_radius_av  : ucm_mdt_r_alt(3 - 1 downto 0);
   signal mdt_radius_dv  : std_logic;
 
   -- 

@@ -48,7 +48,7 @@ entity ucm_mdt_R_comp_top is
     i_phimod      : in std_logic_vector(5 - 1 downto 0);
     i_dv          : in std_logic;
     --
-    o_radius      : out ucm_rpc_r_alt(g_STATION_LAYERS - 1 downto 0);
+    o_radius      : out ucm_mdt_r_alt(g_STATION_LAYERS - 1 downto 0);
     o_dv          : out std_logic
   );
 end entity ucm_mdt_R_comp_top;

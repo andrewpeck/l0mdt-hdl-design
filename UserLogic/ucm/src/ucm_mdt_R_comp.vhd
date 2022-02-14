@@ -35,7 +35,7 @@ entity ucm_mdt_R_comp is
   generic(
     g_STATION_RADIUS      : integer := 0; 
     g_STATION_LAYER       : integer := 0; -- only for RPC
-    g_OUTPUT_WIDTH        : integer := UCM_Z_ROI_LEN
+    g_OUTPUT_WIDTH        : integer --:= UCM_Z_ROI_LEN
   );
   port (
     clk           : in std_logic;
