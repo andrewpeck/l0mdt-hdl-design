@@ -39,7 +39,7 @@ shared/memories/memories_lib.src
 # VHDL utils
 #---------------------------------
 shared/vhdl_utilities/src/vhdl_utils_deserializer.vhd
-# shared/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
+shared/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
 shared/arithmetics/arithmetics_lib.src
 # shared/functions/trigonometrics/roi_atan_pkg.vhd
 # shared/functions/trigonometrics/roi_atan.vhd

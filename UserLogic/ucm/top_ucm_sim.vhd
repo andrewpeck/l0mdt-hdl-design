@@ -32,7 +32,7 @@ library ctrl_lib;
 use ctrl_lib.UCM_CTRL.all;
 
 
-entity top_ucm_tb is
+entity ucm_tb is
   generic (
     PRJ_INFO            : string  := "BA3";
     IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
@@ -66,9 +66,9 @@ entity top_ucm_tb is
   --   -- pipeline
   --   o_uCM2pl_av             : out ucm2pl_avt(c_MAX_NUM_SL -1 downto 0)
   -- );
-end entity top_ucm_tb;
+end entity ucm_tb;
 
-architecture beh of top_ucm_tb is
+architecture beh of ucm_tb is
 
   signal clk                     : std_logic;
   signal rst                     : std_logic;
