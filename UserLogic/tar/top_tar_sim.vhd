@@ -33,7 +33,7 @@ use ctrl_lib.tar_CTRL.all;
 use ctrl_lib.TAR_CTRL_DEF.all;
 
 
-entity top_tar_tb is
+entity tar_tb is
   generic (
     g_HPS_MAX_HP        : integer := 6;
     --
@@ -48,9 +48,9 @@ entity top_tar_tb is
     -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
     DUMMY               : boolean := false
     );
-end entity top_tar_tb;
+end entity tar_tb;
 
-architecture beh of top_tar_tb is
+architecture beh of tar_tb is
 
   -- clk
   constant clk_period : time := 3.125 ns;  -- 320Mhz
