@@ -2,8 +2,8 @@
 config:
   basic_convert_functions : off
   packages:
-    # - ieee: [std_logic_1164, numeric_std, math_real]
-    - shared_lib: [common_ieee_pkg,l0mdt_constants_pkg,sl2mdt_constants_pkg]
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg,l0mdt_constants_pkg,l0mdt_dataformats_pkg,common_constants_pkg,sl2mdt_constants_pkg]
 
 hdl:
 
@@ -79,7 +79,7 @@ hdl:
 # MTC2SL
 - sl2mdt_mtc2sl:
   - data_valid:     [type : logic]
-  - common:         [type : slc_common]
+  - common:         [type : slc_common_rt]
   - mdt_eta:        [type : signed , length : PTCALC2MTC_MDT_ETA_LEN]
   - mdt_pt:         [type : unsigned , length : PTCALC2MTC_MDT_PT_LEN]
   - mdt_ptthresh:   [type : unsigned , length : PTCALC2MTC_MDT_PTTHRESH_LEN]

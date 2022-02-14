@@ -35,7 +35,8 @@ use ctrl_lib.TAR_CTRL_DEF.all;
 
 entity tar_tb is
   generic (
-    g_HPS_MAX_HP        : integer := 6;
+    g_HPS_MAX_HP : integer := 6;
+    g_STATION :   integer := 0;
     --
     PRJ_INFO            : string  := "BA3";
     IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
@@ -77,7 +78,10 @@ begin
   mon_r <= convert(mon_v,mon_r);
 
   TAR : entity tar_lib.tar
-  generic map(g_HPS_MAX_HP)
+  generic map(
+    g_HPS_MAX_HP => g_HPS_MAX_HP,
+    g_STATION => g_STATION
+  )
   port map (
     -- clock, control, and monitoring
     clk             => clk,

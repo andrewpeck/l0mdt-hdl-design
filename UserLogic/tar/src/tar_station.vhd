@@ -82,7 +82,10 @@ begin
   ctrl_r <= convert(ctrl_v,ctrl_r);
   mon_v <= convert(mon_r,mon_v);
 
-  i_tdc_hits_ar <= convert(i_tdc_hits_av,i_tdc_hits_ar);
+  tdc_loop: for b_i in g_ARRAY_LEN -1 downto 0 generate
+    i_tdc_hits_ar(b_i) <= convert(i_tdc_hits_av(b_i),i_tdc_hits_ar(b_i));
+  end generate tdc_loop;
+  
   
   PL_ARRAY : for b_i in g_ARRAY_LEN -1 downto 0 generate
 

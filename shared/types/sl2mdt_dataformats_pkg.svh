@@ -3,8 +3,11 @@
 
 `ifndef SL2MDT_DATAFORMATS_PKG_SVH
 `define SL2MDT_DATAFORMATS_PKG_SVH
+
 `include <common_ieee_pkg.svh>
 `include <l0mdt_constants_pkg.svh>
+`include <l0mdt_dataformats_pkg.svh>
+`include <common_constants_pkg.svh>
 `include <sl2mdt_constants_pkg.svh>
 
 
@@ -79,7 +82,7 @@
 
   typedef struct packed {
     logic  data_valid;
-    slc_common   common;
+    slc_common_rt   common;
     logic signed [PTCALC2MTC_MDT_ETA_LEN-1:0] mdt_eta;
     logic unsigned [PTCALC2MTC_MDT_PT_LEN-1:0] mdt_pt;
     logic unsigned [PTCALC2MTC_MDT_PTTHRESH_LEN-1:0] mdt_ptthresh;
