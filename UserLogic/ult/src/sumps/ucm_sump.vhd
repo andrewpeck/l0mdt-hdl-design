@@ -50,7 +50,7 @@ entity ucm_sump is
     o_uCM2hps_out_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     o_uCM2hps_ext_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- pipeline
-    o_uCM2pl_av             : out ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    o_uCM2pl_av             : out ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
     o_sump : out std_logic
   );

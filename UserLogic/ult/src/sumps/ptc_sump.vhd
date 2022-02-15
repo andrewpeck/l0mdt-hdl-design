@@ -41,7 +41,7 @@ entity ptc_sump is
     i_ext_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
     i_minus_neighbor_segments : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
     i_plus_neighbor_segments  : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_pl2pt_av                : in  pl2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_pl2pt_av                : in  pl2pt_avt(c_NUM_THREADS-1 downto 0);
 
     o_pt2mtc                  : out tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
 

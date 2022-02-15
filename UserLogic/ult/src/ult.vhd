@@ -192,7 +192,7 @@ architecture behavioral of ult is
   -- attribute shreg_extract of out_slc_to_h2s_pipeline : signal is "no";
   -- attribute shreg_extract of ext_slc_to_h2s_pipeline : signal is "no";
 
-  signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal ucm2pl_av         : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
   -- TDC Hits from tar 2 hps
   signal ult_inn_tar_hits_in_av  : tar2hps_avt(c_HPS_MAX_HP_INN -1 downto 0);
@@ -242,8 +242,8 @@ architecture behavioral of ult is
   -- signal extra_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
 
   -- slc to mtc (from pipeline)
-  signal pl2pt_av  : pl2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-  signal pl2mtc_av : pl2mtc_bus_avt (c_MAX_NUM_SL-1 downto 0);
+  signal pl2pt_av  : pl2pt_avt (c_NUM_THREADS-1 downto 0);
+  signal pl2mtc_av : pl2mtc_avt (c_MAX_NUM_SL-1 downto 0);
 
   -- pt calc 2 mtc
   signal pt2mtc_av : tf2mtc_bus_avt(c_NUM_THREADS-1 downto 0);

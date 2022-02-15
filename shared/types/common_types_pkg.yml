@@ -89,9 +89,14 @@ hdl:
 - ucm2pl_art: [array: open ,  type: ucm2pl_rt]
 - ucm2pl_avt: [ array: open,  type: ucm2pl_vt]
 
-- pl2pt_bus: [array: open , type: pl2ptcalc_rt]
-
-- pl2mtc_bus: [array: open , type: pl2mtc_rt]
+# - pl2pt_bus: [array: open , type: pl2ptcalc_rt]
+- pl2pt_vt : [type: logic, length: pl2ptcalc_rt]
+- pl2pt_art: [array: open ,  type: pl2ptcalc_rt]
+- pl2pt_avt: [ array: open,  type: pl2pt_vt]
+# - pl2mtc_bus: [array: open , type: pl2mtc_rt]
+- pl2mtc_vt : [type: logic, length: pl2mtc_rt]
+- pl2mtc_art: [array: open ,  type: pl2mtc_rt]
+- pl2mtc_avt: [ array: open,  type: pl2mtc_vt]
 
 - tf2mtc_bus: [array: open , type: ptcalc2mtc_rt]
 

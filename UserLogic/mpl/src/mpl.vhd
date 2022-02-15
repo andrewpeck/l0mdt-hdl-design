@@ -43,9 +43,9 @@ entity mpl is
     mon_v             : out std_logic_vector;-- : out MPL_MON_t;
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_uCM2pl_av         : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-    o_pl2ptcalc_av      : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_pl2mtc_av         : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
+    i_uCM2pl_av         : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+    o_pl2ptcalc_av      : out pl2pt_avt(c_NUM_THREADS -1 downto 0);
+    o_pl2mtc_av         : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity mpl;
 
@@ -73,17 +73,17 @@ architecture beh of mpl is
 
   signal int_freeze       : std_logic;
 
-  signal i_uCM2pl_ar      : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal i_uCM2pl_ar      : ucm2pl_art(c_MAX_NUM_SL -1 downto 0);
 
-  -- signal pl1out_av : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal main_pl_out_av   : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  signal pl2csw_av        : pl2pt_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  signal pl2ptcalc_av     : mpl2csw_ptcalc_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal pl2mtc_av        : pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal pl1out_av : ucm2pl_art(c_MAX_NUM_SL -1 downto 0);
+  signal main_pl_out_av   : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  signal pl2csw_av        : pl2pt_avt(c_MAX_NUM_SL -1 downto 0);
+  signal pl2ptcalc_av     : mpl2csw_ptcalc_avt(c_NUM_THREADS -1 downto 0);
+  signal pl2mtc_av        : pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
 
-  signal main_pl_out_ar   : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal pl2ptcalc_ar     : mpl2csw_ptcalc_bus_at(c_NUM_THREADS -1 downto 0);
-  signal pl2mtc_ar        : pl2mtc_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal main_pl_out_ar   : ucm2pl_art(c_MAX_NUM_SL -1 downto 0);
+  signal pl2ptcalc_ar     : mpl2csw_ptcalc_art(c_NUM_THREADS -1 downto 0);
+  signal pl2mtc_ar        : pl2mtc_art(c_MAX_NUM_SL -1 downto 0);
 
 begin
 
@@ -144,7 +144,7 @@ begin
 
   MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
 
-    i_uCM2pl_ar(sl_i) <= structify(i_uCM2pl_av(sl_i));
+    i_uCM2pl_ar(sl_i) <= structify(i_uCM2pl_av(sl_i),i_uCM2pl_ar(sl_i));
     
   end generate;
 
@@ -161,6 +161,7 @@ begin
   );
 
   PL_2_TF : for c_i in c_NUM_THREADS -1 downto 0 generate
+    pl2ptcalc_av(c_i) <= vectorify(pl2ptcalc_ar(c_i),pl2ptcalc_av(c_i));
     -- muid
     pl2ptcalc_ar(c_i).muid.slcid        <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.slcid;
     pl2ptcalc_ar(c_i).muid.slid         <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.trailer.slid;
@@ -182,10 +183,14 @@ begin
     pl2mtc_ar(sl_i).process_ch <= main_pl_out_ar(sl_i).process_ch;
     pl2mtc_ar(sl_i).busy <= main_pl_out_ar(sl_i).busy;
     pl2mtc_ar(sl_i).data_valid <= main_pl_out_ar(sl_i).data_valid;
+    --
+    pl2mtc_av(sl_i) <= vectorify(pl2mtc_ar(sl_i),pl2mtc_av(sl_i));
+    main_pl_out_ar(sl_i) <= structify(main_pl_out_av(sl_i),main_pl_out_ar(sl_i));
+
   end generate;
 
-  pl2ptcalc_av <= vectorify(pl2ptcalc_ar);
-  pl2mtc_av <= vectorify(pl2mtc_ar);
-  main_pl_out_ar <= structify(main_pl_out_av);
+  -- pl2ptcalc_av <= vectorify(pl2ptcalc_ar);
+  -- pl2mtc_av <= vectorify(pl2mtc_ar);
+  -- main_pl_out_ar <= structify(main_pl_out_av);
 
 end architecture beh;

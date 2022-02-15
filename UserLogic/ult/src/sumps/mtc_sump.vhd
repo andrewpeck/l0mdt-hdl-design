@@ -36,7 +36,7 @@ entity mtc_sump is
     -- mon               : out H2S_MON_t;
 
     i_ptcalc          : in  tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
-    i_pl2mtc          : in  pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    i_pl2mtc          : in  pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
     o_mtc             : out mtc_out_bus_avt(c_NUM_MTC -1 downto 0);
     o_nsp             : out mtc2nsp_bus_avt(c_NUM_NSP -1 downto 0);
 

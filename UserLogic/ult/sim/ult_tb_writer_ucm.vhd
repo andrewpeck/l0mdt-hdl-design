@@ -86,8 +86,8 @@ architecture sim of ult_tb_writer_ucm is
   alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_plin_av : ucm2hps_avt >>;
   alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_plin_av : ucm2hps_avt >>;
 
-  alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_bus_avt >>;
-  signal ucm2pl_ar : ucm2pl_bus_at(c_MAX_NUM_SL-1 downto 0);
+  alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_avt >>;
+  signal ucm2pl_ar : ucm2pl_art(c_MAX_NUM_SL-1 downto 0);
 
   signal slc_event_u2m_au        : event_at(c_MAX_NUM_SL -1 downto 0);
   signal slc_event_u2h_au        : event_at(c_MAX_NUM_SL -1 downto 0);

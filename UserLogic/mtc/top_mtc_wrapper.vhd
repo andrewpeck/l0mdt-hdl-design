@@ -38,7 +38,7 @@ entity top_mtc_wrapper is
     clock             : in  std_logic;
     rst               : in  std_logic;
     i_ptcalc          : in  tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
-    i_pl2mtc          : in  pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    i_pl2mtc          : in  pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
     o_mtc             : out mtc_out_bus_avt(c_NUM_MTC -1 downto 0)
     --o_nsp             : out mtc2nsp_bus_avt(c_NUM_NSP -1 downto 0)
     );
@@ -57,7 +57,7 @@ architecture mtc_builder_arch of top_mtc_wrapper is
       rst        : in std_logic;
       srst       : in std_logic;
       ptcalc     : in tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
-      slcpipeline: in  pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
+      slcpipeline: in  pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
       mtc        : out mtc_out_bus_avt(n_PRIMARY_MTC -1 downto 0)
       );
 end component;

@@ -18,7 +18,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.common_ieee.all;
+use shared_lib.common_ieee_pkg.all;
 -- use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
@@ -50,9 +50,9 @@ entity mpl_pl is
     --
     i_freeze            : in std_logic := '0';
     --
-    i_uCM2pl_v       : in  ucm2pl_rvt;
-    o_pl2ptcalc_v    : out ucm2pl_rvt;
-    o_pl2mtc_v       : out pl2mtc_rvt
+    i_uCM2pl_v       : in  ucm2pl_vt;
+    o_pl2ptcalc_v    : out ucm2pl_vt;
+    o_pl2mtc_v       : out pl2mtc_vt
     
     );
 end entity mpl_pl;
@@ -65,11 +65,11 @@ architecture beh of mpl_pl is
   -- signal apb_mon_v : std_logic_vector(len(mon_r) - 1 downto 0);
 
   signal i_uCM2pl_r : ucm2pl_rt;
-  signal pl2pl_v    : ucm2pl_rvt;
+  signal pl2pl_v    : ucm2pl_vt;
   signal pl2pl_dv   : std_logic;
   signal pl2pl_r    : ucm2pl_rt;
   signal pl2mtc_r   : pl2mtc_rt;
-  signal pl2mtc_v   : pl2mtc_rvt;
+  signal pl2mtc_v   : pl2mtc_vt;
 
   -- signal apb_ctrl_mem_v : std_logic_vector(len(ctrl_r) - 1 downto 0); 
   -- signal apb_mon_mem_v  : std_logic_vector(len(mon_r) - 1 downto 0);
@@ -80,7 +80,7 @@ begin
   -- apb_ctrl_mem_v <= vectorify(ctrl_r,apb_ctrl_mem_v);
   -- mon_r <= structify(apb_mon_mem_v,mon_r);
 
-  i_uCM2pl_r <= structify(i_uCM2pl_v);
+  i_uCM2pl_r <= convert(i_uCM2pl_v,i_uCM2pl_r);
 
   PL_A : entity vamc_lib.vamc_top
       generic map(
@@ -119,7 +119,7 @@ begin
 
   o_pl2ptcalc_v <= pl2pl_v;
 
-  pl2pl_r <= structify(pl2pl_v);
+  pl2pl_r <= convert(pl2pl_v,pl2pl_r);
 
   -- PL_2_MTC : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     pl2mtc_r.common      <= pl2pl_r.common;
@@ -128,7 +128,7 @@ begin
     pl2mtc_r.data_valid  <= pl2pl_r.data_valid;
   -- end generate;
 
-  pl2mtc_v <= vectorify(pl2mtc_r);
+  pl2mtc_v <= convert(pl2mtc_r,pl2mtc_v);
 
   PL_B : entity vamc_lib.vamc_spl
     generic map(
