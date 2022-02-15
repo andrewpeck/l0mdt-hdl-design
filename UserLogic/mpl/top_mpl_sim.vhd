@@ -30,6 +30,8 @@ use mpl_lib.mpl_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.MPL_CTRL.all;
+use ctrl_lib.MPL_CTRL_DEF.all;
+
 
 
 entity mpl_tb is
@@ -74,10 +76,13 @@ architecture beh of mpl_tb is
   signal ctrl_v              : std_logic_vector(len(ctrl_r) - 1 downto 0); --  : in  MPL_CTRL_t;
   signal mon_v               : std_logic_vector(len(mon_r) - 1 downto 0);--  : out MPL_MON_t; 
   -- SLc pipeline
-  signal i_uCM2pl_av         : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
-  signal o_pl2tf_av          : pl2pt_avt(c_NUM_THREADS -1 downto 0);
-  signal o_pl2mtc_av         : pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
+  signal i_uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  signal o_pl2ptcalc_av         : pl2pt_avt(c_NUM_THREADS -1 downto 0);
+  signal o_pl2mtc_av            : pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
 begin
+
+  ctrl_r <= structify(ctrl_v,ctrl_r);
+  mon_v <= vectorify(mon_r,mon_v);
 
   MPL : entity mpl_lib.mpl
   port map(
@@ -89,7 +94,7 @@ begin
     mon_v           => mon_v,
     --
     i_uCM2pl_av     => i_uCM2pl_av,
-    o_pl2ptcalc_av  => o_pl2pt_av,
+    o_pl2ptcalc_av  => o_pl2ptcalc_av,
     o_pl2mtc_av     => o_pl2mtc_av
   );
   
