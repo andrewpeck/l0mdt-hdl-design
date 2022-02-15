@@ -30,9 +30,10 @@ use hp_lib.hp_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
+use ctrl_lib.HPS_DEF_CTRL.all;
 
 
-entity top_hp_tb is
+entity hp_tb is
   generic (
     PRJ_INFO            : string  := "BA3";
     g_STATION_RADIUS    : integer := 0;
@@ -47,9 +48,9 @@ entity top_hp_tb is
     -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
     DUMMY               : boolean := false
     );
-end entity top_hp_tb;
+end entity hp_tb;
 
-architecture beh of top_hp_tb is
+architecture beh of hp_tb is
 
   signal clk              : std_logic;
   signal rst              : std_logic;

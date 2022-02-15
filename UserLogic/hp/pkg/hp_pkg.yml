@@ -1,15 +1,13 @@
-# yml2hdl v1
-__config__:
-    basic_convert_functions : off
-    packages:
-      shared_lib:
-        - common_ieee_pkg
-        - l0mdt_constants_pkg
-        - l0mdt_dataformats_pkg
-        - common_constants_pkg
-        - common_types_pkg
+# yml2hdl v2
+# module hp
 
-HDL_Types:
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg,common_constants_pkg,common_types_pkg,l0mdt_constants_pkg,l0mdt_dataformats_pkg]
+
+hdl:
 
 # -----------------------------------------------------------
 #  RoI window
