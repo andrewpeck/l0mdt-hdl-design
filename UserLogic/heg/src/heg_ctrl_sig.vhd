@@ -60,7 +60,7 @@ entity heg_ctrl_sig is
     o_hp_control_r      : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
     o_sf_control_r      : out heg_ctrl2sf_rt;
     --
-    o_uCM2hp_data_v     : out hp_heg2hp_slc_rvt;
+    o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
     o_uCM2sf_data_v     : out heg2sfslc_rvt
   );
 end entity heg_ctrl_sig;

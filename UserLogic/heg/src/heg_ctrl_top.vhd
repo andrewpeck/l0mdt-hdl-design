@@ -56,8 +56,8 @@ entity heg_ctrl_top is
     i_uCM_data_v        : in ucm2hps_rvt;
     -- SLc out
     o_uCM2sf_data_v     : out heg2sfslc_rvt;
-    o_uCM2hp_data_v     : out hp_heg2hp_slc_rvt;
-    o_SLC_Window_v      : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
+    o_SLC_Window_v      : out hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     o_SLC_Win_dv        : out std_logic;
 
     o_sf_control_v      : out heg_ctrl2sf_rvt;
@@ -92,13 +92,13 @@ architecture beh of heg_ctrl_top is
   --     o_hp_control_r      : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
   --     o_sf_control_r      : out heg_ctrl2sf_rt;
   --     --
-  --     o_uCM2hp_data_v     : out hp_heg2hp_slc_rvt;
+  --     o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
   --     o_uCM2sf_data_v     : out heg2sfslc_rvt
   --   );
   -- end component ctrl_signals;
 
-  signal SLC_Window_v       : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  signal SLC_Window_r       : hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal SLC_Window_v       : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal SLC_Window_r       : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal win_row_0          : hp_win_tubes_rt; 
 
   signal uCM_data_r         : ucm2hps_rt;

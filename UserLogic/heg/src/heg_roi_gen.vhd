@@ -48,14 +48,14 @@ entity heg_roi_gen is
 
     i_z                   : in unsigned(UCM_Z_ROI_LEN-1 downto 0);
     i_data_valid          : in std_logic;
-    o_SLC_Window_v        : out hp_heg2hp_window_avt;
+    o_SLC_Window_v        : out hp_win_tubes_avt;
     o_data_valid          : out std_logic
   );
 end entity heg_roi_gen;
 
 architecture beh of heg_roi_gen is
 
---   signal SLC_window     : hp_heg2hp_window_at;
+--   signal SLC_window     : hp_win_tubes_art;
 
 --   signal uCM_barrel     : ucm_csf_barrel_rt;
 --   -- signal z_barrel       : unsigned(UCM_Z_ROI_LEN-1 downto 0);

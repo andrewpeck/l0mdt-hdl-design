@@ -47,7 +47,7 @@ entity heg_ctrl_roi is
     --
     i_uCM_data_v        : in ucm2hps_rvt;
     --
-    o_SLC_Window_v      : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    o_SLC_Window_v      : out hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     o_Roi_win_valid      : out std_logic
     
   );
@@ -62,7 +62,7 @@ architecture beh of heg_ctrl_roi is
   signal roi_edges : hp_window_limits_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal dv_z, dv_mbar : std_logic;
   -- signal slc_e_data : ucm_csf_endcap_rt;
-  signal SLC_Window_r : hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal SLC_Window_r : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   
 begin
 

@@ -15,126 +15,176 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 
 package hp_pkg is
 
-  type hp_win_tubes is record
+  type hp_win_tubes_rt is record
     hi : unsigned(MDT_TUBE_LEN-1 downto 0);
     lo : unsigned(MDT_TUBE_LEN-1 downto 0);
-  end record hp_win_tubes;
-  function len(x: hp_win_tubes) return natural;
-  function width(x: hp_win_tubes) return natural;
-  function vectorify(x: hp_win_tubes; t: std_logic_vector) return std_logic_vector;
-  function convert(x: hp_win_tubes; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: hp_win_tubes) return hp_win_tubes;
-  function convert(x: in std_logic_vector; t: hp_win_tubes) return hp_win_tubes;
-  function nullify(t: hp_win_tubes) return hp_win_tubes;
-  function zeroed(t: hp_win_tubes) return hp_win_tubes;
+  end record hp_win_tubes_rt;
+  function len(x: hp_win_tubes_rt) return natural;
+  function width(x: hp_win_tubes_rt) return natural;
+  function vectorify(x: hp_win_tubes_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_win_tubes_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: hp_win_tubes_rt) return hp_win_tubes_rt;
+  function convert(x: in std_logic_vector; t: hp_win_tubes_rt) return hp_win_tubes_rt;
+  function nullify(t: hp_win_tubes_rt) return hp_win_tubes_rt;
+  function zeroed(t: hp_win_tubes_rt) return hp_win_tubes_rt;
 
-  type hp_heg2hp_window is array(integer range <>) of hp_win_tubes;
-  function len(x: hp_heg2hp_window) return natural;
-  function width(x: hp_heg2hp_window) return natural;
-  function vectorify(x: hp_heg2hp_window; t: std_logic_vector) return std_logic_vector;
-  function convert(x: hp_heg2hp_window; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: hp_heg2hp_window) return hp_heg2hp_window;
-  function convert(x: std_logic_vector; t: hp_heg2hp_window) return hp_heg2hp_window;
-  function nullify(x: hp_heg2hp_window) return hp_heg2hp_window;
-  function zeroed(x: hp_heg2hp_window) return hp_heg2hp_window;
+  subtype hp_win_tubes_vt is std_logic_vector(18-1 downto 0);
 
-  type hp_win_tubes_limits is record
+  type hp_win_tubes_art is array(integer range <>) of hp_win_tubes_rt;
+  function len(x: hp_win_tubes_art) return natural;
+  function width(x: hp_win_tubes_art) return natural;
+  function vectorify(x: hp_win_tubes_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_win_tubes_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: hp_win_tubes_art) return hp_win_tubes_art;
+  function convert(x: std_logic_vector; t: hp_win_tubes_art) return hp_win_tubes_art;
+  function nullify(x: hp_win_tubes_art) return hp_win_tubes_art;
+  function zeroed(x: hp_win_tubes_art) return hp_win_tubes_art;
+
+  type hp_win_tubes_avt is array(integer range <>) of hp_win_tubes_vt;
+  function len(x: hp_win_tubes_avt) return natural;
+  function width(x: hp_win_tubes_avt) return natural;
+  function vectorify(x: hp_win_tubes_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_win_tubes_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: hp_win_tubes_avt) return hp_win_tubes_avt;
+  function convert(x: std_logic_vector; t: hp_win_tubes_avt) return hp_win_tubes_avt;
+  function nullify(x: hp_win_tubes_avt) return hp_win_tubes_avt;
+  function zeroed(x: hp_win_tubes_avt) return hp_win_tubes_avt;
+
+  type hp_win_tubes_limits_rt is record
     hi : signed(MDT_TUBE_LEN-1 downto 0);
     lo : signed(MDT_TUBE_LEN-1 downto 0);
-  end record hp_win_tubes_limits;
-  function len(x: hp_win_tubes_limits) return natural;
-  function width(x: hp_win_tubes_limits) return natural;
-  function vectorify(x: hp_win_tubes_limits; t: std_logic_vector) return std_logic_vector;
-  function convert(x: hp_win_tubes_limits; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: hp_win_tubes_limits) return hp_win_tubes_limits;
-  function convert(x: in std_logic_vector; t: hp_win_tubes_limits) return hp_win_tubes_limits;
-  function nullify(t: hp_win_tubes_limits) return hp_win_tubes_limits;
-  function zeroed(t: hp_win_tubes_limits) return hp_win_tubes_limits;
+  end record hp_win_tubes_limits_rt;
+  function len(x: hp_win_tubes_limits_rt) return natural;
+  function width(x: hp_win_tubes_limits_rt) return natural;
+  function vectorify(x: hp_win_tubes_limits_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_win_tubes_limits_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt;
+  function convert(x: in std_logic_vector; t: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt;
+  function nullify(t: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt;
+  function zeroed(t: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt;
 
-  type hp_window_limits is array(integer range <>) of hp_win_tubes_limits;
-  function len(x: hp_window_limits) return natural;
-  function width(x: hp_window_limits) return natural;
-  function vectorify(x: hp_window_limits; t: std_logic_vector) return std_logic_vector;
-  function convert(x: hp_window_limits; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: hp_window_limits) return hp_window_limits;
-  function convert(x: std_logic_vector; t: hp_window_limits) return hp_window_limits;
-  function nullify(x: hp_window_limits) return hp_window_limits;
-  function zeroed(x: hp_window_limits) return hp_window_limits;
+  subtype hp_win_tubes_limits_vt is std_logic_vector(18-1 downto 0);
 
-  type hp_heg2hp_slc_b is record
+  type hp_win_tubes_limits_art is array(integer range <>) of hp_win_tubes_limits_rt;
+  function len(x: hp_win_tubes_limits_art) return natural;
+  function width(x: hp_win_tubes_limits_art) return natural;
+  function vectorify(x: hp_win_tubes_limits_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_win_tubes_limits_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: hp_win_tubes_limits_art) return hp_win_tubes_limits_art;
+  function convert(x: std_logic_vector; t: hp_win_tubes_limits_art) return hp_win_tubes_limits_art;
+  function nullify(x: hp_win_tubes_limits_art) return hp_win_tubes_limits_art;
+  function zeroed(x: hp_win_tubes_limits_art) return hp_win_tubes_limits_art;
+
+  type hp_win_tubes_limits_avt is array(integer range <>) of hp_win_tubes_limits_vt;
+  function len(x: hp_win_tubes_limits_avt) return natural;
+  function width(x: hp_win_tubes_limits_avt) return natural;
+  function vectorify(x: hp_win_tubes_limits_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_win_tubes_limits_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt;
+  function convert(x: std_logic_vector; t: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt;
+  function nullify(x: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt;
+  function zeroed(x: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt;
+
+  type hp_heg2hp_slc_b_rt is record
     roi_z : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     roi_x : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
-  end record hp_heg2hp_slc_b;
-  function len(x: hp_heg2hp_slc_b) return natural;
-  function width(x: hp_heg2hp_slc_b) return natural;
-  function vectorify(x: hp_heg2hp_slc_b; t: std_logic_vector) return std_logic_vector;
-  function convert(x: hp_heg2hp_slc_b; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: hp_heg2hp_slc_b) return hp_heg2hp_slc_b;
-  function convert(x: in std_logic_vector; t: hp_heg2hp_slc_b) return hp_heg2hp_slc_b;
-  function nullify(t: hp_heg2hp_slc_b) return hp_heg2hp_slc_b;
-  function zeroed(t: hp_heg2hp_slc_b) return hp_heg2hp_slc_b;
+  end record hp_heg2hp_slc_b_rt;
+  function len(x: hp_heg2hp_slc_b_rt) return natural;
+  function width(x: hp_heg2hp_slc_b_rt) return natural;
+  function vectorify(x: hp_heg2hp_slc_b_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_heg2hp_slc_b_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt;
+  function convert(x: in std_logic_vector; t: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt;
+  function nullify(t: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt;
+  function zeroed(t: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt;
 
   constant HP_HEG2HP_SPECIFIC_LEN : integer := 38;
 
-  type hp_heg2hp_slc is record
+  type hp_heg2hp_slc_rt is record
     bcid : unsigned(BCID_LEN-1 downto 0);
     specific : std_logic_vector(HP_HEG2HP_SPECIFIC_LEN-1 downto 0);
     data_valid : std_logic;
-  end record hp_heg2hp_slc;
-  function len(x: hp_heg2hp_slc) return natural;
-  function width(x: hp_heg2hp_slc) return natural;
-  function vectorify(x: hp_heg2hp_slc; t: std_logic_vector) return std_logic_vector;
-  function convert(x: hp_heg2hp_slc; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: hp_heg2hp_slc) return hp_heg2hp_slc;
-  function convert(x: in std_logic_vector; t: hp_heg2hp_slc) return hp_heg2hp_slc;
-  function nullify(t: hp_heg2hp_slc) return hp_heg2hp_slc;
-  function zeroed(t: hp_heg2hp_slc) return hp_heg2hp_slc;
+  end record hp_heg2hp_slc_rt;
+  function len(x: hp_heg2hp_slc_rt) return natural;
+  function width(x: hp_heg2hp_slc_rt) return natural;
+  function vectorify(x: hp_heg2hp_slc_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_heg2hp_slc_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt;
+  function convert(x: in std_logic_vector; t: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt;
+  function nullify(t: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt;
+  function zeroed(t: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt;
 
-  type hp_hpsPc2hp is record
+  subtype hp_heg2hp_slc_vt is std_logic_vector(51-1 downto 0);
+
+  type hp_heg2hp_slc_art is array(integer range <>) of hp_heg2hp_slc_rt;
+  function len(x: hp_heg2hp_slc_art) return natural;
+  function width(x: hp_heg2hp_slc_art) return natural;
+  function vectorify(x: hp_heg2hp_slc_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_heg2hp_slc_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: hp_heg2hp_slc_art) return hp_heg2hp_slc_art;
+  function convert(x: std_logic_vector; t: hp_heg2hp_slc_art) return hp_heg2hp_slc_art;
+  function nullify(x: hp_heg2hp_slc_art) return hp_heg2hp_slc_art;
+  function zeroed(x: hp_heg2hp_slc_art) return hp_heg2hp_slc_art;
+
+  type hp_heg2hp_slc_avt is array(integer range <>) of hp_heg2hp_slc_vt;
+  function len(x: hp_heg2hp_slc_avt) return natural;
+  function width(x: hp_heg2hp_slc_avt) return natural;
+  function vectorify(x: hp_heg2hp_slc_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_heg2hp_slc_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt;
+  function convert(x: std_logic_vector; t: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt;
+  function nullify(x: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt;
+  function zeroed(x: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt;
+
+  type hp_hpsPc2hp_rt is record
     tube : unsigned(MDT_TUBE_LEN-1 downto 0);
     layer : unsigned(MDT_LAYER_LEN-1 downto 0);
     time_t0 : unsigned(MDT_TIME_LEN-1 downto 0);
     global_z : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     global_x : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     data_valid : std_logic;
-  end record hp_hpsPc2hp;
-  function len(x: hp_hpsPc2hp) return natural;
-  function width(x: hp_hpsPc2hp) return natural;
-  function vectorify(x: hp_hpsPc2hp; t: std_logic_vector) return std_logic_vector;
-  function convert(x: hp_hpsPc2hp; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: hp_hpsPc2hp) return hp_hpsPc2hp;
-  function convert(x: in std_logic_vector; t: hp_hpsPc2hp) return hp_hpsPc2hp;
-  function nullify(t: hp_hpsPc2hp) return hp_hpsPc2hp;
-  function zeroed(t: hp_hpsPc2hp) return hp_hpsPc2hp;
+  end record hp_hpsPc2hp_rt;
+  function len(x: hp_hpsPc2hp_rt) return natural;
+  function width(x: hp_hpsPc2hp_rt) return natural;
+  function vectorify(x: hp_hpsPc2hp_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_hpsPc2hp_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt;
+  function convert(x: in std_logic_vector; t: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt;
+  function nullify(t: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt;
+  function zeroed(t: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt;
 
-  type hp_hp2sf_data is record
+  subtype hp_hpsPc2hp_vt is std_logic_vector(70-1 downto 0);
+
+  type hp_hp2sf_data_rt is record
     local_y : unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
     local_x : unsigned(MDT_LOCAL_X_LEN-1 downto 0);
     radius : unsigned(MDT_RADIUS_LEN-1 downto 0);
     mlayer : std_logic;
-  end record hp_hp2sf_data;
-  function len(x: hp_hp2sf_data) return natural;
-  function width(x: hp_hp2sf_data) return natural;
-  function vectorify(x: hp_hp2sf_data; t: std_logic_vector) return std_logic_vector;
-  function convert(x: hp_hp2sf_data; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: hp_hp2sf_data) return hp_hp2sf_data;
-  function convert(x: in std_logic_vector; t: hp_hp2sf_data) return hp_hp2sf_data;
-  function nullify(t: hp_hp2sf_data) return hp_hp2sf_data;
-  function zeroed(t: hp_hp2sf_data) return hp_hp2sf_data;
+  end record hp_hp2sf_data_rt;
+  function len(x: hp_hp2sf_data_rt) return natural;
+  function width(x: hp_hp2sf_data_rt) return natural;
+  function vectorify(x: hp_hp2sf_data_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_hp2sf_data_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: hp_hp2sf_data_rt) return hp_hp2sf_data_rt;
+  function convert(x: in std_logic_vector; t: hp_hp2sf_data_rt) return hp_hp2sf_data_rt;
+  function nullify(t: hp_hp2sf_data_rt) return hp_hp2sf_data_rt;
+  function zeroed(t: hp_hp2sf_data_rt) return hp_hp2sf_data_rt;
 
-  type hp_hp2bm is record
-    data : hp_hp2sf_data;
+  type hp_hp2bm_rt is record
+    data : hp_hp2sf_data_rt;
     mdt_valid : std_logic;
     data_valid : std_logic;
-  end record hp_hp2bm;
-  function len(x: hp_hp2bm) return natural;
-  function width(x: hp_hp2bm) return natural;
-  function vectorify(x: hp_hp2bm; t: std_logic_vector) return std_logic_vector;
-  function convert(x: hp_hp2bm; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: hp_hp2bm) return hp_hp2bm;
-  function convert(x: in std_logic_vector; t: hp_hp2bm) return hp_hp2bm;
-  function nullify(t: hp_hp2bm) return hp_hp2bm;
-  function zeroed(t: hp_hp2bm) return hp_hp2bm;
+  end record hp_hp2bm_rt;
+  function len(x: hp_hp2bm_rt) return natural;
+  function width(x: hp_hp2bm_rt) return natural;
+  function vectorify(x: hp_hp2bm_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_hp2bm_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: hp_hp2bm_rt) return hp_hp2bm_rt;
+  function convert(x: in std_logic_vector; t: hp_hp2bm_rt) return hp_hp2bm_rt;
+  function nullify(t: hp_hp2bm_rt) return hp_hp2bm_rt;
+  function zeroed(t: hp_hp2bm_rt) return hp_hp2bm_rt;
+
+  subtype hp_hp2bm_vt is std_logic_vector(42-1 downto 0);
 
 end package hp_pkg;
 
@@ -142,21 +192,21 @@ end package hp_pkg;
 
 package body hp_pkg is
 
-  function len(x: hp_win_tubes) return natural is
+  function len(x: hp_win_tubes_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.hi);
     l := l + len(x.lo);
     return l;
   end function len;
-  function width(x: hp_win_tubes) return natural is
+  function width(x: hp_win_tubes_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.hi);
     l := l + width(x.lo);
     return l;
   end function width;
-  function vectorify(x: hp_win_tubes; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: hp_win_tubes_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -171,7 +221,7 @@ package body hp_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: hp_win_tubes; t: std_logic_vector) return std_logic_vector is
+  function convert(x: hp_win_tubes_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -186,8 +236,8 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: hp_win_tubes) return hp_win_tubes is
-    variable y: hp_win_tubes;
+  function structify(x: in std_logic_vector; t: hp_win_tubes_rt) return hp_win_tubes_rt is
+    variable y: hp_win_tubes_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -201,8 +251,8 @@ package body hp_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: hp_win_tubes) return hp_win_tubes is
-    variable y: hp_win_tubes;
+  function convert(x: in std_logic_vector; t: hp_win_tubes_rt) return hp_win_tubes_rt is
+    variable y: hp_win_tubes_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -216,34 +266,34 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: hp_win_tubes) return hp_win_tubes is
-  variable y: hp_win_tubes;
+  function nullify(t: hp_win_tubes_rt) return hp_win_tubes_rt is
+  variable y: hp_win_tubes_rt;
   begin
     y.hi := nullify(t.hi);
     y.lo := nullify(t.lo);
     return y;
   end function nullify;
-  function zeroed(t: hp_win_tubes) return hp_win_tubes is
-  variable y: hp_win_tubes;
+  function zeroed(t: hp_win_tubes_rt) return hp_win_tubes_rt is
+  variable y: hp_win_tubes_rt;
   begin
     y.hi := zeroed(t.hi);
     y.lo := zeroed(t.lo);
     return y;
   end function zeroed;
 
-  function len(x: hp_heg2hp_window) return natural is
+  function len(x: hp_win_tubes_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: hp_heg2hp_window) return natural is
+  function width(x: hp_win_tubes_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: hp_heg2hp_window; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: hp_win_tubes_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -264,7 +314,7 @@ package body hp_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: hp_heg2hp_window; t: std_logic_vector) return std_logic_vector is
+  function convert(x: hp_win_tubes_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -285,8 +335,8 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: hp_heg2hp_window) return hp_heg2hp_window is
-    variable y : hp_heg2hp_window(t'range);
+  function structify(x: std_logic_vector; t: hp_win_tubes_art) return hp_win_tubes_art is
+    variable y : hp_win_tubes_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -306,8 +356,8 @@ package body hp_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: hp_heg2hp_window) return hp_heg2hp_window is
-    variable y : hp_heg2hp_window(t'range);
+  function convert(x: std_logic_vector; t: hp_win_tubes_art) return hp_win_tubes_art is
+    variable y : hp_win_tubes_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -327,16 +377,16 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: hp_heg2hp_window) return hp_heg2hp_window is
-    variable y : hp_heg2hp_window(x'range);
+  function nullify(x: hp_win_tubes_art) return hp_win_tubes_art is
+    variable y : hp_win_tubes_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: hp_heg2hp_window) return hp_heg2hp_window is
-    variable y : hp_heg2hp_window(x'range);
+  function zeroed(x: hp_win_tubes_art) return hp_win_tubes_art is
+    variable y : hp_win_tubes_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -344,108 +394,19 @@ package body hp_pkg is
     return y;
   end function zeroed;
 
-  function len(x: hp_win_tubes_limits) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.hi);
-    l := l + len(x.lo);
-    return l;
-  end function len;
-  function width(x: hp_win_tubes_limits) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.hi);
-    l := l + width(x.lo);
-    return l;
-  end function width;
-  function vectorify(x: hp_win_tubes_limits; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.hi)-1), vectorify(x.hi, y(left to left+len(x.hi)-1)));
-      left := left + len(x.hi);
-      assign(y(left to left+len(x.lo)-1), vectorify(x.lo, y(left to left+len(x.lo)-1)));
-    else
-      assign(y(left downto left-len(x.hi)+1), vectorify(x.hi, y(left downto left-len(x.hi)+1)));
-      left := left - len(x.hi);
-      assign(y(left downto left-len(x.lo)+1), vectorify(x.lo, y(left downto left-len(x.lo)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: hp_win_tubes_limits; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.hi)-1), convert(x.hi, y(left to left+len(x.hi)-1)));
-      left := left + len(x.hi);
-      assign(y(left to left+len(x.lo)-1), convert(x.lo, y(left to left+len(x.lo)-1)));
-    else
-      assign(y(left downto left-len(x.hi)+1), convert(x.hi, y(left downto left-len(x.hi)+1)));
-      left := left - len(x.hi);
-      assign(y(left downto left-len(x.lo)+1), convert(x.lo, y(left downto left-len(x.lo)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: hp_win_tubes_limits) return hp_win_tubes_limits is
-    variable y: hp_win_tubes_limits;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.hi := structify(x(left to left+len(y.hi)-1), y.hi);
-      left := left + len(y.hi);
-      y.lo := structify(x(left to left+len(y.lo)-1), y.lo);
-    else
-      y.hi := structify(x(left downto left-len(y.hi)+1), y.hi);
-      left := left - len(y.hi);
-      y.lo := structify(x(left downto left-len(y.lo)+1), y.lo);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: hp_win_tubes_limits) return hp_win_tubes_limits is
-    variable y: hp_win_tubes_limits;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.hi := convert(x(left to left+len(y.hi)-1), y.hi);
-      left := left + len(y.hi);
-      y.lo := convert(x(left to left+len(y.lo)-1), y.lo);
-    else
-      y.hi := convert(x(left downto left-len(y.hi)+1), y.hi);
-      left := left - len(y.hi);
-      y.lo := convert(x(left downto left-len(y.lo)+1), y.lo);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: hp_win_tubes_limits) return hp_win_tubes_limits is
-  variable y: hp_win_tubes_limits;
-  begin
-    y.hi := nullify(t.hi);
-    y.lo := nullify(t.lo);
-    return y;
-  end function nullify;
-  function zeroed(t: hp_win_tubes_limits) return hp_win_tubes_limits is
-  variable y: hp_win_tubes_limits;
-  begin
-    y.hi := zeroed(t.hi);
-    y.lo := zeroed(t.lo);
-    return y;
-  end function zeroed;
-
-  function len(x: hp_window_limits) return natural is
+  function len(x: hp_win_tubes_avt) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: hp_window_limits) return natural is
+  function width(x: hp_win_tubes_avt) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: hp_window_limits; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: hp_win_tubes_avt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -466,7 +427,7 @@ package body hp_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: hp_window_limits; t: std_logic_vector) return std_logic_vector is
+  function convert(x: hp_win_tubes_avt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -487,8 +448,8 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: hp_window_limits) return hp_window_limits is
-    variable y : hp_window_limits(t'range);
+  function structify(x: std_logic_vector; t: hp_win_tubes_avt) return hp_win_tubes_avt is
+    variable y : hp_win_tubes_avt(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -508,8 +469,8 @@ package body hp_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: hp_window_limits) return hp_window_limits is
-    variable y : hp_window_limits(t'range);
+  function convert(x: std_logic_vector; t: hp_win_tubes_avt) return hp_win_tubes_avt is
+    variable y : hp_win_tubes_avt(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -529,16 +490,16 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: hp_window_limits) return hp_window_limits is
-    variable y : hp_window_limits(x'range);
+  function nullify(x: hp_win_tubes_avt) return hp_win_tubes_avt is
+    variable y : hp_win_tubes_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: hp_window_limits) return hp_window_limits is
-    variable y : hp_window_limits(x'range);
+  function zeroed(x: hp_win_tubes_avt) return hp_win_tubes_avt is
+    variable y : hp_win_tubes_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -546,21 +507,336 @@ package body hp_pkg is
     return y;
   end function zeroed;
 
-  function len(x: hp_heg2hp_slc_b) return natural is
+  function len(x: hp_win_tubes_limits_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.hi);
+    l := l + len(x.lo);
+    return l;
+  end function len;
+  function width(x: hp_win_tubes_limits_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.hi);
+    l := l + width(x.lo);
+    return l;
+  end function width;
+  function vectorify(x: hp_win_tubes_limits_rt; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.hi)-1), vectorify(x.hi, y(left to left+len(x.hi)-1)));
+      left := left + len(x.hi);
+      assign(y(left to left+len(x.lo)-1), vectorify(x.lo, y(left to left+len(x.lo)-1)));
+    else
+      assign(y(left downto left-len(x.hi)+1), vectorify(x.hi, y(left downto left-len(x.hi)+1)));
+      left := left - len(x.hi);
+      assign(y(left downto left-len(x.lo)+1), vectorify(x.lo, y(left downto left-len(x.lo)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: hp_win_tubes_limits_rt; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.hi)-1), convert(x.hi, y(left to left+len(x.hi)-1)));
+      left := left + len(x.hi);
+      assign(y(left to left+len(x.lo)-1), convert(x.lo, y(left to left+len(x.lo)-1)));
+    else
+      assign(y(left downto left-len(x.hi)+1), convert(x.hi, y(left downto left-len(x.hi)+1)));
+      left := left - len(x.hi);
+      assign(y(left downto left-len(x.lo)+1), convert(x.lo, y(left downto left-len(x.lo)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt is
+    variable y: hp_win_tubes_limits_rt;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.hi := structify(x(left to left+len(y.hi)-1), y.hi);
+      left := left + len(y.hi);
+      y.lo := structify(x(left to left+len(y.lo)-1), y.lo);
+    else
+      y.hi := structify(x(left downto left-len(y.hi)+1), y.hi);
+      left := left - len(y.hi);
+      y.lo := structify(x(left downto left-len(y.lo)+1), y.lo);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt is
+    variable y: hp_win_tubes_limits_rt;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.hi := convert(x(left to left+len(y.hi)-1), y.hi);
+      left := left + len(y.hi);
+      y.lo := convert(x(left to left+len(y.lo)-1), y.lo);
+    else
+      y.hi := convert(x(left downto left-len(y.hi)+1), y.hi);
+      left := left - len(y.hi);
+      y.lo := convert(x(left downto left-len(y.lo)+1), y.lo);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt is
+  variable y: hp_win_tubes_limits_rt;
+  begin
+    y.hi := nullify(t.hi);
+    y.lo := nullify(t.lo);
+    return y;
+  end function nullify;
+  function zeroed(t: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt is
+  variable y: hp_win_tubes_limits_rt;
+  begin
+    y.hi := zeroed(t.hi);
+    y.lo := zeroed(t.lo);
+    return y;
+  end function zeroed;
+
+  function len(x: hp_win_tubes_limits_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: hp_win_tubes_limits_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: hp_win_tubes_limits_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: hp_win_tubes_limits_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: hp_win_tubes_limits_art) return hp_win_tubes_limits_art is
+    variable y : hp_win_tubes_limits_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: hp_win_tubes_limits_art) return hp_win_tubes_limits_art is
+    variable y : hp_win_tubes_limits_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: hp_win_tubes_limits_art) return hp_win_tubes_limits_art is
+    variable y : hp_win_tubes_limits_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: hp_win_tubes_limits_art) return hp_win_tubes_limits_art is
+    variable y : hp_win_tubes_limits_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: hp_win_tubes_limits_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: hp_win_tubes_limits_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: hp_win_tubes_limits_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: hp_win_tubes_limits_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
+    variable y : hp_win_tubes_limits_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
+    variable y : hp_win_tubes_limits_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
+    variable y : hp_win_tubes_limits_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
+    variable y : hp_win_tubes_limits_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: hp_heg2hp_slc_b_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.roi_z);
     l := l + len(x.roi_x);
     return l;
   end function len;
-  function width(x: hp_heg2hp_slc_b) return natural is
+  function width(x: hp_heg2hp_slc_b_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.roi_z);
     l := l + width(x.roi_x);
     return l;
   end function width;
-  function vectorify(x: hp_heg2hp_slc_b; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: hp_heg2hp_slc_b_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -575,7 +851,7 @@ package body hp_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: hp_heg2hp_slc_b; t: std_logic_vector) return std_logic_vector is
+  function convert(x: hp_heg2hp_slc_b_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -590,8 +866,8 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: hp_heg2hp_slc_b) return hp_heg2hp_slc_b is
-    variable y: hp_heg2hp_slc_b;
+  function structify(x: in std_logic_vector; t: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt is
+    variable y: hp_heg2hp_slc_b_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -605,8 +881,8 @@ package body hp_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: hp_heg2hp_slc_b) return hp_heg2hp_slc_b is
-    variable y: hp_heg2hp_slc_b;
+  function convert(x: in std_logic_vector; t: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt is
+    variable y: hp_heg2hp_slc_b_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -620,22 +896,22 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: hp_heg2hp_slc_b) return hp_heg2hp_slc_b is
-  variable y: hp_heg2hp_slc_b;
+  function nullify(t: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt is
+  variable y: hp_heg2hp_slc_b_rt;
   begin
     y.roi_z := nullify(t.roi_z);
     y.roi_x := nullify(t.roi_x);
     return y;
   end function nullify;
-  function zeroed(t: hp_heg2hp_slc_b) return hp_heg2hp_slc_b is
-  variable y: hp_heg2hp_slc_b;
+  function zeroed(t: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt is
+  variable y: hp_heg2hp_slc_b_rt;
   begin
     y.roi_z := zeroed(t.roi_z);
     y.roi_x := zeroed(t.roi_x);
     return y;
   end function zeroed;
 
-  function len(x: hp_heg2hp_slc) return natural is
+  function len(x: hp_heg2hp_slc_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.bcid);
@@ -643,7 +919,7 @@ package body hp_pkg is
     l := l + len(x.data_valid);
     return l;
   end function len;
-  function width(x: hp_heg2hp_slc) return natural is
+  function width(x: hp_heg2hp_slc_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.bcid);
@@ -651,7 +927,7 @@ package body hp_pkg is
     l := l + width(x.data_valid);
     return l;
   end function width;
-  function vectorify(x: hp_heg2hp_slc; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: hp_heg2hp_slc_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -670,7 +946,7 @@ package body hp_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: hp_heg2hp_slc; t: std_logic_vector) return std_logic_vector is
+  function convert(x: hp_heg2hp_slc_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -689,8 +965,8 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: hp_heg2hp_slc) return hp_heg2hp_slc is
-    variable y: hp_heg2hp_slc;
+  function structify(x: in std_logic_vector; t: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt is
+    variable y: hp_heg2hp_slc_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -708,8 +984,8 @@ package body hp_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: hp_heg2hp_slc) return hp_heg2hp_slc is
-    variable y: hp_heg2hp_slc;
+  function convert(x: in std_logic_vector; t: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt is
+    variable y: hp_heg2hp_slc_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -727,16 +1003,16 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: hp_heg2hp_slc) return hp_heg2hp_slc is
-  variable y: hp_heg2hp_slc;
+  function nullify(t: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt is
+  variable y: hp_heg2hp_slc_rt;
   begin
     y.bcid := nullify(t.bcid);
     y.specific := nullify(t.specific);
     y.data_valid := nullify(t.data_valid);
     return y;
   end function nullify;
-  function zeroed(t: hp_heg2hp_slc) return hp_heg2hp_slc is
-  variable y: hp_heg2hp_slc;
+  function zeroed(t: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt is
+  variable y: hp_heg2hp_slc_rt;
   begin
     y.bcid := zeroed(t.bcid);
     y.specific := zeroed(t.specific);
@@ -744,7 +1020,233 @@ package body hp_pkg is
     return y;
   end function zeroed;
 
-  function len(x: hp_hpsPc2hp) return natural is
+  function len(x: hp_heg2hp_slc_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: hp_heg2hp_slc_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: hp_heg2hp_slc_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: hp_heg2hp_slc_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: hp_heg2hp_slc_art) return hp_heg2hp_slc_art is
+    variable y : hp_heg2hp_slc_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: hp_heg2hp_slc_art) return hp_heg2hp_slc_art is
+    variable y : hp_heg2hp_slc_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: hp_heg2hp_slc_art) return hp_heg2hp_slc_art is
+    variable y : hp_heg2hp_slc_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: hp_heg2hp_slc_art) return hp_heg2hp_slc_art is
+    variable y : hp_heg2hp_slc_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: hp_heg2hp_slc_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: hp_heg2hp_slc_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: hp_heg2hp_slc_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: hp_heg2hp_slc_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt is
+    variable y : hp_heg2hp_slc_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt is
+    variable y : hp_heg2hp_slc_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt is
+    variable y : hp_heg2hp_slc_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt is
+    variable y : hp_heg2hp_slc_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: hp_hpsPc2hp_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.tube);
@@ -755,7 +1257,7 @@ package body hp_pkg is
     l := l + len(x.data_valid);
     return l;
   end function len;
-  function width(x: hp_hpsPc2hp) return natural is
+  function width(x: hp_hpsPc2hp_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.tube);
@@ -766,7 +1268,7 @@ package body hp_pkg is
     l := l + width(x.data_valid);
     return l;
   end function width;
-  function vectorify(x: hp_hpsPc2hp; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: hp_hpsPc2hp_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -797,7 +1299,7 @@ package body hp_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: hp_hpsPc2hp; t: std_logic_vector) return std_logic_vector is
+  function convert(x: hp_hpsPc2hp_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -828,8 +1330,8 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: hp_hpsPc2hp) return hp_hpsPc2hp is
-    variable y: hp_hpsPc2hp;
+  function structify(x: in std_logic_vector; t: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt is
+    variable y: hp_hpsPc2hp_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -859,8 +1361,8 @@ package body hp_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: hp_hpsPc2hp) return hp_hpsPc2hp is
-    variable y: hp_hpsPc2hp;
+  function convert(x: in std_logic_vector; t: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt is
+    variable y: hp_hpsPc2hp_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -890,8 +1392,8 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: hp_hpsPc2hp) return hp_hpsPc2hp is
-  variable y: hp_hpsPc2hp;
+  function nullify(t: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt is
+  variable y: hp_hpsPc2hp_rt;
   begin
     y.tube := nullify(t.tube);
     y.layer := nullify(t.layer);
@@ -901,8 +1403,8 @@ package body hp_pkg is
     y.data_valid := nullify(t.data_valid);
     return y;
   end function nullify;
-  function zeroed(t: hp_hpsPc2hp) return hp_hpsPc2hp is
-  variable y: hp_hpsPc2hp;
+  function zeroed(t: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt is
+  variable y: hp_hpsPc2hp_rt;
   begin
     y.tube := zeroed(t.tube);
     y.layer := zeroed(t.layer);
@@ -913,7 +1415,7 @@ package body hp_pkg is
     return y;
   end function zeroed;
 
-  function len(x: hp_hp2sf_data) return natural is
+  function len(x: hp_hp2sf_data_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.local_y);
@@ -922,7 +1424,7 @@ package body hp_pkg is
     l := l + len(x.mlayer);
     return l;
   end function len;
-  function width(x: hp_hp2sf_data) return natural is
+  function width(x: hp_hp2sf_data_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.local_y);
@@ -931,7 +1433,7 @@ package body hp_pkg is
     l := l + width(x.mlayer);
     return l;
   end function width;
-  function vectorify(x: hp_hp2sf_data; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: hp_hp2sf_data_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -954,7 +1456,7 @@ package body hp_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: hp_hp2sf_data; t: std_logic_vector) return std_logic_vector is
+  function convert(x: hp_hp2sf_data_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -977,8 +1479,8 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: hp_hp2sf_data) return hp_hp2sf_data is
-    variable y: hp_hp2sf_data;
+  function structify(x: in std_logic_vector; t: hp_hp2sf_data_rt) return hp_hp2sf_data_rt is
+    variable y: hp_hp2sf_data_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1000,8 +1502,8 @@ package body hp_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: hp_hp2sf_data) return hp_hp2sf_data is
-    variable y: hp_hp2sf_data;
+  function convert(x: in std_logic_vector; t: hp_hp2sf_data_rt) return hp_hp2sf_data_rt is
+    variable y: hp_hp2sf_data_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1023,8 +1525,8 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: hp_hp2sf_data) return hp_hp2sf_data is
-  variable y: hp_hp2sf_data;
+  function nullify(t: hp_hp2sf_data_rt) return hp_hp2sf_data_rt is
+  variable y: hp_hp2sf_data_rt;
   begin
     y.local_y := nullify(t.local_y);
     y.local_x := nullify(t.local_x);
@@ -1032,8 +1534,8 @@ package body hp_pkg is
     y.mlayer := nullify(t.mlayer);
     return y;
   end function nullify;
-  function zeroed(t: hp_hp2sf_data) return hp_hp2sf_data is
-  variable y: hp_hp2sf_data;
+  function zeroed(t: hp_hp2sf_data_rt) return hp_hp2sf_data_rt is
+  variable y: hp_hp2sf_data_rt;
   begin
     y.local_y := zeroed(t.local_y);
     y.local_x := zeroed(t.local_x);
@@ -1042,7 +1544,7 @@ package body hp_pkg is
     return y;
   end function zeroed;
 
-  function len(x: hp_hp2bm) return natural is
+  function len(x: hp_hp2bm_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.data);
@@ -1050,7 +1552,7 @@ package body hp_pkg is
     l := l + len(x.data_valid);
     return l;
   end function len;
-  function width(x: hp_hp2bm) return natural is
+  function width(x: hp_hp2bm_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.data);
@@ -1058,7 +1560,7 @@ package body hp_pkg is
     l := l + width(x.data_valid);
     return l;
   end function width;
-  function vectorify(x: hp_hp2bm; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: hp_hp2bm_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1077,7 +1579,7 @@ package body hp_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: hp_hp2bm; t: std_logic_vector) return std_logic_vector is
+  function convert(x: hp_hp2bm_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1096,8 +1598,8 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: hp_hp2bm) return hp_hp2bm is
-    variable y: hp_hp2bm;
+  function structify(x: in std_logic_vector; t: hp_hp2bm_rt) return hp_hp2bm_rt is
+    variable y: hp_hp2bm_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1115,8 +1617,8 @@ package body hp_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: hp_hp2bm) return hp_hp2bm is
-    variable y: hp_hp2bm;
+  function convert(x: in std_logic_vector; t: hp_hp2bm_rt) return hp_hp2bm_rt is
+    variable y: hp_hp2bm_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1134,16 +1636,16 @@ package body hp_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: hp_hp2bm) return hp_hp2bm is
-  variable y: hp_hp2bm;
+  function nullify(t: hp_hp2bm_rt) return hp_hp2bm_rt is
+  variable y: hp_hp2bm_rt;
   begin
     y.data := nullify(t.data);
     y.mdt_valid := nullify(t.mdt_valid);
     y.data_valid := nullify(t.data_valid);
     return y;
   end function nullify;
-  function zeroed(t: hp_hp2bm) return hp_hp2bm is
-  variable y: hp_hp2bm;
+  function zeroed(t: hp_hp2bm_rt) return hp_hp2bm_rt is
+  variable y: hp_hp2bm_rt;
   begin
     y.data := zeroed(t.data);
     y.mdt_valid := zeroed(t.mdt_valid);

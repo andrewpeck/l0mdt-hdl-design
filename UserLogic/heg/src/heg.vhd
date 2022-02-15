@@ -94,8 +94,8 @@ architecture beh of heg is
   --------------------------------------------
 
   -- signal heg_uCM_data       : ucm2heg_slc_rt;
-  signal roi_b_Window       : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  signal hegC2hp_uCM_data   : hp_heg2hp_slc_rvt;
+  signal roi_b_Window       : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal hegC2hp_uCM_data   : hp_heg2hp_slc_vt;
   
   -- signal heg_Sf_control : heg_ctrl2sf_rt;
   signal hegC_control : heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);

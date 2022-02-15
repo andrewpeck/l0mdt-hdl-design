@@ -21,7 +21,7 @@ USE hegtypes_lib.hp_pkg.ALL;
 PACKAGE heg_pkg IS
 
   TYPE heg_pc2heg_at IS ARRAY(INTEGER RANGE <>) OF hp_hpsPc2hp_rt;
-  TYPE heg_pc2heg_avt IS ARRAY(INTEGER RANGE <>) OF hp_hpsPc2hp_rvt;
+  TYPE heg_pc2heg_avt IS ARRAY(INTEGER RANGE <>) OF hp_hpsPc2hp_vt;
   FUNCTION vectorify(x : heg_pc2heg_at) RETURN heg_pc2heg_avt;
   FUNCTION vectorify(x : heg_pc2heg_at) RETURN STD_LOGIC_VECTOR;
   FUNCTION structify(x : heg_pc2heg_avt) RETURN heg_pc2heg_at;
@@ -71,7 +71,7 @@ PACKAGE heg_pkg IS
   FUNCTION nullify(x : heg_ctrl2sf_rt) RETURN heg_ctrl2sf_rt;
 
   TYPE heg_hp2bm_bus_at IS ARRAY(INTEGER RANGE <>) OF hp_hp2bm_rt;
-  TYPE heg_hp2bm_bus_avt IS ARRAY(INTEGER RANGE <>) OF hp_hp2bm_rvt;
+  TYPE heg_hp2bm_bus_avt IS ARRAY(INTEGER RANGE <>) OF hp_hp2bm_vt;
   FUNCTION vectorify(x : heg_hp2bm_bus_at) RETURN heg_hp2bm_bus_avt;
   FUNCTION vectorify(x : heg_hp2bm_bus_at) RETURN STD_LOGIC_VECTOR;
   FUNCTION structify(x : heg_hp2bm_bus_avt) RETURN heg_hp2bm_bus_at;

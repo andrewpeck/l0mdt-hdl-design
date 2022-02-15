@@ -26,7 +26,7 @@ use shared_lib.config_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
-use hp_lib.hp_dt2r_large_mem.all;
+-- use hp_lib.hp_dt2r_large_mem.all;
 
 entity hp_calc_dt2r_large is
   -- generic(

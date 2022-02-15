@@ -14,21 +14,29 @@
   typedef struct packed {
     logic unsigned [MDT_TUBE_LEN-1:0] hi;
     logic unsigned [MDT_TUBE_LEN-1:0] lo;
-  } hp_win_tubes;
+  } hp_win_tubes_rt;
 
-  typedef hp_win_tubes   hp_heg2hp_window;
+  typedef logic [$bits(hp_win_tubes_rt)-1:0] hp_win_tubes_vt;
+
+  typedef hp_win_tubes_rt   hp_win_tubes_art;
+
+  typedef hp_win_tubes_vt   hp_win_tubes_avt;
 
   typedef struct packed {
     logic signed [MDT_TUBE_LEN-1:0] hi;
     logic signed [MDT_TUBE_LEN-1:0] lo;
-  } hp_win_tubes_limits;
+  } hp_win_tubes_limits_rt;
 
-  typedef hp_win_tubes_limits   hp_window_limits;
+  typedef logic [$bits(hp_win_tubes_limits_rt)-1:0] hp_win_tubes_limits_vt;
+
+  typedef hp_win_tubes_limits_rt   hp_win_tubes_limits_art;
+
+  typedef hp_win_tubes_limits_vt   hp_win_tubes_limits_avt;
 
   typedef struct packed {
     logic unsigned [MDT_GLOBAL_AXI_LEN-1:0] roi_z;
     logic unsigned [MDT_GLOBAL_AXI_LEN-1:0] roi_x;
-  } hp_heg2hp_slc_b;
+  } hp_heg2hp_slc_b_rt;
 
   parameter int  HP_HEG2HP_SPECIFIC_LEN = 38;
 
@@ -36,7 +44,13 @@
     logic unsigned [BCID_LEN-1:0] bcid;
     logic [HP_HEG2HP_SPECIFIC_LEN-1:0] specific;
     logic  data_valid;
-  } hp_heg2hp_slc;
+  } hp_heg2hp_slc_rt;
+
+  typedef logic [$bits(hp_heg2hp_slc_rt)-1:0] hp_heg2hp_slc_vt;
+
+  typedef hp_heg2hp_slc_rt   hp_heg2hp_slc_art;
+
+  typedef hp_heg2hp_slc_vt   hp_heg2hp_slc_avt;
 
   typedef struct packed {
     logic unsigned [MDT_TUBE_LEN-1:0] tube;
@@ -45,20 +59,24 @@
     logic unsigned [MDT_GLOBAL_AXI_LEN-1:0] global_z;
     logic unsigned [MDT_GLOBAL_AXI_LEN-1:0] global_x;
     logic  data_valid;
-  } hp_hpsPc2hp;
+  } hp_hpsPc2hp_rt;
+
+  typedef logic [$bits(hp_hpsPc2hp_rt)-1:0] hp_hpsPc2hp_vt;
 
   typedef struct packed {
     logic unsigned [MDT_LOCAL_Y_LEN-1:0] local_y;
     logic unsigned [MDT_LOCAL_X_LEN-1:0] local_x;
     logic unsigned [MDT_RADIUS_LEN-1:0] radius;
     logic  mlayer;
-  } hp_hp2sf_data;
+  } hp_hp2sf_data_rt;
 
   typedef struct packed {
-    hp_hp2sf_data   data;
+    hp_hp2sf_data_rt   data;
     logic  mdt_valid;
     logic  data_valid;
-  } hp_hp2bm;
+  } hp_hp2bm_rt;
+
+  typedef logic [$bits(hp_hp2bm_rt)-1:0] hp_hp2bm_vt;
 
 
 

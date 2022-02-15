@@ -59,7 +59,7 @@ entity hps_pc is
     o_mon_t0_v              : out std_logic_vector;-- HPS_MDT_T0_MDT_T0_MON_t;   
     -- MDT hit
     i_mdt_tar_v           : in tar2hps_vt;
-    o_mdt_full_data_v     : out hp_hpsPc2hp_rvt
+    o_mdt_full_data_v     : out hp_hpsPc2hp_vt
   );
 end entity hps_pc;
 
