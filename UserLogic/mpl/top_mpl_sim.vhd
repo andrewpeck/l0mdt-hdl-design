@@ -81,8 +81,8 @@ architecture beh of mpl_tb is
   signal o_pl2mtc_av            : pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
 begin
 
-  ctrl_r <= structify(ctrl_v,ctrl_r);
-  mon_v <= vectorify(mon_r,mon_v);
+  ctrl_v <= convert(ctrl_r,ctrl_v);
+  mon_r <= convert(mon_v,mon_r);
 
   MPL : entity mpl_lib.mpl
   port map(
