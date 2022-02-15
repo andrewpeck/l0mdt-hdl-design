@@ -22,8 +22,8 @@ use shared_lib.config_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.common_constants_pkg.all;
 
-library hegtypes_lib; --heg_lib;
-use hegtypes_lib.heg_pkg.all; --heg_lib.heg_pkg.all;
+-- library hegtypes_lib; --heg_lib;
+-- use hegtypes_lib.heg_pkg.all; --heg_lib.heg_pkg.all;
 
 library heg_roi_lib;
 use heg_roi_lib.roi_types_pkg.all;
