@@ -2,13 +2,10 @@ onerror {resume}
 quietly WaveActivateNextPane {} 0
 add wave -noupdate -expand -group hp_top /hp_tb/clk
 add wave -noupdate -expand -group hp_top /hp_tb/rst
-add wave -noupdate -expand -group hp_top /hp_tb/glob_en
 add wave -noupdate -expand -group hp_top /hp_tb/ctrl_r
 add wave -noupdate -expand -group hp_top /hp_tb/mon_r
 add wave -noupdate -expand -group hp_top /hp_tb/ctrl_v
 add wave -noupdate -expand -group hp_top /hp_tb/mon_v
-add wave -noupdate -expand -group hp_top /hp_tb/local_rst
-add wave -noupdate -expand -group hp_top /hp_tb/local_en
 add wave -noupdate -expand -group hp_top /hp_tb/i_SLC_Window_av
 add wave -noupdate -expand -group hp_top /hp_tb/i_slc_data_v
 add wave -noupdate -expand -group hp_top /hp_tb/i_mdt_data_v
@@ -51,10 +48,8 @@ add wave -noupdate -expand -group apb /hp_tb/Hit_Processor/HP_PC/HP_CALC_R/apb_m
 add wave -noupdate -expand -group apb /hp_tb/Hit_Processor/HP_PC/HP_CALC_R/apb_mem_interface/int_rd_status
 add wave -noupdate -expand -group apb /hp_tb/Hit_Processor/HP_PC/HP_CALC_R/apb_mem_interface/int_wr_status
 add wave -noupdate -expand -group apb /hp_tb/Hit_Processor/HP_PC/HP_CALC_R/apb_mem_interface/mon_10A9D_r
-add wave -noupdate -expand -group apb /hp_tb/Hit_Processor/HP_PC/HP_CALC_R/apb_mem_interface/new_apb_rd_req
-add wave -noupdate -expand -group apb /hp_tb/Hit_Processor/HP_PC/HP_CALC_R/apb_mem_interface/new_apb_wr_req
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {4999999624 fs} 0}
+WaveRestoreCursors {{Cursor 1} {1739803350 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100

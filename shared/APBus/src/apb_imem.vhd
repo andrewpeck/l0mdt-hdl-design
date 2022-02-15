@@ -91,8 +91,8 @@ architecture beh of apb_imem is
   signal int_wr_status : unsigned(3 downto 0);
   signal int_rd_status : unsigned(3 downto 0);
 
-  signal new_apb_wr_req : std_logic;
-  signal new_apb_rd_req : std_logic;
+  -- signal new_apb_wr_req : std_logic;
+  -- signal new_apb_rd_req : std_logic;
 
   constant apb_clk_lat : integer := c_CLK_AXI_MULT;
   signal  apb_clk_cnt : integer;

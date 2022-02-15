@@ -41,13 +41,13 @@ entity top_hp is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic := '1';
+    ena             : in std_logic := '1';
     --
     ctrl_b              : in std_logic;
     mon_b               : out std_logic;
     -- configuration
-    local_rst           : in std_logic;
-    local_en            : in std_logic;
+    -- local_rst           : in std_logic;
+    -- local_en            : in std_logic;
     -- time_offset         : in unsigned(12 -1 downto 0);
 
     -- SLc
@@ -142,13 +142,13 @@ begin
   port map(
     clk                 => clk,
     rst                 => rst,
-    glob_en             => glob_en,
+    ena             => ena,
     --
     ctrl_v              => ctrl_v,
     mon_v               => mon_v, 
     -- configuration
-    local_rst           => local_rst,
-    local_en            => local_en,
+    -- local_rst           => local_rst,
+    -- local_en            => local_en,
     -- time_offset         => to_unsigned(HP_BCID_OFFSET_TIME,8),
 
     -- SLc

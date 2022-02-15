@@ -39,13 +39,13 @@ entity hit_processor is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic := '1';
+    ena                 : in std_logic := '1';
     --
     ctrl_v              : in std_logic_vector;
     mon_v               : out std_logic_vector;
     -- configuration
-    local_rst           : in std_logic;
-    local_en            : in std_logic;
+    -- local_rst           : in std_logic;
+    -- local_en            : in std_logic;
     -- time_offset         : in unsigned(12 -1 downto 0);
 
     -- SLc
@@ -79,8 +79,8 @@ architecture beh of hit_processor is
 
 begin
 
-  hp_rst  <= rst OR local_rst;
-  hp_ena  <= glob_en AND local_en;
+  hp_rst  <= rst;-- OR local_rst;
+  hp_ena  <= ena;--glob_en AND local_en;
 
   mdt_data_r <= structify(i_mdt_data_v,mdt_data_r);
   slc_data_r <= structify(i_slc_data_v,slc_data_r);

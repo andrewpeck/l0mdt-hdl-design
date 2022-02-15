@@ -55,9 +55,9 @@ architecture beh of hp_tb is
   constant clk_period : time := 3.125 ns;  -- 320Mhz
   signal clk : std_logic := '0';
   -- rest
-  constant reset_init_cycles : integer := 3;
-  signal rst                 : std_logic;
-  signal glob_en             : std_logic := '1';
+  constant reset_init_cycles  : integer := 3;
+  signal rst                  : std_logic;
+  signal ena                  : std_logic := '1';
   --
   signal ctrl_r           : HPS_HEG_HEG_HP_HP_CTRL_t := DEFAULT_HPS_HEG_HEG_HP_HP_CTRL_t ;
   signal mon_r            : HPS_HEG_HEG_HP_HP_MON_t;
@@ -66,11 +66,11 @@ architecture beh of hp_tb is
   signal ctrl_v           : std_logic_vector(c_CTRL_LEN - 1 downto 0);
   signal mon_v            : std_logic_vector(c_MON_LEN - 1 downto 0);
 
-  signal local_rst        : std_logic;
-  signal local_en         : std_logic;
-  signal i_SLC_Window_av  : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  signal i_slc_data_v     : hp_heg2hp_slc_vt;
-  signal i_mdt_data_v     : hp_hpsPc2hp_vt;
+  -- signal local_rst        : std_logic;
+  -- signal local_en         : std_logic;
+  signal i_SLC_Window_av  : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0) := (others => (others => '0'));
+  signal i_slc_data_v     : hp_heg2hp_slc_vt := (others => '0');
+  signal i_mdt_data_v     : hp_hpsPc2hp_vt := (others => '0');
   signal o_hit_data_v     : hp_hp2bm_vt;
 
 begin
@@ -85,13 +85,13 @@ begin
   port map(
     clk                 => clk,
     rst                 => rst,
-    glob_en             => glob_en,
+    ena                 => ena,
     --
     ctrl_v              => ctrl_v,
     mon_v               => mon_v, 
     -- configuration
-    local_rst           => local_rst,
-    local_en            => local_en,
+    -- local_rst           => local_rst,
+    -- local_en            => local_en,
     -- SLc
     i_SLC_Window        => i_SLC_Window_av,
     i_slc_data_v        => i_slc_data_v,
