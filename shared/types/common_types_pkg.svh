@@ -67,9 +67,9 @@
 
   typedef ucm2hps_vt   ucm2hps_avt;
 
-  typedef heg2sfslc_rt   heg2sfslc_bus;
+  typedef logic [$bits(heg2sfslc_rt)-1:0] heg2sfslc_vt;
 
-  typedef heg2sfhit_rt   heg2sfhit_bus;
+  typedef logic [$bits(heg2sfhit_rt)-1:0] heg2sfhit_vt;
 
   typedef sf2ptcalc_rt   sf2pt_bus;
 

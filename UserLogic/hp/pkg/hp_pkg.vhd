@@ -170,6 +170,28 @@ package hp_pkg is
   function nullify(t: hp_hp2sf_data_rt) return hp_hp2sf_data_rt;
   function zeroed(t: hp_hp2sf_data_rt) return hp_hp2sf_data_rt;
 
+  subtype hp_hp2sf_data_vt is std_logic_vector(40-1 downto 0);
+
+  type hp_hp2sf_data_art is array(integer range <>) of hp_hp2sf_data_rt;
+  function len(x: hp_hp2sf_data_art) return natural;
+  function width(x: hp_hp2sf_data_art) return natural;
+  function vectorify(x: hp_hp2sf_data_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_hp2sf_data_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: hp_hp2sf_data_art) return hp_hp2sf_data_art;
+  function convert(x: std_logic_vector; t: hp_hp2sf_data_art) return hp_hp2sf_data_art;
+  function nullify(x: hp_hp2sf_data_art) return hp_hp2sf_data_art;
+  function zeroed(x: hp_hp2sf_data_art) return hp_hp2sf_data_art;
+
+  type hp_hp2sf_data_avt is array(integer range <>) of hp_hp2sf_data_vt;
+  function len(x: hp_hp2sf_data_avt) return natural;
+  function width(x: hp_hp2sf_data_avt) return natural;
+  function vectorify(x: hp_hp2sf_data_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: hp_hp2sf_data_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: hp_hp2sf_data_avt) return hp_hp2sf_data_avt;
+  function convert(x: std_logic_vector; t: hp_hp2sf_data_avt) return hp_hp2sf_data_avt;
+  function nullify(x: hp_hp2sf_data_avt) return hp_hp2sf_data_avt;
+  function zeroed(x: hp_hp2sf_data_avt) return hp_hp2sf_data_avt;
+
   type hp_hp2bm_rt is record
     data : hp_hp2sf_data_rt;
     mdt_valid : std_logic;
@@ -1541,6 +1563,232 @@ package body hp_pkg is
     y.local_x := zeroed(t.local_x);
     y.radius := zeroed(t.radius);
     y.mlayer := zeroed(t.mlayer);
+    return y;
+  end function zeroed;
+
+  function len(x: hp_hp2sf_data_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: hp_hp2sf_data_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: hp_hp2sf_data_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: hp_hp2sf_data_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: hp_hp2sf_data_art) return hp_hp2sf_data_art is
+    variable y : hp_hp2sf_data_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: hp_hp2sf_data_art) return hp_hp2sf_data_art is
+    variable y : hp_hp2sf_data_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: hp_hp2sf_data_art) return hp_hp2sf_data_art is
+    variable y : hp_hp2sf_data_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: hp_hp2sf_data_art) return hp_hp2sf_data_art is
+    variable y : hp_hp2sf_data_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: hp_hp2sf_data_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: hp_hp2sf_data_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: hp_hp2sf_data_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: hp_hp2sf_data_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: hp_hp2sf_data_avt) return hp_hp2sf_data_avt is
+    variable y : hp_hp2sf_data_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: hp_hp2sf_data_avt) return hp_hp2sf_data_avt is
+    variable y : hp_hp2sf_data_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: hp_hp2sf_data_avt) return hp_hp2sf_data_avt is
+    variable y : hp_hp2sf_data_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: hp_hp2sf_data_avt) return hp_hp2sf_data_avt is
+    variable y : hp_hp2sf_data_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
     return y;
   end function zeroed;
 

@@ -24,9 +24,13 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-library hegtypes_lib;
-use hegtypes_lib.hp_pkg.all;
-use hegtypes_lib.heg_pkg.all;
+library hp_lib;
+use hp_lib.hp_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library heg_lib;
 
@@ -68,13 +72,13 @@ architecture beh of top_heg is
   signal ctrl_v             : std_logic_vector(c_CTRL_LEN -1 downto 0);
   signal mon_v              : std_logic_vector(c_MON_LEN -1 downto 0);
 
-  signal i_uCM_data_rv        : ucm2hps_rvt;
+  signal i_uCM_data_rv        : ucm2hps_vt;
   signal i_uCM_data_v         : std_logic_vector(i_uCM_data_rv'range);
   signal i_mdt_full_data_av   : heg_pc2heg_avt(c_HPS_MAX_ARRAY(FLAVOUR) -1 downto 0);
-  signal o_sf_control_rv      : heg_ctrl2sf_rvt;
+  signal o_sf_control_rv      : heg_ctrl2sf_vt;
   -- signal o_sf_control_v       : std_logic_vector(o_sf_control_rv'range);
-  signal o_sf_slc_data_v      : heg2sfslc_rvt;
-  signal o_sf_mdt_data_v      : heg2sfhit_rvt;
+  signal o_sf_slc_data_v      : heg2sfslc_vt;
+  signal o_sf_mdt_data_v      : heg2sfhit_vt;
 
 begin
 

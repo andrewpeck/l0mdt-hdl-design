@@ -79,6 +79,10 @@ hdl:
   - radius      : [ type: unsigned , length: MDT_RADIUS_LEN ]
   - mlayer      : [ type: logic]
 
+- hp_hp2sf_data_vt : [type: logic, length: hp_hp2sf_data_rt]
+- hp_hp2sf_data_art: [array: open ,  type: hp_hp2sf_data_rt]
+- hp_hp2sf_data_avt: [ array: open,  type: hp_hp2sf_data_vt]
+
 - hp_hp2bm_rt:
   - data        : [ type: hp_hp2sf_data_rt]
   - mdt_valid   : [ type: logic]

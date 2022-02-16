@@ -70,6 +70,12 @@
     logic  mlayer;
   } hp_hp2sf_data_rt;
 
+  typedef logic [$bits(hp_hp2sf_data_rt)-1:0] hp_hp2sf_data_vt;
+
+  typedef hp_hp2sf_data_rt   hp_hp2sf_data_art;
+
+  typedef hp_hp2sf_data_vt   hp_hp2sf_data_avt;
+
   typedef struct packed {
     hp_hp2sf_data_rt   data;
     logic  mdt_valid;

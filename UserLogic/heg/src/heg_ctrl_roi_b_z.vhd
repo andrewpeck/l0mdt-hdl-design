@@ -25,18 +25,16 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
---library hp_lib;
---use hp_lib.hp_pkg.all;
+library hp_lib;
+use hp_lib.hp_pkg.all;
 library heg_lib;
---use heg_lib.heg_pkg.all;
-use heg_lib.heg_custom_pkg.all;
+use heg_lib.heg_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 library heg_roi_lib;
 use heg_roi_lib.roi_types_pkg.all;
 use heg_roi_lib.roi_func_pkg.all;
-
-library hegtypes_lib;
-use hegtypes_lib.hp_pkg.all;
-use hegtypes_lib.heg_pkg.all;
 
 entity b_z2roi is
   generic(
@@ -50,7 +48,7 @@ entity b_z2roi is
     i_z                 : in unsigned(UCM_Z_ROI_LEN-1 downto 0);
     i_dv                : in std_logic;
     --
-    o_roi_center        : out heg_roi_center_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    o_roi_center        : out heg_roi_center_aut(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     o_dv                : out std_logic
   );
 end entity b_z2roi;

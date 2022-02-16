@@ -26,14 +26,13 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
---library hp_lib;
---use hp_lib.hp_pkg.all;
-
-library hegtypes_lib;
-use hegtypes_lib.hp_pkg.all;
-use hegtypes_lib.heg_pkg.all;
+library hp_lib;
+use hp_lib.hp_pkg.all;
 library heg_lib;
---use heg_lib.heg_pkg.all;
+use heg_lib.heg_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 
 library ctrl_lib;
@@ -53,15 +52,15 @@ entity heg_ctrl_top is
     mon_v             : out std_logic_vector; 
     -- configuration
     -- SLc in
-    i_uCM_data_v        : in ucm2hps_rvt;
+    i_uCM_data_v        : in ucm2hps_vt;
     -- SLc out
-    o_uCM2sf_data_v     : out heg2sfslc_rvt;
+    o_uCM2sf_data_v     : out heg2sfslc_vt;
     o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
     o_SLC_Window_v      : out hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     o_SLC_Win_dv        : out std_logic;
 
-    o_sf_control_v      : out heg_ctrl2sf_rvt;
-    o_hp_control_r      : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0)
+    o_sf_control_v      : out heg_ctrl2sf_vt;
+    o_hp_control_r      : out heg_ctrl2hp_art(g_HPS_NUM_MDT_CH -1 downto 0)
   );
 end entity heg_ctrl_top;
 
@@ -89,16 +88,16 @@ architecture beh of heg_ctrl_top is
   --     i_Roi_win_origin    : in unsigned(MDT_TUBE_LEN-1 downto 0);
   --     i_Roi_win_valid     : in std_logic;
   --     --
-  --     o_hp_control_r      : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
+  --     o_hp_control_r      : out heg_ctrl2hp_art(g_HPS_NUM_MDT_CH -1 downto 0);
   --     o_sf_control_r      : out heg_ctrl2sf_rt;
   --     --
   --     o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
-  --     o_uCM2sf_data_v     : out heg2sfslc_rvt
+  --     o_uCM2sf_data_v     : out heg2sfslc_vt
   --   );
   -- end component ctrl_signals;
 
-  signal SLC_Window_v       : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  signal SLC_Window_r       : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal SLC_Window_av       : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal SLC_Window_ar       : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal win_row_0          : hp_win_tubes_rt; 
 
   signal uCM_data_r         : ucm2hps_rt;
@@ -122,10 +121,10 @@ begin
   mon_roi_tc_r <= structify(mon_roi_tc_v,mon_roi_tc_r);
   ctrl_roi_tc_v <= vectorify(ctrl_roi_tc_r,ctrl_roi_tc_v);
 
-  o_SLC_Window_v <= SLC_Window_v;
-  win_row_0 <= structify(SLC_Window_v(0));
+  o_SLC_Window_v <= SLC_Window_av;
+  win_row_0 <= structify(SLC_Window_av(0),win_row_0);
 
-  o_sf_control_v <= vectorify(o_sf_control_r);
+  o_sf_control_v <= vectorify(o_sf_control_r,o_sf_control_v);
   -- o_hp_control_v <= vectorify(o_hp_control_r);
 
   HEG_CTRL_ROI : entity heg_lib.heg_ctrl_roi
@@ -141,11 +140,13 @@ begin
     -- SLc in
     i_uCM_data_v          => i_uCM_data_v,
     -- SLc out
-    o_SLC_Window_v        => SLC_Window_v,
+    o_SLC_Window_av        => SLC_Window_av,
     o_Roi_win_valid       => Roi_win_valid
   );
 
-  SLC_Window_r <= structify(SLC_Window_v);
+  for_gen_SW : for il in get_num_layers(g_STATION_RADIUS) -1 downto 0 generate
+    SLC_Window_ar(il) <= structify(SLC_Window_av(il),SLC_Window_ar(il));
+  end generate ; -- identifier
 
   HEG_CTRL_ROI_ORG : entity heg_lib.heg_ctrl_roi_tc
   generic map(
@@ -160,7 +161,7 @@ begin
     mon_v               =>  mon_roi_tc_v,
     --
     -- i_layer             => ,
-    i_tube              => SLC_Window_r(0).lo,
+    i_tube              => SLC_Window_ar(0).lo,
     i_dv                => Roi_win_valid,
     --
     o_global_x          => roi_global_x,
@@ -197,7 +198,7 @@ begin
   -- o_uCM2sf_data_v <= int_uCM_data;
   -- o_uCM2hp_data_v.barrel.z <= int_uCM_data.barrel.z;
 
-  uCM_data_r <= structify(i_uCM_data_v);
+  uCM_data_r <= structify(i_uCM_data_v,uCM_data_r);
   -- o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r);
 
 end beh;

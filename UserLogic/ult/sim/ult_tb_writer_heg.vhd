@@ -189,7 +189,7 @@ begin
   TH_loop: for th_i in c_NUM_THREADS - 1 downto 0 generate
     HPS_INN: if c_HPS_ENABLE_ST_INN = '1' generate
       alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
-      signal hp2bm_ar : heg_hp2bm_bus_at(c_HPS_MAX_HP_INN-1 downto 0);
+      signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_INN-1 downto 0);
     begin
       hp2bm_ar <= structify(hp2bm_av);
       INN_proc: process(clk, rst)
@@ -221,7 +221,7 @@ begin
     end generate;
     HPS_MID: if c_HPS_ENABLE_ST_MID = '1' generate
       alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
-      signal hp2bm_ar : heg_hp2bm_bus_at(c_HPS_MAX_HP_MID-1 downto 0);
+      signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_MID-1 downto 0);
     begin
       hp2bm_ar <= structify(hp2bm_av);
       MID_proc: process(clk, rst)
@@ -252,7 +252,7 @@ begin
     end generate;
     HPS_OUT: if c_HPS_ENABLE_ST_OUT = '1' generate
       alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
-      signal hp2bm_ar : heg_hp2bm_bus_at(c_HPS_MAX_HP_OUT-1 downto 0);
+      signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_OUT-1 downto 0);
     begin
       hp2bm_ar <= structify(hp2bm_av);
       OUT_proc: process(clk, rst)
@@ -283,7 +283,7 @@ begin
     end generate;
     HPS_EXT: if c_HPS_ENABLE_ST_EXT = '1' generate
       alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
-      signal hp2bm_ar : heg_hp2bm_bus_at(c_HPS_MAX_HP_EXT-1 downto 0);
+      signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_EXT-1 downto 0);
     begin
       hp2bm_ar <= structify(hp2bm_av);
       EXT_proc: process(clk, rst)

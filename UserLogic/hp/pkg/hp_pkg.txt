@@ -64,6 +64,17 @@ E      local_x (unsigned MDT_LOCAL_X_LEN)
 E      radius (unsigned MDT_RADIUS_LEN)
 E      mlayer (logic)
 
+E   hp_hp2sf_data_vt (logic hp_hp2sf_data_rt)
+
+A   hp_hp2sf_data_art (open hp_hp2sf_data_rt)
+E      local_y (unsigned MDT_LOCAL_Y_LEN)
+E      local_x (unsigned MDT_LOCAL_X_LEN)
+E      radius (unsigned MDT_RADIUS_LEN)
+E      mlayer (logic)
+
+A   hp_hp2sf_data_avt (open hp_hp2sf_data_vt)
+E      hp_hp2sf_data_vt (logic hp_hp2sf_data_rt)
+
 R   hp_hp2bm_rt
 E      data (hp_hp2sf_data_rt)
 E         local_y (unsigned MDT_LOCAL_Y_LEN)
