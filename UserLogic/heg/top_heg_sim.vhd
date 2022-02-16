@@ -34,6 +34,7 @@ use heg_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
+use ctrl_lib.HPS_CTRL_DEF.all;
 
 entity heg_tb is
   generic(
@@ -72,7 +73,7 @@ architecture beh of heg_tb is
   -- SLc
   signal i_uCM_data_v         : ucm2hps_vt := (others => '0');
   -- MDT hit
-  signal i_mdt_full_data_av   : heg_pc2heg_avt(g_HPS_NUM_MDT_CH-1 downto 0) := (others => (others => '0'));
+  signal i_mdt_full_data_av   : heg_pc2heg_avt(c_HPS_MAX_ARRAY(FLAVOUR)-1 downto 0) := (others => (others => '0'));
   -- to Segment finder
   signal o_sf_control_v       : heg_ctrl2sf_vt := (others => '0');
   signal o_sf_slc_data_v      : heg2sfslc_vt := (others => '0');
