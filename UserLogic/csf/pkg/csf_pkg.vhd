@@ -35,7 +35,7 @@ package csf_pkg is
 
   constant CSF_MAXHITS_ML_LEN : integer := 3;
 
-  constant CSF_MAX_CLUSTERS : integer := 4;
+  constant CSF_MAX_CLUSTERS : integer := 6;
 
   constant SUM_XY_LEN : integer := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN * 2;
 
