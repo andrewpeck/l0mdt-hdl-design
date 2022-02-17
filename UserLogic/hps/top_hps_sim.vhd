@@ -34,7 +34,7 @@ use hps_lib.hps_pkg.all;
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
 
-entity top_hps_tb is
+entity hps_tb is
   generic(
     -- mdt type
     -- type mdt_type;
@@ -61,9 +61,9 @@ entity top_hps_tb is
     -- -- to pt calc
     -- o_sf2pt_av          : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
   -- );
-end entity top_hps_tb;
+end entity hps_tb;
 
-architecture beh of top_hps_tb is
+architecture beh of hps_tb is
 
   signal clk                : std_logic;
   signal rst                : std_logic;
