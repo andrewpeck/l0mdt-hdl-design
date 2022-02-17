@@ -126,11 +126,15 @@ ARCHITECTURE behavioral OF csf IS
   SIGNAL eof : STD_LOGIC;
 
   -- Clustering signals
-  SIGNAL cluster_hits : csf_hit_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
-  SIGNAL fitter_en : STD_LOGIC_VECTOR(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+  TYPE t_cluster_hits_ml IS ARRAY (INTEGER RANGE <>) OF csf_hit_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+  SIGNAL cluster_hits_ml : t_cluster_hits_ml(1 DOWNTO 0);
+  TYPE t_fitter_en_ml IS ARRAY (INTEGER RANGE <>) OF STD_LOGIC_VECTOR(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+  SIGNAL fitter_en_ml : t_fitter_en_ml(1 DOWNTO 0);
 
   -- Fitters Signals
-  SIGNAL sums : csf_sums_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+  TYPE t_csf_sums_ml IS ARRAY (INTEGER RANGE <>) OF csf_sums_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+  SIGNAL sums_ml : t_csf_sums_ml(1 DOWNTO 0);
+
   SIGNAL locseg : csf_locseg_rvt;
 
   ---- Coordinate transformation
@@ -312,40 +316,45 @@ BEGIN
   ----      spy_meta_wen          => i_spyseg_meta_we
 
   ----    );
-
+  
+  mdt_hit <= structify(i_mdt_hit);
   seed_i <= structify(i_seed);
   o_seg <= globseg;
 
   -- Clustering
 
-  Cluster : ENTITY csf_lib.csf_clustering
-    GENERIC MAP(
-      MAX_HITS_PER_CLUSTER => real(CSF_MAXHITS_SEG),
-      MAX_CLUSTERS => CSF_MAX_CLUSTERS
-    )
-    PORT MAP(
-      clk => clk,
-      i_mdthit => i_mdt_hit,
-      i_seed => i_seed,
-      i_eof => i_eof,
-      o_cluster_hits => cluster_hits,
-      o_fitter_en => fitter_en
-    );
-  SUMMING : FOR i IN 0 TO CSF_MAX_CLUSTERS - 1 GENERATE
-  BEGIN
-    CSF_SUM : ENTITY csf_lib.ncsf_sums
+  CLUSTERING_GEN : FOR i IN 0 TO 1 GENERATE
+    Cluster : ENTITY csf_lib.csf_clustering
+      GENERIC MAP(
+        MAX_HITS_PER_CLUSTER => real(CSF_MAXHITS_SEG/2),
+        MAX_CLUSTERS => CSF_MAX_CLUSTERS
+      )
       PORT MAP(
         clk => clk,
-        i_hit => cluster_hits(i),
-        i_fit_en => fitter_en(i),
-        o_sums => sums(i)
+        i_mdthit => mdt_hits(i),
+        i_seed => i_seed,
+        i_eof => i_eof,
+        o_cluster_hits => cluster_hits_ml(i),
+        o_fitter_en => fitter_en_ml(i)
       );
-  END GENERATE SUMMING;
+
+    SUMMING : FOR k IN 0 TO CSF_MAX_CLUSTERS - 1 GENERATE
+    BEGIN
+      CSF_SUM : ENTITY csf_lib.ncsf_sums
+        PORT MAP(
+          clk => clk,
+          i_hit => cluster_hits_ml(i)(k),
+          i_fit_en => fitter_en_ml(i)(k),
+          o_sums => sums_ml(i)(k)
+        );
+    END GENERATE SUMMING;
+  END GENERATE CLUSTERING_GEN;
 
   Fitter : ENTITY csf_lib.ncsf_fit
     PORT MAP(
       clk => clk,
-      i_sums => sums,
+      i_sums_ml0 => sums_ml(0),
+      i_sums_ml1 => sums_ml(1),
       o_seg => locseg
     );
 
@@ -364,7 +373,8 @@ BEGIN
   csf_proc : PROCESS (clk) IS
   BEGIN
 
-    IF (clk'event AND clk = '1') THEN
+    IF rising_edge(clk) THEN
+      mdt_hits(stdlogic_integer(mdt_hit.mlayer)) <= i_mdt_hit;
 
       IF (seed_i.data_valid = '1') THEN
         seed <= i_seed;

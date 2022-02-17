@@ -23,7 +23,7 @@ HDL_Types:
 - CSF_MAXHITS_SEG     : [ qualifier: constant, type: integer, value: 16]
 - CSF_MAXHITS_SEG_LEN : [qualifier: constant, type: integer, value: 4]
 - CSF_MAXHITS_ML_LEN  : [qualifier: constant, type: integer, value: 3]
-- CSF_MAX_CLUSTERS        : [qualifier: constant, type: integer, value: 10]
+- CSF_MAX_CLUSTERS        : [qualifier: constant, type: integer, value: 6]
 - SUM_XY_LEN : [qualifier : constant, type: integer, value: CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN * 2]
 - SUM_Y_LEN : [qualifier : constant, type: integer, value: CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN]
 - SUM_X_LEN : [qualifier : constant, type: integer, value: CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN]
