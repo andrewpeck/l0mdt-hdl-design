@@ -27,9 +27,9 @@ entity top_upt is
         clk : in std_logic;
         i_rst : in std_logic;
         i_slc: in pl2ptcalc_rvt;
-        i_segment_i : in sf2ptcalc_rvt;
-        i_segment_m : in sf2ptcalc_rvt;
-        i_segment_o : in sf2ptcalc_rvt;
+        i_segment_i : in sf2ptcalc_vt;
+        i_segment_m : in sf2ptcalc_vt;
+        i_segment_o : in sf2ptcalc_vt;
         o_mtc : out ptcalc2mtc_rvt -- TODO [check with Kostas/Davide/etc.] change name to pt2mtc_rvt in data format?
     );
 end top_upt;
@@ -47,9 +47,9 @@ architecture behav of top_upt is
     signal ptcalc_ap_idle     : std_logic;
     signal ptcalc_cnt       : std_logic_vector(2 downto 0):= (others => '0');
     signal ptcalc_slc       : pl2ptcalc_rvt;
-    signal ptcalc_segment_i : sf2ptcalc_rvt;
-    signal ptcalc_segment_m : sf2ptcalc_rvt;
-    signal ptcalc_segment_o : sf2ptcalc_rvt;
+    signal ptcalc_segment_i : sf2ptcalc_vt;
+    signal ptcalc_segment_m : sf2ptcalc_vt;
+    signal ptcalc_segment_o : sf2ptcalc_vt;
     signal ptcalc_debug     : std_logic_vector(57 downto 0);
 
     constant ap_const_logic_1 : STD_LOGIC := '1';
@@ -64,9 +64,9 @@ architecture behav of top_upt is
             ap_idle       : out std_logic;
             ap_ready      : out std_logic;
             pl2ptcalc     : in pl2ptcalc_rvt;
-            sf2ptcalc_inn : in sf2ptcalc_rvt;
-            sf2ptcalc_mid : in sf2ptcalc_rvt;
-            sf2ptcalc_out : in sf2ptcalc_rvt;
+            sf2ptcalc_inn : in sf2ptcalc_vt;
+            sf2ptcalc_mid : in sf2ptcalc_vt;
+            sf2ptcalc_out : in sf2ptcalc_vt;
             ptcalc2mtc : out ptcalc2mtc_rvt;
             ptcalc2mtc_ap_vld : out std_logic;
             is_C_side           : in std_logic

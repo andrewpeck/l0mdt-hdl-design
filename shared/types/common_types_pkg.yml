@@ -85,10 +85,13 @@ hdl:
 
 # - heg2sfhit_bus : [ array : open , type : heg2sfhit_rt]
 - heg2sfhit_vt : [type: logic, length: heg2sfhit_rt]
-# - heg2sfhit_art: [array: open ,  type: heg2sfhit_rt]
-# - heg2sfhit_avt: [ array: open,  type: heg2sfhit_vt]
+- heg2sfhit_art: [array: open ,  type: heg2sfhit_rt]
+- heg2sfhit_avt: [ array: open,  type: heg2sfhit_vt]
 
-- sf2pt_bus: [ array: open , type : sf2ptcalc_rt]
+# - sf2pt_bus: [ array: open , type : sf2ptcalc_rt]
+- sf2ptcalc_vt : [type: logic, length: sf2ptcalc_rt]
+- sf2ptcalc_art: [array: open ,  type: sf2ptcalc_rt]
+- sf2ptcalc_avt: [ array: open,  type: sf2ptcalc_vt]
 
 # - ucm2pl_vt : [type: logic, length: ucm2pl_rt]
 # - ucm2pl_bus: [array: open , type: ucm2pl_rt]
@@ -100,6 +103,7 @@ hdl:
 - pl2pt_vt : [type: logic, length: pl2ptcalc_rt]
 - pl2pt_art: [array: open ,  type: pl2ptcalc_rt]
 - pl2pt_avt: [ array: open,  type: pl2pt_vt]
+
 # - pl2mtc_bus: [array: open , type: pl2mtc_rt]
 - pl2mtc_vt : [type: logic, length: pl2mtc_rt]
 - pl2mtc_art: [array: open ,  type: pl2mtc_rt]

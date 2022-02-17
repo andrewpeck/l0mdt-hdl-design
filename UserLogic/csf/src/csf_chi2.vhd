@@ -44,13 +44,13 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY csf_chi2 IS
     PORT (
         clk : IN STD_LOGIC;
-        i_hit1 : IN csf_hit_rvt;
-        i_hit2 : IN csf_hit_rvt;
+        i_hit1 : IN csf_hit_vt;
+        i_hit2 : IN csf_hit_vt;
         i_mfit : IN signed(CSF_SEG_M_LEN - 1 DOWNTO 0);
         i_bfit : IN signed(CSF_SEG_B_LEN - 1 DOWNTO 0);
         i_nhits : IN unsigned(CSF_MAXHITS_SEG_LEN - 1 DOWNTO 0);
         i_fit_valid : IN STD_LOGIC;
-        o_seg : OUT csf_locseg_rvt
+        o_seg : OUT csf_locseg_vt
     );
 END csf_chi2; -- csf_chi2
 
@@ -62,7 +62,7 @@ ARCHITECTURE Behavioral OF csf_chi2 IS
     := (OTHERS => '0');
     SIGNAL r_addr1, r_addr2 : STD_LOGIC_VECTOR(CSF_MAXHITS_ML_LEN - 1 DOWNTO 0)
     := (OTHERS => '1');
-    SIGNAL hit_vec1, hit_vec2 : csf_hit_rvt
+    SIGNAL hit_vec1, hit_vec2 : csf_hit_vt
     := (OTHERS => '0');
     SIGNAL hit1, hit2 : csf_hit_rt;
     SIGNAL outhit1, outhit2 : csf_hit_rt;
@@ -111,13 +111,13 @@ ARCHITECTURE Behavioral OF csf_chi2 IS
 
 BEGIN
 
-    hit1 <= structify(i_hit1);
-    hit2 <= structify(i_hit2);
+    hit1 <= structify(i_hit1,hit1);
+    hit2 <= structify(i_hit2,hit2);
 
     HitBuffer1 : ENTITY shared_lib.bram_tdp
         GENERIC MAP(
             ADDR => CSF_MAXHITS_ML_LEN,
-            DATA => CSF_HIT_LEN,
+            DATA => i_hit1'length,
             ram_type => "distributed"
         )
         PORT MAP(
@@ -132,7 +132,7 @@ BEGIN
     HitBuffer2 : ENTITY shared_lib.bram_tdp
         GENERIC MAP(
             ADDR => CSF_MAXHITS_ML_LEN,
-            DATA => CSF_HIT_LEN,
+            DATA => i_hit2'length,
             ram_type => "distributed"
         )
         PORT MAP(
@@ -144,10 +144,10 @@ BEGIN
             b_dout => hit_vec2
         );
 
-    outhit1 <= structify(hit_vec1);
-    outhit2 <= structify(hit_vec2);
+    outhit1 <= structify(hit_vec1,outhit1);
+    outhit2 <= structify(hit_vec2,outhit2);
 
-    o_seg <= vectorify(output_seg);
+    o_seg <= vectorify(output_seg,o_seg);
 
     Chi2Proc : PROCESS (clk)
     BEGIN

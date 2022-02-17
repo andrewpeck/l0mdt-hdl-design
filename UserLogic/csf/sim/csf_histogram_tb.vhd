@@ -39,11 +39,11 @@ END csf_histogram_tb;
 
 ARCHITECTURE Behavioral OF csf_histogram_tb IS
     SIGNAL clk : STD_LOGIC := '0';
-    SIGNAL mdt_hit : heg2sfhit_rvt := (OTHERS => '0');
-    SIGNAL seed : heg2sfslc_rvt := (OTHERS => '0');
+    SIGNAL mdt_hit : heg2sfhit_vt := (OTHERS => '0');
+    SIGNAL seed : heg2sfslc_vt := (OTHERS => '0');
     SIGNAL eof : STD_LOGIC := '0';
-    SIGNAL outputHit1 : csf_hit_rvt := (OTHERS => '0');
-    SIGNAL outputHit2 : csf_hit_rvt := (OTHERS => '0');
+    SIGNAL outputHit1 : csf_hit_vt := (OTHERS => '0');
+    SIGNAL outputHit2 : csf_hit_vt := (OTHERS => '0');
 
     SIGNAL mdt_hit_t : heg2sfhit_rt;
     SIGNAL seed_t : heg2sfslc_rt;

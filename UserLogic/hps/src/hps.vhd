@@ -119,7 +119,7 @@ architecture beh of hps is
 
   signal heg2sf_ctrl_av : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
   signal heg2sfslc_av   : heg2sfslc_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal heg2sfhit_av   : heg2sfhit_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sfhit_av   : heg2sfhit_avt(c_NUM_THREADS -1 downto 0);
 
 
   signal sf_fm_data_th  : sf_single_station_array;

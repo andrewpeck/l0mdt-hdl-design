@@ -39,11 +39,11 @@ END seg_coord_tb;
 
 ARCHITECTURE Behavioral OF seg_coord_tb IS
     SIGNAL clk : STD_LOGIC := '0';
-    SIGNAL i_locseg : csf_locseg_rvt := (OTHERS => '0');
-    SIGNAL i_seed : heg2sfslc_rvt := (OTHERS => '0');
+    SIGNAL i_locseg : csf_locseg_vt := (OTHERS => '0');
+    SIGNAL i_seed : heg2sfslc_vt := (OTHERS => '0');
     SIGNAL locseg : csf_locseg_rt;
     SIGNAL seed : heg2sfslc_rt;
-    SIGNAL o_globseg : sf2ptcalc_rvt := (OTHERS => '0');
+    SIGNAL o_globseg : sf2ptcalc_vt := (OTHERS => '0');
     CONSTANT CLK_period : TIME := 2.77777 ns;
 BEGIN
 

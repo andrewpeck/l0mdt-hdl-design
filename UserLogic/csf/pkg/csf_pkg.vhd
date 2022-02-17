@@ -45,133 +45,157 @@ package csf_pkg is
 
   constant SUM_X2_LEN : integer := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN*2;
 
-  type csf_seed is record
-    muid : slc_muid;
+  type csf_seed_rt is record
+    muid : slc_muid_rt;
     mbar : unsigned(UCM_VEC_ANG_LEN-1 downto 0);
     pos : unsigned(UCM_Z_ROI_LEN-1 downto 0);
     ang : unsigned(UCM_Z_ROI_LEN-1 downto 0);
-    mdtid : vec_mdtid;
+    mdtid : vec_mdtid_rt;
     data_valid : std_logic;
-  end record csf_seed;
-  function len(x: csf_seed) return natural;
-  function width(x: csf_seed) return natural;
-  function vectorify(x: csf_seed; t: std_logic_vector) return std_logic_vector;
-  function convert(x: csf_seed; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: csf_seed) return csf_seed;
-  function convert(x: in std_logic_vector; t: csf_seed) return csf_seed;
-  function nullify(t: csf_seed) return csf_seed;
-  function zeroed(t: csf_seed) return csf_seed;
+  end record csf_seed_rt;
+  function len(x: csf_seed_rt) return natural;
+  function width(x: csf_seed_rt) return natural;
+  function vectorify(x: csf_seed_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: csf_seed_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: csf_seed_rt) return csf_seed_rt;
+  function convert(x: in std_logic_vector; t: csf_seed_rt) return csf_seed_rt;
+  function nullify(t: csf_seed_rt) return csf_seed_rt;
+  function zeroed(t: csf_seed_rt) return csf_seed_rt;
 
-  type csf_hit is record
+  type csf_hit_rt is record
     valid : std_logic;
     x : unsigned(MDT_LOCAL_X_LEN-1 downto 0);
     y : unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
-  end record csf_hit;
-  function len(x: csf_hit) return natural;
-  function width(x: csf_hit) return natural;
-  function vectorify(x: csf_hit; t: std_logic_vector) return std_logic_vector;
-  function convert(x: csf_hit; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: csf_hit) return csf_hit;
-  function convert(x: in std_logic_vector; t: csf_hit) return csf_hit;
-  function nullify(t: csf_hit) return csf_hit;
-  function zeroed(t: csf_hit) return csf_hit;
+  end record csf_hit_rt;
+  function len(x: csf_hit_rt) return natural;
+  function width(x: csf_hit_rt) return natural;
+  function vectorify(x: csf_hit_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: csf_hit_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: csf_hit_rt) return csf_hit_rt;
+  function convert(x: in std_logic_vector; t: csf_hit_rt) return csf_hit_rt;
+  function nullify(t: csf_hit_rt) return csf_hit_rt;
+  function zeroed(t: csf_hit_rt) return csf_hit_rt;
 
-  type csf_hit_a is array(integer range <>) of csf_hit;
-  function len(x: csf_hit_a) return natural;
-  function width(x: csf_hit_a) return natural;
-  function vectorify(x: csf_hit_a; t: std_logic_vector) return std_logic_vector;
-  function convert(x: csf_hit_a; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: csf_hit_a) return csf_hit_a;
-  function convert(x: std_logic_vector; t: csf_hit_a) return csf_hit_a;
-  function nullify(x: csf_hit_a) return csf_hit_a;
-  function zeroed(x: csf_hit_a) return csf_hit_a;
+  subtype csf_hit_vt is std_logic_vector(31-1 downto 0);
 
-  type csf_locseg is record
+  type csf_hit_art is array(integer range <>) of csf_hit_rt;
+  function len(x: csf_hit_art) return natural;
+  function width(x: csf_hit_art) return natural;
+  function vectorify(x: csf_hit_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: csf_hit_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: csf_hit_art) return csf_hit_art;
+  function convert(x: std_logic_vector; t: csf_hit_art) return csf_hit_art;
+  function nullify(x: csf_hit_art) return csf_hit_art;
+  function zeroed(x: csf_hit_art) return csf_hit_art;
+
+  type csf_hit_avt is array(integer range <>) of csf_hit_vt;
+  function len(x: csf_hit_avt) return natural;
+  function width(x: csf_hit_avt) return natural;
+  function vectorify(x: csf_hit_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: csf_hit_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: csf_hit_avt) return csf_hit_avt;
+  function convert(x: std_logic_vector; t: csf_hit_avt) return csf_hit_avt;
+  function nullify(x: csf_hit_avt) return csf_hit_avt;
+  function zeroed(x: csf_hit_avt) return csf_hit_avt;
+
+  type csf_locseg_rt is record
     valid : std_logic;
     b : signed(CSF_SEG_B_LEN-1 downto 0);
     m : signed(CSF_SEG_M_LEN-1 downto 0);
     chi2 : unsigned(CSF_SEG_CHI2_LEN-1 downto 0);
     nhits : unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
-  end record csf_locseg;
-  function len(x: csf_locseg) return natural;
-  function width(x: csf_locseg) return natural;
-  function vectorify(x: csf_locseg; t: std_logic_vector) return std_logic_vector;
-  function convert(x: csf_locseg; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: csf_locseg) return csf_locseg;
-  function convert(x: in std_logic_vector; t: csf_locseg) return csf_locseg;
-  function nullify(t: csf_locseg) return csf_locseg;
-  function zeroed(t: csf_locseg) return csf_locseg;
+  end record csf_locseg_rt;
+  function len(x: csf_locseg_rt) return natural;
+  function width(x: csf_locseg_rt) return natural;
+  function vectorify(x: csf_locseg_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: csf_locseg_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: csf_locseg_rt) return csf_locseg_rt;
+  function convert(x: in std_logic_vector; t: csf_locseg_rt) return csf_locseg_rt;
+  function nullify(t: csf_locseg_rt) return csf_locseg_rt;
+  function zeroed(t: csf_locseg_rt) return csf_locseg_rt;
 
-  type csf_locseg_a is array(integer range <>) of csf_locseg;
-  function len(x: csf_locseg_a) return natural;
-  function width(x: csf_locseg_a) return natural;
-  function vectorify(x: csf_locseg_a; t: std_logic_vector) return std_logic_vector;
-  function convert(x: csf_locseg_a; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: csf_locseg_a) return csf_locseg_a;
-  function convert(x: std_logic_vector; t: csf_locseg_a) return csf_locseg_a;
-  function nullify(x: csf_locseg_a) return csf_locseg_a;
-  function zeroed(x: csf_locseg_a) return csf_locseg_a;
+  subtype csf_locseg_vt is std_logic_vector(48-1 downto 0);
 
-  type csf_sums is record
+  type csf_locseg_art is array(integer range <>) of csf_locseg_rt;
+  function len(x: csf_locseg_art) return natural;
+  function width(x: csf_locseg_art) return natural;
+  function vectorify(x: csf_locseg_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: csf_locseg_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: csf_locseg_art) return csf_locseg_art;
+  function convert(x: std_logic_vector; t: csf_locseg_art) return csf_locseg_art;
+  function nullify(x: csf_locseg_art) return csf_locseg_art;
+  function zeroed(x: csf_locseg_art) return csf_locseg_art;
+
+  type csf_locseg_avt is array(integer range <>) of csf_locseg_vt;
+  function len(x: csf_locseg_avt) return natural;
+  function width(x: csf_locseg_avt) return natural;
+  function vectorify(x: csf_locseg_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: csf_locseg_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: csf_locseg_avt) return csf_locseg_avt;
+  function convert(x: std_logic_vector; t: csf_locseg_avt) return csf_locseg_avt;
+  function nullify(x: csf_locseg_avt) return csf_locseg_avt;
+  function zeroed(x: csf_locseg_avt) return csf_locseg_avt;
+
+  type csf_sums_rt is record
     valid : std_logic;
     xy : unsigned(SUM_XY_LEN-1 downto 0);
     y : unsigned(SUM_Y_LEN-1 downto 0);
     x : unsigned(SUM_X_LEN-1 downto 0);
     x2 : unsigned(SUM_X2_LEN-1 downto 0);
     n : unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
-  end record csf_sums;
-  function len(x: csf_sums) return natural;
-  function width(x: csf_sums) return natural;
-  function vectorify(x: csf_sums; t: std_logic_vector) return std_logic_vector;
-  function convert(x: csf_sums; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: csf_sums) return csf_sums;
-  function convert(x: in std_logic_vector; t: csf_sums) return csf_sums;
-  function nullify(t: csf_sums) return csf_sums;
-  function zeroed(t: csf_sums) return csf_sums;
+  end record csf_sums_rt;
+  function len(x: csf_sums_rt) return natural;
+  function width(x: csf_sums_rt) return natural;
+  function vectorify(x: csf_sums_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: csf_sums_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: csf_sums_rt) return csf_sums_rt;
+  function convert(x: in std_logic_vector; t: csf_sums_rt) return csf_sums_rt;
+  function nullify(t: csf_sums_rt) return csf_sums_rt;
+  function zeroed(t: csf_sums_rt) return csf_sums_rt;
 
-  type csf_sums_a is array(integer range <>) of csf_sums;
-  function len(x: csf_sums_a) return natural;
-  function width(x: csf_sums_a) return natural;
-  function vectorify(x: csf_sums_a; t: std_logic_vector) return std_logic_vector;
-  function convert(x: csf_sums_a; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: csf_sums_a) return csf_sums_a;
-  function convert(x: std_logic_vector; t: csf_sums_a) return csf_sums_a;
-  function nullify(x: csf_sums_a) return csf_sums_a;
-  function zeroed(x: csf_sums_a) return csf_sums_a;
+  type csf_sums_art is array(integer range <>) of csf_sums_rt;
+  function len(x: csf_sums_art) return natural;
+  function width(x: csf_sums_art) return natural;
+  function vectorify(x: csf_sums_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: csf_sums_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: csf_sums_art) return csf_sums_art;
+  function convert(x: std_logic_vector; t: csf_sums_art) return csf_sums_art;
+  function nullify(x: csf_sums_art) return csf_sums_art;
+  function zeroed(x: csf_sums_art) return csf_sums_art;
 
-  type sf_seg_data_barrel is record
+  type sf_seg_data_barrel_rt is record
     data_valid : std_logic;
-    muid : slc_muid;
-    mdtid : vec_mdtid;
+    muid : slc_muid_rt;
+    mdtid : vec_mdtid_rt;
     pos : signed(SF_SEG_POS_LEN-1 downto 0);
     angle : signed(SF_SEG_ANG_LEN-1 downto 0);
     quality : std_logic;
-  end record sf_seg_data_barrel;
-  function len(x: sf_seg_data_barrel) return natural;
-  function width(x: sf_seg_data_barrel) return natural;
-  function vectorify(x: sf_seg_data_barrel; t: std_logic_vector) return std_logic_vector;
-  function convert(x: sf_seg_data_barrel; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: sf_seg_data_barrel) return sf_seg_data_barrel;
-  function convert(x: in std_logic_vector; t: sf_seg_data_barrel) return sf_seg_data_barrel;
-  function nullify(t: sf_seg_data_barrel) return sf_seg_data_barrel;
-  function zeroed(t: sf_seg_data_barrel) return sf_seg_data_barrel;
+  end record sf_seg_data_barrel_rt;
+  function len(x: sf_seg_data_barrel_rt) return natural;
+  function width(x: sf_seg_data_barrel_rt) return natural;
+  function vectorify(x: sf_seg_data_barrel_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: sf_seg_data_barrel_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt;
+  function convert(x: in std_logic_vector; t: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt;
+  function nullify(t: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt;
+  function zeroed(t: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt;
 
-  type sf_seg_data_endcap is record
+  type sf_seg_data_endcap_rt is record
     data_valid : std_logic;
-    muid : slc_muid;
-    mdtid : vec_mdtid;
+    muid : slc_muid_rt;
+    mdtid : vec_mdtid_rt;
     pos : unsigned(SF_SEG_POS_LEN-1 downto 0);
     angle : signed(SF_SEG_ANG_LEN-1 downto 0);
     quality : std_logic;
-  end record sf_seg_data_endcap;
-  function len(x: sf_seg_data_endcap) return natural;
-  function width(x: sf_seg_data_endcap) return natural;
-  function vectorify(x: sf_seg_data_endcap; t: std_logic_vector) return std_logic_vector;
-  function convert(x: sf_seg_data_endcap; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: sf_seg_data_endcap) return sf_seg_data_endcap;
-  function convert(x: in std_logic_vector; t: sf_seg_data_endcap) return sf_seg_data_endcap;
-  function nullify(t: sf_seg_data_endcap) return sf_seg_data_endcap;
-  function zeroed(t: sf_seg_data_endcap) return sf_seg_data_endcap;
+  end record sf_seg_data_endcap_rt;
+  function len(x: sf_seg_data_endcap_rt) return natural;
+  function width(x: sf_seg_data_endcap_rt) return natural;
+  function vectorify(x: sf_seg_data_endcap_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: sf_seg_data_endcap_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
+  function convert(x: in std_logic_vector; t: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
+  function nullify(t: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
+  function zeroed(t: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
 
 end package csf_pkg;
 
@@ -179,7 +203,7 @@ end package csf_pkg;
 
 package body csf_pkg is
 
-  function len(x: csf_seed) return natural is
+  function len(x: csf_seed_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.muid);
@@ -190,7 +214,7 @@ package body csf_pkg is
     l := l + len(x.data_valid);
     return l;
   end function len;
-  function width(x: csf_seed) return natural is
+  function width(x: csf_seed_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.muid);
@@ -201,7 +225,7 @@ package body csf_pkg is
     l := l + width(x.data_valid);
     return l;
   end function width;
-  function vectorify(x: csf_seed; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: csf_seed_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -232,7 +256,7 @@ package body csf_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: csf_seed; t: std_logic_vector) return std_logic_vector is
+  function convert(x: csf_seed_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -263,8 +287,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: csf_seed) return csf_seed is
-    variable y: csf_seed;
+  function structify(x: in std_logic_vector; t: csf_seed_rt) return csf_seed_rt is
+    variable y: csf_seed_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -294,8 +318,8 @@ package body csf_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: csf_seed) return csf_seed is
-    variable y: csf_seed;
+  function convert(x: in std_logic_vector; t: csf_seed_rt) return csf_seed_rt is
+    variable y: csf_seed_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -325,8 +349,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: csf_seed) return csf_seed is
-  variable y: csf_seed;
+  function nullify(t: csf_seed_rt) return csf_seed_rt is
+  variable y: csf_seed_rt;
   begin
     y.muid := nullify(t.muid);
     y.mbar := nullify(t.mbar);
@@ -336,8 +360,8 @@ package body csf_pkg is
     y.data_valid := nullify(t.data_valid);
     return y;
   end function nullify;
-  function zeroed(t: csf_seed) return csf_seed is
-  variable y: csf_seed;
+  function zeroed(t: csf_seed_rt) return csf_seed_rt is
+  variable y: csf_seed_rt;
   begin
     y.muid := zeroed(t.muid);
     y.mbar := zeroed(t.mbar);
@@ -348,7 +372,7 @@ package body csf_pkg is
     return y;
   end function zeroed;
 
-  function len(x: csf_hit) return natural is
+  function len(x: csf_hit_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.valid);
@@ -356,7 +380,7 @@ package body csf_pkg is
     l := l + len(x.y);
     return l;
   end function len;
-  function width(x: csf_hit) return natural is
+  function width(x: csf_hit_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.valid);
@@ -364,7 +388,7 @@ package body csf_pkg is
     l := l + width(x.y);
     return l;
   end function width;
-  function vectorify(x: csf_hit; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: csf_hit_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -383,7 +407,7 @@ package body csf_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: csf_hit; t: std_logic_vector) return std_logic_vector is
+  function convert(x: csf_hit_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -402,8 +426,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: csf_hit) return csf_hit is
-    variable y: csf_hit;
+  function structify(x: in std_logic_vector; t: csf_hit_rt) return csf_hit_rt is
+    variable y: csf_hit_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -421,8 +445,8 @@ package body csf_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: csf_hit) return csf_hit is
-    variable y: csf_hit;
+  function convert(x: in std_logic_vector; t: csf_hit_rt) return csf_hit_rt is
+    variable y: csf_hit_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -440,16 +464,16 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: csf_hit) return csf_hit is
-  variable y: csf_hit;
+  function nullify(t: csf_hit_rt) return csf_hit_rt is
+  variable y: csf_hit_rt;
   begin
     y.valid := nullify(t.valid);
     y.x := nullify(t.x);
     y.y := nullify(t.y);
     return y;
   end function nullify;
-  function zeroed(t: csf_hit) return csf_hit is
-  variable y: csf_hit;
+  function zeroed(t: csf_hit_rt) return csf_hit_rt is
+  variable y: csf_hit_rt;
   begin
     y.valid := zeroed(t.valid);
     y.x := zeroed(t.x);
@@ -457,19 +481,19 @@ package body csf_pkg is
     return y;
   end function zeroed;
 
-  function len(x: csf_hit_a) return natural is
+  function len(x: csf_hit_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: csf_hit_a) return natural is
+  function width(x: csf_hit_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: csf_hit_a; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: csf_hit_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -490,7 +514,7 @@ package body csf_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: csf_hit_a; t: std_logic_vector) return std_logic_vector is
+  function convert(x: csf_hit_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -511,8 +535,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: csf_hit_a) return csf_hit_a is
-    variable y : csf_hit_a(t'range);
+  function structify(x: std_logic_vector; t: csf_hit_art) return csf_hit_art is
+    variable y : csf_hit_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -532,8 +556,8 @@ package body csf_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: csf_hit_a) return csf_hit_a is
-    variable y : csf_hit_a(t'range);
+  function convert(x: std_logic_vector; t: csf_hit_art) return csf_hit_art is
+    variable y : csf_hit_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -553,16 +577,16 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: csf_hit_a) return csf_hit_a is
-    variable y : csf_hit_a(x'range);
+  function nullify(x: csf_hit_art) return csf_hit_art is
+    variable y : csf_hit_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: csf_hit_a) return csf_hit_a is
-    variable y : csf_hit_a(x'range);
+  function zeroed(x: csf_hit_art) return csf_hit_art is
+    variable y : csf_hit_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -570,7 +594,120 @@ package body csf_pkg is
     return y;
   end function zeroed;
 
-  function len(x: csf_locseg) return natural is
+  function len(x: csf_hit_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: csf_hit_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: csf_hit_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: csf_hit_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: csf_hit_avt) return csf_hit_avt is
+    variable y : csf_hit_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: csf_hit_avt) return csf_hit_avt is
+    variable y : csf_hit_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: csf_hit_avt) return csf_hit_avt is
+    variable y : csf_hit_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: csf_hit_avt) return csf_hit_avt is
+    variable y : csf_hit_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: csf_locseg_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.valid);
@@ -580,7 +717,7 @@ package body csf_pkg is
     l := l + len(x.nhits);
     return l;
   end function len;
-  function width(x: csf_locseg) return natural is
+  function width(x: csf_locseg_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.valid);
@@ -590,7 +727,7 @@ package body csf_pkg is
     l := l + width(x.nhits);
     return l;
   end function width;
-  function vectorify(x: csf_locseg; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: csf_locseg_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -617,7 +754,7 @@ package body csf_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: csf_locseg; t: std_logic_vector) return std_logic_vector is
+  function convert(x: csf_locseg_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -644,8 +781,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: csf_locseg) return csf_locseg is
-    variable y: csf_locseg;
+  function structify(x: in std_logic_vector; t: csf_locseg_rt) return csf_locseg_rt is
+    variable y: csf_locseg_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -671,8 +808,8 @@ package body csf_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: csf_locseg) return csf_locseg is
-    variable y: csf_locseg;
+  function convert(x: in std_logic_vector; t: csf_locseg_rt) return csf_locseg_rt is
+    variable y: csf_locseg_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -698,8 +835,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: csf_locseg) return csf_locseg is
-  variable y: csf_locseg;
+  function nullify(t: csf_locseg_rt) return csf_locseg_rt is
+  variable y: csf_locseg_rt;
   begin
     y.valid := nullify(t.valid);
     y.b := nullify(t.b);
@@ -708,8 +845,8 @@ package body csf_pkg is
     y.nhits := nullify(t.nhits);
     return y;
   end function nullify;
-  function zeroed(t: csf_locseg) return csf_locseg is
-  variable y: csf_locseg;
+  function zeroed(t: csf_locseg_rt) return csf_locseg_rt is
+  variable y: csf_locseg_rt;
   begin
     y.valid := zeroed(t.valid);
     y.b := zeroed(t.b);
@@ -719,19 +856,19 @@ package body csf_pkg is
     return y;
   end function zeroed;
 
-  function len(x: csf_locseg_a) return natural is
+  function len(x: csf_locseg_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: csf_locseg_a) return natural is
+  function width(x: csf_locseg_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: csf_locseg_a; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: csf_locseg_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -752,7 +889,7 @@ package body csf_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: csf_locseg_a; t: std_logic_vector) return std_logic_vector is
+  function convert(x: csf_locseg_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -773,8 +910,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: csf_locseg_a) return csf_locseg_a is
-    variable y : csf_locseg_a(t'range);
+  function structify(x: std_logic_vector; t: csf_locseg_art) return csf_locseg_art is
+    variable y : csf_locseg_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -794,8 +931,8 @@ package body csf_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: csf_locseg_a) return csf_locseg_a is
-    variable y : csf_locseg_a(t'range);
+  function convert(x: std_logic_vector; t: csf_locseg_art) return csf_locseg_art is
+    variable y : csf_locseg_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -815,16 +952,16 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: csf_locseg_a) return csf_locseg_a is
-    variable y : csf_locseg_a(x'range);
+  function nullify(x: csf_locseg_art) return csf_locseg_art is
+    variable y : csf_locseg_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: csf_locseg_a) return csf_locseg_a is
-    variable y : csf_locseg_a(x'range);
+  function zeroed(x: csf_locseg_art) return csf_locseg_art is
+    variable y : csf_locseg_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -832,7 +969,120 @@ package body csf_pkg is
     return y;
   end function zeroed;
 
-  function len(x: csf_sums) return natural is
+  function len(x: csf_locseg_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: csf_locseg_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: csf_locseg_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: csf_locseg_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: csf_locseg_avt) return csf_locseg_avt is
+    variable y : csf_locseg_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: csf_locseg_avt) return csf_locseg_avt is
+    variable y : csf_locseg_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: csf_locseg_avt) return csf_locseg_avt is
+    variable y : csf_locseg_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: csf_locseg_avt) return csf_locseg_avt is
+    variable y : csf_locseg_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: csf_sums_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.valid);
@@ -843,7 +1093,7 @@ package body csf_pkg is
     l := l + len(x.n);
     return l;
   end function len;
-  function width(x: csf_sums) return natural is
+  function width(x: csf_sums_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.valid);
@@ -854,7 +1104,7 @@ package body csf_pkg is
     l := l + width(x.n);
     return l;
   end function width;
-  function vectorify(x: csf_sums; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: csf_sums_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -885,7 +1135,7 @@ package body csf_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: csf_sums; t: std_logic_vector) return std_logic_vector is
+  function convert(x: csf_sums_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -916,8 +1166,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: csf_sums) return csf_sums is
-    variable y: csf_sums;
+  function structify(x: in std_logic_vector; t: csf_sums_rt) return csf_sums_rt is
+    variable y: csf_sums_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -947,8 +1197,8 @@ package body csf_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: csf_sums) return csf_sums is
-    variable y: csf_sums;
+  function convert(x: in std_logic_vector; t: csf_sums_rt) return csf_sums_rt is
+    variable y: csf_sums_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -978,8 +1228,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: csf_sums) return csf_sums is
-  variable y: csf_sums;
+  function nullify(t: csf_sums_rt) return csf_sums_rt is
+  variable y: csf_sums_rt;
   begin
     y.valid := nullify(t.valid);
     y.xy := nullify(t.xy);
@@ -989,8 +1239,8 @@ package body csf_pkg is
     y.n := nullify(t.n);
     return y;
   end function nullify;
-  function zeroed(t: csf_sums) return csf_sums is
-  variable y: csf_sums;
+  function zeroed(t: csf_sums_rt) return csf_sums_rt is
+  variable y: csf_sums_rt;
   begin
     y.valid := zeroed(t.valid);
     y.xy := zeroed(t.xy);
@@ -1001,19 +1251,19 @@ package body csf_pkg is
     return y;
   end function zeroed;
 
-  function len(x: csf_sums_a) return natural is
+  function len(x: csf_sums_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: csf_sums_a) return natural is
+  function width(x: csf_sums_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: csf_sums_a; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: csf_sums_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -1034,7 +1284,7 @@ package body csf_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: csf_sums_a; t: std_logic_vector) return std_logic_vector is
+  function convert(x: csf_sums_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -1055,8 +1305,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: csf_sums_a) return csf_sums_a is
-    variable y : csf_sums_a(t'range);
+  function structify(x: std_logic_vector; t: csf_sums_art) return csf_sums_art is
+    variable y : csf_sums_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1076,8 +1326,8 @@ package body csf_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: csf_sums_a) return csf_sums_a is
-    variable y : csf_sums_a(t'range);
+  function convert(x: std_logic_vector; t: csf_sums_art) return csf_sums_art is
+    variable y : csf_sums_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1097,16 +1347,16 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: csf_sums_a) return csf_sums_a is
-    variable y : csf_sums_a(x'range);
+  function nullify(x: csf_sums_art) return csf_sums_art is
+    variable y : csf_sums_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: csf_sums_a) return csf_sums_a is
-    variable y : csf_sums_a(x'range);
+  function zeroed(x: csf_sums_art) return csf_sums_art is
+    variable y : csf_sums_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -1114,7 +1364,7 @@ package body csf_pkg is
     return y;
   end function zeroed;
 
-  function len(x: sf_seg_data_barrel) return natural is
+  function len(x: sf_seg_data_barrel_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.data_valid);
@@ -1125,7 +1375,7 @@ package body csf_pkg is
     l := l + len(x.quality);
     return l;
   end function len;
-  function width(x: sf_seg_data_barrel) return natural is
+  function width(x: sf_seg_data_barrel_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.data_valid);
@@ -1136,7 +1386,7 @@ package body csf_pkg is
     l := l + width(x.quality);
     return l;
   end function width;
-  function vectorify(x: sf_seg_data_barrel; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: sf_seg_data_barrel_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1167,7 +1417,7 @@ package body csf_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: sf_seg_data_barrel; t: std_logic_vector) return std_logic_vector is
+  function convert(x: sf_seg_data_barrel_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1198,8 +1448,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: sf_seg_data_barrel) return sf_seg_data_barrel is
-    variable y: sf_seg_data_barrel;
+  function structify(x: in std_logic_vector; t: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt is
+    variable y: sf_seg_data_barrel_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1229,8 +1479,8 @@ package body csf_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: sf_seg_data_barrel) return sf_seg_data_barrel is
-    variable y: sf_seg_data_barrel;
+  function convert(x: in std_logic_vector; t: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt is
+    variable y: sf_seg_data_barrel_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1260,8 +1510,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: sf_seg_data_barrel) return sf_seg_data_barrel is
-  variable y: sf_seg_data_barrel;
+  function nullify(t: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt is
+  variable y: sf_seg_data_barrel_rt;
   begin
     y.data_valid := nullify(t.data_valid);
     y.muid := nullify(t.muid);
@@ -1271,8 +1521,8 @@ package body csf_pkg is
     y.quality := nullify(t.quality);
     return y;
   end function nullify;
-  function zeroed(t: sf_seg_data_barrel) return sf_seg_data_barrel is
-  variable y: sf_seg_data_barrel;
+  function zeroed(t: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt is
+  variable y: sf_seg_data_barrel_rt;
   begin
     y.data_valid := zeroed(t.data_valid);
     y.muid := zeroed(t.muid);
@@ -1283,7 +1533,7 @@ package body csf_pkg is
     return y;
   end function zeroed;
 
-  function len(x: sf_seg_data_endcap) return natural is
+  function len(x: sf_seg_data_endcap_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.data_valid);
@@ -1294,7 +1544,7 @@ package body csf_pkg is
     l := l + len(x.quality);
     return l;
   end function len;
-  function width(x: sf_seg_data_endcap) return natural is
+  function width(x: sf_seg_data_endcap_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.data_valid);
@@ -1305,7 +1555,7 @@ package body csf_pkg is
     l := l + width(x.quality);
     return l;
   end function width;
-  function vectorify(x: sf_seg_data_endcap; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: sf_seg_data_endcap_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1336,7 +1586,7 @@ package body csf_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: sf_seg_data_endcap; t: std_logic_vector) return std_logic_vector is
+  function convert(x: sf_seg_data_endcap_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1367,8 +1617,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: sf_seg_data_endcap) return sf_seg_data_endcap is
-    variable y: sf_seg_data_endcap;
+  function structify(x: in std_logic_vector; t: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt is
+    variable y: sf_seg_data_endcap_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1398,8 +1648,8 @@ package body csf_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: sf_seg_data_endcap) return sf_seg_data_endcap is
-    variable y: sf_seg_data_endcap;
+  function convert(x: in std_logic_vector; t: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt is
+    variable y: sf_seg_data_endcap_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1429,8 +1679,8 @@ package body csf_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: sf_seg_data_endcap) return sf_seg_data_endcap is
-  variable y: sf_seg_data_endcap;
+  function nullify(t: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt is
+  variable y: sf_seg_data_endcap_rt;
   begin
     y.data_valid := nullify(t.data_valid);
     y.muid := nullify(t.muid);
@@ -1440,8 +1690,8 @@ package body csf_pkg is
     y.quality := nullify(t.quality);
     return y;
   end function nullify;
-  function zeroed(t: sf_seg_data_endcap) return sf_seg_data_endcap is
-  variable y: sf_seg_data_endcap;
+  function zeroed(t: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt is
+  variable y: sf_seg_data_endcap_rt;
   begin
     y.data_valid := zeroed(t.data_valid);
     y.muid := zeroed(t.muid);

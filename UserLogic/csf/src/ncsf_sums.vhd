@@ -36,7 +36,7 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY ncsf_sums IS
     PORT (
         clk : IN STD_LOGIC;
-        i_hit : IN csf_hit_rvt;
+        i_hit : IN csf_hit_vt;
         i_fit_en : in STD_LOGIC;
         o_sums : OUT csf_sums_rvt
     );

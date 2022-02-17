@@ -42,21 +42,25 @@
   parameter int  SUM_X2_LEN = CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN*2;
 
   typedef struct packed {
-    slc_muid   muid;
+    slc_muid_rt   muid;
     logic unsigned [UCM_VEC_ANG_LEN-1:0] mbar;
     logic unsigned [UCM_Z_ROI_LEN-1:0] pos;
     logic unsigned [UCM_Z_ROI_LEN-1:0] ang;
-    vec_mdtid   mdtid;
+    vec_mdtid_rt   mdtid;
     logic  data_valid;
-  } csf_seed;
+  } csf_seed_rt;
 
   typedef struct packed {
     logic  valid;
     logic unsigned [MDT_LOCAL_X_LEN-1:0] x;
     logic unsigned [MDT_LOCAL_Y_LEN-1:0] y;
-  } csf_hit;
+  } csf_hit_rt;
 
-  typedef csf_hit   csf_hit_a;
+  typedef logic [$bits(csf_hit_rt)-1:0] csf_hit_vt;
+
+  typedef csf_hit_rt   csf_hit_art;
+
+  typedef csf_hit_vt   csf_hit_avt;
 
   typedef struct packed {
     logic  valid;
@@ -64,9 +68,13 @@
     logic signed [CSF_SEG_M_LEN-1:0] m;
     logic unsigned [CSF_SEG_CHI2_LEN-1:0] chi2;
     logic unsigned [CSF_MAXHITS_SEG_LEN-1:0] nhits;
-  } csf_locseg;
+  } csf_locseg_rt;
 
-  typedef csf_locseg   csf_locseg_a;
+  typedef logic [$bits(csf_locseg_rt)-1:0] csf_locseg_vt;
+
+  typedef csf_locseg_rt   csf_locseg_art;
+
+  typedef csf_locseg_vt   csf_locseg_avt;
 
   typedef struct packed {
     logic  valid;
@@ -75,27 +83,27 @@
     logic unsigned [SUM_X_LEN-1:0] x;
     logic unsigned [SUM_X2_LEN-1:0] x2;
     logic unsigned [CSF_MAXHITS_SEG_LEN-1:0] n;
-  } csf_sums;
+  } csf_sums_rt;
 
-  typedef csf_sums   csf_sums_a;
+  typedef csf_sums_rt   csf_sums_art;
 
   typedef struct packed {
     logic  data_valid;
-    slc_muid   muid;
-    vec_mdtid   mdtid;
+    slc_muid_rt   muid;
+    vec_mdtid_rt   mdtid;
     logic signed [SF_SEG_POS_LEN-1:0] pos;
     logic signed [SF_SEG_ANG_LEN-1:0] angle;
     logic  quality;
-  } sf_seg_data_barrel;
+  } sf_seg_data_barrel_rt;
 
   typedef struct packed {
     logic  data_valid;
-    slc_muid   muid;
-    vec_mdtid   mdtid;
+    slc_muid_rt   muid;
+    vec_mdtid_rt   mdtid;
     logic unsigned [SF_SEG_POS_LEN-1:0] pos;
     logic signed [SF_SEG_ANG_LEN-1:0] angle;
     logic  quality;
-  } sf_seg_data_endcap;
+  } sf_seg_data_endcap_rt;
 
 
 

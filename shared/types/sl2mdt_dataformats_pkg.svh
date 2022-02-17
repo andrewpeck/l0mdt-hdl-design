@@ -18,7 +18,7 @@
     logic unsigned [SL2MDT_HEADER_NMTC_MDT_LEN-1:0] nmtc_mdt;
     logic unsigned [SL2MDT_HEADER_NSLC_SLC_LEN-1:0] nslc;
     logic unsigned [SL2MDT_HEADER_BCID_LEN-1:0] bcid;
-  } SL2MDT_header;
+  } SL2MDT_header_rt;
 
   typedef struct packed {
     logic [SL2MDT_TRAILER_T_RESERVED_LEN-1:0] t_reserved;
@@ -26,7 +26,7 @@
     logic unsigned [SL2MDT_TRAILER_FIBERID_LEN-1:0] fiberid;
     logic unsigned [SL2MDT_TRAILER_SLID_LEN-1:0] slid;
     logic [SL2MDT_TRAILER_COMMA_LEN-1:0] comma;
-  } SL2MDT_trailer;
+  } SL2MDT_trailer_rt;
 
   typedef struct packed {
     SL2MDT_header   header;
@@ -39,7 +39,7 @@
     logic  SL2MDT_charge;
     logic [SL2MDT_SLC_COMMON_COINTYPE_LEN-1:0] cointype;
     SL2MDT_trailer   trailer;
-  } SL2MDT_slc_common;
+  } SL2MDT_slc_common_rt;
 
   typedef struct packed {
     logic [SL2MDT_SLC_ENDCAP_E_RESERVED_LEN-1:0] e_reserved;
@@ -49,7 +49,7 @@
     logic unsigned [SL2MDT_SLC_ENDCAP_NSWSEG_POSETA_LEN-1:0] nswseg_poseta;
     logic signed [SL2MDT_SLC_ENDCAP_SEG_ANGDPHI_LEN-1:0] seg_angdphi;
     logic signed [SL2MDT_SLC_ENDCAP_SEG_ANGDTHETA_LEN-1:0] seg_angdtheta;
-  } SL2MDT_slc_endcap;
+  } SL2MDT_slc_endcap_rt;
 
   typedef struct packed {
     logic [SL2MDT_SLC_BARREL_B_RESERVED_LEN-1:0] b_reserved;
@@ -57,28 +57,28 @@
     logic signed [SL2MDT_SLC_BARREL_RPC2_POSZ_LEN-1:0] rpc2_posz;
     logic signed [SL2MDT_SLC_BARREL_RPC1_POSZ_LEN-1:0] rpc1_posz;
     logic signed [SL2MDT_SLC_BARREL_RPC0_POSZ_LEN-1:0] rpc0_posz;
-  } SL2MDT_slc_barrel;
+  } SL2MDT_slc_barrel_rt;
 
   typedef struct packed {
     logic  data_valid;
     SL2MDT_slc_common   common;
     logic [SL2MDT_SLC_RX_SPECIFIC_LEN-1:0] specific;
-  } SL2MDT_slc_rx;
+  } SL2MDT_slc_rx_rt;
 
-  typedef SL2MDT_slc_rx   SL2MDT_slc_rx_bus;
+  typedef typedef SL2MDT_slc_rx    SL2MDT_slc_rx_bus;
 
-  typedef SL2MDT_slc_endcap   SL2MDT_slc_endcap_bus;
+  typedef typedef SL2MDT_slc_endcap    SL2MDT_slc_endcap_bus;
 
   typedef struct packed {
     logic unsigned [SL2MDT_SLC_COMMON_SLCID_LEN-1:0] slcid;
     logic unsigned [SL2MDT_TRAILER_SLID_LEN-1:0] slid;
     logic unsigned [SL2MDT_HEADER_BCID_LEN-1:0] bcid;
-  } SL2MDT_slc_muid;
+  } SL2MDT_slc_muid_rt;
 
   typedef struct packed {
     logic unsigned [SL2MDT_VEC_MDTID_CHAMBER_ID_LEN-1:0] chamber_id;
     logic unsigned [SL2MDT_VEC_MDTID_CHAMBER_IETA_LEN-1:0] chamber_ieta;
-  } vec_mdtid;
+  } vec_mdtid_rt;
 
   typedef struct packed {
     logic  data_valid;
@@ -91,9 +91,9 @@
     logic unsigned [PTCALC2MTC_MDT_NSEGMENTS_LEN-1:0] mdt_nsegments;
     logic [PTCALC2MTC_MDT_QUALITY_LEN-1:0] mdt_quality;
     logic [SL2MDT_MTC2SL_M_RESERVED_LEN-1:0] m_reserved;
-  } sl2mdt_mtc2sl;
+  } sl2mdt_mtc2sl_rt;
 
-  typedef sl2mdt_mtc2sl   sl2mdt_mtc_out_bus;
+  typedef typedef sl2mdt_mtc2sl    sl2mdt_mtc_out_bus;
 
 
 

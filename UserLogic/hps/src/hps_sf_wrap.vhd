@@ -63,10 +63,10 @@ entity hps_sf_wrap is
     sf_fm_data : out fm_rt_array( 0 to sf_sb_n - 1);
     -- configuration
     i_control_v  : in  heg_ctrl2sf_rvt;
-    i_slc_data_v : in  heg2sfslc_rvt;
-    i_mdt_data_v : in  heg2sfhit_rvt;
+    i_slc_data_v : in  heg2sfslc_vt;
+    i_mdt_data_v : in  heg2sfhit_vt;
     --
-    o_sf_data_v  : out sf2ptcalc_rvt
+    o_sf_data_v  : out sf2ptcalc_vt
     );
 end entity hps_sf_wrap;
 

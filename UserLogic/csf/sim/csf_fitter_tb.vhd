@@ -38,14 +38,14 @@ END csf_fitter_tb;
 
 ARCHITECTURE Behavioral OF csf_fitter_tb IS
     SIGNAL clk : STD_LOGIC := '0';
-    SIGNAL hit1, hit2 : csf_hit_rvt := (OTHERS => '0');
+    SIGNAL hit1, hit2 : csf_hit_vt := (OTHERS => '0');
     SIGNAL hit1_t, hit2_t : csf_hit_rt;
     SIGNAL mfit : signed(CSF_SEG_M_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL bfit : signed(CSF_SEG_B_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL fit_valid : STD_LOGIC := '0';
     SIGNAL nhits : unsigned(CSF_MAXHITS_SEG_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL CLK_period : TIME := 2.77777 ns;
-    SIGNAL seg : csf_locseg_rvt := (OTHERS => '0');
+    SIGNAL seg : csf_locseg_vt := (OTHERS => '0');
 
 BEGIN
 

@@ -38,7 +38,7 @@ ENTITY ncsf_fit IS
         clk : IN STD_LOGIC;
         i_sums_ml0 : csf_sums_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
         i_sums_ml1 : csf_sums_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
-        o_seg : OUT csf_locseg_rvt
+        o_seg : OUT csf_locseg_vt
     );
 END ncsf_fit;
 

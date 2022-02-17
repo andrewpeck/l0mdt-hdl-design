@@ -8,7 +8,7 @@ config:
 hdl:
 
 # SL2MDT_HEADER
-- SL2MDT_header:
+- SL2MDT_header_rt:
   - h_reserved:  [type : logic , length : SL2MDT_HEADER_H_RESERVED_LEN]
   - tcoverflow:  [type : logic]
   - nmtc_sl:  [type : unsigned , length : SL2MDT_HEADER_NMTC_SL_LEN]
@@ -17,7 +17,7 @@ hdl:
   - bcid:  [type : unsigned , length : SL2MDT_HEADER_BCID_LEN]
 
 # SL2MDT_TRAILER
-- SL2MDT_trailer:
+- SL2MDT_trailer_rt:
   - t_reserved:  [type : logic , length : SL2MDT_TRAILER_T_RESERVED_LEN]
   - crc:  [type : logic , length : SL2MDT_TRAILER_CRC_LEN]
   - fiberid:  [type : unsigned , length : SL2MDT_TRAILER_FIBERID_LEN]
@@ -25,7 +25,7 @@ hdl:
   - comma:  [type : logic , length : SL2MDT_TRAILER_COMMA_LEN]
 
 # SL2MDT_SLC_COMMON
-- SL2MDT_slc_common:
+- SL2MDT_slc_common_rt:
   - header:  [type : SL2MDT_header]
   - slcid:  [type : unsigned , length : SL2MDT_SLC_COMMON_SLCID_LEN]
   - tcsent:  [type : logic]
@@ -38,7 +38,7 @@ hdl:
   - trailer:  [type : SL2MDT_trailer]
 
 # SL2MDT_SLC_ENDCAP
-- SL2MDT_slc_endcap:
+- SL2MDT_slc_endcap_rt:
   - e_reserved:  [type : logic , length : SL2MDT_SLC_ENDCAP_E_RESERVED_LEN]
   - nswseg_mon:  [type : logic]
   - nswseg_angdtheta:  [type : signed , length : SL2MDT_SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN]
@@ -48,7 +48,7 @@ hdl:
   - seg_angdtheta:  [type : signed , length : SL2MDT_SLC_ENDCAP_SEG_ANGDTHETA_LEN]
 
 # SL2MDT_SLC_BARREL
-- SL2MDT_slc_barrel:
+- SL2MDT_slc_barrel_rt:
   - b_reserved:  [type : logic , length : SL2MDT_SLC_BARREL_B_RESERVED_LEN]
   - rpc3_posz:  [type : signed , length : SL2MDT_SLC_BARREL_RPC3_POSZ_LEN]
   - rpc2_posz:  [type : signed , length : SL2MDT_SLC_BARREL_RPC2_POSZ_LEN]
@@ -56,7 +56,7 @@ hdl:
   - rpc0_posz:  [type : signed , length : SL2MDT_SLC_BARREL_RPC0_POSZ_LEN]
 
 # SL2MDT_SLC_RX
-- SL2MDT_slc_rx:
+- SL2MDT_slc_rx_rt:
   - data_valid:  [type : logic]
   - common:  [type : SL2MDT_slc_common]
   - specific:  [type : logic , length : SL2MDT_SLC_RX_SPECIFIC_LEN]
@@ -66,18 +66,18 @@ hdl:
 - SL2MDT_slc_endcap_bus: [array: open , type: SL2MDT_slc_endcap]
 
 # SL2MDT_SLC_MUID
-- SL2MDT_slc_muid:
+- SL2MDT_slc_muid_rt:
   - slcid:  [type : unsigned , length : SL2MDT_SLC_COMMON_SLCID_LEN]
   - slid:  [type : unsigned , length : SL2MDT_TRAILER_SLID_LEN]
   - bcid:  [type : unsigned , length : SL2MDT_HEADER_BCID_LEN]
 
 # VEC_MDTID
-- vec_mdtid:
+- vec_mdtid_rt:
   - chamber_id:  [type : unsigned , length : SL2MDT_VEC_MDTID_CHAMBER_ID_LEN]
   - chamber_ieta:  [type : unsigned , length : SL2MDT_VEC_MDTID_CHAMBER_IETA_LEN]
 
 # MTC2SL
-- sl2mdt_mtc2sl:
+- sl2mdt_mtc2sl_rt:
   - data_valid:     [type : logic]
   - common:         [type : slc_common_rt]
   - mdt_eta:        [type : signed , length : PTCALC2MTC_MDT_ETA_LEN]

@@ -57,18 +57,18 @@ use ptc_lib.pt_params_pkg.all;
 entity segment_selector is
     port (
         clk               : in std_logic;
-        i_seg_I          : in  sf2ptcalc_rvt;
-        i_seg_M          : in  sf2ptcalc_rvt;
-        i_seg_O          : in  sf2ptcalc_rvt;
-        i_nsp_seg_I      : in  sf2ptcalc_rvt;
-        i_nsp_seg_M      : in  sf2ptcalc_rvt;
-        i_nsp_seg_O      : in  sf2ptcalc_rvt;
-        i_nsm_seg_I      : in  sf2ptcalc_rvt;
-        i_nsm_seg_M      : in  sf2ptcalc_rvt;
-        i_nsm_seg_O      : in  sf2ptcalc_rvt;
-        o_seg_I          : out sf2ptcalc_rvt;
-        o_seg_M          : out sf2ptcalc_rvt;
-        o_seg_O          : out sf2ptcalc_rvt
+        i_seg_I          : in  sf2ptcalc_vt;
+        i_seg_M          : in  sf2ptcalc_vt;
+        i_seg_O          : in  sf2ptcalc_vt;
+        i_nsp_seg_I      : in  sf2ptcalc_vt;
+        i_nsp_seg_M      : in  sf2ptcalc_vt;
+        i_nsp_seg_O      : in  sf2ptcalc_vt;
+        i_nsm_seg_I      : in  sf2ptcalc_vt;
+        i_nsm_seg_M      : in  sf2ptcalc_vt;
+        i_nsm_seg_O      : in  sf2ptcalc_vt;
+        o_seg_I          : out sf2ptcalc_vt;
+        o_seg_M          : out sf2ptcalc_vt;
+        o_seg_O          : out sf2ptcalc_vt
     );
 end segment_selector; -- segment_selector
 

@@ -36,8 +36,8 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY csf_fitter IS
     PORT (
         clk : IN STD_LOGIC;
-        i_hit1 : IN csf_hit_rvt;
-        i_hit2 : IN csf_hit_rvt;
+        i_hit1 : IN csf_hit_vt;
+        i_hit2 : IN csf_hit_vt;
         o_mfit : OUT signed(CSF_SEG_M_LEN - 1 DOWNTO 0);
         o_bfit : OUT signed(CSF_SEG_B_LEN - 1 DOWNTO 0);
         o_fit_valid : OUT STD_LOGIC;
@@ -150,8 +150,8 @@ ARCHITECTURE Behavioral OF csf_fitter IS
 
 BEGIN
 
-    hit1 <= structify(i_hit1);
-    hit2 <= structify(i_hit2);
+    hit1 <= structify(i_hit1,hit1);
+    hit2 <= structify(i_hit2,hit2);
 
     reciprocal_rom : rom
     GENERIC MAP(

@@ -31,39 +31,54 @@ E   SUM_X_LEN (integer constant CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN)
 
 E   SUM_X2_LEN (integer constant CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN*2)
 
-R   csf_seed
-E      muid (slc_muid)
+R   csf_seed_rt
+E      muid (slc_muid_rt)
+E         slcid (unsigned SLC_COMMON_SLCID_LEN)
+E         slid (unsigned SL_TRAILER_SLID_LEN)
+E         bcid (unsigned SL_HEADER_BCID_LEN)
 E      mbar (unsigned UCM_VEC_ANG_LEN)
 E      pos (unsigned UCM_Z_ROI_LEN)
 E      ang (unsigned UCM_Z_ROI_LEN)
-E      mdtid (vec_mdtid)
+E      mdtid (vec_mdtid_rt)
+E         chamber_id (unsigned VEC_MDTID_CHAMBER_ID_LEN)
+E         chamber_ieta (unsigned VEC_MDTID_CHAMBER_IETA_LEN)
 E      data_valid (logic)
 
-R   csf_hit
+R   csf_hit_rt
 E      valid (logic)
 E      x (unsigned MDT_LOCAL_X_LEN)
 E      y (unsigned MDT_LOCAL_Y_LEN)
 
-A   csf_hit_a (open csf_hit)
+E   csf_hit_vt (logic csf_hit_rt)
+
+A   csf_hit_art (open csf_hit_rt)
 E      valid (logic)
 E      x (unsigned MDT_LOCAL_X_LEN)
 E      y (unsigned MDT_LOCAL_Y_LEN)
 
-R   csf_locseg
+A   csf_hit_avt (open csf_hit_vt)
+E      csf_hit_vt (logic csf_hit_rt)
+
+R   csf_locseg_rt
 E      valid (logic)
 E      b (signed CSF_SEG_B_LEN)
 E      m (signed CSF_SEG_M_LEN)
 E      chi2 (unsigned CSF_SEG_CHI2_LEN)
 E      nhits (unsigned CSF_MAXHITS_SEG_LEN)
 
-A   csf_locseg_a (open csf_locseg)
+E   csf_locseg_vt (logic csf_locseg_rt)
+
+A   csf_locseg_art (open csf_locseg_rt)
 E      valid (logic)
 E      b (signed CSF_SEG_B_LEN)
 E      m (signed CSF_SEG_M_LEN)
 E      chi2 (unsigned CSF_SEG_CHI2_LEN)
 E      nhits (unsigned CSF_MAXHITS_SEG_LEN)
 
-R   csf_sums
+A   csf_locseg_avt (open csf_locseg_vt)
+E      csf_locseg_vt (logic csf_locseg_rt)
+
+R   csf_sums_rt
 E      valid (logic)
 E      xy (unsigned SUM_XY_LEN)
 E      y (unsigned SUM_Y_LEN)
@@ -71,7 +86,7 @@ E      x (unsigned SUM_X_LEN)
 E      x2 (unsigned SUM_X2_LEN)
 E      n (unsigned CSF_MAXHITS_SEG_LEN)
 
-A   csf_sums_a (open csf_sums)
+A   csf_sums_art (open csf_sums_rt)
 E      valid (logic)
 E      xy (unsigned SUM_XY_LEN)
 E      y (unsigned SUM_Y_LEN)
@@ -79,18 +94,28 @@ E      x (unsigned SUM_X_LEN)
 E      x2 (unsigned SUM_X2_LEN)
 E      n (unsigned CSF_MAXHITS_SEG_LEN)
 
-R   sf_seg_data_barrel
+R   sf_seg_data_barrel_rt
 E      data_valid (logic)
-E      muid (slc_muid)
-E      mdtid (vec_mdtid)
+E      muid (slc_muid_rt)
+E         slcid (unsigned SLC_COMMON_SLCID_LEN)
+E         slid (unsigned SL_TRAILER_SLID_LEN)
+E         bcid (unsigned SL_HEADER_BCID_LEN)
+E      mdtid (vec_mdtid_rt)
+E         chamber_id (unsigned VEC_MDTID_CHAMBER_ID_LEN)
+E         chamber_ieta (unsigned VEC_MDTID_CHAMBER_IETA_LEN)
 E      pos (signed SF_SEG_POS_LEN)
 E      angle (signed SF_SEG_ANG_LEN)
 E      quality (logic)
 
-R   sf_seg_data_endcap
+R   sf_seg_data_endcap_rt
 E      data_valid (logic)
-E      muid (slc_muid)
-E      mdtid (vec_mdtid)
+E      muid (slc_muid_rt)
+E         slcid (unsigned SLC_COMMON_SLCID_LEN)
+E         slid (unsigned SL_TRAILER_SLID_LEN)
+E         bcid (unsigned SL_HEADER_BCID_LEN)
+E      mdtid (vec_mdtid_rt)
+E         chamber_id (unsigned VEC_MDTID_CHAMBER_ID_LEN)
+E         chamber_ieta (unsigned VEC_MDTID_CHAMBER_IETA_LEN)
 E      pos (unsigned SF_SEG_POS_LEN)
 E      angle (signed SF_SEG_ANG_LEN)
 E      quality (logic)

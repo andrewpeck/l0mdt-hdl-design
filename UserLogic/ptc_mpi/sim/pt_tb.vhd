@@ -45,7 +45,7 @@ end pt_tb;
 architecture Behavioral of pt_tb is
     signal clk : std_logic := '0';
     signal seg_I, seg_M, seg_O : sf2ptcalc_rt;
-    signal i_segment_I, i_segment_M, i_segment_O : sf2ptcalc_rvt := (others => '0');
+    signal i_segment_I, i_segment_M, i_segment_O : sf2ptcalc_vt := (others => '0');
     signal i_SLC : pl2ptcalc_rvt := (others => '0');
     signal slc : pl2ptcalc_rt;
     signal o_mtc : ptcalc2mtc_rvt := (others => '0');

@@ -49,9 +49,9 @@ entity pt is
     );
     Port (
         clk : in std_logic;
-        i_segment_I  : in sf2ptcalc_rvt;
-        i_segment_M  : in sf2ptcalc_rvt;
-        i_segment_O  : in sf2ptcalc_rvt;
+        i_segment_I  : in sf2ptcalc_vt;
+        i_segment_M  : in sf2ptcalc_vt;
+        i_segment_O  : in sf2ptcalc_vt;
         i_SLC        : in pl2ptcalc_rvt;
         i_rst        : in std_logic;
         o_mtc        : out ptcalc2mtc_rvt
@@ -62,10 +62,10 @@ architecture Behavioral of pt is
     -- Online segments in global coordinates
     signal segment_I, segment_M, segment_O : sf2ptcalc_rt;
     signal segment_I_s, segment_M_s, segment_O_s : sf2ptcalc_rt;
-    signal segment_eta, segment_I_v, segment_M_v, segment_O_v : sf2ptcalc_rvt;
+    signal segment_eta, segment_I_v, segment_M_v, segment_O_v : sf2ptcalc_vt;
 
 
-    signal segment_EI, segment_EM, segment_EO : sf2ptcalc_rvt;
+    signal segment_EI, segment_EM, segment_EO : sf2ptcalc_vt;
 
     -- SLC candidate
     signal slc, slc_s : pl2ptcalc_rt;

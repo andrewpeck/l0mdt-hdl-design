@@ -71,7 +71,15 @@
 
   typedef logic [$bits(heg2sfhit_rt)-1:0] heg2sfhit_vt;
 
-  typedef sf2ptcalc_rt   sf2pt_bus;
+  typedef heg2sfhit_rt   heg2sfhit_art;
+
+  typedef heg2sfhit_vt   heg2sfhit_avt;
+
+  typedef logic [$bits(sf2ptcalc_rt)-1:0] sf2ptcalc_vt;
+
+  typedef sf2ptcalc_rt   sf2ptcalc_art;
+
+  typedef sf2ptcalc_vt   sf2ptcalc_avt;
 
   typedef logic [$bits(ucm2pl_rt)-1:0] ucm2pl_vt;
 

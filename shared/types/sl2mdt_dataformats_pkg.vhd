@@ -15,40 +15,40 @@ use shared_lib.sl2mdt_constants_pkg.all;
 
 package sl2mdt_dataformats_pkg is
 
-  type SL2MDT_header is record
+  type SL2MDT_header_rt is record
     h_reserved : std_logic_vector(SL2MDT_HEADER_H_RESERVED_LEN-1 downto 0);
     tcoverflow : std_logic;
     nmtc_sl : unsigned(SL2MDT_HEADER_NMTC_SL_LEN-1 downto 0);
     nmtc_mdt : unsigned(SL2MDT_HEADER_NMTC_MDT_LEN-1 downto 0);
     nslc : unsigned(SL2MDT_HEADER_NSLC_SLC_LEN-1 downto 0);
     bcid : unsigned(SL2MDT_HEADER_BCID_LEN-1 downto 0);
-  end record SL2MDT_header;
-  function len(x: SL2MDT_header) return natural;
-  function width(x: SL2MDT_header) return natural;
-  function vectorify(x: SL2MDT_header; t: std_logic_vector) return std_logic_vector;
-  function convert(x: SL2MDT_header; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: SL2MDT_header) return SL2MDT_header;
-  function convert(x: in std_logic_vector; t: SL2MDT_header) return SL2MDT_header;
-  function nullify(t: SL2MDT_header) return SL2MDT_header;
-  function zeroed(t: SL2MDT_header) return SL2MDT_header;
+  end record SL2MDT_header_rt;
+  function len(x: SL2MDT_header_rt) return natural;
+  function width(x: SL2MDT_header_rt) return natural;
+  function vectorify(x: SL2MDT_header_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: SL2MDT_header_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: SL2MDT_header_rt) return SL2MDT_header_rt;
+  function convert(x: in std_logic_vector; t: SL2MDT_header_rt) return SL2MDT_header_rt;
+  function nullify(t: SL2MDT_header_rt) return SL2MDT_header_rt;
+  function zeroed(t: SL2MDT_header_rt) return SL2MDT_header_rt;
 
-  type SL2MDT_trailer is record
+  type SL2MDT_trailer_rt is record
     t_reserved : std_logic_vector(SL2MDT_TRAILER_T_RESERVED_LEN-1 downto 0);
     crc : std_logic_vector(SL2MDT_TRAILER_CRC_LEN-1 downto 0);
     fiberid : unsigned(SL2MDT_TRAILER_FIBERID_LEN-1 downto 0);
     slid : unsigned(SL2MDT_TRAILER_SLID_LEN-1 downto 0);
     comma : std_logic_vector(SL2MDT_TRAILER_COMMA_LEN-1 downto 0);
-  end record SL2MDT_trailer;
-  function len(x: SL2MDT_trailer) return natural;
-  function width(x: SL2MDT_trailer) return natural;
-  function vectorify(x: SL2MDT_trailer; t: std_logic_vector) return std_logic_vector;
-  function convert(x: SL2MDT_trailer; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: SL2MDT_trailer) return SL2MDT_trailer;
-  function convert(x: in std_logic_vector; t: SL2MDT_trailer) return SL2MDT_trailer;
-  function nullify(t: SL2MDT_trailer) return SL2MDT_trailer;
-  function zeroed(t: SL2MDT_trailer) return SL2MDT_trailer;
+  end record SL2MDT_trailer_rt;
+  function len(x: SL2MDT_trailer_rt) return natural;
+  function width(x: SL2MDT_trailer_rt) return natural;
+  function vectorify(x: SL2MDT_trailer_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: SL2MDT_trailer_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: SL2MDT_trailer_rt) return SL2MDT_trailer_rt;
+  function convert(x: in std_logic_vector; t: SL2MDT_trailer_rt) return SL2MDT_trailer_rt;
+  function nullify(t: SL2MDT_trailer_rt) return SL2MDT_trailer_rt;
+  function zeroed(t: SL2MDT_trailer_rt) return SL2MDT_trailer_rt;
 
-  type SL2MDT_slc_common is record
+  type SL2MDT_slc_common_rt is record
     header : SL2MDT_header;
     slcid : unsigned(SL2MDT_SLC_COMMON_SLCID_LEN-1 downto 0);
     tcsent : std_logic;
@@ -59,17 +59,17 @@ package sl2mdt_dataformats_pkg is
     SL2MDT_charge : std_logic;
     cointype : std_logic_vector(SL2MDT_SLC_COMMON_COINTYPE_LEN-1 downto 0);
     trailer : SL2MDT_trailer;
-  end record SL2MDT_slc_common;
-  function len(x: SL2MDT_slc_common) return natural;
-  function width(x: SL2MDT_slc_common) return natural;
-  function vectorify(x: SL2MDT_slc_common; t: std_logic_vector) return std_logic_vector;
-  function convert(x: SL2MDT_slc_common; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: SL2MDT_slc_common) return SL2MDT_slc_common;
-  function convert(x: in std_logic_vector; t: SL2MDT_slc_common) return SL2MDT_slc_common;
-  function nullify(t: SL2MDT_slc_common) return SL2MDT_slc_common;
-  function zeroed(t: SL2MDT_slc_common) return SL2MDT_slc_common;
+  end record SL2MDT_slc_common_rt;
+  function len(x: SL2MDT_slc_common_rt) return natural;
+  function width(x: SL2MDT_slc_common_rt) return natural;
+  function vectorify(x: SL2MDT_slc_common_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: SL2MDT_slc_common_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: SL2MDT_slc_common_rt) return SL2MDT_slc_common_rt;
+  function convert(x: in std_logic_vector; t: SL2MDT_slc_common_rt) return SL2MDT_slc_common_rt;
+  function nullify(t: SL2MDT_slc_common_rt) return SL2MDT_slc_common_rt;
+  function zeroed(t: SL2MDT_slc_common_rt) return SL2MDT_slc_common_rt;
 
-  type SL2MDT_slc_endcap is record
+  type SL2MDT_slc_endcap_rt is record
     e_reserved : std_logic_vector(SL2MDT_SLC_ENDCAP_E_RESERVED_LEN-1 downto 0);
     nswseg_mon : std_logic;
     nswseg_angdtheta : signed(SL2MDT_SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN-1 downto 0);
@@ -77,45 +77,45 @@ package sl2mdt_dataformats_pkg is
     nswseg_poseta : unsigned(SL2MDT_SLC_ENDCAP_NSWSEG_POSETA_LEN-1 downto 0);
     seg_angdphi : signed(SL2MDT_SLC_ENDCAP_SEG_ANGDPHI_LEN-1 downto 0);
     seg_angdtheta : signed(SL2MDT_SLC_ENDCAP_SEG_ANGDTHETA_LEN-1 downto 0);
-  end record SL2MDT_slc_endcap;
-  function len(x: SL2MDT_slc_endcap) return natural;
-  function width(x: SL2MDT_slc_endcap) return natural;
-  function vectorify(x: SL2MDT_slc_endcap; t: std_logic_vector) return std_logic_vector;
-  function convert(x: SL2MDT_slc_endcap; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: SL2MDT_slc_endcap) return SL2MDT_slc_endcap;
-  function convert(x: in std_logic_vector; t: SL2MDT_slc_endcap) return SL2MDT_slc_endcap;
-  function nullify(t: SL2MDT_slc_endcap) return SL2MDT_slc_endcap;
-  function zeroed(t: SL2MDT_slc_endcap) return SL2MDT_slc_endcap;
+  end record SL2MDT_slc_endcap_rt;
+  function len(x: SL2MDT_slc_endcap_rt) return natural;
+  function width(x: SL2MDT_slc_endcap_rt) return natural;
+  function vectorify(x: SL2MDT_slc_endcap_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: SL2MDT_slc_endcap_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: SL2MDT_slc_endcap_rt) return SL2MDT_slc_endcap_rt;
+  function convert(x: in std_logic_vector; t: SL2MDT_slc_endcap_rt) return SL2MDT_slc_endcap_rt;
+  function nullify(t: SL2MDT_slc_endcap_rt) return SL2MDT_slc_endcap_rt;
+  function zeroed(t: SL2MDT_slc_endcap_rt) return SL2MDT_slc_endcap_rt;
 
-  type SL2MDT_slc_barrel is record
+  type SL2MDT_slc_barrel_rt is record
     b_reserved : std_logic_vector(SL2MDT_SLC_BARREL_B_RESERVED_LEN-1 downto 0);
     rpc3_posz : signed(SL2MDT_SLC_BARREL_RPC3_POSZ_LEN-1 downto 0);
     rpc2_posz : signed(SL2MDT_SLC_BARREL_RPC2_POSZ_LEN-1 downto 0);
     rpc1_posz : signed(SL2MDT_SLC_BARREL_RPC1_POSZ_LEN-1 downto 0);
     rpc0_posz : signed(SL2MDT_SLC_BARREL_RPC0_POSZ_LEN-1 downto 0);
-  end record SL2MDT_slc_barrel;
-  function len(x: SL2MDT_slc_barrel) return natural;
-  function width(x: SL2MDT_slc_barrel) return natural;
-  function vectorify(x: SL2MDT_slc_barrel; t: std_logic_vector) return std_logic_vector;
-  function convert(x: SL2MDT_slc_barrel; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: SL2MDT_slc_barrel) return SL2MDT_slc_barrel;
-  function convert(x: in std_logic_vector; t: SL2MDT_slc_barrel) return SL2MDT_slc_barrel;
-  function nullify(t: SL2MDT_slc_barrel) return SL2MDT_slc_barrel;
-  function zeroed(t: SL2MDT_slc_barrel) return SL2MDT_slc_barrel;
+  end record SL2MDT_slc_barrel_rt;
+  function len(x: SL2MDT_slc_barrel_rt) return natural;
+  function width(x: SL2MDT_slc_barrel_rt) return natural;
+  function vectorify(x: SL2MDT_slc_barrel_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: SL2MDT_slc_barrel_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: SL2MDT_slc_barrel_rt) return SL2MDT_slc_barrel_rt;
+  function convert(x: in std_logic_vector; t: SL2MDT_slc_barrel_rt) return SL2MDT_slc_barrel_rt;
+  function nullify(t: SL2MDT_slc_barrel_rt) return SL2MDT_slc_barrel_rt;
+  function zeroed(t: SL2MDT_slc_barrel_rt) return SL2MDT_slc_barrel_rt;
 
-  type SL2MDT_slc_rx is record
+  type SL2MDT_slc_rx_rt is record
     data_valid : std_logic;
     common : SL2MDT_slc_common;
     specific : std_logic_vector(SL2MDT_SLC_RX_SPECIFIC_LEN-1 downto 0);
-  end record SL2MDT_slc_rx;
-  function len(x: SL2MDT_slc_rx) return natural;
-  function width(x: SL2MDT_slc_rx) return natural;
-  function vectorify(x: SL2MDT_slc_rx; t: std_logic_vector) return std_logic_vector;
-  function convert(x: SL2MDT_slc_rx; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: SL2MDT_slc_rx) return SL2MDT_slc_rx;
-  function convert(x: in std_logic_vector; t: SL2MDT_slc_rx) return SL2MDT_slc_rx;
-  function nullify(t: SL2MDT_slc_rx) return SL2MDT_slc_rx;
-  function zeroed(t: SL2MDT_slc_rx) return SL2MDT_slc_rx;
+  end record SL2MDT_slc_rx_rt;
+  function len(x: SL2MDT_slc_rx_rt) return natural;
+  function width(x: SL2MDT_slc_rx_rt) return natural;
+  function vectorify(x: SL2MDT_slc_rx_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: SL2MDT_slc_rx_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt;
+  function convert(x: in std_logic_vector; t: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt;
+  function nullify(t: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt;
+  function zeroed(t: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt;
 
   type SL2MDT_slc_rx_bus is array(integer range <>) of SL2MDT_slc_rx;
   function len(x: SL2MDT_slc_rx_bus) return natural;
@@ -137,34 +137,34 @@ package sl2mdt_dataformats_pkg is
   function nullify(x: SL2MDT_slc_endcap_bus) return SL2MDT_slc_endcap_bus;
   function zeroed(x: SL2MDT_slc_endcap_bus) return SL2MDT_slc_endcap_bus;
 
-  type SL2MDT_slc_muid is record
+  type SL2MDT_slc_muid_rt is record
     slcid : unsigned(SL2MDT_SLC_COMMON_SLCID_LEN-1 downto 0);
     slid : unsigned(SL2MDT_TRAILER_SLID_LEN-1 downto 0);
     bcid : unsigned(SL2MDT_HEADER_BCID_LEN-1 downto 0);
-  end record SL2MDT_slc_muid;
-  function len(x: SL2MDT_slc_muid) return natural;
-  function width(x: SL2MDT_slc_muid) return natural;
-  function vectorify(x: SL2MDT_slc_muid; t: std_logic_vector) return std_logic_vector;
-  function convert(x: SL2MDT_slc_muid; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: SL2MDT_slc_muid) return SL2MDT_slc_muid;
-  function convert(x: in std_logic_vector; t: SL2MDT_slc_muid) return SL2MDT_slc_muid;
-  function nullify(t: SL2MDT_slc_muid) return SL2MDT_slc_muid;
-  function zeroed(t: SL2MDT_slc_muid) return SL2MDT_slc_muid;
+  end record SL2MDT_slc_muid_rt;
+  function len(x: SL2MDT_slc_muid_rt) return natural;
+  function width(x: SL2MDT_slc_muid_rt) return natural;
+  function vectorify(x: SL2MDT_slc_muid_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: SL2MDT_slc_muid_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: SL2MDT_slc_muid_rt) return SL2MDT_slc_muid_rt;
+  function convert(x: in std_logic_vector; t: SL2MDT_slc_muid_rt) return SL2MDT_slc_muid_rt;
+  function nullify(t: SL2MDT_slc_muid_rt) return SL2MDT_slc_muid_rt;
+  function zeroed(t: SL2MDT_slc_muid_rt) return SL2MDT_slc_muid_rt;
 
-  type vec_mdtid is record
+  type vec_mdtid_rt is record
     chamber_id : unsigned(SL2MDT_VEC_MDTID_CHAMBER_ID_LEN-1 downto 0);
     chamber_ieta : unsigned(SL2MDT_VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
-  end record vec_mdtid;
-  function len(x: vec_mdtid) return natural;
-  function width(x: vec_mdtid) return natural;
-  function vectorify(x: vec_mdtid; t: std_logic_vector) return std_logic_vector;
-  function convert(x: vec_mdtid; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: vec_mdtid) return vec_mdtid;
-  function convert(x: in std_logic_vector; t: vec_mdtid) return vec_mdtid;
-  function nullify(t: vec_mdtid) return vec_mdtid;
-  function zeroed(t: vec_mdtid) return vec_mdtid;
+  end record vec_mdtid_rt;
+  function len(x: vec_mdtid_rt) return natural;
+  function width(x: vec_mdtid_rt) return natural;
+  function vectorify(x: vec_mdtid_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: vec_mdtid_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: vec_mdtid_rt) return vec_mdtid_rt;
+  function convert(x: in std_logic_vector; t: vec_mdtid_rt) return vec_mdtid_rt;
+  function nullify(t: vec_mdtid_rt) return vec_mdtid_rt;
+  function zeroed(t: vec_mdtid_rt) return vec_mdtid_rt;
 
-  type sl2mdt_mtc2sl is record
+  type sl2mdt_mtc2sl_rt is record
     data_valid : std_logic;
     common : slc_common_rt;
     mdt_eta : signed(PTCALC2MTC_MDT_ETA_LEN-1 downto 0);
@@ -175,15 +175,15 @@ package sl2mdt_dataformats_pkg is
     mdt_nsegments : unsigned(PTCALC2MTC_MDT_NSEGMENTS_LEN-1 downto 0);
     mdt_quality : std_logic_vector(PTCALC2MTC_MDT_QUALITY_LEN-1 downto 0);
     m_reserved : std_logic_vector(SL2MDT_MTC2SL_M_RESERVED_LEN-1 downto 0);
-  end record sl2mdt_mtc2sl;
-  function len(x: sl2mdt_mtc2sl) return natural;
-  function width(x: sl2mdt_mtc2sl) return natural;
-  function vectorify(x: sl2mdt_mtc2sl; t: std_logic_vector) return std_logic_vector;
-  function convert(x: sl2mdt_mtc2sl; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: sl2mdt_mtc2sl) return sl2mdt_mtc2sl;
-  function convert(x: in std_logic_vector; t: sl2mdt_mtc2sl) return sl2mdt_mtc2sl;
-  function nullify(t: sl2mdt_mtc2sl) return sl2mdt_mtc2sl;
-  function zeroed(t: sl2mdt_mtc2sl) return sl2mdt_mtc2sl;
+  end record sl2mdt_mtc2sl_rt;
+  function len(x: sl2mdt_mtc2sl_rt) return natural;
+  function width(x: sl2mdt_mtc2sl_rt) return natural;
+  function vectorify(x: sl2mdt_mtc2sl_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: sl2mdt_mtc2sl_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt;
+  function convert(x: in std_logic_vector; t: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt;
+  function nullify(t: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt;
+  function zeroed(t: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt;
 
   type sl2mdt_mtc_out_bus is array(integer range <>) of sl2mdt_mtc2sl;
   function len(x: sl2mdt_mtc_out_bus) return natural;
@@ -201,7 +201,7 @@ end package sl2mdt_dataformats_pkg;
 
 package body sl2mdt_dataformats_pkg is
 
-  function len(x: SL2MDT_header) return natural is
+  function len(x: SL2MDT_header_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.h_reserved);
@@ -212,7 +212,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + len(x.bcid);
     return l;
   end function len;
-  function width(x: SL2MDT_header) return natural is
+  function width(x: SL2MDT_header_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.h_reserved);
@@ -223,7 +223,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + width(x.bcid);
     return l;
   end function width;
-  function vectorify(x: SL2MDT_header; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: SL2MDT_header_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -254,7 +254,7 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: SL2MDT_header; t: std_logic_vector) return std_logic_vector is
+  function convert(x: SL2MDT_header_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -285,8 +285,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: SL2MDT_header) return SL2MDT_header is
-    variable y: SL2MDT_header;
+  function structify(x: in std_logic_vector; t: SL2MDT_header_rt) return SL2MDT_header_rt is
+    variable y: SL2MDT_header_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -316,8 +316,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: SL2MDT_header) return SL2MDT_header is
-    variable y: SL2MDT_header;
+  function convert(x: in std_logic_vector; t: SL2MDT_header_rt) return SL2MDT_header_rt is
+    variable y: SL2MDT_header_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -347,8 +347,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: SL2MDT_header) return SL2MDT_header is
-  variable y: SL2MDT_header;
+  function nullify(t: SL2MDT_header_rt) return SL2MDT_header_rt is
+  variable y: SL2MDT_header_rt;
   begin
     y.h_reserved := nullify(t.h_reserved);
     y.tcoverflow := nullify(t.tcoverflow);
@@ -358,8 +358,8 @@ package body sl2mdt_dataformats_pkg is
     y.bcid := nullify(t.bcid);
     return y;
   end function nullify;
-  function zeroed(t: SL2MDT_header) return SL2MDT_header is
-  variable y: SL2MDT_header;
+  function zeroed(t: SL2MDT_header_rt) return SL2MDT_header_rt is
+  variable y: SL2MDT_header_rt;
   begin
     y.h_reserved := zeroed(t.h_reserved);
     y.tcoverflow := zeroed(t.tcoverflow);
@@ -370,7 +370,7 @@ package body sl2mdt_dataformats_pkg is
     return y;
   end function zeroed;
 
-  function len(x: SL2MDT_trailer) return natural is
+  function len(x: SL2MDT_trailer_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.t_reserved);
@@ -380,7 +380,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + len(x.comma);
     return l;
   end function len;
-  function width(x: SL2MDT_trailer) return natural is
+  function width(x: SL2MDT_trailer_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.t_reserved);
@@ -390,7 +390,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + width(x.comma);
     return l;
   end function width;
-  function vectorify(x: SL2MDT_trailer; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: SL2MDT_trailer_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -417,7 +417,7 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: SL2MDT_trailer; t: std_logic_vector) return std_logic_vector is
+  function convert(x: SL2MDT_trailer_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -444,8 +444,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: SL2MDT_trailer) return SL2MDT_trailer is
-    variable y: SL2MDT_trailer;
+  function structify(x: in std_logic_vector; t: SL2MDT_trailer_rt) return SL2MDT_trailer_rt is
+    variable y: SL2MDT_trailer_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -471,8 +471,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: SL2MDT_trailer) return SL2MDT_trailer is
-    variable y: SL2MDT_trailer;
+  function convert(x: in std_logic_vector; t: SL2MDT_trailer_rt) return SL2MDT_trailer_rt is
+    variable y: SL2MDT_trailer_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -498,8 +498,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: SL2MDT_trailer) return SL2MDT_trailer is
-  variable y: SL2MDT_trailer;
+  function nullify(t: SL2MDT_trailer_rt) return SL2MDT_trailer_rt is
+  variable y: SL2MDT_trailer_rt;
   begin
     y.t_reserved := nullify(t.t_reserved);
     y.crc := nullify(t.crc);
@@ -508,8 +508,8 @@ package body sl2mdt_dataformats_pkg is
     y.comma := nullify(t.comma);
     return y;
   end function nullify;
-  function zeroed(t: SL2MDT_trailer) return SL2MDT_trailer is
-  variable y: SL2MDT_trailer;
+  function zeroed(t: SL2MDT_trailer_rt) return SL2MDT_trailer_rt is
+  variable y: SL2MDT_trailer_rt;
   begin
     y.t_reserved := zeroed(t.t_reserved);
     y.crc := zeroed(t.crc);
@@ -519,7 +519,7 @@ package body sl2mdt_dataformats_pkg is
     return y;
   end function zeroed;
 
-  function len(x: SL2MDT_slc_common) return natural is
+  function len(x: SL2MDT_slc_common_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.header);
@@ -534,7 +534,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + len(x.trailer);
     return l;
   end function len;
-  function width(x: SL2MDT_slc_common) return natural is
+  function width(x: SL2MDT_slc_common_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.header);
@@ -549,7 +549,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + width(x.trailer);
     return l;
   end function width;
-  function vectorify(x: SL2MDT_slc_common; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: SL2MDT_slc_common_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -596,7 +596,7 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: SL2MDT_slc_common; t: std_logic_vector) return std_logic_vector is
+  function convert(x: SL2MDT_slc_common_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -643,8 +643,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: SL2MDT_slc_common) return SL2MDT_slc_common is
-    variable y: SL2MDT_slc_common;
+  function structify(x: in std_logic_vector; t: SL2MDT_slc_common_rt) return SL2MDT_slc_common_rt is
+    variable y: SL2MDT_slc_common_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -690,8 +690,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: SL2MDT_slc_common) return SL2MDT_slc_common is
-    variable y: SL2MDT_slc_common;
+  function convert(x: in std_logic_vector; t: SL2MDT_slc_common_rt) return SL2MDT_slc_common_rt is
+    variable y: SL2MDT_slc_common_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -737,8 +737,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: SL2MDT_slc_common) return SL2MDT_slc_common is
-  variable y: SL2MDT_slc_common;
+  function nullify(t: SL2MDT_slc_common_rt) return SL2MDT_slc_common_rt is
+  variable y: SL2MDT_slc_common_rt;
   begin
     y.header := nullify(t.header);
     y.slcid := nullify(t.slcid);
@@ -752,8 +752,8 @@ package body sl2mdt_dataformats_pkg is
     y.trailer := nullify(t.trailer);
     return y;
   end function nullify;
-  function zeroed(t: SL2MDT_slc_common) return SL2MDT_slc_common is
-  variable y: SL2MDT_slc_common;
+  function zeroed(t: SL2MDT_slc_common_rt) return SL2MDT_slc_common_rt is
+  variable y: SL2MDT_slc_common_rt;
   begin
     y.header := zeroed(t.header);
     y.slcid := zeroed(t.slcid);
@@ -768,7 +768,7 @@ package body sl2mdt_dataformats_pkg is
     return y;
   end function zeroed;
 
-  function len(x: SL2MDT_slc_endcap) return natural is
+  function len(x: SL2MDT_slc_endcap_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.e_reserved);
@@ -780,7 +780,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + len(x.seg_angdtheta);
     return l;
   end function len;
-  function width(x: SL2MDT_slc_endcap) return natural is
+  function width(x: SL2MDT_slc_endcap_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.e_reserved);
@@ -792,7 +792,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + width(x.seg_angdtheta);
     return l;
   end function width;
-  function vectorify(x: SL2MDT_slc_endcap; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: SL2MDT_slc_endcap_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -827,7 +827,7 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: SL2MDT_slc_endcap; t: std_logic_vector) return std_logic_vector is
+  function convert(x: SL2MDT_slc_endcap_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -862,8 +862,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: SL2MDT_slc_endcap) return SL2MDT_slc_endcap is
-    variable y: SL2MDT_slc_endcap;
+  function structify(x: in std_logic_vector; t: SL2MDT_slc_endcap_rt) return SL2MDT_slc_endcap_rt is
+    variable y: SL2MDT_slc_endcap_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -897,8 +897,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: SL2MDT_slc_endcap) return SL2MDT_slc_endcap is
-    variable y: SL2MDT_slc_endcap;
+  function convert(x: in std_logic_vector; t: SL2MDT_slc_endcap_rt) return SL2MDT_slc_endcap_rt is
+    variable y: SL2MDT_slc_endcap_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -932,8 +932,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: SL2MDT_slc_endcap) return SL2MDT_slc_endcap is
-  variable y: SL2MDT_slc_endcap;
+  function nullify(t: SL2MDT_slc_endcap_rt) return SL2MDT_slc_endcap_rt is
+  variable y: SL2MDT_slc_endcap_rt;
   begin
     y.e_reserved := nullify(t.e_reserved);
     y.nswseg_mon := nullify(t.nswseg_mon);
@@ -944,8 +944,8 @@ package body sl2mdt_dataformats_pkg is
     y.seg_angdtheta := nullify(t.seg_angdtheta);
     return y;
   end function nullify;
-  function zeroed(t: SL2MDT_slc_endcap) return SL2MDT_slc_endcap is
-  variable y: SL2MDT_slc_endcap;
+  function zeroed(t: SL2MDT_slc_endcap_rt) return SL2MDT_slc_endcap_rt is
+  variable y: SL2MDT_slc_endcap_rt;
   begin
     y.e_reserved := zeroed(t.e_reserved);
     y.nswseg_mon := zeroed(t.nswseg_mon);
@@ -957,7 +957,7 @@ package body sl2mdt_dataformats_pkg is
     return y;
   end function zeroed;
 
-  function len(x: SL2MDT_slc_barrel) return natural is
+  function len(x: SL2MDT_slc_barrel_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.b_reserved);
@@ -967,7 +967,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + len(x.rpc0_posz);
     return l;
   end function len;
-  function width(x: SL2MDT_slc_barrel) return natural is
+  function width(x: SL2MDT_slc_barrel_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.b_reserved);
@@ -977,7 +977,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + width(x.rpc0_posz);
     return l;
   end function width;
-  function vectorify(x: SL2MDT_slc_barrel; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: SL2MDT_slc_barrel_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1004,7 +1004,7 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: SL2MDT_slc_barrel; t: std_logic_vector) return std_logic_vector is
+  function convert(x: SL2MDT_slc_barrel_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1031,8 +1031,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: SL2MDT_slc_barrel) return SL2MDT_slc_barrel is
-    variable y: SL2MDT_slc_barrel;
+  function structify(x: in std_logic_vector; t: SL2MDT_slc_barrel_rt) return SL2MDT_slc_barrel_rt is
+    variable y: SL2MDT_slc_barrel_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1058,8 +1058,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: SL2MDT_slc_barrel) return SL2MDT_slc_barrel is
-    variable y: SL2MDT_slc_barrel;
+  function convert(x: in std_logic_vector; t: SL2MDT_slc_barrel_rt) return SL2MDT_slc_barrel_rt is
+    variable y: SL2MDT_slc_barrel_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1085,8 +1085,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: SL2MDT_slc_barrel) return SL2MDT_slc_barrel is
-  variable y: SL2MDT_slc_barrel;
+  function nullify(t: SL2MDT_slc_barrel_rt) return SL2MDT_slc_barrel_rt is
+  variable y: SL2MDT_slc_barrel_rt;
   begin
     y.b_reserved := nullify(t.b_reserved);
     y.rpc3_posz := nullify(t.rpc3_posz);
@@ -1095,8 +1095,8 @@ package body sl2mdt_dataformats_pkg is
     y.rpc0_posz := nullify(t.rpc0_posz);
     return y;
   end function nullify;
-  function zeroed(t: SL2MDT_slc_barrel) return SL2MDT_slc_barrel is
-  variable y: SL2MDT_slc_barrel;
+  function zeroed(t: SL2MDT_slc_barrel_rt) return SL2MDT_slc_barrel_rt is
+  variable y: SL2MDT_slc_barrel_rt;
   begin
     y.b_reserved := zeroed(t.b_reserved);
     y.rpc3_posz := zeroed(t.rpc3_posz);
@@ -1106,7 +1106,7 @@ package body sl2mdt_dataformats_pkg is
     return y;
   end function zeroed;
 
-  function len(x: SL2MDT_slc_rx) return natural is
+  function len(x: SL2MDT_slc_rx_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.data_valid);
@@ -1114,7 +1114,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + len(x.specific);
     return l;
   end function len;
-  function width(x: SL2MDT_slc_rx) return natural is
+  function width(x: SL2MDT_slc_rx_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.data_valid);
@@ -1122,7 +1122,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + width(x.specific);
     return l;
   end function width;
-  function vectorify(x: SL2MDT_slc_rx; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: SL2MDT_slc_rx_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1141,7 +1141,7 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: SL2MDT_slc_rx; t: std_logic_vector) return std_logic_vector is
+  function convert(x: SL2MDT_slc_rx_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1160,8 +1160,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: SL2MDT_slc_rx) return SL2MDT_slc_rx is
-    variable y: SL2MDT_slc_rx;
+  function structify(x: in std_logic_vector; t: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt is
+    variable y: SL2MDT_slc_rx_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1179,8 +1179,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: SL2MDT_slc_rx) return SL2MDT_slc_rx is
-    variable y: SL2MDT_slc_rx;
+  function convert(x: in std_logic_vector; t: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt is
+    variable y: SL2MDT_slc_rx_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1198,16 +1198,16 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: SL2MDT_slc_rx) return SL2MDT_slc_rx is
-  variable y: SL2MDT_slc_rx;
+  function nullify(t: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt is
+  variable y: SL2MDT_slc_rx_rt;
   begin
     y.data_valid := nullify(t.data_valid);
     y.common := nullify(t.common);
     y.specific := nullify(t.specific);
     return y;
   end function nullify;
-  function zeroed(t: SL2MDT_slc_rx) return SL2MDT_slc_rx is
-  variable y: SL2MDT_slc_rx;
+  function zeroed(t: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt is
+  variable y: SL2MDT_slc_rx_rt;
   begin
     y.data_valid := zeroed(t.data_valid);
     y.common := zeroed(t.common);
@@ -1441,7 +1441,7 @@ package body sl2mdt_dataformats_pkg is
     return y;
   end function zeroed;
 
-  function len(x: SL2MDT_slc_muid) return natural is
+  function len(x: SL2MDT_slc_muid_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.slcid);
@@ -1449,7 +1449,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + len(x.bcid);
     return l;
   end function len;
-  function width(x: SL2MDT_slc_muid) return natural is
+  function width(x: SL2MDT_slc_muid_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.slcid);
@@ -1457,7 +1457,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + width(x.bcid);
     return l;
   end function width;
-  function vectorify(x: SL2MDT_slc_muid; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: SL2MDT_slc_muid_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1476,7 +1476,7 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: SL2MDT_slc_muid; t: std_logic_vector) return std_logic_vector is
+  function convert(x: SL2MDT_slc_muid_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1495,8 +1495,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: SL2MDT_slc_muid) return SL2MDT_slc_muid is
-    variable y: SL2MDT_slc_muid;
+  function structify(x: in std_logic_vector; t: SL2MDT_slc_muid_rt) return SL2MDT_slc_muid_rt is
+    variable y: SL2MDT_slc_muid_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1514,8 +1514,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: SL2MDT_slc_muid) return SL2MDT_slc_muid is
-    variable y: SL2MDT_slc_muid;
+  function convert(x: in std_logic_vector; t: SL2MDT_slc_muid_rt) return SL2MDT_slc_muid_rt is
+    variable y: SL2MDT_slc_muid_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1533,16 +1533,16 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: SL2MDT_slc_muid) return SL2MDT_slc_muid is
-  variable y: SL2MDT_slc_muid;
+  function nullify(t: SL2MDT_slc_muid_rt) return SL2MDT_slc_muid_rt is
+  variable y: SL2MDT_slc_muid_rt;
   begin
     y.slcid := nullify(t.slcid);
     y.slid := nullify(t.slid);
     y.bcid := nullify(t.bcid);
     return y;
   end function nullify;
-  function zeroed(t: SL2MDT_slc_muid) return SL2MDT_slc_muid is
-  variable y: SL2MDT_slc_muid;
+  function zeroed(t: SL2MDT_slc_muid_rt) return SL2MDT_slc_muid_rt is
+  variable y: SL2MDT_slc_muid_rt;
   begin
     y.slcid := zeroed(t.slcid);
     y.slid := zeroed(t.slid);
@@ -1550,21 +1550,21 @@ package body sl2mdt_dataformats_pkg is
     return y;
   end function zeroed;
 
-  function len(x: vec_mdtid) return natural is
+  function len(x: vec_mdtid_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.chamber_id);
     l := l + len(x.chamber_ieta);
     return l;
   end function len;
-  function width(x: vec_mdtid) return natural is
+  function width(x: vec_mdtid_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.chamber_id);
     l := l + width(x.chamber_ieta);
     return l;
   end function width;
-  function vectorify(x: vec_mdtid; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: vec_mdtid_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1579,7 +1579,7 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: vec_mdtid; t: std_logic_vector) return std_logic_vector is
+  function convert(x: vec_mdtid_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1594,8 +1594,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: vec_mdtid) return vec_mdtid is
-    variable y: vec_mdtid;
+  function structify(x: in std_logic_vector; t: vec_mdtid_rt) return vec_mdtid_rt is
+    variable y: vec_mdtid_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1609,8 +1609,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: vec_mdtid) return vec_mdtid is
-    variable y: vec_mdtid;
+  function convert(x: in std_logic_vector; t: vec_mdtid_rt) return vec_mdtid_rt is
+    variable y: vec_mdtid_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1624,22 +1624,22 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: vec_mdtid) return vec_mdtid is
-  variable y: vec_mdtid;
+  function nullify(t: vec_mdtid_rt) return vec_mdtid_rt is
+  variable y: vec_mdtid_rt;
   begin
     y.chamber_id := nullify(t.chamber_id);
     y.chamber_ieta := nullify(t.chamber_ieta);
     return y;
   end function nullify;
-  function zeroed(t: vec_mdtid) return vec_mdtid is
-  variable y: vec_mdtid;
+  function zeroed(t: vec_mdtid_rt) return vec_mdtid_rt is
+  variable y: vec_mdtid_rt;
   begin
     y.chamber_id := zeroed(t.chamber_id);
     y.chamber_ieta := zeroed(t.chamber_ieta);
     return y;
   end function zeroed;
 
-  function len(x: sl2mdt_mtc2sl) return natural is
+  function len(x: sl2mdt_mtc2sl_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.data_valid);
@@ -1654,7 +1654,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + len(x.m_reserved);
     return l;
   end function len;
-  function width(x: sl2mdt_mtc2sl) return natural is
+  function width(x: sl2mdt_mtc2sl_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.data_valid);
@@ -1669,7 +1669,7 @@ package body sl2mdt_dataformats_pkg is
     l := l + width(x.m_reserved);
     return l;
   end function width;
-  function vectorify(x: sl2mdt_mtc2sl; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: sl2mdt_mtc2sl_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1716,7 +1716,7 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: sl2mdt_mtc2sl; t: std_logic_vector) return std_logic_vector is
+  function convert(x: sl2mdt_mtc2sl_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1763,8 +1763,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: sl2mdt_mtc2sl) return sl2mdt_mtc2sl is
-    variable y: sl2mdt_mtc2sl;
+  function structify(x: in std_logic_vector; t: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt is
+    variable y: sl2mdt_mtc2sl_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1810,8 +1810,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: sl2mdt_mtc2sl) return sl2mdt_mtc2sl is
-    variable y: sl2mdt_mtc2sl;
+  function convert(x: in std_logic_vector; t: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt is
+    variable y: sl2mdt_mtc2sl_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1857,8 +1857,8 @@ package body sl2mdt_dataformats_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: sl2mdt_mtc2sl) return sl2mdt_mtc2sl is
-  variable y: sl2mdt_mtc2sl;
+  function nullify(t: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt is
+  variable y: sl2mdt_mtc2sl_rt;
   begin
     y.data_valid := nullify(t.data_valid);
     y.common := nullify(t.common);
@@ -1872,8 +1872,8 @@ package body sl2mdt_dataformats_pkg is
     y.m_reserved := nullify(t.m_reserved);
     return y;
   end function nullify;
-  function zeroed(t: sl2mdt_mtc2sl) return sl2mdt_mtc2sl is
-  variable y: sl2mdt_mtc2sl;
+  function zeroed(t: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt is
+  variable y: sl2mdt_mtc2sl_rt;
   begin
     y.data_valid := zeroed(t.data_valid);
     y.common := zeroed(t.common);

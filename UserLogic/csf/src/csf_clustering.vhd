@@ -40,10 +40,10 @@ ENTITY csf_clustering IS
     );
     PORT (
         clk : IN STD_LOGIC;
-        i_mdthit : IN heg2sfhit_rvt;
-        i_seed : IN heg2sfslc_rvt;
+        i_mdthit : IN heg2sfhit_vt;
+        i_seed : IN heg2sfslc_vt;
         i_eof : IN STD_LOGIC;
-        o_cluster_hits : OUT csf_hit_a_avt(MAX_CLUSTERS-1 DOWNTO 0);
+        o_cluster_hits : OUT csf_hit_avt(MAX_CLUSTERS-1 DOWNTO 0);
         o_fitter_en : OUT STD_LOGIC_VECTOR(MAX_CLUSTERS-1 DOWNTO 0)
     );
 END csf_clustering;
@@ -116,11 +116,10 @@ ARCHITECTURE Behavioral OF csf_clustering IS
     SIGNAL reference_b : t_reference_b(MAX_CLUSTERS-1 DOWNTO 0);
     SIGNAL cluster_active : STD_LOGIC_VECTOR(MAX_CLUSTERS-1 DOWNTO 0) := (others => '0');
 
-    -- Clustering hit signals
-    TYPE t_hit_vectors IS ARRAY (NATURAL RANGE <>)
-    OF STD_LOGIC_VECTOR(CSF_HIT_LEN - 1 DOWNTO 0);
-
     SIGNAL hit_p, hit_m : csf_hit_rt;
+    -- Clustering hit signals
+    TYPE t_hit_vectors IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR(len(hit_p) - 1 DOWNTO 0);
+
     SIGNAL hit_plus, hit_minus : csf_hit_a_at(MAX_CLUSTERS/2 downto 0);
     SIGNAL eof_v, dv_v : STD_LOGIC_VECTOR(MAX_CLUSTERS/2 downto 0);
 

@@ -121,7 +121,19 @@ E   heg2sfslc_vt (logic heg2sfslc_rt)
 
 E   heg2sfhit_vt (logic heg2sfhit_rt)
 
-A   sf2pt_bus (open sf2ptcalc_rt)
+A   heg2sfhit_art (open heg2sfhit_rt)
+E      data_valid (logic)
+E      mlayer (logic)
+E      localx (unsigned HEG2SFHIT_LOCALX_LEN)
+E      localy (unsigned HEG2SFHIT_LOCALY_LEN)
+E      radius (unsigned HEG2SFHIT_RADIUS_LEN)
+
+A   heg2sfhit_avt (open heg2sfhit_vt)
+E      heg2sfhit_vt (logic heg2sfhit_rt)
+
+E   sf2ptcalc_vt (logic sf2ptcalc_rt)
+
+A   sf2ptcalc_art (open sf2ptcalc_rt)
 E      data_valid (logic)
 E      muid (slc_muid_rt)
 E         slcid (unsigned SLC_COMMON_SLCID_LEN)
@@ -133,6 +145,9 @@ E      segquality (logic)
 E      mdtid (vec_mdtid_rt)
 E         chamber_id (unsigned VEC_MDTID_CHAMBER_ID_LEN)
 E         chamber_ieta (unsigned VEC_MDTID_CHAMBER_IETA_LEN)
+
+A   sf2ptcalc_avt (open sf2ptcalc_vt)
+E      sf2ptcalc_vt (logic sf2ptcalc_rt)
 
 E   ucm2pl_vt (logic ucm2pl_rt)
 
