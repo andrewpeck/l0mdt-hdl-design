@@ -26,7 +26,7 @@ hdl:
 
 # SL2MDT_SLC_COMMON
 - SL2MDT_slc_common_rt:
-  - header:  [type : SL2MDT_header]
+  - header:  [type : SL2MDT_header_rt]
   - slcid:  [type : unsigned , length : SL2MDT_SLC_COMMON_SLCID_LEN]
   - tcsent:  [type : logic]
   - poseta:  [type : signed , length : SL2MDT_SLC_COMMON_POSETA_LEN]
@@ -35,7 +35,7 @@ hdl:
   - SL2MDT_ptthresh:  [type : unsigned , length : SL2MDT_SLC_COMMON_SL_PTTHRESH_LEN]
   - SL2MDT_charge:  [type : logic]
   - cointype:  [type : logic , length : SL2MDT_SLC_COMMON_COINTYPE_LEN]
-  - trailer:  [type : SL2MDT_trailer]
+  - trailer:  [type : SL2MDT_trailer_rt]
 
 # SL2MDT_SLC_ENDCAP
 - SL2MDT_slc_endcap_rt:
@@ -58,12 +58,12 @@ hdl:
 # SL2MDT_SLC_RX
 - SL2MDT_slc_rx_rt:
   - data_valid:  [type : logic]
-  - common:  [type : SL2MDT_slc_common]
+  - common:  [type : SL2MDT_slc_common_rt]
   - specific:  [type : logic , length : SL2MDT_SLC_RX_SPECIFIC_LEN]
 
 # SL2MDT_SLC_BUS
-- SL2MDT_slc_rx_bus: [array: open , type: SL2MDT_slc_rx]
-- SL2MDT_slc_endcap_bus: [array: open , type: SL2MDT_slc_endcap]
+- SL2MDT_slc_rx_bus: [array: open , type: SL2MDT_slc_rx_rt]
+- SL2MDT_slc_endcap_bus: [array: open , type: SL2MDT_slc_endcap_rt]
 
 # SL2MDT_SLC_MUID
 - SL2MDT_slc_muid_rt:
@@ -89,4 +89,4 @@ hdl:
   - mdt_quality:    [type : logic , length : PTCALC2MTC_MDT_QUALITY_LEN]
   - m_reserved:     [type : logic , length : SL2MDT_MTC2SL_M_RESERVED_LEN]
 
-- sl2mdt_mtc_out_bus: [array: open , type: sl2mdt_mtc2sl]
+- sl2mdt_mtc_out_bus: [array: open , type: sl2mdt_mtc2sl_rt]

@@ -29,7 +29,7 @@
   } SL2MDT_trailer_rt;
 
   typedef struct packed {
-    SL2MDT_header   header;
+    SL2MDT_header_rt   header;
     logic unsigned [SL2MDT_SLC_COMMON_SLCID_LEN-1:0] slcid;
     logic  tcsent;
     logic signed [SL2MDT_SLC_COMMON_POSETA_LEN-1:0] poseta;
@@ -38,7 +38,7 @@
     logic unsigned [SL2MDT_SLC_COMMON_SL_PTTHRESH_LEN-1:0] SL2MDT_ptthresh;
     logic  SL2MDT_charge;
     logic [SL2MDT_SLC_COMMON_COINTYPE_LEN-1:0] cointype;
-    SL2MDT_trailer   trailer;
+    SL2MDT_trailer_rt   trailer;
   } SL2MDT_slc_common_rt;
 
   typedef struct packed {
@@ -61,13 +61,13 @@
 
   typedef struct packed {
     logic  data_valid;
-    SL2MDT_slc_common   common;
+    SL2MDT_slc_common_rt   common;
     logic [SL2MDT_SLC_RX_SPECIFIC_LEN-1:0] specific;
   } SL2MDT_slc_rx_rt;
 
-  typedef typedef SL2MDT_slc_rx    SL2MDT_slc_rx_bus;
+  typedef SL2MDT_slc_rx_rt   SL2MDT_slc_rx_bus;
 
-  typedef typedef SL2MDT_slc_endcap    SL2MDT_slc_endcap_bus;
+  typedef SL2MDT_slc_endcap_rt   SL2MDT_slc_endcap_bus;
 
   typedef struct packed {
     logic unsigned [SL2MDT_SLC_COMMON_SLCID_LEN-1:0] slcid;
@@ -93,7 +93,7 @@
     logic [SL2MDT_MTC2SL_M_RESERVED_LEN-1:0] m_reserved;
   } sl2mdt_mtc2sl_rt;
 
-  typedef typedef sl2mdt_mtc2sl    sl2mdt_mtc_out_bus;
+  typedef sl2mdt_mtc2sl_rt   sl2mdt_mtc_out_bus;
 
 
 

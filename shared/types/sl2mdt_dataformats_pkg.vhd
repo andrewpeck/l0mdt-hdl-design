@@ -49,7 +49,7 @@ package sl2mdt_dataformats_pkg is
   function zeroed(t: SL2MDT_trailer_rt) return SL2MDT_trailer_rt;
 
   type SL2MDT_slc_common_rt is record
-    header : SL2MDT_header;
+    header : SL2MDT_header_rt;
     slcid : unsigned(SL2MDT_SLC_COMMON_SLCID_LEN-1 downto 0);
     tcsent : std_logic;
     poseta : signed(SL2MDT_SLC_COMMON_POSETA_LEN-1 downto 0);
@@ -58,7 +58,7 @@ package sl2mdt_dataformats_pkg is
     SL2MDT_ptthresh : unsigned(SL2MDT_SLC_COMMON_SL_PTTHRESH_LEN-1 downto 0);
     SL2MDT_charge : std_logic;
     cointype : std_logic_vector(SL2MDT_SLC_COMMON_COINTYPE_LEN-1 downto 0);
-    trailer : SL2MDT_trailer;
+    trailer : SL2MDT_trailer_rt;
   end record SL2MDT_slc_common_rt;
   function len(x: SL2MDT_slc_common_rt) return natural;
   function width(x: SL2MDT_slc_common_rt) return natural;
@@ -105,7 +105,7 @@ package sl2mdt_dataformats_pkg is
 
   type SL2MDT_slc_rx_rt is record
     data_valid : std_logic;
-    common : SL2MDT_slc_common;
+    common : SL2MDT_slc_common_rt;
     specific : std_logic_vector(SL2MDT_SLC_RX_SPECIFIC_LEN-1 downto 0);
   end record SL2MDT_slc_rx_rt;
   function len(x: SL2MDT_slc_rx_rt) return natural;
@@ -117,7 +117,7 @@ package sl2mdt_dataformats_pkg is
   function nullify(t: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt;
   function zeroed(t: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt;
 
-  type SL2MDT_slc_rx_bus is array(integer range <>) of SL2MDT_slc_rx;
+  type SL2MDT_slc_rx_bus is array(integer range <>) of SL2MDT_slc_rx_rt;
   function len(x: SL2MDT_slc_rx_bus) return natural;
   function width(x: SL2MDT_slc_rx_bus) return natural;
   function vectorify(x: SL2MDT_slc_rx_bus; t: std_logic_vector) return std_logic_vector;
@@ -127,7 +127,7 @@ package sl2mdt_dataformats_pkg is
   function nullify(x: SL2MDT_slc_rx_bus) return SL2MDT_slc_rx_bus;
   function zeroed(x: SL2MDT_slc_rx_bus) return SL2MDT_slc_rx_bus;
 
-  type SL2MDT_slc_endcap_bus is array(integer range <>) of SL2MDT_slc_endcap;
+  type SL2MDT_slc_endcap_bus is array(integer range <>) of SL2MDT_slc_endcap_rt;
   function len(x: SL2MDT_slc_endcap_bus) return natural;
   function width(x: SL2MDT_slc_endcap_bus) return natural;
   function vectorify(x: SL2MDT_slc_endcap_bus; t: std_logic_vector) return std_logic_vector;
@@ -185,7 +185,7 @@ package sl2mdt_dataformats_pkg is
   function nullify(t: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt;
   function zeroed(t: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt;
 
-  type sl2mdt_mtc_out_bus is array(integer range <>) of sl2mdt_mtc2sl;
+  type sl2mdt_mtc_out_bus is array(integer range <>) of sl2mdt_mtc2sl_rt;
   function len(x: sl2mdt_mtc_out_bus) return natural;
   function width(x: sl2mdt_mtc_out_bus) return natural;
   function vectorify(x: sl2mdt_mtc_out_bus; t: std_logic_vector) return std_logic_vector;
