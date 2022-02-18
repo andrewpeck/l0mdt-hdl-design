@@ -192,7 +192,6 @@ def check_config_file(config_file):
     file_ok = p.exists() and p.is_file()
     if not file_ok:
         return False, f"Test config file (={config_file} could not be found or opened"
-
     ##
     ## schema is valid
     ##
@@ -208,6 +207,7 @@ def check_config_file(config_file):
         )
     except Exception as ex:
         return False, str(ex)
+
     return valid_ok, err
 
 
@@ -298,7 +298,6 @@ def check_and_inspect_config_file(config_file):
     config_ok, err = check_config_file(config_file)
     if not config_ok:
         return False, err
-
     ##
     ## insect the test configuration data itself
     ##
@@ -310,7 +309,6 @@ def check_and_inspect_config_file(config_file):
 
 
 def config_from_file(config_file):
-
     config_ok, err = check_and_inspect_config_file(config_file)
     if not config_ok:
         return None, err
