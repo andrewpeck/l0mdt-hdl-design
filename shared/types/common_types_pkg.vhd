@@ -177,6 +177,26 @@ package common_types_pkg is
 
   subtype heg2sfslc_vt is std_logic_vector(77-1 downto 0);
 
+  type heg2sfslc_art is array(integer range <>) of heg2sfslc_rt;
+  function len(x: heg2sfslc_art) return natural;
+  function width(x: heg2sfslc_art) return natural;
+  function vectorify(x: heg2sfslc_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: heg2sfslc_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: heg2sfslc_art) return heg2sfslc_art;
+  function convert(x: std_logic_vector; t: heg2sfslc_art) return heg2sfslc_art;
+  function nullify(x: heg2sfslc_art) return heg2sfslc_art;
+  function zeroed(x: heg2sfslc_art) return heg2sfslc_art;
+
+  type heg2sfslc_avt is array(integer range <>) of heg2sfslc_vt;
+  function len(x: heg2sfslc_avt) return natural;
+  function width(x: heg2sfslc_avt) return natural;
+  function vectorify(x: heg2sfslc_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: heg2sfslc_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: heg2sfslc_avt) return heg2sfslc_avt;
+  function convert(x: std_logic_vector; t: heg2sfslc_avt) return heg2sfslc_avt;
+  function nullify(x: heg2sfslc_avt) return heg2sfslc_avt;
+  function zeroed(x: heg2sfslc_avt) return heg2sfslc_avt;
+
   subtype heg2sfhit_vt is std_logic_vector(41-1 downto 0);
 
   type heg2sfhit_art is array(integer range <>) of heg2sfhit_rt;
@@ -1902,6 +1922,232 @@ package body common_types_pkg is
   end function nullify;
   function zeroed(x: ucm2hps_avt) return ucm2hps_avt is
     variable y : ucm2hps_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: heg2sfslc_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: heg2sfslc_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: heg2sfslc_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: heg2sfslc_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: heg2sfslc_art) return heg2sfslc_art is
+    variable y : heg2sfslc_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: heg2sfslc_art) return heg2sfslc_art is
+    variable y : heg2sfslc_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: heg2sfslc_art) return heg2sfslc_art is
+    variable y : heg2sfslc_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: heg2sfslc_art) return heg2sfslc_art is
+    variable y : heg2sfslc_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: heg2sfslc_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: heg2sfslc_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: heg2sfslc_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: heg2sfslc_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: heg2sfslc_avt) return heg2sfslc_avt is
+    variable y : heg2sfslc_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: heg2sfslc_avt) return heg2sfslc_avt is
+    variable y : heg2sfslc_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: heg2sfslc_avt) return heg2sfslc_avt is
+    variable y : heg2sfslc_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: heg2sfslc_avt) return heg2sfslc_avt is
+    variable y : heg2sfslc_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));

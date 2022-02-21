@@ -57,13 +57,13 @@ entity h2s_sump is
     i_out_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
     i_ext_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
     -- Segments Out
-    o_inn_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_mid_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_out_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_ext_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_inn_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
+    o_mid_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
+    o_out_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
+    o_ext_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
     -- Segments Out to Neighbor
-    o_plus_neighbor_segments_av  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    o_minus_neighbor_segments_av : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments_av  : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments_av : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
     
     o_sump : out std_logic
   );

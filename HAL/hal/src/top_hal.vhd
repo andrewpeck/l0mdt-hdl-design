@@ -90,12 +90,12 @@ entity top_hal is
     minus_neighbor_slc : out slc_rx_rvt;
 
     -- pt from neighbor
-    plus_neighbor_segments_o  : out sf2pt_bus_avt (c_NUM_SF_INPUTS -1 downto 0);
-    minus_neighbor_segments_o : out sf2pt_bus_avt (c_NUM_SF_INPUTS -1 downto 0);
+    plus_neighbor_segments_o  : out sf2ptcalc_avt (c_NUM_SF_INPUTS -1 downto 0);
+    minus_neighbor_segments_o : out sf2ptcalc_avt (c_NUM_SF_INPUTS -1 downto 0);
 
     -- pt to neighbor
-    plus_neighbor_segments_i  : in sf2pt_bus_avt (c_NUM_SF_OUTPUTS -1 downto 0);
-    minus_neighbor_segments_i : in sf2pt_bus_avt (c_NUM_SF_OUTPUTS -1 downto 0);
+    plus_neighbor_segments_i  : in sf2ptcalc_avt (c_NUM_SF_OUTPUTS -1 downto 0);
+    minus_neighbor_segments_i : in sf2ptcalc_avt (c_NUM_SF_OUTPUTS -1 downto 0);
 
     --------------------------------------------------------------------------------
     -- NSP + MUCTPI

@@ -116,16 +116,16 @@ entity top_ult is
     i_plus_neighbor_slc_b       : in std_logic;--slc_rx_rvt;
     i_minus_neighbor_slc_b      : in std_logic;--slc_rx_rvt;
     -- Segments in from neighbor
-    i_plus_neighbor_segments_ab  : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_minus_neighbor_segments_ab : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments_ab  : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_minus_neighbor_segments_ab : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
     o_daq_streams_ab     : out std_logic_vector(c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);--felix_stream_bus_avt (c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);
     -- o_daq_streams : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
-    o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
     -- MUCTPI
     o_MTC_ab : out std_logic_vector(c_NUM_MTC-1 downto 0);--mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
@@ -230,8 +230,8 @@ architecture behavioral of top_ult is
   signal i_plus_neighbor_slc_av       :slc_rx_bus_std_avt(0 downto 0);
   signal i_minus_neighbor_slc_av      :slc_rx_bus_std_avt(0 downto 0);
 
-  signal i_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-  signal i_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+  signal i_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+  signal i_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
   type sf2pt_bus_std_avt is array(integer range <>) of std_logic_vector(SF2PTCALC_LEN - 1 downto 0);
 
@@ -240,8 +240,8 @@ architecture behavioral of top_ult is
 
   signal o_daq_streams     : felix_stream_bus_avt (c_HPS_MAX_HP_INN  + c_HPS_MAX_HP_MID  + c_HPS_MAX_HP_OUT - 1 downto 0);
 
-  signal o_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-  signal o_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal o_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal o_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
   signal o_MTC : mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
   signal o_NSP : mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
@@ -345,8 +345,8 @@ begin
     o_daq_streams_ab(i_d) <= xor_reduce(o_daq_streams(i_d));
   end generate;
   --------------------------------------------------------------
-  -- o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-  -- o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  -- o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  -- o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
   pns: for i_d in c_NUM_SF_OUTPUTS - 1 downto 0 generate
     o_plus_neighbor_segments_ab(i_d) <= xor_reduce(o_plus_neighbor_segments(i_d));
   end generate;

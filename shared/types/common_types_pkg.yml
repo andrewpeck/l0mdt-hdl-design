@@ -80,8 +80,8 @@ hdl:
 
 # - heg2sfslc_bus : [ array : open , type : heg2sfslc_rt]
 - heg2sfslc_vt : [type: logic, length: heg2sfslc_rt]
-# - heg2sfslc_art: [array: open ,  type: heg2sfslc_rt]
-# - heg2sfslc_avt: [ array: open,  type: heg2sfslc_vt]
+- heg2sfslc_art: [array: open ,  type: heg2sfslc_rt]
+- heg2sfslc_avt: [ array: open,  type: heg2sfslc_vt]
 
 # - heg2sfhit_bus : [ array : open , type : heg2sfhit_rt]
 - heg2sfhit_vt : [type: logic, length: heg2sfhit_rt]

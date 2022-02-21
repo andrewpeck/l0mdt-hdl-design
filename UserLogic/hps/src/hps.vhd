@@ -61,7 +61,7 @@ entity hps is
     -- MDT hit
     i_mdt_tar_av      : in  tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc
-    o_sf2pt_av        : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
+    o_sf2pt_av        : out sf2ptcalc_avt(c_NUM_THREADS -1 downto 0)
     );
 end entity hps;
 
@@ -117,7 +117,7 @@ architecture beh of hps is
   -- signal control_enable(c_NUM_THREADS -1 downto 0);
 
   signal heg2sf_ctrl_av : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
-  signal heg2sfslc_av   : heg2sfslc_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sfslc_av   : heg2sfslc_avt(c_NUM_THREADS -1 downto 0);
   signal heg2sfhit_av   : heg2sfhit_avt(c_NUM_THREADS -1 downto 0);
 
 

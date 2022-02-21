@@ -119,6 +119,23 @@ E      ucm2hps_vt (logic ucm2hps_rt)
 
 E   heg2sfslc_vt (logic heg2sfslc_rt)
 
+A   heg2sfslc_art (open heg2sfslc_rt)
+E      data_valid (logic)
+E      muid (slc_muid_rt)
+E         slcid (unsigned SLC_COMMON_SLCID_LEN)
+E         slid (unsigned SL_TRAILER_SLID_LEN)
+E         bcid (unsigned SL_HEADER_BCID_LEN)
+E      mdtseg_dest (logic HEG2SFSLC_MDTSEG_DEST_LEN)
+E      mdtid (vec_mdtid_rt)
+E         chamber_id (unsigned VEC_MDTID_CHAMBER_ID_LEN)
+E         chamber_ieta (unsigned VEC_MDTID_CHAMBER_IETA_LEN)
+E      vec_pos (unsigned UCM2HPS_VEC_POS_LEN)
+E      vec_ang (unsigned UCM2HPS_VEC_ANG_LEN)
+E      hewindow_pos (unsigned HEG2SFSLC_HEWINDOW_POS_LEN)
+
+A   heg2sfslc_avt (open heg2sfslc_vt)
+E      heg2sfslc_vt (logic heg2sfslc_rt)
+
 E   heg2sfhit_vt (logic heg2sfhit_rt)
 
 A   heg2sfhit_art (open heg2sfhit_rt)

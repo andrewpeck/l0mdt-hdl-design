@@ -17,6 +17,8 @@
 
   typedef heg_ctrl2sf_rt   hps_ctrl2sf_art;
 
+  typedef heg_ctrl2sf_vt   hps_ctrl2sf_avt;
+
 
 
 `endif // HPS_PKG_SVH

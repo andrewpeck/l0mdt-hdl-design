@@ -69,6 +69,10 @@
 
   typedef logic [$bits(heg2sfslc_rt)-1:0] heg2sfslc_vt;
 
+  typedef heg2sfslc_rt   heg2sfslc_art;
+
+  typedef heg2sfslc_vt   heg2sfslc_avt;
+
   typedef logic [$bits(heg2sfhit_rt)-1:0] heg2sfhit_vt;
 
   typedef heg2sfhit_rt   heg2sfhit_art;

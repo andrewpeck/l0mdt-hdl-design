@@ -12,6 +12,7 @@ config:
 hdl:
 
 - hps_ctrl2sf_art : [ array : open , type : heg_ctrl2sf_rt]
+- hps_ctrl2sf_avt : [ array : open , type : heg_ctrl2sf_vt]
 
 # - hps_bm2sf   : [ array : open , type : hps2sf] 
 

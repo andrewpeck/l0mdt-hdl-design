@@ -110,8 +110,8 @@ entity ult is
     i_minus_neighbor_slc      : in  slc_rx_rvt;
 
     -- Segments in from neighbor
-    i_plus_neighbor_segments  : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_minus_neighbor_segments : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments  : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_minus_neighbor_segments : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
     o_daq_streams : out felix_stream_bus_avt (c_HPS_MAX_HP_INN
@@ -120,8 +120,8 @@ entity ult is
     -- o_daq_streams             : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
-    o_plus_neighbor_segments_av  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    o_minus_neighbor_segments_av : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments_av  : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments_av : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
     -- -- MUCTPI
     o_MTC                     : out mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
@@ -214,17 +214,17 @@ architecture behavioral of ult is
   signal ult_ext_tdc_hits_in_av  : tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- outputs from hits to segments
-  signal inn_segments_to_pt_plin_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal mid_segments_to_pt_plin_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal out_segments_to_pt_plin_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal ext_segments_to_pt_plin_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal inn_segments_to_pt_plout_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal mid_segments_to_pt_plout_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal out_segments_to_pt_plout_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal ext_segments_to_pt_plout_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+  signal mid_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+  signal out_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+  signal ext_segments_to_pt_plin_av  : sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_segments_to_pt_plout_av  : sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+  signal mid_segments_to_pt_plout_av  : sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+  signal out_segments_to_pt_plout_av  : sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+  signal ext_segments_to_pt_plout_av  : sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
 
   -- type sf2pt_bus_array_t is array (integer range 0 to SLR_PIPELINE_DEPTH)
-  --   of sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  --   of sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
   -- signal inn_segments_to_pt_pipeline : sf2pt_bus_array_t;
   -- signal mid_segments_to_pt_pipeline : sf2pt_bus_array_t;
   -- signal out_segments_to_pt_pipeline : sf2pt_bus_array_t;
@@ -236,10 +236,10 @@ architecture behavioral of ult is
   -- attribute shreg_extract of ext_segments_to_pt_pipeline : signal is "no";
 
   -- slc to pt (from pipeline)
-  -- signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-  -- signal middle_slc_to_pt : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-  -- signal outer_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-  -- signal extra_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  -- signal inner_slc_to_pt  : sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
+  -- signal middle_slc_to_pt : sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
+  -- signal outer_slc_to_pt  : sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
+  -- signal extra_slc_to_pt  : sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
 
   -- slc to mtc (from pipeline)
   signal pl2pt_av  : pl2pt_avt (c_NUM_THREADS-1 downto 0);

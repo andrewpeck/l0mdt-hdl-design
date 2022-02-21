@@ -134,10 +134,10 @@ architecture structural of top_l0mdt is
   signal plus_neighbor_slc  : slc_rx_rvt;
   signal minus_neighbor_slc : slc_rx_rvt;
 
-  signal plus_neighbor_segments_i  : sf2pt_bus_avt (c_NUM_SF_INPUTS - 1 downto 0);
-  signal minus_neighbor_segments_i : sf2pt_bus_avt (c_NUM_SF_INPUTS - 1 downto 0);
-  signal plus_neighbor_segments_o  : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
-  signal minus_neighbor_segments_o : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal plus_neighbor_segments_i  : sf2ptcalc_avt (c_NUM_SF_INPUTS - 1 downto 0);
+  signal minus_neighbor_segments_i : sf2ptcalc_avt (c_NUM_SF_INPUTS - 1 downto 0);
+  signal plus_neighbor_segments_o  : sf2ptcalc_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal minus_neighbor_segments_o : sf2ptcalc_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
 
   signal daq_streams : FELIX_STREAM_bus_avt (c_HPS_MAX_HP_INN
                                              + c_HPS_MAX_HP_MID

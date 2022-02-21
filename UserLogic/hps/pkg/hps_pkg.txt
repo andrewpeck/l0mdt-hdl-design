@@ -5,3 +5,6 @@ A   hps_ctrl2sf_art (open heg_ctrl2sf_rt)
 E      rst (logic)
 E      eof (logic)
 E      enable (logic)
+
+A   hps_ctrl2sf_avt (open heg_ctrl2sf_vt)
+E      heg_ctrl2sf_vt (logic heg_ctrl2sf_rt)

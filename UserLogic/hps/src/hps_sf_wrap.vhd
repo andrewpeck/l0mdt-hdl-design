@@ -64,7 +64,7 @@ entity hps_sf_wrap is
 
     sf_fm_data : out fm_rt_array( 0 to sf_sb_n - 1);
     -- configuration
-    i_control_v  : in  heg_ctrl2sf_rvt;
+    i_control_v  : in  heg_ctrl2sf_vt;
     i_slc_data_v : in  heg2sfslc_vt;
     i_mdt_data_v : in  heg2sfhit_vt;
     --
@@ -82,27 +82,39 @@ architecture beh of hps_sf_wrap is
 
   signal sf_data_v : std_logic_vector(o_sf_data_v'length -1 downto 0);
 
+  constant lc_HEG2SFSLC_LEN : integer := i_slc_data_v'length;--len():
+  constant lc_HEG2SFHIT_LEN : integer := i_mdt_data_v'length;--len():
+  constant lc_SF2PTCALC_LEN : integer := o_sf_data_v'length;--len():
+
 begin
 
-  i_control_r <= structify(i_control_v);
+  i_control_r <= structify(i_control_v,i_control_r);
 
-  csf_ctrl_r <= convert(csf_ctrl_v,csf_ctrl_r);
-  csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
-  lsf_ctrl_r <= convert(lsf_ctrl_v,lsf_ctrl_r);
-  lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
-  sf_fm_data(0).fm_data <= (mon_dw_max-1 downto HEG2SFSLC_LEN => '0') & i_slc_data_v;
-  sf_fm_data(0).fm_vld  <= i_slc_data_v(HEG2SFSLC_LEN-1);
+  -- csf_ctrl_r <= convert(csf_ctrl_v,csf_ctrl_r);
+  -- csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
+  -- lsf_ctrl_r <= convert(lsf_ctrl_v,lsf_ctrl_r);
+  -- lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
+  sf_fm_data(0).fm_data <= (mon_dw_max-1 downto lc_HEG2SFSLC_LEN => '0') & i_slc_data_v;
+  sf_fm_data(0).fm_vld  <= i_slc_data_v(lc_HEG2SFSLC_LEN-1);
 
-  sf_fm_data(1).fm_data <= (mon_dw_max-1 downto HEG2SFHIT_LEN => '0') & i_mdt_data_v;
-  sf_fm_data(1).fm_vld  <= i_mdt_data_v(HEG2SFHIT_LEN-1);
+  sf_fm_data(1).fm_data <= (mon_dw_max-1 downto lc_HEG2SFHIT_LEN => '0') & i_mdt_data_v;
+  sf_fm_data(1).fm_vld  <= i_mdt_data_v(lc_HEG2SFHIT_LEN-1);
 
-  sf_fm_data(2).fm_data <= (mon_dw_max-1 downto SF2PTCALC_LEN => '0') & o_sf_data_v;
-  sf_fm_data(2).fm_vld  <= o_sf_data_v(SF2PTCALC_LEN -1);
+  sf_fm_data(2).fm_data <= (mon_dw_max-1 downto lc_SF2PTCALC_LEN => '0') & o_sf_data_v;
+  sf_fm_data(2).fm_vld  <= o_sf_data_v(lc_SF2PTCALC_LEN -1);
 
 
   EN_SF : if c_SF_ENABLED = '1' generate
 
     SF_BP: if c_SF_BYPASS = '0' generate
+      --
+      csf_ctrl_r <= convert(csf_ctrl_v,csf_ctrl_r);
+      csf_mon_v <= (others => '0');
+      lsf_ctrl_r <= convert(lsf_ctrl_v,lsf_ctrl_r);
+      lsf_mon_v <= (others => '0');
+
+      
+      --
       SF_TYPE : if c_SF_TYPE = '0' generate
 
         CSF : entity csf_lib.csf

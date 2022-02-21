@@ -184,15 +184,15 @@ architecture beh of ult_tp is
   signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
 
   -- Segments in from neighbor
-  signal i_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
-  signal i_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
+  signal i_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
+  signal i_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
   signal o_daq_streams :  felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0) := (others => (others => '0'));
 
   -- Segments Out to Neighbor
-  signal o_plus_neighbor_segments_av  :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
-  signal o_minus_neighbor_segments_av :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
+  signal o_plus_neighbor_segments_av  :  sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
+  signal o_minus_neighbor_segments_av :  sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- MUCTPI
   signal o_MTC :  mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
