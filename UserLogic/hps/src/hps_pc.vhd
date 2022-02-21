@@ -113,10 +113,10 @@ begin
   -- tc_ctrl_v <= vectorify(i_ctrl_tc,tc_ctrl_v);
   -- o_mon_tc <= structify(tc_mon_v,o_mon_tc);
 
-  i_mdt_tar_r  <= structify(i_mdt_tar_v);
+  i_mdt_tar_r  <= structify(i_mdt_tar_v,i_mdt_tar_r);
 
   -- mdt_tar_data_pl(0) <= structify(i_mdt_tar_v);
-  o_mdt_full_data_v <= vectorify(mdt_full_data_r);
+  o_mdt_full_data_v <= vectorify(mdt_full_data_r,o_mdt_full_data_v);
 
   T0 : entity hps_lib.hps_pc_b_t0
     generic map(
@@ -196,7 +196,7 @@ begin
       o_dv        => pl_mdt_tar_dv
     );
 
-    pl_mdt_tar_r  <= structify(pl_mdt_tar_v);
+    pl_mdt_tar_r  <= structify(pl_mdt_tar_v,pl_mdt_tar_r);
   
 
   COORD : process(clk)
