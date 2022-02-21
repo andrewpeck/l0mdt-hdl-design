@@ -32,7 +32,7 @@ use heg_lib.heg_pkg.all;
 -- use hegtypes_lib.hp_pkg.all;
 -- use hegtypes_lib.heg_pkg.all;
 
-library heg_lib;
+-- library heg_lib;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
