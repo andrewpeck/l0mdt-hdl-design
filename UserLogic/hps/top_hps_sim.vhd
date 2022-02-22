@@ -78,8 +78,8 @@ architecture beh of hps_tb is
   signal mon_r              : HPS_MON_t;
   signal ctrl_v             : std_logic_vector(len(ctrl_r) -1 downto 0);
   signal mon_v              : std_logic_vector(len(mon_r) -1 downto 0);
-  signal i_uCM2hps_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal i_mdt_tar_av       : tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+  signal i_uCM2hps_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tar_av       : tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0) := (others => (others => '0'));
   signal o_sf2pt_av         : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
 
 begin

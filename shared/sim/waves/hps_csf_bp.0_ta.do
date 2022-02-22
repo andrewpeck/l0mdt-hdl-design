@@ -5,7 +5,9 @@ add wave -noupdate /hps_tb/HPS/g_STATION_RADIUS
 add wave -noupdate /hps_tb/HPS/clk
 add wave -noupdate /hps_tb/HPS/glob_en
 add wave -noupdate /hps_tb/HPS/ctrl_v
+add wave -noupdate /hps_tb/HPS/ctrl_r
 add wave -noupdate /hps_tb/HPS/mon_v
+add wave -noupdate -expand /hps_tb/HPS/mon_r
 add wave -noupdate /hps_tb/HPS/i_mdt_tar_av
 add wave -noupdate /hps_tb/HPS/i_uCM2hps_av
 add wave -noupdate /hps_tb/HPS/rst
@@ -19,7 +21,6 @@ add wave -noupdate /hps_tb/HPS/LSF_CTRL_LEN
 add wave -noupdate /hps_tb/HPS/LSF_MON_LEN
 add wave -noupdate /hps_tb/HPS/int_ena
 add wave -noupdate /hps_tb/HPS/int_rst
-add wave -noupdate /hps_tb/HPS/ctrl_r
 add wave -noupdate /hps_tb/HPS/csf_ctrl_av
 add wave -noupdate /hps_tb/HPS/csf_mon_av
 add wave -noupdate /hps_tb/HPS/ctrl_super_v
@@ -32,7 +33,6 @@ add wave -noupdate /hps_tb/HPS/local_freeze
 add wave -noupdate /hps_tb/HPS/lsf_ctrl_av
 add wave -noupdate /hps_tb/HPS/lsf_mon_av
 add wave -noupdate /hps_tb/HPS/mdt_full_data_av
-add wave -noupdate /hps_tb/HPS/mon_r
 add wave -noupdate /hps_tb/HPS/mon_super_v
 add wave -noupdate /hps_tb/HPS/pc_t0_ctrl_v
 add wave -noupdate /hps_tb/HPS/pc_t0_mon_v
@@ -40,7 +40,7 @@ add wave -noupdate /hps_tb/HPS/pc_tc_ctrl_v
 add wave -noupdate /hps_tb/HPS/pc_tc_mon_v
 add wave -noupdate /hps_tb/HPS/sf_fm_data_th
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1675571178 fs} 0}
+WaveRestoreCursors {{Cursor 1} {1398881789 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
