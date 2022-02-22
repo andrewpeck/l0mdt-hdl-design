@@ -103,6 +103,8 @@ begin
         int_en <= '1';
         int_rst <= rst;
         apb_clk_cnt <= 0;
+        axi_cnt_reset <= '0';
+        axi_rep_clk <= '0';
       else
         --------------------------------------------
         --    AXI CLK CTRL

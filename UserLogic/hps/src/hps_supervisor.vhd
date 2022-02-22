@@ -81,8 +81,8 @@ architecture beh of hps_supervisor is
 
   constant apb_clk_lat : integer := c_CLK_AXI_MULT;
   signal  apb_clk_cnt : integer;
-  -- signal axi_cnt_reset    : std_logic;
-  -- signal axi_rep_clk      : std_logic;
+  signal axi_cnt_reset    : std_logic;
+  signal axi_rep_clk      : std_logic;
 
   attribute MAX_FANOUT              : string;
   attribute MAX_FANOUT of int_rst   : signal is "256";
@@ -107,6 +107,8 @@ begin
         int_en <= '1';
         int_rst <= rst;
         apb_clk_cnt <= 0;
+        axi_cnt_reset <= '0';
+        axi_rep_clk <= '0';
       else
         --------------------------------------------
         --    AXI CLK CTRL
