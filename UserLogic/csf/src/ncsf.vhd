@@ -132,7 +132,7 @@ ARCHITECTURE behavioral OF csf IS
   SIGNAL fitter_en_ml : t_fitter_en_ml(1 DOWNTO 0);
 
   -- Fitters Signals
-  TYPE t_csf_sums_ml IS ARRAY (INTEGER RANGE <>) OF csf_sums_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+  TYPE t_csf_sums_ml IS ARRAY (INTEGER RANGE <>) OF csf_sums_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
   SIGNAL sums_ml : t_csf_sums_ml(1 DOWNTO 0);
 
   SIGNAL locseg : csf_locseg_vt;
@@ -317,8 +317,8 @@ BEGIN
 
   ----    );
   
-  mdt_hit <= structify(i_mdt_hit);
-  seed_i <= structify(i_seed);
+  mdt_hit <= structify(i_mdt_hit,mdt_hit);
+  seed_i <= structify(i_seed,seed_i);
   o_seg <= globseg;
 
   -- Clustering

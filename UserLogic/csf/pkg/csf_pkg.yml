@@ -64,8 +64,9 @@ hdl:
   - x : [type: unsigned, length: SUM_X_LEN]
   - x2 : [type: unsigned, length: SUM_X2_LEN]
   - n : [type: unsigned, length: CSF_MAXHITS_SEG_LEN]
-
-- csf_sums_art: [array: open, type: csf_sums_rt]
+- csf_sums_vt : [type: logic, length: csf_sums_rt]
+- csf_sums_art: [array: open,   type: csf_sums_rt]
+- csf_sums_avt: [array: open,   type: csf_sums_vt]
 
 # - SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
 # - SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]

@@ -153,6 +153,8 @@ package csf_pkg is
   function nullify(t: csf_sums_rt) return csf_sums_rt;
   function zeroed(t: csf_sums_rt) return csf_sums_rt;
 
+  subtype csf_sums_vt is std_logic_vector(111-1 downto 0);
+
   type csf_sums_art is array(integer range <>) of csf_sums_rt;
   function len(x: csf_sums_art) return natural;
   function width(x: csf_sums_art) return natural;
@@ -162,6 +164,16 @@ package csf_pkg is
   function convert(x: std_logic_vector; t: csf_sums_art) return csf_sums_art;
   function nullify(x: csf_sums_art) return csf_sums_art;
   function zeroed(x: csf_sums_art) return csf_sums_art;
+
+  type csf_sums_avt is array(integer range <>) of csf_sums_vt;
+  function len(x: csf_sums_avt) return natural;
+  function width(x: csf_sums_avt) return natural;
+  function vectorify(x: csf_sums_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: csf_sums_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: csf_sums_avt) return csf_sums_avt;
+  function convert(x: std_logic_vector; t: csf_sums_avt) return csf_sums_avt;
+  function nullify(x: csf_sums_avt) return csf_sums_avt;
+  function zeroed(x: csf_sums_avt) return csf_sums_avt;
 
   type sf_seg_data_barrel_rt is record
     data_valid : std_logic;
@@ -1357,6 +1369,119 @@ package body csf_pkg is
   end function nullify;
   function zeroed(x: csf_sums_art) return csf_sums_art is
     variable y : csf_sums_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: csf_sums_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: csf_sums_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: csf_sums_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: csf_sums_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: csf_sums_avt) return csf_sums_avt is
+    variable y : csf_sums_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: csf_sums_avt) return csf_sums_avt is
+    variable y : csf_sums_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: csf_sums_avt) return csf_sums_avt is
+    variable y : csf_sums_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: csf_sums_avt) return csf_sums_avt is
+    variable y : csf_sums_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));

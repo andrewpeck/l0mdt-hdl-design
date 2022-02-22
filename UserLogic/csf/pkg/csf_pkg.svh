@@ -85,7 +85,11 @@
     logic unsigned [CSF_MAXHITS_SEG_LEN-1:0] n;
   } csf_sums_rt;
 
+  typedef logic [$bits(csf_sums_rt)-1:0] csf_sums_vt;
+
   typedef csf_sums_rt   csf_sums_art;
+
+  typedef csf_sums_vt   csf_sums_avt;
 
   typedef struct packed {
     logic  data_valid;

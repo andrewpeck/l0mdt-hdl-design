@@ -86,6 +86,8 @@ E      x (unsigned SUM_X_LEN)
 E      x2 (unsigned SUM_X2_LEN)
 E      n (unsigned CSF_MAXHITS_SEG_LEN)
 
+E   csf_sums_vt (logic csf_sums_rt)
+
 A   csf_sums_art (open csf_sums_rt)
 E      valid (logic)
 E      xy (unsigned SUM_XY_LEN)
@@ -93,6 +95,9 @@ E      y (unsigned SUM_Y_LEN)
 E      x (unsigned SUM_X_LEN)
 E      x2 (unsigned SUM_X2_LEN)
 E      n (unsigned CSF_MAXHITS_SEG_LEN)
+
+A   csf_sums_avt (open csf_sums_vt)
+E      csf_sums_vt (logic csf_sums_rt)
 
 R   sf_seg_data_barrel_rt
 E      data_valid (logic)

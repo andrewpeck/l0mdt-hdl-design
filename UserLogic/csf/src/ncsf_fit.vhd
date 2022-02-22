@@ -36,15 +36,15 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY ncsf_fit IS
     PORT (
         clk : IN STD_LOGIC;
-        i_sums_ml0 : csf_sums_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
-        i_sums_ml1 : csf_sums_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+        i_sums_ml0 : csf_sums_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+        i_sums_ml1 : csf_sums_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
         o_seg : OUT csf_locseg_vt
     );
 END ncsf_fit;
 
 ARCHITECTURE Behavioral OF ncsf_fit IS
     -- Input sums
-    SIGNAL sums_ml0, sums_ml1 : csf_sums_a_at(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+    SIGNAL sums_ml0, sums_ml1 : csf_sums_art(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
     SIGNAL sums_ml0_s, sums_ml1_s, sums : csf_sums_rt;
     -- Numerator/Denominator widths
     CONSTANT NSUM_XY_LEN : INTEGER := SUM_XY_LEN + CSF_MAXHITS_SEG_LEN;
@@ -147,9 +147,12 @@ BEGIN
         douta => reciprocal_den
     );
 
-    sums_ml0 <= structify(i_sums_ml0);
-    sums_ml1 <= structify(i_sums_ml1);
-    o_seg <= vectorify(output_seg);
+    clust_loop_gen : for i_c in CSF_MAX_CLUSTERS -1 downto 0 generate
+      sums_ml0(i_c) <= structify(i_sums_ml0(i_c),sums_ml0(i_c));
+      sums_ml1(i_c) <= structify(i_sums_ml1(i_c),sums_ml1(i_c));
+    end generate ; -- clust_loop_gen
+
+    o_seg <= vectorify(output_seg,o_seg);
 
     Fitter : PROCESS (clk)
     BEGIN
