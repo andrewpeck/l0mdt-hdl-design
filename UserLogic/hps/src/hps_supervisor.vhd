@@ -81,8 +81,8 @@ architecture beh of hps_supervisor is
 
   constant apb_clk_lat : integer := c_CLK_AXI_MULT;
   signal  apb_clk_cnt : integer;
-  signal axi_cnt_reset    : std_logic;
-  signal axi_rep_clk      : std_logic;
+  -- signal axi_cnt_reset    : std_logic;
+  -- signal axi_rep_clk      : std_logic;
 
   attribute MAX_FANOUT              : string;
   attribute MAX_FANOUT of int_rst   : signal is "256";
@@ -143,10 +143,10 @@ begin
         --------------------------------------------
         --    to apb
         --------------------------------------------
-        mon_r.status.ENABLED <= local_en;
-        mon_r.status.READY <= not local_rst;
-        mon_r.status.ERROR <= (others => '0');
       end if;
+      mon_r.status.ENABLED <= local_en;
+      mon_r.status.READY <= not local_rst;
+      mon_r.status.ERROR <= (others => '0');
     end if;
   end process;
 end architecture beh;
