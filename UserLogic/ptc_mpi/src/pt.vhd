@@ -52,9 +52,9 @@ entity pt is
         i_segment_I  : in sf2ptcalc_vt;
         i_segment_M  : in sf2ptcalc_vt;
         i_segment_O  : in sf2ptcalc_vt;
-        i_SLC        : in pl2ptcalc_rvt;
+        i_SLC        : in pl2ptcalc_vt;
         i_rst        : in std_logic;
-        o_mtc        : out ptcalc2mtc_rvt
+        o_mtc        : out ptcalc2mtc_vt
     );
 end pt;
 
@@ -372,14 +372,14 @@ begin
         douta => e1_1
     );
 
-    segment_I <= structify(i_segment_I);
-    segment_M <= structify(i_segment_M);
-    segment_O <= structify(i_segment_O);
+    segment_I <= structify(i_segment_I,segment_I);
+    segment_M <= structify(i_segment_M,segment_M);
+    segment_O <= structify(i_segment_O,segment_O);
   
     combo_index <= comboid_to_index_ram(comboid);
     
-    slc <= structify(i_SLC);
-    o_mtc <= vectorify(mtc);
+    slc <= structify(i_SLC,slc);
+    o_mtc <= vectorify(mtc,o_mtc);
 
     pt_top_proc : process( clk )
     begin

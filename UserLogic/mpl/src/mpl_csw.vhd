@@ -39,7 +39,7 @@ entity mpl_csw is
     -- configuration, control & Monitoring
     -- SLc pipeline
     i_ucm_av            : in mpl2csw_ptcalc_avt(c_NUM_THREADS -1 downto 0);
-    o_tf_av             : out pl2pt_avt(c_NUM_THREADS -1 downto 0)
+    o_tf_av             : out pl2ptcalc_avt(c_NUM_THREADS -1 downto 0)
     -- o_mtc_av          : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity mpl_csw;
@@ -47,7 +47,7 @@ end entity mpl_csw;
 architecture beh of mpl_csw is
 
   signal slc_pl     : mpl2csw_ptcalc_art(c_NUM_THREADS -1 downto 0);
-  signal csw2tf_ar  : pl2pt_art(c_NUM_THREADS -1 downto 0);
+  signal csw2tf_ar  : pl2ptcalc_art(c_NUM_THREADS -1 downto 0);
 
 begin
 

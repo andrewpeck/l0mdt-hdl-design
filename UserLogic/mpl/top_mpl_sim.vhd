@@ -57,7 +57,7 @@ entity mpl_tb is
   --   -- configuration, control & Monitoring
   --   -- SLc pipeline
   --   i_uCM2pl_av         : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
-  --   o_pl2tf_av          : out pl2pt_avt(c_NUM_THREADS -1 downto 0);
+  --   o_pl2tf_av          : out pl2ptcalc_avt(c_NUM_THREADS -1 downto 0);
   --   o_pl2mtc_av         : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
   -- );
 end entity mpl_tb;
@@ -77,7 +77,7 @@ architecture beh of mpl_tb is
   signal mon_v               : std_logic_vector(len(mon_r) - 1 downto 0);--  : out MPL_MON_t; 
   -- SLc pipeline
   signal i_uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
-  signal o_pl2ptcalc_av         : pl2pt_avt(c_NUM_THREADS -1 downto 0);
+  signal o_pl2ptcalc_av         : pl2ptcalc_avt(c_NUM_THREADS -1 downto 0);
   signal o_pl2mtc_av            : pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
 begin
 

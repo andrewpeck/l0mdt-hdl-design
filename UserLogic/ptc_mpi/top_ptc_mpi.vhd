@@ -52,7 +52,7 @@ entity top_ptc_mpi is
     Port ( 
         clk            : in  std_logic;
         rst            : in  std_logic;
-        i_SLCs         : in  pl2pt_avt(N_FINDERS_PER_STATION-1 downto 0);
+        i_SLCs         : in  pl2ptcalc_avt(N_FINDERS_PER_STATION-1 downto 0);
         i_segments_I   : in  sf2ptcalc_avt(N_FINDERS_PER_STATION-1 downto 0);
         i_segments_M   : in  sf2ptcalc_avt(N_FINDERS_PER_STATION-1 downto 0);
         i_segments_O   : in  sf2ptcalc_avt(N_FINDERS_PER_STATION-1 downto 0);
@@ -62,7 +62,7 @@ entity top_ptc_mpi is
         i_nsm_segs_I   : in  sf2ptcalc_avt(N_FINDERS_PER_STATION-1 downto 0);
         i_nsm_segs_M   : in  sf2ptcalc_avt(N_FINDERS_PER_STATION-1 downto 0);
         i_nsm_segs_O   : in  sf2ptcalc_avt(N_FINDERS_PER_STATION-1 downto 0);
-        o_mtcs         : out tf2mtc_bus_avt(N_FINDERS_PER_STATION-1 downto 0)
+        o_mtcs         : out ptcalc2mtc_avt(N_FINDERS_PER_STATION-1 downto 0)
     );
 end top_ptc_mpi;
 

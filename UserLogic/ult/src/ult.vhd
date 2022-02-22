@@ -242,11 +242,11 @@ architecture behavioral of ult is
   -- signal extra_slc_to_pt  : sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
 
   -- slc to mtc (from pipeline)
-  signal pl2pt_av  : pl2pt_avt (c_NUM_THREADS-1 downto 0);
+  signal pl2pt_av  : pl2ptcalc_avt (c_NUM_THREADS-1 downto 0);
   signal pl2mtc_av : pl2mtc_avt (c_MAX_NUM_SL-1 downto 0);
 
   -- pt calc 2 mtc
-  signal pt2mtc_av : tf2mtc_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal pt2mtc_av : ptcalc2mtc_avt(c_NUM_THREADS-1 downto 0);
   -- signal pt2mtc : pt2mtc_avt (c_NUM_THREADS-1 downto 0);
 
   signal ucm_sump : std_logic := '1';

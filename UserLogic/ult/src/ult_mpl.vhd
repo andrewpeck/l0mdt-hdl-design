@@ -40,7 +40,7 @@ entity pipeline is
     -- Sector Logic Candidates from uCM
     i_ucm2pl_av       : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
     -- Sector Logic Candidates to Track fitting
-    o_pl2pt_av        : out pl2pt_avt(c_NUM_THREADS -1 downto 0);
+    o_pl2pt_av        : out pl2ptcalc_avt(c_NUM_THREADS -1 downto 0);
     -- Sector Logic Candidates to mTC
     o_pl2mtc_av       : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
     );

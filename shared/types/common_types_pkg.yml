@@ -100,16 +100,19 @@ hdl:
 - ucm2pl_avt: [ array: open,  type: ucm2pl_vt]
 
 # - pl2pt_bus: [array: open , type: pl2ptcalc_rt]
-- pl2pt_vt : [type: logic, length: pl2ptcalc_rt]
-- pl2pt_art: [array: open ,  type: pl2ptcalc_rt]
-- pl2pt_avt: [ array: open,  type: pl2pt_vt]
+- pl2ptcalc_vt : [type: logic, length: pl2ptcalc_rt]
+- pl2ptcalc_art: [array: open ,  type: pl2ptcalc_rt]
+- pl2ptcalc_avt: [ array: open,  type: pl2ptcalc_vt]
 
 # - pl2mtc_bus: [array: open , type: pl2mtc_rt]
 - pl2mtc_vt : [type: logic, length: pl2mtc_rt]
 - pl2mtc_art: [array: open ,  type: pl2mtc_rt]
 - pl2mtc_avt: [ array: open,  type: pl2mtc_vt]
 
-- tf2mtc_bus: [array: open , type: ptcalc2mtc_rt]
+# - tf2mtc_bus: [array: open , type: ptcalc2mtc_rt]
+- ptcalc2mtc_vt : [type: logic, length: ptcalc2mtc_rt]
+- ptcalc2mtc_art: [array: open ,  type: ptcalc2mtc_rt]
+- ptcalc2mtc_avt: [ array: open,  type: ptcalc2mtc_vt]
 
 - mtc_out_bus: [array: open , type: mtc2sl_rt]
 

@@ -58,7 +58,7 @@ architecture beh of top_mpl is
   signal mon_v             : std_logic_vector(len(mon_r) -1 downto 0);
 
   signal i_uCM2pl_av         : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
-  signal o_pl2tf_av          : pl2pt_avt(c_NUM_THREADS -1 downto 0);
+  signal o_pl2tf_av          : pl2ptcalc_avt(c_NUM_THREADS -1 downto 0);
   signal o_pl2mtc_av         : pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
 
   begin

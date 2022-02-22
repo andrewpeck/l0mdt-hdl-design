@@ -24,11 +24,11 @@ entity top_upt is
     port (
         clk : in std_logic;
         i_rst : in std_logic;
-        i_slc: in pl2ptcalc_rvt;
+        i_slc: in pl2ptcalc_vt;
         i_segment_i : in sf2ptcalc_vt;
         i_segment_m : in sf2ptcalc_vt;
         i_segment_o : in sf2ptcalc_vt;
-        o_mtc : out ptcalc2mtc_rvt -- TODO [check with Kostas/Davide/etc.] change name to pt2mtc_rvt in data format?
+        o_mtc : out ptcalc2mtc_vt -- TODO [check with Kostas/Davide/etc.] change name to pt2mtc_rvt in data format?
     );
 end top_upt;
 

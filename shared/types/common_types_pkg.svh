@@ -91,11 +91,11 @@
 
   typedef ucm2pl_vt   ucm2pl_avt;
 
-  typedef logic [$bits(pl2ptcalc_rt)-1:0] pl2pt_vt;
+  typedef logic [$bits(pl2ptcalc_rt)-1:0] pl2ptcalc_vt;
 
-  typedef pl2ptcalc_rt   pl2pt_art;
+  typedef pl2ptcalc_rt   pl2ptcalc_art;
 
-  typedef pl2pt_vt   pl2pt_avt;
+  typedef pl2ptcalc_vt   pl2ptcalc_avt;
 
   typedef logic [$bits(pl2mtc_rt)-1:0] pl2mtc_vt;
 
@@ -103,7 +103,11 @@
 
   typedef pl2mtc_vt   pl2mtc_avt;
 
-  typedef ptcalc2mtc_rt   tf2mtc_bus;
+  typedef logic [$bits(ptcalc2mtc_rt)-1:0] ptcalc2mtc_vt;
+
+  typedef ptcalc2mtc_rt   ptcalc2mtc_art;
+
+  typedef ptcalc2mtc_vt   ptcalc2mtc_avt;
 
   typedef mtc2sl_rt   mtc_out_bus;
 

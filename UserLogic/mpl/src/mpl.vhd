@@ -44,7 +44,7 @@ entity mpl is
     -- configuration, control & Monitoring
     -- SLc pipeline
     i_uCM2pl_av         : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
-    o_pl2ptcalc_av      : out pl2pt_avt(c_NUM_THREADS -1 downto 0);
+    o_pl2ptcalc_av      : out pl2ptcalc_avt(c_NUM_THREADS -1 downto 0);
     o_pl2mtc_av         : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity mpl;
@@ -77,7 +77,7 @@ architecture beh of mpl is
 
   -- signal pl1out_av : ucm2pl_art(c_MAX_NUM_SL -1 downto 0);
   signal main_pl_out_av   : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
-  signal pl2csw_av        : pl2pt_avt(c_MAX_NUM_SL -1 downto 0);
+  signal pl2csw_av        : pl2ptcalc_avt(c_MAX_NUM_SL -1 downto 0);
   signal pl2ptcalc_av     : mpl2csw_ptcalc_avt(c_NUM_THREADS -1 downto 0);
   signal pl2mtc_av        : pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
 

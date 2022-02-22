@@ -202,9 +202,9 @@ E      nswseg_poseta (unsigned SLC_ENDCAP_NSWSEG_POSETA_LEN)
 A   ucm2pl_avt (open ucm2pl_vt)
 E      ucm2pl_vt (logic ucm2pl_rt)
 
-E   pl2pt_vt (logic pl2ptcalc_rt)
+E   pl2ptcalc_vt (logic pl2ptcalc_rt)
 
-A   pl2pt_art (open pl2ptcalc_rt)
+A   pl2ptcalc_art (open pl2ptcalc_rt)
 E      data_valid (logic)
 E      muid (slc_muid_rt)
 E         slcid (unsigned SLC_COMMON_SLCID_LEN)
@@ -216,8 +216,8 @@ E      nswseg_poseta (unsigned SLC_ENDCAP_NSWSEG_POSETA_LEN)
 E      nswseg_posphi (unsigned SLC_ENDCAP_NSWSEG_POSPHI_LEN)
 E      nswseg_angdtheta (signed SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN)
 
-A   pl2pt_avt (open pl2pt_vt)
-E      pl2pt_vt (logic pl2ptcalc_rt)
+A   pl2ptcalc_avt (open pl2ptcalc_vt)
+E      pl2ptcalc_vt (logic pl2ptcalc_rt)
 
 E   pl2mtc_vt (logic pl2mtc_rt)
 
@@ -251,7 +251,9 @@ E            comma (logic SL_TRAILER_COMMA_LEN)
 A   pl2mtc_avt (open pl2mtc_vt)
 E      pl2mtc_vt (logic pl2mtc_rt)
 
-A   tf2mtc_bus (open ptcalc2mtc_rt)
+E   ptcalc2mtc_vt (logic ptcalc2mtc_rt)
+
+A   ptcalc2mtc_art (open ptcalc2mtc_rt)
 E      data_valid (logic)
 E      muid (slc_muid_rt)
 E         slcid (unsigned SLC_COMMON_SLCID_LEN)
@@ -263,6 +265,9 @@ E      mdt_ptthresh (unsigned PTCALC2MTC_MDT_PTTHRESH_LEN)
 E      mdt_charge (logic)
 E      mdt_nsegments (unsigned PTCALC2MTC_MDT_NSEGMENTS_LEN)
 E      mdt_quality (logic PTCALC2MTC_MDT_QUALITY_LEN)
+
+A   ptcalc2mtc_avt (open ptcalc2mtc_vt)
+E      ptcalc2mtc_vt (logic ptcalc2mtc_rt)
 
 A   mtc_out_bus (open mtc2sl_rt)
 E      data_valid (logic)
