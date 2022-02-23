@@ -82,7 +82,7 @@ begin
   HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
     TAR : entity tar_lib.tar
     generic map(
-        c_HPS_MAX_HP => c_HPS_MAX_HP_INN,
+        g_HPS_MAX_HP => c_HPS_MAX_HP_INN,
         g_STATION => 0
       )
     port map (
@@ -105,7 +105,7 @@ begin
   HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
     TAR : entity tar_lib.tar
     generic map(
-      c_HPS_MAX_HP => c_HPS_MAX_HP_MID,
+      g_HPS_MAX_HP => c_HPS_MAX_HP_MID,
       g_STATION => 1
     )
     port map (
@@ -128,7 +128,7 @@ begin
   HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
     TAR : entity tar_lib.tar
     generic map(
-      c_HPS_MAX_HP => c_HPS_MAX_HP_OUT,
+      g_HPS_MAX_HP => c_HPS_MAX_HP_OUT,
       g_STATION => 2
     )
     port map (
@@ -151,7 +151,7 @@ begin
   HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
     TAR : entity tar_lib.tar
     generic map(
-      c_HPS_MAX_HP => c_HPS_MAX_HP_EXT,
+      g_HPS_MAX_HP => c_HPS_MAX_HP_EXT,
       g_STATION => 3
     )
     port map (

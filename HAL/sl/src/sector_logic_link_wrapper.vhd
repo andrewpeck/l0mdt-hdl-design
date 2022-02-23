@@ -60,7 +60,7 @@ entity sector_logic_link_wrapper is
     sl_data_o : out slc_rx_bus_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
     -- Data to SL
-    mtc_i : in mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+    mtc_i : in mtc_out_avt(c_NUM_MTC-1 downto 0);
 
     -- from mgt
     sl_rx_ctrl_i : in sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);

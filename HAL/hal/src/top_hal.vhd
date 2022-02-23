@@ -86,8 +86,8 @@ entity top_hal is
 
     main_primary_slc   : out slc_rx_bus_avt(2 downto 0);  -- is the main SL used
     main_secondary_slc : out slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
-    plus_neighbor_slc  : out slc_rx_rvt;
-    minus_neighbor_slc : out slc_rx_rvt;
+    plus_neighbor_slc  : out slc_rx_vt;
+    minus_neighbor_slc : out slc_rx_vt;
 
     -- pt from neighbor
     plus_neighbor_segments_o  : out sf2ptcalc_avt (c_NUM_SF_INPUTS -1 downto 0);
@@ -101,8 +101,8 @@ entity top_hal is
     -- NSP + MUCTPI
     --------------------------------------------------------------------------------
 
-    MTC_i : in mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-    NSP_i : in mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+    MTC_i : in mtc_out_avt(c_NUM_MTC-1 downto 0);
+    NSP_i : in mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- felix
@@ -111,7 +111,7 @@ entity top_hal is
     -- FIXME: note that right now (10/19/2021) the daq stream is a 65 bit field,
     -- which needs to change somehow to pack into the 32 bit / bx that we can
     -- send to FELIX
-    daq_streams : in FELIX_STREAM_bus_avt (c_HPS_MAX_HP_INN
+    daq_streams : in felix_stream_avt (c_HPS_MAX_HP_INN
                                            + c_HPS_MAX_HP_MID
                                            + c_HPS_MAX_HP_OUT - 1 downto 0);
 

@@ -36,7 +36,7 @@ entity daq is
     i_mid_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
     i_out_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
     i_ext_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
-    o_daq_streams     : out felix_stream_bus_avt (c_HPS_MAX_HP_INN     
+    o_daq_streams     : out felix_stream_avt (c_HPS_MAX_HP_INN     
                                                   + c_HPS_MAX_HP_MID   
                                                   + c_HPS_MAX_HP_OUT - 1 downto 0)
     -- o_sump            : out std_logic
@@ -56,6 +56,11 @@ architecture behavioral of daq is
 
 
   -- actual
+  signal temp_felix_data_t : felix_data_t;
+
+  signal temp_tdcpolmux2tar_vt : tdcpolmux2tar_vt;
+
+  constant TDCPOLMUX2TAR_LEN : integer := temp_tdcpolmux2tar_vt'length;
 
 
   function get_branches_struct (N: integer) return daq_branches_map_at is
@@ -102,7 +107,7 @@ architecture behavioral of daq is
   signal middle_tdc_hits : tdcpolmux2tar_art(c_HPS_MAX_HP_MID-1 downto 0);
   signal outer_tdc_hits  : tdcpolmux2tar_art(c_HPS_MAX_HP_OUT-1 downto 0);
   signal extra_tdc_hits  : tdcpolmux2tar_art(c_HPS_MAX_HP_EXT-1 downto 0);
-  signal daq_streams     : felix_stream_bus_at (c_HPS_MAX_HP_INN
+  signal daq_streams     : felix_stream_art (c_HPS_MAX_HP_INN
                                                 + c_HPS_MAX_HP_MID
                                                 + c_HPS_MAX_HP_OUT - 1 downto 0);
 
@@ -126,11 +131,24 @@ architecture behavioral of daq is
 
 begin
 
-  inner_tdc_hits  <=  structify(inner_tdc_hits_v);
-  middle_tdc_hits <=  structify(middle_tdc_hits_v);
-  outer_tdc_hits  <=  structify(outer_tdc_hits_v);
-  extra_tdc_hits  <=  structify(extra_tdc_hits_v);
-  o_daq_streams   <=  vectorify(daq_streams);
+    
+
+  inn_for_gen : for index in 0 to c_HPS_MAX_HP_INN - 1 generate
+    inner_tdc_hits(index)  <=  structify(inner_tdc_hits_v(index) ,inner_tdc_hits(index) );
+  end generate ; -- inn_gen
+  mid_for_gen : for index in 0 to c_HPS_MAX_HP_MID - 1 generate
+    middle_tdc_hits(index) <=  structify(middle_tdc_hits_v(index),middle_tdc_hits(index));
+  end generate ; -- mid_gen
+  out_for_gen : for index in 0 to c_HPS_MAX_HP_OUT - 1 generate
+    outer_tdc_hits(index)  <=  structify(outer_tdc_hits_v(index) ,outer_tdc_hits(index) );
+  end generate ; -- out_gen
+  ext_for_gen : for index in 0 to c_HPS_MAX_HP_EXT - 1 generate
+    extra_tdc_hits(index)  <=  structify(extra_tdc_hits_v(index) ,extra_tdc_hits(index) );
+  end generate ; -- ext_gen
+  daq_for_gen : for index in 0 to (c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1) generate
+    o_daq_streams(index)   <=  vectorify(daq_streams(index)      ,o_daq_streams(index)  );
+  end generate ; -- daq_gen
+
 
 
   DAQ_GEN : if c_DAQ_ENABLED generate
@@ -142,7 +160,7 @@ begin
                      BRANCHES_MASK     => get_branches_mask(c_HPS_MAX_HP_INN),
                      BRANCHES_STRUCT   => get_branches_struct(c_HPS_MAX_HP_INN),
                      COUNTER_WIDTH     => 32,
-                     OUTPUT_DATA_WIDTH => felix_data_t'length)
+                     OUTPUT_DATA_WIDTH => temp_felix_data_t'length)
         port map (branch_ir => inner_er.i, branch_or =>  inner_er.o);
    
       inner_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
@@ -177,7 +195,7 @@ begin
                      BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_MID),
                      BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_MID),
                      COUNTER_WIDTH     => 32,
-                     OUTPUT_DATA_WIDTH => felix_data_t'length)
+                     OUTPUT_DATA_WIDTH => temp_felix_data_t'length)
         port map (branch_ir => middle_er.i, branch_or =>  middle_er.o);
    
       middle_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
@@ -212,7 +230,7 @@ begin
                      BRANCHES_MASK   => get_branches_mask(c_HPS_MAX_HP_OUT),
                      BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_OUT),
                      COUNTER_WIDTH     => 32,
-                     OUTPUT_DATA_WIDTH => felix_data_t'length)
+                     OUTPUT_DATA_WIDTH => temp_felix_data_t'length)
         port map (branch_ir => outer_er.i, branch_or =>  outer_er.o);
    
       outer_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
@@ -248,7 +266,7 @@ begin
     --                        BRANCHES_MASK   => (others => 1),
     --                        BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_EXT),
     --                        COUNTER_WIDTH     => 32,
-    --                        OUTPUT_DATA_WIDTH => felix_data_t'length))
+    --                        OUTPUT_DATA_WIDTH => temp_felix_data_t'length))
     --     port map (branch_ir => extra_er.i, branch_or =>  extra_er.o);
     -- 
     --   extra_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);

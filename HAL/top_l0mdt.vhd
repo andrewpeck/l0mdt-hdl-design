@@ -131,22 +131,22 @@ architecture structural of top_l0mdt is
 
   signal main_primary_slc   : slc_rx_bus_avt(2 downto 0);  -- is the main SL used
   signal main_secondary_slc : slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
-  signal plus_neighbor_slc  : slc_rx_rvt;
-  signal minus_neighbor_slc : slc_rx_rvt;
+  signal plus_neighbor_slc  : slc_rx_vt;
+  signal minus_neighbor_slc : slc_rx_vt;
 
   signal plus_neighbor_segments_i  : sf2ptcalc_avt (c_NUM_SF_INPUTS - 1 downto 0);
   signal minus_neighbor_segments_i : sf2ptcalc_avt (c_NUM_SF_INPUTS - 1 downto 0);
   signal plus_neighbor_segments_o  : sf2ptcalc_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
   signal minus_neighbor_segments_o : sf2ptcalc_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
 
-  signal daq_streams : FELIX_STREAM_bus_avt (c_HPS_MAX_HP_INN
+  signal daq_streams : felix_stream_avt (c_HPS_MAX_HP_INN
                                              + c_HPS_MAX_HP_MID
                                              + c_HPS_MAX_HP_OUT - 1 downto 0);
 
   -- NSP + MUCTPI
 
-  signal mtc : mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-  signal nsp : mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+  signal mtc : mtc_out_avt(c_NUM_MTC-1 downto 0);
+  signal nsp : mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
   -- AXI
 

@@ -30,19 +30,21 @@ package common_types_pkg is
   function nullify(x: integer_bus) return integer_bus;
   function zeroed(x: integer_bus) return integer_bus;
 
-  type l0mdt_control is record
+  type l0mdt_control_rt is record
     clk : std_logic;
     rst : std_logic;
     bx : std_logic;
-  end record l0mdt_control;
-  function len(x: l0mdt_control) return natural;
-  function width(x: l0mdt_control) return natural;
-  function vectorify(x: l0mdt_control; t: std_logic_vector) return std_logic_vector;
-  function convert(x: l0mdt_control; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: l0mdt_control) return l0mdt_control;
-  function convert(x: in std_logic_vector; t: l0mdt_control) return l0mdt_control;
-  function nullify(t: l0mdt_control) return l0mdt_control;
-  function zeroed(t: l0mdt_control) return l0mdt_control;
+  end record l0mdt_control_rt;
+  function len(x: l0mdt_control_rt) return natural;
+  function width(x: l0mdt_control_rt) return natural;
+  function vectorify(x: l0mdt_control_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: l0mdt_control_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: l0mdt_control_rt) return l0mdt_control_rt;
+  function convert(x: in std_logic_vector; t: l0mdt_control_rt) return l0mdt_control_rt;
+  function nullify(t: l0mdt_control_rt) return l0mdt_control_rt;
+  function zeroed(t: l0mdt_control_rt) return l0mdt_control_rt;
+
+  subtype l0mdt_control_vt is std_logic_vector(3-1 downto 0);
 
   type l0mdt_ttc_rt is record
     bcr : std_logic;
@@ -329,50 +331,84 @@ package common_types_pkg is
   function nullify(x: ptcalc2mtc_avt) return ptcalc2mtc_avt;
   function zeroed(x: ptcalc2mtc_avt) return ptcalc2mtc_avt;
 
-  type mtc_out_bus is array(integer range <>) of mtc2sl_rt;
-  function len(x: mtc_out_bus) return natural;
-  function width(x: mtc_out_bus) return natural;
-  function vectorify(x: mtc_out_bus; t: std_logic_vector) return std_logic_vector;
-  function convert(x: mtc_out_bus; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: mtc_out_bus) return mtc_out_bus;
-  function convert(x: std_logic_vector; t: mtc_out_bus) return mtc_out_bus;
-  function nullify(x: mtc_out_bus) return mtc_out_bus;
-  function zeroed(x: mtc_out_bus) return mtc_out_bus;
+  subtype mtc2sl_vt is std_logic_vector(193-1 downto 0);
 
-  type mtc2nsp_bus is array(integer range <>) of mtc2sl_rt;
-  function len(x: mtc2nsp_bus) return natural;
-  function width(x: mtc2nsp_bus) return natural;
-  function vectorify(x: mtc2nsp_bus; t: std_logic_vector) return std_logic_vector;
-  function convert(x: mtc2nsp_bus; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: mtc2nsp_bus) return mtc2nsp_bus;
-  function convert(x: std_logic_vector; t: mtc2nsp_bus) return mtc2nsp_bus;
-  function nullify(x: mtc2nsp_bus) return mtc2nsp_bus;
-  function zeroed(x: mtc2nsp_bus) return mtc2nsp_bus;
+  type mtc_out_art is array(integer range <>) of mtc2sl_rt;
+  function len(x: mtc_out_art) return natural;
+  function width(x: mtc_out_art) return natural;
+  function vectorify(x: mtc_out_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: mtc_out_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: mtc_out_art) return mtc_out_art;
+  function convert(x: std_logic_vector; t: mtc_out_art) return mtc_out_art;
+  function nullify(x: mtc_out_art) return mtc_out_art;
+  function zeroed(x: mtc_out_art) return mtc_out_art;
+
+  type mtc_out_avt is array(integer range <>) of mtc2sl_vt;
+  function len(x: mtc_out_avt) return natural;
+  function width(x: mtc_out_avt) return natural;
+  function vectorify(x: mtc_out_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: mtc_out_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: mtc_out_avt) return mtc_out_avt;
+  function convert(x: std_logic_vector; t: mtc_out_avt) return mtc_out_avt;
+  function nullify(x: mtc_out_avt) return mtc_out_avt;
+  function zeroed(x: mtc_out_avt) return mtc_out_avt;
+
+  type mtc2nsp_art is array(integer range <>) of mtc2sl_rt;
+  function len(x: mtc2nsp_art) return natural;
+  function width(x: mtc2nsp_art) return natural;
+  function vectorify(x: mtc2nsp_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: mtc2nsp_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: mtc2nsp_art) return mtc2nsp_art;
+  function convert(x: std_logic_vector; t: mtc2nsp_art) return mtc2nsp_art;
+  function nullify(x: mtc2nsp_art) return mtc2nsp_art;
+  function zeroed(x: mtc2nsp_art) return mtc2nsp_art;
+
+  type mtc2nsp_avt is array(integer range <>) of mtc2sl_vt;
+  function len(x: mtc2nsp_avt) return natural;
+  function width(x: mtc2nsp_avt) return natural;
+  function vectorify(x: mtc2nsp_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: mtc2nsp_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: mtc2nsp_avt) return mtc2nsp_avt;
+  function convert(x: std_logic_vector; t: mtc2nsp_avt) return mtc2nsp_avt;
+  function nullify(x: mtc2nsp_avt) return mtc2nsp_avt;
+  function zeroed(x: mtc2nsp_avt) return mtc2nsp_avt;
 
   subtype felix_data is std_logic_vector(250-1 downto 0);
 
-  type felix_stream is record
+  type felix_stream_rt is record
     valid : std_logic;
     data : felix_data;
-  end record felix_stream;
-  function len(x: felix_stream) return natural;
-  function width(x: felix_stream) return natural;
-  function vectorify(x: felix_stream; t: std_logic_vector) return std_logic_vector;
-  function convert(x: felix_stream; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: felix_stream) return felix_stream;
-  function convert(x: in std_logic_vector; t: felix_stream) return felix_stream;
-  function nullify(t: felix_stream) return felix_stream;
-  function zeroed(t: felix_stream) return felix_stream;
+  end record felix_stream_rt;
+  function len(x: felix_stream_rt) return natural;
+  function width(x: felix_stream_rt) return natural;
+  function vectorify(x: felix_stream_rt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: felix_stream_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: felix_stream_rt) return felix_stream_rt;
+  function convert(x: in std_logic_vector; t: felix_stream_rt) return felix_stream_rt;
+  function nullify(t: felix_stream_rt) return felix_stream_rt;
+  function zeroed(t: felix_stream_rt) return felix_stream_rt;
 
-  type felix_stream_bus is array(integer range <>) of felix_stream;
-  function len(x: felix_stream_bus) return natural;
-  function width(x: felix_stream_bus) return natural;
-  function vectorify(x: felix_stream_bus; t: std_logic_vector) return std_logic_vector;
-  function convert(x: felix_stream_bus; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: felix_stream_bus) return felix_stream_bus;
-  function convert(x: std_logic_vector; t: felix_stream_bus) return felix_stream_bus;
-  function nullify(x: felix_stream_bus) return felix_stream_bus;
-  function zeroed(x: felix_stream_bus) return felix_stream_bus;
+  subtype felix_stream_vt is std_logic_vector(251-1 downto 0);
+
+  type felix_stream_art is array(integer range <>) of felix_stream_rt;
+  function len(x: felix_stream_art) return natural;
+  function width(x: felix_stream_art) return natural;
+  function vectorify(x: felix_stream_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: felix_stream_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: felix_stream_art) return felix_stream_art;
+  function convert(x: std_logic_vector; t: felix_stream_art) return felix_stream_art;
+  function nullify(x: felix_stream_art) return felix_stream_art;
+  function zeroed(x: felix_stream_art) return felix_stream_art;
+
+  type felix_stream_avt is array(integer range <>) of felix_stream_vt;
+  function len(x: felix_stream_avt) return natural;
+  function width(x: felix_stream_avt) return natural;
+  function vectorify(x: felix_stream_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: felix_stream_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: felix_stream_avt) return felix_stream_avt;
+  function convert(x: std_logic_vector; t: felix_stream_avt) return felix_stream_avt;
+  function nullify(x: felix_stream_avt) return felix_stream_avt;
+  function zeroed(x: felix_stream_avt) return felix_stream_avt;
 
 end package common_types_pkg;
 
@@ -493,7 +529,7 @@ package body common_types_pkg is
     return y;
   end function zeroed;
 
-  function len(x: l0mdt_control) return natural is
+  function len(x: l0mdt_control_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.clk);
@@ -501,7 +537,7 @@ package body common_types_pkg is
     l := l + len(x.bx);
     return l;
   end function len;
-  function width(x: l0mdt_control) return natural is
+  function width(x: l0mdt_control_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.clk);
@@ -509,7 +545,7 @@ package body common_types_pkg is
     l := l + width(x.bx);
     return l;
   end function width;
-  function vectorify(x: l0mdt_control; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: l0mdt_control_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -528,7 +564,7 @@ package body common_types_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: l0mdt_control; t: std_logic_vector) return std_logic_vector is
+  function convert(x: l0mdt_control_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -547,8 +583,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: l0mdt_control) return l0mdt_control is
-    variable y: l0mdt_control;
+  function structify(x: in std_logic_vector; t: l0mdt_control_rt) return l0mdt_control_rt is
+    variable y: l0mdt_control_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -566,8 +602,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: l0mdt_control) return l0mdt_control is
-    variable y: l0mdt_control;
+  function convert(x: in std_logic_vector; t: l0mdt_control_rt) return l0mdt_control_rt is
+    variable y: l0mdt_control_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -585,16 +621,16 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: l0mdt_control) return l0mdt_control is
-  variable y: l0mdt_control;
+  function nullify(t: l0mdt_control_rt) return l0mdt_control_rt is
+  variable y: l0mdt_control_rt;
   begin
     y.clk := nullify(t.clk);
     y.rst := nullify(t.rst);
     y.bx := nullify(t.bx);
     return y;
   end function nullify;
-  function zeroed(t: l0mdt_control) return l0mdt_control is
-  variable y: l0mdt_control;
+  function zeroed(t: l0mdt_control_rt) return l0mdt_control_rt is
+  variable y: l0mdt_control_rt;
   begin
     y.clk := zeroed(t.clk);
     y.rst := zeroed(t.rst);
@@ -3523,19 +3559,19 @@ package body common_types_pkg is
     return y;
   end function zeroed;
 
-  function len(x: mtc_out_bus) return natural is
+  function len(x: mtc_out_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: mtc_out_bus) return natural is
+  function width(x: mtc_out_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: mtc_out_bus; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: mtc_out_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -3556,7 +3592,7 @@ package body common_types_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: mtc_out_bus; t: std_logic_vector) return std_logic_vector is
+  function convert(x: mtc_out_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -3577,8 +3613,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: mtc_out_bus) return mtc_out_bus is
-    variable y : mtc_out_bus(t'range);
+  function structify(x: std_logic_vector; t: mtc_out_art) return mtc_out_art is
+    variable y : mtc_out_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -3598,8 +3634,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: mtc_out_bus) return mtc_out_bus is
-    variable y : mtc_out_bus(t'range);
+  function convert(x: std_logic_vector; t: mtc_out_art) return mtc_out_art is
+    variable y : mtc_out_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -3619,16 +3655,16 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: mtc_out_bus) return mtc_out_bus is
-    variable y : mtc_out_bus(x'range);
+  function nullify(x: mtc_out_art) return mtc_out_art is
+    variable y : mtc_out_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: mtc_out_bus) return mtc_out_bus is
-    variable y : mtc_out_bus(x'range);
+  function zeroed(x: mtc_out_art) return mtc_out_art is
+    variable y : mtc_out_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -3636,19 +3672,19 @@ package body common_types_pkg is
     return y;
   end function zeroed;
 
-  function len(x: mtc2nsp_bus) return natural is
+  function len(x: mtc_out_avt) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: mtc2nsp_bus) return natural is
+  function width(x: mtc_out_avt) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: mtc2nsp_bus; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: mtc_out_avt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -3669,7 +3705,7 @@ package body common_types_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: mtc2nsp_bus; t: std_logic_vector) return std_logic_vector is
+  function convert(x: mtc_out_avt; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -3690,8 +3726,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: mtc2nsp_bus) return mtc2nsp_bus is
-    variable y : mtc2nsp_bus(t'range);
+  function structify(x: std_logic_vector; t: mtc_out_avt) return mtc_out_avt is
+    variable y : mtc_out_avt(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -3711,8 +3747,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: mtc2nsp_bus) return mtc2nsp_bus is
-    variable y : mtc2nsp_bus(t'range);
+  function convert(x: std_logic_vector; t: mtc_out_avt) return mtc_out_avt is
+    variable y : mtc_out_avt(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -3732,16 +3768,16 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: mtc2nsp_bus) return mtc2nsp_bus is
-    variable y : mtc2nsp_bus(x'range);
+  function nullify(x: mtc_out_avt) return mtc_out_avt is
+    variable y : mtc_out_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: mtc2nsp_bus) return mtc2nsp_bus is
-    variable y : mtc2nsp_bus(x'range);
+  function zeroed(x: mtc_out_avt) return mtc_out_avt is
+    variable y : mtc_out_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -3749,21 +3785,247 @@ package body common_types_pkg is
     return y;
   end function zeroed;
 
-  function len(x: felix_stream) return natural is
+  function len(x: mtc2nsp_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: mtc2nsp_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: mtc2nsp_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: mtc2nsp_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: mtc2nsp_art) return mtc2nsp_art is
+    variable y : mtc2nsp_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: mtc2nsp_art) return mtc2nsp_art is
+    variable y : mtc2nsp_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: mtc2nsp_art) return mtc2nsp_art is
+    variable y : mtc2nsp_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: mtc2nsp_art) return mtc2nsp_art is
+    variable y : mtc2nsp_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: mtc2nsp_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: mtc2nsp_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: mtc2nsp_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: mtc2nsp_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: mtc2nsp_avt) return mtc2nsp_avt is
+    variable y : mtc2nsp_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: mtc2nsp_avt) return mtc2nsp_avt is
+    variable y : mtc2nsp_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: mtc2nsp_avt) return mtc2nsp_avt is
+    variable y : mtc2nsp_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: mtc2nsp_avt) return mtc2nsp_avt is
+    variable y : mtc2nsp_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: felix_stream_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.valid);
     l := l + len(x.data);
     return l;
   end function len;
-  function width(x: felix_stream) return natural is
+  function width(x: felix_stream_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.valid);
     l := l + width(x.data);
     return l;
   end function width;
-  function vectorify(x: felix_stream; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: felix_stream_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -3778,7 +4040,7 @@ package body common_types_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: felix_stream; t: std_logic_vector) return std_logic_vector is
+  function convert(x: felix_stream_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -3793,8 +4055,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: felix_stream) return felix_stream is
-    variable y: felix_stream;
+  function structify(x: in std_logic_vector; t: felix_stream_rt) return felix_stream_rt is
+    variable y: felix_stream_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -3808,8 +4070,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: felix_stream) return felix_stream is
-    variable y: felix_stream;
+  function convert(x: in std_logic_vector; t: felix_stream_rt) return felix_stream_rt is
+    variable y: felix_stream_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -3823,34 +4085,34 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(t: felix_stream) return felix_stream is
-  variable y: felix_stream;
+  function nullify(t: felix_stream_rt) return felix_stream_rt is
+  variable y: felix_stream_rt;
   begin
     y.valid := nullify(t.valid);
     y.data := nullify(t.data);
     return y;
   end function nullify;
-  function zeroed(t: felix_stream) return felix_stream is
-  variable y: felix_stream;
+  function zeroed(t: felix_stream_rt) return felix_stream_rt is
+  variable y: felix_stream_rt;
   begin
     y.valid := zeroed(t.valid);
     y.data := zeroed(t.data);
     return y;
   end function zeroed;
 
-  function len(x: felix_stream_bus) return natural is
+  function len(x: felix_stream_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: felix_stream_bus) return natural is
+  function width(x: felix_stream_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: felix_stream_bus; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: felix_stream_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -3871,7 +4133,7 @@ package body common_types_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: felix_stream_bus; t: std_logic_vector) return std_logic_vector is
+  function convert(x: felix_stream_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -3892,8 +4154,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: felix_stream_bus) return felix_stream_bus is
-    variable y : felix_stream_bus(t'range);
+  function structify(x: std_logic_vector; t: felix_stream_art) return felix_stream_art is
+    variable y : felix_stream_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -3913,8 +4175,8 @@ package body common_types_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: felix_stream_bus) return felix_stream_bus is
-    variable y : felix_stream_bus(t'range);
+  function convert(x: std_logic_vector; t: felix_stream_art) return felix_stream_art is
+    variable y : felix_stream_art(t'range);
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -3934,16 +4196,129 @@ package body common_types_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: felix_stream_bus) return felix_stream_bus is
-    variable y : felix_stream_bus(x'range);
+  function nullify(x: felix_stream_art) return felix_stream_art is
+    variable y : felix_stream_art(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: felix_stream_bus) return felix_stream_bus is
-    variable y : felix_stream_bus(x'range);
+  function zeroed(x: felix_stream_art) return felix_stream_art is
+    variable y : felix_stream_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: felix_stream_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: felix_stream_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: felix_stream_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: felix_stream_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: felix_stream_avt) return felix_stream_avt is
+    variable y : felix_stream_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: felix_stream_avt) return felix_stream_avt is
+    variable y : felix_stream_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: felix_stream_avt) return felix_stream_avt is
+    variable y : felix_stream_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: felix_stream_avt) return felix_stream_avt is
+    variable y : felix_stream_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));

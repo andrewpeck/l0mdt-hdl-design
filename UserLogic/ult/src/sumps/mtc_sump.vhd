@@ -37,8 +37,8 @@ entity mtc_sump is
 
     i_ptcalc          : in  ptcalc2mtc_avt(c_NUM_THREADS -1 downto 0);
     i_pl2mtc          : in  pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
-    o_mtc             : out mtc_out_bus_avt(c_NUM_MTC -1 downto 0);
-    o_nsp             : out mtc2nsp_bus_avt(c_NUM_NSP -1 downto 0);
+    o_mtc             : out mtc_out_avt(c_NUM_MTC -1 downto 0);
+    o_nsp             : out mtc2nsp_avt(c_NUM_NSP -1 downto 0);
 
     o_sump : out std_logic
   );

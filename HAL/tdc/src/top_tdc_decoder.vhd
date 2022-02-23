@@ -248,7 +248,7 @@ begin
         return ret;
       end polmux_input_map;
 
-      function is_valid (a : mdt_polmux_rvt)
+      function is_valid (a : mdt_polmux_vt)
         return std_logic is
         variable tmp : mdt_polmux_rt;
       begin
@@ -267,8 +267,8 @@ begin
       -- signals to hold the up to ~20 polmux inputs and outputs for this loop
       signal read_done_polmux : std_logic_vector (POLMUX_WIDTH-1 downto 0);
       signal polmux_inputs    : tdcpolmux2tar_avt (POLMUX_WIDTH-1 downto 0);
-      signal polmux_output    : mdt_polmux_rvt;
-      signal fifo_output      : mdt_polmux_rvt;
+      signal polmux_output    : mdt_polmux_vt;
+      signal fifo_output      : mdt_polmux_vt;
       signal valid            : std_logic;
       signal din              : std_logic_vector (63 downto 0);
       signal dout             : std_logic_vector (63 downto 0);

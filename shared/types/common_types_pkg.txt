@@ -9,10 +9,12 @@ E   orid (unsigned 32)
 
 A   integer_bus (open integer)
 
-R   l0mdt_control
+R   l0mdt_control_rt
 E      clk (logic)
 E      rst (logic)
 E      bx (logic)
+
+E   l0mdt_control_vt (logic l0mdt_control_rt)
 
 R   l0mdt_ttc_rt
 E      bcr (logic)
@@ -269,7 +271,9 @@ E      mdt_quality (logic PTCALC2MTC_MDT_QUALITY_LEN)
 A   ptcalc2mtc_avt (open ptcalc2mtc_vt)
 E      ptcalc2mtc_vt (logic ptcalc2mtc_rt)
 
-A   mtc_out_bus (open mtc2sl_rt)
+E   mtc2sl_vt (logic mtc2sl_rt)
+
+A   mtc_out_art (open mtc2sl_rt)
 E      data_valid (logic)
 E      common (slc_common_rt)
 E         header (sl_header_rt)
@@ -302,7 +306,10 @@ E      mdt_nsegments (unsigned PTCALC2MTC_MDT_NSEGMENTS_LEN)
 E      mdt_quality (logic PTCALC2MTC_MDT_QUALITY_LEN)
 E      m_reserved (logic MTC2SL_M_RESERVED_LEN)
 
-A   mtc2nsp_bus (open mtc2sl_rt)
+A   mtc_out_avt (open mtc2sl_vt)
+E      mtc2sl_vt (logic mtc2sl_rt)
+
+A   mtc2nsp_art (open mtc2sl_rt)
 E      data_valid (logic)
 E      common (slc_common_rt)
 E         header (sl_header_rt)
@@ -334,13 +341,21 @@ E      mdt_procflags (logic MTC2SL_MDT_PROCFLAGS_LEN)
 E      mdt_nsegments (unsigned PTCALC2MTC_MDT_NSEGMENTS_LEN)
 E      mdt_quality (logic PTCALC2MTC_MDT_QUALITY_LEN)
 E      m_reserved (logic MTC2SL_M_RESERVED_LEN)
+
+A   mtc2nsp_avt (open mtc2sl_vt)
+E      mtc2sl_vt (logic mtc2sl_rt)
 
 E   felix_data (logic 250)
 
-R   felix_stream
+R   felix_stream_rt
 E      valid (logic)
 E      data (felix_data)
 
-A   felix_stream_bus (open felix_stream)
+E   felix_stream_vt (logic felix_stream_rt)
+
+A   felix_stream_art (open felix_stream_rt)
 E      valid (logic)
 E      data (felix_data)
+
+A   felix_stream_avt (open felix_stream_vt)
+E      felix_stream_vt (logic felix_stream_rt)

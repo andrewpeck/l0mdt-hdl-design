@@ -43,12 +43,15 @@ use shared_lib.vhdl_textio_csv_pkg.all;
 library ult_lib;
 -- use ult_lib.ult_tb_sim_pkg.all;
 
---library heg_lib;
---use heg_lib.heg_pkg.all;
-library hegtypes_lib;
-use hegtypes_lib.heg_pkg.all;
+library hp_lib;
+use hp_lib.hp_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -177,8 +180,8 @@ architecture beh of ult_tp is
   -- Sector Logic Candidates
   signal i_main_primary_slc       : slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
   signal i_main_secondary_slc     : slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
-  signal i_plus_neighbor_slc      : slc_rx_rvt := (others => '0');
-  signal i_minus_neighbor_slc     : slc_rx_rvt := (others => '0');
+  signal i_plus_neighbor_slc      : slc_rx_vt := (others => '0');
+  signal i_minus_neighbor_slc     : slc_rx_vt := (others => '0');
   signal slc_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
 
   signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
@@ -188,15 +191,15 @@ architecture beh of ult_tp is
   signal i_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-  signal o_daq_streams :  felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0) := (others => (others => '0'));
+  signal o_daq_streams :  felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0) := (others => (others => '0'));
 
   -- Segments Out to Neighbor
   signal o_plus_neighbor_segments_av  :  sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
   signal o_minus_neighbor_segments_av :  sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- MUCTPI
-  signal o_MTC :  mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-  signal o_NSP :  mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+  signal o_MTC :  mtc_out_avt(c_NUM_MTC-1 downto 0);
+  signal o_NSP :  mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
   signal sump : std_logic;
 

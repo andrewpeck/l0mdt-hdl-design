@@ -11,12 +11,6 @@
 -- -----
 --------------------------------------------------------------------------------
 
-
-
-
-
-
-
 library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
@@ -121,11 +115,11 @@ begin
     signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_INPUTS-1 downto 0);
     signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_INPUTS-1 downto 0);
     signal pl2pt_sump                     : std_logic_vector (c_NUM_THREADS-1 downto 0);
-    signal l0mdt_ttc_v  : l0mdt_ttc_rvt;
-    signal l0mdt_control_v  : l0mdt_control_rvt;
+    signal l0mdt_ttc_v  : l0mdt_ttc_vt;
+    signal l0mdt_control_v  : l0mdt_control_vt;
   begin
-    l0mdt_ttc_v <= vectorify(ttc_commands);
-    l0mdt_control_v <= vectorify(clock_and_control);
+    l0mdt_ttc_v <= vectorify(ttc_commands,l0mdt_ttc_v);
+    l0mdt_control_v <= vectorify(clock_and_control,l0mdt_control_v);
     o_pt2mtc <= ( others => (others => '0'));
 
     sump_proc : process (clock_and_control.clk) is

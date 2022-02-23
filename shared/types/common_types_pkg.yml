@@ -24,10 +24,11 @@ hdl:
 # L0MDT CONTROL TYPES
 #############################################################
 
-- l0mdt_control:
+- l0mdt_control_rt:
   - clk       : [type: logic]
   - rst       : [type: logic]
   - bx        : [type: logic]
+- l0mdt_control_vt : [type: logic, length: l0mdt_control_rt]
 
 - l0mdt_ttc_rt:
   - bcr       : [type: logic]
@@ -114,15 +115,24 @@ hdl:
 - ptcalc2mtc_art: [array: open ,  type: ptcalc2mtc_rt]
 - ptcalc2mtc_avt: [ array: open,  type: ptcalc2mtc_vt]
 
-- mtc_out_bus: [array: open , type: mtc2sl_rt]
+# - mtc_out_bus: [array: open , type: mtc2sl_rt]
+- mtc2sl_vt : [type: logic, length: mtc2sl_rt]
+- mtc_out_art: [array: open ,  type: mtc2sl_rt]
+- mtc_out_avt: [ array: open,  type: mtc2sl_vt]
 
-- mtc2nsp_bus: [array: open , type: mtc2sl_rt]
+# - mtc2nsp_bus: [array: open , type: mtc2sl_rt]
+# - mtc2nsp_vt : [type: logic, length: mtc2sl_rt]
+- mtc2nsp_art: [array: open ,  type: mtc2sl_rt]
+- mtc2nsp_avt: [ array: open,  type: mtc2sl_vt]
 
 - felix_data: [type: logic, length: 250]
 
-- felix_stream:
+- felix_stream_rt:
     - valid: [type: logic]
     - data: [type: felix_data]
 
 #- felix_stream_bus : [array: open , type: felix_stream]
-- felix_stream_bus : [array: open , type: felix_stream]
+# - felix_stream_bus : [array: open , type: felix_stream]
+- felix_stream_vt : [type: logic, length: felix_stream_rt]
+- felix_stream_art: [array: open ,  type: felix_stream_rt]
+- felix_stream_avt: [ array: open,  type: felix_stream_vt]

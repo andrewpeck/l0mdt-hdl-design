@@ -52,8 +52,8 @@ entity ult_tb_reader_slc is
     -- Sector Logic Candidates
     o_main_primary_slc    : out slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
     o_main_secondary_slc  : out slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
-    o_plus_neighbor_slc   : out slc_rx_rvt := (others => '0');
-    o_minus_neighbor_slc  : out slc_rx_rvt := (others => '0')
+    o_plus_neighbor_slc   : out slc_rx_vt := (others => '0');
+    o_minus_neighbor_slc  : out slc_rx_vt := (others => '0')
 
     -- o_slc_event_ai : out event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'))
   );

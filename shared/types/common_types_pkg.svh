@@ -22,7 +22,9 @@
     logic  clk;
     logic  rst;
     logic  bx;
-  } l0mdt_control;
+  } l0mdt_control_rt;
+
+  typedef logic [$bits(l0mdt_control_rt)-1:0] l0mdt_control_vt;
 
   typedef struct packed {
     logic  bcr;
@@ -109,18 +111,28 @@
 
   typedef ptcalc2mtc_vt   ptcalc2mtc_avt;
 
-  typedef mtc2sl_rt   mtc_out_bus;
+  typedef logic [$bits(mtc2sl_rt)-1:0] mtc2sl_vt;
 
-  typedef mtc2sl_rt   mtc2nsp_bus;
+  typedef mtc2sl_rt   mtc_out_art;
+
+  typedef mtc2sl_vt   mtc_out_avt;
+
+  typedef mtc2sl_rt   mtc2nsp_art;
+
+  typedef mtc2sl_vt   mtc2nsp_avt;
 
   typedef logic [250-1:0] felix_data;
 
   typedef struct packed {
     logic  valid;
     felix_data   data;
-  } felix_stream;
+  } felix_stream_rt;
 
-  typedef felix_stream   felix_stream_bus;
+  typedef logic [$bits(felix_stream_rt)-1:0] felix_stream_vt;
+
+  typedef felix_stream_rt   felix_stream_art;
+
+  typedef felix_stream_vt   felix_stream_avt;
 
 
 

@@ -30,7 +30,7 @@ entity top_upt is
         i_segment_i : in sf2ptcalc_vt;
         i_segment_m : in sf2ptcalc_vt;
         i_segment_o : in sf2ptcalc_vt;
-        o_mtc : out ptcalc2mtc_vt -- TODO [check with Kostas/Davide/etc.] change name to pt2mtc_rvt in data format?
+        o_mtc : out ptcalc2mtc_vt -- TODO [check with Kostas/Davide/etc.] change name to pt2mtc_vt in data format?
     );
 end top_upt;
 

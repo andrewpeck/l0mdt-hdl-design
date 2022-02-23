@@ -13,8 +13,8 @@ library shared_lib;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
---use shared_lib.common_constants_pkg.all;
---use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
 
 entity top_upt is
     generic (
@@ -28,7 +28,7 @@ entity top_upt is
         i_segment_i : in sf2ptcalc_vt;
         i_segment_m : in sf2ptcalc_vt;
         i_segment_o : in sf2ptcalc_vt;
-        o_mtc : out ptcalc2mtc_vt -- TODO [check with Kostas/Davide/etc.] change name to pt2mtc_rvt in data format?
+        o_mtc : out ptcalc2mtc_vt -- TODO [check with Kostas/Davide/etc.] change name to pt2mtc_vt in data format?
     );
 end top_upt;
 
