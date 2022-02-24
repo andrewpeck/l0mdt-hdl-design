@@ -191,7 +191,9 @@ begin
     alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_INN.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
-    mdt_full_data_ar <= structify(mdt_full_data_av);
+    array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
+      mdt_full_data_ar(i) <= structify(mdt_full_data_av(i),mdt_full_data_ar(i));
+    end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then
       elsif rising_edge(clk) then
@@ -218,7 +220,9 @@ begin
     alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_MID.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
-    mdt_full_data_ar <= structify(mdt_full_data_av);
+    array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
+      mdt_full_data_ar(i) <= structify(mdt_full_data_av(i),mdt_full_data_ar(i));
+    end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then
       elsif rising_edge(clk) then
@@ -245,7 +249,9 @@ begin
     alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_OUT.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
-    mdt_full_data_ar <= structify(mdt_full_data_av);
+    array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
+      mdt_full_data_ar(i) <= structify(mdt_full_data_av(i),mdt_full_data_ar(i));
+    end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then
       elsif rising_edge(clk) then
@@ -272,7 +278,9 @@ begin
     alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_EXT.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
-    mdt_full_data_ar <= structify(mdt_full_data_av);
+    array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
+      mdt_full_data_ar(i) <= structify(mdt_full_data_av(i),mdt_full_data_ar(i));
+    end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then
       elsif rising_edge(clk) then

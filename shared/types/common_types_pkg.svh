@@ -51,6 +51,12 @@
 
   typedef slc_endcap_vt   slc_endcap_avt;
 
+  typedef logic [$bits(slc_barrel_rt)-1:0] slc_barrel_vt;
+
+  typedef slc_barrel_rt   slc_barrel_art;
+
+  typedef slc_barrel_vt   slc_barrel_avt;
+
   typedef logic [$bits(tdcpolmux2tar_rt)-1:0] tdcpolmux2tar_vt;
 
   typedef tdcpolmux2tar_rt   tdcpolmux2tar_art;

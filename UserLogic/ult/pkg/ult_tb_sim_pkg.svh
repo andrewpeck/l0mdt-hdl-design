@@ -22,7 +22,7 @@
 
   parameter int  TB_TAR_FIFO_WIDTH = 32;
 
-  typedef input_mdt_rt  [TB_TAR_FIFO_WIDTH-1:0] input_mdt_bus;
+  typedef input_mdt_rt  [TB_TAR_FIFO_WIDTH-1:0] input_mdt_art;
 
   typedef tar2hps_rt  [TB_TAR_FIFO_WIDTH-1:0] tar2hps_tb;
 
@@ -36,9 +36,9 @@
 
   parameter int  TB_SLC_FIFO_WIDTH = 32;
 
-  typedef input_slc_rt  [TB_SLC_FIFO_WIDTH-1:0] input_slc_bus;
+  typedef input_slc_rt  [TB_SLC_FIFO_WIDTH-1:0] input_slc_art;
 
-  typedef slc_rx_rt  [TB_SLC_FIFO_WIDTH-1:0] slc_tb;
+  typedef slc_rx_rt  [TB_SLC_FIFO_WIDTH-1:0] slc_tb_art;
 
   typedef struct packed {
     logic unsigned [64-1:0] ToA;

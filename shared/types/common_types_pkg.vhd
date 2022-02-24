@@ -111,6 +111,28 @@ package common_types_pkg is
   function nullify(x: slc_endcap_avt) return slc_endcap_avt;
   function zeroed(x: slc_endcap_avt) return slc_endcap_avt;
 
+  subtype slc_barrel_vt is std_logic_vector(48-1 downto 0);
+
+  type slc_barrel_art is array(integer range <>) of slc_barrel_rt;
+  function len(x: slc_barrel_art) return natural;
+  function width(x: slc_barrel_art) return natural;
+  function vectorify(x: slc_barrel_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: slc_barrel_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: slc_barrel_art) return slc_barrel_art;
+  function convert(x: std_logic_vector; t: slc_barrel_art) return slc_barrel_art;
+  function nullify(x: slc_barrel_art) return slc_barrel_art;
+  function zeroed(x: slc_barrel_art) return slc_barrel_art;
+
+  type slc_barrel_avt is array(integer range <>) of slc_barrel_vt;
+  function len(x: slc_barrel_avt) return natural;
+  function width(x: slc_barrel_avt) return natural;
+  function vectorify(x: slc_barrel_avt; t: std_logic_vector) return std_logic_vector;
+  function convert(x: slc_barrel_avt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: slc_barrel_avt) return slc_barrel_avt;
+  function convert(x: std_logic_vector; t: slc_barrel_avt) return slc_barrel_avt;
+  function nullify(x: slc_barrel_avt) return slc_barrel_avt;
+  function zeroed(x: slc_barrel_avt) return slc_barrel_avt;
+
   subtype tdcpolmux2tar_vt is std_logic_vector(42-1 downto 0);
 
   type tdcpolmux2tar_art is array(integer range <>) of tdcpolmux2tar_rt;
@@ -1292,6 +1314,232 @@ package body common_types_pkg is
   end function nullify;
   function zeroed(x: slc_endcap_avt) return slc_endcap_avt is
     variable y : slc_endcap_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: slc_barrel_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: slc_barrel_art) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: slc_barrel_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: slc_barrel_art; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: slc_barrel_art) return slc_barrel_art is
+    variable y : slc_barrel_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: slc_barrel_art) return slc_barrel_art is
+    variable y : slc_barrel_art(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: slc_barrel_art) return slc_barrel_art is
+    variable y : slc_barrel_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: slc_barrel_art) return slc_barrel_art is
+    variable y : slc_barrel_art(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
+
+  function len(x: slc_barrel_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function width(x: slc_barrel_avt) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
+  function vectorify(x: slc_barrel_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: slc_barrel_avt; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), convert(x(i), y(b to a)));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), convert(x(i), y(a downto b)));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function structify(x: std_logic_vector; t: slc_barrel_avt) return slc_barrel_avt is
+    variable y : slc_barrel_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function convert(x: std_logic_vector; t: slc_barrel_avt) return slc_barrel_avt is
+    variable y : slc_barrel_avt(t'range);
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
+        y(i) := convert(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
+        y(i) := convert(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function convert;
+  function nullify(x: slc_barrel_avt) return slc_barrel_avt is
+    variable y : slc_barrel_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function zeroed(x: slc_barrel_avt) return slc_barrel_avt is
+    variable y : slc_barrel_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));

@@ -209,6 +209,9 @@ architecture behavioral of top_ult is
   signal i_outer_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
   signal i_extra_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
+  signal temp_tdcpolmux2tar_vt : tdcpolmux2tar_vt;
+  constant TDCPOLMUX2TAR_LEN : integer := temp_tdcpolmux2tar_vt'length;
+
   type mdt_polmux_bus_std_avt is array(integer range <>) of std_logic_vector(TDCPOLMUX2TAR_LEN - 1 downto 0);
 
   signal i_inn_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_INN -1 downto 0);
@@ -216,7 +219,8 @@ architecture behavioral of top_ult is
   signal i_out_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_OUT -1 downto 0);
   signal i_ext_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
-  
+  signal temp_slc_rx_vt : slc_rx_vt;
+  constant SLC_RX_LEN : integer := temp_slc_rx_vt'length;
 
   signal i_main_primary_slc        :slc_rx_avt(2 downto 0);  -- is the main SL used
   signal i_main_secondary_slc      :slc_rx_avt(2 downto 0);  -- only used in the big endcap
@@ -232,6 +236,9 @@ architecture behavioral of top_ult is
 
   signal i_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
   signal i_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+
+  signal temp_sf2ptcalc_vt : sf2ptcalc_vt;
+  constant SF2PTCALC_LEN : integer := temp_sf2ptcalc_vt'length;
 
   type sf2pt_bus_std_avt is array(integer range <>) of std_logic_vector(SF2PTCALC_LEN - 1 downto 0);
 
@@ -332,7 +339,9 @@ begin
   des_m : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_minus_neighbor_slc_b,o_data => i_minus_neighbor_slc);
   --------------------------------------------------------------
   ns_p: for i_h in c_NUM_SF_INPUTS - 1 downto 0 generate
-    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SF2PTCALC_LEN)port map(clk => clk,rst  => rst,i_data => i_plus_neighbor_segments_ab(i_h),o_data => i_plus_neighbor_segments_av(i_h));
+    des : entity shared_lib.vhdl_utils_deserializer 
+      generic map (g_DATA_WIDTH => SF2PTCALC_LEN)
+      port map(clk => clk,rst  => rst,i_data => i_plus_neighbor_segments_ab(i_h),o_data => i_plus_neighbor_segments_av(i_h));
     i_plus_neighbor_segments(i_h) <= i_plus_neighbor_segments_av(i_h);
   end generate;
 

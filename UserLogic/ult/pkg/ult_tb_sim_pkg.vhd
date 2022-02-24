@@ -35,15 +35,15 @@ package ult_tb_sim_pkg is
 
   constant TB_TAR_FIFO_WIDTH : integer := 32;
 
-  type input_mdt_bus is array(TB_TAR_FIFO_WIDTH-1 downto 0) of input_mdt_rt;
-  function len(x: input_mdt_bus) return natural;
-  function width(x: input_mdt_bus) return natural;
-  function vectorify(x: input_mdt_bus; t: std_logic_vector) return std_logic_vector;
-  function convert(x: input_mdt_bus; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: input_mdt_bus) return input_mdt_bus;
-  function convert(x: std_logic_vector; t: input_mdt_bus) return input_mdt_bus;
-  function nullify(x: input_mdt_bus) return input_mdt_bus;
-  function zeroed(x: input_mdt_bus) return input_mdt_bus;
+  type input_mdt_art is array(TB_TAR_FIFO_WIDTH-1 downto 0) of input_mdt_rt;
+  function len(x: input_mdt_art) return natural;
+  function width(x: input_mdt_art) return natural;
+  function vectorify(x: input_mdt_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: input_mdt_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: input_mdt_art) return input_mdt_art;
+  function convert(x: std_logic_vector; t: input_mdt_art) return input_mdt_art;
+  function nullify(x: input_mdt_art) return input_mdt_art;
+  function zeroed(x: input_mdt_art) return input_mdt_art;
 
   type tar2hps_tb is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tar2hps_rt;
   function len(x: tar2hps_tb) return natural;
@@ -81,25 +81,25 @@ package ult_tb_sim_pkg is
 
   constant TB_SLC_FIFO_WIDTH : integer := 32;
 
-  type input_slc_bus is array(TB_SLC_FIFO_WIDTH-1 downto 0) of input_slc_rt;
-  function len(x: input_slc_bus) return natural;
-  function width(x: input_slc_bus) return natural;
-  function vectorify(x: input_slc_bus; t: std_logic_vector) return std_logic_vector;
-  function convert(x: input_slc_bus; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: input_slc_bus) return input_slc_bus;
-  function convert(x: std_logic_vector; t: input_slc_bus) return input_slc_bus;
-  function nullify(x: input_slc_bus) return input_slc_bus;
-  function zeroed(x: input_slc_bus) return input_slc_bus;
+  type input_slc_art is array(TB_SLC_FIFO_WIDTH-1 downto 0) of input_slc_rt;
+  function len(x: input_slc_art) return natural;
+  function width(x: input_slc_art) return natural;
+  function vectorify(x: input_slc_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: input_slc_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: input_slc_art) return input_slc_art;
+  function convert(x: std_logic_vector; t: input_slc_art) return input_slc_art;
+  function nullify(x: input_slc_art) return input_slc_art;
+  function zeroed(x: input_slc_art) return input_slc_art;
 
-  type slc_tb is array(TB_SLC_FIFO_WIDTH-1 downto 0) of slc_rx_rt;
-  function len(x: slc_tb) return natural;
-  function width(x: slc_tb) return natural;
-  function vectorify(x: slc_tb; t: std_logic_vector) return std_logic_vector;
-  function convert(x: slc_tb; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: slc_tb) return slc_tb;
-  function convert(x: std_logic_vector; t: slc_tb) return slc_tb;
-  function nullify(x: slc_tb) return slc_tb;
-  function zeroed(x: slc_tb) return slc_tb;
+  type slc_tb_art is array(TB_SLC_FIFO_WIDTH-1 downto 0) of slc_rx_rt;
+  function len(x: slc_tb_art) return natural;
+  function width(x: slc_tb_art) return natural;
+  function vectorify(x: slc_tb_art; t: std_logic_vector) return std_logic_vector;
+  function convert(x: slc_tb_art; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: slc_tb_art) return slc_tb_art;
+  function convert(x: std_logic_vector; t: slc_tb_art) return slc_tb_art;
+  function nullify(x: slc_tb_art) return slc_tb_art;
+  function zeroed(x: slc_tb_art) return slc_tb_art;
 
   type out_heg_bm_hit_sim_rt is record
     ToA : unsigned(64-1 downto 0);
@@ -359,19 +359,19 @@ package body ult_tb_sim_pkg is
     return y;
   end function zeroed;
 
-  function len(x: input_mdt_bus) return natural is
+  function len(x: input_mdt_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: input_mdt_bus) return natural is
+  function width(x: input_mdt_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: input_mdt_bus; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: input_mdt_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -392,7 +392,7 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: input_mdt_bus; t: std_logic_vector) return std_logic_vector is
+  function convert(x: input_mdt_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -413,8 +413,8 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: input_mdt_bus) return input_mdt_bus is
-    variable y : input_mdt_bus;
+  function structify(x: std_logic_vector; t: input_mdt_art) return input_mdt_art is
+    variable y : input_mdt_art;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -434,8 +434,8 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: input_mdt_bus) return input_mdt_bus is
-    variable y : input_mdt_bus;
+  function convert(x: std_logic_vector; t: input_mdt_art) return input_mdt_art is
+    variable y : input_mdt_art;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -455,16 +455,16 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: input_mdt_bus) return input_mdt_bus is
-    variable y : input_mdt_bus;
+  function nullify(x: input_mdt_art) return input_mdt_art is
+    variable y : input_mdt_art;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: input_mdt_bus) return input_mdt_bus is
-    variable y : input_mdt_bus;
+  function zeroed(x: input_mdt_art) return input_mdt_art is
+    variable y : input_mdt_art;
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -807,19 +807,19 @@ package body ult_tb_sim_pkg is
     return y;
   end function zeroed;
 
-  function len(x: input_slc_bus) return natural is
+  function len(x: input_slc_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: input_slc_bus) return natural is
+  function width(x: input_slc_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: input_slc_bus; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: input_slc_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -840,7 +840,7 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: input_slc_bus; t: std_logic_vector) return std_logic_vector is
+  function convert(x: input_slc_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -861,8 +861,8 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: input_slc_bus) return input_slc_bus is
-    variable y : input_slc_bus;
+  function structify(x: std_logic_vector; t: input_slc_art) return input_slc_art is
+    variable y : input_slc_art;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -882,8 +882,8 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: input_slc_bus) return input_slc_bus is
-    variable y : input_slc_bus;
+  function convert(x: std_logic_vector; t: input_slc_art) return input_slc_art is
+    variable y : input_slc_art;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -903,16 +903,16 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: input_slc_bus) return input_slc_bus is
-    variable y : input_slc_bus;
+  function nullify(x: input_slc_art) return input_slc_art is
+    variable y : input_slc_art;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: input_slc_bus) return input_slc_bus is
-    variable y : input_slc_bus;
+  function zeroed(x: input_slc_art) return input_slc_art is
+    variable y : input_slc_art;
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -920,19 +920,19 @@ package body ult_tb_sim_pkg is
     return y;
   end function zeroed;
 
-  function len(x: slc_tb) return natural is
+  function len(x: slc_tb_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: slc_tb) return natural is
+  function width(x: slc_tb_art) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: slc_tb; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: slc_tb_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -953,7 +953,7 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function vectorify;
-  function convert(x: slc_tb; t: std_logic_vector) return std_logic_vector is
+  function convert(x: slc_tb_art; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -974,8 +974,8 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: slc_tb) return slc_tb is
-    variable y : slc_tb;
+  function structify(x: std_logic_vector; t: slc_tb_art) return slc_tb_art is
+    variable y : slc_tb_art;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -995,8 +995,8 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: slc_tb) return slc_tb is
-    variable y : slc_tb;
+  function convert(x: std_logic_vector; t: slc_tb_art) return slc_tb_art is
+    variable y : slc_tb_art;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1016,16 +1016,16 @@ package body ult_tb_sim_pkg is
     end if;
     return y;
   end function convert;
-  function nullify(x: slc_tb) return slc_tb is
-    variable y : slc_tb;
+  function nullify(x: slc_tb_art) return slc_tb_art is
+    variable y : slc_tb_art;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: slc_tb) return slc_tb is
-    variable y : slc_tb;
+  function zeroed(x: slc_tb_art) return slc_tb_art is
+    variable y : slc_tb_art;
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));

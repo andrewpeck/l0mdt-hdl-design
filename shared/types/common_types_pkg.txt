@@ -73,6 +73,17 @@ E      seg_angdtheta (signed SLC_ENDCAP_SEG_ANGDTHETA_LEN)
 A   slc_endcap_avt (open slc_endcap_vt)
 E      slc_endcap_vt (logic slc_endcap_rt)
 
+E   slc_barrel_vt (logic slc_barrel_rt)
+
+A   slc_barrel_art (open slc_barrel_rt)
+E      rpc3_posz (signed SLC_BARREL_RPC3_POSZ_LEN)
+E      rpc2_posz (signed SLC_BARREL_RPC2_POSZ_LEN)
+E      rpc1_posz (signed SLC_BARREL_RPC1_POSZ_LEN)
+E      rpc0_posz (signed SLC_BARREL_RPC0_POSZ_LEN)
+
+A   slc_barrel_avt (open slc_barrel_vt)
+E      slc_barrel_vt (logic slc_barrel_rt)
+
 E   tdcpolmux2tar_vt (logic tdcpolmux2tar_rt)
 
 A   tdcpolmux2tar_art (open tdcpolmux2tar_rt)

@@ -92,10 +92,10 @@ architecture sim of ult_tb_writer_ucm is
   signal slc_event_u2m_au        : event_at(c_MAX_NUM_SL -1 downto 0);
   signal slc_event_u2h_au        : event_at(c_MAX_NUM_SL -1 downto 0);
 
-  signal inn_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
-  signal mid_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
-  signal out_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
-  signal ext_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
+  signal inn_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
+  signal mid_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
+  signal out_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
+  signal ext_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
 
 
 
@@ -144,10 +144,13 @@ begin
     );
   end generate;
 
-  inn_ucm2hps_bus_ar <= structify(inn_slc_to_h2s_av);
-  mid_ucm2hps_bus_ar <= structify(mid_slc_to_h2s_av);
-  out_ucm2hps_bus_ar <= structify(out_slc_to_h2s_av);
-  ext_ucm2hps_bus_ar <= structify(ext_slc_to_h2s_av);
+    th_loop : for i in c_NUM_THREADS-1 downto 0 generate
+      inn_ucm2hps_bus_ar(i) <= structify(inn_slc_to_h2s_av(i),inn_ucm2hps_bus_ar(i));
+      mid_ucm2hps_bus_ar(i) <= structify(mid_slc_to_h2s_av(i),mid_ucm2hps_bus_ar(i));
+      out_ucm2hps_bus_ar(i) <= structify(out_slc_to_h2s_av(i),out_ucm2hps_bus_ar(i));
+      ext_ucm2hps_bus_ar(i) <= structify(ext_slc_to_h2s_av(i),ext_ucm2hps_bus_ar(i));
+    end generate ; -- identifier
+
 
   UCM2HPS_OUT: process(clk, rst)
     variable first_write           : std_logic := '1';
@@ -348,7 +351,9 @@ begin
     );
   end generate;
 
-  ucm2pl_ar <= structify(ucm2pl_av);
+  sl_loop : for i in c_MAX_NUM_SL - 1 downto 0 generate
+    ucm2pl_ar(i) <= structify(ucm2pl_av(i),ucm2pl_ar(i));
+  end generate ; -- sl_loop
 
   UCM2MPL_OUT: process(clk, rst)
 

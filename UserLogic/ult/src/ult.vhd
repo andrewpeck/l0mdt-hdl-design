@@ -97,6 +97,8 @@ entity ult is
     i_out_tdc_hits_av : in tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
     i_ext_tdc_hits_av : in tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
+
+
     -- TDC Hits from Tar
     -- i_inner_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
     -- i_middle_tar_hits : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
@@ -164,6 +166,11 @@ architecture behavioral of ult is
   signal int_mid_tdc_hits_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
   signal int_out_tdc_hits_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
   signal int_ext_tdc_hits_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+
+  signal i_inn_tdc_hits_v : std_logic_vector (len(i_inn_tdc_hits_av) -1 downto 0);
+  signal i_mid_tdc_hits_v : std_logic_vector (len(i_mid_tdc_hits_av) -1 downto 0);
+  signal i_out_tdc_hits_v : std_logic_vector (len(i_out_tdc_hits_av) -1 downto 0);
+  signal i_ext_tdc_hits_v : std_logic_vector (len(i_ext_tdc_hits_av) -1 downto 0);
 
   constant SLR_PIPELINE_DEPTH : integer := 12;
 
@@ -1005,16 +1012,16 @@ begin
       if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
 
         inner_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_INN-1 loop
-          tdc_hit_inner_sump(I) <= xor_reduce(vectorify(i_inn_tdc_hits_av(I)));
+          tdc_hit_inner_sump(I) <= xor_reduce(vectorify(i_inn_tdc_hits_av(I),i_inn_tdc_hits_v));
         end loop;
         middle_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_MID-1 loop
-          tdc_hit_middle_sump(I) <= xor_reduce(vectorify(i_mid_tdc_hits_av(I)));
+          tdc_hit_middle_sump(I) <= xor_reduce(vectorify(i_mid_tdc_hits_av(I),i_mid_tdc_hits_v));
         end loop;
         outer_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_OUT-1 loop
-          tdc_hit_outer_sump(I) <= xor_reduce(vectorify(i_out_tdc_hits_av(I)));
+          tdc_hit_outer_sump(I) <= xor_reduce(vectorify(i_out_tdc_hits_av(I),i_out_tdc_hits_v));
         end loop;
         extra_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_EXT-1 loop
-          tdc_hit_extra_sump(I) <= xor_reduce(vectorify(i_ext_tdc_hits_av(I)));
+          tdc_hit_extra_sump(I) <= xor_reduce(vectorify(i_ext_tdc_hits_av(I),i_ext_tdc_hits_v));
         end loop;
 
         sump <= xor_reduce(tdc_hit_inner_sump)

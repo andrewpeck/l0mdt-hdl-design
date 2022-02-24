@@ -19,7 +19,7 @@ E         tdcid (unsigned TDCPOLMUX2TAR_TDCID_LEN)
 
 E   TB_TAR_FIFO_WIDTH (integer constant 32)
 
-A   input_mdt_bus (TB_TAR_FIFO_WIDTH input_mdt_rt)
+A   input_mdt_art (TB_TAR_FIFO_WIDTH input_mdt_rt)
 E      ToA (unsigned 64)
 E      station (unsigned 8)
 E      chamber (unsigned SLC_CHAMBER_LEN)
@@ -84,7 +84,7 @@ E         specific (logic SLC_RX_SPECIFIC_LEN)
 
 E   TB_SLC_FIFO_WIDTH (integer constant 32)
 
-A   input_slc_bus (TB_SLC_FIFO_WIDTH input_slc_rt)
+A   input_slc_art (TB_SLC_FIFO_WIDTH input_slc_rt)
 E      ToA (unsigned 64)
 E      event (unsigned 32)
 E      slc (slc_rx_rt)
@@ -113,7 +113,7 @@ E               slid (unsigned SL_TRAILER_SLID_LEN)
 E               comma (logic SL_TRAILER_COMMA_LEN)
 E         specific (logic SLC_RX_SPECIFIC_LEN)
 
-A   slc_tb (TB_SLC_FIFO_WIDTH slc_rx_rt)
+A   slc_tb_art (TB_SLC_FIFO_WIDTH slc_rx_rt)
 E      data_valid (logic)
 E      common (slc_common_rt)
 E         header (sl_header_rt)

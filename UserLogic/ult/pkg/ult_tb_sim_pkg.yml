@@ -17,7 +17,7 @@ hdl:
 
 - TB_TAR_FIFO_WIDTH:     [ qualifier: constant , type: integer , value: 32 ]
 
-- input_mdt_bus : [ array: TB_TAR_FIFO_WIDTH , type: input_mdt_rt]
+- input_mdt_art : [ array: TB_TAR_FIFO_WIDTH , type: input_mdt_rt]
 - tar2hps_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tar2hps_rt]
 - pol2tar_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tdcpolmux2tar_rt]
 
@@ -29,10 +29,13 @@ hdl:
 
 - TB_SLC_FIFO_WIDTH:     [ qualifier: constant , type: integer , value: 32 ]
 
-- input_slc_bus    : [ array: TB_SLC_FIFO_WIDTH , type: input_slc_rt]
+- input_slc_art    : [ array: TB_SLC_FIFO_WIDTH , type: input_slc_rt]
 
-- slc_tb    : [ array: TB_SLC_FIFO_WIDTH , type: slc_rx_rt]
-
+- slc_tb_art    : [ array: TB_SLC_FIFO_WIDTH , type: slc_rx_rt]
+# - slc_tb_avt    : [ array: TB_SLC_FIFO_WIDTH , type: slc_rx_vt]
+# - slc_tb_vt : [type: logic, length: slc_tb_rt]
+# - slc_tb_art: [array: open ,  type: slc_tb_rt]
+# - slc_tb_avt: [ array: open,  type: slc_tb_vt]
 #####################################################
 
 - out_heg_bm_hit_sim_rt:

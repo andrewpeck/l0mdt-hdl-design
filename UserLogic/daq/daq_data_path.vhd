@@ -16,7 +16,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use shared_lib.common_ieee.all;
+use shared_lib.common_ieee_pkg.all;
 
 use ttc_def.ttc_defs.all;
 

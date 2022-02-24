@@ -98,19 +98,19 @@ architecture sim of ult_tb_writer_heg is
   -- alias heg2sf_out_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfhit_av : heg2sfhit_avt >>;
   -- alias heg2sf_out_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
   
-  -- signal heg2sf_inn_slc_ar  : heg2sfslc_bus_at;
-  -- signal heg2sf_inn_hit_ar  : heg2sfhit_bus_at(c_TOTAL_MAX_NUM_HP - 1 downto 0);
-  -- signal heg2sf_inn_ctrl_ar : hps_ctrl2sf_at  ;
-  -- signal heg2sf_mid_slc_ar  : heg2sfslc_bus_at;
-  -- signal heg2sf_mid_hit_ar  : heg2sfhit_bus_at(c_TOTAL_MAX_NUM_HP - 1 downto 0);
-  -- signal heg2sf_mid_ctrl_ar : hps_ctrl2sf_at  ;
-  -- signal heg2sf_out_slc_ar  : heg2sfslc_bus_at;
-  -- signal heg2sf_out_hit_ar  : heg2sfhit_bus_at(c_TOTAL_MAX_NUM_HP - 1 downto 0);
-  -- signal heg2sf_out_ctrl_ar : hps_ctrl2sf_at  ;
+  -- signal heg2sf_inn_slc_ar  : heg2sfslc_art;
+  -- signal heg2sf_inn_hit_ar  : heg2sfhit_art(c_TOTAL_MAX_NUM_HP - 1 downto 0);
+  -- signal heg2sf_inn_ctrl_ar : hps_ctrl2sf_art  ;
+  -- signal heg2sf_mid_slc_ar  : heg2sfslc_art;
+  -- signal heg2sf_mid_hit_ar  : heg2sfhit_art(c_TOTAL_MAX_NUM_HP - 1 downto 0);
+  -- signal heg2sf_mid_ctrl_ar : hps_ctrl2sf_art  ;
+  -- signal heg2sf_out_slc_ar  : heg2sfslc_art;
+  -- signal heg2sf_out_hit_ar  : heg2sfhit_art(c_TOTAL_MAX_NUM_HP - 1 downto 0);
+  -- signal heg2sf_out_ctrl_ar : hps_ctrl2sf_art  ;
   
-  -- type heg2sfslc_megabus_at   is array (0 to 4) of heg2sfslc_bus_at(c_TOTAL_MAX_NUM_HP - 1 downto 0);
-  -- type heg2sfhit_megabus_at   is array (0 to 4) of heg2sfhit_bus_at(c_TOTAL_MAX_NUM_HP - 1 downto 0);
-  -- type hps_ctrl2sf_megabus_at is array (0 to 4) of hps_ctrl2sf_at(c_TOTAL_MAX_NUM_HP - 1 downto 0)  ;
+  -- type heg2sfslc_megabus_at   is array (0 to 4) of heg2sfslc_art(c_TOTAL_MAX_NUM_HP - 1 downto 0);
+  -- type heg2sfhit_megabus_at   is array (0 to 4) of heg2sfhit_art(c_TOTAL_MAX_NUM_HP - 1 downto 0);
+  -- type hps_ctrl2sf_megabus_at is array (0 to 4) of hps_ctrl2sf_art(c_TOTAL_MAX_NUM_HP - 1 downto 0)  ;
 
   -- signal heg2sf_slc_ar  : heg2sfslc_megabus_at;
   -- signal heg2sf_hit_ar  : heg2sfhit_megabus_at;
@@ -189,10 +189,12 @@ begin
 
   TH_loop: for th_i in c_NUM_THREADS - 1 downto 0 generate
     HPS_INN: if c_HPS_ENABLE_ST_INN = '1' generate
-      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
+      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_avt >>;
       signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_INN-1 downto 0);
     begin
-      hp2bm_ar <= structify(hp2bm_av);
+      array_gen : for i in c_HPS_MAX_HP_INN-1 downto 0 generate
+        hp2bm_ar(i) <= structify(hp2bm_av(i),hp2bm_ar(i));
+      end generate ; -- array_gen
       INN_proc: process(clk, rst)
       begin
         if rst = '1' then
@@ -221,10 +223,12 @@ begin
       end process INN_proc;
     end generate;
     HPS_MID: if c_HPS_ENABLE_ST_MID = '1' generate
-      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
+      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_avt >>;
       signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_MID-1 downto 0);
     begin
-      hp2bm_ar <= structify(hp2bm_av);
+      array_gen : for i in c_HPS_MAX_HP_MID-1 downto 0 generate
+        hp2bm_ar(i) <= structify(hp2bm_av(i),hp2bm_ar(i));
+      end generate ; -- array_gen
       MID_proc: process(clk, rst)
       begin
         if rst = '1' then
@@ -252,10 +256,12 @@ begin
       end process;
     end generate;
     HPS_OUT: if c_HPS_ENABLE_ST_OUT = '1' generate
-      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
+      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_avt >>;
       signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_OUT-1 downto 0);
     begin
-      hp2bm_ar <= structify(hp2bm_av);
+      array_gen : for i in c_HPS_MAX_HP_OUT-1 downto 0 generate
+        hp2bm_ar(i) <= structify(hp2bm_av(i),hp2bm_ar(i));
+      end generate ; -- array_gen
       OUT_proc: process(clk, rst)
       begin
         if rst = '1' then
@@ -283,10 +289,12 @@ begin
       end process;
     end generate;
     HPS_EXT: if c_HPS_ENABLE_ST_EXT = '1' generate
-      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
+      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_avt >>;
       signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_EXT-1 downto 0);
     begin
-      hp2bm_ar <= structify(hp2bm_av);
+      array_gen : for i in c_HPS_MAX_HP_EXT-1 downto 0 generate
+        hp2bm_ar(i) <= structify(hp2bm_av(i),hp2bm_ar(i));
+      end generate ; -- array_gen
       EXT_proc: process(clk, rst)
       begin
         if rst = '1' then
@@ -397,7 +405,7 @@ begin
 
   --       if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := structify(heg2sf_inn_slc_av(heg_i));
+  --           read_slc := structify(heg2sf_inn_slc_av(heg_i),read_slc);
   --           if read_slc.data_valid = '1' then
 
   --             slc2write.ToA      := tb_curr_tdc_time;
@@ -412,7 +420,7 @@ begin
   --       end if;
   --       if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := structify(heg2sf_mid_slc_av(heg_i));
+  --           read_slc := structify(heg2sf_mid_slc_av(heg_i),read_slc);
   --           if read_slc.data_valid = '1' then
 
   --             slc2write.ToA      := tb_curr_tdc_time;
@@ -427,7 +435,7 @@ begin
   --       end if;
   --       if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := structify(heg2sf_out_slc_av(heg_i));
+  --           read_slc := structify(heg2sf_out_slc_av(heg_i),read_slc);
   --           if read_slc.data_valid = '1' then
 
   --             slc2write.ToA      := tb_curr_tdc_time;

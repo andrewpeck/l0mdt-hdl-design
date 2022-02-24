@@ -62,12 +62,12 @@ end entity ult_tb_reader_tdc;
 architecture sim of ult_tb_reader_tdc is
 
   -- signal mdt_tdc_station  : pol2tar_tb_at;
-  signal mdt_tdc_station  : input_mdt_bus_at;
+  signal mdt_tdc_station  : input_mdt_art;
 
   type infifo_hit_counts is array (integer range <>) of integer;
 
   -- type infifo_hit_mem_at is array (integer range <>) of pol2tar_tb_at;
-  type infifo_hit_mem_at is array (integer range <>) of input_mdt_bus_at;
+  type infifo_hit_mem_at is array (integer range <>) of input_mdt_art;
 
   signal mdt_tdc_event_r  : input_mdt_rt;
   signal mdt_new_event    : input_mdt_rt;
@@ -194,7 +194,7 @@ begin
 
           for wr_i in c_HPS_MAX_HP_INN -1 downto 0 loop
             if(v_mdt_inn_counts(wr_i) > 0) then
-              i_mdt_tdc_inn_av(wr_i) <= vectorify(mdt_inn_fifo(wr_i)(0).tdc);
+              i_mdt_tdc_inn_av(wr_i) <= vectorify(mdt_inn_fifo(wr_i)(0).tdc,i_mdt_tdc_inn_av(wr_i));
               mdt_event_ai(0)(wr_i) <= mdt_inn_fifo(wr_i)(0).event;
               -- for test input read
               i_mdt_tdc_inn_ar(wr_i) <= mdt_inn_fifo(wr_i)(0).tdc;
@@ -212,7 +212,7 @@ begin
 
           for wr_i in c_HPS_MAX_HP_MID -1 downto 0 loop
             if(v_mdt_mid_counts(wr_i) > 0) then
-              i_mdt_tdc_mid_av(wr_i) <= vectorify(mdt_mid_fifo(wr_i)(0).tdc);
+              i_mdt_tdc_mid_av(wr_i) <= vectorify(mdt_mid_fifo(wr_i)(0).tdc,i_mdt_tdc_mid_av(wr_i));
               mdt_event_ai(1)(wr_i) <= mdt_mid_fifo(wr_i)(0).event;
 
               -- for test input read
@@ -231,7 +231,7 @@ begin
 
           for wr_i in c_HPS_MAX_HP_OUT -1 downto 0 loop
             if(v_mdt_out_counts(wr_i) > 0) then
-              i_mdt_tdc_out_av(wr_i) <= vectorify(mdt_out_fifo(wr_i)(0).tdc);
+              i_mdt_tdc_out_av(wr_i) <= vectorify(mdt_out_fifo(wr_i)(0).tdc,i_mdt_tdc_out_av(wr_i));
               mdt_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).event;
 
               -- for test input read
@@ -250,7 +250,7 @@ begin
 
           for wr_i in c_HPS_MAX_HP_EXT -1 downto 0 loop
             if(v_mdt_ext_counts(wr_i) > 0) then
-              i_mdt_tdc_ext_av(wr_i) <= vectorify(mdt_ext_fifo(wr_i)(0).tdc);
+              i_mdt_tdc_ext_av(wr_i) <= vectorify(mdt_ext_fifo(wr_i)(0).tdc,i_mdt_tdc_ext_av(wr_i));
               mdt_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).event;
 
               -- for test input read
