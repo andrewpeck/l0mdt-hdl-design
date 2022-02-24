@@ -13,10 +13,9 @@ library shared_lib;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
---use shared_lib.common_constants_pkg.all;
---use shared_lib.common_types_pkg.all;
---library upt_lib;
---library xil_defaultlib;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
 entity top_upt is
     generic (
@@ -36,43 +35,48 @@ end top_upt;
 
 architecture behav of top_upt is
 
-    constant const_ap_start : std_logic := '1';
-    constant const_ap_idle  : std_logic := '0';
-    constant ptcalc_hls_ii  : unsigned := "1"; --X"4";
-    signal ptcalc2mtc_data  : std_logic_vector(PTCALC2MTC_LEN-1 downto 0) := (others => '0');
-    signal ptcalc2mtc_valid : std_logic;
-    signal ptcalc2mtc_done  : std_logic;
-    signal ptcalc_ap_start  : std_logic;
-    signal ptcalc_ap_ready  : std_logic;
-    signal ptcalc_ap_idle     : std_logic;
-    signal ptcalc_cnt       : std_logic_vector(2 downto 0):= (others => '0');
-    signal ptcalc_slc       : pl2ptcalc_vt;
-    signal ptcalc_segment_i : sf2ptcalc_vt;
-    signal ptcalc_segment_m : sf2ptcalc_vt;
-    signal ptcalc_segment_o : sf2ptcalc_vt;
-    signal ptcalc_debug     : std_logic_vector(57 downto 0);
+  signal temp_PTCALC2MTC_LEN : ptcalc2mtc_vt;
+  constant PTCALC2MTC_LEN : integer := temp_PTCALC2MTC_LEN'length;
+  signal temp_PL2PTCALC_LEN : pl2ptcalc_vt;
+  constant PL2PTCALC_LEN : integer := temp_PL2PTCALC_LEN'length;
 
-    constant ap_const_logic_1 : STD_LOGIC := '1';
-    constant ap_const_logic_0 : STD_LOGIC := '0';
+  constant const_ap_start : std_logic := '1';
+  constant const_ap_idle  : std_logic := '0';
+  constant ptcalc_hls_ii  : unsigned := "1"; --X"4";
+  signal ptcalc2mtc_data  : std_logic_vector(PTCALC2MTC_LEN-1 downto 0) := (others => '0');
+  signal ptcalc2mtc_valid : std_logic;
+  signal ptcalc2mtc_done  : std_logic;
+  signal ptcalc_ap_start  : std_logic;
+  signal ptcalc_ap_ready  : std_logic;
+  signal ptcalc_ap_idle   : std_logic;
+  signal ptcalc_cnt       : std_logic_vector(2 downto 0):= (others => '0');
+  signal ptcalc_slc       : pl2ptcalc_vt;
+  signal ptcalc_segment_i : sf2ptcalc_vt;
+  signal ptcalc_segment_m : sf2ptcalc_vt;
+  signal ptcalc_segment_o : sf2ptcalc_vt;
+  signal ptcalc_debug     : std_logic_vector(57 downto 0);
 
-    component hls_ptcalc_top
-        port (
-            ap_clk : in std_logic;
-            ap_rst : in std_logic;
-            ap_start      : in std_logic;
-            ap_done       : out std_logic;
-            ap_idle       : out std_logic;
-            ap_ready      : out std_logic;
-            pl2ptcalc     : in pl2ptcalc_vt;
-            sf2ptcalc_inn : in sf2ptcalc_vt;
-            sf2ptcalc_mid : in sf2ptcalc_vt;
-            sf2ptcalc_out : in sf2ptcalc_vt;
-            ptcalc2mtc : out ptcalc2mtc_vt;
-            ptcalc2mtc_ap_vld : out std_logic;
-            is_C_side           : in std_logic
-          --  ptcalc_debug        : out std_logic_vector(57 downto 0)
-            );
-    end component;
+  constant ap_const_logic_1 : STD_LOGIC := '1';
+  constant ap_const_logic_0 : STD_LOGIC := '0';
+
+  component hls_ptcalc_top
+    port (
+      ap_clk : in std_logic;
+      ap_rst : in std_logic;
+      ap_start      : in std_logic;
+      ap_done       : out std_logic;
+      ap_idle       : out std_logic;
+      ap_ready      : out std_logic;
+      pl2ptcalc     : in pl2ptcalc_vt;
+      sf2ptcalc_inn : in sf2ptcalc_vt;
+      sf2ptcalc_mid : in sf2ptcalc_vt;
+      sf2ptcalc_out : in sf2ptcalc_vt;
+      ptcalc2mtc : out ptcalc2mtc_vt;
+      ptcalc2mtc_ap_vld : out std_logic;
+      is_C_side           : in std_logic
+      --  ptcalc_debug        : out std_logic_vector(57 downto 0)
+    );
+  end component;
 
 begin
     o_mtc           <= ptcalc2mtc_done & ptcalc2mtc_data(PTCALC2MTC_LEN-2 downto 0);
