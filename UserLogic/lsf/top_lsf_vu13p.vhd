@@ -15,11 +15,13 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 library lsf_lib;
 
-
 library shared_lib;
---use shared_lib.common_ieee_pkg.all;
+use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
 entity top_lsf_vu13p IS
   generic (
@@ -28,9 +30,9 @@ entity top_lsf_vu13p IS
     );
   PORT(
     clock,reset   : in std_logic;
-    slc_roi       : in std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
-    mdt_hit       : in std_logic_vector(HEG2SFHIT_LEN-1 downto 0); -- 14
-    lsf           : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
+    slc_roi       : in std_logic_vector;--(HEG2SFSLC_LEN-1 downto 0);
+    mdt_hit       : in std_logic_vector;--(HEG2SFHIT_LEN-1 downto 0); -- 14
+    lsf           : out std_logic_vector;--(SF2PTCALC_LEN-1 downto 0);
     i_eof         : in std_logic;
     hba_max_clocks: in std_logic_vector(9 downto 0)
 
@@ -40,6 +42,14 @@ entity top_lsf_vu13p IS
 
 
 architecture top_lsf_arch of top_lsf_vu13p IS
+
+signal temp_HEG2SFHIT_LEN : heg2sfhit_vt;
+constant HEG2SFHIT_LEN : integer := temp_HEG2SFHIT_LEN'length;
+signal temp_HEG2SFSLC_LEN : heg2sfslc_vt;
+constant HEG2SFSLC_LEN : integer := temp_HEG2SFSLC_LEN'length;
+signal temp_SF2PTCALC_LEN : sf2ptcalc_vt;
+constant SF2PTCALC_LEN : integer := temp_SF2PTCALC_LEN'length;
+
 component lsf_spybuffer_wrapper
   
   PORT(

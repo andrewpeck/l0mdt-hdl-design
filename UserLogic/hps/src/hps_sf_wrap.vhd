@@ -214,18 +214,33 @@ begin
     else generate
 
 
-      csf_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (csf_mon_v'length) port map(clk,rst,xor_reduce(csf_ctrl_v),csf_mon_v);
-      lsf_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (lsf_mon_v'length) port map(clk,rst,xor_reduce(lsf_ctrl_v),lsf_mon_v);
-
+      csf_ctrl : entity shared_lib.vhdl_utils_deserializer 
+        generic map (g_DATA_WIDTH => csf_mon_v'length) 
+        port map(
+          clk     => clk,
+          rst     => rst,
+          i_data  => xor_reduce(csf_ctrl_v),
+          o_data  => csf_mon_v
+      );
+      lsf_ctrl : entity shared_lib.vhdl_utils_deserializer 
+        generic map (g_DATA_WIDTH => lsf_mon_v'length) 
+        port map(
+          clk     => clk,
+          rst     => rst,
+          i_data  => xor_reduce(lsf_ctrl_v),
+          o_data  => lsf_mon_v
+      );
 
       des0 : entity shared_lib.vhdl_utils_deserializer
         generic map (g_DATA_WIDTH => sf_data_v'length)
         port map(
-          clk => clk,
-          rst  => rst,
-          i_data => glob_en OR (xor_reduce(i_control_v) xor xor_reduce(i_slc_data_v) xor xor_reduce(i_mdt_data_v)),
-          o_data => sf_data_v);
-          o_sf_data_v <= sf_data_v;
+          clk     => clk,
+          rst     => rst,
+          i_data  => glob_en OR (xor_reduce(i_control_v) xor xor_reduce(i_slc_data_v) xor xor_reduce(i_mdt_data_v)),
+          o_data  => sf_data_v
+      );
+      o_sf_data_v <= sf_data_v;
+
     end generate SF_BP;
 
   else generate
