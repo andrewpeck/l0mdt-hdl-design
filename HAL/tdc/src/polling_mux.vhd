@@ -50,7 +50,7 @@ architecture behavioral of polling_mux is
     variable rec : tdcpolmux2tar_rt;
   begin
     for I in 0 to size-1 loop
-      rec := structify(arr(I));
+      rec := structify(arr(I),rec);
       if (rec.data_valid = '1') then
         tmp(I) := '1';
       else
@@ -174,6 +174,6 @@ begin
     end if;
   end process;
 
-  tdc_hit_o <= structify(tdc_hits_or);
+  tdc_hit_o <= structify(tdc_hits_or,tdc_hit_o);
 
 end behavioral;

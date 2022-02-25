@@ -95,10 +95,10 @@ begin
 
       tdc_hit.csmid      <= to_unsigned(g_CSM, tdc_hit.csmid'length);
       tdc_hit.tdcid      <= to_unsigned(I, tdc_hit.tdcid'length);
-      tdc_hit.tdc        <= structify(tdc_word);
+      tdc_hit.tdc        <= structify(tdc_word,tdc_hit.tdc);
       tdc_hit.data_valid <= tdc_valid;
 
-      tdc_hits_o(idx) <= vectorify (tdc_hit);
+      tdc_hits_o(idx) <= vectorify (tdc_hit,tdc_hits_o(idx));
 
       --------------------------------------------------------------------------------
       -- New TDC

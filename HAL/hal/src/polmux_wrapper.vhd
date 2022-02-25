@@ -48,6 +48,7 @@ end polmux_wrapper;
 
 architecture behavioral of polmux_wrapper is
   signal polmux_o  : tdcpolmux2tar_rt;
+  signal polmux_o_v  : tdcpolmux2tar_vt;
   signal read_done : std_logic_vector (g_WIDTH-1 downto 0);
   signal valid     : std_logic := '0';
   signal tdc_hits  : tdcpolmux2tar_vt;
@@ -80,7 +81,7 @@ begin
     process (pipeline_clock) is
     begin
       if (rising_edge(pipeline_clock)) then
-        tdc_hits   <= vectorify(polmux_o);
+        tdc_hits   <= vectorify(polmux_o,tdc_hits);
         tdc_hits_o <= tdc_hits;
       end if;
     end process;
@@ -92,9 +93,9 @@ begin
     signal fifo_dout : std_logic_vector (63 downto 0) := (others => '0');
   begin
 
-    fifo_din <= std_logic_vector(resize(unsigned(vectorify(polmux_o)), fifo_din'length));  -- zero pad
+    fifo_din <= std_logic_vector(resize(unsigned(vectorify(polmux_o,polmux_o_v)), fifo_din'length));  -- zero pad
 
-    polmux_sync_fifo_inst : entity work.fifo_async
+    polmux_sync_fifo_inst : entity tdc.fifo_async
       generic map (
         DEPTH    => 16,
         WR_WIDTH => 64,

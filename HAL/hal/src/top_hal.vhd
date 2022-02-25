@@ -84,8 +84,8 @@ entity top_hal is
     -- SLC
     --------------------------------------------------------------------------------
 
-    main_primary_slc   : out slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-    main_secondary_slc : out slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
+    main_primary_slc   : out slc_rx_avt(2 downto 0);  -- is the main SL used
+    main_secondary_slc : out slc_rx_avt(2 downto 0);  -- only used in the big endcap
     plus_neighbor_slc  : out slc_rx_vt;
     minus_neighbor_slc : out slc_rx_vt;
 
@@ -209,7 +209,7 @@ architecture behavioral of top_hal is
   signal sl_tx_ctrl           : sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_ctrl           : sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_slide          : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-  signal sl_rx_data           : slc_rx_bus_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_rx_data           : slc_rx_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_tx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_data_sump      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
