@@ -693,20 +693,6 @@ begin
       );
     end generate;
 
-    -- process (clock_and_control.clk) is
-    -- begin
-    --   if (rising_edge(clock_and_control.clk)) then
-
-    --     for I in 1 to SLR_PIPELINE_DEPTH loop
-    --       inn_segments_to_pt_pipeline(I) <= inn_segments_to_pt_pipeline(I-1);
-    --       mid_segments_to_pt_pipeline(I) <= mid_segments_to_pt_pipeline(I-1);
-    --       out_segments_to_pt_pipeline(I) <= out_segments_to_pt_pipeline(I-1);
-    --       ext_segments_to_pt_pipeline(I) <= ext_segments_to_pt_pipeline(I-1);
-    --     end loop;
-
-    --   end if;
-    -- end process;
-
     hps2pt_loop: for th_i in c_NUM_THREADS -1 downto 0 generate
       HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
         SLC2HPS_INN_PL : entity vamc_lib.vamc_spl
@@ -903,7 +889,7 @@ begin
 
     DAQ_GEN : if c_DAQ_ENABLED = '1' generate
       ULT_DAQ : entity ult_lib.daq
-        generic map(DELAY => 9600, memory_type => "ultra")
+        -- generic map(DELAY => 9600, memory_type => "ultra")
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
