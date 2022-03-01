@@ -57,9 +57,9 @@ architecture beh of top_mpl is
   signal ctrl_v            : std_logic_vector(len(ctrl_r) -1 downto 0);
   signal mon_v             : std_logic_vector(len(mon_r) -1 downto 0);
 
-  signal i_uCM2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  signal o_pl2tf_av          : pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_pl2mtc_av         : pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal i_uCM2pl_av         : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  signal o_pl2tf_av          : pl2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+  signal o_pl2mtc_av         : pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
 
   begin
 
@@ -67,7 +67,7 @@ architecture beh of top_mpl is
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
   slc_mp: for i_h in c_MAX_NUM_SL - 1 downto 0 generate
-    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => UCM2PL_LEN)port map(clk => clk,rst  => rst,i_data => i_uCM2pl_ab(i_h),o_data => i_uCM2pl_av(i_h));
+    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => i_uCM2pl_av(i_h)'length)port map(clk => clk,rst  => rst,i_data => i_uCM2pl_ab(i_h),o_data => i_uCM2pl_av(i_h));
     -- i_slc_data_mainA(i_h) <= i_slc_data_mainA_av(i_h);
   end generate;
   --------------------------------------------------------------

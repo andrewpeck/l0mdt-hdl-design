@@ -32,8 +32,8 @@ entity ucm_ctrl_main is
     rst                 : in std_logic;
     ena             : in std_logic;
     -- extrnals
-    i_data              : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-    o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
+    i_data              : in ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
+    o_csw_ctrl          : out ucm_csw_control_art(c_MAX_NUM_SL -1 downto 0);
     -- internals
     o_num_cand          : out unsigned(3 downto 0);
     o_pam_update        : out std_logic
@@ -47,8 +47,8 @@ architecture beh of ucm_ctrl_main is
   );
   signal alg_status   : alg_status_t;
 
-  signal i_data_ar    : ucm_prepro2ctrl_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal data_ar      : ucm_prepro2ctrl_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal i_data_ar    : ucm_prepro2ctrl_art(c_MAX_NUM_SL -1 downto 0);
+  signal data_ar      : ucm_prepro2ctrl_art(c_MAX_NUM_SL -1 downto 0);
 
   signal input_valids : std_logic_vector(c_MAX_NUM_SL -1 downto 0);
 
@@ -59,7 +59,7 @@ architecture beh of ucm_ctrl_main is
 begin
   
   pre_op: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    i_data_ar(sl_i) <= structify(i_data(sl_i));
+    i_data_ar(sl_i) <= convert(i_data(sl_i),i_data_ar(sl_i));
     input_Valids(sl_i) <= i_data_ar(sl_i).data_valid;
   end generate;
 

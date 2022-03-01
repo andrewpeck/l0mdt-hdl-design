@@ -28,14 +28,13 @@ use shared_lib.detector_param_pkg.all;
 
 use shared_lib.gtube2chamber_pkg.all;
 
---library hp_lib;
---use hp_lib.hp_pkg.all;
+library hp_lib;
+use hp_lib.hp_pkg.all;
 library heg_lib;
---use heg_lib.heg_pkg.all;
-use heg_lib.heg_custom_pkg.all;
-library hegtypes_lib;
-use hegtypes_lib.hp_pkg.all;
-use hegtypes_lib.heg_pkg.all;
+use heg_lib.heg_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 
 entity heg_ctrl_sig is
@@ -57,11 +56,11 @@ entity heg_ctrl_sig is
     i_roi_global_z      : in unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     i_roi_global_dv   : in std_logic;
     --
-    o_hp_control_r      : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
+    o_hp_control_r      : out heg_ctrl2hp_art(g_HPS_NUM_MDT_CH -1 downto 0);
     o_sf_control_r      : out heg_ctrl2sf_rt;
     --
-    o_uCM2hp_data_v     : out hp_heg2hp_slc_rvt;
-    o_uCM2sf_data_v     : out heg2sfslc_rvt
+    o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
+    o_uCM2sf_data_v     : out heg2sfslc_vt
   );
 end entity heg_ctrl_sig;
 
@@ -122,8 +121,8 @@ begin
     o_dv          => csf_slope_dv
   );
 
-  o_uCM2sf_data_v <= vectorify(o_uCM2sf_data_r);
-  o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r);
+  o_uCM2sf_data_v <= vectorify(o_uCM2sf_data_r,o_uCM2sf_data_v);
+  o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r,o_uCM2hp_data_v);
 
   CTRL_GEN : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
     enables_a(hp_i) <= o_hp_control_r(hp_i).enable;
@@ -247,7 +246,7 @@ begin
               o_sf_control_r.eof <= '0';
 
               if c_ST_nBARREL_ENDCAP = '0' then -- barrel
-                o_uCM2hp_data_r.specific <= vectorify(b_data);
+                o_uCM2hp_data_r.specific <= vectorify(b_data,o_uCM2hp_data_r.specific);
               else --endcap
 
               end if;

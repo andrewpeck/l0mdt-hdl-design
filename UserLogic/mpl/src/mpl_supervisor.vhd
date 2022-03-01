@@ -136,6 +136,7 @@ begin
         --    to apb
         --------------------------------------------
         mon_r.status.ENABLED <= local_en;
+        mon_r.status.FREEZED <= o_freeze;
         mon_r.status.READY <= not local_rst;
         mon_r.status.ERROR <= (others => '0');
       end if;

@@ -70,7 +70,7 @@ entity csm is
     -- TDC Data
     --------------------------------------------------------------------------------
 
-    tdc_hits_to_polmux_o    : out mdt_polmux_bus_avt (g_TDC_CNT-1 downto 0);
+    tdc_hits_to_polmux_o    : out tdcpolmux2tar_avt (g_TDC_CNT-1 downto 0);
     read_done_from_polmux_i : in  std_logic_vector (g_TDC_CNT-1 downto 0);
 
     ctrl : in  HAL_CSM_CSM_CTRL_t;

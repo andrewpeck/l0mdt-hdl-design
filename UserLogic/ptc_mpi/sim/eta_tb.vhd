@@ -40,7 +40,7 @@ end eta_tb;
 
 architecture Behavioral of eta_tb is
     signal clk : std_logic := '0';
-    signal i_seg : sf2ptcalc_rvt;
+    signal i_seg : sf2ptcalc_vt;
     signal seg: sf2ptcalc_rt;
     signal o_eta   : signed(PTCALC2MTC_MDT_ETA_LEN-1 downto 0);
     signal o_dv_eta  :  std_logic := '0';

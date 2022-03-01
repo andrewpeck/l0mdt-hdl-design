@@ -40,9 +40,9 @@ ENTITY seg_coord_transform IS
     );
     PORT (
         clk : IN STD_LOGIC;
-        i_locseg : IN csf_locseg_rvt;
-        i_seed : IN heg2sfslc_rvt;
-        o_globseg : OUT sf2ptcalc_rvt
+        i_locseg : IN csf_locseg_vt;
+        i_seed : IN heg2sfslc_vt;
+        o_globseg : OUT sf2ptcalc_vt
     );
 END seg_coord_transform; -- seg_coord_transform
 
@@ -120,9 +120,9 @@ BEGIN
         delta_r <= (others => '0');
     end generate STATION_GENERATE;
 
-    seed_i <= structify(i_seed);
-    locseg_i <= structify(i_locseg);
-    o_globseg <= vectorify(globseg);
+    seed_i <= structify(i_seed,seed_i);
+    locseg_i <= structify(i_locseg,locseg_i);
+    o_globseg <= vectorify(globseg,o_globseg);
 
     ARCTAN : rom
     GENERIC MAP(

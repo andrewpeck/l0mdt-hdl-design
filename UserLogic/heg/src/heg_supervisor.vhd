@@ -27,14 +27,13 @@ use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
 
---library hp_lib;
---use hp_lib.hp_pkg.all;
---library heg_lib;
---use heg_lib.heg_pkg.all;
-
-library hegtypes_lib;
-use hegtypes_lib.hp_pkg.all;
-use hegtypes_lib.heg_pkg.all;
+library hp_lib;
+use hp_lib.hp_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HEG_CTRL.all;
@@ -104,6 +103,8 @@ begin
         int_en <= '1';
         int_rst <= rst;
         apb_clk_cnt <= 0;
+        axi_cnt_reset <= '0';
+        axi_rep_clk <= '0';
       else
         --------------------------------------------
         --    AXI CLK CTRL
@@ -137,17 +138,18 @@ begin
           end if;
         -- else
         -- end if;
+
+        --------------------------------------------
+        --    counters
+        --------------------------------------------
+
+      end if;
         --------------------------------------------
         --    to apb
         --------------------------------------------
         mon_r.status.ENABLED <= local_en;
         mon_r.status.READY <= not local_rst;
         mon_r.status.ERROR <= '0';
-        --------------------------------------------
-        --    counters
-        --------------------------------------------
-
-      end if;
     end if;
   end process;
 

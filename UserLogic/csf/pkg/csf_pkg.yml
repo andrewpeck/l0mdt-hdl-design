@@ -1,0 +1,99 @@
+# yml2hdl v2
+# module csf
+
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg,common_constants_pkg,common_types_pkg,l0mdt_constants_pkg,l0mdt_dataformats_pkg]
+
+
+hdl:
+
+# - UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: UCM_VEC_ANG_LEN ]
+- UCM_MBAR_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
+
+- CSF_SEG_M_LEN       : [ qualifier: constant, type: integer, value: 15]
+- CSF_SEG_M_MULT      : [ qualifier: constant, type: real, value: 4096.0]
+- CSF_SEG_B_LEN       : [ qualifier: constant, type: integer, value: 13]
+- CSF_SEG_B_MULT      : [ qualifier: constant, type: real, value: 16.0]
+- CSF_SEG_CHI2_LEN    : [ qualifier: constant, type: integer, value: 15]
+- CSF_SEG_CHI2_MULT   : [ qualifier: constant, type: real, value: 4.0]
+- CSF_MAXHITS_SEG     : [ qualifier: constant, type: integer, value: 16]
+- CSF_MAXHITS_SEG_LEN : [qualifier: constant, type: integer, value: 4]
+- CSF_MAXHITS_ML_LEN  : [qualifier: constant, type: integer, value: 3]
+- CSF_MAX_CLUSTERS        : [qualifier: constant, type: integer, value: 6]
+- SUM_XY_LEN : [qualifier : constant, type: integer, value: CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN * 2]
+- SUM_Y_LEN : [qualifier : constant, type: integer, value: CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN]
+- SUM_X_LEN : [qualifier : constant, type: integer, value: CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN]
+- SUM_X2_LEN :  [qualifier : constant, type: integer, value: CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN*2]
+
+
+- csf_seed_rt:
+  - muid          : [ type: slc_muid_rt]
+  - mbar          : [ type: unsigned , length: UCM_VEC_ANG_LEN ]
+  - pos           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
+  - ang           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
+  # - chamber_ieta    : [ type: unsigned , length: SLC_CHAMBER_LEN ]
+  - mdtid         :  [type : vec_mdtid_rt]
+  - data_valid    : [ type: logic]
+
+- csf_hit_rt:
+  - valid : [type : logic]
+  - x     : [type : unsigned, length: MDT_LOCAL_X_LEN]
+  - y     : [type : unsigned, length: MDT_LOCAL_Y_LEN]
+- csf_hit_vt : [type: logic, length: csf_hit_rt]
+- csf_hit_art: [array: open ,  type: csf_hit_rt]
+- csf_hit_avt: [ array: open,  type: csf_hit_vt]
+
+- csf_locseg_rt:
+  - valid : [type : logic]
+  - b     : [type : signed, length: CSF_SEG_B_LEN]
+  - m     : [type : signed, length: CSF_SEG_M_LEN]
+  - chi2  : [type : unsigned, length: CSF_SEG_CHI2_LEN]
+  - nhits  : [type : unsigned, length: CSF_MAXHITS_SEG_LEN]
+- csf_locseg_vt : [type: logic, length: csf_locseg_rt]
+- csf_locseg_art: [array: open ,  type: csf_locseg_rt]
+- csf_locseg_avt: [ array: open,  type: csf_locseg_vt]
+# - csf_locseg_art: [array: open , type: csf_locseg_rt]
+
+- csf_sums_rt:
+  - valid : [type: logic]
+  - xy : [type: unsigned, length: SUM_XY_LEN]
+  - y : [type: unsigned, length: SUM_Y_LEN]
+  - x : [type: unsigned, length: SUM_X_LEN]
+  - x2 : [type: unsigned, length: SUM_X2_LEN]
+  - n : [type: unsigned, length: CSF_MAXHITS_SEG_LEN]
+- csf_sums_vt : [type: logic, length: csf_sums_rt]
+- csf_sums_art: [array: open,   type: csf_sums_rt]
+- csf_sums_avt: [array: open,   type: csf_sums_vt]
+
+# - SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
+# - SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]
+# - SF_SEG_ANG_LEN : [ qualifier: constant, type: integer, value: 15]
+# - SF_SEG_ANG_MULTI     : [qualifier: constant, type: real, value: 4096.0]
+# - SF_SEG_ANG_MULTI_LEN : [qualifier: constant, type: integer, value: 12]
+
+# - sf2pt:
+#   - data_valid  : [ type: logic]
+#   - muid        : [ type: slc_muid_rt]
+#   - chamber_ieta  : [ type: unsigned , length: SLC_CHAMBER_LEN ]
+#   - pos         : [ type: signed, length: SF_SEG_POS_LEN ]
+#   - angle       : [ type: signed, length: SF_SEG_ANG_LEN ]
+#   - quality     : [ type: logic]
+
+- sf_seg_data_barrel_rt:
+  - data_valid  : [ type: logic]
+  - muid        : [ type: slc_muid_rt]
+  - mdtid       : [type : vec_mdtid_rt]
+  - pos         : [ type: signed, length: SF_SEG_POS_LEN ]
+  - angle       : [ type: signed, length: SF_SEG_ANG_LEN ]
+  - quality     : [ type: logic]
+
+- sf_seg_data_endcap_rt:
+  - data_valid  : [ type: logic]
+  - muid        : [ type: slc_muid_rt]
+  - mdtid       : [type : vec_mdtid_rt]
+  - pos         : [ type: unsigned, length: SF_SEG_POS_LEN ]
+  - angle       : [ type: signed, length: SF_SEG_ANG_LEN ]
+  - quality     : [ type: logic]

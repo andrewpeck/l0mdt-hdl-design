@@ -50,10 +50,10 @@ entity ult_tb_reader_slc is
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0');
     -- Sector Logic Candidates
-    o_main_primary_slc    : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
-    o_main_secondary_slc  : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
-    o_plus_neighbor_slc   : out slc_rx_rvt := (others => '0');
-    o_minus_neighbor_slc  : out slc_rx_rvt := (others => '0')
+    o_main_primary_slc    : out slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
+    o_main_secondary_slc  : out slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
+    o_plus_neighbor_slc   : out slc_rx_vt := (others => '0');
+    o_minus_neighbor_slc  : out slc_rx_vt := (others => '0')
 
     -- o_slc_event_ai : out event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'))
   );
@@ -67,13 +67,20 @@ architecture sim of ult_tb_reader_slc is
   -- signal o_plus_neighbor_slc_ar     : slc_rx_rt;
   -- signal o_minus_neighbor_slc_ar    : slc_rx_rt;
 
+  signal temp_slc_rx_vt : slc_rx_vt;
+  constant SLC_RX_LEN : integer := temp_slc_rx_vt'length;
+
   type infifo_slc_counts is array (integer range <>) of integer;
 
-  type infifo_slc_mem_at is array (integer range <>) of slc_tb_at;
-  type infifo_event_mem_at is array (integer range <>) of input_slc_bus_at;
+  type infifo_slc_mem_at is array (integer range <>) of slc_tb_art;
+  type infifo_event_mem_at is array (integer range <>) of input_slc_art;
 
-  signal slc_element          : slc_tb_at := structify(std_logic_vector(to_unsigned(0,SLC_RX_LEN * TB_SLC_FIFO_WIDTH)));
-  signal event_element        : input_slc_bus_at := structify(std_logic_vector(to_unsigned(0,INPUT_SLC_LEN * TB_SLC_FIFO_WIDTH)));
+  signal slc_element_temp     : slc_tb_art;-- := nullify(slc_element);
+  signal slc_element          : slc_tb_art := nullify(slc_element_temp);
+  -- signal slc_element          : slc_tb_art := structify(std_logic_vector(to_unsigned(0,SLC_RX_LEN * TB_SLC_FIFO_WIDTH)),slc_element);
+  signal event_element_temp   : input_slc_art;-- := nullify(event_element);
+  signal event_element        : input_slc_art := nullify(event_element_temp);
+  -- signal event_element        : input_slc_art := structify(std_logic_vector(to_unsigned(0,INPUT_SLC_LEN * TB_SLC_FIFO_WIDTH)),event_element);
 
   signal slc_event_r          : input_slc_rt;
   signal slc_new_event        : input_slc_rt;
@@ -162,7 +169,8 @@ begin
     variable header       : sl_header_rt;
     variable trailer      : sl_trailer_rt;
     variable common       : slc_common_rt;
-    variable specific     : slc_barrel_rt;
+    variable specific_r     : slc_barrel_rt;
+    variable specific_v     : slc_barrel_vt;
 
     variable tcoverflow : std_logic;
 
@@ -200,7 +208,7 @@ begin
           for wr_i in 2 downto 0 loop
             if(v_slc_main_prim_counts(wr_i) > 0) then
               -- o_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
-              o_main_primary_slc(wr_i) <= vectorify(event_main_prim_fifo(wr_i)(0).slc);
+              o_main_primary_slc(wr_i) <= vectorify(event_main_prim_fifo(wr_i)(0).slc,o_main_primary_slc(wr_i));
               --
               slc_event_ai(wr_i + 2) <= event_main_prim_fifo(wr_i)(0).event;
               -- for test input read
@@ -303,7 +311,7 @@ begin
               trailer     => trailer
             );
 
-            specific :=(
+            specific_r :=(
               -- b_reserved  => (others => '0'),
               rpc0_posz   => to_signed(integer(real(z_RPC0) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC0_POSZ_LEN) ,
               rpc1_posz   => to_signed(integer(real(z_RPC1) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC1_POSZ_LEN) ,
@@ -317,7 +325,7 @@ begin
               slc => (
                 data_Valid  => '1',
                 common      => common,
-                specific    => std_logic_vector(vectorify(specific))
+                specific    => std_logic_vector(vectorify(specific_r,specific_v))
               )
             );
             row_counter := row_counter + 1;
@@ -432,7 +440,7 @@ begin
                   trailer     => trailer
                 );
 
-                specific :=(
+                specific_r :=(
                   -- b_reserved  => (others => '0'),
                   rpc0_posz   => to_signed(integer(real(z_RPC0) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC0_POSZ_LEN) ,
                   rpc1_posz   => to_signed(integer(real(z_RPC1) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC1_POSZ_LEN) ,
@@ -446,7 +454,7 @@ begin
                   slc => (
                     data_Valid  => '1',
                     common      => common,
-                    specific    => std_logic_vector(vectorify(specific))
+                    specific    => std_logic_vector(vectorify(specific_r,specific_v))
                   )
                 );
                 row_counter := row_counter + 1;

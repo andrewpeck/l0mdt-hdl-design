@@ -28,9 +28,9 @@ use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
 
 library hp_lib;
---use hp_lib.hp_pkg.all;
-library hegtypes_lib;
-use hegtypes_lib.hp_pkg.all;
+use hp_lib.hp_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
 
 entity hp_matching is
   generic(
@@ -47,7 +47,7 @@ entity hp_matching is
     -- time_offset         : in unsigned(7 downto 0);
     -- RoI_size            : in unsigned(7 downto 0);
     -- SLc
-    i_SLC_Window        : in hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    i_SLC_Window        : in hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     -- i_SLc_rpc_z         : in SLc_zpos_st;
     i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- i_SLc_z0            : in SLc_zpos_st;
@@ -67,6 +67,8 @@ architecture beh of hp_matching is
 
   constant TIME_LOW_ADJUST : integer := 10;--unsigned(MDT_TIME_LEN-1 downto 0) := to_unsigned(10,MDT_TIME_LEN);
 
+  constant c_HP_HITM_NUM_LAYERS : integer := get_num_layers(g_STATION_RADIUS);
+
   -- signal tube_high_limit, tube_low_limit : unsigned(MDT_TUBE_LEN - 1 downto 0);
   -- signal trLUT_valid : std_logic;
 
@@ -76,11 +78,13 @@ architecture beh of hp_matching is
 
   signal space_valid,time_valid : std_logic;
 
-  signal Roi_window : hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal Roi_window : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
 
 begin
 
-  Roi_window <= structify(i_SLC_Window);
+  loop1 : for li in c_HP_HITM_NUM_LAYERS - 1 downto 0 generate
+    Roi_window(li) <= structify(i_SLC_Window(li),Roi_window(li));
+  end generate ; -- loop1
 
   time_high_limit <= resize(
       (i_SLc_BCID & "00000") + to_unsigned(HP_BCID_OFFSET_TIME_078res,i_SLc_BCID'length + 5)

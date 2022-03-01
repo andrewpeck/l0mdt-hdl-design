@@ -4,7 +4,7 @@
 `ifndef TF_CTRL_SVH
 `define TF_CTRL_SVH
 
-`include <common_ieee.svh>
+`include <common_ieee_pkg.svh>
 
 
   typedef struct packed {

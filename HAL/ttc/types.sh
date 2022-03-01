@@ -16,5 +16,5 @@ python3 "$YML2HDL" -v -d "$DEST"          \
 	-a ieee.std_logic_1164            \
 	-a ieee.numeric_std               \
 	-a ieee.math_real                 \
-	-a shared_lib.common_ieee         \
+	-a shared_lib.common_ieee_pkg         \
         "$TTC_PKG/ttc_defs.yml"        

@@ -36,9 +36,9 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY ncsf_sums IS
     PORT (
         clk : IN STD_LOGIC;
-        i_hit : IN csf_hit_rvt;
+        i_hit : IN csf_hit_vt;
         i_fit_en : in STD_LOGIC;
-        o_sums : OUT csf_sums_rvt
+        o_sums : OUT csf_sums_vt
     );
 END ncsf_sums;
 
@@ -62,8 +62,8 @@ ARCHITECTURE Behavioral OF ncsf_sums IS
 
 BEGIN
 
-    hit <= structify(i_hit);
-    o_sums <= vectorify(sums);
+    hit <= structify(i_hit,hit);
+    o_sums <= vectorify(sums,o_sums);
 
     Summing : PROCESS (clk)
     BEGIN

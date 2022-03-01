@@ -24,16 +24,15 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
---library hp_lib;
---use hp_lib.hp_pkg.all;
---library heg_lib;
---use heg_lib.heg_pkg.all;
-library hegtypes_lib;
-use hegtypes_lib.hp_pkg.all;
-use hegtypes_lib.heg_pkg.all;
-
+library hp_lib;
+use hp_lib.hp_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -47,23 +46,23 @@ entity h2s_sump is
     -- mon               : out H2S_MON_t;
 
     -- TDC Hits from Polmux
-    i_inn_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- Sector Logic Candidates from uCM
-    i_inn_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_mid_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_out_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_ext_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_inn_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+    i_mid_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+    i_out_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+    i_ext_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
     -- Segments Out
-    o_inn_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_mid_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_out_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_ext_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_inn_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
+    o_mid_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
+    o_out_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
+    o_ext_segments_av  : out sf2ptcalc_avt (c_NUM_THREADS-1 downto 0);
     -- Segments Out to Neighbor
-    o_plus_neighbor_segments_av  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    o_minus_neighbor_segments_av : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments_av  : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments_av : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
     
     o_sump : out std_logic
   );

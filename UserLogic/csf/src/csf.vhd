@@ -50,11 +50,11 @@ entity csf is
   );
   port (
     clk       : in    std_logic;
-    i_seed    : in    heg2sfslc_rvt;
-    i_mdt_hit : in    heg2sfhit_rvt;
+    i_seed    : in    heg2sfslc_vt;
+    i_mdt_hit : in    heg2sfhit_vt;
     i_eof     : in    std_logic;
     i_rst     : in    std_logic;
-    o_seg     : out   sf2ptcalc_rvt;
+    o_seg     : out   sf2ptcalc_vt;
 
     --SpuBuffer -- TODO - This block has been moved to FM block - Can be removed here
     spy_clock           : in    std_logic;
@@ -64,13 +64,13 @@ entity csf is
     i_spyhit_freeze     : in    std_logic;
     i_spyhit_playback   : in    std_logic_vector(1 downto 0);
     i_spyhit_pb_we      : in    std_logic;
-    i_spyhit_pb_wdata   : in    heg2sfhit_rvt;
+    i_spyhit_pb_wdata   : in    heg2sfhit_vt;
     i_spyhit_re         : in    std_logic; --this should be enable signal in
                                            --new Spybuffer interface
     i_spyhit_meta_we    : in    std_logic;
     i_spyhit_addr       : in    std_logic_vector(SPYHIT_MEM_WIDTH - 1 downto 0);
     i_spyhit_meta_addr  : in   std_logic_vector(SPYHIT_EL_MEM_WIDTH - 1 downto 0);
-    o_spyhit_data       : out   heg2sfhit_rvt;
+    o_spyhit_data       : out   heg2sfhit_vt;
     o_spyhit_meta_rdata : out   std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
     i_spyhit_meta_wdata : in    std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
     o_spyhit_af         : out   std_logic;
@@ -82,13 +82,13 @@ entity csf is
     i_spyslc_freeze     : in    std_logic;
     i_spyslc_playback   : in    std_logic_vector(1 downto 0);
     i_spyslc_pb_we      : in    std_logic;
-    i_spyslc_pb_wdata   : in    heg2sfslc_rvt;
+    i_spyslc_pb_wdata   : in    heg2sfslc_vt;
     i_spyslc_re         : in    std_logic; --this should be enable signal in
                                            --new Spybuffer interface
     i_spyslc_addr       : in    std_logic_vector(SPYSLC_MEM_WIDTH - 1 downto 0);
     i_spyslc_meta_we    : in    std_logic;
     i_spyslc_meta_addr  : in    std_logic_vector(SPYSLC_EL_MEM_WIDTH - 1 downto 0);
-    o_spyslc_data       : out   heg2sfslc_rvt;
+    o_spyslc_data       : out   heg2sfslc_vt;
     o_spyslc_meta_rdata : out   std_logic_vector( SPY_META_DATA_WIDTH -1 downto 0);
     i_spyslc_meta_wdata : in    std_logic_vector( SPY_META_DATA_WIDTH -1 downto 0);
     o_spyslc_af         : out   std_logic;
@@ -100,13 +100,13 @@ entity csf is
     i_spyseg_freeze     : in    std_logic;
     i_spyseg_playback   : in    std_logic_vector(1 downto 0);
     i_spyseg_pb_we      : in    std_logic;
-    i_spyseg_pb_wdata   : in    sf2ptcalc_rvt;
+    i_spyseg_pb_wdata   : in    sf2ptcalc_vt;
     i_spyseg_re         : in    std_logic; --this should be enable signal in
                                            --new Spybuffer interface
     i_spyseg_addr       : in    std_logic_vector(SPYSEG_MEM_WIDTH - 1 downto 0);
     i_spyseg_meta_addr  : in    std_logic_vector(SPYSEG_EL_MEM_WIDTH - 1 downto 0);
     i_spyseg_meta_we    : in    std_logic;
-    o_spyseg_data       : out   sf2ptcalc_rvt;
+    o_spyseg_data       : out   sf2ptcalc_vt;
     o_spyseg_meta_rdata : out   std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
     i_spyseg_meta_wdata : in    std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
     o_spyseg_af         : out   std_logic;
@@ -118,17 +118,17 @@ architecture behavioral of csf is
 
   -- Input RoI
   signal seed_i   : heg2sfslc_rt;
-  signal seed     : heg2sfslc_rvt;
-  signal csf_seed : heg2sfslc_rvt;
+  signal seed     : heg2sfslc_vt;
+  signal csf_seed : heg2sfslc_vt;
 
   -- Input signals
-  signal csf_mdt_hit : heg2sfhit_rvt;
+  signal csf_mdt_hit : heg2sfhit_vt;
   signal mdt_hit     : heg2sfhit_rt;
-  signal mdt_hits    : heg2sfhit_bus_avt (1 downto 0);
+  signal mdt_hits    : heg2sfhit_avt (1 downto 0);
   signal eof         : std_logic;
 
   -- Histogram signals
-  signal histo_hit_max0, histo_hit_max1 : csf_hit_a_avt(1 downto 0);
+  signal histo_hit_max0, histo_hit_max1 : csf_hit_avt(1 downto 0);
 
   -- Fitters Signals
 
@@ -139,25 +139,25 @@ architecture behavioral of csf is
   type t_nhit is ARRAY (NATURAL RANGE <>)
     OF unsigned(CSF_MAXHITS_SEG_LEN - 1 downto 0);
 
-  signal fit_hit_histo0, fit_hit_histo1 : csf_hit_a_avt(NUM_FITTERS - 1 downto 0);
+  signal fit_hit_histo0, fit_hit_histo1 : csf_hit_avt(NUM_FITTERS - 1 downto 0);
   signal mfits                          : t_mfit(NUM_FITTERS - 1 downto 0);
   signal bfits                          : t_bfit(NUM_FITTERS - 1 downto 0);
   signal fit_valids                     : std_logic_vector(NUM_FITTERS - 1 downto 0);
   signal nhits                          : t_nhit(NUM_FITTERS - 1 downto 0);
 
   -- Chi2 Signals
-  signal chi2_segs : csf_locseg_a_avt(NUM_FITTERS - 1 downto 0);
+  signal chi2_segs : csf_locseg_avt(NUM_FITTERS - 1 downto 0);
   signal rst_chi2  : std_logic;
 
   -- Coordinate transformation
-  signal coord_seed     : heg2sfslc_rvt;
+  signal coord_seed     : heg2sfslc_vt;
 
 
 
   -- Output signal
-  signal output_segment : csf_locseg_rvt;
+  signal output_segment : csf_locseg_vt;
   signal out_seg        : csf_locseg_rt;
-  signal globseg        : sf2ptcalc_rvt;
+  signal globseg        : sf2ptcalc_vt;
 
   -- Components
   component spybuffer is
@@ -213,19 +213,19 @@ architecture behavioral of csf is
     );
     port (
       clk          : in    std_logic;
-      i_mdthit     : in    heg2sfhit_rvt;
-      i_seed       : in    heg2sfslc_rvt;
+      i_mdthit     : in    heg2sfhit_vt;
+      i_seed       : in    heg2sfslc_vt;
       i_eof        : in    std_logic;
-      o_histo_hit0 : out   csf_hit_rvt;
-      o_histo_hit1 : out   csf_hit_rvt
+      o_histo_hit0 : out   csf_hit_vt;
+      o_histo_hit1 : out   csf_hit_vt
     );
   end component csf_histogram;
 
   component csf_fitter is
     port (
       clk         : in    std_logic;
-      i_hit1      : in    csf_hit_rvt;
-      i_hit2      : in    csf_hit_rvt;
+      i_hit1      : in    csf_hit_vt;
+      i_hit2      : in    csf_hit_vt;
       o_mfit      : out   signed(CSF_SEG_M_LEN - 1 downto 0);
       o_bfit      : out   signed(CSF_SEG_B_LEN - 1 downto 0);
       o_fit_valid : out   std_logic;
@@ -236,21 +236,21 @@ architecture behavioral of csf is
   component csf_chi2 is
     port (
       clk         : in    std_logic;
-      i_hit1      : in    csf_hit_rvt;
-      i_hit2      : in    csf_hit_rvt;
+      i_hit1      : in    csf_hit_vt;
+      i_hit2      : in    csf_hit_vt;
       i_mfit      : in    signed(CSF_SEG_M_LEN - 1 downto 0);
       i_bfit      : in    signed(CSF_SEG_B_LEN - 1 downto 0);
       i_nhits     : in    unsigned(CSF_MAXHITS_SEG_LEN - 1 downto 0);
       i_fit_valid : in    std_logic;
-      o_seg       : out   csf_locseg_rvt
+      o_seg       : out   csf_locseg_vt
     );
   end component csf_chi2;
 
   component csf_chi2_comparison is
     port (
       clk        : in    std_logic;
-      i_segments : in    csf_locseg_a_avt(NUM_FITTERS - 1 downto 0);
-      o_segment  : out   csf_locseg_rvt
+      i_segments : in    csf_locseg_avt(NUM_FITTERS - 1 downto 0);
+      o_segment  : out   csf_locseg_vt
     );
   end component csf_chi2_comparison;
 
@@ -261,9 +261,9 @@ architecture behavioral of csf is
     );
     port (
       clk       : in    std_logic;
-      i_locseg  : in    csf_locseg_rvt;
-      i_seed    : in    heg2sfslc_rvt;
-      o_globseg : out   sf2ptcalc_rvt
+      i_locseg  : in    csf_locseg_vt;
+      i_seed    : in    heg2sfslc_vt;
+      o_globseg : out   sf2ptcalc_vt
     );
   end component seg_coord_transform;
 
@@ -275,8 +275,8 @@ begin
 
     hit_spybuffer : component spybuffer
       generic map (
-        DATA_WIDTH_A    => HEG2SFHIT_LEN,
-        DATA_WIDTH_B    => HEG2SFHIT_LEN,
+        DATA_WIDTH_A    => i_mdt_hit'length,
+        DATA_WIDTH_B    => i_mdt_hit'length,
         SPY_MEM_WIDTH_A => SPYHIT_MEM_WIDTH,
         SPY_MEM_WIDTH_B => SPYHIT_MEM_WIDTH,
         FC_FIFO_WIDTH   => 4,
@@ -305,7 +305,7 @@ begin
         spy_en                => i_spyhit_re, 
         spy_data              => o_spyhit_data,
         spy_clock_meta        => spy_clock,
- 	spy_meta_en           => '0',
+ 	      spy_meta_en           => '0',
         spy_meta_addr         => i_spyhit_meta_addr,
         spy_meta_read_data    => o_spyhit_meta_rdata,
         spy_meta_write_data   => i_spyhit_meta_wdata,
@@ -315,8 +315,8 @@ begin
 
     slc_spybuffer : component spybuffer
       generic map (
-        DATA_WIDTH_A    => HEG2SFSLC_LEN,
-        DATA_WIDTH_B    => HEG2SFSLC_LEN,
+        DATA_WIDTH_A    => i_seed'length,
+        DATA_WIDTH_B    => i_seed'length,
         SPY_MEM_WIDTH_A => SPYSLC_MEM_WIDTH,
         SPY_MEM_WIDTH_B => SPYSLC_MEM_WIDTH,
         FC_FIFO_WIDTH   => 4,
@@ -356,8 +356,8 @@ begin
 
     seg_spybuffer : component spybuffer
       generic map (
-        DATA_WIDTH_A    => SF2PTCALC_LEN,
-        DATA_WIDTH_B    => SF2PTCALC_LEN,
+        DATA_WIDTH_A    => globseg'length,
+        DATA_WIDTH_B    => globseg'length,
         SPY_MEM_WIDTH_A => SPYSEG_MEM_WIDTH,
         SPY_MEM_WIDTH_B => SPYSEG_MEM_WIDTH,
         FC_FIFO_WIDTH   => 4,
@@ -394,12 +394,12 @@ begin
 
       );
 
-    mdt_hit <= structify(csf_mdt_hit);
-    seed_i  <= structify(csf_seed);
+    mdt_hit <= structify(csf_mdt_hit,mdt_hit);
+    seed_i  <= structify(csf_seed,seed_i);
 
   ELSE GENERATE
-    mdt_hit <= structify(i_mdt_hit);
-    seed_i  <= structify(i_seed);
+    mdt_hit <= structify(i_mdt_hit,mdt_hit);
+    seed_i  <= structify(i_seed,seed_i);
     o_seg   <= globseg;
   end generate spybuffer_generate;
 
@@ -531,7 +531,7 @@ begin
       o_globseg => globseg
     );
 
-  out_seg <= structify(output_segment);
+  out_seg <= structify(output_segment,out_seg);
 
   csf_proc : process (clk) is
   begin

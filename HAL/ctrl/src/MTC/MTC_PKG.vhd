@@ -2,14 +2,12 @@
 -- https://gitlab.com/tcpaiva/yml2hdl
 
 library ieee;
-
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 library shared_lib;
-
-use shared_lib.common_ieee.all;
+use shared_lib.common_ieee_pkg.all;
 
 package MTC_CTRL is
 

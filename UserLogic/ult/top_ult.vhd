@@ -86,39 +86,39 @@
 --     fm_mon_r              : out FM_MON_t;
 
 --     -- TDC Hits from Polmux
---     i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
---     i_middle_tdc_hits : in mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
---     i_outer_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
---     i_extra_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+--     i_inner_tdc_hits  : in tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
+--     i_middle_tdc_hits : in tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
+--     i_outer_tdc_hits  : in tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+--     i_extra_tdc_hits  : in tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
 --     -- TDC Hits from Tar
---     -- i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
---     -- i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
---     -- i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
---     -- i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+--     -- i_inner_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+--     -- i_middle_tar_hits : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+--     -- i_outer_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+--     -- i_extra_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
 --     -- Sector Logic Candidates
---     i_main_primary_slc        : in slc_rx_bus_avt(2 downto 0);  -- is the main SL used
---     i_main_secondary_slc      : in slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
---     i_plus_neighbor_slc       : in slc_rx_rvt;
---     i_minus_neighbor_slc      : in slc_rx_rvt;
+--     i_main_primary_slc        : in slc_rx_avt(2 downto 0);  -- is the main SL used
+--     i_main_secondary_slc      : in slc_rx_avt(2 downto 0);  -- only used in the big endcap
+--     i_plus_neighbor_slc       : in slc_rx_vt;
+--     i_minus_neighbor_slc      : in slc_rx_vt;
 --     -- Segments in from neighbor
---     i_plus_neighbor_segments  : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
---     i_minus_neighbor_segments : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+--     i_plus_neighbor_segments  : in sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+--     i_minus_neighbor_segments : in sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
 --     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
---     o_daq_streams     : out felix_stream_bus_avt (c_HPS_MAX_HP_INN
+--     o_daq_streams     : out felix_stream_avt (c_HPS_MAX_HP_INN
 --                                                   + c_HPS_MAX_HP_MID
 --                                                   + c_HPS_MAX_HP_OUT - 1 downto 0);
---     -- o_daq_streams : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+--     -- o_daq_streams : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
 --     -- Segments Out to Neighbor
---     o_plus_neighbor_segments  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
---     o_minus_neighbor_segments : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+--     o_plus_neighbor_segments  : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+--     o_minus_neighbor_segments : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
 --     -- MUCTPI
---     o_MTC : out mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
---     o_NSP : out mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+--     o_MTC : out mtc_out_avt(c_NUM_MTC-1 downto 0);
+--     o_NSP : out mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
 --     sump : out std_logic
 

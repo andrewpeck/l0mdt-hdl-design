@@ -35,7 +35,7 @@ entity tdc_decoder_wrapper is
 
 
     -- TDC hits from CSM
-    tdc_hits_o  : out mdt_polmux_bus_avt (g_NUM_TDCS-1 downto 0);
+    tdc_hits_o  : out tdcpolmux2tar_avt (g_NUM_TDCS-1 downto 0);
     err_cnt_o   : out std16_array_t (g_NUM_TDCS-1 downto 0);
     synced_o    : out std_logic_vector (g_NUM_TDCS-1 downto 0);
     read_done_i : in  std_logic_vector (g_NUM_TDCS-1 downto 0)
@@ -95,10 +95,10 @@ begin
 
       tdc_hit.csmid      <= to_unsigned(g_CSM, tdc_hit.csmid'length);
       tdc_hit.tdcid      <= to_unsigned(I, tdc_hit.tdcid'length);
-      tdc_hit.tdc        <= structify(tdc_word);
+      tdc_hit.tdc        <= structify(tdc_word,tdc_hit.tdc);
       tdc_hit.data_valid <= tdc_valid;
 
-      tdc_hits_o(idx) <= vectorify (tdc_hit);
+      tdc_hits_o(idx) <= vectorify (tdc_hit,tdc_hits_o(idx));
 
       --------------------------------------------------------------------------------
       -- New TDC

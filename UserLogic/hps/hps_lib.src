@@ -1,4 +1,4 @@
-UserLogic/heg/hegtypes_lib.src lib=hegtypes_lib
+# UserLogic/heg/hegtypes_lib.src lib=hegtypes_lib
 UserLogic/hps/pkg/hps_pkg.vhd
 UserLogic/hps/src/hps_sf_wrap.vhd
 UserLogic/hps/src/hps_pc.vhd

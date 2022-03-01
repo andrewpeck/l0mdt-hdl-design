@@ -57,18 +57,18 @@ use ptc_lib.pt_params_pkg.all;
 entity segment_selector is
     port (
         clk               : in std_logic;
-        i_seg_I          : in  sf2ptcalc_rvt;
-        i_seg_M          : in  sf2ptcalc_rvt;
-        i_seg_O          : in  sf2ptcalc_rvt;
-        i_nsp_seg_I      : in  sf2ptcalc_rvt;
-        i_nsp_seg_M      : in  sf2ptcalc_rvt;
-        i_nsp_seg_O      : in  sf2ptcalc_rvt;
-        i_nsm_seg_I      : in  sf2ptcalc_rvt;
-        i_nsm_seg_M      : in  sf2ptcalc_rvt;
-        i_nsm_seg_O      : in  sf2ptcalc_rvt;
-        o_seg_I          : out sf2ptcalc_rvt;
-        o_seg_M          : out sf2ptcalc_rvt;
-        o_seg_O          : out sf2ptcalc_rvt
+        i_seg_I          : in  sf2ptcalc_vt;
+        i_seg_M          : in  sf2ptcalc_vt;
+        i_seg_O          : in  sf2ptcalc_vt;
+        i_nsp_seg_I      : in  sf2ptcalc_vt;
+        i_nsp_seg_M      : in  sf2ptcalc_vt;
+        i_nsp_seg_O      : in  sf2ptcalc_vt;
+        i_nsm_seg_I      : in  sf2ptcalc_vt;
+        i_nsm_seg_M      : in  sf2ptcalc_vt;
+        i_nsm_seg_O      : in  sf2ptcalc_vt;
+        o_seg_I          : out sf2ptcalc_vt;
+        o_seg_M          : out sf2ptcalc_vt;
+        o_seg_O          : out sf2ptcalc_vt
     );
 end segment_selector; -- segment_selector
 
@@ -97,19 +97,19 @@ architecture Behavioral of segment_selector is
     signal outseg_I, outseg_M, outseg_O : sf2ptcalc_rt;
 
 begin
-    seg_I <= structify(i_seg_I);
-    seg_M <= structify(i_seg_M);
-    seg_O <= structify(i_seg_O);
-    nsm_seg_I <= structify(i_nsm_seg_I);
-    nsm_seg_M <= structify(i_nsm_seg_M);
-    nsm_seg_O <= structify(i_nsm_seg_O);
-    nsp_seg_I <= structify(i_nsp_seg_I);
-    nsp_seg_M <= structify(i_nsp_seg_M);
-    nsp_seg_O <= structify(i_nsp_seg_O);
+    seg_I <= structify(i_seg_I,seg_I);
+    seg_M <= structify(i_seg_M,seg_M);
+    seg_O <= structify(i_seg_O,seg_O);
+    nsm_seg_I <= structify(i_nsm_seg_I,nsm_seg_I);
+    nsm_seg_M <= structify(i_nsm_seg_M,nsm_seg_M);
+    nsm_seg_O <= structify(i_nsm_seg_O,nsm_seg_O);
+    nsp_seg_I <= structify(i_nsp_seg_I,nsp_seg_I);
+    nsp_seg_M <= structify(i_nsp_seg_M,nsp_seg_M);
+    nsp_seg_O <= structify(i_nsp_seg_O,nsp_seg_O);
 
-    o_seg_I <= vectorify(outseg_I);
-    o_seg_M <= vectorify(outseg_M);
-    o_seg_O <= vectorify(outseg_O);
+    o_seg_I <= vectorify(outseg_I,o_seg_I);
+    o_seg_M <= vectorify(outseg_M,o_seg_M);
+    o_seg_O <= vectorify(outseg_O,o_seg_O);
 
     SelProc : process( clk )
         begin

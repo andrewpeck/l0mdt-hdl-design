@@ -30,9 +30,9 @@ package ttc_defs_pkg is
     rst : std_logic;
   end record ttc_sys_rt;
   constant TTC_SYS_LEN : integer := 3;
-  subtype ttc_sys_rvt is std_logic_vector(TTC_SYS_LEN-1 downto 0);
-  function vectorify(x: ttc_sys_rt) return ttc_sys_rvt;
-  function structify(x: ttc_sys_rvt) return ttc_sys_rt;
+  subtype ttc_sys_vt is std_logic_vector(TTC_SYS_LEN-1 downto 0);
+  function vectorify(x: ttc_sys_rt) return ttc_sys_vt;
+  function structify(x: ttc_sys_vt) return ttc_sys_rt;
   function nullify(x: ttc_sys_rt) return ttc_sys_rt;
 
   type ttc_fmt_rt is record
@@ -46,9 +46,9 @@ package ttc_defs_pkg is
     reserved4 : std_logic;
   end record ttc_fmt_rt;
   constant TTC_FMT_LEN : integer := 8;
-  subtype ttc_fmt_rvt is std_logic_vector(TTC_FMT_LEN-1 downto 0);
-  function vectorify(x: ttc_fmt_rt) return ttc_fmt_rvt;
-  function structify(x: ttc_fmt_rvt) return ttc_fmt_rt;
+  subtype ttc_fmt_vt is std_logic_vector(TTC_FMT_LEN-1 downto 0);
+  function vectorify(x: ttc_fmt_rt) return ttc_fmt_vt;
+  function structify(x: ttc_fmt_vt) return ttc_fmt_rt;
   function nullify(x: ttc_fmt_rt) return ttc_fmt_rt;
 
   -- 320MHz domain
@@ -60,9 +60,9 @@ package ttc_defs_pkg is
     bx : std_logic;
   end record ttc_cmd_rt;
   constant TTC_CMD_LEN : integer := 5;
-  subtype ttc_cmd_rvt is std_logic_vector(TTC_CMD_LEN-1 downto 0);
-  function vectorify(x: ttc_cmd_rt) return ttc_cmd_rvt;
-  function structify(x: ttc_cmd_rvt) return ttc_cmd_rt;
+  subtype ttc_cmd_vt is std_logic_vector(TTC_CMD_LEN-1 downto 0);
+  function vectorify(x: ttc_cmd_rt) return ttc_cmd_vt;
+  function structify(x: ttc_cmd_vt) return ttc_cmd_rt;
   function nullify(x: ttc_cmd_rt) return ttc_cmd_rt;
 
   type ttc_counters_rt is record
@@ -71,9 +71,9 @@ package ttc_defs_pkg is
     orid : orid_t;
   end record ttc_counters_rt;
   constant TTC_COUNTERS_LEN : integer := 76;
-  subtype ttc_counters_rvt is std_logic_vector(TTC_COUNTERS_LEN-1 downto 0);
-  function vectorify(x: ttc_counters_rt) return ttc_counters_rvt;
-  function structify(x: ttc_counters_rvt) return ttc_counters_rt;
+  subtype ttc_counters_vt is std_logic_vector(TTC_COUNTERS_LEN-1 downto 0);
+  function vectorify(x: ttc_counters_rt) return ttc_counters_vt;
+  function structify(x: ttc_counters_vt) return ttc_counters_rt;
   function nullify(x: ttc_counters_rt) return ttc_counters_rt;
 
   type ttc_i_rt is record
@@ -81,9 +81,9 @@ package ttc_defs_pkg is
     data : std_logic_vector(TTC_FMT_LEN-1 downto 0);
   end record ttc_i_rt;
   constant TTC_I_LEN : integer := 11;
-  subtype ttc_i_rvt is std_logic_vector(TTC_I_LEN-1 downto 0);
-  function vectorify(x: ttc_i_rt) return ttc_i_rvt;
-  function structify(x: ttc_i_rvt) return ttc_i_rt;
+  subtype ttc_i_vt is std_logic_vector(TTC_I_LEN-1 downto 0);
+  function vectorify(x: ttc_i_rt) return ttc_i_vt;
+  function structify(x: ttc_i_vt) return ttc_i_rt;
   function nullify(x: ttc_i_rt) return ttc_i_rt;
 
   type ttc_ort is record
@@ -112,15 +112,15 @@ end package ttc_defs_pkg;
 
 package body ttc_defs_pkg is
 
-  function vectorify(x: ttc_sys_rt) return ttc_sys_rvt is
-    variable y : ttc_sys_rvt;
+  function vectorify(x: ttc_sys_rt) return ttc_sys_vt is
+    variable y : ttc_sys_vt;
   begin
     y(2 downto 2)              := vectorify(x.clk40);
     y(1 downto 1)              := vectorify(x.clk320);
     y(0 downto 0)              := vectorify(x.rst);
     return y;
   end function vectorify;
-  function structify(x: ttc_sys_rvt) return ttc_sys_rt is
+  function structify(x: ttc_sys_vt) return ttc_sys_rt is
     variable y : ttc_sys_rt;
   begin
     y.clk40                    := structify(x(2 downto 2));
@@ -137,8 +137,8 @@ package body ttc_defs_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: ttc_fmt_rt) return ttc_fmt_rvt is
-    variable y : ttc_fmt_rvt;
+  function vectorify(x: ttc_fmt_rt) return ttc_fmt_vt is
+    variable y : ttc_fmt_vt;
   begin
     y(7 downto 7)              := vectorify(x.bcr);
     y(6 downto 6)              := vectorify(x.ecr);
@@ -150,7 +150,7 @@ package body ttc_defs_pkg is
     y(0 downto 0)              := vectorify(x.reserved4);
     return y;
   end function vectorify;
-  function structify(x: ttc_fmt_rvt) return ttc_fmt_rt is
+  function structify(x: ttc_fmt_vt) return ttc_fmt_rt is
     variable y : ttc_fmt_rt;
   begin
     y.bcr                      := structify(x(7 downto 7));
@@ -177,8 +177,8 @@ package body ttc_defs_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: ttc_cmd_rt) return ttc_cmd_rvt is
-    variable y : ttc_cmd_rvt;
+  function vectorify(x: ttc_cmd_rt) return ttc_cmd_vt is
+    variable y : ttc_cmd_vt;
   begin
     y(4 downto 4)              := vectorify(x.bcr);
     y(3 downto 3)              := vectorify(x.ocr);
@@ -187,7 +187,7 @@ package body ttc_defs_pkg is
     y(0 downto 0)              := vectorify(x.bx);
     return y;
   end function vectorify;
-  function structify(x: ttc_cmd_rvt) return ttc_cmd_rt is
+  function structify(x: ttc_cmd_vt) return ttc_cmd_rt is
     variable y : ttc_cmd_rt;
   begin
     y.bcr                      := structify(x(4 downto 4));
@@ -208,15 +208,15 @@ package body ttc_defs_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: ttc_counters_rt) return ttc_counters_rvt is
-    variable y : ttc_counters_rvt;
+  function vectorify(x: ttc_counters_rt) return ttc_counters_vt is
+    variable y : ttc_counters_vt;
   begin
     y(75 downto 64)            := vectorify(x.bcid);
     y(63 downto 32)            := vectorify(x.evid);
     y(31 downto 0)             := vectorify(x.orid);
     return y;
   end function vectorify;
-  function structify(x: ttc_counters_rvt) return ttc_counters_rt is
+  function structify(x: ttc_counters_vt) return ttc_counters_rt is
     variable y : ttc_counters_rt;
   begin
     y.bcid                     := structify(x(75 downto 64));
@@ -233,14 +233,14 @@ package body ttc_defs_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: ttc_i_rt) return ttc_i_rvt is
-    variable y : ttc_i_rvt;
+  function vectorify(x: ttc_i_rt) return ttc_i_vt is
+    variable y : ttc_i_vt;
   begin
     y(10 downto 8)             := vectorify(x.sys);
     y(7 downto 0)              := vectorify(x.data);
     return y;
   end function vectorify;
-  function structify(x: ttc_i_rvt) return ttc_i_rt is
+  function structify(x: ttc_i_vt) return ttc_i_rt is
     variable y : ttc_i_rt;
   begin
     y.sys                      := structify(x(10 downto 8));

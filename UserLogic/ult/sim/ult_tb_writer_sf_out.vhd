@@ -171,12 +171,12 @@ begin
   HPS_INN: if c_STATIONS_IN_SECTOR(0) = '1' generate
     constant lc_ST_ID : integer := 0;
     --
-    alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_bus_avt >>;
-    alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_bus_avt >>;
+    alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
+    alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
     alias heg2sf_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
-    signal heg2sf_slc_ar  : heg2sfslc_bus_at(c_NUM_THREADS -1 downto 0);
-    signal heg2sf_hit_ar  : heg2sfhit_bus_at(c_NUM_THREADS -1 downto 0);
-    signal heg2sf_ctrl_ar : hps_ctrl2sf_at(c_NUM_THREADS -1 downto 0);
+    signal heg2sf_slc_ar  : heg2sfslc_art(c_NUM_THREADS -1 downto 0);
+    signal heg2sf_hit_ar  : heg2sfhit_art(c_NUM_THREADS -1 downto 0);
+    signal heg2sf_ctrl_ar : hps_ctrl2sf_art(c_NUM_THREADS -1 downto 0);
 
   begin
     heg2sf_hit_ar  <= structify(heg2sf_hit_av );
@@ -237,8 +237,8 @@ begin
   HPS_MID: if c_STATIONS_IN_SECTOR(1) = '1' generate
     constant lc_ST_ID : integer := 1;
     --
-    alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_bus_avt >>;
-    alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_bus_avt >>;
+    alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
+    alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
     alias heg2sf_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
 
   begin

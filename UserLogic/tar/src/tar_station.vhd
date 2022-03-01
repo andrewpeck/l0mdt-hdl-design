@@ -52,9 +52,9 @@ entity tar_station is
     -- supervisor
     i_freeze          : in std_logic :=  '0';
     -- data
-    i_tdc_hits_av    : in  mdt_polmux_bus_avt (g_ARRAY_LEN -1 downto 0);
-    o_tdc_hits_av    : out mdt_polmux_bus_avt(g_ARRAY_LEN -1 downto 0);
-    o_tar_hits_av    : out tar2hps_bus_avt(g_ARRAY_LEN -1 downto 0)
+    i_tdc_hits_av    : in  tdcpolmux2tar_avt (g_ARRAY_LEN -1 downto 0);
+    o_tdc_hits_av    : out tdcpolmux2tar_avt(g_ARRAY_LEN -1 downto 0);
+    o_tar_hits_av    : out tar2hps_avt(g_ARRAY_LEN -1 downto 0)
     
   );
 end entity tar_station;
@@ -73,8 +73,8 @@ architecture beh of tar_station is
   signal ctrl_apb_mem_av : ctrl_apb_mem_avt;
   signal mon_apb_mem_av  : mon_apb_mem_avt; 
 
-  signal i_tdc_hits_ar : mdt_polmux_bus_at(g_ARRAY_LEN -1 downto 0);
-  signal int_tdc_hits_av : mdt_polmux_bus_avt(g_ARRAY_LEN -1 downto 0);
+  signal i_tdc_hits_ar : tdcpolmux2tar_art(g_ARRAY_LEN -1 downto 0);
+  signal int_tdc_hits_av : tdcpolmux2tar_avt(g_ARRAY_LEN -1 downto 0);
 
 
 begin
@@ -82,7 +82,10 @@ begin
   ctrl_r <= convert(ctrl_v,ctrl_r);
   mon_v <= convert(mon_r,mon_v);
 
-  i_tdc_hits_ar <= structify(i_tdc_hits_av);
+  tdc_loop: for b_i in g_ARRAY_LEN -1 downto 0 generate
+    i_tdc_hits_ar(b_i) <= convert(i_tdc_hits_av(b_i),i_tdc_hits_ar(b_i));
+  end generate tdc_loop;
+  
   
   PL_ARRAY : for b_i in g_ARRAY_LEN -1 downto 0 generate
 

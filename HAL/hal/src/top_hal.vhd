@@ -75,34 +75,34 @@ entity top_hal is
     --------------------------------------------------------------------------------
 
     -- TDC hits from CSM
-    tdc_hits_inner  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
-    tdc_hits_middle : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
-    tdc_hits_outer  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
-    tdc_hits_extra  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
+    tdc_hits_inner  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+    tdc_hits_middle : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+    tdc_hits_outer  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+    tdc_hits_extra  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- SLC
     --------------------------------------------------------------------------------
 
-    main_primary_slc   : out slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-    main_secondary_slc : out slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
-    plus_neighbor_slc  : out slc_rx_rvt;
-    minus_neighbor_slc : out slc_rx_rvt;
+    main_primary_slc   : out slc_rx_avt(2 downto 0);  -- is the main SL used
+    main_secondary_slc : out slc_rx_avt(2 downto 0);  -- only used in the big endcap
+    plus_neighbor_slc  : out slc_rx_vt;
+    minus_neighbor_slc : out slc_rx_vt;
 
     -- pt from neighbor
-    plus_neighbor_segments_o  : out sf2pt_bus_avt (c_NUM_SF_INPUTS -1 downto 0);
-    minus_neighbor_segments_o : out sf2pt_bus_avt (c_NUM_SF_INPUTS -1 downto 0);
+    plus_neighbor_segments_o  : out sf2ptcalc_avt (c_NUM_SF_INPUTS -1 downto 0);
+    minus_neighbor_segments_o : out sf2ptcalc_avt (c_NUM_SF_INPUTS -1 downto 0);
 
     -- pt to neighbor
-    plus_neighbor_segments_i  : in sf2pt_bus_avt (c_NUM_SF_OUTPUTS -1 downto 0);
-    minus_neighbor_segments_i : in sf2pt_bus_avt (c_NUM_SF_OUTPUTS -1 downto 0);
+    plus_neighbor_segments_i  : in sf2ptcalc_avt (c_NUM_SF_OUTPUTS -1 downto 0);
+    minus_neighbor_segments_i : in sf2ptcalc_avt (c_NUM_SF_OUTPUTS -1 downto 0);
 
     --------------------------------------------------------------------------------
     -- NSP + MUCTPI
     --------------------------------------------------------------------------------
 
-    MTC_i : in mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-    NSP_i : in mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+    MTC_i : in mtc_out_avt(c_NUM_MTC-1 downto 0);
+    NSP_i : in mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- felix
@@ -111,7 +111,7 @@ entity top_hal is
     -- FIXME: note that right now (10/19/2021) the daq stream is a 65 bit field,
     -- which needs to change somehow to pack into the 32 bit / bx that we can
     -- send to FELIX
-    daq_streams : in FELIX_STREAM_bus_avt (c_HPS_MAX_HP_INN
+    daq_streams : in felix_stream_avt (c_HPS_MAX_HP_INN
                                            + c_HPS_MAX_HP_MID
                                            + c_HPS_MAX_HP_OUT - 1 downto 0);
 
@@ -182,7 +182,7 @@ architecture behavioral of top_hal is
   -- TDC Glue
   --------------------------------------------------------------------------------
 
-  signal tdc_hits_to_polmux    : mdt_polmux_bus_avt (c_NUM_TDC_INPUTS-1 downto 0);
+  signal tdc_hits_to_polmux    : tdcpolmux2tar_avt (c_NUM_TDC_INPUTS-1 downto 0);
   signal read_done_from_polmux : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
 
   --------------------------------------------------------------------------------
@@ -209,7 +209,7 @@ architecture behavioral of top_hal is
   signal sl_tx_ctrl           : sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_ctrl           : sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_slide          : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-  signal sl_rx_data           : slc_rx_bus_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_rx_data           : slc_rx_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_tx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_data_sump      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
@@ -503,7 +503,7 @@ begin  -- architecture behavioral
       constant hi       : integer := polmux_hi_lo (id).hi;
       constant lo       : integer := polmux_hi_lo (id).lo;
       constant width    : integer := hi-lo+1;
-      signal tdc_hits_o : tdcpolmux2tar_rvt;
+      signal tdc_hits_o : tdcpolmux2tar_vt;
     begin
 
       assert false report "Generating PolMux #" & integer'image(id)

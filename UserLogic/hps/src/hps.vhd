@@ -26,16 +26,15 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
---library hp_lib;
---use hp_lib.hp_pkg.all;
+library hp_lib;
+use hp_lib.hp_pkg.all;
 library heg_lib;
---use heg_lib.heg_pkg.all;
-
-library hegtypes_lib;
-use hegtypes_lib.hp_pkg.all;
-use hegtypes_lib.heg_pkg.all;
+use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -58,11 +57,11 @@ entity hps is
     mon_v             : out std_logic_vector;--HPS_MON_t;
     h2s_fm_data       : out fm_rt_array(0 to h2s_sb_single_station_n - 1);
     -- SLc
-    i_uCM2hps_av      : in  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+    i_uCM2hps_av      : in  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av      : in  tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+    i_mdt_tar_av      : in  tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc
-    o_sf2pt_av        : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
+    o_sf2pt_av        : out sf2ptcalc_avt(c_NUM_THREADS -1 downto 0)
     );
 end entity hps;
 
@@ -118,8 +117,8 @@ architecture beh of hps is
   -- signal control_enable(c_NUM_THREADS -1 downto 0);
 
   signal heg2sf_ctrl_av : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
-  signal heg2sfslc_av   : heg2sfslc_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal heg2sfhit_av   : heg2sfhit_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sfslc_av   : heg2sfslc_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sfhit_av   : heg2sfhit_avt(c_NUM_THREADS -1 downto 0);
 
 
   signal sf_fm_data_th  : sf_single_station_array;

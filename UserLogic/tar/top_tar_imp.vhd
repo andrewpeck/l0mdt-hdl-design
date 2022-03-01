@@ -37,7 +37,8 @@ use ctrl_lib.tar_CTRL.all;
 
 entity top_tar is
   generic(
-    g_HPS_MAX_HP : integer := 6
+    g_HPS_MAX_HP : integer := 6;
+    g_STATION :   integer := 0
   );
   port (
     clk                 : in std_logic;
@@ -65,12 +66,12 @@ architecture beh of top_tar is
   signal ctrl_v             : std_logic_vector(c_CTRL_LEN -1 downto 0);
   signal mon_v              : std_logic_vector(c_MON_LEN -1 downto 0);
 
-  signal i_tdc_hits_av    : mdt_polmux_bus_avt (g_HPS_MAX_HP -1 downto 0);
+  signal i_tdc_hits_av    : tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0);
   -- TDC polmux from Tar
-  signal o_tdc_hits_av    : mdt_polmux_bus_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tdc_hits_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
 
   -- TDC Hits from Tar
-  signal o_tar_hits_av    : tar2hps_bus_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tar_hits_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
 
 
 begin
@@ -79,14 +80,26 @@ begin
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
   tdc_inn: for i_h in g_HPS_MAX_HP - 1 downto 0 generate
-    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_tdc_hits_ab(i_h),o_data => i_tdc_hits_av(i_h));
+    des : entity shared_lib.vhdl_utils_deserializer 
+      generic map (
+        g_DATA_WIDTH => i_tdc_hits_av(i_h)'length
+      )
+      port map(
+        clk => clk,
+        rst  => rst,
+        i_data => i_tdc_hits_ab(i_h),
+        o_data => i_tdc_hits_av(i_h)
+      );
     o_tdc_hits_ab(i_h) <= xor_reduce(o_tdc_hits_av(i_h));
     o_tar_hits_ab(i_h) <= xor_reduce(o_tar_hits_av(i_h));
   end generate;
   --------------------------------------------------------------
 
   TAR : entity tar_lib.tar
-  generic map(g_HPS_MAX_HP)
+  generic map(
+    g_HPS_MAX_HP => g_HPS_MAX_HP,
+    g_STATION => g_STATION
+  )
   port map (
     -- clock, control, and monitoring
     clk             => clk,

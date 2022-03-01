@@ -99,37 +99,37 @@ entity top_ult is
     
 
     -- TDC Hits from Polmux
-    i_inn_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- TDC Hits from Tar
-    -- i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    -- i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    -- i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    -- i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    -- i_inner_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+    -- i_middle_tar_hits : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+    -- i_outer_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+    -- i_extra_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates
-    i_main_primary_slc_ab        : in std_logic_vector(2 downto 0);--slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-    i_main_secondary_slc_ab      : in std_logic_vector(2 downto 0);--slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
-    i_plus_neighbor_slc_b       : in std_logic;--slc_rx_rvt;
-    i_minus_neighbor_slc_b      : in std_logic;--slc_rx_rvt;
+    i_main_primary_slc_ab        : in std_logic_vector(2 downto 0);--slc_rx_avt(2 downto 0);  -- is the main SL used
+    i_main_secondary_slc_ab      : in std_logic_vector(2 downto 0);--slc_rx_avt(2 downto 0);  -- only used in the big endcap
+    i_plus_neighbor_slc_b       : in std_logic;--slc_rx_vt;
+    i_minus_neighbor_slc_b      : in std_logic;--slc_rx_vt;
     -- Segments in from neighbor
-    i_plus_neighbor_segments_ab  : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_minus_neighbor_segments_ab : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments_ab  : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_minus_neighbor_segments_ab : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    o_daq_streams_ab     : out std_logic_vector(c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);--felix_stream_bus_avt (c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);
-    -- o_daq_streams : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    o_daq_streams_ab     : out std_logic_vector(c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);--felix_stream_avt (c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);
+    -- o_daq_streams : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
-    o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
     -- MUCTPI
-    o_MTC_ab : out std_logic_vector(c_NUM_MTC-1 downto 0);--mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-    o_NSP_ab : out std_logic_vector(c_NUM_NSP-1 downto 0);--mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+    o_MTC_ab : out std_logic_vector(c_NUM_MTC-1 downto 0);--mtc_out_avt(c_NUM_MTC-1 downto 0);
+    o_NSP_ab : out std_logic_vector(c_NUM_NSP-1 downto 0);--mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
     sump : out std_logic
 
@@ -204,10 +204,13 @@ architecture behavioral of top_ult is
   signal fm_ctrl_v             : std_logic_vector(len(fm_ctrl_r ) -1 downto 0);
   signal fm_mon_v              : std_logic_vector(len(fm_mon_r  ) -1 downto 0);
 
-  signal i_inner_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_middle_tdc_hits : mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_outer_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_extra_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_inner_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
+  signal i_middle_tdc_hits : tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
+  signal i_outer_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+  signal i_extra_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+
+  signal temp_tdcpolmux2tar_vt : tdcpolmux2tar_vt;
+  constant TDCPOLMUX2TAR_LEN : integer := temp_tdcpolmux2tar_vt'length;
 
   type mdt_polmux_bus_std_avt is array(integer range <>) of std_logic_vector(TDCPOLMUX2TAR_LEN - 1 downto 0);
 
@@ -216,12 +219,13 @@ architecture behavioral of top_ult is
   signal i_out_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_OUT -1 downto 0);
   signal i_ext_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
-  
+  signal temp_slc_rx_vt : slc_rx_vt;
+  constant SLC_RX_LEN : integer := temp_slc_rx_vt'length;
 
-  signal i_main_primary_slc        :slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-  signal i_main_secondary_slc      :slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
-  signal i_plus_neighbor_slc       :slc_rx_rvt;
-  signal i_minus_neighbor_slc      :slc_rx_rvt;
+  signal i_main_primary_slc        :slc_rx_avt(2 downto 0);  -- is the main SL used
+  signal i_main_secondary_slc      :slc_rx_avt(2 downto 0);  -- only used in the big endcap
+  signal i_plus_neighbor_slc       :slc_rx_vt;
+  signal i_minus_neighbor_slc      :slc_rx_vt;
 
   type slc_rx_bus_std_avt is array(integer range <>) of std_logic_vector(SLC_RX_LEN - 1 downto 0);
 
@@ -230,21 +234,24 @@ architecture behavioral of top_ult is
   signal i_plus_neighbor_slc_av       :slc_rx_bus_std_avt(0 downto 0);
   signal i_minus_neighbor_slc_av      :slc_rx_bus_std_avt(0 downto 0);
 
-  signal i_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-  signal i_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+  signal i_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+  signal i_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+
+  signal temp_sf2ptcalc_vt : sf2ptcalc_vt;
+  constant SF2PTCALC_LEN : integer := temp_sf2ptcalc_vt'length;
 
   type sf2pt_bus_std_avt is array(integer range <>) of std_logic_vector(SF2PTCALC_LEN - 1 downto 0);
 
   signal i_plus_neighbor_segments_av  : sf2pt_bus_std_avt(c_NUM_SF_INPUTS - 1 downto 0);
   signal i_minus_neighbor_segments_av : sf2pt_bus_std_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
-  signal o_daq_streams     : felix_stream_bus_avt (c_HPS_MAX_HP_INN  + c_HPS_MAX_HP_MID  + c_HPS_MAX_HP_OUT - 1 downto 0);
+  signal o_daq_streams     : felix_stream_avt (c_HPS_MAX_HP_INN  + c_HPS_MAX_HP_MID  + c_HPS_MAX_HP_OUT - 1 downto 0);
 
-  signal o_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-  signal o_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal o_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal o_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
-  signal o_MTC : mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-  signal o_NSP : mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+  signal o_MTC : mtc_out_avt(c_NUM_MTC-1 downto 0);
+  signal o_NSP : mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
 begin
 
@@ -332,7 +339,9 @@ begin
   des_m : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_minus_neighbor_slc_b,o_data => i_minus_neighbor_slc);
   --------------------------------------------------------------
   ns_p: for i_h in c_NUM_SF_INPUTS - 1 downto 0 generate
-    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SF2PTCALC_LEN)port map(clk => clk,rst  => rst,i_data => i_plus_neighbor_segments_ab(i_h),o_data => i_plus_neighbor_segments_av(i_h));
+    des : entity shared_lib.vhdl_utils_deserializer 
+      generic map (g_DATA_WIDTH => SF2PTCALC_LEN)
+      port map(clk => clk,rst  => rst,i_data => i_plus_neighbor_segments_ab(i_h),o_data => i_plus_neighbor_segments_av(i_h));
     i_plus_neighbor_segments(i_h) <= i_plus_neighbor_segments_av(i_h);
   end generate;
 
@@ -345,8 +354,8 @@ begin
     o_daq_streams_ab(i_d) <= xor_reduce(o_daq_streams(i_d));
   end generate;
   --------------------------------------------------------------
-  -- o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-  -- o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  -- o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  -- o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
   pns: for i_d in c_NUM_SF_OUTPUTS - 1 downto 0 generate
     o_plus_neighbor_segments_ab(i_d) <= xor_reduce(o_plus_neighbor_segments(i_d));
   end generate;

@@ -30,9 +30,10 @@ use hp_lib.hp_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
+use ctrl_lib.HPS_CTRL_DEF.all;
 
 
-entity top_hp_tb is
+entity hp_tb is
   generic (
     PRJ_INFO            : string  := "BA3";
     g_STATION_RADIUS    : integer := 0;
@@ -47,29 +48,35 @@ entity top_hp_tb is
     -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
     DUMMY               : boolean := false
     );
-end entity top_hp_tb;
+end entity hp_tb;
 
-architecture beh of top_hp_tb is
-
-  signal clk              : std_logic;
-  signal rst              : std_logic;
-  signal glob_en          : std_logic;
-
-  constant c_CTRL_LEN     : integer := 41;--len(ctrl_r)
-  constant c_MON_LEN      : integer := 10;--len(mon_r)
-  signal ctrl_r           : HPS_HEG_HEG_HP_HP_CTRL_t;
+architecture beh of hp_tb is
+  -- clk
+  constant clk_period : time := 3.125 ns;  -- 320Mhz
+  signal clk : std_logic := '0';
+  -- rest
+  constant reset_init_cycles  : integer := 3;
+  signal rst                  : std_logic;
+  signal ena                  : std_logic := '1';
+  --
+  signal ctrl_r           : HPS_HEG_HEG_HP_HP_CTRL_t := DEFAULT_HPS_HEG_HEG_HP_HP_CTRL_t ;
   signal mon_r            : HPS_HEG_HEG_HP_HP_MON_t;
+  constant c_CTRL_LEN     : integer := len(ctrl_r);
+  constant c_MON_LEN      : integer := len(mon_r);
   signal ctrl_v           : std_logic_vector(c_CTRL_LEN - 1 downto 0);
   signal mon_v            : std_logic_vector(c_MON_LEN - 1 downto 0);
 
-  signal local_rst        : std_logic;
-  signal local_en         : std_logic;
-  signal i_SLC_Window_av  : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  signal i_slc_data_v     : hp_heg2hp_slc_rvt;
-  signal i_mdt_data_v     : hp_hpsPc2hp_rvt;
-  signal o_hit_data_v     : hp_hp2bm_rvt;
+  -- signal local_rst        : std_logic;
+  -- signal local_en         : std_logic;
+  signal i_SLC_Window_av  : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0) := (others => (others => '0'));
+  signal i_slc_data_v     : hp_heg2hp_slc_vt := (others => '0');
+  signal i_mdt_data_v     : hp_hpsPc2hp_vt := (others => '0');
+  signal o_hit_data_v     : hp_hp2bm_vt;
 
 begin
+
+  ctrl_v <= convert(ctrl_r,ctrl_v);
+  mon_r <= convert(mon_v,mon_r);
 
   Hit_Processor : entity hp_lib.hit_processor
   generic map(
@@ -78,13 +85,13 @@ begin
   port map(
     clk                 => clk,
     rst                 => rst,
-    glob_en             => glob_en,
+    ena                 => ena,
     --
     ctrl_v              => ctrl_v,
     mon_v               => mon_v, 
     -- configuration
-    local_rst           => local_rst,
-    local_en            => local_en,
+    -- local_rst           => local_rst,
+    -- local_en            => local_en,
     -- SLc
     i_SLC_Window        => i_SLC_Window_av,
     i_slc_data_v        => i_slc_data_v,
@@ -93,5 +100,25 @@ begin
     -- out 2 bm
     o_hit_data_v       => o_hit_data_v
   );
-
+  -------------------------------------------------------------------------------------
+	-- clock Generator
+	-------------------------------------------------------------------------------------
+  CLK_MAIN : process begin
+    clk <= '0';
+    wait for CLK_period/2;
+    clk <= '1';
+    wait for CLK_period/2;
+  end process;
+ 	-------------------------------------------------------------------------------------
+	-- Reset Generator
+	-------------------------------------------------------------------------------------
+	rst_process: process begin
+		rst<='0';
+		wait for CLK_period;
+		rst<='1';
+		wait for CLK_period*reset_init_cycles;
+		rst<= '0';
+		wait;
+  end process;
+  
 end beh;

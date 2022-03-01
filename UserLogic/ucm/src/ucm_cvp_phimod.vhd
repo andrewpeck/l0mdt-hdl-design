@@ -53,8 +53,8 @@ architecture beh of ucm_cvp_phimod is
 
 
 
-  type phimod_buff_at is array (g_PIPELINE downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
-  signal phimod_buff : phimod_buff_at;-- := ( others =>  (others => '0'));
+  type phimod_buff_art is array (g_PIPELINE downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+  signal phimod_buff : phimod_buff_art;-- := ( others =>  (others => '0'));
   signal dv_buff : std_logic_vector(g_PIPELINE - 1 downto 0);
 
   signal phimod : signed(UCM2PL_PHIMOD_LEN -1 downto 0);

@@ -4,7 +4,7 @@
 `ifndef MEM_INT_4A17D_CTRL_SVH
 `define MEM_INT_4A17D_CTRL_SVH
 
-`include <common_ieee.svh>
+`include <common_ieee_pkg.svh>
 
 
   typedef struct packed {

@@ -41,9 +41,9 @@ use ptc_lib.pt_params_pkg.all;
 entity sagitta_calculator is
   port (
     clk               : in std_logic;
-    i_seg0            : in sf2ptcalc_rvt;
-    i_seg1            : in sf2ptcalc_rvt;
-    i_seg2            : in sf2ptcalc_rvt;
+    i_seg0            : in sf2ptcalc_vt;
+    i_seg1            : in sf2ptcalc_vt;
+    i_seg2            : in sf2ptcalc_vt;
     o_charge          : out std_logic;
     o_inv_s           : out unsigned(INV_S_LEN-1 downto 0);
     o_dv_s            : out std_logic
@@ -212,9 +212,9 @@ begin
         douta => sqrt_m_io
     );
 
-    seg0 <= structify(i_seg0);
-    seg1 <= structify(i_seg1);
-    seg2 <= structify(i_seg2);
+    seg0 <= structify(i_seg0,seg0);
+    seg1 <= structify(i_seg1,seg1);
+    seg2 <= structify(i_seg2,seg2);
     rec_sagitta_addr <= std_logic_vector(abs(den_sagitta_red));
 
     SagittaProc : process( clk )

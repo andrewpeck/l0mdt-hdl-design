@@ -49,11 +49,11 @@ ENTITY csf IS
   );
   PORT (
     clk : IN STD_LOGIC;
-    i_seed : IN heg2sfslc_rvt;
-    i_mdt_hit : IN heg2sfhit_rvt;
+    i_seed : IN heg2sfslc_vt;
+    i_mdt_hit : IN heg2sfhit_vt;
     i_eof : IN STD_LOGIC;
     i_rst : IN STD_LOGIC;
-    o_seg : OUT sf2ptcalc_rvt;
+    o_seg : OUT sf2ptcalc_vt;
     --SpuBuffer -- TODO - This block has been moved to FM block - Can be removed here
     spy_clock : IN STD_LOGIC;
     -- Hit Spybuffer
@@ -62,13 +62,13 @@ ENTITY csf IS
     i_spyhit_freeze : IN STD_LOGIC;
     i_spyhit_playback : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
     i_spyhit_pb_we : IN STD_LOGIC;
-    i_spyhit_pb_wdata : IN heg2sfhit_rvt;
+    i_spyhit_pb_wdata : IN heg2sfhit_vt;
     i_spyhit_re : IN STD_LOGIC; --this should be enable signal in
     --new Spybuffer interface
     i_spyhit_meta_we : IN STD_LOGIC;
     i_spyhit_addr : IN STD_LOGIC_VECTOR(SPYHIT_MEM_WIDTH - 1 DOWNTO 0);
     i_spyhit_meta_addr : IN STD_LOGIC_VECTOR(SPYHIT_EL_MEM_WIDTH - 1 DOWNTO 0);
-    o_spyhit_data : OUT heg2sfhit_rvt;
+    o_spyhit_data : OUT heg2sfhit_vt;
     o_spyhit_meta_rdata : OUT STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
     i_spyhit_meta_wdata : IN STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
     o_spyhit_af : OUT STD_LOGIC;
@@ -80,13 +80,13 @@ ENTITY csf IS
     i_spyslc_freeze : IN STD_LOGIC;
     i_spyslc_playback : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
     i_spyslc_pb_we : IN STD_LOGIC;
-    i_spyslc_pb_wdata : IN heg2sfslc_rvt;
+    i_spyslc_pb_wdata : IN heg2sfslc_vt;
     i_spyslc_re : IN STD_LOGIC; --this should be enable signal in
     --new Spybuffer interface
     i_spyslc_addr : IN STD_LOGIC_VECTOR(SPYSLC_MEM_WIDTH - 1 DOWNTO 0);
     i_spyslc_meta_we : IN STD_LOGIC;
     i_spyslc_meta_addr : IN STD_LOGIC_VECTOR(SPYSLC_EL_MEM_WIDTH - 1 DOWNTO 0);
-    o_spyslc_data : OUT heg2sfslc_rvt;
+    o_spyslc_data : OUT heg2sfslc_vt;
     o_spyslc_meta_rdata : OUT STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
     i_spyslc_meta_wdata : IN STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
     o_spyslc_af : OUT STD_LOGIC;
@@ -98,13 +98,13 @@ ENTITY csf IS
     i_spyseg_freeze : IN STD_LOGIC;
     i_spyseg_playback : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
     i_spyseg_pb_we : IN STD_LOGIC;
-    i_spyseg_pb_wdata : IN sf2ptcalc_rvt;
+    i_spyseg_pb_wdata : IN sf2ptcalc_vt;
     i_spyseg_re : IN STD_LOGIC; --this should be enable signal in
     --new Spybuffer interface
     i_spyseg_addr : IN STD_LOGIC_VECTOR(SPYSEG_MEM_WIDTH - 1 DOWNTO 0);
     i_spyseg_meta_addr : IN STD_LOGIC_VECTOR(SPYSEG_EL_MEM_WIDTH - 1 DOWNTO 0);
     i_spyseg_meta_we : IN STD_LOGIC;
-    o_spyseg_data : OUT sf2ptcalc_rvt;
+    o_spyseg_data : OUT sf2ptcalc_vt;
     o_spyseg_meta_rdata : OUT STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
     i_spyseg_meta_wdata : IN STD_LOGIC_VECTOR(SPY_META_DATA_WIDTH - 1 DOWNTO 0);
     o_spyseg_af : OUT STD_LOGIC;
@@ -116,34 +116,34 @@ ARCHITECTURE behavioral OF csf IS
 
   -- Input RoI
   SIGNAL seed_i : heg2sfslc_rt;
-  SIGNAL seed : heg2sfslc_rvt;
-  SIGNAL csf_seed : heg2sfslc_rvt;
+  SIGNAL seed : heg2sfslc_vt;
+  SIGNAL csf_seed : heg2sfslc_vt;
 
   -- Input signals
-  SIGNAL csf_mdt_hit : heg2sfhit_rvt;
+  SIGNAL csf_mdt_hit : heg2sfhit_vt;
   SIGNAL mdt_hit : heg2sfhit_rt;
-  SIGNAL mdt_hits : heg2sfhit_bus_avt (1 DOWNTO 0);
+  SIGNAL mdt_hits : heg2sfhit_avt (1 DOWNTO 0);
   SIGNAL eof : STD_LOGIC;
 
   -- Clustering signals
-  TYPE t_cluster_hits_ml IS ARRAY (INTEGER RANGE <>) OF csf_hit_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+  TYPE t_cluster_hits_ml IS ARRAY (INTEGER RANGE <>) OF csf_hit_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
   SIGNAL cluster_hits_ml : t_cluster_hits_ml(1 DOWNTO 0);
   TYPE t_fitter_en_ml IS ARRAY (INTEGER RANGE <>) OF STD_LOGIC_VECTOR(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
   SIGNAL fitter_en_ml : t_fitter_en_ml(1 DOWNTO 0);
 
   -- Fitters Signals
-  TYPE t_csf_sums_ml IS ARRAY (INTEGER RANGE <>) OF csf_sums_a_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+  TYPE t_csf_sums_ml IS ARRAY (INTEGER RANGE <>) OF csf_sums_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
   SIGNAL sums_ml : t_csf_sums_ml(1 DOWNTO 0);
 
-  SIGNAL locseg : csf_locseg_rvt;
+  SIGNAL locseg : csf_locseg_vt;
 
   ---- Coordinate transformation
-  SIGNAL coord_seed : heg2sfslc_rvt;
+  SIGNAL coord_seed : heg2sfslc_vt;
 
   -- Output signal
-  SIGNAL output_segment : csf_locseg_rvt;
+  SIGNAL output_segment : csf_locseg_vt;
   SIGNAL out_seg : csf_locseg_rt;
-  SIGNAL globseg : sf2ptcalc_rvt;
+  SIGNAL globseg : sf2ptcalc_vt;
 
   -- Components
   --component spybuffer is
@@ -317,8 +317,8 @@ BEGIN
 
   ----    );
   
-  mdt_hit <= structify(i_mdt_hit);
-  seed_i <= structify(i_seed);
+  mdt_hit <= structify(i_mdt_hit,mdt_hit);
+  seed_i <= structify(i_seed,seed_i);
   o_seg <= globseg;
 
   -- Clustering

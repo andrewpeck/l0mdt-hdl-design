@@ -43,11 +43,13 @@ END csf_tb;
 ARCHITECTURE Behavioral OF csf_tb IS
     SIGNAL clk : STD_LOGIC := '0';
     SIGNAL seed : heg2sfslc_rt;
+    SIGNAL seed_v : heg2sfslc_vt;
     SIGNAL mdt_hit : heg2sfhit_rt;
+    SIGNAL mdt_hit_v : heg2sfhit_vt;
     CONSTANT clk_period : TIME := 4.0 ns;
     SIGNAL eof : STD_LOGIC := '0';
     SIGNAL rst : STD_LOGIC := '0';
-    signal v_seg : sf2ptcalc_rvt;
+    signal v_seg : sf2ptcalc_vt;
     signal seg : sf2ptcalc_rt;
 BEGIN
 
@@ -97,8 +99,8 @@ BEGIN
     CSF : ENTITY csf_lib.csf
         port map (
             clk => clk,
-            i_seed => vectorify(seed),
-            i_mdt_hit => vectorify(mdt_hit),
+            i_seed => vectorify(seed,seed_v),
+            i_mdt_hit => vectorify(mdt_hit,mdt_hit_v),
             i_eof => eof,
             i_rst => rst,
             o_seg => v_seg,
@@ -145,7 +147,7 @@ BEGIN
             i_spyseg_meta_wdata => (others => '0')
     );
 
-    seg <= structify(v_seg);
+    seg <= structify(v_seg,seg);
 
     --layerId 3 driftRadius 372 bplus 29 bminus 12 x 2128 z 934 isOnSegment 1
     --layerId 3 driftRadius 280 bplus 42 bminus 29 x 2128 z 1415 isOnSegment 1

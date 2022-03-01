@@ -35,14 +35,14 @@ entity daq_sump is
     -- ctrl              : in  H2S_CTRL_t;
     -- mon               : out H2S_MON_t;
 
-    i_inn_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
-    o_daq_streams     : out felix_stream_bus_avt (c_HPS_MAX_HP_INN     
+    i_inn_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+    o_daq_streams     : out felix_stream_avt (c_HPS_MAX_HP_INN     
                                                   + c_HPS_MAX_HP_MID   
                                                   + c_HPS_MAX_HP_OUT - 1 downto 0);
-    -- o_daq_streams     : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    -- o_daq_streams     : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     o_sump : out std_logic
   );
@@ -88,8 +88,8 @@ end architecture beh;
   --   signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
   --   signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
   --   signal sump_v : std_logic_vector(c_NUM_DAQ_STREAMS - 1 downto 0);
-  --   signal l0mdt_ttc_v  : l0mdt_ttc_rvt;
-  --   signal l0mdt_control_v  : l0mdt_control_rvt;
+  --   signal l0mdt_ttc_v  : l0mdt_ttc_vt;
+  --   signal l0mdt_control_v  : l0mdt_control_vt;
   -- begin
   --   l0mdt_ttc_v <= vectorify(ttc_commands);
   --   l0mdt_control_v <= vectorify(clock_and_control);

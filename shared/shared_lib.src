@@ -36,8 +36,10 @@ shared/memories/memories_lib.src
 ## CSF/PT
 # shared/shared_mpi.src
 #---------------------------------
-# arithmetics
+# VHDL utils
 #---------------------------------
+shared/vhdl_utilities/src/vhdl_utils_deserializer.vhd
+shared/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
 shared/arithmetics/arithmetics_lib.src
 # shared/functions/trigonometrics/roi_atan_pkg.vhd
 # shared/functions/trigonometrics/roi_atan.vhd
@@ -55,5 +57,5 @@ shared/spybuffer_vhdl_wrapper/spybuffer_vhdl.vhd
 # Simulation functions
 #---------------------------------
 shared/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd
-shared/vhdl_utilities/src/vhdl_utils_deserializer.vhd
-shared/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
+
+

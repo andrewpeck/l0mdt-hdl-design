@@ -27,10 +27,11 @@ use shared_lib.config_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
-
 library heg_lib;
 use heg_lib.heg_pkg.all;
-use heg_lib.heg_custom_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library heg_roi_lib;
 use heg_roi_lib.roi_types_pkg.all;
@@ -48,14 +49,14 @@ entity heg_roi_gen is
 
     i_z                   : in unsigned(UCM_Z_ROI_LEN-1 downto 0);
     i_data_valid          : in std_logic;
-    o_SLC_Window_v        : out hp_heg2hp_window_avt;
+    o_SLC_Window_v        : out hp_win_tubes_avt;
     o_data_valid          : out std_logic
   );
 end entity heg_roi_gen;
 
 architecture beh of heg_roi_gen is
 
---   signal SLC_window     : hp_heg2hp_window_at;
+--   signal SLC_window     : hp_win_tubes_art;
 
 --   signal uCM_barrel     : ucm_csf_barrel_rt;
 --   -- signal z_barrel       : unsigned(UCM_Z_ROI_LEN-1 downto 0);

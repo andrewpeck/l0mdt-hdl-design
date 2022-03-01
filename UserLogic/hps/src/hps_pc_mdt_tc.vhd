@@ -31,12 +31,16 @@ use shared_lib.TC_B3A_pkg.all;
 
 -- library project_lib;
 -- use project_lib.vhdl_tb_utils_pkg.all;
--- library hp_lib;
--- use hp_lib.hp_pkg.all;
--- library heg_lib;
--- use heg_lib.heg_pkg.all;
+
+library hp_lib;
+use hp_lib.hp_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
