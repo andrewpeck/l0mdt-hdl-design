@@ -37,7 +37,7 @@ GEN:cocotb:
         - echo $TESTVECS_PATH
         - echo Print HOG_SIMULATION_LIB_PATH-----
         - echo $HOG_SIMULATION_LIB_PATH
-        - export XILINX_VIVADO="/mnt/vd/Xilinx/Vivado/2020.2/"
+        #- export XILINX_VIVADO="/mnt/vd/Xilinx/Vivado/2020.2/"
         - echo XILINX_VIVADO = $XILINX_VIVADO
         #- cd tb/
         - cd tools/cocotb/
