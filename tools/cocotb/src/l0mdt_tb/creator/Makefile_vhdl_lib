@@ -5,7 +5,7 @@ SBDIR = $(SRCDIR)/shared/SpyBuffer/src
 IPDIR = $(SRCDIR)/IP
 USERLOGIC = $(SRCDIR)/UserLogic
 HLS       = $(SRCDIR)/l0mdt-hls
-
+COCOTBDIR = $(PWD)/../../../../../
 
 
 # Specify TopLevel language for cocotb
@@ -79,10 +79,9 @@ VHDL_SOURCES_project_lib = \
 VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
-	$(SHAREDDIR)/types/common_ieee.vhd \
 	$(SHAREDDIR)/types/l0mdt_constants_pkg.vhd \
 	$(SHAREDDIR)/types/l0mdt_dataformats_pkg.vhd \
-	$(SHAREDDIR)/types/yml2hdl_v1/common_constants_pkg.vhd \
+	$(SHAREDDIR)/types/common_constants_pkg.vhd \
 	$(SHAREDDIR)/types/common_types_pkg.vhd \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/detector_time_param_pkg.vhd \
@@ -113,7 +112,8 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/arithmetics/src/roi_tan.vhd \
 	$(SHAREDDIR)/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd \
 	$(SHAREDDIR)/vhdl_utilities/src/vhdl_utils_deserializer.vhd \
-	$(SHAREDDIR)/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
+	$(SHAREDDIR)/vhdl_utilities/src/vhdl_utils_NinCounter.vhd 
+
 
 
 VHDL_SOURCES_shared_cfg_def_lib = \
@@ -179,23 +179,19 @@ VHDL_SOURCES_ctrl_lib = \
 VHDL_SOURCES_xpm = \
 	$(XILINX_HOME)/data/ip/xpm/xpm_VCOMP.vhd
 
-VHDL_SOURCES_hegtypes_lib = \
-   $(HPDIR)/../pkg/hp_pkg.vhd \
-   $(HEGDIR)/../pkg/heg_pkg.vhd 
 
 VHDL_SOURCES_heg_roi_lib = \
-   $(HEGDIR)/ROMs/roi_types_pkg.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BILA3.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BMLA3.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BOLA3.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BILA3_angle.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BMLA3_angle.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BOLA3_angle.vhd \
-   $(HEGDIR)/ROMs/roi_lut_functions.vhd
+   $(SHAREDDIR)/detector_parameters/ROIs/roi_types_pkg.vhd \
+   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BILA3.vhd \
+   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BMLA3.vhd \
+   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BOLA3.vhd \
+   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BILA3_angle.vhd \
+   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BMLA3_angle.vhd \
+   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BOLA3_angle.vhd \
+   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_functions.vhd
 
 
 VHDL_SOURCES_heg_lib = \
-   $(HEGDIR)/ROMs/heg_rom_b_zholes_pkg.vhd \
    $(HEGDIR)/../pkg/heg_pkg.vhd \
    $(HEGDIR)/../pkg/heg_custom_pkg.vhd \
    $(HEGDIR)/heg_bm.vhd \
@@ -210,6 +206,7 @@ VHDL_SOURCES_heg_lib = \
    $(HEGDIR)/heg.vhd
 
 VHDL_SOURCES_hp_lib = \
+    $(HPDIR)/../pkg/hp_pkg.vhd \
     $(HPDIR)/hp_calc_radius.vhd \
     $(HPDIR)/hp_calc_RoI_vect.vhd \
     $(HPDIR)/hp_hit_matching.vhd \
@@ -242,7 +239,7 @@ VHDL_SOURCES_lsf_lib = \
     $(LSFDIR)/../top_lsf.vhd
 
 VHDL_SOURCES_upt_lib = \
-	$(USERLOGIC)/upt/IP/vu13p/hls_ptcalc_top_inst/synth/hls_ptcalc_top.vhd \
+	$(COCOTBDIR)/src/l0mdt_tb/testbench/ptcalc/test/hls_ptcalc_top.vhd \
 	$(USERLOGIC)/upt/top_upt.vhd
 
 VERILOG_SOURCES_lsf_lib = \
@@ -365,16 +362,15 @@ VHDL_LIB_ORDER = xpm \
 	apbus_lib \
 	vamc_lib \
 	csf_lib \
+	upt_lib \
 	ptc_lib \
 	lsf_lib \
-	upt_lib \
 	ucm_lib \
 	mpl_lib \
 	ult_lib \
 	fm_lib \
-	hegtypes_lib \
-	heg_roi_lib \
 	hp_lib \
+	heg_roi_lib \
 	heg_lib \
 	hps_lib
 

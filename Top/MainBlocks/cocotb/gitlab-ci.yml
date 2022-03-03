@@ -1,0 +1,50 @@
+#################### CocoTB Project ###########################
+#Following libraries need to be installed in gitrunner for successful installation of pyenv and python 3.8.6
+#sudo yum -y install zlib-devel
+#sudo yum install openssl-devel
+#sudo yum install libffi-devel
+#sudo yum install bzip2-devel
+#sudo yum install readline-devel
+#sudo yum install sqlite-devel
+#sudo yum install -y xz-devel Edited
+
+
+
+GEN:cocotb:
+    extends: .cocotb
+    variables:
+        extends: .vars
+        PROJECT_NAME: MainBlocks/cocotb
+    script: 
+        # Create Directory for TV
+        - mkdir tools/cocotb/l0mdt_tv
+        #- mkdir tools/tv
+        - echo $HOG_PASSWORD | kinit $HOG_USER	
+        # Fetch testvectors from EOS
+        - xrdcp root://eosuser.cern.ch//eos/project/a/atlas-tdaq-phase2-l0mdt-electronics/TestVectors/TV_MC_2022-02-18_DF_v4.1.8b_TV_v1.0.81/B_C_3.xz tools/cocotb/l0mdt_tv/.
+        #PYTHON
+        - export PATH="/home/l0mdtel/.pyenv/bin:$PATH"
+        - eval "$(pyenv init -)"
+        - eval "$(pyenv init --path)"
+        - eval "$(pyenv virtualenv-init -)"
+        #- echo y | pyenv uninstall 3.8.2
+        #- env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.8.2
+        - pyenv global 3.8.2 
+        #- unzip testvecs_6_25_2020.zip
+        #- export TESTVECS_PATH="`pwd`/testvecs"
+        - export TESTVECS_PATH="`pwd`/tools/cocotb/l0mdt_tv"
+        - echo Print TESTVECS_PATH-----
+        - echo $TESTVECS_PATH
+        - echo Print HOG_SIMULATION_LIB_PATH-----
+        - echo $HOG_SIMULATION_LIB_PATH
+        - export XILINX_VIVADO="/mnt/vd/Xilinx/Vivado/2020.2/"
+        - echo XILINX_VIVADO = $XILINX_VIVADO
+        #- cd tb/
+        - cd tools/cocotb/
+        # Setup testbench environment
+        - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
+        - tb run test_config/config_mpl_mtc.json 2>&1 | tee cocotb_run.log
+        # Make test fail if cocotb raised a failure
+        - sh -c "! grep cocotb.result.TestFailure cocotb_run.log"
+        # Make test fail if cocotb raised a failure
+        #- sh -c "! grep cocotb.result.TestFailure es_test.log"
