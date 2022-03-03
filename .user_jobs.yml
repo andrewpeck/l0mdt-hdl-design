@@ -134,3 +134,13 @@
       fi
   allow_failure: true
   interruptible: true
+
+
+.cocotb: &cocotb
+  <<: *only-default
+  <<: *tag-hog
+  tags:
+     - cocotb
+  stage: generation_and_simulation
+  script:
+  allow_failure: true
