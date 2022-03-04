@@ -38,8 +38,7 @@ GEN:cocotb:
         - echo Print HOG_SIMULATION_LIB_PATH-----
         - echo $HOG_SIMULATION_LIB_PATH
         - export VIVADO_EXEC=$(which vivado)
-        - export XILINX_VIVADO="${VIVADO_EXEC/bin\/vivado/}"
-        - export XILINX_VIVADO="echo $(which vivado) | sed -E 's/(.*)bin.*vivado$/\1/'TH/"
+        - export XILINX_VIVADO="${VIVADO_EXEC/bin\/vivado/}"        
         #- export XILINX_VIVADO="/mnt/vd/Xilinx/Vivado/2020.2/"
         - echo XILINX_VIVADO = $XILINX_VIVADO
         #- cd tb/
