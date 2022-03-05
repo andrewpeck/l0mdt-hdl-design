@@ -80,7 +80,7 @@ begin
 
   -- BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
-  --   -- uCM_barrel <= structify(i_specific);
+  --   -- uCM_barrel <= convert(i_specific);
   --   -- z_barrel <= uCM_barrel.z;
 
   --   dv_guard : process(i_data_valid) begin
@@ -116,7 +116,7 @@ begin
   --     SLC_Window(il).hi <= to_unsigned(window(il)(1),MDT_TUBE_LEN);
   --   end generate;
 
-  --   o_SLC_Window_v <= vectorify(SLC_Window);
+  --   o_SLC_Window_v <= convert(SLC_Window);
 
   -- end generate;
 

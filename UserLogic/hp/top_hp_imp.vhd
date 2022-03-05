@@ -100,13 +100,13 @@ begin
   generic map (g_DATA_WIDTH => slc_win_len)
   port map(clk => clk,rst  => rst,i_data => i_SLC_Window_b,o_data => i_SLC_Window_v);
 
-  i_SLC_Window_ar <= structify(i_SLC_Window_v,i_SLC_Window_ar);
+  i_SLC_Window_ar <= convert(i_SLC_Window_v,i_SLC_Window_ar);
 
   gen_for : for il in (get_num_layers(g_STATION_RADIUS) -1) downto 0 generate
-    i_SLC_Window_av(il) <= vectorify(i_SLC_Window_ar(il),i_SLC_Window_av(il));
+    i_SLC_Window_av(il) <= convert(i_SLC_Window_ar(il),i_SLC_Window_av(il));
   end generate ; -- gen_for
-  -- i_SLC_Window_ar <= structify(i_SLC_Window_v);
-  -- i_SLC_Window_av <= vectorify(i_SLC_Window_ar);
+  -- i_SLC_Window_ar <= convert(i_SLC_Window_v);
+  -- i_SLC_Window_av <= convert(i_SLC_Window_ar);
 
   des2 : entity shared_lib.vhdl_utils_deserializer 
   generic map (g_DATA_WIDTH => len(hp_heg2hp_slc_len) )

@@ -77,10 +77,10 @@ architecture sim of ult_tb_reader_slc is
 
   signal slc_element_temp     : slc_tb_art;-- := nullify(slc_element);
   signal slc_element          : slc_tb_art := nullify(slc_element_temp);
-  -- signal slc_element          : slc_tb_art := structify(std_logic_vector(to_unsigned(0,SLC_RX_LEN * TB_SLC_FIFO_WIDTH)),slc_element);
+  -- signal slc_element          : slc_tb_art := convert(std_logic_vector(to_unsigned(0,SLC_RX_LEN * TB_SLC_FIFO_WIDTH)),slc_element);
   signal event_element_temp   : input_slc_art;-- := nullify(event_element);
   signal event_element        : input_slc_art := nullify(event_element_temp);
-  -- signal event_element        : input_slc_art := structify(std_logic_vector(to_unsigned(0,INPUT_SLC_LEN * TB_SLC_FIFO_WIDTH)),event_element);
+  -- signal event_element        : input_slc_art := convert(std_logic_vector(to_unsigned(0,INPUT_SLC_LEN * TB_SLC_FIFO_WIDTH)),event_element);
 
   signal slc_event_r          : input_slc_rt;
   signal slc_new_event        : input_slc_rt;
@@ -207,8 +207,8 @@ begin
 
           for wr_i in 2 downto 0 loop
             if(v_slc_main_prim_counts(wr_i) > 0) then
-              -- o_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
-              o_main_primary_slc(wr_i) <= vectorify(event_main_prim_fifo(wr_i)(0).slc,o_main_primary_slc(wr_i));
+              -- o_main_primary_slc(wr_i) <= convert(slc_main_prim_fifo(wr_i)(0));
+              o_main_primary_slc(wr_i) <= convert(event_main_prim_fifo(wr_i)(0).slc,o_main_primary_slc(wr_i));
               --
               slc_event_ai(wr_i + 2) <= event_main_prim_fifo(wr_i)(0).event;
               -- for test input read
@@ -325,7 +325,7 @@ begin
               slc => (
                 data_Valid  => '1',
                 common      => common,
-                specific    => std_logic_vector(vectorify(specific_r,specific_v))
+                specific    => std_logic_vector(convert(specific_r,specific_v))
               )
             );
             row_counter := row_counter + 1;
@@ -454,7 +454,7 @@ begin
                   slc => (
                     data_Valid  => '1',
                     common      => common,
-                    specific    => std_logic_vector(vectorify(specific_r,specific_v))
+                    specific    => std_logic_vector(convert(specific_r,specific_v))
                   )
                 );
                 row_counter := row_counter + 1;

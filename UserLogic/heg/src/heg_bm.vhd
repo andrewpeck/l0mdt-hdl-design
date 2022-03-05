@@ -97,8 +97,8 @@ architecture beh of heg_buffermux is
   -- signal aux_data_v : std_logic_vector(len(i_mdt_hits_ar(0).data) - 1 downto 0);
 begin
 
-  o_mdt_hits_v <= vectorify(o_mdt_hits_r,o_mdt_hits_v);
-  buff_mdt_hit_r <= structify(buff_mdt_hit_v,buff_mdt_hit_r);
+  o_mdt_hits_v <= convert(o_mdt_hits_r,o_mdt_hits_v);
+  buff_mdt_hit_r <= convert(buff_mdt_hit_v,buff_mdt_hit_r);
 
   o_mdt_hits_r.localx <= buff_mdt_hit_r.local_x;
   o_mdt_hits_r.localy <= buff_mdt_hit_r.local_y;
@@ -109,9 +109,9 @@ begin
   FIFOS: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
     -- input extraction
 
-    i_mdt_hits_data_av(hp_i) <= vectorify(i_mdt_hits_ar(hp_i).data,i_mdt_hits_data_av(hp_i) ); -- joooooor
+    i_mdt_hits_data_av(hp_i) <= convert(i_mdt_hits_ar(hp_i).data,i_mdt_hits_data_av(hp_i) ); -- joooooor
     
-    i_mdt_hits_ar(hp_i) <= structify(i_mdt_hits_av(hp_i),i_mdt_hits_ar(hp_i));
+    i_mdt_hits_ar(hp_i) <= convert(i_mdt_hits_av(hp_i),i_mdt_hits_ar(hp_i));
 
     fifo_wr(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
 

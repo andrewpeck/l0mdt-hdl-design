@@ -120,9 +120,9 @@ BEGIN
         delta_r <= (others => '0');
     end generate STATION_GENERATE;
 
-    seed_i <= structify(i_seed,seed_i);
-    locseg_i <= structify(i_locseg,locseg_i);
-    o_globseg <= vectorify(globseg,o_globseg);
+    seed_i <= convert(i_seed,seed_i);
+    locseg_i <= convert(i_locseg,locseg_i);
+    o_globseg <= convert(globseg,o_globseg);
 
     ARCTAN : rom
     GENERIC MAP(

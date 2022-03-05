@@ -193,7 +193,7 @@ ARCHITECTURE Behavioral OF csf_histogram IS
 BEGIN
 
 
-    seed <= structify(i_seed,seed);
+    seed <= convert(i_seed,seed);
     --invsqrt_mbar : invsqrt_mbar_rom
     --PORT MAP (
     --    clka => clk,
@@ -265,7 +265,7 @@ BEGIN
             END IF;
 
             -- Delay the hits of two clocks for 
-            mdt_hit <= structify(i_mdthit,mdt_hit);
+            mdt_hit <= convert(i_mdthit,mdt_hit);
 
             -- Clock 0
             dv0 <= mdt_hit.data_valid;
@@ -354,9 +354,9 @@ BEGIN
             dv6 <= dv5;
             w_en <= (OTHERS => '0');
             w_en(to_integer(bminus_ss)) <= fill_minus_s;
-            w_hit_vec(to_integer(bminus_ss)) <= vectorify(hit_minus_s,w_hit_vec(to_integer(bminus_ss)));
+            w_hit_vec(to_integer(bminus_ss)) <= convert(hit_minus_s,w_hit_vec(to_integer(bminus_ss)));
             w_en(to_integer(bplus_ss)) <= fill_plus_s;
-            w_hit_vec(to_integer(bplus_ss)) <= vectorify(hit_plus_s,w_hit_vec(to_integer(bplus_ss)));
+            w_hit_vec(to_integer(bplus_ss)) <= convert(hit_plus_s,w_hit_vec(to_integer(bplus_ss)));
             bplus_sss <= bplus_ss;
             bminus_sss <= bminus_ss;
             eof6 <= eof5;

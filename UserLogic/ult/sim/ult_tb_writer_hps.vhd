@@ -181,10 +181,10 @@ begin
     end generate;
   end generate;
 
-  -- inn_mdt_full_data_ar <= structify(inn_mdt_full_data_av);
-  -- mid_mdt_full_data_ar <= structify(mid_mdt_full_data_av);
-  -- out_mdt_full_data_ar <= structify(out_mdt_full_data_av);
-  -- ext_mdt_full_data_ar <= structify(ext_mdt_full_data_av);
+  -- inn_mdt_full_data_ar <= convert(inn_mdt_full_data_av);
+  -- mid_mdt_full_data_ar <= convert(mid_mdt_full_data_av);
+  -- out_mdt_full_data_ar <= convert(out_mdt_full_data_av);
+  -- ext_mdt_full_data_ar <= convert(ext_mdt_full_data_av);
   
   HPS_INN: if c_STATIONS_IN_SECTOR(0) = '1' generate
     constant lc_ST_ID : integer := 0;
@@ -192,7 +192,7 @@ begin
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
     array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
-      mdt_full_data_ar(i) <= structify(mdt_full_data_av(i),mdt_full_data_ar(i));
+      mdt_full_data_ar(i) <= convert(mdt_full_data_av(i),mdt_full_data_ar(i));
     end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then
@@ -221,7 +221,7 @@ begin
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
     array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
-      mdt_full_data_ar(i) <= structify(mdt_full_data_av(i),mdt_full_data_ar(i));
+      mdt_full_data_ar(i) <= convert(mdt_full_data_av(i),mdt_full_data_ar(i));
     end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then
@@ -250,7 +250,7 @@ begin
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
     array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
-      mdt_full_data_ar(i) <= structify(mdt_full_data_av(i),mdt_full_data_ar(i));
+      mdt_full_data_ar(i) <= convert(mdt_full_data_av(i),mdt_full_data_ar(i));
     end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then
@@ -279,7 +279,7 @@ begin
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
     array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
-      mdt_full_data_ar(i) <= structify(mdt_full_data_av(i),mdt_full_data_ar(i));
+      mdt_full_data_ar(i) <= convert(mdt_full_data_av(i),mdt_full_data_ar(i));
     end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then

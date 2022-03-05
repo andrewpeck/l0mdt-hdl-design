@@ -70,8 +70,8 @@ BEGIN
         WAIT FOR CLK_period/2;
     END PROCESS;
 
-    seed <= vectorify(seed_t);
-    mdt_hit <= vectorify(mdt_hit_t);
+    seed <= convert(seed_t);
+    mdt_hit <= convert(mdt_hit_t);
 
     Pulse : PROCESS
     BEGIN

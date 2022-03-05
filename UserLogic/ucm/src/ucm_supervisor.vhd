@@ -278,7 +278,7 @@ begin
           if cde_z0_apb_wr_dv_o = '1' then
             cde_ch_z0_org(st_i)(to_integer(unsigned(cde_z0_apb_wr_addr_o))) <=resize(unsigned(cde_z0_apb_wr_data_o),cde_ch_z0_org(st_i)(0)'length);
           else
-            o_cde_chamber_z_org_bus(st_i) <= vectorify(cde_ch_z0_org(st_i));
+            o_cde_chamber_z_org_bus(st_i) <= convert(cde_ch_z0_org(st_i));
           end if;
 
         end if;
@@ -390,7 +390,7 @@ begin
           if cvp_z0_apb_wr_dv_o = '1' then
             cvp_ch_z0_org(st_i)(to_integer(unsigned(cvp_z0_apb_wr_addr_o))) <=resize(unsigned(cvp_z0_apb_wr_data_o),cvp_ch_z0_org(st_i)(0)'length);
           else
-            o_cvp_chamber_z_org_bus(st_i) <= vectorify(cvp_ch_z0_org(st_i));
+            o_cvp_chamber_z_org_bus(st_i) <= convert(cvp_ch_z0_org(st_i));
           end if;
 
         end if;

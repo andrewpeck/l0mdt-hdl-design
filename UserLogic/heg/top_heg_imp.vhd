@@ -112,7 +112,7 @@ begin
       port map(clk => clk,rst  => rst,i_data => i_mdt_full_data_ab(i_h),o_data => i_mdt_full_data_av(i_h));
   end generate;
   
-  -- i_SLC_Window_ar <= structify(i_SLC_Window_v);
+  -- i_SLC_Window_ar <= convert(i_SLC_Window_v);
   --------------------------------------------------------------
   o_sf_control_b <= xor_reduce(o_sf_control_rv);
   o_sf_slc_data_b <= xor_reduce(o_sf_slc_data_v);

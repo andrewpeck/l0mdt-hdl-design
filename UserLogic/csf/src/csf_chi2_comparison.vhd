@@ -55,10 +55,10 @@ ARCHITECTURE Behavioral OF csf_chi2_comparison IS
     SIGNAL dv0, dv1 : STD_LOGIC := '0';
 BEGIN
     SEG_GEN : FOR x IN NUM_FITTERS - 1 DOWNTO 0 GENERATE
-        segments(x) <= structify(i_segments(x),segments(x));
+        segments(x) <= convert(i_segments(x),segments(x));
     END GENERATE SEG_GEN;
 
-    o_segment <= vectorify(output_segment,o_segment);
+    o_segment <= convert(output_segment,o_segment);
 
     CHI2_COMPARE : PROCESS (clk)
     BEGIN

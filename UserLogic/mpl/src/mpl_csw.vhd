@@ -52,8 +52,8 @@ architecture beh of mpl_csw is
 begin
 
   V2R: for sl_i in c_NUM_THREADS - 1 downto 0 generate
-    slc_pl(sl_i) <= structify(i_ucm_av(sl_i),slc_pl(sl_i));
-    o_tf_av(sl_i) <= vectorify(csw2tf_ar(sl_i),o_tf_av(sl_i));
+    slc_pl(sl_i) <= convert(i_ucm_av(sl_i),slc_pl(sl_i));
+    o_tf_av(sl_i) <= convert(csw2tf_ar(sl_i),o_tf_av(sl_i));
   end generate V2R;
 
   MP2TF_CSW: process(clk)

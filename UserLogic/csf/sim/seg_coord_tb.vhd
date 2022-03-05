@@ -63,8 +63,8 @@ BEGIN
         WAIT FOR CLK_period/2;
     END PROCESS;
 
-    i_locseg <= vectorify(locseg);
-    i_seed <= vectorify(seed);
+    i_locseg <= convert(locseg);
+    i_seed <= convert(seed);
 
     --    *** DIGI Local Seg *** 
     --y_digi: 2489.0000000000

@@ -63,7 +63,7 @@ begin
         wait for CLK_period/2;
     end process;
 
-    i_seg <= vectorify(seg);
+    i_seg <= convert(seg);
 
     --=== Eta Calculation ===
     --zdigi -39160.0000 rdigi 38046.0000

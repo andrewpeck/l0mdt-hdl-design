@@ -124,16 +124,16 @@ architecture beh of hps is
   signal sf_fm_data_th  : sf_single_station_array;
 begin
 
-  ctrl_r <= structify(ctrl_v,ctrl_r);
-  mon_v <= vectorify(mon_r,mon_v);
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
 
   ctrl_super_v <= convert(ctrl_r.super,ctrl_super_v);
   mon_r.super <= convert(mon_super_v,mon_r.super);
 
-  pc_t0_ctrl_v <= vectorify(ctrl_r.MDT_T0.MDT_T0,pc_t0_ctrl_v);
-  pc_tc_ctrl_v <= vectorify(ctrl_r.MDT_TC.MDT_TC,pc_tc_ctrl_v);
-  mon_r.MDT_T0.MDT_T0 <= structify(pc_t0_mon_v,mon_r.MDT_T0.MDT_T0);
-  mon_r.MDT_TC.MDT_TC <= structify(pc_tc_mon_v,mon_r.MDT_TC.MDT_TC);
+  pc_t0_ctrl_v <= convert(ctrl_r.MDT_T0.MDT_T0,pc_t0_ctrl_v);
+  pc_tc_ctrl_v <= convert(ctrl_r.MDT_TC.MDT_TC,pc_tc_ctrl_v);
+  mon_r.MDT_T0.MDT_T0 <= convert(pc_t0_mon_v,mon_r.MDT_T0.MDT_T0);
+  mon_r.MDT_TC.MDT_TC <= convert(pc_tc_mon_v,mon_r.MDT_TC.MDT_TC);
 
   h2s_fm_gen: for th_i in c_NUM_THREADS -1 downto 0 generate
     h2s_fm_data(th_i*sf_sb_n to (th_i+1)*sf_sb_n - 1)   <= sf_fm_data_th(th_i)(0 to sf_sb_n -1);
@@ -192,8 +192,8 @@ begin
 
   heg_gen : for th_i in c_NUM_THREADS -1 downto 0 generate
 
-    heg_ctrl_av(th_i) <= vectorify(ctrl_r.heg.heg(th_i),heg_ctrl_av(th_i));
-    mon_r.heg.heg(th_i) <= structify(heg_mon_av(th_i),mon_r.heg.heg(th_i));
+    heg_ctrl_av(th_i) <= convert(ctrl_r.heg.heg(th_i),heg_ctrl_av(th_i));
+    mon_r.heg.heg(th_i) <= convert(heg_mon_av(th_i),mon_r.heg.heg(th_i));
 
     HEG : entity heg_lib.heg
       generic map(

@@ -68,10 +68,10 @@ begin
 
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
-    uCM_data_r <= structify(i_uCM_data_v,uCM_data_r);
-    -- slc_b_data_r <= structify(uCM_data_r.specific);
+    uCM_data_r <= convert(i_uCM_data_v,uCM_data_r);
+    -- slc_b_data_r <= convert(uCM_data_r.specific);
     for_gen_SW : for il in get_num_layers(g_STATION_RADIUS) -1 downto 0 generate
-      o_SLC_Window_av(il) <= vectorify(SLC_Window_ar(il),o_SLC_Window_av(il));
+      o_SLC_Window_av(il) <= convert(SLC_Window_ar(il),o_SLC_Window_av(il));
     end generate ; -- identifier
     
     ROI_Z : entity heg_lib.b_z2roi

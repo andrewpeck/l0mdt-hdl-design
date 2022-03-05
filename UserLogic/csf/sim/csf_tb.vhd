@@ -99,8 +99,8 @@ BEGIN
     CSF : ENTITY csf_lib.csf
         port map (
             clk => clk,
-            i_seed => vectorify(seed,seed_v),
-            i_mdt_hit => vectorify(mdt_hit,mdt_hit_v),
+            i_seed => convert(seed,seed_v),
+            i_mdt_hit => convert(mdt_hit,mdt_hit_v),
             i_eof => eof,
             i_rst => rst,
             o_seg => v_seg,
@@ -147,7 +147,7 @@ BEGIN
             i_spyseg_meta_wdata => (others => '0')
     );
 
-    seg <= structify(v_seg,seg);
+    seg <= convert(v_seg,seg);
 
     --layerId 3 driftRadius 372 bplus 29 bminus 12 x 2128 z 934 isOnSegment 1
     --layerId 3 driftRadius 280 bplus 42 bminus 29 x 2128 z 1415 isOnSegment 1

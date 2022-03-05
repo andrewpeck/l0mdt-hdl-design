@@ -199,7 +199,7 @@ begin
   end process evt_slc_csw;
 
   csw_ctrl_loop : for i in c_MAX_NUM_SL -1 downto 0 generate
-    csw_control_ar(i) <= structify(csw_control_av(i),csw_control_ar(i));
+    csw_control_ar(i) <= convert(csw_control_av(i),csw_control_ar(i));
   end generate ; -- identifier
   
 
@@ -226,9 +226,9 @@ begin
   end generate;
     
   proc_info_loop : for i in c_NUM_THREADS -1 downto 0 generate
-    proc_info_ar(i) <= structify(proc_info_av(i),proc_info_ar(i));
+    proc_info_ar(i) <= convert(proc_info_av(i),proc_info_ar(i));
   end generate ; -- identifier
-  -- proc_info_ar <= structify(proc_info_av);
+  -- proc_info_ar <= convert(proc_info_av);
 
   evt_slc_pam: process(clk)
   begin
@@ -294,10 +294,10 @@ begin
   end generate;
 
 
-  -- inn_mdt_full_data_ar <= structify(inn_mdt_full_data_av);
-  -- mid_mdt_full_data_ar <= structify(mid_mdt_full_data_av);
-  -- out_mdt_full_data_ar <= structify(out_mdt_full_data_av);
-  -- ext_mdt_full_data_ar <= structify(ext_mdt_full_data_av);
+  -- inn_mdt_full_data_ar <= convert(inn_mdt_full_data_av);
+  -- mid_mdt_full_data_ar <= convert(mid_mdt_full_data_av);
+  -- out_mdt_full_data_ar <= convert(out_mdt_full_data_av);
+  -- ext_mdt_full_data_ar <= convert(ext_mdt_full_data_av);
   
   HPS_INN: if c_STATIONS_IN_SECTOR(0) = '1' generate
     constant st_i : integer := 0;
@@ -312,13 +312,13 @@ begin
   begin
 
     proc_info_loop : for i in c_NUM_THREADS -1 downto 0 generate
-      heg2sf_hit_ar(i)  <= structify(heg2sf_hit_av(i) ,heg2sf_hit_ar(i) );
-      heg2sf_slc_ar(i)  <= structify(heg2sf_slc_av(i) ,heg2sf_slc_ar(i) );
-      heg2sf_ctrl_ar(i) <= structify(heg2sf_ctrl_av(i),heg2sf_ctrl_ar(i));
+      heg2sf_hit_ar(i)  <= convert(heg2sf_hit_av(i) ,heg2sf_hit_ar(i) );
+      heg2sf_slc_ar(i)  <= convert(heg2sf_slc_av(i) ,heg2sf_slc_ar(i) );
+      heg2sf_ctrl_ar(i) <= convert(heg2sf_ctrl_av(i),heg2sf_ctrl_ar(i));
     end generate ; -- identifier
-    -- heg2sf_hit_ar  <= structify(heg2sf_hit_av );
-    -- heg2sf_slc_ar  <= structify(heg2sf_slc_av );
-    -- heg2sf_ctrl_ar <= structify(heg2sf_ctrl_av);
+    -- heg2sf_hit_ar  <= convert(heg2sf_hit_av );
+    -- heg2sf_slc_ar  <= convert(heg2sf_slc_av );
+    -- heg2sf_ctrl_ar <= convert(heg2sf_ctrl_av);
 
     TH_LOOP: for th_i in c_NUM_THREADS -1 downto 0 generate
       alias fifo_rd is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
@@ -463,13 +463,13 @@ begin
   begin
 
     gen_loop : for i in c_NUM_THREADS -1 downto 0 generate
-      heg2sf_hit_ar(i)  <= structify(heg2sf_hit_av(i) ,heg2sf_hit_ar(i) );
-      heg2sf_slc_ar(i)  <= structify(heg2sf_slc_av(i) ,heg2sf_slc_ar(i) );
-      heg2sf_ctrl_ar(i) <= structify(heg2sf_ctrl_av(i),heg2sf_ctrl_ar(i));
+      heg2sf_hit_ar(i)  <= convert(heg2sf_hit_av(i) ,heg2sf_hit_ar(i) );
+      heg2sf_slc_ar(i)  <= convert(heg2sf_slc_av(i) ,heg2sf_slc_ar(i) );
+      heg2sf_ctrl_ar(i) <= convert(heg2sf_ctrl_av(i),heg2sf_ctrl_ar(i));
     end generate ; -- identifier
-    -- heg2sf_hit_ar  <= structify(heg2sf_hit_av );
-    -- heg2sf_slc_ar  <= structify(heg2sf_slc_av );
-    -- heg2sf_ctrl_ar <= structify(heg2sf_ctrl_av);
+    -- heg2sf_hit_ar  <= convert(heg2sf_hit_av );
+    -- heg2sf_slc_ar  <= convert(heg2sf_slc_av );
+    -- heg2sf_ctrl_ar <= convert(heg2sf_ctrl_av);
 
     TH_LOOP: for th_i in c_NUM_THREADS -1 downto 0 generate
       alias fifo_rd is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
@@ -613,13 +613,13 @@ begin
 
     begin
     gen_loop : for i in c_NUM_THREADS -1 downto 0 generate
-      heg2sf_hit_ar(i)  <= structify(heg2sf_hit_av(i) ,heg2sf_hit_ar(i) );
-      heg2sf_slc_ar(i)  <= structify(heg2sf_slc_av(i) ,heg2sf_slc_ar(i) );
-      heg2sf_ctrl_ar(i) <= structify(heg2sf_ctrl_av(i),heg2sf_ctrl_ar(i));
+      heg2sf_hit_ar(i)  <= convert(heg2sf_hit_av(i) ,heg2sf_hit_ar(i) );
+      heg2sf_slc_ar(i)  <= convert(heg2sf_slc_av(i) ,heg2sf_slc_ar(i) );
+      heg2sf_ctrl_ar(i) <= convert(heg2sf_ctrl_av(i),heg2sf_ctrl_ar(i));
     end generate ; -- identifier
-    -- heg2sf_hit_ar  <= structify(heg2sf_hit_av );
-    -- heg2sf_slc_ar  <= structify(heg2sf_slc_av );
-    -- heg2sf_ctrl_ar <= structify(heg2sf_ctrl_av);
+    -- heg2sf_hit_ar  <= convert(heg2sf_hit_av );
+    -- heg2sf_slc_ar  <= convert(heg2sf_slc_av );
+    -- heg2sf_ctrl_ar <= convert(heg2sf_ctrl_av);
 
     TH_LOOP: for th_i in c_NUM_THREADS -1 downto 0 generate
       alias fifo_rd is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
@@ -762,13 +762,13 @@ signal heg2sf_ctrl_ar : hps_ctrl2sf_art(c_NUM_THREADS -1 downto 0);
 
 begin
   gen_loop : for i in c_NUM_THREADS -1 downto 0 generate
-    heg2sf_hit_ar(i)  <= structify(heg2sf_hit_av(i) ,heg2sf_hit_ar(i) );
-    heg2sf_slc_ar(i)  <= structify(heg2sf_slc_av(i) ,heg2sf_slc_ar(i) );
-    heg2sf_ctrl_ar(i) <= structify(heg2sf_ctrl_av(i),heg2sf_ctrl_ar(i));
+    heg2sf_hit_ar(i)  <= convert(heg2sf_hit_av(i) ,heg2sf_hit_ar(i) );
+    heg2sf_slc_ar(i)  <= convert(heg2sf_slc_av(i) ,heg2sf_slc_ar(i) );
+    heg2sf_ctrl_ar(i) <= convert(heg2sf_ctrl_av(i),heg2sf_ctrl_ar(i));
   end generate ; -- identifier
--- heg2sf_hit_ar  <= structify(heg2sf_hit_av );
--- heg2sf_slc_ar  <= structify(heg2sf_slc_av );
--- heg2sf_ctrl_ar <= structify(heg2sf_ctrl_av);
+-- heg2sf_hit_ar  <= convert(heg2sf_hit_av );
+-- heg2sf_slc_ar  <= convert(heg2sf_slc_av );
+-- heg2sf_ctrl_ar <= convert(heg2sf_ctrl_av);
 
 TH_LOOP: for th_i in c_NUM_THREADS -1 downto 0 generate
   alias fifo_rd is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;

@@ -86,8 +86,8 @@ BEGIN
     --y: 16269 x: 13456
     --y: 16956 x: 14058
 
-    hit1 <= vectorify(hit1_t);
-    hit2 <= vectorify(hit2_t);
+    hit1 <= convert(hit1_t);
+    hit2 <= convert(hit2_t);
 
     Pulse : PROCESS
     BEGIN

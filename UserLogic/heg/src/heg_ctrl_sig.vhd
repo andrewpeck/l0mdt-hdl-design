@@ -121,8 +121,8 @@ begin
     o_dv          => csf_slope_dv
   );
 
-  o_uCM2sf_data_v <= vectorify(o_uCM2sf_data_r,o_uCM2sf_data_v);
-  o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r,o_uCM2hp_data_v);
+  o_uCM2sf_data_v <= convert(o_uCM2sf_data_r,o_uCM2sf_data_v);
+  o_uCM2hp_data_v <= convert(o_uCM2hp_data_r,o_uCM2hp_data_v);
 
   CTRL_GEN : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
     enables_a(hp_i) <= o_hp_control_r(hp_i).enable;
@@ -246,7 +246,7 @@ begin
               o_sf_control_r.eof <= '0';
 
               if c_ST_nBARREL_ENDCAP = '0' then -- barrel
-                o_uCM2hp_data_r.specific <= vectorify(b_data,o_uCM2hp_data_r.specific);
+                o_uCM2hp_data_r.specific <= convert(b_data,o_uCM2hp_data_r.specific);
               else --endcap
 
               end if;

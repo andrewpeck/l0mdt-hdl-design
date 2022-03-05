@@ -317,8 +317,8 @@ BEGIN
 
   ----    );
   
-  mdt_hit <= structify(i_mdt_hit,mdt_hit);
-  seed_i <= structify(i_seed,seed_i);
+  mdt_hit <= convert(i_mdt_hit,mdt_hit);
+  seed_i <= convert(i_seed,seed_i);
   o_seg <= globseg;
 
   -- Clustering

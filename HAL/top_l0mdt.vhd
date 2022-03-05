@@ -372,37 +372,37 @@ begin
       );
 
   -- ctrl/mon
-  ucm_ctrl_v     <= vectorify(ucm_ctrl_r, ucm_ctrl_v);
-  ucm_mon_r      <= structify(ucm_mon_v, ucm_mon_r);
+  ucm_ctrl_v     <= convert(ucm_ctrl_r, ucm_ctrl_v);
+  ucm_mon_r      <= convert(ucm_mon_v, ucm_mon_r);
 
-  tar_inn_ctrl_v <= vectorify(tar_inn_ctrl_r, tar_inn_ctrl_v);
-  tar_inn_mon_r  <= structify(tar_inn_mon_v, tar_inn_mon_r);
-  tar_mid_ctrl_v <= vectorify(tar_mid_ctrl_r, tar_mid_ctrl_v);
-  tar_mid_mon_r  <= structify(tar_mid_mon_v, tar_mid_mon_r);
-  tar_out_ctrl_v <= vectorify(tar_out_ctrl_r, tar_out_ctrl_v);
-  tar_out_mon_r  <= structify(tar_out_mon_v, tar_out_mon_r);
-  tar_ext_ctrl_v <= vectorify(tar_ext_ctrl_r, tar_ext_ctrl_v);
-  tar_ext_mon_r  <= structify(tar_ext_mon_v, tar_ext_mon_r);
+  tar_inn_ctrl_v <= convert(tar_inn_ctrl_r, tar_inn_ctrl_v);
+  tar_inn_mon_r  <= convert(tar_inn_mon_v, tar_inn_mon_r);
+  tar_mid_ctrl_v <= convert(tar_mid_ctrl_r, tar_mid_ctrl_v);
+  tar_mid_mon_r  <= convert(tar_mid_mon_v, tar_mid_mon_r);
+  tar_out_ctrl_v <= convert(tar_out_ctrl_r, tar_out_ctrl_v);
+  tar_out_mon_r  <= convert(tar_out_mon_v, tar_out_mon_r);
+  tar_ext_ctrl_v <= convert(tar_ext_ctrl_r, tar_ext_ctrl_v);
+  tar_ext_mon_r  <= convert(tar_ext_mon_v, tar_ext_mon_r);
 
-  hps_inn_ctrl_v <= vectorify(hps_inn_ctrl_r, hps_inn_ctrl_v);
-  hps_inn_mon_r  <= structify(hps_inn_mon_v, hps_inn_mon_r);
-  hps_mid_ctrl_v <= vectorify(hps_mid_ctrl_r, hps_mid_ctrl_v);
-  hps_mid_mon_r  <= structify(hps_mid_mon_v, hps_mid_mon_r);
-  hps_out_ctrl_v <= vectorify(hps_out_ctrl_r, hps_out_ctrl_v);
-  hps_out_mon_r  <= structify(hps_out_mon_v, hps_out_mon_r);
-  hps_ext_ctrl_v <= vectorify(hps_ext_ctrl_r, hps_ext_ctrl_v);
-  hps_ext_mon_r  <= structify(hps_ext_mon_v, hps_ext_mon_r);
+  hps_inn_ctrl_v <= convert(hps_inn_ctrl_r, hps_inn_ctrl_v);
+  hps_inn_mon_r  <= convert(hps_inn_mon_v, hps_inn_mon_r);
+  hps_mid_ctrl_v <= convert(hps_mid_ctrl_r, hps_mid_ctrl_v);
+  hps_mid_mon_r  <= convert(hps_mid_mon_v, hps_mid_mon_r);
+  hps_out_ctrl_v <= convert(hps_out_ctrl_r, hps_out_ctrl_v);
+  hps_out_mon_r  <= convert(hps_out_mon_v, hps_out_mon_r);
+  hps_ext_ctrl_v <= convert(hps_ext_ctrl_r, hps_ext_ctrl_v);
+  hps_ext_mon_r  <= convert(hps_ext_mon_v, hps_ext_mon_r);
 
-  mpl_ctrl_v     <= vectorify(mpl_ctrl_r, mpl_ctrl_v);
-  mpl_mon_r      <= structify(mpl_mon_v, mpl_mon_r);
-  tf_ctrl_v      <= vectorify(tf_ctrl_r, tf_ctrl_v);
-  tf_mon_r       <= structify(tf_mon_v, tf_mon_r);
-  mtc_ctrl_v     <= vectorify(mtc_ctrl_r, mtc_ctrl_v);
-  mtc_mon_r      <= structify(mtc_mon_v, mtc_mon_r);
-  daq_ctrl_v     <= vectorify(daq_ctrl_r, daq_ctrl_v);
-  daq_mon_r      <= structify(daq_mon_v, daq_mon_r);
-  fm_ctrl_v      <= vectorify(fm_ctrl_r, fm_ctrl_v);
-  fm_mon_r       <= structify(fm_mon_v, fm_mon_r);
+  mpl_ctrl_v     <= convert(mpl_ctrl_r, mpl_ctrl_v);
+  mpl_mon_r      <= convert(mpl_mon_v, mpl_mon_r);
+  tf_ctrl_v      <= convert(tf_ctrl_r, tf_ctrl_v);
+  tf_mon_r       <= convert(tf_mon_v, tf_mon_r);
+  mtc_ctrl_v     <= convert(mtc_ctrl_r, mtc_ctrl_v);
+  mtc_mon_r      <= convert(mtc_mon_v, mtc_mon_r);
+  daq_ctrl_v     <= convert(daq_ctrl_r, daq_ctrl_v);
+  daq_mon_r      <= convert(daq_mon_v, daq_mon_r);
+  fm_ctrl_v      <= convert(fm_ctrl_r, fm_ctrl_v);
+  fm_mon_r       <= convert(fm_mon_v, fm_mon_r);
 
   top_control_inst : entity work.top_control
     port map (

@@ -82,10 +82,10 @@ begin
   hp_rst  <= rst;-- OR local_rst;
   hp_ena  <= ena;--glob_en AND local_en;
 
-  mdt_data_r <= structify(i_mdt_data_v,mdt_data_r);
-  slc_data_r <= structify(i_slc_data_v,slc_data_r);
+  mdt_data_r <= convert(i_mdt_data_v,mdt_data_r);
+  slc_data_r <= convert(i_slc_data_v,slc_data_r);
 
-  o_hit_data_v <= vectorify(data_2_sf_r,o_hit_data_v);
+  o_hit_data_v <= convert(data_2_sf_r,o_hit_data_v);
 
 
   HP_HM : entity hp_lib.hp_matching
@@ -126,7 +126,7 @@ begin
     ctrl_v          => ctrl_v,
     mon_v           => mon_v , 
     -- SLc-
-    -- i_SLC_RoI_org       => structify(i_SLC_Window(0)).lo,
+    -- i_SLC_RoI_org       => convert(i_SLC_Window(0)).lo,
     i_SLc_data_v        => i_slc_data_v,--.specific,
     -- i_SLc_BCID          => slc_data_r.BCID,
     -- MDT hit

@@ -113,8 +113,8 @@ architecture beh of heg is
 
 begin
 
-  ctrl_r <= structify(ctrl_v,ctrl_r);
-  mon_v <= vectorify(mon_r,mon_v);
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
 
   ctrl_super_v <= convert(ctrl_r.super,ctrl_super_v);
   mon_r.super <= convert(mon_super_v,mon_r.super);
@@ -122,14 +122,14 @@ begin
   heg_ctrl_ctrl_r <= ctrl_r.ctrl;
   mon_r.ctrl <= heg_ctrl_mon_r;
   
-  heg_ctrl_mon_r <= structify(heg_ctrl_mon_v,heg_ctrl_mon_r);
-  heg_ctrl_ctrl_v <= vectorify(heg_ctrl_ctrl_r,heg_ctrl_ctrl_v);
+  heg_ctrl_mon_r <= convert(heg_ctrl_mon_v,heg_ctrl_mon_r);
+  heg_ctrl_ctrl_v <= convert(heg_ctrl_ctrl_r,heg_ctrl_ctrl_v);
 
   ctrl_hp_ar <= ctrl_r.HP.HP;
   mon_r.HP.HP <= mon_hp_ar;
 
   -------------------------------------------
-  i_uCM_data_r <= structify(i_uCM_data_v,i_uCM_data_r);
+  i_uCM_data_r <= convert(i_uCM_data_v,i_uCM_data_r);
   count_slcs_in_trig(0) <= i_uCM_data_r.data_valid;
 
 
@@ -189,8 +189,8 @@ begin
 
   hp_gen: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
 
-    i_mdt_full_data_ar(hp_i) <= structify(i_mdt_full_data_av(hp_i),i_mdt_full_data_ar(hp_i));
-    hp2bm_ar(hp_i) <= structify(hp2bm_av(hp_i),hp2bm_ar(hp_i));
+    i_mdt_full_data_ar(hp_i) <= convert(i_mdt_full_data_av(hp_i),i_mdt_full_data_ar(hp_i));
+    hp2bm_ar(hp_i) <= convert(hp2bm_av(hp_i),hp2bm_ar(hp_i));
 
     count_hits_in_trig(hp_i) <= i_mdt_full_data_ar(hp_i).data_valid;
     count_hits_ok_trig(hp_i) <= hp2bm_ar(hp_i).data_valid;

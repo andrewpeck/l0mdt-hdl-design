@@ -83,7 +83,7 @@ architecture beh of hp_matching is
 begin
 
   loop1 : for li in c_HP_HITM_NUM_LAYERS - 1 downto 0 generate
-    Roi_window(li) <= structify(i_SLC_Window(li),Roi_window(li));
+    Roi_window(li) <= convert(i_SLC_Window(li),Roi_window(li));
   end generate ; -- loop1
 
   time_high_limit <= resize(

@@ -150,8 +150,8 @@ ARCHITECTURE Behavioral OF csf_fitter IS
 
 BEGIN
 
-    hit1 <= structify(i_hit1,hit1);
-    hit2 <= structify(i_hit2,hit2);
+    hit1 <= convert(i_hit1,hit1);
+    hit2 <= convert(i_hit2,hit2);
 
     reciprocal_rom : rom
     GENERIC MAP(

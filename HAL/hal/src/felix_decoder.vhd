@@ -79,7 +79,7 @@ architecture behavioral of felix_decoder is
   -- function gate_ttc (ttc : l0mdt_ttc_rt; gate : std_logic)
   --   return l0mdt_ttc_rt is
   -- begin
-  --   return structify(vectorify(ttc) and repeat(gate, L0MDT_TTC_LEN));
+  --   return convert(convert(ttc) and repeat(gate, L0MDT_TTC_LEN));
   -- end gate_ttc;
 
 begin

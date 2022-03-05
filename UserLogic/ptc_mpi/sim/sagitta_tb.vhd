@@ -65,9 +65,9 @@ begin
         wait for CLK_period/2;
     end process;
 
-    i_seg0 <= vectorify(seg0);
-    i_seg1 <= vectorify(seg1);
-    i_seg2 <= vectorify(seg2);
+    i_seg0 <= convert(seg0);
+    i_seg1 <= convert(seg1);
+    i_seg2 <= convert(seg2);
 
 --    ***** MPI_TrackFitter DIGI debug ***********
 --TVector3 A 3D physics vector (x,y,z)=(3362.936764,3362.935708,-4894.147499) (rho,theta,phi)=(6824.321211,135.820708,44.999991)

@@ -88,7 +88,7 @@ architecture beh of hps_sf_wrap is
 
 begin
 
-  i_control_r <= structify(i_control_v,i_control_r);
+  i_control_r <= convert(i_control_v,i_control_r);
 
   csf_ctrl_r <= convert(csf_ctrl_v,csf_ctrl_r);
   -- csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );

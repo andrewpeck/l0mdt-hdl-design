@@ -232,7 +232,7 @@ architecture beh of ult_tp is
 
 begin
 
-  -- h2s_ctrl_v <= vectorify(h2s_ctrl,h2s_ctrl_v);
+  -- h2s_ctrl_v <= convert(h2s_ctrl,h2s_ctrl_v);
 
   ULT : entity ult_lib.ult
   generic map(
@@ -319,38 +319,38 @@ begin
   );
 
     -- ctrl/mon
-    hps_inn_ctrl_v  <= vectorify(hps_inn_ctrl  ,hps_inn_ctrl_v);
-    hps_inn_mon     <= structify(hps_inn_mon_v ,hps_inn_mon);
-    hps_mid_ctrl_v  <= vectorify(hps_mid_ctrl  ,hps_mid_ctrl_v);
-    hps_mid_mon     <= structify(hps_mid_mon_v ,hps_mid_mon);
-    hps_out_ctrl_v  <= vectorify(hps_out_ctrl  ,hps_out_ctrl_v);
-    hps_out_mon     <= structify(hps_out_mon_v ,hps_out_mon);
-    hps_ext_ctrl_v  <= vectorify(hps_ext_ctrl  ,hps_ext_ctrl_v);
-    hps_ext_mon     <= structify(hps_ext_mon_v ,hps_ext_mon);
+    hps_inn_ctrl_v  <= convert(hps_inn_ctrl  ,hps_inn_ctrl_v);
+    hps_inn_mon     <= convert(hps_inn_mon_v ,hps_inn_mon);
+    hps_mid_ctrl_v  <= convert(hps_mid_ctrl  ,hps_mid_ctrl_v);
+    hps_mid_mon     <= convert(hps_mid_mon_v ,hps_mid_mon);
+    hps_out_ctrl_v  <= convert(hps_out_ctrl  ,hps_out_ctrl_v);
+    hps_out_mon     <= convert(hps_out_mon_v ,hps_out_mon);
+    hps_ext_ctrl_v  <= convert(hps_ext_ctrl  ,hps_ext_ctrl_v);
+    hps_ext_mon     <= convert(hps_ext_mon_v ,hps_ext_mon);
     --
-    ucm_ctrl_v <= vectorify(ucm_ctrl,ucm_ctrl_v);
-    ucm_mon <= structify(ucm_mon_v,ucm_mon);
+    ucm_ctrl_v <= convert(ucm_ctrl,ucm_ctrl_v);
+    ucm_mon <= convert(ucm_mon_v,ucm_mon);
 
-    tar_inn_ctrl_v  <= vectorify(tar_inn_ctrl ,tar_inn_ctrl_v);
-    tar_inn_mon     <= structify(tar_inn_mon_v,tar_inn_mon);
-    tar_mid_ctrl_v  <= vectorify(tar_mid_ctrl ,tar_mid_ctrl_v);
-    tar_mid_mon     <= structify(tar_mid_mon_v,tar_mid_mon);
-    tar_out_ctrl_v  <= vectorify(tar_out_ctrl ,tar_out_ctrl_v);
-    tar_out_mon     <= structify(tar_out_mon_v,tar_out_mon);
-    tar_ext_ctrl_v  <= vectorify(tar_ext_ctrl ,tar_ext_ctrl_v);
-    tar_ext_mon     <= structify(tar_ext_mon_v,tar_ext_mon);
-    -- h2s_ctrl_v <= vectorify(h2s_ctrl,h2s_ctrl_v);
-    -- h2s_mon <= structify(h2s_mon_v,h2s_mon);
-    mpl_ctrl_v <= vectorify(mpl_ctrl,mpl_ctrl_v);
-    mpl_mon <= structify(mpl_mon_v,mpl_mon);
-    tf_ctrl_v <= vectorify(tf_ctrl,tf_ctrl_v);
-    tf_mon <= structify(tf_mon_v,tf_mon);
-    mtc_ctrl_v <= vectorify(mtc_ctrl,mtc_ctrl_v);
-    mtc_mon <= structify(mtc_mon_v,mtc_mon);
-    daq_ctrl_v <= vectorify(daq_ctrl,daq_ctrl_v);
-    daq_mon <= structify(daq_mon_v,daq_mon);
-    fm_ctrl_v <= vectorify(fm_ctrl,fm_ctrl_v);
-    fm_mon    <= structify(fm_mon_v,fm_mon);
+    tar_inn_ctrl_v  <= convert(tar_inn_ctrl ,tar_inn_ctrl_v);
+    tar_inn_mon     <= convert(tar_inn_mon_v,tar_inn_mon);
+    tar_mid_ctrl_v  <= convert(tar_mid_ctrl ,tar_mid_ctrl_v);
+    tar_mid_mon     <= convert(tar_mid_mon_v,tar_mid_mon);
+    tar_out_ctrl_v  <= convert(tar_out_ctrl ,tar_out_ctrl_v);
+    tar_out_mon     <= convert(tar_out_mon_v,tar_out_mon);
+    tar_ext_ctrl_v  <= convert(tar_ext_ctrl ,tar_ext_ctrl_v);
+    tar_ext_mon     <= convert(tar_ext_mon_v,tar_ext_mon);
+    -- h2s_ctrl_v <= convert(h2s_ctrl,h2s_ctrl_v);
+    -- h2s_mon <= convert(h2s_mon_v,h2s_mon);
+    mpl_ctrl_v <= convert(mpl_ctrl,mpl_ctrl_v);
+    mpl_mon <= convert(mpl_mon_v,mpl_mon);
+    tf_ctrl_v <= convert(tf_ctrl,tf_ctrl_v);
+    tf_mon <= convert(tf_mon_v,tf_mon);
+    mtc_ctrl_v <= convert(mtc_ctrl,mtc_ctrl_v);
+    mtc_mon <= convert(mtc_mon_v,mtc_mon);
+    daq_ctrl_v <= convert(daq_ctrl,daq_ctrl_v);
+    daq_mon <= convert(daq_mon_v,daq_mon);
+    fm_ctrl_v <= convert(fm_ctrl,fm_ctrl_v);
+    fm_mon    <= convert(fm_mon_v,fm_mon);
 
   -------------------------------------------------------------------------------------
 	-- clock Generator

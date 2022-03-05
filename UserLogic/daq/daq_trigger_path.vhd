@@ -120,7 +120,7 @@ end architecture V2;
 --   signal port_or : daq_trigger_ort;
 -- begin
 --   port_ir <= structify(port_iv, port_ir);
---   port_ov <= vectorify(port_or, port_ov);
+--   port_ov <= convert(port_or, port_ov);
 --   u_daq_trigger : entity work.daq_trigger
 --     generic map (G => G)
 --     port map (port_ir => port_ir, port_or => port_or);
