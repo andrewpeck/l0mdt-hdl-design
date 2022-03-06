@@ -1,0 +1,213 @@
+# yml2hdl v2
+#  Auto-generated from:
+#  https://docs.google.com/spreadsheets/d/1oJh-NPv990n6AzXXZ7cBaySrltqBO-eGucrsnOx_r4s
+#  Date: 08/02/2022 UTC
+
+#df_hash = 0750f02e
+
+config:
+  basic_convert_functions: off
+  packages:
+    # - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg]
+
+hdl:
+# - kkkk_LEN:    [qualifier : constant , type : std_logic , value : '0']
+# - kkkk_MULT:    [qualifier : constant , type : integer , value : 10]
+# - kkkka_LEN:    [qualifier : constant , type : std_logic_vector(1 downto 0) , value : "00"]
+# - kkkka_MULT:    [qualifier : constant , type : real , value : 10.0]
+
+
+# SL_HEADER
+- SL_HEADER_H_RESERVED_LEN:    [qualifier : constant , type : integer , value : 10]
+- SL_HEADER_H_RESERVED_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SL_HEADER_TCOVERFLOW_LEN:    [qualifier : constant , type : integer , value : 1]
+- SL_HEADER_TCOVERFLOW_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SL_HEADER_NMTC_SL_LEN:    [qualifier : constant , type : integer , value : 3]
+- SL_HEADER_NMTC_SL_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SL_HEADER_NMTC_MDT_LEN:    [qualifier : constant , type : integer , value : 3]
+- SL_HEADER_NMTC_MDT_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SL_HEADER_NSLC_LEN:    [qualifier : constant , type : integer , value : 3]
+- SL_HEADER_NSLC_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SL_HEADER_BCID_LEN:    [qualifier : constant , type : integer , value : 12]
+- SL_HEADER_BCID_MULT:    [qualifier : constant , type : real, value : 1.0]
+
+# SL_TRAILER
+- SL_TRAILER_T_RESERVED_LEN:    [qualifier : constant , type : integer , value : 6]
+- SL_TRAILER_T_RESERVED_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SL_TRAILER_CRC_LEN:    [qualifier : constant , type : integer , value : 8]
+- SL_TRAILER_CRC_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SL_TRAILER_FIBERID_LEN:    [qualifier : constant , type : integer , value : 4]
+- SL_TRAILER_FIBERID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SL_TRAILER_SLID_LEN:    [qualifier : constant , type : integer , value : 6]
+- SL_TRAILER_SLID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SL_TRAILER_COMMA_LEN:    [qualifier : constant , type : integer , value : 8]
+- SL_TRAILER_COMMA_MULT:    [qualifier : constant , type : real, value : 1.0]
+
+# SLC_COMMON
+- SLC_COMMON_SLCID_LEN:    [qualifier : constant , type : integer , value : 3]
+- SLC_COMMON_SLCID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SLC_COMMON_TCSENT_LEN:    [qualifier : constant , type : integer , value : 1]
+- SLC_COMMON_TCSENT_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SLC_COMMON_POSETA_LEN:    [qualifier : constant , type : integer , value : 14]
+- SLC_COMMON_POSETA_MULT:    [qualifier : constant , type : real, value : 4096.0]
+- SLC_COMMON_POSPHI_LEN:    [qualifier : constant , type : integer , value : 9]
+- SLC_COMMON_POSPHI_MULT:    [qualifier : constant , type : real, value : 64.0]
+- SLC_COMMON_SL_PT_LEN:    [qualifier : constant , type : integer , value : 8]
+- SLC_COMMON_SL_PT_MULT:    [qualifier : constant , type : real, value : 2.0]
+- SLC_COMMON_SL_PTTHRESH_LEN:    [qualifier : constant , type : integer , value : 4]
+- SLC_COMMON_SL_PTTHRESH_MULT:    [qualifier : constant , type : real, value : 0.25]
+- SLC_COMMON_SL_CHARGE_LEN:    [qualifier : constant , type : integer , value : 1]
+- SLC_COMMON_SL_CHARGE_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SLC_COMMON_COINTYPE_LEN:    [qualifier : constant , type : integer , value : 3]
+- SLC_COMMON_COINTYPE_MULT:    [qualifier : constant , type : real, value : 1.0]
+
+# SLC_ENDCAP
+- SLC_ENDCAP_E_RESERVED_LEN:    [qualifier : constant , type : integer , value : 9]
+- SLC_ENDCAP_E_RESERVED_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SLC_ENDCAP_NSWSEG_MON_LEN:    [qualifier : constant , type : integer , value : 1]
+- SLC_ENDCAP_NSWSEG_MON_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN:    [qualifier : constant , type : integer , value : 5]
+- SLC_ENDCAP_NSWSEG_ANGDTHETA_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SLC_ENDCAP_NSWSEG_POSPHI_LEN:    [qualifier : constant , type : integer , value : 8]
+- SLC_ENDCAP_NSWSEG_POSPHI_MULT:    [qualifier : constant , type : real, value : 0.03125]
+- SLC_ENDCAP_NSWSEG_POSETA_LEN:    [qualifier : constant , type : integer , value : 14]
+- SLC_ENDCAP_NSWSEG_POSETA_MULT:    [qualifier : constant , type : real, value : 4096.0]
+- SLC_ENDCAP_SEG_ANGDPHI_LEN:    [qualifier : constant , type : integer , value : 4]
+- SLC_ENDCAP_SEG_ANGDPHI_MULT:    [qualifier : constant , type : real, value : 0.2]
+- SLC_ENDCAP_SEG_ANGDTHETA_LEN:    [qualifier : constant , type : integer , value : 7]
+- SLC_ENDCAP_SEG_ANGDTHETA_MULT:    [qualifier : constant , type : real, value : 0.25]
+
+# SLC_BARREL
+- SLC_BARREL_RPC3_POSZ_LEN:    [qualifier : constant , type : integer , value : 12]
+- SLC_BARREL_RPC3_POSZ_MULT:    [qualifier : constant , type : real, value : 0.125]
+- SLC_BARREL_RPC2_POSZ_LEN:    [qualifier : constant , type : integer , value : 12]
+- SLC_BARREL_RPC2_POSZ_MULT:    [qualifier : constant , type : real, value : 0.125]
+- SLC_BARREL_RPC1_POSZ_LEN:    [qualifier : constant , type : integer , value : 12]
+- SLC_BARREL_RPC1_POSZ_MULT:    [qualifier : constant , type : real, value : 0.125]
+- SLC_BARREL_RPC0_POSZ_LEN:    [qualifier : constant , type : integer , value : 12]
+- SLC_BARREL_RPC0_POSZ_MULT:    [qualifier : constant , type : real, value : 0.125]
+
+# SLC_RX
+- SLC_RX_DATA_VALID_LEN:    [qualifier : constant , type : integer , value : 1]
+- SLC_RX_DATA_VALID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SLC_RX_SPECIFIC_LEN:    [qualifier : constant , type : integer , value : 48]
+- SLC_RX_SPECIFIC_MULT:    [qualifier : constant , type : real, value : 1.0]
+
+# SLC_MUID
+
+# VEC_MDTID
+- VEC_MDTID_CHAMBER_ID_LEN:    [qualifier : constant , type : integer , value : 5]
+- VEC_MDTID_CHAMBER_ID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- VEC_MDTID_CHAMBER_IETA_LEN:    [qualifier : constant , type : integer , value : 4]
+- VEC_MDTID_CHAMBER_IETA_MULT:    [qualifier : constant , type : real, value : 1.0]
+
+# TDC
+- TDC_CHANID_LEN:    [qualifier : constant , type : integer , value : 5]
+- TDC_CHANID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- TDC_EDGEMODE_LEN:    [qualifier : constant , type : integer , value : 2]
+- TDC_EDGEMODE_MULT:    [qualifier : constant , type : real, value : 1.0]
+- TDC_COARSETIME_LEN:    [qualifier : constant , type : integer , value : 12]
+- TDC_COARSETIME_MULT:    [qualifier : constant , type : real, value : 1.0]
+- TDC_FINETIME_LEN:    [qualifier : constant , type : integer , value : 5]
+- TDC_FINETIME_MULT:    [qualifier : constant , type : real, value : 32.0]
+- TDC_PULSEWIDTH_LEN:    [qualifier : constant , type : integer , value : 8]
+- TDC_PULSEWIDTH_MULT:    [qualifier : constant , type : real, value : 32.0]
+
+# UCM2PL
+- UCM2PL_DATA_VALID_LEN:    [qualifier : constant , type : integer , value : 1]
+- UCM2PL_DATA_VALID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- UCM2PL_BUSY_LEN:    [qualifier : constant , type : integer , value : 1]
+- UCM2PL_BUSY_MULT:    [qualifier : constant , type : real, value : 1.0]
+- UCM2PL_PROCESS_CH_LEN:    [qualifier : constant , type : integer , value : 4]
+- UCM2PL_PROCESS_CH_MULT:    [qualifier : constant , type : real, value : 1.0]
+- UCM2PL_PHIMOD_LEN:    [qualifier : constant , type : integer , value : 8]
+- UCM2PL_PHIMOD_MULT:    [qualifier : constant , type : real, value : 256.0]
+
+# TDCPOLMUX2TAR
+- TDCPOLMUX2TAR_DATA_VALID_LEN:    [qualifier : constant , type : integer , value : 1]
+- TDCPOLMUX2TAR_DATA_VALID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- TDCPOLMUX2TAR_CSMID_LEN:    [qualifier : constant , type : integer , value : 4]
+- TDCPOLMUX2TAR_CSMID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- TDCPOLMUX2TAR_TDCID_LEN:    [qualifier : constant , type : integer , value : 5]
+- TDCPOLMUX2TAR_TDCID_MULT:    [qualifier : constant , type : real, value : 1.0]
+
+# UCM2HPS
+- UCM2HPS_DATA_VALID_LEN:    [qualifier : constant , type : integer , value : 1]
+- UCM2HPS_DATA_VALID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- UCM2HPS_MDTSEG_DEST_LEN:    [qualifier : constant , type : integer , value : 2]
+- UCM2HPS_MDTSEG_DEST_MULT:    [qualifier : constant , type : real, value : 1.0]
+- UCM2HPS_VEC_POS_LEN:    [qualifier : constant , type : integer , value : 14]
+- UCM2HPS_VEC_POS_MULT:    [qualifier : constant , type : real, value : 1.0]
+- UCM2HPS_VEC_ANG_LEN:    [qualifier : constant , type : integer , value : 11]
+- UCM2HPS_VEC_ANG_MULT:    [qualifier : constant , type : real, value : 1.0]
+
+# HEG2SFSLC
+- HEG2SFSLC_DATA_VALID_LEN:    [qualifier : constant , type : integer , value : 1]
+- HEG2SFSLC_DATA_VALID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- HEG2SFSLC_MDTSEG_DEST_LEN:    [qualifier : constant , type : integer , value : 2]
+- HEG2SFSLC_MDTSEG_DEST_MULT:    [qualifier : constant , type : real, value : 1.0]
+- HEG2SFSLC_HEWINDOW_POS_LEN:    [qualifier : constant , type : integer , value : 19]
+- HEG2SFSLC_HEWINDOW_POS_MULT:    [qualifier : constant , type : real, value : 32.0]
+
+# TAR2HPS
+- TAR2HPS_DATA_VALID_LEN:    [qualifier : constant , type : integer , value : 1]
+- TAR2HPS_DATA_VALID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- TAR2HPS_LAYER_LEN:    [qualifier : constant , type : integer , value : 5]
+- TAR2HPS_LAYER_MULT:    [qualifier : constant , type : real, value : 1.0]
+- TAR2HPS_TUBE_LEN:    [qualifier : constant , type : integer , value : 9]
+- TAR2HPS_TUBE_MULT:    [qualifier : constant , type : real, value : 1.0]
+- TAR2HPS_TIME_LEN:    [qualifier : constant , type : integer , value : 17]
+- TAR2HPS_TIME_MULT:    [qualifier : constant , type : real, value : 32.0]
+
+# HEG2SFHIT
+- HEG2SFHIT_DATA_VALID_LEN:    [qualifier : constant , type : integer , value : 1]
+- HEG2SFHIT_DATA_VALID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- HEG2SFHIT_MLAYER_LEN:    [qualifier : constant , type : integer , value : 1]
+- HEG2SFHIT_MLAYER_MULT:    [qualifier : constant , type : real, value : 1.0]
+- HEG2SFHIT_LOCALX_LEN:    [qualifier : constant , type : integer , value : 15]
+- HEG2SFHIT_LOCALX_MULT:    [qualifier : constant , type : real, value : 32.0]
+- HEG2SFHIT_LOCALY_LEN:    [qualifier : constant , type : integer , value : 15]
+- HEG2SFHIT_LOCALY_MULT:    [qualifier : constant , type : real, value : 32.0]
+- HEG2SFHIT_RADIUS_LEN:    [qualifier : constant , type : integer , value : 9]
+- HEG2SFHIT_RADIUS_MULT:    [qualifier : constant , type : real, value : 32.0]
+
+# PL2PTCALC
+
+# SF2PTCALC
+- SF2PTCALC_DATA_VALID_LEN:    [qualifier : constant , type : integer , value : 1]
+- SF2PTCALC_DATA_VALID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- SF2PTCALC_SEGPOS_LEN:    [qualifier : constant , type : integer , value : 18]
+- SF2PTCALC_SEGPOS_MULT:    [qualifier : constant , type : real, value : 8.0]
+- SF2PTCALC_SEGANGLE_LEN:    [qualifier : constant , type : integer , value : 14]
+- SF2PTCALC_SEGANGLE_MULT:    [qualifier : constant , type : real, value : 4096.0]
+- SF2PTCALC_SEGQUALITY_LEN:    [qualifier : constant , type : integer , value : 1]
+- SF2PTCALC_SEGQUALITY_MULT:    [qualifier : constant , type : real, value : 1.0]
+
+# PTCALC2MTC
+- PTCALC2MTC_DATA_VALID_LEN:    [qualifier : constant , type : integer , value : 1]
+- PTCALC2MTC_DATA_VALID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- PTCALC2MTC_MDT_ETA_LEN:    [qualifier : constant , type : integer , value : 14]
+- PTCALC2MTC_MDT_ETA_MULT:    [qualifier : constant , type : real, value : 2048.0]
+- PTCALC2MTC_MDT_PT_LEN:    [qualifier : constant , type : integer , value : 8]
+- PTCALC2MTC_MDT_PT_MULT:    [qualifier : constant , type : real, value : 2.0]
+- PTCALC2MTC_MDT_PTTHRESH_LEN:    [qualifier : constant , type : integer , value : 4]
+- PTCALC2MTC_MDT_PTTHRESH_MULT:    [qualifier : constant , type : real, value : 0.25]
+- PTCALC2MTC_MDT_CHARGE_LEN:    [qualifier : constant , type : integer , value : 1]
+- PTCALC2MTC_MDT_CHARGE_MULT:    [qualifier : constant , type : real, value : 1.0]
+- PTCALC2MTC_MDT_NSEGMENTS_LEN:    [qualifier : constant , type : integer , value : 2]
+- PTCALC2MTC_MDT_NSEGMENTS_MULT:    [qualifier : constant , type : real, value : 1.0]
+- PTCALC2MTC_MDT_QUALITY_LEN:    [qualifier : constant , type : integer , value : 3]
+- PTCALC2MTC_MDT_QUALITY_MULT:    [qualifier : constant , type : real, value : 1.0]
+
+# PL2MTC
+- PL2MTC_DATA_VALID_LEN:    [qualifier : constant , type : integer , value : 1]
+- PL2MTC_DATA_VALID_MULT:    [qualifier : constant , type : real, value : 1.0]
+
+# MTC2SL
+- MTC2SL_DATA_VALID_LEN:    [qualifier : constant , type : integer , value : 1]
+- MTC2SL_DATA_VALID_MULT:    [qualifier : constant , type : real, value : 1.0]
+- MTC2SL_MDT_PROCFLAGS_LEN:    [qualifier : constant , type : integer , value : 4]
+- MTC2SL_MDT_PROCFLAGS_MULT:    [qualifier : constant , type : real, value : 1.0]
+- MTC2SL_M_RESERVED_LEN:    [qualifier : constant , type : integer , value : 49]
+- MTC2SL_M_RESERVED_MULT:    [qualifier : constant , type : real, value : 1.0]
