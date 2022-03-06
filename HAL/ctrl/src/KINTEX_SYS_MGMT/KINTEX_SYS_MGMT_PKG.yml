@@ -1,26 +1,20 @@
-# yml2hdl v2
-# This file was auto-generated.
-# Modifications might be lost.
+# yml2hdl v3
 config:
-  basic_convert_functions : off
-  packages:
-    - ieee: [std_logic_1164, numeric_std, math_real]
-    - shared_lib: [common_ieee_pkg]
-
-hdl:
-
-- KINTEX_SYS_MGMT_MON_t:
-  - TEMP : [ type: logic, length: 10 ]
-  - VCCINT : [ type: logic, length: 10 ]
-  - VCCAUX : [ type: logic, length: 10 ]
-  - VCCBRAM : [ type: logic, length: 10 ]
-  - TEMP_MAX : [ type: logic, length: 10 ]
-  - VCCINT_MAX : [ type: logic, length: 10 ]
-  - VCCAUX_MAX : [ type: logic, length: 10 ]
-  - VCCBRAM_MAX : [ type: logic, length: 10 ]
-  - TEMP_MIN : [ type: logic, length: 10 ]
-  - VCCINT_MIN : [ type: logic, length: 10 ]
-  - VCCAUX_MIN : [ type: logic, length: 10 ]
-  - VCCBRAM_MIN : [ type: logic, length: 10 ]
-
-
+   basic_functions: False
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+      - shared_lib: [common_ieee_pkg]
+types:
+   - KINTEX_SYS_MGMT_MON_t:
+      - TEMP: {'type': 'logic', 'range': ['10-1', 0]}
+      - VCCINT: {'type': 'logic', 'range': ['10-1', 0]}
+      - VCCAUX: {'type': 'logic', 'range': ['10-1', 0]}
+      - VCCBRAM: {'type': 'logic', 'range': ['10-1', 0]}
+      - TEMP_MAX: {'type': 'logic', 'range': ['10-1', 0]}
+      - VCCINT_MAX: {'type': 'logic', 'range': ['10-1', 0]}
+      - VCCAUX_MAX: {'type': 'logic', 'range': ['10-1', 0]}
+      - VCCBRAM_MAX: {'type': 'logic', 'range': ['10-1', 0]}
+      - TEMP_MIN: {'type': 'logic', 'range': ['10-1', 0]}
+      - VCCINT_MIN: {'type': 'logic', 'range': ['10-1', 0]}
+      - VCCAUX_MIN: {'type': 'logic', 'range': ['10-1', 0]}
+      - VCCBRAM_MIN: {'type': 'logic', 'range': ['10-1', 0]}
