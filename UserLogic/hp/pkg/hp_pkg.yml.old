@@ -1,0 +1,92 @@
+# yml2hdl v2
+# module hp
+
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg,common_constants_pkg,common_types_pkg,l0mdt_constants_pkg,l0mdt_dataformats_pkg]
+
+hdl:
+
+# -----------------------------------------------------------
+#  RoI window
+# -----------------------------------------------------------
+- hp_win_tubes_rt:
+  - hi: [ type: unsigned, length: MDT_TUBE_LEN]
+  - lo: [ type: unsigned, length: MDT_TUBE_LEN]
+# hp_heg2hp_win_layer  : [array: 2 , type: unsigned, length: MDT_TUBE_LEN]
+# - hp_heg2hp_window  : [array: open , type: hp_win_tubes]
+- hp_win_tubes_vt : [type: logic, length: hp_win_tubes_rt]
+- hp_win_tubes_art: [array: open ,  type: hp_win_tubes_rt]
+- hp_win_tubes_avt: [ array: open,  type: hp_win_tubes_vt]
+# - hp_win_tubes_vart : [type: logic, length: hp_win_tubes_art]
+
+# -----------------------------------------------------------
+#  RoI window limits
+# -----------------------------------------------------------
+- hp_win_tubes_limits_rt:
+  - hi: [ type: signed, length: MDT_TUBE_LEN]
+  - lo: [ type: signed, length: MDT_TUBE_LEN]
+# hp_heg2hp_win_layer  : [array: 2 , type: unsigned, length: MDT_TUBE_LEN]
+# - hp_window_limits  : [array: open , type: hp_win_tubes_limits]
+- hp_win_tubes_limits_vt : [type: logic, length: hp_win_tubes_limits_rt]
+- hp_win_tubes_limits_art: [array: open ,  type: hp_win_tubes_limits_rt]
+- hp_win_tubes_limits_avt: [ array: open,  type: hp_win_tubes_limits_vt]
+
+# -----------------------------------------------------------
+#  SLC
+# -----------------------------------------------------------
+- hp_heg2hp_slc_b_rt:
+  - roi_z         : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
+  - roi_x         : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
+
+- HP_HEG2HP_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 38 ]
+
+- hp_heg2hp_slc_rt:
+  - bcid        : [ type: unsigned , length: BCID_LEN]
+  - specific    : [type: logic , length: HP_HEG2HP_SPECIFIC_LEN ]
+  # - roi_z    : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
+  # - roi_x    : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
+  - data_valid  : [ type: logic]
+- hp_heg2hp_slc_vt : [type: logic, length: hp_heg2hp_slc_rt]
+- hp_heg2hp_slc_art: [array: open ,  type: hp_heg2hp_slc_rt]
+- hp_heg2hp_slc_avt: [ array: open,  type: hp_heg2hp_slc_vt]
+# -----------------------------------------------------------
+#  MDT full
+# -----------------------------------------------------------
+
+- hp_hpsPc2hp_rt:
+  - tube        : [ type: unsigned , length: MDT_TUBE_LEN ]
+  - layer       : [ type: unsigned , length: MDT_LAYER_LEN ]
+  - time_t0     : [ type: unsigned , length: MDT_TIME_LEN ]
+  - global_z    : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
+  - global_x    : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
+  # - mlayer      : [ type: logic ]
+  - data_valid  : [ type: logic ]
+- hp_hpsPc2hp_vt : [type: logic, length: hp_hpsPc2hp_rt]
+# - hp_hpsPc2hp_art: [array: open ,  type: hp_hpsPc2hp_rt]
+# - hp_hpsPc2hp_avt: [ array: open,  type: hp_hpsPc2hp_vt]
+# -----------------------------------------------------------
+#  hit out
+# -----------------------------------------------------------
+
+- hp_hp2sf_data_rt:
+  # - local_x     : [ type: signed , length: MDT_LOCAL_AXI_LEN ]
+  # - local_y     : [ type: unsigned , length: MDT_LOCAL_AXI_LEN ]
+  - local_y     : [ type: unsigned , length: MDT_LOCAL_Y_LEN ]
+  - local_x     : [ type: unsigned , length: MDT_LOCAL_X_LEN ]
+  - radius      : [ type: unsigned , length: MDT_RADIUS_LEN ]
+  - mlayer      : [ type: logic]
+
+- hp_hp2sf_data_vt : [type: logic, length: hp_hp2sf_data_rt]
+- hp_hp2sf_data_art: [array: open ,  type: hp_hp2sf_data_rt]
+- hp_hp2sf_data_avt: [ array: open,  type: hp_hp2sf_data_vt]
+
+- hp_hp2bm_rt:
+  - data        : [ type: hp_hp2sf_data_rt]
+  - mdt_valid   : [ type: logic]
+  - data_valid  : [ type: logic]
+- hp_hp2bm_vt : [type: logic, length: hp_hp2bm_rt]
+# - hp_hp2bm_art: [array: open ,  type: hp_hp2bm_rt]
+# - hp_hp2bm_avt: [ array: open,  type: hp_hp2bm_vt]

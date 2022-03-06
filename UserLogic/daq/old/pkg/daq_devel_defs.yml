@@ -1,31 +1,16 @@
-# yml2hdl v2
+# yml2hdl v3
 config:
-  basic_convert_functions: off
-  packages:
-    - ieee: [std_logic_1164, numeric_std, math_real]
-    - types_def: [common_defs]
-
-hdl:
-
-# BUSES ------------------------------------------------------------------------
-
-- DAQ_MAX_STREAMS: [qualifier: constant, type: integer, value: 1]
-
-- DAQ_MAX_BRANCHES: [qualifier: constant, type: integer, value: 6]
-
-- DAQ_MAX_ROWS: [qualifier: constant, type: integer, value: DAQ_MAX_STREAMS + 1]
-
-- DAQ_PIPELINES: [qualifier: constant, type: integer, value: 32]
-
-- DAQ_MAX_COUNTER_WIDTH: [qualifier: constant, type: integer, value: 32]
-
-- DAQ_MAX_DATA_WIDTH: [qualifier: constant, type: integer, value: 512]
-
-- DAQ_FELIX_STREAM_WIDTH: [qualifier: constant, type: integer, value: 64]
-
-
-# FIFOs ------------------------------------------------------------------------
-
-- DAQ_NODE_WRITE_DATA_WIDTH: [qualifier: constant, type: integer, value: 42]
-
-- DAQ_NODE_FIFO_DEPTH: [qualifier: constant, type: integer, value: 1024]
+   basic_functions: False
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+      - types_def: [common_defs]
+types:
+   - DAQ_MAX_STREAMS: {'qualifier': 'constant', 'type': 'integer', 'value': 1}
+   - DAQ_MAX_BRANCHES: {'qualifier': 'constant', 'type': 'integer', 'value': 6}
+   - DAQ_MAX_ROWS: {'qualifier': 'constant', 'type': 'integer', 'value': 'DAQ_MAX_STREAMS + 1'}
+   - DAQ_PIPELINES: {'qualifier': 'constant', 'type': 'integer', 'value': 32}
+   - DAQ_MAX_COUNTER_WIDTH: {'qualifier': 'constant', 'type': 'integer', 'value': 32}
+   - DAQ_MAX_DATA_WIDTH: {'qualifier': 'constant', 'type': 'integer', 'value': 512}
+   - DAQ_FELIX_STREAM_WIDTH: {'qualifier': 'constant', 'type': 'integer', 'value': 64}
+   - DAQ_NODE_WRITE_DATA_WIDTH: {'qualifier': 'constant', 'type': 'integer', 'value': 42}
+   - DAQ_NODE_FIFO_DEPTH: {'qualifier': 'constant', 'type': 'integer', 'value': 1024}

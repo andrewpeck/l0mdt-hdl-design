@@ -1,11 +1,8 @@
-# yml2hdl v2
+# yml2hdl v3
 config:
-  basic_convert_functions: off
-  packages:
-    - ieee: [std_logic_1164, numeric_std, math_real]
-    - types_lib: [common_defs]
-
-hdl:
-
-- PIPELINES: [type: integer, qualifier: constant, value: 1]
-
+   basic_functions: False
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+      - types_lib: [common_defs]
+types:
+   - PIPELINES: {'type': 'integer', 'qualifier': 'constant', 'value': 1}

@@ -1,87 +1,58 @@
-# yml2hdl v2
+# yml2hdl v3
 config:
-  basic_convert_functions : off
-  packages:
-    - ieee: [std_logic_1164, numeric_std, math_real]
-    - shared_lib: [common_ieee_pkg,l0mdt_constants_pkg,l0mdt_dataformats_pkg,common_constants_pkg]
-    - heg_lib: [heg_pkg]
-
-hdl:
-
-- input_mdt_rt:
-  - ToA         : [ type : unsigned , length : 64]
-  - station     : [ type : unsigned , length : 8]
-  - chamber     : [ type : unsigned , length : SLC_CHAMBER_LEN]
-  - event       : [ type : unsigned , length : 32]
-  - tdc         : [ type : tdcpolmux2tar_rt ]
-
-- TB_TAR_FIFO_WIDTH:     [ qualifier: constant , type: integer , value: 32 ]
-
-- input_mdt_art : [ array: TB_TAR_FIFO_WIDTH , type: input_mdt_rt]
-- tar2hps_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tar2hps_rt]
-- pol2tar_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tdcpolmux2tar_rt]
-
-
-- input_slc_rt:
-  - ToA         : [ type : unsigned , length : 64]
-  - event       : [ type : unsigned , length : 32]
-  - slc         : [ type : slc_rx_rt]
-
-- TB_SLC_FIFO_WIDTH:     [ qualifier: constant , type: integer , value: 32 ]
-
-- input_slc_art    : [ array: TB_SLC_FIFO_WIDTH , type: input_slc_rt]
-
-- slc_tb_art    : [ array: TB_SLC_FIFO_WIDTH , type: slc_rx_rt]
-# - slc_tb_avt    : [ array: TB_SLC_FIFO_WIDTH , type: slc_rx_vt]
-# - slc_tb_vt : [type: logic, length: slc_tb_rt]
-# - slc_tb_art: [array: open ,  type: slc_tb_rt]
-# - slc_tb_avt: [ array: open,  type: slc_tb_vt]
-#####################################################
-
-- out_heg_bm_hit_sim_rt:
-  - ToA         : [ type : unsigned , length : 64]
-  - station     : [ type : unsigned , length : 4]
-  - thread      : [ type : unsigned , length : 4]
-  - data        : [ type : heg2sfhit_rt]
-
-- out_heg_bm_slc_sim_rt:
-  - ToA         : [ type : unsigned , length : 64]
-  - station     : [ type : unsigned , length : 4]
-  - thread      : [ type : unsigned , length : 4]
-  - data      : [ type : heg2sfslc_rt]
-
-- out_heg_bm_ctrl_sim_rt:
-  - ToA         : [ type : unsigned , length : 64]
-  - station     : [ type : unsigned , length : 4]
-  - thread      : [ type : unsigned , length : 4]
-  - heg_ctrl    : [ type : heg_ctrl2sf_rt]
-  - data      : [ type : heg2sfslc_rt]
-
-
-#####################################################
-
-- in_pt_pt2sf_sim_rt:
-  - ToA         : [ type : unsigned , length : 64]
-  - station     : [ type : unsigned , length : 4]
-  - thread      : [ type : unsigned , length : 4]
-  - data      : [ type : sf2ptcalc_rt]
-
-- in_pt_mpl_sim_rt:
-  - ToA         : [ type : unsigned , length : 64]
-  # - station     : [ type : unsigned , length : 4]
-  - thread      : [ type : unsigned , length : 4]
-  - data      : [ type : pl2ptcalc_rt]
-
-  #####################################################
-
-- in_mtc_pt_sim_rt:
-  - ToA         : [ type : unsigned , length : 64]
-  # - station     : [ type : unsigned , length : 4]
-  - thread      : [ type : unsigned , length : 4]
-  - data      : [ type : ptcalc2mtc_rt]
-
-- in_mtc_mpl_sim_rt:
-  - ToA         : [ type : unsigned , length : 64]
-  # - station     : [ type : unsigned , length : 4]
-  - thread      : [ type : unsigned , length : 4]
-  - data      : [ type : pl2mtc_rt]
+   basic_functions: False
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+      - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg]
+      - heg_lib: [heg_pkg]
+types:
+   - input_mdt_rt:
+      - ToA: {'type': 'unsigned', 'range': ['64-1', 0]}
+      - station: {'type': 'unsigned', 'range': ['8-1', 0]}
+      - chamber: {'type': 'unsigned', 'range': ['SLC_CHAMBER_LEN-1', 0]}
+      - event: {'type': 'unsigned', 'range': ['32-1', 0]}
+      - tdc: {'type': 'tdcpolmux2tar_rt'}
+   - TB_TAR_FIFO_WIDTH: {'qualifier': 'constant', 'type': 'integer', 'value': 32}
+   - input_mdt_art: {'array': ['TB_TAR_FIFO_WIDTH-1', 0], 'type': 'input_mdt_rt'}
+   - tar2hps_tb: {'array': ['TB_TAR_FIFO_WIDTH-1', 0], 'type': 'tar2hps_rt'}
+   - pol2tar_tb: {'array': ['TB_TAR_FIFO_WIDTH-1', 0], 'type': 'tdcpolmux2tar_rt'}
+   - input_slc_rt:
+      - ToA: {'type': 'unsigned', 'range': ['64-1', 0]}
+      - event: {'type': 'unsigned', 'range': ['32-1', 0]}
+      - slc: {'type': 'slc_rx_rt'}
+   - TB_SLC_FIFO_WIDTH: {'qualifier': 'constant', 'type': 'integer', 'value': 32}
+   - input_slc_art: {'array': ['TB_SLC_FIFO_WIDTH-1', 0], 'type': 'input_slc_rt'}
+   - slc_tb_art: {'array': ['TB_SLC_FIFO_WIDTH-1', 0], 'type': 'slc_rx_rt'}
+   - out_heg_bm_hit_sim_rt:
+      - ToA: {'type': 'unsigned', 'range': ['64-1', 0]}
+      - station: {'type': 'unsigned', 'range': ['4-1', 0]}
+      - thread: {'type': 'unsigned', 'range': ['4-1', 0]}
+      - data: {'type': 'heg2sfhit_rt'}
+   - out_heg_bm_slc_sim_rt:
+      - ToA: {'type': 'unsigned', 'range': ['64-1', 0]}
+      - station: {'type': 'unsigned', 'range': ['4-1', 0]}
+      - thread: {'type': 'unsigned', 'range': ['4-1', 0]}
+      - data: {'type': 'heg2sfslc_rt'}
+   - out_heg_bm_ctrl_sim_rt:
+      - ToA: {'type': 'unsigned', 'range': ['64-1', 0]}
+      - station: {'type': 'unsigned', 'range': ['4-1', 0]}
+      - thread: {'type': 'unsigned', 'range': ['4-1', 0]}
+      - heg_ctrl: {'type': 'heg_ctrl2sf_rt'}
+      - data: {'type': 'heg2sfslc_rt'}
+   - in_pt_pt2sf_sim_rt:
+      - ToA: {'type': 'unsigned', 'range': ['64-1', 0]}
+      - station: {'type': 'unsigned', 'range': ['4-1', 0]}
+      - thread: {'type': 'unsigned', 'range': ['4-1', 0]}
+      - data: {'type': 'sf2ptcalc_rt'}
+   - in_pt_mpl_sim_rt:
+      - ToA: {'type': 'unsigned', 'range': ['64-1', 0]}
+      - thread: {'type': 'unsigned', 'range': ['4-1', 0]}
+      - data: {'type': 'pl2ptcalc_rt'}
+   - in_mtc_pt_sim_rt:
+      - ToA: {'type': 'unsigned', 'range': ['64-1', 0]}
+      - thread: {'type': 'unsigned', 'range': ['4-1', 0]}
+      - data: {'type': 'ptcalc2mtc_rt'}
+   - in_mtc_mpl_sim_rt:
+      - ToA: {'type': 'unsigned', 'range': ['64-1', 0]}
+      - thread: {'type': 'unsigned', 'range': ['4-1', 0]}
+      - data: {'type': 'pl2mtc_rt'}
