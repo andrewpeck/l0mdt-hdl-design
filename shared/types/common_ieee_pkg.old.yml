@@ -1,11 +1,6 @@
-# yml2hdl v2
+# yml2hdl v3
 config:
-  basic_convert_functions : on
-  packages:
-    - ieee: [std_logic_1164, numeric_std, math_real]
-
-# hdl:
-
-
-# - dummy_t:
-#   --dum : [type : logic]
+   basic_functions: True
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+types:
