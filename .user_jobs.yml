@@ -136,12 +136,14 @@
   interruptible: true
 
 
-.cocotb: &cocotb
-  <<: *only-default
-  <<: *tag-hog
+.cocotb: 
+  <<: *only-default  
   tags:
      - cocotb
   stage: generation_and_simulation
+  allow_failure: true
+  interruptible: true
+
   script:
         # Create Directory for TV
         - mkdir tools/cocotb/l0mdt_tv
@@ -168,4 +170,5 @@
         - cd tools/cocotb/
         # Setup testbench environment
         - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
-  allow_failure: true
+        - tb run test_config/config_mpl_mtc.json 2>&1 | tee cocotb_run.log
+        - sh -c "! grep cocotb.result.TestFailure cocotb_run.log"

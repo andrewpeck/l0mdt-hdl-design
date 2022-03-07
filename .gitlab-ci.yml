@@ -96,4 +96,4 @@ include:
     #---------------------------------------------
     #         CocoTB
     #---------------------------------------------
-    - local: '/tools/cocotb/ci-scripts/gitlab-ci.yml'
+    #- local: '/tools/cocotb/ci-scripts/gitlab-ci.yml'
