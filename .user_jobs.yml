@@ -136,7 +136,7 @@
   interruptible: true
 
 
-.cocotb: 
+.cocotb: &cocotb
   <<: *only-default  
   tags:
      - cocotb
@@ -170,5 +170,3 @@
         - cd tools/cocotb/
         # Setup testbench environment
         - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
-        - tb run test_config/config_mpl_mtc.json 2>&1 | tee cocotb_run.log
-        - sh -c "! grep cocotb.result.TestFailure cocotb_run.log"
