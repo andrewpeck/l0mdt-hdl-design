@@ -1,10 +1,10 @@
 #################### ptc_mpi Project ###########################
-GEN:ptc_mpi:
-    extends: .generate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/ptc_mpi
-      HOG_NO_BITSTREAM: 1 # if 1 runs only the synthesis
+# GEN:ptc_mpi:
+#     extends: .generate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: MainBlocks/ptc_mpi
+#       HOG_NO_BITSTREAM: 1 # if 1 runs only the synthesis
 
 
 SIM:ptc_mpi:
