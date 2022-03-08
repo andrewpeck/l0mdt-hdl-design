@@ -1,4 +1,4 @@
-# yml2hdl v3
+# yml2hdl v0.3
 config:
    basic_functions: True
    packages:
