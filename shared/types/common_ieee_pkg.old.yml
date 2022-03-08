@@ -1,6 +1,0 @@
-# yml2hdl v3
-config:
-   basic_functions: True
-   packages:
-      - ieee: [std_logic_1164, numeric_std, math_real]
-types:
