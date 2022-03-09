@@ -1,0 +1,22 @@
+#################### CocoTB Project ###########################
+#Following libraries need to be installed in gitrunner for successful installation of pyenv and python 3.8.6
+#sudo yum -y install zlib-devel
+#sudo yum install openssl-devel
+#sudo yum install libffi-devel
+#sudo yum install bzip2-devel
+#sudo yum install readline-devel
+#sudo yum install sqlite-devel
+#sudo yum install -y xz-devel Edited
+
+
+
+GEN:cocotb:
+    extends: .cocotb
+    tags:
+       - cocotb
+    stage: generation_and_simulation
+    allow_failure: true
+    interruptible: true
+    variables:
+        extends: .vars
+        PROJECT_NAME: tools/cocotb/

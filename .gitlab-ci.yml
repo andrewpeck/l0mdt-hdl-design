@@ -93,3 +93,8 @@ include:
     # # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
     - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
     - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
+    #---------------------------------------------
+    #         CocoTB
+    #---------------------------------------------
+    - local: '/tools/cocotb/ci-scripts/gitlab-ci.yml'
+
