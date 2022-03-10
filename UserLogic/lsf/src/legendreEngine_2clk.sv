@@ -285,6 +285,8 @@ module legendreEngine_2clk #(
    logic 			   get_next_rom_addr_d;
    logic  [13:0] theta_global;
    logic 	 theta_global_vld;
+   logic  [13:0] theta_global_rad;
+   logic 	 theta_global_rad_vld;
    logic [13:0]  theta_global_gra;
 
    logic [W_r-1:0]  r_global;
@@ -639,7 +641,7 @@ assign hewindow_pos_Z = hewindow_pos >> (HEG2SFSLC_HEWINDOW_POS_DECB - SF2PTCALC
 	       begin
 		  le_output[SF2PTCALC_MDTID_MSB:SF2PTCALC_MDTID_LSB]                      <= slc_mdtid;
 		  le_output[SF2PTCALC_SEGQUALITY_MSB:SF2PTCALC_SEGQUALITY_LSB] <= sf_segquality;
-	          le_output[SF2PTCALC_SEGANGLE_MSB:SF2PTCALC_SEGANGLE_LSB]      <= theta_global;
+	      le_output[SF2PTCALC_SEGANGLE_MSB:SF2PTCALC_SEGANGLE_LSB]      <= theta_global_rad;
 		  le_output[SF2PTCALC_SEGPOS_MSB:SF2PTCALC_SEGPOS_LSB]               <= sf_segpos;
 		  le_output[SF2PTCALC_MUID_MSB:SF2PTCALC_MUID_LSB]                         <= slc_muid;
 		  le_output[SF2PTCALC_DATA_VALID_MSB]                                                    <= 1'b1;
@@ -1378,8 +1380,10 @@ hls_find_max_bin find_max_bin_inst(
 				   .max_bin_count_63(max_bin_count[63]),
 				   .max_bin_r_63(max_bin_r[63]),
 
-			       	  .hls_LT_theta_global(theta_global),
+			      .hls_LT_theta_global(theta_global),
 				  .hls_LT_theta_global_ap_vld(theta_global_vld),
+			      .hls_LT_theta_global_rad(theta_global_rad),
+				  .hls_LT_theta_global_rad_ap_vld(theta_global_rad_vld),
 				  .hls_LT_r_global(r_global),
 				  .hls_LT_r_global_ap_vld(r_global_vld),
 				  .hls_LT_theta(theta),

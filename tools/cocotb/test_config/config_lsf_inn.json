@@ -15,7 +15,7 @@
             "output_directory_name": "lsf_inn",
             "test_location": "src/l0mdt_tb/testbench/lsf/test",
             "expected_is_observed": false,
-            "components_lib_dir": "${XILINX_SIM_LIB}"
+            "components_lib_dir": "${XILINX_LIB_DIR}"
         },
         "testvectors": {
             "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
