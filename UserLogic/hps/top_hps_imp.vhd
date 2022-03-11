@@ -30,6 +30,9 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -72,9 +75,9 @@ architecture beh of top_hps is
   signal ctrl_v             : std_logic_vector(c_CTRL_LEN -1 downto 0);
   signal mon_v              : std_logic_vector(c_MON_LEN -1 downto 0);
 
-  signal i_uCM2hps_av        : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal i_mdt_tar_av        : tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
-  signal o_sf2pt_av          : sf2pt_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal i_uCM2hps_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal i_mdt_tar_av        : tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+  signal o_sf2pt_av          : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
 
 begin
 

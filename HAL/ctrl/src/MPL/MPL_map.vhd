@@ -97,15 +97,16 @@ begin  -- architecture behavioral
         regRdAck  <= '1';
         case to_integer(unsigned(localAddress(8 downto 0))) is
           
-        when 1 => --0x1
-          localRdData( 3 downto  0)  <=  reg_data( 1)( 3 downto  0);                   --
-          localRdData( 4)            <=  reg_data( 1)( 4);                             --
-          localRdData( 5)            <=  reg_data( 1)( 5);                             --
-          localRdData( 6)            <=  reg_data( 1)( 6);                             --
-        when 2 => --0x2
-          localRdData( 0)            <=  Mon.STATUS.ENABLED;                           --
-          localRdData( 1)            <=  Mon.STATUS.READY;                             --
-          localRdData(11 downto  4)  <=  Mon.STATUS.ERROR;                             --
+        when 17 => --0x11
+          localRdData( 3 downto  0)  <=  reg_data(17)( 3 downto  0);                   --
+          localRdData( 4)            <=  reg_data(17)( 4);                             --
+          localRdData( 5)            <=  reg_data(17)( 5);                             --
+          localRdData( 6)            <=  reg_data(17)( 6);                             --
+        when 18 => --0x12
+          localRdData( 0)            <=  Mon.SUPER.STATUS.ENABLED;                     --
+          localRdData( 1)            <=  Mon.SUPER.STATUS.READY;                       --
+          localRdData( 2)            <=  Mon.SUPER.STATUS.FREEZED;                     --
+          localRdData(11 downto  4)  <=  Mon.SUPER.STATUS.ERROR;                       --
         when 256 => --0x100
           localRdData( 0)            <=  Mon.PL_MEM.PL_MEM(0).SIGNALS.rd_rdy;          --Read ready
           localRdData( 4)            <=  reg_data(256)( 4);                            --flush memory to Zync
@@ -268,10 +269,10 @@ begin  -- architecture behavioral
   -------------------------------------------------------------------------------
 
   -- Register mapping to ctrl structures
-  Ctrl.CONFIGS.THREADS                      <=  reg_data( 1)( 3 downto  0);      
-  Ctrl.CONFIGS.INPUT_EN                     <=  reg_data( 1)( 4);                
-  Ctrl.CONFIGS.OUTPUT_EN                    <=  reg_data( 1)( 5);                
-  Ctrl.CONFIGS.FLUSH_MEM_RESET              <=  reg_data( 1)( 6);                
+  Ctrl.SUPER.CONFIGS.THREADS                <=  reg_data(17)( 3 downto  0);      
+  Ctrl.SUPER.CONFIGS.INPUT_EN               <=  reg_data(17)( 4);                
+  Ctrl.SUPER.CONFIGS.OUTPUT_EN              <=  reg_data(17)( 5);                
+  Ctrl.SUPER.CONFIGS.FLUSH_MEM_RESET        <=  reg_data(17)( 6);                
   Ctrl.PL_MEM.PL_MEM(0).SIGNALS.flush_req   <=  reg_data(256)( 4);               
   Ctrl.PL_MEM.PL_MEM(0).SIGNALS.freeze_req  <=  reg_data(256)( 5);               
   Ctrl.PL_MEM.PL_MEM(0).SIGNALS.mem_sel     <=  reg_data(256)( 8 downto  6);     
@@ -327,10 +328,10 @@ begin  -- architecture behavioral
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data( 1)( 3 downto  0)  <= DEFAULT_MPL_CTRL_t.CONFIGS.THREADS;
-      reg_data( 1)( 4)  <= DEFAULT_MPL_CTRL_t.CONFIGS.INPUT_EN;
-      reg_data( 1)( 5)  <= DEFAULT_MPL_CTRL_t.CONFIGS.OUTPUT_EN;
-      reg_data( 1)( 6)  <= DEFAULT_MPL_CTRL_t.CONFIGS.FLUSH_MEM_RESET;
+      reg_data(17)( 3 downto  0)  <= DEFAULT_MPL_CTRL_t.SUPER.CONFIGS.THREADS;
+      reg_data(17)( 4)  <= DEFAULT_MPL_CTRL_t.SUPER.CONFIGS.INPUT_EN;
+      reg_data(17)( 5)  <= DEFAULT_MPL_CTRL_t.SUPER.CONFIGS.OUTPUT_EN;
+      reg_data(17)( 6)  <= DEFAULT_MPL_CTRL_t.SUPER.CONFIGS.FLUSH_MEM_RESET;
       reg_data(256)( 4)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.flush_req;
       reg_data(256)( 5)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.freeze_req;
       reg_data(256)( 8 downto  6)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.mem_sel;
@@ -383,10 +384,10 @@ begin  -- architecture behavioral
       reg_data(327)(19 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).wr_data.wr_data_4;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      Ctrl.ACTIONS.RESET <= '0';
-      Ctrl.ACTIONS.ENABLE <= '0';
-      Ctrl.ACTIONS.DISABLE <= '0';
-      Ctrl.ACTIONS.FREEZE <= '0';
+      Ctrl.SUPER.ACTIONS.RESET <= '0';
+      Ctrl.SUPER.ACTIONS.ENABLE <= '0';
+      Ctrl.SUPER.ACTIONS.DISABLE <= '0';
+      Ctrl.SUPER.ACTIONS.FREEZE <= '0';
       Ctrl.PL_MEM.PL_MEM(0).SIGNALS.wr_req <= '0';
       Ctrl.PL_MEM.PL_MEM(0).SIGNALS.wr_ack <= '0';
       Ctrl.PL_MEM.PL_MEM(0).SIGNALS.rd_req <= '0';
@@ -412,16 +413,16 @@ begin  -- architecture behavioral
       
       if localWrEn = '1' then
         case to_integer(unsigned(localAddress(8 downto 0))) is
-        when 0 => --0x0
-          Ctrl.ACTIONS.RESET                    <=  localWrData( 0);               
-          Ctrl.ACTIONS.ENABLE                   <=  localWrData( 1);               
-          Ctrl.ACTIONS.DISABLE                  <=  localWrData( 2);               
-          Ctrl.ACTIONS.FREEZE                   <=  localWrData( 3);               
-        when 1 => --0x1
-          reg_data( 1)( 3 downto  0)            <=  localWrData( 3 downto  0);      --
-          reg_data( 1)( 4)                      <=  localWrData( 4);                --
-          reg_data( 1)( 5)                      <=  localWrData( 5);                --
-          reg_data( 1)( 6)                      <=  localWrData( 6);                --
+        when 16 => --0x10
+          Ctrl.SUPER.ACTIONS.RESET              <=  localWrData( 0);               
+          Ctrl.SUPER.ACTIONS.ENABLE             <=  localWrData( 1);               
+          Ctrl.SUPER.ACTIONS.DISABLE            <=  localWrData( 2);               
+          Ctrl.SUPER.ACTIONS.FREEZE             <=  localWrData( 3);               
+        when 17 => --0x11
+          reg_data(17)( 3 downto  0)            <=  localWrData( 3 downto  0);      --
+          reg_data(17)( 4)                      <=  localWrData( 4);                --
+          reg_data(17)( 5)                      <=  localWrData( 5);                --
+          reg_data(17)( 6)                      <=  localWrData( 6);                --
         when 256 => --0x100
           Ctrl.PL_MEM.PL_MEM(0).SIGNALS.wr_req  <=  localWrData( 0);               
           Ctrl.PL_MEM.PL_MEM(0).SIGNALS.wr_ack  <=  localWrData( 1);               

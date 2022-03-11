@@ -71,16 +71,18 @@ entity top_l0mdt is
     clock_i_p : in std_logic;
     clock_i_n : in std_logic;
 
-    lhc_refclk_o_p : out std_logic;
-    lhc_refclk_o_n : out std_logic;
+    tc_clk_o_p : out std_logic;
+    tc_clk_o_n : out std_logic;
+
+    tc_clk_i_p : in std_logic;
+    tc_clk_i_n : in std_logic;
 
     --------------------------------------------------------------------------------
     -- AXI C2C
     --------------------------------------------------------------------------------
 
-    clock_100m_i_p : in std_logic;
-    clock_100m_i_n : in std_logic;
-
+    clock_async_i_p : in std_logic;
+    clock_async_i_n : in std_logic;
 
     c2c_rxn : in  std_logic;
     c2c_rxp : in  std_logic;
@@ -117,34 +119,34 @@ architecture structural of top_l0mdt is
 
   -- hal <--> ult
 
-  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal inner_tdc_hits  : tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal middle_tdc_hits : tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal outer_tdc_hits  : tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal extra_tdc_hits  : tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
-  -- signal i_inner_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  -- signal i_middle_tar_hits : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  -- signal i_outer_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  -- signal i_extra_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  -- signal i_inner_tar_hits  : tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  -- signal i_middle_tar_hits : tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  -- signal i_outer_tar_hits  : tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  -- signal i_extra_tar_hits  : tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
-  signal main_primary_slc   : slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-  signal main_secondary_slc : slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
-  signal plus_neighbor_slc  : slc_rx_rvt;
-  signal minus_neighbor_slc : slc_rx_rvt;
+  signal main_primary_slc   : slc_rx_avt(2 downto 0);  -- is the main SL used
+  signal main_secondary_slc : slc_rx_avt(2 downto 0);  -- only used in the big endcap
+  signal plus_neighbor_slc  : slc_rx_vt;
+  signal minus_neighbor_slc : slc_rx_vt;
 
-  signal plus_neighbor_segments_i  : sf2pt_bus_avt (c_NUM_SF_INPUTS - 1 downto 0);
-  signal minus_neighbor_segments_i : sf2pt_bus_avt (c_NUM_SF_INPUTS - 1 downto 0);
-  signal plus_neighbor_segments_o  : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
-  signal minus_neighbor_segments_o : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal plus_neighbor_segments_i  : sf2ptcalc_avt (c_NUM_SF_INPUTS - 1 downto 0);
+  signal minus_neighbor_segments_i : sf2ptcalc_avt (c_NUM_SF_INPUTS - 1 downto 0);
+  signal plus_neighbor_segments_o  : sf2ptcalc_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal minus_neighbor_segments_o : sf2ptcalc_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
 
-  signal daq_streams : FELIX_STREAM_bus_avt (c_HPS_MAX_HP_INN
+  signal daq_streams : felix_stream_avt (c_HPS_MAX_HP_INN
                                              + c_HPS_MAX_HP_MID
                                              + c_HPS_MAX_HP_OUT - 1 downto 0);
 
   -- NSP + MUCTPI
 
-  signal mtc : mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-  signal nsp : mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+  signal mtc : mtc_out_avt(c_NUM_MTC-1 downto 0);
+  signal nsp : mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
   -- AXI
 
@@ -163,8 +165,15 @@ architecture structural of top_l0mdt is
   signal hps_ext_mon_r  : HPS_MON_t;
   signal hps_ext_ctrl_r : HPS_CTRL_t;
 
-  signal tar_ctrl_r : TAR_CTRL_t;
-  signal tar_mon_r  : TAR_MON_t;
+  signal tar_inn_mon_r  : TAR_MON_t;
+  signal tar_inn_ctrl_r : TAR_CTRL_t;
+  signal tar_mid_mon_r  : TAR_MON_t;
+  signal tar_mid_ctrl_r : TAR_CTRL_t;
+  signal tar_out_mon_r  : TAR_MON_t;
+  signal tar_out_ctrl_r : TAR_CTRL_t;
+  signal tar_ext_mon_r  : TAR_MON_t;
+  signal tar_ext_ctrl_r : TAR_CTRL_t;
+
   signal mtc_ctrl_r : MTC_CTRL_t;
   signal mtc_mon_r  : MTC_MON_t;
   signal ucm_ctrl_r : UCM_CTRL_t;
@@ -188,8 +197,15 @@ architecture structural of top_l0mdt is
   signal hps_ext_ctrl_v : std_logic_vector(len(hps_ext_ctrl_r) -1 downto 0);
   signal hps_ext_mon_v  : std_logic_vector(len(hps_ext_mon_r) -1 downto 0);
 
-  signal tar_ctrl_v : std_logic_vector(len(tar_ctrl_r) -1 downto 0);
-  signal tar_mon_v  : std_logic_vector(len(tar_mon_r) -1 downto 0);
+  signal tar_inn_ctrl_v : std_logic_vector(len(tar_inn_ctrl_r) -1 downto 0);
+  signal tar_inn_mon_v  : std_logic_vector(len(tar_inn_mon_r) -1 downto 0);
+  signal tar_mid_ctrl_v : std_logic_vector(len(tar_mid_ctrl_r) -1 downto 0);
+  signal tar_mid_mon_v  : std_logic_vector(len(tar_mid_mon_r) -1 downto 0);
+  signal tar_out_ctrl_v : std_logic_vector(len(tar_out_ctrl_r) -1 downto 0);
+  signal tar_out_mon_v  : std_logic_vector(len(tar_out_mon_r) -1 downto 0);
+  signal tar_ext_ctrl_v : std_logic_vector(len(tar_ext_ctrl_r) -1 downto 0);
+  signal tar_ext_mon_v  : std_logic_vector(len(tar_ext_mon_r) -1 downto 0);
+
   signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl_r) -1 downto 0);
   signal mtc_mon_v  : std_logic_vector(len(mtc_mon_r) -1 downto 0);
   signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl_r) -1 downto 0);
@@ -235,14 +251,14 @@ begin
     port map (
 
       -- clock io
-      clock_i_p      => clock_i_p,
-      clock_i_n      => clock_i_n,
-      clock_100m_i_p => clock_100m_i_p,
-      clock_100m_i_n => clock_100m_i_n,
-      lhc_refclk_o_p => lhc_refclk_o_p,
-      lhc_refclk_o_n => lhc_refclk_o_n,
-      refclk_i_p     => refclk_i_p,
-      refclk_i_n     => refclk_i_n,
+      clock_i_p       => clock_i_p,
+      clock_i_n       => clock_i_n,
+      clock_async_i_p => clock_async_i_p,
+      clock_async_i_n => clock_async_i_n,
+      lhc_refclk_o_p  => tc_clk_o_p,
+      lhc_refclk_o_n  => tc_clk_o_n,
+      refclk_i_p      => refclk_i_p,
+      refclk_i_n      => refclk_i_n,
 
       -- clocks to user logic
       clock_and_control_o => clock_and_control,
@@ -329,8 +345,15 @@ begin
       hps_ext_ctrl_v => hps_ext_ctrl_v,
       hps_ext_mon_v  => hps_ext_mon_v,
 
-      tar_ctrl_v => tar_ctrl_v,
-      tar_mon_v  => tar_mon_v,
+      tar_inn_ctrl_v => tar_inn_ctrl_v,
+      tar_inn_mon_v  => tar_inn_mon_v,
+      tar_mid_ctrl_v => tar_mid_ctrl_v,
+      tar_mid_mon_v  => tar_mid_mon_v,
+      tar_out_ctrl_v => tar_out_ctrl_v,
+      tar_out_mon_v  => tar_out_mon_v,
+      tar_ext_ctrl_v => tar_ext_ctrl_v,
+      tar_ext_mon_v  => tar_ext_mon_v,
+
       mtc_ctrl_v => mtc_ctrl_v,
       mtc_mon_v  => mtc_mon_v,
       ucm_ctrl_v => ucm_ctrl_v,
@@ -351,8 +374,15 @@ begin
   -- ctrl/mon
   ucm_ctrl_v     <= vectorify(ucm_ctrl_r, ucm_ctrl_v);
   ucm_mon_r      <= structify(ucm_mon_v, ucm_mon_r);
-  tar_ctrl_v     <= vectorify(tar_ctrl_r, tar_ctrl_v);
-  tar_mon_r      <= structify(tar_mon_v, tar_mon_r);
+
+  tar_inn_ctrl_v <= vectorify(tar_inn_ctrl_r, tar_inn_ctrl_v);
+  tar_inn_mon_r  <= structify(tar_inn_mon_v, tar_inn_mon_r);
+  tar_mid_ctrl_v <= vectorify(tar_mid_ctrl_r, tar_mid_ctrl_v);
+  tar_mid_mon_r  <= structify(tar_mid_mon_v, tar_mid_mon_r);
+  tar_out_ctrl_v <= vectorify(tar_out_ctrl_r, tar_out_ctrl_v);
+  tar_out_mon_r  <= structify(tar_out_mon_v, tar_out_mon_r);
+  tar_ext_ctrl_v <= vectorify(tar_ext_ctrl_r, tar_ext_ctrl_v);
+  tar_ext_mon_r  <= structify(tar_ext_mon_v, tar_ext_mon_r);
 
   hps_inn_ctrl_v <= vectorify(hps_inn_ctrl_r, hps_inn_ctrl_v);
   hps_inn_mon_r  <= structify(hps_inn_mon_v, hps_inn_mon_r);
@@ -404,8 +434,15 @@ begin
       hps_ext_ctrl => hps_ext_ctrl_r,
       hps_ext_mon  => hps_ext_mon_r,
 
-      tar_ctrl    => tar_ctrl_r,
-      tar_mon     => tar_mon_r,
+      tar_inn_ctrl => tar_inn_ctrl_r,
+      tar_inn_mon  => tar_inn_mon_r,
+      tar_mid_ctrl => tar_mid_ctrl_r,
+      tar_mid_mon  => tar_mid_mon_r,
+      tar_out_ctrl => tar_out_ctrl_r,
+      tar_out_mon  => tar_out_mon_r,
+      tar_ext_ctrl => tar_ext_ctrl_r,
+      tar_ext_mon  => tar_ext_mon_r,
+
       mtc_ctrl    => mtc_ctrl_r,
       mtc_mon     => mtc_mon_r,
       ucm_ctrl    => ucm_ctrl_r,

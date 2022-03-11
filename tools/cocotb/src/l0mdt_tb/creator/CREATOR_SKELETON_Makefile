@@ -47,6 +47,7 @@ UCMDIR    = $(USERLOGIC)/ucm/src
 UCMHPSDIR = $(USERLOGIC)/ucm_hps/src
 ULTDIR    = $(USERLOGIC)/ult/src
 UPTDIR    = $(USERLOGIC)/upt/src
+FMDIR     = $(USERLOGIC)/fm/src
 SHAREDDIR = $(SRCDIR)/shared
 HAL       = $(SRCDIR)/HAL
 IP_REPO   = $(HLS)/IPs/vu13p
@@ -72,6 +73,7 @@ LSFSIMDIR = $(USERLOGIC)/lsf/sim
 # LOAD_LE_REFPOS = $(IP_REPO)/hls_load_LE_refPos/hdl/verilog
 # HISTMEM_128x4 = $(LSFDIR)/../sim
 
+
 # VHDL source files, required by CocoTB
 VHDL_SOURCES = $(CSFDIR)/csf.vhd
 
@@ -80,7 +82,7 @@ include ../../../creator/Makefile_vhdl_lib
 
 
 # Set the include path and compilation flags for CocoTB
-EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) +incdir+$($(XILINX_HOME)/data/ip/xpm/xpm_memory/hdl) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib  -L $(SIM_BUILD)/work +define+RUN_SIM
+EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) +incdir+$(HAL)/ctrl/src/FM/ +incdir+$($(XILINX_HOME)/data/ip/xpm/xpm_memory/hdl) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib  -L $(SIM_BUILD)/work +define+RUN_SIM
 VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
 VCOM_ARGS  += -2008
 

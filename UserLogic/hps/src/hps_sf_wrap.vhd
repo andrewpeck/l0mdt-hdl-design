@@ -30,6 +30,9 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library csf_lib;
 
@@ -61,11 +64,11 @@ entity hps_sf_wrap is
 
     sf_fm_data : out fm_rt_array( 0 to sf_sb_n - 1);
     -- configuration
-    i_control_v  : in  heg_ctrl2sf_rvt;
-    i_slc_data_v : in  heg2sfslc_rvt;
-    i_mdt_data_v : in  heg2sfhit_rvt;
+    i_control_v  : in  heg_ctrl2sf_vt;
+    i_slc_data_v : in  heg2sfslc_vt;
+    i_mdt_data_v : in  heg2sfhit_vt;
     --
-    o_sf_data_v  : out sf2ptcalc_rvt
+    o_sf_data_v  : out sf2ptcalc_vt
     );
 end entity hps_sf_wrap;
 
@@ -79,28 +82,50 @@ architecture beh of hps_sf_wrap is
 
   signal sf_data_v : std_logic_vector(o_sf_data_v'length -1 downto 0);
 
+  constant lc_HEG2SFSLC_LEN : integer := i_slc_data_v'length;--len():
+  constant lc_HEG2SFHIT_LEN : integer := i_mdt_data_v'length;--len():
+  constant lc_SF2PTCALC_LEN : integer := o_sf_data_v'length;--len():
+
 begin
 
-  i_control_r <= structify(i_control_v);
+  i_control_r <= structify(i_control_v,i_control_r);
 
   csf_ctrl_r <= convert(csf_ctrl_v,csf_ctrl_r);
-  csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
+  -- csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
   lsf_ctrl_r <= convert(lsf_ctrl_v,lsf_ctrl_r);
-  lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
-  sf_fm_data(0).fm_data <= (mon_dw_max-1 downto HEG2SFSLC_LEN => '0') & i_slc_data_v;
-  sf_fm_data(0).fm_vld  <= i_slc_data_v(HEG2SFSLC_LEN-1);
+  -- lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
+  --
+  lsf_mon_r <= nullify(lsf_mon_r);
+  csf_mon_r <= nullify(csf_mon_r);
+  --
+  sf_fm_data(0).fm_data <= (mon_dw_max-1 downto lc_HEG2SFSLC_LEN => '0') & i_slc_data_v;
+  sf_fm_data(0).fm_vld  <= i_slc_data_v(lc_HEG2SFSLC_LEN-1);
 
-  sf_fm_data(1).fm_data <= (mon_dw_max-1 downto HEG2SFHIT_LEN => '0') & i_mdt_data_v;
-  sf_fm_data(1).fm_vld  <= i_mdt_data_v(HEG2SFHIT_LEN-1);
+  sf_fm_data(1).fm_data <= (mon_dw_max-1 downto lc_HEG2SFHIT_LEN => '0') & i_mdt_data_v;
+  sf_fm_data(1).fm_vld  <= i_mdt_data_v(lc_HEG2SFHIT_LEN-1);
 
-  sf_fm_data(2).fm_data <= (mon_dw_max-1 downto SF2PTCALC_LEN => '0') & o_sf_data_v;
-  sf_fm_data(2).fm_vld  <= o_sf_data_v(SF2PTCALC_LEN -1);
+  sf_fm_data(2).fm_data <= (mon_dw_max-1 downto lc_SF2PTCALC_LEN => '0') & o_sf_data_v;
+  sf_fm_data(2).fm_vld  <= o_sf_data_v(lc_SF2PTCALC_LEN -1);
 
 
   EN_SF : if c_SF_ENABLED = '1' generate
 
     SF_BP: if c_SF_BYPASS = '0' generate
+      --
+      -- csf_ctrl_r <= convert(csf_ctrl_v,csf_ctrl_r);
+      -- csf_mon_r <= nullify(csf_mon_r);
+
+      -- lsf_ctrl_r <= convert(lsf_ctrl_v,lsf_ctrl_r);
+      -- lsf_mon_r <= nullify(lsf_mon_r);
+
+
+      
+      --
       SF_TYPE : if c_SF_TYPE = '0' generate
+
+        csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
+        lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
+        
 
         CSF : entity csf_lib.csf
           generic map(
@@ -115,7 +140,7 @@ begin
             i_rst     => rst,
             spy_clock => clk,
             o_seg     => o_sf_data_v,
---            csf_fm_data => sf_fm_data,
+            -- csf_fm_data => sf_fm_data,
             i_spyhit_fc_we      => '0',
             i_spyhit_fc_re      => '0',
             i_spyhit_freeze     => '0',
@@ -165,8 +190,8 @@ begin
             --o_spyseg_empty      => '0';
         );
 
-        lsf_mon_r <= nullify(lsf_mon_r);
-        csf_mon_r <= nullify(csf_mon_r);
+        -- lsf_mon_r <= nullify(lsf_mon_r);
+        -- csf_mon_r <= nullify(csf_mon_r);
 
       else generate
 
@@ -182,31 +207,46 @@ begin
             hba_max_clocks                      => lsf_ctrl_r.hba_max_clocks            
         );
 
-        csf_mon_r <= nullify(csf_mon_r);
+        -- csf_mon_r <= nullify(csf_mon_r);
 
 
       end generate;
     else generate
 
 
-      csf_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (csf_mon_v'length) port map(clk,rst,xor_reduce(csf_ctrl_v),csf_mon_v);
-      lsf_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (lsf_mon_v'length) port map(clk,rst,xor_reduce(lsf_ctrl_v),lsf_mon_v);
-
+      csf_ctrl : entity shared_lib.vhdl_utils_deserializer 
+        generic map (g_DATA_WIDTH => csf_mon_v'length) 
+        port map(
+          clk     => clk,
+          rst     => rst,
+          i_data  => xor_reduce(csf_ctrl_v),
+          o_data  => csf_mon_v
+      );
+      lsf_ctrl : entity shared_lib.vhdl_utils_deserializer 
+        generic map (g_DATA_WIDTH => lsf_mon_v'length) 
+        port map(
+          clk     => clk,
+          rst     => rst,
+          i_data  => xor_reduce(lsf_ctrl_v),
+          o_data  => lsf_mon_v
+      );
 
       des0 : entity shared_lib.vhdl_utils_deserializer
         generic map (g_DATA_WIDTH => sf_data_v'length)
         port map(
-          clk => clk,
-          rst  => rst,
-          i_data => glob_en OR (xor_reduce(i_control_v) xor xor_reduce(i_slc_data_v) xor xor_reduce(i_mdt_data_v)),
-          o_data => sf_data_v);
-          o_sf_data_v <= sf_data_v;
+          clk     => clk,
+          rst     => rst,
+          i_data  => glob_en OR (xor_reduce(i_control_v) xor xor_reduce(i_slc_data_v) xor xor_reduce(i_mdt_data_v)),
+          o_data  => sf_data_v
+      );
+      o_sf_data_v <= sf_data_v;
+
     end generate SF_BP;
 
   else generate
 
-    lsf_mon_r <= nullify(lsf_mon_r);
-    csf_mon_r <= nullify(csf_mon_r);
+    -- lsf_mon_r <= nullify(lsf_mon_r);
+    -- csf_mon_r <= nullify(csf_mon_r);
 
     o_sf_data_v <= (others => '0');
 

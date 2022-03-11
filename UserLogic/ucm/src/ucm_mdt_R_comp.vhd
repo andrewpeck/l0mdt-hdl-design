@@ -35,7 +35,7 @@ entity ucm_mdt_R_comp is
   generic(
     g_STATION_RADIUS      : integer := 0; 
     g_STATION_LAYER       : integer := 0; -- only for RPC
-    g_OUTPUT_WIDTH        : integer := UCM_Z_ROI_LEN
+    g_OUTPUT_WIDTH        : integer --:= UCM_Z_ROI_LEN
   );
   port (
     clk           : in std_logic;
@@ -62,8 +62,8 @@ architecture beh of ucm_mdt_R_comp is
 
 begin
 
-  mon_v <= vectorify(mon_r,mon_v);
-  ctrl_r <= structify(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
+  ctrl_r <= convert(ctrl_v,ctrl_r);
 
   process(clk) begin
     if rising_edge(clk) then

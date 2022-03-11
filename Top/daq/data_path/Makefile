@@ -1,4 +1,3 @@
-# VIVADO_PATH should point to the Vivado install folder
 SHELL := /bin/bash
 proj := $(shell scripts/path.sh $$(pwd))
 curr := $(shell basename $$(pwd))

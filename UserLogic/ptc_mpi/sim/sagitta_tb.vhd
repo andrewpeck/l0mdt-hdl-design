@@ -40,7 +40,7 @@ end sagitta_tb;
 
 architecture Behavioral of sagitta_tb is
     signal clk : std_logic := '0';
-    signal i_seg0, i_seg1, i_seg2 : sf2ptcalc_rvt;
+    signal i_seg0, i_seg1, i_seg2 : sf2ptcalc_vt;
     signal seg0, seg1, seg2 : sf2ptcalc_rt;
     signal o_inv_s   : unsigned(INV_S_LEN-1 downto 0);
     signal o_dv_s      :  std_logic := '0';

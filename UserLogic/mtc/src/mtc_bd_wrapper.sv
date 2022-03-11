@@ -43,11 +43,9 @@ endgenerate
    
    
  mtc_builder_verilog #(
-	      .PTCALC_WIDTH(PTCALC_WIDTH),
-	      .SLCPIPELINE_WIDTH(SLCPIPELINE_WIDTH),
-	      .c_NUM_THREADS(c_NUM_THREADS),
-	      .c_MAX_NUM_SL (c_MAX_NUM_SL),
-	      .n_PRIMARY_MTC(n_PRIMARY_MTC)
+		       .c_NUM_THREADS(c_NUM_THREADS),
+		       .c_MAX_NUM_SL (c_MAX_NUM_SL),
+		       .n_PRIMARY_MTC(n_PRIMARY_MTC)
 	      )
    mtc_builder_verilog_inst(
 		 .clock(clock),

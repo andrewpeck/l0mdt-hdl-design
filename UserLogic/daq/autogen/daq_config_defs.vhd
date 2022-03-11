@@ -7,7 +7,7 @@ use ieee.numeric_std.all;
 use ieee.std_logic_1164.all;
 
 library shared_lib;
-use shared_lib.common_ieee.all;
+use shared_lib.common_ieee_pkg.all;
 
 package daq_config_defs is
 
@@ -15,13 +15,19 @@ package daq_config_defs is
 
   constant DAQ_MAX_BRANCHES : integer := 6;
 
-  constant DAQ_PIPELINES : integer := 40;
-
-  constant DAQ_MAX_COUNTER_WIDTH : integer := 32;
+  constant DAQ_MAX_PIPELINES : integer := 40;
 
   constant DAQ_MAX_DATA_WIDTH : integer := 256;
 
-  constant DAQ_FELIX_STREAM_WIDTH : integer := 64;
+  constant DAQ_DEFAULT_FIFO_DEPTH : integer := 1024;
+
+  constant DAQ_DEFAULT_COUNTER_WIDTH : integer := 32;
+
+  constant DAQ_DEFAULT_LOWER_WINDOW_SIZE : integer := 0;
+
+  constant DAQ_DEFAULT_UPPER_WINDOW_SIZE : integer := 0;
+
+  constant DAQ_DEFAULT_WINDOW_LATENCY : integer := 0;
 
 end package daq_config_defs;
 

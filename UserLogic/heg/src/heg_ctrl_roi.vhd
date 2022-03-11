@@ -29,7 +29,11 @@ library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 use heg_lib.heg_custom_pkg.all;
+
 
 entity heg_ctrl_roi is
   generic(
@@ -41,9 +45,9 @@ entity heg_ctrl_roi is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    i_uCM_data_v        : in ucm2hps_rvt;
+    i_uCM_data_v        : in ucm2hps_vt;
     --
-    o_SLC_Window_v      : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    o_SLC_Window_av      : out hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     o_Roi_win_valid      : out std_logic
     
   );
@@ -54,19 +58,21 @@ architecture beh of heg_ctrl_roi is
   signal uCM_data_r : ucm2hps_rt;
   -- signal slc_b_data_r  : ucm_csf_barrel_rt;
   
-  signal roi_center : heg_roi_center_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  signal roi_edges : hp_window_limits_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal roi_center : heg_roi_center_aut(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal roi_edges : hp_win_tubes_limits_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal dv_z, dv_mbar : std_logic;
   -- signal slc_e_data : ucm_csf_endcap_rt;
-  signal SLC_Window_r : hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal SLC_Window_ar : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   
 begin
 
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
-    uCM_data_r <= structify(i_uCM_data_v);
+    uCM_data_r <= structify(i_uCM_data_v,uCM_data_r);
     -- slc_b_data_r <= structify(uCM_data_r.specific);
-    o_SLC_Window_v <= vectorify(SLC_Window_r);
+    for_gen_SW : for il in get_num_layers(g_STATION_RADIUS) -1 downto 0 generate
+      o_SLC_Window_av(il) <= vectorify(SLC_Window_ar(il),o_SLC_Window_av(il));
+    end generate ; -- identifier
     
     ROI_Z : entity heg_lib.b_z2roi
     generic map(
@@ -129,18 +135,18 @@ begin
     begin
       if rising_edge(clk) then
         if rst = '1' then
-          SLC_Window_r <= (others => (others => (others => '0')));
+          SLC_Window_ar <= (others => (others => (others => '0')));
         else
           for l_i in get_num_layers(g_STATION_RADIUS)-1 downto 0 loop
             if to_integer(signed(roi_center(l_i)) + roi_edges(l_i).lo) >= 0 then
-              SLC_Window_r(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
+              SLC_Window_ar(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
             else
-              SLC_Window_r(l_i).lo <= (others => '0');
+              SLC_Window_ar(l_i).lo <= (others => '0');
             end if;
             if to_integer(signed(roi_center(l_i)) + roi_edges(l_i).hi) >= 0 then
-              SLC_Window_r(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
+              SLC_Window_ar(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
             else
-              SLC_Window_r(l_i).hi <= (others => '0');
+              SLC_Window_ar(l_i).hi <= (others => '0');
             end if;
           end loop;
 
@@ -152,11 +158,11 @@ begin
 
     -- WIN_GEN : for l_i in get_num_layers(g_STATION_RADIUS)-1 downto 0 generate
     --   if (roi_center(l_i)) + roi_edges(l_i).lo > 0) then
-    --     SLC_Window_r(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
+    --     SLC_Window_ar(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
     --   else
-    --     SLC_Window_r(l_i).lo <= (others => '0');
+    --     SLC_Window_ar(l_i).lo <= (others => '0');
     --   end if;
-    --   SLC_Window_r(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
+    --   SLC_Window_ar(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
 
       
     -- end generate;

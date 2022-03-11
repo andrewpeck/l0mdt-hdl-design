@@ -30,6 +30,9 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 
 library ctrl_lib;
@@ -111,10 +114,6 @@ begin
     g_MEMORY_TYPE           => "distributed",
     g_ADDR_WIDTH            => ADDR_WIDTH,
     g_DATA_WIDTH            => DATA_WIDTH
-    -- g_CTRL_TYPE             => MEM_INT_12A148D_CTRL_t; 
-    -- g_MON_TYPE              => MEM_INT_12A148D_MON_t;   
-    -- g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
-    -- g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
   )
   port map (
     clk           => clk,

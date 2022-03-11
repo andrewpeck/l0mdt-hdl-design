@@ -24,10 +24,14 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-library hp_lib;
-use hp_lib.hp_pkg.all;
-library heg_lib;
-use heg_lib.heg_pkg.all;
+--library hp_lib;
+--use hp_lib.hp_pkg.all;
+--library heg_lib;
+--use heg_lib.heg_pkg.all;
+library hegtypes_lib;
+use hegtypes_lib.hp_pkg.all;
+use hegtypes_lib.heg_pkg.all;
+
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
@@ -53,7 +57,7 @@ entity hps_top_tb is
     -- i_mdt_polmux_av    : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     i_mdt_tar_av        : in tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc
-    o_sf2pt_av          : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
+    o_sf2pt_av          : out sf2ptcalc_avt(c_NUM_THREADS -1 downto 0)
   );
 end entity hps_top_tb;
 

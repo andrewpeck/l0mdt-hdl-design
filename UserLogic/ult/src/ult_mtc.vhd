@@ -31,10 +31,10 @@ entity mtc_builder is
     ttc_commands      : in  l0mdt_ttc_rt;
     ctrl_v            : in std_logic_vector; --  : in  MTC_CTRL_t;
     mon_v             : out std_logic_vector;--  : out MTC_MON_t;
-    i_ptcalc          : in  tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
-    i_pl2mtc          : in  pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
-    o_mtc             : out mtc_out_bus_avt(c_NUM_MTC -1 downto 0);
-    o_nsp             : out mtc2nsp_bus_avt(c_NUM_NSP -1 downto 0);
+    i_ptcalc          : in  ptcalc2mtc_avt(c_NUM_THREADS -1 downto 0);
+    i_pl2mtc          : in  pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
+    o_mtc             : out mtc_out_avt(c_NUM_MTC -1 downto 0);
+    o_nsp             : out mtc2nsp_avt(c_NUM_NSP -1 downto 0);
 
     o_sump            : out std_logic
     );
@@ -66,12 +66,12 @@ begin
   MTC_NO_GEN : if c_MTC_ENABLED = '0' generate
     signal ptcalc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
     signal pl2mtc_sump            : std_logic_vector (c_MAX_NUM_SL-1 downto 0);
-    signal l0mdt_ttc_v  : l0mdt_ttc_rvt;
-    signal l0mdt_control_v  : l0mdt_control_rvt;
+    signal l0mdt_ttc_v  : l0mdt_ttc_vt;
+    signal l0mdt_control_v  : l0mdt_control_vt;
   begin
 
-    l0mdt_ttc_v <= vectorify(ttc_commands);
-    l0mdt_control_v <= vectorify(clock_and_control);
+    l0mdt_ttc_v <= vectorify(ttc_commands,l0mdt_ttc_v);
+    l0mdt_control_v <= vectorify(clock_and_control,l0mdt_control_v);
     o_mtc <= (others => (others => '0'));
     o_nsp <= (others => (others => '0'));
 

@@ -5,7 +5,7 @@ config:
   basic_convert_functions : off
   packages:
     - ieee: [std_logic_1164, numeric_std, math_real]
-    - shared_lib: [common_ieee]
+    - shared_lib: [common_ieee_pkg]
 
 hdl:
 
@@ -29,12 +29,12 @@ hdl:
   - ERROR : [ type: logic, length: 8 ]
 
 
-- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t:
+- TAR_PL_ST_PL_MEM_SIGNALS_MON_t:
   - rd_rdy : [ type: logic ]
   - freeze_ena : [ type: logic ]
 
 
-- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t:
+- TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t:
   - wr_req : [ type: logic ]
   - wr_ack : [ type: logic ]
   - rd_req : [ type: logic ]
@@ -44,54 +44,36 @@ hdl:
   - mem_sel : [ type: logic, length: 3 ]
 
 
-- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t:
+- TAR_PL_ST_PL_MEM_wr_data_CTRL_t:
   - wr_data_0 : [ type: logic, length: 32 ]
   - wr_data_1 : [ type: logic, length: 10 ]
 
 
-- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t:
+- TAR_PL_ST_PL_MEM_rd_data_MON_t:
   - rd_data_0 : [ type: logic, length: 32 ]
   - rd_data_1 : [ type: logic, length: 10 ]
 
 
-- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t:
-  - SIGNALS : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t ]
-  - rd_data : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t ]
+- TAR_PL_ST_PL_MEM_MON_t:
+  - SIGNALS : [ type: TAR_PL_ST_PL_MEM_SIGNALS_MON_t ]
+  - rd_data : [ type: TAR_PL_ST_PL_MEM_rd_data_MON_t ]
 
-- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY: [array: 6, type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t]
+- TAR_PL_ST_PL_MEM_MON_t_ARRAY: [array: 6, type: TAR_PL_ST_PL_MEM_MON_t]
 
-- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t:
-  - SIGNALS : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t ]
+- TAR_PL_ST_PL_MEM_CTRL_t:
+  - SIGNALS : [ type: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t ]
   - wr_addr : [ type: logic, length: 12 ]
   - rd_addr : [ type: logic, length: 12 ]
-  - wr_data : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t ]
+  - wr_data : [ type: TAR_PL_ST_PL_MEM_wr_data_CTRL_t ]
 
-- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY: [array: 6, type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t]
-
-- TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t:
-  - PL_MEM : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY ]
-
-
-- TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t:
-  - PL_MEM : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY ]
-
-
-- TAR_PL_ST_PL_ST_MON_t:
-  - PL_CHAMBER : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t ]
-
-- TAR_PL_ST_PL_ST_MON_t_ARRAY: [array: 4, type: TAR_PL_ST_PL_ST_MON_t]
-
-- TAR_PL_ST_PL_ST_CTRL_t:
-  - PL_CHAMBER : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t ]
-
-- TAR_PL_ST_PL_ST_CTRL_t_ARRAY: [array: 4, type: TAR_PL_ST_PL_ST_CTRL_t]
+- TAR_PL_ST_PL_MEM_CTRL_t_ARRAY: [array: 6, type: TAR_PL_ST_PL_MEM_CTRL_t]
 
 - TAR_PL_ST_MON_t:
-  - PL_ST : [ type: TAR_PL_ST_PL_ST_MON_t_ARRAY ]
+  - PL_MEM : [ type: TAR_PL_ST_PL_MEM_MON_t_ARRAY ]
 
 
 - TAR_PL_ST_CTRL_t:
-  - PL_ST : [ type: TAR_PL_ST_PL_ST_CTRL_t_ARRAY ]
+  - PL_MEM : [ type: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY ]
 
 
 - TAR_MON_t:

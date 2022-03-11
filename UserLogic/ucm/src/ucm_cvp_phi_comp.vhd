@@ -45,7 +45,7 @@ entity ucm_cvp_phi_comp is
     i_posphi            : in unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
     i_dv                : in std_logic;
     --
-    o_rads              : out ucm_cvp_rads_at(g_NUM_DIFF_RADIUS -1 downto 0)
+    o_rads              : out ucm_cvp_rads_art(g_NUM_DIFF_RADIUS -1 downto 0)
     -- o_dv                : out std_logic;
   );
 end entity ucm_cvp_phi_comp;

@@ -31,6 +31,9 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -54,14 +57,14 @@ entity hps_pc is
     i_ctrl_t0_v             : in  std_logic_vector;--HPS_MDT_T0_MDT_T0_CTRL_t;  
     o_mon_t0_v              : out std_logic_vector;-- HPS_MDT_T0_MDT_T0_MON_t;   
     -- MDT hit
-    i_mdt_tar_v           : in tar2hps_rvt;
-    o_mdt_full_data_v     : out hp_hpsPc2hp_rvt
+    i_mdt_tar_v           : in tar2hps_vt;
+    o_mdt_full_data_v     : out hp_hpsPc2hp_vt
   );
 end entity hps_pc;
 
 architecture beh of hps_pc is
   signal i_mdt_tar_r : tar2hps_rt;
-  signal pl_mdt_tar_v  : tar2hps_rvt;
+  signal pl_mdt_tar_v  : tar2hps_vt;
   signal pl_mdt_tar_r  : tar2hps_rt;
   signal pl_mdt_tar_dv : std_logic;
 
@@ -110,10 +113,10 @@ begin
   -- tc_ctrl_v <= vectorify(i_ctrl_tc,tc_ctrl_v);
   -- o_mon_tc <= structify(tc_mon_v,o_mon_tc);
 
-  i_mdt_tar_r  <= structify(i_mdt_tar_v);
+  i_mdt_tar_r  <= structify(i_mdt_tar_v,i_mdt_tar_r);
 
   -- mdt_tar_data_pl(0) <= structify(i_mdt_tar_v);
-  o_mdt_full_data_v <= vectorify(mdt_full_data_r);
+  o_mdt_full_data_v <= vectorify(mdt_full_data_r,o_mdt_full_data_v);
 
   T0 : entity hps_lib.hps_pc_b_t0
     generic map(
@@ -193,7 +196,7 @@ begin
       o_dv        => pl_mdt_tar_dv
     );
 
-    pl_mdt_tar_r  <= structify(pl_mdt_tar_v);
+    pl_mdt_tar_r  <= structify(pl_mdt_tar_v,pl_mdt_tar_r);
   
 
   COORD : process(clk)

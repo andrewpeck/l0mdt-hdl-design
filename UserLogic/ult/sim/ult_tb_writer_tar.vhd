@@ -68,19 +68,19 @@ architecture sim of ult_tb_writer_tar is
   shared variable csv_file_1: csv_file_type;
   constant g_OUT_FILE_1     : string  := "ov_tar2hps_" & g_PRJ_INFO & ".csv";
 
-  alias ult_inn_tar_hits_av is  << signal.ult_tp.ULT.ult_inn_tar_hits_av : tar2hps_bus_avt >>;
-  alias ult_mid_tar_hits_av is  << signal.ult_tp.ULT.ult_mid_tar_hits_av : tar2hps_bus_avt >>;
-  alias ult_out_tar_hits_av is  << signal.ult_tp.ULT.ult_out_tar_hits_av : tar2hps_bus_avt >>;
-  alias ult_ext_tar_hits_av is  << signal.ult_tp.ULT.ult_ext_tar_hits_av : tar2hps_bus_avt >>;
+  alias ult_inn_tar_hits_av is  << signal.ult_tp.ULT.ult_inn_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_mid_tar_hits_av is  << signal.ult_tp.ULT.ult_mid_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_out_tar_hits_av is  << signal.ult_tp.ULT.ult_out_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_ext_tar_hits_av is  << signal.ult_tp.ULT.ult_ext_tar_hits_out_av : tar2hps_avt >>;
 
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_u2h_au : event_tdc_at;
 
-  signal ult_inn_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_INN -1 downto 0);
-  signal ult_mid_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_MID -1 downto 0);
-  signal ult_out_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal ult_ext_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal ult_inn_tar_hits_ar  : tar2hps_art(c_HPS_MAX_HP_INN -1 downto 0);
+  signal ult_mid_tar_hits_ar  : tar2hps_art(c_HPS_MAX_HP_MID -1 downto 0);
+  signal ult_out_tar_hits_ar  : tar2hps_art(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ult_ext_tar_hits_ar  : tar2hps_art(c_HPS_MAX_HP_EXT -1 downto 0);
   
 begin
   
@@ -120,10 +120,19 @@ begin
     end generate;
   end generate;
 
-  ult_inn_tar_hits_ar <= structify(ult_inn_tar_hits_av);
-  ult_mid_tar_hits_ar <= structify(ult_mid_tar_hits_av);
-  ult_out_tar_hits_ar <= structify(ult_out_tar_hits_av);
-  ult_ext_tar_hits_ar <= structify(ult_ext_tar_hits_av);
+    loop_inn : for i in c_HPS_MAX_HP_INN -1 downto 0 generate
+      ult_inn_tar_hits_ar(i) <= structify(ult_inn_tar_hits_av(i),ult_inn_tar_hits_ar(i));
+    end generate ; -- identifier
+    loop_mid : for i in c_HPS_MAX_HP_MID -1 downto 0 generate
+      ult_mid_tar_hits_ar(i) <= structify(ult_mid_tar_hits_av(i),ult_mid_tar_hits_ar(i));
+    end generate ; -- identifier
+    loop_out : for i in c_HPS_MAX_HP_OUT -1 downto 0 generate
+      ult_out_tar_hits_ar(i) <= structify(ult_out_tar_hits_av(i),ult_out_tar_hits_ar(i));
+    end generate ; -- identifier
+    loop_ext : for i in c_HPS_MAX_HP_EXT -1 downto 0 generate
+      ult_ext_tar_hits_ar(i) <= structify(ult_ext_tar_hits_av(i),ult_ext_tar_hits_ar(i));
+    end generate ; -- identifier
+
   
   TAR2HPS: process(clk)
     variable first_write           : std_logic := '1';

@@ -81,21 +81,21 @@ architecture sim of ult_tb_writer_ucm is
 
   alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
 
-  alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_av : ucm2hps_bus_avt >>;
-  alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_av : ucm2hps_bus_avt >>;
-  alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_av : ucm2hps_bus_avt >>;
-  alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_av : ucm2hps_bus_avt >>;
+  alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_plin_av : ucm2hps_avt >>;
 
-  alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_bus_avt >>;
-  signal ucm2pl_ar : ucm2pl_bus_at(c_MAX_NUM_SL-1 downto 0);
+  alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_avt >>;
+  signal ucm2pl_ar : ucm2pl_art(c_MAX_NUM_SL-1 downto 0);
 
   signal slc_event_u2m_au        : event_at(c_MAX_NUM_SL -1 downto 0);
   signal slc_event_u2h_au        : event_at(c_MAX_NUM_SL -1 downto 0);
 
-  signal inn_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
-  signal mid_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
-  signal out_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
-  signal ext_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
+  signal inn_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
+  signal mid_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
+  signal out_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
+  signal ext_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
 
 
 
@@ -144,10 +144,13 @@ begin
     );
   end generate;
 
-  inn_ucm2hps_bus_ar <= structify(inn_slc_to_h2s_av);
-  mid_ucm2hps_bus_ar <= structify(mid_slc_to_h2s_av);
-  out_ucm2hps_bus_ar <= structify(out_slc_to_h2s_av);
-  ext_ucm2hps_bus_ar <= structify(ext_slc_to_h2s_av);
+    th_loop : for i in c_NUM_THREADS-1 downto 0 generate
+      inn_ucm2hps_bus_ar(i) <= structify(inn_slc_to_h2s_av(i),inn_ucm2hps_bus_ar(i));
+      mid_ucm2hps_bus_ar(i) <= structify(mid_slc_to_h2s_av(i),mid_ucm2hps_bus_ar(i));
+      out_ucm2hps_bus_ar(i) <= structify(out_slc_to_h2s_av(i),out_ucm2hps_bus_ar(i));
+      ext_ucm2hps_bus_ar(i) <= structify(ext_slc_to_h2s_av(i),ext_ucm2hps_bus_ar(i));
+    end generate ; -- identifier
+
 
   UCM2HPS_OUT: process(clk, rst)
     variable first_write           : std_logic := '1';
@@ -348,7 +351,9 @@ begin
     );
   end generate;
 
-  ucm2pl_ar <= structify(ucm2pl_av);
+  sl_loop : for i in c_MAX_NUM_SL - 1 downto 0 generate
+    ucm2pl_ar(i) <= structify(ucm2pl_av(i),ucm2pl_ar(i));
+  end generate ; -- sl_loop
 
   UCM2MPL_OUT: process(clk, rst)
 
@@ -469,16 +474,16 @@ begin
 
   --   -- o_sf_control_v
 
-  --   alias heg2sf_inn_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
-  --   alias heg2sf_inn_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+  --   alias heg2sf_inn_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av : heg2sfslc_avt >>;
+  --   alias heg2sf_inn_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av : heg2sfhit_avt >>;
   --   alias heg2sf_inn_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
 
-  --   alias heg2sf_mid_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
-  --   alias heg2sf_mid_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+  --   alias heg2sf_mid_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfslc_av : heg2sfslc_avt >>;
+  --   alias heg2sf_mid_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfhit_av : heg2sfhit_avt >>;
   --   alias heg2sf_mid_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
 
-  --   alias heg2sf_out_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
-  --   alias heg2sf_out_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+  --   alias heg2sf_out_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfslc_av : heg2sfslc_avt >>;
+  --   alias heg2sf_out_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfhit_av : heg2sfhit_avt >>;
   --   alias heg2sf_out_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
   --   -- heg2sf_ctrl_av : hps_ctrl2sf_avt
 

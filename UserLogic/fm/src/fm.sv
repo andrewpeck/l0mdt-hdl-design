@@ -13,13 +13,13 @@ module fm #(
 	      output logic [$bits(FM_MON_t)-1:0] fm_mon_v,
 	      input logic [$bits(fm_rt)-1 :0 ] 	 ult_fm_data_v[total_sb]
 	  );
-
-   logic [sb_mapped_n-1:0] 	       freeze;
-   logic [pb_mode_width-1:0] 	       playback_mode[sb_mapped_n];
-   logic 			       axi_clock;
-   logic 			       axi_rst;
-   logic [2:0]			       axi_rst_d;
-   genvar 			       sb_t;
+   logic 					 axi_clock;
+   logic 					 axi_rst;
+   logic [2:0] 					 axi_rst_d;
+   genvar 					 sb_t;
+   
+   logic [sb_mapped_n-1:0] 			 freeze;
+   logic [pb_mode_width-1:0] 			 playback_mode[sb_mapped_n];
    
    
    FM_MON_t fm_mon_out;

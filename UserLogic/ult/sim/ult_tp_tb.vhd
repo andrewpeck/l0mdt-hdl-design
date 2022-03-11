@@ -43,10 +43,15 @@ use shared_lib.vhdl_textio_csv_pkg.all;
 library ult_lib;
 -- use ult_lib.ult_tb_sim_pkg.all;
 
+library hp_lib;
+use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -106,8 +111,14 @@ architecture beh of ult_tp is
   signal hps_out_mon  :  HPS_MON_t;
   signal hps_ext_ctrl :  HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
   signal hps_ext_mon  :  HPS_MON_t;
-  signal tar_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
-  signal tar_mon  :  TAR_MON_t ;
+  signal tar_inn_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_inn_mon  :  TAR_MON_t ;
+  signal tar_mid_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_mid_mon  :  TAR_MON_t ;
+  signal tar_out_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_out_mon  :  TAR_MON_t ;
+  signal tar_ext_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_ext_mon  :  TAR_MON_t ;
   signal mtc_ctrl :  MTC_CTRL_t := DEFAULT_MTC_CTRL_t;
   signal mtc_mon  :  MTC_MON_t;
   signal ucm_ctrl :  UCM_CTRL_t := DEFAULT_UCM_CTRL_t;
@@ -132,8 +143,15 @@ architecture beh of ult_tp is
   signal hps_ext_ctrl_v : std_logic_vector(len(hps_ext_ctrl)-1 downto 0);
   signal hps_ext_mon_v  : std_logic_vector(len(hps_ext_mon )-1 downto 0);
 
-  signal tar_ctrl_v : std_logic_vector(len(tar_ctrl)-1 downto 0);
-  signal tar_mon_v  : std_logic_vector(len(tar_mon )-1 downto 0);
+  signal tar_inn_ctrl_v : std_logic_vector(len(tar_inn_ctrl)-1 downto 0);
+  signal tar_inn_mon_v  : std_logic_vector(len(tar_inn_mon )-1 downto 0);
+  signal tar_mid_ctrl_v : std_logic_vector(len(tar_mid_ctrl)-1 downto 0);
+  signal tar_mid_mon_v  : std_logic_vector(len(tar_mid_mon )-1 downto 0);
+  signal tar_out_ctrl_v : std_logic_vector(len(tar_out_ctrl)-1 downto 0);
+  signal tar_out_mon_v  : std_logic_vector(len(tar_out_mon )-1 downto 0);
+  signal tar_ext_ctrl_v : std_logic_vector(len(tar_ext_ctrl)-1 downto 0);
+  signal tar_ext_mon_v  : std_logic_vector(len(tar_ext_mon )-1 downto 0);
+
   signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl)-1 downto 0);
   signal mtc_mon_v  : std_logic_vector(len(mtc_mon )-1 downto 0);
   signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl)-1 downto 0);
@@ -148,40 +166,40 @@ architecture beh of ult_tp is
   signal fm_mon_v   : std_logic_vector(len(fm_mon )-1 downto 0);
 
   -- TDC Hits from Polmux
-  signal i_mdt_tdc_inn_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_mid_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_out_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_ext_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_inn_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_mid_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   -- TDC Hits from Tar
-  -- signal i_mdt_tar_inn_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  -- signal i_mdt_tar_mid_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  -- signal i_mdt_tar_out_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  -- signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_inn_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_mid_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_out_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_ext_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   -- Sector Logic Candidates
-  signal i_main_primary_slc       : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
-  signal i_main_secondary_slc     : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
-  signal i_plus_neighbor_slc      : slc_rx_rvt := (others => '0');
-  signal i_minus_neighbor_slc     : slc_rx_rvt := (others => '0');
+  signal i_main_primary_slc       : slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
+  signal i_main_secondary_slc     : slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
+  signal i_plus_neighbor_slc      : slc_rx_vt := (others => '0');
+  signal i_minus_neighbor_slc     : slc_rx_vt := (others => '0');
   signal slc_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
 
   signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
 
   -- Segments in from neighbor
-  signal i_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
-  signal i_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
+  signal i_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
+  signal i_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-  signal o_daq_streams :  felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0) := (others => (others => '0'));
+  signal o_daq_streams :  felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0) := (others => (others => '0'));
 
   -- Segments Out to Neighbor
-  signal o_plus_neighbor_segments_av  :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
-  signal o_minus_neighbor_segments_av :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
+  signal o_plus_neighbor_segments_av  :  sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
+  signal o_minus_neighbor_segments_av :  sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- MUCTPI
-  signal o_MTC :  mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-  signal o_NSP :  mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+  signal o_MTC :  mtc_out_avt(c_NUM_MTC-1 downto 0);
+  signal o_NSP :  mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
   signal sump : std_logic;
 
@@ -242,8 +260,15 @@ begin
     hps_ext_ctrl_v  => hps_ext_ctrl_v,
     hps_ext_mon_v   => hps_ext_mon_v ,
 
-    tar_ctrl_v => tar_ctrl_v,
-    tar_mon_v  => tar_mon_v,
+    tar_inn_ctrl_v => tar_inn_ctrl_v,
+    tar_inn_mon_v  => tar_inn_mon_v ,
+    tar_mid_ctrl_v => tar_mid_ctrl_v,
+    tar_mid_mon_v  => tar_mid_mon_v ,
+    tar_out_ctrl_v => tar_out_ctrl_v,
+    tar_out_mon_v  => tar_out_mon_v ,
+    tar_ext_ctrl_v => tar_ext_ctrl_v,
+    tar_ext_mon_v  => tar_ext_mon_v ,
+
     mtc_ctrl_v => mtc_ctrl_v,
     mtc_mon_v  => mtc_mon_v,
     ucm_ctrl_v => ucm_ctrl_v,
@@ -305,8 +330,15 @@ begin
     --
     ucm_ctrl_v <= vectorify(ucm_ctrl,ucm_ctrl_v);
     ucm_mon <= structify(ucm_mon_v,ucm_mon);
-    tar_ctrl_v <= vectorify(tar_ctrl,tar_ctrl_v);
-    tar_mon <= structify(tar_mon_v,tar_mon);
+
+    tar_inn_ctrl_v  <= vectorify(tar_inn_ctrl ,tar_inn_ctrl_v);
+    tar_inn_mon     <= structify(tar_inn_mon_v,tar_inn_mon);
+    tar_mid_ctrl_v  <= vectorify(tar_mid_ctrl ,tar_mid_ctrl_v);
+    tar_mid_mon     <= structify(tar_mid_mon_v,tar_mid_mon);
+    tar_out_ctrl_v  <= vectorify(tar_out_ctrl ,tar_out_ctrl_v);
+    tar_out_mon     <= structify(tar_out_mon_v,tar_out_mon);
+    tar_ext_ctrl_v  <= vectorify(tar_ext_ctrl ,tar_ext_ctrl_v);
+    tar_ext_mon     <= structify(tar_ext_mon_v,tar_ext_mon);
     -- h2s_ctrl_v <= vectorify(h2s_ctrl,h2s_ctrl_v);
     -- h2s_mon <= structify(h2s_mon_v,h2s_mon);
     mpl_ctrl_v <= vectorify(mpl_ctrl,mpl_ctrl_v);
@@ -403,7 +435,8 @@ begin
 
   MDT : entity project_lib.ult_tb_reader_tdc 
   generic map (
-    IN_HIT_FILE => IN_HIT_FILE
+    IN_HIT_FILE => IN_HIT_FILE,
+    g_verbose => 2
   )
   port map(
     clk => clk,
@@ -420,7 +453,8 @@ begin
 
   SLC : entity project_lib.ult_tb_reader_slc 
   generic map (
-    IN_SLC_FILE => IN_SLC_FILE
+    IN_SLC_FILE => IN_SLC_FILE,
+    g_verbose => 2
   )
   port map(
     clk => clk,

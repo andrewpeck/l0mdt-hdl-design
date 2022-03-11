@@ -11,10 +11,10 @@
 # --------------------------------------------------------------------------------
 
 yml2hdl="../../../tools/yml2hdl/yml2hdl.py"
-# # common_ieee="../../../shared/types/common_ieee.yml"
+# # common_ieee_pkg="../../../shared/types/common_ieee_pkg.yml"
 
 # #####
-# # python3 $yml2hdl -e $common_ieee MPL/MPL_TYPES_v2.yml
+# # python3 $yml2hdl -e $common_ieee_pkg MPL/MPL_TYPES_v2.yml
 # python3 $yml2hdl -v -n MPL_CTRL MPL/MPL_PKG.yml
 # python3 $yml2hdl -v -n UCM_CTRL UCM/UCM_PKG.yml
 # python3 $yml2hdl -v -n HPS_CTRL HPS/HPS_PKG.yml

@@ -36,8 +36,8 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY csf_fitter IS
     PORT (
         clk : IN STD_LOGIC;
-        i_hit1 : IN csf_hit_rvt;
-        i_hit2 : IN csf_hit_rvt;
+        i_hit1 : IN csf_hit_vt;
+        i_hit2 : IN csf_hit_vt;
         o_mfit : OUT signed(CSF_SEG_M_LEN - 1 DOWNTO 0);
         o_bfit : OUT signed(CSF_SEG_B_LEN - 1 DOWNTO 0);
         o_fit_valid : OUT STD_LOGIC;
@@ -53,14 +53,8 @@ ARCHITECTURE Behavioral OF csf_fitter IS
     -- Signal declaring last hits from Histograms
     SIGNAL finalhit : STD_LOGIC := '0';
 
-    -- Summation signal widths
-    CONSTANT SUM_YZ_LEN : INTEGER := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN * 2;
-    CONSTANT SUM_Y_LEN : INTEGER := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN;
-    CONSTANT SUM_X_LEN : INTEGER := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN;
-    CONSTANT SUM_X2_LEN : INTEGER := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN * 2;
-
     -- Summation signals
-    SIGNAL dsp_SumXY, dsp_SumXY_s : unsigned(SUM_YZ_LEN - 1 DOWNTO 0)
+    SIGNAL dsp_SumXY, dsp_SumXY_s : unsigned(SUM_XY_LEN - 1 DOWNTO 0)
     := (OTHERS => '0');
     SIGNAL dsp_SumY, dsp_SumY_s : unsigned(SUM_Y_LEN - 1 DOWNTO 0)
     := (OTHERS => '0');
@@ -72,13 +66,13 @@ ARCHITECTURE Behavioral OF csf_fitter IS
     := (OTHERS => '0');
 
     -- Numerator/Denominator widths
-    CONSTANT NSUM_YZ_LEN : INTEGER := SUM_YZ_LEN + CSF_MAXHITS_SEG_LEN;
+    CONSTANT NSUM_XY_LEN : INTEGER := SUM_XY_LEN + CSF_MAXHITS_SEG_LEN;
     CONSTANT SUM_Y_SUM_X_LEN : INTEGER := SUM_Y_LEN + SUM_X_LEN;
     CONSTANT SUM_Y_SUM_X2_LEN : INTEGER := SUM_Y_LEN + SUM_X2_LEN;
-    CONSTANT SUM_XZ_SUM_X_LEN : INTEGER := SUM_YZ_LEN + SUM_X_LEN;
+    CONSTANT SUM_XY_SUM_X_LEN : INTEGER := SUM_XY_LEN + SUM_X_LEN;
     CONSTANT SUM_X_SUM_X_LEN : INTEGER := SUM_X_LEN * 2;
     CONSTANT NSUM_X2_LEN : INTEGER := CSF_MAXHITS_SEG_LEN + SUM_X2_LEN;
-    CONSTANT NUM_M_LEN : INTEGER := NSUM_YZ_LEN + 1;
+    CONSTANT NUM_M_LEN : INTEGER := NSUM_XY_LEN + 1;
     CONSTANT NUM_B_LEN : INTEGER := SUM_Y_SUM_X2_LEN + 1;
     CONSTANT DEN_LEN : INTEGER := NSUM_X2_LEN;
 
@@ -92,13 +86,13 @@ ARCHITECTURE Behavioral OF csf_fitter IS
 
     -- Numerator/Denominator signals
     SIGNAL dsp_NSumXY, dsp_NSumXY_s, dsp_NSumXY_ss
-    : unsigned(NSUM_YZ_LEN - 1 DOWNTO 0) := (OTHERS => '0');
+    : unsigned(NSUM_XY_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL dsp_SumYSumX, dsp_SumYSumX_s, dsp_SumYSumX_ss
     : unsigned(SUM_Y_SUM_X_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL dsp_SumYSumX2, dsp_SumYSumX2_s, dsp_SumYSumX2_ss
     : unsigned(SUM_Y_SUM_X2_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL dsp_SumXYSumX, dsp_SumXYSumX_s, dsp_SumXYSumX_ss
-    : unsigned(SUM_XZ_SUM_X_LEN - 1 DOWNTO 0) := (OTHERS => '0');
+    : unsigned(SUM_XY_SUM_X_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL dsp_NSumX2, dsp_NSumX2_s, dsp_NSumX2_ss
     : unsigned(NSUM_X2_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL dsp_SumXSumX, dsp_SumXSumX_s, dsp_SumXSumX_ss
@@ -117,10 +111,10 @@ ARCHITECTURE Behavioral OF csf_fitter IS
     := (OTHERS => '0');
     SIGNAL reciprocal_addr : STD_LOGIC_VECTOR(DEN_LEN - SHIFT_DEN - 1 DOWNTO 0)
     := (OTHERS => '0');
-    SIGNAL reciprocal_den : STD_LOGIC_VECTOR(RECIPROCAL_LEN-1 downto 0);
+    SIGNAL reciprocal_den : STD_LOGIC_VECTOR(RECIPROCAL_LEN - 1 DOWNTO 0);
     SIGNAL reciprocal_den_s : signed(RECIPROCAL_LEN DOWNTO 0)
     := (OTHERS => '0');
-    
+
     -- Fit result widths
     CONSTANT MFIT_FULL_LEN : INTEGER := NUM_M_LEN - SHIFT_NUM_M + RECIPROCAL_LEN + 1;
     CONSTANT BFIT_FULL_LEN : INTEGER := NUM_B_LEN - SHIFT_NUM_B + RECIPROCAL_LEN + 1;
@@ -156,8 +150,8 @@ ARCHITECTURE Behavioral OF csf_fitter IS
 
 BEGIN
 
-    hit1 <= structify(i_hit1);
-    hit2 <= structify(i_hit2);
+    hit1 <= structify(i_hit1,hit1);
+    hit2 <= structify(i_hit2,hit2);
 
     reciprocal_rom : rom
     GENERIC MAP(
@@ -263,8 +257,6 @@ BEGIN
             dv7 <= dv6;
             numerator_b_red_sss <= numerator_b_red_ss;
             numerator_m_red_sss <= numerator_m_red_ss;
-
-
             -- Clock 8
             dv8 <= dv7;
             numerator_b_red_ssss <= numerator_b_red_sss;

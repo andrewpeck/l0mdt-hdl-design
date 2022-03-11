@@ -34,6 +34,9 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -81,6 +84,10 @@ architecture beh of hps_supervisor is
   signal axi_cnt_reset    : std_logic;
   signal axi_rep_clk      : std_logic;
 
+  attribute MAX_FANOUT              : string;
+  attribute MAX_FANOUT of int_rst   : signal is "256";
+  attribute MAX_FANOUT of local_rst : signal is "256";
+
 begin
   ctrl_r <= convert(ctrl_v,ctrl_r);
   mon_v <= convert(mon_r,mon_v);
@@ -100,6 +107,8 @@ begin
         int_en <= '1';
         int_rst <= rst;
         apb_clk_cnt <= 0;
+        axi_cnt_reset <= '0';
+        axi_rep_clk <= '0';
       else
         --------------------------------------------
         --    AXI CLK CTRL
@@ -136,10 +145,10 @@ begin
         --------------------------------------------
         --    to apb
         --------------------------------------------
-        mon_r.status.ENABLED <= local_en;
-        mon_r.status.READY <= not local_rst;
-        mon_r.status.ERROR <= (others => '0');
       end if;
+      mon_r.status.ENABLED <= local_en;
+      mon_r.status.READY <= not local_rst;
+      mon_r.status.ERROR <= (others => '0');
     end if;
   end process;
 end architecture beh;

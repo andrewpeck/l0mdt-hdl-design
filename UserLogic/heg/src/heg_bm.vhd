@@ -33,6 +33,10 @@ library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
+
 
 entity heg_buffermux is
   generic(
@@ -43,11 +47,11 @@ entity heg_buffermux is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    i_control           : in heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
+    i_control           : in heg_ctrl2hp_art(g_HPS_NUM_MDT_CH -1 downto 0);
     -- MDT in
-    i_mdt_hits_av       : in heg_hp2bm_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+    i_mdt_hits_av       : in heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
     -- MDT out
-    o_mdt_hits_v        : out heg2sfhit_rvt
+    o_mdt_hits_v        : out heg2sfhit_vt
     
   );
 end entity heg_buffermux;
@@ -60,17 +64,18 @@ architecture beh of heg_buffermux is
 
   constant BM_FIFO_DEPTH : integer := 8;
   
-  signal i_mdt_hits_ar : heg_hp2bm_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal i_mdt_hits_ar : heg_hp2bm_art(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal i_mdt_hits_data_av : heg_hp2bm_data_avt(g_HPS_NUM_MDT_CH-1 downto 0);
 
   signal fifo_wr    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_rd    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
   signal o_mdt_hits_r : heg2sfhit_rt; 
 
-  signal ff_o_mdt_hit_av  : heg_hp2bm_data_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal ff_o_mdt_hit_av  : heg_hp2bm_data_avt(g_HPS_NUM_MDT_CH-1 downto 0);
   signal ff_o_mdt_hit_dv  : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
-  signal buff_mdt_hit_v   : hp_hp2sf_data_rvt;
+  signal buff_mdt_hit_v   : hp_hp2sf_data_vt;
   signal buff_mdt_hit_r   : hp_hp2sf_data_rt;
   signal buff_mdt_dv      : std_logic;
   
@@ -88,10 +93,12 @@ architecture beh of heg_buffermux is
   signal lasthit  : integer := 0;
   signal readhit  : std_logic;
   signal last_read : integer;
+
+  -- signal aux_data_v : std_logic_vector(len(i_mdt_hits_ar(0).data) - 1 downto 0);
 begin
 
-  o_mdt_hits_v <= vectorify(o_mdt_hits_r);
-  buff_mdt_hit_r <= structify(buff_mdt_hit_v);
+  o_mdt_hits_v <= vectorify(o_mdt_hits_r,o_mdt_hits_v);
+  buff_mdt_hit_r <= structify(buff_mdt_hit_v,buff_mdt_hit_r);
 
   o_mdt_hits_r.localx <= buff_mdt_hit_r.local_x;
   o_mdt_hits_r.localy <= buff_mdt_hit_r.local_y;
@@ -101,8 +108,10 @@ begin
 
   FIFOS: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
     -- input extraction
+
+    i_mdt_hits_data_av(hp_i) <= vectorify(i_mdt_hits_ar(hp_i).data,i_mdt_hits_data_av(hp_i) ); -- joooooor
     
-    i_mdt_hits_ar(hp_i) <= structify(i_mdt_hits_av(hp_i));
+    i_mdt_hits_ar(hp_i) <= structify(i_mdt_hits_av(hp_i),i_mdt_hits_ar(hp_i));
 
     fifo_wr(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
 
@@ -114,7 +123,7 @@ begin
       g_MEMORY_TYPE   => "distributed",
       -- PIPELINE_IN_REGS => 1,
       -- PIPELINE_OUT_REGS => 1,
-      g_RAM_WIDTH     => HP_HP2SF_DATA_LEN,
+      g_RAM_WIDTH     => i_mdt_hits_data_av(hp_i)'length,
       g_RAM_DEPTH     => BM_FIFO_DEPTH
     )
     port map (
@@ -122,7 +131,7 @@ begin
       rst           => rst,
       -- delay         => num_delays - 2,
       i_wr          => fifo_wr(hp_i),
-      i_wr_data     => vectorify(i_mdt_hits_ar(hp_i).data),
+      i_wr_data     => i_mdt_hits_data_av(hp_i),
       i_rd          => fifo_rd(hp_i),
       o_rd_dv       => ff_o_mdt_hit_dv(hp_i),
       o_rd_data     => ff_o_mdt_hit_av(hp_i),

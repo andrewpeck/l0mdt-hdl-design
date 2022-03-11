@@ -29,6 +29,9 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -53,7 +56,7 @@ entity hps_pc_top is
     i_ctrl_t0_v           : in  std_logic_vector; -- HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;  
     o_mon_t0_v            : out std_logic_vector; -- HPS_MDT_T0_MDT_T0_MON_t_ARRAY;   
     -- MDT hit
-    i_mdt_tar_v           : in tar2hps_bus_avt(g_HPS_NUM_MDT_CH - 1 downto 0);
+    i_mdt_tar_v           : in tar2hps_avt(g_HPS_NUM_MDT_CH - 1 downto 0);
     o_mdt_full_data_v     : out heg_pc2heg_avt(g_HPS_NUM_MDT_CH - 1 downto 0)
   );
 end entity hps_pc_top;

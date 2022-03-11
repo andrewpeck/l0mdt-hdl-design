@@ -11,12 +11,6 @@
 -- -----
 --------------------------------------------------------------------------------
 
-
-
-
-
-
-
 library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
@@ -44,15 +38,15 @@ entity ptcalc is
     ttc_commands              : in  l0mdt_ttc_rt;
     ctrl_v                    : in std_logic_vector; --  : in  TF_CTRL_t;
     mon_v                     : out std_logic_vector;-- : out TF_MON_t;
-    i_inn_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_mid_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_out_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_ext_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_minus_neighbor_segments : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_plus_neighbor_segments  : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_pl2pt_av                : in  pl2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_inn_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_mid_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_out_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_ext_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_minus_neighbor_segments : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments  : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_pl2pt_av                : in  pl2ptcalc_avt(c_NUM_THREADS-1 downto 0);
 
-    o_pt2mtc                  : out tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
+    o_pt2mtc                  : out ptcalc2mtc_avt(c_NUM_THREADS -1 downto 0);
 
     o_sump                : out std_logic
   );
@@ -121,11 +115,11 @@ begin
     signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_INPUTS-1 downto 0);
     signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_INPUTS-1 downto 0);
     signal pl2pt_sump                     : std_logic_vector (c_NUM_THREADS-1 downto 0);
-    signal l0mdt_ttc_v  : l0mdt_ttc_rvt;
-    signal l0mdt_control_v  : l0mdt_control_rvt;
+    signal l0mdt_ttc_v  : l0mdt_ttc_vt;
+    signal l0mdt_control_v  : l0mdt_control_vt;
   begin
-    l0mdt_ttc_v <= vectorify(ttc_commands);
-    l0mdt_control_v <= vectorify(clock_and_control);
+    l0mdt_ttc_v <= vectorify(ttc_commands,l0mdt_ttc_v);
+    l0mdt_control_v <= vectorify(clock_and_control,l0mdt_control_v);
     o_pt2mtc <= ( others => (others => '0'));
 
     sump_proc : process (clock_and_control.clk) is

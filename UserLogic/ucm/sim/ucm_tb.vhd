@@ -41,15 +41,15 @@ architecture beh of ucm_tb is
   signal glob_en : std_logic := '1';
 
   -- SLc in
-  signal i_slc_data_mainA_av     : slc_rx_bus_avt(2 downto 0);
-  signal i_slc_data_mainB_av     : slc_rx_bus_avt(2 downto 0);
-  signal i_slc_data_neighborA_v : slc_rx_rvt;
-  signal i_slc_data_neighborB_v : slc_rx_rvt;
+  signal i_slc_data_mainA_av     : slc_rx_avt(2 downto 0);
+  signal i_slc_data_mainB_av     : slc_rx_avt(2 downto 0);
+  signal i_slc_data_neighborA_v : slc_rx_vt;
+  signal i_slc_data_neighborB_v : slc_rx_vt;
   -- to hps
-  signal o_uCM2hps_inn_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_mid_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_out_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_ext_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_inn_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
   signal o_uCM2pl_av            : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
 
@@ -126,7 +126,7 @@ begin
   cand1.common.rpc_pt         <= std_logic_vector(to_unsigned( 0 , 8));
   cand1.common.pt_th          <= std_logic_vector(to_unsigned( 11 , SLC_PT_TH_LEN ));
   cand1.common.charge         <= '0'; --std_logic_vector(to_unsigned( 1 , SLC_CHARGE_LEN ));
-  cand1.specific              <= vectorify(barrel1);
+  cand1.specific              <= convert(barrel1, cand1.specific);
   cand1.data_valid            <= '1';
   ------------------------
   barrel2.spare_bits          <= std_logic_vector(to_unsigned( 0 , SLC_B_SPARE_LEN ));
@@ -149,7 +149,7 @@ begin
   cand2.common.rpc_pt         <= std_logic_vector(to_unsigned( 0 , 8));
   cand2.common.pt_th          <= std_logic_vector(to_unsigned( 2 , SLC_PT_TH_LEN ));
   cand2.common.charge         <= '0'; --std_logic_vector(to_unsigned( 1 , SLC_CHARGE_LEN ));
-  cand2.specific              <= vectorify(barrel2);
+  cand2.specific              <= convert(barrel2,cand2.specific);
   cand2.data_valid            <= '1';
  	-------------------------------------------------------------------------------------
 	-- Reset Generator
@@ -175,10 +175,10 @@ begin
           i_slc_data_neighborB_v <= (others => '0');
         when x"1" =>
           tb_motor <= x"2";
-          i_slc_data_mainA_av(2) <= vectorify(cand1);
-          i_slc_data_mainA_av(1) <= vectorify(cand2);
+          i_slc_data_mainA_av(2) <= convert(cand1,i_slc_data_mainA_av(2));
+          i_slc_data_mainA_av(1) <= convert(cand2,i_slc_data_mainA_av(1));
           i_slc_data_mainA_av(0) <= (others => '0');
-          i_slc_data_neighborA_v <= vectorify(cand2);
+          i_slc_data_neighborA_v <= convert(cand2,i_slc_data_neighborA_v);
           i_slc_data_neighborB_v <= (others => '0');
         when others =>
           i_slc_data_mainA_av(2) <= (others => '0');

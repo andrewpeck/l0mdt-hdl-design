@@ -32,6 +32,9 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -54,11 +57,11 @@ entity hps is
     mon_v             : out std_logic_vector;--HPS_MON_t;
     h2s_fm_data       : out fm_rt_array(0 to h2s_sb_single_station_n - 1);
     -- SLc
-    i_uCM2hps_av      : in  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+    i_uCM2hps_av      : in  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av      : in  tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+    i_mdt_tar_av      : in  tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc
-    o_sf2pt_av        : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
+    o_sf2pt_av        : out sf2ptcalc_avt(c_NUM_THREADS -1 downto 0)
     );
 end entity hps;
 
@@ -95,6 +98,8 @@ architecture beh of hps is
   signal pc_t0_mon_v  : std_logic_vector(len(mon_r.MDT_T0.MDT_T0)-1 downto 0);
   signal pc_tc_mon_v  : std_logic_vector(len(mon_r.MDT_TC.MDT_TC)-1 downto 0);
 
+  signal local_freeze : std_logic;
+
   -- type heg_ctrl_at is array (0 to 3 ) of  HPS_HEG_HEG_CTRL_t;
   -- type heg_mon_at is array (0 to 3 ) of  HPS_HEG_HEG_MON_t;
   type heg_ctrl_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(len(ctrl_r.heg.heg(0))-1 downto 0);
@@ -112,8 +117,8 @@ architecture beh of hps is
   -- signal control_enable(c_NUM_THREADS -1 downto 0);
 
   signal heg2sf_ctrl_av : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
-  signal heg2sfslc_av   : heg2sfslc_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal heg2sfhit_av   : heg2sfhit_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sfslc_av   : heg2sfslc_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sfhit_av   : heg2sfhit_avt(c_NUM_THREADS -1 downto 0);
 
 
   signal sf_fm_data_th  : sf_single_station_array;
@@ -156,9 +161,9 @@ begin
     --
     ctrl_v      => ctrl_super_v,
     mon_v       => mon_super_v,
-    -- i_actions   => ctrl_r.actions,
-    -- i_configs   => ctrl_r.configs,
-    -- o_status    => mon_r.status,
+    --
+    -- i_freeze    => i_freeze,
+    o_freeze    => local_freeze,
     --
     o_local_rst => int_rst,
     o_local_en  => int_ena
@@ -196,20 +201,22 @@ begin
         g_HPS_NUM_MDT_CH => g_HPS_NUM_MDT_CH
         )
       port map(
-        clk                => clk,
-        rst                => int_rst,
-        glob_en            => int_ena,
+        clk                 => clk,
+        rst                 => int_rst,
+        glob_en             => int_ena,
         --
-        ctrl_v             => heg_ctrl_av(th_i),
-        mon_v              => heg_mon_av(th_i),
+        ctrl_v              => heg_ctrl_av(th_i),
+        mon_v               => heg_mon_av(th_i),
         --
-        i_uCM_data_v       => i_uCM2hps_av(th_i),
+        i_freeze            => local_freeze,
+        --
+        i_uCM_data_v        => i_uCM2hps_av(th_i),
         -- MDT hit
-        i_mdt_full_data_av => mdt_full_data_av,
+        i_mdt_full_data_av  => mdt_full_data_av,
         -- to Segment finder
-        o_sf_control_v     => heg2sf_ctrl_av(th_i),
-        o_sf_slc_data_v    => heg2sfslc_av(th_i),
-        o_sf_mdt_data_v    => heg2sfhit_av(th_i)
+        o_sf_control_v      => heg2sf_ctrl_av(th_i),
+        o_sf_slc_data_v     => heg2sfslc_av(th_i),
+        o_sf_mdt_data_v     => heg2sfhit_av(th_i)
         );
 
     SF : entity hps_lib.hps_sf_wrap

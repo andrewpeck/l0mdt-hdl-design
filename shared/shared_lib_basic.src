@@ -11,22 +11,34 @@ shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 #---------------------------------
 # common constants and types
 #---------------------------------
-
-shared/types/common_ieee.vhd
-shared/types/common_ieee.svh
-shared/types/yml2hdl_v1/common_ieee_pkg.vhd
+#yml2hdl_v1
+# shared/types/common_ieee_pkg.vhd
+# shared/types/common_ieee_pkg.svh
+# ####### constant and types from dataformat folder ######
+# # shared/types/yml2hdl_v1/sl2mdt_constants_pkg.vhd
+# # shared/types/yml2hdl_v1/sl2mdt_dataformats_pkg.vhd
+# ####### constant and types from dataformat folder ######
+# shared/types/l0mdt_constants_pkg.vhd
+# shared/types/l0mdt_dataformats_pkg.vhd
+# ####### constant and types from shared folder ######
+# shared/types/yml2hdl_v1/common_constants_pkg.vhd
+# shared/types/yml2hdl_v1/common_types_pkg.vhd
+# dataformats/l0mdt_buses_constants.svh
+#---------------------------------
+# #yml2hdl_v2
+shared/types/common_ieee_pkg.vhd
+# shared/types/common_ieee_pkg.svh
 ####### constant and types from dataformat folder ######
-# shared/types/yml2hdl_v1/sl2mdt_constants_pkg.vhd
-# shared/types/yml2hdl_v1/sl2mdt_dataformats_pkg.vhd
-####### constant and types from dataformat folder ######
+# dataformats/l0mdt_constants_pkg.vhd
+# dataformats/l0mdt_dataformats_pkg.vhd
+dataformats/l0mdt_buses_constants.svh
+####### constant and types from shared folder ######
 shared/types/l0mdt_constants_pkg.vhd
 shared/types/l0mdt_dataformats_pkg.vhd
-####### constant and types from shared folder ######
-#shared/types/l0mdt_constants_pkg.vhd
-#shared/types/l0mdt_dataformats_pkg.vhd
-shared/types/yml2hdl_v1/common_constants_pkg.vhd
-shared/types/yml2hdl_v1/common_types_pkg.vhd
-dataformats/l0mdt_buses_constants.svh
+shared/types/sl2mdt_constants_pkg.vhd
+shared/types/sl2mdt_dataformats_pkg.vhd
+shared/types/common_constants_pkg.vhd
+shared/types/common_types_pkg.vhd
 
 #---------------------------------
 # VHDL2008 functions not implemented in Vivado

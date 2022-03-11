@@ -26,7 +26,7 @@ use shared_lib.detector_param_pkg.all;
 
 package heg_custom_pkg is
   
-  type heg_roi_center_at is array(integer range <>) of unsigned(MDT_TUBE_LEN-1 downto 0);
+  -- type heg_roi_center_aut is array(integer range <>) of unsigned(MDT_TUBE_LEN-1 downto 0);
 
   type heg_times_rt is record
     load    : integer;

@@ -72,7 +72,7 @@ begin
   alias out_segments_to_pt_av is << signal.ult_tp.ULT.out_segments_to_pt_av : sf2pt_bus_avt >>;
   alias ext_segments_to_pt_av is << signal.ult_tp.ULT.ext_segments_to_pt_av : sf2pt_bus_avt >>;
 
-  alias pl2pt_av is << signal.ult_tp.ULT.pl2pt_av : pl2pt_bus_avt >>;
+  alias pl2pt_av is << signal.ult_tp.ULT.pl2pt_av : pl2ptcalc_avt >>;
 
   -- variable fifo_mem_v : heg2sf_hits_fifo_at(OUTPUT_FIFO_LEN -1 downto 0);
   variable fifo_count : integer := 0;

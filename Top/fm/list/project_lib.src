@@ -1,7 +1,15 @@
-shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
-shared/shared_lib_basic.src lib=shared_lib
 shared/shared_lib.src lib=shared_lib
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 Top/fm/prj_cfg.vhd lib=project_lib
+UserLogic/ult/ult_lib.src lib=ult_lib
+UserLogic/hp/hp_lib.src lib=hp_lib
+UserLogic/heg/heg_lib.src lib=heg_lib
+UserLogic/hps/hps_lib.src lib=hps_lib
+ UserLogic/mpl/mpl_lib.src lib=mpl_lib
+UserLogic/ucm/ucm_lib.src lib=ucm_lib
+UserLogic/tar/tar_lib.src lib=tar_lib
+UserLogic/mtc/mtc_lib.src lib=mtc_lib
+UserLogic/daq/daq.src
+shared/spybuffers.src
 UserLogic/fm/fm_lib.src lib=fm_lib
-Top/fm/top_fm.vhd
+Top/fm/top_ult_fm.vhd top=top_ult_fm

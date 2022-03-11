@@ -23,7 +23,7 @@ ku15p_lsf_upt:
     - "pinouts_mpi_ku15p.xdc"
   variants:
     default:
-      link_map: "link_map_default"
+      link_map: "link_map_ku15p"
       sector_id: 3
       sector_side: 0
       endcap: 0
@@ -40,12 +40,12 @@ ku15p_csf_mpt:
     - "pinouts_mpi_ku15p.xdc"
   variants:
     default:
-      link_map: "link_map_default"
+      link_map: "link_map_ku15p"
       en_daq: 1
       endcap: 0
 
 vu13p_lsf_upt:
-  fpga: xcvu13p-flga2577-1-e
+  fpga: xcvu13p-flga2577-2-e
   board_pkg: board_pkg_mpi_vu13p
   sf: lsf
   pt: upt
@@ -53,11 +53,11 @@ vu13p_lsf_upt:
     - "pinouts_mpi_vu13p.xdc"
   variants:
     default:
-      link_map: "link_map_default"
+      link_map: "link_map_vu13p"
       en_daq: 1
 
 vu13p_csf_mpt:
-  fpga: xcvu13p-flga2577-1-e
+  fpga: xcvu13p-flga2577-2-e
   board_pkg: board_pkg_mpi_vu13p
   sf: csf
   pt: mpt
@@ -65,4 +65,4 @@ vu13p_csf_mpt:
     - "pinouts_mpi_vu13p.xdc"
   variants:
     default:
-      link_map: "link_map_default"
+      link_map: "link_map_vu13p"

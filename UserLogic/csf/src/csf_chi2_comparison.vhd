@@ -42,23 +42,23 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY csf_chi2_comparison IS
     PORT (
         clk : IN STD_LOGIC;
-        i_segments : IN csf_locseg_a_avt(NUM_FITTERS - 1 DOWNTO 0);
-        o_segment : OUT csf_locseg_rvt
+        i_segments : IN csf_locseg_avt(NUM_FITTERS - 1 DOWNTO 0);
+        o_segment : OUT csf_locseg_vt
     );
 END csf_chi2_comparison;
 
 ARCHITECTURE Behavioral OF csf_chi2_comparison IS
-    SIGNAL segments : csf_locseg_a_at(NUM_FITTERS - 1 DOWNTO 0);
+    SIGNAL segments : csf_locseg_art(NUM_FITTERS - 1 DOWNTO 0);
     -- Signal to store best local segments
     SIGNAL segment_0, segment_1, output_segment : csf_locseg_rt;
     -- Signal Data Valid signals
     SIGNAL dv0, dv1 : STD_LOGIC := '0';
 BEGIN
     SEG_GEN : FOR x IN NUM_FITTERS - 1 DOWNTO 0 GENERATE
-        segments(x) <= structify(i_segments(x));
+        segments(x) <= structify(i_segments(x),segments(x));
     END GENERATE SEG_GEN;
 
-    o_segment <= vectorify(output_segment);
+    o_segment <= vectorify(output_segment,o_segment);
 
     CHI2_COMPARE : PROCESS (clk)
     BEGIN
