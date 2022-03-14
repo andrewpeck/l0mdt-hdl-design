@@ -3,20 +3,20 @@ config:
    basic_functions: False
    packages:
       - ieee: [std_logic_1164, numeric_std, math_real]
-      - shared_lib: [common_ieee_pkg, common_constants_pkg, common_types_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg]
+      - shared_lib: [l0mdt_constants_pkg, l0mdt_dataformats_pkg,common_ieee_pkg, common_constants_pkg, common_types_pkg]
 types:
    - hp_win_tubes_rt:
       - hi: {'type': 'unsigned', 'range': ['MDT_TUBE_LEN-1', 0]}
       - lo: {'type': 'unsigned', 'range': ['MDT_TUBE_LEN-1', 0]}
-   - hp_win_tubes_vt: {'type': 'logic', 'range': ['hp_win_tubes_rt-1', 0]}
+  #  - hp_win_tubes_vt: {'type': 'logic', 'range': ['hp_win_tubes_rt-1', 0]}
    - hp_win_tubes_art: {'array': 'open', 'type': 'hp_win_tubes_rt'}
-   - hp_win_tubes_avt: {'array': 'open', 'type': 'hp_win_tubes_vt'}
+  #  - hp_win_tubes_avt: {'array': 'open', 'type': 'hp_win_tubes_vt'}
    - hp_win_tubes_limits_rt:
       - hi: {'type': 'signed', 'range': ['MDT_TUBE_LEN-1', 0]}
       - lo: {'type': 'signed', 'range': ['MDT_TUBE_LEN-1', 0]}
-   - hp_win_tubes_limits_vt: {'type': 'logic', 'range': ['hp_win_tubes_limits_rt-1', 0]}
+  #  - hp_win_tubes_limits_vt: {'type': 'logic', 'range': ['hp_win_tubes_limits_rt-1', 0]}
    - hp_win_tubes_limits_art: {'array': 'open', 'type': 'hp_win_tubes_limits_rt'}
-   - hp_win_tubes_limits_avt: {'array': 'open', 'type': 'hp_win_tubes_limits_vt'}
+  #  - hp_win_tubes_limits_avt: {'array': 'open', 'type': 'hp_win_tubes_limits_vt'}
    - hp_heg2hp_slc_b_rt:
       - roi_z: {'type': 'unsigned', 'range': ['MDT_GLOBAL_AXI_LEN-1', 0]}
       - roi_x: {'type': 'unsigned', 'range': ['MDT_GLOBAL_AXI_LEN-1', 0]}
@@ -25,9 +25,9 @@ types:
       - bcid: {'type': 'unsigned', 'range': ['BCID_LEN-1', 0]}
       - specific: {'type': 'logic', 'range': ['HP_HEG2HP_SPECIFIC_LEN-1', 0]}
       - data_valid: {'type': 'logic'}
-   - hp_heg2hp_slc_vt: {'type': 'logic', 'range': ['hp_heg2hp_slc_rt-1', 0]}
+  #  - hp_heg2hp_slc_vt: {'type': 'logic', 'range': ['hp_heg2hp_slc_rt-1', 0]}
    - hp_heg2hp_slc_art: {'array': 'open', 'type': 'hp_heg2hp_slc_rt'}
-   - hp_heg2hp_slc_avt: {'array': 'open', 'type': 'hp_heg2hp_slc_vt'}
+  #  - hp_heg2hp_slc_avt: {'array': 'open', 'type': 'hp_heg2hp_slc_vt'}
    - hp_hpsPc2hp_rt:
       - tube: {'type': 'unsigned', 'range': ['MDT_TUBE_LEN-1', 0]}
       - layer: {'type': 'unsigned', 'range': ['MDT_LAYER_LEN-1', 0]}
@@ -35,17 +35,17 @@ types:
       - global_z: {'type': 'unsigned', 'range': ['MDT_GLOBAL_AXI_LEN-1', 0]}
       - global_x: {'type': 'unsigned', 'range': ['MDT_GLOBAL_AXI_LEN-1', 0]}
       - data_valid: {'type': 'logic'}
-   - hp_hpsPc2hp_vt: {'type': 'logic', 'range': ['hp_hpsPc2hp_rt-1', 0]}
+  #  - hp_hpsPc2hp_vt: {'type': 'logic', 'range': ['hp_hpsPc2hp_rt-1', 0]}
    - hp_hp2sf_data_rt:
       - local_y: {'type': 'unsigned', 'range': ['MDT_LOCAL_Y_LEN-1', 0]}
       - local_x: {'type': 'unsigned', 'range': ['MDT_LOCAL_X_LEN-1', 0]}
       - radius: {'type': 'unsigned', 'range': ['MDT_RADIUS_LEN-1', 0]}
       - mlayer: {'type': 'logic'}
-   - hp_hp2sf_data_vt: {'type': 'logic', 'range': ['hp_hp2sf_data_rt-1', 0]}
+  #  - hp_hp2sf_data_vt: {'type': 'logic', 'range': ['hp_hp2sf_data_rt-1', 0]}
    - hp_hp2sf_data_art: {'array': 'open', 'type': 'hp_hp2sf_data_rt'}
-   - hp_hp2sf_data_avt: {'array': 'open', 'type': 'hp_hp2sf_data_vt'}
+  #  - hp_hp2sf_data_avt: {'array': 'open', 'type': 'hp_hp2sf_data_vt'}
    - hp_hp2bm_rt:
       - data: {'type': 'hp_hp2sf_data_rt'}
       - mdt_valid: {'type': 'logic'}
       - data_valid: {'type': 'logic'}
-   - hp_hp2bm_vt: {'type': 'logic', 'range': ['hp_hp2bm_rt-1', 0]}
+  #  - hp_hp2bm_vt: {'type': 'logic', 'range': ['hp_hp2bm_rt-1', 0]}
