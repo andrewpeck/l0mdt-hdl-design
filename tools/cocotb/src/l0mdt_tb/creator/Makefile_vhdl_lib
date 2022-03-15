@@ -260,6 +260,7 @@ VERILOG_SOURCES_lsf_lib = \
     $(LSFDIR)/update_histogram_dmem.sv \
     $(LSFDIR)/update_histogram_reg_2clk.sv \
     $(FIND_MAX_BIN_HLS_IP)/find_max_bin.v \
+    $(FIND_MAX_BIN_HLS_IP)/find_max_bin_mul_mul_13ns_15ns_27_4_1.v \
     $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_18s_15ns_33_4_1.v \
     $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_26ns_18ns_32_4_1.v \
     $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_lut_divider_barrel_V.v \

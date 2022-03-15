@@ -161,7 +161,7 @@ module legendreEngine_2clk #(
    const logic [3:0] 								    hba_latency             = 3; //7; //5; //8;//7; //12;
 
  //  const logic [3:0] 								    hba_mem_latency         = HBA_MEM_LATENCY; //DMEM-4, REG-3; //4; //3;
-   const logic [3:0] 								    find_max_bin_latency    = 4; //3; //2; //4;
+   const logic [3:0] 								    find_max_bin_latency    = 7; //4; //3; //2; //4;
    const logic [3:0] 								    reset_cycles = 10;
    const logic [7:0] 								    hba_reset_clocks = RBINS-1; //3
 
