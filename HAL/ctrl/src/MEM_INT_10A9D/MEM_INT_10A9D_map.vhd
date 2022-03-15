@@ -104,8 +104,8 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data( 0)( 5);                --freeze memory
           localRdData( 8 downto  6)  <=  reg_data( 0)( 8 downto  6);      --sel memory
         when 2 => --0x2
-          localRdData( 9)            <=  reg_data( 2)( 9);                --wr_Address
-          localRdData(25)            <=  reg_data( 2)(25);                --rd_Address
+          localRdData( 9 downto  0)  <=  reg_data( 2)( 9 downto  0);      --wr_Address
+          localRdData(25 downto 16)  <=  reg_data( 2)(25 downto 16);      --rd_Address
         when 3 => --0x3
           localRdData( 8 downto  0)  <=  reg_data( 3)( 8 downto  0);      --Write Data 0
         when 5 => --0x5
@@ -130,8 +130,8 @@ begin  -- architecture behavioral
   Ctrl.SIGNALS.flush_req   <=  reg_data( 0)( 4);               
   Ctrl.SIGNALS.freeze_req  <=  reg_data( 0)( 5);               
   Ctrl.SIGNALS.mem_sel     <=  reg_data( 0)( 8 downto  6);     
-  Ctrl.wr_addr             <=  reg_data( 2)( 9);               
-  Ctrl.rd_addr             <=  reg_data( 2)(25);               
+  Ctrl.wr_addr             <=  reg_data( 2)( 9 downto  0);     
+  Ctrl.rd_addr             <=  reg_data( 2)(25 downto 16);     
   Ctrl.wr_data.wr_data_0   <=  reg_data( 3)( 8 downto  0);     
 
 
@@ -141,8 +141,8 @@ begin  -- architecture behavioral
       reg_data( 0)( 4)  <= DEFAULT_MEM_INT_10A9D_CTRL_t.SIGNALS.flush_req;
       reg_data( 0)( 5)  <= DEFAULT_MEM_INT_10A9D_CTRL_t.SIGNALS.freeze_req;
       reg_data( 0)( 8 downto  6)  <= DEFAULT_MEM_INT_10A9D_CTRL_t.SIGNALS.mem_sel;
-      reg_data( 2)( 9)  <= DEFAULT_MEM_INT_10A9D_CTRL_t.wr_addr;
-      reg_data( 2)(25)  <= DEFAULT_MEM_INT_10A9D_CTRL_t.rd_addr;
+      reg_data( 2)( 9 downto  0)  <= DEFAULT_MEM_INT_10A9D_CTRL_t.wr_addr;
+      reg_data( 2)(25 downto 16)  <= DEFAULT_MEM_INT_10A9D_CTRL_t.rd_addr;
       reg_data( 3)( 8 downto  0)  <= DEFAULT_MEM_INT_10A9D_CTRL_t.wr_data.wr_data_0;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
@@ -164,8 +164,8 @@ begin  -- architecture behavioral
           reg_data( 0)( 5)            <=  localWrData( 5);                --freeze memory
           reg_data( 0)( 8 downto  6)  <=  localWrData( 8 downto  6);      --sel memory
         when 2 => --0x2
-          reg_data( 2)( 9)            <=  localWrData( 9);                --wr_Address
-          reg_data( 2)(25)            <=  localWrData(25);                --rd_Address
+          reg_data( 2)( 9 downto  0)  <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data( 2)(25 downto 16)  <=  localWrData(25 downto 16);      --rd_Address
         when 3 => --0x3
           reg_data( 3)( 8 downto  0)  <=  localWrData( 8 downto  0);      --Write Data 0
 

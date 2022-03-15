@@ -140,8 +140,8 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(67)( 5);                              --freeze memory
           localRdData( 8 downto  6)  <=  reg_data(67)( 8 downto  6);                    --sel memory
         when 69 => --0x45
-          localRdData( 9)            <=  reg_data(69)( 9);                              --wr_Address
-          localRdData(25)            <=  reg_data(69)(25);                              --rd_Address
+          localRdData( 9 downto  0)  <=  reg_data(69)( 9 downto  0);                    --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(69)(25 downto 16);                    --rd_Address
         when 70 => --0x46
           localRdData( 8 downto  0)  <=  reg_data(70)( 8 downto  0);                    --Write Data 0
         when 72 => --0x48
@@ -157,8 +157,8 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(83)( 5);                              --freeze memory
           localRdData( 8 downto  6)  <=  reg_data(83)( 8 downto  6);                    --sel memory
         when 85 => --0x55
-          localRdData( 9)            <=  reg_data(85)( 9);                              --wr_Address
-          localRdData(25)            <=  reg_data(85)(25);                              --rd_Address
+          localRdData( 9 downto  0)  <=  reg_data(85)( 9 downto  0);                    --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(85)(25 downto 16);                    --rd_Address
         when 86 => --0x56
           localRdData( 8 downto  0)  <=  reg_data(86)( 8 downto  0);                    --Write Data 0
         when 88 => --0x58
@@ -174,8 +174,8 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(99)( 5);                              --freeze memory
           localRdData( 8 downto  6)  <=  reg_data(99)( 8 downto  6);                    --sel memory
         when 101 => --0x65
-          localRdData( 9)            <=  reg_data(101)( 9);                             --wr_Address
-          localRdData(25)            <=  reg_data(101)(25);                             --rd_Address
+          localRdData( 9 downto  0)  <=  reg_data(101)( 9 downto  0);                   --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(101)(25 downto 16);                   --rd_Address
         when 102 => --0x66
           localRdData( 8 downto  0)  <=  reg_data(102)( 8 downto  0);                   --Write Data 0
         when 104 => --0x68
@@ -191,8 +191,8 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(115)( 5);                             --freeze memory
           localRdData( 8 downto  6)  <=  reg_data(115)( 8 downto  6);                   --sel memory
         when 117 => --0x75
-          localRdData( 9)            <=  reg_data(117)( 9);                             --wr_Address
-          localRdData(25)            <=  reg_data(117)(25);                             --rd_Address
+          localRdData( 9 downto  0)  <=  reg_data(117)( 9 downto  0);                   --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(117)(25 downto 16);                   --rd_Address
         when 118 => --0x76
           localRdData( 8 downto  0)  <=  reg_data(118)( 8 downto  0);                   --Write Data 0
         when 120 => --0x78
@@ -208,8 +208,8 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(131)( 5);                             --freeze memory
           localRdData( 8 downto  6)  <=  reg_data(131)( 8 downto  6);                   --sel memory
         when 133 => --0x85
-          localRdData( 9)            <=  reg_data(133)( 9);                             --wr_Address
-          localRdData(25)            <=  reg_data(133)(25);                             --rd_Address
+          localRdData( 9 downto  0)  <=  reg_data(133)( 9 downto  0);                   --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(133)(25 downto 16);                   --rd_Address
         when 134 => --0x86
           localRdData( 8 downto  0)  <=  reg_data(134)( 8 downto  0);                   --Write Data 0
         when 136 => --0x88
@@ -225,8 +225,8 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(147)( 5);                             --freeze memory
           localRdData( 8 downto  6)  <=  reg_data(147)( 8 downto  6);                   --sel memory
         when 149 => --0x95
-          localRdData( 9)            <=  reg_data(149)( 9);                             --wr_Address
-          localRdData(25)            <=  reg_data(149)(25);                             --rd_Address
+          localRdData( 9 downto  0)  <=  reg_data(149)( 9 downto  0);                   --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(149)(25 downto 16);                   --rd_Address
         when 150 => --0x96
           localRdData( 8 downto  0)  <=  reg_data(150)( 8 downto  0);                   --Write Data 0
         when 152 => --0x98
@@ -264,8 +264,8 @@ begin  -- architecture behavioral
   Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(67)( 4);                
   Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(67)( 5);                
   Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(67)( 8 downto  6);      
-  Ctrl.HP.HP(0).MDT_DT2R.wr_addr             <=  reg_data(69)( 9);                
-  Ctrl.HP.HP(0).MDT_DT2R.rd_addr             <=  reg_data(69)(25);                
+  Ctrl.HP.HP(0).MDT_DT2R.wr_addr             <=  reg_data(69)( 9 downto  0);      
+  Ctrl.HP.HP(0).MDT_DT2R.rd_addr             <=  reg_data(69)(25 downto 16);      
   Ctrl.HP.HP(0).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(70)( 8 downto  0);      
   Ctrl.HP.HP(1).CONFIGS.INPUT_EN             <=  reg_data(81)( 4);                
   Ctrl.HP.HP(1).CONFIGS.OUTPUT_EN            <=  reg_data(81)( 5);                
@@ -273,8 +273,8 @@ begin  -- architecture behavioral
   Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(83)( 4);                
   Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(83)( 5);                
   Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(83)( 8 downto  6);      
-  Ctrl.HP.HP(1).MDT_DT2R.wr_addr             <=  reg_data(85)( 9);                
-  Ctrl.HP.HP(1).MDT_DT2R.rd_addr             <=  reg_data(85)(25);                
+  Ctrl.HP.HP(1).MDT_DT2R.wr_addr             <=  reg_data(85)( 9 downto  0);      
+  Ctrl.HP.HP(1).MDT_DT2R.rd_addr             <=  reg_data(85)(25 downto 16);      
   Ctrl.HP.HP(1).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(86)( 8 downto  0);      
   Ctrl.HP.HP(2).CONFIGS.INPUT_EN             <=  reg_data(97)( 4);                
   Ctrl.HP.HP(2).CONFIGS.OUTPUT_EN            <=  reg_data(97)( 5);                
@@ -282,8 +282,8 @@ begin  -- architecture behavioral
   Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(99)( 4);                
   Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(99)( 5);                
   Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(99)( 8 downto  6);      
-  Ctrl.HP.HP(2).MDT_DT2R.wr_addr             <=  reg_data(101)( 9);               
-  Ctrl.HP.HP(2).MDT_DT2R.rd_addr             <=  reg_data(101)(25);               
+  Ctrl.HP.HP(2).MDT_DT2R.wr_addr             <=  reg_data(101)( 9 downto  0);     
+  Ctrl.HP.HP(2).MDT_DT2R.rd_addr             <=  reg_data(101)(25 downto 16);     
   Ctrl.HP.HP(2).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(102)( 8 downto  0);     
   Ctrl.HP.HP(3).CONFIGS.INPUT_EN             <=  reg_data(113)( 4);               
   Ctrl.HP.HP(3).CONFIGS.OUTPUT_EN            <=  reg_data(113)( 5);               
@@ -291,8 +291,8 @@ begin  -- architecture behavioral
   Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(115)( 4);               
   Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(115)( 5);               
   Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(115)( 8 downto  6);     
-  Ctrl.HP.HP(3).MDT_DT2R.wr_addr             <=  reg_data(117)( 9);               
-  Ctrl.HP.HP(3).MDT_DT2R.rd_addr             <=  reg_data(117)(25);               
+  Ctrl.HP.HP(3).MDT_DT2R.wr_addr             <=  reg_data(117)( 9 downto  0);     
+  Ctrl.HP.HP(3).MDT_DT2R.rd_addr             <=  reg_data(117)(25 downto 16);     
   Ctrl.HP.HP(3).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(118)( 8 downto  0);     
   Ctrl.HP.HP(4).CONFIGS.INPUT_EN             <=  reg_data(129)( 4);               
   Ctrl.HP.HP(4).CONFIGS.OUTPUT_EN            <=  reg_data(129)( 5);               
@@ -300,8 +300,8 @@ begin  -- architecture behavioral
   Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(131)( 4);               
   Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(131)( 5);               
   Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(131)( 8 downto  6);     
-  Ctrl.HP.HP(4).MDT_DT2R.wr_addr             <=  reg_data(133)( 9);               
-  Ctrl.HP.HP(4).MDT_DT2R.rd_addr             <=  reg_data(133)(25);               
+  Ctrl.HP.HP(4).MDT_DT2R.wr_addr             <=  reg_data(133)( 9 downto  0);     
+  Ctrl.HP.HP(4).MDT_DT2R.rd_addr             <=  reg_data(133)(25 downto 16);     
   Ctrl.HP.HP(4).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(134)( 8 downto  0);     
   Ctrl.HP.HP(5).CONFIGS.INPUT_EN             <=  reg_data(145)( 4);               
   Ctrl.HP.HP(5).CONFIGS.OUTPUT_EN            <=  reg_data(145)( 5);               
@@ -309,8 +309,8 @@ begin  -- architecture behavioral
   Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(147)( 4);               
   Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(147)( 5);               
   Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(147)( 8 downto  6);     
-  Ctrl.HP.HP(5).MDT_DT2R.wr_addr             <=  reg_data(149)( 9);               
-  Ctrl.HP.HP(5).MDT_DT2R.rd_addr             <=  reg_data(149)(25);               
+  Ctrl.HP.HP(5).MDT_DT2R.wr_addr             <=  reg_data(149)( 9 downto  0);     
+  Ctrl.HP.HP(5).MDT_DT2R.rd_addr             <=  reg_data(149)(25 downto 16);     
   Ctrl.HP.HP(5).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(150)( 8 downto  0);     
 
 
@@ -333,8 +333,8 @@ begin  -- architecture behavioral
       reg_data(67)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.flush_req;
       reg_data(67)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(67)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.mem_sel;
-      reg_data(69)( 9)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.wr_addr;
-      reg_data(69)(25)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.rd_addr;
+      reg_data(69)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.wr_addr;
+      reg_data(69)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.rd_addr;
       reg_data(70)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.wr_data.wr_data_0;
       reg_data(81)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).CONFIGS.INPUT_EN;
       reg_data(81)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).CONFIGS.OUTPUT_EN;
@@ -342,8 +342,8 @@ begin  -- architecture behavioral
       reg_data(83)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.flush_req;
       reg_data(83)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(83)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.mem_sel;
-      reg_data(85)( 9)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.wr_addr;
-      reg_data(85)(25)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.rd_addr;
+      reg_data(85)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.wr_addr;
+      reg_data(85)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.rd_addr;
       reg_data(86)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.wr_data.wr_data_0;
       reg_data(97)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).CONFIGS.INPUT_EN;
       reg_data(97)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).CONFIGS.OUTPUT_EN;
@@ -351,8 +351,8 @@ begin  -- architecture behavioral
       reg_data(99)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.flush_req;
       reg_data(99)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(99)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.mem_sel;
-      reg_data(101)( 9)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.wr_addr;
-      reg_data(101)(25)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.rd_addr;
+      reg_data(101)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.wr_addr;
+      reg_data(101)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.rd_addr;
       reg_data(102)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.wr_data.wr_data_0;
       reg_data(113)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).CONFIGS.INPUT_EN;
       reg_data(113)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).CONFIGS.OUTPUT_EN;
@@ -360,8 +360,8 @@ begin  -- architecture behavioral
       reg_data(115)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.flush_req;
       reg_data(115)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(115)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.mem_sel;
-      reg_data(117)( 9)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.wr_addr;
-      reg_data(117)(25)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.rd_addr;
+      reg_data(117)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.wr_addr;
+      reg_data(117)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.rd_addr;
       reg_data(118)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.wr_data.wr_data_0;
       reg_data(129)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).CONFIGS.INPUT_EN;
       reg_data(129)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).CONFIGS.OUTPUT_EN;
@@ -369,8 +369,8 @@ begin  -- architecture behavioral
       reg_data(131)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.flush_req;
       reg_data(131)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(131)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.mem_sel;
-      reg_data(133)( 9)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.wr_addr;
-      reg_data(133)(25)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.rd_addr;
+      reg_data(133)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.wr_addr;
+      reg_data(133)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.rd_addr;
       reg_data(134)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.wr_data.wr_data_0;
       reg_data(145)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).CONFIGS.INPUT_EN;
       reg_data(145)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).CONFIGS.OUTPUT_EN;
@@ -378,8 +378,8 @@ begin  -- architecture behavioral
       reg_data(147)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.flush_req;
       reg_data(147)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(147)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.mem_sel;
-      reg_data(149)( 9)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.wr_addr;
-      reg_data(149)(25)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.rd_addr;
+      reg_data(149)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.wr_addr;
+      reg_data(149)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.rd_addr;
       reg_data(150)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.wr_data.wr_data_0;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
@@ -486,8 +486,8 @@ begin  -- architecture behavioral
           reg_data(67)( 5)                       <=  localWrData( 5);                --freeze memory
           reg_data(67)( 8 downto  6)             <=  localWrData( 8 downto  6);      --sel memory
         when 69 => --0x45
-          reg_data(69)( 9)                       <=  localWrData( 9);                --wr_Address
-          reg_data(69)(25)                       <=  localWrData(25);                --rd_Address
+          reg_data(69)( 9 downto  0)             <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(69)(25 downto 16)             <=  localWrData(25 downto 16);      --rd_Address
         when 70 => --0x46
           reg_data(70)( 8 downto  0)             <=  localWrData( 8 downto  0);      --Write Data 0
         when 80 => --0x50
@@ -508,8 +508,8 @@ begin  -- architecture behavioral
           reg_data(83)( 5)                       <=  localWrData( 5);                --freeze memory
           reg_data(83)( 8 downto  6)             <=  localWrData( 8 downto  6);      --sel memory
         when 85 => --0x55
-          reg_data(85)( 9)                       <=  localWrData( 9);                --wr_Address
-          reg_data(85)(25)                       <=  localWrData(25);                --rd_Address
+          reg_data(85)( 9 downto  0)             <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(85)(25 downto 16)             <=  localWrData(25 downto 16);      --rd_Address
         when 86 => --0x56
           reg_data(86)( 8 downto  0)             <=  localWrData( 8 downto  0);      --Write Data 0
         when 96 => --0x60
@@ -530,8 +530,8 @@ begin  -- architecture behavioral
           reg_data(99)( 5)                       <=  localWrData( 5);                --freeze memory
           reg_data(99)( 8 downto  6)             <=  localWrData( 8 downto  6);      --sel memory
         when 101 => --0x65
-          reg_data(101)( 9)                      <=  localWrData( 9);                --wr_Address
-          reg_data(101)(25)                      <=  localWrData(25);                --rd_Address
+          reg_data(101)( 9 downto  0)            <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(101)(25 downto 16)            <=  localWrData(25 downto 16);      --rd_Address
         when 102 => --0x66
           reg_data(102)( 8 downto  0)            <=  localWrData( 8 downto  0);      --Write Data 0
         when 112 => --0x70
@@ -552,8 +552,8 @@ begin  -- architecture behavioral
           reg_data(115)( 5)                      <=  localWrData( 5);                --freeze memory
           reg_data(115)( 8 downto  6)            <=  localWrData( 8 downto  6);      --sel memory
         when 117 => --0x75
-          reg_data(117)( 9)                      <=  localWrData( 9);                --wr_Address
-          reg_data(117)(25)                      <=  localWrData(25);                --rd_Address
+          reg_data(117)( 9 downto  0)            <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(117)(25 downto 16)            <=  localWrData(25 downto 16);      --rd_Address
         when 118 => --0x76
           reg_data(118)( 8 downto  0)            <=  localWrData( 8 downto  0);      --Write Data 0
         when 128 => --0x80
@@ -574,8 +574,8 @@ begin  -- architecture behavioral
           reg_data(131)( 5)                      <=  localWrData( 5);                --freeze memory
           reg_data(131)( 8 downto  6)            <=  localWrData( 8 downto  6);      --sel memory
         when 133 => --0x85
-          reg_data(133)( 9)                      <=  localWrData( 9);                --wr_Address
-          reg_data(133)(25)                      <=  localWrData(25);                --rd_Address
+          reg_data(133)( 9 downto  0)            <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(133)(25 downto 16)            <=  localWrData(25 downto 16);      --rd_Address
         when 134 => --0x86
           reg_data(134)( 8 downto  0)            <=  localWrData( 8 downto  0);      --Write Data 0
         when 144 => --0x90
@@ -596,8 +596,8 @@ begin  -- architecture behavioral
           reg_data(147)( 5)                      <=  localWrData( 5);                --freeze memory
           reg_data(147)( 8 downto  6)            <=  localWrData( 8 downto  6);      --sel memory
         when 149 => --0x95
-          reg_data(149)( 9)                      <=  localWrData( 9);                --wr_Address
-          reg_data(149)(25)                      <=  localWrData(25);                --rd_Address
+          reg_data(149)( 9 downto  0)            <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(149)(25 downto 16)            <=  localWrData(25 downto 16);      --rd_Address
         when 150 => --0x96
           reg_data(150)( 8 downto  0)            <=  localWrData( 8 downto  0);      --Write Data 0
 

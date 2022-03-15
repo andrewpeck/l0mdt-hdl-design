@@ -133,8 +133,8 @@ types:
 
 - HEG_HP_HP_MDT_DT2R_CTRL_t:
   - SIGNALS : { type: HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t }
-  - wr_addr : { type: logic, range : [ 9 , 0 ] }
-  - rd_addr : { type: logic, range : [ 9 , 0 ] }
+  - wr_addr : { type: logic, range : [ 10 , 0 ] }
+  - rd_addr : { type: logic, range : [ 10 , 0 ] }
   - wr_data : { type: HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t }
 
 
