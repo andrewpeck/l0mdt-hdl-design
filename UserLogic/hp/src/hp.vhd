@@ -29,6 +29,7 @@ library vamc_lib;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
+use hp_lib.hp_custom_pkg.all;
 -- library hegtypes_lib;
 -- use hegtypes_lib.hp_pkg.all;
 
@@ -54,7 +55,7 @@ entity hit_processor is
     -- MDT hit
     i_mdt_data_v          : in hp_hpsPc2hp_vt;
     -- to Segment finder
-    o_hit_data_v          : out hp_hp2bm_vt
+    o_hit_data_v          : out  hp_hp2bm_vt
   );
 end entity hit_processor;
 

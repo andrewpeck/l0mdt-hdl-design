@@ -34,6 +34,7 @@ use ctrl_lib.HPS_CTRL.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
+use hp_lib.hp_custom_pkg.all;
 
 -- library hegtypes_lib;
 -- use hegtypes_lib.hp_pkg.all;
