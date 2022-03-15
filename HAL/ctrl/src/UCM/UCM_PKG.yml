@@ -1,141 +1,215 @@
 # yml2hdl v0.3
+# This file was auto-generated.
+# Modifications might be lost.
 config:
-   basic_functions: False
-   packages:
-      - ieee: [std_logic_1164, numeric_std, math_real]
-      - shared_lib: [common_ieee_pkg]
+  basic_functions : False
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg]
+
 types:
-   - UCM_SUPER_ACTIONS_CTRL_t:
-      - RESET: {'type': 'logic'}
-      - ENABLE: {'type': 'logic'}
-      - DISABLE: {'type': 'logic'}
-      - FREEZE: {'type': 'logic'}
-   - UCM_SUPER_CONFIGS_CTRL_t:
-      - THREADS: {'type': 'logic', 'range': ['4-1', 0]}
-      - INPUT_EN: {'type': 'logic'}
-      - OUTPUT_EN: {'type': 'logic'}
-   - UCM_SUPER_STATUS_MON_t:
-      - ENABLED: {'type': 'logic'}
-      - READY: {'type': 'logic'}
-      - ERROR: {'type': 'logic', 'range': ['8-1', 0]}
-   - UCM_SUPER_SECTOR_PHI_MON_t:
-      - rd_data: {'type': 'logic', 'range': ['10-1', 0]}
-   - UCM_SUPER_SECTOR_PHI_CTRL_t:
-      - wr_req: {'type': 'logic'}
-      - rd_req: {'type': 'logic'}
-      - wr_data: {'type': 'logic', 'range': ['10-1', 0]}
-   - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t:
-      - rd_rdy: {'type': 'logic'}
-      - freeze_ena: {'type': 'logic'}
-   - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t:
-      - wr_req: {'type': 'logic'}
-      - wr_ack: {'type': 'logic'}
-      - rd_req: {'type': 'logic'}
-      - rd_ack: {'type': 'logic'}
-      - flush_req: {'type': 'logic'}
-      - freeze_req: {'type': 'logic'}
-      - mem_sel: {'type': 'logic', 'range': ['3-1', 0]}
-   - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t:
-      - wr_data_0: {'type': 'logic', 'range': ['16-1', 0]}
-   - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t:
-      - rd_data_0: {'type': 'logic', 'range': ['16-1', 0]}
-   - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t:
-      - SIGNALS: {'type': 'UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t'}
-      - rd_data: {'type': 'UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t'}
-   - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY: {'array': ['4-1', 0], 'type': 'UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t'}
-   - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t:
-      - SIGNALS: {'type': 'UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t'}
-      - wr_addr: {'type': 'logic', 'range': ['8-1', 0]}
-      - rd_addr: {'type': 'logic', 'range': ['8-1', 0]}
-      - wr_data: {'type': 'UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t'}
-   - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY: {'array': ['4-1', 0], 'type': 'UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t'}
-   - UCM_SUPER_CDE_CHAMB_Z0_MON_t:
-      - CDE_CHAMB_Z0: {'type': 'UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY'}
-   - UCM_SUPER_CDE_CHAMB_Z0_CTRL_t:
-      - CDE_CHAMB_Z0: {'type': 'UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY'}
-   - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t:
-      - rd_rdy: {'type': 'logic'}
-      - freeze_ena: {'type': 'logic'}
-   - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t:
-      - wr_req: {'type': 'logic'}
-      - wr_ack: {'type': 'logic'}
-      - rd_req: {'type': 'logic'}
-      - rd_ack: {'type': 'logic'}
-      - flush_req: {'type': 'logic'}
-      - freeze_req: {'type': 'logic'}
-      - mem_sel: {'type': 'logic', 'range': ['3-1', 0]}
-   - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t:
-      - wr_data_0: {'type': 'logic', 'range': ['16-1', 0]}
-   - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t:
-      - rd_data_0: {'type': 'logic', 'range': ['16-1', 0]}
-   - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t:
-      - SIGNALS: {'type': 'UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t'}
-      - rd_data: {'type': 'UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t'}
-   - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY: {'array': ['4-1', 0], 'type': 'UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t'}
-   - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t:
-      - SIGNALS: {'type': 'UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t'}
-      - wr_addr: {'type': 'logic', 'range': ['8-1', 0]}
-      - rd_addr: {'type': 'logic', 'range': ['8-1', 0]}
-      - wr_data: {'type': 'UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t'}
-   - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY: {'array': ['4-1', 0], 'type': 'UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t'}
-   - UCM_SUPER_CVP_CHAMB_Z0_MON_t:
-      - CVP_CHAMB_Z0: {'type': 'UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY'}
-   - UCM_SUPER_CVP_CHAMB_Z0_CTRL_t:
-      - CVP_CHAMB_Z0: {'type': 'UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY'}
-   - UCM_SUPER_MON_t:
-      - STATUS: {'type': 'UCM_SUPER_STATUS_MON_t'}
-      - SECTOR_PHI: {'type': 'UCM_SUPER_SECTOR_PHI_MON_t'}
-      - CDE_CHAMB_Z0: {'type': 'UCM_SUPER_CDE_CHAMB_Z0_MON_t'}
-      - CVP_CHAMB_Z0: {'type': 'UCM_SUPER_CVP_CHAMB_Z0_MON_t'}
-   - UCM_SUPER_CTRL_t:
-      - ACTIONS: {'type': 'UCM_SUPER_ACTIONS_CTRL_t'}
-      - CONFIGS: {'type': 'UCM_SUPER_CONFIGS_CTRL_t'}
-      - SECTOR_PHI: {'type': 'UCM_SUPER_SECTOR_PHI_CTRL_t'}
-      - CDE_CHAMB_Z0: {'type': 'UCM_SUPER_CDE_CHAMB_Z0_CTRL_t'}
-      - CVP_CHAMB_Z0: {'type': 'UCM_SUPER_CVP_CHAMB_Z0_CTRL_t'}
-   - UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t:
-      - rd_rdy: {'type': 'logic'}
-      - rd_data: {'type': 'logic', 'range': ['12-1', 0]}
-   - UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t:
-      - wr_req: {'type': 'logic'}
-      - rd_req: {'type': 'logic'}
-      - wr_addr: {'type': 'logic', 'range': ['5-1', 0]}
-      - rd_addr: {'type': 'logic', 'range': ['5-1', 0]}
-      - wr_data: {'type': 'logic', 'range': ['12-1', 0]}
-   - UCM_R_PHI_COMP_RPC_MON_t:
-      - MEM_INTERFACE: {'type': 'UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t'}
-   - UCM_R_PHI_COMP_RPC_CTRL_t:
-      - sel_thread: {'type': 'logic', 'range': ['4-1', 0]}
-      - sel_station: {'type': 'logic', 'range': ['4-1', 0]}
-      - sel_layer: {'type': 'logic', 'range': ['4-1', 0]}
-      - ext_ctrl: {'type': 'logic'}
-      - MEM_INTERFACE: {'type': 'UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t'}
-   - UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t:
-      - rd_rdy: {'type': 'logic'}
-      - rd_data: {'type': 'logic', 'range': ['14-1', 0]}
-   - UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t:
-      - wr_req: {'type': 'logic'}
-      - rd_req: {'type': 'logic'}
-      - wr_addr: {'type': 'logic', 'range': ['5-1', 0]}
-      - rd_addr: {'type': 'logic', 'range': ['5-1', 0]}
-      - wr_data: {'type': 'logic', 'range': ['14-1', 0]}
-   - UCM_R_PHI_COMP_MDT_MON_t:
-      - MEM_INTERFACE: {'type': 'UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t'}
-   - UCM_R_PHI_COMP_MDT_CTRL_t:
-      - sel_thread: {'type': 'logic', 'range': ['4-1', 0]}
-      - sel_station: {'type': 'logic', 'range': ['4-1', 0]}
-      - sel_layer: {'type': 'logic', 'range': ['4-1', 0]}
-      - ext_ctrl: {'type': 'logic'}
-      - MEM_INTERFACE: {'type': 'UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t'}
-   - UCM_R_PHI_COMP_MON_t:
-      - RPC: {'type': 'UCM_R_PHI_COMP_RPC_MON_t'}
-      - MDT: {'type': 'UCM_R_PHI_COMP_MDT_MON_t'}
-   - UCM_R_PHI_COMP_CTRL_t:
-      - RPC: {'type': 'UCM_R_PHI_COMP_RPC_CTRL_t'}
-      - MDT: {'type': 'UCM_R_PHI_COMP_MDT_CTRL_t'}
-   - UCM_MON_t:
-      - SUPER: {'type': 'UCM_SUPER_MON_t'}
-      - R_PHI_COMP: {'type': 'UCM_R_PHI_COMP_MON_t'}
-   - UCM_CTRL_t:
-      - SUPER: {'type': 'UCM_SUPER_CTRL_t'}
-      - R_PHI_COMP: {'type': 'UCM_R_PHI_COMP_CTRL_t'}
+
+- UCM_SUPER_ACTIONS_CTRL_t:
+  - RESET : { type: logic }
+  - ENABLE : { type: logic }
+  - DISABLE : { type: logic }
+  - FREEZE : { type: logic }
+
+
+- UCM_SUPER_CONFIGS_CTRL_t:
+  - THREADS : { type: logic, range : [ 4 , 0 ] }
+  - INPUT_EN : { type: logic }
+  - OUTPUT_EN : { type: logic }
+
+
+- UCM_SUPER_STATUS_MON_t:
+  - ENABLED : { type: logic }
+  - READY : { type: logic }
+  - ERROR : { type: logic, range : [ 8 , 0 ] }
+
+
+- UCM_SUPER_SECTOR_PHI_MON_t:
+  - rd_data : { type: logic, range : [ 10 , 0 ] }
+
+
+- UCM_SUPER_SECTOR_PHI_CTRL_t:
+  - wr_req : { type: logic }
+  - rd_req : { type: logic }
+  - wr_data : { type: logic, range : [ 10 , 0 ] }
+
+
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t:
+  - rd_rdy : { type: logic }
+  - freeze_ena : { type: logic }
+
+
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t:
+  - wr_req : { type: logic }
+  - wr_ack : { type: logic }
+  - rd_req : { type: logic }
+  - rd_ack : { type: logic }
+  - flush_req : { type: logic }
+  - freeze_req : { type: logic }
+  - mem_sel : { type: logic, range : [ 3 , 0 ] }
+
+
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t:
+  - wr_data_0 : { type: logic, range : [ 16 , 0 ] }
+
+
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t:
+  - rd_data_0 : { type: logic, range : [ 16 , 0 ] }
+
+
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t:
+  - SIGNALS : { type: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t }
+  - rd_data : { type: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t }
+
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY: {array : [ 4 , 0 ], type : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t}
+
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t:
+  - SIGNALS : { type: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t }
+  - wr_addr : { type: logic, range : [ 8 , 0 ] }
+  - rd_addr : { type: logic, range : [ 8 , 0 ] }
+  - wr_data : { type: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t }
+
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY: {array : [ 4 , 0 ], type : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t}
+
+- UCM_SUPER_CDE_CHAMB_Z0_MON_t:
+  - CDE_CHAMB_Z0 : { type: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY }
+
+
+- UCM_SUPER_CDE_CHAMB_Z0_CTRL_t:
+  - CDE_CHAMB_Z0 : { type: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY }
+
+
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t:
+  - rd_rdy : { type: logic }
+  - freeze_ena : { type: logic }
+
+
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t:
+  - wr_req : { type: logic }
+  - wr_ack : { type: logic }
+  - rd_req : { type: logic }
+  - rd_ack : { type: logic }
+  - flush_req : { type: logic }
+  - freeze_req : { type: logic }
+  - mem_sel : { type: logic, range : [ 3 , 0 ] }
+
+
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t:
+  - wr_data_0 : { type: logic, range : [ 16 , 0 ] }
+
+
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t:
+  - rd_data_0 : { type: logic, range : [ 16 , 0 ] }
+
+
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t:
+  - SIGNALS : { type: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t }
+  - rd_data : { type: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t }
+
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY: {array : [ 4 , 0 ], type : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t}
+
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t:
+  - SIGNALS : { type: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t }
+  - wr_addr : { type: logic, range : [ 8 , 0 ] }
+  - rd_addr : { type: logic, range : [ 8 , 0 ] }
+  - wr_data : { type: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t }
+
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY: {array : [ 4 , 0 ], type : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t}
+
+- UCM_SUPER_CVP_CHAMB_Z0_MON_t:
+  - CVP_CHAMB_Z0 : { type: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY }
+
+
+- UCM_SUPER_CVP_CHAMB_Z0_CTRL_t:
+  - CVP_CHAMB_Z0 : { type: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY }
+
+
+- UCM_SUPER_MON_t:
+  - STATUS : { type: UCM_SUPER_STATUS_MON_t }
+  - SECTOR_PHI : { type: UCM_SUPER_SECTOR_PHI_MON_t }
+  - CDE_CHAMB_Z0 : { type: UCM_SUPER_CDE_CHAMB_Z0_MON_t }
+  - CVP_CHAMB_Z0 : { type: UCM_SUPER_CVP_CHAMB_Z0_MON_t }
+
+
+- UCM_SUPER_CTRL_t:
+  - ACTIONS : { type: UCM_SUPER_ACTIONS_CTRL_t }
+  - CONFIGS : { type: UCM_SUPER_CONFIGS_CTRL_t }
+  - SECTOR_PHI : { type: UCM_SUPER_SECTOR_PHI_CTRL_t }
+  - CDE_CHAMB_Z0 : { type: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t }
+  - CVP_CHAMB_Z0 : { type: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t }
+
+
+- UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t:
+  - rd_rdy : { type: logic }
+  - rd_data : { type: logic, range : [ 12 , 0 ] }
+
+
+- UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t:
+  - wr_req : { type: logic }
+  - rd_req : { type: logic }
+  - wr_addr : { type: logic, range : [ 5 , 0 ] }
+  - rd_addr : { type: logic, range : [ 5 , 0 ] }
+  - wr_data : { type: logic, range : [ 12 , 0 ] }
+
+
+- UCM_R_PHI_COMP_RPC_MON_t:
+  - MEM_INTERFACE : { type: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t }
+
+
+- UCM_R_PHI_COMP_RPC_CTRL_t:
+  - sel_thread : { type: logic, range : [ 4 , 0 ] }
+  - sel_station : { type: logic, range : [ 4 , 0 ] }
+  - sel_layer : { type: logic, range : [ 4 , 0 ] }
+  - ext_ctrl : { type: logic }
+  - MEM_INTERFACE : { type: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t }
+
+
+- UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t:
+  - rd_rdy : { type: logic }
+  - rd_data : { type: logic, range : [ 14 , 0 ] }
+
+
+- UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t:
+  - wr_req : { type: logic }
+  - rd_req : { type: logic }
+  - wr_addr : { type: logic, range : [ 5 , 0 ] }
+  - rd_addr : { type: logic, range : [ 5 , 0 ] }
+  - wr_data : { type: logic, range : [ 14 , 0 ] }
+
+
+- UCM_R_PHI_COMP_MDT_MON_t:
+  - MEM_INTERFACE : { type: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t }
+
+
+- UCM_R_PHI_COMP_MDT_CTRL_t:
+  - sel_thread : { type: logic, range : [ 4 , 0 ] }
+  - sel_station : { type: logic, range : [ 4 , 0 ] }
+  - sel_layer : { type: logic, range : [ 4 , 0 ] }
+  - ext_ctrl : { type: logic }
+  - MEM_INTERFACE : { type: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t }
+
+
+- UCM_R_PHI_COMP_MON_t:
+  - RPC : { type: UCM_R_PHI_COMP_RPC_MON_t }
+  - MDT : { type: UCM_R_PHI_COMP_MDT_MON_t }
+
+
+- UCM_R_PHI_COMP_CTRL_t:
+  - RPC : { type: UCM_R_PHI_COMP_RPC_CTRL_t }
+  - MDT : { type: UCM_R_PHI_COMP_MDT_CTRL_t }
+
+
+- UCM_MON_t:
+  - SUPER : { type: UCM_SUPER_MON_t }
+  - R_PHI_COMP : { type: UCM_R_PHI_COMP_MON_t }
+
+
+- UCM_CTRL_t:
+  - SUPER : { type: UCM_SUPER_CTRL_t }
+  - R_PHI_COMP : { type: UCM_R_PHI_COMP_CTRL_t }
+
+

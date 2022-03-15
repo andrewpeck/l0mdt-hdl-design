@@ -21,8 +21,8 @@ package MEM_INT_10A9D_CTRL_DEF is
                                                                                   );
   constant DEFAULT_MEM_INT_10A9D_CTRL_t : MEM_INT_10A9D_CTRL_t := (
                                                                    SIGNALS => DEFAULT_MEM_INT_10A9D_SIGNALS_CTRL_t,
-                                                                   wr_addr => (others => '0'),
-                                                                   rd_addr => (others => '0'),
+                                                                   wr_addr => '0',
+                                                                   rd_addr => '0',
                                                                    wr_data => DEFAULT_MEM_INT_10A9D_wr_data_CTRL_t
                                                                   );
 

@@ -128,8 +128,8 @@ package HPS_CTRL_DEF is
                                                                                                             );
   constant DEFAULT_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t : HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t := (
                                                                                              SIGNALS => DEFAULT_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t,
-                                                                                             wr_addr => (others => '0'),
-                                                                                             rd_addr => (others => '0'),
+                                                                                             wr_addr => '0',
+                                                                                             rd_addr => '0',
                                                                                              wr_data => DEFAULT_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t
                                                                                             );
   constant DEFAULT_HPS_HEG_HEG_HP_HP_CTRL_t : HPS_HEG_HEG_HP_HP_CTRL_t := (

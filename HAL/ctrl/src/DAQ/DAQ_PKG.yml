@@ -1,12 +1,20 @@
 # yml2hdl v0.3
+# This file was auto-generated.
+# Modifications might be lost.
 config:
-   basic_functions: False
-   packages:
-      - ieee: [std_logic_1164, numeric_std, math_real]
-      - shared_lib: [common_ieee_pkg]
+  basic_functions : False
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg]
+
 types:
-   - DAQ_MON_t:
-      - STATUS: {'type': 'logic'}
-      - READY: {'type': 'logic'}
-   - DAQ_CTRL_t:
-      - RESET: {'type': 'logic'}
+
+- DAQ_MON_t:
+  - STATUS : { type: logic }
+  - READY : { type: logic }
+
+
+- DAQ_CTRL_t:
+  - RESET : { type: logic }
+
+
