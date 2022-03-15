@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <node id="FM">
   <node id="SPY_CTRL"  address="0x0">
     <node id="GLOBAL_FREEZE" address = "0x0" permission="w" mask="0x1"/>
@@ -8,7 +9,7 @@
   <node id="PLAYBACK_MASK_0" address="0x5" permission="w" mask="0xFFFFFFFF"/>
   <node id="PLAYBACK_MASK_1" address="0x6" permission="w" mask="0xFFFFFFFF"/>
 
-
+<!-- 
 
   <node id="SB0" address="0x100">
     <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
@@ -117,5 +118,5 @@
   <node id="SB26" address="0x4600">
     <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
     <node id="SB_META" address="0x20" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-  </node>
+  </node> -->
 </node>
