@@ -81,7 +81,8 @@ architecture beh of top_hp is
   -- report "The value of 'slc_win_len' is " & integer'image(slc_win_len);
   signal i_SLC_Window_v   : std_logic_vector(slc_win_len - 1 downto 0);
   signal i_SLC_Window_ar  : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  signal i_SLC_Window_av  : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  -- signal i_SLC_Window_av  : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal i_SLC_Window_av         : std_logic_vector_array(get_num_layers(g_STATION_RADIUS) -1 downto 0)(width(hp_win_tubes_rt_temp) -1 downto 0);
 
   signal hp_heg2hp_slc_len : hp_heg2hp_slc_rt;
   signal i_slc_data_v       : std_logic_vector(width(hp_heg2hp_slc_len) - 1 downto 0);

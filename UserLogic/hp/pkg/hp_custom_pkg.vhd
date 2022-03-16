@@ -32,7 +32,8 @@ use hp_lib.hp_pkg.all;
 
 package hp_custom_pkg   is
   
-  subtype hp_win_tubes_vt is std_logic_vector(18-1 downto 0);
+  signal hp_win_tubes_rt_temp : hp_win_tubes_rt;
+  subtype hp_win_tubes_vt is std_logic_vector(width(hp_win_tubes_rt_temp)-1 downto 0);
   type hp_win_tubes_avt is array(integer range <>) of hp_win_tubes_vt;
 
   subtype hp_win_tubes_limits_vt is std_logic_vector(18-1 downto 0);

@@ -47,7 +47,9 @@ entity hp_matching is
     -- time_offset         : in unsigned(7 downto 0);
     -- RoI_size            : in unsigned(7 downto 0);
     -- SLc
-    i_SLC_Window        : in hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    -- i_SLC_Window        : in hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    i_SLC_Window        : in std_logic_vector_array(get_num_layers(g_STATION_RADIUS) -1 downto 0)(width(hp_win_tubes_rt_temp) -1 downto 0);
+
     -- i_SLc_rpc_z         : in SLc_zpos_st;
     i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- i_SLc_z0            : in SLc_zpos_st;

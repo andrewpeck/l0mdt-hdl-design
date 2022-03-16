@@ -69,7 +69,9 @@ architecture beh of hp_tb is
 
   -- signal local_rst        : std_logic;
   -- signal local_en         : std_logic;
-  signal i_SLC_Window_av  : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0) := (others => (others => '0'));
+  -- signal i_SLC_Window_av  : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0) := (others => (others => '0'));
+  signal i_SLC_Window_av  : std_logic_vector_array(get_num_layers(g_STATION_RADIUS) -1 downto 0)(width(hp_win_tubes_rt_temp) -1 downto 0) := (others => (others => '0'));
+
   signal i_slc_data_v     : hp_heg2hp_slc_vt := (others => '0');
   signal i_mdt_data_v     : hp_hpsPc2hp_vt := (others => '0');
   signal o_hit_data_v     : hp_hp2bm_vt;

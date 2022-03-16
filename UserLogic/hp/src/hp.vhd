@@ -50,7 +50,9 @@ entity hit_processor is
     -- time_offset         : in unsigned(12 -1 downto 0);
 
     -- SLc
-    i_SLC_Window        : in hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    -- i_SLC_Window        : in hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    i_SLC_Window        : in std_logic_vector_array(get_num_layers(g_STATION_RADIUS) -1 downto 0)(width(hp_win_tubes_rt_temp) -1 downto 0);
+
     i_slc_data_v        : in hp_heg2hp_slc_vt;
     -- MDT hit
     i_mdt_data_v          : in hp_hpsPc2hp_vt;
