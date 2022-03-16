@@ -357,7 +357,7 @@ def parse_tvlist(
                         this_station_ID = ""
                 else:
                     this_station_ID = station_ID[my_port]
-                print("tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
+                #print("tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_cnd_thrd_id[my_port], station_ID=this_station_ID):
                     #print ("parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
                     #tvtools.dump_event(events_list,ievent)
@@ -418,7 +418,7 @@ def prepend_zeroes(tv, num=1):
     return tv_out
 
 
-def modify_tv_padzeroes(tv, location="end", num=1):
+def modify_tv_padzeroes(tv, location="end", num=[1]):
     tv_out = []
 
     for io in range(len(tv)):
@@ -431,11 +431,11 @@ def modify_tv_padzeroes(tv, location="end", num=1):
             # print("modify_tv (io,i) = (",io,i,")")
             tv_port.append(tv[io][i])
         if location == "end":
-            for i in range(num):
+            for i in range(num[io]):
                 tv_port.append(0)
         tv_out.append(tv_port)
-    # print("modify_tv_padzeroes (tv) =", tv )
-    # print("modify_tv_padzeroes (tv_out) =", tv_out )
+    #print("modify_tv_padzeroes (tv) =", tv )
+    #print("modify_tv_padzeroes (tv_out) =", tv_out )
     return tv_out
 
 
