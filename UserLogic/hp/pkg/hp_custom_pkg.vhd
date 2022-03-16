@@ -47,6 +47,8 @@ package hp_custom_pkg   is
   subtype hp_hp2sf_data_vt is std_logic_vector(40-1 downto 0);
   type hp_hp2sf_data_avt is array(integer range <>) of hp_hp2sf_data_vt;
 
+  subtype hp_hp2bm_vt is std_logic_vector(42-1 downto 0);
+
 end package hp_custom_pkg;  
 
 -- package body hp_custom_pkg is

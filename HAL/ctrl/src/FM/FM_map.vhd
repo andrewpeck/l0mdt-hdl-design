@@ -21,7 +21,7 @@ entity FM_map is
     slave_readMISO   : out AXIReadMISO  := DefaultAXIReadMISO;
     slave_writeMOSI  : in  AXIWriteMOSI;
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
-    
+    ;
     Ctrl             : out FM_Ctrl_t
         
     );

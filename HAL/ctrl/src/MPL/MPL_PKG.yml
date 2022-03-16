@@ -17,7 +17,7 @@ types:
 
 
 - MPL_SUPER_CONFIGS_CTRL_t:
-  - THREADS : { type: logic, range : [ 4 , 0 ] }
+  - THREADS : { type: logic, range : [ 4 - 1 , 0 ] }
   - INPUT_EN : { type: logic }
   - OUTPUT_EN : { type: logic }
   - FLUSH_MEM_RESET : { type: logic }
@@ -27,7 +27,7 @@ types:
   - ENABLED : { type: logic }
   - READY : { type: logic }
   - FREEZED : { type: logic }
-  - ERROR : { type: logic, range : [ 8 , 0 ] }
+  - ERROR : { type: logic, range : [ 8 - 1 , 0 ] }
 
 
 - MPL_SUPER_MON_t:
@@ -51,38 +51,38 @@ types:
   - rd_ack : { type: logic }
   - flush_req : { type: logic }
   - freeze_req : { type: logic }
-  - mem_sel : { type: logic, range : [ 3 , 0 ] }
+  - mem_sel : { type: logic, range : [ 3 - 1 , 0 ] }
 
 
 - MPL_PL_MEM_PL_MEM_wr_data_CTRL_t:
-  - wr_data_0 : { type: logic, range : [ 32 , 0 ] }
-  - wr_data_1 : { type: logic, range : [ 32 , 0 ] }
-  - wr_data_2 : { type: logic, range : [ 32 , 0 ] }
-  - wr_data_3 : { type: logic, range : [ 32 , 0 ] }
-  - wr_data_4 : { type: logic, range : [ 20 , 0 ] }
+  - wr_data_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - wr_data_1 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - wr_data_2 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - wr_data_3 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - wr_data_4 : { type: logic, range : [ 20 - 1 , 0 ] }
 
 
 - MPL_PL_MEM_PL_MEM_rd_data_MON_t:
-  - rd_data_0 : { type: logic, range : [ 32 , 0 ] }
-  - rd_data_1 : { type: logic, range : [ 32 , 0 ] }
-  - rd_data_2 : { type: logic, range : [ 32 , 0 ] }
-  - rd_data_3 : { type: logic, range : [ 32 , 0 ] }
-  - rd_data_4 : { type: logic, range : [ 20 , 0 ] }
+  - rd_data_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - rd_data_1 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - rd_data_2 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - rd_data_3 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - rd_data_4 : { type: logic, range : [ 20 - 1 , 0 ] }
 
 
 - MPL_PL_MEM_PL_MEM_MON_t:
   - SIGNALS : { type: MPL_PL_MEM_PL_MEM_SIGNALS_MON_t }
   - rd_data : { type: MPL_PL_MEM_PL_MEM_rd_data_MON_t }
 
-- MPL_PL_MEM_PL_MEM_MON_t_ARRAY: {array : [ 5 , 0 ], type : MPL_PL_MEM_PL_MEM_MON_t}
+- MPL_PL_MEM_PL_MEM_MON_t_ARRAY: {array : [ 5 -1 , 0 ], type : MPL_PL_MEM_PL_MEM_MON_t}
 
 - MPL_PL_MEM_PL_MEM_CTRL_t:
   - SIGNALS : { type: MPL_PL_MEM_PL_MEM_SIGNALS_CTRL_t }
-  - wr_addr : { type: logic, range : [ 12 , 0 ] }
-  - rd_addr : { type: logic, range : [ 12 , 0 ] }
+  - wr_addr : { type: logic, range : [ 12 - 1 , 0 ] }
+  - rd_addr : { type: logic, range : [ 12 - 1 , 0 ] }
   - wr_data : { type: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t }
 
-- MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY: {array : [ 5 , 0 ], type : MPL_PL_MEM_PL_MEM_CTRL_t}
+- MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY: {array : [ 5 -1 , 0 ], type : MPL_PL_MEM_PL_MEM_CTRL_t}
 
 - MPL_PL_MEM_MON_t:
   - PL_MEM : { type: MPL_PL_MEM_PL_MEM_MON_t_ARRAY }

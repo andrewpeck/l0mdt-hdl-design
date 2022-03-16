@@ -21,15 +21,15 @@ types:
   - rd_ack : { type: logic }
   - flush_req : { type: logic }
   - freeze_req : { type: logic }
-  - mem_sel : { type: logic, range : [ 3 , 0 ] }
+  - mem_sel : { type: logic, range : [ 3 - 1 , 0 ] }
 
 
 - MEM_INT_10A9D_wr_data_CTRL_t:
-  - wr_data_0 : { type: logic, range : [ 9 , 0 ] }
+  - wr_data_0 : { type: logic, range : [ 9 - 1 , 0 ] }
 
 
 - MEM_INT_10A9D_rd_data_MON_t:
-  - rd_data_0 : { type: logic, range : [ 9 , 0 ] }
+  - rd_data_0 : { type: logic, range : [ 9 - 1 , 0 ] }
 
 
 - MEM_INT_10A9D_MON_t:
@@ -39,8 +39,8 @@ types:
 
 - MEM_INT_10A9D_CTRL_t:
   - SIGNALS : { type: MEM_INT_10A9D_SIGNALS_CTRL_t }
-  - wr_addr : { type: logic, range : [ 10 , 0 ] }
-  - rd_addr : { type: logic, range : [ 10 , 0 ] }
+  - wr_addr : { type: logic, range : [ 10 - 1 , 0 ] }
+  - rd_addr : { type: logic, range : [ 10 - 1 , 0 ] }
   - wr_data : { type: MEM_INT_10A9D_wr_data_CTRL_t }
 
 

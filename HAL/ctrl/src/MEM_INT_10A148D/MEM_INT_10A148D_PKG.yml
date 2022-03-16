@@ -10,19 +10,19 @@ config:
 types:
 
 - MEM_INT_10A148D_wr_data_CTRL_t:
-  - wr_data_0 : { type: logic, range : [ 32 , 0 ] }
-  - wr_data_1 : { type: logic, range : [ 32 , 0 ] }
-  - wr_data_2 : { type: logic, range : [ 32 , 0 ] }
-  - wr_data_3 : { type: logic, range : [ 32 , 0 ] }
-  - wr_data_4 : { type: logic, range : [ 20 , 0 ] }
+  - wr_data_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - wr_data_1 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - wr_data_2 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - wr_data_3 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - wr_data_4 : { type: logic, range : [ 20 - 1 , 0 ] }
 
 
 - MEM_INT_10A148D_rd_data_MON_t:
-  - rd_data_0 : { type: logic, range : [ 32 , 0 ] }
-  - rd_data_1 : { type: logic, range : [ 32 , 0 ] }
-  - rd_data_2 : { type: logic, range : [ 32 , 0 ] }
-  - rd_data_3 : { type: logic, range : [ 32 , 0 ] }
-  - rd_data_4 : { type: logic, range : [ 20 , 0 ] }
+  - rd_data_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - rd_data_1 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - rd_data_2 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - rd_data_3 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - rd_data_4 : { type: logic, range : [ 20 - 1 , 0 ] }
 
 
 - MEM_INT_10A148D_MON_t:
@@ -36,8 +36,8 @@ types:
   - rd_req : { type: logic }
   - rd_ack : { type: logic }
   - flush_req : { type: logic }
-  - wr_addr : { type: logic, range : [ 10 , 0 ] }
-  - rd_addr : { type: logic, range : [ 10 , 0 ] }
+  - wr_addr : { type: logic, range : [ 10 - 1 , 0 ] }
+  - rd_addr : { type: logic, range : [ 10 - 1 , 0 ] }
   - wr_data : { type: MEM_INT_10A148D_wr_data_CTRL_t }
 
 

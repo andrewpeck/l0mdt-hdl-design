@@ -10,11 +10,11 @@ config:
 types:
 
 - MEM_INT_9A19D_wr_data_CTRL_t:
-  - wr_data_0 : { type: logic, range : [ 19 , 0 ] }
+  - wr_data_0 : { type: logic, range : [ 19 - 1 , 0 ] }
 
 
 - MEM_INT_9A19D_rd_data_MON_t:
-  - rd_data_0 : { type: logic, range : [ 19 , 0 ] }
+  - rd_data_0 : { type: logic, range : [ 19 - 1 , 0 ] }
 
 
 - MEM_INT_9A19D_MON_t:
@@ -28,8 +28,8 @@ types:
   - rd_req : { type: logic }
   - rd_ack : { type: logic }
   - flush_req : { type: logic }
-  - wr_addr : { type: logic, range : [ 9 , 0 ] }
-  - rd_addr : { type: logic, range : [ 9 , 0 ] }
+  - wr_addr : { type: logic, range : [ 9 - 1 , 0 ] }
+  - rd_addr : { type: logic, range : [ 9 - 1 , 0 ] }
   - wr_data : { type: MEM_INT_9A19D_wr_data_CTRL_t }
 
 
