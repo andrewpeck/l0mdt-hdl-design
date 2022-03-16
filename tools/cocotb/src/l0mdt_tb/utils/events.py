@@ -375,6 +375,13 @@ def parse_tvlist(
         else:
             break
 
+    if valid_events < n_to_load :        
+        print (" ****************************************")
+        print (" ****************************************")
+        print ("ERROR:CANNOT run ", n_to_load, " events. Total events available in TV file is = ",valid_events)
+        print (" ****************************************")
+        print (" ****************************************")
+        sys.exit("Exiting due to Errors")
     return tv
 
 
