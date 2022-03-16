@@ -418,7 +418,7 @@ def prepend_zeroes(tv, num=1):
     return tv_out
 
 
-def modify_tv_padzeroes(tv, location="end", num=[1]):
+def modify_tv_padzeroes(tv, location="end", num=[]):
     tv_out = []
 
     for io in range(len(tv)):
@@ -431,8 +431,9 @@ def modify_tv_padzeroes(tv, location="end", num=[1]):
             # print("modify_tv (io,i) = (",io,i,")")
             tv_port.append(tv[io][i])
         if location == "end":
-            for i in range(num[io]):
-                tv_port.append(0)
+            if(len(num) > 0):
+                for i in range(num[io]):
+                    tv_port.append(0)
         tv_out.append(tv_port)
     #print("modify_tv_padzeroes (tv) =", tv )
     #print("modify_tv_padzeroes (tv_out) =", tv_out )
