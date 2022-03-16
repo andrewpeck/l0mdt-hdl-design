@@ -23,6 +23,8 @@ entity HAL_CORE_map is
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
     Mon              : in  HAL_CORE_Mon_t;
+    
+    
     Ctrl             : out HAL_CORE_Ctrl_t
         
     );

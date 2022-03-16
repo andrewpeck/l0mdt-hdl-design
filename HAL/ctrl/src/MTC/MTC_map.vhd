@@ -23,6 +23,8 @@ entity MTC_map is
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
     Mon              : in  MTC_Mon_t;
+    
+    
     Ctrl             : out MTC_Ctrl_t
         
     );

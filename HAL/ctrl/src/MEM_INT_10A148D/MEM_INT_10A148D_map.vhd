@@ -23,6 +23,8 @@ entity MEM_INT_10A148D_map is
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
     Mon              : in  MEM_INT_10A148D_Mon_t;
+    
+    
     Ctrl             : out MEM_INT_10A148D_Ctrl_t
         
     );
