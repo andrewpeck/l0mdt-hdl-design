@@ -77,14 +77,14 @@ architecture beh of top_hp is
   signal hp_win_tubes_len : hp_win_tubes_rt;
   
   
-  constant slc_win_len : integer := len(hp_win_tubes_len) * get_num_layers(g_STATION_RADIUS); -- HP_WIN_TUBES_LEN
+  constant slc_win_len : integer := width(hp_win_tubes_len) * get_num_layers(g_STATION_RADIUS); -- HP_WIN_TUBES_LEN
   -- report "The value of 'slc_win_len' is " & integer'image(slc_win_len);
   signal i_SLC_Window_v   : std_logic_vector(slc_win_len - 1 downto 0);
   signal i_SLC_Window_ar  : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal i_SLC_Window_av  : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
 
   signal hp_heg2hp_slc_len : hp_heg2hp_slc_rt;
-  signal i_slc_data_v       : std_logic_vector(len(hp_heg2hp_slc_len) - 1 downto 0);
+  signal i_slc_data_v       : std_logic_vector(width(hp_heg2hp_slc_len) - 1 downto 0);
   signal i_slc_data_rv      : hp_heg2hp_slc_vt;
   -- signal i_slc_data_v       : hp_heg2hp_slc_vt;
   signal i_mdt_data_v       : hp_hpsPc2hp_vt;
@@ -110,7 +110,7 @@ begin
   -- i_SLC_Window_av <= convert(i_SLC_Window_ar);
 
   des2 : entity shared_lib.vhdl_utils_deserializer 
-  generic map (g_DATA_WIDTH => len(hp_heg2hp_slc_len) )
+  generic map (g_DATA_WIDTH => width(hp_heg2hp_slc_len) )
   port map(clk => clk,rst  => rst,i_data => i_slc_data_b,o_data => i_slc_data_v);
   i_slc_data_rv <= i_slc_data_v;
 

@@ -188,37 +188,37 @@ architecture structural of top_l0mdt is
   signal fm_mon_r  : FM_MON_t;
   signal fm_ctrl_r : FM_CTRL_t;
 
-  signal hps_inn_ctrl_v : std_logic_vector(len(hps_inn_ctrl_r) -1 downto 0);
-  signal hps_inn_mon_v  : std_logic_vector(len(hps_inn_mon_r) -1 downto 0);
-  signal hps_mid_ctrl_v : std_logic_vector(len(hps_mid_ctrl_r) -1 downto 0);
-  signal hps_mid_mon_v  : std_logic_vector(len(hps_mid_mon_r) -1 downto 0);
-  signal hps_out_ctrl_v : std_logic_vector(len(hps_out_ctrl_r) -1 downto 0);
-  signal hps_out_mon_v  : std_logic_vector(len(hps_out_mon_r) -1 downto 0);
-  signal hps_ext_ctrl_v : std_logic_vector(len(hps_ext_ctrl_r) -1 downto 0);
-  signal hps_ext_mon_v  : std_logic_vector(len(hps_ext_mon_r) -1 downto 0);
+  signal hps_inn_ctrl_v : std_logic_vector(width(hps_inn_ctrl_r) -1 downto 0);
+  signal hps_inn_mon_v  : std_logic_vector(width(hps_inn_mon_r) -1 downto 0);
+  signal hps_mid_ctrl_v : std_logic_vector(width(hps_mid_ctrl_r) -1 downto 0);
+  signal hps_mid_mon_v  : std_logic_vector(width(hps_mid_mon_r) -1 downto 0);
+  signal hps_out_ctrl_v : std_logic_vector(width(hps_out_ctrl_r) -1 downto 0);
+  signal hps_out_mon_v  : std_logic_vector(width(hps_out_mon_r) -1 downto 0);
+  signal hps_ext_ctrl_v : std_logic_vector(width(hps_ext_ctrl_r) -1 downto 0);
+  signal hps_ext_mon_v  : std_logic_vector(width(hps_ext_mon_r) -1 downto 0);
 
-  signal tar_inn_ctrl_v : std_logic_vector(len(tar_inn_ctrl_r) -1 downto 0);
-  signal tar_inn_mon_v  : std_logic_vector(len(tar_inn_mon_r) -1 downto 0);
-  signal tar_mid_ctrl_v : std_logic_vector(len(tar_mid_ctrl_r) -1 downto 0);
-  signal tar_mid_mon_v  : std_logic_vector(len(tar_mid_mon_r) -1 downto 0);
-  signal tar_out_ctrl_v : std_logic_vector(len(tar_out_ctrl_r) -1 downto 0);
-  signal tar_out_mon_v  : std_logic_vector(len(tar_out_mon_r) -1 downto 0);
-  signal tar_ext_ctrl_v : std_logic_vector(len(tar_ext_ctrl_r) -1 downto 0);
-  signal tar_ext_mon_v  : std_logic_vector(len(tar_ext_mon_r) -1 downto 0);
+  signal tar_inn_ctrl_v : std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0);
+  signal tar_inn_mon_v  : std_logic_vector(width(tar_inn_mon_r) -1 downto 0);
+  signal tar_mid_ctrl_v : std_logic_vector(width(tar_mid_ctrl_r) -1 downto 0);
+  signal tar_mid_mon_v  : std_logic_vector(width(tar_mid_mon_r) -1 downto 0);
+  signal tar_out_ctrl_v : std_logic_vector(width(tar_out_ctrl_r) -1 downto 0);
+  signal tar_out_mon_v  : std_logic_vector(width(tar_out_mon_r) -1 downto 0);
+  signal tar_ext_ctrl_v : std_logic_vector(width(tar_ext_ctrl_r) -1 downto 0);
+  signal tar_ext_mon_v  : std_logic_vector(width(tar_ext_mon_r) -1 downto 0);
 
-  signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl_r) -1 downto 0);
-  signal mtc_mon_v  : std_logic_vector(len(mtc_mon_r) -1 downto 0);
-  signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl_r) -1 downto 0);
-  signal ucm_mon_v  : std_logic_vector(len(ucm_mon_r) -1 downto 0);
-  signal daq_ctrl_v : std_logic_vector(len(daq_ctrl_r) -1 downto 0);
-  signal daq_mon_v  : std_logic_vector(len(daq_mon_r) -1 downto 0);
-  signal tf_ctrl_v  : std_logic_vector(len(tf_ctrl_r) -1 downto 0);
-  signal tf_mon_v   : std_logic_vector(len(tf_mon_r) -1 downto 0);
-  signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl_r) -1 downto 0);
-  signal mpl_mon_v  : std_logic_vector(len(mpl_mon_r) -1 downto 0);
+  signal mtc_ctrl_v : std_logic_vector(width(mtc_ctrl_r) -1 downto 0);
+  signal mtc_mon_v  : std_logic_vector(width(mtc_mon_r) -1 downto 0);
+  signal ucm_ctrl_v : std_logic_vector(width(ucm_ctrl_r) -1 downto 0);
+  signal ucm_mon_v  : std_logic_vector(width(ucm_mon_r) -1 downto 0);
+  signal daq_ctrl_v : std_logic_vector(width(daq_ctrl_r) -1 downto 0);
+  signal daq_mon_v  : std_logic_vector(width(daq_mon_r) -1 downto 0);
+  signal tf_ctrl_v  : std_logic_vector(width(tf_ctrl_r) -1 downto 0);
+  signal tf_mon_v   : std_logic_vector(width(tf_mon_r) -1 downto 0);
+  signal mpl_ctrl_v : std_logic_vector(width(mpl_ctrl_r) -1 downto 0);
+  signal mpl_mon_v  : std_logic_vector(width(mpl_mon_r) -1 downto 0);
 
-  signal fm_mon_v  : std_logic_vector(len(fm_mon_r) -1 downto 0);
-  signal fm_ctrl_v : std_logic_vector(len(fm_ctrl_r) -1 downto 0);
+  signal fm_mon_v  : std_logic_vector(width(fm_mon_r) -1 downto 0);
+  signal fm_ctrl_v : std_logic_vector(width(fm_ctrl_r) -1 downto 0);
   --
 
   signal hal_mon  : HAL_MON_t;

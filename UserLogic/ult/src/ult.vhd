@@ -141,20 +141,20 @@ end entity ult;
 architecture behavioral of ult is
 
   -- ctrl/mon vectors
-  -- signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl) - 1 downto 0);
-  -- signal h2s_mon_v  : std_logic_vector(len(h2s_mon) - 1 downto 0);
-  -- signal tar_ctrl_v : std_logic_vector(len(tar_ctrl) - 1 downto 0);
-  -- signal tar_mon_v  : std_logic_vector(len(tar_mon) - 1 downto 0);
-  -- -- signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl) - 1 downto 0);
-  -- -- signal mtc_mon_v  : std_logic_vector(len(mtc_mon) - 1 downto 0);
-  -- signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl) - 1 downto 0);
-  -- signal ucm_mon_v  : std_logic_vector(len(ucm_mon) - 1 downto 0);
-  -- -- signal daq_ctrl_v : std_logic_vector(len(daq_ctrl) - 1 downto 0);
-  -- -- signal daq_mon_v  : std_logic_vector(len(daq_mon) - 1 downto 0);
-  -- -- signal tf_ctrl_v  : std_logic_vector(len(tf_ctrl) - 1 downto 0);
-  -- -- signal tf_mon_v   : std_logic_vector(len(tf_mon) - 1 downto 0);
-  -- signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl) - 1 downto 0);
-  -- signal mpl_mon_v  : std_logic_vector(len(mpl_mon) - 1 downto 0);
+  -- signal h2s_ctrl_v : std_logic_vector(width(h2s_ctrl) - 1 downto 0);
+  -- signal h2s_mon_v  : std_logic_vector(width(h2s_mon) - 1 downto 0);
+  -- signal tar_ctrl_v : std_logic_vector(width(tar_ctrl) - 1 downto 0);
+  -- signal tar_mon_v  : std_logic_vector(width(tar_mon) - 1 downto 0);
+  -- -- signal mtc_ctrl_v : std_logic_vector(width(mtc_ctrl) - 1 downto 0);
+  -- -- signal mtc_mon_v  : std_logic_vector(width(mtc_mon) - 1 downto 0);
+  -- signal ucm_ctrl_v : std_logic_vector(width(ucm_ctrl) - 1 downto 0);
+  -- signal ucm_mon_v  : std_logic_vector(width(ucm_mon) - 1 downto 0);
+  -- -- signal daq_ctrl_v : std_logic_vector(width(daq_ctrl) - 1 downto 0);
+  -- -- signal daq_mon_v  : std_logic_vector(width(daq_mon) - 1 downto 0);
+  -- -- signal tf_ctrl_v  : std_logic_vector(width(tf_ctrl) - 1 downto 0);
+  -- -- signal tf_mon_v   : std_logic_vector(width(tf_mon) - 1 downto 0);
+  -- signal mpl_ctrl_v : std_logic_vector(width(mpl_ctrl) - 1 downto 0);
+  -- signal mpl_mon_v  : std_logic_vector(width(mpl_mon) - 1 downto 0);
 
   -- "Xilinx recommends using at least three pipeline stages to cross an SLR:
   -- one at the top, one at the bottom, and one in the middle of the SL"
@@ -167,10 +167,10 @@ architecture behavioral of ult is
   signal int_out_tdc_hits_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
   signal int_ext_tdc_hits_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
-  signal i_inn_tdc_hits_v : std_logic_vector (len(i_inn_tdc_hits_av) -1 downto 0);
-  signal i_mid_tdc_hits_v : std_logic_vector (len(i_mid_tdc_hits_av) -1 downto 0);
-  signal i_out_tdc_hits_v : std_logic_vector (len(i_out_tdc_hits_av) -1 downto 0);
-  signal i_ext_tdc_hits_v : std_logic_vector (len(i_ext_tdc_hits_av) -1 downto 0);
+  signal i_inn_tdc_hits_v : std_logic_vector (width(i_inn_tdc_hits_av) -1 downto 0);
+  signal i_mid_tdc_hits_v : std_logic_vector (width(i_mid_tdc_hits_av) -1 downto 0);
+  signal i_out_tdc_hits_v : std_logic_vector (width(i_out_tdc_hits_av) -1 downto 0);
+  signal i_ext_tdc_hits_v : std_logic_vector (width(i_ext_tdc_hits_av) -1 downto 0);
 
   constant SLR_PIPELINE_DEPTH : integer := 12;
 
