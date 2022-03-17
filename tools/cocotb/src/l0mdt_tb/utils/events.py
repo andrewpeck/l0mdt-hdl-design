@@ -385,9 +385,6 @@ def parse_tvlist(
     return tv
 
 
-
-
-
 def modify_tv(tv, ii):
     tv_out = []
     for io in range(len(tv)):
