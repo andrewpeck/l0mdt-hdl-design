@@ -11,7 +11,7 @@ shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 #---------------------------------
 # common constants and types
 #---------------------------------
-shared_lib_types.src
+shared/shared_lib_types.src
 
 #---------------------------------
 # VHDL2008 functions not implemented in Vivado
