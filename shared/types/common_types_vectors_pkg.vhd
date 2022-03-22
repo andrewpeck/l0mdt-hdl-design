@@ -16,11 +16,11 @@ use shared_lib.common_types_pkg.all;
 
 package common_types_vectors_pkg is
 
-  signal l0mdt_control_vt_temp : l0mdt_control_rt;
+  signal l0mdt_control_rt_temp : l0mdt_control_rt;
   subtype l0mdt_control_vt is std_logic_vector(width(l0mdt_control_rt_temp)-1 downto 0);
 
-  signal l0mdt_ttc_vt_temp : l0mdt_ttc_rt;
-  subtype l0mdt_ttc_vt is std_logic_vector(width(l0mdt_ttc_rt)-1 downto 0);
+  signal l0mdt_ttc_rt_temp : l0mdt_ttc_rt;
+  subtype l0mdt_ttc_vt is std_logic_vector(width(l0mdt_ttc_rt_temp)-1 downto 0);
 
   subtype slc_rx_vt is std_logic_vector(156-1 downto 0);
   type slc_rx_avt is array(integer range <>) of slc_rx_vt;

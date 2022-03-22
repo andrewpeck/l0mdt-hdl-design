@@ -23,6 +23,7 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
+use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
@@ -30,11 +31,11 @@ use shared_lib.gtube2chamber_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
+use hp_lib.hp_custom_pkg.all;
+
 library heg_lib;
 use heg_lib.heg_pkg.all;
--- library hegtypes_lib;
--- use hegtypes_lib.hp_pkg.all;
--- use hegtypes_lib.heg_pkg.all;
+use heg_lib.heg_custom_pkg.all;
 
 
 entity heg_ctrl_sig is
@@ -140,8 +141,8 @@ begin
 
         heg_count_en <= '0';
 
-        o_uCM2sf_data_r <= nullify(o_uCM2sf_data_r);
-        o_uCM2hp_data_r <= nullify(o_uCM2hp_data_r);
+        o_uCM2sf_data_r <= convert((width(o_uCM2sf_data_r) -1 downto 0 => '1'),o_uCM2sf_data_r);
+        o_uCM2hp_data_r <= convert((width(o_uCM2hp_data_r) -1 downto 0 => '1'),o_uCM2hp_data_r);
         -- hp control resets
         o_sf_control_r.enable <= '0';
         o_sf_control_r.rst <= '0';
