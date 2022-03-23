@@ -25,6 +25,21 @@
   GIT_STRATEGY: clone
 #   CI_DEBUG_TRACE: "true"
 
+.check_list_and_conf: &check_list_and_conf
+    <<: *only-default
+    <<: *tag-hog
+    stage: user_pre
+    script:
+        - echo "Creating the project"
+        - ./Hog/CreateProject.sh $PROJECT_NAME
+        - echo "Recreating List and Config file"
+        - vivado -nojournal -nolog -mode batch -notrace -source $CI_PROJECT_DIR/Hog/Tcl/utils/check_list_files.tcl -tclargs -recreate -recreate_conf -force -project $PROJECT_NAME
+        - echo "Checking Git differences..."
+        - git diff --exit-code
+    allow_failure: true
+    interruptible: true
+
+
 .user_sim: &user_sim
   <<: *only-default
   <<: *tag-hog
