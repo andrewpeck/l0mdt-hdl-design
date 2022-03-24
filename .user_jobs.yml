@@ -32,7 +32,8 @@ variables:
 .check_list_and_conf: &check_list_and_conf
     <<: *only-default
     <<: *tag-hog
-    <<: *variables
+    variables:
+      <<: *variables
     stage: user_pre
     script:
         - echo "Creating the project"
