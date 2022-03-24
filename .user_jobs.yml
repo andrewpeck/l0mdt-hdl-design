@@ -25,7 +25,7 @@
   GIT_STRATEGY: clone
 #   CI_DEBUG_TRACE: "true"
 
-.variables: &variables
+variables: 
   GIT_STRATEGY: clone
   GIT_SUBMODULE_STRATEGY: recursive
 
