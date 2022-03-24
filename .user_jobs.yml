@@ -25,9 +25,14 @@
   GIT_STRATEGY: clone
 #   CI_DEBUG_TRACE: "true"
 
+.variables: &variables
+  GIT_STRATEGY: clone
+  GIT_SUBMODULE_STRATEGY: recursive
+
 .check_list_and_conf: &check_list_and_conf
     <<: *only-default
     <<: *tag-hog
+    <<: *variables
     stage: user_pre
     script:
         - echo "Creating the project"
