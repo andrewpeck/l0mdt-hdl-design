@@ -34,7 +34,7 @@
     <<: *tag-hog
     variables:
       <<: *chk_variables
-    stage: user_pre
+    stage: generation_and_simulation
     script:
         - echo "Creating the project"
         - ./Hog/CreateProject.sh $PROJECT_NAME
