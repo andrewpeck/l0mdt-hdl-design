@@ -18,4 +18,4 @@ shared/types/sl2mdt_dataformats_pkg.vhd
 
 shared/types/common_constants_pkg.vhd
 shared/types/common_types_pkg.vhd
-shared/types/common_types_vectors_pkg.vhd
+# shared/types/common_types_vectors_pkg.vhd
