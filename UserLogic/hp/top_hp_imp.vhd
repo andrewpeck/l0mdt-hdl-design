@@ -33,7 +33,7 @@ use ctrl_lib.HPS_CTRL.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
-use hp_lib.hp_custom_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
 
 entity top_hp is
   generic(
@@ -64,12 +64,12 @@ end entity top_hp;
 
 architecture beh of top_hp is
 
-  constant  c_CTRL_LEN :  integer := 1711;
-  constant c_MON_LEN : integer := 1042;
+  -- constant  c_CTRL_LEN :  integer := 1711;
+  -- constant c_MON_LEN : integer := 1042;
   signal ctrl_r             : HPS_HEG_HEG_HP_HP_CTRL_t;
   signal mon_r              : HPS_HEG_HEG_HP_HP_MON_t;
-  signal ctrl_v             : std_logic_vector(c_CTRL_LEN -1 downto 0);
-  signal mon_v              : std_logic_vector(c_MON_LEN -1 downto 0);
+  signal ctrl_v             : std_logic_vector(HPS_HEG_HEG_HP_HP_CTRL_t'w -1 downto 0);
+  signal mon_v              : std_logic_vector(HPS_HEG_HEG_HP_HP_MON_t'w -1 downto 0);
 
   -- signal local_rst          : std_logic;
   -- signal local_en           : std_logic;
@@ -82,7 +82,7 @@ architecture beh of top_hp is
   signal i_SLC_Window_v   : std_logic_vector(slc_win_len - 1 downto 0);
   signal i_SLC_Window_ar  : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   -- signal i_SLC_Window_av  : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  signal i_SLC_Window_av         : std_logic_vector_array(get_num_layers(g_STATION_RADIUS) -1 downto 0)(width(hp_win_tubes_rt_temp) -1 downto 0);
+  signal i_SLC_Window_av         : std_logic_vector_array(get_num_layers(g_STATION_RADIUS) -1 downto 0)(hp_win_tubes_rt'w -1 downto 0);
 
   signal hp_heg2hp_slc_len : hp_heg2hp_slc_rt;
   signal i_slc_data_v       : std_logic_vector(width(hp_heg2hp_slc_len) - 1 downto 0);
@@ -94,7 +94,9 @@ architecture beh of top_hp is
 
 begin
   -- report "slc_win_len";
-  ctrl : entity shared_lib.vhdl_utils_deserializer generic map (c_CTRL_LEN) port map(clk,rst,ctrl_b,ctrl_v);
+  ctrl : entity shared_lib.vhdl_utils_deserializer 
+  generic map (g_DATA_WIDTH => ctrl_v'length) 
+    port map(clk => clk,rst  => rst,i_data => ctrl_b,o_data => ctrl_v);
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
 

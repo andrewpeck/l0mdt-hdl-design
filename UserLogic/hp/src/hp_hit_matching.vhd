@@ -29,7 +29,7 @@ use shared_lib.detector_time_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
-use hp_lib.hp_custom_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
 
 
 entity hp_matching is
@@ -48,7 +48,7 @@ entity hp_matching is
     -- RoI_size            : in unsigned(7 downto 0);
     -- SLc
     -- i_SLC_Window        : in hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-    i_SLC_Window        : in std_logic_vector_array(get_num_layers(g_STATION_RADIUS) -1 downto 0)(width(hp_win_tubes_rt_temp) -1 downto 0);
+    i_SLC_Window        : in std_logic_vector_array(get_num_layers(g_STATION_RADIUS) -1 downto 0)(hp_win_tubes_rt'w -1 downto 0);
 
     -- i_SLc_rpc_z         : in SLc_zpos_st;
     i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);

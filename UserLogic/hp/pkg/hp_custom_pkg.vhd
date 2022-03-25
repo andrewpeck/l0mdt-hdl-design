@@ -32,28 +32,28 @@ use hp_lib.hp_pkg.all;
 
 package hp_custom_pkg   is
   
-  signal hp_win_tubes_rt_temp : hp_win_tubes_rt;
-  subtype hp_win_tubes_vt is std_logic_vector(width(hp_win_tubes_rt_temp)-1 downto 0);
-  type hp_win_tubes_avt is array(integer range <>) of hp_win_tubes_vt;
+  -- signal hp_win_tubes_rt_temp : hp_win_tubes_rt;
+  -- subtype hp_win_tubes_vt is std_logic_vector(width(hp_win_tubes_rt_temp)-1 downto 0);
+  -- type hp_win_tubes_avt is array(integer range <>) of hp_win_tubes_vt;
 
-  signal hp_win_tubes_limits_rt_temp : hp_win_tubes_limits_rt;
-  subtype hp_win_tubes_limits_vt is std_logic_vector(width(hp_win_tubes_limits_rt_temp)-1 downto 0);
-  type hp_win_tubes_limits_avt is array(integer range <>) of hp_win_tubes_limits_vt;
+  -- signal hp_win_tubes_limits_rt_temp : hp_win_tubes_limits_rt;
+  -- subtype hp_win_tubes_limits_vt is std_logic_vector(width(hp_win_tubes_limits_rt_temp)-1 downto 0);
+  -- type hp_win_tubes_limits_avt is array(integer range <>) of hp_win_tubes_limits_vt;
 
-  signal hp_heg2hp_slc_rt_temp : hp_heg2hp_slc_rt;
-  subtype hp_heg2hp_slc_vt is std_logic_vector(width(hp_heg2hp_slc_rt_temp)-1 downto 0);
-  type hp_heg2hp_slc_avt is array(integer range <>) of hp_heg2hp_slc_vt;
+  -- signal hp_heg2hp_slc_rt_temp : hp_heg2hp_slc_rt;
+  -- subtype hp_heg2hp_slc_vt is std_logic_vector(width(hp_heg2hp_slc_rt_temp)-1 downto 0);
+  -- type hp_heg2hp_slc_avt is array(integer range <>) of hp_heg2hp_slc_vt;
 
-  signal hp_hpsPc2hp_rt_temp : hp_hpsPc2hp_rt;
-  subtype hp_hpsPc2hp_vt is std_logic_vector(width(hp_hpsPc2hp_rt_temp)-1 downto 0);
-  type hp_hpsPc2hp_avt is array(integer range <>) of hp_hpsPc2hp_vt;
+  -- signal hp_hpsPc2hp_rt_temp : hp_hpsPc2hp_rt;
+  -- subtype hp_hpsPc2hp_vt is std_logic_vector(width(hp_hpsPc2hp_rt_temp)-1 downto 0);
+  -- type hp_hpsPc2hp_avt is array(integer range <>) of hp_hpsPc2hp_vt;
 
-  signal hp_hp2sf_data_rt_temp : hp_hp2sf_data_rt;
-  subtype hp_hp2sf_data_vt is std_logic_vector(width(hp_hp2sf_data_rt_temp)-1 downto 0);
-  type hp_hp2sf_data_avt is array(integer range <>) of hp_hp2sf_data_vt;
+  -- signal hp_hp2sf_data_rt_temp : hp_hp2sf_data_rt;
+  -- subtype hp_hp2sf_data_vt is std_logic_vector(width(hp_hp2sf_data_rt_temp)-1 downto 0);
+  -- type hp_hp2sf_data_avt is array(integer range <>) of hp_hp2sf_data_vt;
 
-  signal hp_hp2bm_rt_temp : hp_hp2bm_rt;
-  subtype hp_hp2bm_vt is std_logic_vector(width(hp_hp2bm_rt_temp)-1 downto 0);
+  -- signal hp_hp2bm_rt_temp : hp_hp2bm_rt;
+  -- subtype hp_hp2bm_vt is std_logic_vector(width(hp_hp2bm_rt_temp)-1 downto 0);
 
 end package hp_custom_pkg;  
 
