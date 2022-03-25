@@ -100,9 +100,9 @@ architecture beh of apb_imem is
   ----------------------------
 
   signal apb_ctrl_r       : APB_MEM_SIG_CTRL_t;
-  signal apb_ctrl_v       : std_logic_vector(width(apb_ctrl_r)-1 downto 0);
+  signal apb_ctrl_v       : std_logic_vector(APB_MEM_SIG_CTRL_t'w -1 downto 0);
   signal apb_mon_r        : APB_MEM_SIG_MON_t;
-  signal apb_mon_v        : std_logic_vector(width(apb_mon_r)-1 downto 0);
+  signal apb_mon_v        : std_logic_vector(APB_MEM_SIG_MON_t'w -1 downto 0);
 
   signal apb_rd_addr      : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
   signal apb_wr_addr      : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
@@ -234,7 +234,7 @@ begin
           int_wr_status <=  x"0";
           int_rd_status <=  x"0";
 
-          -- apb_mon_r <= nullify(apb_mon_r);
+          apb_mon_r <= zero(apb_mon_r);
   
         else
           -----------------------------------------------
@@ -356,7 +356,7 @@ begin
           int_wr_status <=  x"0";
           int_rd_status <=  x"0";
 
-          -- apb_mon_r <= nullify(apb_mon_r);
+          apb_mon_r <= zero(apb_mon_r);
 
   
         else
