@@ -152,7 +152,7 @@ BEGIN
     Chi2Proc : PROCESS (clk)
     BEGIN
         IF rising_edge(clk) THEN
-            output_seg <= nullify(output_seg);
+            output_seg <= zero(output_seg);
 
             -- Store Hits into a RAM, waiting for the fit result
             IF hit1.valid = '1' THEN

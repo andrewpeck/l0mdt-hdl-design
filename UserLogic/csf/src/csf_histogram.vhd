@@ -114,7 +114,7 @@ ARCHITECTURE Behavioral OF csf_histogram IS
     SIGNAL hit_plus_s, hit_minus_s : csf_hit_rt;
 
     -- Histogram hit signals
-    TYPE t_hit_vectors IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR(len(hit_plus) - 1 DOWNTO 0);
+    TYPE t_hit_vectors IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR(csf_hit_rt'w - 1 DOWNTO 0);
 
     SIGNAL w_hit_vec, r_hit_vec : t_hit_vectors(2 ** HISTO_LEN - 1 DOWNTO 0)
     := (OTHERS => (OTHERS => '0'));

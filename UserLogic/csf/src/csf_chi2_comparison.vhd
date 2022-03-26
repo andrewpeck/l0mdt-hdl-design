@@ -79,7 +79,7 @@ BEGIN
                 segment_0 <= segments(1);
             ELSE
                 dv0 <= '0';
-                segment_0 <= nullify(segment_0);
+                segment_0 <= zero(segment_0);
             END IF;
 
             IF segments(2).valid = '1' AND segments(3).valid = '1' THEN
@@ -97,7 +97,7 @@ BEGIN
                 segment_1 <= segments(3);
             ELSE
                 dv1 <= '0';
-                segment_1 <= nullify(segment_1);
+                segment_1 <= zero(segment_1);
             END IF;
 
             -- clock 1
@@ -112,7 +112,7 @@ BEGIN
             ELSIF dv1 = '1' THEN
                 output_segment <= segment_1;
             ELSE
-                output_segment <= nullify(output_segment);
+                output_segment <= zero(output_segment);
             END IF;
         END IF;
     END PROCESS;

@@ -69,7 +69,7 @@ BEGIN
     BEGIN
         IF rising_edge(clk) THEN
             hit_s <= hit;
-            sums <= nullify(sums);
+            sums <= zero(sums);
 
             IF (hit.valid = '1')
                 THEN

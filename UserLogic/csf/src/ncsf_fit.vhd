@@ -160,7 +160,7 @@ BEGIN
 
             -- Clock 0        
             dsp_start <= '0';
-            sums <= nullify(sums);
+            sums <= zero(sums);
             sum_loop : FOR i IN 0 TO CSF_MAX_CLUSTERS - 1 LOOP
                 IF sums_ml0(i).valid = '1' THEN
                     dsp_start <= sums_ml0(i).valid;

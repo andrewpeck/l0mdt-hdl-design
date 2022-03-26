@@ -85,8 +85,8 @@ BEGIN
 
     Pulse : PROCESS
     BEGIN
-        seed <= nullify(seed);
-        locseg <= nullify(locseg);
+        seed <= zero(seed);
+        locseg <= zero(locseg);
         WAIT FOR clk_period * 5;
         seed.hewindow_pos <= to_unsigned(255, UCM2HPS_VEC_POS_LEN);
         seed.data_valid <= '1';
@@ -95,8 +95,8 @@ BEGIN
         locseg.b <= to_signed(2489, CSF_SEG_B_LEN);
         locseg.m <= to_signed(1560, CSF_SEG_M_LEN);
         WAIT FOR clk_period;
-        locseg <= nullify(locseg);
-        seed <= nullify(seed);
+        locseg <= zero(locseg);
+        seed <= zero(seed);
         WAIT;
     END PROCESS;
 END Behavioral;
