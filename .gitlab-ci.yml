@@ -7,7 +7,7 @@ variables:
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'v5.13.0'
+      ref: 'v6.4.0'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -92,4 +92,9 @@ include:
     - local: '/Top/MainBlocks/ncsf/gitlab-ci.yml'
     # # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
     - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
-    # - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
+    #---------------------------------------------
+    #         CocoTB
+    #---------------------------------------------
+    - local: '/tools/cocotb/ci-scripts/gitlab-ci.yml'
+

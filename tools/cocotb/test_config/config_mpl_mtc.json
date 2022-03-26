@@ -25,7 +25,7 @@
                 {
                     "tv_format": "PTCALC2MTC_LSF",
                     "ports"    : 3,
-		    "pl_latency"  : 630
+		    "pl_latency"  : 580
                 }
             ],
             "outputs": [
