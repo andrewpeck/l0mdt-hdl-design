@@ -23,7 +23,7 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-use shared_lib.common_types_vectors_pkg.all;
+-- use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
@@ -31,7 +31,7 @@ use shared_lib.gtube2chamber_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
-use hp_lib.hp_custom_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
 
 library heg_lib;
 use heg_lib.heg_pkg.all;
@@ -150,7 +150,7 @@ begin
         -- o_sf_control_r.slope <= (others => '0');
         -- o_sf_control_r.window_valid <= '0';
         -- hp control reset
-        -- b_data <= nullify(b_data);
+        -- b_data <= zero(b_data);
 
         for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
           o_hp_control_r(hp_i).enable <= '0';

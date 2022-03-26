@@ -23,13 +23,13 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-use shared_lib.common_types_vectors_pkg.all;
+-- use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
-use hp_lib.hp_custom_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
 
 library heg_lib;
 use heg_lib.heg_pkg.all;
@@ -70,8 +70,8 @@ architecture beh of heg_ctrl_top is
   signal mon_r            : HPS_HEG_HEG_CTRL_MON_t;
   signal ctrl_roi_tc_r    : HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t;
   signal  mon_roi_tc_r    : HPS_HEG_HEG_CTRL_ROI_TC_MON_t;
-  signal ctrl_roi_tc_v    : std_logic_vector(len(ctrl_roi_tc_r)-1 downto 0);
-  signal  mon_roi_tc_v    : std_logic_vector(len(mon_roi_tc_r)-1 downto 0);
+  signal ctrl_roi_tc_v    : std_logic_vector(HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t'w-1 downto 0);
+  signal  mon_roi_tc_v    : std_logic_vector(HPS_HEG_HEG_CTRL_ROI_TC_MON_t'w-1 downto 0);
 
   -- component ctrl_signals is
   --   generic(

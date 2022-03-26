@@ -22,14 +22,14 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-use shared_lib.common_types_vectors_pkg.all;
+-- use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
-use hp_lib.hp_custom_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
 
 library heg_lib;
 use heg_lib.heg_pkg.all;
@@ -67,21 +67,21 @@ architecture beh of heg is
   signal ctrl_r           : HPS_HEG_HEG_CTRL_t;
   signal mon_r            : HPS_HEG_HEG_MON_t;
   
-  constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
-  constant SUPER_MON_LEN  : integer := len(mon_r.super);
-  signal ctrl_super_v : std_logic_vector(SUPER_CTRL_LEN -1 downto 0);
-  signal mon_super_v  : std_logic_vector(SUPER_MON_LEN -1 downto 0);
+  -- constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
+  -- constant SUPER_MON_LEN  : integer := len(mon_r.super);
+  signal ctrl_super_v : std_logic_vector(HPS_HEG_HEG_CTRL_t'w -1 downto 0);
+  signal mon_super_v  : std_logic_vector(HPS_HEG_HEG_MON_t'w -1 downto 0);
 
   signal heg_ctrl_ctrl_r  : HPS_HEG_HEG_CTRL_CTRL_t;
   signal heg_ctrl_mon_r   : HPS_HEG_HEG_CTRL_MON_t;
-  signal heg_ctrl_ctrl_v  : std_logic_vector(len(heg_ctrl_ctrl_r)-1 downto 0);
-  signal heg_ctrl_mon_v   : std_logic_vector(len(heg_ctrl_mon_r)-1 downto 0);
+  signal heg_ctrl_ctrl_v  : std_logic_vector(HPS_HEG_HEG_CTRL_CTRL_t'w-1 downto 0);
+  signal heg_ctrl_mon_v   : std_logic_vector(HPS_HEG_HEG_CTRL_MON_t'w-1 downto 0);
 
   signal ctrl_hp_ar : HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY ;
   signal mon_hp_ar  : HPS_HEG_HEG_HP_HP_MON_t_ARRAY ;
 
-  type ctrl_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(len(ctrl_hp_ar(0))-1 downto 0);
-  type mon_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(len(mon_hp_ar(0))-1 downto 0);
+  type ctrl_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(width(ctrl_hp_ar(0))-1 downto 0);
+  type mon_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(width(mon_hp_ar(0))-1 downto 0);
 
   signal ctrl_hp_av : ctrl_hp_avt;
   signal mon_hp_av  : mon_hp_avt;

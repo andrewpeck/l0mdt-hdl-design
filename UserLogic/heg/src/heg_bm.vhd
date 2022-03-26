@@ -158,7 +158,7 @@ begin
     if rising_edge(clk) then
       if(rst= '1') then
         -- o_mdt_hits <= (others => '0');
-        buff_mdt_hit_v <= nullify(buff_mdt_hit_v);
+        buff_mdt_hit_v <= zero(buff_mdt_hit_v);
         -- new_index_v := 0;
         nexthit <= 0;
         lasthit <= 0;

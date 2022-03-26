@@ -22,7 +22,7 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-use shared_lib.common_types_vectors_pkg.all;
+-- use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
 
 library hp_lib;
@@ -65,10 +65,10 @@ architecture beh of heg_tb is
   --
   signal ctrl_r               : HPS_HEG_HEG_CTRL_t := DEFAULT_HPS_HEG_HEG_CTRL_t ;
   signal mon_r                : HPS_HEG_HEG_MON_t;
-  constant c_CTRL_LEN         : integer := len(ctrl_r);
-  constant c_MON_LEN          : integer := len(mon_r);
-  signal ctrl_v               : std_logic_vector(c_CTRL_LEN - 1 downto 0);
-  signal mon_v                : std_logic_vector(c_MON_LEN - 1 downto 0);
+  -- constant c_CTRL_LEN         : integer := len(ctrl_r);
+  -- constant c_MON_LEN          : integer := len(mon_r);
+  signal ctrl_v               : std_logic_vector(HPS_HEG_HEG_CTRL_t'w - 1 downto 0);
+  signal mon_v                : std_logic_vector(HPS_HEG_HEG_MON_t'w - 1 downto 0);
   --
   signal i_freeze             : std_logic := '0';
   -- SLc
