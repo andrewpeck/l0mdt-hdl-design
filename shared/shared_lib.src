@@ -16,7 +16,7 @@ shared/detector_parameters/detector_parameters_lib.src
 #---------------------------------
 # VHDL2008 functions not implemented in Vivado
 #---------------------------------
-shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
+# shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 #---------------------------------
 # Apollo Platform axi Bus
 #---------------------------------
@@ -40,6 +40,8 @@ shared/memories/memories_lib.src
 #---------------------------------
 shared/vhdl_utilities/src/vhdl_utils_deserializer.vhd
 shared/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
+shared/vhdl_utilities/src/vhdl2008_functions_pkg.vhd
+
 shared/arithmetics/arithmetics_lib.src
 # shared/functions/trigonometrics/roi_atan_pkg.vhd
 # shared/functions/trigonometrics/roi_atan.vhd
