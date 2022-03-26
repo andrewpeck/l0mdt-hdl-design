@@ -166,7 +166,7 @@ begin
     --     if rst = '1' then
     --       for i in 0 to c_HPS_PC_PL_LEN - 2 loop
     --         dv_pl(i) <= '0';
-    --         mdt_tar_data_pl(i) <= nullify(mdt_tar_data_pl(i));
+    --         mdt_tar_data_pl(i) <= zero(mdt_tar_data_pl(i));
     --       end loop;
     --     else
     --       dv_pl(0) <= i_mdt_tar_r.data_valid;
@@ -242,7 +242,7 @@ begin
           --
           mdt_full_data_r.data_valid <= '1';
         else
-          mdt_full_data_r <= nullify(mdt_full_data_r);
+          mdt_full_data_r <= zero(mdt_full_data_r);
           -- mdt_full_data_r.data_valid <= '0';
         end if;
 

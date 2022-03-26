@@ -68,10 +68,10 @@ architecture beh of hps_pc_top is
   signal i_ctrl_t0_r   : HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;  
   signal o_mon_t0_r    : HPS_MDT_T0_MDT_T0_MON_t_ARRAY; 
 
-  type ctrl_tc_avt is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(len(i_ctrl_tc_r(0))-1 downto 0);
-  type mon_tc_avt  is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(len(o_mon_tc_r(0))-1 downto 0);
-  type ctrl_t0_avt is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(len(i_ctrl_t0_r(0))-1 downto 0);
-  type mon_t0_avt  is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(len(o_mon_t0_r(0))-1 downto 0);
+  type ctrl_tc_avt is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(width(i_ctrl_tc_r(0))-1 downto 0);
+  type mon_tc_avt  is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(width(o_mon_tc_r(0))-1 downto 0);
+  type ctrl_t0_avt is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(width(i_ctrl_t0_r(0))-1 downto 0);
+  type mon_t0_avt  is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(width(o_mon_t0_r(0))-1 downto 0);
 
   signal ctrl_tc_av : ctrl_tc_avt;
   signal mon_tc_av  : mon_tc_avt ;

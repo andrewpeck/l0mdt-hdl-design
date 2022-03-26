@@ -70,8 +70,8 @@ architecture beh of top_hps is
 
   signal ctrl_r             : HPS_CTRL_t;
   signal mon_r              : HPS_MON_t;
-  constant  c_CTRL_LEN      : integer := len(ctrl_r);
-  constant c_MON_LEN        : integer := len(mon_r);
+  constant  c_CTRL_LEN      : integer := HPS_CTRL_t'w;--len(ctrl_r);
+  constant c_MON_LEN        : integer := HPS_MON_t'w;--len(mon_r);
   signal ctrl_v             : std_logic_vector(c_CTRL_LEN -1 downto 0);
   signal mon_v              : std_logic_vector(c_MON_LEN -1 downto 0);
 

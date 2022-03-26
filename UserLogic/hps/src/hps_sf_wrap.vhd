@@ -95,8 +95,8 @@ begin
   lsf_ctrl_r <= convert(lsf_ctrl_v,lsf_ctrl_r);
   -- lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
   --
-  lsf_mon_r <= nullify(lsf_mon_r);
-  csf_mon_r <= nullify(csf_mon_r);
+  lsf_mon_r <= zero(lsf_mon_r);
+  csf_mon_r <= zero(csf_mon_r);
   --
   sf_fm_data(0).fm_data <= (mon_dw_max-1 downto lc_HEG2SFSLC_LEN => '0') & i_slc_data_v;
   sf_fm_data(0).fm_vld  <= i_slc_data_v(lc_HEG2SFSLC_LEN-1);
@@ -113,10 +113,10 @@ begin
     SF_BP: if c_SF_BYPASS = '0' generate
       --
       -- csf_ctrl_r <= convert(csf_ctrl_v,csf_ctrl_r);
-      -- csf_mon_r <= nullify(csf_mon_r);
+      -- csf_mon_r <= zero(csf_mon_r);
 
       -- lsf_ctrl_r <= convert(lsf_ctrl_v,lsf_ctrl_r);
-      -- lsf_mon_r <= nullify(lsf_mon_r);
+      -- lsf_mon_r <= zero(lsf_mon_r);
 
 
       
@@ -190,8 +190,8 @@ begin
             --o_spyseg_empty      => '0';
         );
 
-        -- lsf_mon_r <= nullify(lsf_mon_r);
-        -- csf_mon_r <= nullify(csf_mon_r);
+        -- lsf_mon_r <= zero(lsf_mon_r);
+        -- csf_mon_r <= zero(csf_mon_r);
 
       else generate
 
@@ -207,7 +207,7 @@ begin
             hba_max_clocks                      => lsf_ctrl_r.hba_max_clocks            
         );
 
-        -- csf_mon_r <= nullify(csf_mon_r);
+        -- csf_mon_r <= zero(csf_mon_r);
 
 
       end generate;
@@ -245,8 +245,8 @@ begin
 
   else generate
 
-    -- lsf_mon_r <= nullify(lsf_mon_r);
-    -- csf_mon_r <= nullify(csf_mon_r);
+    -- lsf_mon_r <= zero(lsf_mon_r);
+    -- csf_mon_r <= zero(csf_mon_r);
 
     o_sf_data_v <= (others => '0');
 
