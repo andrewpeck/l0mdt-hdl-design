@@ -118,7 +118,7 @@ ARCHITECTURE Behavioral OF csf_clustering IS
 
     SIGNAL hit_p, hit_m : csf_hit_rt;
     -- Clustering hit signals
-    TYPE t_hit_vectors IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR(len(hit_p) - 1 DOWNTO 0);
+    TYPE t_hit_vectors IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR(csf_hit_rt'w - 1 DOWNTO 0);
 
     SIGNAL hit_plus, hit_minus : csf_hit_art(MAX_CLUSTERS/2 downto 0);
     SIGNAL eof_v, dv_v : STD_LOGIC_VECTOR(MAX_CLUSTERS/2 downto 0);
