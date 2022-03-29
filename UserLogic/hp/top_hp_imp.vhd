@@ -77,15 +77,15 @@ architecture beh of top_hp is
   signal hp_win_tubes_len : hp_win_tubes_rt;
   
   
-  constant slc_win_len : integer := width(hp_win_tubes_len) * get_num_layers(g_STATION_RADIUS); -- HP_WIN_TUBES_LEN
+  constant slc_win_len : integer := hp_win_tubes_rt'w * get_num_layers(g_STATION_RADIUS); -- HP_WIN_TUBES_LEN
   -- report "The value of 'slc_win_len' is " & integer'image(slc_win_len);
   signal i_SLC_Window_v   : std_logic_vector(slc_win_len - 1 downto 0);
   signal i_SLC_Window_ar  : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  -- signal i_SLC_Window_av  : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  signal i_SLC_Window_av         : std_logic_vector_array(get_num_layers(g_STATION_RADIUS) -1 downto 0)(hp_win_tubes_rt'w -1 downto 0);
+  signal i_SLC_Window_av  : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  -- signal i_SLC_Window_av  : std_logic_vector_array(get_num_layers(g_STATION_RADIUS) -1 downto 0)(hp_win_tubes_rt'w -1 downto 0);
 
   signal hp_heg2hp_slc_len : hp_heg2hp_slc_rt;
-  signal i_slc_data_v       : std_logic_vector(width(hp_heg2hp_slc_len) - 1 downto 0);
+  signal i_slc_data_v       : std_logic_vector(hp_heg2hp_slc_rt'w - 1 downto 0);
   signal i_slc_data_rv      : hp_heg2hp_slc_vt;
   -- signal i_slc_data_v       : hp_heg2hp_slc_vt;
   signal i_mdt_data_v       : hp_hpsPc2hp_vt;
@@ -113,12 +113,13 @@ begin
   -- i_SLC_Window_av <= convert(i_SLC_Window_ar);
 
   des2 : entity shared_lib.vhdl_utils_deserializer 
-  generic map (g_DATA_WIDTH => width(hp_heg2hp_slc_len) )
+  generic map (g_DATA_WIDTH => hp_heg2hp_slc_rt'w )
   port map(clk => clk,rst  => rst,i_data => i_slc_data_b,o_data => i_slc_data_v);
   i_slc_data_rv <= i_slc_data_v;
 
-  des3 : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => i_mdt_data_v'length --HP_HPSPC2HP_LEN
-    )port map(clk => clk,rst  => rst,i_data => i_mdt_data_b,o_data => i_mdt_data_v);
+  des3 : entity shared_lib.vhdl_utils_deserializer 
+  generic map (g_DATA_WIDTH => i_mdt_data_v'length)
+  port map(clk => clk,rst  => rst,i_data => i_mdt_data_b,o_data => i_mdt_data_v);
 
   o_hit_data_b <= xor_reduce(o_hit_data_v);
 
@@ -146,7 +147,7 @@ begin
   port map(
     clk                 => clk,
     rst                 => rst,
-    ena             => ena,
+    ena                 => ena,
     --
     ctrl_v              => ctrl_v,
     mon_v               => mon_v, 
@@ -159,12 +160,12 @@ begin
     i_SLC_Window        => i_SLC_Window_av,
     i_slc_data_v        => i_slc_data_rv,
     -- MDT hit
-    i_mdt_data_v          => i_mdt_data_v,
+    i_mdt_data_v        => i_mdt_data_v,
     -- i_mdt_valid         => i_mdt_valid,
     -- i_mdt_time_real     => i_mdt_time_real,
     -- to Segment finder
     -- o_sf_slc_data_v       => o_sf_slc_data_v,
-    o_hit_data_v       => o_hit_data_v
+    o_hit_data_v        => o_hit_data_v
   );
 
 
