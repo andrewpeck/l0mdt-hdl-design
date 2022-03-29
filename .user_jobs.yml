@@ -45,6 +45,20 @@
     allow_failure: true
     interruptible: true
 
+check_auto_generated_code:
+    <<: *only-default
+    <<: *tag-hog
+    variables:
+      <<: *chk_variables
+    stage: user_pre
+    script:
+      - ./tools/gldl-scripts/yml2hdl.sh -s UserLogic
+      - make clean_regmap && make regmap
+      - echo "Checking Git differences..."
+      - git diff --exit-code 
+    interruptible: true
+
+
 
 .user_sim: &user_sim
   <<: *only-default
