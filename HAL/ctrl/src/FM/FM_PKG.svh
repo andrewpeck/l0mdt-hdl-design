@@ -10,18 +10,18 @@
 
 package FM_CTRL;
 
-   typedef struct FM_SPY_CTRL_CTRL_t {
-      logic GLOBAL_FREEZE;
-      logic GLOBAL_PLAYBACK_MODE[2 - 1:0];
-   };
+  //  typedef struct FM_SPY_CTRL_CTRL_t {
+  //     logic GLOBAL_FREEZE;
+  //     logic GLOBAL_PLAYBACK_MODE[2 - 1:0];
+  //  };
 
-   typedef struct FM_CTRL_t {
-      FM_SPY_CTRL_CTRL_t SPY_CTRL;
-      logic FREEZE_MASK_0[32 - 1:0];
-      logic FREEZE_MASK_1[32 - 1:0];
-      logic PLAYBACK_MASK_0[32 - 1:0];
-      logic PLAYBACK_MASK_1[32 - 1:0];
-   };
+  //  typedef struct FM_CTRL_t {
+  //     FM_SPY_CTRL_CTRL_t SPY_CTRL;
+  //     logic FREEZE_MASK_0[32 - 1:0];
+  //     logic FREEZE_MASK_1[32 - 1:0];
+  //     logic PLAYBACK_MASK_0[32 - 1:0];
+  //     logic PLAYBACK_MASK_1[32 - 1:0];
+  //  };
 
 endpackage : FM_CTRL
 

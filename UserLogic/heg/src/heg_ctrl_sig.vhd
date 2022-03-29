@@ -35,7 +35,7 @@ use hp_lib.hp_pkg.all;
 
 library heg_lib;
 use heg_lib.heg_pkg.all;
-use heg_lib.heg_custom_pkg.all;
+-- use heg_lib.heg_custom_pkg.all;
 
 
 entity heg_ctrl_sig is
