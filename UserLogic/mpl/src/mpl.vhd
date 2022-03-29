@@ -56,16 +56,16 @@ architecture beh of mpl is
   --
   signal super_ctrl_r : MPL_SUPER_CTRL_t;
   signal super_mon_r  : MPL_SUPER_MON_t;
-  signal super_ctrl_v : std_logic_vector(len(super_ctrl_r) - 1 downto 0);
-  signal super_mon_v  : std_logic_vector(len(super_mon_r) - 1 downto 0);
+  signal super_ctrl_v : std_logic_vector(MPL_SUPER_CTRL_t'w - 1 downto 0);
+  signal super_mon_v  : std_logic_vector(MPL_SUPER_MON_t'w - 1 downto 0);
   --
   signal mpl_ctrl_r : MPL_PL_MEM_PL_MEM_CTRL_t;
-  signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl_r) - 1 downto 0);
-  type   mpl_ctrl_avt is array (0 to c_MAX_NUM_SL - 1)of std_logic_vector(len(mpl_ctrl_r) -1 downto 0);
+  signal mpl_ctrl_v : std_logic_vector(MPL_PL_MEM_PL_MEM_CTRL_t'w - 1 downto 0);
+  type   mpl_ctrl_avt is array (0 to c_MAX_NUM_SL - 1)of std_logic_vector(MPL_PL_MEM_PL_MEM_CTRL_t'w -1 downto 0);
   signal mpl_ctrl_av  : mpl_ctrl_avt;
   
   signal mpl_mon_r  : MPL_PL_MEM_PL_MEM_MON_t;
-  type   mpl_mon_avt is array (0 to c_MAX_NUM_SL - 1)of std_logic_vector(len(mpl_mon_r) -1 downto 0);
+  type   mpl_mon_avt is array (0 to c_MAX_NUM_SL - 1)of std_logic_vector(MPL_PL_MEM_PL_MEM_MON_t'w -1 downto 0);
   signal mpl_mon_av  : mpl_mon_avt;
 
   signal local_en         :  std_logic;
