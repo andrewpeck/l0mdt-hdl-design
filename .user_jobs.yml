@@ -53,9 +53,7 @@ check_auto_generated_code:
       <<: *chk_variables
     stage: user_pre
     script:
-      - ./tools/gldl-scripts/yml2hdl.sh -s UserLogic
-      - make clean_regmap && make regmap
-      - make flavors
+      - make all 
       - echo "Checking Git differences..."
       - git diff --exit-code 
     interruptible: true

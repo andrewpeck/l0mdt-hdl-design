@@ -67,7 +67,8 @@ clean_regmap:
 
 # Updates the yml2hdl type system
 types:
-	make -C shared/types
+	./tools/gldl-scripts/yml2hdl.sh -d 2 -s UserLogic
+# make -C shared/types
 
 ################################################################################
 # Regmap + types
