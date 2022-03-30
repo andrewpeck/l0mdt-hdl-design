@@ -47,14 +47,15 @@
 
 check_auto_generated_code:
     <<: *only-default
-    <<: *tag-hog
+    <<: *tag-sr
+    image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
     variables:
       <<: *chk_variables
     stage: user_pre
     script:
       - ./tools/gldl-scripts/yml2hdl.sh -s UserLogic
       - make clean_regmap && make regmap
-      - make types
+      - make flavors
       - echo "Checking Git differences..."
       - git diff --exit-code 
     interruptible: true
