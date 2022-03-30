@@ -54,6 +54,7 @@ check_auto_generated_code:
     script:
       - ./tools/gldl-scripts/yml2hdl.sh -s UserLogic
       - make clean_regmap && make regmap
+      - make types
       - echo "Checking Git differences..."
       - git diff --exit-code 
     interruptible: true
