@@ -17,7 +17,7 @@ UserLogic/ult/top_ult_imp.vhd top=top_ult
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 # modules included
-UserLogic/heg/hegtypes_lib.src lib=hegtypes_lib
+#UserLogic/heg/hegtypes_lib.src lib=hegtypes_lib
 UserLogic/mpl/mpl_lib.src lib=mpl_lib
 UserLogic/ult/ult_lib.src lib=ult_lib
 UserLogic/ucm/ucm_lib.src lib=ucm_lib

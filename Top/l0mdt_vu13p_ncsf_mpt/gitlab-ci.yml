@@ -8,3 +8,9 @@ GEN:l0mdt_vu13p_ncsf_mpt:
       HOG_CHECK_SYNTAX : 0
     tags:
       - heavy-duty
+
+CHK:l0mdt_vu13p_ncsf_mpt:
+    extends: .check_list_and_conf
+    variables:
+      extends: .vars
+      PROJECT_NAME: l0mdt_vu13p_ncsf_mpt
