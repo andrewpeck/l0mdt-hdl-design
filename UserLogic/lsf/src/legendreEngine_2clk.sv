@@ -630,11 +630,7 @@ assign hewindow_pos_Z = hewindow_pos >> (HEG2SFSLC_HEWINDOW_POS_DECB - SF2PTCALC
 	else
 	  begin
 
-    	     le_tb_output_vld    <= sf_segpos_vld;
-	     //PRIYA ADDING TEMPORARY LOGIC FOR segquality
-	     if(hls_sf_segquality_vld == 1)
-	       sf_segquality <= hls_sf_segquality;
-	  
+    	     le_tb_output_vld    <= sf_segpos_vld;	  
 
 	     
 	     if(sf_segpos_vld)
@@ -1557,8 +1553,8 @@ hls_find_max_bin_64 find_max_bin_64_inst(
 				  .res_max_bin_theta_V_ap_vld(rest_max_bin_theta_vld),
 				  .res_max_bin_r_V(res_max_bin_r),
 				  .res_max_bin_r_V_ap_vld(res_max_bin_r_vld),
-					 .segquality( hls_sf_segquality),
-					 .segquality_ap_vld( hls_sf_segquality_vld)
+				  .segquality( hls_sf_segquality),
+				  .segquality_ap_vld( hls_sf_segquality_vld)
 				  );
 				     end // block: find_max_bin_64
 				     end // block: find_max_bin_tb_64
@@ -1704,7 +1700,6 @@ end
 								  .hls_sin_val(hw_sin_val_gls),
 								  .hls_cos_val(hw_cos_val[0]),
 								  .hls_LT_r_global(r_global),
-
 								  .slcvec_pos_R(slcvec_pos_ref),
 								  .hewindow_pos_R(hewindow_pos_ref),
 								  .hewindow_pos_Z( hewindow_pos_Z),
