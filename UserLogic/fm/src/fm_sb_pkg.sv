@@ -3,7 +3,7 @@
 `include "l0mdt_buses_constants.svh"
 `include "FM_PKG.svh"
 
-import FM_PKG::*;
+import FM_CTRL::*;
 
 package fm_sb_pkg;
 
