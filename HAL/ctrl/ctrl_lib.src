@@ -14,4 +14,5 @@ HAL/ctrl/src/axi-vhdl-package/bramPortPkg.vhd
 HAL/ctrl/src/*/*_PKG_DEF.vhd
 HAL/ctrl/src/*/*_PKG.vhd
 HAL/ctrl/src/*/*_map.vhd
-HAL/ctrl/src/*/*_PKG.svh
+HAL/ctrl/src/*/*_PKG.svh SystemVerilog
+
