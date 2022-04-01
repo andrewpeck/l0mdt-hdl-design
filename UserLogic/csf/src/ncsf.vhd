@@ -319,7 +319,6 @@ BEGIN
   
   mdt_hit <= structify(i_mdt_hit,mdt_hit);
   seed_i <= structify(i_seed,seed_i);
-  o_seg <= globseg;
 
   -- Clustering
 
