@@ -3,10 +3,11 @@
 `include "l0mdt_buses_constants.svh"
 `include "FM_PKG.svh"
 
+import FM_PKG::*;
 
 package fm_sb_pkg;
 
-   import fm_ctrl::*;
+  //  import FM_PKG::*;
    import l0mdt_dataformats_svh::*;
 
    //parameter total_sb_bits      = $clog2(total_sb);

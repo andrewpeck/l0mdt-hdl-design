@@ -1,7 +1,7 @@
 `include "fm_sb_pkg.sv"
 `include "FM_PKG.svh"
 
-import FM_CTRL::*;
+import FM_PKG::*;
 import fm_sb_pkg::*;
 
 
