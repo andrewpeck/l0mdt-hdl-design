@@ -62,9 +62,10 @@ PKG_OBJS = $(patsubst %.xml, %_PKG.vhd, $(XML_FILES))
 YML_OBJS = $(patsubst %.xml, %_PKG.yml, $(XML_FILES))
 DEF_OBJS = $(patsubst %.xml, %_PKG_DEF.vhd, $(XML_FILES))
 SVH_OBJS = $(patsubst %.xml, %_PKG.svh, $(XML_FILES))
+TXT_OBJS = $(patsubst %.xml, %_PKG.txt, $(XML_FILES))
 
 clean_regmap:
-	@rm -rf $(MAP_OBJS) $(PKG_OBJS) $(YML_OBJS) $(DEF_OBJS) $(SVH_OBJS)
+	@rm -rf $(MAP_OBJS) $(PKG_OBJS) $(YML_OBJS) $(DEF_OBJS) $(SVH_OBJS) $(TXT_OBJS)
 
 # Updates the yml2hdl type system
 types:

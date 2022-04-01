@@ -81,7 +81,9 @@ architecture beh of top_hps is
 
 begin
 
-  ctrl : entity shared_lib.vhdl_utils_deserializer generic map (c_CTRL_LEN) port map(clk,rst,ctrl_b,ctrl_v);
+  ctrl : entity shared_lib.vhdl_utils_deserializer 
+    generic map (g_DATA_WIDTH => c_CTRL_LEN) 
+    port map(clk => clk,rst  => rst,i_data => ctrl_b,o_data => ctrl_v);
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
   for0: for i_th in c_NUM_THREADS -1 downto 0 generate
