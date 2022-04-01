@@ -68,7 +68,7 @@ begin
   process(clk) begin
     if rising_edge(clk) then
       if rst = '1' then
-        mon_r  <= nullify(mon_r);
+        mon_r  <= zero(mon_r);
         o_dv <= '0';
         o_radius <= (others => '0');
       else

@@ -60,9 +60,9 @@ architecture beh of ucm_rpc_R_comp_top is
 
   signal dv : std_logic_vector(3 downto 0) := (others => '0');
 
-  type mon_avt is array (0 to 3)of std_logic_vector(len(mon_r) -1 downto 0);
+  type mon_avt is array (0 to 3)of std_logic_vector(UCM_R_PHI_COMP_RPC_MON_t'w -1 downto 0);
   signal mon_av  : mon_avt;
-  signal mon_null : std_logic_vector(len(mon_r) -1 downto 0)  := (others => '0');
+  signal mon_null : std_logic_vector(UCM_R_PHI_COMP_RPC_MON_t'w -1 downto 0)  := (others => '0');
  
 begin
 

@@ -47,8 +47,8 @@ entity ucm_supervisor is
     mon_v               : out std_logic_vector;--UCM_SUPER_MON_t;
     --
     o_phicenter             : out unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
-    o_cde_chamber_z_org_bus : out b_chamber_z_origin_station_avt;
-    o_cvp_chamber_z_org_bus : out b_chamber_z_origin_station_avt;
+    o_cde_chamber_z_org_av : out b_chamber_z_origin_station_avt;
+    o_cvp_chamber_z_org_av : out b_chamber_z_origin_station_avt;
     --
     i_freeze      : in std_logic := '0';
     o_freeze            : out std_logic;
@@ -214,8 +214,8 @@ begin
   CDE_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
     -- signal cde_z0_ctrl_r : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
     -- signal cde_z0_mon_r : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-    signal cde_z0_ctrl_v  : std_logic_vector(len(cde_z0_ctrl_r(st_i)) - 1 downto 0);
-    signal cde_z0_mon_v   : std_logic_vector(len(cde_z0_mon_r(st_i)) - 1 downto 0);
+    signal cde_z0_ctrl_v  : std_logic_vector(UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t'w - 1 downto 0);
+    signal cde_z0_mon_v   : std_logic_vector(UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t'w - 1 downto 0);
 
     signal cde_z0_apb_rd_addr_o    : std_logic_vector(8 - 1 downto 0);
     signal cde_z0_apb_wr_addr_o    : std_logic_vector(8 - 1 downto 0);
@@ -278,7 +278,7 @@ begin
           if cde_z0_apb_wr_dv_o = '1' then
             cde_ch_z0_org(st_i)(to_integer(unsigned(cde_z0_apb_wr_addr_o))) <=resize(unsigned(cde_z0_apb_wr_data_o),cde_ch_z0_org(st_i)(0)'length);
           else
-            o_cde_chamber_z_org_bus(st_i) <= convert(cde_ch_z0_org(st_i));
+            o_cde_chamber_z_org_av(st_i) <= convert(cde_ch_z0_org(st_i));
           end if;
 
         end if;
@@ -306,7 +306,7 @@ begin
     --       if cde_z0_apb_wr_dv_o = '1' then
     --         cde_ch_z0_org(st_i)(to_integer(unsigned(cde_z0_apb_wr_addr_o))) <=resize(unsigned(cde_z0_apb_wr_data_o),cde_ch_z0_org(st_i)(0)'length);
     --       else
-    --         o_cde_chamber_z_org_bus(st_i) <= convert(cde_ch_z0_org(st_i));
+    --         o_cde_chamber_z_org_av(st_i) <= convert(cde_ch_z0_org(st_i));
     --       end if;
 
     --     end if;
@@ -326,8 +326,8 @@ begin
   -- mon_r.CDE_CHAMB_Z0.CDE_CHAMB_Z0 <= cde_z0_mon_r;
 
   CVP_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
-    signal cvp_z0_ctrl_v  : std_logic_vector(len(cvp_z0_ctrl_r(st_i)) - 1 downto 0);
-    signal cvp_z0_mon_v   : std_logic_vector(len(cvp_z0_mon_r(st_i)) - 1 downto 0);
+    signal cvp_z0_ctrl_v  : std_logic_vector(UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t'w - 1 downto 0);
+    signal cvp_z0_mon_v   : std_logic_vector(UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t'w - 1 downto 0);
 
     signal cvp_z0_apb_rd_addr_o    : std_logic_vector(8 - 1 downto 0);
     signal cvp_z0_apb_wr_addr_o    : std_logic_vector(8 - 1 downto 0);
@@ -390,7 +390,7 @@ begin
           if cvp_z0_apb_wr_dv_o = '1' then
             cvp_ch_z0_org(st_i)(to_integer(unsigned(cvp_z0_apb_wr_addr_o))) <=resize(unsigned(cvp_z0_apb_wr_data_o),cvp_ch_z0_org(st_i)(0)'length);
           else
-            o_cvp_chamber_z_org_bus(st_i) <= convert(cvp_ch_z0_org(st_i));
+            o_cvp_chamber_z_org_av(st_i) <= convert(cvp_ch_z0_org(st_i));
           end if;
 
         end if;
@@ -418,7 +418,7 @@ begin
   --           cvp_ch_z0_org(st_i)(to_integer(unsigned(CVP_Z0_CTRL(st_i).wr_addr))) <=resize(unsigned(CVP_Z0_CTRL(st_i).wr_data),cvp_ch_z0_org(st_i)(0)'length);
   --         end if;
   --       end if;
-  --       o_cvp_chamber_z_org_bus(st_i) <= convert(cvp_ch_z0_org(st_i));
+  --       o_cvp_chamber_z_org_av(st_i) <= convert(cvp_ch_z0_org(st_i));
   --     end if;
   --   end process;
   -- end generate;
