@@ -1,7 +1,7 @@
 `include "fm_sb_pkg.sv"
 `include "FM_PKG.svh"
 
-import fm_ctrl::*;
+import FM_CTRL::*;
 import fm_sb_pkg::*;
 
 
@@ -14,9 +14,9 @@ module fm_data #(
 	       input logic 		       axi_reset,
 	       input logic [sb_mapped_n-1:0]   freeze,
 	       input logic [pb_mode_width-1:0] playback_mode[sb_mapped_n],
-	       input 			       FM_CTRL_t fm_ctrl_in,
-	       input 			       fm_rt ult_mon_data[total_sb],
-	       output 			       FM_MON_t fm_mon_out
+	       input FM_CTRL_t fm_ctrl_in,
+	       input fm_rt ult_mon_data[total_sb],
+	       output FM_MON_t fm_mon_out
 	       );
    localparam axi_dw = axi_dw;
    genvar 	      sb_i;
