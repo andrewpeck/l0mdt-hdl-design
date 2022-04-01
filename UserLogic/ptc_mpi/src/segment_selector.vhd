@@ -88,7 +88,7 @@ architecture Behavioral of segment_selector is
         elsif seg2.data_valid = '1' then
             outseg := seg2;
         end if;
-        return nullify(outseg);
+        return zero(outseg);
     end function select_segment;
 
     signal seg_I, seg_M, seg_O, 

@@ -517,8 +517,8 @@ add wave -noupdate -expand -group ULT -group UCM -group SUPER /ult_tp/ULT/logic_
 add wave -noupdate -expand -group ULT -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/cvp_ch_z0_org
 add wave -noupdate -expand -group ULT -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/mon_v
 add wave -noupdate -expand -group ULT -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/o_phicenter
-add wave -noupdate -expand -group ULT -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/o_cde_chamber_z_org_bus
-add wave -noupdate -expand -group ULT -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/o_cvp_chamber_z_org_bus
+add wave -noupdate -expand -group ULT -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/o_cde_chamber_z_org_av
+add wave -noupdate -expand -group ULT -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/o_cvp_chamber_z_org_av
 add wave -noupdate -expand -group ULT -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/local_en
 add wave -noupdate -expand -group ULT -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/local_rst
 add wave -noupdate -expand -group ULT -group UCM -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/clk

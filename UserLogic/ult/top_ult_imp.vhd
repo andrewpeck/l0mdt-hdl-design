@@ -47,7 +47,7 @@ entity top_ult is
   generic (
     DUMMY       : boolean := false
 
-    -- g_h2s_ctrl  : H2S_CTRL_t := nullify(g_h2s_ctrl);
+    -- g_h2s_ctrl  : H2S_CTRL_t := zero(g_h2s_ctrl);
     );
 
   port (

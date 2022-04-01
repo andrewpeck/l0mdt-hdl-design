@@ -80,7 +80,7 @@ begin
         seg.data_valid <= '1';
 
         wait for clk_period;
-        seg <= nullify(seg);
+        seg <= zero(seg);
         wait;
         --assert (dv_sagitta = '1' and inv_sagitta = 3820) report "Correct Sagitta evaluated" severity NOTE ;
         --assert (dv_sagitta = '1' and inv_sagitta /= 3820) report "Wrong Sagitta evaluated" severity Error ;

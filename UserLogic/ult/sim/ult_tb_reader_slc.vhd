@@ -75,23 +75,23 @@ architecture sim of ult_tb_reader_slc is
   type infifo_slc_mem_at is array (integer range <>) of slc_tb_art;
   type infifo_event_mem_at is array (integer range <>) of input_slc_art;
 
-  signal slc_element_temp     : slc_tb_art;-- := nullify(slc_element);
-  signal slc_element          : slc_tb_art := nullify(slc_element_temp);
+  signal slc_element_temp     : slc_tb_art;-- := zero(slc_element);
+  signal slc_element          : slc_tb_art := zero(slc_element_temp);
   -- signal slc_element          : slc_tb_art := convert(std_logic_vector(to_unsigned(0,SLC_RX_LEN * TB_SLC_FIFO_WIDTH)),slc_element);
-  signal event_element_temp   : input_slc_art;-- := nullify(event_element);
-  signal event_element        : input_slc_art := nullify(event_element_temp);
+  signal event_element_temp   : input_slc_art;-- := zero(event_element);
+  signal event_element        : input_slc_art := zero(event_element_temp);
   -- signal event_element        : input_slc_art := convert(std_logic_vector(to_unsigned(0,INPUT_SLC_LEN * TB_SLC_FIFO_WIDTH)),event_element);
 
   signal slc_event_r          : input_slc_rt;
   signal slc_new_event        : input_slc_rt;
 
-  signal event_main_prim_fifo : infifo_event_mem_at(2 downto 0) := (others => nullify(event_element));
+  signal event_main_prim_fifo : infifo_event_mem_at(2 downto 0) := (others => zero(event_element));
   signal slc_event_ai         : event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'));
 
-  signal slc_main_prim_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
-  signal slc_main_seco_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
-  signal slc_neig_plus_fifo   : infifo_slc_mem_at(0 downto 0) := (others => nullify(slc_element));
-  signal slc_neig_minu_fifo   : infifo_slc_mem_at(0 downto 0) := (others => nullify(slc_element));
+  signal slc_main_prim_fifo   : infifo_slc_mem_at(2 downto 0) := (others => zero(slc_element));
+  signal slc_main_seco_fifo   : infifo_slc_mem_at(2 downto 0) := (others => zero(slc_element));
+  signal slc_neig_plus_fifo   : infifo_slc_mem_at(0 downto 0) := (others => zero(slc_element));
+  signal slc_neig_minu_fifo   : infifo_slc_mem_at(0 downto 0) := (others => zero(slc_element));
 
   signal slc_main_prim_counts : infifo_slc_counts(2 downto 0) := (others => 0);
   signal slc_main_seco_counts : infifo_slc_counts(2 downto 0) := (others => 0);
@@ -220,8 +220,8 @@ begin
               v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
             else
               slc_event_ai(wr_i + 2) <= (others => '0');
-              o_main_primary_slc(wr_i) <= nullify(o_main_primary_slc(wr_i));
-              -- o_main_primary_slc_ar(wr_i) <= nullify(o_main_primary_slc_ar(wr_i));
+              o_main_primary_slc(wr_i) <= zero(o_main_primary_slc(wr_i));
+              -- o_main_primary_slc_ar(wr_i) <= zero(o_main_primary_slc_ar(wr_i));
             end if;
           end loop;
 -- /*
@@ -472,7 +472,7 @@ begin
                 exit;
               end if;
             else
-              -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
+              -- i_mdt_tar_av <= zero(i_mdt_tar_av);
               exit;
             end if;
           end loop;

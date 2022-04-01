@@ -481,11 +481,11 @@ begin
             if dv_pt = '1' or i_rst = '1' then
                 comboid <= (others => '0');
                 dv_combo <= '0';
-                slc_s <= nullify(slc_s);
-                segment_I_s <= nullify(segment_I_s);
-                segment_M_s <= nullify(segment_M_s);
-                segment_O_s <= nullify(segment_O_s);
-                segment_eta <= nullify(segment_eta);
+                slc_s <= zero(slc_s);
+                segment_I_s <= zero(segment_I_s);
+                segment_M_s <= zero(segment_M_s);
+                segment_O_s <= zero(segment_O_s);
+                segment_eta <= zero(segment_eta);
                 nsegments <= (others => '0');
                 quality   <= (others => '0');
             end if;
