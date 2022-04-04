@@ -270,19 +270,19 @@ architecture behavioral of ult is
 begin
 
   -- -- ctrl/mon
-  -- ucm_ctrl_v <= vectorify(ucm_ctrl,ucm_ctrl_v);
+  -- ucm_ctrl_v <= convert(ucm_ctrl,ucm_ctrl_v);
   -- ucm_mon <= structify(ucm_mon_v,ucm_mon);
-  -- tar_ctrl_v <= vectorify(tar_ctrl,tar_ctrl_v);
+  -- tar_ctrl_v <= convert(tar_ctrl,tar_ctrl_v);
   -- tar_mon <= structify(tar_mon_v,tar_mon);
-  -- h2s_ctrl_v <= vectorify(h2s_ctrl,h2s_ctrl_v);
+  -- h2s_ctrl_v <= convert(h2s_ctrl,h2s_ctrl_v);
   -- h2s_mon <= structify(h2s_mon_v,h2s_mon);
-  -- mpl_ctrl_v <= vectorify(mpl_ctrl,mpl_ctrl_v);
+  -- mpl_ctrl_v <= convert(mpl_ctrl,mpl_ctrl_v);
   -- mpl_mon <= structify(mpl_mon_v,mpl_mon);
-  -- tf_ctrl_v <= vectorify(tf_ctrl,tf_ctrl_v);
+  -- tf_ctrl_v <= convert(tf_ctrl,tf_ctrl_v);
   -- tf_mon <= structify(tf_mon_v,tf_mon);
-  -- mtc_ctrl_v <= vectorify(mtc_ctrl,mtc_ctrl_v);
+  -- mtc_ctrl_v <= convert(mtc_ctrl,mtc_ctrl_v);
   -- mtc_mon <= structify(mtc_mon_v,mtc_mon);
-  -- daq_ctrl_v <= vectorify(daq_ctrl,daq_ctrl_v);
+  -- daq_ctrl_v <= convert(daq_ctrl,daq_ctrl_v);
   -- daq_mon <= structify(daq_mon_v,daq_mon);
 
   logic_gen : if (not DUMMY) generate
@@ -998,16 +998,16 @@ begin
       if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
 
         inner_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_INN-1 loop
-          tdc_hit_inner_sump(I) <= xor_reduce(vectorify(i_inn_tdc_hits_av(I),i_inn_tdc_hits_v));
+          tdc_hit_inner_sump(I) <= xor_reduce(convert(i_inn_tdc_hits_av(I),i_inn_tdc_hits_v));
         end loop;
         middle_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_MID-1 loop
-          tdc_hit_middle_sump(I) <= xor_reduce(vectorify(i_mid_tdc_hits_av(I),i_mid_tdc_hits_v));
+          tdc_hit_middle_sump(I) <= xor_reduce(convert(i_mid_tdc_hits_av(I),i_mid_tdc_hits_v));
         end loop;
         outer_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_OUT-1 loop
-          tdc_hit_outer_sump(I) <= xor_reduce(vectorify(i_out_tdc_hits_av(I),i_out_tdc_hits_v));
+          tdc_hit_outer_sump(I) <= xor_reduce(convert(i_out_tdc_hits_av(I),i_out_tdc_hits_v));
         end loop;
         extra_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_EXT-1 loop
-          tdc_hit_extra_sump(I) <= xor_reduce(vectorify(i_ext_tdc_hits_av(I),i_ext_tdc_hits_v));
+          tdc_hit_extra_sump(I) <= xor_reduce(convert(i_ext_tdc_hits_av(I),i_ext_tdc_hits_v));
         end loop;
 
         sump <= xor_reduce(tdc_hit_inner_sump)
