@@ -75,7 +75,7 @@ ARCHITECTURE Behavioral OF seg_coord_transform IS
     -- Store roi information
     SIGNAL seed, seed_i : heg2sfslc_rt;
     -- Store seg information
-    SIGNAL locseg, locseg_i : csf_locseg_rt;
+    SIGNAL locseg, locseg_i, locseg_s, locseg_ss : csf_locseg_rt;
     -- Extrapolated coordinate (z_ext = z_fit + z_ref - x_ref*m_fit)
     SIGNAL z_ext, z_ext_s, z_ext_ss, z_loc, mx : signed(CSF_SEG_B_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     -- Theta angle
@@ -146,7 +146,7 @@ BEGIN
         IF rising_edge(clk) THEN
             -- Clock 0
             dv0 <= locseg_i.valid;
-
+            locseg <= nullify(locseg);
             IF seed_i.data_valid = '1' AND locseg_i.valid = '1' THEN
                 seed <= seed_i;
                 locseg <= locseg_i;
@@ -156,12 +156,14 @@ BEGIN
 
             -- Clock 1
             dv1 <= dv0;
+            locseg_s <= locseg;
             delta_r_mbar <= resize(shift_right(delta_r*unsigned(abs(locseg.m)),CSF_SEG_M_MULT_LEN),SF2PTCALC_SEGPOS_LEN);
 
             -- Clock 2
             dv2 <= dv1;
-            abs_loc_pos <= resize(shift_right(unsigned(ABS(locseg.b)), LOC_POS_SHIFT), SF2PTCALC_SEGPOS_LEN);
-            loc_pos_sign <= locseg.b(CSF_SEG_B_LEN - 1);
+            locseg_ss <= locseg_s;
+            abs_loc_pos <= resize(shift_right(unsigned(ABS(locseg_s.b)), LOC_POS_SHIFT), SF2PTCALC_SEGPOS_LEN);
+            loc_pos_sign <= locseg_s.b(CSF_SEG_B_LEN - 1);
 
             -- Clock 3
             globseg.data_valid <= dv2;
@@ -173,7 +175,7 @@ BEGIN
 
             globseg.segangle <= resize(unsigned(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
             globseg.muid <= seed.muid;
-            if locseg.nhits > 1 then
+            if locseg_ss.nhits > 1 then
                 globseg.segquality <= '1';
             else
                 globseg.segquality <= '0';

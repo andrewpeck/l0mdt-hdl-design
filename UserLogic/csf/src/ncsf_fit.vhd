@@ -171,6 +171,10 @@ BEGIN
                     sums_ml1_s <= sums_ml1(i);
                 END IF;
             END LOOP;
+            
+            if dsp_start = '1' then
+                dsp_start <= '0';
+            end if;
 
             sums.valid <= dsp_start;
             sums.n <= sums_ml0_s.n + sums_ml1_s.n;
