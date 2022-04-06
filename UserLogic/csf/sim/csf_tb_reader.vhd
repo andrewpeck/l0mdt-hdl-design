@@ -120,7 +120,7 @@ begin
               radius => to_unsigned(hit_r, HEG2SFHIT_RADIUS_LEN)
             );
 
-            SEED := nullify(SEED);
+            SEED := zero(SEED);
             SEED.data_valid := to_unsigned(slc_dv,1)(0);
             SEED.mdtid := (
                 chamber_id => to_unsigned(slc_chamber_id, VEC_MDTID_CHAMBER_ID_LEN),

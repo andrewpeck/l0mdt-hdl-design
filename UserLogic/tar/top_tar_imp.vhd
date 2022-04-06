@@ -61,8 +61,8 @@ architecture beh of top_tar is
 
   signal ctrl_r             : tar_CTRL_t;
   signal mon_r              : tar_MON_t;
-  constant  c_CTRL_LEN      : integer := len(ctrl_r);
-  constant c_MON_LEN        : integer := len(mon_r);
+  constant  c_CTRL_LEN      : integer := tar_CTRL_t'w;
+  constant c_MON_LEN        : integer := tar_MON_t'w;
   signal ctrl_v             : std_logic_vector(c_CTRL_LEN -1 downto 0);
   signal mon_v              : std_logic_vector(c_MON_LEN -1 downto 0);
 

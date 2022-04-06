@@ -23,6 +23,8 @@ entity TF_map is
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
     Mon              : in  TF_Mon_t;
+    
+    
     Ctrl             : out TF_Ctrl_t
         
     );

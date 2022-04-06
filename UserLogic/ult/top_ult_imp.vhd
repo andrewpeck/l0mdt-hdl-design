@@ -47,7 +47,7 @@ entity top_ult is
   generic (
     DUMMY       : boolean := false
 
-    -- g_h2s_ctrl  : H2S_CTRL_t := nullify(g_h2s_ctrl);
+    -- g_h2s_ctrl  : H2S_CTRL_t := zero(g_h2s_ctrl);
     );
 
   port (
@@ -256,20 +256,20 @@ architecture behavioral of top_ult is
 begin
 
   -- ctrl/mon
-  -- ucm_ctrl_v  <= vectorify(ucm_ctrl_r,ucm_ctrl_v);
-  -- ucm_mon_r   <= structify(ucm_mon_v,ucm_mon_r);
-  -- tar_ctrl_v  <= vectorify(tar_ctrl_r,tar_ctrl_v);
-  -- tar_mon_r   <= structify(tar_mon_v,tar_mon_r);
-  -- h2s_ctrl_v  <= vectorify(h2s_ctrl_r,h2s_ctrl_v);
-  -- h2s_mon_r   <= structify(h2s_mon_v,h2s_mon_r);
-  -- mpl_ctrl_v  <= vectorify(mpl_ctrl_r,mpl_ctrl_v);
-  -- mpl_mon_r   <= structify(mpl_mon_v,mpl_mon_r);
-  -- tf_ctrl_v   <= vectorify(tf_ctrl_r,tf_ctrl_v);
-  -- tf_mon_r    <= structify(tf_mon_v,tf_mon_r);
-  -- mtc_ctrl_v  <= vectorify(mtc_ctrl_r,mtc_ctrl_v);
-  -- mtc_mon_r   <= structify(mtc_mon_v,mtc_mon_r);
-  -- daq_ctrl_v  <= vectorify(daq_ctrl_r,daq_ctrl_v);
-  -- daq_mon_r   <= structify(daq_mon_v,daq_mon_r);
+  -- ucm_ctrl_v  <= convert(ucm_ctrl_r,ucm_ctrl_v);
+  -- ucm_mon_r   <= convert(ucm_mon_v,ucm_mon_r);
+  -- tar_ctrl_v  <= convert(tar_ctrl_r,tar_ctrl_v);
+  -- tar_mon_r   <= convert(tar_mon_v,tar_mon_r);
+  -- h2s_ctrl_v  <= convert(h2s_ctrl_r,h2s_ctrl_v);
+  -- h2s_mon_r   <= convert(h2s_mon_v,h2s_mon_r);
+  -- mpl_ctrl_v  <= convert(mpl_ctrl_r,mpl_ctrl_v);
+  -- mpl_mon_r   <= convert(mpl_mon_v,mpl_mon_r);
+  -- tf_ctrl_v   <= convert(tf_ctrl_r,tf_ctrl_v);
+  -- tf_mon_r    <= convert(tf_mon_v,tf_mon_r);
+  -- mtc_ctrl_v  <= convert(mtc_ctrl_r,mtc_ctrl_v);
+  -- mtc_mon_r   <= convert(mtc_mon_v,mtc_mon_r);
+  -- daq_ctrl_v  <= convert(daq_ctrl_r,daq_ctrl_v);
+  -- daq_mon_r   <= convert(daq_mon_v,daq_mon_r);
 
   clock_and_control.clk <= clk;
   clock_and_control.rst <= rst;

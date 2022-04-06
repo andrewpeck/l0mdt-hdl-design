@@ -72,17 +72,17 @@ begin
     if rising_edge(clk) then
       if rst= '1' then
         alg_Status <= ALG_IDLE;
-        o_csw_ctrl <= nullify(o_csw_ctrl);--((others => '0'), (others => ( others => '0')));
+        o_csw_ctrl <= zero(o_csw_ctrl);--((others => '0'), (others => ( others => '0')));
         o_pam_update <= '0';
         o_num_cand <= (others => '0');
-        data_ar <= nullify(data_ar);
+        data_ar <= zero(data_ar);
       else
         case alg_status is
           when ALG_IDLE =>
             if or_reduce(input_Valids) = '1' then
               -- here goes the algorithm
               data_ar <= i_data_ar;
-              o_csw_ctrl <= nullify(o_csw_ctrl);-- ((others => '0'), (others => ( others => '0')));
+              o_csw_ctrl <= zero(o_csw_ctrl);-- ((others => '0'), (others => ( others => '0')));
               pl_o := 0;
               o_pam_update <= '0';
               alg_Status <= ALG_RUN;
@@ -156,7 +156,7 @@ begin
           
             -- reset internals
             alg_Status <= ALG_IDLE;
-            o_csw_ctrl <= nullify(o_csw_ctrl); -- ((others => '0'), (others => ( others => '0')));
+            o_csw_ctrl <= zero(o_csw_ctrl); -- ((others => '0'), (others => ( others => '0')));
             o_pam_update <= '0';
             o_num_cand <= (others => '0');
             alg_Status <= ALG_IDLE;

@@ -77,8 +77,8 @@ architecture beh of ucm_tb is
   -- configuration, control & Monitoring
   signal ctrl_r              : UCM_CTRL_t;
   signal mon_r               : UCM_MON_t;
-  signal ctrl_v              : std_logic_vector(len(ctrl_r)-1 downto 0);--UCM_CTRL_t;
-  signal mon_v               : std_logic_vector(len(mon_r )-1 downto 0);--UCM_MON_t;
+  signal ctrl_v              : std_logic_vector(UCM_CTRL_t'w-1 downto 0);--UCM_CTRL_t;
+  signal mon_v               : std_logic_vector(UCM_MON_t'w-1 downto 0);--UCM_MON_t;
   -- SLc in
   signal i_slc_data_mainA_av     : slc_rx_avt(2 downto 0);
   signal i_slc_data_mainB_av     : slc_rx_avt(2 downto 0);

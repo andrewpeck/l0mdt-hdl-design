@@ -134,11 +134,11 @@ begin
         wait for CLK_period/2;
     end process;
 
-    i_segment_I <= vectorify(seg_I,i_segment_I);
-    i_segment_M <= vectorify(seg_M,i_segment_M);
-    i_segment_O <= vectorify(seg_O,i_segment_O);
-    i_SLC <= vectorify(slc,i_SLC);
-    mtc <= structify(o_mtc,mtc);
+    i_segment_I <= convert(seg_I,i_segment_I);
+    i_segment_M <= convert(seg_M,i_segment_M);
+    i_segment_O <= convert(seg_O,i_segment_O);
+    i_SLC <= convert(slc,i_SLC);
+    mtc <= convert(o_mtc,mtc);
 
     tb_proc : process (CLK)
         variable first_read           : std_logic := '1';

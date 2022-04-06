@@ -6,12 +6,12 @@ GEN:ncsf:
       PROJECT_NAME: MainBlocks/ncsf
       HOG_NO_BITSTREAM: 1 # if 1 runs only the synthesis
 
-# SIM:ncsf:
-#     extends: .simulate_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: MainBlocks/ncsf
-#     allow_failure: false
+RIV:ncsf:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/ncsf
+    allow_failure: false
 
 # CHK:ncsf:
 #   extends: .sim_check
@@ -21,7 +21,7 @@ GEN:ncsf:
 #     BLOCK: CSF
 #   needs: ["SIM:ncsf"]
 #   artifacts:
-#     name: CHK_csf
+#     name: CHK_ncsf
 #     paths:
 #       - $CI_PROJECT_DIR/bin
 #     expire_in: 30 day

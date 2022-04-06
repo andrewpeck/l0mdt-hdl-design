@@ -109,7 +109,7 @@ begin
             chamber_ieta := 0;
           end if;
 
-          seg := nullify(seg);
+          seg := zero(seg);
           seg.data_valid := to_unsigned(seg_dv,1)(0);
           seg.muid := (
             slcid => to_unsigned(slcid, SLC_COMMON_SLCID_LEN),
@@ -124,7 +124,7 @@ begin
             chamber_ieta => to_unsigned(chamber_ieta, VEC_MDTID_CHAMBER_IETA_LEN)
           );
         else
-          seg := nullify(seg);
+          seg := zero(seg);
         end if;
 
         o_segment <= seg;

@@ -163,10 +163,10 @@ begin
     end generate;
   end generate;
 
-  -- inn_mdt_full_data_ar <= structify(inn_mdt_full_data_av);
-  -- mid_mdt_full_data_ar <= structify(mid_mdt_full_data_av);
-  -- out_mdt_full_data_ar <= structify(out_mdt_full_data_av);
-  -- ext_mdt_full_data_ar <= structify(ext_mdt_full_data_av);
+  -- inn_mdt_full_data_ar <= convert(inn_mdt_full_data_av);
+  -- mid_mdt_full_data_ar <= convert(mid_mdt_full_data_av);
+  -- out_mdt_full_data_ar <= convert(out_mdt_full_data_av);
+  -- ext_mdt_full_data_ar <= convert(ext_mdt_full_data_av);
   
   HPS_INN: if c_STATIONS_IN_SECTOR(0) = '1' generate
     constant lc_ST_ID : integer := 0;
@@ -179,7 +179,7 @@ begin
     signal heg2sf_ctrl_ar : hps_ctrl2sf_art(c_NUM_THREADS -1 downto 0);
 
   begin
-    heg2sf_hit_ar  <= structify(heg2sf_hit_av );
+    heg2sf_hit_ar  <= convert(heg2sf_hit_av );
     HIT_HEG2SF: process(clk, rst) begin
       if rst = '1' then
       elsif rising_edge(clk) then
@@ -199,8 +199,8 @@ begin
       end if;
     end process;
     --
-    heg2sf_slc_ar  <= structify(heg2sf_slc_av );
-    heg2sf_ctrl_ar <= structify(heg2sf_ctrl_av);
+    heg2sf_slc_ar  <= convert(heg2sf_slc_av );
+    heg2sf_ctrl_ar <= convert(heg2sf_ctrl_av);
     SLC_HEG2SF: process(clk, rst) begin
       if rst = '1' then
       elsif rising_edge(clk) then

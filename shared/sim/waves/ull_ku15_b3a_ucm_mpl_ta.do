@@ -79,8 +79,8 @@ add wave -noupdate -group UCM_Top -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UC
 add wave -noupdate -group UCM_Top -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/ctrl
 add wave -noupdate -group UCM_Top -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/mon
 add wave -noupdate -group UCM_Top -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/o_phicenter
-add wave -noupdate -group UCM_Top -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/o_cde_chamber_z_org_bus
-add wave -noupdate -group UCM_Top -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/o_cvp_chamber_z_org_bus
+add wave -noupdate -group UCM_Top -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/o_cde_chamber_z_org_av
+add wave -noupdate -group UCM_Top -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/o_cvp_chamber_z_org_av
 add wave -noupdate -group UCM_Top -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/local_en
 add wave -noupdate -group UCM_Top -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/local_rst
 add wave -noupdate -group UCM_Top -group UCM_SUPERVISOR -expand -group APB_MS /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/APB_MS/clk

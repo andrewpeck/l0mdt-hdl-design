@@ -34,6 +34,7 @@ use ctrl_lib.HPS_CTRL.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
 
 -- library hegtypes_lib;
 -- use hegtypes_lib.hp_pkg.all;
@@ -73,7 +74,7 @@ architecture beh of hp_calc_radius is
   constant ADDR_WIDTH : integer := 10;
   constant DATA_WIDTH : integer := 9;
 
-  -- signal  wr_data_v : std_logic_vector(len(ctrl_r.wr_data) -1 downto 0);
+  -- signal  wr_data_v : std_logic_vector(width(ctrl_r.wr_data) -1 downto 0);
 
   signal drift_time : unsigned(MDT_TIME_LEN -1 downto 0);
   signal BCID_exp : unsigned(MDT_TIME_LEN -1 downto 0);

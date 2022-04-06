@@ -64,6 +64,7 @@ entity ult_fm is
       end process;
           
      ult_fm_data_flatten: for sb_i in 0 to total_sb-1 generate
+      --  ult_fm_data_avt(sb_i) <= vectorify(ult_fm_data(sb_i));
        ult_fm_data_avt(sb_i) <= vectorify(ult_fm_data(sb_i),ult_fm_data_avt(sb_i));
      end generate ult_fm_data_flatten;
      

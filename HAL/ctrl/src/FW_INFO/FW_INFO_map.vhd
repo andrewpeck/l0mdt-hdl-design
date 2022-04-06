@@ -22,7 +22,9 @@ entity FW_INFO_map is
     slave_writeMOSI  : in  AXIWriteMOSI;
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
-    Mon              : in  FW_INFO_Mon_t    
+    Mon              : in  FW_INFO_Mon_t
+    
+        
     );
 end entity FW_INFO_map;
 architecture behavioral of FW_INFO_map is

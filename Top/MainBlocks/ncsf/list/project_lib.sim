@@ -1,6 +1,9 @@
 #Simulator questa
-UserLogic/csf/sim/ncsf_tb.vhd topsim=ncsf_tb runtime=500ns
-UserLogic/csf/sim/*
-#UserLogic/csf/sim/csf_short_in.csv
-#UserLogic/csf/sim/csf_wave.do
+UserLogic/csf/sim/csf_tb.vhd topsim=csf_tb runtime=500us 
+UserLogic/csf/sim/CSF_in_A3_Barrel.csv
+UserLogic/csf/sim/CSF_out_A3_Barrel.csv
+UserLogic/csf/sim/csf_tb_reader.vhd
+UserLogic/csf/sim/csf_tb_writer.vhd
+UserLogic/csf/sim/csf_textio_pkg.vhd
+UserLogic/csf/sim/ncsf_wave.do wavefile
 shared/shared_lib.sim lib=shared_lib

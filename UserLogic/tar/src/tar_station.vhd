@@ -64,8 +64,8 @@ architecture beh of tar_station is
   signal ctrl_r : TAR_PL_ST_CTRL_t;
   signal mon_r  : TAR_PL_ST_MON_t;
 
-  constant CTRL_LEN : integer := len(ctrl_r.PL_MEM(0));--71;
-  constant MON_LEN : integer := len(mon_r.PL_MEM(0));--43;
+  constant CTRL_LEN : integer := width(ctrl_r.PL_MEM(0));--71;
+  constant MON_LEN : integer := width(mon_r.PL_MEM(0));--43;
 
   type ctrl_apb_mem_avt is array (5 downto 0) of std_logic_vector(CTRL_LEN-1  downto 0);
   type mon_apb_mem_avt  is array (5 downto 0) of std_logic_vector(MON_LEN-1  downto 0);

@@ -108,7 +108,7 @@ begin
             nswseg_angdtheta := 0;
           end if;
 
-          slc := nullify(slc);
+          slc := zero(slc);
           slc.data_valid := to_unsigned(dv,1)(0);
           slc.muid := (
             slcid => to_unsigned(slcid, SLC_COMMON_SLCID_LEN),
@@ -123,7 +123,7 @@ begin
     
           
         else
-          slc := nullify(slc);
+          slc := zero(slc);
         end if;
         o_slc <= slc;
       end if;

@@ -81,8 +81,8 @@ architecture beh of mpl_supervisor is
   signal axi_cnt_reset    : std_logic;
   signal axi_rep_clk      : std_logic;
 begin
-  ctrl_r <= structify(ctrl_v,ctrl_r);
-  mon_v <= vectorify(mon_r,mon_v);
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
 
   o_local_en <= local_en;
   o_local_rst <= local_rst;

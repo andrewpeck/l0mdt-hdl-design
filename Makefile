@@ -1,5 +1,6 @@
 SHELL:=/bin/bash
 
+MOD_NAME =
 ################################################################################
 # Use CCZE and/or time if available
 ################################################################################
@@ -61,9 +62,10 @@ PKG_OBJS = $(patsubst %.xml, %_PKG.vhd, $(XML_FILES))
 YML_OBJS = $(patsubst %.xml, %_PKG.yml, $(XML_FILES))
 DEF_OBJS = $(patsubst %.xml, %_PKG_DEF.vhd, $(XML_FILES))
 SVH_OBJS = $(patsubst %.xml, %_PKG.svh, $(XML_FILES))
+TXT_OBJS = $(patsubst %.xml, %_PKG.txt, $(XML_FILES))
 
 clean_regmap:
-	@rm -rf $(MAP_OBJS) $(PKG_OBJS) $(YML_OBJS) $(DEF_OBJS) $(SVH_OBJS)
+	@rm -rf $(MAP_OBJS) $(PKG_OBJS) $(YML_OBJS) $(DEF_OBJS) $(SVH_OBJS) $(TXT_OBJS)
 
 # Updates the yml2hdl type system
 types:
@@ -78,16 +80,24 @@ regmap : $(MAP_OBJS)
 
 # Update the XML2VHDL register map
 %_map.vhd %_PKG.vhd : %.xml
+	@echo "================================== $(basename $(notdir $<)) =================================="
+	@echo regmap/build_vhdl_packages.py -y 3 -s True -x address_tables/modules/$(basename $(notdir $<)).xml -o  $(dir $<) --mapTemplate templates/axi_generic/template_map_withbram.vhd $(basename $(notdir $<))
+
 	@python3 regmap/build_vhdl_packages.py \
-			-y 2 \
+			-y 3 \
 			-s True \
 			-x address_tables/modules/$(basename $(notdir $<)).xml \
 			-o  $(dir $<) \
 			--mapTemplate templates/axi_generic/template_map_withbram.vhd \
-        $(basename $(notdir $<))
+			$(basename $(notdir $<))
 
-	@python3 tools/yml2hdl/yml2hdl.py -p $(basename $(notdir $<))_CTRL \
-			$(patsubst %.xml,%_PKG.yml,$<)
+	@if [ $(basename $(notdir $<)) == "FM" ]; then \
+		echo VHDL + SV; \
+		python3 tools/yml2hdl/yml2hdl.py -p $(basename $(notdir $<))_CTRL -f $(patsubst %.xml,%_PKG.yml,$<); \
+	else \
+		echo VHDL only; \
+		python3 tools/yml2hdl/yml2hdl.py -p $(basename $(notdir $<))_CTRL -f -V $(patsubst %.xml,%_PKG.yml,$<); \
+	fi;
 
 ################################################################################
 # MDT Flavors

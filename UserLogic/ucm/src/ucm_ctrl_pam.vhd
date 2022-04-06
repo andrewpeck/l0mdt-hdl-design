@@ -101,10 +101,10 @@ begin
 
         ch_busy <= (others => '0');
         ch_count_av <= (others => (others => '0'));
-        int_pam_ctrl_ar <= nullify(int_pam_ctrl_ar);-- ((others => '0'),(others => (others => '0')));
-        buff_pam_ctrl_ar <= nullify(buff_pam_ctrl_ar);
+        int_pam_ctrl_ar <= zero(int_pam_ctrl_ar);-- ((others => '0'),(others => (others => '0')));
+        buff_pam_ctrl_ar <= zero(buff_pam_ctrl_ar);
         -- o_pam2heg <= (others =>( (others => '0') , '0') );
-        proc_info_ar <= nullify(proc_info_ar);-- (others =>( (others => '0') , '0') );
+        proc_info_ar <= zero(proc_info_ar);-- (others =>( (others => '0') , '0') );
         
       else
 

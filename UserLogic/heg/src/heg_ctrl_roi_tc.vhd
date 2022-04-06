@@ -124,8 +124,8 @@ architecture beh of heg_ctrl_roi_tc is
 
 begin
 
-  -- ctrl_v <= vectorify(ctrl,ctrl_v);
-  -- mon <= structify(mon_v,mon);
+  -- ctrl_v <= convert(ctrl,ctrl_v);
+  -- mon <= convert(mon_v,mon);
 
   apb_mem_interface : entity apbus_lib.apb_imem
   generic map(

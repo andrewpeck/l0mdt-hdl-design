@@ -1,182 +1,182 @@
-# yml2hdl v2
+# yml2hdl v0.3
 # This file was auto-generated.
 # Modifications might be lost.
 config:
-  basic_convert_functions : off
+  basic_functions : False
   packages:
     - ieee: [std_logic_1164, numeric_std, math_real]
     - shared_lib: [common_ieee_pkg]
 
-hdl:
+types:
 
 - HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t:
-  - READY : [ type: logic ]
-  - FEC_ERR_CNT : [ type: logic, length: 16 ]
+  - READY : { type: logic }
+  - FEC_ERR_CNT : { type: logic, range : [ 16 - 1 , 0 ] }
 
-- HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY: [array: 2, type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t]
+- HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY: {array : [ 2 -1 , 0 ], type : HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t}
 
 - HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t:
-  - RESET : [ type: logic ]
+  - RESET : { type: logic }
 
-- HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY: [array: 2, type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t]
+- HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY: {array : [ 2 -1 , 0 ], type : HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t}
 
 - HAL_CSM_CSM_LPGBT_UPLINK_MON_t:
-  - UPLINK : [ type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY ]
+  - UPLINK : { type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY }
 
 
 - HAL_CSM_CSM_LPGBT_UPLINK_CTRL_t:
-  - UPLINK : [ type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY ]
+  - UPLINK : { type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY }
 
 
 - HAL_CSM_CSM_LPGBT_DOWNLINK_MON_t:
-  - READY : [ type: logic ]
+  - READY : { type: logic }
 
 
 - HAL_CSM_CSM_LPGBT_DOWNLINK_CTRL_t:
-  - RESET : [ type: logic ]
+  - RESET : { type: logic }
 
 
 - HAL_CSM_CSM_LPGBT_MON_t:
-  - UPLINK : [ type: HAL_CSM_CSM_LPGBT_UPLINK_MON_t ]
-  - DOWNLINK : [ type: HAL_CSM_CSM_LPGBT_DOWNLINK_MON_t ]
+  - UPLINK : { type: HAL_CSM_CSM_LPGBT_UPLINK_MON_t }
+  - DOWNLINK : { type: HAL_CSM_CSM_LPGBT_DOWNLINK_MON_t }
 
 
 - HAL_CSM_CSM_LPGBT_CTRL_t:
-  - UPLINK : [ type: HAL_CSM_CSM_LPGBT_UPLINK_CTRL_t ]
-  - DOWNLINK : [ type: HAL_CSM_CSM_LPGBT_DOWNLINK_CTRL_t ]
+  - UPLINK : { type: HAL_CSM_CSM_LPGBT_UPLINK_CTRL_t }
+  - DOWNLINK : { type: HAL_CSM_CSM_LPGBT_DOWNLINK_CTRL_t }
 
 
 - HAL_CSM_CSM_SC_MASTER_IC_MON_t:
-  - RX_DATA_FROM_GBTX : [ type: logic, length: 8 ]
-  - TX_READY : [ type: logic ]
-  - RX_DATA : [ type: logic, length: 32 ]
-  - RX_CHIP_ADR : [ type: logic, length: 7 ]
-  - RX_UP_PARITY_OK : [ type: logic ]
-  - RX_DOWN_PARITY_OK : [ type: logic ]
-  - RX_ERR : [ type: logic ]
-  - RX_VALID : [ type: logic ]
-  - RX_REG_ADR : [ type: logic, length: 16 ]
-  - RX_LENGTH : [ type: logic, length: 16 ]
+  - RX_DATA_FROM_GBTX : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_READY : { type: logic }
+  - RX_DATA : { type: logic, range : [ 32 - 1 , 0 ] }
+  - RX_CHIP_ADR : { type: logic, range : [ 7 - 1 , 0 ] }
+  - RX_UP_PARITY_OK : { type: logic }
+  - RX_DOWN_PARITY_OK : { type: logic }
+  - RX_ERR : { type: logic }
+  - RX_VALID : { type: logic }
+  - RX_REG_ADR : { type: logic, range : [ 16 - 1 , 0 ] }
+  - RX_LENGTH : { type: logic, range : [ 16 - 1 , 0 ] }
 
 
 - HAL_CSM_CSM_SC_MASTER_IC_CTRL_t:
-  - TX_START_WRITE : [ type: logic ]
-  - TX_START_READ : [ type: logic ]
-  - TX_GBTX_ADDR : [ type: logic, length: 8 ]
-  - TX_REGISTER_ADDR : [ type: logic, length: 16 ]
-  - TX_NUM_BYTES_TO_READ : [ type: logic, length: 16 ]
-  - TX_DATA_TO_GBTX : [ type: logic, length: 8 ]
-  - TX_WR : [ type: logic ]
+  - TX_START_WRITE : { type: logic }
+  - TX_START_READ : { type: logic }
+  - TX_GBTX_ADDR : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_REGISTER_ADDR : { type: logic, range : [ 16 - 1 , 0 ] }
+  - TX_NUM_BYTES_TO_READ : { type: logic, range : [ 16 - 1 , 0 ] }
+  - TX_DATA_TO_GBTX : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_WR : { type: logic }
 
 
 - HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t:
-  - RX_LEN : [ type: logic, length: 8 ]
-  - RX_ADDRESS : [ type: logic, length: 8 ]
-  - RX_CONTROL : [ type: logic, length: 8 ]
-  - RX_TRANSID : [ type: logic, length: 8 ]
-  - RX_ERR : [ type: logic, length: 8 ]
-  - RX_RECEIVED : [ type: logic ]
-  - RX_CHANNEL : [ type: logic, length: 8 ]
-  - RX_DATA : [ type: logic, length: 32 ]
+  - RX_LEN : { type: logic, range : [ 8 - 1 , 0 ] }
+  - RX_ADDRESS : { type: logic, range : [ 8 - 1 , 0 ] }
+  - RX_CONTROL : { type: logic, range : [ 8 - 1 , 0 ] }
+  - RX_TRANSID : { type: logic, range : [ 8 - 1 , 0 ] }
+  - RX_ERR : { type: logic, range : [ 8 - 1 , 0 ] }
+  - RX_RECEIVED : { type: logic }
+  - RX_CHANNEL : { type: logic, range : [ 8 - 1 , 0 ] }
+  - RX_DATA : { type: logic, range : [ 32 - 1 , 0 ] }
 
-- HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY: [array: 3, type: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t]
+- HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY: {array : [ 3 -1 , 0 ], type : HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t}
 
 - HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t:
-  - RX : [ type: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY ]
+  - RX : { type: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY }
 
 
 - HAL_CSM_CSM_SC_MASTER_MON_t:
-  - IC : [ type: HAL_CSM_CSM_SC_MASTER_IC_MON_t ]
-  - SCA_RX : [ type: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t ]
+  - IC : { type: HAL_CSM_CSM_SC_MASTER_IC_MON_t }
+  - SCA_RX : { type: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t }
 
 
 - HAL_CSM_CSM_SC_MASTER_CTRL_t:
-  - TX_RESET : [ type: logic ]
-  - RX_RESET : [ type: logic ]
-  - IC : [ type: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t ]
-  - TX_CMD : [ type: logic, length: 8 ]
-  - TX_ADDRESS : [ type: logic, length: 8 ]
-  - TX_TRANSID : [ type: logic, length: 8 ]
-  - TX_CHANNEL : [ type: logic, length: 8 ]
-  - TX_DATA : [ type: logic, length: 32 ]
-  - SCA_ENABLE : [ type: logic, length: 3 ]
-  - START_RESET : [ type: logic ]
-  - START_CONNECT : [ type: logic ]
-  - START_COMMAND : [ type: logic ]
-  - INJ_CRC_ERR : [ type: logic ]
+  - TX_RESET : { type: logic }
+  - RX_RESET : { type: logic }
+  - IC : { type: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t }
+  - TX_CMD : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_ADDRESS : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_TRANSID : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_CHANNEL : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_DATA : { type: logic, range : [ 32 - 1 , 0 ] }
+  - SCA_ENABLE : { type: logic, range : [ 3 - 1 , 0 ] }
+  - START_RESET : { type: logic }
+  - START_CONNECT : { type: logic }
+  - START_COMMAND : { type: logic }
+  - INJ_CRC_ERR : { type: logic }
 
 
 - HAL_CSM_CSM_SC_SLAVE_IC_MON_t:
-  - RX_DATA_FROM_GBTX : [ type: logic, length: 8 ]
-  - TX_READY : [ type: logic ]
-  - RX_DATA : [ type: logic, length: 32 ]
-  - RX_CHIP_ADR : [ type: logic, length: 7 ]
-  - RX_UP_PARITY_OK : [ type: logic ]
-  - RX_DOWN_PARITY_OK : [ type: logic ]
-  - RX_ERR : [ type: logic ]
-  - RX_VALID : [ type: logic ]
-  - RX_REG_ADR : [ type: logic, length: 16 ]
-  - RX_LENGTH : [ type: logic, length: 16 ]
+  - RX_DATA_FROM_GBTX : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_READY : { type: logic }
+  - RX_DATA : { type: logic, range : [ 32 - 1 , 0 ] }
+  - RX_CHIP_ADR : { type: logic, range : [ 7 - 1 , 0 ] }
+  - RX_UP_PARITY_OK : { type: logic }
+  - RX_DOWN_PARITY_OK : { type: logic }
+  - RX_ERR : { type: logic }
+  - RX_VALID : { type: logic }
+  - RX_REG_ADR : { type: logic, range : [ 16 - 1 , 0 ] }
+  - RX_LENGTH : { type: logic, range : [ 16 - 1 , 0 ] }
 
 
 - HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t:
-  - TX_START_WRITE : [ type: logic ]
-  - TX_START_READ : [ type: logic ]
-  - TX_GBTX_ADDR : [ type: logic, length: 8 ]
-  - TX_REGISTER_ADDR : [ type: logic, length: 16 ]
-  - TX_NUM_BYTES_TO_READ : [ type: logic, length: 16 ]
-  - TX_DATA_TO_GBTX : [ type: logic, length: 8 ]
-  - TX_WR : [ type: logic ]
+  - TX_START_WRITE : { type: logic }
+  - TX_START_READ : { type: logic }
+  - TX_GBTX_ADDR : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_REGISTER_ADDR : { type: logic, range : [ 16 - 1 , 0 ] }
+  - TX_NUM_BYTES_TO_READ : { type: logic, range : [ 16 - 1 , 0 ] }
+  - TX_DATA_TO_GBTX : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_WR : { type: logic }
 
 
 - HAL_CSM_CSM_SC_SLAVE_MON_t:
-  - IC : [ type: HAL_CSM_CSM_SC_SLAVE_IC_MON_t ]
+  - IC : { type: HAL_CSM_CSM_SC_SLAVE_IC_MON_t }
 
 
 - HAL_CSM_CSM_SC_SLAVE_CTRL_t:
-  - TX_RESET : [ type: logic ]
-  - RX_RESET : [ type: logic ]
-  - IC : [ type: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t ]
+  - TX_RESET : { type: logic }
+  - RX_RESET : { type: logic }
+  - IC : { type: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t }
 
 
 - HAL_CSM_CSM_SC_MON_t:
-  - MASTER : [ type: HAL_CSM_CSM_SC_MASTER_MON_t ]
-  - SLAVE : [ type: HAL_CSM_CSM_SC_SLAVE_MON_t ]
+  - MASTER : { type: HAL_CSM_CSM_SC_MASTER_MON_t }
+  - SLAVE : { type: HAL_CSM_CSM_SC_SLAVE_MON_t }
 
 
 - HAL_CSM_CSM_SC_CTRL_t:
-  - MASTER : [ type: HAL_CSM_CSM_SC_MASTER_CTRL_t ]
-  - SLAVE : [ type: HAL_CSM_CSM_SC_SLAVE_CTRL_t ]
+  - MASTER : { type: HAL_CSM_CSM_SC_MASTER_CTRL_t }
+  - SLAVE : { type: HAL_CSM_CSM_SC_SLAVE_CTRL_t }
 
 
 - HAL_CSM_CSM_MON_t:
-  - LPGBT : [ type: HAL_CSM_CSM_LPGBT_MON_t ]
-  - SC : [ type: HAL_CSM_CSM_SC_MON_t ]
+  - LPGBT : { type: HAL_CSM_CSM_LPGBT_MON_t }
+  - SC : { type: HAL_CSM_CSM_SC_MON_t }
 
-- HAL_CSM_CSM_MON_t_ARRAY: [array: 36, type: HAL_CSM_CSM_MON_t]
+- HAL_CSM_CSM_MON_t_ARRAY: {array : [ 36 -1 , 0 ], type : HAL_CSM_CSM_MON_t}
 
 - HAL_CSM_CSM_CTRL_t:
-  - LPGBT : [ type: HAL_CSM_CSM_LPGBT_CTRL_t ]
-  - SC : [ type: HAL_CSM_CSM_SC_CTRL_t ]
+  - LPGBT : { type: HAL_CSM_CSM_LPGBT_CTRL_t }
+  - SC : { type: HAL_CSM_CSM_SC_CTRL_t }
 
-- HAL_CSM_CSM_CTRL_t_ARRAY: [array: 36, type: HAL_CSM_CSM_CTRL_t]
+- HAL_CSM_CSM_CTRL_t_ARRAY: {array : [ 36 -1 , 0 ], type : HAL_CSM_CSM_CTRL_t}
 
 - HAL_CSM_MON_t:
-  - CSM : [ type: HAL_CSM_CSM_MON_t_ARRAY ]
+  - CSM : { type: HAL_CSM_CSM_MON_t_ARRAY }
 
 
 - HAL_CSM_CTRL_t:
-  - CSM : [ type: HAL_CSM_CSM_CTRL_t_ARRAY ]
+  - CSM : { type: HAL_CSM_CSM_CTRL_t_ARRAY }
 
 
 - HAL_MON_t:
-  - CSM : [ type: HAL_CSM_MON_t ]
+  - CSM : { type: HAL_CSM_MON_t }
 
 
 - HAL_CTRL_t:
-  - RESET_DOWNLINKS : [ type: logic ]
-  - RESET_UPLINKS : [ type: logic ]
-  - RESET_COUNTERS : [ type: logic ]
-  - CSM : [ type: HAL_CSM_CTRL_t ]
+  - RESET_DOWNLINKS : { type: logic }
+  - RESET_UPLINKS : { type: logic }
+  - RESET_COUNTERS : { type: logic }
+  - CSM : { type: HAL_CSM_CTRL_t }
 
 

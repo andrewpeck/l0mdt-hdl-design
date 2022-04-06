@@ -23,6 +23,8 @@ entity UCM_map is
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
     Mon              : in  UCM_Mon_t;
+    
+    
     Ctrl             : out UCM_Ctrl_t
         
     );

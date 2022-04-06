@@ -143,19 +143,19 @@ begin
   --   
 
     -- inn_for_gen : for index in 0 to c_HPS_MAX_HP_INN - 1 generate
-    --   inner_tdc_hits(index)  <=  structify(inner_tdc_hits_v(index) ,inner_tdc_hits(index) );
+    --   inner_tdc_hits(index)  <=  convert(inner_tdc_hits_v(index) ,inner_tdc_hits(index) );
     -- end generate ; -- inn_gen
     -- mid_for_gen : for index in 0 to c_HPS_MAX_HP_MID - 1 generate
-    --   middle_tdc_hits(index) <=  structify(middle_tdc_hits_v(index),middle_tdc_hits(index));
+    --   middle_tdc_hits(index) <=  convert(middle_tdc_hits_v(index),middle_tdc_hits(index));
     -- end generate ; -- mid_gen
     -- out_for_gen : for index in 0 to c_HPS_MAX_HP_OUT - 1 generate
-    --   outer_tdc_hits(index)  <=  structify(outer_tdc_hits_v(index) ,outer_tdc_hits(index) );
+    --   outer_tdc_hits(index)  <=  convert(outer_tdc_hits_v(index) ,outer_tdc_hits(index) );
     -- end generate ; -- out_gen
     -- ext_for_gen : for index in 0 to c_HPS_MAX_HP_EXT - 1 generate
-    --   extra_tdc_hits(index)  <=  structify(extra_tdc_hits_v(index) ,extra_tdc_hits(index) );
+    --   extra_tdc_hits(index)  <=  convert(extra_tdc_hits_v(index) ,extra_tdc_hits(index) );
     -- end generate ; -- ext_gen
     -- daq_for_gen : for index in 0 to (c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1) generate
-    --   o_daq_streams(index)   <=  vectorify(daq_streams(index)      ,o_daq_streams(index)  );
+    --   o_daq_streams(index)   <=  convert(daq_streams(index)      ,o_daq_streams(index)  );
     -- end generate ; -- daq_gen
 
 

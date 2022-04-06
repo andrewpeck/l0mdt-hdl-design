@@ -117,7 +117,7 @@ ARCHITECTURE Behavioral OF csf_clustering IS
 
   SIGNAL hit_p, hit_m : csf_hit_rt;
   -- Clustering hit signals
-  TYPE t_hit_vectors IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR(len(hit_p) - 1 DOWNTO 0);
+  TYPE t_hit_vectors IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR(csf_hit_rt'w - 1 DOWNTO 0);
 
   SIGNAL hit_plus, hit_minus : csf_hit_art(MAX_CLUSTERS/2 DOWNTO 0);
   SIGNAL eof_v, dv_v         : STD_LOGIC_VECTOR(MAX_CLUSTERS/2 DOWNTO 0);
@@ -166,7 +166,7 @@ ARCHITECTURE Behavioral OF csf_clustering IS
   END COMPONENT;
 
 BEGIN
-  seed <= structify(i_seed, seed);
+  seed <= convert(i_seed, seed);
 
   invsqrt_mbar : rom
   GENERIC MAP(
@@ -205,7 +205,7 @@ BEGIN
       END IF;
 
       -- Delay the hits of two clocks for 
-      mdt_hit <= structify(i_mdthit, mdt_hit);
+      mdt_hit <= convert(i_mdthit, mdt_hit);
 
       -- Clock 0
       dv0         <= mdt_hit.data_valid;
@@ -269,10 +269,10 @@ BEGIN
       eof4        <= eof3;
 
       -- Clock 5
---      b_mux : FOR i IN 0 TO MAX_CLUSTERS - 1 LOOP
+      --      b_mux : FOR i IN 0 TO MAX_CLUSTERS - 1 LOOP
       a_bplus(0)  <= bplus_s;
       a_bminus(0) <= bminus_s;
---      END LOOP b_mux;
+      --      END LOOP b_mux;
       hit_minus(0) <= hit_m;
       hit_plus(0)  <= hit_p;
       eof_v(0)     <= eof4;
@@ -284,8 +284,8 @@ BEGIN
       counter_loop : FOR i IN 0 TO MAX_CLUSTERS/2 - 1 LOOP
         hit_plus(i + 1)  <= hit_plus(i);
         hit_minus(i + 1) <= hit_minus(i);
-        a_bplus(i+1) <= a_bplus(i);
-        a_bminus(i+1) <= a_bminus(i);
+        a_bplus(i + 1)   <= a_bplus(i);
+        a_bminus(i + 1)  <= a_bminus(i);
         eof_v(i + 1)     <= eof_v(i);
         dv_v(i + 1)      <= dv_v(i);
 
@@ -293,8 +293,8 @@ BEGIN
           IF counters(i * 2) = 0 AND counters(i * 2 + 1) = 0 AND (i = 0 OR on_cluster(i - 1) = '0') THEN
             reference_b(i * 2)        <= a_bplus(i);
             reference_b(i * 2 + 1)    <= a_bminus(i);
-            o_cluster_hits(i * 2)     <= vectorify(hit_plus(i), o_cluster_hits(i * 2));
-            o_cluster_hits(i * 2 + 1) <= vectorify(hit_minus(i), o_cluster_hits(i * 2 + 1));
+            o_cluster_hits(i * 2)     <= convert(hit_plus(i), o_cluster_hits(i * 2));
+            o_cluster_hits(i * 2 + 1) <= convert(hit_minus(i), o_cluster_hits(i * 2 + 1));
             counters(i * 2)           <= counters(i * 2) + 1;
             counters(i * 2 + 1)       <= counters(i * 2 + 1) + 1;
             max_counter               <= counters(i * 2) + 1;
@@ -303,14 +303,14 @@ BEGIN
             -- Check Cluster i*2
             IF i = 0 OR on_cluster(i - 1) = '0' THEN
               IF a_bplus(i) - reference_b(i * 2) < ABS(a_bminus(i * 2) - reference_b(i * 2)) AND ABS(a_bplus(i) - reference_b(i * 2)) < B_TOLERANCE THEN
-                o_cluster_hits(i * 2) <= vectorify(hit_plus(i), o_cluster_hits(i * 2));
+                o_cluster_hits(i * 2) <= convert(hit_plus(i), o_cluster_hits(i * 2));
                 counters(i * 2)       <= counters(i * 2) + 1;
                 IF counters(i * 2) + 1 > max_counter THEN
                   max_counter <= counters(i * 2) + 1;
                   out_cluster <= to_unsigned(i * 2, MAX_CLUSTERS_LEN);
                 END IF;
               ELSIF ABS(a_bminus(i) - reference_b(i * 2)) < B_TOLERANCE THEN
-                o_cluster_hits(i * 2) <= vectorify(hit_minus(i), o_cluster_hits(i * 2));
+                o_cluster_hits(i * 2) <= convert(hit_minus(i), o_cluster_hits(i * 2));
                 counters(i * 2)       <= counters(i * 2) + 1;
                 IF counters(i * 2) + 1 > max_counter THEN
                   max_counter <= counters(i * 2) + 1;
@@ -320,7 +320,7 @@ BEGIN
                 -- Check Cluster i*2+1
                 IF ABS(a_bplus(i) - reference_b(i * 2 + 1)) < ABS(a_bminus(i) - reference_b(i * 2 + 1))
                   AND ABS(a_bplus(i) - reference_b(i * 2 + 1)) < B_TOLERANCE THEN
-                  o_cluster_hits(i * 2 + 1) <= vectorify(hit_plus(i), o_cluster_hits(i * 2 + 1));
+                  o_cluster_hits(i * 2 + 1) <= convert(hit_plus(i), o_cluster_hits(i * 2 + 1));
                   counters(i * 2 + 1)       <= counters(i * 2 + 1) + 1;
                   IF counters(i * 2 + 1) + 1 > max_counter THEN
                     max_counter <= counters(i * 2 + 1) + 1;
@@ -328,7 +328,7 @@ BEGIN
 
                   END IF;
                 ELSIF ABS(a_bminus(i) - reference_b(i * 2 + 1)) < B_TOLERANCE THEN
-                  o_cluster_hits(i * 2 + 1) <= vectorify(hit_minus(i), o_cluster_hits(i * 2 + 1));
+                  o_cluster_hits(i * 2 + 1) <= convert(hit_minus(i), o_cluster_hits(i * 2 + 1));
                   counters(i * 2 + 1)       <= counters(i * 2 + 1) + 1;
                   IF counters(i * 2 + 1) + 1 > max_counter THEN
                     max_counter <= counters(i * 2 + 1) + 1;
@@ -346,11 +346,11 @@ BEGIN
       END LOOP counter_loop;
 
       -- Clock 9
-      o_fitter_en                          <= (OTHERS => '0');
-      IF eof_v(MAX_CLUSTERS/2)             = '1' THEN
+      o_fitter_en <= (OTHERS => '0');
+      IF eof_v(MAX_CLUSTERS/2) = '1' THEN
         o_fitter_en(to_integer(out_cluster)) <= '1';
-        reference_b <= (others => (others => '0'));
-        counters <= (others => (others => '0'));
+        reference_b                          <= (OTHERS => (OTHERS => '0'));
+        counters                             <= (OTHERS => (OTHERS => '0'));
       END IF;
 
     END IF;

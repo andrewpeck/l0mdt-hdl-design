@@ -212,9 +212,9 @@ begin
         douta => sqrt_m_io
     );
 
-    seg0 <= structify(i_seg0,seg0);
-    seg1 <= structify(i_seg1,seg1);
-    seg2 <= structify(i_seg2,seg2);
+    seg0 <= convert(i_seg0,seg0);
+    seg1 <= convert(i_seg1,seg1);
+    seg2 <= convert(i_seg2,seg2);
     rec_sagitta_addr <= std_logic_vector(abs(den_sagitta_red));
 
     SagittaProc : process( clk )

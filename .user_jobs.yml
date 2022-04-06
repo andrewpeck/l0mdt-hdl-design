@@ -23,7 +23,10 @@
 
 .riviera_vars: &riviera_vars
   GIT_STRATEGY: clone
-#   CI_DEBUG_TRACE: "true"
+  HOG_SIMULATION_LIB_PATH: /afs/cern.ch/work/l/l0mdtel/RivieraLibs
+  GIT_SUBMODULE_STRATEGY: recursive
+  HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
+
 
 .chk_variables: &chk_variables 
   GIT_STRATEGY: clone
@@ -77,6 +80,7 @@
 .riviera_sim: &riviera_sim
   <<: *only-default
   <<: *tag-hog
+  <<: *riviera_vars
   stage: generation_and_simulation
   script:
     - export PATH=${HOG_PATH}:$PATH
@@ -87,14 +91,10 @@
       echo "Project version checker is disabled.";
       fi
     - if [ -f "./Projects/$PROJECT_NAME/skip.me" ]; then
-      echo "CI disabled for $PROJECT_NAME";
-      else
-      if [ -z ${HOG_SIMULATION_LIB_PATH+x} ]; then
-      echo 'Simulation library path is not defined';
+        echo "CI disabled for $PROJECT_NAME";
       else
         sed -i 's/questa/riviera/' ./Top/$PROJECT_NAME/list/project_lib.sim;
         vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_simulation.tcl -tclargs -lib_path $HOG_SIMULATION_LIB_PATH $PROJECT_NAME ;
-      fi;
       fi
   artifacts:
     name: user_sim
@@ -103,8 +103,6 @@
       - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
     expire_in: 30 day
   allow_failure: false
-  tags:
-    - riviera
   interruptible: true
 
 
