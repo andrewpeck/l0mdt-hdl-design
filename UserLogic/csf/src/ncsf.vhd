@@ -373,6 +373,7 @@ BEGIN
   BEGIN
 
     IF rising_edge(clk) THEN
+      mdt_hits <= (others => (others => '0'));
       mdt_hits(stdlogic_integer(mdt_hit.mlayer)) <= i_mdt_hit;
 
       IF (seed_i.data_valid = '1') THEN

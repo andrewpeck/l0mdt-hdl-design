@@ -54,3 +54,5 @@ __init__.py
 kernel/
 package.json
 */package.json
+Plots
+*.rst
