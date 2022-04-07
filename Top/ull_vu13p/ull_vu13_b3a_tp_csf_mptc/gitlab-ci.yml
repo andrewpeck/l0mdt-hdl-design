@@ -11,7 +11,7 @@
 #       - hog
 
 SIM:ull_vu13_b3a_tp_csf_mptc:
-    extends: .simulate_project
+    extends: .riviera_sim
     variables:
       extends: .vars
       PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
@@ -34,6 +34,7 @@ CHK:ull_vu13_b3a_tp_csf_mptc:
     extends: .vars
     PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
     BLOCK: HEG
+    SIMULATOR: riviera
   needs: ["SIM:ull_vu13_b3a_tp_csf_mptc"]
   artifacts:
     name: CHK_ull_vu13_b3a_ucm_mpl_hps_csf

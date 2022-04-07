@@ -81,6 +81,7 @@
   variables:
     HOG_SIMULATION_LIB_PATH: /afs/cern.ch/work/l/l0mdtel/RivieraLibs
     HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
+    HOG_CHECK_PROJVER : 0
   stage: generation_and_simulation
   script:
     - export PATH=${HOG_PATH}:$PATH
@@ -142,7 +143,7 @@
     - echo $AUX_PRJ_FOLDER
     - export AUX_PRJ_NAME=${PROJECT_NAME##**/}
     - echo $AUX_PRJ_NAME
-    - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/questa
+    - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/$SIMULATOR
     # - sleep 1h
     # DAvide
     # - PRJ_NAME=$(basename $PROJECT_NAME)
