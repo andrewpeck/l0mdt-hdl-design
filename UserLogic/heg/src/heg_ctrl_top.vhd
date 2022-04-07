@@ -23,17 +23,17 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
+-- use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
+
 library heg_lib;
 use heg_lib.heg_pkg.all;
--- library hegtypes_lib;
--- use hegtypes_lib.hp_pkg.all;
--- use hegtypes_lib.heg_pkg.all;
-
+-- use heg_lib.heg_custom_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -70,8 +70,8 @@ architecture beh of heg_ctrl_top is
   signal mon_r            : HPS_HEG_HEG_CTRL_MON_t;
   signal ctrl_roi_tc_r    : HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t;
   signal  mon_roi_tc_r    : HPS_HEG_HEG_CTRL_ROI_TC_MON_t;
-  signal ctrl_roi_tc_v    : std_logic_vector(len(ctrl_roi_tc_r)-1 downto 0);
-  signal  mon_roi_tc_v    : std_logic_vector(len(mon_roi_tc_r)-1 downto 0);
+  signal ctrl_roi_tc_v    : std_logic_vector(HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t'w-1 downto 0);
+  signal  mon_roi_tc_v    : std_logic_vector(HPS_HEG_HEG_CTRL_ROI_TC_MON_t'w-1 downto 0);
 
   -- component ctrl_signals is
   --   generic(
@@ -112,20 +112,20 @@ architecture beh of heg_ctrl_top is
 
 begin
 
-  ctrl_r <= structify(ctrl_v,ctrl_r);
-  mon_v <= vectorify(mon_r,mon_v);
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
   
   ctrl_roi_tc_r <= ctrl_r.ROI_TC;
   mon_r.ROI_TC <= mon_roi_tc_r;
   
-  mon_roi_tc_r <= structify(mon_roi_tc_v,mon_roi_tc_r);
-  ctrl_roi_tc_v <= vectorify(ctrl_roi_tc_r,ctrl_roi_tc_v);
+  mon_roi_tc_r <= convert(mon_roi_tc_v,mon_roi_tc_r);
+  ctrl_roi_tc_v <= convert(ctrl_roi_tc_r,ctrl_roi_tc_v);
 
   o_SLC_Window_v <= SLC_Window_av;
-  win_row_0 <= structify(SLC_Window_av(0),win_row_0);
+  win_row_0 <= convert(SLC_Window_av(0),win_row_0);
 
-  o_sf_control_v <= vectorify(o_sf_control_r,o_sf_control_v);
-  -- o_hp_control_v <= vectorify(o_hp_control_r);
+  o_sf_control_v <= convert(o_sf_control_r,o_sf_control_v);
+  -- o_hp_control_v <= convert(o_hp_control_r);
 
   HEG_CTRL_ROI : entity heg_lib.heg_ctrl_roi
   generic map(
@@ -145,7 +145,7 @@ begin
   );
 
   for_gen_SW : for il in get_num_layers(g_STATION_RADIUS) -1 downto 0 generate
-    SLC_Window_ar(il) <= structify(SLC_Window_av(il),SLC_Window_ar(il));
+    SLC_Window_ar(il) <= convert(SLC_Window_av(il),SLC_Window_ar(il));
   end generate ; -- identifier
 
   HEG_CTRL_ROI_ORG : entity heg_lib.heg_ctrl_roi_tc
@@ -198,7 +198,7 @@ begin
   -- o_uCM2sf_data_v <= int_uCM_data;
   -- o_uCM2hp_data_v.barrel.z <= int_uCM_data.barrel.z;
 
-  uCM_data_r <= structify(i_uCM_data_v,uCM_data_r);
-  -- o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r);
+  uCM_data_r <= convert(i_uCM_data_v,uCM_data_r);
+  -- o_uCM2hp_data_v <= convert(o_uCM2hp_data_r);
 
 end beh;

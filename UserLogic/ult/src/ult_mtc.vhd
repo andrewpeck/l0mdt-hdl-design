@@ -70,8 +70,8 @@ begin
     signal l0mdt_control_v  : l0mdt_control_vt;
   begin
 
-    l0mdt_ttc_v <= vectorify(ttc_commands,l0mdt_ttc_v);
-    l0mdt_control_v <= vectorify(clock_and_control,l0mdt_control_v);
+    l0mdt_ttc_v <= convert(ttc_commands,l0mdt_ttc_v);
+    l0mdt_control_v <= convert(clock_and_control,l0mdt_control_v);
     o_mtc <= (others => (others => '0'));
     o_nsp <= (others => (others => '0'));
 

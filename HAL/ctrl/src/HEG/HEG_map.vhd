@@ -23,6 +23,8 @@ entity HEG_map is
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
     Mon              : in  HEG_Mon_t;
+    
+    
     Ctrl             : out HEG_Ctrl_t
         
     );

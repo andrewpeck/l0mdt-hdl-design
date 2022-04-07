@@ -127,10 +127,10 @@ begin
 
       sl : if (I < c_NUM_MTC) generate
 
-        mtc <= structify(mtc_i(I),mtc);
+        mtc <= convert(mtc_i(I),mtc);
 
-        header  <= vectorify(mtc.common.header,header);
-        trailer <= vectorify(mtc.common.trailer,trailer);
+        header  <= convert(mtc.common.header,header);
+        trailer <= convert(mtc.common.trailer,trailer);
 
         data(2 downto 0)    <= std_logic_vector(mtc.common.slcid);
         data(3)             <= mtc.common.tcsent;
@@ -191,7 +191,7 @@ begin
       process (pipeline_clock) is
       begin
         if (rising_edge(pipeline_clock)) then
-          sl_data_o(I) <= vectorify(sl_data,sl_data_o(I));
+          sl_data_o(I) <= convert(sl_data,sl_data_o(I));
         end if;
       end process;
 
@@ -199,8 +199,8 @@ begin
       data    <= sl_rx_data(I).data(159 downto 32);
       trailer <= sl_rx_data(I).data(191 downto 160);
 
-      sl_data.common.header  <= structify(header,sl_data.common.header);
-      sl_data.common.trailer <= structify(trailer,sl_data.common.trailer);
+      sl_data.common.header  <= convert(header,sl_data.common.header);
+      sl_data.common.trailer <= convert(trailer,sl_data.common.trailer);
 
       sl_data.common.slcid       <= unsigned(data(2 downto 0));
       sl_data.common.tcsent      <= data(3);
@@ -226,11 +226,11 @@ begin
       slc_endcap_specific.e_reserved       <= data(90 downto 82);
 
       barrel_spec_gen : if (station = BARREL) generate
-        sl_data.specific <= vectorify(slc_barrel_specific,sl_data.specific);
+        sl_data.specific <= convert(slc_barrel_specific,sl_data.specific);
       end generate;
 
       endcap_spec_gen : if (station = ENDCAP) generate
-        sl_data.specific <= vectorify(slc_endcap_specific,sl_data.specific);
+        sl_data.specific <= convert(slc_endcap_specific,sl_data.specific);
       end generate;
 
       sl_data.data_valid <= sl_rx_data(I).valid;

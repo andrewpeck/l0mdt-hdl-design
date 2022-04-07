@@ -72,16 +72,16 @@ architecture beh of hps is
 
   -- signal ctrl_super_r : HPS_SUPER_CTRL_t;
   -- signal mon_super_r  : HPS_SUPER_MON_t;
-  constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
-  constant SUPER_MON_LEN  : integer := len(mon_r.super);
+  constant SUPER_CTRL_LEN : integer := width(ctrl_r.super); 
+  constant SUPER_MON_LEN  : integer := width(mon_r.super);
   signal ctrl_super_v : std_logic_vector(SUPER_CTRL_LEN -1 downto 0);
   signal mon_super_v  : std_logic_vector(SUPER_MON_LEN -1 downto 0);
 
 
-  constant CSF_CTRL_LEN : integer := len(ctrl_r.csf.csf(0)); 
-  constant CSF_MON_LEN  : integer := len(mon_r.csf.csf(0));
-  constant LSF_CTRL_LEN : integer := len(ctrl_r.lsf.lsf(0));
-  constant LSF_MON_LEN  : integer := len(mon_r.lsf.lsf(0));
+  constant CSF_CTRL_LEN : integer := width(ctrl_r.csf.csf(0)); 
+  constant CSF_MON_LEN  : integer := width(mon_r.csf.csf(0));
+  constant LSF_CTRL_LEN : integer := width(ctrl_r.lsf.lsf(0));
+  constant LSF_MON_LEN  : integer := width(mon_r.lsf.lsf(0));
 
   type csf_ctrl_avt is array (integer range <>) of std_logic_vector(CSF_CTRL_LEN -1 downto 0);
   type csf_mon_avt  is array (integer range <>) of std_logic_vector(CSF_MON_LEN  -1 downto 0);
@@ -93,17 +93,17 @@ architecture beh of hps is
   signal lsf_ctrl_av : lsf_ctrl_avt(c_NUM_THREADS -1 downto 0 );
   signal lsf_mon_av  : lsf_mon_avt (c_NUM_THREADS -1 downto 0 );
 
-  signal pc_t0_ctrl_v  : std_logic_vector(len(ctrl_r.MDT_T0.MDT_T0)-1 downto 0);
-  signal pc_tc_ctrl_v  : std_logic_vector(len(ctrl_r.MDT_TC.MDT_TC)-1 downto 0);
-  signal pc_t0_mon_v  : std_logic_vector(len(mon_r.MDT_T0.MDT_T0)-1 downto 0);
-  signal pc_tc_mon_v  : std_logic_vector(len(mon_r.MDT_TC.MDT_TC)-1 downto 0);
+  signal pc_t0_ctrl_v  : std_logic_vector(width(ctrl_r.MDT_T0.MDT_T0)-1 downto 0);
+  signal pc_tc_ctrl_v  : std_logic_vector(width(ctrl_r.MDT_TC.MDT_TC)-1 downto 0);
+  signal pc_t0_mon_v  : std_logic_vector(width(mon_r.MDT_T0.MDT_T0)-1 downto 0);
+  signal pc_tc_mon_v  : std_logic_vector(width(mon_r.MDT_TC.MDT_TC)-1 downto 0);
 
   signal local_freeze : std_logic;
 
   -- type heg_ctrl_at is array (0 to 3 ) of  HPS_HEG_HEG_CTRL_t;
   -- type heg_mon_at is array (0 to 3 ) of  HPS_HEG_HEG_MON_t;
-  type heg_ctrl_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(len(ctrl_r.heg.heg(0))-1 downto 0);
-  type heg_mon_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(len(mon_r.heg.heg(0))-1 downto 0);
+  type heg_ctrl_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(width(ctrl_r.heg.heg(0))-1 downto 0);
+  type heg_mon_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(width(mon_r.heg.heg(0))-1 downto 0);
 
   signal heg_ctrl_av : heg_ctrl_avt;
   signal heg_mon_av : heg_mon_avt;
@@ -124,16 +124,16 @@ architecture beh of hps is
   signal sf_fm_data_th  : sf_single_station_array;
 begin
 
-  ctrl_r <= structify(ctrl_v,ctrl_r);
-  mon_v <= vectorify(mon_r,mon_v);
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
 
   ctrl_super_v <= convert(ctrl_r.super,ctrl_super_v);
   mon_r.super <= convert(mon_super_v,mon_r.super);
 
-  pc_t0_ctrl_v <= vectorify(ctrl_r.MDT_T0.MDT_T0,pc_t0_ctrl_v);
-  pc_tc_ctrl_v <= vectorify(ctrl_r.MDT_TC.MDT_TC,pc_tc_ctrl_v);
-  mon_r.MDT_T0.MDT_T0 <= structify(pc_t0_mon_v,mon_r.MDT_T0.MDT_T0);
-  mon_r.MDT_TC.MDT_TC <= structify(pc_tc_mon_v,mon_r.MDT_TC.MDT_TC);
+  pc_t0_ctrl_v <= convert(ctrl_r.MDT_T0.MDT_T0,pc_t0_ctrl_v);
+  pc_tc_ctrl_v <= convert(ctrl_r.MDT_TC.MDT_TC,pc_tc_ctrl_v);
+  mon_r.MDT_T0.MDT_T0 <= convert(pc_t0_mon_v,mon_r.MDT_T0.MDT_T0);
+  mon_r.MDT_TC.MDT_TC <= convert(pc_tc_mon_v,mon_r.MDT_TC.MDT_TC);
 
   h2s_fm_gen: for th_i in c_NUM_THREADS -1 downto 0 generate
     h2s_fm_data(th_i*sf_sb_n to (th_i+1)*sf_sb_n - 1)   <= sf_fm_data_th(th_i)(0 to sf_sb_n -1);
@@ -192,8 +192,8 @@ begin
 
   heg_gen : for th_i in c_NUM_THREADS -1 downto 0 generate
 
-    heg_ctrl_av(th_i) <= vectorify(ctrl_r.heg.heg(th_i),heg_ctrl_av(th_i));
-    mon_r.heg.heg(th_i) <= structify(heg_mon_av(th_i),mon_r.heg.heg(th_i));
+    heg_ctrl_av(th_i) <= convert(ctrl_r.heg.heg(th_i),heg_ctrl_av(th_i));
+    mon_r.heg.heg(th_i) <= convert(heg_mon_av(th_i),mon_r.heg.heg(th_i));
 
     HEG : entity heg_lib.heg
       generic map(

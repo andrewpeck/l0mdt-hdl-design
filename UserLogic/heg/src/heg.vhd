@@ -22,17 +22,18 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
+-- use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
+
 library heg_lib;
 use heg_lib.heg_pkg.all;
--- library hegtypes_lib;
--- use hegtypes_lib.hp_pkg.all;
--- use hegtypes_lib.heg_pkg.all;
+-- use heg_lib.heg_custom_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -66,21 +67,21 @@ architecture beh of heg is
   signal ctrl_r           : HPS_HEG_HEG_CTRL_t;
   signal mon_r            : HPS_HEG_HEG_MON_t;
   
-  constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
-  constant SUPER_MON_LEN  : integer := len(mon_r.super);
-  signal ctrl_super_v : std_logic_vector(SUPER_CTRL_LEN -1 downto 0);
-  signal mon_super_v  : std_logic_vector(SUPER_MON_LEN -1 downto 0);
+  -- constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
+  -- constant SUPER_MON_LEN  : integer := len(mon_r.super);
+  signal ctrl_super_v : std_logic_vector(HPS_HEG_HEG_CTRL_t'w -1 downto 0);
+  signal mon_super_v  : std_logic_vector(HPS_HEG_HEG_MON_t'w -1 downto 0);
 
   signal heg_ctrl_ctrl_r  : HPS_HEG_HEG_CTRL_CTRL_t;
   signal heg_ctrl_mon_r   : HPS_HEG_HEG_CTRL_MON_t;
-  signal heg_ctrl_ctrl_v  : std_logic_vector(len(heg_ctrl_ctrl_r)-1 downto 0);
-  signal heg_ctrl_mon_v   : std_logic_vector(len(heg_ctrl_mon_r)-1 downto 0);
+  signal heg_ctrl_ctrl_v  : std_logic_vector(HPS_HEG_HEG_CTRL_CTRL_t'w-1 downto 0);
+  signal heg_ctrl_mon_v   : std_logic_vector(HPS_HEG_HEG_CTRL_MON_t'w-1 downto 0);
 
   signal ctrl_hp_ar : HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY ;
   signal mon_hp_ar  : HPS_HEG_HEG_HP_HP_MON_t_ARRAY ;
 
-  type ctrl_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(len(ctrl_hp_ar(0))-1 downto 0);
-  type mon_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(len(mon_hp_ar(0))-1 downto 0);
+  type ctrl_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(width(ctrl_hp_ar(0))-1 downto 0);
+  type mon_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(width(mon_hp_ar(0))-1 downto 0);
 
   signal ctrl_hp_av : ctrl_hp_avt;
   signal mon_hp_av  : mon_hp_avt;
@@ -113,8 +114,8 @@ architecture beh of heg is
 
 begin
 
-  ctrl_r <= structify(ctrl_v,ctrl_r);
-  mon_v <= vectorify(mon_r,mon_v);
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
 
   ctrl_super_v <= convert(ctrl_r.super,ctrl_super_v);
   mon_r.super <= convert(mon_super_v,mon_r.super);
@@ -122,14 +123,14 @@ begin
   heg_ctrl_ctrl_r <= ctrl_r.ctrl;
   mon_r.ctrl <= heg_ctrl_mon_r;
   
-  heg_ctrl_mon_r <= structify(heg_ctrl_mon_v,heg_ctrl_mon_r);
-  heg_ctrl_ctrl_v <= vectorify(heg_ctrl_ctrl_r,heg_ctrl_ctrl_v);
+  heg_ctrl_mon_r <= convert(heg_ctrl_mon_v,heg_ctrl_mon_r);
+  heg_ctrl_ctrl_v <= convert(heg_ctrl_ctrl_r,heg_ctrl_ctrl_v);
 
   ctrl_hp_ar <= ctrl_r.HP.HP;
   mon_r.HP.HP <= mon_hp_ar;
 
   -------------------------------------------
-  i_uCM_data_r <= structify(i_uCM_data_v,i_uCM_data_r);
+  i_uCM_data_r <= convert(i_uCM_data_v,i_uCM_data_r);
   count_slcs_in_trig(0) <= i_uCM_data_r.data_valid;
 
 
@@ -189,8 +190,8 @@ begin
 
   hp_gen: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
 
-    i_mdt_full_data_ar(hp_i) <= structify(i_mdt_full_data_av(hp_i),i_mdt_full_data_ar(hp_i));
-    hp2bm_ar(hp_i) <= structify(hp2bm_av(hp_i),hp2bm_ar(hp_i));
+    i_mdt_full_data_ar(hp_i) <= convert(i_mdt_full_data_av(hp_i),i_mdt_full_data_ar(hp_i));
+    hp2bm_ar(hp_i) <= convert(hp2bm_av(hp_i),hp2bm_ar(hp_i));
 
     count_hits_in_trig(hp_i) <= i_mdt_full_data_ar(hp_i).data_valid;
     count_hits_ok_trig(hp_i) <= hp2bm_ar(hp_i).data_valid;

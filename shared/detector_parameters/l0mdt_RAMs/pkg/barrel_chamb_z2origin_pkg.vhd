@@ -83,8 +83,8 @@ package barrel_chamb_z2origin_pkg is
   function get_b_chamber_origin_z_u( sector_id, side_id , station : integer; mult : real; out_width : integer := 16) return b_chamber_z_origin_aut;
   function get_b_chamber_origin_z_i( sector_id, side_id , station : integer; mult : real) return b_chamber_z_origin_ait;
 
-  function vectorify(x: b_chamber_z_origin_aut) return b_chamber_z_origin_avt;
-  function structify(x: b_chamber_z_origin_avt) return b_chamber_z_origin_aut;
+  function convert(x: b_chamber_z_origin_aut) return b_chamber_z_origin_avt;
+  function convert(x: b_chamber_z_origin_avt) return b_chamber_z_origin_aut;
   
   
 end package barrel_chamb_z2origin_pkg;
@@ -107,7 +107,7 @@ package body barrel_chamb_z2origin_pkg is
     end loop;
     return y;
   end function;
-  function vectorify(x: b_chamber_z_origin_aut) return b_chamber_z_origin_avt is
+  function convert(x: b_chamber_z_origin_aut) return b_chamber_z_origin_avt is
     variable msb : integer := x'length*16-1;
     variable y : b_chamber_z_origin_avt;
   begin
@@ -117,7 +117,7 @@ package body barrel_chamb_z2origin_pkg is
     end loop;
     return y;
   end function;
-  function structify(x: b_chamber_z_origin_avt) return b_chamber_z_origin_aut is
+  function convert(x: b_chamber_z_origin_avt) return b_chamber_z_origin_aut is
     variable y :  b_chamber_z_origin_aut;
     variable msb : integer := x'left;
   begin

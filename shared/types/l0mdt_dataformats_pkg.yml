@@ -1,189 +1,142 @@
-# yml2hdl v2
-#  Auto-generated from:
-#  https://docs.google.com/spreadsheets/d/1oJh-NPv990n6AzXXZ7cBaySrltqBO-eGucrsnOx_r4s
-#  Date: 08/02/2022 UTC
-
-#df_hash = 0750f02e
-
+# yml2hdl v0.3
 config:
-  basic_convert_functions: off
-  packages:
-    - ieee: [std_logic_1164, numeric_std, math_real]
-    - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg]
-
-hdl:
-
-# SL_HEADER
-- sl_header_rt:
-  - h_reserved:  [type : logic , length : SL_HEADER_H_RESERVED_LEN]
-  - tcoverflow:  [type : logic]
-  - nmtc_sl:  [type : unsigned , length : SL_HEADER_NMTC_SL_LEN]
-  - nmtc_mdt:  [type : unsigned , length : SL_HEADER_NMTC_MDT_LEN]
-  - nslc:  [type : unsigned , length : SL_HEADER_NSLC_LEN]
-  - bcid:  [type : unsigned , length : SL_HEADER_BCID_LEN]
-
-# SL_TRAILER
-- sl_trailer_rt:
-  - t_reserved:  [type : logic , length : SL_TRAILER_T_RESERVED_LEN]
-  - crc:  [type : logic , length : SL_TRAILER_CRC_LEN]
-  - fiberid:  [type : unsigned , length : SL_TRAILER_FIBERID_LEN]
-  - slid:  [type : unsigned , length : SL_TRAILER_SLID_LEN]
-  - comma:  [type : logic , length : SL_TRAILER_COMMA_LEN]
-
-# SLC_COMMON
-- slc_common_rt:
-  - header:  [type : sl_header_rt]
-  - slcid:  [type : unsigned , length : SLC_COMMON_SLCID_LEN]
-  - tcsent:  [type : logic]
-  - poseta:  [type : signed , length : SLC_COMMON_POSETA_LEN]
-  - posphi:  [type : unsigned , length : SLC_COMMON_POSPHI_LEN]
-  - sl_pt:  [type : unsigned , length : SLC_COMMON_SL_PT_LEN]
-  - sl_ptthresh:  [type : unsigned , length : SLC_COMMON_SL_PTTHRESH_LEN]
-  - sl_charge:  [type : logic]
-  - cointype:  [type : logic , length : SLC_COMMON_COINTYPE_LEN]
-  - trailer:  [type : sl_trailer_rt]
-
-# SLC_ENDCAP
-- slc_endcap_rt:
-  - e_reserved:  [type : logic , length : SLC_ENDCAP_E_RESERVED_LEN]
-  - nswseg_mon:  [type : logic]
-  - nswseg_angdtheta:  [type : signed , length : SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN]
-  - nswseg_posphi:  [type : unsigned , length : SLC_ENDCAP_NSWSEG_POSPHI_LEN]
-  - nswseg_poseta:  [type : unsigned , length : SLC_ENDCAP_NSWSEG_POSETA_LEN]
-  - seg_angdphi:  [type : signed , length : SLC_ENDCAP_SEG_ANGDPHI_LEN]
-  - seg_angdtheta:  [type : signed , length : SLC_ENDCAP_SEG_ANGDTHETA_LEN]
-
-# SLC_BARREL
-- slc_barrel_rt:
-  - rpc3_posz:  [type : signed , length : SLC_BARREL_RPC3_POSZ_LEN]
-  - rpc2_posz:  [type : signed , length : SLC_BARREL_RPC2_POSZ_LEN]
-  - rpc1_posz:  [type : signed , length : SLC_BARREL_RPC1_POSZ_LEN]
-  - rpc0_posz:  [type : signed , length : SLC_BARREL_RPC0_POSZ_LEN]
-
-# SLC_RX
-- slc_rx_rt:
-  - data_valid:  [type : logic]
-  - common:  [type : slc_common_rt]
-  - specific:  [type : logic , length : SLC_RX_SPECIFIC_LEN]
-
-# SLC_MUID
-- slc_muid_rt:
-  - slcid:  [type : unsigned , length : SLC_COMMON_SLCID_LEN]
-  - slid:  [type : unsigned , length : SL_TRAILER_SLID_LEN]
-  - bcid:  [type : unsigned , length : SL_HEADER_BCID_LEN]
-
-# VEC_MDTID
-- vec_mdtid_rt:
-  - chamber_id:  [type : unsigned , length : VEC_MDTID_CHAMBER_ID_LEN]
-  - chamber_ieta:  [type : unsigned , length : VEC_MDTID_CHAMBER_IETA_LEN]
-
-# TDC
-- tdc_rt:
-  - chanid:  [type : unsigned , length : TDC_CHANID_LEN]
-  - edgemode:  [type : logic , length : TDC_EDGEMODE_LEN]
-  - coarsetime:  [type : unsigned , length : TDC_COARSETIME_LEN]
-  - finetime:  [type : unsigned , length : TDC_FINETIME_LEN]
-  - pulsewidth:  [type : unsigned , length : TDC_PULSEWIDTH_LEN]
-
-# UCM2PL
-- ucm2pl_rt:
-  - data_valid:  [type : logic]
-  - busy:  [type : logic]
-  - process_ch:  [type : logic , length : UCM2PL_PROCESS_CH_LEN]
-  - common:  [type : slc_common_rt]
-  - phimod:  [type : signed , length : UCM2PL_PHIMOD_LEN]
-  - nswseg_angdtheta:  [type : signed , length : SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN]
-  - nswseg_posphi:  [type : unsigned , length : SLC_ENDCAP_NSWSEG_POSPHI_LEN]
-  - nswseg_poseta:  [type : unsigned , length : SLC_ENDCAP_NSWSEG_POSETA_LEN]
-
-# TDCPOLMUX2TAR
-- tdcpolmux2tar_rt:
-  - data_valid:  [type : logic]
-  - tdc:  [type : tdc_rt]
-  - csmid:  [type : unsigned , length : TDCPOLMUX2TAR_CSMID_LEN]
-  - tdcid:  [type : unsigned , length : TDCPOLMUX2TAR_TDCID_LEN]
-
-# UCM2HPS
-- ucm2hps_rt:
-  - data_valid:  [type : logic]
-  - muid:  [type : slc_muid_rt]
-  - mdtseg_dest:  [type : logic , length : UCM2HPS_MDTSEG_DEST_LEN]
-  - mdtid:  [type : vec_mdtid_rt]
-  - vec_pos:  [type : unsigned , length : UCM2HPS_VEC_POS_LEN]
-  - vec_ang:  [type : unsigned , length : UCM2HPS_VEC_ANG_LEN]
-
-# HEG2SFSLC
-- heg2sfslc_rt:
-  - data_valid:  [type : logic]
-  - muid:  [type : slc_muid_rt]
-  - mdtseg_dest:  [type : logic , length : HEG2SFSLC_MDTSEG_DEST_LEN]
-  - mdtid:  [type : vec_mdtid_rt]
-  - vec_pos:  [type : unsigned , length : UCM2HPS_VEC_POS_LEN]
-  - vec_ang:  [type : unsigned , length : UCM2HPS_VEC_ANG_LEN]
-  - hewindow_pos:  [type : unsigned , length : HEG2SFSLC_HEWINDOW_POS_LEN]
-
-# TAR2HPS
-- tar2hps_rt:
-  - data_valid:  [type : logic]
-  - chamber_ieta:  [type : unsigned , length : VEC_MDTID_CHAMBER_IETA_LEN]
-  - layer:  [type : unsigned , length : TAR2HPS_LAYER_LEN]
-  - tube:  [type : unsigned , length : TAR2HPS_TUBE_LEN]
-  - time:  [type : unsigned , length : TAR2HPS_TIME_LEN]
-
-# HEG2SFHIT
-- heg2sfhit_rt:
-  - data_valid:  [type : logic]
-  - mlayer:  [type : logic]
-  - localx:  [type : unsigned , length : HEG2SFHIT_LOCALX_LEN]
-  - localy:  [type : unsigned , length : HEG2SFHIT_LOCALY_LEN]
-  - radius:  [type : unsigned , length : HEG2SFHIT_RADIUS_LEN]
-
-# PL2PTCALC
-- pl2ptcalc_rt:
-  - data_valid:  [type : logic]
-  - muid:  [type : slc_muid_rt]
-  - phimod:  [type : signed , length : UCM2PL_PHIMOD_LEN]
-  - sl_charge:  [type : logic]
-  - nswseg_poseta:  [type : unsigned , length : SLC_ENDCAP_NSWSEG_POSETA_LEN]
-  - nswseg_posphi:  [type : unsigned , length : SLC_ENDCAP_NSWSEG_POSPHI_LEN]
-  - nswseg_angdtheta:  [type : signed , length : SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN]
-
-# SF2PTCALC
-- sf2ptcalc_rt:
-  - data_valid:  [type : logic]
-  - muid:  [type : slc_muid_rt]
-  - segpos:  [type : unsigned , length : SF2PTCALC_SEGPOS_LEN]
-  - segangle:  [type : unsigned , length : SF2PTCALC_SEGANGLE_LEN]
-  - segquality:  [type : logic]
-  - mdtid:  [type : vec_mdtid_rt]
-
-# PTCALC2MTC
-- ptcalc2mtc_rt:
-  - data_valid:  [type : logic]
-  - muid:  [type : slc_muid_rt]
-  - mdt_eta:  [type : signed , length : PTCALC2MTC_MDT_ETA_LEN]
-  - mdt_pt:  [type : unsigned , length : PTCALC2MTC_MDT_PT_LEN]
-  - mdt_ptthresh:  [type : unsigned , length : PTCALC2MTC_MDT_PTTHRESH_LEN]
-  - mdt_charge:  [type : logic]
-  - mdt_nsegments:  [type : unsigned , length : PTCALC2MTC_MDT_NSEGMENTS_LEN]
-  - mdt_quality:  [type : logic , length : PTCALC2MTC_MDT_QUALITY_LEN]
-
-# PL2MTC
-- pl2mtc_rt:
-  - data_valid:  [type : logic]
-  - busy:  [type : logic]
-  - process_ch:  [type : logic , length : UCM2PL_PROCESS_CH_LEN]
-  - common:  [type : slc_common_rt]
-
-# MTC2SL
-- mtc2sl_rt:
-  - data_valid:  [type : logic]
-  - common:  [type : slc_common_rt]
-  - mdt_eta:  [type : signed , length : PTCALC2MTC_MDT_ETA_LEN]
-  - mdt_pt:  [type : unsigned , length : PTCALC2MTC_MDT_PT_LEN]
-  - mdt_ptthresh:  [type : unsigned , length : PTCALC2MTC_MDT_PTTHRESH_LEN]
-  - mdt_charge:  [type : logic]
-  - mdt_procflags:  [type : logic , length : MTC2SL_MDT_PROCFLAGS_LEN]
-  - mdt_nsegments:  [type : unsigned , length : PTCALC2MTC_MDT_NSEGMENTS_LEN]
-  - mdt_quality:  [type : logic , length : PTCALC2MTC_MDT_QUALITY_LEN]
-  - m_reserved:  [type : logic , length : MTC2SL_M_RESERVED_LEN]
+   basic_functions: False
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+      - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg]
+types:
+   - sl_header_rt:
+      - h_reserved: {'type': 'logic', 'range': ['SL_HEADER_H_RESERVED_LEN-1', 0]}
+      - tcoverflow: {'type': 'logic'}
+      - nmtc_sl: {'type': 'unsigned', 'range': ['SL_HEADER_NMTC_SL_LEN-1', 0]}
+      - nmtc_mdt: {'type': 'unsigned', 'range': ['SL_HEADER_NMTC_MDT_LEN-1', 0]}
+      - nslc: {'type': 'unsigned', 'range': ['SL_HEADER_NSLC_LEN-1', 0]}
+      - bcid: {'type': 'unsigned', 'range': ['SL_HEADER_BCID_LEN-1', 0]}
+   - sl_trailer_rt:
+      - t_reserved: {'type': 'logic', 'range': ['SL_TRAILER_T_RESERVED_LEN-1', 0]}
+      - crc: {'type': 'logic', 'range': ['SL_TRAILER_CRC_LEN-1', 0]}
+      - fiberid: {'type': 'unsigned', 'range': ['SL_TRAILER_FIBERID_LEN-1', 0]}
+      - slid: {'type': 'unsigned', 'range': ['SL_TRAILER_SLID_LEN-1', 0]}
+      - comma: {'type': 'logic', 'range': ['SL_TRAILER_COMMA_LEN-1', 0]}
+   - slc_common_rt:
+      - header: {'type': 'sl_header_rt'}
+      - slcid: {'type': 'unsigned', 'range': ['SLC_COMMON_SLCID_LEN-1', 0]}
+      - tcsent: {'type': 'logic'}
+      - poseta: {'type': 'signed', 'range': ['SLC_COMMON_POSETA_LEN-1', 0]}
+      - posphi: {'type': 'unsigned', 'range': ['SLC_COMMON_POSPHI_LEN-1', 0]}
+      - sl_pt: {'type': 'unsigned', 'range': ['SLC_COMMON_SL_PT_LEN-1', 0]}
+      - sl_ptthresh: {'type': 'unsigned', 'range': ['SLC_COMMON_SL_PTTHRESH_LEN-1', 0]}
+      - sl_charge: {'type': 'logic'}
+      - cointype: {'type': 'logic', 'range': ['SLC_COMMON_COINTYPE_LEN-1', 0]}
+      - trailer: {'type': 'sl_trailer_rt'}
+   - slc_endcap_rt:
+      - e_reserved: {'type': 'logic', 'range': ['SLC_ENDCAP_E_RESERVED_LEN-1', 0]}
+      - nswseg_mon: {'type': 'logic'}
+      - nswseg_angdtheta: {'type': 'signed', 'range': ['SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN-1', 0]}
+      - nswseg_posphi: {'type': 'unsigned', 'range': ['SLC_ENDCAP_NSWSEG_POSPHI_LEN-1', 0]}
+      - nswseg_poseta: {'type': 'unsigned', 'range': ['SLC_ENDCAP_NSWSEG_POSETA_LEN-1', 0]}
+      - seg_angdphi: {'type': 'signed', 'range': ['SLC_ENDCAP_SEG_ANGDPHI_LEN-1', 0]}
+      - seg_angdtheta: {'type': 'signed', 'range': ['SLC_ENDCAP_SEG_ANGDTHETA_LEN-1', 0]}
+   - slc_barrel_rt:
+      - rpc3_posz: {'type': 'signed', 'range': ['SLC_BARREL_RPC3_POSZ_LEN-1', 0]}
+      - rpc2_posz: {'type': 'signed', 'range': ['SLC_BARREL_RPC2_POSZ_LEN-1', 0]}
+      - rpc1_posz: {'type': 'signed', 'range': ['SLC_BARREL_RPC1_POSZ_LEN-1', 0]}
+      - rpc0_posz: {'type': 'signed', 'range': ['SLC_BARREL_RPC0_POSZ_LEN-1', 0]}
+   - slc_rx_rt:
+      - data_valid: {'type': 'logic'}
+      - common: {'type': 'slc_common_rt'}
+      - specific: {'type': 'logic', 'range': ['SLC_RX_SPECIFIC_LEN-1', 0]}
+   - slc_muid_rt:
+      - slcid: {'type': 'unsigned', 'range': ['SLC_COMMON_SLCID_LEN-1', 0]}
+      - slid: {'type': 'unsigned', 'range': ['SL_TRAILER_SLID_LEN-1', 0]}
+      - bcid: {'type': 'unsigned', 'range': ['SL_HEADER_BCID_LEN-1', 0]}
+   - vec_mdtid_rt:
+      - chamber_id: {'type': 'unsigned', 'range': ['VEC_MDTID_CHAMBER_ID_LEN-1', 0]}
+      - chamber_ieta: {'type': 'unsigned', 'range': ['VEC_MDTID_CHAMBER_IETA_LEN-1', 0]}
+   - tdc_rt:
+      - chanid: {'type': 'unsigned', 'range': ['TDC_CHANID_LEN-1', 0]}
+      - edgemode: {'type': 'logic', 'range': ['TDC_EDGEMODE_LEN-1', 0]}
+      - coarsetime: {'type': 'unsigned', 'range': ['TDC_COARSETIME_LEN-1', 0]}
+      - finetime: {'type': 'unsigned', 'range': ['TDC_FINETIME_LEN-1', 0]}
+      - pulsewidth: {'type': 'unsigned', 'range': ['TDC_PULSEWIDTH_LEN-1', 0]}
+   - ucm2pl_rt:
+      - data_valid: {'type': 'logic'}
+      - busy: {'type': 'logic'}
+      - process_ch: {'type': 'logic', 'range': ['UCM2PL_PROCESS_CH_LEN-1', 0]}
+      - common: {'type': 'slc_common_rt'}
+      - phimod: {'type': 'signed', 'range': ['UCM2PL_PHIMOD_LEN-1', 0]}
+      - nswseg_angdtheta: {'type': 'signed', 'range': ['SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN-1', 0]}
+      - nswseg_posphi: {'type': 'unsigned', 'range': ['SLC_ENDCAP_NSWSEG_POSPHI_LEN-1', 0]}
+      - nswseg_poseta: {'type': 'unsigned', 'range': ['SLC_ENDCAP_NSWSEG_POSETA_LEN-1', 0]}
+   - tdcpolmux2tar_rt:
+      - data_valid: {'type': 'logic'}
+      - tdc: {'type': 'tdc_rt'}
+      - csmid: {'type': 'unsigned', 'range': ['TDCPOLMUX2TAR_CSMID_LEN-1', 0]}
+      - tdcid: {'type': 'unsigned', 'range': ['TDCPOLMUX2TAR_TDCID_LEN-1', 0]}
+   - ucm2hps_rt:
+      - data_valid: {'type': 'logic'}
+      - muid: {'type': 'slc_muid_rt'}
+      - mdtseg_dest: {'type': 'logic', 'range': ['UCM2HPS_MDTSEG_DEST_LEN-1', 0]}
+      - mdtid: {'type': 'vec_mdtid_rt'}
+      - vec_pos: {'type': 'unsigned', 'range': ['UCM2HPS_VEC_POS_LEN-1', 0]}
+      - vec_ang: {'type': 'unsigned', 'range': ['UCM2HPS_VEC_ANG_LEN-1', 0]}
+   - heg2sfslc_rt:
+      - data_valid: {'type': 'logic'}
+      - muid: {'type': 'slc_muid_rt'}
+      - mdtseg_dest: {'type': 'logic', 'range': ['HEG2SFSLC_MDTSEG_DEST_LEN-1', 0]}
+      - mdtid: {'type': 'vec_mdtid_rt'}
+      - vec_pos: {'type': 'unsigned', 'range': ['UCM2HPS_VEC_POS_LEN-1', 0]}
+      - vec_ang: {'type': 'unsigned', 'range': ['UCM2HPS_VEC_ANG_LEN-1', 0]}
+      - hewindow_pos: {'type': 'unsigned', 'range': ['HEG2SFSLC_HEWINDOW_POS_LEN-1', 0]}
+   - tar2hps_rt:
+      - data_valid: {'type': 'logic'}
+      - chamber_ieta: {'type': 'unsigned', 'range': ['VEC_MDTID_CHAMBER_IETA_LEN-1', 0]}
+      - layer: {'type': 'unsigned', 'range': ['TAR2HPS_LAYER_LEN-1', 0]}
+      - tube: {'type': 'unsigned', 'range': ['TAR2HPS_TUBE_LEN-1', 0]}
+      - time: {'type': 'unsigned', 'range': ['TAR2HPS_TIME_LEN-1', 0]}
+   - heg2sfhit_rt:
+      - data_valid: {'type': 'logic'}
+      - mlayer: {'type': 'logic'}
+      - localx: {'type': 'unsigned', 'range': ['HEG2SFHIT_LOCALX_LEN-1', 0]}
+      - localy: {'type': 'unsigned', 'range': ['HEG2SFHIT_LOCALY_LEN-1', 0]}
+      - radius: {'type': 'unsigned', 'range': ['HEG2SFHIT_RADIUS_LEN-1', 0]}
+   - pl2ptcalc_rt:
+      - data_valid: {'type': 'logic'}
+      - muid: {'type': 'slc_muid_rt'}
+      - phimod: {'type': 'signed', 'range': ['UCM2PL_PHIMOD_LEN-1', 0]}
+      - sl_charge: {'type': 'logic'}
+      - nswseg_poseta: {'type': 'unsigned', 'range': ['SLC_ENDCAP_NSWSEG_POSETA_LEN-1', 0]}
+      - nswseg_posphi: {'type': 'unsigned', 'range': ['SLC_ENDCAP_NSWSEG_POSPHI_LEN-1', 0]}
+      - nswseg_angdtheta: {'type': 'signed', 'range': ['SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN-1', 0]}
+   - sf2ptcalc_rt:
+      - data_valid: {'type': 'logic'}
+      - muid: {'type': 'slc_muid_rt'}
+      - segpos: {'type': 'unsigned', 'range': ['SF2PTCALC_SEGPOS_LEN-1', 0]}
+      - segangle: {'type': 'unsigned', 'range': ['SF2PTCALC_SEGANGLE_LEN-1', 0]}
+      - segquality: {'type': 'logic'}
+      - mdtid: {'type': 'vec_mdtid_rt'}
+   - ptcalc2mtc_rt:
+      - data_valid: {'type': 'logic'}
+      - muid: {'type': 'slc_muid_rt'}
+      - mdt_eta: {'type': 'signed', 'range': ['PTCALC2MTC_MDT_ETA_LEN-1', 0]}
+      - mdt_pt: {'type': 'unsigned', 'range': ['PTCALC2MTC_MDT_PT_LEN-1', 0]}
+      - mdt_ptthresh: {'type': 'unsigned', 'range': ['PTCALC2MTC_MDT_PTTHRESH_LEN-1', 0]}
+      - mdt_charge: {'type': 'logic'}
+      - mdt_nsegments: {'type': 'unsigned', 'range': ['PTCALC2MTC_MDT_NSEGMENTS_LEN-1', 0]}
+      - mdt_quality: {'type': 'logic', 'range': ['PTCALC2MTC_MDT_QUALITY_LEN-1', 0]}
+   - pl2mtc_rt:
+      - data_valid: {'type': 'logic'}
+      - busy: {'type': 'logic'}
+      - process_ch: {'type': 'logic', 'range': ['UCM2PL_PROCESS_CH_LEN-1', 0]}
+      - common: {'type': 'slc_common_rt'}
+   - mtc2sl_rt:
+      - data_valid: {'type': 'logic'}
+      - common: {'type': 'slc_common_rt'}
+      - mdt_eta: {'type': 'signed', 'range': ['PTCALC2MTC_MDT_ETA_LEN-1', 0]}
+      - mdt_pt: {'type': 'unsigned', 'range': ['PTCALC2MTC_MDT_PT_LEN-1', 0]}
+      - mdt_ptthresh: {'type': 'unsigned', 'range': ['PTCALC2MTC_MDT_PTTHRESH_LEN-1', 0]}
+      - mdt_charge: {'type': 'logic'}
+      - mdt_procflags: {'type': 'logic', 'range': ['MTC2SL_MDT_PROCFLAGS_LEN-1', 0]}
+      - mdt_nsegments: {'type': 'unsigned', 'range': ['PTCALC2MTC_MDT_NSEGMENTS_LEN-1', 0]}
+      - mdt_quality: {'type': 'logic', 'range': ['PTCALC2MTC_MDT_QUALITY_LEN-1', 0]}
+      - m_reserved: {'type': 'logic', 'range': ['MTC2SL_M_RESERVED_LEN-1', 0]}

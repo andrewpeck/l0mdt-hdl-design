@@ -23,6 +23,8 @@ entity DAQ_map is
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
     Mon              : in  DAQ_Mon_t;
+    
+    
     Ctrl             : out DAQ_Ctrl_t
         
     );

@@ -107,16 +107,16 @@ begin
   t0_ctrl_v <= i_ctrl_t0_v;
   o_mon_t0_v  <= t0_mon_v;
 
-  -- t0_ctrl_v <= vectorify(i_ctrl_t0,t0_ctrl_v);
-  -- o_mon_t0 <= structify(t0_mon_v,o_mon_t0);
+  -- t0_ctrl_v <= convert(i_ctrl_t0,t0_ctrl_v);
+  -- o_mon_t0 <= convert(t0_mon_v,o_mon_t0);
 
-  -- tc_ctrl_v <= vectorify(i_ctrl_tc,tc_ctrl_v);
-  -- o_mon_tc <= structify(tc_mon_v,o_mon_tc);
+  -- tc_ctrl_v <= convert(i_ctrl_tc,tc_ctrl_v);
+  -- o_mon_tc <= convert(tc_mon_v,o_mon_tc);
 
-  i_mdt_tar_r  <= structify(i_mdt_tar_v,i_mdt_tar_r);
+  i_mdt_tar_r  <= convert(i_mdt_tar_v,i_mdt_tar_r);
 
-  -- mdt_tar_data_pl(0) <= structify(i_mdt_tar_v);
-  o_mdt_full_data_v <= vectorify(mdt_full_data_r,o_mdt_full_data_v);
+  -- mdt_tar_data_pl(0) <= convert(i_mdt_tar_v);
+  o_mdt_full_data_v <= convert(mdt_full_data_r,o_mdt_full_data_v);
 
   T0 : entity hps_lib.hps_pc_b_t0
     generic map(
@@ -166,7 +166,7 @@ begin
     --     if rst = '1' then
     --       for i in 0 to c_HPS_PC_PL_LEN - 2 loop
     --         dv_pl(i) <= '0';
-    --         mdt_tar_data_pl(i) <= nullify(mdt_tar_data_pl(i));
+    --         mdt_tar_data_pl(i) <= zero(mdt_tar_data_pl(i));
     --       end loop;
     --     else
     --       dv_pl(0) <= i_mdt_tar_r.data_valid;
@@ -196,7 +196,7 @@ begin
       o_dv        => pl_mdt_tar_dv
     );
 
-    pl_mdt_tar_r  <= structify(pl_mdt_tar_v,pl_mdt_tar_r);
+    pl_mdt_tar_r  <= convert(pl_mdt_tar_v,pl_mdt_tar_r);
   
 
   COORD : process(clk)
@@ -242,7 +242,7 @@ begin
           --
           mdt_full_data_r.data_valid <= '1';
         else
-          mdt_full_data_r <= nullify(mdt_full_data_r);
+          mdt_full_data_r <= zero(mdt_full_data_r);
           -- mdt_full_data_r.data_valid <= '0';
         end if;
 

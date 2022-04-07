@@ -23,6 +23,8 @@ entity MPL_map is
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
     Mon              : in  MPL_Mon_t;
+    
+    
     Ctrl             : out MPL_Ctrl_t
         
     );

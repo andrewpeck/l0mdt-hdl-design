@@ -154,10 +154,10 @@ begin
 
         tdc_hit_to_polmux.fiberid    <= std_logic_vector(to_unsigned(idx, MDT_FIBER_LEN));
         tdc_hit_to_polmux.muxid      <= std_logic_vector(to_unsigned(channel, MDT_MUXCH_LEN));  -- FIXME: what is a muxid??
-        tdc_hit_to_polmux.tdc        <= structify(tdc_word_from_decoder);
+        tdc_hit_to_polmux.tdc        <= convert(tdc_word_from_decoder);
         tdc_hit_to_polmux.data_valid <= tdc_valid_from_decoder;
 
-        tdc_hits_to_polmux(I) <= vectorify(tdc_hit_to_polmux);
+        tdc_hits_to_polmux(I) <= convert(tdc_hit_to_polmux);
 
         cnt_err : entity work.counter
           generic map (width => 16)
@@ -252,7 +252,7 @@ begin
         return std_logic is
         variable tmp : mdt_polmux_rt;
       begin
-        tmp := structify(a);
+        tmp := convert(a);
         return tmp.data_valid;
       end is_valid;
 
@@ -329,12 +329,12 @@ begin
         assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
           " to INNER tdc stream #" & integer'image(inner_polmux_idx_array(I)) severity note;
 
-        tmp.tdc        <= structify (fifo_output).tdc;
-        tmp.fiberid    <= structify (fifo_output).fiberid;
-        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.tdc        <= convert (fifo_output).tdc;
+        tmp.fiberid    <= convert (fifo_output).fiberid;
+        tmp.muxid      <= convert (fifo_output).muxid;
         tmp.data_valid <= valid;
 
-        tdc_hits_inner(inner_polmux_idx_array(I)) <= vectorify(tmp);
+        tdc_hits_inner(inner_polmux_idx_array(I)) <= convert(tmp);
       end generate;
 
       middle_assign : if (POLMUX_STATION = MIDDLE) generate
@@ -343,12 +343,12 @@ begin
         assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
           " to MIDDLE tdc stream #" & integer'image(middle_polmux_idx_array(I)) severity note;
 
-        tmp.tdc        <= structify (fifo_output).tdc;
-        tmp.fiberid    <= structify (fifo_output).fiberid;
-        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.tdc        <= convert (fifo_output).tdc;
+        tmp.fiberid    <= convert (fifo_output).fiberid;
+        tmp.muxid      <= convert (fifo_output).muxid;
         tmp.data_valid <= valid;
 
-        tdc_hits_middle(middle_polmux_idx_array(I)) <= vectorify(tmp);
+        tdc_hits_middle(middle_polmux_idx_array(I)) <= convert(tmp);
       end generate;
 
       outer_assign : if (POLMUX_STATION = OUTER) generate
@@ -357,12 +357,12 @@ begin
         assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
           " to OUTER tdc stream #" & integer'image(outer_polmux_idx_array(I)) severity note;
 
-        tmp.tdc        <= structify (fifo_output).tdc;
-        tmp.fiberid    <= structify (fifo_output).fiberid;
-        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.tdc        <= convert (fifo_output).tdc;
+        tmp.fiberid    <= convert (fifo_output).fiberid;
+        tmp.muxid      <= convert (fifo_output).muxid;
         tmp.data_valid <= valid;
 
-        tdc_hits_outer(outer_polmux_idx_array(I)) <= vectorify(tmp);
+        tdc_hits_outer(outer_polmux_idx_array(I)) <= convert(tmp);
       end generate;
 
       extra_assign : if (POLMUX_STATION = EXTRA) generate
@@ -371,12 +371,12 @@ begin
         assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
           " to EXTRA tdc stream #" & integer'image(extra_polmux_idx_array(I)) severity note;
 
-        tmp.tdc        <= structify (fifo_output).tdc;
-        tmp.fiberid    <= structify (fifo_output).fiberid;
-        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.tdc        <= convert (fifo_output).tdc;
+        tmp.fiberid    <= convert (fifo_output).fiberid;
+        tmp.muxid      <= convert (fifo_output).muxid;
         tmp.data_valid <= valid;
 
-        tdc_hits_extra(extra_polmux_idx_array(I)) <= vectorify(tmp);
+        tdc_hits_extra(extra_polmux_idx_array(I)) <= convert(tmp);
       end generate;
 
     end generate;  -- check polmux idx array

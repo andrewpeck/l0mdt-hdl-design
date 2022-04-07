@@ -34,7 +34,7 @@ begin
   port_or.cmds <= cmds_r;
   port_or.cnt <= cnt_r;
 
-  fmt_r <= structify(port_ir.data, fmt_r);
+  fmt_r <= convert(port_ir.data, fmt_r);
 
   ocr <= fmt_r.bcr and fmt_40_dr.bcr;
 
@@ -125,8 +125,8 @@ architecture V2 of ttc_wrap is
   signal port_ir : ttc_irt;
   signal port_or : ttc_ort;
 begin
-  port_ir <= structify(port_iv, port_ir);
-  port_ov <= vectorify(port_or, port_ov);
+  port_ir <= convert(port_iv, port_ir);
+  port_ov <= convert(port_or, port_ov);
   u_ttc : entity work.ttc
     port map (port_ir => port_ir, port_or => port_or);
 end V2;

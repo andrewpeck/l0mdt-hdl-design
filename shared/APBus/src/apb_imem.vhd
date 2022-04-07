@@ -100,9 +100,9 @@ architecture beh of apb_imem is
   ----------------------------
 
   signal apb_ctrl_r       : APB_MEM_SIG_CTRL_t;
-  signal apb_ctrl_v       : std_logic_vector(len(apb_ctrl_r)-1 downto 0);
+  signal apb_ctrl_v       : std_logic_vector(APB_MEM_SIG_CTRL_t'w -1 downto 0);
   signal apb_mon_r        : APB_MEM_SIG_MON_t;
-  signal apb_mon_v        : std_logic_vector(len(apb_mon_r)-1 downto 0);
+  signal apb_mon_v        : std_logic_vector(APB_MEM_SIG_MON_t'w -1 downto 0);
 
   signal apb_rd_addr      : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
   signal apb_wr_addr      : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
@@ -132,83 +132,83 @@ architecture beh of apb_imem is
 begin
 
   model_mem: if g_XML_NODE_NAME = "MEM_INT_10A38D" generate
-    ctrl_10A38D_r <= structify(ctrl_v,ctrl_10A38D_r);
-    apb_ctrl_v    <= vectorify(ctrl_10A38D_r.SIGNALS,apb_ctrl_v);
-    apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
+    ctrl_10A38D_r <= convert(ctrl_v,ctrl_10A38D_r);
+    apb_ctrl_v    <= convert(ctrl_10A38D_r.SIGNALS,apb_ctrl_v);
+    apb_ctrl_r    <= convert(apb_ctrl_v,apb_ctrl_r);
     apb_rd_addr   <= ctrl_10A38D_r.rd_addr;
     apb_wr_addr   <= ctrl_10A38D_r.wr_addr;
-    apb_wr_data   <= vectorify(ctrl_10A38D_r.wr_data,apb_wr_data);
+    apb_wr_data   <= convert(ctrl_10A38D_r.wr_data,apb_wr_data);
     --
-    mon_10A38D_r.rd_data <= structify(apb_rd_data,mon_10A38D_r.rd_data);
-    apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
-    mon_10A38D_r.SIGNALS <= structify(apb_mon_v,mon_10A38D_r.SIGNALS); 
+    mon_10A38D_r.rd_data <= convert(apb_rd_data,mon_10A38D_r.rd_data);
+    apb_mon_v  <= convert(apb_mon_r,apb_mon_v);
+    mon_10A38D_r.SIGNALS <= convert(apb_mon_v,mon_10A38D_r.SIGNALS); 
 
-    mon_v <= vectorify(mon_10A38D_r,mon_v);
+    mon_v <= convert(mon_10A38D_r,mon_v);
   elsif g_XML_NODE_NAME = "MEM_INT_12A148D" generate
-    ctrl_12A148D_r <= structify(ctrl_v,ctrl_12A148D_r);
-    apb_ctrl_v    <= vectorify(ctrl_12A148D_r.SIGNALS,apb_ctrl_v);
-    apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
+    ctrl_12A148D_r <= convert(ctrl_v,ctrl_12A148D_r);
+    apb_ctrl_v    <= convert(ctrl_12A148D_r.SIGNALS,apb_ctrl_v);
+    apb_ctrl_r    <= convert(apb_ctrl_v,apb_ctrl_r);
     apb_rd_addr   <= ctrl_12A148D_r.rd_addr;
     apb_wr_addr   <= ctrl_12A148D_r.wr_addr;
-    apb_wr_data   <= vectorify(ctrl_12A148D_r.wr_data,apb_wr_data);
+    apb_wr_data   <= convert(ctrl_12A148D_r.wr_data,apb_wr_data);
     --
-    mon_12A148D_r.rd_data <= structify(apb_rd_data,mon_12A148D_r.rd_data);
-    apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
-    mon_12A148D_r.SIGNALS <= structify(apb_mon_v,mon_12A148D_r.SIGNALS); 
+    mon_12A148D_r.rd_data <= convert(apb_rd_data,mon_12A148D_r.rd_data);
+    apb_mon_v  <= convert(apb_mon_r,apb_mon_v);
+    mon_12A148D_r.SIGNALS <= convert(apb_mon_v,mon_12A148D_r.SIGNALS); 
 
-    mon_v <= vectorify(mon_12A148D_r,mon_v);
+    mon_v <= convert(mon_12A148D_r,mon_v);
   elsif g_XML_NODE_NAME = "MEM_INT_12A42D" generate
-    ctrl_12A42D_r <= structify(ctrl_v,ctrl_12A42D_r);
-    apb_ctrl_v    <= vectorify(ctrl_12A42D_r.SIGNALS,apb_ctrl_v);
-    apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
+    ctrl_12A42D_r <= convert(ctrl_v,ctrl_12A42D_r);
+    apb_ctrl_v    <= convert(ctrl_12A42D_r.SIGNALS,apb_ctrl_v);
+    apb_ctrl_r    <= convert(apb_ctrl_v,apb_ctrl_r);
     apb_rd_addr   <= ctrl_12A42D_r.rd_addr;
     apb_wr_addr   <= ctrl_12A42D_r.wr_addr;
-    apb_wr_data   <= vectorify(ctrl_12A42D_r.wr_data,apb_wr_data);
+    apb_wr_data   <= convert(ctrl_12A42D_r.wr_data,apb_wr_data);
     --
-    mon_12A42D_r.rd_data <= structify(apb_rd_data,mon_12A42D_r.rd_data);
-    apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
-    mon_12A42D_r.SIGNALS <= structify(apb_mon_v,mon_12A42D_r.SIGNALS); 
+    mon_12A42D_r.rd_data <= convert(apb_rd_data,mon_12A42D_r.rd_data);
+    apb_mon_v  <= convert(apb_mon_r,apb_mon_v);
+    mon_12A42D_r.SIGNALS <= convert(apb_mon_v,mon_12A42D_r.SIGNALS); 
 
-    mon_v <= vectorify(mon_12A42D_r,mon_v);
+    mon_v <= convert(mon_12A42D_r,mon_v);
   elsif g_XML_NODE_NAME = "MEM_INT_10A9D" generate
-    ctrl_10A9D_r <= structify(ctrl_v,ctrl_10A9D_r);
-    apb_ctrl_v    <= vectorify(ctrl_10A9D_r.SIGNALS,apb_ctrl_v);
-    apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
+    ctrl_10A9D_r <= convert(ctrl_v,ctrl_10A9D_r);
+    apb_ctrl_v    <= convert(ctrl_10A9D_r.SIGNALS,apb_ctrl_v);
+    apb_ctrl_r    <= convert(apb_ctrl_v,apb_ctrl_r);
     apb_rd_addr   <= ctrl_10A9D_r.rd_addr;
     apb_wr_addr   <= ctrl_10A9D_r.wr_addr;
-    apb_wr_data   <= vectorify(ctrl_10A9D_r.wr_data,apb_wr_data);
+    apb_wr_data   <= convert(ctrl_10A9D_r.wr_data,apb_wr_data);
     --
-    mon_10A9D_r.rd_data <= structify(apb_rd_data,mon_10A9D_r.rd_data);
-    apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
-    mon_10A9D_r.SIGNALS <= structify(apb_mon_v,mon_10A9D_r.SIGNALS); 
+    mon_10A9D_r.rd_data <= convert(apb_rd_data,mon_10A9D_r.rd_data);
+    apb_mon_v  <= convert(apb_mon_r,apb_mon_v);
+    mon_10A9D_r.SIGNALS <= convert(apb_mon_v,mon_10A9D_r.SIGNALS); 
 
-    mon_v <= vectorify(mon_10A9D_r,mon_v);
+    mon_v <= convert(mon_10A9D_r,mon_v);
   elsif g_XML_NODE_NAME = "MEM_INT_4A17D" generate
-    ctrl_4A17D_r <= structify(ctrl_v,ctrl_4A17D_r);
-    apb_ctrl_v    <= vectorify(ctrl_4A17D_r.SIGNALS,apb_ctrl_v);
-    apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
+    ctrl_4A17D_r <= convert(ctrl_v,ctrl_4A17D_r);
+    apb_ctrl_v    <= convert(ctrl_4A17D_r.SIGNALS,apb_ctrl_v);
+    apb_ctrl_r    <= convert(apb_ctrl_v,apb_ctrl_r);
     apb_rd_addr   <= ctrl_4A17D_r.rd_addr;
     apb_wr_addr   <= ctrl_4A17D_r.wr_addr;
-    apb_wr_data   <= vectorify(ctrl_4A17D_r.wr_data,apb_wr_data);
+    apb_wr_data   <= convert(ctrl_4A17D_r.wr_data,apb_wr_data);
     --
-    mon_4A17D_r.rd_data <= structify(apb_rd_data,mon_4A17D_r.rd_data);
-    apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
-    mon_4A17D_r.SIGNALS <= structify(apb_mon_v,mon_4A17D_r.SIGNALS); 
+    mon_4A17D_r.rd_data <= convert(apb_rd_data,mon_4A17D_r.rd_data);
+    apb_mon_v  <= convert(apb_mon_r,apb_mon_v);
+    mon_4A17D_r.SIGNALS <= convert(apb_mon_v,mon_4A17D_r.SIGNALS); 
 
-    mon_v <= vectorify(mon_4A17D_r,mon_v);
+    mon_v <= convert(mon_4A17D_r,mon_v);
   elsif g_XML_NODE_NAME = "MEM_INT_8A16D" generate
-    ctrl_8A16D_r <= structify(ctrl_v,ctrl_8A16D_r);
-    apb_ctrl_v    <= vectorify(ctrl_8A16D_r.SIGNALS,apb_ctrl_v);
-    apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
+    ctrl_8A16D_r <= convert(ctrl_v,ctrl_8A16D_r);
+    apb_ctrl_v    <= convert(ctrl_8A16D_r.SIGNALS,apb_ctrl_v);
+    apb_ctrl_r    <= convert(apb_ctrl_v,apb_ctrl_r);
     apb_rd_addr   <= ctrl_8A16D_r.rd_addr;
     apb_wr_addr   <= ctrl_8A16D_r.wr_addr;
-    apb_wr_data   <= vectorify(ctrl_8A16D_r.wr_data,apb_wr_data);
+    apb_wr_data   <= convert(ctrl_8A16D_r.wr_data,apb_wr_data);
     --
-    mon_8A16D_r.rd_data <= structify(apb_rd_data,mon_8A16D_r.rd_data);
-    apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
-    mon_8A16D_r.SIGNALS <= structify(apb_mon_v,mon_8A16D_r.SIGNALS); 
+    mon_8A16D_r.rd_data <= convert(apb_rd_data,mon_8A16D_r.rd_data);
+    apb_mon_v  <= convert(apb_mon_r,apb_mon_v);
+    mon_8A16D_r.SIGNALS <= convert(apb_mon_v,mon_8A16D_r.SIGNALS); 
 
-    mon_v <= vectorify(mon_8A16D_r,mon_v);
+    mon_v <= convert(mon_8A16D_r,mon_v);
   end generate model_mem;
 
   MEM_TYPE: if g_MEMORY_TYPE = "distributed" generate
@@ -234,7 +234,7 @@ begin
           int_wr_status <=  x"0";
           int_rd_status <=  x"0";
 
-          apb_mon_r <= nullify(apb_mon_r);
+          apb_mon_r <= zero(apb_mon_r);
   
         else
           -----------------------------------------------
@@ -356,7 +356,7 @@ begin
           int_wr_status <=  x"0";
           int_rd_status <=  x"0";
 
-          apb_mon_r <= nullify(apb_mon_r);
+          apb_mon_r <= zero(apb_mon_r);
 
   
         else

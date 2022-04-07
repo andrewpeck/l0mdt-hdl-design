@@ -54,3 +54,4 @@ __init__.py
 kernel/
 package.json
 */package.json
+**/*.yml.old

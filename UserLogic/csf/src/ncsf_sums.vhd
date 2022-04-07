@@ -62,14 +62,14 @@ ARCHITECTURE Behavioral OF ncsf_sums IS
 
 BEGIN
 
-    hit <= structify(i_hit,hit);
-    o_sums <= vectorify(sums,o_sums);
+    hit <= convert(i_hit,hit);
+    o_sums <= convert(sums,o_sums);
 
     Summing : PROCESS (clk)
     BEGIN
         IF rising_edge(clk) THEN
             hit_s <= hit;
-            sums <= nullify(sums);
+            sums <= zero(sums);
 
             IF (hit.valid = '1')
                 THEN

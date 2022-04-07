@@ -73,8 +73,8 @@ architecture beh of mpl_tb is
   --
   signal ctrl_r              : MPL_CTRL_t := DEFAULT_MPL_CTRL_t ;
   signal mon_r               : MPL_MON_t;
-  signal ctrl_v              : std_logic_vector(len(ctrl_r) - 1 downto 0); --  : in  MPL_CTRL_t;
-  signal mon_v               : std_logic_vector(len(mon_r) - 1 downto 0);--  : out MPL_MON_t; 
+  signal ctrl_v              : std_logic_vector(MPL_CTRL_t'w - 1 downto 0); --  : in  MPL_CTRL_t;
+  signal mon_v               : std_logic_vector(MPL_MON_t'w - 1 downto 0);--  : out MPL_MON_t; 
   -- SLc pipeline
   signal i_uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
   signal o_pl2ptcalc_av         : pl2ptcalc_avt(c_NUM_THREADS -1 downto 0);

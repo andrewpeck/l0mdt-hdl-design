@@ -23,6 +23,8 @@ entity TAR_map is
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
     Mon              : in  TAR_Mon_t;
+    
+    
     Ctrl             : out TAR_Ctrl_t
         
     );

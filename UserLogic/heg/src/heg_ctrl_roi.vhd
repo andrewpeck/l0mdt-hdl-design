@@ -23,16 +23,20 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
+-- use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
+
 library heg_lib;
 use heg_lib.heg_pkg.all;
+-- use heg_lib.heg_custom_pkg.all;
+
 -- library hegtypes_lib;
 -- use hegtypes_lib.hp_pkg.all;
 -- use hegtypes_lib.heg_pkg.all;
-use heg_lib.heg_custom_pkg.all;
 
 
 entity heg_ctrl_roi is
@@ -68,10 +72,10 @@ begin
 
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
-    uCM_data_r <= structify(i_uCM_data_v,uCM_data_r);
-    -- slc_b_data_r <= structify(uCM_data_r.specific);
+    uCM_data_r <= convert(i_uCM_data_v,uCM_data_r);
+    -- slc_b_data_r <= convert(uCM_data_r.specific);
     for_gen_SW : for il in get_num_layers(g_STATION_RADIUS) -1 downto 0 generate
-      o_SLC_Window_av(il) <= vectorify(SLC_Window_ar(il),o_SLC_Window_av(il));
+      o_SLC_Window_av(il) <= convert(SLC_Window_ar(il),o_SLC_Window_av(il));
     end generate ; -- identifier
     
     ROI_Z : entity heg_lib.b_z2roi

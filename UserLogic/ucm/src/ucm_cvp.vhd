@@ -72,13 +72,13 @@ architecture beh of ucm_cvp is
 
   signal rpc_R_ctrl_r : UCM_R_PHI_COMP_RPC_CTRL_t;
   signal rpc_R_mon_r  : UCM_R_PHI_COMP_RPC_MON_t; 
-  signal rpc_R_ctrl_v : std_logic_vector(len(rpc_R_ctrl_r) - 1 downto 0);
-  signal rpc_R_mon_v  : std_logic_vector(len(rpc_R_mon_r) - 1 downto 0);
+  signal rpc_R_ctrl_v : std_logic_vector(UCM_R_PHI_COMP_RPC_CTRL_t'w - 1 downto 0);
+  signal rpc_R_mon_v  : std_logic_vector(UCM_R_PHI_COMP_RPC_MON_t'w - 1 downto 0);
 
   signal mdt_R_ctrl_r : UCM_R_PHI_COMP_MDT_CTRL_t;
   signal mdt_R_mon_r  : UCM_R_PHI_COMP_MDT_MON_t; 
-  signal mdt_R_ctrl_v : std_logic_vector(len(mdt_R_ctrl_r) - 1 downto 0);
-  signal mdt_R_mon_v  : std_logic_vector(len(mdt_R_mon_r) - 1 downto 0);
+  signal mdt_R_ctrl_v : std_logic_vector(UCM_R_PHI_COMP_MDT_CTRL_t'w - 1 downto 0);
+  signal mdt_R_mon_v  : std_logic_vector(UCM_R_PHI_COMP_MDT_MON_t'w - 1 downto 0);
 
   --
 
@@ -419,7 +419,7 @@ begin
       o_ucm2hps_av(hps_i) <= convert(ucm2hps_ar(hps_i),o_ucm2hps_av(hps_i));
     end generate;
     DIS : if c_STATIONS_IN_SECTOR(hps_i) = '0' generate
-      o_ucm2hps_av(hps_i) <= nullify(o_ucm2hps_av(hps_i));
+      o_ucm2hps_av(hps_i) <= zero(o_ucm2hps_av(hps_i));
     end generate;
   end generate;
 
@@ -428,8 +428,8 @@ begin
 
       if local_rst= '1' then
         for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-          ucm2hps_buff_ar(hps_i) <= nullify(ucm2hps_buff_ar(hps_i));
-          ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+          ucm2hps_buff_ar(hps_i) <= zero(ucm2hps_buff_ar(hps_i));
+          ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
           -- ucm2hps_ar(hps_i).data_valid    <= '0';
         end loop;
       else 
@@ -515,10 +515,10 @@ begin
                     -- ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= (others => '0'); 
                     -- ucm2hps_ar(hps_i).mdtid.chamber_id    <= (others => '0'); 
 
-                    ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+                    ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
 
                     -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-                    --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+                    --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
                     -- end loop;
 
                   end if;
@@ -567,7 +567,7 @@ end beh;
 
 
         for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-          -- ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+          -- ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
           ucm2hps_ar(hps_i).data_valid    <= '0';
         end loop;
 
@@ -604,7 +604,7 @@ end beh;
                   else
                     ucm2hps_ar(hps_i).data_valid    <= '0';
                     -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-                    --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+                    --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
                     -- end loop;
 
                   end if;
@@ -615,7 +615,7 @@ end beh;
               -- local origin calc : to be done in HEG local origin of window
             -- else
               -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-              --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+              --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
               -- end loop;
             -- end if;
           -- else --LSF
@@ -625,7 +625,7 @@ end beh;
         
         -- else
         -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-        --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+        --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
         -- end loop;
         -- block dissabled
       end if;

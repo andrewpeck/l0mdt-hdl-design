@@ -148,11 +148,11 @@ BEGIN
     );
 
     clust_loop_gen : for i_c in CSF_MAX_CLUSTERS -1 downto 0 generate
-      sums_ml0(i_c) <= structify(i_sums_ml0(i_c),sums_ml0(i_c));
-      sums_ml1(i_c) <= structify(i_sums_ml1(i_c),sums_ml1(i_c));
+      sums_ml0(i_c) <= convert(i_sums_ml0(i_c),sums_ml0(i_c));
+      sums_ml1(i_c) <= convert(i_sums_ml1(i_c),sums_ml1(i_c));
     end generate ; -- clust_loop_gen
 
-    o_seg <= vectorify(output_seg,o_seg);
+    o_seg <= convert(output_seg,o_seg);
 
     Fitter : PROCESS (clk)
     BEGIN
@@ -160,7 +160,7 @@ BEGIN
 
             -- Clock 0        
             dsp_start <= '0';
-            sums <= nullify(sums);
+            sums <= zero(sums);
             sum_loop : FOR i IN 0 TO CSF_MAX_CLUSTERS - 1 LOOP
                 IF sums_ml0(i).valid = '1' THEN
                     dsp_start <= sums_ml0(i).valid;

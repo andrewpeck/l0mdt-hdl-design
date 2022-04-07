@@ -22,7 +22,9 @@ entity KINTEX_SYS_MGMT_map is
     slave_writeMOSI  : in  AXIWriteMOSI;
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
-    Mon              : in  KINTEX_SYS_MGMT_Mon_t    
+    Mon              : in  KINTEX_SYS_MGMT_Mon_t
+    
+        
     );
 end entity KINTEX_SYS_MGMT_map;
 architecture behavioral of KINTEX_SYS_MGMT_map is

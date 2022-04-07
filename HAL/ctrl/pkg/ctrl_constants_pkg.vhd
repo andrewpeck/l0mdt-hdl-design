@@ -30,9 +30,9 @@ library ctrl_lib;
 package ctrl_constants_pkg is
   
   signal  sc_HPS_CTRL_LEN : HPS_CTRL_t;
-  constant c_HPS_CTRL_LEN : integer := len(sc_HPS_CTRL_LEN);
+  constant c_HPS_CTRL_LEN : integer := width(sc_HPS_CTRL_LEN);
 
   signal  sc_HPS_CTRL_LEN : HPS_CTRL_t;
-  constant c_HPS_CTRL_LEN : integer := len(sc_HPS_CTRL_LEN);
+  constant c_HPS_CTRL_LEN : integer := width(sc_HPS_CTRL_LEN);
   
 end package ctrl_constants_pkg;
