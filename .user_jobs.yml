@@ -69,7 +69,7 @@
   artifacts:
     name: user_sim
     paths:
-      - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/$PROJECT_NAME.sim
+      - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/*.sim
       - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
     expire_in: 30 day
   allow_failure: false
@@ -99,7 +99,7 @@
   artifacts:
     name: user_sim
     paths:
-      - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/$PROJECT_NAME.sim
+      - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/*.sim
       - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
     expire_in: 30 day
   allow_failure: false
