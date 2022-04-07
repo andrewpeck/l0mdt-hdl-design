@@ -23,9 +23,7 @@
 
 .riviera_vars: &riviera_vars
   GIT_STRATEGY: clone
-  HOG_SIMULATION_LIB_PATH: /afs/cern.ch/work/l/l0mdtel/RivieraLibs
   GIT_SUBMODULE_STRATEGY: recursive
-  HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
 
 
 .chk_variables: &chk_variables 
@@ -80,7 +78,9 @@
 .riviera_sim: &riviera_sim
   <<: *only-default
   <<: *tag-hog
-  <<: *riviera_vars
+  variables:
+    HOG_SIMULATION_LIB_PATH: /afs/cern.ch/work/l/l0mdtel/RivieraLibs
+    HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
   stage: generation_and_simulation
   script:
     - export PATH=${HOG_PATH}:$PATH
