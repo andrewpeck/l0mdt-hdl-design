@@ -7,7 +7,7 @@ GEN:ncsf:
       HOG_NO_BITSTREAM: 1 # if 1 runs only the synthesis
 
 RIV:ncsf:
-    extends: .simulate_project
+    extends: .riviera_sim
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/ncsf

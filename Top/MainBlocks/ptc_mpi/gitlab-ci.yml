@@ -7,25 +7,21 @@
 #       HOG_NO_BITSTREAM: 1 # if 1 runs only the synthesis
 
 
-SIM:ptc_mpi:
-    extends: .simulate_project
+RIV:ptc_mpi:
+    extends: .riviera_sim
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/ptc_mpi
-    tags:
-      - questa
-      - hog
-      - "2020.2"
       
-CHK:ptc_mpi:
-  extends: .sim_check
-  variables: 
-    extends: .vars
-    PROJECT_NAME: MainBlocks/ptc_mpi
-    BLOCK: PTC
-  needs: ["SIM:ptc_mpi"]
-  artifacts:
-    name: CHK_ptc
-    paths:
-      - $CI_PROJECT_DIR/bin
-    expire_in: 30 day
+# CHK:ptc_mpi:
+#   extends: .sim_check
+#   variables: 
+#     extends: .vars
+#     PROJECT_NAME: MainBlocks/ptc_mpi
+#     BLOCK: PTC
+#   needs: ["SIM:ptc_mpi"]
+#   artifacts:
+#     name: CHK_ptc
+#     paths:
+#       - $CI_PROJECT_DIR/bin
+#     expire_in: 30 day
