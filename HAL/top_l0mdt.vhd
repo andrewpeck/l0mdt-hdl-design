@@ -27,7 +27,7 @@ use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.FM_CTRL.all;
 
-library shared_lib;git s
+library shared_lib;
 use shared_lib.spybuffer_pkg.all;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
