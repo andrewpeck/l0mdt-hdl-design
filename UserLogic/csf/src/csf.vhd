@@ -394,12 +394,12 @@ begin
 
       );
 
-    mdt_hit <= structify(csf_mdt_hit,mdt_hit);
-    seed_i  <= structify(csf_seed,seed_i);
+    mdt_hit <= convert(csf_mdt_hit,mdt_hit);
+    seed_i  <= convert(csf_seed,seed_i);
 
   ELSE GENERATE
-    mdt_hit <= structify(i_mdt_hit,mdt_hit);
-    seed_i  <= structify(i_seed,seed_i);
+    mdt_hit <= convert(i_mdt_hit,mdt_hit);
+    seed_i  <= convert(i_seed,seed_i);
     o_seg   <= globseg;
   end generate spybuffer_generate;
 
@@ -531,7 +531,7 @@ begin
       o_globseg => globseg
     );
 
-  out_seg <= structify(output_segment,out_seg);
+  out_seg <= convert(output_segment,out_seg);
 
   csf_proc : process (clk) is
   begin

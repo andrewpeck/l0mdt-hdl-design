@@ -3,20 +3,9 @@
 #---------------------------------
 shared/shared_lib_basic.src
 #---------------------------------
-# Detector shared RAMs ( Under dev)
+# Detector shared RAMs
 #---------------------------------
-# shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber_pkg.vhd
-# shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber.vhd
-# shared/detector_parameters/l0mdt_RAMs/pkg/barrel_chamb_z2origin_pkg.vhd
-# shared/detector_parameters/l0mdt_RAMs/src/chamber_z_org.vhd
-# #---------------------------------
-# # Detector shared RAMs
-# #---------------------------------
 shared/detector_parameters/detector_parameters_lib.src
-#---------------------------------
-# VHDL2008 functions not implemented in Vivado
-#---------------------------------
-shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 #---------------------------------
 # Apollo Platform axi Bus
 #---------------------------------
@@ -38,8 +27,10 @@ shared/memories/memories_lib.src
 #---------------------------------
 # VHDL utils
 #---------------------------------
+shared/vhdl_utilities/pkg/vhdl2008_functions_pkg.vhd
 shared/vhdl_utilities/src/vhdl_utils_deserializer.vhd
 shared/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
+
 shared/arithmetics/arithmetics_lib.src
 # shared/functions/trigonometrics/roi_atan_pkg.vhd
 # shared/functions/trigonometrics/roi_atan.vhd

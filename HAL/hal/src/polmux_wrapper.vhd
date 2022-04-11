@@ -81,7 +81,7 @@ begin
     process (pipeline_clock) is
     begin
       if (rising_edge(pipeline_clock)) then
-        tdc_hits   <= vectorify(polmux_o,tdc_hits);
+        tdc_hits   <= convert(polmux_o,tdc_hits);
         tdc_hits_o <= tdc_hits;
       end if;
     end process;
@@ -93,7 +93,7 @@ begin
     signal fifo_dout : std_logic_vector (63 downto 0) := (others => '0');
   begin
 
-    fifo_din <= std_logic_vector(resize(unsigned(vectorify(polmux_o,polmux_o_v)), fifo_din'length));  -- zero pad
+    fifo_din <= std_logic_vector(resize(unsigned(convert(polmux_o,polmux_o_v)), fifo_din'length));  -- zero pad
 
     polmux_sync_fifo_inst : entity tdc.fifo_async
       generic map (

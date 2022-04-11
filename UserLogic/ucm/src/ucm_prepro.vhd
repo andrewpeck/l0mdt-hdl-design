@@ -134,7 +134,7 @@ begin
   -- UCM_PRE_PROC : process(rst,clk) begin
   --   if rising_edge(clk) then
   --     if(rst= '1') then
-  --       prepro_data_r <= nullify(prepro_data_r);
+  --       prepro_data_r <= zero(prepro_data_r);
   --     else
   --       if i_slc_data_r.data_valid = '1' then
   --         -- prepro_data_r.muid        <= i_slc_data_r.muid;
@@ -143,7 +143,7 @@ begin
   --         -- prepro_data_r.specific    <= i_slc_data_r.slc_specific;
   --         prepro_data_r.data_valid  <= i_slc_data_r.data_valid;
   --       else
-  --         prepro_data_r <= nullify(prepro_data_r);
+  --         prepro_data_r <= zero(prepro_data_r);
   --       end if;
   --     end if;
   --   end if;

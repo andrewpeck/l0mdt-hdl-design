@@ -111,8 +111,8 @@ ARCHITECTURE Behavioral OF csf_chi2 IS
 
 BEGIN
 
-    hit1 <= structify(i_hit1,hit1);
-    hit2 <= structify(i_hit2,hit2);
+    hit1 <= convert(i_hit1,hit1);
+    hit2 <= convert(i_hit2,hit2);
 
     HitBuffer1 : ENTITY shared_lib.bram_tdp
         GENERIC MAP(
@@ -144,15 +144,15 @@ BEGIN
             b_dout => hit_vec2
         );
 
-    outhit1 <= structify(hit_vec1,outhit1);
-    outhit2 <= structify(hit_vec2,outhit2);
+    outhit1 <= convert(hit_vec1,outhit1);
+    outhit2 <= convert(hit_vec2,outhit2);
 
-    o_seg <= vectorify(output_seg,o_seg);
+    o_seg <= convert(output_seg,o_seg);
 
     Chi2Proc : PROCESS (clk)
     BEGIN
         IF rising_edge(clk) THEN
-            output_seg <= nullify(output_seg);
+            output_seg <= zero(output_seg);
 
             -- Store Hits into a RAM, waiting for the fit result
             IF hit1.valid = '1' THEN

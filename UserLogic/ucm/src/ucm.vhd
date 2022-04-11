@@ -66,40 +66,38 @@ architecture beh of ucm is
 
   signal super_ctrl_r : UCM_SUPER_CTRL_t;
   signal super_mon_r : UCM_SUPER_MON_t;
-  signal super_ctrl_v : std_logic_vector(len(super_ctrl_r) - 1 downto 0);
-  signal super_mon_v : std_logic_vector(len(super_mon_r) - 1 downto 0);
+  signal super_ctrl_v : std_logic_vector(UCM_SUPER_CTRL_t'w - 1 downto 0);
+  signal super_mon_v : std_logic_vector(UCM_SUPER_MON_t'w - 1 downto 0);
 
   signal r_phi_comp_ctrl_r : UCM_R_PHI_COMP_CTRL_t;
-  signal r_phi_comp_ctrl_v : std_logic_vector(len(r_phi_comp_ctrl_r) - 1 downto 0);
+  signal r_phi_comp_ctrl_v : std_logic_vector(UCM_R_PHI_COMP_CTRL_t'w - 1 downto 0);
   signal r_phi_comp_mon_r  : UCM_R_PHI_COMP_MON_t;
-  type   r_phi_comp_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(r_phi_comp_mon_r) -1 downto 0);
+  type   r_phi_comp_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(UCM_R_PHI_COMP_MON_t'w -1 downto 0);
   signal r_phi_comp_mon_av  : r_phi_comp_mon_avt;
-  signal r_phi_comp_mon_null : std_logic_vector(len(r_phi_comp_mon_r) -1 downto 0)  := (others => '0');
-  -- type   mdt_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(mdt_R_mon_r) -1 downto 0);
+  signal r_phi_comp_mon_null : std_logic_vector(UCM_R_PHI_COMP_MON_t'w -1 downto 0)  := (others => '0');
+  -- type   mdt_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(UCM_R_PHI_COMP_RPC_MON_t'w -1 downto 0);
   -- signal mdt_mon_av  : mdt_mon_avt;
-  -- signal mdt_mon_null : std_logic_vector(len(mdt_R_mon_r) -1 downto 0)  := (others => '0');
+  -- signal mdt_mon_null : std_logic_vector(UCM_R_PHI_COMP_RPC_MON_t'w -1 downto 0)  := (others => '0');
 
   -- signal rpc_R_ctrl_r : UCM_RPC_R_COMP_CTRL_t;
   signal rpc_R_mon_r  : UCM_R_PHI_COMP_RPC_MON_t;
   -- signal rpc_R_ctrl_v : std_logic_vector(len(rpc_R_ctrl_r) - 1 downto 0);
-  signal rpc_R_mon_v  : std_logic_vector(len(rpc_R_mon_r) - 1 downto 0);
-
+  signal rpc_R_mon_v  : std_logic_vector(UCM_R_PHI_COMP_RPC_MON_t'w - 1 downto 0);
+  type   rpc_mon_art is array (0 to c_NUM_THREADS - 1) of UCM_R_PHI_COMP_RPC_MON_t;
+  signal rpc_mon_a  : rpc_mon_art;
+  type   rpc_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(UCM_R_PHI_COMP_RPC_MON_t'w -1 downto 0);
+  signal rpc_mon_av  : rpc_mon_avt;
+  signal rpc_mon_null : std_logic_vector(UCM_R_PHI_COMP_RPC_MON_t'w -1 downto 0)  := (others => '0');
+  
   -- signal mdt_R_ctrl_r : UCM_MDT_R_COMP_CTRL_t;
   signal mdt_R_mon_r  : UCM_R_PHI_COMP_MDT_MON_t;
   -- signal mdt_R_ctrl_v : std_logic_vector(len(mdt_R_ctrl_r) - 1 downto 0);
-  signal mdt_R_mon_v  : std_logic_vector(len(mdt_R_mon_r) - 1 downto 0);
-
-  type   rpc_mon_art is array (0 to c_NUM_THREADS - 1) of UCM_R_PHI_COMP_RPC_MON_t;
-  signal rpc_mon_a  : rpc_mon_art;
-  type   rpc_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(rpc_R_mon_r) -1 downto 0);
-  signal rpc_mon_av  : rpc_mon_avt;
-  signal rpc_mon_null : std_logic_vector(len(rpc_R_mon_r) -1 downto 0)  := (others => '0');
-  
+  signal mdt_R_mon_v  : std_logic_vector(UCM_R_PHI_COMP_MDT_MON_t'w - 1 downto 0);
   type   mdt_mon_art is array (0 to c_NUM_THREADS - 1) of UCM_R_PHI_COMP_MDT_MON_t;
   signal mdt_mon_a  : mdt_mon_art;
-  type   mdt_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(mdt_R_mon_r) -1 downto 0);
+  type   mdt_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(UCM_R_PHI_COMP_MDT_MON_t'w -1 downto 0);
   signal mdt_mon_av  : mdt_mon_avt;
-  signal mdt_mon_null : std_logic_vector(len(mdt_R_mon_r) -1 downto 0)  := (others => '0');
+  signal mdt_mon_null : std_logic_vector(UCM_R_PHI_COMP_MDT_MON_t'w -1 downto 0)  := (others => '0');
 
   --  FC
 
@@ -220,8 +218,8 @@ begin
     mon_v               => super_mon_v,
     --
     o_phicenter => phicenter,
-    o_cde_chamber_z_org_bus => cde_chamber_z_org_bus,
-    o_cvp_chamber_z_org_bus => cvp_chamber_z_org_bus,
+    o_cde_chamber_z_org_av => cde_chamber_z_org_bus,
+    o_cvp_chamber_z_org_av => cvp_chamber_z_org_bus,
     -- 
     o_local_en          => local_en,
     o_local_rst         => local_rst

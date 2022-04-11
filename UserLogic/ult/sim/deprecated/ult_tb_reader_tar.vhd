@@ -72,10 +72,10 @@ architecture sim of ult_tb_reader_tar is
   signal i_mdt_tar_out_ar :  tar2hps_art (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
   signal i_mdt_tar_ext_ar :  tar2hps_art (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
-  signal mdt_inn_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_INN -1 downto 0) := (others => nullify(mdt_tar_station));
-  signal mdt_mid_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_MID -1 downto 0) := (others => nullify(mdt_tar_station));
-  signal mdt_out_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_OUT -1 downto 0) := (others => nullify(mdt_tar_station));
-  signal mdt_ext_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_EXT -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_inn_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_INN -1 downto 0) := (others => zero(mdt_tar_station));
+  signal mdt_mid_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_MID -1 downto 0) := (others => zero(mdt_tar_station));
+  signal mdt_out_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_OUT -1 downto 0) := (others => zero(mdt_tar_station));
+  signal mdt_ext_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_EXT -1 downto 0) := (others => zero(mdt_tar_station));
   
   signal mdt_inn_counts   : infifo_hit_counts(c_HPS_MAX_HP_INN -1 downto 0) := (others => 0);
   signal mdt_mid_counts   : infifo_hit_counts(c_HPS_MAX_HP_MID -1 downto 0) := (others => 0);
@@ -119,7 +119,7 @@ begin
 
           for wr_i in c_HPS_MAX_HP_INN -1 downto 0 loop
             if(v_mdt_inn_counts(wr_i) > 0) then
-              i_mdt_tar_inn_av(wr_i) <= vectorify(mdt_inn_fifo(wr_i)(0));
+              i_mdt_tar_inn_av(wr_i) <= convert(mdt_inn_fifo(wr_i)(0));
               -- for test input read
               i_mdt_tar_inn_ar(wr_i) <= mdt_inn_fifo(wr_i)(0);
               --
@@ -128,14 +128,14 @@ begin
               end loop;
               v_mdt_inn_counts(wr_i) := v_mdt_inn_counts(wr_i) - 1;
             else
-              i_mdt_tar_inn_av(wr_i) <= nullify(i_mdt_tar_inn_av(wr_i));
-              i_mdt_tar_inn_ar(wr_i) <= nullify(i_mdt_tar_inn_ar(wr_i));
+              i_mdt_tar_inn_av(wr_i) <= zero(i_mdt_tar_inn_av(wr_i));
+              i_mdt_tar_inn_ar(wr_i) <= zero(i_mdt_tar_inn_ar(wr_i));
             end if;
           end loop;
 
           for wr_i in c_HPS_MAX_HP_MID -1 downto 0 loop
             if(v_mdt_mid_counts(wr_i) > 0) then
-              i_mdt_tar_mid_av(wr_i) <= vectorify(mdt_mid_fifo(wr_i)(0));
+              i_mdt_tar_mid_av(wr_i) <= convert(mdt_mid_fifo(wr_i)(0));
               -- for test input read
               i_mdt_tar_mid_ar(wr_i) <= mdt_mid_fifo(wr_i)(0);
               --
@@ -144,14 +144,14 @@ begin
               end loop;
               v_mdt_mid_counts(wr_i) := v_mdt_mid_counts(wr_i) - 1;
             else
-              i_mdt_tar_mid_av(wr_i) <= nullify(i_mdt_tar_mid_av(wr_i));
-              i_mdt_tar_mid_ar(wr_i) <= nullify(i_mdt_tar_mid_ar(wr_i));
+              i_mdt_tar_mid_av(wr_i) <= zero(i_mdt_tar_mid_av(wr_i));
+              i_mdt_tar_mid_ar(wr_i) <= zero(i_mdt_tar_mid_ar(wr_i));
             end if;
           end loop;
 
           for wr_i in c_HPS_MAX_HP_OUT -1 downto 0 loop
             if(v_mdt_out_counts(wr_i) > 0) then
-              i_mdt_tar_out_av(wr_i) <= vectorify(mdt_out_fifo(wr_i)(0));
+              i_mdt_tar_out_av(wr_i) <= convert(mdt_out_fifo(wr_i)(0));
               -- for test input read
               i_mdt_tar_out_ar(wr_i) <= mdt_out_fifo(wr_i)(0);
               --
@@ -160,14 +160,14 @@ begin
               end loop;
               v_mdt_out_counts(wr_i) := v_mdt_out_counts(wr_i) - 1;
             else
-              i_mdt_tar_out_av(wr_i) <= nullify(i_mdt_tar_out_av(wr_i));
-              i_mdt_tar_out_ar(wr_i) <= nullify(i_mdt_tar_out_ar(wr_i));
+              i_mdt_tar_out_av(wr_i) <= zero(i_mdt_tar_out_av(wr_i));
+              i_mdt_tar_out_ar(wr_i) <= zero(i_mdt_tar_out_ar(wr_i));
             end if;
           end loop;
 
           for wr_i in c_HPS_MAX_HP_EXT -1 downto 0 loop
             if(v_mdt_ext_counts(wr_i) > 0) then
-              i_mdt_tar_ext_av(wr_i) <= vectorify(mdt_ext_fifo(wr_i)(0));
+              i_mdt_tar_ext_av(wr_i) <= convert(mdt_ext_fifo(wr_i)(0));
               -- for test input read
               i_mdt_tar_ext_ar(wr_i) <= mdt_ext_fifo(wr_i)(0);
               --
@@ -176,8 +176,8 @@ begin
               end loop;
               v_mdt_ext_counts(wr_i) := v_mdt_ext_counts(wr_i) - 1;
             else
-              i_mdt_tar_ext_av(wr_i) <= nullify(i_mdt_tar_ext_av(wr_i));
-              i_mdt_tar_ext_ar(wr_i) <= nullify(i_mdt_tar_ext_ar(wr_i));
+              i_mdt_tar_ext_av(wr_i) <= zero(i_mdt_tar_ext_av(wr_i));
+              i_mdt_tar_ext_ar(wr_i) <= zero(i_mdt_tar_ext_ar(wr_i));
             end if;
           end loop;
 
@@ -231,7 +231,7 @@ begin
                 exit;
               end if;
             else
-              -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
+              -- i_mdt_tar_av <= zero(i_mdt_tar_av);
               exit;
             end if;
           end loop;

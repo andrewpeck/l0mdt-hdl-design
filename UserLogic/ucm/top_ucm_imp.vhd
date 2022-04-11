@@ -64,8 +64,8 @@ architecture beh of top_ucm is
   signal mon_r             : UCM_MON_t;
   -- constant  c_CTRL_LEN :  integer := len(ctrl_r);--394;
   -- constant c_MON_LEN : integer := len(mon_r);--184;
-  signal ctrl_v            : std_logic_vector(len(ctrl_r) -1 downto 0);
-  signal mon_v             : std_logic_vector(len(mon_r) -1 downto 0);
+  signal ctrl_v            : std_logic_vector(UCM_CTRL_t'w -1 downto 0);
+  signal mon_v             : std_logic_vector(UCM_MON_t'w -1 downto 0);
 
   signal i_slc_data_mainA_av     : slc_rx_avt(2 downto 0);
   signal i_slc_data_mainB_av     : slc_rx_avt(2 downto 0);
@@ -79,7 +79,9 @@ architecture beh of top_ucm is
 
 begin
 
-  ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(ctrl_r)) port map(clk,rst,ctrl_b,ctrl_v);
+  ctrl : entity shared_lib.vhdl_utils_deserializer 
+  generic map (g_DATA_WIDTH => UCM_CTRL_t'w) 
+    port map(clk => clk, rst => rst, i_data => ctrl_b, o_data => ctrl_v);
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
   slc_mp: for i_h in 2 downto 0 generate

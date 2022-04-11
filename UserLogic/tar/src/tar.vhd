@@ -65,8 +65,8 @@ architecture beh of tar is
   signal ctrl_r            : TAR_CTRL_t;
   signal mon_r             : TAR_MON_t;
 
-  constant PL_ST_CTRL_LEN : integer := len(ctrl_r.PL_ST);--426;
-  constant PL_ST_MON_LEN : integer := len(mon_r.PL_ST);--258;
+  constant PL_ST_CTRL_LEN : integer := width(ctrl_r.PL_ST);--426;
+  constant PL_ST_MON_LEN : integer := width(mon_r.PL_ST);--258;
 
   signal ctrl_pl_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(0))-1  downto 0);
 

@@ -77,8 +77,8 @@ architecture beh of mpl_pl is
   
 begin
 
-  -- apb_ctrl_mem_v <= vectorify(ctrl_r,apb_ctrl_mem_v);
-  -- mon_r <= structify(apb_mon_mem_v,mon_r);
+  -- apb_ctrl_mem_v <= convert(ctrl_r,apb_ctrl_mem_v);
+  -- mon_r <= convert(apb_mon_mem_v,mon_r);
 
   i_uCM2pl_r <= convert(i_uCM2pl_v,i_uCM2pl_r);
 

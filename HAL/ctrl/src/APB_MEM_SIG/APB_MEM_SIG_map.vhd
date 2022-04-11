@@ -23,6 +23,8 @@ entity APB_MEM_SIG_map is
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
     Mon              : in  APB_MEM_SIG_Mon_t;
+    
+    
     Ctrl             : out APB_MEM_SIG_Ctrl_t
         
     );

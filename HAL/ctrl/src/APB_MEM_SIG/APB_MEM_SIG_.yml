@@ -1,0 +1,15 @@
+- APB_MEM_SIG_MON_t:
+  - rd_rdy : [ type: logic ]
+  - freeze_ena : [ type: logic ]
+
+
+- APB_MEM_SIG_CTRL_t:
+  - wr_req : [ type: logic ]
+  - wr_ack : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - flush_req : [ type: logic ]
+  - freeze_req : [ type: logic ]
+  - mem_sel : [ type: logic, length: 3 ]
+
+

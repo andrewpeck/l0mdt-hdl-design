@@ -126,7 +126,7 @@ begin
         douta => eta_BM
     );
 
-    seg <= structify(i_seg,seg);
+    seg <= convert(i_seg,seg);
 
     EtaProc : process( clk )
     begin

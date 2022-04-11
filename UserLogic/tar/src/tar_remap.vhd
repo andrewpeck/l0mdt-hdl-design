@@ -103,7 +103,7 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        o_tar_hits_r <= nullify(o_tar_hits_r);
+        o_tar_hits_r <= zero(o_tar_hits_r);
         
       else
         if c_ST_nBARREL_ENDCAP = '0' then -- BARREL
@@ -150,7 +150,7 @@ begin
             o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
             o_tar_hits_r.time         <= full_time;
           else
-            o_tar_hits_r <= nullify(o_tar_hits_r);
+            o_tar_hits_r <= zero(o_tar_hits_r);
             -- o_tar_hits_r.data_valid   <= '0';
             -- o_tar_hits_r.chamber_ieta <= 
             -- o_tar_hits_r.layer        <= 

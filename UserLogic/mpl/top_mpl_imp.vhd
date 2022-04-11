@@ -54,8 +54,8 @@ architecture beh of top_mpl is
 
   signal ctrl_r              : MPL_CTRL_t;
   signal mon_r               : MPL_MON_t;
-  signal ctrl_v            : std_logic_vector(len(ctrl_r) -1 downto 0);
-  signal mon_v             : std_logic_vector(len(mon_r) -1 downto 0);
+  signal ctrl_v            : std_logic_vector(MPL_CTRL_t'w -1 downto 0);
+  signal mon_v             : std_logic_vector(MPL_MON_t'w -1 downto 0);
 
   signal i_uCM2pl_av         : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
   signal o_pl2tf_av          : pl2ptcalc_avt(c_NUM_THREADS -1 downto 0);
@@ -63,7 +63,9 @@ architecture beh of top_mpl is
 
   begin
 
-  ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(ctrl_r )) port map(clk,rst,ctrl_b,ctrl_v);
+  ctrl : entity shared_lib.vhdl_utils_deserializer 
+  generic map (g_DATA_WIDTH => MPL_CTRL_t'w) 
+  port map(clk => clk,rst => rst,i_data => ctrl_b,o_data => ctrl_v);
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
   slc_mp: for i_h in c_MAX_NUM_SL - 1 downto 0 generate

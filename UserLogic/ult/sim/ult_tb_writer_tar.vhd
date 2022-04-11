@@ -121,16 +121,16 @@ begin
   end generate;
 
     loop_inn : for i in c_HPS_MAX_HP_INN -1 downto 0 generate
-      ult_inn_tar_hits_ar(i) <= structify(ult_inn_tar_hits_av(i),ult_inn_tar_hits_ar(i));
+      ult_inn_tar_hits_ar(i) <= convert(ult_inn_tar_hits_av(i),ult_inn_tar_hits_ar(i));
     end generate ; -- identifier
     loop_mid : for i in c_HPS_MAX_HP_MID -1 downto 0 generate
-      ult_mid_tar_hits_ar(i) <= structify(ult_mid_tar_hits_av(i),ult_mid_tar_hits_ar(i));
+      ult_mid_tar_hits_ar(i) <= convert(ult_mid_tar_hits_av(i),ult_mid_tar_hits_ar(i));
     end generate ; -- identifier
     loop_out : for i in c_HPS_MAX_HP_OUT -1 downto 0 generate
-      ult_out_tar_hits_ar(i) <= structify(ult_out_tar_hits_av(i),ult_out_tar_hits_ar(i));
+      ult_out_tar_hits_ar(i) <= convert(ult_out_tar_hits_av(i),ult_out_tar_hits_ar(i));
     end generate ; -- identifier
     loop_ext : for i in c_HPS_MAX_HP_EXT -1 downto 0 generate
-      ult_ext_tar_hits_ar(i) <= structify(ult_ext_tar_hits_av(i),ult_ext_tar_hits_ar(i));
+      ult_ext_tar_hits_ar(i) <= convert(ult_ext_tar_hits_av(i),ult_ext_tar_hits_ar(i));
     end generate ; -- identifier
 
   

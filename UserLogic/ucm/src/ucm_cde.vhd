@@ -75,7 +75,7 @@ architecture beh of ucm_cde is
   signal int2_slc_data_r   : slc_rx_rt;
 
   signal o_cde_data_r     : ucm_cde_rt;
-  -- signal o_cde_data_null  : ucm_cde_rt;-- := nullify(o_cde_data_r);
+  -- signal o_cde_data_null  : ucm_cde_rt;-- := zero(o_cde_data_r);
 
   signal barrel_r : slc_barrel_rt;
 
@@ -292,7 +292,7 @@ begin
       begin
         if rising_edge(clk) then
           if(rst= '1') then
-            o_cde_data_r <= nullify(o_cde_data_r);
+            o_cde_data_r <= zero(o_cde_data_r);
             -- o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
             -- o_cde_data_r.muid.slid    <= o_cde_data_null.muid.slid ;
             -- o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;
@@ -333,7 +333,7 @@ begin
 
 
             else
-              -- o_cde_data_r <= nullify(o_cde_data_r);
+              -- o_cde_data_r <= zero(o_cde_data_r);
               -- o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
               -- o_cde_data_r.muid.slid    <= o_cde_data_null.muid.slid ;
               -- o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;
@@ -381,7 +381,7 @@ begin
     begin
       if rising_edge(clk) then
         if(rst= '1') then
-          o_uCM2pl_r <= nullify(o_uCM2pl_r);
+          o_uCM2pl_r <= zero(o_uCM2pl_r);
         else
           if int2_slc_data_r.data_valid = '1' then
             o_uCM2pl_r.busy        <= i_proc_info_r.processed;
@@ -400,7 +400,7 @@ begin
             end if;
 
           else
-            o_uCM2pl_r <= nullify(o_uCM2pl_r);
+            o_uCM2pl_r <= zero(o_uCM2pl_r);
             -- o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
             -- o_cde_data_r.muid.slid    <= o_cde_data_null.muid.slid ;
             -- o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;

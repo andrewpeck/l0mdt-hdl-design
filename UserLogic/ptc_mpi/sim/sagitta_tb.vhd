@@ -65,9 +65,9 @@ begin
         wait for CLK_period/2;
     end process;
 
-    i_seg0 <= vectorify(seg0);
-    i_seg1 <= vectorify(seg1);
-    i_seg2 <= vectorify(seg2);
+    i_seg0 <= convert(seg0);
+    i_seg1 <= convert(seg1);
+    i_seg2 <= convert(seg2);
 
 --    ***** MPI_TrackFitter DIGI debug ***********
 --TVector3 A 3D physics vector (x,y,z)=(3362.936764,3362.935708,-4894.147499) (rho,theta,phi)=(6824.321211,135.820708,44.999991)
@@ -83,9 +83,9 @@ begin
     
     Pulse : process
     begin
-        seg0 <= nullify(seg0);
-        seg1 <= nullify(seg1);
-        seg2 <= nullify(seg2);
+        seg0 <= zero(seg0);
+        seg1 <= zero(seg1);
+        seg2 <= zero(seg2);
         wait for clk_period*5;
         seg0.segpos <= to_unsigned(39153, SF2PTCALC_SEGPOS_LEN);
         seg1.segpos <= to_unsigned(56666, SF2PTCALC_SEGPOS_LEN);
@@ -99,9 +99,9 @@ begin
 
 
         wait for clk_period;
-        seg0 <= nullify(seg0);
-        seg1 <= nullify(seg1);
-        seg2 <= nullify(seg2);
+        seg0 <= zero(seg0);
+        seg1 <= zero(seg1);
+        seg2 <= zero(seg2);
         wait;
         --assert (dv_sagitta = '1' and inv_sagitta = 3820) report "Correct Sagitta evaluated" severity NOTE ;
         --assert (dv_sagitta = '1' and inv_sagitta /= 3820) report "Wrong Sagitta evaluated" severity Error ;

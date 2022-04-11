@@ -193,7 +193,7 @@ begin
       signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_INN-1 downto 0);
     begin
       array_gen : for i in c_HPS_MAX_HP_INN-1 downto 0 generate
-        hp2bm_ar(i) <= structify(hp2bm_av(i),hp2bm_ar(i));
+        hp2bm_ar(i) <= convert(hp2bm_av(i),hp2bm_ar(i));
       end generate ; -- array_gen
       INN_proc: process(clk, rst)
       begin
@@ -227,7 +227,7 @@ begin
       signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_MID-1 downto 0);
     begin
       array_gen : for i in c_HPS_MAX_HP_MID-1 downto 0 generate
-        hp2bm_ar(i) <= structify(hp2bm_av(i),hp2bm_ar(i));
+        hp2bm_ar(i) <= convert(hp2bm_av(i),hp2bm_ar(i));
       end generate ; -- array_gen
       MID_proc: process(clk, rst)
       begin
@@ -260,7 +260,7 @@ begin
       signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_OUT-1 downto 0);
     begin
       array_gen : for i in c_HPS_MAX_HP_OUT-1 downto 0 generate
-        hp2bm_ar(i) <= structify(hp2bm_av(i),hp2bm_ar(i));
+        hp2bm_ar(i) <= convert(hp2bm_av(i),hp2bm_ar(i));
       end generate ; -- array_gen
       OUT_proc: process(clk, rst)
       begin
@@ -293,7 +293,7 @@ begin
       signal hp2bm_ar : heg_hp2bm_art(c_HPS_MAX_HP_EXT-1 downto 0);
     begin
       array_gen : for i in c_HPS_MAX_HP_EXT-1 downto 0 generate
-        hp2bm_ar(i) <= structify(hp2bm_av(i),hp2bm_ar(i));
+        hp2bm_ar(i) <= convert(hp2bm_av(i),hp2bm_ar(i));
       end generate ; -- array_gen
       EXT_proc: process(clk, rst)
       begin
@@ -405,7 +405,7 @@ begin
 
   --       if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := structify(heg2sf_inn_slc_av(heg_i),read_slc);
+  --           read_slc := convert(heg2sf_inn_slc_av(heg_i),read_slc);
   --           if read_slc.data_valid = '1' then
 
   --             slc2write.ToA      := tb_curr_tdc_time;
@@ -420,7 +420,7 @@ begin
   --       end if;
   --       if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := structify(heg2sf_mid_slc_av(heg_i),read_slc);
+  --           read_slc := convert(heg2sf_mid_slc_av(heg_i),read_slc);
   --           if read_slc.data_valid = '1' then
 
   --             slc2write.ToA      := tb_curr_tdc_time;
@@ -435,7 +435,7 @@ begin
   --       end if;
   --       if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := structify(heg2sf_out_slc_av(heg_i),read_slc);
+  --           read_slc := convert(heg2sf_out_slc_av(heg_i),read_slc);
   --           if read_slc.data_valid = '1' then
 
   --             slc2write.ToA      := tb_curr_tdc_time;
@@ -455,10 +455,10 @@ begin
 
   --       if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_ctrl := structify(heg2sf_inn_ctrl_av(heg_i));
-  --           -- read_slc := structify(heg2sf_inn_slc_av(heg_i));
+  --           read_ctrl := convert(heg2sf_inn_ctrl_av(heg_i));
+  --           -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
   --           if read_ctrl.eof = '1' then
-  --             read_slc := structify(heg2sf_inn_slc_av(heg_i));
+  --             read_slc := convert(heg2sf_inn_slc_av(heg_i));
   --             ctrl2write.ToA      := tb_curr_tdc_time;
   --             ctrl2write.station  := to_unsigned(0,4);
   --             ctrl2write.thread   := to_unsigned(heg_i,4);
@@ -472,10 +472,10 @@ begin
   --       end if;
   --       if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_ctrl := structify(heg2sf_mid_ctrl_av(heg_i));
-  --           -- read_slc := structify(heg2sf_mid_slc_av(heg_i));
+  --           read_ctrl := convert(heg2sf_mid_ctrl_av(heg_i));
+  --           -- read_slc := convert(heg2sf_mid_slc_av(heg_i));
   --           if read_ctrl.eof = '1' then
-  --             read_slc := structify(heg2sf_mid_slc_av(heg_i));
+  --             read_slc := convert(heg2sf_mid_slc_av(heg_i));
   --             ctrl2write.ToA      := tb_curr_tdc_time;
   --             ctrl2write.station  := to_unsigned(0,4);
   --             ctrl2write.thread   := to_unsigned(heg_i,4);
@@ -489,10 +489,10 @@ begin
   --       end if;
   --       if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_ctrl := structify(heg2sf_out_ctrl_av(heg_i));
-  --           -- read_slc := structify(heg2sf_out_slc_av(heg_i));
+  --           read_ctrl := convert(heg2sf_out_ctrl_av(heg_i));
+  --           -- read_slc := convert(heg2sf_out_slc_av(heg_i));
   --           if read_ctrl.eof = '1' then
-  --             read_slc := structify(heg2sf_out_slc_av(heg_i));
+  --             read_slc := convert(heg2sf_out_slc_av(heg_i));
   --             ctrl2write.ToA      := tb_curr_tdc_time;
   --             ctrl2write.station  := to_unsigned(0,4);
   --             ctrl2write.thread   := to_unsigned(heg_i,4);
@@ -511,7 +511,7 @@ begin
 
   --       if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_hit := structify(heg2sf_inn_hit_av(heg_i));
+  --           read_hit := convert(heg2sf_inn_hit_av(heg_i));
   --           if read_hit.data_valid = '1' then
   --             hit2write.ToA      := tb_curr_tdc_time;
   --             hit2write.station  := to_unsigned(0,4);
@@ -524,7 +524,7 @@ begin
   --       end if;
   --       if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_hit := structify(heg2sf_mid_hit_av(heg_i));
+  --           read_hit := convert(heg2sf_mid_hit_av(heg_i));
   --           if read_hit.data_valid = '1' then
   --             hit2write.ToA      := tb_curr_tdc_time;
   --             hit2write.station  := to_unsigned(1,4);
@@ -537,7 +537,7 @@ begin
   --       end if;
   --       if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
   --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_hit := structify(heg2sf_out_hit_av(heg_i));
+  --           read_hit := convert(heg2sf_out_hit_av(heg_i));
   --           if read_hit.data_valid = '1' then
   --             hit2write.ToA      := tb_curr_tdc_time;
   --             hit2write.station  := to_unsigned(2,4);

@@ -25,8 +25,8 @@ use shared_lib.config_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
--- library hegtypes_lib;
--- use hegtypes_lib.hp_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
+
 
 entity hp_paramCalc is
   generic(
@@ -76,10 +76,10 @@ architecture beh of hp_paramCalc is
 
 begin
 
-  SLc_data_r <= structify(i_SLc_data_v,SLc_data_r);
+  SLc_data_r <= convert(i_SLc_data_v,SLc_data_r);
 
   SLC_B_GEN: if c_ST_nBARREL_ENDCAP = '0' generate
-    barrel_data_r <= structify(SLc_data_r.specific,barrel_data_r);
+    barrel_data_r <= convert(SLc_data_r.specific,barrel_data_r);
   end generate;
 
   HP_CALC_R : entity hp_lib.hp_calc_radius
