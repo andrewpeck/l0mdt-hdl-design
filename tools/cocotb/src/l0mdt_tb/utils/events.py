@@ -235,7 +235,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
                     RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID)
                     RTL_BF[0].set_bitwordvalue(tv_format_val[0])
-                    #print("events.py: EXP_BF=",EXP_BF[0])
+                    print("events.py: EXP_BF=",EXP_BF[0])
                     #print("events.py: RTL_BF=",RTL_BF[0].print_bitFieldWord())
                     #print("events.py ==== Calling DF Print:")
                     #RTL_DFSL.print_summary()
@@ -339,6 +339,7 @@ def parse_tvlist(
     else:
         my_cnd_thrd_id = cnd_thrd_id
     
+    #print("Events.py : my_cnd_thread_id = ",my_cnd_thrd_id)
 
     #    tv_reader_pkl.dump_event(events_list[0])
     for ievent in range(len(events_list)):  # range(n_to_load):
@@ -349,7 +350,7 @@ def parse_tvlist(
                         this_station_ID = ""
                 else:
                     this_station_ID = station_ID[my_port]
-                print("tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
+                #print("Events.py: tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_cnd_thrd_id[my_port], station_ID=this_station_ID):
                     #print ("parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
                     #tvtools.dump_event(events_list,ievent)
