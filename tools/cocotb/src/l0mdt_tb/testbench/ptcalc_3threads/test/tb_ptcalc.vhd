@@ -1,5 +1,4 @@
 library ieee;
-use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
@@ -27,19 +26,20 @@ entity tb_ptcalc is
     ttc_commands              : in  l0mdt_ttc_rt;
     ctrl_v                    : in std_logic_vector; --  : in  TF_CTRL_t;
     mon_v                     : out std_logic_vector;-- : out TF_MON_t;
-    i_inn_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_mid_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_out_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_ext_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_minus_neighbor_segments : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_plus_neighbor_segments  : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_pl2pt_av                : in  pl2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_inn_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_mid_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_out_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_ext_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_minus_neighbor_segments : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments  : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_pl2pt_av                : in  pl2ptcalc_avt(c_NUM_THREADS-1 downto 0);
 
-    o_pt2mtc                  : out tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
+    o_pt2mtc                  : out ptcalc2mtc_avt(c_NUM_THREADS -1 downto 0);
 
     o_sump                : out std_logic
   );
 end entity tb_ptcalc;
+                      
 
 architecture behavioral of tb_ptcalc is
    signal   clock_and_control         :       l0mdt_control_rt;
