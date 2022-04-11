@@ -6,40 +6,40 @@ set script_path "[file normalize [file dirname [info script]]]"
 
 proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 
-    exec sed -i ""  "s/ku15p/${fpga_short}/g" $lib
+    exec sed -i  "s/ku15p/${fpga_short}/g" $lib
 
-    exec sed -i ""  "s/hal_.*.src/hal_[string range ${fpga_short} 0 1].src/g" $lib
+    exec sed -i  "s/hal_.*.src/hal_[string range ${fpga_short} 0 1].src/g" $lib
 
     if {[string compare "upt" $pt_calc]==0} {
         # enable upt
-        exec sed -i ""  "s/^#\\(UserLogic.*upt_lib_${fpga_short}.src\\)/\\1/g" $lib
+        exec sed -i  "s/^#\\(UserLogic.*upt_lib_${fpga_short}.src\\)/\\1/g" $lib
         # disable upt empty
-        exec sed -i ""  "s/^UserLogic.*upt_lib_empty.src/#&/g" $lib
+        exec sed -i  "s/^UserLogic.*upt_lib_empty.src/#&/g" $lib
     } else {
         # disable upt
-        exec sed -i ""  "s/^UserLogic.*upt_lib_${fpga_short}.src/#&/g" $lib
+        exec sed -i  "s/^UserLogic.*upt_lib_${fpga_short}.src/#&/g" $lib
         # enable upt empty
-        exec sed -i ""  "s/^#\\(UserLogic.*upt_lib_empty.src\\)/\\1/g" $lib
+        exec sed -i  "s/^#\\(UserLogic.*upt_lib_empty.src\\)/\\1/g" $lib
     }
 
     if {[string compare "mpt" $pt_calc]==0} {
         # enable ptc
-        exec sed -i ""  "s/^#\\(UserLogic.*ptc_lib.src\\)/\\1/g" $lib
+        exec sed -i  "s/^#\\(UserLogic.*ptc_lib.src\\)/\\1/g" $lib
     } else {
         # disable ptc
-        exec sed -i ""  "s/^UserLogic.*ptc_lib.src/#&/g" $lib
+        exec sed -i  "s/^UserLogic.*ptc_lib.src/#&/g" $lib
     }
 
     if {[string compare "lsf" $segment_finder]==0} {
         # enable lsf
-        exec sed -i ""  "s/^#\\(UserLogic.*lsf_lib_${fpga_short}.src\\)/\\1/g" $lib
+        exec sed -i  "s/^#\\(UserLogic.*lsf_lib_${fpga_short}.src\\)/\\1/g" $lib
         # disable lsf empty
-        exec sed -i ""  "s/^UserLogic.*lsf_lib_empty.src/#&/g" $lib
+        exec sed -i  "s/^UserLogic.*lsf_lib_empty.src/#&/g" $lib
     } else {
         # disable lsf
-        exec sed -i ""  "s/^UserLogic.*lsf_lib_${fpga_short}.src/#&/g" $lib
+        exec sed -i  "s/^UserLogic.*lsf_lib_${fpga_short}.src/#&/g" $lib
         # enable empty lsf
-        exec sed -i ""  "s/^#\\(UserLogic.*lsf_lib_empty.src\\)/\\1/g" $lib
+        exec sed -i  "s/^#\\(UserLogic.*lsf_lib_empty.src\\)/\\1/g" $lib
     }
 
     # need to keep csf lib in the sources for now, since
@@ -60,11 +60,11 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 }
 
 proc replace_cfg_std_logic {entry new_value dest_file} {
-    exec sed -i "" s|\\(proj_cfg.${entry}\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${new_value}|g $dest_file
+    exec sed -i s|\\(proj_cfg.${entry}\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${new_value}|g $dest_file
 }
 
 proc replace_cfg_int {entry new_value dest_file} {
-    exec sed -i "" s|\\(proj_cfg.${entry}\\s*:=\\s*\\)\\(\[0-9\]*\\)|\\1${new_value}|g $dest_file
+    exec sed -i s|\\(proj_cfg.${entry}\\s*:=\\s*\\)\\(\[0-9\]*\\)|\\1${new_value}|g $dest_file
 }
 
 proc update_prj_config {dest_file segment_finder pt_calc props} {
@@ -137,17 +137,18 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     }
 
     # update the link mapping
-    exec sed -i "" "s|HAL/link_maps/.*$|HAL/link_maps/${link_map}.vhd|g" "$dest_path/list/hal.src"
+    # exec sed -i "" "s|HAL/link_maps/.*$|HAL/link_maps/${link_map}.vhd|g" "$dest_path/list/hal.src"
+    exec sed -i "s|HAL/link_maps/.*$|HAL/link_maps/${link_map}.vhd|g" "$dest_path/list/hal.src"
 
     # update hog.conf
     file rename -force "$dest_path/hog.conf" "$dest_path/hog.conf"
 
     # replace fpga shortname
-    exec sed -i ""  "s/ku15p/${fpga_shortname}/g" "$dest_path/hog.conf"
-    exec sed -i ""  "s/vu13p/${fpga_shortname}/g" "$dest_path/hog.conf"
+    exec sed -i "s/ku15p/${fpga_shortname}/g" "$dest_path/hog.conf"
+    exec sed -i "s/vu13p/${fpga_shortname}/g" "$dest_path/hog.conf"
 
     # update fpga part number
-    exec sed -i "" "s|PART=.*$|PART=$fpga|g" "$dest_path/hog.conf"
+    exec sed -i "s|PART=.*$|PART=$fpga|g" "$dest_path/hog.conf"
 
     # create the board specific constraints
     set brd_con [open "$dest_path/list/board.con" w+]
@@ -165,29 +166,29 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     set foo ${board_pkg_dir}.*board_pkg.*.vhd
     set bar ${board_pkg_dir}${board_pkg}.vhd
     set re "s|${foo}|${bar}|g"
-    exec sed -i "" $re "$dest_path/list/hal.src"
+    exec sed -i $re "$dest_path/list/hal.src"
 
     # update the project config
     file rename -force "$dest_path/prj_cfg_default.vhd" "$dest_path/prj_cfg_default.vhd"
     update_prj_config "$dest_path/prj_cfg_default.vhd" $segment_finder $pt_calc $props
 
     # update the project_lib.src file
-    exec sed -i "" "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
-    #exec sed -i "" "s|prj_cfg_default|prj_cfg_${name}|g" "$dest_path/list/project_lib.src"
+    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
+    #exec sed -i "s|prj_cfg_default|prj_cfg_${name}|g" "$dest_path/list/project_lib.src"
 
     # update the gitlab ci file
-    exec sed -i "" "s|base_l0mdt|${name}|g" "$dest_path/gitlab-ci.yml"
+    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/gitlab-ci.yml"
 
     # change the gitlab-ci hog_only_synth property
-    exec sed -i "" "s|\\(.*HOG_ONLY_SYNTH:\\).*\\(#.*\\)|\\1 $hog_only_synth \\2|g" "$dest_path/gitlab-ci.yml"
+    exec sed -i "s|\\(.*HOG_ONLY_SYNTH:\\).*\\(#.*\\)|\\1 $hog_only_synth \\2|g" "$dest_path/gitlab-ci.yml"
 
     # remove hog_chk for projects
     if {0 == $hog_chk} {
-        exec sed -i "" "/^CHK:/,/PROJECT_NAME.*/d" "$dest_path/gitlab-ci.yml"
+        exec sed -i "/^CHK:/,/PROJECT_NAME.*/d" "$dest_path/gitlab-ci.yml"
     }
 
     # update the ctrl_lib
-    exec sed -i "" "s|ku15p|${fpga_shortname}|g" "$dest_path/list/ctrl_lib.src"
+    exec sed -i "s|ku15p|${fpga_shortname}|g" "$dest_path/list/ctrl_lib.src"
 }
 
 proc clone_projects {huddle} {
