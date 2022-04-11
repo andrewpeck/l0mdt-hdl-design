@@ -25,11 +25,11 @@ package body prj_cfg is
     proj_cfg.SECTOR_ID           := 3;
     proj_cfg.SECTOR_SIDE         := 0;
     proj_cfg.ST_nBARREL_ENDCAP   := '0';  -- 0: barrel    1: Endcap
-    proj_cfg.ENABLE_NEIGHBORS    := '0';  -- 0: disabled  1: enabled
+    proj_cfg.ENABLE_NEIGHBORS    := '1';  -- 0: disabled  1: enabled
     proj_cfg.ENDCAP_nSMALL_LARGE := '0';  -- 0: small     1: large
-    proj_cfg.SF_TYPE             := '1';  -- 0: CSF       1: LSF
-    proj_cfg.PT_TYPE             := '1';  -- 0: MPT       1: UPT
-    proj_cfg.ENABLE_DAQ          := '1';
+    proj_cfg.SF_TYPE             := '0';  -- 0: CSF       1: LSF
+    proj_cfg.PT_TYPE             := '0';  -- 0: MPT       1: UPT
+    proj_cfg.ENABLE_DAQ          := '0';
     -- END of auto-set variables
     proj_cfg.NUM_MTC             := 3;    -- default 3, connecting to primary SL
 
