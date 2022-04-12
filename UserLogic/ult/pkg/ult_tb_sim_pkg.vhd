@@ -13,9 +13,14 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 
+library hp_lib;
+use hp_lib.hp_pkg.all;
+
 library heg_lib;
-use heg_lib.hp_pkg.all;
 use heg_lib.heg_pkg.all;
+
+library hps_lib;
+use hps_lib.hps_pkg.all;
 
 package ult_tb_sim_pkg is
 
@@ -194,9 +199,12 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 
+library hp_lib;
+use hp_lib.hp_pkg.all;
 library heg_lib;
-use heg_lib.hp_pkg.all;
 use heg_lib.heg_pkg.all;
+library hps_lib;
+use hps_lib.hps_pkg.all;
 
 package body ult_tb_sim_pkg is
 

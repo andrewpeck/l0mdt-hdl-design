@@ -33,9 +33,6 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
--- library hegtypes_lib;
--- use hegtypes_lib.hp_pkg.all;
--- use hegtypes_lib.heg_pkg.all;
 
 package ult_tb_sim_cstm_pkg is
   
@@ -49,8 +46,5 @@ package ult_tb_sim_cstm_pkg is
 end package ult_tb_sim_cstm_pkg;
 
 
-package body ult_tb_sim_cstm_pkg is
-  
-  
-  
-end package body ult_tb_sim_cstm_pkg;
+-- package body ult_tb_sim_cstm_pkg is
+-- end package body ult_tb_sim_cstm_pkg;
