@@ -46,6 +46,20 @@
     allow_failure: true
     interruptible: true
 
+check_auto_generated_code:
+    <<: *only-default
+    <<: *tag-sr
+    image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
+    variables:
+      <<: *chk_variables
+    stage: user_pre
+    script:
+      - make all 
+      - echo "Checking Git differences..."
+      - git diff --exit-code 
+    interruptible: true
+
+
 
 .user_sim: &user_sim
   <<: *only-default
