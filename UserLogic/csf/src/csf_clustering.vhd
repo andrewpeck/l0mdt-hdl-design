@@ -52,7 +52,7 @@ ARCHITECTURE Behavioral OF csf_clustering IS
   -- Histogram parameters
   CONSTANT B_FULL_MULTI     : real    := real(HEG2SFHIT_LOCALX_MULT * UCM_MBAR_MULT);
   CONSTANT B_MULTI          : real    := HEG2SFHIT_LOCALX_MULT;
-  CONSTANT B_RANGE          : real    := 256.0;
+  CONSTANT B_RANGE          : real    := 512.0;
   CONSTANT MBAR_MULTI_LEN   : INTEGER := INTEGER(log2(UCM_MBAR_MULT));
   CONSTANT B_MULTI_LEN      : INTEGER := INTEGER(LOG2(B_MULTI));
   CONSTANT B_LEN            : INTEGER := INTEGER(LOG2(B_MULTI * B_RANGE));

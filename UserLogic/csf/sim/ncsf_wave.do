@@ -1,75 +1,32 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate /ncsf_tb/clk
-add wave -noupdate /ncsf_tb/CSF/mdt_hits(1)
-add wave -noupdate /ncsf_tb/CSF/mdt_hits(0)
-add wave -noupdate /ncsf_tb/CSF/seed_i
-add wave -noupdate /ncsf_tb/CSF/i_eof
-add wave -noupdate /ncsf_tb/CSF/cluster_hits_ml(0)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(0)/SUMMING(1)/CSF_SUM/hit
-add wave -noupdate /ncsf_tb/CSF/fitter_en_ml(0)
-add wave -noupdate /ncsf_tb/CSF/sums_ml(0)
-add wave -noupdate /ncsf_tb/CSF/cluster_hits_ml(1)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/SUMMING(1)/CSF_SUM/hit
-add wave -noupdate /ncsf_tb/CSF/fitter_en_ml(1)
-add wave -noupdate /ncsf_tb/CSF/sums_ml(1)
-add wave -noupdate /ncsf_tb/CSF/locseg
-add wave -noupdate -childformat {{/ncsf_tb/CSF/Fitter/output_seg.b -radix unsigned} {/ncsf_tb/CSF/Fitter/output_seg.m -radix unsigned}} -expand -subitemconfig {/ncsf_tb/CSF/Fitter/output_seg.b {-height 16 -radix unsigned} /ncsf_tb/CSF/Fitter/output_seg.m {-height 16 -radix unsigned}} /ncsf_tb/CSF/Fitter/output_seg
+add wave -noupdate /csf_tb/CSF/clk
+add wave -noupdate /csf_tb/CSF/i_eof
+add wave -noupdate /csf_tb/CSF/i_seed
+add wave -noupdate /csf_tb/CSF/i_mdt_hit
 add wave -noupdate -divider Cluster0
+add wave -noupdate /csf_tb/CSF/CLUSTERING_GEN(0)/Cluster/mdt_hit
 add wave -noupdate -divider Cluster1
-add wave -noupdate -childformat {{/ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/mdt_hit.localx -radix unsigned} {/ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/mdt_hit.localy -radix unsigned} {/ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/mdt_hit.radius -radix unsigned}} -expand -subitemconfig {/ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/mdt_hit.localx {-radix unsigned} /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/mdt_hit.localy {-radix unsigned} /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/mdt_hit.radius {-radix unsigned}} /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/mdt_hit
-add wave -noupdate -color Yellow -itemcolor Yellow /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/dv0
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/dsp_squ_m_r
-add wave -noupdate -color Yellow -itemcolor Yellow /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/dv1
-add wave -noupdate -color Yellow -itemcolor Yellow /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/dv2
-add wave -noupdate -color Yellow -itemcolor Yellow /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/dv3
-add wave -noupdate -color Yellow -itemcolor Yellow /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/dv4
-add wave -noupdate -color Yellow -itemcolor Yellow /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/dv_v(0)
-add wave -noupdate -childformat {{/ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_plus(0).x -radix unsigned} {/ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_plus(0).y -radix unsigned}} -expand -subitemconfig {/ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_plus(0).x {-radix unsigned} /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_plus(0).y {-radix unsigned}} /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_plus(0)
-add wave -noupdate -childformat {{/ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_minus(0).x -radix unsigned} {/ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_minus(0).y -radix unsigned}} -expand -subitemconfig {/ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_minus(0).x {-radix unsigned} /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_minus(0).y {-radix unsigned}} /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_minus(0)
-add wave -noupdate -radix unsigned /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/a_bminus(0)
-add wave -noupdate -radix unsigned /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/a_bplus(0)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_minus(0)
-add wave -noupdate -color Yellow -itemcolor Yellow /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/dv_v(1)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/on_cluster(0)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/reference_b(0)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/reference_b(1)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/counters(0)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/counters(1)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/o_cluster_hits(1)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/o_cluster_hits(0)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/a_bminus(1)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/a_bplus(1)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_plus(1)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_minus(1)
-add wave -noupdate -color Yellow -itemcolor Yellow /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/dv_v(2)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/on_cluster(1)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/reference_b(2)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/reference_b(3)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/counters(2)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/counters(3)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/o_cluster_hits(3)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/o_cluster_hits(2)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/a_bplus(2)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/a_bminus(2)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_plus(2)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_minus(2)
-add wave -noupdate -color Yellow -itemcolor Yellow /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/dv_v(3)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/on_cluster(2)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/reference_b(4)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/reference_b(5)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/counters(4)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/counters(5)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/o_cluster_hits(5)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/o_cluster_hits(4)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/a_bplus(3)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/a_bminus(3)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_plus(3)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/hit_minus(3)
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/out_cluster
-add wave -noupdate /ncsf_tb/CSF/CLUSTERING_GEN(1)/Cluster/max_counter
+add wave -noupdate /csf_tb/CSF/CLUSTERING_GEN(1)/Cluster/mdt_hit
+add wave -noupdate -divider Fitter
+add wave -noupdate /csf_tb/CSF/Fitter/dsp_start
+add wave -noupdate /csf_tb/CSF/Fitter/sums
+add wave -noupdate -childformat {{/csf_tb/CSF/Fitter/output_seg.b -radix unsigned} {/csf_tb/CSF/Fitter/output_seg.m -radix unsigned}} -expand -subitemconfig {/csf_tb/CSF/Fitter/output_seg.b {-radix unsigned} /csf_tb/CSF/Fitter/output_seg.m {-radix unsigned}} /csf_tb/CSF/Fitter/output_seg
+add wave -noupdate -divider CoordTransf
+add wave -noupdate -childformat {{/csf_tb/CSF/coordtransform/seed_i.vec_pos -radix unsigned} {/csf_tb/CSF/coordtransform/seed_i.hewindow_pos -radix unsigned}} -expand -subitemconfig {/csf_tb/CSF/coordtransform/seed_i.vec_pos {-radix unsigned} /csf_tb/CSF/coordtransform/seed_i.hewindow_pos {-radix unsigned}} /csf_tb/CSF/coordtransform/seed_i
+add wave -noupdate /csf_tb/CSF/coordtransform/locseg_i
+add wave -noupdate /csf_tb/CSF/coordtransform/dv0
+add wave -noupdate /csf_tb/CSF/coordtransform/seed
+add wave -noupdate -childformat {{/csf_tb/CSF/coordtransform/locseg.b -radix decimal} {/csf_tb/CSF/coordtransform/locseg.m -radix decimal}} -subitemconfig {/csf_tb/CSF/coordtransform/locseg.b {-height 16 -radix decimal} /csf_tb/CSF/coordtransform/locseg.m {-height 16 -radix decimal}} /csf_tb/CSF/coordtransform/locseg
+add wave -noupdate /csf_tb/CSF/coordtransform/dv1
+add wave -noupdate /csf_tb/CSF/coordtransform/delta_r_mbar
+add wave -noupdate /csf_tb/CSF/coordtransform/dv2
+add wave -noupdate -radix unsigned /csf_tb/CSF/coordtransform/abs_loc_pos
+add wave -noupdate /csf_tb/CSF/coordtransform/loc_pos_sign
+add wave -noupdate -childformat {{/csf_tb/CSF/coordtransform/globseg.segpos -radix unsigned} {/csf_tb/CSF/coordtransform/globseg.segangle -radix unsigned}} -subitemconfig {/csf_tb/CSF/coordtransform/globseg.segpos {-height 16 -radix unsigned} /csf_tb/CSF/coordtransform/globseg.segangle {-height 16 -radix unsigned}} /csf_tb/CSF/coordtransform/globseg
+add wave -noupdate /csf_tb/CSF/coordtransform/vec_pos
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {65810599 fs} 0} {{Cursor 2} {299999315 fs} 0}
+WaveRestoreCursors {{Cursor 1} {1555930570 fs} 0} {{Cursor 2} {49970412500 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 154
 configure wave -valuecolwidth 100
@@ -85,4 +42,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {54801670 fs} {133230242 fs}
+WaveRestoreZoom {1528121677 fs} {1569137303 fs}

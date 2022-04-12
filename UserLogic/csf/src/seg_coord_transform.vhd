@@ -49,7 +49,7 @@ END seg_coord_transform; -- seg_coord_transform
 ARCHITECTURE Behavioral OF seg_coord_transform IS
 
   -- Pos HE Window shift
-  CONSTANT HE_POS_SHIFT : INTEGER := INTEGER(log2(SF2PTCALC_SEGPOS_MULT));
+  CONSTANT HE_POS_SHIFT : INTEGER := INTEGER(log2(HEG2SFSLC_HEWINDOW_POS_MULT/SF2PTCALC_SEGPOS_MULT));
   -- Local Pos shift
   CONSTANT LOC_POS_SHIFT : INTEGER := INTEGER(log2(CSF_SEG_B_MULT/SF2PTCALC_SEGPOS_MULT));
   -- Reference position - Corner Position
@@ -69,8 +69,8 @@ ARCHITECTURE Behavioral OF seg_coord_transform IS
   CONSTANT CSF_SEG_M_MULT_LEN : INTEGER := INTEGER(log2(CSF_SEG_M_MULT));
   CONSTANT DELTA_R_LEN        : INTEGER := 12;
 
-  SIGNAL delta_r      : unsigned(DELTA_R_LEN - 1 DOWNTO 0);
-  SIGNAL delta_r_mbar : unsigned(SF2PTCALC_SEGPOS_LEN - 1 DOWNTO 0);
+  SIGNAL delta_r                      : unsigned(DELTA_R_LEN - 1 DOWNTO 0);
+  SIGNAL delta_r_mbar, delta_r_mbar_s : unsigned(SF2PTCALC_SEGPOS_LEN - 1 DOWNTO 0);
 
   -- Store roi information
   SIGNAL seed, seed_i : heg2sfslc_rt;
@@ -151,7 +151,7 @@ BEGIN
               seed         <= seed_i;
               locseg       <= locseg_i;
               chamber_ieta <= STD_LOGIC_VECTOR(seed_i.mdtid.chamber_ieta);
-              vec_pos      <= shift_left(resize(seed_i.vec_pos, SF2PTCALC_SEGPOS_LEN), HE_POS_SHIFT);
+              vec_pos      <= shift_right(resize(seed_i.hewindow_pos, SF2PTCALC_SEGPOS_LEN), HE_POS_SHIFT);
             END IF;
 
             -- Clock 1
@@ -160,17 +160,18 @@ BEGIN
             delta_r_mbar <= resize(shift_right(delta_r * unsigned(ABS(locseg.m)), CSF_SEG_M_MULT_LEN), SF2PTCALC_SEGPOS_LEN);
 
             -- Clock 2
-            dv2          <= dv1;
-            locseg_ss    <= locseg_s;
-            abs_loc_pos  <= resize(shift_right(unsigned(ABS(locseg_s.b)), LOC_POS_SHIFT), SF2PTCALC_SEGPOS_LEN);
-            loc_pos_sign <= locseg_s.b(CSF_SEG_B_LEN - 1);
+            dv2            <= dv1;
+            locseg_ss      <= locseg_s;
+            delta_r_mbar_s <= delta_r_mbar;
+            abs_loc_pos    <= resize(shift_right(unsigned(ABS(locseg_s.b)), LOC_POS_SHIFT), SF2PTCALC_SEGPOS_LEN);
+            loc_pos_sign   <= locseg_s.b(CSF_SEG_B_LEN - 1);
 
             -- Clock 3
             globseg.data_valid <= dv2;
             IF loc_pos_sign = '1' THEN
-              globseg.segpos <= vec_pos + abs_loc_pos - delta_r_mbar;
+              globseg.segpos <= vec_pos + abs_loc_pos - delta_r_mbar_s;
             ELSE
-              globseg.segpos <= vec_pos + abs_loc_pos + delta_r_mbar;
+              globseg.segpos <= vec_pos + abs_loc_pos + delta_r_mbar_s;
             END IF;
 
             globseg.segangle <= resize(unsigned(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
