@@ -201,8 +201,10 @@ use shared_lib.common_types_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
+
 library heg_lib;
 use heg_lib.heg_pkg.all;
+
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
