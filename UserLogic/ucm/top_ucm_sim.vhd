@@ -36,6 +36,11 @@ use ucm_lib.ucm_pkg.all;
 library ctrl_lib;
 use ctrl_lib.UCM_CTRL.all;
 
+library project_lib;
+use project_lib.l0mdt_sim_pkg.all;
+use project_lib.l0mdt_sim_cstm_pkg.all;
+-- use project_lib.vhdl_tb_utils_pkg.all;
+use project_lib.vhdl_textio_csv_pkg.all;
 
 entity ucm_tb is
   generic (
@@ -230,7 +235,7 @@ begin
   -------------------------------------------------------------------------------------
 	-- CSV
   -------------------------------------------------------------------------------------
-  CSV_SLC_IN : entity shared_lib.csv_reader_slc 
+  CSV_SLC_IN : entity project_lib.csv_reader_slc 
   generic map (
     IN_SLC_FILE => IN_SLC_FILE,
     g_verbose => 2
@@ -250,25 +255,25 @@ begin
     -- o_slc_event_ai            => slc_event_ai
   );
 
-  CSV_UCM_OUT : entity shared_lib.csv_writer_ucm
-  generic map (
-    g_PRJ_INFO    => PRJ_INFO,
-    g_IN_HIT_FILE => IN_HIT_FILE,
-    g_IN_SLC_FILE => IN_SLC_FILE
-  )
-  port map(
-    clk                       => clk,
-    rst                       => rst,
-    enable                    => enable_slc,
-    --
-    tb_curr_tdc_time          => tb_curr_tdc_time
-    --
-    o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
-    o_uCM2hps_mid_av        => o_uCM2hps_mid_av,
-    o_uCM2hps_out_av        => o_uCM2hps_out_av,
-    o_uCM2hps_ext_av        => o_uCM2hps_ext_av,
-    --
-    o_uCM2pl_av             => o_uCM2pl_av
-  );
+  -- CSV_UCM_OUT : entity shared_lib.csv_writer_ucm
+  -- generic map (
+  --   g_PRJ_INFO    => PRJ_INFO,
+  --   g_IN_HIT_FILE => IN_HIT_FILE,
+  --   g_IN_SLC_FILE => IN_SLC_FILE
+  -- )
+  -- port map(
+  --   clk                       => clk,
+  --   rst                       => rst,
+  --   enable                    => enable_slc,
+  --   --
+  --   tb_curr_tdc_time          => tb_curr_tdc_time
+  --   --
+  --   o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
+  --   o_uCM2hps_mid_av        => o_uCM2hps_mid_av,
+  --   o_uCM2hps_out_av        => o_uCM2hps_out_av,
+  --   o_uCM2hps_ext_av        => o_uCM2hps_ext_av,
+  --   --
+  --   o_uCM2pl_av             => o_uCM2pl_av
+  -- );
 
 end beh;
