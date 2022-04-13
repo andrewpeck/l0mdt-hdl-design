@@ -5,6 +5,11 @@
 # shared/sim/pkg/gldl_textio_pkg.vhd
 
 #---------------------------------
+# Simulation entities
+#---------------------------------
+shared/sim/shared_sim_lib.sim
+
+#---------------------------------
 # Simulation functions
 #---------------------------------
 shared/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd
