@@ -8,7 +8,6 @@ GEN:l0mdt_vu13p_lsf_upt:
       HOG_CHECK_SYNTAX : 0
     tags:
       - heavy-duty
-
 CHK:l0mdt_vu13p_lsf_upt:
     extends: .check_list_and_conf
     variables:

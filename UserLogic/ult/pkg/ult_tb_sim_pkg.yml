@@ -5,7 +5,10 @@ config:
       - ieee: [std_logic_1164, numeric_std, math_real]
       # - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg]
       - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
-      - heg_lib: [hp_pkg,heg_pkg]
+      - hp_lib: [hp_pkg]
+      - heg_lib: [heg_pkg]
+      - hps_lib: [hps_pkg]
+
 types:
    - input_mdt_rt:
       - ToA: {type: unsigned, range: [64-1, 0]}
