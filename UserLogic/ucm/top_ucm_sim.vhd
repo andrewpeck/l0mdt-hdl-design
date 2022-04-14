@@ -89,23 +89,24 @@ architecture beh of ucm_tb is
   signal ctrl_v              : std_logic_vector(UCM_CTRL_t'w-1 downto 0) := (others => '0');--UCM_CTRL_t;
   signal mon_v               : std_logic_vector(UCM_MON_t'w-1 downto 0);--UCM_MON_t;
   -- SLc in
-  signal i_slc_data_mainA_av     : slc_rx_avt(2 downto 0);
-  signal i_slc_data_mainB_av     : slc_rx_avt(2 downto 0);
-  signal i_slc_data_neighborA_v  : slc_rx_vt;
-  signal i_slc_data_neighborB_v  : slc_rx_vt;
+  signal i_slc_data_mainA_av      : slc_rx_avt(2 downto 0);
+  signal i_slc_data_mainB_av      : slc_rx_avt(2 downto 0);
+  signal i_slc_data_neighborA_v   : slc_rx_vt;
+  signal i_slc_data_neighborB_v   : slc_rx_vt;
   -- to hps
-  signal o_uCM2hps_inn_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_mid_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_out_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_ext_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_inn_av         : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_av         : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_av         : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_av         : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
-  signal o_uCM2pl_av             : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  signal o_uCM2pl_av              : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
   ---------------------------------------------------------------------------
   -- 
   ---------------------------------------------------------------------------
-  signal slc_file_ok             : std_logic;
-  signal slc_file_ts             : string(1 to LINE_LENGTH_MAX);
+  signal slc_file_ok              : std_logic;
+  signal slc_file_ts              : string(1 to LINE_LENGTH_MAX);
+  signal slc_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
 
 begin
 
@@ -219,21 +220,22 @@ begin
     g_verbose => 2
   )
   port map(
-    clk => clk,
-    rst => rst,
-    enable => enable_slc,
+    clk               => clk,
+    rst               => rst,
+    enable            => enable_slc,
     --
-    tb_curr_tdc_time => tb_curr_tdc_time,
+    tb_curr_tdc_time  => tb_curr_tdc_time,
     --
-    o_file_ok             : slc_file_ok; 
-    o_file_ts             : slc_file_ts;  
+    o_file_ok         => slc_file_ok,
+    o_file_ts         => slc_file_ts, 
+    --
+    o_slc_event_ai        => slc_event_ai,
     --
     o_main_primary_slc    => i_slc_data_mainA_av,
     o_main_secondary_slc  => i_slc_data_mainB_av,
     o_plus_neighbor_slc   => i_slc_data_neighborA_v,
     o_minus_neighbor_slc  => i_slc_data_neighborB_v
-    --
-    -- o_slc_event_ai            => slc_event_ai
+
   );
 
   CSV_UCM_OUT : entity shared_lib.csv_writer_ucm
@@ -247,14 +249,18 @@ begin
     rst                       => rst,
     enable                    => enable_slc,
     --
-    tb_curr_tdc_time          => tb_curr_tdc_time
+    tb_curr_tdc_time          => tb_curr_tdc_time,
     --
-    o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
-    o_uCM2hps_mid_av        => o_uCM2hps_mid_av,
-    o_uCM2hps_out_av        => o_uCM2hps_out_av,
-    o_uCM2hps_ext_av        => o_uCM2hps_ext_av,
+    in_slc_file_ok            => slc_file_ok,
+    in_slc_file_ts            => slc_file_ts,
     --
-    o_uCM2pl_av             => o_uCM2pl_av
+    slc_event_ai              => slc_event_ai,
+    --
+    inn_slc_to_h2s_av         => o_uCM2hps_inn_av,
+    mid_slc_to_h2s_av         => o_uCM2hps_mid_av,
+    out_slc_to_h2s_av         => o_uCM2hps_out_av,
+    ext_slc_to_h2s_av         => o_uCM2hps_ext_av,
+    ucm2pl_av                 => o_uCM2pl_av
   );
 
 end beh;

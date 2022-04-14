@@ -1,17 +1,21 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: ATLAS L0MDT Trigger
+-- File: csv_writer_ucm.vhd
+-- Module: UCM CSV output signals writer
+-- File PATH: /shared/sim/src/csv_writer_ucm.vhd
+-- -----
+-- File Created: Wednesday, 24th November 2020 1:50:08 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Thursday, 14th April 2022 2:51:28 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 2020-11-24	GLdL : Creation	
+-- 2022-04-14	GLdL : New version	
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger
---  Module: Test Bench Module for Logic Trigger Path
---  Description: SLC input vector reader and injector
---
---------------------------------------------------------------------------------
---  Revisions:
---      2020.11.24 Creation 
---
---------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
@@ -64,20 +68,21 @@ entity csv_writer_ucm is
     in_slc_file_ok        : in std_logic;
     in_slc_file_ts        : in string;
     --
-    o_uCM2hps_inn_av      : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_mid_av      : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_out_av      : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_ext_av      : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-
-    o_uCM2pl_av           : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0)
+    slc_event_ai          : in event_aut;
+    --
+    inn_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    mid_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    out_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    ext_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    ucm2pl_av             : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0)
 
   );
 end entity csv_writer_ucm;
 
 architecture sim of csv_writer_ucm is
 
-  alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
-  alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
+  -- alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
+  -- alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
   -- alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
   -- alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
 
@@ -87,14 +92,14 @@ architecture sim of csv_writer_ucm is
   shared variable csv_file_1: csv_file_type;
   shared variable csv_file_2: csv_file_type;
 
-  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
+  -- alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
 
   -- alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_plin_av : ucm2hps_avt >>;
   -- alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_plin_av : ucm2hps_avt >>;
   -- alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_plin_av : ucm2hps_avt >>;
   -- alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_plin_av : ucm2hps_avt >>;
 
-  alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_avt >>;
+  -- alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_avt >>;
   signal ucm2pl_ar : ucm2pl_art(c_MAX_NUM_SL-1 downto 0);
 
   signal slc_event_u2m_au        : event_at(c_MAX_NUM_SL -1 downto 0);
@@ -110,22 +115,24 @@ architecture sim of csv_writer_ucm is
   
 begin
 
+  -- slc_file_ts <= in_slc_file_ts;
+
   open_csv: process
   begin
-    wait until slc_file_ok and hit_file_ok;
+    wait until in_slc_file_ok;
     puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
     csv_file_1.initialize(g_OUT_FILE_1,"wr");
     csv_file_1.write_string("# --------------------------");
-    csv_file_1.write_string("# SLC TS  : " & slc_file_ts);
-    csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
+    csv_file_1.write_string("# SLC TS  : " & in_slc_file_ts);
+    -- csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
     csv_file_1.write_string("# PRJ CFG : " & g_PRJ_INFO);
     csv_file_1.write_string("# SIM TS  : " & time'image(now));
     csv_file_1.write_string("# --------------------------");   
     puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
     csv_file_2.initialize(g_OUT_FILE_2,"wr");
     csv_file_2.write_string("# --------------------------");
-    csv_file_2.write_string("# SLC TS  : " & slc_file_ts);
-    csv_file_2.write_string("# HIT TS  : " & hit_file_ts);
+    csv_file_2.write_string("# SLC TS  : " & in_slc_file_ts);
+    -- csv_file_2.write_string("# HIT TS  : " & hit_file_ts);
     csv_file_2.write_string("# PRJ CFG : " & g_PRJ_INFO);
     csv_file_2.write_string("# SIM TS  : " & time'image(now));
     csv_file_2.write_string("# --------------------------");    
