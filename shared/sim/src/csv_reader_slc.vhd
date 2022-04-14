@@ -42,7 +42,7 @@ use shared_lib.vhdl_textio_csv_pkg.all;
 
 entity csv_reader_slc is
   generic (
-    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
+    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.csv";
     g_verbose         : integer := 1
   );
   port (
@@ -52,6 +52,9 @@ entity csv_reader_slc is
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0');
     -- Sector Logic Candidates
+    o_file_ok             : out std_logic;
+    o_file_ts             : out string(1 to LINE_LENGTH_MAX);
+    --
     o_main_primary_slc    : out slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
     o_main_secondary_slc  : out slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
     o_plus_neighbor_slc   : out slc_rx_vt := (others => '0');
@@ -101,11 +104,16 @@ architecture sim of csv_reader_slc is
   signal slc_neig_minu_counts : infifo_slc_counts(0 downto 0) := (others => 0);
   
   shared variable csv_file: csv_file_type;
-  signal  file_open         : std_logic := '0';
-  signal file_ts : string(1 to LINE_LENGTH_MAX);
+  signal file_open  : std_logic := '0';
+  signal file_ts    : string(1 to LINE_LENGTH_MAX);
     
   
 begin
+
+  o_file_ok <= file_open;
+  o_file_ts <= file_ts;
+
+
 
   open_csv: process
     variable timestamp : string(1 to LINE_LENGTH_MAX);

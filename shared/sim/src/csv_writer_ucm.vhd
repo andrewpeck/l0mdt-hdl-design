@@ -32,7 +32,7 @@ use shared_lib.detector_param_pkg.all;
 use shared_lib.vhdl_tb_utils_pkg.all;
 
 -- library project_lib;
-use shared_lib.l0mdt_sim_pkg.all;
+use shared_lib.ucm_sim_pkg.all;
 use shared_lib.l0mdt_sim_cstm_pkg.all;
 -- use project_lib.vhdl_tb_utils_pkg.all;
 use shared_lib.vhdl_textio_csv_pkg.all;
@@ -60,7 +60,10 @@ entity csv_writer_ucm is
     enable                : in integer;
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0);
-
+    --
+    in_slc_file_ok        : in std_logic;
+    in_slc_file_ts        : in string;
+    --
     o_uCM2hps_inn_av      : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     o_uCM2hps_mid_av      : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     o_uCM2hps_out_av      : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
@@ -75,8 +78,8 @@ architecture sim of csv_writer_ucm is
 
   alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
   alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
-  alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
-  alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
+  -- alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
+  -- alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
 
   constant g_OUT_FILE_1     : string  := "ov_ucm2hps_" & g_PRJ_INFO & ".csv";
   constant g_OUT_FILE_2     : string  := "ov_ucm2mpl_" & g_PRJ_INFO & ".csv";
