@@ -28,19 +28,17 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
-
+-- library project_lib;
+use shared_lib.ucm_sim_pkg.all;
+use shared_lib.l0mdt_sim_cstm_pkg.all;
+-- use project_lib.vhdl_tb_utils_pkg.all;
+use shared_lib.vhdl_textio_csv_pkg.all;
 
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.UCM_CTRL.all;
-
-library project_lib;
-use project_lib.l0mdt_sim_pkg.all;
-use project_lib.l0mdt_sim_cstm_pkg.all;
--- use project_lib.vhdl_tb_utils_pkg.all;
-use project_lib.vhdl_textio_csv_pkg.all;
 
 entity ucm_tb is
   generic (
@@ -80,6 +78,8 @@ end entity ucm_tb;
 
 architecture beh of ucm_tb is
 
+  signal enable_slc : integer := 1;
+
   ---------------------------------------------------------------------------
   -- simulation signals
   ---------------------------------------------------------------------------
@@ -114,7 +114,7 @@ architecture beh of ucm_tb is
   -- configuration, control & Monitoring
   signal ctrl_r              : UCM_CTRL_t;
   signal mon_r               : UCM_MON_t;
-  signal ctrl_v              : std_logic_vector(UCM_CTRL_t'w-1 downto 0);--UCM_CTRL_t;
+  signal ctrl_v              : std_logic_vector(UCM_CTRL_t'w-1 downto 0) := (others => '0');--UCM_CTRL_t;
   signal mon_v               : std_logic_vector(UCM_MON_t'w-1 downto 0);--UCM_MON_t;
   -- SLc in
   signal i_slc_data_mainA_av     : slc_rx_avt(2 downto 0);
@@ -143,8 +143,8 @@ begin
     -- SLc in
     i_slc_data_mainA_av     => i_slc_data_mainA_av,
     i_slc_data_mainB_av     => i_slc_data_mainB_av,
-    i_slc_data_neighborA_v => i_slc_data_neighborA_v,
-    i_slc_data_neighborB_v => i_slc_data_neighborB_v,
+    i_slc_data_neighborA_v  => i_slc_data_neighborA_v,
+    i_slc_data_neighborB_v  => i_slc_data_neighborB_v,
     -- pam out
     -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
     o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
@@ -183,7 +183,7 @@ begin
     clk <= '1';
     wait for CLK_period/2;
   end process;
-  clk <= clk;
+  -- clk <= clk;
   -------------------------------------------------------------------------------------
   --    AXI CLK
   -------------------------------------------------------------------------------------
@@ -214,7 +214,7 @@ begin
 		rst<= '0';
 		wait;
   end process;
-  rst <= rst;
+  -- rst <= rst;
   -------------------------------------------------------------------------------------
 	-- Test Bench time
   -------------------------------------------------------------------------------------
@@ -235,7 +235,7 @@ begin
   -------------------------------------------------------------------------------------
 	-- CSV
   -------------------------------------------------------------------------------------
-  CSV_SLC_IN : entity project_lib.csv_reader_slc 
+  CSV_SLC_IN : entity shared_lib.csv_reader_slc 
   generic map (
     IN_SLC_FILE => IN_SLC_FILE,
     g_verbose => 2
@@ -247,10 +247,10 @@ begin
     --
     tb_curr_tdc_time => tb_curr_tdc_time,
     -- TAR Hits for simulation
-    o_main_primary_slc    => i_main_primary_slc  ,
-    o_main_secondary_slc  => i_main_secondary_slc,
-    o_plus_neighbor_slc   => i_plus_neighbor_slc ,
-    o_minus_neighbor_slc  => i_minus_neighbor_slc
+    o_main_primary_slc    => i_slc_data_mainA_av,
+    o_main_secondary_slc  => i_slc_data_mainB_av,
+    o_plus_neighbor_slc   => i_slc_data_neighborA_v,
+    o_minus_neighbor_slc  => i_slc_data_neighborB_v
     --
     -- o_slc_event_ai            => slc_event_ai
   );

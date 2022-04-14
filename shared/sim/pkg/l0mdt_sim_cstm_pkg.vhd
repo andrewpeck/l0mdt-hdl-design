@@ -27,12 +27,12 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
-library hp_lib;
-use hp_lib.hp_pkg.all;
-library heg_lib;
-use heg_lib.heg_pkg.all;
-library hps_lib;
-use hps_lib.hps_pkg.all;
+-- library hp_lib;
+-- use hp_lib.hp_pkg.all;
+-- library heg_lib;
+-- use heg_lib.heg_pkg.all;
+-- library hps_lib;
+-- use hps_lib.hps_pkg.all;
 
 package l0mdt_sim_cstm_pkg is
   

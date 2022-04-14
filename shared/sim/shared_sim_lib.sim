@@ -1,5 +1,6 @@
 shared/sim/pkg/l0mdt_sim_cstm_pkg.vhd
-shared/sim/pkg/l0mdt_sim_pkg.vhd
+# shared/sim/pkg/l0mdt_sim_pkg.vhd
+shared/sim/pkg/ucm_sim_pkg.vhd
 
 # shared/sim/src/csv_reader_tar.vhd
 # shared/sim/src/csv_reader_tdc.vhd
