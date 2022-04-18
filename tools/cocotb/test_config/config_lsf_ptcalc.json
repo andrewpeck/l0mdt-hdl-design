@@ -53,7 +53,7 @@
                 {
                     "tv_format": "PL2PTCALC",
                     "ports": 1,
-		    "lsf_compute_results_latency": 25,
+		    "lsf_compute_results_latency": 59,
 		    "station_ID": [
                         ""
                     ],

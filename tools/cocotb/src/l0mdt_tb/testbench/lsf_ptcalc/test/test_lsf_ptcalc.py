@@ -287,16 +287,19 @@ def lsf_ptcalc_test(dut):
             for io in range(LsfPtcalcPorts.get_input_interface_ports(n_ip_intf)): 
                 input_tv_list.append(single_interface_list[io])
         elif(n_ip_intf == 1): #HEG2SFHIT
-           for io in range (LsfPtcalcPorts.get_input_interface_ports(n_ip_intf)): 
-                hits_in_event      = len(single_interface_list[io])
-                hits_zero_padding  = heg2sfslc_ii - heg2sfhit_ii*hits_in_event - loadlut_setup;
+            hits_in_event = []  
+            hits_zero_padding = []
+            for io in range (LsfPtcalcPorts.get_input_interface_ports(n_ip_intf)): 
+                for e_i in range(len(single_interface_list[io])):
+                    hits_in_event.append(len(single_interface_list[io][e_i]))
+                    hits_zero_padding.append(heg2sfslc_ii - heg2sfhit_ii*hits_in_event[e_i] - loadlut_setup);
                 single_interface_list_ii_delay_tmp = events.modify_tv(single_interface_list[io], heg2sfhit_ii)
                 #add zeros
                 single_interface_list_ii_delay_tmp2 = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp,'begin',loadlut_setup)
                 single_interface_list_ii_delay      = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp2,'end',hits_zero_padding)
-                single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)
+                single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)            
                 input_tv_list.append(single_interface_list_ii_delay_flat[0])
-
+            print("Events.py: INPUT HITS =", input_tv_list)
         elif(n_ip_intf == 2) : #LSF_CTRL
             i_eof_zero_padding = loadlut_setup + max_hits * 2
             i_eof_ii           = heg2sfslc_ii

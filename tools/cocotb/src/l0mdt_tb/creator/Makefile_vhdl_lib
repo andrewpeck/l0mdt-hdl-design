@@ -79,8 +79,8 @@ VHDL_SOURCES_project_lib = \
 VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
-	$(SHAREDDIR)/types/l0mdt_constants_pkg.vhd \
-	$(SHAREDDIR)/types/l0mdt_dataformats_pkg.vhd \
+	$(DFDIR)/l0mdt_constants_pkg.vhd \
+	$(DFDIR)/l0mdt_dataformats_pkg.vhd \
 	$(SHAREDDIR)/types/common_constants_pkg.vhd \
 	$(SHAREDDIR)/types/common_types_pkg.vhd \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
@@ -326,6 +326,7 @@ VERILOG_SOURCES_upt_lib = \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top.v \
 
 VERILOG_SOURCES_fm_lib = \
+    $(SHAREDDIR)/types/common_ieee_pkg.svh \
     $(HAL)/ctrl/src/FM/FM_PKG.svh \
     $(FMDIR)/fm_sb_pkg.sv \
     $(FMDIR)/fm_sb_ctrl.sv \
