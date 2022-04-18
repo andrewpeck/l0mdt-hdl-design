@@ -34,6 +34,7 @@ CHK:ull_vu13_b3a_tp_csf_uptc:
     extends: .vars
     PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_uptc
     BLOCK: HEG
+    SIMULATOR: questa
   needs: ["SIM:ull_vu13_b3a_tp_csf_uptc"]
   artifacts:
     name: CHK_ull_vu13_b3a_ucm_mpl_hps_csf

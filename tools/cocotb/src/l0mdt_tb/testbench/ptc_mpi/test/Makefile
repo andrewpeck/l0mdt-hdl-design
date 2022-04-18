@@ -61,7 +61,6 @@ HAL       = $(SRCDIR)/HAL
 IP_REPO   = $(HLS)/IPs/vu13p
 LSFSIMDIR = $(USERLOGIC)/lsf/sim
 
-
 # VHDL source files
 VHDL_SOURCES = \
     $(MPTDIR)/pt.vhd

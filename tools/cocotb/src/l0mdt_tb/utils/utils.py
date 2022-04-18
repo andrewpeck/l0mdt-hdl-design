@@ -60,7 +60,6 @@ def validate_against_schema(instance, schema_type):
     returns:
         bool -> True: valid, False: invalid
     """
-
     instance_data = instance
     if isinstance(instance, str):
         # assume it is a filepath
@@ -74,11 +73,9 @@ def validate_against_schema(instance, schema_type):
             with open(instance, "r") as infile:
                 instance_data = json.load(infile)
 
-
     schema_file = get_schema_file(schema_type=schema_type)
     if schema_file is None:
         raise Exception(f"Could not find schema file of type={schema_type}")
-
     with open(schema_file, "r") as infile:
         schema_data = json.load(infile)
 
@@ -127,7 +124,6 @@ def tb_test_config_directory():
 
 
 def tb_schema_directory():
-
     p_tp_fw = tp_fw_path()
     if not p_tp_fw:
         return None
@@ -147,7 +143,6 @@ def get_schema_file(schema_type=""):
             f"ERROR Invalid schema_type (={schema_type}) provided, allowed ones are: {allowed_schema_types()}"
         )
         return None
-
     found_schema = []
     for schema_file in get_schema_files():
         if schema_type in str(schema_file).split("/")[-1]:

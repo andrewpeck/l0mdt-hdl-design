@@ -190,6 +190,15 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     tv_format_failure_cnt = {}
 
     RTL_DFSL.build_data_format()
+    # EXP_DF.build_data_format()
+
+
+
+
+    # if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
+    #     stationNum_internal = 0
+    # else:
+    #     stationNum_internal = stationNum
 
     if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
         stationNum_internal = 0
@@ -208,6 +217,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
         if evt == e_idx:
             break
         else:
+            print("\nEvent: ", ievent)
             for this_candidate in range(n_candidates):
                 if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=this_candidate):
                     EXP_DF.clear()
@@ -231,7 +241,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     tv_format_bf[0].set_bitwordvalue(rtl_tv_i)
                     tv_format_val.append(tv_format_bf[0].get_bitwordvalue())
                     RTL_DFSL.fillBitFieldWord(tvformat, stationID, tv_format_val)
-
 
                     RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID)
                     RTL_BF[0].set_bitwordvalue(tv_format_val[0])
@@ -298,7 +307,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     df_data.to_csv(df_file_name)
     print("Saving Comparison data to %s " % df_file_name)
 
-
     return ret_val, pass_count, fail_count, tv_format_failure_cnt
 
 
@@ -350,7 +358,9 @@ def parse_tvlist(
                         this_station_ID = ""
                 else:
                     this_station_ID = station_ID[my_port]
+
                 #print("Events.py: tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
+
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_cnd_thrd_id[my_port], station_ID=this_station_ID):
                     #print ("parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
                     #tvtools.dump_event(events_list,ievent)
@@ -368,10 +378,14 @@ def parse_tvlist(
         else:
             break
 
+    if valid_events < n_to_load :        
+        print (" ****************************************")
+        print (" ****************************************")
+        print ("ERROR:CANNOT run ", n_to_load, " events. Total events available in TV file is = ",valid_events)
+        print (" ****************************************")
+        print (" ****************************************")
+        sys.exit("Exiting due to Errors")
     return tv
-
-
-
 
 
 def modify_tv(tv, ii):
@@ -411,7 +425,7 @@ def prepend_zeroes(tv, num=1):
     return tv_out
 
 
-def modify_tv_padzeroes(tv, location="end", num=1):
+def modify_tv_padzeroes(tv, location="end", num=[]):
     tv_out = []
 
     for io in range(len(tv)):
@@ -424,11 +438,12 @@ def modify_tv_padzeroes(tv, location="end", num=1):
             # print("modify_tv (io,i) = (",io,i,")")
             tv_port.append(tv[io][i])
         if location == "end":
-            for i in range(num):
-                tv_port.append(0)
+            if(len(num) > 0):
+                for i in range(num[io]):
+                    tv_port.append(0)
         tv_out.append(tv_port)
-    # print("modify_tv_padzeroes (tv) =", tv )
-    # print("modify_tv_padzeroes (tv_out) =", tv_out )
+    #print("modify_tv_padzeroes (tv) =", tv )
+    #print("modify_tv_padzeroes (tv_out) =", tv_out )
     return tv_out
 
 
