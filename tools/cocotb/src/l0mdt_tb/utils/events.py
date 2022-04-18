@@ -244,7 +244,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
                     RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID)
                     RTL_BF[0].set_bitwordvalue(tv_format_val[0])
-                    print("events.py: EXP_BF=",EXP_BF[0])
+                    # print("events.py: EXP_BF=",EXP_BF[0])
                     #print("events.py: RTL_BF=",RTL_BF[0].print_bitFieldWord())
                     #print("events.py ==== Calling DF Print:")
                     #RTL_DFSL.print_summary()
