@@ -115,7 +115,7 @@ begin
   o_file_ok <= file_open;
   o_file_ts <= file_ts;
 
-
+  o_slc_event_ai <= slc_event_ai;
 
   open_csv: process
     variable timestamp : string(1 to LINE_LENGTH_MAX);

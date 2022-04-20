@@ -56,8 +56,8 @@ architecture beh of ucm_tb is
   -- simulation signals generation
   ---------------------------------------------------------------------------
   -- AXI clk & rst
-  signal axi_rst      : std_logic;
-  signal clk_axi      : std_logic;
+  signal axi_rst      : std_logic := '0';
+  signal clk_axi      : std_logic := '0';
   signal clk_axi_cnt  : integer;
   -- constant c_CLK_AXI_MULT : integer := 5; 
   -- clk
@@ -262,5 +262,12 @@ begin
     ext_slc_to_h2s_av         => o_uCM2hps_ext_av,
     ucm2pl_av                 => o_uCM2pl_av
   );
+
+  -- MON_SIM: if mon_sim = '0' generate
+  ttc_commands <= zero(ttc_commands);
+  ctrl_r <= zero(ctrl_r);
+  ctrl_v <= convert(ctrl_r,ctrl_v);
+  mon_r <= convert(mon_v,mon_r);
+  -- end generate MON_SIM;
 
 end beh;
