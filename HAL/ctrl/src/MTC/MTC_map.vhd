@@ -10,9 +10,12 @@ use work.types.all;
 
 use work.MTC_Ctrl.all;
 use work.MTC_Ctrl_DEF.all;
+
+
 entity MTC_map is
   generic (
-    READ_TIMEOUT     : integer := 2048
+    READ_TIMEOUT     : integer := 2048;
+    ALLOCATED_MEMORY_RANGE : integer
     );
   port (
     clk_axi          : in  std_logic;
@@ -49,6 +52,13 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
+  assert ((4*1) <= ALLOCATED_MEMORY_RANGE)
+    report "MTC: Regmap addressing range " & integer'image(4*1) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity ERROR;
+  assert ((4*1) > ALLOCATED_MEMORY_RANGE)
+    report "MTC: Regmap addressing range " & integer'image(4*1) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity NOTE;
+
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
@@ -124,6 +134,7 @@ begin  -- architecture behavioral
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
+      reg_data( 0)( 0)  <= DEFAULT_MTC_CTRL_t.RESET;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       Ctrl.RESET <= '0';

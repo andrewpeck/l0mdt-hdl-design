@@ -10,9 +10,12 @@ use work.types.all;
 
 use work.TAR_Ctrl.all;
 use work.TAR_Ctrl_DEF.all;
+
+
 entity TAR_map is
   generic (
-    READ_TIMEOUT     : integer := 2048
+    READ_TIMEOUT     : integer := 2048;
+    ALLOCATED_MEMORY_RANGE : integer
     );
   port (
     clk_axi          : in  std_logic;
@@ -49,6 +52,13 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
+  assert ((4*2153) <= ALLOCATED_MEMORY_RANGE)
+    report "TAR: Regmap addressing range " & integer'image(4*2153) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity ERROR;
+  assert ((4*2153) > ALLOCATED_MEMORY_RANGE)
+    report "TAR: Regmap addressing range " & integer'image(4*2153) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity NOTE;
+
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
@@ -280,10 +290,17 @@ begin  -- architecture behavioral
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
+      reg_data( 0)( 0)  <= DEFAULT_TAR_CTRL_t.ACTIONS.RESET;
+      reg_data( 0)( 1)  <= DEFAULT_TAR_CTRL_t.ACTIONS.ENABLE;
+      reg_data( 0)( 2)  <= DEFAULT_TAR_CTRL_t.ACTIONS.DISABLE;
       reg_data( 0)( 3)  <= DEFAULT_TAR_CTRL_t.ACTIONS.FREEZE;
       reg_data( 1)( 4)  <= DEFAULT_TAR_CTRL_t.CONFIGS.INPUT_EN;
       reg_data( 1)( 5)  <= DEFAULT_TAR_CTRL_t.CONFIGS.OUTPUT_EN;
       reg_data( 1)( 6)  <= DEFAULT_TAR_CTRL_t.CONFIGS.FLUSH_MEM_RESET;
+      reg_data(2064)( 0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(0).SIGNALS.wr_req;
+      reg_data(2064)( 1)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(0).SIGNALS.wr_ack;
+      reg_data(2064)( 2)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(0).SIGNALS.rd_req;
+      reg_data(2064)( 3)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(0).SIGNALS.rd_ack;
       reg_data(2064)( 4)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(0).SIGNALS.flush_req;
       reg_data(2064)( 5)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(0).SIGNALS.freeze_req;
       reg_data(2064)( 8 downto  6)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(0).SIGNALS.mem_sel;
@@ -291,6 +308,10 @@ begin  -- architecture behavioral
       reg_data(2066)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(0).rd_addr;
       reg_data(2068)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(0).wr_data.wr_data_0;
       reg_data(2069)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(0).wr_data.wr_data_1;
+      reg_data(2080)( 0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(1).SIGNALS.wr_req;
+      reg_data(2080)( 1)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(1).SIGNALS.wr_ack;
+      reg_data(2080)( 2)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(1).SIGNALS.rd_req;
+      reg_data(2080)( 3)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(1).SIGNALS.rd_ack;
       reg_data(2080)( 4)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(1).SIGNALS.flush_req;
       reg_data(2080)( 5)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(1).SIGNALS.freeze_req;
       reg_data(2080)( 8 downto  6)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(1).SIGNALS.mem_sel;
@@ -298,6 +319,10 @@ begin  -- architecture behavioral
       reg_data(2082)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(1).rd_addr;
       reg_data(2084)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(1).wr_data.wr_data_0;
       reg_data(2085)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(1).wr_data.wr_data_1;
+      reg_data(2096)( 0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(2).SIGNALS.wr_req;
+      reg_data(2096)( 1)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(2).SIGNALS.wr_ack;
+      reg_data(2096)( 2)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(2).SIGNALS.rd_req;
+      reg_data(2096)( 3)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(2).SIGNALS.rd_ack;
       reg_data(2096)( 4)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(2).SIGNALS.flush_req;
       reg_data(2096)( 5)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(2).SIGNALS.freeze_req;
       reg_data(2096)( 8 downto  6)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(2).SIGNALS.mem_sel;
@@ -305,6 +330,10 @@ begin  -- architecture behavioral
       reg_data(2098)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(2).rd_addr;
       reg_data(2100)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(2).wr_data.wr_data_0;
       reg_data(2101)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(2).wr_data.wr_data_1;
+      reg_data(2112)( 0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(3).SIGNALS.wr_req;
+      reg_data(2112)( 1)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(3).SIGNALS.wr_ack;
+      reg_data(2112)( 2)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(3).SIGNALS.rd_req;
+      reg_data(2112)( 3)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(3).SIGNALS.rd_ack;
       reg_data(2112)( 4)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(3).SIGNALS.flush_req;
       reg_data(2112)( 5)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(3).SIGNALS.freeze_req;
       reg_data(2112)( 8 downto  6)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(3).SIGNALS.mem_sel;
@@ -312,6 +341,10 @@ begin  -- architecture behavioral
       reg_data(2114)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(3).rd_addr;
       reg_data(2116)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(3).wr_data.wr_data_0;
       reg_data(2117)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(3).wr_data.wr_data_1;
+      reg_data(2128)( 0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(4).SIGNALS.wr_req;
+      reg_data(2128)( 1)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(4).SIGNALS.wr_ack;
+      reg_data(2128)( 2)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(4).SIGNALS.rd_req;
+      reg_data(2128)( 3)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(4).SIGNALS.rd_ack;
       reg_data(2128)( 4)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(4).SIGNALS.flush_req;
       reg_data(2128)( 5)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(4).SIGNALS.freeze_req;
       reg_data(2128)( 8 downto  6)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(4).SIGNALS.mem_sel;
@@ -319,6 +352,10 @@ begin  -- architecture behavioral
       reg_data(2130)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(4).rd_addr;
       reg_data(2132)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(4).wr_data.wr_data_0;
       reg_data(2133)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(4).wr_data.wr_data_1;
+      reg_data(2144)( 0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(5).SIGNALS.wr_req;
+      reg_data(2144)( 1)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(5).SIGNALS.wr_ack;
+      reg_data(2144)( 2)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(5).SIGNALS.rd_req;
+      reg_data(2144)( 3)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(5).SIGNALS.rd_ack;
       reg_data(2144)( 4)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(5).SIGNALS.flush_req;
       reg_data(2144)( 5)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(5).SIGNALS.freeze_req;
       reg_data(2144)( 8 downto  6)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_MEM(5).SIGNALS.mem_sel;

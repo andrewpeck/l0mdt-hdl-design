@@ -10,9 +10,12 @@ use work.types.all;
 
 use work.KINTEX_SYS_MGMT_Ctrl.all;
 use work.KINTEX_SYS_MGMT_Ctrl_DEF.all;
+
+
 entity KINTEX_SYS_MGMT_map is
   generic (
-    READ_TIMEOUT     : integer := 2048
+    READ_TIMEOUT     : integer := 2048;
+    ALLOCATED_MEMORY_RANGE : integer
     );
   port (
     clk_axi          : in  std_logic;
@@ -47,6 +50,13 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
+  assert ((4*295) <= ALLOCATED_MEMORY_RANGE)
+    report "KINTEX_SYS_MGMT: Regmap addressing range " & integer'image(4*295) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity ERROR;
+  assert ((4*295) > ALLOCATED_MEMORY_RANGE)
+    report "KINTEX_SYS_MGMT: Regmap addressing range " & integer'image(4*295) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity NOTE;
+
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
