@@ -240,6 +240,7 @@ def ucm_test(dut):
     input_tv_list                  =  []
     single_interface_list          = []
     single_interface_list_ii_delay =  []
+    single_interface_list_iii_delay =  []
     for n_ip_intf in range(UcmPorts.n_input_interfaces): # Add concept of interface
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
@@ -251,8 +252,9 @@ def ucm_test(dut):
 
 
         for io in range(UcmPorts.get_input_interface_ports(n_ip_intf)):
-            single_interface_list_ii_delay = events.modify_tv(single_interface_list, slc_rx_ii)
-            input_tv_list.append(single_interface_list_ii_delay[io])
+            single_interface_list_ii_delay  = events.modify_tv(single_interface_list, slc_rx_ii)
+            single_interface_list_iii_delay = events.modify_tv_padzeroes(single_interface_list_ii_delay,'end',[1,1,1,1]);
+            input_tv_list.append(single_interface_list_iii_delay[0])
 
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
