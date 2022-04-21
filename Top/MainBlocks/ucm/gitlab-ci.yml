@@ -15,18 +15,18 @@ SIM:ucm:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ucm
+      PROJECT_NAME: MainBlocks/ucm
 
-CHK:ull_vu13_b3a_tp_csf_mptc:
+CHK:MainBlocks/ucm:
   extends: .sim_check
   variables: 
     extends: .vars
-    PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
+    PROJECT_NAME: MainBlocks/ucm
     BLOCK: HEG
     SIMULATOR: questa
-  needs: ["SIM:ull_vu13_b3a_tp_csf_mptc"]
+  needs: ["SIM:ucm"]
   artifacts:
-    name: CHK_ull_vu13_b3a_ucm_mpl_hps_csf
+    name: CHK_MainBlocks_ucm
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
