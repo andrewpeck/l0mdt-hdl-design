@@ -25,20 +25,20 @@ include:
     #---------------------------------------------
     #         Modules
     #---------------------------------------------
-      # - local: '/Top/csf.0/gitlab-ci.yml'
-      # - local: '/Top/csf.1/gitlab-ci.yml'
+    # - local: '/Top/csf.0/gitlab-ci.yml'
+    # - local: '/Top/csf.1/gitlab-ci.yml'
     # - local: '/Top/ptc_mpi/gitlab-ci.yml'
     # - local: '/Top/lsf/gitlab-ci.yml'
     # - local: '/Top/upt/gitlab-ci.yml'
-      # - local: '/Top/ucm/gitlab-ci.yml'
-      # - local: '/Top/hp/gitlab-ci.yml'
-      # - local: '/Top/heg/gitlab-ci.yml'
-      # - local: '/Top/hps_csf/gitlab-ci.yml'
-      # - local: '/Top/hps_lsf/gitlab-ci.yml'
-      # - local: '/Top/daq/gitlab-ci.yml'
-      # - local: '/Top/mpl/gitlab-ci.yml'
-      # - local: '/Top/tdc/gitlab-ci.yml'
-      # - local: '/Top/mtc_vu13p/gitlab-ci.yml'
+    - local: '/Top/ucm/gitlab-ci.yml'
+    # - local: '/Top/hp/gitlab-ci.yml'
+    # - local: '/Top/heg/gitlab-ci.yml'
+    # - local: '/Top/hps_csf/gitlab-ci.yml'
+    # - local: '/Top/hps_lsf/gitlab-ci.yml'
+    # - local: '/Top/daq/gitlab-ci.yml'
+    # - local: '/Top/mpl/gitlab-ci.yml'
+    # - local: '/Top/tdc/gitlab-ci.yml'
+    # - local: '/Top/mtc_vu13p/gitlab-ci.yml'
     #---------------------------------------------
     #         KU15 Projects
     #---------------------------------------------

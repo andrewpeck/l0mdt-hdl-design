@@ -10,8 +10,23 @@ GEN:ucm:
       - normal-ops
       - hog
       # - "2020.2"
-# SIM:ucm:
-#     extends: .simulate_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: ucm
+
+SIM:ucm:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ucm
+
+CHK:ull_vu13_b3a_tp_csf_mptc:
+  extends: .sim_check
+  variables: 
+    extends: .vars
+    PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
+    BLOCK: HEG
+    SIMULATOR: questa
+  needs: ["SIM:ull_vu13_b3a_tp_csf_mptc"]
+  artifacts:
+    name: CHK_ull_vu13_b3a_ucm_mpl_hps_csf
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day
