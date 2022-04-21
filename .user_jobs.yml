@@ -206,5 +206,6 @@ check_auto_generated_code:
       - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
       - tb run test_config/config_mpl_mtc.json 2>&1 | tee cocotb_run.log
       - tb run test_config/config_lsf_inn.json 2>&1 | tee -a cocotb_run.log
+      - tb run test_config/mtc_aldec.json 2>&1 | tee -a cocotb_run.log
       # Make test fail if cocotb raised a failure
       - sh -c "! grep cocotb.result.TestFailure cocotb_run.log"
