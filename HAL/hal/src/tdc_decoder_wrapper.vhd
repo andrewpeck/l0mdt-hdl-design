@@ -77,7 +77,12 @@ begin
       --
       -- test cases are below
       --
-      function get_ith_bit_index (a : std_logic_vector; pos : integer; length : integer) return integer is
+      -- only works correctly with descending vectors, e.g. x downto y.. if you
+      -- have an ascending vector you should reverse it
+
+      function get_ith_bit_index (a : std_logic_vector; pos : integer; length : integer)
+        return integer is
+        variable n_ones : natural := 0;
       begin
         -- short circuit: a 0 should always return -1
         if (a(pos) = '0') then
@@ -85,7 +90,12 @@ begin
         elsif (pos=0) then
           return 0;
         else
-          return count_ones(a(pos downto 0))-1;
+          for index in 0 to pos-1 loop
+            if a(index) = '1' then
+              n_ones := n_ones + 1;
+            end if;
+          end loop;
+          return n_ones;
         end if;
       end function;
 
@@ -97,13 +107,17 @@ begin
       -- function tests
       --------------------------------------------------------------------------------
 
-      assert get_ith_bit_index("111011",0,6)=0  report "function get_ith_bit_index failed " & integer'image(0) severity error;
-      assert get_ith_bit_index("111011",1,6)=1  report "function get_ith_bit_index failed " & integer'image(1) severity error;
-      assert get_ith_bit_index("111011",2,6)=-1 report "function get_ith_bit_index failed " & integer'image(2) severity error;
-      assert get_ith_bit_index("111011",3,6)=2  report "function get_ith_bit_index failed " & integer'image(3) severity error;
-      assert get_ith_bit_index("111011",4,6)=3  report "function get_ith_bit_index failed " & integer'image(4) severity error;
-      assert get_ith_bit_index("111011",5,6)=4  report "function get_ith_bit_index failed " & integer'image(5) severity error;
-      assert get_ith_bit_index("111111111111111111",17,18)=17  report "function get_ith_bit_index failed" & integer'image(17)  severity error;
+      test_gen : if (true) generate
+        constant test : std_logic_vector(5 downto 0) := "111011";
+      begin
+        assert get_ith_bit_index(test,0,6)=0  report "function get_ith_bit_index failed " & integer'image(0) severity error;
+        assert get_ith_bit_index(test,1,6)=1  report "function get_ith_bit_index failed " & integer'image(1) severity error;
+        assert get_ith_bit_index(test,2,6)=-1 report "function get_ith_bit_index failed " & integer'image(2) severity error;
+        assert get_ith_bit_index(test,3,6)=2  report "function get_ith_bit_index failed " & integer'image(3) severity error;
+        assert get_ith_bit_index(test,4,6)=3  report "function get_ith_bit_index failed " & integer'image(4) severity error;
+        assert get_ith_bit_index(test,5,6)=4  report "function get_ith_bit_index failed " & integer'image(5) severity error;
+        assert get_ith_bit_index("111111111111111111",17,18)=17  report "function get_ith_bit_index failed" & integer'image(17)  severity error;
+      end generate;
 
       --------------------------------------------------------------------------------
       -- Data Mapping
