@@ -605,6 +605,12 @@ begin  -- architecture behavioral
 
   -- Felix Transmitter
 
+  assert c_NUM_DAQ_STREAMS <= c_NUM_FELIX_UPLINKS
+                              report "Cannot have more DAQ streams than we have FELIX uplinks allocated."
+                              & "c_NUM_DAQ_STREAMS=" & integer'image(c_NUM_DAQ_STREAMS)
+                              & "c_NUM_FELIX_UPLINKS=" & integer'image(c_NUM_FELIX_UPLINKS)
+                              severity error;
+
   felix_tx_inst : entity work.felix_tx
     generic map (
       g_NUM_UPLINKS => c_NUM_DAQ_STREAMS
