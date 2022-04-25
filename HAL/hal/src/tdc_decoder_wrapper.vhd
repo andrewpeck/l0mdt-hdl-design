@@ -73,34 +73,41 @@ begin
 
       -- given a std_logic_vector A such as 111011, and a position index POS,
       -- this function returns the zero supressed count of the set bit
-      -- bits which are not set will return -1
+      -- bits which are not set will return -1.
       --
-      -- e.g. for 111011 above
+      -- test cases are below
       --
-      -- f(111011,0) =>  0
-      -- f(111011,1) =>  1
-      -- f(111011,2) => -1
-      -- f(111011,3) =>  2
-      -- f(111011,4) =>  3
-      -- f(111011,5) =>  4
-      --
-      function get_ith_bit_index (a : std_logic_vector; pos : integer) return integer is
-        variable cnt : integer := 0;
+      function get_ith_bit_index (a : std_logic_vector; pos : integer; length : integer) return integer is
       begin
-        for k in 0 to c_MDT_CONFIG'length -1 loop
-          if (a(k) = '1') then
-            if (k = pos) then
-              return cnt;
-            end if;
-            cnt := cnt + 1;
-          end if;
-        end loop;
-        return -1;
+        -- short circuit: a 0 should always return -1
+        if (a(pos) = '0') then
+          return -1;
+        elsif (pos=0) then
+          return 0;
+        else
+          return count_ones(a(pos downto 0))-1;
+        end if;
       end function;
 
-      constant idx : integer := get_ith_bit_index (g_ENABLE_MASK, I);
+      constant idx : integer := get_ith_bit_index (g_ENABLE_MASK, I, c_MDT_CONFIG'length);
 
     begin
+
+      --------------------------------------------------------------------------------
+      -- function tests
+      --------------------------------------------------------------------------------
+
+      assert get_ith_bit_index("111011",0,6)=0  report "function get_ith_bit_index failed " & integer'image(0) severity error;
+      assert get_ith_bit_index("111011",1,6)=1  report "function get_ith_bit_index failed " & integer'image(1) severity error;
+      assert get_ith_bit_index("111011",2,6)=-1 report "function get_ith_bit_index failed " & integer'image(2) severity error;
+      assert get_ith_bit_index("111011",3,6)=2  report "function get_ith_bit_index failed " & integer'image(3) severity error;
+      assert get_ith_bit_index("111011",4,6)=3  report "function get_ith_bit_index failed " & integer'image(4) severity error;
+      assert get_ith_bit_index("111011",5,6)=4  report "function get_ith_bit_index failed " & integer'image(5) severity error;
+      assert get_ith_bit_index("111111111111111111",17,18)=17  report "function get_ith_bit_index failed" & integer'image(17)  severity error;
+
+      --------------------------------------------------------------------------------
+      -- Data Mapping
+      --------------------------------------------------------------------------------
 
       even_data <= lpgbt_uplink_data_i(lpgbt).data(8*(d1+1)-1 downto 8*d1);
       odd_data  <= lpgbt_uplink_data_i(lpgbt).data(8*(d0+1)-1 downto 8*d0);
