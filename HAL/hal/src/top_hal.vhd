@@ -111,6 +111,12 @@ entity top_hal is
     -- FIXME: note that right now (10/19/2021) the daq stream is a 65 bit field,
     -- which needs to change somehow to pack into the 32 bit / bx that we can
     -- send to FELIX
+    --
+    -- FIXME: this doesn't add the EXT station because it wasn't included in the
+    -- user logic
+    --
+    -- FIXME: this is a pipeline of 18 things, which may be partially stuffed
+    --
     daq_streams : in felix_stream_avt (c_HPS_MAX_HP_INN
                                            + c_HPS_MAX_HP_MID
                                            + c_HPS_MAX_HP_OUT - 1 downto 0);
@@ -619,7 +625,20 @@ begin  -- architecture behavioral
       clk320           => clocks.clock320,
       clk40            => clocks.clock40,
       reset_i          => global_reset,
-      daq_streams      => daq_streams,
+
+      -- FIXME:
+      --
+      -- daq streams is always length 18, and these are picked out incorrectly
+      --
+      -- this is due to a deliberate bug in the user logic where the constant
+      -- c_NUM_DAQ_STREAMS was commented out in favor of
+      -- c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT
+      --
+      -- so now the calculation of which daq link is which is completely wrong
+      -- this needs some kind of translation layer to map user logic daq links
+      -- onto felix links
+
+      daq_streams      => daq_streams (c_NUM_DAQ_STREAMS-1 downto 0),
       mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
       ready_o          => open,
       was_not_ready_o  => open,
@@ -651,7 +670,7 @@ begin  -- architecture behavioral
   -- end generate;
 
   sump_gen : if (true) generate
-    signal daq_sump                     : std_logic_vector (c_NUM_DAQ_STREAMS-1 downto 0);
+    signal daq_sump                     : std_logic_vector (daq_streams'length-1 downto 0);
     signal mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
     signal nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);
     signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
@@ -664,7 +683,7 @@ begin  -- architecture behavioral
       if (rising_edge(clocks.clock_pipeline)) then
 
         daqsump_loop :
-        for I in 0 to c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT -1 loop
+        for I in 0 to daq_streams'length-1 loop
           daq_sump(I) <= xor_reduce(daq_streams(I));
         end loop;
         mtc_sump_loop : for I in 0 to c_NUM_MTC-1 loop
