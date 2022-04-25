@@ -6,7 +6,7 @@ use work.board_pkg_common.all;
 
 package link_map is
 
-  constant c_MDT_CONFIG : mdt_config_t (17 downto 0) := (
+  constant c_MDT_CONFIG : mdt_config_t (11 downto 0) := (
     0  => (mgt_id_m => 40, mgt_id_s => 41, station_id => INNER,  csm_id => 0,  polmux_id => 0,  en => "111111111111111111", legacy => "000000000000000000"),
     1  => (mgt_id_m => 42, mgt_id_s => 43, station_id => INNER,  csm_id => 1,  polmux_id => 1,  en => "111111111111111111", legacy => "000000000000000000"),
     2  => (mgt_id_m => 44, mgt_id_s => 45, station_id => INNER,  csm_id => 2,  polmux_id => 2,  en => "111111111111111111", legacy => "000000000000000000"),
