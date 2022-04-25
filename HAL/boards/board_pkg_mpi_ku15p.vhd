@@ -36,7 +36,7 @@ package board_pkg is
     17     => (MGT_SL       ,  4     , GTY     , 0 , 17) , -- BANK 131 Sector Logic 9
     18     => (MGT_SL       ,  4     , GTY     , 0 , 18) , -- BANK 131 Sector Logic 10
     19     => (MGT_SL       ,  4     , GTY     , 0 , 19) , -- BANK 131 Sector Logic 11
-    20     => (MGT_TTC      ,  5     , GTY     , 0 , 20) , -- BANK 132 FELIX 0
+    20     => (MGT_FELIX    ,  5     , GTY     , 0 , 20) , -- BANK 132 FELIX 0
     21     => (MGT_FELIX    ,  5     , GTY     , 0 , 21) , -- BANK 132 FELIX 1
     22     => (MGT_FELIX    ,  5     , GTY     , 0 , 22) , -- BANK 132 FELIX 2
     23     => (MGT_FELIX    ,  5     , GTY     , 0 , 23) , -- BANK 132 FELIX 3
