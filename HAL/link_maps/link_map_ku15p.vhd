@@ -18,13 +18,13 @@ package link_map is
     8  => (mgt_id_m => 56, mgt_id_s => 57, station_id => MIDDLE, csm_id => 2,  polmux_id => 8,  en => "111111111111111111", legacy => "000000000000000000"),
     9  => (mgt_id_m => 58, mgt_id_s => 59, station_id => MIDDLE, csm_id => 3,  polmux_id => 9,  en => "111111111111111111", legacy => "000000000000000000"),
     10 => (mgt_id_m => 60, mgt_id_s => 61, station_id => MIDDLE, csm_id => 4,  polmux_id => 10, en => "111111111111111111", legacy => "000000000000000000"),
-    11 => (mgt_id_m => 62, mgt_id_s => 63, station_id => MIDDLE, csm_id => 5,  polmux_id => 11, en => "111111111111111111", legacy => "000000000000000000"),
-    12 => (mgt_id_m => 64, mgt_id_s => 65, station_id => OUTER,  csm_id => 0,  polmux_id => 12, en => "111111111111111111", legacy => "000000000000000000"),
-    13 => (mgt_id_m => 66, mgt_id_s => 67, station_id => OUTER,  csm_id => 1,  polmux_id => 13, en => "111111111111111111", legacy => "000000000000000000"),
-    14 => (mgt_id_m => 68, mgt_id_s => 69, station_id => OUTER,  csm_id => 2,  polmux_id => 14, en => "111111111111111111", legacy => "000000000000000000"),
-    15 => (mgt_id_m => 70, mgt_id_s => 71, station_id => OUTER,  csm_id => 3,  polmux_id => 15, en => "111111111111111111", legacy => "000000000000000000"),
-    16 => (mgt_id_m => 72, mgt_id_s => 73, station_id => OUTER,  csm_id => 4,  polmux_id => 16, en => "111111111111111111", legacy => "000000000000000000"),
-    17 => (mgt_id_m => 74, mgt_id_s => 75, station_id => OUTER,  csm_id => 5,  polmux_id => 17, en => "111111111111111111", legacy => "000000000000000000")
+    11 => (mgt_id_m => 62, mgt_id_s => 63, station_id => MIDDLE, csm_id => 5,  polmux_id => 11, en => "111111111111111111", legacy => "000000000000000000")
+    -- 12 => (mgt_id_m => 64, mgt_id_s => 65, station_id => OUTER,  csm_id => 0,  polmux_id => 12, en => "111111111111111111", legacy => "000000000000000000"),
+    -- 13 => (mgt_id_m => 66, mgt_id_s => 67, station_id => OUTER,  csm_id => 1,  polmux_id => 13, en => "111111111111111111", legacy => "000000000000000000"),
+    -- 14 => (mgt_id_m => 68, mgt_id_s => 69, station_id => OUTER,  csm_id => 2,  polmux_id => 14, en => "111111111111111111", legacy => "000000000000000000"),
+    -- 15 => (mgt_id_m => 70, mgt_id_s => 71, station_id => OUTER,  csm_id => 3,  polmux_id => 15, en => "111111111111111111", legacy => "000000000000000000"),
+    -- 16 => (mgt_id_m => 72, mgt_id_s => 73, station_id => OUTER,  csm_id => 4,  polmux_id => 16, en => "111111111111111111", legacy => "000000000000000000"),
+    -- 17 => (mgt_id_m => 74, mgt_id_s => 75, station_id => OUTER,  csm_id => 5,  polmux_id => 17, en => "111111111111111111", legacy => "000000000000000000")
     );
 
 end package link_map;
