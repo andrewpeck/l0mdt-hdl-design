@@ -71,6 +71,19 @@ begin
 
       signal tdc_hit : tdcpolmux2tar_rt;
 
+      -- given a std_logic_vector A such as 111011, and a position index POS,
+      -- this function returns the zero supressed count of the set bit
+      -- bits which are not set will return -1
+      --
+      -- e.g. for 111011 above
+      --
+      -- f(111011,0) =>  0
+      -- f(111011,1) =>  1
+      -- f(111011,2) => -1
+      -- f(111011,3) =>  2
+      -- f(111011,4) =>  3
+      -- f(111011,5) =>  4
+      --
       function get_ith_bit_index (a : std_logic_vector; pos : integer) return integer is
         variable cnt : integer := 0;
       begin
