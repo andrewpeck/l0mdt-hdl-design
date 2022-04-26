@@ -1,0 +1,19 @@
+/dts-v1/;
+/plugin/;
+ 
+/ {
+	fragment@0 {
+	    target = <&amba_pl>;
+	    __overlay__ {
+        #address-cells = <1>;
+        #size-cells = <1>;
+       axiSlaveFM: FM@83C50000 {
+        reg = <0x83C50000 0x2000>;
+        compatible = "generic-uio";
+        label = "FM";
+        linux,uio-name = "FM";
+
+      };
+    };
+  };
+};

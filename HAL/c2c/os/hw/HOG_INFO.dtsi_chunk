@@ -1,7 +1,0 @@
-  amba_pl {
-    axiSlaveHOG_INFO: HOG_INFO@44A10000 {
-      compatible = "generic-uio";
-      reg = <0x44A10000 0x10000>;
-      label = "HOG_INFO";
-    };
-  };

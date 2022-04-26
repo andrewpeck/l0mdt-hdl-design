@@ -1,0 +1,19 @@
+/dts-v1/;
+/plugin/;
+ 
+/ {
+	fragment@0 {
+	    target = <&amba_pl>;
+	    __overlay__ {
+        #address-cells = <1>;
+        #size-cells = <1>;
+       axiSlaveKINTEX_SYS_MGMT: KINTEX_SYS_MGMT@83C45000 {
+        reg = <0x83C45000 0x1000>;
+        compatible = "generic-uio";
+        label = "KINTEX_SYS_MGMT";
+        linux,uio-name = "KINTEX_SYS_MGMT";
+
+      };
+    };
+  };
+};

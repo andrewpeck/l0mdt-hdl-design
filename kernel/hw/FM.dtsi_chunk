@@ -1,0 +1,11 @@
+  amba_pl@0 {
+    axiSlaveFM: FM@83C50000 {
+      		#address-cells = <1>;
+                   #size-cells = <1>;
+      reg = <0x83C50000 0x2000>;
+        compatible = "generic-uio";
+        label = "FM";
+        linux,uio-name = "FM";
+
+    };
+  };

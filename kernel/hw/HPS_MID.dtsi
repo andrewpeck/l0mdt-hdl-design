@@ -1,0 +1,19 @@
+/dts-v1/;
+/plugin/;
+ 
+/ {
+	fragment@0 {
+	    target = <&amba_pl>;
+	    __overlay__ {
+        #address-cells = <1>;
+        #size-cells = <1>;
+       axiSlaveHPS_MID: HPS_MID@83C80000 {
+        reg = <0x83C80000 0x1000>;
+        compatible = "generic-uio";
+        label = "HPS_MID";
+        linux,uio-name = "HPS_MID";
+
+      };
+    };
+  };
+};

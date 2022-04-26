@@ -1,0 +1,11 @@
+  amba_pl@0 {
+    axiSlaveMTC: MTC@83C4A000 {
+      		#address-cells = <1>;
+                   #size-cells = <1>;
+      reg = <0x83C4A000 0x1000>;
+        compatible = "generic-uio";
+        label = "MTC";
+        linux,uio-name = "MTC";
+
+    };
+  };

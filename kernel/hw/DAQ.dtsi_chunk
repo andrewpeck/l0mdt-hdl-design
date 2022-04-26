@@ -1,0 +1,11 @@
+  amba_pl@0 {
+    axiSlaveDAQ: DAQ@83C4D000 {
+      		#address-cells = <1>;
+                   #size-cells = <1>;
+      reg = <0x83C4D000 0x1000>;
+        compatible = "generic-uio";
+        label = "DAQ";
+        linux,uio-name = "DAQ";
+
+    };
+  };

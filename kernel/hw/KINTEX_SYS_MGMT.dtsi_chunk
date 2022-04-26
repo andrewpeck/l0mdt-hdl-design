@@ -1,0 +1,11 @@
+  amba_pl@0 {
+    axiSlaveKINTEX_SYS_MGMT: KINTEX_SYS_MGMT@83C45000 {
+      		#address-cells = <1>;
+                   #size-cells = <1>;
+      reg = <0x83C45000 0x1000>;
+        compatible = "generic-uio";
+        label = "KINTEX_SYS_MGMT";
+        linux,uio-name = "KINTEX_SYS_MGMT";
+
+    };
+  };

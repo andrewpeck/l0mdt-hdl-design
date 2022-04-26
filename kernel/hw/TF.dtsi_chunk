@@ -1,0 +1,11 @@
+  amba_pl@0 {
+    axiSlaveTF: TF@83C4B000 {
+      		#address-cells = <1>;
+                   #size-cells = <1>;
+      reg = <0x83C4B000 0x1000>;
+        compatible = "generic-uio";
+        label = "TF";
+        linux,uio-name = "TF";
+
+    };
+  };
