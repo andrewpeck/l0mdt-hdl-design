@@ -378,6 +378,11 @@ function main {
             if ! update_makefile_questa; then
 		return 1
             fi
+
+            if ! update_makefile_aldec; then
+		return 1
+            fi
+
             echo "Installation successful"
 
 
@@ -404,6 +409,46 @@ function main {
 
     echo "Virtual environment \"${venv_dir_name}\" has been activated. Type 'deactivate' to exit."
 }
+
+
+
+##ALDEC
+
+### Old Makefile UPDATE
+function update_makefile_aldec() {
+
+    sed -i '/^$(SIM_BUILD)\/runsim.tcl/ i ifneq ($(VERILOG_SOURCES),) '  $(find ./env -name Makefile.riviera)
+    sed -i '/^$(SIM_BUILD)\/runsim.tcl/ i \\tVERILOG_LIB            += $(foreach SOURCES_VAR, $(filter VERILOG_SOURCES_%, $(.VARIABLES)), $(subst VERILOG_SOURCES_,,$(SOURCES_VAR))) '  $(find ./env -name Makefile.riviera)
+    sed -i '/^$(SIM_BUILD)\/runsim.tcl/ i endif '  $(find ./env -name Makefile.riviera)
+
+
+    #Appending  SO COMMANDS ARE REVERSED IN SED
+    #COMPILATION COMMANDS FOR VLIB, VMAP OF LIBRARIES and COMPILING VERILOG LIBRARRIES,
+    sed -i '/\@echo \"alib $(RTL_LIBRARY)" /a endif' $(find ./env -name Makefile.riviera)
+    sed -i '/\@echo \"alib $(RTL_LIBRARY)" /a \\t\techo "vlog -work $(SOURCES_VAR) $(VLOG_ARGS) $(EXTRA_ARGS) $(call to_tcl_path,$(VERILOG_SOURCES_$(SOURCES_VAR)))" >> $@ ;)' $(find ./env -name Makefile.riviera)
+    sed -i '/\@echo \"alib $(RTL_LIBRARY)" /a \\t$(foreach SOURCES_VAR, $(VERILOG_LIB), \\' $(find ./env -name Makefile.riviera)
+    sed -i '/\@echo \"alib $(RTL_LIBRARY)" /a ifneq ($(VERILOG_SOURCES),)' $(find ./env -name Makefile.riviera)
+
+    ###VHDL_LIB_ORDER compilation
+    sed -i '/\@echo \"alib $(RTL_LIBRARY)" /a \\t\techo "acom -work $(SOURCES_VAR) $(VCOM_ARGS) $(call to_tcl_path,$(VHDL_SOURCES_$(SOURCES_VAR)))" >> $@ ;)'  $(find ./env -name Makefile.riviera)
+    sed -i '/\@echo \"alib $(RTL_LIBRARY)" /a \\t$(foreach SOURCES_VAR, $(VHDL_LIB_ORDER), \\'  $(find ./env -name Makefile.riviera)
+
+
+    sed -i '/\@echo \"alib $(RTL_LIBRARY)" /a \\t\tdone' $(find ./env -name Makefile.riviera)
+    sed -i '/\@echo \"alib $(RTL_LIBRARY)" /a \\t\techo "alib $$SOURCES_VAR $(SIM_BUILD)/$$SOURCES_VAR " >> $@ ; \\' $(find ./env -name Makefile.riviera)
+    sed -i '/\@echo \"alib $(RTL_LIBRARY)" /a \\t\techo "alib $(SIM_BUILD)/$$SOURCES_VAR " >> $@ ; \\' $(find ./env -name Makefile.riviera)
+    sed -i '/\@echo \"alib $(RTL_LIBRARY)" /a \\tfor SOURCES_VAR in $(VHDL_LIB_ORDER); do \\' $(find ./env -name Makefile.riviera)  #Create all libraries in project, VHDL_LIB has all of them
+
+    ###################
+
+
+
+
+
+
+    return 0
+}
+
 
 #__________________________________
 main $*
