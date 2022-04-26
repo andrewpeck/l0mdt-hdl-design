@@ -177,8 +177,12 @@ check_auto_generated_code:
   stage: generation_and_simulation
   allow_failure: true
   interruptible: true
-
+  variables:
+    HOG_SIMULATION_LIB_PATH: /afs/cern.ch/work/l/l0mdtel/RivieraLibs
+    HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
+    HOG_CHECK_PROJVER : 0
   script: 
+      - export PATH=${HOG_PATH}:$PATH
       # Create Directory for TV
       - mkdir tools/cocotb/l0mdt_tv
       - echo $HOG_PASSWORD | kinit $HOG_USER	
