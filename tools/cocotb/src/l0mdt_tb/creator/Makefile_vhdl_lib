@@ -177,7 +177,7 @@ VHDL_SOURCES_ctrl_lib = \
 
 
 VHDL_SOURCES_xpm = \
-	$(XILINX_HOME)/data/ip/xpm/xpm_VCOMP.vhd
+	$(XILINX_HOME)/data/ip/xpm/xpm_VCOMP.vhd 
 
 
 VHDL_SOURCES_heg_roi_lib = \
@@ -241,6 +241,9 @@ VHDL_SOURCES_lsf_lib = \
 VHDL_SOURCES_upt_lib = \
 	$(COCOTBDIR)/src/l0mdt_tb/testbench/ptcalc/test/hls_ptcalc_top.vhd \
 	$(USERLOGIC)/upt/top_upt.vhd
+
+VERILOG_SOURCES_xpm = \
+	$(XILINX_HOME)/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
 
 VERILOG_SOURCES_lsf_lib = \
     $(DFDIR)/l0mdt_buses_constants.svh \
