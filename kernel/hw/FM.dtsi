@@ -7,8 +7,8 @@
 	    __overlay__ {
         #address-cells = <1>;
         #size-cells = <1>;
-       axiSlaveFM: FM@83C50000 {
-        reg = <0x83C50000 0x2000>;
+       axiSlaveFM: FM@8000A000 {
+        reg = <0x8000A000 0x2000>;
         compatible = "generic-uio";
         label = "FM";
         linux,uio-name = "FM";

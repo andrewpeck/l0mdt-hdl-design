@@ -7,8 +7,8 @@
 	    __overlay__ {
         #address-cells = <1>;
         #size-cells = <1>;
-       axiSlaveFW_INFO: FW_INFO@83C46000 {
-        reg = <0x83C46000 0x1000>;
+       axiSlaveFW_INFO: FW_INFO@80002000 {
+        reg = <0x80002000 0x1000>;
         compatible = "generic-uio";
         label = "FW_INFO";
         linux,uio-name = "FW_INFO";

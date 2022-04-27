@@ -7,8 +7,8 @@
 	    __overlay__ {
         #address-cells = <1>;
         #size-cells = <1>;
-       axiSlaveTAR_MID: TAR_MID@83C90000 {
-        reg = <0x83C90000 0x1000>;
+       axiSlaveTAR_MID: TAR_MID@80022000 {
+        reg = <0x80022000 0x1000>;
         compatible = "generic-uio";
         label = "TAR_MID";
         linux,uio-name = "TAR_MID";

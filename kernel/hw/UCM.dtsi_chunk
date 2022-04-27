@@ -1,8 +1,8 @@
   amba_pl@0 {
-    axiSlaveUCM: UCM@83C4C000 {
+    axiSlaveUCM: UCM@80007000 {
       		#address-cells = <1>;
                    #size-cells = <1>;
-      reg = <0x83C4C000 0x1000>;
+      reg = <0x80007000 0x1000>;
         compatible = "generic-uio";
         label = "UCM";
         linux,uio-name = "UCM";

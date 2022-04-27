@@ -7,8 +7,8 @@
 	    __overlay__ {
         #address-cells = <1>;
         #size-cells = <1>;
-       axiSlaveHPS_OUT: HPS_OUT@83CA0000 {
-        reg = <0x83CA0000 0x1000>;
+       axiSlaveHPS_OUT: HPS_OUT@80030000 {
+        reg = <0x80030000 0x1000>;
         compatible = "generic-uio";
         label = "HPS_OUT";
         linux,uio-name = "HPS_OUT";

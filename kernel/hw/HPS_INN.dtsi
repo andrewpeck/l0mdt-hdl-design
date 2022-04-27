@@ -7,8 +7,8 @@
 	    __overlay__ {
         #address-cells = <1>;
         #size-cells = <1>;
-       axiSlaveHPS_INN: HPS_INN@83C60000 {
-        reg = <0x83C60000 0x1000>;
+       axiSlaveHPS_INN: HPS_INN@80010000 {
+        reg = <0x80010000 0x1000>;
         compatible = "generic-uio";
         label = "HPS_INN";
         linux,uio-name = "HPS_INN";

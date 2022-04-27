@@ -1,8 +1,8 @@
   amba_pl@0 {
-    axiSlaveTAR_MID: TAR_MID@83C90000 {
+    axiSlaveTAR_MID: TAR_MID@80022000 {
       		#address-cells = <1>;
                    #size-cells = <1>;
-      reg = <0x83C90000 0x1000>;
+      reg = <0x80022000 0x1000>;
         compatible = "generic-uio";
         label = "TAR_MID";
         linux,uio-name = "TAR_MID";

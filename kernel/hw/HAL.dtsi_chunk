@@ -1,8 +1,8 @@
   amba_pl@0 {
-    axiSlaveHAL: HAL@83C47000 {
+    axiSlaveHAL: HAL@80003000 {
       		#address-cells = <1>;
                    #size-cells = <1>;
-      reg = <0x83C47000 0x1000>;
+      reg = <0x80003000 0x1000>;
         compatible = "generic-uio";
         label = "HAL";
         linux,uio-name = "HAL";

@@ -7,8 +7,8 @@
 	    __overlay__ {
         #address-cells = <1>;
         #size-cells = <1>;
-       axiSlaveDAQ: DAQ@83C4D000 {
-        reg = <0x83C4D000 0x1000>;
+       axiSlaveDAQ: DAQ@80008000 {
+        reg = <0x80008000 0x1000>;
         compatible = "generic-uio";
         label = "DAQ";
         linux,uio-name = "DAQ";

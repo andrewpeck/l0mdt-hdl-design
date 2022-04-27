@@ -7,8 +7,8 @@
 	    __overlay__ {
         #address-cells = <1>;
         #size-cells = <1>;
-       axiSlaveMTC: MTC@83C4A000 {
-        reg = <0x83C4A000 0x1000>;
+       axiSlaveMTC: MTC@80005000 {
+        reg = <0x80005000 0x1000>;
         compatible = "generic-uio";
         label = "MTC";
         linux,uio-name = "MTC";

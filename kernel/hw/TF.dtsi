@@ -7,8 +7,8 @@
 	    __overlay__ {
         #address-cells = <1>;
         #size-cells = <1>;
-       axiSlaveTF: TF@83C4B000 {
-        reg = <0x83C4B000 0x1000>;
+       axiSlaveTF: TF@80006000 {
+        reg = <0x80006000 0x1000>;
         compatible = "generic-uio";
         label = "TF";
         linux,uio-name = "TF";
