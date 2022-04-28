@@ -74,8 +74,11 @@ set mRST [list $AXI_MASTER_RSTN  $AXI_MASTER_RSTN]
 #  Configure and add AXI slaves
 #================================================================================
 
-#set AXI_BASE_ADDRESS 0xB0000000 ; USP
-set AXI_BASE_ADDRESS 0x80000000 ; # 7 Series
+if {![info exists AXI_BASE_ADDRESS]} {
+    # default to US+
+    set AXI_BASE_ADDRESS 0xB0000000 ; # US+
+    #set AXI_BASE_ADDRESS 0x80000000 ; # 7 Series
+}
 
 source -quiet "$BD_PATH/add_slaves_from_yaml.tcl"
 yaml_to_bd "$C2C_PATH/slaves.yaml"
