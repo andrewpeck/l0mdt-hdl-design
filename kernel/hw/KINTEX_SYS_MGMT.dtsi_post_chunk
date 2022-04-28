@@ -1,6 +1,0 @@
-  &KINTEX_SYS_MGMT{
-        compatible = "generic-uio";
-        label = "KINTEX_SYS_MGMT";
-        linux,uio-name = "KINTEX_SYS_MGMT";
-
-  };
