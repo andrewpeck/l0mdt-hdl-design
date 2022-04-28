@@ -31,6 +31,7 @@ ku15p_lsf_upt:
       en_neighbors: 0
       en_daq: 1
       hog_only_synth: 1
+      zynq_target: 7s  # 7s or usp
 
 ku15p_csf_mpt:
   fpga: xcku15p-ffva1760-2-e
@@ -45,6 +46,7 @@ ku15p_csf_mpt:
       en_daq: 1
       endcap: 0
       hog_only_synth: 1
+      zynq_target: 7s
 
 vu13p_lsf_upt:
   fpga: xcvu13p-flga2577-2-e
@@ -58,6 +60,7 @@ vu13p_lsf_upt:
       link_map: "link_map_vu13p"
       en_daq: 1
       hog_chk: 1
+      zynq_target: 7s
 
 vu13p_csf_mpt:
   fpga: xcvu13p-flga2577-2-e
@@ -69,3 +72,4 @@ vu13p_csf_mpt:
   variants:
     default:
       link_map: "link_map_vu13p"
+      zynq_target: 7s

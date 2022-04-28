@@ -111,6 +111,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     # default values
     set hog_only_synth 0
     set hog_chk 0
+    set zynq_target usp
 
     # destructure the input properties into variables
     foreach prop [huddle keys $props] {
@@ -151,6 +152,16 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # update fpga part number
     exec sed -i "s|PART=.*$|PART=$fpga|g" "$dest_path/hog.conf"
+    exec sed -i "s|PART=.*$|PART=$fpga|g" "$dest_path/hog.conf"
+
+    # update zynq target
+    if {$zynq_target == "usp"} {
+        exec sed -i "s|^set.*AXI_BASE_ADDRESS.*0x.*|set AXI_BASE_ADDRESS 0xB0000000 ; # USP|g" "$dest_path/post-creation.tcl"
+    } elseif {$zynq_target == "7s"} {
+        exec sed -i "s|^set.*AXI_BASE_ADDRESS.+0x.*|set AXI_BASE_ADDRESS 0x80000000 ; # 7-Series|g" "$dest_path/post-creation.tcl"
+    } else {
+        error "Unrecognized zynq target \"$zynq_target\""
+    }
 
     # create the board specific constraints
     set brd_con [open "$dest_path/list/board.con" w+]
@@ -216,12 +227,15 @@ proc clone_projects {huddle} {
             set props [huddle get $variants $variant]
 
             set link_map       [huddle get_stripped $props link_map]
+            set zynq_target    [huddle get_stripped $props zynq_target]
             #set prj_cfg        [huddle get_stripped $props prj_cfg]
+
             puts "    - Flavor: $variant"
-            puts "        link_map : $link_map"
-            #puts "        prj_cfg  : $prj_cfg"
-            puts "        sf       : $sf"
-            puts "        pt       : $pt"
+            puts "        link_map    : $link_map"
+            puts "        zynq_target : $zynq_target"
+            puts "        sf          : $sf"
+            puts "        pt          : $pt"
+           #puts "        prj_cfg     : $prj_cfg"
 
             global script_path
 
