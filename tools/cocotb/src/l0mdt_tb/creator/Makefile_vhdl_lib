@@ -326,6 +326,7 @@ VERILOG_SOURCES_upt_lib = \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top.v \
 
 VERILOG_SOURCES_fm_lib = \
+    $(SHAREDDIR)/types/common_ieee_pkg.svh \
     $(HAL)/ctrl/src/FM/FM_PKG.svh \
     $(FMDIR)/fm_sb_pkg.sv \
     $(FMDIR)/fm_sb_ctrl.sv \
