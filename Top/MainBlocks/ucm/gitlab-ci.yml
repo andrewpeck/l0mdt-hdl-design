@@ -25,12 +25,13 @@ SIM:ucm_riviera:
     # allow_failure: false
 
 COMP:ucm:
-    extends: .sim_comp
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/ucm
+  extends: .sim_comp
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/ucm
+  needs: ["SIM:ucm_questa","SIM:ucm_riviera"]
 
-CHK:MainBlocks/ucm:
+CHK:ucm:
   extends: .sim_check
   variables: 
     extends: .vars
