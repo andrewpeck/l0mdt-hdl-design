@@ -29,9 +29,9 @@ CHK:MainBlocks/ucm:
   variables: 
     extends: .vars
     PROJECT_NAME: MainBlocks/ucm
-    BLOCK: HEG
+    BLOCK: UCM
     SIMULATOR: questa
-  needs: ["SIM:ucm"]
+  needs: ["SIM:ucm_questa"]
   artifacts:
     name: CHK_MainBlocks_ucm
     paths:
