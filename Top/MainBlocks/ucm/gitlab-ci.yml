@@ -24,6 +24,12 @@ SIM:ucm_riviera:
       PROJECT_NAME: MainBlocks/ucm
     # allow_failure: false
 
+COMP:ucm:
+    extends: .sim_comp
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/ucm
+
 CHK:MainBlocks/ucm:
   extends: .sim_check
   variables: 
