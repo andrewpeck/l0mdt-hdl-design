@@ -144,6 +144,7 @@ check_auto_generated_code:
   script:
     - cd tools/simComp
     - python3 comparator.py $PROJECT_NAME
+    - sleep 1h
   allow_failure: true
 
 .sim_check: &sim_check
@@ -158,7 +159,7 @@ check_auto_generated_code:
     - export AUX_PRJ_NAME=${PROJECT_NAME##**/}
     - echo $AUX_PRJ_NAME
     - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/$SIMULATOR
-    # - sleep 1h
+    - sleep 1h
     # DAvide
     # - PRJ_NAME=$(basename $PROJECT_NAME)
     # - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PRJ_NAME.sim/project_lib_sim/behav/questa
