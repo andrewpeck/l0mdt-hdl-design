@@ -108,7 +108,7 @@ check_auto_generated_code:
     - if [ -f "./Projects/$PROJECT_NAME/skip.me" ]; then
         echo "CI disabled for $PROJECT_NAME";
       else
-        sed -i 's/questa/riviera/' $CI_PROJECT_DIR/Projects/Top/$PROJECT_NAME/list/project_lib.sim;
+        sed -i 's/questa/riviera/' ./Top/$PROJECT_NAME/list/project_lib.sim;
         vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_simulation.tcl -tclargs -lib_path $HOG_SIMULATION_LIB_PATH $PROJECT_NAME ;
       fi
   artifacts:
