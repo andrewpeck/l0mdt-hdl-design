@@ -24,12 +24,12 @@ SIM:ucm_questa:
 #       PROJECT_NAME: MainBlocks/ucm.1
     # allow_failure: false
 
-# COMP:ucm.1:
-#   extends: .sim_comp
-#   variables:
-#     extends: .vars
-#     PROJECT_NAME: MainBlocks/ucm.1
-#   needs: ["SIM:ucm_questa","SIM:ucm_riviera"]
+COMP:ucm.1:
+  extends: .sim_comp
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/ucm.1
+  needs: ["SIM:ucm_questa","SIM:ucm_riviera"]
 
 CHK:ucm.1:
   extends: .sim_check

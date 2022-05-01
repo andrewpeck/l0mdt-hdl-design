@@ -37,8 +37,8 @@ CHK:ucm.0:
     extends: .vars
     PROJECT_NAME: MainBlocks/ucm.0
     BLOCK: UCM
-    SIMULATOR: questa
-  needs: ["SIM:ucm_questa"]
+    SIMULATOR: riviera
+  needs: ["SIM:ucm_riviera"]
   artifacts:
     name: CHK_MainBlocks_ucm
     paths:
