@@ -11,17 +11,17 @@ GEN:ucm.1:
       - hog
       # - "2020.2"
 
-# SIM:ucm_questa:
-#     extends: .simulate_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: MainBlocks/ucm.1
-
-SIM:ucm_riviera:
-    extends: .riviera_sim
+SIM:ucm_questa:
+    extends: .simulate_project
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/ucm.1
+
+# SIM:ucm_riviera:
+#     extends: .riviera_sim
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: MainBlocks/ucm.1
     # allow_failure: false
 
 # COMP:ucm.1:
