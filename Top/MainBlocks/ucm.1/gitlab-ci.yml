@@ -24,23 +24,23 @@ SIM:ucm_riviera:
       PROJECT_NAME: MainBlocks/ucm.1
     # allow_failure: false
 
-COMP:ucm.1:
-  extends: .sim_comp
-  variables:
-    extends: .vars
-    PROJECT_NAME: MainBlocks/ucm.1
-  needs: ["SIM:ucm_questa","SIM:ucm_riviera"]
-
-# CHK:ucm.1:
-#   extends: .sim_check
-#   variables: 
+# COMP:ucm.1:
+#   extends: .sim_comp
+#   variables:
 #     extends: .vars
 #     PROJECT_NAME: MainBlocks/ucm.1
-#     BLOCK: UCM
-#     SIMULATOR: questa
-#   needs: ["SIM:ucm_questa"]
-#   artifacts:
-#     name: CHK_MainBlocks_ucm
-#     paths:
-#       - $CI_PROJECT_DIR/bin
-#     expire_in: 30 day
+#   needs: ["SIM:ucm_questa","SIM:ucm_riviera"]
+
+CHK:ucm.1:
+  extends: .sim_check
+  variables: 
+    extends: .vars
+    PROJECT_NAME: MainBlocks/ucm.1
+    BLOCK: UCM
+    SIMULATOR: questa
+  needs: ["SIM:ucm_questa"]
+  artifacts:
+    name: CHK_MainBlocks_ucm
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day
