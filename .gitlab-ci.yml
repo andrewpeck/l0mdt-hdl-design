@@ -69,6 +69,8 @@ include:
     #         Modules vU13P
     #---------------------------------------------
     # - local: '/Top/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/ucm_r/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/ucm_q/gitlab-ci.yml'
     - local: '/Top/MainBlocks/ucm/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/mpl/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/tar/gitlab-ci.yml'
@@ -96,5 +98,5 @@ include:
     #---------------------------------------------
     #         CocoTB
     #---------------------------------------------
-    - local: '/tools/cocotb/ci-scripts/gitlab-ci.yml'
+    # - local: '/tools/cocotb/ci-scripts/gitlab-ci.yml'
 

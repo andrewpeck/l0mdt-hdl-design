@@ -142,9 +142,7 @@ check_auto_generated_code:
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
   stage: user_proj
   script:
-    - sleep 1h
-    - cd tools/simComp
-    - python3 comparator.py $PROJECT_NAME
+    # - python3 tools/simComp/comparator.py $PROJECT_NAME
     - sleep 1h
   allow_failure: true
 

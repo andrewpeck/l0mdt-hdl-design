@@ -11,25 +11,25 @@ GEN:ucm_q:
       - hog
       # - "2020.2"
 
-SIM:ucm_questa:
+SIM:ucm_q:
     extends: .simulate_project
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/ucm_q
 
-SIM:ucm_riviera:
-    extends: .riviera_sim
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/ucm_q
+# SIM:ucm_riviera:
+#     extends: .riviera_sim
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: MainBlocks/ucm_q
     # allow_failure: false
 
-COMP:ucm:
+COMP:ucm_q:
   extends: .sim_comp
   variables:
     extends: .vars
     PROJECT_NAME: MainBlocks/ucm_q
-  needs: ["SIM:ucm_questa","SIM:ucm_riviera"]
+  needs: ["SIM:ucm_q","SIM:ucm_r"]
 
 CHK:ucm_q:
   extends: .sim_check

@@ -1,9 +1,9 @@
-#################### ucm_q Project ###########################
-GEN:ucm_q:
+#################### ucm_r Project ###########################
+GEN:ucm_r:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: MainBlocks/ucm_q
+      PROJECT_NAME: MainBlocks/ucm_r
       HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
       
     tags:
@@ -11,31 +11,31 @@ GEN:ucm_q:
       - hog
       # - "2020.2"
 
-SIM:ucm_questa:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/ucm_q
+# SIM:ucm_questa:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: MainBlocks/ucm_r
 
-SIM:ucm_riviera:
+SIM:ucm_r:
     extends: .riviera_sim
     variables:
       extends: .vars
-      PROJECT_NAME: MainBlocks/ucm_q
+      PROJECT_NAME: MainBlocks/ucm_r
     # allow_failure: false
 
-COMP:ucm:
+COMP:ucm_r:
   extends: .sim_comp
   variables:
     extends: .vars
-    PROJECT_NAME: MainBlocks/ucm_q
-  needs: ["SIM:ucm_questa","SIM:ucm_riviera"]
+    PROJECT_NAME: MainBlocks/ucm_r
+  needs: ["SIM:ucm_q","SIM:ucm_r"]
 
-CHK:ucm_q:
+CHK:ucm_r:
   extends: .sim_check
   variables: 
     extends: .vars
-    PROJECT_NAME: MainBlocks/ucm_q
+    PROJECT_NAME: MainBlocks/ucm_r
     BLOCK: UCM
     SIMULATOR: riviera
   needs: ["SIM:ucm_riviera"]
