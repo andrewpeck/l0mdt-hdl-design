@@ -17,7 +17,7 @@ GEN:ucm_r:
 #       extends: .vars
 #       PROJECT_NAME: MainBlocks/ucm_r
 
-SIM:ucm_riviera:
+SIM:ucm_r:
     extends: .riviera_sim
     variables:
       extends: .vars
@@ -29,7 +29,7 @@ COMP:ucm_r:
   variables:
     extends: .vars
     PROJECT_NAME: MainBlocks/ucm_r
-  needs: ["SIM:ucm_questa","SIM:ucm_riviera"]
+  needs: ["SIM:ucm_q","SIM:ucm_r"]
 
 CHK:ucm_r:
   extends: .sim_check
