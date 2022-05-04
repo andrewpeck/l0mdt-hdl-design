@@ -11,6 +11,12 @@ GEN:ucm:
       - hog
       # - "2020.2"
 
+# SIM:ucm_vivado:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: MainBlocks/ucm
+
 SIM:ucm_questa:
     extends: .simulate_project
     variables:
