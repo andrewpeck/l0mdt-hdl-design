@@ -79,7 +79,7 @@ def reset(dut):
     Resets the testbench, having reset active LOW.
     """
 
-    dut.reset_n <= 1
+    dut.reset_n <= 0
     yield ClockCycles(dut.clock, 10)
     dut.reset_n <= 0
     yield ClockCycles(dut.clock, 10)
@@ -264,11 +264,14 @@ def csf_test(dut):
         if(n_ip_intf == 0): #HEG2SFSLC
             single_interface_list_delay = events.modify_tv(single_interface_list, heg2sfslc_ii)
             for io in range(CsfPorts.get_input_interface_ports(n_ip_intf)):
-                input_tv_list.append(single_interface_list[io])
+                input_tv_list.append(single_interface_list_delay[io])
         elif(n_ip_intf == 1): #HEG2SFHIT
-            for io in range(CsfPorts.get_input_interface_ports(n_ip_intf)):
-                hits_in_event      = len(single_interface_list[io])
-                hits_zero_padding  = heg2sfslc_ii - hits_in_event - csf_init_cycles;
+            hits_in_event = []  
+            hits_zero_padding = []
+            for io in range(len(single_interface_list)): #(CsfPorts.get_input_interface_ports(n_ip_intf)):
+                for e_i in range(len(single_interface_list[io])):
+                    hits_in_event.append(len(single_interface_list[io]))
+                    hits_zero_padding.append(heg2sfslc_ii - hits_in_event[e_i] - csf_init_cycles)
                 single_interface_list_dly_0 = events.modify_tv_padzeroes(single_interface_list[io],'begin',csf_init_cycles)
                 single_interface_list_dly_1 = events.modify_tv_padzeroes(single_interface_list_dly_0, 'end', hits_zero_padding)
                 single_interface_list_dly_2 = events.flatten_list(single_interface_list_dly_1)
@@ -279,8 +282,7 @@ def csf_test(dut):
             i_eof_ii           = heg2sfslc_ii
             single_interface_list_dly_0 = events.modify_tv(single_interface_list, i_eof_ii)
             single_interface_list_dly_1 = events.modify_tv_padzeroes(single_interface_list_dly_0, 'begin', i_eof_zero_padding)
-            for io in range(CsfPorts.get_input_interface_ports(n_ip_intf)):
-                input_tv_list.append(single_interface_list_dly_1[io])
+            input_tv_list.append(single_interface_list_dly_1[0])
             
             
 
