@@ -34,9 +34,7 @@ def run(config):
     test_location = run_config["test_location"]
     output_dir_name = run_config["output_directory_name"]
 
-    if run_config["configure_rtl"] is "true":
-        configure_rtl_for_test(run_config)
-	
+ 	
     ##
     ## communicate input args
     ##
@@ -53,6 +51,12 @@ def run(config):
     # I can't seem to get cocotb to run with absolute paths provided to the Makefile,
     # so I just move to the test_location here
     os.chdir(test_location)
+
+    #Update RTL configuration
+    if "configure_rtl" in run_config:
+        if run_config["configure_rtl"] is True:
+            configure_rtl_for_test(run_config)
+
 
     makefile = "Makefile"
     sim_build_out = f"{relative_output_path}/test_output/{output_dir_name}"
@@ -126,3 +130,11 @@ def check_config(config, dump):
             print(f'Configuration for test "{test_name}":')
             print(json.dumps(parsed_config, sort_keys=False, indent=4))
             print(60 * "-")
+
+
+def configure_rtl_for_test(run_config):
+    #RTL configuration for MPT/UPT
+    if run_config["pt_type"] is "mpt":
+        test_config.rtl_configuration("prj_cfg.vhd", "PT_TYPE", 0)
+    else:
+        test_config.rtl_configuration("prj_cfg.vhd", "PT_TYPE", 1)
