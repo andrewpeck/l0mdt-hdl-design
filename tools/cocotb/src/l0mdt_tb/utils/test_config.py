@@ -1,5 +1,6 @@
 import json
 import os
+import fileinput
 from pathlib import Path
 
 from l0mdt_tb.utils import utils
@@ -315,3 +316,13 @@ def config_from_file(config_file):
 
     config = testbench_config_from_file(config_file)
     return config, None
+
+
+def rtl_configuration(prj_cfg, parameter, val):
+	for line in fileinput.FileInput(prj_cfg,inplace=1):
+		if parameter in line.strip():
+			print("proj_cfg.",parameter," := '"+str(val)+"';")
+		else:
+			print(line.strip())
+								
+	

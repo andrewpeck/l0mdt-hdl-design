@@ -34,6 +34,9 @@ def run(config):
     test_location = run_config["test_location"]
     output_dir_name = run_config["output_directory_name"]
 
+    if run_config["configure_rtl"] is "true":
+        configure_rtl_for_test(run_config)
+	
     ##
     ## communicate input args
     ##
