@@ -318,10 +318,13 @@ def config_from_file(config_file):
     return config, None
 
 
-def rtl_configuration(prj_cfg, parameter, val):
+def rtl_configuration(prj_cfg, parameter, val, as_str=1):
 	for line in fileinput.FileInput(prj_cfg,inplace=1):
 		if parameter in line.strip():
-			print("proj_cfg.",parameter," := '"+str(val)+"';")
+                    if as_str is 1:
+                        print("proj_cfg."+str(parameter)+" := '"+str(val)+"';")
+                    else:
+                        print("proj_cfg."+str(parameter)+" := "+str(val)+";")
 		else:
 			print(line.strip())
 								
