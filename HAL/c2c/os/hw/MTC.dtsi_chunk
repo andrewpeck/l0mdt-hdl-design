@@ -1,7 +1,0 @@
-  amba_pl {
-    axiSlaveMTC: MTC@44A40000 {
-      compatible = "generic-uio";
-      reg = <0x44A40000 0x10000>;
-      label = "MTC";
-    };
-  };

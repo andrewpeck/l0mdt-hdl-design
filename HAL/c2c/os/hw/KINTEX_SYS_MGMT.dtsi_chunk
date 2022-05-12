@@ -1,7 +1,0 @@
-  amba_pl {
-    axiSlaveKINTEX_SYS_MGMT: KINTEX_SYS_MGMT@83C42000 {
-      compatible = "generic-uio";
-      reg = <0x83C42000 0x1000>;
-      label = "KINTEX_SYS_MGMT";
-    };
-  };
