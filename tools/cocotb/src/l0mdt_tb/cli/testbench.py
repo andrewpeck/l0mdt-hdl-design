@@ -135,7 +135,6 @@ def check_config(config, dump):
 def configure_rtl_for_test(run_config):
     filename="prj_cfg.vhd"
     #RTL configuration for MPT/UPT
-    print("SAIRAM SAIRAM pt_type="+run_config["pt_type"])
     if "pt_type" in run_config:
         if run_config["pt_type"] == "mpt":
             test_config.rtl_configuration(filename, "PT_TYPE", 0)
