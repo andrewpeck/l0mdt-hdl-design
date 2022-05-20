@@ -7,7 +7,7 @@ variables:
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: '1914966'
+      ref: 'v6.9.0'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
