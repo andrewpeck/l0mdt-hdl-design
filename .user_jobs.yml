@@ -98,6 +98,7 @@ check_auto_generated_code:
     HOG_CHECK_PROJVER : 0
   stage: generation_and_simulation
   script:
+    - git pull
     - export PATH=${HOG_PATH}:$PATH
     - which vsim
     - if [[ -v HOG_CHECK_PROJVER ]] && [[ $HOG_CHECK_PROJVER == '1' ]]; then
