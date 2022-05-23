@@ -73,3 +73,45 @@ vu13p_csf_mpt:
     default:
       link_map: "link_map_vu13p"
       zynq_target: 7s
+
+###################################################
+#           EMPTY ULL PROJECTS
+###################################################
+
+ku15p_ull_empty:
+  fpga: xcku15p-ffva1760-2-e
+  board_pkg: board_pkg_mpi_ku15p
+  sf: lsf
+  pt: upt
+  constraints:
+    - "pinouts_mpi_ku15p.xdc"
+  variants:
+    default:
+      link_map: "link_map_ku15p"
+      sector_id: 3
+      sector_side: 0
+      endcap: 0
+      large: 0
+      en_neighbors: 0
+      en_daq: 1
+      hog_only_synth: 1
+      zynq_target: 7s  # 7s or usp
+
+vu13p_ull_empty:
+  fpga: xcvu13p-flga2577-2-e
+  board_pkg: board_pkg_mpi_vu13p
+  sf: lsf
+  pt: upt
+  constraints:
+    - "pinouts_mpi_vu13p.xdc"
+  variants:
+    default:
+      link_map: "link_map_vu13p"
+      sector_id: 3
+      sector_side: 0
+      endcap: 0
+      large: 0
+      en_neighbors: 0
+      en_daq: 1
+      hog_only_synth: 1
+      zynq_target: 7s  # 7s or usp
