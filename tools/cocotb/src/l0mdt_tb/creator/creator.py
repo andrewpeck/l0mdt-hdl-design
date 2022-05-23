@@ -213,7 +213,8 @@ def create_test_ports_file(test_name, n_inputs, n_outputs, input_ports, output_p
     lines.append("\tdef n_output_ports(self):")
     lines.append(f"\t\toutput_ports = 0")
     lines.append(f"\t\tfor i in range(self.n_output_interfaces):")
-    lines.append(f"\t\t\toutput_ports = output_ports + self.n_output_interfaces")
+    lines.append(f"\t\t\toutput_ports = output_ports + self.get_output_interface_ports(i)")
+    #lines.append(f"\t\t\toutput_ports = output_ports + self.n_output_interfaces")
     lines.append(f"\t\treturn output_ports")
 
 
@@ -411,9 +412,12 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
     ##
     config_run_config = {
         "output_directory_name": test_name,
-        "test_location": f"{str(p_test_dir)}/test",
-        "expected_is_observed": False,
-        "components_lib_dir": "${XILINX_LIB_DIR}",
+        "test_location"        : f"{str(p_test_dir)}/test",
+        "expected_is_observed" : False,
+        "components_lib_dir"   : "${XILINX_LIB_DIR}",
+        "configure_rtl"        :True,
+        "pt_type"              : "upt",
+
     }
 
     ##
@@ -430,7 +434,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
 
     config_testvectors = {
         "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
-        "testvector_file": "B_C_3.xz",
+        "testvector_file": "B_A_3.xz",
         "inputs": input_list,
         "outputs": output_list,
     }

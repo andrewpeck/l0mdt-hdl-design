@@ -255,9 +255,9 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         RTL_BF[0], tolerances
                     )  # compare_bitfieldwordvalue returns list
                     if stationNum != -99:
-                        print("\n\tSL candidate ", this_candidate, ":\t",tvformat,", Station:",stationID)
+                        print("\n\tSL candidate ", this_candidate, ":\t",tvformat,", Station:",stationID, "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
                     else:
-                        print("\n\tSL candidate ", this_candidate, ":\t",tvformat)
+                        print("\n\tSL candidate ", this_candidate, ":\t",tvformat, "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
 
                     if results[0]:
                         cprint("\tPass: RTL Matches expected  value", "green")
@@ -492,3 +492,26 @@ def results_summary( total_events, total_pass, total_fail, total_dataformats, fi
 
     print ("\t\t\t TEST RESULTS SUMMARY: Total Events=", total_events, "Total Ports = ",total_ports," Pass=",total_pass, "Fail=",total_fail,"\n")
     print ("\n=========================================================\n")
+
+
+def get_hex_list(int_list):
+    #print (int_list)
+    
+    hex_list = [hex(int(item)) for item in int_list]
+    return hex_list
+
+
+def get_n_dim_hex_list(int_list):
+    hex_list    = []
+    hex_list_2  = []
+    
+    for dim_i in range(len(int_list)):
+        if type(int_list[dim_i][0]) == list :
+            hex_list_2.append(hex_n_dim_list(int_list[dim_i]))
+            hex_list.append(hex_list_2)
+        else:
+            hex_list.append(get_hex_list(int_list[dim_i]))
+    return hex_list
+        
+                                                                    
+        

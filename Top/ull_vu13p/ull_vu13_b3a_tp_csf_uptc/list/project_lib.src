@@ -25,7 +25,7 @@ UserLogic/mtc/mtc_lib.src lib=mtc_lib
 UserLogic/fm/fm_lib.src lib=fm_lib
 UserLogic/daq/daq.src
 
-UserLogic/csf/csf_lib.src lib=csf_lib
+UserLogic/csf/ncsf_lib.src lib=csf_lib
 UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
 # UserLogic/lsf/lsf_lib_vu13p.src lib=lsf_lib
 

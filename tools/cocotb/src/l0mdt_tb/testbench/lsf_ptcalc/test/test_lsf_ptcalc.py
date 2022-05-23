@@ -285,7 +285,7 @@ def lsf_ptcalc_test(dut):
         if(n_ip_intf == 0): #HEG2SFSLC
             single_interface_list_ii_delay = events.modify_tv(single_interface_list, heg2sfslc_ii)
             for io in range(LsfPtcalcPorts.get_input_interface_ports(n_ip_intf)): 
-                input_tv_list.append(single_interface_list[io])
+                input_tv_list.append(single_interface_list_ii_delay[io])
         elif(n_ip_intf == 1): #HEG2SFHIT
             hits_in_event = []  
             hits_zero_padding = []
@@ -299,7 +299,7 @@ def lsf_ptcalc_test(dut):
                 single_interface_list_ii_delay      = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp2,'end',hits_zero_padding)
                 single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)            
                 input_tv_list.append(single_interface_list_ii_delay_flat[0])
-            print("Events.py: INPUT HITS =", input_tv_list)
+            print("Events.py: INPUT HITS =", events.get_n_dim_hex_list(input_tv_list))
         elif(n_ip_intf == 2) : #LSF_CTRL
             i_eof_zero_padding = loadlut_setup + max_hits * 2
             i_eof_ii           = heg2sfslc_ii

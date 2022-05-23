@@ -58,11 +58,11 @@
                     "tolerance": {
                         "segpos": [
                             "abs",
-                            1000000.0
+                               5.0
                         ],
                         "segangle": [
-                            "perc",
-                            50
+                            "abs",
+                            0.015
                         ]
                     }
                 }
