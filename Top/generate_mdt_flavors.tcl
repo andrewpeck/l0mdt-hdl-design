@@ -249,4 +249,6 @@ proc clone_projects {huddle} {
                 $fpga $board_pkg $pt $sf $constraints $link_map $props
             }}}
 
-            clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]
+puts "---"
+puts "$script_path"
+clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]
