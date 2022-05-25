@@ -133,7 +133,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     list/project_lib.src list/shared_lib.src list/xdc.con
     pre-synthesis.tcl
     post-bitstream.tcl
-    post-creation.tcl prj_cfg_default.vhd"
+    post-creation.tcl prj_cfg.vhd"
 
     foreach file $files_to_copy {
         file copy -force ${source_path}/$file ${dest_path}/$file
@@ -182,12 +182,11 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     exec sed -i $re "$dest_path/list/hal.src"
 
     # update the project config
-    file rename -force "$dest_path/prj_cfg_default.vhd" "$dest_path/prj_cfg_default.vhd"
-    update_prj_config "$dest_path/prj_cfg_default.vhd" $segment_finder $pt_calc $props
+    file rename -force "$dest_path/prj_cfg.vhd" "$dest_path/prj_cfg.vhd"
+    update_prj_config "$dest_path/prj_cfg.vhd" $segment_finder $pt_calc $props
 
     # update the project_lib.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
-    #exec sed -i "s|prj_cfg_default|prj_cfg_${name}|g" "$dest_path/list/project_lib.src"
 
     # update the gitlab ci file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/gitlab-ci.yml"
@@ -210,10 +209,10 @@ proc clone_projects {huddle} {
 
         set build [huddle get $huddle $key]
 
-        set fpga [huddle get_stripped $build fpga]
-        set board_pkg [huddle get_stripped $build board_pkg]
-        set pt        [huddle get_stripped $build pt]
-        set sf [huddle get_stripped $build sf]
+        set fpga        [huddle get_stripped $build fpga]
+        set board_pkg   [huddle get_stripped $build board_pkg]
+        set pt          [huddle get_stripped $build pt]
+        set sf          [huddle get_stripped $build sf]
         set constraints [huddle get_stripped $build constraints]
 
         puts " Build: $key"
@@ -228,14 +227,12 @@ proc clone_projects {huddle} {
 
             set link_map       [huddle get_stripped $props link_map]
             set zynq_target    [huddle get_stripped $props zynq_target]
-            #set prj_cfg        [huddle get_stripped $props prj_cfg]
 
             puts "    - Flavor: $variant"
             puts "        link_map    : $link_map"
             puts "        zynq_target : $zynq_target"
             puts "        sf          : $sf"
             puts "        pt          : $pt"
-           #puts "        prj_cfg     : $prj_cfg"
 
             global script_path
 
