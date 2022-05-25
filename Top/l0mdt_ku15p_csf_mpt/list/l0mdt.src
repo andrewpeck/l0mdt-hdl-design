@@ -1,5 +1,3 @@
-# -*- mode: TCL;-*-
-
 HAL/top_l0mdt.vhd top=top_l0mdt
 
 # Control
