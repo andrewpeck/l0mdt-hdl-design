@@ -282,12 +282,13 @@ begin  -- architecture behavioral
       reset_i => core_ctrl.clocking.reset_mmcm,
 
       -- clock inputs
-      -- this is the ASYNC UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
+
+      -- this is the ASYNC UNSTOPPABLE clock that should be used to run any core
+      -- logic (AXI and so on)
       clock_async_i_p => clock_async_i_p,
       clock_async_i_n => clock_async_i_n,
 
-      -- 40MHz clock from Si synth, this is either free-running or locked onto
-      -- the 40MHz clock that comes from FELIX (recovered through this FPGA)
+      -- 40 MHz LHC Clock from FELIX etc
       clock_i_p => clock_i_p,
       clock_i_n => clock_i_n,
 

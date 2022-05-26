@@ -73,13 +73,9 @@ set_property -quiet PACKAGE_PIN L12     [get_ports refclk_i_p[21]   ] ; # FE_REF
 set_property -quiet PACKAGE_PIN L11     [get_ports refclk_i_n[21]   ] ; # FE_REF7_N
 
 # LHC REF Inputs
-#set_property -quiet PACKAGE_PIN AT24    [get_ports lhc_clock_in_p] ; # IN: LHC clock ;; SM or SMA or (KUP/ZUP output) --> Si5345 (no ZDM)
-#set_property -quiet PACKAGE_PIN AU24    [get_ports lhc_clock_in_n] ; # IN: LHC clock ;; SM or SMA or (KUP/ZUP output) --> Si5345 (no ZDM)
+set_property -quiet PACKAGE_PIN AT24    [get_ports clock_i_p] ; # IN: async programmable clock ;; oscillator --> SI5341 (no zdm)
+set_property -quiet PACKAGE_PIN AU24    [get_ports clock_i_n] ; # IN: async programmable clock ;; oscillator --> SI5341 (no zdm)
 create_clock -period 25 -name clock_in_lhc [get_ports clock_i_p]
-
-# CLK_GEN Inputs
-set_property -quiet PACKAGE_PIN AP29    [get_ports clock_i_p] ; # IN: async programmable clock ;; oscillator --> SI5341 (no zdm)
-set_property -quiet PACKAGE_PIN AP30    [get_ports clock_i_n] ; # IN: async programmable clock ;; oscillator --> SI5341 (no zdm)
 
 # ASYNC Oscillator
 set_property -quiet PACKAGE_PIN AY16    [get_ports clock_async_i_p] ; # IN: oscillator clock, ASYNC, always on
@@ -91,8 +87,8 @@ set_property -quiet PACKAGE_PIN AT23    [get_ports tc_clk_o_p] ; # OUT: recovere
 set_property -quiet PACKAGE_PIN AU23    [get_ports tc_clk_o_n] ; # OUT: recovered LHC Clock to synths
 
 set_property IOSTANDARD LVDS [get_ports  clock_i*]
-set_property IOSTANDARD LVDS [get_ports  clock_100m_i*]
-set_property IOSTANDARD LVDS [get_ports  tc_clk_o*]
+set_property IOSTANDARD LVDS [get_ports  clock_async_i*]
+set_property IOSTANDARD LVDS [get_ports  tc_clk_*]
 
 set_property -quiet PACKAGE_PIN AU12   [get_ports sump]
 set_property IOSTANDARD LVCMOS18       [get_ports sump]
