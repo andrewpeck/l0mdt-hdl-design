@@ -10,8 +10,33 @@
 #    - {any other board specific constraints files}
 #  variants:
 #    Y:
-#      prj_cfg: "prj_cfg"
 #      link_map: "ku15p_test"
+#      zynq_target: 7s  # 7s or usp
+#
+#      hog_only_synth: 1
+#      hog_chk: 1
+#      sector_id: 3
+#      sector_side: 0
+#      endcap: 0
+#      large: 0
+#      en_neighbors: 0
+#
+#      en_tar: 1
+#      en_h2s: 1
+#      en_ucm: 1
+#      en_mpl: 1
+#      en_sf: 1
+#      en_pt: 1
+#      en_daq: 1
+#      en_mtc: 1
+#
+#      en_INN:6
+#      en_MID:6
+#      en_OUT:6
+#      en_EXT:0
+#
+#      threads: 3
+
 #    Z:
 
 ku15p_lsf_upt:
@@ -81,37 +106,51 @@ vu13p_csf_mpt:
 ku15p_ull_empty:
   fpga: xcku15p-ffva1760-2-e
   board_pkg: board_pkg_mpi_ku15p
-  sf: lsf
-  pt: upt
+  sf: csf
+  pt: mpt
   constraints:
     - "pinouts_mpi_ku15p.xdc"
   variants:
     default:
       link_map: "link_map_ku15p"
+      zynq_target: 7s  # 7s or usp
       sector_id: 3
       sector_side: 0
       endcap: 0
       large: 0
       en_neighbors: 0
-      en_daq: 1
       hog_only_synth: 1
-      zynq_target: 7s  # 7s or usp
+      en_tar: 0
+      en_h2s: 0
+      en_ucm: 0
+      en_mpl: 0
+      en_sf: 0
+      en_pt: 0
+      en_daq: 0
+      en_mtc: 0
 
 vu13p_ull_empty:
   fpga: xcvu13p-flga2577-2-e
   board_pkg: board_pkg_mpi_vu13p
-  sf: lsf
-  pt: upt
+  sf: csf
+  pt: mpt
   constraints:
     - "pinouts_mpi_vu13p.xdc"
   variants:
     default:
       link_map: "link_map_vu13p"
+      zynq_target: 7s  # 7s or usp
       sector_id: 3
       sector_side: 0
       endcap: 0
       large: 0
       en_neighbors: 0
-      en_daq: 1
       hog_only_synth: 1
-      zynq_target: 7s  # 7s or usp
+      en_tar: 0
+      en_h2s: 0
+      en_ucm: 0
+      en_mpl: 0
+      en_sf: 0
+      en_pt: 0
+      en_daq: 0
+      en_mtc: 0
