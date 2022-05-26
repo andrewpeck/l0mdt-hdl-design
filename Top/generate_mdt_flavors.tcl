@@ -59,12 +59,33 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
     # }
 }
 
-proc replace_cfg_std_logic {entry new_value dest_file} {
+proc replace_prj_cfg_std_logic {entry new_value dest_file} {
     exec sed -i s|\\(proj_cfg.${entry}\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${new_value}|g $dest_file
 }
 
-proc replace_cfg_int {entry new_value dest_file} {
-    exec sed -i s|\\(proj_cfg.${entry}\\s*:=\\s*\\)\\(\[0-9\]*\\)|\\1${new_value}|g $dest_file
+proc replace_prj_cfg_int {entry new_value dest_file} {
+    exec sed -i s,\\(proj_cfg.${entry}\\s*:=\\s*\\)\\(\[0-9\]*\\),\\1${new_value},g $dest_file
+}
+
+proc replace_constant_int {entry new_value dest_file} {
+    exec sed -i s,\\(constant\\s*${entry}\\s*:\\s*integer\\s*:=\\s*\\)\\(\\-\\?\[0-9\]*\\),\\1${new_value},g $dest_file
+    # puts sed -i s,\\(constant\\s*${entry}\\s*:\\s*integer\\s*:=\\s*\\)\\(-\?\[0-9\]*\\),\\1${new_value},g $dest_file
+}
+
+proc update_hal_config {dest_file props} {
+    # default values
+    set csm_links -1
+    set lpgbt_uplinks -1
+    set lpgbt_downlinks -1
+
+    # destructure the input properties into variables
+    foreach prop [huddle keys $props] {
+        set $prop [huddle get_stripped $props $prop]
+    }
+
+    replace_constant_int user_CSM_LINKS ${csm_links} ${dest_file}
+    replace_constant_int user_LPGBT_UPLINKS ${lpgbt_uplinks} ${dest_file}
+    replace_constant_int user_LPGBT_DOWNLINKS ${lpgbt_downlinks} ${dest_file}
 }
 
 proc update_prj_config {dest_file segment_finder pt_calc props} {
@@ -107,22 +128,23 @@ proc update_prj_config {dest_file segment_finder pt_calc props} {
     }
 
     # update the SF_TYPE and PT_TYPE
-    replace_cfg_std_logic SF_TYPE ${sf_type} ${dest_file}
-    replace_cfg_std_logic PT_TYPE ${pt_type} ${dest_file}
-    replace_cfg_std_logic ENABLE_NEIGHBORS ${en_neighbors} ${dest_file}
-    replace_cfg_std_logic ENDCAP_nSMALL_LARGE ${large} ${dest_file}
-    replace_cfg_std_logic ST_nBARREL_ENDCAP ${endcap} ${dest_file}
+    replace_prj_cfg_std_logic SF_TYPE ${sf_type} ${dest_file}
+    replace_prj_cfg_std_logic PT_TYPE ${pt_type} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_NEIGHBORS ${en_neighbors} ${dest_file}
+    replace_prj_cfg_std_logic ENDCAP_nSMALL_LARGE ${large} ${dest_file}
+    replace_prj_cfg_std_logic ST_nBARREL_ENDCAP ${endcap} ${dest_file}
 
-    replace_cfg_std_logic ENABLE_DAQ ${en_daq} ${dest_file}
-    replace_cfg_std_logic ENABLE_FM  ${en_fm}  ${dest_file}
-    replace_cfg_std_logic ENABLE_SF  ${en_sf}  ${dest_file}
-    replace_cfg_std_logic ENABLE_PT  ${en_pt}  ${dest_file}
-    replace_cfg_std_logic ENABLE_UCM ${en_ucm} ${dest_file}
-    replace_cfg_std_logic ENABLE_H2S ${en_h2s} ${dest_file}
-    replace_cfg_std_logic ENABLE_MPL ${en_mpl} ${dest_file}
-    replace_cfg_std_logic ENABLE_MTC ${en_mtc} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_DAQ ${en_daq} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_FM  ${en_fm}  ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_SF  ${en_sf}  ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_PT  ${en_pt}  ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_UCM ${en_ucm} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_H2S ${en_h2s} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_MPL ${en_mpl} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_MTC ${en_mtc} ${dest_file}
 
-    replace_cfg_int SECTOR_SIDE ${sector_side} ${dest_file}
+    replace_prj_cfg_int SECTOR_SIDE ${sector_side} ${dest_file}
+    replace_prj_cfg_int SECTOR_ID ${sector_id} ${dest_file}
 }
 
 proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints link_map props} {
@@ -151,6 +173,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     list/xml.lst list/hal.src list/l0mdt.src
     list/project_lib.src list/shared_lib.src list/xdc.con
     pre-synthesis.tcl
+    user_pkg.vhd
     post-bitstream.tcl
     post-creation.tcl prj_cfg.vhd"
 
@@ -159,7 +182,6 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     }
 
     # update the link mapping
-    # exec sed -i "" "s|HAL/link_maps/.*$|HAL/link_maps/${link_map}.vhd|g" "$dest_path/list/hal.src"
     exec sed -i "s|HAL/link_maps/.*$|HAL/link_maps/${link_map}.vhd|g" "$dest_path/list/hal.src"
 
     # update hog.conf
@@ -200,9 +222,12 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     set re "s|${foo}|${bar}|g"
     exec sed -i $re "$dest_path/list/hal.src"
 
-    # update the project config
-    file rename -force "$dest_path/prj_cfg.vhd" "$dest_path/prj_cfg.vhd"
+    # update the project/hal configs
     update_prj_config "$dest_path/prj_cfg.vhd" $segment_finder $pt_calc $props
+    update_hal_config "$dest_path/user_pkg.vhd" $props
+
+    # update the hal.src file
+    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/hal.src"
 
     # update the project_lib.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
