@@ -75,6 +75,7 @@ proc replace_constant_int {entry new_value dest_file} {
 proc update_hal_config {dest_file props} {
     # default values
     set csm_links -1
+    set tdc_links -1
     set lpgbt_uplinks -1
     set lpgbt_downlinks -1
 
@@ -84,6 +85,7 @@ proc update_hal_config {dest_file props} {
     }
 
     replace_constant_int user_CSM_LINKS ${csm_links} ${dest_file}
+    replace_constant_int user_TDC_INPUTS ${tdc_links} ${dest_file}
     replace_constant_int user_LPGBT_UPLINKS ${lpgbt_uplinks} ${dest_file}
     replace_constant_int user_LPGBT_DOWNLINKS ${lpgbt_downlinks} ${dest_file}
 }
