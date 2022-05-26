@@ -248,10 +248,13 @@ proc clone_projects {huddle} {
             set zynq_target    [huddle get_stripped $props zynq_target]
 
             puts "    - Flavor: $variant"
-            puts "        link_map    : $link_map"
-            puts "        zynq_target : $zynq_target"
-            puts "        sf          : $sf"
-            puts "        pt          : $pt"
+            puts "        link_map       : $link_map"
+            puts "        zynq_target    : $zynq_target"
+            puts "        sf             : $sf"
+            puts "        pt             : $pt"
+            foreach prop [huddle keys $props] {
+                puts "        [format %-14s $prop] : [huddle get_stripped $props $prop]"
+            }
 
             global script_path
 
