@@ -43,6 +43,7 @@ package body prj_cfg is
     proj_cfg.ENABLE_H2S          := '0';
     proj_cfg.ENABLE_MPL          := '0';
     proj_cfg.ENABLE_MTC          := '0';
+    proj_cfg.ENABLE_TAR          := '0';
 
     -- END of auto-set variables
     proj_cfg.NUM_MTC             := 3;    -- default 3, connecting to primary SL
