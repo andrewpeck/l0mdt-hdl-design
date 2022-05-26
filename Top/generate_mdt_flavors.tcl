@@ -97,6 +97,7 @@ proc update_prj_config {dest_file segment_finder pt_calc props} {
     set en_ucm 1
     set en_mpl 1
     set en_sf 1
+    set en_fm 1
     set en_pt 1
     set en_mtc 1
 
@@ -113,6 +114,7 @@ proc update_prj_config {dest_file segment_finder pt_calc props} {
     replace_cfg_std_logic ST_nBARREL_ENDCAP ${endcap} ${dest_file}
 
     replace_cfg_std_logic ENABLE_DAQ ${en_daq} ${dest_file}
+    replace_cfg_std_logic ENABLE_FM  ${en_fm}  ${dest_file}
     replace_cfg_std_logic ENABLE_SF  ${en_sf}  ${dest_file}
     replace_cfg_std_logic ENABLE_PT  ${en_pt}  ${dest_file}
     replace_cfg_std_logic ENABLE_UCM ${en_ucm} ${dest_file}

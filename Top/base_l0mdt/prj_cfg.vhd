@@ -37,6 +37,7 @@ package body prj_cfg is
     -- enables
     proj_cfg.ENABLE_DAQ          := '1';
     proj_cfg.ENABLE_SF           := '1';
+    proj_cfg.ENABLE_FM           := '1';
     proj_cfg.ENABLE_PT           := '1';
     proj_cfg.ENABLE_UCM          := '1';
     proj_cfg.ENABLE_H2S          := '1';

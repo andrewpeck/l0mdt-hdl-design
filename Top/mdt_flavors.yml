@@ -122,6 +122,7 @@ ku15p_ull_empty:
       large: 0
       en_neighbors: 0
       hog_only_synth: 0
+      en_fm: 0
       en_tar: 0
       en_h2s: 0
       en_ucm: 0
@@ -149,6 +150,7 @@ vu13p_ull_empty:
       en_neighbors: 0
       hog_only_synth: 0
       zynq_target: 7s  # 7s or usp
+      en_fm: 0
       en_tar: 0
       en_h2s: 0
       en_ucm: 0
