@@ -29,6 +29,8 @@ COMP:ucm_r:
   variables:
     extends: .vars
     PROJECT_NAME: MainBlocks/ucm_r
+    PROJECT_Q_NAME: MainBlocks/ucm_q
+    PROJECT_R_NAME: MainBlocks/ucm_r
   needs: ["SIM:ucm_q","SIM:ucm_r"]
 
 CHK:ucm_r:

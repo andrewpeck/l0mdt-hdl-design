@@ -144,8 +144,8 @@ check_auto_generated_code:
   stage: user_proj
   script:
     # - python3 tools/simComp/comparator.py $PROJECT_NAME
-    python3 tools/simComp/comparator.py -Q $PROJECT_Q_NAME -R $PROJECT_R_NAME -v 1
-    - sleep 1h
+    - python3 tools/simComp/comparator.py -Q $PROJECT_Q_NAME -R $PROJECT_R_NAME -v 1
+    # - sleep 1h
   allow_failure: true
 
 .sim_check: &sim_check
