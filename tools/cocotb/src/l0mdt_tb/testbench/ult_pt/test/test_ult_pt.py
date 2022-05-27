@@ -317,6 +317,7 @@ def ult_pt_test(dut):
     recvd_events_intf = []
     for n_op_intf in range(UltPtPorts.n_output_interfaces):
         recvd_events     = [["" for x in range(num_events_to_process)]for y in range(UltPtPorts.get_output_interface_ports(n_op_intf))]
+        recvd_time       = [["" for x in range(num_events_to_process)]for y in range(UltPtPorts.get_output_interface_ports(n_op_intf))]
         for n_oport, oport in enumerate(ult_pt_wrapper.output_ports(n_op_intf)):
 
             ##
@@ -324,12 +325,14 @@ def ult_pt_test(dut):
             ##
             monitor, io, is_active = oport
             words = monitor.observed_words
-
+            time  = monitor.observed_time
             recvd_events[n_oport] = words
+            recvd_time[n_oport]   = time
             cocotb.log.info(
                 f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
             )
-        recvd_events_intf.append(recvd_events)
+        o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process)
+        recvd_events_intf.append(o_recvd_events)
 
     ##
     ## extract the expected data for this output
