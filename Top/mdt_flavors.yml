@@ -88,6 +88,7 @@ vu13p_lsf_upt:
       en_daq: 1
       hog_chk: 1
       zynq_target: 7s
+      hog_only_synth: 1
 
 vu13p_csf_mpt:
   fpga: xcvu13p-flga2577-2-e
@@ -100,6 +101,7 @@ vu13p_csf_mpt:
     default:
       link_map: "link_map_vu13p"
       zynq_target: 7s
+      hog_only_synth: 1
 
 ###################################################
 #           EMPTY ULL PROJECTS
