@@ -155,7 +155,7 @@ def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,s
             #tvRTL_i.clear()
             port_idx = port_idx + 1
 
-    #print ("TV RTL")
+    print ("events.py: TV RTL")
     #for port_i in range(len(tvRTL_list)):
     #   tvRTL_p = tvRTL_list[port_i]
     #    tvRTL_p.print_tv()
@@ -164,7 +164,7 @@ def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,s
 
 def   print_tv_bitfields(tvRTL_list): #tvformats, tv_list, n_interfaces, n_ports, n_events_to_process):
     port_idx  = 0
-    
+    print ("events.py: print_tv_bitfields")
     for port_i in range(len(tvRTL_list)):
         tvRTL_p = tvRTL_list[port_i]
         for n_events in range(len(tvRTL_p.tv_val)):
@@ -191,8 +191,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
     RTL_DFSL.build_data_format()
     # EXP_DF.build_data_format()
-
-
 
 
     # if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
@@ -335,7 +333,8 @@ def parse_tvlist(
 ):
     events_list = tv_bcid_list
 
-    # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
+    #print("events.py VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
+
 
     tv = [["" for x in range(n_to_load)] for y in range(n_ports)]
     my_cnd_thrd_id = [0 for x in range(n_ports)] 
@@ -393,7 +392,7 @@ def modify_tv(tv, ii):
     for io in range(len(tv)):
         tv_port = []
         tv_index = 0
-        #print("modify_tv (tv,ii) =", tv , ii)
+        print("events.py :modify_tv (tv,ii) =", tv , ii)
         for i in range(len(tv[io])):
             # print("modify_tv (io,i) = (",io,i,")")
             tv_port.append(tv[io][i])
@@ -513,5 +512,59 @@ def get_n_dim_hex_list(int_list):
             hex_list.append(get_hex_list(int_list[dim_i]))
     return hex_list
         
+
+def time_ordering(events, time, num_events):
+    n_ports  = len(events)
+    port_idx = [0 for x in range(n_ports)]
+    o_events = [[0 for x in range(num_events)] for y in range(n_ports)]
+
+    for p_i in range(n_ports):
+        port_idx[p_i] = 0
+
+    #find earliest time index across all ports
+    
+    for n_event in range(num_events):     
+        cur_time = 9999999999.9
+        for p_i in range(n_ports):           
+            if(len(time[p_i]) >  port_idx[p_i]):
+                this_time = time[p_i][port_idx[p_i]]               
+            else:
+                this_time = cur_time; 
+                        
+            if(this_time < cur_time):
+                cur_time = this_time
+                        
+    
+        #Update output events list for this time
+        for p_i in range(n_ports):
+            
+            if(len(time[p_i]) >  port_idx[p_i]):
+                this_time = time[p_i][port_idx[p_i]]               
+            else:
+                this_time = cur_time; 
+
+            if(len(events[p_i]) > port_idx[p_i]):
+               this_event = events[p_i][port_idx[p_i]]
+            else:
+               this_event = 0
+            
+
+            if(this_time == cur_time):
+                o_events[p_i][n_event] = this_event
+            else:
+                o_events[p_i][n_event] = 0
+            
+
+        #Update port index
+        for p_i in range(n_ports):
+            if(len(time[p_i]) > port_idx[p_i]):
+                this_time = time[p_i][port_idx[p_i]]
+            else:
+                this_time = 0
+
+            if(this_time == cur_time):
+                port_idx[p_i] = port_idx[p_i] + 1
+                      
+    return o_events
                                                                     
         

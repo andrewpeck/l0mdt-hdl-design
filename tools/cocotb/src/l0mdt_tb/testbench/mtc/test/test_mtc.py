@@ -215,6 +215,7 @@ def mtc_test(dut):
 
         for io in range(MtcPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list_i[sb_port_index] = (single_interface_list[io])
+            input_tv_list_i[sb_port_index].append(0)
             sb_port_index                = sb_port_index + 1
 
         input_tv_list = events.modify_tv_padzeroes(input_tv_list_i)
@@ -288,7 +289,9 @@ def mtc_test(dut):
         #Multiple ports in this interface, need to lineup events across ports based on time
         #recvd_lineup = events.timebased_lineup(recvd_events, recvd_time,num_events_to_process,MtcPorts.get_output_interface_ports(n_op_intf))
         #recvd_events_intf.append(recvd_lineup)
-        recvd_events_intf.append(recvd_events)
+        o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process)
+        recvd_events_intf.append(o_recvd_events)
+      
 
 
     ##
@@ -311,6 +314,8 @@ def mtc_test(dut):
     field_fail_cnt        = []
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
+
+    
 
     for n_op_intf in range (MtcPorts.n_output_interfaces):
         events_are_equal,pass_count , fail_count, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],MtcPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], tolerances=mtc2sl_lsf_tol,output_path=output_dir);
