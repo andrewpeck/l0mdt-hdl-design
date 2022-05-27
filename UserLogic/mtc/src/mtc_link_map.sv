@@ -132,8 +132,8 @@ import l0mdt_dataformats_svh::*;
 		  
 		  if(mtc_in_vld[j] == 1'b1)
 		    begin
-		    //   $display("SAIRAM mtc_slc_common[%d] = 0x%h, mtc_sl_trailer[%d]=0x%h",j,mtc_slc_common[j],j, mtc_sl_trailer[j]);
-		       $display("{%d,%d},mtc_slc_common[%d].slcid = 0x%h, mtc_sl_trailer[%d].slid = 0x%h", LINK_SLCID, LINK_SLID,j, mtc_slc_common[j].slcid, j,mtc_sl_trailer[j].slid);
+		    
+		   //    $display("{%d,%d},mtc_slc_common[%d].slcid = 0x%h, mtc_sl_trailer[%d].slid = 0x%h", LINK_SLCID, LINK_SLID,j, mtc_slc_common[j].slcid, j,mtc_sl_trailer[j].slid);
 		       
 		       if(mtc_slc_common[j].slcid == LINK_SLCID && mtc_sl_trailer[j].slid == LINK_SLID)
 			 link_valid_map[j] <= 1'b1;

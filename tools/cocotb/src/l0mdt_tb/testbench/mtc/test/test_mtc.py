@@ -257,7 +257,7 @@ def mtc_test(dut):
         )
     dut._log.info("Sending finished!")
 
-    timer = Timer(20, "us")
+    timer = Timer(1, "us")
     dut._log.info("Going to wait 20 microseconds")
     yield timer
 
@@ -271,6 +271,7 @@ def mtc_test(dut):
         recvd_events     = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(n_op_intf))]
         recvd_lineup     = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(n_op_intf))]
         recvd_time       = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(n_op_intf))]
+        
         for n_oport, oport in enumerate(mtc_wrapper.output_ports(n_op_intf)):
 
             ##
@@ -305,7 +306,7 @@ def mtc_test(dut):
         expected_output_events = output_tv_list
 
 
-    #print("RECVD_LINEUP :",recvd_lineup)
+
     field_fail_cnt_header = []
     field_fail_cnt        = []
     field_fail_cnt_header.clear()

@@ -7,10 +7,6 @@ from cocotb import binary
 
 from l0mdt_tb.utils import events
 
-# from l0mdt_tb.utils import
-#from DataFormat import DataFormat, BitField
-
-
 def transaction_to_data_word(transaction):
 
     # at this point "transaction" is a 65-bit word with the MSB the meta-flag,
