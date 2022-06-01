@@ -518,16 +518,17 @@ def time_ordering(events, time, num_events):
     port_idx = [0 for x in range(n_ports)]
     o_events = [[0 for x in range(num_events)] for y in range(n_ports)]
 
-    for p_i in range(n_ports):
-        port_idx[p_i] = 0
-
     #find earliest time index across all ports
     
     for n_event in range(num_events):     
-        cur_time = -1
+        #print("time = ", time)
+        #print("events = ",events)
+
+        #Find time which has first arrival of event
+        cur_time = -1        
         for p_i in range(n_ports):           
-            if(len(time[p_i]) >  port_idx[p_i]):
-                this_time = time[p_i][port_idx[p_i]]               
+            if(len(time[p_i]) >= 1):
+                this_time = time[p_i][0]
             else:
                 this_time = cur_time; 
                 
@@ -538,36 +539,31 @@ def time_ordering(events, time, num_events):
                     cur_time = this_time
                         
     
-        #Update output events list for this time
+        #Update output list with events arriving at cur_time
         for p_i in range(n_ports):
             
-            if(len(time[p_i]) >  port_idx[p_i]):
-                this_time = time[p_i][port_idx[p_i]]               
+            if(len(time[p_i]) >=  1):
+                this_time = time[p_i][0]                                
             else:
                 this_time = cur_time; 
 
-            if(len(events[p_i]) > port_idx[p_i]):
-               this_event = events[p_i][port_idx[p_i]]
+            if(len(events[p_i]) >= 1):
+               this_event = events[p_i][0]               
             else:
                this_event = 0
             
 
             if(this_time == cur_time):
                 o_events[p_i][n_event] = this_event
+                if(len(time[p_i]) >= 1):
+                   time[p_i].pop(0)
+                   events[p_i].pop(0)
             else:
                 o_events[p_i][n_event] = 0
             
 
-        #Update port index
-        for p_i in range(n_ports):
-            if(len(time[p_i]) > port_idx[p_i]):
-                this_time = time[p_i][port_idx[p_i]]
-            else:
-                this_time = 0
-
-            if(this_time == cur_time):
-                port_idx[p_i] = port_idx[p_i] + 1
-                      
+       
+    #print("o_events = ", o_events)
     return o_events
                                                                     
         
