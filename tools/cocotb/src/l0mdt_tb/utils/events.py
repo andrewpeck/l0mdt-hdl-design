@@ -524,15 +524,18 @@ def time_ordering(events, time, num_events):
     #find earliest time index across all ports
     
     for n_event in range(num_events):     
-        cur_time = 9999999999.9
+        cur_time = -1
         for p_i in range(n_ports):           
             if(len(time[p_i]) >  port_idx[p_i]):
                 this_time = time[p_i][port_idx[p_i]]               
             else:
                 this_time = cur_time; 
-                        
-            if(this_time < cur_time):
+                
+            if(cur_time == -1):
                 cur_time = this_time
+            else :
+                if(this_time < cur_time):
+                    cur_time = this_time
                         
     
         #Update output events list for this time
