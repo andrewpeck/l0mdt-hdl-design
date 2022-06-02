@@ -146,13 +146,14 @@ def print_BitFieldsInDataFormat(tvformat, tvformat_val, stationNum=-99):
 def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id=""):
     port_idx  = 0
     tvRTL_list = []
+    
     for n_intf in range(n_interfaces): # Add concept of interface
         for io in range(n_ports[n_intf]):
             tvRTL_i    = tvRTL()
             for n_events in range(n_events_to_process):     
                 if(station_id == ""):
                     tvRTL_i.set_tv(tv_list[port_idx][n_events], tvformats[n_intf])
-                else:
+                else:                    
                     tvRTL_i.set_tv(tv_list[port_idx][n_events], tvformats[n_intf],station=station_id[n_intf][io])
             tvRTL_list.append(tvRTL_i)
             #tvRTL_i.clear()
@@ -189,9 +190,7 @@ def print_tv_list(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process
     tvRTL_list = fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id)
     print_tv_bitfields(tvRTL_list, print_this_event=event_number)
     
-def print_event_in_list(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id="",n_event = -1):
-     tvRTL_list = fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id)
-     print_tv_bitfields(tvRTL_list, print_this_event=n_event)
+
 
 def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99):
     evt                = 0

@@ -349,6 +349,14 @@ def ult_pt_test(dut):
         expected_output_events = output_tv_list
 
 
+
+    #DEBUG i PRINTING ALL EVENTS
+    #events.print_tv_list(input_tvformats, input_tv_list, UltPtPorts.n_input_interfaces, UltPtPorts.n_ip_ports_in_intf, num_events_to_process,  station_id=inputs_station_id)
+    #DEBUG i PRINTING EVENT 2
+    #Since inputs have been lined up based on pt_ii, make sure event number is correctly calculated
+    events.print_tv_list(input_tvformats, input_tv_list, UltPtPorts.n_input_interfaces, UltPtPorts.n_ip_ports_in_intf, num_events_to_process * pt_ii, station_id=inputs_station_id, event_number=1*pt_ii)
+    
+
     pass_count = 0
     fail_count = 0
     field_fail_cnt_header = []
