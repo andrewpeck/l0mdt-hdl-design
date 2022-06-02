@@ -143,14 +143,17 @@ def print_BitFieldsInDataFormat(tvformat, tvformat_val, stationNum=-99):
     print(bitfieldWord[0].print_bitFieldWord())
    
 
-def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id):
+def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id=""):
     port_idx  = 0
     tvRTL_list = []
     for n_intf in range(n_interfaces): # Add concept of interface
         for io in range(n_ports[n_intf]):
             tvRTL_i    = tvRTL()
-            for n_events in range(n_events_to_process):
-                tvRTL_i.set_tv(tv_list[port_idx][n_events], tvformats[n_intf],station=station_id[n_intf][io])
+            for n_events in range(n_events_to_process):     
+                if(station_id == ""):
+                    tvRTL_i.set_tv(tv_list[port_idx][n_events], tvformats[n_intf])
+                else:
+                    tvRTL_i.set_tv(tv_list[port_idx][n_events], tvformats[n_intf],station=station_id[n_intf][io])
             tvRTL_list.append(tvRTL_i)
             #tvRTL_i.clear()
             port_idx = port_idx + 1
@@ -162,19 +165,33 @@ def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,s
 
     return tvRTL_list
 
-def   print_tv_bitfields(tvRTL_list): #tvformats, tv_list, n_interfaces, n_ports, n_events_to_process):
+def   print_tv_bitfields(tvRTL_list,print_this_event=-1): #tvformats, tv_list, n_interfaces, n_ports, n_events_to_process):
     port_idx  = 0
     print ("events.py: print_tv_bitfields")
+    if print_this_event == -1:
+        print_single_event = 1
+    else:
+        print_single_event = 0
+
     for port_i in range(len(tvRTL_list)):
         tvRTL_p = tvRTL_list[port_i]
-        for n_events in range(len(tvRTL_p.tv_val)):
-            print_BitFieldsInDataFormat(tvRTL_p.df, tvRTL_p.tv_val[n_events], stationNum=station_name_to_id(tvRTL_p.station))
-
+        if print_this_event == 0 :
+            print ("events.py: print_tv_bitfields: Printing ", len(tvRTL_p.tv_val), "events")
+            for n_events in range(len(tvRTL_p.tv_val)):
+                print_BitFieldsInDataFormat(tvRTL_p.df, tvRTL_p.tv_val[n_events], stationNum=station_name_to_id(tvRTL_p.station))
+        else :
+            print ("events.py: print_tv_bitfields: Printing event ", print_this_event)
+            print_BitFieldsInDataFormat(tvRTL_p.df, tvRTL_p.tv_val[print_this_event], stationNum=station_name_to_id(tvRTL_p.station))
     
     
 
-
-
+def print_tv_list(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id="", event_number = -1):
+    tvRTL_list = fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id)
+    print_tv_bitfields(tvRTL_list, print_this_event=event_number)
+    
+def print_event_in_list(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id="",n_event = -1):
+     tvRTL_list = fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id)
+     print_tv_bitfields(tvRTL_list, print_this_event=n_event)
 
 def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99):
     evt                = 0

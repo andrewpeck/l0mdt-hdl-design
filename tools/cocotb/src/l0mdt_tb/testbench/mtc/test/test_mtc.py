@@ -315,6 +315,10 @@ def mtc_test(dut):
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
 
+    #DEBUG i PRINTING ALL EVENTS
+    events.print_tv_list(input_tvformats, input_tv_list, MtcPorts.n_input_interfaces, MtcPorts.n_ports, num_events_to_process)
+    #DEBUG i PRINTING EVENT 2
+    events.print_tv_list(input_tvformats, input_tv_list, MtcPorts.n_input_interfaces, MtcPorts.n_ports, num_events_to_process, event_number=2)
     
 
     for n_op_intf in range (MtcPorts.n_output_interfaces):
