@@ -45,25 +45,12 @@ entity ucm_phimod is
     clk                   : in std_logic;
     rst                   : in std_logic;
     ena                   : in std_logic;
-    -- configuration, control & Monitoring
-    -- i_phicenter           : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
-    -- i_chamber_z_org_bus   : in b_chamber_z_origin_station_avt;
-    -- -- PAM
-    -- i_proc_info_v         : in ucm_proc_info_vt := (others => '0');
-    -- -- SLc in
-    -- i_slc_data_v          : in slc_rx_vt;
-    -- -- pam out
-    -- o_cde_data_v          : out ucm_cde_vt;
-    -- -- to pipeline
-    -- o_pl_phimod           : out std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
-    -- o_pl_phimod_dv        : out std_logic;
-
-    -- o_ucm2pl_v            : out ucm2pl_vt
 
     i_phicenter : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_posphi    : in std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
     i_dv        : in std_logic;
     o_phimod_abs : out std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
+    o_abs_dv        : out std_logic;
     o_phimod    : out std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
     o_dv        : out std_logic
   );
@@ -72,38 +59,43 @@ end entity ucm_phimod;
 architecture beh of ucm_phimod is
 
     
-  signal i_proc_info_r           : ucm_proc_info_rt;
+  signal int_phicenter : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
+  signal int_posphi    : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
+
+  -- signal i_proc_info_r           : ucm_proc_info_rt;
   
-  signal i_slc_data_r     : slc_rx_rt;
+  -- signal i_slc_data_r     : slc_rx_rt;
 
-  signal int_slc_data_v   : slc_rx_vt;
-  signal int2_slc_data_v   : slc_rx_vt;
-  signal int_slc_data_r   : slc_rx_rt;
-  signal int2_slc_data_r   : slc_rx_rt;
+  -- signal int_slc_data_v   : slc_rx_vt;
+  -- signal int2_slc_data_v   : slc_rx_vt;
+  -- signal int_slc_data_r   : slc_rx_rt;
+  -- signal int2_slc_data_r   : slc_rx_rt;
 
-  signal o_cde_data_r     : ucm_cde_rt;
+  -- signal o_cde_data_r     : ucm_cde_rt;
   -- signal o_cde_data_null  : ucm_cde_rt;-- := zero(o_cde_data_r);
 
-  signal barrel_r : slc_barrel_rt;
+  -- signal barrel_r : slc_barrel_rt;
 
-  signal dv_bus : std_logic_vector(3 downto 0);
+  -- signal dv_bus : std_logic_vector(3 downto 0);
 
-  type rpc_z_art is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
-  signal rpc_z_a : rpc_z_art;
+  -- type rpc_z_art is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
+  -- signal rpc_z_a : rpc_z_art;
 
-  signal  int_chamb_ieta : chamb_ieta_rpc_aut;
+  -- signal  int_chamb_ieta : chamb_ieta_rpc_aut;
 
   -- constant phicenter : std_logic_vector
 
-  signal slc_posphi   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
+  -- signal slc_posphi   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
+  signal int_phimod_s   : signed(SLC_COMMON_POSPHI_LEN downto 0);
   signal int_phimod   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_abs : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_abs_pl : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_pl: std_logic_vector(12 -1 downto 0);
+  signal int_posphi_pl_dv : std_logic;
   signal int_phimod_dv : std_logic;
 
   -----------------
-  signal o_uCM2pl_r : ucm2pl_rt;
+  -- signal o_uCM2pl_r : ucm2pl_rt;
 
 begin
 
@@ -129,23 +121,37 @@ begin
       --     o_dv        => int_phimod_dv
       -- );
 
+      -- int_phimod      <= std_logic_vector(resize(signed('0'&int_posphi) - signed('0'&int_phicenter),SLC_COMMON_POSPHI_LEN));
+      int_phimod_s    <= signed('0'&int_posphi) - signed('0'&int_phicenter);
+      -- int_phimod_abs  <= std_logic_vector(resize(abs(signed('0'&int_posphi) - signed('0'&int_phicenter)),SLC_COMMON_POSPHI_LEN));
+
       phimod_proc : process(clk)
       begin
         if rising_edge(clk) then
           if rst = '1' then
             int_phimod      <= (others => '0');
             int_phimod_abs  <= (others => '0');
+            int_phicenter <= (others => '0');
+            int_posphi <= (others => '0');
             int_phimod_dv <= '0';
           else
-            int_phimod_dv <= i_dv ;
+            int_posphi_pl_dv <= i_dv ;
             int_phimod_abs_pl <= int_phimod_abs;
             if i_dv = '1' then
-              int_phimod      <= std_logic_vector(resize(signed('0'&i_posphi) - signed('0'&i_phicenter),SLC_COMMON_POSPHI_LEN));
-              int_phimod_abs  <= std_logic_vector(resize(abs(signed('0'&i_posphi) - signed('0'&i_phicenter)),SLC_COMMON_POSPHI_LEN));
-            else
-              int_phimod      <= (others => '0');
-              int_phimod_abs  <= (others => '0');
+              int_phicenter <= i_phicenter;
+              int_posphi    <= i_posphi   ;
+            -- else
+            --   int_phicenter  <= (others => '0');
+            --   int_posphi     <= (others => '0');   
             end if;
+              -- int_phimod      <= std_logic_vector(resize(signed('0'&i_posphi) - signed('0'&i_phicenter),SLC_COMMON_POSPHI_LEN));
+              -- int_phimod_abs  <= std_logic_vector(resize(abs(signed('0'&i_posphi) - signed('0'&i_phicenter)),SLC_COMMON_POSPHI_LEN));
+              int_phimod      <= std_logic_vector(resize(int_phimod_s,SLC_COMMON_POSPHI_LEN));
+              int_phimod_abs  <= std_logic_vector(resize(abs(int_phimod_s),SLC_COMMON_POSPHI_LEN));
+              int_phimod_dv <= int_posphi_pl_dv;
+              -- int_phimod      <= (others => '0');
+              -- int_phimod_abs  <= (others => '0');
+            -- end if;
           end if;
         end if;
       end process;

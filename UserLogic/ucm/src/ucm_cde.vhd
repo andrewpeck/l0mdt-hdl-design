@@ -89,11 +89,11 @@ architecture beh of ucm_cde is
   -- constant phicenter : std_logic_vector
 
   signal slc_posphi   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
-  signal int_phimod   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
-  signal int_phimod_abs : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
+  -- signal int_phimod   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
+  -- signal int_phimod_abs : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_abs_pl : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
-  signal int_phimod_pl: std_logic_vector(12 -1 downto 0);
-  signal int_phimod_dv : std_logic;
+  signal int_phimod_pl: std_logic_vector(UCM2PL_PHIMOD_LEN - 1 downto 0);--(12 -1 downto 0);
+  signal int_abs_dv : std_logic;
 
   -----------------
   signal o_uCM2pl_r : ucm2pl_rt;
@@ -145,9 +145,12 @@ begin
           i_dv        => i_slc_data_r.data_valid,
 
           o_phimod_abs => int_phimod_abs_pl,
-          o_phimod    => o_pl_phimod,
+          o_abs_dv    => int_abs_dv,
+          o_phimod    => int_phimod_pl,
           o_dv        => o_pl_phimod_dv
       );
+
+      o_pl_phimod <= int_phimod_pl;
 
       -- phimod_proc : process(clk)
       -- begin
