@@ -18,146 +18,140 @@
 -- 
 ----------------------------------------------------------------------------------
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use ieee.math_real.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+USE ieee.math_real.ALL;
 
-library shared_lib;
-use shared_lib.common_ieee_pkg.all;
-use shared_lib.l0mdt_constants_pkg.all;
-use shared_lib.l0mdt_dataformats_pkg.all;
-use shared_lib.common_constants_pkg.all;
-use shared_lib.common_types_pkg.all;
-use shared_lib.config_pkg.all;
+LIBRARY shared_lib;
+USE shared_lib.common_ieee_pkg.ALL;
+USE shared_lib.l0mdt_constants_pkg.ALL;
+USE shared_lib.l0mdt_dataformats_pkg.ALL;
+USE shared_lib.common_constants_pkg.ALL;
+USE shared_lib.common_types_pkg.ALL;
+USE shared_lib.config_pkg.ALL;
 
-library ptc_lib;
-use ptc_lib.pt_pkg.all;
-use ptc_lib.pt_params_pkg.all;
+LIBRARY ptc_lib;
+USE ptc_lib.pt_pkg.ALL;
+USE ptc_lib.pt_params_pkg.ALL;
 
-library project_lib;
+LIBRARY project_lib;
+ENTITY pt_tb IS
+  --  Port ( );
+END pt_tb;
 
+ARCHITECTURE Behavioral OF pt_tb IS
+  SIGNAL clk                                   : STD_LOGIC := '0';
+  SIGNAL seg_I, seg_M, seg_O                   : sf2ptcalc_rt;
+  SIGNAL i_segment_I, i_segment_M, i_segment_O : sf2ptcalc_vt := (OTHERS => '0');
+  SIGNAL i_SLC                                 : pl2ptcalc_vt := (OTHERS => '0');
+  SIGNAL slc                                   : pl2ptcalc_rt;
+  SIGNAL o_mtc                                 : ptcalc2mtc_vt := (OTHERS => '0');
+  SIGNAL mtc                                   : ptcalc2mtc_rt;
+  SIGNAL rst                                   : STD_LOGIC := '0';
+  SIGNAL enable                                : STD_LOGIC := '1';
+  SIGNAL done                                  : STD_LOGIC;
+  CONSTANT CLK_period                          : TIME := 4.0 ns;
 
-entity pt_tb is
---  Port ( );
-end pt_tb;
+BEGIN
 
-architecture Behavioral of pt_tb is
-    signal clk : std_logic := '0';
-    signal seg_I, seg_M, seg_O : sf2ptcalc_rt;
-    signal i_segment_I, i_segment_M, i_segment_O : sf2ptcalc_vt := (others => '0');
-    signal i_SLC : pl2ptcalc_vt := (others => '0');
-    signal slc : pl2ptcalc_rt;
-    signal o_mtc : ptcalc2mtc_vt := (others => '0');
-    signal mtc : ptcalc2mtc_rt;
-    signal rst : std_logic := '0';
-    signal enable : std_logic := '1';
-    signal done : std_logic;
-    constant CLK_period : time := 4.0 ns;
-
-begin
-    
-    seg_I_read : ENTITY project_lib.pt_tb_seg_reader
-    generic map (
-        IN_HIT_FILE => "pt_in0.csv"
+  seg_I_read : ENTITY project_lib.pt_tb_seg_reader
+    GENERIC MAP(
+      IN_HIT_FILE => "pt_in_pryia0.csv"
     )
-    port map(
-        clk => clk,
-        rst => rst,
-        enable => enable,
-        o_segment => seg_I
+    PORT MAP(
+      clk       => clk,
+      rst       => rst,
+      enable    => enable,
+      o_segment => seg_I
     );
 
-    seg_M_read : ENTITY project_lib.pt_tb_seg_reader
-    generic map (
-        IN_HIT_FILE => "pt_in1.csv"
+  seg_M_read : ENTITY project_lib.pt_tb_seg_reader
+    GENERIC MAP(
+      IN_HIT_FILE => "pt_in_pryia1.csv"
     )
-    port map(
-        clk => clk,
-        rst => rst,
-        enable => enable,
-        o_segment => seg_M
+    PORT MAP(
+      clk       => clk,
+      rst       => rst,
+      enable    => enable,
+      o_segment => seg_M
     );
-
-
-    seg_O_read : ENTITY project_lib.pt_tb_seg_reader
-    generic map (
-        IN_HIT_FILE => "pt_in2.csv"
+  seg_O_read : ENTITY project_lib.pt_tb_seg_reader
+    GENERIC MAP(
+      IN_HIT_FILE => "pt_in_pryia2.csv"
     )
-    port map(
-        clk => clk,
-        rst => rst,
-        enable => enable,
-        o_segment => seg_O
+    PORT MAP(
+      clk       => clk,
+      rst       => rst,
+      enable    => enable,
+      o_segment => seg_O
     );
 
-    slc_read : ENTITY project_lib.pt_tb_slc_reader
-    generic map (
-        IN_HIT_FILE => "pt_in_slc.csv"
+  slc_read : ENTITY project_lib.pt_tb_slc_reader
+    GENERIC MAP(
+      IN_HIT_FILE => "pt_in_pryia_slc.csv"
     )
-    port map(
-        clk => clk,
-        rst => rst,
-        enable => enable,
-        o_slc => slc
+    PORT MAP(
+      clk    => clk,
+      rst    => rst,
+      enable => enable,
+      o_slc  => slc
+    );
+  pt : ENTITY ptc_lib.pt
+    PORT MAP(
+      clk         => clk,
+      i_segment_I => i_segment_I,
+      i_segment_M => i_segment_M,
+      i_segment_O => i_segment_O,
+      i_SLC       => i_SLC,
+      i_rst       => rst,
+      o_mtc       => o_mtc
     );
 
-
-    pt : entity ptc_lib.pt
-    Port map(
-        clk  => clk,
-        i_segment_I => i_segment_I,
-        i_segment_M => i_segment_M,
-        i_segment_O => i_segment_O,
-        i_SLC       => i_SLC,
-        i_rst       => rst,
-        o_mtc       => o_mtc
-    );
-
-    pt_write : entity project_lib.pt_tb_writer
-    generic map (
-        OUT_FILE => "out_pt_fw.csv"
+  pt_write : ENTITY project_lib.pt_tb_writer
+    GENERIC MAP(
+      OUT_FILE => "out_pt_fw.csv"
     )
-    Port map (
-        clk => clk,
-        rst => rst,
-        enable => 1,
-        mtc => mtc
+    PORT MAP(
+      clk    => clk,
+      rst    => rst,
+      enable => 1,
+      mtc    => mtc
     );
 
-    CLK_process : process
+  CLK_process : PROCESS
 
-    begin
-        CLK <= '0';
-        wait for CLK_period/2;
-        CLK <= '1';
-        wait for CLK_period/2;
-    end process;
+  BEGIN
+    CLK <= '0';
+    WAIT FOR CLK_period/2;
+    CLK <= '1';
+    WAIT FOR CLK_period/2;
+  END PROCESS;
 
-    i_segment_I <= convert(seg_I,i_segment_I);
-    i_segment_M <= convert(seg_M,i_segment_M);
-    i_segment_O <= convert(seg_O,i_segment_O);
-    i_SLC <= convert(slc,i_SLC);
-    mtc <= convert(o_mtc,mtc);
+  i_segment_I <= convert(seg_I, i_segment_I);
+  i_segment_M <= convert(seg_M, i_segment_M);
+  i_segment_O <= convert(seg_O, i_segment_O);
+  i_SLC       <= convert(slc, i_SLC);
+  mtc         <= convert(o_mtc, mtc);
 
-    tb_proc : process (CLK)
-        variable first_read           : std_logic := '1';
-    begin
-      if (rising_edge(CLK)) then
+  tb_proc : PROCESS (CLK)
+    VARIABLE first_read : STD_LOGIC := '1';
+  BEGIN
+    IF (rising_edge(CLK)) THEN
 
-        if mtc.data_valid = '1' then
-            enable <= '1';
-        end if;
+      IF mtc.data_valid = '1' THEN
+        enable <= '1';
+      END IF;
 
-        if enable = '1' then
-            if first_read = '1' then 
-                first_read := '0';
-            else
-                enable <= '0';
-            end if;
-        end if;
- 
-      end if;
-    end process tb_proc;
+      IF enable = '1' THEN
+        IF first_read = '1' THEN
+          first_read := '0';
+        ELSE
+          enable <= '0';
+        END IF;
+      END IF;
 
-end Behavioral;
+    END IF;
+  END PROCESS tb_proc;
+
+END Behavioral;
