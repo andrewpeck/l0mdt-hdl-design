@@ -88,8 +88,8 @@ architecture beh of ucm_phimod is
   -- signal slc_posphi   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_s   : signed(SLC_COMMON_POSPHI_LEN downto 0);
   signal int_phimod   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
-  signal int_phimod_abs : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
-  signal int_phimod_abs_pl : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
+  -- signal int_phimod_abs : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
+  -- signal int_phimod_abs_pl : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_pl: std_logic_vector(12 -1 downto 0);
   signal int_posphi_pl_dv : std_logic;
   signal int_phimod_dv : std_logic;
@@ -130,13 +130,13 @@ begin
         if rising_edge(clk) then
           if rst = '1' then
             int_phimod      <= (others => '0');
-            int_phimod_abs  <= (others => '0');
+            -- int_phimod_abs  <= (others => '0');
             int_phicenter <= (others => '0');
             int_posphi <= (others => '0');
             int_phimod_dv <= '0';
           else
             int_posphi_pl_dv <= i_dv ;
-            int_phimod_abs_pl <= int_phimod_abs;
+            -- int_phimod_abs_pl <= int_phimod_abs;
             if i_dv = '1' then
               int_phicenter <= i_phicenter;
               int_posphi    <= i_posphi   ;
@@ -147,8 +147,12 @@ begin
               -- int_phimod      <= std_logic_vector(resize(signed('0'&i_posphi) - signed('0'&i_phicenter),SLC_COMMON_POSPHI_LEN));
               -- int_phimod_abs  <= std_logic_vector(resize(abs(signed('0'&i_posphi) - signed('0'&i_phicenter)),SLC_COMMON_POSPHI_LEN));
               int_phimod      <= std_logic_vector(resize(int_phimod_s,SLC_COMMON_POSPHI_LEN));
-              int_phimod_abs  <= std_logic_vector(resize(abs(int_phimod_s),SLC_COMMON_POSPHI_LEN));
+              o_phimod_abs  <= std_logic_vector(resize(abs(int_phimod_s),SLC_COMMON_POSPHI_LEN));
+              
+              
+              
               int_phimod_dv <= int_posphi_pl_dv;
+              o_abs_dv <= int_posphi_pl_dv;
               -- int_phimod      <= (others => '0');
               -- int_phimod_abs  <= (others => '0');
             -- end if;
@@ -156,7 +160,7 @@ begin
         end if;
       end process;
 
-      o_phimod_abs <= int_phimod_abs_pl;
+      -- o_phimod_abs <= int_phimod_abs_pl;
 
 
       PHIMOD_SCALE : entity shared_lib.generic_pipelined_MATH

@@ -31,7 +31,11 @@ entity generic_pipelined_MATH is
     -- g_OPERAND_B_WIDTH : integer := 16;     -- width of the second multiplier operand
     g_OUT_PIPE_STAGES : integer := 2;       -- number of the pipeline registers to instantiate at the output of multiplier
     -- g_RESULT_WIDTH    : integer := arith_get_out_width(g_OPERATION,g_OPERAND_A_WIDTH,g_OPERAND_B_WIDTH)
-    g_IN_DEFAULT_VAL : std_logic_vector(0 downto 0) := (others => '0')
+    g_IN_DEFAULT_VAL : std_logic_vector(0 downto 0) := (others => '0');
+    g_length_in_A : integer := 0;
+    g_length_in_B : integer := 0;
+    g_length_in_C : integer := 0;
+    g_length_in_D : integer := 0;
   );
   port (
     -- clock and reset signals
