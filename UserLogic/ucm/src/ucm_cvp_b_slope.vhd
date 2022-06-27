@@ -217,9 +217,8 @@ begin
       generic map(
         g_OPERATION => "*",
         g_IN_PIPE_STAGES  => 2,
-        g_OUT_PIPE_STAGES => 2,
-        g_length_in_A     => std_logic_vector(rpc_a(hit_i)).length,
-        g_length_in_B     => std_logic_vector(rad_a(hit_i)).length
+        g_OUT_PIPE_STAGES => 2
+      )
       port map(
         clk         => clk,
         rst         => rst,
