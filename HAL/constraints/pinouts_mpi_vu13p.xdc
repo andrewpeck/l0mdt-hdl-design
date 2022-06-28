@@ -53,8 +53,8 @@ create_clock -period 3.125 -name refclk31 [get_ports refclk_i_p[31]] ; # Bank 23
 
 # LHC Clock Inputs
 create_clock -period 25 -name clock_in_lhc [get_ports clock_i_p]
-set_property -quiet PACKAGE_PIN AR17 [get_ports lhc_clock_in_p] ;
-set_property -quiet PACKAGE_PIN AR16 [get_ports lhc_clock_in_n] ;
+set_property -quiet PACKAGE_PIN AR17 [get_ports clock_in_p] ;
+set_property -quiet PACKAGE_PIN AR16 [get_ports clock_in_n] ;
 
 # 200M Oscillator
 set_property -quiet PACKAGE_PIN AT17 [get_ports clock_async_i_p] ; # IN: oscillator clock

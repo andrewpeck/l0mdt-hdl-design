@@ -1,7 +1,4 @@
-# -*- mode: TCL;-*-
-# for some reason, it seems HOG requires hal.src to be double listed here and in l0mdt.src???
-# otherwise it adds only the 2 .vhd files listed below and ignores the entire library
 HAL/hal/list/hal.src
-HAL/hal_user_pkg.vhd
+Top/l0mdt_vu13p_csf_mpt/user_pkg.vhd
 HAL/boards/board_pkg_mpi_vu13p.vhd
 HAL/link_maps/link_map_vu13p.vhd
