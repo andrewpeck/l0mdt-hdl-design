@@ -2,7 +2,7 @@
 -- Joakim Olsson, UC Irvine
 -- joakim.olsson@cern.ch
 -- created: 2020-04-12
--- last update: 2021-12-07
+-- last update: 2022-06-28
 -- ===========================================================
 
 library ieee;
@@ -72,8 +72,8 @@ architecture behav of top_upt is
       sf2ptcalc_mid : in sf2ptcalc_vt;
       sf2ptcalc_out : in sf2ptcalc_vt;
       ptcalc2mtc : out ptcalc2mtc_vt;
-      ptcalc2mtc_ap_vld : out std_logic;
-      is_C_side           : in std_logic
+      ptcalc2mtc_ap_vld : out std_logic
+     -- is_C_side           : in std_logic
       --  ptcalc_debug        : out std_logic_vector(57 downto 0)
     );
   end component;
@@ -94,8 +94,8 @@ begin
         sf2ptcalc_mid   => ptcalc_segment_m,
         sf2ptcalc_out   => ptcalc_segment_o,
         ptcalc2mtc      => ptcalc2mtc_data,
-        ptcalc2mtc_ap_vld   => ptcalc2mtc_valid, -- hls control signal: probably not needed?
-        is_C_side           => ap_const_logic_1
+        ptcalc2mtc_ap_vld   => ptcalc2mtc_valid -- hls control signal: probably not needed?
+        -- is_C_side           => ap_const_logic_1
        -- ptcalc_debug        => ptcalc_debug
         );
 

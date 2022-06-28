@@ -333,29 +333,32 @@ VHDL_SOURCES_fm_lib = \
 
 VHDL_SOURCES +=\
     $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_eta_table_V.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_33ns_35ns_65_6_1.vhd  \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_19s_12s_31_4_1.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_24s_15ns_39_4_1.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_e_2s_table_V.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_12s_12s_24_1_1.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_19s_7s_25_1_1.vhd \
     $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_ptthresh_2s_table_V.vhd \
     $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_inv_table_2_V.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_14s_14s_28_4_1.vhd  \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_21s_12s_33_4_1.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_28s_16ns_44_4_1.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_e_3s_table_V.vhd  \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_14s_13ns_21_1_1.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_a_2s_table_V.vhd \
     $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_ptthresh_3s_table_V.vhd \
     $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_inv_table_V.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_16ns_16ns_31_4_1.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_22s_7ns_29_4_1.vhd  \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_a_2s_table_V.vhd  \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_p_2s_table_V.vhd  \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_15s_12ns_26_1_1.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_a_3s_table_V.vhd \
     $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_rsp_table_V.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_30ns_24s_45_5_1.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_16s_26ns_42_4_1.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_24s_14s_38_4_1.vhd \
-    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_a_3s_table_V.vhd  \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mac_muladd_12s_8s_12s_16_1_1.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_15s_8ns_18_1_1.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_e_2s_table_V.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mac_muladd_12s_8s_12s_19_1_1.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_15s_8s_20_1_1.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_e_3s_table_V.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_12ns_51ns_60_6_1.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_18ns_8ns_25_1_1.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_p_2s_table_V.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_8s_8s_16_1_1.vhd \
+    $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_mul_mul_18s_18s_36_1_1.vhd \
     $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top_params_p_3s_table_V.vhd \
     $(IP_REPO)/hls_upt/hdl/vhdl/ptcalc_top.vhd \
+
+   
 	       
 VHDL_LIB_ORDER = xpm \
 	shared_cfg_def_lib \

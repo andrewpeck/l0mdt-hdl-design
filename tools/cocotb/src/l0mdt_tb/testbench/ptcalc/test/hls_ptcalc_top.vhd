@@ -47,7 +47,7 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: xilinx.com:hls:ptcalc_top:1.0
--- IP Revision: 2111191856
+-- IP Revision: 2112569434
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
@@ -66,8 +66,7 @@ ENTITY hls_ptcalc_top IS
     sf2ptcalc_inn : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
     sf2ptcalc_mid : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
     sf2ptcalc_out : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
-    ptcalc2mtc : OUT STD_LOGIC_VECTOR(53 DOWNTO 0);
-    is_C_side : IN STD_LOGIC
+    ptcalc2mtc : OUT STD_LOGIC_VECTOR(53 DOWNTO 0)
   );
 END hls_ptcalc_top;
 
@@ -87,8 +86,7 @@ ARCHITECTURE hls_ptcalc_top_arch OF hls_ptcalc_top IS
       sf2ptcalc_inn : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
       sf2ptcalc_mid : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
       sf2ptcalc_out : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
-      ptcalc2mtc : OUT STD_LOGIC_VECTOR(53 DOWNTO 0);
-      is_C_side : IN STD_LOGIC
+      ptcalc2mtc : OUT STD_LOGIC_VECTOR(53 DOWNTO 0)
     );
   END COMPONENT ptcalc_top;
   ATTRIBUTE X_CORE_INFO : STRING;
@@ -96,7 +94,7 @@ ARCHITECTURE hls_ptcalc_top_arch OF hls_ptcalc_top IS
   ATTRIBUTE CHECK_LICENSE_TYPE : STRING;
   ATTRIBUTE CHECK_LICENSE_TYPE OF hls_ptcalc_top_arch : ARCHITECTURE IS "hls_ptcalc_top,ptcalc_top,{}";
   ATTRIBUTE CORE_GENERATION_INFO : STRING;
-  ATTRIBUTE CORE_GENERATION_INFO OF hls_ptcalc_top_arch: ARCHITECTURE IS "hls_ptcalc_top,ptcalc_top,{x_ipProduct=Vivado 2020.2,x_ipVendor=xilinx.com,x_ipLibrary=hls,x_ipName=ptcalc_top,x_ipVersion=1.0,x_ipCoreRevision=2111191856,x_ipLanguage=VHDL,x_ipSimLanguage=MIXED}";
+  ATTRIBUTE CORE_GENERATION_INFO OF hls_ptcalc_top_arch: ARCHITECTURE IS "hls_ptcalc_top,ptcalc_top,{x_ipProduct=Vivado 2020.2,x_ipVendor=xilinx.com,x_ipLibrary=hls,x_ipName=ptcalc_top,x_ipVersion=1.0,x_ipCoreRevision=2112569434,x_ipLanguage=VHDL,x_ipSimLanguage=MIXED}";
   ATTRIBUTE SDX_KERNEL : STRING;
   ATTRIBUTE SDX_KERNEL OF ptcalc_top: COMPONENT IS "true";
   ATTRIBUTE SDX_KERNEL_TYPE : STRING;
@@ -107,8 +105,6 @@ ARCHITECTURE hls_ptcalc_top_arch OF hls_ptcalc_top IS
   ATTRIBUTE IP_DEFINITION_SOURCE OF hls_ptcalc_top_arch: ARCHITECTURE IS "HLS";
   ATTRIBUTE X_INTERFACE_INFO : STRING;
   ATTRIBUTE X_INTERFACE_PARAMETER : STRING;
-  ATTRIBUTE X_INTERFACE_PARAMETER OF is_C_side: SIGNAL IS "XIL_INTERFACENAME is_C_side, LAYERED_METADATA undef";
-  ATTRIBUTE X_INTERFACE_INFO OF is_C_side: SIGNAL IS "xilinx.com:signal:data:1.0 is_C_side DATA";
   ATTRIBUTE X_INTERFACE_PARAMETER OF ptcalc2mtc: SIGNAL IS "XIL_INTERFACENAME ptcalc2mtc, LAYERED_METADATA undef";
   ATTRIBUTE X_INTERFACE_INFO OF ptcalc2mtc: SIGNAL IS "xilinx.com:signal:data:1.0 ptcalc2mtc DATA";
   ATTRIBUTE X_INTERFACE_PARAMETER OF sf2ptcalc_out: SIGNAL IS "XIL_INTERFACENAME sf2ptcalc_out, LAYERED_METADATA undef";
@@ -141,7 +137,6 @@ BEGIN
       sf2ptcalc_inn => sf2ptcalc_inn,
       sf2ptcalc_mid => sf2ptcalc_mid,
       sf2ptcalc_out => sf2ptcalc_out,
-      ptcalc2mtc => ptcalc2mtc,
-      is_C_side => is_C_side
+      ptcalc2mtc => ptcalc2mtc
     );
 END hls_ptcalc_top_arch;
