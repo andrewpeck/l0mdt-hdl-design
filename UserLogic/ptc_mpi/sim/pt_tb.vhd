@@ -57,7 +57,7 @@ BEGIN
 
   seg_I_read : ENTITY project_lib.pt_tb_seg_reader
     GENERIC MAP(
-      IN_HIT_FILE => "pt_in_pryia0.csv"
+      IN_HIT_FILE => "pt_in0.csv"
     )
     PORT MAP(
       clk       => clk,
@@ -68,7 +68,7 @@ BEGIN
 
   seg_M_read : ENTITY project_lib.pt_tb_seg_reader
     GENERIC MAP(
-      IN_HIT_FILE => "pt_in_pryia1.csv"
+      IN_HIT_FILE => "pt_in1.csv"
     )
     PORT MAP(
       clk       => clk,
@@ -78,7 +78,7 @@ BEGIN
     );
   seg_O_read : ENTITY project_lib.pt_tb_seg_reader
     GENERIC MAP(
-      IN_HIT_FILE => "pt_in_pryia2.csv"
+      IN_HIT_FILE => "pt_in2.csv"
     )
     PORT MAP(
       clk       => clk,
@@ -89,7 +89,7 @@ BEGIN
 
   slc_read : ENTITY project_lib.pt_tb_slc_reader
     GENERIC MAP(
-      IN_HIT_FILE => "pt_in_pryia_slc.csv"
+      IN_HIT_FILE => "pt_in_slc.csv"
     )
     PORT MAP(
       clk    => clk,
