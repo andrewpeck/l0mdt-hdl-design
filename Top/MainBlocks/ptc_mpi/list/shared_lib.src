@@ -3,3 +3,4 @@
 #### shared ####
 shared/shared_mpi.src lib=shared_lib
 shared/shared_lib_basic.src lib=shared_lib
+shared/vhdl_utilities/src/vhdl_utils_deserializer.vhd

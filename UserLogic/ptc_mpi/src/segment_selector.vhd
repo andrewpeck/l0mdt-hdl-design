@@ -81,6 +81,7 @@ architecture Behavioral of segment_selector is
     ) return sf2ptcalc_rt is
         variable outseg : sf2ptcalc_rt;
     begin
+        outseg := zero(outseg);
         if seg0.data_valid = '1' then
             outseg := seg0;
         elsif seg1.data_valid = '1' then
@@ -88,7 +89,7 @@ architecture Behavioral of segment_selector is
         elsif seg2.data_valid = '1' then
             outseg := seg2;
         end if;
-        return zero(outseg);
+        return outseg;
     end function select_segment;
 
     signal seg_I, seg_M, seg_O, 
