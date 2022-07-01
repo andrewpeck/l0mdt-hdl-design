@@ -21,6 +21,10 @@ class UltPtPorts(port_descriptor.PortDescriptor):
 
 	n_output_interfaces = 1
 
+	n_ip_ports_in_intf = [3, 3, 3, 3]
+
+	n_op_ports_in_intf = [3]
+
 	def get_input_interface_ports(interface):
 		input_ports = [3, 3, 3, 3]
 		return input_ports[interface]
