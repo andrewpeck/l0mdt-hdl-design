@@ -113,8 +113,6 @@ check_auto_generated_code:
         sed -i 's/questa/riviera/' ./Top/$PROJECT_NAME/list/project_lib.sim;
         vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_simulation.tcl -tclargs -lib_path $HOG_SIMULATION_LIB_PATH $PROJECT_NAME ;
       fi
-    - pwd
-    - ls -lrt Projects/${PROJECT_NAME}
   artifacts:
     name: user_sim
     paths:
