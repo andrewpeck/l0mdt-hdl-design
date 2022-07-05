@@ -213,20 +213,22 @@ begin
   end process set_data;
 
   SQR_LOOP: for hit_i in 3 downto 0 generate
-    MULT_ZY_ENT : entity shared_lib.generic_pipelined_MATH
+    MULT_ZY_ENT : entity shared_lib.VUGPPMATH
       generic map(
         g_OPERATION => "*",
         g_IN_PIPE_STAGES  => 2,
-        g_OUT_PIPE_STAGES => 2
+        g_OUT_PIPE_STAGES => 2,
+        g_length_in_A => SLC_Z_RPC_LEN, 
+        g_length_in_B => SLC_Z_RPC_LEN
       )
       port map(
         clk         => clk,
         rst         => rst,
         --
-        i_in_A      => std_logic_vector(rpc_a(hit_i)),
-        i_in_B      => std_logic_vector(rad_a(hit_i)),
-        i_in_C      => "0",
-        i_in_D      => "0",
+        i_in_A      => rpc_a(hit_i),
+        i_in_B      => rad_a(hit_i),
+        -- i_in_C      => 0,
+        -- i_in_D      => 0,
         i_dv        => set_data_dv,
         --
         o_result    => mult_zy(hit_i),
