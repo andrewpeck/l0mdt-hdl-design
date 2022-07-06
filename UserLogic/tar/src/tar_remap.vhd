@@ -43,9 +43,9 @@ entity tar_remap is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- TDC Hits from Polmux
-    i_tdc_hits    : in  tdcpolmux2tar_rvt;
+    i_tdc_hits    : in  tdcpolmux2tar_vt;
 
-    o_tar_hits    : out tar2hps_rvt
+    o_tar_hits    : out tar2hps_vt
 
   );
 end entity tar_remap;
@@ -89,8 +89,8 @@ architecture beh of tar_remap is
   
 begin
 
-  i_tdc_hits_r <= structify(i_tdc_hits);
-  o_tar_hits <= vectorify(o_tar_hits_r);
+  i_tdc_hits_r <= convert(i_tdc_hits,i_tdc_hits_r);
+  o_tar_hits <= convert(o_tar_hits_r,o_tar_hits);
   
   -- TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
     -- o_tdc_hits <= i_tdc_hits;
@@ -103,7 +103,7 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        o_tar_hits_r <= nullify(o_tar_hits_r);
+        o_tar_hits_r <= zero(o_tar_hits_r);
         
       else
         if c_ST_nBARREL_ENDCAP = '0' then -- BARREL
@@ -150,7 +150,7 @@ begin
             o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
             o_tar_hits_r.time         <= full_time;
           else
-            o_tar_hits_r <= nullify(o_tar_hits_r);
+            o_tar_hits_r <= zero(o_tar_hits_r);
             -- o_tar_hits_r.data_valid   <= '0';
             -- o_tar_hits_r.chamber_ieta <= 
             -- o_tar_hits_r.layer        <= 

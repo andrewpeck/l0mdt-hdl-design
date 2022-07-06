@@ -72,7 +72,7 @@ begin
   alias out_segments_to_pt_av is << signal.ult_tp.ULT.out_segments_to_pt_av : sf2pt_bus_avt >>;
   alias ext_segments_to_pt_av is << signal.ult_tp.ULT.ext_segments_to_pt_av : sf2pt_bus_avt >>;
 
-  alias pl2pt_av is << signal.ult_tp.ULT.pl2pt_av : pl2pt_bus_avt >>;
+  alias pl2pt_av is << signal.ult_tp.ULT.pl2pt_av : pl2ptcalc_avt >>;
 
   -- variable fifo_mem_v : heg2sf_hits_fifo_at(OUTPUT_FIFO_LEN -1 downto 0);
   variable fifo_count : integer := 0;
@@ -135,7 +135,7 @@ begin
 
       if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
         for heg_i in c_NUM_THREADS -1 downto 0 loop
-          read_sf := structify(inn_segments_to_pt_av(heg_i));
+          read_sf := convert(inn_segments_to_pt_av(heg_i));
           if read_sf.data_valid = '1' then
 
             sf_2write.ToA      := tb_curr_tdc_time;
@@ -150,7 +150,7 @@ begin
       end if;
       if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
         for heg_i in c_NUM_THREADS -1 downto 0 loop
-          read_sf := structify(mid_segments_to_pt_av(heg_i));
+          read_sf := convert(mid_segments_to_pt_av(heg_i));
           if read_sf.data_valid = '1' then
 
             sf_2write.ToA      := tb_curr_tdc_time;
@@ -165,7 +165,7 @@ begin
       end if;
       if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
         for heg_i in c_NUM_THREADS -1 downto 0 loop
-          read_sf := structify(out_segments_to_pt_av(heg_i));
+          read_sf := convert(out_segments_to_pt_av(heg_i));
           if read_sf.data_valid = '1' then
 
             sf_2write.ToA      := tb_curr_tdc_time;
@@ -185,7 +185,7 @@ begin
 
       -- if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
         for heg_i in c_NUM_THREADS -1 downto 0 loop
-          read_mpl := structify(pl2pt_av(heg_i));
+          read_mpl := convert(pl2pt_av(heg_i));
           if read_mpl.data_valid = '1' then
             mpl_2write.ToA      := tb_curr_tdc_time;
             -- mpl_2write.station  := to_unsigned(0,4);

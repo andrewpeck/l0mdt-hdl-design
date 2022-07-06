@@ -40,31 +40,31 @@ entity ucm_prepro is
     ena                   : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_v          : in slc_rx_rvt;
+    i_slc_data_v          : in slc_rx_vt;
     -- ctrl out
-    o_prepro2ctrl_v       : out ucm_prepro2ctrl_rvt;
+    o_prepro2ctrl_v       : out ucm_prepro2ctrl_vt;
     -- data out
-    o_prepro_data_v       : out slc_rx_rvt
+    o_prepro_data_v       : out slc_rx_vt
   );
 end entity ucm_prepro;
 
 architecture beh of ucm_prepro is
   
   signal i_slc_data_r     : slc_rx_rt;
-  signal prepro_data_r  : slc_rx_rt;
+  signal prepro_data_r    : slc_rx_rt;
   signal i_barrel         : slc_barrel_rt;
   signal o_barrel         : slc_barrel_rt;
 
-  signal prepro_data_v    : slc_rx_rvt;
+  signal prepro_data_v    : slc_rx_vt;
     
 
   signal o_prepro2ctrl_r  : ucm_prepro2ctrl_rt;
 
 begin
   
-  i_slc_data_r <= structify(i_slc_data_v);
+  i_slc_data_r <= convert(i_slc_data_v,i_slc_data_r);
 
-  o_prepro2ctrl_v <= vectorify(o_prepro2ctrl_r);
+  o_prepro2ctrl_v <= convert(o_prepro2ctrl_r,o_prepro2ctrl_v);
 
   prepro_data_r.data_valid                <= i_slc_data_r.data_valid;
   prepro_data_r.common.header.h_reserved  <= (others => '0');
@@ -89,7 +89,7 @@ begin
 
   B_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
 
-    i_barrel <= structify(i_slc_data_r.specific);
+    i_barrel <= convert(i_slc_data_r.specific,i_barrel);
 
     -- o_barrel.b_reserved <= (others => '0');
     o_barrel.rpc3_posz  <= i_barrel.rpc3_posz;
@@ -101,14 +101,14 @@ begin
 
   end generate;
   
-  prepro_data_r.specific <= vectorify(o_barrel);
-  prepro_data_v <= vectorify(prepro_data_r);
+  prepro_data_r.specific <= convert(o_barrel,prepro_data_r.specific);
+  prepro_data_v <= convert(prepro_data_r,prepro_data_v);
 
 
   E_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
 
-    -- i_barrel <= structify(i_slc_data_r.specific);
-    -- prepro_data_r.specific <= vectorify(o_barrel);
+    -- i_barrel <= convert(i_slc_data_r.specific);
+    -- prepro_data_r.specific <= convert(o_barrel);
 
     -- o_barrel.b_reserved <= (others => '0');
 
@@ -134,7 +134,7 @@ begin
   -- UCM_PRE_PROC : process(rst,clk) begin
   --   if rising_edge(clk) then
   --     if(rst= '1') then
-  --       prepro_data_r <= nullify(prepro_data_r);
+  --       prepro_data_r <= zero(prepro_data_r);
   --     else
   --       if i_slc_data_r.data_valid = '1' then
   --         -- prepro_data_r.muid        <= i_slc_data_r.muid;
@@ -143,7 +143,7 @@ begin
   --         -- prepro_data_r.specific    <= i_slc_data_r.slc_specific;
   --         prepro_data_r.data_valid  <= i_slc_data_r.data_valid;
   --       else
-  --         prepro_data_r <= nullify(prepro_data_r);
+  --         prepro_data_r <= zero(prepro_data_r);
   --       end if;
   --     end if;
   --   end if;

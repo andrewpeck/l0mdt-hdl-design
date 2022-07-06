@@ -42,23 +42,23 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY csf_chi2_comparison IS
     PORT (
         clk : IN STD_LOGIC;
-        i_segments : IN csf_locseg_a_avt(NUM_FITTERS - 1 DOWNTO 0);
-        o_segment : OUT csf_locseg_rvt
+        i_segments : IN csf_locseg_avt(NUM_FITTERS - 1 DOWNTO 0);
+        o_segment : OUT csf_locseg_vt
     );
 END csf_chi2_comparison;
 
 ARCHITECTURE Behavioral OF csf_chi2_comparison IS
-    SIGNAL segments : csf_locseg_a_at(NUM_FITTERS - 1 DOWNTO 0);
+    SIGNAL segments : csf_locseg_art(NUM_FITTERS - 1 DOWNTO 0);
     -- Signal to store best local segments
     SIGNAL segment_0, segment_1, output_segment : csf_locseg_rt;
     -- Signal Data Valid signals
     SIGNAL dv0, dv1 : STD_LOGIC := '0';
 BEGIN
     SEG_GEN : FOR x IN NUM_FITTERS - 1 DOWNTO 0 GENERATE
-        segments(x) <= structify(i_segments(x));
+        segments(x) <= convert(i_segments(x),segments(x));
     END GENERATE SEG_GEN;
 
-    o_segment <= vectorify(output_segment);
+    o_segment <= convert(output_segment,o_segment);
 
     CHI2_COMPARE : PROCESS (clk)
     BEGIN
@@ -79,7 +79,7 @@ BEGIN
                 segment_0 <= segments(1);
             ELSE
                 dv0 <= '0';
-                segment_0 <= nullify(segment_0);
+                segment_0 <= zero(segment_0);
             END IF;
 
             IF segments(2).valid = '1' AND segments(3).valid = '1' THEN
@@ -97,7 +97,7 @@ BEGIN
                 segment_1 <= segments(3);
             ELSE
                 dv1 <= '0';
-                segment_1 <= nullify(segment_1);
+                segment_1 <= zero(segment_1);
             END IF;
 
             -- clock 1
@@ -112,7 +112,7 @@ BEGIN
             ELSIF dv1 = '1' THEN
                 output_segment <= segment_1;
             ELSE
-                output_segment <= nullify(output_segment);
+                output_segment <= zero(output_segment);
             END IF;
         END IF;
     END PROCESS;

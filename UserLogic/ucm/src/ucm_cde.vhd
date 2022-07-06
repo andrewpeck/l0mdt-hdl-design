@@ -49,42 +49,42 @@ entity ucm_cde is
     i_phicenter           : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_chamber_z_org_bus   : in b_chamber_z_origin_station_avt;
     -- PAM
-    i_proc_info_v         : in ucm_proc_info_ch_rvt := (others => '0');
+    i_proc_info_v         : in ucm_proc_info_vt := (others => '0');
     -- SLc in
-    i_slc_data_v          : in slc_rx_rvt;
+    i_slc_data_v          : in slc_rx_vt;
     -- pam out
-    o_cde_data_v          : out ucm_cde_rvt;
+    o_cde_data_v          : out ucm_cde_vt;
     -- to pipeline
     o_pl_phimod           : out std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
     o_pl_phimod_dv        : out std_logic;
 
-    o_ucm2pl_v            : out ucm2pl_rvt
+    o_ucm2pl_v            : out ucm2pl_vt
   );
 end entity ucm_cde;
 
 architecture beh of ucm_cde is
 
     
-  signal i_proc_info_r           : ucm_proc_info_ch_rt;
+  signal i_proc_info_r           : ucm_proc_info_rt;
   
   signal i_slc_data_r     : slc_rx_rt;
 
-  signal int_slc_data_v   : slc_rx_rvt;
-  signal int2_slc_data_v   : slc_rx_rvt;
+  signal int_slc_data_v   : slc_rx_vt;
+  signal int2_slc_data_v   : slc_rx_vt;
   signal int_slc_data_r   : slc_rx_rt;
   signal int2_slc_data_r   : slc_rx_rt;
 
   signal o_cde_data_r     : ucm_cde_rt;
-  -- signal o_cde_data_null  : ucm_cde_rt;-- := nullify(o_cde_data_r);
+  -- signal o_cde_data_null  : ucm_cde_rt;-- := zero(o_cde_data_r);
 
   signal barrel_r : slc_barrel_rt;
 
   signal dv_bus : std_logic_vector(3 downto 0);
 
-  type rpc_z_at is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
-  signal rpc_z_a : rpc_z_at;
+  type rpc_z_art is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
+  signal rpc_z_a : rpc_z_art;
 
-  signal  int_chamb_ieta : chamb_ieta_rpc_bus_at;
+  signal  int_chamb_ieta : chamb_ieta_rpc_aut;
 
   -- constant phicenter : std_logic_vector
 
@@ -100,10 +100,10 @@ architecture beh of ucm_cde is
 
 begin
 
-  i_proc_info_r <= structify(i_proc_info_v);
+  i_proc_info_r <= convert(i_proc_info_v,i_proc_info_r);
   
-  i_slc_data_r <= structify(i_slc_data_v);
-  o_cde_data_v <= vectorify(o_cde_data_r);
+  i_slc_data_r <= convert(i_slc_data_v,i_slc_data_r);
+  o_cde_data_v <= convert(o_cde_data_r,o_cde_data_v);
   -- o_phimod <= int_phimod;
 
   PL_in : entity vamc_lib.vamc_spl
@@ -127,7 +127,7 @@ begin
 
     B_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
 
-      barrel_r <= structify(i_slc_data_r.specific);
+      barrel_r <= convert(i_slc_data_r.specific,barrel_r);
 
       rpc_z_a <= (
         unsigned(barrel_r.rpc3_posz),
@@ -207,7 +207,7 @@ begin
 
 
 
-      int_slc_data_r <= structify(int_slc_data_v);
+      int_slc_data_r <= convert(int_slc_data_v,int_slc_data_r);
 
       IETA_INN : entity ucm_lib.ucm_ieta_calc
         generic map(
@@ -292,7 +292,7 @@ begin
       begin
         if rising_edge(clk) then
           if(rst= '1') then
-            o_cde_data_r <= nullify(o_cde_data_r);
+            o_cde_data_r <= zero(o_cde_data_r);
             -- o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
             -- o_cde_data_r.muid.slid    <= o_cde_data_null.muid.slid ;
             -- o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;
@@ -333,7 +333,7 @@ begin
 
 
             else
-              -- o_cde_data_r <= nullify(o_cde_data_r);
+              -- o_cde_data_r <= zero(o_cde_data_r);
               -- o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
               -- o_cde_data_r.muid.slid    <= o_cde_data_null.muid.slid ;
               -- o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;
@@ -373,7 +373,7 @@ begin
     );
 
 
-    int2_slc_data_r <= structify(int2_slc_data_v);
+    int2_slc_data_r <= convert(int2_slc_data_v,int2_slc_data_r);
 
     UCM_CDE2CVP_PROC : process(rst,clk) 
       variable ch_i : integer;
@@ -381,7 +381,7 @@ begin
     begin
       if rising_edge(clk) then
         if(rst= '1') then
-          o_uCM2pl_r <= nullify(o_uCM2pl_r);
+          o_uCM2pl_r <= zero(o_uCM2pl_r);
         else
           if int2_slc_data_r.data_valid = '1' then
             o_uCM2pl_r.busy        <= i_proc_info_r.processed;
@@ -400,7 +400,7 @@ begin
             end if;
 
           else
-            o_uCM2pl_r <= nullify(o_uCM2pl_r);
+            o_uCM2pl_r <= zero(o_uCM2pl_r);
             -- o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
             -- o_cde_data_r.muid.slid    <= o_cde_data_null.muid.slid ;
             -- o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;
@@ -413,7 +413,7 @@ begin
       end if;
     end process;
 
-    o_uCM2pl_v <= vectorify(o_uCM2pl_r);
+    o_uCM2pl_v <= convert(o_uCM2pl_r,o_uCM2pl_v);
   end generate BYPASS_GEN;
 
   

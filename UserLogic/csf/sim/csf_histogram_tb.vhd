@@ -39,11 +39,11 @@ END csf_histogram_tb;
 
 ARCHITECTURE Behavioral OF csf_histogram_tb IS
     SIGNAL clk : STD_LOGIC := '0';
-    SIGNAL mdt_hit : heg2sfhit_rvt := (OTHERS => '0');
-    SIGNAL seed : heg2sfslc_rvt := (OTHERS => '0');
+    SIGNAL mdt_hit : heg2sfhit_vt := (OTHERS => '0');
+    SIGNAL seed : heg2sfslc_vt := (OTHERS => '0');
     SIGNAL eof : STD_LOGIC := '0';
-    SIGNAL outputHit1 : csf_hit_rvt := (OTHERS => '0');
-    SIGNAL outputHit2 : csf_hit_rvt := (OTHERS => '0');
+    SIGNAL outputHit1 : csf_hit_vt := (OTHERS => '0');
+    SIGNAL outputHit2 : csf_hit_vt := (OTHERS => '0');
 
     SIGNAL mdt_hit_t : heg2sfhit_rt;
     SIGNAL seed_t : heg2sfslc_rt;
@@ -70,8 +70,8 @@ BEGIN
         WAIT FOR CLK_period/2;
     END PROCESS;
 
-    seed <= vectorify(seed_t);
-    mdt_hit <= vectorify(mdt_hit_t);
+    seed <= convert(seed_t);
+    mdt_hit <= convert(mdt_hit_t);
 
     Pulse : PROCESS
     BEGIN
@@ -79,7 +79,7 @@ BEGIN
         seed_t.data_valid <= '1';
         seed_t.vec_ang <= to_unsigned(1114, UCM_VEC_ANG_LEN);
         WAIT FOR clk_period;
-        seed_t <= nullify(seed_t);
+        seed_t <= zero(seed_t);
         WAIT FOR clk_period * 5;
         mdt_hit_t <= ('1', '0', to_unsigned(2978, HEG2SFHIT_LOCALX_LEN), to_unsigned(9256, HEG2SFHIT_LOCALY_LEN), to_unsigned(372, HEG2SFHIT_RADIUS_LEN));
         WAIT FOR clk_period;
@@ -89,7 +89,7 @@ BEGIN
         WAIT FOR clk_period;
         mdt_hit_t <= ('1', '0', to_unsigned(1313, HEG2SFHIT_LOCALX_LEN), to_unsigned(7689, HEG2SFHIT_LOCALY_LEN), to_unsigned(205, HEG2SFHIT_RADIUS_LEN));
         WAIT FOR clk_period;
-        mdt_hit_t <= nullify(mdt_hit_t);
+        mdt_hit_t <= zero(mdt_hit_t);
         WAIT FOR clk_period * 5;
         eof <= '1';
         WAIT FOR clk_period;

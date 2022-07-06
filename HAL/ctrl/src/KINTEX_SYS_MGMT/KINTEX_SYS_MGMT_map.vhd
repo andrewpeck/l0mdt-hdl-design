@@ -11,6 +11,9 @@ use work.types.all;
 use work.KINTEX_SYS_MGMT_Ctrl.all;
 use work.KINTEX_SYS_MGMT_Ctrl_DEF.all;
 entity KINTEX_SYS_MGMT_map is
+  generic (
+    READ_TIMEOUT     : integer := 2048
+    );
   port (
     clk_axi          : in  std_logic;
     reset_axi_n      : in  std_logic;
@@ -19,7 +22,9 @@ entity KINTEX_SYS_MGMT_map is
     slave_writeMOSI  : in  AXIWriteMOSI;
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
     
-    Mon              : in  KINTEX_SYS_MGMT_Mon_t    
+    Mon              : in  KINTEX_SYS_MGMT_Mon_t
+    
+        
     );
 end entity KINTEX_SYS_MGMT_map;
 architecture behavioral of KINTEX_SYS_MGMT_map is
@@ -43,6 +48,9 @@ begin  -- architecture behavioral
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
   AXIRegBridge : entity work.axiLiteRegBlocking
+    generic map (
+      READ_TIMEOUT => READ_TIMEOUT
+      )
     port map (
       clk_axi     => clk_axi,
       reset_axi_n => reset_axi_n,

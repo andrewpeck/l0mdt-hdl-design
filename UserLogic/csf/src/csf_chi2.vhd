@@ -44,13 +44,13 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY csf_chi2 IS
     PORT (
         clk : IN STD_LOGIC;
-        i_hit1 : IN csf_hit_rvt;
-        i_hit2 : IN csf_hit_rvt;
+        i_hit1 : IN csf_hit_vt;
+        i_hit2 : IN csf_hit_vt;
         i_mfit : IN signed(CSF_SEG_M_LEN - 1 DOWNTO 0);
         i_bfit : IN signed(CSF_SEG_B_LEN - 1 DOWNTO 0);
         i_nhits : IN unsigned(CSF_MAXHITS_SEG_LEN - 1 DOWNTO 0);
         i_fit_valid : IN STD_LOGIC;
-        o_seg : OUT csf_locseg_rvt
+        o_seg : OUT csf_locseg_vt
     );
 END csf_chi2; -- csf_chi2
 
@@ -62,7 +62,7 @@ ARCHITECTURE Behavioral OF csf_chi2 IS
     := (OTHERS => '0');
     SIGNAL r_addr1, r_addr2 : STD_LOGIC_VECTOR(CSF_MAXHITS_ML_LEN - 1 DOWNTO 0)
     := (OTHERS => '1');
-    SIGNAL hit_vec1, hit_vec2 : csf_hit_rvt
+    SIGNAL hit_vec1, hit_vec2 : csf_hit_vt
     := (OTHERS => '0');
     SIGNAL hit1, hit2 : csf_hit_rt;
     SIGNAL outhit1, outhit2 : csf_hit_rt;
@@ -101,7 +101,7 @@ ARCHITECTURE Behavioral OF csf_chi2 IS
     SIGNAL start_read : STD_LOGIC := '0';
     SIGNAL nhits_s : unsigned(CSF_MAXHITS_SEG_LEN - 1 DOWNTO 0)
     := (OTHERS => '0');
-    SIGNAL dsp_chi : unsigned(CSF_SEG_CHI2_LEN * 2 - 1 DOWNTO 0)
+    SIGNAL dsp_chi : unsigned(RES_LEN - 1 DOWNTO 0)
     := (OTHERS => '0');
     SIGNAL counter : INTEGER := 0;
     SIGNAL startCounter : STD_LOGIC := '0';
@@ -111,13 +111,13 @@ ARCHITECTURE Behavioral OF csf_chi2 IS
 
 BEGIN
 
-    hit1 <= structify(i_hit1);
-    hit2 <= structify(i_hit2);
+    hit1 <= convert(i_hit1,hit1);
+    hit2 <= convert(i_hit2,hit2);
 
     HitBuffer1 : ENTITY shared_lib.bram_tdp
         GENERIC MAP(
             ADDR => CSF_MAXHITS_ML_LEN,
-            DATA => CSF_HIT_LEN,
+            DATA => i_hit1'length,
             ram_type => "distributed"
         )
         PORT MAP(
@@ -132,7 +132,7 @@ BEGIN
     HitBuffer2 : ENTITY shared_lib.bram_tdp
         GENERIC MAP(
             ADDR => CSF_MAXHITS_ML_LEN,
-            DATA => CSF_HIT_LEN,
+            DATA => i_hit2'length,
             ram_type => "distributed"
         )
         PORT MAP(
@@ -144,15 +144,15 @@ BEGIN
             b_dout => hit_vec2
         );
 
-    outhit1 <= structify(hit_vec1);
-    outhit2 <= structify(hit_vec2);
+    outhit1 <= convert(hit_vec1,outhit1);
+    outhit2 <= convert(hit_vec2,outhit2);
 
-    o_seg <= vectorify(output_seg);
+    o_seg <= convert(output_seg,o_seg);
 
     Chi2Proc : PROCESS (clk)
     BEGIN
         IF rising_edge(clk) THEN
-            output_seg <= nullify(output_seg);
+            output_seg <= zero(output_seg);
 
             -- Store Hits into a RAM, waiting for the fit result
             IF hit1.valid = '1' THEN
@@ -213,29 +213,29 @@ BEGIN
                 shift_right(dsp_b_y_2 - dsp_mx2, SIGMA_LEN - CHI2_MULT_LEN/2),
                 RES_LEN);
 
+            ---- Clock 2
+            --dv2_1 <= dv1_1;
+            --dv2_2 <= dv1_2;
+            --dsp_res2_1 <= resize(unsigned(dsp_res_1 * dsp_res_1),
+            --    CSF_SEG_CHI2_LEN * 2);
+            --dsp_res2_2 <= resize(unsigned(dsp_res_2 * dsp_res_2),
+            --    CSF_SEG_CHI2_LEN * 2);
+
+            ---- Clock 3
+            --dv3_1 <= dv2_1;
+            --dv3_2 <= dv2_2;
+            --dsp_res2_1_s <= dsp_res2_1;
+            --dsp_res2_2_s <= dsp_res2_2;
+
             -- Clock 2
-            dv2_1 <= dv1_1;
-            dv2_2 <= dv1_2;
-            dsp_res2_1 <= resize(unsigned(dsp_res_1 * dsp_res_1),
-                CSF_SEG_CHI2_LEN * 2);
-            dsp_res2_2 <= resize(unsigned(dsp_res_2 * dsp_res_2),
-                CSF_SEG_CHI2_LEN * 2);
-
-            -- Clock 3
-            dv3_1 <= dv2_1;
-            dv3_2 <= dv2_2;
-            dsp_res2_1_s <= dsp_res2_1;
-            dsp_res2_2_s <= dsp_res2_2;
-
-            -- Clock 4
-            IF dv3_1 = '1' AND dv3_2 = '1' THEN
-                dsp_chi <= dsp_chi + dsp_res2_1_s + dsp_res2_2_s;
+            IF dv1_1 = '1' AND dv1_2 = '1' THEN
+                dsp_chi <= dsp_chi + unsigned(abs(dsp_res_1)) + unsigned(abs(dsp_res_2));
                 startCounter <= '1';
-            ELSIF dv3_1 = '1' THEN
-                dsp_chi <= dsp_chi + dsp_res2_1_s;
+            ELSIF dv1_1 = '1' THEN
+                dsp_chi <= dsp_chi + unsigned(abs(dsp_res_1));
                 startCounter <= '1';
-            ELSIF dv3_2 = '1' THEN
-                dsp_chi <= dsp_chi + dsp_res2_2_s;
+            ELSIF dv1_2 = '1' THEN
+                dsp_chi <= dsp_chi + unsigned(abs(dsp_res_2));
                 startCounter <= '1';
             END IF;
 

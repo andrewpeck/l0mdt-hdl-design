@@ -67,8 +67,8 @@ begin
 
   variable row 		: line;
 
-  alias pt2mtc_av is << signal.ult_tp.ULT.pt2mtc_av : tf2mtc_bus_avt >>;
-  alias pl2mtc_av is << signal.ult_tp.ULT.pl2mtc_av : pl2mtc_bus_avt >>;
+  alias pt2mtc_av is << signal.ult_tp.ULT.pt2mtc_av : ptcalc2mtc_avt >>;
+  alias pl2mtc_av is << signal.ult_tp.ULT.pl2mtc_av : pl2mtc_avt >>;
 
   -- variable fifo_mem_v : heg2sf_hits_fifo_at(OUTPUT_FIFO_LEN -1 downto 0);
   variable fifo_count : integer := 0;
@@ -131,7 +131,7 @@ begin
 
       -- if c_MTC_ENABLED = '1' then 
         for heg_i in c_NUM_THREADS -1 downto 0 loop
-          read_pt := structify(pt2mtc_av(heg_i));
+          read_pt := convert(pt2mtc_av(heg_i));
           if read_pt.data_valid = '1' then
             sf_2write.ToA      := tb_curr_tdc_time;
             -- sf_2write.station  := to_unsigned(0,4);
@@ -149,7 +149,7 @@ begin
 
 
       for sl_i in c_MAX_NUM_SL -1 downto 0 loop
-        read_mpl := structify(pl2mtc_av(sl_i));
+        read_mpl := convert(pl2mtc_av(sl_i));
         if read_mpl.data_valid = '1' then
           mpl_2write.ToA      := tb_curr_tdc_time;
           -- mpl_2write.station  := to_unsigned(0,4);

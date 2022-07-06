@@ -35,15 +35,15 @@ entity ptc_sump is
     -- ctrl              : in  H2S_CTRL_t;
     -- mon               : out H2S_MON_t;
 
-    i_inn_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_mid_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_out_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_ext_segments            : in  sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_minus_neighbor_segments : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_plus_neighbor_segments  : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_pl2pt_av                : in  pl2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_inn_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_mid_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_out_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_ext_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
+    i_minus_neighbor_segments : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments  : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_pl2pt_av                : in  pl2ptcalc_avt(c_NUM_THREADS-1 downto 0);
 
-    o_pt2mtc                  : out tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
+    o_pt2mtc                  : out ptcalc2mtc_avt(c_NUM_THREADS -1 downto 0);
 
     o_sump : out std_logic
   );

@@ -30,10 +30,15 @@ use shared_lib.mdt_dt2r_pkg.all;
 library apbus_lib;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
+
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+
 
 entity hp_calc_radius is
   generic(
@@ -63,13 +68,13 @@ architecture beh of hp_calc_radius is
   -- signal axi_rst      : std_logic;
   -- signal axi_clk      : std_logic;
 
-  -- signal ctrl_r : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
-  -- signal mon_r : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t;
+  -- signal ctrl_r : HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
+  -- signal mon_r : HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t;
 
   constant ADDR_WIDTH : integer := 10;
   constant DATA_WIDTH : integer := 9;
 
-  -- signal  wr_data_v : std_logic_vector(len(ctrl_r.wr_data) -1 downto 0);
+  -- signal  wr_data_v : std_logic_vector(width(ctrl_r.wr_data) -1 downto 0);
 
   signal drift_time : unsigned(MDT_TIME_LEN -1 downto 0);
   signal BCID_exp : unsigned(MDT_TIME_LEN -1 downto 0);
@@ -104,10 +109,6 @@ begin
       g_MEMORY_TYPE           => "distributed",
       g_ADDR_WIDTH            => ADDR_WIDTH,
       g_DATA_WIDTH            => DATA_WIDTH
-      -- g_CTRL_TYPE             => MEM_INT_12A148D_CTRL_t; 
-      -- g_MON_TYPE              => MEM_INT_12A148D_MON_t;   
-      -- g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
-      -- g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
     )
     port map (
       clk           => clk,

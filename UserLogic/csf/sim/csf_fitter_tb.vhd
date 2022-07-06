@@ -38,14 +38,14 @@ END csf_fitter_tb;
 
 ARCHITECTURE Behavioral OF csf_fitter_tb IS
     SIGNAL clk : STD_LOGIC := '0';
-    SIGNAL hit1, hit2 : csf_hit_rvt := (OTHERS => '0');
+    SIGNAL hit1, hit2 : csf_hit_vt := (OTHERS => '0');
     SIGNAL hit1_t, hit2_t : csf_hit_rt;
     SIGNAL mfit : signed(CSF_SEG_M_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL bfit : signed(CSF_SEG_B_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL fit_valid : STD_LOGIC := '0';
     SIGNAL nhits : unsigned(CSF_MAXHITS_SEG_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL CLK_period : TIME := 2.77777 ns;
-    SIGNAL seg : csf_locseg_rvt := (OTHERS => '0');
+    SIGNAL seg : csf_locseg_vt := (OTHERS => '0');
 
 BEGIN
 
@@ -86,8 +86,8 @@ BEGIN
     --y: 16269 x: 13456
     --y: 16956 x: 14058
 
-    hit1 <= vectorify(hit1_t);
-    hit2 <= vectorify(hit2_t);
+    hit1 <= convert(hit1_t);
+    hit2 <= convert(hit2_t);
 
     Pulse : PROCESS
     BEGIN
@@ -98,10 +98,10 @@ BEGIN
         hit1_t <= ('1', to_unsigned(772, MDT_LOCAL_X_LEN), to_unsigned(3104, MDT_LOCAL_Y_LEN));
         hit2_t <= ('1', to_unsigned(13456, MDT_LOCAL_X_LEN), to_unsigned(16269, MDT_LOCAL_Y_LEN));
         WAIT FOR clk_period;
-        hit1_t <= nullify(hit1_t);
+        hit1_t <= zero(hit1_t);
         hit2_t <= ('1', to_unsigned(14058, MDT_LOCAL_X_LEN), to_unsigned(16956, MDT_LOCAL_Y_LEN));
         WAIT FOR clk_period;
-        hit2_t <= nullify(hit2_t);
+        hit2_t <= zero(hit2_t);
         WAIT;
 
     END PROCESS;

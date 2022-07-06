@@ -48,12 +48,12 @@ entity top_pt is
     );
     Port (
         clk : in std_logic;
-        i_segment_I  : in sf2ptcalc_rvt;
-        i_segment_M  : in sf2ptcalc_rvt;
-        i_segment_O  : in sf2ptcalc_rvt;
-        i_SLC        : in pl2pt_rvt;
+        i_segment_I  : in sf2ptcalc_vt;
+        i_segment_M  : in sf2ptcalc_vt;
+        i_segment_O  : in sf2ptcalc_vt;
+        i_SLC        : in pl2pt_vt;
         i_rst        : in std_logic;
-        o_mtc        : out tf2mtc_rvt
+        o_mtc        : out tf2mtc_vt
     );
 end top_pt;
 

@@ -1,21 +1,17 @@
 #################### ptc_mpi Project ###########################
-GEN:ptc_mpi:
-    extends: .generate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/ptc_mpi
-      HOG_NO_BITSTREAM: 1 # if 1 runs only the synthesis
+# GEN:ptc_mpi:
+#     extends: .generate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: MainBlocks/ptc_mpi
+#       HOG_NO_BITSTREAM: 1 # if 1 runs only the synthesis
 
 
 SIM:ptc_mpi:
-    extends: .simulate_project
+    extends: .riviera_sim
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/ptc_mpi
-    tags:
-      - questa
-      - hog
-      - "2020.2"
       
 CHK:ptc_mpi:
   extends: .sim_check
@@ -23,6 +19,7 @@ CHK:ptc_mpi:
     extends: .vars
     PROJECT_NAME: MainBlocks/ptc_mpi
     BLOCK: PTC
+    SIMULATOR: riviera
   needs: ["SIM:ptc_mpi"]
   artifacts:
     name: CHK_ptc

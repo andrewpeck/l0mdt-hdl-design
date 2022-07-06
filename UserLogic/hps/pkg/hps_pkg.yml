@@ -1,0 +1,11 @@
+# yml2hdl v0.3
+config:
+   basic_functions: False
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+      - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
+      - hp_lib: [hp_pkg]
+      - heg_lib: [heg_pkg]
+types:
+   - hps_ctrl2sf_art: {'array': 'open', 'type': 'heg_ctrl2sf_rt'}
+   - hps_ctrl2sf_avt: {'array': 'open', 'type': 'heg_ctrl2sf_vt'}

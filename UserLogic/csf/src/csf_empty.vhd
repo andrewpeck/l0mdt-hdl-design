@@ -45,11 +45,11 @@ entity csf is
   );
   port (
     clk       : in    std_logic;
-    i_seed    : in    heg2sfslc_rvt;
-    i_mdt_hit : in    heg2sfhit_rvt;
+    i_seed    : in    heg2sfslc_vt;
+    i_mdt_hit : in    heg2sfhit_vt;
     i_eof     : in    std_logic;
     i_rst     : in    std_logic;
-    o_seg     : out   sf2ptcalc_rvt;
+    o_seg     : out   sf2ptcalc_vt;
 
     --SpuBuffer
     spy_clock           : in    std_logic;
@@ -59,12 +59,12 @@ entity csf is
     i_spyhit_freeze     : in    std_logic;
     i_spyhit_playback   : in    std_logic_vector(1 downto 0);
     i_spyhit_pb_we      : in    std_logic;
-    i_spyhit_pb_wdata   : in    heg2sfhit_rvt;
+    i_spyhit_pb_wdata   : in    heg2sfhit_vt;
     i_spyhit_re         : in    std_logic;
     i_spyhit_meta_we    : in    std_logic;
     i_spyhit_addr       : in    std_logic_vector(SPYHIT_MEM_WIDTH - 1 downto 0);
     i_spyhit_meta_addr  : in   std_logic_vector(SPYHIT_EL_MEM_WIDTH - 1 downto 0);
-    o_spyhit_data       : out   heg2sfhit_rvt;
+    o_spyhit_data       : out   heg2sfhit_vt;
     o_spyhit_meta_rdata : out   std_logic_vector(SPYHIT_MEM_WIDTH downto 0);
     i_spyhit_meta_wdata : in    std_logic_vector(SPYHIT_MEM_WIDTH downto 0);
     o_spyhit_af         : out   std_logic;
@@ -76,12 +76,12 @@ entity csf is
     i_spyslc_freeze     : in    std_logic;
     i_spyslc_playback   : in    std_logic_vector(1 downto 0);
     i_spyslc_pb_we      : in    std_logic;
-    i_spyslc_pb_wdata   : in    heg2sfslc_rvt;
+    i_spyslc_pb_wdata   : in    heg2sfslc_vt;
     i_spyslc_re         : in    std_logic;
     i_spyslc_addr       : in    std_logic_vector(SPYSLC_MEM_WIDTH - 1 downto 0);
     i_spyslc_meta_we    : in    std_logic;
     i_spyslc_meta_addr  : in    std_logic_vector(SPYSLC_EL_MEM_WIDTH - 1 downto 0);
-    o_spyslc_data       : out   heg2sfslc_rvt;
+    o_spyslc_data       : out   heg2sfslc_vt;
     o_spyslc_meta_rdata : out   std_logic_vector(SPYSLC_MEM_WIDTH downto 0);
     i_spyslc_meta_wdata : in    std_logic_vector(SPYSLC_MEM_WIDTH downto 0);
     o_spyslc_af         : out   std_logic;
@@ -93,12 +93,12 @@ entity csf is
     i_spyseg_freeze     : in    std_logic;
     i_spyseg_playback   : in    std_logic_vector(1 downto 0);
     i_spyseg_pb_we      : in    std_logic;
-    i_spyseg_pb_wdata   : in    sf2ptcalc_rvt;
+    i_spyseg_pb_wdata   : in    sf2ptcalc_vt;
     i_spyseg_re         : in    std_logic;
     i_spyseg_addr       : in    std_logic_vector(SPYSEG_MEM_WIDTH - 1 downto 0);
     i_spyseg_meta_addr  : in    std_logic_vector(SPYSEG_EL_MEM_WIDTH - 1 downto 0);
     i_spyseg_meta_we    : in    std_logic;
-    o_spyseg_data       : out   sf2ptcalc_rvt;
+    o_spyseg_data       : out   sf2ptcalc_vt;
     o_spyseg_meta_rdata : out   std_logic_vector(SPYSEG_MEM_WIDTH downto 0);
     i_spyseg_meta_wdata : in    std_logic_vector(SPYSEG_MEM_WIDTH downto 0);
     o_spyseg_af         : out   std_logic;

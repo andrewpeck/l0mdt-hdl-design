@@ -38,22 +38,22 @@ entity mpl_csw is
     ena                 : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_ucm_av            : in mpl2csw_ptcalc_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_tf_av             : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0)
-    -- o_mtc_av          : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
+    i_ucm_av            : in mpl2csw_ptcalc_avt(c_NUM_THREADS -1 downto 0);
+    o_tf_av             : out pl2ptcalc_avt(c_NUM_THREADS -1 downto 0)
+    -- o_mtc_av          : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity mpl_csw;
 
 architecture beh of mpl_csw is
 
-  signal slc_pl     : mpl2csw_ptcalc_bus_at(c_NUM_THREADS -1 downto 0);
-  signal csw2tf_ar  : pl2pt_bus_at(c_NUM_THREADS -1 downto 0);
+  signal slc_pl     : mpl2csw_ptcalc_art(c_NUM_THREADS -1 downto 0);
+  signal csw2tf_ar  : pl2ptcalc_art(c_NUM_THREADS -1 downto 0);
 
 begin
 
   V2R: for sl_i in c_NUM_THREADS - 1 downto 0 generate
-    slc_pl(sl_i) <= structify(i_ucm_av(sl_i));
-    o_tf_av(sl_i) <= vectorify(csw2tf_ar(sl_i));
+    slc_pl(sl_i) <= convert(i_ucm_av(sl_i),slc_pl(sl_i));
+    o_tf_av(sl_i) <= convert(csw2tf_ar(sl_i),o_tf_av(sl_i));
   end generate V2R;
 
   MP2TF_CSW: process(clk)
@@ -63,7 +63,7 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         for slo_i in c_NUM_THREADS -1 downto 0 loop
-          csw2tf_ar(slo_i) <= nullify(csw2tf_ar(slo_i));
+          csw2tf_ar(slo_i) <= zero(csw2tf_ar(slo_i));
           -- csw2tf_ar(slo_i).data_valid <= '0';
         end loop;
       else
@@ -86,7 +86,7 @@ begin
               end if;
             end loop;
             if slo_found = '0' then
-              -- csw2tf_ar(slo_i) <= nullify(csw2tf_ar(slo_i));
+              -- csw2tf_ar(slo_i) <= zero(csw2tf_ar(slo_i));
               csw2tf_ar(slo_i).data_valid <= '0';
             end if;
           end loop;

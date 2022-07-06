@@ -15,41 +15,49 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 library lsf_lib;
 
-
 library shared_lib;
---use shared_lib.common_ieee_pkg.all;
+use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
 entity top_lsf_vu13p IS
   generic (
     LSF_SB_MEM_WIDTH    : positive := 8;
-    LSF_SB_EL_MEM_WIDTH : positive := 4
-    );
+    LSF_SB_EL_MEM_WIDTH : positive := 4;
+    temp_HEG2SFHIT_LEN : heg2sfhit_vt := (others => '0');
+    HEG2SFHIT_LEN : integer := temp_HEG2SFHIT_LEN'length;
+    temp_HEG2SFSLC_LEN : heg2sfslc_vt := (others => '0');
+    HEG2SFSLC_LEN : integer := temp_HEG2SFSLC_LEN'length;
+    temp_SF2PTCALC_LEN : sf2ptcalc_vt := (others => '0');
+    SF2PTCALC_LEN : integer := temp_SF2PTCALC_LEN'length
+  );
   PORT(
     clock,reset   : in std_logic;
     slc_roi       : in std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
     mdt_hit       : in std_logic_vector(HEG2SFHIT_LEN-1 downto 0); -- 14
     lsf           : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
     i_eof         : in std_logic;
-    hba_max_clocks: in std_logic_vector(9 downto 0);
-  --SpyBuffer Interface
-    sb_lsf_mdt_hits_freeze : in std_logic;
-    sb_lsf_mdt_hits_re     : in std_logic;
-    sb_lsf_mdt_hits_raddr  : in std_logic_vector (LSF_SB_MEM_WIDTH-1 downto 0);
-    sb_lsf_mdt_hits_rdata  : out std_logic_vector(HEG2SFHIT_LEN-1 downto 0)
+    hba_max_clocks: in std_logic_vector(9 downto 0)
 
-    );
-  end entity top_lsf_vu13p;
+  );
+end entity top_lsf_vu13p;
 
 
 
 architecture top_lsf_arch of top_lsf_vu13p IS
+
+-- signal temp_HEG2SFHIT_LEN : heg2sfhit_vt;
+-- constant HEG2SFHIT_LEN : integer := temp_HEG2SFHIT_LEN'length;
+-- signal temp_HEG2SFSLC_LEN : heg2sfslc_vt;
+-- constant HEG2SFSLC_LEN : integer := temp_HEG2SFSLC_LEN'length;
+-- signal temp_SF2PTCALC_LEN : sf2ptcalc_vt;
+-- constant SF2PTCALC_LEN : integer := temp_SF2PTCALC_LEN'length;
+
 component lsf_spybuffer_wrapper
-   generic (
-    LSF_SB_MEM_WIDTH    : positive;
-    LSF_SB_EL_MEM_WIDTH : positive
-    );
+  
   PORT(
     clock         : in std_logic;
     reset         : in std_logic;
@@ -59,29 +67,12 @@ component lsf_spybuffer_wrapper
     roi_we        : in std_logic;
     lsf_output    : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
     i_eof         : in std_logic;
-    histogram_accumulation_count : in std_logic_vector(9 downto 0);
-    --SpyBuffer Interface
-    sb_lsf_mdt_hits_freeze         : in std_logic;
-    --  sb_lsf_mdt_hits_playback       : in std_logic;
-    --  sb_lsf_mdt_hits_playback_we    : in std_logic;
-    --  sb_lsf_mdt_hits_playback_wdata : in std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
-    sb_lsf_mdt_hits_re             : in std_logic;
-    --  sb_lsf_mdt_hits_meta_re        : in std_logic;
-    sb_lsf_mdt_hits_raddr          : in std_logic_vector (LSF_SB_MEM_WIDTH-1 downto 0);
-    --  sb_lsf_mdt_hits_meta_raddr     : in std_logic_vector (LSF_SB_EL_MEM_WIDTH-1 downto 0);
-    --  sb_lsf_mdt_hits_waddr          : in std_logic_vector (LSF_SB_MEM_WIDTH-1 downto 0);
-    --  sb_lsf_mdt_hits_meta_waddr     : in std_logic_vector (LSF_SB_EL_MEM_WIDTH-1 downto 0);
-    sb_lsf_mdt_hits_rdata          : out std_logic_vector(HEG2SFHIT_LEN-1 downto 0)
-   --  sb_lsf_mdt_hits_meta_rdata     : out std_logic_vector(LSF_SB_MEM_WIDTH-1 downto 0)
-   --  mdt_hit_af    : out std_logic
+    histogram_accumulation_count : in std_logic_vector(9 downto 0)
+ 
     );
   end component;
 begin
-   lsf_spybuffer_wrapper_inst: component lsf_spybuffer_wrapper
-     generic map (
-       LSF_SB_MEM_WIDTH    => LSF_SB_MEM_WIDTH,
-       LSF_SB_EL_MEM_WIDTH => LSF_SB_EL_MEM_WIDTH
-     )
+   lsf_spybuffer_wrapper_inst: component lsf_spybuffer_wrapper    
    port map (
      clock         => clock,
      reset         => reset,
@@ -91,11 +82,6 @@ begin
      roi_we        => slc_roi(HEG2SFSLC_LEN-1),
      lsf_output    => lsf,
      i_eof         => i_eof,
-     histogram_accumulation_count  => hba_max_clocks,
-     --SpyBuffer
-     sb_lsf_mdt_hits_freeze        => sb_lsf_mdt_hits_freeze,
-     sb_lsf_mdt_hits_re            => sb_lsf_mdt_hits_re,
-     sb_lsf_mdt_hits_raddr         => sb_lsf_mdt_hits_raddr,
-     sb_lsf_mdt_hits_rdata         => sb_lsf_mdt_hits_rdata
+     histogram_accumulation_count  => hba_max_clocks
      );
   end architecture top_lsf_arch;

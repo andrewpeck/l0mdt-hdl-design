@@ -29,6 +29,9 @@ library vamc_lib;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
+-- use hp_lib.hp_custom_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
 
 entity hit_processor is
   generic(
@@ -37,22 +40,24 @@ entity hit_processor is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic := '1';
+    ena                 : in std_logic := '1';
     --
     ctrl_v              : in std_logic_vector;
     mon_v               : out std_logic_vector;
     -- configuration
-    local_rst           : in std_logic;
-    local_en            : in std_logic;
+    -- local_rst           : in std_logic;
+    -- local_en            : in std_logic;
     -- time_offset         : in unsigned(12 -1 downto 0);
 
     -- SLc
-    i_SLC_Window        : in hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-    i_slc_data_v        : in hp_heg2hp_slc_rvt;
+    i_SLC_Window        : in hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    -- i_SLC_Window        : in std_logic_vector_array(get_num_layers(g_STATION_RADIUS) -1 downto 0)(hp_win_tubes_rt'w -1 downto 0);
+
+    i_slc_data_v        : in hp_heg2hp_slc_vt;
     -- MDT hit
-    i_mdt_data_v          : in hp_hpsPc2hp_rvt;
+    i_mdt_data_v          : in hp_hpsPc2hp_vt;
     -- to Segment finder
-    o_hit_data_v          : out hp_hp2bm_rvt
+    o_hit_data_v          : out  hp_hp2bm_vt
   );
 end entity hit_processor;
 
@@ -77,13 +82,13 @@ architecture beh of hit_processor is
 
 begin
 
-  hp_rst  <= rst OR local_rst;
-  hp_ena  <= glob_en AND local_en;
+  hp_rst  <= rst;-- OR local_rst;
+  hp_ena  <= ena;--glob_en AND local_en;
 
-  mdt_data_r <= structify(i_mdt_data_v);
-  slc_data_r <= structify(i_slc_data_v);
+  mdt_data_r <= convert(i_mdt_data_v,mdt_data_r);
+  slc_data_r <= convert(i_slc_data_v,slc_data_r);
 
-  o_hit_data_v <= vectorify(data_2_sf_r);
+  o_hit_data_v <= convert(data_2_sf_r,o_hit_data_v);
 
 
   HP_HM : entity hp_lib.hp_matching
@@ -124,7 +129,7 @@ begin
     ctrl_v          => ctrl_v,
     mon_v           => mon_v , 
     -- SLc-
-    -- i_SLC_RoI_org       => structify(i_SLC_Window(0)).lo,
+    -- i_SLC_RoI_org       => convert(i_SLC_Window(0)).lo,
     i_SLc_data_v        => i_slc_data_v,--.specific,
     -- i_SLc_BCID          => slc_data_r.BCID,
     -- MDT hit

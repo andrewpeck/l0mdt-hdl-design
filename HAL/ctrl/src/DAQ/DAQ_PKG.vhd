@@ -2,204 +2,141 @@
 -- https://gitlab.com/tcpaiva/yml2hdl
 
 library ieee;
-
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 library shared_lib;
-
-use shared_lib.common_ieee.all;
+use shared_lib.common_ieee_pkg.all;
 
 package DAQ_CTRL is
 
-  type DAQ_MON_t is record
-    STATUS : std_logic;
-    READY : std_logic;
-  end record DAQ_MON_t;
-  function len(x: DAQ_MON_t) return natural;
-  function width(x: DAQ_MON_t) return natural;
-  function vectorify(x: DAQ_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: DAQ_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: DAQ_MON_t) return DAQ_MON_t;
-  function convert(x: in std_logic_vector; t: DAQ_MON_t) return DAQ_MON_t;
-  function nullify(t: DAQ_MON_t) return DAQ_MON_t;
-  function zeroed(t: DAQ_MON_t) return DAQ_MON_t;
+   -- Custom types and functions --
 
-  type DAQ_CTRL_t is record
-    RESET : std_logic;
-  end record DAQ_CTRL_t;
-  function len(x: DAQ_CTRL_t) return natural;
-  function width(x: DAQ_CTRL_t) return natural;
-  function vectorify(x: DAQ_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: DAQ_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: DAQ_CTRL_t) return DAQ_CTRL_t;
-  function convert(x: in std_logic_vector; t: DAQ_CTRL_t) return DAQ_CTRL_t;
-  function nullify(t: DAQ_CTRL_t) return DAQ_CTRL_t;
-  function zeroed(t: DAQ_CTRL_t) return DAQ_CTRL_t;
+   type DAQ_MON_t is record
+      STATUS : std_logic;
+      READY : std_logic;
+   end record DAQ_MON_t;
+   attribute w of DAQ_MON_t : type is 2;
+   function width(x: DAQ_MON_t) return natural;
+   function convert(x: DAQ_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: DAQ_MON_t) return DAQ_MON_t;
+   function zero(tpl: DAQ_MON_t) return DAQ_MON_t;
+
+   type DAQ_CTRL_t is record
+      RESET : std_logic;
+   end record DAQ_CTRL_t;
+   attribute w of DAQ_CTRL_t : type is 1;
+   function width(x: DAQ_CTRL_t) return natural;
+   function convert(x: DAQ_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: DAQ_CTRL_t) return DAQ_CTRL_t;
+   function zero(tpl: DAQ_CTRL_t) return DAQ_CTRL_t;
 
 end package DAQ_CTRL;
 
 ------------------------------------------------------------
 
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.math_real.all;
+
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+
 package body DAQ_CTRL is
 
-  function len(x: DAQ_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.STATUS);
-    l := l + len(x.READY);
-    return l;
-  end function len;
-  function width(x: DAQ_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.STATUS);
-    l := l + width(x.READY);
-    return l;
-  end function width;
-  function vectorify(x: DAQ_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.STATUS)-1), vectorify(x.STATUS, y(left to left+len(x.STATUS)-1)));
-      left := left + len(x.STATUS);
-      assign(y(left to left+len(x.READY)-1), vectorify(x.READY, y(left to left+len(x.READY)-1)));
-    else
-      assign(y(left downto left-len(x.STATUS)+1), vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1)));
-      left := left - len(x.STATUS);
-      assign(y(left downto left-len(x.READY)+1), vectorify(x.READY, y(left downto left-len(x.READY)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: DAQ_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.STATUS)-1), convert(x.STATUS, y(left to left+len(x.STATUS)-1)));
-      left := left + len(x.STATUS);
-      assign(y(left to left+len(x.READY)-1), convert(x.READY, y(left to left+len(x.READY)-1)));
-    else
-      assign(y(left downto left-len(x.STATUS)+1), convert(x.STATUS, y(left downto left-len(x.STATUS)+1)));
-      left := left - len(x.STATUS);
-      assign(y(left downto left-len(x.READY)+1), convert(x.READY, y(left downto left-len(x.READY)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: DAQ_MON_t) return DAQ_MON_t is
-    variable y: DAQ_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.STATUS := structify(x(left to left+len(y.STATUS)-1), y.STATUS);
-      left := left + len(y.STATUS);
-      y.READY := structify(x(left to left+len(y.READY)-1), y.READY);
-    else
-      y.STATUS := structify(x(left downto left-len(y.STATUS)+1), y.STATUS);
-      left := left - len(y.STATUS);
-      y.READY := structify(x(left downto left-len(y.READY)+1), y.READY);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: DAQ_MON_t) return DAQ_MON_t is
-    variable y: DAQ_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.STATUS := convert(x(left to left+len(y.STATUS)-1), y.STATUS);
-      left := left + len(y.STATUS);
-      y.READY := convert(x(left to left+len(y.READY)-1), y.READY);
-    else
-      y.STATUS := convert(x(left downto left-len(y.STATUS)+1), y.STATUS);
-      left := left - len(y.STATUS);
-      y.READY := convert(x(left downto left-len(y.READY)+1), y.READY);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: DAQ_MON_t) return DAQ_MON_t is
-  variable y: DAQ_MON_t;
-  begin
-    y.STATUS := nullify(t.STATUS);
-    y.READY := nullify(t.READY);
-    return y;
-  end function nullify;
-  function zeroed(t: DAQ_MON_t) return DAQ_MON_t is
-  variable y: DAQ_MON_t;
-  begin
-    y.STATUS := zeroed(t.STATUS);
-    y.READY := zeroed(t.READY);
-    return y;
-  end function zeroed;
+   -- Custom types and functions --
 
-  function len(x: DAQ_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.RESET);
-    return l;
-  end function len;
-  function width(x: DAQ_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.RESET);
-    return l;
-  end function width;
-  function vectorify(x: DAQ_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.RESET)-1), vectorify(x.RESET, y(left to left+len(x.RESET)-1)));
-    else
-      assign(y(left downto left-len(x.RESET)+1), vectorify(x.RESET, y(left downto left-len(x.RESET)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: DAQ_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.RESET)-1), convert(x.RESET, y(left to left+len(x.RESET)-1)));
-    else
-      assign(y(left downto left-len(x.RESET)+1), convert(x.RESET, y(left downto left-len(x.RESET)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: DAQ_CTRL_t) return DAQ_CTRL_t is
-    variable y: DAQ_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.RESET := structify(x(left to left+len(y.RESET)-1), y.RESET);
-    else
-      y.RESET := structify(x(left downto left-len(y.RESET)+1), y.RESET);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: DAQ_CTRL_t) return DAQ_CTRL_t is
-    variable y: DAQ_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.RESET := convert(x(left to left+len(y.RESET)-1), y.RESET);
-    else
-      y.RESET := convert(x(left downto left-len(y.RESET)+1), y.RESET);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: DAQ_CTRL_t) return DAQ_CTRL_t is
-  variable y: DAQ_CTRL_t;
-  begin
-    y.RESET := nullify(t.RESET);
-    return y;
-  end function nullify;
-  function zeroed(t: DAQ_CTRL_t) return DAQ_CTRL_t is
-  variable y: DAQ_CTRL_t;
-  begin
-    y.RESET := zeroed(t.RESET);
-    return y;
-  end function zeroed;
+   function width(x: DAQ_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.STATUS);
+      w := w + width(x.READY);
+      return w;
+   end function width;
+   function convert(x: DAQ_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.STATUS);
+         y(u to u+w-1) := convert(x.STATUS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.READY);
+         y(u to u+w-1) := convert(x.READY, y(u to u+w-1));
+      else
+         w := width(x.STATUS);
+         y(u downto u-w+1) := convert(x.STATUS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.READY);
+         y(u downto u-w+1) := convert(x.READY, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: DAQ_MON_t) return DAQ_MON_t is
+      variable y : DAQ_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.STATUS);
+         y.STATUS := convert(x(u to u+w-1), tpl.STATUS);
+         u := u + w;
+         w := width(tpl.READY);
+         y.READY := convert(x(u to u+w-1), tpl.READY);
+      else
+         w := width(tpl.STATUS);
+         y.STATUS := convert(x(u downto u-w+1), tpl.STATUS);
+         u := u - w;
+         w := width(tpl.READY);
+         y.READY := convert(x(u downto u-w+1), tpl.READY);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: DAQ_MON_t) return DAQ_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: DAQ_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.RESET);
+      return w;
+   end function width;
+   function convert(x: DAQ_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.RESET);
+         y(u to u+w-1) := convert(x.RESET, y(u to u+w-1));
+      else
+         w := width(x.RESET);
+         y(u downto u-w+1) := convert(x.RESET, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: DAQ_CTRL_t) return DAQ_CTRL_t is
+      variable y : DAQ_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.RESET);
+         y.RESET := convert(x(u to u+w-1), tpl.RESET);
+      else
+         w := width(tpl.RESET);
+         y.RESET := convert(x(u downto u-w+1), tpl.RESET);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: DAQ_CTRL_t) return DAQ_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
 end package body DAQ_CTRL;

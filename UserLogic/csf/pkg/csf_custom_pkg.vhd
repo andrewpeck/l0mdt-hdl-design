@@ -43,7 +43,7 @@ PACKAGE csf_custom_pkg IS
     CONSTANT MFIT_MULTI_LEN : INTEGER := INTEGER(log2(CSF_SEG_M_MULT));
     CONSTANT CHI2_MULT_LEN : INTEGER := INTEGER(log2(CSF_SEG_CHI2_MULT));
 
-    ------------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------
     -- Functions
     FUNCTION stdlogic_integer(s : STD_LOGIC) RETURN INTEGER;
 

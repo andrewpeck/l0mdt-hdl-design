@@ -30,9 +30,11 @@ use mpl_lib.mpl_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.MPL_CTRL.all;
+use ctrl_lib.MPL_CTRL_DEF.all;
 
 
-entity top_mpl_tb is
+
+entity mpl_tb is
   generic (
     PRJ_INFO            : string  := "BA3";
     IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
@@ -54,15 +56,33 @@ entity top_mpl_tb is
   --   mon                 : out MPL_MON_t;
   --   -- configuration, control & Monitoring
   --   -- SLc pipeline
-  --   i_uCM2pl_av         : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  --   o_pl2tf_av          : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
-  --   o_pl2mtc_av         : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
+  --   i_uCM2pl_av         : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  --   o_pl2tf_av          : out pl2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+  --   o_pl2mtc_av         : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
   -- );
-end entity top_mpl_tb;
+end entity mpl_tb;
 
-architecture beh of top_mpl_tb is
-  
+architecture beh of mpl_tb is
+  -- clk
+  constant clk_period : time := 3.125 ns;  -- 320Mhz
+  signal clk : std_logic := '0';
+  -- rest
+  constant reset_init_cycles : integer := 3;
+  signal rst                 : std_logic;
+  signal glob_en             : std_logic := '1';
+  --
+  signal ctrl_r              : MPL_CTRL_t := DEFAULT_MPL_CTRL_t ;
+  signal mon_r               : MPL_MON_t;
+  signal ctrl_v              : std_logic_vector(MPL_CTRL_t'w - 1 downto 0); --  : in  MPL_CTRL_t;
+  signal mon_v               : std_logic_vector(MPL_MON_t'w - 1 downto 0);--  : out MPL_MON_t; 
+  -- SLc pipeline
+  signal i_uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  signal o_pl2ptcalc_av         : pl2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+  signal o_pl2mtc_av            : pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
 begin
+
+  ctrl_v <= convert(ctrl_r,ctrl_v);
+  mon_r <= convert(mon_v,mon_r);
 
   MPL : entity mpl_lib.mpl
   port map(
@@ -74,10 +94,30 @@ begin
     mon_v           => mon_v,
     --
     i_uCM2pl_av     => i_uCM2pl_av,
-    o_pl2ptcalc_av  => o_pl2pt_av,
+    o_pl2ptcalc_av  => o_pl2ptcalc_av,
     o_pl2mtc_av     => o_pl2mtc_av
   );
   
+  -------------------------------------------------------------------------------------
+	-- clock Generator
+	-------------------------------------------------------------------------------------
+  CLK_MAIN : process begin
+    clk <= '0';
+    wait for CLK_period/2;
+    clk <= '1';
+    wait for CLK_period/2;
+  end process;
+ 	-------------------------------------------------------------------------------------
+	-- Reset Generator
+	-------------------------------------------------------------------------------------
+	rst_process: process begin
+		rst<='0';
+		wait for CLK_period;
+		rst<='1';
+		wait for CLK_period*reset_init_cycles;
+		rst<= '0';
+		wait;
+  end process;
   
   
 end architecture beh;

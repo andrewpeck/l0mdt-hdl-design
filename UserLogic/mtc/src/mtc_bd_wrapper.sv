@@ -1,4 +1,8 @@
+`ifndef L0MDT_BUS_CONSTANTS
+`define L0MDT_BUS_CONSTANTS
 `include "l0mdt_buses_constants.svh"
+import l0mdt_dataformats_svh::*;
+`endif
 module mtc_bd_wrapper #(
 			parameter PTCALC_WIDTH=PTCALC2MTC_LEN,
 			parameter SLCPIPELINE_WIDTH=PL2MTC_LEN ,
@@ -39,11 +43,9 @@ endgenerate
    
    
  mtc_builder_verilog #(
-	      .PTCALC_WIDTH(PTCALC_WIDTH),
-	      .SLCPIPELINE_WIDTH(SLCPIPELINE_WIDTH),
-	      .c_NUM_THREADS(c_NUM_THREADS),
-	      .c_MAX_NUM_SL (c_MAX_NUM_SL),
-	      .n_PRIMARY_MTC(n_PRIMARY_MTC)
+		       .c_NUM_THREADS(c_NUM_THREADS),
+		       .c_MAX_NUM_SL (c_MAX_NUM_SL),
+		       .n_PRIMARY_MTC(n_PRIMARY_MTC)
 	      )
    mtc_builder_verilog_inst(
 		 .clock(clock),

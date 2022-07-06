@@ -30,3 +30,4 @@ UserLogic/mpl/mpl_lib.src lib=mpl_lib
 # UserLogic/mtc/mtc_lib.src lib=mtc_lib
 # UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
 # UserLogic/daq/daq_lib.src lib=daq_lib
+# UserLogic/fm/fm_lib.src lib=fm_lib

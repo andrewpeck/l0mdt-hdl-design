@@ -11,13 +11,13 @@
 # --------------------------------------------------------------------------------
 
 yml2hdl="../../../tools/yml2hdl/yml2hdl.py"
-# # common_ieee="../../../shared/types/common_ieee.yml"
+# # common_ieee_pkg="../../../shared/types/common_ieee_pkg.yml"
 
 # #####
-# # python3 $yml2hdl -e $common_ieee MPL/MPL_TYPES_v2.yml
+# # python3 $yml2hdl -e $common_ieee_pkg MPL/MPL_TYPES_v2.yml
 # python3 $yml2hdl -v -n MPL_CTRL MPL/MPL_PKG.yml
 # python3 $yml2hdl -v -n UCM_CTRL UCM/UCM_PKG.yml
-# python3 $yml2hdl -v -n H2S_CTRL H2S/H2S_PKG.yml
+# python3 $yml2hdl -v -n HPS_CTRL HPS/HPS_PKG.yml
 
 # # Interfaces
 # python3 $yml2hdl -v MEM_INT_10A148D/MEM_INT_10A148D_PKG.yml
@@ -29,7 +29,7 @@ declare -a arr=(
   "TAR"
   "MPL" 
   "UCM" 
-  "H2S"
+  "HPS"
   "TF"
   "DAQ"
   "MTC"

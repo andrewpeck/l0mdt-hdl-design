@@ -17,15 +17,15 @@ use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
-use ctrl_lib.H2S_CTRL.all;
-use ctrl_lib.H2S_Ctrl_DEF.all;
+use ctrl_lib.HPS_CTRL.all;
+use ctrl_lib.HPS_Ctrl_DEF.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
 use ctrl_lib.UCM_CTRL.all;
 use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
-
+use ctrl_lib.FM_CTRL.all;
 
 library shared_lib;
 use shared_lib.spybuffer_pkg.all;
@@ -71,16 +71,15 @@ entity top_l0mdt is
     clock_i_p : in std_logic;
     clock_i_n : in std_logic;
 
-    lhc_refclk_o_p : out std_logic;
-    lhc_refclk_o_n : out std_logic;
+    tc_clk_o_p : out std_logic;
+    tc_clk_o_n : out std_logic;
 
     --------------------------------------------------------------------------------
     -- AXI C2C
     --------------------------------------------------------------------------------
 
-    clock_100m_i_p : in std_logic;
-    clock_100m_i_n : in std_logic;
-
+    clock_async_i_p : in std_logic;
+    clock_async_i_n : in std_logic;
 
     c2c_rxn : in  std_logic;
     c2c_rxp : in  std_logic;
@@ -117,34 +116,34 @@ architecture structural of top_l0mdt is
 
   -- hal <--> ult
 
-  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal inner_tdc_hits  : tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal middle_tdc_hits : tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal outer_tdc_hits  : tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal extra_tdc_hits  : tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
-  -- signal i_inner_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  -- signal i_middle_tar_hits : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  -- signal i_outer_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  -- signal i_extra_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  -- signal i_inner_tar_hits  : tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  -- signal i_middle_tar_hits : tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  -- signal i_outer_tar_hits  : tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  -- signal i_extra_tar_hits  : tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
-  signal main_primary_slc   : slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-  signal main_secondary_slc : slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
-  signal plus_neighbor_slc  : slc_rx_rvt;
-  signal minus_neighbor_slc : slc_rx_rvt;
+  signal main_primary_slc   : slc_rx_avt(2 downto 0);  -- is the main SL used
+  signal main_secondary_slc : slc_rx_avt(2 downto 0);  -- only used in the big endcap
+  signal plus_neighbor_slc  : slc_rx_vt;
+  signal minus_neighbor_slc : slc_rx_vt;
 
-  signal plus_neighbor_segments_i  : sf2pt_bus_avt (c_NUM_SF_INPUTS - 1 downto 0);
-  signal minus_neighbor_segments_i : sf2pt_bus_avt (c_NUM_SF_INPUTS - 1 downto 0);
-  signal plus_neighbor_segments_o  : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
-  signal minus_neighbor_segments_o : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal plus_neighbor_segments_i  : sf2ptcalc_avt (c_NUM_SF_INPUTS - 1 downto 0);
+  signal minus_neighbor_segments_i : sf2ptcalc_avt (c_NUM_SF_INPUTS - 1 downto 0);
+  signal plus_neighbor_segments_o  : sf2ptcalc_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal minus_neighbor_segments_o : sf2ptcalc_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
 
-  signal daq_streams : FELIX_STREAM_bus_avt (c_HPS_MAX_HP_INN
+  signal daq_streams : felix_stream_avt (c_HPS_MAX_HP_INN
                                              + c_HPS_MAX_HP_MID
                                              + c_HPS_MAX_HP_OUT - 1 downto 0);
 
   -- NSP + MUCTPI
 
-  signal mtc : mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-  signal nsp : mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+  signal mtc : mtc_out_avt(c_NUM_MTC-1 downto 0);
+  signal nsp : mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
   -- AXI
 
@@ -154,10 +153,24 @@ architecture structural of top_l0mdt is
 
   -- Control and Monitoring Records
 
-  signal h2s_mon_r  : H2S_MON_t;
-  signal h2s_ctrl_r : H2S_CTRL_t;
-  signal tar_ctrl_r : TAR_CTRL_t;
-  signal tar_mon_r  : TAR_MON_t;
+  signal hps_inn_mon_r  : HPS_MON_t;
+  signal hps_inn_ctrl_r : HPS_CTRL_t;
+  signal hps_mid_mon_r  : HPS_MON_t;
+  signal hps_mid_ctrl_r : HPS_CTRL_t;
+  signal hps_out_mon_r  : HPS_MON_t;
+  signal hps_out_ctrl_r : HPS_CTRL_t;
+  signal hps_ext_mon_r  : HPS_MON_t;
+  signal hps_ext_ctrl_r : HPS_CTRL_t;
+
+  signal tar_inn_mon_r  : TAR_MON_t;
+  signal tar_inn_ctrl_r : TAR_CTRL_t;
+  signal tar_mid_mon_r  : TAR_MON_t;
+  signal tar_mid_ctrl_r : TAR_CTRL_t;
+  signal tar_out_mon_r  : TAR_MON_t;
+  signal tar_out_ctrl_r : TAR_CTRL_t;
+  signal tar_ext_mon_r  : TAR_MON_t;
+  signal tar_ext_ctrl_r : TAR_CTRL_t;
+
   signal mtc_ctrl_r : MTC_CTRL_t;
   signal mtc_mon_r  : MTC_MON_t;
   signal ucm_ctrl_r : UCM_CTRL_t;
@@ -169,22 +182,40 @@ architecture structural of top_l0mdt is
   signal mpl_mon_r  : MPL_MON_t;
   signal mpl_ctrl_r : MPL_CTRL_t;
 
-  signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl_r) -1 downto 0);
-  signal h2s_mon_v  : std_logic_vector(len(h2s_mon_r) -1 downto 0);
-  signal tar_ctrl_v : std_logic_vector(len(tar_ctrl_r) -1 downto 0);
-  signal tar_mon_v  : std_logic_vector(len(tar_mon_r) -1 downto 0);
-  signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl_r) -1 downto 0);
-  signal mtc_mon_v  : std_logic_vector(len(mtc_mon_r) -1 downto 0);
-  signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl_r) -1 downto 0);
-  signal ucm_mon_v  : std_logic_vector(len(ucm_mon_r) -1 downto 0);
-  signal daq_ctrl_v : std_logic_vector(len(daq_ctrl_r) -1 downto 0);
-  signal daq_mon_v  : std_logic_vector(len(daq_mon_r) -1 downto 0);
-  signal tf_ctrl_v  : std_logic_vector(len(tf_ctrl_r) -1 downto 0);
-  signal tf_mon_v   : std_logic_vector(len(tf_mon_r) -1 downto 0);
-  signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl_r) -1 downto 0);
-  signal mpl_mon_v  : std_logic_vector(len(mpl_mon_r) -1 downto 0);
+  signal fm_mon_r  : FM_MON_t;
+  signal fm_ctrl_r : FM_CTRL_t;
 
+  signal hps_inn_ctrl_v : std_logic_vector(width(hps_inn_ctrl_r) -1 downto 0);
+  signal hps_inn_mon_v  : std_logic_vector(width(hps_inn_mon_r) -1 downto 0);
+  signal hps_mid_ctrl_v : std_logic_vector(width(hps_mid_ctrl_r) -1 downto 0);
+  signal hps_mid_mon_v  : std_logic_vector(width(hps_mid_mon_r) -1 downto 0);
+  signal hps_out_ctrl_v : std_logic_vector(width(hps_out_ctrl_r) -1 downto 0);
+  signal hps_out_mon_v  : std_logic_vector(width(hps_out_mon_r) -1 downto 0);
+  signal hps_ext_ctrl_v : std_logic_vector(width(hps_ext_ctrl_r) -1 downto 0);
+  signal hps_ext_mon_v  : std_logic_vector(width(hps_ext_mon_r) -1 downto 0);
 
+  signal tar_inn_ctrl_v : std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0);
+  signal tar_inn_mon_v  : std_logic_vector(width(tar_inn_mon_r) -1 downto 0);
+  signal tar_mid_ctrl_v : std_logic_vector(width(tar_mid_ctrl_r) -1 downto 0);
+  signal tar_mid_mon_v  : std_logic_vector(width(tar_mid_mon_r) -1 downto 0);
+  signal tar_out_ctrl_v : std_logic_vector(width(tar_out_ctrl_r) -1 downto 0);
+  signal tar_out_mon_v  : std_logic_vector(width(tar_out_mon_r) -1 downto 0);
+  signal tar_ext_ctrl_v : std_logic_vector(width(tar_ext_ctrl_r) -1 downto 0);
+  signal tar_ext_mon_v  : std_logic_vector(width(tar_ext_mon_r) -1 downto 0);
+
+  signal mtc_ctrl_v : std_logic_vector(width(mtc_ctrl_r) -1 downto 0);
+  signal mtc_mon_v  : std_logic_vector(width(mtc_mon_r) -1 downto 0);
+  signal ucm_ctrl_v : std_logic_vector(width(ucm_ctrl_r) -1 downto 0);
+  signal ucm_mon_v  : std_logic_vector(width(ucm_mon_r) -1 downto 0);
+  signal daq_ctrl_v : std_logic_vector(width(daq_ctrl_r) -1 downto 0);
+  signal daq_mon_v  : std_logic_vector(width(daq_mon_r) -1 downto 0);
+  signal tf_ctrl_v  : std_logic_vector(width(tf_ctrl_r) -1 downto 0);
+  signal tf_mon_v   : std_logic_vector(width(tf_mon_r) -1 downto 0);
+  signal mpl_ctrl_v : std_logic_vector(width(mpl_ctrl_r) -1 downto 0);
+  signal mpl_mon_v  : std_logic_vector(width(mpl_mon_r) -1 downto 0);
+
+  signal fm_mon_v  : std_logic_vector(width(fm_mon_r) -1 downto 0);
+  signal fm_ctrl_v : std_logic_vector(width(fm_ctrl_r) -1 downto 0);
   --
 
   signal hal_mon  : HAL_MON_t;
@@ -217,14 +248,17 @@ begin
     port map (
 
       -- clock io
-      clock_i_p      => clock_i_p,
-      clock_i_n      => clock_i_n,
-      clock_100m_i_p => clock_100m_i_p,
-      clock_100m_i_n => clock_100m_i_n,
-      lhc_refclk_o_p => lhc_refclk_o_p,
-      lhc_refclk_o_n => lhc_refclk_o_n,
-      refclk_i_p     => refclk_i_p,
-      refclk_i_n     => refclk_i_n,
+      clock_i_p       => clock_i_p,
+      clock_i_n       => clock_i_n,
+
+      clock_async_i_p => clock_async_i_p,
+      clock_async_i_n => clock_async_i_n,
+
+      lhc_refclk_o_p  => tc_clk_o_p,
+      lhc_refclk_o_n  => tc_clk_o_n,
+
+      refclk_i_p      => refclk_i_p,
+      refclk_i_n      => refclk_i_n,
 
       -- clocks to user logic
       clock_and_control_o => clock_and_control,
@@ -302,10 +336,24 @@ begin
 
       -- Control and Monitoring
 
-      h2s_ctrl_v => h2s_ctrl_v,
-      h2s_mon_v  => h2s_mon_v,
-      tar_ctrl_v => tar_ctrl_v,
-      tar_mon_v  => tar_mon_v,
+      hps_inn_ctrl_v => hps_inn_ctrl_v,
+      hps_inn_mon_v  => hps_inn_mon_v,
+      hps_mid_ctrl_v => hps_mid_ctrl_v,
+      hps_mid_mon_v  => hps_mid_mon_v,
+      hps_out_ctrl_v => hps_out_ctrl_v,
+      hps_out_mon_v  => hps_out_mon_v,
+      hps_ext_ctrl_v => hps_ext_ctrl_v,
+      hps_ext_mon_v  => hps_ext_mon_v,
+
+      tar_inn_ctrl_v => tar_inn_ctrl_v,
+      tar_inn_mon_v  => tar_inn_mon_v,
+      tar_mid_ctrl_v => tar_mid_ctrl_v,
+      tar_mid_mon_v  => tar_mid_mon_v,
+      tar_out_ctrl_v => tar_out_ctrl_v,
+      tar_out_mon_v  => tar_out_mon_v,
+      tar_ext_ctrl_v => tar_ext_ctrl_v,
+      tar_ext_mon_v  => tar_ext_mon_v,
+
       mtc_ctrl_v => mtc_ctrl_v,
       mtc_mon_v  => mtc_mon_v,
       ucm_ctrl_v => ucm_ctrl_v,
@@ -316,26 +364,45 @@ begin
       tf_mon_v   => tf_mon_v,
       mpl_ctrl_v => mpl_ctrl_v,
       mpl_mon_v  => mpl_mon_v,
+      fm_ctrl_v  => fm_ctrl_v,
+      fm_mon_v   => fm_mon_v,
       --
 
       sump => user_sump
       );
 
   -- ctrl/mon
-  ucm_ctrl_v <= vectorify(ucm_ctrl_r, ucm_ctrl_v);
-  ucm_mon_r  <= structify(ucm_mon_v, ucm_mon_r);
-  tar_ctrl_v <= vectorify(tar_ctrl_r, tar_ctrl_v);
-  tar_mon_r  <= structify(tar_mon_v, tar_mon_r);
-  h2s_ctrl_v <= vectorify(h2s_ctrl_r, h2s_ctrl_v);
-  h2s_mon_r  <= structify(h2s_mon_v, h2s_mon_r);
-  mpl_ctrl_v <= vectorify(mpl_ctrl_r, mpl_ctrl_v);
-  mpl_mon_r  <= structify(mpl_mon_v, mpl_mon_r);
-  tf_ctrl_v  <= vectorify(tf_ctrl_r, tf_ctrl_v);
-  tf_mon_r   <= structify(tf_mon_v, tf_mon_r);
-  mtc_ctrl_v <= vectorify(mtc_ctrl_r, mtc_ctrl_v);
-  mtc_mon_r  <= structify(mtc_mon_v, mtc_mon_r);
-  daq_ctrl_v <= vectorify(daq_ctrl_r, daq_ctrl_v);
-  daq_mon_r  <= structify(daq_mon_v, daq_mon_r);
+  ucm_ctrl_v     <= convert(ucm_ctrl_r, ucm_ctrl_v);
+  ucm_mon_r      <= convert(ucm_mon_v, ucm_mon_r);
+
+  tar_inn_ctrl_v <= convert(tar_inn_ctrl_r, tar_inn_ctrl_v);
+  tar_inn_mon_r  <= convert(tar_inn_mon_v, tar_inn_mon_r);
+  tar_mid_ctrl_v <= convert(tar_mid_ctrl_r, tar_mid_ctrl_v);
+  tar_mid_mon_r  <= convert(tar_mid_mon_v, tar_mid_mon_r);
+  tar_out_ctrl_v <= convert(tar_out_ctrl_r, tar_out_ctrl_v);
+  tar_out_mon_r  <= convert(tar_out_mon_v, tar_out_mon_r);
+  tar_ext_ctrl_v <= convert(tar_ext_ctrl_r, tar_ext_ctrl_v);
+  tar_ext_mon_r  <= convert(tar_ext_mon_v, tar_ext_mon_r);
+
+  hps_inn_ctrl_v <= convert(hps_inn_ctrl_r, hps_inn_ctrl_v);
+  hps_inn_mon_r  <= convert(hps_inn_mon_v, hps_inn_mon_r);
+  hps_mid_ctrl_v <= convert(hps_mid_ctrl_r, hps_mid_ctrl_v);
+  hps_mid_mon_r  <= convert(hps_mid_mon_v, hps_mid_mon_r);
+  hps_out_ctrl_v <= convert(hps_out_ctrl_r, hps_out_ctrl_v);
+  hps_out_mon_r  <= convert(hps_out_mon_v, hps_out_mon_r);
+  hps_ext_ctrl_v <= convert(hps_ext_ctrl_r, hps_ext_ctrl_v);
+  hps_ext_mon_r  <= convert(hps_ext_mon_v, hps_ext_mon_r);
+
+  mpl_ctrl_v     <= convert(mpl_ctrl_r, mpl_ctrl_v);
+  mpl_mon_r      <= convert(mpl_mon_v, mpl_mon_r);
+  tf_ctrl_v      <= convert(tf_ctrl_r, tf_ctrl_v);
+  tf_mon_r       <= convert(tf_mon_v, tf_mon_r);
+  mtc_ctrl_v     <= convert(mtc_ctrl_r, mtc_ctrl_v);
+  mtc_mon_r      <= convert(mtc_mon_v, mtc_mon_r);
+  daq_ctrl_v     <= convert(daq_ctrl_r, daq_ctrl_v);
+  daq_mon_r      <= convert(daq_mon_v, daq_mon_r);
+  fm_ctrl_v      <= convert(fm_ctrl_r, fm_ctrl_v);
+  fm_mon_r       <= convert(fm_mon_v, fm_mon_r);
 
   top_control_inst : entity work.top_control
     port map (
@@ -358,10 +425,24 @@ begin
 
       -- ULT Control
 
-      h2s_ctrl    => h2s_ctrl_r,
-      h2s_mon     => h2s_mon_r,
-      tar_ctrl    => tar_ctrl_r,
-      tar_mon     => tar_mon_r,
+      hps_inn_ctrl => hps_inn_ctrl_r,
+      hps_inn_mon  => hps_inn_mon_r,
+      hps_mid_ctrl => hps_mid_ctrl_r,
+      hps_mid_mon  => hps_mid_mon_r,
+      hps_out_ctrl => hps_out_ctrl_r,
+      hps_out_mon  => hps_out_mon_r,
+      hps_ext_ctrl => hps_ext_ctrl_r,
+      hps_ext_mon  => hps_ext_mon_r,
+
+      tar_inn_ctrl => tar_inn_ctrl_r,
+      tar_inn_mon  => tar_inn_mon_r,
+      tar_mid_ctrl => tar_mid_ctrl_r,
+      tar_mid_mon  => tar_mid_mon_r,
+      tar_out_ctrl => tar_out_ctrl_r,
+      tar_out_mon  => tar_out_mon_r,
+      tar_ext_ctrl => tar_ext_ctrl_r,
+      tar_ext_mon  => tar_ext_mon_r,
+
       mtc_ctrl    => mtc_ctrl_r,
       mtc_mon     => mtc_mon_r,
       ucm_ctrl    => ucm_ctrl_r,
@@ -373,6 +454,8 @@ begin
       mpl_ctrl    => mpl_ctrl_r,
       mpl_mon     => mpl_mon_r,
       fw_info_mon => fw_info_mon,
+      fm_ctrl     => fm_ctrl_r,
+      fm_mon      => fm_mon_r,
 
       -- axi common
       clk320                  => clk320,
@@ -383,8 +466,8 @@ begin
       reset_n                 => '1',
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
-    --sys_mgmt_scl            => sys_mgmt_scl,
-    --sys_mgmt_sda            => sys_mgmt_sda,
+      --sys_mgmt_scl            => sys_mgmt_scl,
+      --sys_mgmt_sda            => sys_mgmt_sda,
       sys_mgmt_vccaux_alarm   => open,
       sys_mgmt_vccint_alarm   => open
       );
@@ -402,48 +485,56 @@ begin
   fw_info_mon.FW_INFO.BUILD_TIME.sec               <= (others => '0');  -- TS_SEC;
   fw_info_mon.FW_INFO.BUILD_TIME.min               <= (others => '0');  -- TS_MIN;
   fw_info_mon.FW_INFO.BUILD_TIME.HOUR              <= (others => '0');  -- TS_HOUR
-  fw_info_mon.HOG_INFO.GLOBAL_FWDATE               <= GLOBAL_FWDATE;
-  fw_info_mon.HOG_INFO.GLOBAL_FWTIME               <= GLOBAL_FWTIME;
-  fw_info_mon.HOG_INFO.OFFICIAL                    <= OFFICIAL;
-  fw_info_mon.HOG_INFO.GLOBAL_FWHASH               <= GLOBAL_FWHASH;
-  fw_info_mon.HOG_INFO.TOP_FWHASH                  <= TOP_FWHASH;
-  fw_info_mon.HOG_INFO.XML_HASH                    <= XML_HASH;
-  fw_info_mon.HOG_INFO.GLOBAL_FWVERSION            <= GLOBAL_FWVERSION;
-  fw_info_mon.HOG_INFO.TOP_FWVERSION               <= TOP_FWVERSION;
-  fw_info_mon.HOG_INFO.XML_VERSION                 <= XML_VERSION;
-  fw_info_mon.HOG_INFO.HOG_FWHASH                  <= HOG_FWHASH;
-  fw_info_mon.HOG_INFO.FRAMEWORK_FWVERSION         <= FRAMEWORK_FWVERSION;
-  fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH            <= FRAMEWORK_FWHASH;
-  fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW           <= MAIN_CFG_COMPILE_HW;
-  fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL           <= MAIN_CFG_COMPILE_UL;
-  fw_info_mon.CONFIG.ST_nBARREL_ENDCAP             <= c_ST_nBARREL_ENDCAP;
-  fw_info_mon.CONFIG.ENABLE_NEIGHBORS              <= c_ENABLE_NEIGHBORS;
-  fw_info_mon.CONFIG.SECTOR_ID                     <= std_logic_vector(to_unsigned(c_SECTOR_ID, 32));
-  fw_info_mon.CONFIG.ENDCAP_nSMALL_LARGE           <= c_ENDCAP_nSMALL_LARGE;
-  fw_info_mon.CONFIG.PHY_BARREL_R0                 <= std_logic_vector(resize(PHY_BARREL_R0, 32));
-  fw_info_mon.CONFIG.PHY_BARREL_R1                 <= std_logic_vector(resize(PHY_BARREL_R1, 32));
-  fw_info_mon.CONFIG.PHY_BARREL_R2                 <= std_logic_vector(resize(PHY_BARREL_R2, 32));
-  fw_info_mon.CONFIG.PHY_BARREL_R3                 <= std_logic_vector(resize(PHY_BARREL_R3, 32));
-  fw_info_mon.CONFIG.HPS_ENABLE_ST_INN             <= c_HPS_ENABLE_ST_INN;
-  fw_info_mon.CONFIG.HPS_ENABLE_ST_EXT             <= c_HPS_ENABLE_ST_EXT;
-  fw_info_mon.CONFIG.HPS_ENABLE_ST_MID             <= c_HPS_ENABLE_ST_MID;
-  fw_info_mon.CONFIG.HPS_ENABLE_ST_OUT             <= c_HPS_ENABLE_ST_OUT;
-  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_INN            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_INN, 8));
-  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_EXT            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_EXT, 8));
-  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_MID            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_MID, 8));
-  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_OUT            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_OUT, 8));
-  fw_info_mon.CONFIG.NUM_MTC                       <= std_logic_vector(to_unsigned(c_NUM_MTC, 8));
-  fw_info_mon.CONFIG.NUM_NSP                       <= std_logic_vector(to_unsigned(c_NUM_NSP, 8));
-  fw_info_mon.CONFIG.UCM_ENABLED                   <= c_UCM_ENABLED;
-  fw_info_mon.CONFIG.MPL_ENABLED                   <= c_MPL_ENABLED;
-  fw_info_mon.CONFIG.SF_ENABLED                    <= c_SF_ENABLED;
-  fw_info_mon.CONFIG.SF_TYPE                       <= c_SF_TYPE;
-  fw_info_mon.CONFIG.NUM_DAQ_STREAMS               <= std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8));
-  fw_info_mon.CONFIG.NUM_SF_INPUTS                 <= std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8));
-  fw_info_mon.CONFIG.NUM_SF_OUTPUTS                <= std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8));
-  fw_info_mon.CONFIG.MAX_NUM_SL                    <= std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8));
-  fw_info_mon.CONFIG.NUM_THREADS                   <= std_logic_vector(to_unsigned(c_NUM_THREADS, 8));
 
-  sump <= hal_sump xor user_sump;
+  fw_info_mon.HOG_INFO.GLOBAL_FWDATE       <= GLOBAL_FWDATE;
+  fw_info_mon.HOG_INFO.GLOBAL_FWTIME       <= GLOBAL_FWTIME;
+  fw_info_mon.HOG_INFO.OFFICIAL            <= OFFICIAL;
+  fw_info_mon.HOG_INFO.GLOBAL_FWHASH       <= GLOBAL_FWHASH;
+  fw_info_mon.HOG_INFO.TOP_FWHASH          <= TOP_FWHASH;
+  fw_info_mon.HOG_INFO.XML_HASH            <= XML_HASH;
+  fw_info_mon.HOG_INFO.GLOBAL_FWVERSION    <= GLOBAL_FWVERSION;
+  fw_info_mon.HOG_INFO.TOP_FWVERSION       <= TOP_FWVERSION;
+  fw_info_mon.HOG_INFO.XML_VERSION         <= XML_VERSION;
+  fw_info_mon.HOG_INFO.HOG_FWHASH          <= HOG_FWHASH;
+  fw_info_mon.HOG_INFO.FRAMEWORK_FWVERSION <= FRAMEWORK_FWVERSION;
+  fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH    <= FRAMEWORK_FWHASH;
+
+  fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW <= MAIN_CFG_COMPILE_HW;
+  fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL <= MAIN_CFG_COMPILE_UL;
+  fw_info_mon.CONFIG.ST_nBARREL_ENDCAP   <= c_ST_nBARREL_ENDCAP;
+  fw_info_mon.CONFIG.ENABLE_NEIGHBORS    <= c_ENABLE_NEIGHBORS;
+  fw_info_mon.CONFIG.SECTOR_ID           <= std_logic_vector(to_unsigned(c_SECTOR_ID, 32));
+  fw_info_mon.CONFIG.ENDCAP_nSMALL_LARGE <= c_ENDCAP_nSMALL_LARGE;
+  fw_info_mon.CONFIG.PHY_BARREL_R0       <= std_logic_vector(resize(PHY_BARREL_R0, 32));
+  fw_info_mon.CONFIG.PHY_BARREL_R1       <= std_logic_vector(resize(PHY_BARREL_R1, 32));
+  fw_info_mon.CONFIG.PHY_BARREL_R2       <= std_logic_vector(resize(PHY_BARREL_R2, 32));
+  fw_info_mon.CONFIG.PHY_BARREL_R3       <= std_logic_vector(resize(PHY_BARREL_R3, 32));
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_INN   <= c_HPS_ENABLE_ST_INN;
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_EXT   <= c_HPS_ENABLE_ST_EXT;
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_MID   <= c_HPS_ENABLE_ST_MID;
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_OUT   <= c_HPS_ENABLE_ST_OUT;
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_INN  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_INN, 8));
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_EXT  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_EXT, 8));
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_MID  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_MID, 8));
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_OUT  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_OUT, 8));
+  fw_info_mon.CONFIG.NUM_MTC             <= std_logic_vector(to_unsigned(c_NUM_MTC, 8));
+  fw_info_mon.CONFIG.NUM_NSP             <= std_logic_vector(to_unsigned(c_NUM_NSP, 8));
+  fw_info_mon.CONFIG.UCM_ENABLED         <= c_UCM_ENABLED;
+  fw_info_mon.CONFIG.MPL_ENABLED         <= c_MPL_ENABLED;
+  fw_info_mon.CONFIG.SF_ENABLED          <= c_SF_ENABLED;
+  fw_info_mon.CONFIG.SF_TYPE             <= c_SF_TYPE;
+  fw_info_mon.CONFIG.NUM_DAQ_STREAMS     <= std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8));
+  fw_info_mon.CONFIG.NUM_SF_INPUTS       <= std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8));
+  fw_info_mon.CONFIG.NUM_SF_OUTPUTS      <= std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8));
+  fw_info_mon.CONFIG.MAX_NUM_SL          <= std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8));
+  fw_info_mon.CONFIG.NUM_THREADS         <= std_logic_vector(to_unsigned(c_NUM_THREADS, 8));
+
+  process (clock_and_control.clk) is
+  begin
+    if (rising_edge(clock_and_control.clk)) then
+      sump <= hal_sump xor user_sump;
+    end if;
+  end process;
+
 
 end structural;

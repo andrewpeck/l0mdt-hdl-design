@@ -34,10 +34,10 @@ entity top_tdc_decoder is
     lpgbt_uplink_data : in lpgbt_uplink_data_rt_array (c_FELIX_LPGBT_INDEX downto 0);
 
     -- TDC hits from CSM
-    tdc_hits_inner  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
-    tdc_hits_middle : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
-    tdc_hits_outer  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
-    tdc_hits_extra  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0)
+    tdc_hits_inner  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+    tdc_hits_middle : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+    tdc_hits_outer  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+    tdc_hits_extra  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0)
 
     );
 end top_tdc_decoder;
@@ -47,7 +47,7 @@ architecture behavioral of top_tdc_decoder is
   type tdc_err_cnt_array_t is array (integer range <>) of std_logic_vector(15 downto 0);
   signal tdc_err_cnt : tdc_err_cnt_array_t (c_NUM_TDC_INPUTS-1 downto 0) := (others => '0');
 
-  signal tdc_hits_to_polmux : mdt_polmux_bus_avt (c_NUM_TDC_INPUTS-1 downto 0);
+  signal tdc_hits_to_polmux : tdcpolmux2tar_avt (c_NUM_TDC_INPUTS-1 downto 0);
 
   signal read_done : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
 
@@ -154,10 +154,10 @@ begin
 
         tdc_hit_to_polmux.fiberid    <= std_logic_vector(to_unsigned(idx, MDT_FIBER_LEN));
         tdc_hit_to_polmux.muxid      <= std_logic_vector(to_unsigned(channel, MDT_MUXCH_LEN));  -- FIXME: what is a muxid??
-        tdc_hit_to_polmux.tdc        <= structify(tdc_word_from_decoder);
+        tdc_hit_to_polmux.tdc        <= convert(tdc_word_from_decoder);
         tdc_hit_to_polmux.data_valid <= tdc_valid_from_decoder;
 
-        tdc_hits_to_polmux(I) <= vectorify(tdc_hit_to_polmux);
+        tdc_hits_to_polmux(I) <= convert(tdc_hit_to_polmux);
 
         cnt_err : entity work.counter
           generic map (width => 16)
@@ -231,13 +231,13 @@ begin
 
       -- function to take create an array of tdc hits correctly mapped and assigned to be
       -- used as input to the polling mux
-      function polmux_input_map (in_array  : mdt_polmux_bus_avt;        -- full array of all TDC hits
+      function polmux_input_map (in_array  : tdcpolmux2tar_avt;        -- full array of all TDC hits
                                  tdc_map   : tdc_link_map_array_t;  -- constant mapping from board pkg
                                  polmux_id : integer;               -- id # of the polmux
                                  size      : integer)               -- size of the polmux
-        return mdt_polmux_bus_avt is
+        return tdcpolmux2tar_avt is
         variable count : integer := 0;
-        variable ret   : mdt_polmux_bus_avt (size - 1 downto 0);
+        variable ret   : tdcpolmux2tar_avt (size - 1 downto 0);
       begin
         for I in 0 to c_NUM_TDC_INPUTS-1 loop
           if (tdc_map(I).polmux_id = polmux_id) then
@@ -248,11 +248,11 @@ begin
         return ret;
       end polmux_input_map;
 
-      function is_valid (a : mdt_polmux_rvt)
+      function is_valid (a : mdt_polmux_vt)
         return std_logic is
         variable tmp : mdt_polmux_rt;
       begin
-        tmp := structify(a);
+        tmp := convert(a);
         return tmp.data_valid;
       end is_valid;
 
@@ -266,9 +266,9 @@ begin
 
       -- signals to hold the up to ~20 polmux inputs and outputs for this loop
       signal read_done_polmux : std_logic_vector (POLMUX_WIDTH-1 downto 0);
-      signal polmux_inputs    : mdt_polmux_bus_avt (POLMUX_WIDTH-1 downto 0);
-      signal polmux_output    : mdt_polmux_rvt;
-      signal fifo_output      : mdt_polmux_rvt;
+      signal polmux_inputs    : tdcpolmux2tar_avt (POLMUX_WIDTH-1 downto 0);
+      signal polmux_output    : mdt_polmux_vt;
+      signal fifo_output      : mdt_polmux_vt;
       signal valid            : std_logic;
       signal din              : std_logic_vector (63 downto 0);
       signal dout             : std_logic_vector (63 downto 0);
@@ -329,12 +329,12 @@ begin
         assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
           " to INNER tdc stream #" & integer'image(inner_polmux_idx_array(I)) severity note;
 
-        tmp.tdc        <= structify (fifo_output).tdc;
-        tmp.fiberid    <= structify (fifo_output).fiberid;
-        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.tdc        <= convert (fifo_output).tdc;
+        tmp.fiberid    <= convert (fifo_output).fiberid;
+        tmp.muxid      <= convert (fifo_output).muxid;
         tmp.data_valid <= valid;
 
-        tdc_hits_inner(inner_polmux_idx_array(I)) <= vectorify(tmp);
+        tdc_hits_inner(inner_polmux_idx_array(I)) <= convert(tmp);
       end generate;
 
       middle_assign : if (POLMUX_STATION = MIDDLE) generate
@@ -343,12 +343,12 @@ begin
         assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
           " to MIDDLE tdc stream #" & integer'image(middle_polmux_idx_array(I)) severity note;
 
-        tmp.tdc        <= structify (fifo_output).tdc;
-        tmp.fiberid    <= structify (fifo_output).fiberid;
-        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.tdc        <= convert (fifo_output).tdc;
+        tmp.fiberid    <= convert (fifo_output).fiberid;
+        tmp.muxid      <= convert (fifo_output).muxid;
         tmp.data_valid <= valid;
 
-        tdc_hits_middle(middle_polmux_idx_array(I)) <= vectorify(tmp);
+        tdc_hits_middle(middle_polmux_idx_array(I)) <= convert(tmp);
       end generate;
 
       outer_assign : if (POLMUX_STATION = OUTER) generate
@@ -357,12 +357,12 @@ begin
         assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
           " to OUTER tdc stream #" & integer'image(outer_polmux_idx_array(I)) severity note;
 
-        tmp.tdc        <= structify (fifo_output).tdc;
-        tmp.fiberid    <= structify (fifo_output).fiberid;
-        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.tdc        <= convert (fifo_output).tdc;
+        tmp.fiberid    <= convert (fifo_output).fiberid;
+        tmp.muxid      <= convert (fifo_output).muxid;
         tmp.data_valid <= valid;
 
-        tdc_hits_outer(outer_polmux_idx_array(I)) <= vectorify(tmp);
+        tdc_hits_outer(outer_polmux_idx_array(I)) <= convert(tmp);
       end generate;
 
       extra_assign : if (POLMUX_STATION = EXTRA) generate
@@ -371,12 +371,12 @@ begin
         assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
           " to EXTRA tdc stream #" & integer'image(extra_polmux_idx_array(I)) severity note;
 
-        tmp.tdc        <= structify (fifo_output).tdc;
-        tmp.fiberid    <= structify (fifo_output).fiberid;
-        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.tdc        <= convert (fifo_output).tdc;
+        tmp.fiberid    <= convert (fifo_output).fiberid;
+        tmp.muxid      <= convert (fifo_output).muxid;
         tmp.data_valid <= valid;
 
-        tdc_hits_extra(extra_polmux_idx_array(I)) <= vectorify(tmp);
+        tdc_hits_extra(extra_polmux_idx_array(I)) <= convert(tmp);
       end generate;
 
     end generate;  -- check polmux idx array

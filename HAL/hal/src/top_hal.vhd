@@ -44,9 +44,9 @@ entity top_hal is
     -- Hardware clocking
     --------------------------------------------------------------------------------
 
-    -- 100MHz ASYNC clock
-    clock_100m_i_p : in std_logic;
-    clock_100m_i_n : in std_logic;
+    -- ASYNC ASYNC clock
+    clock_async_i_p : in std_logic;
+    clock_async_i_n : in std_logic;
 
     -- 320MHz ASYNC clock to MMCM
     clock_i_p : in std_logic;
@@ -75,40 +75,49 @@ entity top_hal is
     --------------------------------------------------------------------------------
 
     -- TDC hits from CSM
-    tdc_hits_inner  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
-    tdc_hits_middle : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
-    tdc_hits_outer  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
-    tdc_hits_extra  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
+    tdc_hits_inner  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+    tdc_hits_middle : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+    tdc_hits_outer  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+    tdc_hits_extra  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- SLC
     --------------------------------------------------------------------------------
 
-    main_primary_slc   : out slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-    main_secondary_slc : out slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
-    plus_neighbor_slc  : out slc_rx_rvt;
-    minus_neighbor_slc : out slc_rx_rvt;
+    main_primary_slc   : out slc_rx_avt(2 downto 0);  -- is the main SL used
+    main_secondary_slc : out slc_rx_avt(2 downto 0);  -- only used in the big endcap
+    plus_neighbor_slc  : out slc_rx_vt;
+    minus_neighbor_slc : out slc_rx_vt;
 
     -- pt from neighbor
-    plus_neighbor_segments_o  : out sf2pt_bus_avt (c_NUM_SF_INPUTS -1 downto 0);
-    minus_neighbor_segments_o : out sf2pt_bus_avt (c_NUM_SF_INPUTS -1 downto 0);
+    plus_neighbor_segments_o  : out sf2ptcalc_avt (c_NUM_SF_INPUTS -1 downto 0);
+    minus_neighbor_segments_o : out sf2ptcalc_avt (c_NUM_SF_INPUTS -1 downto 0);
 
     -- pt to neighbor
-    plus_neighbor_segments_i  : in sf2pt_bus_avt (c_NUM_SF_OUTPUTS -1 downto 0);
-    minus_neighbor_segments_i : in sf2pt_bus_avt (c_NUM_SF_OUTPUTS -1 downto 0);
+    plus_neighbor_segments_i  : in sf2ptcalc_avt (c_NUM_SF_OUTPUTS -1 downto 0);
+    minus_neighbor_segments_i : in sf2ptcalc_avt (c_NUM_SF_OUTPUTS -1 downto 0);
 
     --------------------------------------------------------------------------------
     -- NSP + MUCTPI
     --------------------------------------------------------------------------------
 
-    MTC_i : in mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-    NSP_i : in mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+    MTC_i : in mtc_out_avt(c_NUM_MTC-1 downto 0);
+    NSP_i : in mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- felix
     --------------------------------------------------------------------------------
 
-    daq_streams : in FELIX_STREAM_bus_avt (c_HPS_MAX_HP_INN
+    -- FIXME: note that right now (10/19/2021) the daq stream is a 65 bit field,
+    -- which needs to change somehow to pack into the 32 bit / bx that we can
+    -- send to FELIX
+    --
+    -- FIXME: this doesn't add the EXT station because it wasn't included in the
+    -- user logic
+    --
+    -- FIXME: this is a pipeline of 18 things, which may be partially stuffed
+    --
+    daq_streams : in felix_stream_avt (c_HPS_MAX_HP_INN
                                            + c_HPS_MAX_HP_MID
                                            + c_HPS_MAX_HP_OUT - 1 downto 0);
 
@@ -135,14 +144,18 @@ entity top_hal is
 end entity top_hal;
 architecture behavioral of top_hal is
 
+  attribute MAX_FANOUT : string;
+  attribute DONT_TOUCH : string;
+
   signal clock_ibufds : std_logic;
   signal clocks       : system_clocks_rt;
-  signal global_reset : std_logic;
+
+  signal global_reset       : std_logic;
+  signal userlogic_reset    : std_logic;
+  signal reset              : std_logic;
 
   signal strobe_pipeline : std_logic;
   signal strobe_320      : std_logic;
-
-  signal reset : std_logic;
 
   signal felix_valid : std_logic;
 
@@ -154,9 +167,6 @@ architecture behavioral of top_hal is
 
   signal lpgbt_downlink_mgt_word_array : std32_array_t (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
   signal lpgbt_uplink_mgt_word_array   : std32_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
-
-  signal felix_ttc_mgt_word : std_logic_vector (31 downto 0);
-  signal felix_ttc_bitslip  : std_logic;
 
   signal lpgbt_uplink_bitslip : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
@@ -178,14 +188,21 @@ architecture behavioral of top_hal is
   -- TDC Glue
   --------------------------------------------------------------------------------
 
-  signal tdc_hits_to_polmux    : mdt_polmux_bus_avt (c_NUM_TDC_INPUTS-1 downto 0);
+  signal tdc_hits_to_polmux    : tdcpolmux2tar_avt (c_NUM_TDC_INPUTS-1 downto 0);
   signal read_done_from_polmux : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
+
+  --------------------------------------------------------------------------------
+  -- TTC Glue
+  --------------------------------------------------------------------------------
+
+  signal ttc_mgt_word : std_logic_vector (31 downto 0);
+  signal ttc_bitslip  : std_logic;
+  signal lhc_recclk   : std_logic;
 
   --------------------------------------------------------------------------------
   -- FELIX Glue
   --------------------------------------------------------------------------------
 
-  signal felix_mgt_rxusrclk          : std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
   signal felix_uplink_mgt_word_array : std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
   signal felix_mgt_txusrclk          : std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
 
@@ -198,9 +215,9 @@ architecture behavioral of top_hal is
   signal sl_tx_ctrl           : sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_ctrl           : sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_slide          : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-  signal sl_rx_data           : slc_rx_bus_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-  signal sl_tx_clk            : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-  signal sl_rx_clk            : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_rx_data           : slc_rx_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_tx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_rx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_data_sump      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
   --------------------------------------------------------------------------------
@@ -216,14 +233,15 @@ architecture behavioral of top_hal is
   -- Attributes for synthesis
   --------------------------------------------------------------------------------
 
-  attribute DONT_TOUCH                    : string;
-  attribute MAX_FANOUT                    : string;
   attribute MAX_FANOUT of strobe_pipeline : signal is "20";
   attribute DONT_TOUCH of strobe_pipeline : signal is "true";
 
+  attribute MAX_FANOUT of strobe_320 : signal is "20";
+
   -- Save this here so we can extract it from the hierarchy later
+  -- this is used in log_mgts.tcl so please do not remove it
   attribute NUM_MGTS                       : integer;
-  attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
+  attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;
   attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
 
 begin  -- architecture behavioral
@@ -247,19 +265,32 @@ begin  -- architecture behavioral
   -- Common Clocking
   --------------------------------------------------------------------------------
 
+  -- FIXME: this should come from an ODDR
+  lhc_refclk_OBUFDS_inst : OBUFDS
+    port map (
+      O  => lhc_refclk_o_p,             -- 1-bit output: Diff_p output (connect directly to top-level port)
+      OB => lhc_refclk_o_n,             -- 1-bit output: Diff_n output (connect directly to top-level port)
+      I  => lhc_recclk                  -- 1-bit input: Buffer input
+      );
+
   top_clocking_inst : entity hal.top_clocking
+    generic map (
+      CLK_FREQ => c_CLK_FREQ
+      )
     port map (
       --
-      reset_i          => core_ctrl.clocking.reset_mmcm,
+      reset_i => core_ctrl.clocking.reset_mmcm,
 
       -- clock inputs
-      -- this is the 100MHz UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
-      clock_100m_i_p => clock_100m_i_p,
-      clock_100m_i_n => clock_100m_i_n,
 
-      -- 40MHz clock from Si synth
-      clock_i_p      => clock_i_p,
-      clock_i_n      => clock_i_n,
+      -- this is the ASYNC UNSTOPPABLE clock that should be used to run any core
+      -- logic (AXI and so on)
+      clock_async_i_p => clock_async_i_p,
+      clock_async_i_n => clock_async_i_n,
+
+      -- 40 MHz LHC Clock from FELIX etc
+      clock_i_p => clock_i_p,
+      clock_i_n => clock_i_n,
 
       -- system clocks
       clocks_o => clocks,
@@ -268,14 +299,16 @@ begin  -- architecture behavioral
       locked_o => clocks.locked
       );
 
-  clock_strobe_1: entity work.clock_strobe
+  clock_strobe_1 : entity work.clock_strobe
+    generic map (RATIO => 8)
     port map (
       fast_clk_i => clocks.clock320,
       slow_clk_i => clocks.clock40,
       strobe_o   => strobe_320
       );
 
-  clock_strobe_2: entity work.clock_strobe
+  clock_strobe_2 : entity work.clock_strobe
+    generic map (RATIO => 8)
     port map (
       fast_clk_i => clocks.clock_pipeline,
       slow_clk_i => clocks.clock40,
@@ -283,19 +316,20 @@ begin  -- architecture behavioral
       );
 
   rst_bit_synchronizer : xpm_cdc_sync_rst
-    generic map (DEST_SYNC_FF => 2, INIT => 1, INIT_SYNC_FF => 1)
+    generic map (DEST_SYNC_FF => 4, INIT => 1, INIT_SYNC_FF => 1)
     port map (
       dest_rst => reset,
       dest_clk => clocks.clock320,
       src_rst  => global_reset);
 
   pipeline_rst_bit_synchronizer : xpm_cdc_sync_rst
-    generic map (DEST_SYNC_FF => 2, INIT => 1, INIT_SYNC_FF => 1)
+    generic map (DEST_SYNC_FF => 5, INIT => 1, INIT_SYNC_FF => 1)
     port map (
-      dest_rst => clock_and_control_o.rst,
+      dest_rst => userlogic_reset,
       dest_clk => clocks.clock_pipeline,
       src_rst  => global_reset);
 
+  clock_and_control_o.rst <= userlogic_reset;
   clock_and_control_o.clk <= clocks.clock_pipeline;
   clock_and_control_o.bx  <= strobe_pipeline;
 
@@ -325,8 +359,8 @@ begin  -- architecture behavioral
       sl_tx_ctrl_i           => sl_tx_ctrl,
       sl_rx_ctrl_o           => sl_rx_ctrl,
       sl_rx_slide_i          => sl_rx_slide,
-      sl_tx_clk              => sl_tx_clk,
-      sl_rx_clk              => sl_rx_clk,
+      sl_tx_clk              => sl_tx_clks,
+      sl_rx_clk              => sl_rx_clks,
 
       -- lpgbt
       lpgbt_rxslide_i                 => lpgbt_uplink_bitslip,
@@ -338,13 +372,14 @@ begin  -- architecture behavioral
       lpgbt_emul_downlink_mgt_word_array_o => lpgbt_emul_downlink_mgt_word_array,
       lpgbt_emul_uplink_mgt_word_array_i   => lpgbt_emul_uplink_mgt_word_array,
 
-      -- Felix
-      -- felix Downlinks are carried on the LPGBT links
-      felix_ttc_bitslip_i  => felix_ttc_bitslip,
-      felix_ttc_mgt_word_o => felix_ttc_mgt_word,
+      -- Felix TTC
+      ttc_bitslip_i  => ttc_bitslip,
+      ttc_mgt_word_o => ttc_mgt_word,
+      ttc_mgt_word_i => (others => '1'),
+      ttc_recclk_o   => lhc_recclk,
 
+      -- Felix DAQ
       felix_uplink_mgt_word_array_i => felix_uplink_mgt_word_array,
-      felix_mgt_rxusrclk_o          => felix_mgt_rxusrclk,
       felix_mgt_txusrclk_o          => felix_mgt_txusrclk
       );
 
@@ -352,6 +387,8 @@ begin  -- architecture behavioral
   -- LPGBT Emulator
   --------------------------------------------------------------------------------
 
+  -- FIXME: just use 1 instance of the emulator and mux the downlink data to each
+  -- 
   lpgbtemul_wrapper_inst : entity hal.lpgbtemul_wrapper
     port map (
       reset                           => global_reset,
@@ -390,46 +427,71 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
   -- 0 to e.g. 17 CSM Boards
-  csm_gen : for I in c_MDT_CONFIG'range generate
-    constant hi      : integer := csm_hi_lo (I).hi;
-    constant lo      : integer := csm_hi_lo (I).lo;
-    constant tdc_cnt : integer := count_ones(c_MDT_CONFIG(I).en);
-    constant mgt_idx : integer := get_csm_mgt_num(I, c_MGT_MAP);
+  csm_gen : for CSM in c_MDT_CONFIG'range generate
+    constant hi       : integer := csm_hi_lo (CSM).hi;
+    constant lo       : integer := csm_hi_lo (CSM).lo;
+    constant tdc_cnt  : integer := count_ones(c_MDT_CONFIG(CSM).en);
+    constant mgt_idx  : integer := c_MDT_CONFIG(CSM).mgt_id_m;
+    constant mgt_id_m : integer := c_MDT_CONFIG(CSM).mgt_id_m;
+    constant mgt_id_s : integer := c_MDT_CONFIG(CSM).mgt_id_s;
   begin
-    csm_ifgen : if (I < c_NUM_CSMS_ACTIVE and tdc_cnt > 0) generate
+
+    csm_ifgen : if (CSM < c_NUM_CSMS_ACTIVE and tdc_cnt > 0) generate
     begin
+
+      assert c_MGT_MAP(mgt_id_m).mgt_type=MGT_LPGBT
+        report "CSM Master assigned to non-lpgbt link!" severity error;
+      assert c_MGT_MAP(mgt_id_s).mgt_type=MGT_LPGBT
+        report "CSM Servant assigned to non-lpgbt link!" severity error;
+      assert mgt_id_m = mgt_id_s-1
+        report "CSM Master and Servant are not adjacent, this is not supported right now... :(" severity error;
 
       mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
       begin
 
         assert false report
-          "Generating CSM #" & integer'image(I)
+          "Generating CSM #" & integer'image(CSM)
           & " bithi=" & integer'image(hi)
           & " bitlo=" & integer'image(lo)
           severity note;
 
         csm_inst : entity work.csm
           generic map (
-            g_CSM_ID  => c_MDT_CONFIG(I).csm_id,
-            g_TDC_CNT => tdc_cnt
+            g_CSM_ID      => c_MDT_CONFIG(CSM).csm_id,
+            g_TDC_CNT     => tdc_cnt,
+            g_ENABLE_MASK => c_MDT_CONFIG(CSM).en,
+            g_LEGACY_FLAG => c_MDT_CONFIG(CSM).legacy
             )
           port map (
-            reset_i                      => global_reset,
-            trg_i                        => ttc_commands.l0a,
-            bcr_i                        => ttc_commands.bcr,
-            ecr_i                        => ttc_commands.ecr,
-            gsr_i                        => global_reset,     -- TODO: axi control
-            clk40                        => clocks.clock40,
-            strobe_320                   => strobe_320,
-            downlink_clk                 => clocks.clock320,  -- ZDM?
-            downlink_mgt_word_array_o(0) => lpgbt_downlink_mgt_word_array(I),
-            uplink_mgt_word_array_i      => lpgbt_uplink_mgt_word_array(I*2+1 downto I*2),
-            uplink_clk                   => clocks.clock320,  -- ZDM?
-            uplink_bitslip_o             => lpgbt_uplink_bitslip(I*2+1 downto I*2),
-            tdc_hits_to_polmux_o         => tdc_hits_to_polmux (hi downto lo),
-            read_done_from_polmux_i      => read_done_from_polmux (hi downto lo),
-            ctrl                         => ctrl.csm.csm(I),
-            mon                          => mon.csm.csm(I)
+            -- clock and reset
+            clk40      => clocks.clock40,
+            strobe_320 => strobe_320,
+            reset_i    => global_reset,
+
+            -- TTC signals
+            -- TODO: axi generation of TTC signals
+            trg_i => ttc_commands.l0a,
+            bcr_i => ttc_commands.bcr,
+            ecr_i => ttc_commands.ecr,
+            gsr_i => global_reset,
+
+            -- downlink
+            downlink_clk                 => clocks.clock320,
+            downlink_mgt_word_array_o(0) => lpgbt_downlink_mgt_word_array (lpgbt_downlink_idx_array(c_MDT_CONFIG(CSM).mgt_id_m)),
+
+            -- uplink clk &
+            -- master(0) + slave(1) uplink data/bitslips
+            uplink_clk                 => clocks.clock320,
+            uplink_mgt_word_array_i(0) => lpgbt_uplink_mgt_word_array(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_m)),
+            uplink_mgt_word_array_i(1) => lpgbt_uplink_mgt_word_array(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_s)),
+            uplink_bitslip_o(0)        => lpgbt_uplink_bitslip(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_m)),
+            uplink_bitslip_o(1)        => lpgbt_uplink_bitslip(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_s)),
+
+            -- outputs to polmux
+            tdc_hits_to_polmux_o    => tdc_hits_to_polmux (hi downto lo),
+            read_done_from_polmux_i => read_done_from_polmux (hi downto lo),
+            ctrl                    => ctrl.csm.csm(CSM),
+            mon                     => mon.csm.csm(CSM)
             );
 
       end generate;
@@ -437,20 +499,18 @@ begin  -- architecture behavioral
   end generate;
 
   -- 0 to 3, inner middle outer extra
-  station_gen : for I in 0 to 3 generate
+  station_gen : for STATION in 0 to 3 generate
     constant num_polmuxes :
-      int_array_t (0 to 3) := (c_NUM_POLMUX_INNER,
-                               c_NUM_POLMUX_MIDDLE,
-                               c_NUM_POLMUX_OUTER,
-                               c_NUM_POLMUX_EXTRA);
+      int_array_t (0 to 3) := (c_NUM_POLMUX_INNER, c_NUM_POLMUX_MIDDLE,
+                               c_NUM_POLMUX_OUTER, c_NUM_POLMUX_EXTRA);
   begin
 
-    polmux_gen : for J in 0 to num_polmuxes(I)-1 generate
-      constant id       : integer := get_polmux_global_id (c_MDT_CONFIG, J, stations(I));
+    polmux_gen : for POLMUX in 0 to num_polmuxes(STATION)-1 generate
+      constant id       : integer := get_polmux_global_id (c_MDT_CONFIG, POLMUX, stations(STATION));
       constant hi       : integer := polmux_hi_lo (id).hi;
       constant lo       : integer := polmux_hi_lo (id).lo;
       constant width    : integer := hi-lo+1;
-      signal tdc_hits_o : tdcpolmux2tar_rvt;
+      signal tdc_hits_o : tdcpolmux2tar_vt;
     begin
 
       assert false report "Generating PolMux #" & integer'image(id)
@@ -463,8 +523,8 @@ begin  -- architecture behavioral
         generic map (
           g_WIDTH       => width,             -- number of tdcs
           g_ID          => id,
-          g_STATION     => stations(I),
-          g_STATION_STR => stations_str(I)
+          g_STATION     => stations(STATION),
+          g_STATION_STR => stations_str(STATION)
           )
         port map (
           clock          => clocks.clock320,  -- ZDM?
@@ -475,17 +535,17 @@ begin  -- architecture behavioral
           tdc_hits_o     => tdc_hits_o
           );
 
-      inner : if (I = 0) generate
-        tdc_hits_inner(J) <= tdc_hits_o;
+      inner : if (STATION = 0) generate
+        tdc_hits_inner(POLMUX) <= tdc_hits_o;
       end generate;
-      middle : if (I = 1) generate
-        tdc_hits_middle (J) <= tdc_hits_o;
+      middle : if (STATION = 1) generate
+        tdc_hits_middle (POLMUX) <= tdc_hits_o;
       end generate;
-      outer : if (I = 2) generate
-        tdc_hits_outer (J) <= tdc_hits_o;
+      outer : if (STATION = 2) generate
+        tdc_hits_outer (POLMUX) <= tdc_hits_o;
       end generate;
-      extra : if (I = 3) generate
-        tdc_hits_extra(J) <= tdc_hits_o;
+      extra : if (STATION = 3) generate
+        tdc_hits_extra(POLMUX) <= tdc_hits_o;
       end generate;
 
     end generate;
@@ -500,9 +560,10 @@ begin  -- architecture behavioral
   sector_logic_link_wrapper_inst : entity hal.sector_logic_link_wrapper
     port map (
 
-      tx_clk         => sl_tx_clk,
-      rx_clk         => sl_rx_clk,
+      tx_clk         => sl_tx_clks,
+      rx_clk         => sl_rx_clks,
       pipeline_clock => clocks.clock_pipeline,
+      clk40          => clocks.clock40,
       reset          => global_reset,
 
       sl_rx_mgt_word_array_i => sl_rx_mgt_word_array,
@@ -518,30 +579,71 @@ begin  -- architecture behavioral
       );
 
   -- FIXME: these mappings are totally made up for testing purposes...
+  -- probably want an arbitrary mapping here?? from some config file?
   main_primary_slc   <= sl_rx_data(2 downto 0);
   main_secondary_slc <= sl_rx_data(5 downto 3);
   plus_neighbor_slc  <= sl_rx_data(6);
   minus_neighbor_slc <= sl_rx_data(7);
 
   --------------------------------------------------------------------------------
-  -- Felix Receiver
+  -- Felix
   --------------------------------------------------------------------------------
+
+  -- Felix Receiver
 
   felix_decoder_inst : entity work.felix_decoder
     port map (
-      clock => clocks.clock320,
+      clock320 => clocks.clock320, -- felix downlink clock
+      clock40  => clocks.clock40, -- 40mhz system clock
+
       reset => global_reset,
 
-      ttc_mgt_data_i    => felix_ttc_mgt_word,
-      ttc_mgt_bitslip_o => felix_ttc_bitslip,
+      ttc_mgt_data_i    => ttc_mgt_word,
+      ttc_mgt_bitslip_o => ttc_bitslip,
 
       strobe_pipeline => strobe_pipeline,
       strobe_320      => strobe_320,
 
-      l0mdt_ttc_40m      => ttc_commands,    -- copies of outputs stable for 25ns
-      l0mdt_ttc_320m     => open,            -- copies of outputs stable for 3.125ns
-      l0mdt_ttc_pipeline => ttc_commands_o,  -- copies of outputs stable for 1 pipeline clock
-      valid_o            => felix_valid
+      l0mdt_ttc_40m => ttc_commands, -- copies of outputs stable for 25ns
+      valid_o       => felix_valid
+      );
+
+  ttc_commands_o <= ttc_commands;
+
+  -- Felix Transmitter
+
+  assert c_NUM_DAQ_STREAMS <= c_NUM_FELIX_UPLINKS
+                              report "Cannot have more DAQ streams than we have FELIX uplinks allocated."
+                              & " c_NUM_DAQ_STREAMS=" & integer'image(c_NUM_DAQ_STREAMS)
+                              & " c_NUM_FELIX_UPLINKS=" & integer'image(c_NUM_FELIX_UPLINKS)
+                              severity error;
+
+  felix_tx_inst : entity work.felix_tx
+    generic map (
+      g_NUM_UPLINKS => c_NUM_DAQ_STREAMS
+      )
+    port map (
+      clk320           => clocks.clock320,
+      clk40            => clocks.clock40,
+      reset_i          => global_reset,
+
+      -- FIXME:
+      --
+      -- daq streams is always length 18, and these are picked out incorrectly
+      --
+      -- this is due to a deliberate bug in the user logic where the constant
+      -- c_NUM_DAQ_STREAMS was commented out in favor of
+      -- c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT
+      --
+      -- so now the calculation of which daq link is which is completely wrong
+      -- this needs some kind of translation layer to map user logic daq links
+      -- onto felix links
+
+      daq_streams      => daq_streams (c_NUM_DAQ_STREAMS-1 downto 0),
+      mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
+      ready_o          => open,
+      was_not_ready_o  => open,
+      strobe_320       => strobe_320
       );
 
   --------------------------------------------------------------------------------
@@ -568,30 +670,46 @@ begin  -- architecture behavioral
   --   end process data_loop;
   -- end generate;
 
-  sump_loop : process (clocks.clock_pipeline) is
-    variable daq_sump                     : std_logic_vector (c_NUM_DAQ_STREAMS-1 downto 0);
-    variable mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
-    variable nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);
-    variable plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
-    variable minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
-  begin  -- process data_loop
-    if (rising_edge(clocks.clock_pipeline)) then  -- rising clock edge
+  sump_gen : if (true) generate
+    signal daq_sump                     : std_logic_vector (daq_streams'length-1 downto 0);
+    signal mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
+    signal nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);
+    signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
+    signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
+  begin
 
-      daqsump_loop : for I in 0 to c_NUM_DAQ_STREAMS-1 loop
-        daq_sump(I) := xor_reduce(daq_streams(I));
-      end loop;
-      mtc_sump_loop : for I in 0 to c_NUM_MTC-1 loop
-        mtc_sump(I) := xor_reduce(mtc_i(I));
-      end loop;
-      nsp_sump_loop : for I in 0 to c_NUM_NSP-1 loop
-        nsp_sump(I) := xor_reduce(nsp_i(I));
-      end loop;
+    process (clocks.clock_pipeline) is
+    begin
 
-      sump <= xor_reduce(daq_sump) xor xor_reduce(nsp_sump);
+      if (rising_edge(clocks.clock_pipeline)) then
 
-      plus_neighbor_segments_o  <= plus_neighbor_segments_i;
-      minus_neighbor_segments_o <= minus_neighbor_segments_i;
+        daqsump_loop :
+        for I in 0 to daq_streams'length-1 loop
+          daq_sump(I) <= xor_reduce(daq_streams(I));
+        end loop;
+        mtc_sump_loop : for I in 0 to c_NUM_MTC-1 loop
+          mtc_sump(I) <= xor_reduce(mtc_i(I));
+        end loop;
+        nsp_sump_loop : for I in 0 to c_NUM_NSP-1 loop
+          nsp_sump(I) <= xor_reduce(nsp_i(I));
+        end loop;
 
-    end if;
-  end process sump_loop;
+        neighbor_segments_loop : for I in 0 to c_NUM_SF_OUTPUTS-1 loop
+          plus_neighbor_segments_sump(I)  <= xor_reduce(plus_neighbor_segments_i(I));
+          minus_neighbor_segments_sump(I) <= xor_reduce(minus_neighbor_segments_i(I));
+        end loop;
+
+        sump <= xor_reduce(daq_sump)
+                xor xor_reduce(nsp_sump)
+                xor xor_reduce(mtc_sump)
+                xor xor_reduce(plus_neighbor_segments_sump)
+                xor xor_reduce(minus_neighbor_segments_sump);
+
+        plus_neighbor_segments_o  <= plus_neighbor_segments_i;
+        minus_neighbor_segments_o <= minus_neighbor_segments_i;
+
+      end if;
+    end process;
+  end generate;
+
 end architecture behavioral;

@@ -6,6 +6,7 @@ HAL/ctrl/src/axi-vhdl-package/axiRegBlocking.vhd
 HAL/ctrl/src/axi-vhdl-package/axiRegPkg.vhd
 #HAL/ctrl/src/axi-vhdl-package/axiReg.vhd
 HAL/ctrl/src/axi-vhdl-package/axiRegWidthPkg_32.vhd
+HAL/ctrl/src/axi-vhdl-package/bramPortPkg.vhd
 
 #HAL/ctrl/src/axi/axi_bram_controller.vhd
 #HAL/ctrl/src/axi/axi_bram_ctrl_v4_1_rfs.vhd
@@ -13,3 +14,5 @@ HAL/ctrl/src/axi-vhdl-package/axiRegWidthPkg_32.vhd
 HAL/ctrl/src/*/*_PKG_DEF.vhd
 HAL/ctrl/src/*/*_PKG.vhd
 HAL/ctrl/src/*/*_map.vhd
+HAL/ctrl/src/*/*_PKG.svh
+

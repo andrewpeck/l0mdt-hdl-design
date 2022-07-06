@@ -23,9 +23,9 @@ entity mpl_top_tb is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
-    i_uCM2pl_av         : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-    o_pl2ptcalc_av      : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_pl2mtc_av         : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
+    i_uCM2pl_av         : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+    o_pl2ptcalc_av      : out pl2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+    o_pl2mtc_av         : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity mpl_top_tb;
 
@@ -33,16 +33,17 @@ architecture beh of mpl_top_tb is
    signal ctrl : MPL_CTRL_t;
    signal mon  : MPL_MON_t;
    signal ctrl_len : natural;
-   signal ctrl_v : std_logic_vector(len(ctrl)-1 downto 0) := (others => '0');
-   signal mon_v  : std_logic_vector(len(mon)-1 downto 0);
+   signal ctrl_v : std_logic_vector(MPL_CTRL_t'w - 1 downto 0) := (others => '0');
+   signal mon_v  : std_logic_vector(MPL_MON_t'w - 1 downto 0);
+   signal mon_r  : MPL_MON_t;
   begin
     --ctrl.ACTIONS.RESET   <= '0';
     --ctrl.ACTIONS.ENABLE  <= '1';
     --ctrl.ACTIONS.DISABLE <= '0';
     --ctrl.ACTIONS.FREEZE  <= '0';
-    ctrl_len <= len(ctrl);
-    ctrl_v(len(ctrl)-1 downto len(ctrl)-12 ) <= x"03e";
-
+    ctrl_v(MPL_PL_MEM_PL_MEM_CTRL_t'w-1 downto MPL_PL_MEM_PL_MEM_CTRL_t'w - 12 ) <= x"03e";
+    mon_v <= convert(mon_r, mon_v);
+    
     mpl:entity mpl_lib.mpl
   port map(
     clk      => clk,
@@ -55,5 +56,7 @@ architecture beh of mpl_top_tb is
     o_pl2ptcalc_av   => o_pl2ptcalc_av,
     o_pl2mtc_av      => o_pl2mtc_av
   );
+
+   
 
   end architecture beh;

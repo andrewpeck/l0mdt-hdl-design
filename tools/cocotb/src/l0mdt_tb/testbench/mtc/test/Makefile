@@ -54,6 +54,8 @@ VERILOG_SOURCES = \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
     $(SBDIR)/asym_ram_tdp_read_first.v \
+    $(MTCDIR)/mtc_link_map.sv \
+    $(MTCDIR)/format_mtc_pkt.sv \
     $(MTCDIR)/mtc_builder_verilog.sv
 
 # VHDL source files

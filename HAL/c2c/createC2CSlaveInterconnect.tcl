@@ -74,6 +74,12 @@ set mRST [list $AXI_MASTER_RSTN  $AXI_MASTER_RSTN]
 #  Configure and add AXI slaves
 #================================================================================
 
+if {![info exists AXI_BASE_ADDRESS]} {
+    # default to US+
+    set AXI_BASE_ADDRESS 0xB0000000 ; # US+
+    #set AXI_BASE_ADDRESS 0x80000000 ; # 7 Series
+}
+
 source -quiet "$BD_PATH/add_slaves_from_yaml.tcl"
 yaml_to_bd "$C2C_PATH/slaves.yaml"
 
@@ -84,9 +90,11 @@ yaml_to_bd "$C2C_PATH/slaves.yaml"
 # why start_gui / stop_gui?
 # see: https://forums.xilinx.com/t5/Vivado-TCL-Community/running-write-bd-layout-in-batch-mode/td-p/948476
 # the gui will open and close for a second to generate the svg outputs
-start_gui
-write_bd_layout -force -format svg -orientation portrait ${BD_OUTPUT_PATH}/${fpga_shortname}/c2cSlave/c2cSlave.svg
-stop_gui
+if {$regenerate_svg && [info exists ::env(DISPLAY) ]} {
+    start_gui
+    write_bd_layout -force -format svg -orientation portrait ${BD_OUTPUT_PATH}/${fpga_shortname}/c2cSlave/c2cSlave.svg
+    stop_gui
+}
 
 validate_bd_design
 

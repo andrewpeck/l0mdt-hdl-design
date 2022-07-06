@@ -39,11 +39,11 @@ ENTITY csf_histogram IS
     );
     PORT (
         clk : IN STD_LOGIC;
-        i_mdthit : IN heg2sfhit_rvt;
-        i_seed : IN heg2sfslc_rvt;
+        i_mdthit : IN heg2sfhit_vt;
+        i_seed : IN heg2sfslc_vt;
         i_eof : IN STD_LOGIC;
-        o_histo_hit0 : OUT csf_hit_rvt;
-        o_histo_hit1 : OUT csf_hit_rvt
+        o_histo_hit0 : OUT csf_hit_vt;
+        o_histo_hit1 : OUT csf_hit_vt
     );
 END csf_histogram;
 
@@ -110,12 +110,11 @@ ARCHITECTURE Behavioral OF csf_histogram IS
     SIGNAL w_en : STD_LOGIC_VECTOR(2 ** HISTO_LEN - 1 DOWNTO 0)
     := (OTHERS => '0');
 
-    -- Histogram hit signals
-    TYPE t_hit_vectors IS ARRAY (NATURAL RANGE <>)
-    OF STD_LOGIC_VECTOR(CSF_HIT_LEN - 1 DOWNTO 0);
-
     SIGNAL hit_plus, hit_minus : csf_hit_rt;
     SIGNAL hit_plus_s, hit_minus_s : csf_hit_rt;
+
+    -- Histogram hit signals
+    TYPE t_hit_vectors IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR(csf_hit_rt'w - 1 DOWNTO 0);
 
     SIGNAL w_hit_vec, r_hit_vec : t_hit_vectors(2 ** HISTO_LEN - 1 DOWNTO 0)
     := (OTHERS => (OTHERS => '0'));
@@ -194,7 +193,7 @@ ARCHITECTURE Behavioral OF csf_histogram IS
 BEGIN
 
 
-    seed <= structify(i_seed);
+    seed <= convert(i_seed,seed);
     --invsqrt_mbar : invsqrt_mbar_rom
     --PORT MAP (
     --    clka => clk,
@@ -214,7 +213,7 @@ BEGIN
         MXADRB => UCM_MBAR_LEN,
         MXDATB => INV_SQRT_M_LEN,
         ROM_FILE => "invsqrt_mbar.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "block"
     )
     PORT MAP(
         ena => '1',
@@ -228,7 +227,7 @@ BEGIN
         MXADRB => UCM_MBAR_LEN,
         MXDATB => SQU_M_LEN,
         ROM_FILE => "sqrt_mbar.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "block"
     )
     PORT MAP(
         ena => '1',
@@ -242,7 +241,7 @@ BEGIN
         Bin : ENTITY shared_lib.bram_tdp
             GENERIC MAP(
                 ADDR => BIN_DEPTH,
-                DATA => CSF_HIT_LEN,
+                DATA => w_hit_vec(k)'length,--CSF_HIT_LE,
                 ram_type => "distributed"
             )
             PORT MAP(
@@ -266,7 +265,7 @@ BEGIN
             END IF;
 
             -- Delay the hits of two clocks for 
-            mdt_hit <= structify(i_mdthit);
+            mdt_hit <= convert(i_mdthit,mdt_hit);
 
             -- Clock 0
             dv0 <= mdt_hit.data_valid;
@@ -355,9 +354,9 @@ BEGIN
             dv6 <= dv5;
             w_en <= (OTHERS => '0');
             w_en(to_integer(bminus_ss)) <= fill_minus_s;
-            w_hit_vec(to_integer(bminus_ss)) <= vectorify(hit_minus_s);
+            w_hit_vec(to_integer(bminus_ss)) <= convert(hit_minus_s,w_hit_vec(to_integer(bminus_ss)));
             w_en(to_integer(bplus_ss)) <= fill_plus_s;
-            w_hit_vec(to_integer(bplus_ss)) <= vectorify(hit_plus_s);
+            w_hit_vec(to_integer(bplus_ss)) <= convert(hit_plus_s,w_hit_vec(to_integer(bplus_ss)));
             bplus_sss <= bplus_ss;
             bminus_sss <= bminus_ss;
             eof6 <= eof5;

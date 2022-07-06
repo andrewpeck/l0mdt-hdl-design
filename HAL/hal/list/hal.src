@@ -11,16 +11,13 @@ HAL/hal/src/board_pkg_common.vhd
 HAL/hal/src/constants_pkg.vhd
 HAL/hal/src/system_types_pkg.vhd
 HAL/hal/src/sync_cdc.vhd
-HAL/hal/src/felix_decoder.vhd
+HAL/hal/src/pulse_extend.vhd
+HAL/hal/src/latch.vhd
+HAL/hal/src/synch.vhd
 HAL/hal/src/polmux_wrapper.vhd
 HAL/hal/src/tdc_decoder_wrapper.vhd
 HAL/hal/src/csm.vhd
 HAL/hal/src/display_board_cfg.vhd
-
-# IP
-HAL/IP/framework_mmcm/framework_mmcm.xci
-HAL/IP/mgt_10g24_gth/mgt_10g24_gth.xci
-HAL/IP/mgt_10g24_gty/mgt_10g24_gty.xci
 
 # MGT
 HAL/hal/src/mgt/mgt_pkg.vhd
@@ -37,10 +34,15 @@ HAL/lpgbt/src/lpgbt_pkg.vhd
 
 # LPGBT
 HAL/lpgbt/list/gbt_sc.src lib=gbt_sc
-#HAL/lpgbt/list/lpgbt_emul.src lib=lpgbt_emul
+HAL/lpgbt/list/lpgbt_emul.src lib=lpgbt_emul
 HAL/lpgbt/list/lpgbt_fpga.src lib=lpgbt_fpga
 
 # Sector Logic
 HAL/sl/src/sector_logic_link_wrapper.vhd
 HAL/sl/src/sector_logic_pkg.vhd
 HAL/sl/list/sl.src lib=sl
+
+# FELIX
+HAL/hal/src/felix_decoder.vhd
+HAL/hal/src/felix_tx.vhd
+HAL/lpgbt/src/lpgbt_10g_tx.vhd

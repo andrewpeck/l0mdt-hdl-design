@@ -30,10 +30,13 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 library apbus_lib;
 
 entity hps_pc_b_t0 is
@@ -48,8 +51,8 @@ entity hps_pc_b_t0 is
     rst                 : in std_logic;
     ena                 : in std_logic;
     --
-    ctrl_v              : in std_logic_vector;--H2S_HPS_MDT_T0_MDT_T0_CTRL_t;  
-    mon_v               : out std_logic_vector;--H2S_HPS_MDT_T0_MDT_T0_MON_t;  
+    ctrl_v              : in std_logic_vector;--HPS_MDT_T0_MDT_T0_CTRL_t;  
+    mon_v               : out std_logic_vector;--HPS_MDT_T0_MDT_T0_MON_t;  
     --
     i_chamber           : in unsigned(SLC_CHAMBER_LEN-1 downto 0);
     i_dv                : in std_logic;
@@ -111,10 +114,6 @@ begin
     g_MEMORY_TYPE           => "distributed",
     g_ADDR_WIDTH            => ADDR_WIDTH,
     g_DATA_WIDTH            => DATA_WIDTH
-    -- g_CTRL_TYPE             => MEM_INT_12A148D_CTRL_t; 
-    -- g_MON_TYPE              => MEM_INT_12A148D_MON_t;   
-    -- g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
-    -- g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
   )
   port map (
     clk           => clk,

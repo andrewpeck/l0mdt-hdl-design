@@ -119,6 +119,34 @@ python -m pip install <package_name>
 ```
 
 
+
+For cocoTB, you will need to have `libpython.so`, in that case install python using:
+```bash
+env PYTHON_CONFIGURE_OPTS="--enable-shared"  pyenv install -v 3.8.3
+```
+
+Once python3 is installed under your user account, update pip:
+```bash
+pip install --upgrade pip
+```
+
+If you never run python, you may need to add under your `${HOME}` area, a file named `.pythonrc.py` containing:
+```python
+# file: ~/.pythonrc.py
+## for tab-completion
+import rlcompleter, readline
+readline.parse_and_bind('tab: complete')
+readline.parse_and_bind('set show-all-if-ambiguous On')
+
+## for history
+import os, atexit
+f = os.path.join(os.environ["HOME"], ".python_history")
+try:            readline.read_history_file(f)
+except IOError: pass
+atexit.register(readline.write_history_file, f)
+## EOF ##
+```
+
 <!----------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------->
 <!--------------------------- INSTALLATION AND SETUP -------------------------->

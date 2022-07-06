@@ -41,9 +41,9 @@ use ptc_lib.pt_params_pkg.all;
 entity sagitta_calculator is
   port (
     clk               : in std_logic;
-    i_seg0            : in sf2ptcalc_rvt;
-    i_seg1            : in sf2ptcalc_rvt;
-    i_seg2            : in sf2ptcalc_rvt;
+    i_seg0            : in sf2ptcalc_vt;
+    i_seg1            : in sf2ptcalc_vt;
+    i_seg2            : in sf2ptcalc_vt;
     o_charge          : out std_logic;
     o_inv_s           : out unsigned(INV_S_LEN-1 downto 0);
     o_dv_s            : out std_logic
@@ -212,9 +212,9 @@ begin
         douta => sqrt_m_io
     );
 
-    seg0 <= structify(i_seg0);
-    seg1 <= structify(i_seg1);
-    seg2 <= structify(i_seg2);
+    seg0 <= convert(i_seg0,seg0);
+    seg1 <= convert(i_seg1,seg1);
+    seg2 <= convert(i_seg2,seg2);
     rec_sagitta_addr <= std_logic_vector(abs(den_sagitta_red));
 
     SagittaProc : process( clk )
@@ -228,27 +228,29 @@ begin
 
             -- Delta Beta calculations
             dvb_01 <= ( (seg0.data_valid and
-                       seg1.data_valid) xor
-                       seg2.data_valid);
-            dvb_02 <= ( seg0.data_valid xor (
+                       seg1.data_valid and seg0.segquality and seg1.segquality) xor
+                       seg2.segquality);
+            dvb_02 <= ( seg0.segquality xor (
                         seg1.data_valid and
-                       seg2.data_valid));
+                       seg2.data_valid and seg1.segquality and
+                       seg2.segquality));
             dvb_12 <= ((seg1.data_valid and
-                       seg2.data_valid) xor seg0.data_valid);
+                       seg2.data_valid and seg1.segquality and
+                       seg2.segquality) xor seg0.segquality);
 
-            if seg0.data_valid = '1' and
-                seg1.data_valid = '1' and
-                seg2.data_valid = '0' then
+            if seg0.segquality = '1' and
+                seg1.segquality = '1' and
+                seg2.segquality = '0' then
                 delta_beta <= resize(
                     unsigned(abs(signed(seg0.segangle) - signed(seg1.segangle))), DBETA_LEN);
-            elsif seg0.data_valid = '1' and
-                seg1.data_valid = '0' and
-                seg2.data_valid = '1' then
+            elsif seg0.segquality = '1' and
+                seg1.segquality = '0' and
+                seg2.segquality = '1' then
                 delta_beta <= resize(
                     unsigned(abs(signed(seg0.segangle) - signed(seg2.segangle))), DBETA_LEN);
-            elsif seg0.data_valid = '0' and
-                seg1.data_valid = '1' and
-                seg2.data_valid = '1' then
+            elsif seg0.segquality = '0' and
+                seg1.segquality = '1' and
+                seg2.segquality = '1' then
                 delta_beta <= resize(
                     unsigned(abs(signed(seg1.segangle) - signed(seg2.segangle))), DBETA_LEN);
             else

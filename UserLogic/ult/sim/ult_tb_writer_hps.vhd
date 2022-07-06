@@ -41,12 +41,15 @@ use shared_lib.vhdl_textio_csv_pkg.all;
 library ult_lib;
 library vamc_lib;
 
-library hps_lib;
-use hps_lib.hps_pkg.all;
-library heg_lib;
-use heg_lib.heg_pkg.all;
 library hp_lib;
 use hp_lib.hp_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
+library hps_lib;
+use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 entity ult_tb_writer_hps is
   generic(
@@ -178,17 +181,19 @@ begin
     end generate;
   end generate;
 
-  -- inn_mdt_full_data_ar <= structify(inn_mdt_full_data_av);
-  -- mid_mdt_full_data_ar <= structify(mid_mdt_full_data_av);
-  -- out_mdt_full_data_ar <= structify(out_mdt_full_data_av);
-  -- ext_mdt_full_data_ar <= structify(ext_mdt_full_data_av);
+  -- inn_mdt_full_data_ar <= convert(inn_mdt_full_data_av);
+  -- mid_mdt_full_data_ar <= convert(mid_mdt_full_data_av);
+  -- out_mdt_full_data_ar <= convert(out_mdt_full_data_av);
+  -- ext_mdt_full_data_ar <= convert(ext_mdt_full_data_av);
   
   HPS_INN: if c_STATIONS_IN_SECTOR(0) = '1' generate
     constant lc_ST_ID : integer := 0;
     alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_INN.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
-    signal mdt_full_data_ar  : heg_pc2heg_at(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
+    signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
-    mdt_full_data_ar <= structify(mdt_full_data_av);
+    array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
+      mdt_full_data_ar(i) <= convert(mdt_full_data_av(i),mdt_full_data_ar(i));
+    end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then
       elsif rising_edge(clk) then
@@ -213,9 +218,11 @@ begin
   HPS_MID: if c_STATIONS_IN_SECTOR(1) = '1' generate
     constant lc_ST_ID : integer := 1;
     alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_MID.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
-    signal mdt_full_data_ar  : heg_pc2heg_at(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
+    signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
-    mdt_full_data_ar <= structify(mdt_full_data_av);
+    array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
+      mdt_full_data_ar(i) <= convert(mdt_full_data_av(i),mdt_full_data_ar(i));
+    end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then
       elsif rising_edge(clk) then
@@ -240,9 +247,11 @@ begin
   HPS_OUT: if c_STATIONS_IN_SECTOR(2) = '1' generate
     constant lc_ST_ID : integer := 2;
     alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_OUT.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
-    signal mdt_full_data_ar  : heg_pc2heg_at(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
+    signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
-    mdt_full_data_ar <= structify(mdt_full_data_av);
+    array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
+      mdt_full_data_ar(i) <= convert(mdt_full_data_av(i),mdt_full_data_ar(i));
+    end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then
       elsif rising_edge(clk) then
@@ -267,9 +276,11 @@ begin
   EXT_MID: if c_STATIONS_IN_SECTOR(3) = '1' generate
     constant lc_ST_ID : integer := 3;
     alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_EXT.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
-    signal mdt_full_data_ar  : heg_pc2heg_at(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
+    signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
-    mdt_full_data_ar <= structify(mdt_full_data_av);
+    array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
+      mdt_full_data_ar(i) <= convert(mdt_full_data_av(i),mdt_full_data_ar(i));
+    end generate ; -- identifier
     PC2HP: process(clk, rst) begin
       if rst = '1' then
       elsif rising_edge(clk) then

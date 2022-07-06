@@ -2,2310 +2,1145 @@
 -- https://gitlab.com/tcpaiva/yml2hdl
 
 library ieee;
-
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 library shared_lib;
-
-use shared_lib.common_ieee.all;
+use shared_lib.common_ieee_pkg.all;
 
 package TAR_CTRL is
 
-  type TAR_ACTIONS_CTRL_t is record
-    RESET : std_logic;
-    ENABLE : std_logic;
-    DISABLE : std_logic;
-    FREEZE : std_logic;
-  end record TAR_ACTIONS_CTRL_t;
-  function len(x: TAR_ACTIONS_CTRL_t) return natural;
-  function width(x: TAR_ACTIONS_CTRL_t) return natural;
-  function vectorify(x: TAR_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
-  function convert(x: in std_logic_vector; t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
-  function nullify(t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
-  function zeroed(t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
+   -- Custom types and functions --
 
-  type TAR_CONFIGS_CTRL_t is record
-    INPUT_EN : std_logic;
-    OUTPUT_EN : std_logic;
-    FLUSH_MEM_RESET : std_logic;
-  end record TAR_CONFIGS_CTRL_t;
-  function len(x: TAR_CONFIGS_CTRL_t) return natural;
-  function width(x: TAR_CONFIGS_CTRL_t) return natural;
-  function vectorify(x: TAR_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
-  function convert(x: in std_logic_vector; t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
-  function nullify(t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
-  function zeroed(t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
+   type TAR_ACTIONS_CTRL_t is record
+      RESET : std_logic;
+      ENABLE : std_logic;
+      DISABLE : std_logic;
+      FREEZE : std_logic;
+   end record TAR_ACTIONS_CTRL_t;
+   attribute w of TAR_ACTIONS_CTRL_t : type is 4;
+   function width(x: TAR_ACTIONS_CTRL_t) return natural;
+   function convert(x: TAR_ACTIONS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
+   function zero(tpl: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
 
-  type TAR_STATUS_MON_t is record
-    ENABLED : std_logic;
-    READY : std_logic;
-    ERROR : std_logic_vector(8-1 downto 0);
-  end record TAR_STATUS_MON_t;
-  function len(x: TAR_STATUS_MON_t) return natural;
-  function width(x: TAR_STATUS_MON_t) return natural;
-  function vectorify(x: TAR_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
-  function convert(x: in std_logic_vector; t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
-  function nullify(t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
-  function zeroed(t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
+   type TAR_CONFIGS_CTRL_t is record
+      INPUT_EN : std_logic;
+      OUTPUT_EN : std_logic;
+      FLUSH_MEM_RESET : std_logic;
+   end record TAR_CONFIGS_CTRL_t;
+   attribute w of TAR_CONFIGS_CTRL_t : type is 3;
+   function width(x: TAR_CONFIGS_CTRL_t) return natural;
+   function convert(x: TAR_CONFIGS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
+   function zero(tpl: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
 
-  type TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t is record
-    rd_rdy : std_logic;
-  end record TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return natural;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
+   type TAR_STATUS_MON_t is record
+      ENABLED : std_logic;
+      READY : std_logic;
+      FREEZED : std_logic;
+      ERROR : std_logic_vector(8 - 1 downto 0);
+   end record TAR_STATUS_MON_t;
+   attribute w of TAR_STATUS_MON_t : type is 11;
+   function width(x: TAR_STATUS_MON_t) return natural;
+   function convert(x: TAR_STATUS_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
+   function zero(tpl: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
 
-  type TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t is record
-    wr_req : std_logic;
-    wr_ack : std_logic;
-    rd_req : std_logic;
-    rd_ack : std_logic;
-    flush_req : std_logic;
-  end record TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return natural;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
+   type TAR_PL_ST_PL_MEM_SIGNALS_MON_t is record
+      rd_rdy : std_logic;
+      freeze_ena : std_logic;
+   end record TAR_PL_ST_PL_MEM_SIGNALS_MON_t;
+   attribute w of TAR_PL_ST_PL_MEM_SIGNALS_MON_t : type is 2;
+   function width(x: TAR_PL_ST_PL_MEM_SIGNALS_MON_t) return natural;
+   function convert(x: TAR_PL_ST_PL_MEM_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_MEM_SIGNALS_MON_t;
+   function zero(tpl: TAR_PL_ST_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_MEM_SIGNALS_MON_t;
 
-  type TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t is record
-    wr_data_0 : std_logic_vector(32-1 downto 0);
-    wr_data_1 : std_logic_vector(10-1 downto 0);
-  end record TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t;
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return natural;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t;
+   type TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t is record
+      wr_req : std_logic;
+      wr_ack : std_logic;
+      rd_req : std_logic;
+      rd_ack : std_logic;
+      flush_req : std_logic;
+      freeze_req : std_logic;
+      mem_sel : std_logic_vector(3 - 1 downto 0);
+   end record TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t;
+   attribute w of TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t : type is 9;
+   function width(x: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t) return natural;
+   function convert(x: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t;
+   function zero(tpl: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t;
 
-  type TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t is record
-    rd_data_0 : std_logic_vector(32-1 downto 0);
-    rd_data_1 : std_logic_vector(10-1 downto 0);
-  end record TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t;
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return natural;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t;
+   type TAR_PL_ST_PL_MEM_wr_data_CTRL_t is record
+      wr_data_0 : std_logic_vector(32 - 1 downto 0);
+      wr_data_1 : std_logic_vector(10 - 1 downto 0);
+   end record TAR_PL_ST_PL_MEM_wr_data_CTRL_t;
+   attribute w of TAR_PL_ST_PL_MEM_wr_data_CTRL_t : type is 42;
+   function width(x: TAR_PL_ST_PL_MEM_wr_data_CTRL_t) return natural;
+   function convert(x: TAR_PL_ST_PL_MEM_wr_data_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_MEM_wr_data_CTRL_t;
+   function zero(tpl: TAR_PL_ST_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_MEM_wr_data_CTRL_t;
 
-  type TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t is record
-    SIGNALS : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
-    rd_data : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t;
-  end record TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t;
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return natural;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t;
+   type TAR_PL_ST_PL_MEM_rd_data_MON_t is record
+      rd_data_0 : std_logic_vector(32 - 1 downto 0);
+      rd_data_1 : std_logic_vector(10 - 1 downto 0);
+   end record TAR_PL_ST_PL_MEM_rd_data_MON_t;
+   attribute w of TAR_PL_ST_PL_MEM_rd_data_MON_t : type is 42;
+   function width(x: TAR_PL_ST_PL_MEM_rd_data_MON_t) return natural;
+   function convert(x: TAR_PL_ST_PL_MEM_rd_data_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_MEM_rd_data_MON_t;
+   function zero(tpl: TAR_PL_ST_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_MEM_rd_data_MON_t;
 
-  type TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY is array(6-1 downto 0) of TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t;
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return natural;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY;
-  function convert(x: std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY;
-  function nullify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY;
-  function zeroed(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY;
+   type TAR_PL_ST_PL_MEM_MON_t is record
+      SIGNALS : TAR_PL_ST_PL_MEM_SIGNALS_MON_t;
+      rd_data : TAR_PL_ST_PL_MEM_rd_data_MON_t;
+   end record TAR_PL_ST_PL_MEM_MON_t;
+   attribute w of TAR_PL_ST_PL_MEM_MON_t : type is 44;
+   function width(x: TAR_PL_ST_PL_MEM_MON_t) return natural;
+   function convert(x: TAR_PL_ST_PL_MEM_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_MON_t) return TAR_PL_ST_PL_MEM_MON_t;
+   function zero(tpl: TAR_PL_ST_PL_MEM_MON_t) return TAR_PL_ST_PL_MEM_MON_t;
 
-  type TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t is record
-    SIGNALS : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
-    wr_addr : std_logic_vector(12-1 downto 0);
-    rd_addr : std_logic_vector(12-1 downto 0);
-    wr_data : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t;
-  end record TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return natural;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
+   type TAR_PL_ST_PL_MEM_MON_t_ARRAY is array(6 -1 downto 0) of TAR_PL_ST_PL_MEM_MON_t;
+   attribute w of TAR_PL_ST_PL_MEM_MON_t_ARRAY : type is 264;
+   function width(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return integer;
+   function convert(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_MEM_MON_t_ARRAY;
+   function zero(tpl: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_MEM_MON_t_ARRAY;
+   function convert(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_MEM_MON_t_ARRAY;
 
-  type TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY is array(6-1 downto 0) of TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return natural;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY;
-  function convert(x: std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY;
-  function nullify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY;
-  function zeroed(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY;
+   type TAR_PL_ST_PL_MEM_CTRL_t is record
+      SIGNALS : TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t;
+      wr_addr : std_logic_vector(12 - 1 downto 0);
+      rd_addr : std_logic_vector(12 - 1 downto 0);
+      wr_data : TAR_PL_ST_PL_MEM_wr_data_CTRL_t;
+   end record TAR_PL_ST_PL_MEM_CTRL_t;
+   attribute w of TAR_PL_ST_PL_MEM_CTRL_t : type is 75;
+   function width(x: TAR_PL_ST_PL_MEM_CTRL_t) return natural;
+   function convert(x: TAR_PL_ST_PL_MEM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_CTRL_t) return TAR_PL_ST_PL_MEM_CTRL_t;
+   function zero(tpl: TAR_PL_ST_PL_MEM_CTRL_t) return TAR_PL_ST_PL_MEM_CTRL_t;
 
-  type TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t is record
-    PL_MEM : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY;
-  end record TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t;
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return natural;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t;
+   type TAR_PL_ST_PL_MEM_CTRL_t_ARRAY is array(6 -1 downto 0) of TAR_PL_ST_PL_MEM_CTRL_t;
+   attribute w of TAR_PL_ST_PL_MEM_CTRL_t_ARRAY : type is 450;
+   function width(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return integer;
+   function convert(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
+   function zero(tpl: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
+   function convert(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
 
-  type TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t is record
-    PL_MEM : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY;
-  end record TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t;
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return natural;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t;
+   type TAR_PL_ST_MON_t is record
+      PL_MEM : TAR_PL_ST_PL_MEM_MON_t_ARRAY;
+   end record TAR_PL_ST_MON_t;
+   attribute w of TAR_PL_ST_MON_t : type is 264;
+   function width(x: TAR_PL_ST_MON_t) return natural;
+   function convert(x: TAR_PL_ST_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t;
+   function zero(tpl: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t;
 
-  type TAR_PL_ST_PL_ST_MON_t is record
-    PL_CHAMBER : TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t;
-  end record TAR_PL_ST_PL_ST_MON_t;
-  function len(x: TAR_PL_ST_PL_ST_MON_t) return natural;
-  function width(x: TAR_PL_ST_PL_ST_MON_t) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_MON_t) return TAR_PL_ST_PL_ST_MON_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_MON_t) return TAR_PL_ST_PL_ST_MON_t;
-  function nullify(t: TAR_PL_ST_PL_ST_MON_t) return TAR_PL_ST_PL_ST_MON_t;
-  function zeroed(t: TAR_PL_ST_PL_ST_MON_t) return TAR_PL_ST_PL_ST_MON_t;
+   type TAR_PL_ST_CTRL_t is record
+      PL_MEM : TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
+   end record TAR_PL_ST_CTRL_t;
+   attribute w of TAR_PL_ST_CTRL_t : type is 450;
+   function width(x: TAR_PL_ST_CTRL_t) return natural;
+   function convert(x: TAR_PL_ST_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t;
+   function zero(tpl: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t;
 
-  type TAR_PL_ST_PL_ST_MON_t_ARRAY is array(4-1 downto 0) of TAR_PL_ST_PL_ST_MON_t;
-  function len(x: TAR_PL_ST_PL_ST_MON_t_ARRAY) return natural;
-  function width(x: TAR_PL_ST_PL_ST_MON_t_ARRAY) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: TAR_PL_ST_PL_ST_MON_t_ARRAY) return TAR_PL_ST_PL_ST_MON_t_ARRAY;
-  function convert(x: std_logic_vector; t: TAR_PL_ST_PL_ST_MON_t_ARRAY) return TAR_PL_ST_PL_ST_MON_t_ARRAY;
-  function nullify(x: TAR_PL_ST_PL_ST_MON_t_ARRAY) return TAR_PL_ST_PL_ST_MON_t_ARRAY;
-  function zeroed(x: TAR_PL_ST_PL_ST_MON_t_ARRAY) return TAR_PL_ST_PL_ST_MON_t_ARRAY;
+   type TAR_MON_t is record
+      STATUS : TAR_STATUS_MON_t;
+      PL_ST : TAR_PL_ST_MON_t;
+   end record TAR_MON_t;
+   attribute w of TAR_MON_t : type is 275;
+   function width(x: TAR_MON_t) return natural;
+   function convert(x: TAR_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_MON_t) return TAR_MON_t;
+   function zero(tpl: TAR_MON_t) return TAR_MON_t;
 
-  type TAR_PL_ST_PL_ST_CTRL_t is record
-    PL_CHAMBER : TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t;
-  end record TAR_PL_ST_PL_ST_CTRL_t;
-  function len(x: TAR_PL_ST_PL_ST_CTRL_t) return natural;
-  function width(x: TAR_PL_ST_PL_ST_CTRL_t) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_CTRL_t) return TAR_PL_ST_PL_ST_CTRL_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_CTRL_t) return TAR_PL_ST_PL_ST_CTRL_t;
-  function nullify(t: TAR_PL_ST_PL_ST_CTRL_t) return TAR_PL_ST_PL_ST_CTRL_t;
-  function zeroed(t: TAR_PL_ST_PL_ST_CTRL_t) return TAR_PL_ST_PL_ST_CTRL_t;
-
-  type TAR_PL_ST_PL_ST_CTRL_t_ARRAY is array(4-1 downto 0) of TAR_PL_ST_PL_ST_CTRL_t;
-  function len(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return natural;
-  function width(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return natural;
-  function vectorify(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_CTRL_t_ARRAY;
-  function convert(x: std_logic_vector; t: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_CTRL_t_ARRAY;
-  function nullify(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_CTRL_t_ARRAY;
-  function zeroed(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_CTRL_t_ARRAY;
-
-  type TAR_PL_ST_MON_t is record
-    PL_ST : TAR_PL_ST_PL_ST_MON_t_ARRAY;
-  end record TAR_PL_ST_MON_t;
-  function len(x: TAR_PL_ST_MON_t) return natural;
-  function width(x: TAR_PL_ST_MON_t) return natural;
-  function vectorify(x: TAR_PL_ST_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t;
-  function nullify(t: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t;
-  function zeroed(t: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t;
-
-  type TAR_PL_ST_CTRL_t is record
-    PL_ST : TAR_PL_ST_PL_ST_CTRL_t_ARRAY;
-  end record TAR_PL_ST_CTRL_t;
-  function len(x: TAR_PL_ST_CTRL_t) return natural;
-  function width(x: TAR_PL_ST_CTRL_t) return natural;
-  function vectorify(x: TAR_PL_ST_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_PL_ST_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t;
-  function nullify(t: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t;
-  function zeroed(t: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t;
-
-  type TAR_MON_t is record
-    STATUS : TAR_STATUS_MON_t;
-    PL_ST : TAR_PL_ST_MON_t;
-  end record TAR_MON_t;
-  function len(x: TAR_MON_t) return natural;
-  function width(x: TAR_MON_t) return natural;
-  function vectorify(x: TAR_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_MON_t) return TAR_MON_t;
-  function convert(x: in std_logic_vector; t: TAR_MON_t) return TAR_MON_t;
-  function nullify(t: TAR_MON_t) return TAR_MON_t;
-  function zeroed(t: TAR_MON_t) return TAR_MON_t;
-
-  type TAR_CTRL_t is record
-    ACTIONS : TAR_ACTIONS_CTRL_t;
-    CONFIGS : TAR_CONFIGS_CTRL_t;
-    PL_ST : TAR_PL_ST_CTRL_t;
-  end record TAR_CTRL_t;
-  function len(x: TAR_CTRL_t) return natural;
-  function width(x: TAR_CTRL_t) return natural;
-  function vectorify(x: TAR_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: TAR_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: TAR_CTRL_t) return TAR_CTRL_t;
-  function convert(x: in std_logic_vector; t: TAR_CTRL_t) return TAR_CTRL_t;
-  function nullify(t: TAR_CTRL_t) return TAR_CTRL_t;
-  function zeroed(t: TAR_CTRL_t) return TAR_CTRL_t;
+   type TAR_CTRL_t is record
+      ACTIONS : TAR_ACTIONS_CTRL_t;
+      CONFIGS : TAR_CONFIGS_CTRL_t;
+      PL_ST : TAR_PL_ST_CTRL_t;
+   end record TAR_CTRL_t;
+   attribute w of TAR_CTRL_t : type is 457;
+   function width(x: TAR_CTRL_t) return natural;
+   function convert(x: TAR_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: TAR_CTRL_t) return TAR_CTRL_t;
+   function zero(tpl: TAR_CTRL_t) return TAR_CTRL_t;
 
 end package TAR_CTRL;
 
 ------------------------------------------------------------
 
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.math_real.all;
+
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+
 package body TAR_CTRL is
 
-  function len(x: TAR_ACTIONS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.RESET);
-    l := l + len(x.ENABLE);
-    l := l + len(x.DISABLE);
-    l := l + len(x.FREEZE);
-    return l;
-  end function len;
-  function width(x: TAR_ACTIONS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.RESET);
-    l := l + width(x.ENABLE);
-    l := l + width(x.DISABLE);
-    l := l + width(x.FREEZE);
-    return l;
-  end function width;
-  function vectorify(x: TAR_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.RESET)-1), vectorify(x.RESET, y(left to left+len(x.RESET)-1)));
-      left := left + len(x.RESET);
-      assign(y(left to left+len(x.ENABLE)-1), vectorify(x.ENABLE, y(left to left+len(x.ENABLE)-1)));
-      left := left + len(x.ENABLE);
-      assign(y(left to left+len(x.DISABLE)-1), vectorify(x.DISABLE, y(left to left+len(x.DISABLE)-1)));
-      left := left + len(x.DISABLE);
-      assign(y(left to left+len(x.FREEZE)-1), vectorify(x.FREEZE, y(left to left+len(x.FREEZE)-1)));
-    else
-      assign(y(left downto left-len(x.RESET)+1), vectorify(x.RESET, y(left downto left-len(x.RESET)+1)));
-      left := left - len(x.RESET);
-      assign(y(left downto left-len(x.ENABLE)+1), vectorify(x.ENABLE, y(left downto left-len(x.ENABLE)+1)));
-      left := left - len(x.ENABLE);
-      assign(y(left downto left-len(x.DISABLE)+1), vectorify(x.DISABLE, y(left downto left-len(x.DISABLE)+1)));
-      left := left - len(x.DISABLE);
-      assign(y(left downto left-len(x.FREEZE)+1), vectorify(x.FREEZE, y(left downto left-len(x.FREEZE)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.RESET)-1), convert(x.RESET, y(left to left+len(x.RESET)-1)));
-      left := left + len(x.RESET);
-      assign(y(left to left+len(x.ENABLE)-1), convert(x.ENABLE, y(left to left+len(x.ENABLE)-1)));
-      left := left + len(x.ENABLE);
-      assign(y(left to left+len(x.DISABLE)-1), convert(x.DISABLE, y(left to left+len(x.DISABLE)-1)));
-      left := left + len(x.DISABLE);
-      assign(y(left to left+len(x.FREEZE)-1), convert(x.FREEZE, y(left to left+len(x.FREEZE)-1)));
-    else
-      assign(y(left downto left-len(x.RESET)+1), convert(x.RESET, y(left downto left-len(x.RESET)+1)));
-      left := left - len(x.RESET);
-      assign(y(left downto left-len(x.ENABLE)+1), convert(x.ENABLE, y(left downto left-len(x.ENABLE)+1)));
-      left := left - len(x.ENABLE);
-      assign(y(left downto left-len(x.DISABLE)+1), convert(x.DISABLE, y(left downto left-len(x.DISABLE)+1)));
-      left := left - len(x.DISABLE);
-      assign(y(left downto left-len(x.FREEZE)+1), convert(x.FREEZE, y(left downto left-len(x.FREEZE)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t is
-    variable y: TAR_ACTIONS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.RESET := structify(x(left to left+len(y.RESET)-1), y.RESET);
-      left := left + len(y.RESET);
-      y.ENABLE := structify(x(left to left+len(y.ENABLE)-1), y.ENABLE);
-      left := left + len(y.ENABLE);
-      y.DISABLE := structify(x(left to left+len(y.DISABLE)-1), y.DISABLE);
-      left := left + len(y.DISABLE);
-      y.FREEZE := structify(x(left to left+len(y.FREEZE)-1), y.FREEZE);
-    else
-      y.RESET := structify(x(left downto left-len(y.RESET)+1), y.RESET);
-      left := left - len(y.RESET);
-      y.ENABLE := structify(x(left downto left-len(y.ENABLE)+1), y.ENABLE);
-      left := left - len(y.ENABLE);
-      y.DISABLE := structify(x(left downto left-len(y.DISABLE)+1), y.DISABLE);
-      left := left - len(y.DISABLE);
-      y.FREEZE := structify(x(left downto left-len(y.FREEZE)+1), y.FREEZE);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t is
-    variable y: TAR_ACTIONS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.RESET := convert(x(left to left+len(y.RESET)-1), y.RESET);
-      left := left + len(y.RESET);
-      y.ENABLE := convert(x(left to left+len(y.ENABLE)-1), y.ENABLE);
-      left := left + len(y.ENABLE);
-      y.DISABLE := convert(x(left to left+len(y.DISABLE)-1), y.DISABLE);
-      left := left + len(y.DISABLE);
-      y.FREEZE := convert(x(left to left+len(y.FREEZE)-1), y.FREEZE);
-    else
-      y.RESET := convert(x(left downto left-len(y.RESET)+1), y.RESET);
-      left := left - len(y.RESET);
-      y.ENABLE := convert(x(left downto left-len(y.ENABLE)+1), y.ENABLE);
-      left := left - len(y.ENABLE);
-      y.DISABLE := convert(x(left downto left-len(y.DISABLE)+1), y.DISABLE);
-      left := left - len(y.DISABLE);
-      y.FREEZE := convert(x(left downto left-len(y.FREEZE)+1), y.FREEZE);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t is
-  variable y: TAR_ACTIONS_CTRL_t;
-  begin
-    y.RESET := nullify(t.RESET);
-    y.ENABLE := nullify(t.ENABLE);
-    y.DISABLE := nullify(t.DISABLE);
-    y.FREEZE := nullify(t.FREEZE);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t is
-  variable y: TAR_ACTIONS_CTRL_t;
-  begin
-    y.RESET := zeroed(t.RESET);
-    y.ENABLE := zeroed(t.ENABLE);
-    y.DISABLE := zeroed(t.DISABLE);
-    y.FREEZE := zeroed(t.FREEZE);
-    return y;
-  end function zeroed;
+   -- Custom types and functions --
 
-  function len(x: TAR_CONFIGS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.INPUT_EN);
-    l := l + len(x.OUTPUT_EN);
-    l := l + len(x.FLUSH_MEM_RESET);
-    return l;
-  end function len;
-  function width(x: TAR_CONFIGS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.INPUT_EN);
-    l := l + width(x.OUTPUT_EN);
-    l := l + width(x.FLUSH_MEM_RESET);
-    return l;
-  end function width;
-  function vectorify(x: TAR_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.INPUT_EN)-1), vectorify(x.INPUT_EN, y(left to left+len(x.INPUT_EN)-1)));
-      left := left + len(x.INPUT_EN);
-      assign(y(left to left+len(x.OUTPUT_EN)-1), vectorify(x.OUTPUT_EN, y(left to left+len(x.OUTPUT_EN)-1)));
-      left := left + len(x.OUTPUT_EN);
-      assign(y(left to left+len(x.FLUSH_MEM_RESET)-1), vectorify(x.FLUSH_MEM_RESET, y(left to left+len(x.FLUSH_MEM_RESET)-1)));
-    else
-      assign(y(left downto left-len(x.INPUT_EN)+1), vectorify(x.INPUT_EN, y(left downto left-len(x.INPUT_EN)+1)));
-      left := left - len(x.INPUT_EN);
-      assign(y(left downto left-len(x.OUTPUT_EN)+1), vectorify(x.OUTPUT_EN, y(left downto left-len(x.OUTPUT_EN)+1)));
-      left := left - len(x.OUTPUT_EN);
-      assign(y(left downto left-len(x.FLUSH_MEM_RESET)+1), vectorify(x.FLUSH_MEM_RESET, y(left downto left-len(x.FLUSH_MEM_RESET)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.INPUT_EN)-1), convert(x.INPUT_EN, y(left to left+len(x.INPUT_EN)-1)));
-      left := left + len(x.INPUT_EN);
-      assign(y(left to left+len(x.OUTPUT_EN)-1), convert(x.OUTPUT_EN, y(left to left+len(x.OUTPUT_EN)-1)));
-      left := left + len(x.OUTPUT_EN);
-      assign(y(left to left+len(x.FLUSH_MEM_RESET)-1), convert(x.FLUSH_MEM_RESET, y(left to left+len(x.FLUSH_MEM_RESET)-1)));
-    else
-      assign(y(left downto left-len(x.INPUT_EN)+1), convert(x.INPUT_EN, y(left downto left-len(x.INPUT_EN)+1)));
-      left := left - len(x.INPUT_EN);
-      assign(y(left downto left-len(x.OUTPUT_EN)+1), convert(x.OUTPUT_EN, y(left downto left-len(x.OUTPUT_EN)+1)));
-      left := left - len(x.OUTPUT_EN);
-      assign(y(left downto left-len(x.FLUSH_MEM_RESET)+1), convert(x.FLUSH_MEM_RESET, y(left downto left-len(x.FLUSH_MEM_RESET)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
-    variable y: TAR_CONFIGS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.INPUT_EN := structify(x(left to left+len(y.INPUT_EN)-1), y.INPUT_EN);
-      left := left + len(y.INPUT_EN);
-      y.OUTPUT_EN := structify(x(left to left+len(y.OUTPUT_EN)-1), y.OUTPUT_EN);
-      left := left + len(y.OUTPUT_EN);
-      y.FLUSH_MEM_RESET := structify(x(left to left+len(y.FLUSH_MEM_RESET)-1), y.FLUSH_MEM_RESET);
-    else
-      y.INPUT_EN := structify(x(left downto left-len(y.INPUT_EN)+1), y.INPUT_EN);
-      left := left - len(y.INPUT_EN);
-      y.OUTPUT_EN := structify(x(left downto left-len(y.OUTPUT_EN)+1), y.OUTPUT_EN);
-      left := left - len(y.OUTPUT_EN);
-      y.FLUSH_MEM_RESET := structify(x(left downto left-len(y.FLUSH_MEM_RESET)+1), y.FLUSH_MEM_RESET);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
-    variable y: TAR_CONFIGS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.INPUT_EN := convert(x(left to left+len(y.INPUT_EN)-1), y.INPUT_EN);
-      left := left + len(y.INPUT_EN);
-      y.OUTPUT_EN := convert(x(left to left+len(y.OUTPUT_EN)-1), y.OUTPUT_EN);
-      left := left + len(y.OUTPUT_EN);
-      y.FLUSH_MEM_RESET := convert(x(left to left+len(y.FLUSH_MEM_RESET)-1), y.FLUSH_MEM_RESET);
-    else
-      y.INPUT_EN := convert(x(left downto left-len(y.INPUT_EN)+1), y.INPUT_EN);
-      left := left - len(y.INPUT_EN);
-      y.OUTPUT_EN := convert(x(left downto left-len(y.OUTPUT_EN)+1), y.OUTPUT_EN);
-      left := left - len(y.OUTPUT_EN);
-      y.FLUSH_MEM_RESET := convert(x(left downto left-len(y.FLUSH_MEM_RESET)+1), y.FLUSH_MEM_RESET);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
-  variable y: TAR_CONFIGS_CTRL_t;
-  begin
-    y.INPUT_EN := nullify(t.INPUT_EN);
-    y.OUTPUT_EN := nullify(t.OUTPUT_EN);
-    y.FLUSH_MEM_RESET := nullify(t.FLUSH_MEM_RESET);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
-  variable y: TAR_CONFIGS_CTRL_t;
-  begin
-    y.INPUT_EN := zeroed(t.INPUT_EN);
-    y.OUTPUT_EN := zeroed(t.OUTPUT_EN);
-    y.FLUSH_MEM_RESET := zeroed(t.FLUSH_MEM_RESET);
-    return y;
-  end function zeroed;
+   function width(x: TAR_ACTIONS_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.RESET);
+      w := w + width(x.ENABLE);
+      w := w + width(x.DISABLE);
+      w := w + width(x.FREEZE);
+      return w;
+   end function width;
+   function convert(x: TAR_ACTIONS_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.RESET);
+         y(u to u+w-1) := convert(x.RESET, y(u to u+w-1));
+         u := u + w;
+         w := width(x.ENABLE);
+         y(u to u+w-1) := convert(x.ENABLE, y(u to u+w-1));
+         u := u + w;
+         w := width(x.DISABLE);
+         y(u to u+w-1) := convert(x.DISABLE, y(u to u+w-1));
+         u := u + w;
+         w := width(x.FREEZE);
+         y(u to u+w-1) := convert(x.FREEZE, y(u to u+w-1));
+      else
+         w := width(x.RESET);
+         y(u downto u-w+1) := convert(x.RESET, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.ENABLE);
+         y(u downto u-w+1) := convert(x.ENABLE, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.DISABLE);
+         y(u downto u-w+1) := convert(x.DISABLE, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.FREEZE);
+         y(u downto u-w+1) := convert(x.FREEZE, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t is
+      variable y : TAR_ACTIONS_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.RESET);
+         y.RESET := convert(x(u to u+w-1), tpl.RESET);
+         u := u + w;
+         w := width(tpl.ENABLE);
+         y.ENABLE := convert(x(u to u+w-1), tpl.ENABLE);
+         u := u + w;
+         w := width(tpl.DISABLE);
+         y.DISABLE := convert(x(u to u+w-1), tpl.DISABLE);
+         u := u + w;
+         w := width(tpl.FREEZE);
+         y.FREEZE := convert(x(u to u+w-1), tpl.FREEZE);
+      else
+         w := width(tpl.RESET);
+         y.RESET := convert(x(u downto u-w+1), tpl.RESET);
+         u := u - w;
+         w := width(tpl.ENABLE);
+         y.ENABLE := convert(x(u downto u-w+1), tpl.ENABLE);
+         u := u - w;
+         w := width(tpl.DISABLE);
+         y.DISABLE := convert(x(u downto u-w+1), tpl.DISABLE);
+         u := u - w;
+         w := width(tpl.FREEZE);
+         y.FREEZE := convert(x(u downto u-w+1), tpl.FREEZE);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_STATUS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.ENABLED);
-    l := l + len(x.READY);
-    l := l + len(x.ERROR);
-    return l;
-  end function len;
-  function width(x: TAR_STATUS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.ENABLED);
-    l := l + width(x.READY);
-    l := l + width(x.ERROR);
-    return l;
-  end function width;
-  function vectorify(x: TAR_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.ENABLED)-1), vectorify(x.ENABLED, y(left to left+len(x.ENABLED)-1)));
-      left := left + len(x.ENABLED);
-      assign(y(left to left+len(x.READY)-1), vectorify(x.READY, y(left to left+len(x.READY)-1)));
-      left := left + len(x.READY);
-      assign(y(left to left+len(x.ERROR)-1), vectorify(x.ERROR, y(left to left+len(x.ERROR)-1)));
-    else
-      assign(y(left downto left-len(x.ENABLED)+1), vectorify(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
-      left := left - len(x.ENABLED);
-      assign(y(left downto left-len(x.READY)+1), vectorify(x.READY, y(left downto left-len(x.READY)+1)));
-      left := left - len(x.READY);
-      assign(y(left downto left-len(x.ERROR)+1), vectorify(x.ERROR, y(left downto left-len(x.ERROR)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.ENABLED)-1), convert(x.ENABLED, y(left to left+len(x.ENABLED)-1)));
-      left := left + len(x.ENABLED);
-      assign(y(left to left+len(x.READY)-1), convert(x.READY, y(left to left+len(x.READY)-1)));
-      left := left + len(x.READY);
-      assign(y(left to left+len(x.ERROR)-1), convert(x.ERROR, y(left to left+len(x.ERROR)-1)));
-    else
-      assign(y(left downto left-len(x.ENABLED)+1), convert(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
-      left := left - len(x.ENABLED);
-      assign(y(left downto left-len(x.READY)+1), convert(x.READY, y(left downto left-len(x.READY)+1)));
-      left := left - len(x.READY);
-      assign(y(left downto left-len(x.ERROR)+1), convert(x.ERROR, y(left downto left-len(x.ERROR)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t is
-    variable y: TAR_STATUS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.ENABLED := structify(x(left to left+len(y.ENABLED)-1), y.ENABLED);
-      left := left + len(y.ENABLED);
-      y.READY := structify(x(left to left+len(y.READY)-1), y.READY);
-      left := left + len(y.READY);
-      y.ERROR := structify(x(left to left+len(y.ERROR)-1), y.ERROR);
-    else
-      y.ENABLED := structify(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
-      left := left - len(y.ENABLED);
-      y.READY := structify(x(left downto left-len(y.READY)+1), y.READY);
-      left := left - len(y.READY);
-      y.ERROR := structify(x(left downto left-len(y.ERROR)+1), y.ERROR);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t is
-    variable y: TAR_STATUS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.ENABLED := convert(x(left to left+len(y.ENABLED)-1), y.ENABLED);
-      left := left + len(y.ENABLED);
-      y.READY := convert(x(left to left+len(y.READY)-1), y.READY);
-      left := left + len(y.READY);
-      y.ERROR := convert(x(left to left+len(y.ERROR)-1), y.ERROR);
-    else
-      y.ENABLED := convert(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
-      left := left - len(y.ENABLED);
-      y.READY := convert(x(left downto left-len(y.READY)+1), y.READY);
-      left := left - len(y.READY);
-      y.ERROR := convert(x(left downto left-len(y.ERROR)+1), y.ERROR);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t is
-  variable y: TAR_STATUS_MON_t;
-  begin
-    y.ENABLED := nullify(t.ENABLED);
-    y.READY := nullify(t.READY);
-    y.ERROR := nullify(t.ERROR);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t is
-  variable y: TAR_STATUS_MON_t;
-  begin
-    y.ENABLED := zeroed(t.ENABLED);
-    y.READY := zeroed(t.READY);
-    y.ERROR := zeroed(t.ERROR);
-    return y;
-  end function zeroed;
+   function width(x: TAR_CONFIGS_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.INPUT_EN);
+      w := w + width(x.OUTPUT_EN);
+      w := w + width(x.FLUSH_MEM_RESET);
+      return w;
+   end function width;
+   function convert(x: TAR_CONFIGS_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.INPUT_EN);
+         y(u to u+w-1) := convert(x.INPUT_EN, y(u to u+w-1));
+         u := u + w;
+         w := width(x.OUTPUT_EN);
+         y(u to u+w-1) := convert(x.OUTPUT_EN, y(u to u+w-1));
+         u := u + w;
+         w := width(x.FLUSH_MEM_RESET);
+         y(u to u+w-1) := convert(x.FLUSH_MEM_RESET, y(u to u+w-1));
+      else
+         w := width(x.INPUT_EN);
+         y(u downto u-w+1) := convert(x.INPUT_EN, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.OUTPUT_EN);
+         y(u downto u-w+1) := convert(x.OUTPUT_EN, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.FLUSH_MEM_RESET);
+         y(u downto u-w+1) := convert(x.FLUSH_MEM_RESET, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
+      variable y : TAR_CONFIGS_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.INPUT_EN);
+         y.INPUT_EN := convert(x(u to u+w-1), tpl.INPUT_EN);
+         u := u + w;
+         w := width(tpl.OUTPUT_EN);
+         y.OUTPUT_EN := convert(x(u to u+w-1), tpl.OUTPUT_EN);
+         u := u + w;
+         w := width(tpl.FLUSH_MEM_RESET);
+         y.FLUSH_MEM_RESET := convert(x(u to u+w-1), tpl.FLUSH_MEM_RESET);
+      else
+         w := width(tpl.INPUT_EN);
+         y.INPUT_EN := convert(x(u downto u-w+1), tpl.INPUT_EN);
+         u := u - w;
+         w := width(tpl.OUTPUT_EN);
+         y.OUTPUT_EN := convert(x(u downto u-w+1), tpl.OUTPUT_EN);
+         u := u - w;
+         w := width(tpl.FLUSH_MEM_RESET);
+         y.FLUSH_MEM_RESET := convert(x(u downto u-w+1), tpl.FLUSH_MEM_RESET);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_rdy);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.rd_rdy);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), convert(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), convert(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-    else
-      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := convert(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-    else
-      y.rd_rdy := convert(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
-  begin
-    y.rd_rdy := nullify(t.rd_rdy);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
-  begin
-    y.rd_rdy := zeroed(t.rd_rdy);
-    return y;
-  end function zeroed;
+   function width(x: TAR_STATUS_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.ENABLED);
+      w := w + width(x.READY);
+      w := w + width(x.FREEZED);
+      w := w + width(x.ERROR);
+      return w;
+   end function width;
+   function convert(x: TAR_STATUS_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.ENABLED);
+         y(u to u+w-1) := convert(x.ENABLED, y(u to u+w-1));
+         u := u + w;
+         w := width(x.READY);
+         y(u to u+w-1) := convert(x.READY, y(u to u+w-1));
+         u := u + w;
+         w := width(x.FREEZED);
+         y(u to u+w-1) := convert(x.FREEZED, y(u to u+w-1));
+         u := u + w;
+         w := width(x.ERROR);
+         y(u to u+w-1) := convert(x.ERROR, y(u to u+w-1));
+      else
+         w := width(x.ENABLED);
+         y(u downto u-w+1) := convert(x.ENABLED, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.READY);
+         y(u downto u-w+1) := convert(x.READY, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.FREEZED);
+         y(u downto u-w+1) := convert(x.FREEZED, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.ERROR);
+         y(u downto u-w+1) := convert(x.ERROR, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_STATUS_MON_t) return TAR_STATUS_MON_t is
+      variable y : TAR_STATUS_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.ENABLED);
+         y.ENABLED := convert(x(u to u+w-1), tpl.ENABLED);
+         u := u + w;
+         w := width(tpl.READY);
+         y.READY := convert(x(u to u+w-1), tpl.READY);
+         u := u + w;
+         w := width(tpl.FREEZED);
+         y.FREEZED := convert(x(u to u+w-1), tpl.FREEZED);
+         u := u + w;
+         w := width(tpl.ERROR);
+         y.ERROR := convert(x(u to u+w-1), tpl.ERROR);
+      else
+         w := width(tpl.ENABLED);
+         y.ENABLED := convert(x(u downto u-w+1), tpl.ENABLED);
+         u := u - w;
+         w := width(tpl.READY);
+         y.READY := convert(x(u downto u-w+1), tpl.READY);
+         u := u - w;
+         w := width(tpl.FREEZED);
+         y.FREEZED := convert(x(u downto u-w+1), tpl.FREEZED);
+         u := u - w;
+         w := width(tpl.ERROR);
+         y.ERROR := convert(x(u downto u-w+1), tpl.ERROR);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_STATUS_MON_t) return TAR_STATUS_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_req);
-    l := l + len(x.wr_ack);
-    l := l + len(x.rd_req);
-    l := l + len(x.rd_ack);
-    l := l + len(x.flush_req);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.wr_req);
-    l := l + width(x.wr_ack);
-    l := l + width(x.rd_req);
-    l := l + width(x.rd_ack);
-    l := l + width(x.flush_req);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.wr_ack)-1), vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
-      left := left + len(x.wr_ack);
-      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.rd_ack)-1), vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
-      left := left + len(x.rd_ack);
-      assign(y(left to left+len(x.flush_req)-1), vectorify(x.flush_req, y(left to left+len(x.flush_req)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.wr_ack)+1), vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
-      left := left - len(x.wr_ack);
-      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.rd_ack)+1), vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
-      left := left - len(x.rd_ack);
-      assign(y(left downto left-len(x.flush_req)+1), vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), convert(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.wr_ack)-1), convert(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
-      left := left + len(x.wr_ack);
-      assign(y(left to left+len(x.rd_req)-1), convert(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.rd_ack)-1), convert(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
-      left := left + len(x.rd_ack);
-      assign(y(left to left+len(x.flush_req)-1), convert(x.flush_req, y(left to left+len(x.flush_req)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), convert(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.wr_ack)+1), convert(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
-      left := left - len(x.wr_ack);
-      assign(y(left downto left-len(x.rd_req)+1), convert(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.rd_ack)+1), convert(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
-      left := left - len(x.rd_ack);
-      assign(y(left downto left-len(x.flush_req)+1), convert(x.flush_req, y(left downto left-len(x.flush_req)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.wr_ack := structify(x(left to left+len(y.wr_ack)-1), y.wr_ack);
-      left := left + len(y.wr_ack);
-      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.rd_ack := structify(x(left to left+len(y.rd_ack)-1), y.rd_ack);
-      left := left + len(y.rd_ack);
-      y.flush_req := structify(x(left to left+len(y.flush_req)-1), y.flush_req);
-    else
-      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.wr_ack := structify(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
-      left := left - len(y.wr_ack);
-      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.rd_ack := structify(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
-      left := left - len(y.rd_ack);
-      y.flush_req := structify(x(left downto left-len(y.flush_req)+1), y.flush_req);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := convert(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.wr_ack := convert(x(left to left+len(y.wr_ack)-1), y.wr_ack);
-      left := left + len(y.wr_ack);
-      y.rd_req := convert(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.rd_ack := convert(x(left to left+len(y.rd_ack)-1), y.rd_ack);
-      left := left + len(y.rd_ack);
-      y.flush_req := convert(x(left to left+len(y.flush_req)-1), y.flush_req);
-    else
-      y.wr_req := convert(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.wr_ack := convert(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
-      left := left - len(y.wr_ack);
-      y.rd_req := convert(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.rd_ack := convert(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
-      left := left - len(y.rd_ack);
-      y.flush_req := convert(x(left downto left-len(y.flush_req)+1), y.flush_req);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
-  begin
-    y.wr_req := nullify(t.wr_req);
-    y.wr_ack := nullify(t.wr_ack);
-    y.rd_req := nullify(t.rd_req);
-    y.rd_ack := nullify(t.rd_ack);
-    y.flush_req := nullify(t.flush_req);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
-  begin
-    y.wr_req := zeroed(t.wr_req);
-    y.wr_ack := zeroed(t.wr_ack);
-    y.rd_req := zeroed(t.rd_req);
-    y.rd_ack := zeroed(t.rd_ack);
-    y.flush_req := zeroed(t.flush_req);
-    return y;
-  end function zeroed;
+   function width(x: TAR_PL_ST_PL_MEM_SIGNALS_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_rdy);
+      w := w + width(x.freeze_ena);
+      return w;
+   end function width;
+   function convert(x: TAR_PL_ST_PL_MEM_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_rdy);
+         y(u to u+w-1) := convert(x.rd_rdy, y(u to u+w-1));
+         u := u + w;
+         w := width(x.freeze_ena);
+         y(u to u+w-1) := convert(x.freeze_ena, y(u to u+w-1));
+      else
+         w := width(x.rd_rdy);
+         y(u downto u-w+1) := convert(x.rd_rdy, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.freeze_ena);
+         y(u downto u-w+1) := convert(x.freeze_ena, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_MEM_SIGNALS_MON_t is
+      variable y : TAR_PL_ST_PL_MEM_SIGNALS_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_rdy);
+         y.rd_rdy := convert(x(u to u+w-1), tpl.rd_rdy);
+         u := u + w;
+         w := width(tpl.freeze_ena);
+         y.freeze_ena := convert(x(u to u+w-1), tpl.freeze_ena);
+      else
+         w := width(tpl.rd_rdy);
+         y.rd_rdy := convert(x(u downto u-w+1), tpl.rd_rdy);
+         u := u - w;
+         w := width(tpl.freeze_ena);
+         y.freeze_ena := convert(x(u downto u-w+1), tpl.freeze_ena);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_PL_ST_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_MEM_SIGNALS_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_data_0);
-    l := l + len(x.wr_data_1);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.wr_data_0);
-    l := l + width(x.wr_data_1);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_data_0)-1), vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1)));
-      left := left + len(x.wr_data_0);
-      assign(y(left to left+len(x.wr_data_1)-1), vectorify(x.wr_data_1, y(left to left+len(x.wr_data_1)-1)));
-    else
-      assign(y(left downto left-len(x.wr_data_0)+1), vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1)));
-      left := left - len(x.wr_data_0);
-      assign(y(left downto left-len(x.wr_data_1)+1), vectorify(x.wr_data_1, y(left downto left-len(x.wr_data_1)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_data_0)-1), convert(x.wr_data_0, y(left to left+len(x.wr_data_0)-1)));
-      left := left + len(x.wr_data_0);
-      assign(y(left to left+len(x.wr_data_1)-1), convert(x.wr_data_1, y(left to left+len(x.wr_data_1)-1)));
-    else
-      assign(y(left downto left-len(x.wr_data_0)+1), convert(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1)));
-      left := left - len(x.wr_data_0);
-      assign(y(left downto left-len(x.wr_data_1)+1), convert(x.wr_data_1, y(left downto left-len(x.wr_data_1)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_data_0 := structify(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
-      left := left + len(y.wr_data_0);
-      y.wr_data_1 := structify(x(left to left+len(y.wr_data_1)-1), y.wr_data_1);
-    else
-      y.wr_data_0 := structify(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
-      left := left - len(y.wr_data_0);
-      y.wr_data_1 := structify(x(left downto left-len(y.wr_data_1)+1), y.wr_data_1);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_data_0 := convert(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
-      left := left + len(y.wr_data_0);
-      y.wr_data_1 := convert(x(left to left+len(y.wr_data_1)-1), y.wr_data_1);
-    else
-      y.wr_data_0 := convert(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
-      left := left - len(y.wr_data_0);
-      y.wr_data_1 := convert(x(left downto left-len(y.wr_data_1)+1), y.wr_data_1);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t;
-  begin
-    y.wr_data_0 := nullify(t.wr_data_0);
-    y.wr_data_1 := nullify(t.wr_data_1);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t;
-  begin
-    y.wr_data_0 := zeroed(t.wr_data_0);
-    y.wr_data_1 := zeroed(t.wr_data_1);
-    return y;
-  end function zeroed;
+   function width(x: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.wr_req);
+      w := w + width(x.wr_ack);
+      w := w + width(x.rd_req);
+      w := w + width(x.rd_ack);
+      w := w + width(x.flush_req);
+      w := w + width(x.freeze_req);
+      w := w + width(x.mem_sel);
+      return w;
+   end function width;
+   function convert(x: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.wr_req);
+         y(u to u+w-1) := convert(x.wr_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_ack);
+         y(u to u+w-1) := convert(x.wr_ack, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_req);
+         y(u to u+w-1) := convert(x.rd_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_ack);
+         y(u to u+w-1) := convert(x.rd_ack, y(u to u+w-1));
+         u := u + w;
+         w := width(x.flush_req);
+         y(u to u+w-1) := convert(x.flush_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.freeze_req);
+         y(u to u+w-1) := convert(x.freeze_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.mem_sel);
+         y(u to u+w-1) := convert(x.mem_sel, y(u to u+w-1));
+      else
+         w := width(x.wr_req);
+         y(u downto u-w+1) := convert(x.wr_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_ack);
+         y(u downto u-w+1) := convert(x.wr_ack, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_req);
+         y(u downto u-w+1) := convert(x.rd_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_ack);
+         y(u downto u-w+1) := convert(x.rd_ack, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.flush_req);
+         y(u downto u-w+1) := convert(x.flush_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.freeze_req);
+         y(u downto u-w+1) := convert(x.freeze_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.mem_sel);
+         y(u downto u-w+1) := convert(x.mem_sel, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t is
+      variable y : TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u to u+w-1), tpl.wr_req);
+         u := u + w;
+         w := width(tpl.wr_ack);
+         y.wr_ack := convert(x(u to u+w-1), tpl.wr_ack);
+         u := u + w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u to u+w-1), tpl.rd_req);
+         u := u + w;
+         w := width(tpl.rd_ack);
+         y.rd_ack := convert(x(u to u+w-1), tpl.rd_ack);
+         u := u + w;
+         w := width(tpl.flush_req);
+         y.flush_req := convert(x(u to u+w-1), tpl.flush_req);
+         u := u + w;
+         w := width(tpl.freeze_req);
+         y.freeze_req := convert(x(u to u+w-1), tpl.freeze_req);
+         u := u + w;
+         w := width(tpl.mem_sel);
+         y.mem_sel := convert(x(u to u+w-1), tpl.mem_sel);
+      else
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u downto u-w+1), tpl.wr_req);
+         u := u - w;
+         w := width(tpl.wr_ack);
+         y.wr_ack := convert(x(u downto u-w+1), tpl.wr_ack);
+         u := u - w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u downto u-w+1), tpl.rd_req);
+         u := u - w;
+         w := width(tpl.rd_ack);
+         y.rd_ack := convert(x(u downto u-w+1), tpl.rd_ack);
+         u := u - w;
+         w := width(tpl.flush_req);
+         y.flush_req := convert(x(u downto u-w+1), tpl.flush_req);
+         u := u - w;
+         w := width(tpl.freeze_req);
+         y.freeze_req := convert(x(u downto u-w+1), tpl.freeze_req);
+         u := u - w;
+         w := width(tpl.mem_sel);
+         y.mem_sel := convert(x(u downto u-w+1), tpl.mem_sel);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_data_0);
-    l := l + len(x.rd_data_1);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.rd_data_0);
-    l := l + width(x.rd_data_1);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_data_0)-1), vectorify(x.rd_data_0, y(left to left+len(x.rd_data_0)-1)));
-      left := left + len(x.rd_data_0);
-      assign(y(left to left+len(x.rd_data_1)-1), vectorify(x.rd_data_1, y(left to left+len(x.rd_data_1)-1)));
-    else
-      assign(y(left downto left-len(x.rd_data_0)+1), vectorify(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1)));
-      left := left - len(x.rd_data_0);
-      assign(y(left downto left-len(x.rd_data_1)+1), vectorify(x.rd_data_1, y(left downto left-len(x.rd_data_1)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_data_0)-1), convert(x.rd_data_0, y(left to left+len(x.rd_data_0)-1)));
-      left := left + len(x.rd_data_0);
-      assign(y(left to left+len(x.rd_data_1)-1), convert(x.rd_data_1, y(left to left+len(x.rd_data_1)-1)));
-    else
-      assign(y(left downto left-len(x.rd_data_0)+1), convert(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1)));
-      left := left - len(x.rd_data_0);
-      assign(y(left downto left-len(x.rd_data_1)+1), convert(x.rd_data_1, y(left downto left-len(x.rd_data_1)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_data_0 := structify(x(left to left+len(y.rd_data_0)-1), y.rd_data_0);
-      left := left + len(y.rd_data_0);
-      y.rd_data_1 := structify(x(left to left+len(y.rd_data_1)-1), y.rd_data_1);
-    else
-      y.rd_data_0 := structify(x(left downto left-len(y.rd_data_0)+1), y.rd_data_0);
-      left := left - len(y.rd_data_0);
-      y.rd_data_1 := structify(x(left downto left-len(y.rd_data_1)+1), y.rd_data_1);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_data_0 := convert(x(left to left+len(y.rd_data_0)-1), y.rd_data_0);
-      left := left + len(y.rd_data_0);
-      y.rd_data_1 := convert(x(left to left+len(y.rd_data_1)-1), y.rd_data_1);
-    else
-      y.rd_data_0 := convert(x(left downto left-len(y.rd_data_0)+1), y.rd_data_0);
-      left := left - len(y.rd_data_0);
-      y.rd_data_1 := convert(x(left downto left-len(y.rd_data_1)+1), y.rd_data_1);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t;
-  begin
-    y.rd_data_0 := nullify(t.rd_data_0);
-    y.rd_data_1 := nullify(t.rd_data_1);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t;
-  begin
-    y.rd_data_0 := zeroed(t.rd_data_0);
-    y.rd_data_1 := zeroed(t.rd_data_1);
-    return y;
-  end function zeroed;
+   function width(x: TAR_PL_ST_PL_MEM_wr_data_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.wr_data_0);
+      w := w + width(x.wr_data_1);
+      return w;
+   end function width;
+   function convert(x: TAR_PL_ST_PL_MEM_wr_data_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.wr_data_0);
+         y(u to u+w-1) := convert(x.wr_data_0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data_1);
+         y(u to u+w-1) := convert(x.wr_data_1, y(u to u+w-1));
+      else
+         w := width(x.wr_data_0);
+         y(u downto u-w+1) := convert(x.wr_data_0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data_1);
+         y(u downto u-w+1) := convert(x.wr_data_1, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_MEM_wr_data_CTRL_t is
+      variable y : TAR_PL_ST_PL_MEM_wr_data_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.wr_data_0);
+         y.wr_data_0 := convert(x(u to u+w-1), tpl.wr_data_0);
+         u := u + w;
+         w := width(tpl.wr_data_1);
+         y.wr_data_1 := convert(x(u to u+w-1), tpl.wr_data_1);
+      else
+         w := width(tpl.wr_data_0);
+         y.wr_data_0 := convert(x(u downto u-w+1), tpl.wr_data_0);
+         u := u - w;
+         w := width(tpl.wr_data_1);
+         y.wr_data_1 := convert(x(u downto u-w+1), tpl.wr_data_1);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_PL_ST_PL_MEM_wr_data_CTRL_t) return TAR_PL_ST_PL_MEM_wr_data_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.SIGNALS);
-    l := l + len(x.rd_data);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.SIGNALS);
-    l := l + width(x.rd_data);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), vectorify(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), vectorify(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), convert(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), convert(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := structify(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.SIGNALS := structify(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := convert(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.SIGNALS := convert(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t;
-  begin
-    y.SIGNALS := nullify(t.SIGNALS);
-    y.rd_data := nullify(t.rd_data);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t;
-  begin
-    y.SIGNALS := zeroed(t.SIGNALS);
-    y.rd_data := zeroed(t.rd_data);
-    return y;
-  end function zeroed;
+   function width(x: TAR_PL_ST_PL_MEM_rd_data_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data_0);
+      w := w + width(x.rd_data_1);
+      return w;
+   end function width;
+   function convert(x: TAR_PL_ST_PL_MEM_rd_data_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data_0);
+         y(u to u+w-1) := convert(x.rd_data_0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_1);
+         y(u to u+w-1) := convert(x.rd_data_1, y(u to u+w-1));
+      else
+         w := width(x.rd_data_0);
+         y(u downto u-w+1) := convert(x.rd_data_0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_1);
+         y(u downto u-w+1) := convert(x.rd_data_1, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_MEM_rd_data_MON_t is
+      variable y : TAR_PL_ST_PL_MEM_rd_data_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data_0);
+         y.rd_data_0 := convert(x(u to u+w-1), tpl.rd_data_0);
+         u := u + w;
+         w := width(tpl.rd_data_1);
+         y.rd_data_1 := convert(x(u to u+w-1), tpl.rd_data_1);
+      else
+         w := width(tpl.rd_data_0);
+         y.rd_data_0 := convert(x(u downto u-w+1), tpl.rd_data_0);
+         u := u - w;
+         w := width(tpl.rd_data_1);
+         y.rd_data_1 := convert(x(u downto u-w+1), tpl.rd_data_1);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_PL_ST_PL_MEM_rd_data_MON_t) return TAR_PL_ST_PL_MEM_rd_data_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * len(x(x'left));
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * width(x(x'left));
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), vectorify(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), vectorify(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), convert(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), convert(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function structify(x: std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := structify(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := structify(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function structify;
-  function convert(x: std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := convert(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := convert(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function nullify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := nullify(y(i));
-    end loop l;
-    return y;
-  end function nullify;
-  function zeroed(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := zeroed(y(i));
-    end loop l;
-    return y;
-  end function zeroed;
+   function width(x: TAR_PL_ST_PL_MEM_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SIGNALS);
+      w := w + width(x.rd_data);
+      return w;
+   end function width;
+   function convert(x: TAR_PL_ST_PL_MEM_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SIGNALS);
+         y(u to u+w-1) := convert(x.SIGNALS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+      else
+         w := width(x.SIGNALS);
+         y(u downto u-w+1) := convert(x.SIGNALS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_MON_t) return TAR_PL_ST_PL_MEM_MON_t is
+      variable y : TAR_PL_ST_PL_MEM_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u to u+w-1), tpl.SIGNALS);
+         u := u + w;
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+      else
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u downto u-w+1), tpl.SIGNALS);
+         u := u - w;
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_PL_ST_PL_MEM_MON_t) return TAR_PL_ST_PL_MEM_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.SIGNALS);
-    l := l + len(x.wr_addr);
-    l := l + len(x.rd_addr);
-    l := l + len(x.wr_data);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.SIGNALS);
-    l := l + width(x.wr_addr);
-    l := l + width(x.rd_addr);
-    l := l + width(x.wr_data);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), vectorify(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), vectorify(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), convert(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.wr_addr)-1), convert(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), convert(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), convert(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.wr_addr)+1), convert(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), convert(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := structify(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.SIGNALS := structify(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := convert(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.wr_addr := convert(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := convert(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.SIGNALS := convert(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.wr_addr := convert(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := convert(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-  begin
-    y.SIGNALS := nullify(t.SIGNALS);
-    y.wr_addr := nullify(t.wr_addr);
-    y.rd_addr := nullify(t.rd_addr);
-    y.wr_data := nullify(t.wr_data);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-  begin
-    y.SIGNALS := zeroed(t.SIGNALS);
-    y.wr_addr := zeroed(t.wr_addr);
-    y.rd_addr := zeroed(t.rd_addr);
-    y.wr_data := zeroed(t.wr_data);
-    return y;
-  end function zeroed;
+   function width(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return integer is
+      variable w : integer := x'length * width(x(x'low));
+   begin
+      return w;
+   end function width;
+   function convert(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_MEM_MON_t_ARRAY is
+      variable y : TAR_PL_ST_PL_MEM_MON_t_ARRAY;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_MEM_MON_t_ARRAY is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return TAR_PL_ST_PL_MEM_MON_t_ARRAY is
+      variable y : TAR_PL_ST_PL_MEM_MON_t_ARRAY;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
 
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * len(x(x'left));
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * width(x(x'left));
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), vectorify(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), vectorify(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), convert(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), convert(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function structify(x: std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := structify(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := structify(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function structify;
-  function convert(x: std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := convert(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := convert(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function nullify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := nullify(y(i));
-    end loop l;
-    return y;
-  end function nullify;
-  function zeroed(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := zeroed(y(i));
-    end loop l;
-    return y;
-  end function zeroed;
+   function width(x: TAR_PL_ST_PL_MEM_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SIGNALS);
+      w := w + width(x.wr_addr);
+      w := w + width(x.rd_addr);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: TAR_PL_ST_PL_MEM_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SIGNALS);
+         y(u to u+w-1) := convert(x.SIGNALS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_addr);
+         y(u to u+w-1) := convert(x.wr_addr, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_addr);
+         y(u to u+w-1) := convert(x.rd_addr, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.SIGNALS);
+         y(u downto u-w+1) := convert(x.SIGNALS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_addr);
+         y(u downto u-w+1) := convert(x.wr_addr, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_addr);
+         y(u downto u-w+1) := convert(x.rd_addr, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_CTRL_t) return TAR_PL_ST_PL_MEM_CTRL_t is
+      variable y : TAR_PL_ST_PL_MEM_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u to u+w-1), tpl.SIGNALS);
+         u := u + w;
+         w := width(tpl.wr_addr);
+         y.wr_addr := convert(x(u to u+w-1), tpl.wr_addr);
+         u := u + w;
+         w := width(tpl.rd_addr);
+         y.rd_addr := convert(x(u to u+w-1), tpl.rd_addr);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u downto u-w+1), tpl.SIGNALS);
+         u := u - w;
+         w := width(tpl.wr_addr);
+         y.wr_addr := convert(x(u downto u-w+1), tpl.wr_addr);
+         u := u - w;
+         w := width(tpl.rd_addr);
+         y.rd_addr := convert(x(u downto u-w+1), tpl.rd_addr);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_PL_ST_PL_MEM_CTRL_t) return TAR_PL_ST_PL_MEM_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.PL_MEM);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.PL_MEM);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_MEM)-1), vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
-    else
-      assign(y(left downto left-len(x.PL_MEM)+1), vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_MEM)-1), convert(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
-    else
-      assign(y(left downto left-len(x.PL_MEM)+1), convert(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_MEM := structify(x(left to left+len(y.PL_MEM)-1), y.PL_MEM);
-    else
-      y.PL_MEM := structify(x(left downto left-len(y.PL_MEM)+1), y.PL_MEM);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_MEM := convert(x(left to left+len(y.PL_MEM)-1), y.PL_MEM);
-    else
-      y.PL_MEM := convert(x(left downto left-len(y.PL_MEM)+1), y.PL_MEM);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t;
-  begin
-    y.PL_MEM := nullify(t.PL_MEM);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t;
-  begin
-    y.PL_MEM := zeroed(t.PL_MEM);
-    return y;
-  end function zeroed;
+   function width(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return integer is
+      variable w : integer := x'length * width(x(x'low));
+   begin
+      return w;
+   end function width;
+   function convert(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_MEM_CTRL_t_ARRAY is
+      variable y : TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_MEM_CTRL_t_ARRAY is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_MEM_CTRL_t_ARRAY is
+      variable y : TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
 
-  function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.PL_MEM);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.PL_MEM);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_MEM)-1), vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
-    else
-      assign(y(left downto left-len(x.PL_MEM)+1), vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_MEM)-1), convert(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
-    else
-      assign(y(left downto left-len(x.PL_MEM)+1), convert(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_MEM := structify(x(left to left+len(y.PL_MEM)-1), y.PL_MEM);
-    else
-      y.PL_MEM := structify(x(left downto left-len(y.PL_MEM)+1), y.PL_MEM);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t is
-    variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_MEM := convert(x(left to left+len(y.PL_MEM)-1), y.PL_MEM);
-    else
-      y.PL_MEM := convert(x(left downto left-len(y.PL_MEM)+1), y.PL_MEM);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t;
-  begin
-    y.PL_MEM := nullify(t.PL_MEM);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t is
-  variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t;
-  begin
-    y.PL_MEM := zeroed(t.PL_MEM);
-    return y;
-  end function zeroed;
+   function width(x: TAR_PL_ST_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.PL_MEM);
+      return w;
+   end function width;
+   function convert(x: TAR_PL_ST_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.PL_MEM);
+         y(u to u+w-1) := convert(x.PL_MEM, y(u to u+w-1));
+      else
+         w := width(x.PL_MEM);
+         y(u downto u-w+1) := convert(x.PL_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t is
+      variable y : TAR_PL_ST_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.PL_MEM);
+         y.PL_MEM := convert(x(u to u+w-1), tpl.PL_MEM);
+      else
+         w := width(tpl.PL_MEM);
+         y.PL_MEM := convert(x(u downto u-w+1), tpl.PL_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_PL_ST_PL_ST_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.PL_CHAMBER);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.PL_CHAMBER);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_CHAMBER)-1), vectorify(x.PL_CHAMBER, y(left to left+len(x.PL_CHAMBER)-1)));
-    else
-      assign(y(left downto left-len(x.PL_CHAMBER)+1), vectorify(x.PL_CHAMBER, y(left downto left-len(x.PL_CHAMBER)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_CHAMBER)-1), convert(x.PL_CHAMBER, y(left to left+len(x.PL_CHAMBER)-1)));
-    else
-      assign(y(left downto left-len(x.PL_CHAMBER)+1), convert(x.PL_CHAMBER, y(left downto left-len(x.PL_CHAMBER)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_MON_t) return TAR_PL_ST_PL_ST_MON_t is
-    variable y: TAR_PL_ST_PL_ST_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_CHAMBER := structify(x(left to left+len(y.PL_CHAMBER)-1), y.PL_CHAMBER);
-    else
-      y.PL_CHAMBER := structify(x(left downto left-len(y.PL_CHAMBER)+1), y.PL_CHAMBER);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_MON_t) return TAR_PL_ST_PL_ST_MON_t is
-    variable y: TAR_PL_ST_PL_ST_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_CHAMBER := convert(x(left to left+len(y.PL_CHAMBER)-1), y.PL_CHAMBER);
-    else
-      y.PL_CHAMBER := convert(x(left downto left-len(y.PL_CHAMBER)+1), y.PL_CHAMBER);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_PL_ST_MON_t) return TAR_PL_ST_PL_ST_MON_t is
-  variable y: TAR_PL_ST_PL_ST_MON_t;
-  begin
-    y.PL_CHAMBER := nullify(t.PL_CHAMBER);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_PL_ST_MON_t) return TAR_PL_ST_PL_ST_MON_t is
-  variable y: TAR_PL_ST_PL_ST_MON_t;
-  begin
-    y.PL_CHAMBER := zeroed(t.PL_CHAMBER);
-    return y;
-  end function zeroed;
+   function width(x: TAR_PL_ST_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.PL_MEM);
+      return w;
+   end function width;
+   function convert(x: TAR_PL_ST_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.PL_MEM);
+         y(u to u+w-1) := convert(x.PL_MEM, y(u to u+w-1));
+      else
+         w := width(x.PL_MEM);
+         y(u downto u-w+1) := convert(x.PL_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t is
+      variable y : TAR_PL_ST_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.PL_MEM);
+         y.PL_MEM := convert(x(u to u+w-1), tpl.PL_MEM);
+      else
+         w := width(tpl.PL_MEM);
+         y.PL_MEM := convert(x(u downto u-w+1), tpl.PL_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_PL_ST_PL_ST_MON_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * len(x(x'left));
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_MON_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * width(x(x'left));
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), vectorify(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), vectorify(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), convert(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), convert(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function structify(x: std_logic_vector; t: TAR_PL_ST_PL_ST_MON_t_ARRAY) return TAR_PL_ST_PL_ST_MON_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_MON_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := structify(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := structify(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function structify;
-  function convert(x: std_logic_vector; t: TAR_PL_ST_PL_ST_MON_t_ARRAY) return TAR_PL_ST_PL_ST_MON_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_MON_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := convert(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := convert(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function nullify(x: TAR_PL_ST_PL_ST_MON_t_ARRAY) return TAR_PL_ST_PL_ST_MON_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_MON_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := nullify(y(i));
-    end loop l;
-    return y;
-  end function nullify;
-  function zeroed(x: TAR_PL_ST_PL_ST_MON_t_ARRAY) return TAR_PL_ST_PL_ST_MON_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_MON_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := zeroed(y(i));
-    end loop l;
-    return y;
-  end function zeroed;
+   function width(x: TAR_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.STATUS);
+      w := w + width(x.PL_ST);
+      return w;
+   end function width;
+   function convert(x: TAR_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.STATUS);
+         y(u to u+w-1) := convert(x.STATUS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.PL_ST);
+         y(u to u+w-1) := convert(x.PL_ST, y(u to u+w-1));
+      else
+         w := width(x.STATUS);
+         y(u downto u-w+1) := convert(x.STATUS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.PL_ST);
+         y(u downto u-w+1) := convert(x.PL_ST, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_MON_t) return TAR_MON_t is
+      variable y : TAR_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.STATUS);
+         y.STATUS := convert(x(u to u+w-1), tpl.STATUS);
+         u := u + w;
+         w := width(tpl.PL_ST);
+         y.PL_ST := convert(x(u to u+w-1), tpl.PL_ST);
+      else
+         w := width(tpl.STATUS);
+         y.STATUS := convert(x(u downto u-w+1), tpl.STATUS);
+         u := u - w;
+         w := width(tpl.PL_ST);
+         y.PL_ST := convert(x(u downto u-w+1), tpl.PL_ST);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_MON_t) return TAR_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: TAR_PL_ST_PL_ST_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.PL_CHAMBER);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.PL_CHAMBER);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_CHAMBER)-1), vectorify(x.PL_CHAMBER, y(left to left+len(x.PL_CHAMBER)-1)));
-    else
-      assign(y(left downto left-len(x.PL_CHAMBER)+1), vectorify(x.PL_CHAMBER, y(left downto left-len(x.PL_CHAMBER)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_CHAMBER)-1), convert(x.PL_CHAMBER, y(left to left+len(x.PL_CHAMBER)-1)));
-    else
-      assign(y(left downto left-len(x.PL_CHAMBER)+1), convert(x.PL_CHAMBER, y(left downto left-len(x.PL_CHAMBER)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_CTRL_t) return TAR_PL_ST_PL_ST_CTRL_t is
-    variable y: TAR_PL_ST_PL_ST_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_CHAMBER := structify(x(left to left+len(y.PL_CHAMBER)-1), y.PL_CHAMBER);
-    else
-      y.PL_CHAMBER := structify(x(left downto left-len(y.PL_CHAMBER)+1), y.PL_CHAMBER);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_PL_ST_CTRL_t) return TAR_PL_ST_PL_ST_CTRL_t is
-    variable y: TAR_PL_ST_PL_ST_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_CHAMBER := convert(x(left to left+len(y.PL_CHAMBER)-1), y.PL_CHAMBER);
-    else
-      y.PL_CHAMBER := convert(x(left downto left-len(y.PL_CHAMBER)+1), y.PL_CHAMBER);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_PL_ST_CTRL_t) return TAR_PL_ST_PL_ST_CTRL_t is
-  variable y: TAR_PL_ST_PL_ST_CTRL_t;
-  begin
-    y.PL_CHAMBER := nullify(t.PL_CHAMBER);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_PL_ST_CTRL_t) return TAR_PL_ST_PL_ST_CTRL_t is
-  variable y: TAR_PL_ST_PL_ST_CTRL_t;
-  begin
-    y.PL_CHAMBER := zeroed(t.PL_CHAMBER);
-    return y;
-  end function zeroed;
-
-  function len(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * len(x(x'left));
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * width(x(x'left));
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), vectorify(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), vectorify(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), convert(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), convert(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function structify(x: std_logic_vector; t: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_CTRL_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_CTRL_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := structify(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := structify(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function structify;
-  function convert(x: std_logic_vector; t: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_CTRL_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_CTRL_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := convert(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := convert(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function nullify(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_CTRL_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_CTRL_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := nullify(y(i));
-    end loop l;
-    return y;
-  end function nullify;
-  function zeroed(x: TAR_PL_ST_PL_ST_CTRL_t_ARRAY) return TAR_PL_ST_PL_ST_CTRL_t_ARRAY is
-    variable y : TAR_PL_ST_PL_ST_CTRL_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := zeroed(y(i));
-    end loop l;
-    return y;
-  end function zeroed;
-
-  function len(x: TAR_PL_ST_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.PL_ST);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.PL_ST);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_ST)-1), vectorify(x.PL_ST, y(left to left+len(x.PL_ST)-1)));
-    else
-      assign(y(left downto left-len(x.PL_ST)+1), vectorify(x.PL_ST, y(left downto left-len(x.PL_ST)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_ST)-1), convert(x.PL_ST, y(left to left+len(x.PL_ST)-1)));
-    else
-      assign(y(left downto left-len(x.PL_ST)+1), convert(x.PL_ST, y(left downto left-len(x.PL_ST)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t is
-    variable y: TAR_PL_ST_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_ST := structify(x(left to left+len(y.PL_ST)-1), y.PL_ST);
-    else
-      y.PL_ST := structify(x(left downto left-len(y.PL_ST)+1), y.PL_ST);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t is
-    variable y: TAR_PL_ST_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_ST := convert(x(left to left+len(y.PL_ST)-1), y.PL_ST);
-    else
-      y.PL_ST := convert(x(left downto left-len(y.PL_ST)+1), y.PL_ST);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t is
-  variable y: TAR_PL_ST_MON_t;
-  begin
-    y.PL_ST := nullify(t.PL_ST);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_MON_t) return TAR_PL_ST_MON_t is
-  variable y: TAR_PL_ST_MON_t;
-  begin
-    y.PL_ST := zeroed(t.PL_ST);
-    return y;
-  end function zeroed;
-
-  function len(x: TAR_PL_ST_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.PL_ST);
-    return l;
-  end function len;
-  function width(x: TAR_PL_ST_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.PL_ST);
-    return l;
-  end function width;
-  function vectorify(x: TAR_PL_ST_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_ST)-1), vectorify(x.PL_ST, y(left to left+len(x.PL_ST)-1)));
-    else
-      assign(y(left downto left-len(x.PL_ST)+1), vectorify(x.PL_ST, y(left downto left-len(x.PL_ST)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_PL_ST_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.PL_ST)-1), convert(x.PL_ST, y(left to left+len(x.PL_ST)-1)));
-    else
-      assign(y(left downto left-len(x.PL_ST)+1), convert(x.PL_ST, y(left downto left-len(x.PL_ST)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t is
-    variable y: TAR_PL_ST_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_ST := structify(x(left to left+len(y.PL_ST)-1), y.PL_ST);
-    else
-      y.PL_ST := structify(x(left downto left-len(y.PL_ST)+1), y.PL_ST);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t is
-    variable y: TAR_PL_ST_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.PL_ST := convert(x(left to left+len(y.PL_ST)-1), y.PL_ST);
-    else
-      y.PL_ST := convert(x(left downto left-len(y.PL_ST)+1), y.PL_ST);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t is
-  variable y: TAR_PL_ST_CTRL_t;
-  begin
-    y.PL_ST := nullify(t.PL_ST);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t is
-  variable y: TAR_PL_ST_CTRL_t;
-  begin
-    y.PL_ST := zeroed(t.PL_ST);
-    return y;
-  end function zeroed;
-
-  function len(x: TAR_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.STATUS);
-    l := l + len(x.PL_ST);
-    return l;
-  end function len;
-  function width(x: TAR_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.STATUS);
-    l := l + width(x.PL_ST);
-    return l;
-  end function width;
-  function vectorify(x: TAR_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.STATUS)-1), vectorify(x.STATUS, y(left to left+len(x.STATUS)-1)));
-      left := left + len(x.STATUS);
-      assign(y(left to left+len(x.PL_ST)-1), vectorify(x.PL_ST, y(left to left+len(x.PL_ST)-1)));
-    else
-      assign(y(left downto left-len(x.STATUS)+1), vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1)));
-      left := left - len(x.STATUS);
-      assign(y(left downto left-len(x.PL_ST)+1), vectorify(x.PL_ST, y(left downto left-len(x.PL_ST)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.STATUS)-1), convert(x.STATUS, y(left to left+len(x.STATUS)-1)));
-      left := left + len(x.STATUS);
-      assign(y(left to left+len(x.PL_ST)-1), convert(x.PL_ST, y(left to left+len(x.PL_ST)-1)));
-    else
-      assign(y(left downto left-len(x.STATUS)+1), convert(x.STATUS, y(left downto left-len(x.STATUS)+1)));
-      left := left - len(x.STATUS);
-      assign(y(left downto left-len(x.PL_ST)+1), convert(x.PL_ST, y(left downto left-len(x.PL_ST)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_MON_t) return TAR_MON_t is
-    variable y: TAR_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.STATUS := structify(x(left to left+len(y.STATUS)-1), y.STATUS);
-      left := left + len(y.STATUS);
-      y.PL_ST := structify(x(left to left+len(y.PL_ST)-1), y.PL_ST);
-    else
-      y.STATUS := structify(x(left downto left-len(y.STATUS)+1), y.STATUS);
-      left := left - len(y.STATUS);
-      y.PL_ST := structify(x(left downto left-len(y.PL_ST)+1), y.PL_ST);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_MON_t) return TAR_MON_t is
-    variable y: TAR_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.STATUS := convert(x(left to left+len(y.STATUS)-1), y.STATUS);
-      left := left + len(y.STATUS);
-      y.PL_ST := convert(x(left to left+len(y.PL_ST)-1), y.PL_ST);
-    else
-      y.STATUS := convert(x(left downto left-len(y.STATUS)+1), y.STATUS);
-      left := left - len(y.STATUS);
-      y.PL_ST := convert(x(left downto left-len(y.PL_ST)+1), y.PL_ST);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_MON_t) return TAR_MON_t is
-  variable y: TAR_MON_t;
-  begin
-    y.STATUS := nullify(t.STATUS);
-    y.PL_ST := nullify(t.PL_ST);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_MON_t) return TAR_MON_t is
-  variable y: TAR_MON_t;
-  begin
-    y.STATUS := zeroed(t.STATUS);
-    y.PL_ST := zeroed(t.PL_ST);
-    return y;
-  end function zeroed;
-
-  function len(x: TAR_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.ACTIONS);
-    l := l + len(x.CONFIGS);
-    l := l + len(x.PL_ST);
-    return l;
-  end function len;
-  function width(x: TAR_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.ACTIONS);
-    l := l + width(x.CONFIGS);
-    l := l + width(x.PL_ST);
-    return l;
-  end function width;
-  function vectorify(x: TAR_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.ACTIONS)-1), vectorify(x.ACTIONS, y(left to left+len(x.ACTIONS)-1)));
-      left := left + len(x.ACTIONS);
-      assign(y(left to left+len(x.CONFIGS)-1), vectorify(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
-      left := left + len(x.CONFIGS);
-      assign(y(left to left+len(x.PL_ST)-1), vectorify(x.PL_ST, y(left to left+len(x.PL_ST)-1)));
-    else
-      assign(y(left downto left-len(x.ACTIONS)+1), vectorify(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
-      left := left - len(x.ACTIONS);
-      assign(y(left downto left-len(x.CONFIGS)+1), vectorify(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
-      left := left - len(x.CONFIGS);
-      assign(y(left downto left-len(x.PL_ST)+1), vectorify(x.PL_ST, y(left downto left-len(x.PL_ST)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: TAR_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.ACTIONS)-1), convert(x.ACTIONS, y(left to left+len(x.ACTIONS)-1)));
-      left := left + len(x.ACTIONS);
-      assign(y(left to left+len(x.CONFIGS)-1), convert(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
-      left := left + len(x.CONFIGS);
-      assign(y(left to left+len(x.PL_ST)-1), convert(x.PL_ST, y(left to left+len(x.PL_ST)-1)));
-    else
-      assign(y(left downto left-len(x.ACTIONS)+1), convert(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
-      left := left - len(x.ACTIONS);
-      assign(y(left downto left-len(x.CONFIGS)+1), convert(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
-      left := left - len(x.CONFIGS);
-      assign(y(left downto left-len(x.PL_ST)+1), convert(x.PL_ST, y(left downto left-len(x.PL_ST)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: TAR_CTRL_t) return TAR_CTRL_t is
-    variable y: TAR_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.ACTIONS := structify(x(left to left+len(y.ACTIONS)-1), y.ACTIONS);
-      left := left + len(y.ACTIONS);
-      y.CONFIGS := structify(x(left to left+len(y.CONFIGS)-1), y.CONFIGS);
-      left := left + len(y.CONFIGS);
-      y.PL_ST := structify(x(left to left+len(y.PL_ST)-1), y.PL_ST);
-    else
-      y.ACTIONS := structify(x(left downto left-len(y.ACTIONS)+1), y.ACTIONS);
-      left := left - len(y.ACTIONS);
-      y.CONFIGS := structify(x(left downto left-len(y.CONFIGS)+1), y.CONFIGS);
-      left := left - len(y.CONFIGS);
-      y.PL_ST := structify(x(left downto left-len(y.PL_ST)+1), y.PL_ST);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: TAR_CTRL_t) return TAR_CTRL_t is
-    variable y: TAR_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.ACTIONS := convert(x(left to left+len(y.ACTIONS)-1), y.ACTIONS);
-      left := left + len(y.ACTIONS);
-      y.CONFIGS := convert(x(left to left+len(y.CONFIGS)-1), y.CONFIGS);
-      left := left + len(y.CONFIGS);
-      y.PL_ST := convert(x(left to left+len(y.PL_ST)-1), y.PL_ST);
-    else
-      y.ACTIONS := convert(x(left downto left-len(y.ACTIONS)+1), y.ACTIONS);
-      left := left - len(y.ACTIONS);
-      y.CONFIGS := convert(x(left downto left-len(y.CONFIGS)+1), y.CONFIGS);
-      left := left - len(y.CONFIGS);
-      y.PL_ST := convert(x(left downto left-len(y.PL_ST)+1), y.PL_ST);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: TAR_CTRL_t) return TAR_CTRL_t is
-  variable y: TAR_CTRL_t;
-  begin
-    y.ACTIONS := nullify(t.ACTIONS);
-    y.CONFIGS := nullify(t.CONFIGS);
-    y.PL_ST := nullify(t.PL_ST);
-    return y;
-  end function nullify;
-  function zeroed(t: TAR_CTRL_t) return TAR_CTRL_t is
-  variable y: TAR_CTRL_t;
-  begin
-    y.ACTIONS := zeroed(t.ACTIONS);
-    y.CONFIGS := zeroed(t.CONFIGS);
-    y.PL_ST := zeroed(t.PL_ST);
-    return y;
-  end function zeroed;
+   function width(x: TAR_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.ACTIONS);
+      w := w + width(x.CONFIGS);
+      w := w + width(x.PL_ST);
+      return w;
+   end function width;
+   function convert(x: TAR_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.ACTIONS);
+         y(u to u+w-1) := convert(x.ACTIONS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.CONFIGS);
+         y(u to u+w-1) := convert(x.CONFIGS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.PL_ST);
+         y(u to u+w-1) := convert(x.PL_ST, y(u to u+w-1));
+      else
+         w := width(x.ACTIONS);
+         y(u downto u-w+1) := convert(x.ACTIONS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.CONFIGS);
+         y(u downto u-w+1) := convert(x.CONFIGS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.PL_ST);
+         y(u downto u-w+1) := convert(x.PL_ST, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: TAR_CTRL_t) return TAR_CTRL_t is
+      variable y : TAR_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.ACTIONS);
+         y.ACTIONS := convert(x(u to u+w-1), tpl.ACTIONS);
+         u := u + w;
+         w := width(tpl.CONFIGS);
+         y.CONFIGS := convert(x(u to u+w-1), tpl.CONFIGS);
+         u := u + w;
+         w := width(tpl.PL_ST);
+         y.PL_ST := convert(x(u to u+w-1), tpl.PL_ST);
+      else
+         w := width(tpl.ACTIONS);
+         y.ACTIONS := convert(x(u downto u-w+1), tpl.ACTIONS);
+         u := u - w;
+         w := width(tpl.CONFIGS);
+         y.CONFIGS := convert(x(u downto u-w+1), tpl.CONFIGS);
+         u := u - w;
+         w := width(tpl.PL_ST);
+         y.PL_ST := convert(x(u downto u-w+1), tpl.PL_ST);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: TAR_CTRL_t) return TAR_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
 end package body TAR_CTRL;

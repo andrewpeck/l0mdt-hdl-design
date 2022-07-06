@@ -1,131 +1,83 @@
-# yml2hdl v2
+
 config:
-  basic_convert_functions: off
-  packages:
-    - ieee: [std_logic_1164, numeric_std, math_real]
-    - ttc_def: [ttc_defs]
-    - types_def: [common_defs]
-    - daq_def: [daq_devel_defs, daq_defs]
-
-hdl:
-
-# basic interfaces =============================================================
-
-# hnode | mngt -----------------------------------------------------------------
-
-- node_to_mngt_rt:
-  - done: [type: logic]
-  - nempty: [type: logic]
-  - err : [type: logic]
-
-- mngt_to_node_rt:
-  - en: [type: logic]
-  - rd_en: [type: logic]
-
-# hnode | mngt -----------------------------------------------------------------
-
-# node | bus converter ---------------------------------------------------------
-
-- node_to_bconv_rt:
-    - counter: [type: forward_rt]
-    - payload: [type: forward_rt]
-
-- bconv_to_node_rt:
-    - counter: [type: backward_rt]
-    - payload: [type: backward_rt]
-
-- bconv_to_pbldr_rt:
-    - counter: [type: forward_rt]
-    - payload: [type: forward_rt]
-
-- pbldr_to_bconv_rt:
-    - counter: [type: backward_rt]
-    - payload: [type: backward_rt]
-
-# entities =====================================================================
-
-# common node ------------------------------------------------------------------
-
-- node_ort:
-  - mngt: [type: node_to_mngt_rt]
-  - bconv: [type: node_to_bconv_rt]
-
-- node_ovt: [type: logic, length: node_ort]
-
-# data node --------------------------------------------------------------------
-
-- dnode_grt:
-    - INPUT_DATA_WIDTH: [type: natural]
-    - COUNTER_WIDTH: [type: natural]
-
-- dnode_irt:
-    - sys: [type: daq_sys_rt]
-    - mngt: [type: mngt_to_node_rt]
-    - req: [type: req_to_row_common_rt]
-    - stream: [type: daq_stream_rt]
-    - bconv: [type: bconv_to_node_rt]
-
-- dnode_ert:
-    - i : [type: dnode_irt]
-    - o : [type: node_ort]
-
-- dnode_ivt: [type: logic, length: dnode_irt]
-
-# header node ------------------------------------------------------------------
-
-- hnode_grt:
-    - COUNTER_WIDTH: [type: natural]
-
-- hnode_irt:
-    - sys: [type: daq_sys_rt]
-    - mngt: [type: mngt_to_node_rt]
-    - req: [type: req_to_row_rt]
-    - bconv: [type: bconv_to_node_rt]
-
-- hnode_ert:
-    - i : [type: hnode_irt]
-    - o : [type: node_ort]
-
-- hnode_ivt: [type: logic, length: hnode_irt]
-
-# bus converter --------------------------------------------------------------
-
-- bconv_grt:
-  - INPUT_DATA_WIDTH: [type: natural]
-
-- bconv_irt:
-  - sys: [type: daq_sys_rt]
-  - src: [type: forward_rt]
-  - dst: [type: pbldr_backward_rt]
-
-- bconv_ort:
-  - src: [type: backward_rt]
-  - dst: [type: pbldr_forward_rt]
-
-- bconv_ert:
-    - i: [type: bconv_irt]
-    - o: [type: bconv_ort]
-
-- bconv_ivt: [type: logic, length: bconv_irt]
-
-- bconv_ovt: [type: logic, length: bconv_ort]
-
-# hub --------------------------------------------------------------------------
-
-- hub_irt:
-  - cnt: [type: pbldr_forward_rt]
-  - pld: [type: pbldr_forward_rt]
-  - dst: [type: pbldr_backward_rt]
-
-- hub_ort:
-  - cnt: [type: pbldr_backward_rt]
-  - pld: [type: pbldr_backward_rt]
-  - dst: [type: pbldr_forward_rt]
-
-- hub_ert:
-  - i: [type: hub_irt]
-  - o: [type: hub_ort]
-
-- hub_ivt: [type: logic, length: hub_irt]
-
-- hub_ovt: [type: logic, length: hub_ort]
+   basic_functions: False
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+      - ttc_def: [ttc_defs]
+      - types_def: [common_defs]
+      - daq_def: [daq_devel_defs, daq_defs]
+types:
+   - node_to_mngt_rt:
+      - done: {'type': 'logic'}
+      - nempty: {'type': 'logic'}
+      - err: {'type': 'logic'}
+   - mngt_to_node_rt:
+      - en: {'type': 'logic'}
+      - rd_en: {'type': 'logic'}
+   - node_to_bconv_rt:
+      - counter: {'type': 'forward_rt'}
+      - payload: {'type': 'forward_rt'}
+   - bconv_to_node_rt:
+      - counter: {'type': 'backward_rt'}
+      - payload: {'type': 'backward_rt'}
+   - bconv_to_pbldr_rt:
+      - counter: {'type': 'forward_rt'}
+      - payload: {'type': 'forward_rt'}
+   - pbldr_to_bconv_rt:
+      - counter: {'type': 'backward_rt'}
+      - payload: {'type': 'backward_rt'}
+   - node_ort:
+      - mngt: {'type': 'node_to_mngt_rt'}
+      - bconv: {'type': 'node_to_bconv_rt'}
+   - node_ovt: {'type': 'logic', 'range': ['node_ort-1', 0]}
+   - dnode_grt:
+      - INPUT_DATA_WIDTH: {'type': 'natural'}
+      - COUNTER_WIDTH: {'type': 'natural'}
+   - dnode_irt:
+      - sys: {'type': 'daq_sys_rt'}
+      - mngt: {'type': 'mngt_to_node_rt'}
+      - req: {'type': 'req_to_row_common_rt'}
+      - stream: {'type': 'daq_stream_rt'}
+      - bconv: {'type': 'bconv_to_node_rt'}
+   - dnode_ert:
+      - i: {'type': 'dnode_irt'}
+      - o: {'type': 'node_ort'}
+   - dnode_ivt: {'type': 'logic', 'range': ['dnode_irt-1', 0]}
+   - hnode_grt:
+      - COUNTER_WIDTH: {'type': 'natural'}
+   - hnode_irt:
+      - sys: {'type': 'daq_sys_rt'}
+      - mngt: {'type': 'mngt_to_node_rt'}
+      - req: {'type': 'req_to_row_rt'}
+      - bconv: {'type': 'bconv_to_node_rt'}
+   - hnode_ert:
+      - i: {'type': 'hnode_irt'}
+      - o: {'type': 'node_ort'}
+   - hnode_ivt: {'type': 'logic', 'range': ['hnode_irt-1', 0]}
+   - bconv_grt:
+      - INPUT_DATA_WIDTH: {'type': 'natural'}
+   - bconv_irt:
+      - sys: {'type': 'daq_sys_rt'}
+      - src: {'type': 'forward_rt'}
+      - dst: {'type': 'pbldr_backward_rt'}
+   - bconv_ort:
+      - src: {'type': 'backward_rt'}
+      - dst: {'type': 'pbldr_forward_rt'}
+   - bconv_ert:
+      - i: {'type': 'bconv_irt'}
+      - o: {'type': 'bconv_ort'}
+   - bconv_ivt: {'type': 'logic', 'range': ['bconv_irt-1', 0]}
+   - bconv_ovt: {'type': 'logic', 'range': ['bconv_ort-1', 0]}
+   - hub_irt:
+      - cnt: {'type': 'pbldr_forward_rt'}
+      - pld: {'type': 'pbldr_forward_rt'}
+      - dst: {'type': 'pbldr_backward_rt'}
+   - hub_ort:
+      - cnt: {'type': 'pbldr_backward_rt'}
+      - pld: {'type': 'pbldr_backward_rt'}
+      - dst: {'type': 'pbldr_forward_rt'}
+   - hub_ert:
+      - i: {'type': 'hub_irt'}
+      - o: {'type': 'hub_ort'}
+   - hub_ivt: {'type': 'logic', 'range': ['hub_irt-1', 0]}
+   - hub_ovt: {'type': 'logic', 'range': ['hub_ort-1', 0]}

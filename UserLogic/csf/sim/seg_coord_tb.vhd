@@ -39,11 +39,11 @@ END seg_coord_tb;
 
 ARCHITECTURE Behavioral OF seg_coord_tb IS
     SIGNAL clk : STD_LOGIC := '0';
-    SIGNAL i_locseg : csf_locseg_rvt := (OTHERS => '0');
-    SIGNAL i_seed : heg2sfslc_rvt := (OTHERS => '0');
+    SIGNAL i_locseg : csf_locseg_vt := (OTHERS => '0');
+    SIGNAL i_seed : heg2sfslc_vt := (OTHERS => '0');
     SIGNAL locseg : csf_locseg_rt;
     SIGNAL seed : heg2sfslc_rt;
-    SIGNAL o_globseg : sf2ptcalc_rvt := (OTHERS => '0');
+    SIGNAL o_globseg : sf2ptcalc_vt := (OTHERS => '0');
     CONSTANT CLK_period : TIME := 2.77777 ns;
 BEGIN
 
@@ -63,8 +63,8 @@ BEGIN
         WAIT FOR CLK_period/2;
     END PROCESS;
 
-    i_locseg <= vectorify(locseg);
-    i_seed <= vectorify(seed);
+    i_locseg <= convert(locseg);
+    i_seed <= convert(seed);
 
     --    *** DIGI Local Seg *** 
     --y_digi: 2489.0000000000
@@ -85,8 +85,8 @@ BEGIN
 
     Pulse : PROCESS
     BEGIN
-        seed <= nullify(seed);
-        locseg <= nullify(locseg);
+        seed <= zero(seed);
+        locseg <= zero(locseg);
         WAIT FOR clk_period * 5;
         seed.hewindow_pos <= to_unsigned(255, UCM2HPS_VEC_POS_LEN);
         seed.data_valid <= '1';
@@ -95,8 +95,8 @@ BEGIN
         locseg.b <= to_signed(2489, CSF_SEG_B_LEN);
         locseg.m <= to_signed(1560, CSF_SEG_M_LEN);
         WAIT FOR clk_period;
-        locseg <= nullify(locseg);
-        seed <= nullify(seed);
+        locseg <= zero(locseg);
+        seed <= zero(seed);
         WAIT;
     END PROCESS;
 END Behavioral;

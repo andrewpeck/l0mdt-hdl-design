@@ -1,4 +1,5 @@
-`include "l0mdt_buses_constants.svh"
+//`include "l0mdt_buses_constants.svh"
+import l0mdt_dataformats_svh::*;
 
 module get_rom_addr(
 		     input logic 			       clk,

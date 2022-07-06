@@ -30,9 +30,12 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 entity top_hps is
   generic(
@@ -65,20 +68,22 @@ end entity top_hps;
 
 architecture beh of top_hps is
 
-  signal ctrl_r             : H2S_HPS_CTRL_t;
-  signal mon_r              : H2S_HPS_MON_t;
-  constant  c_CTRL_LEN      : integer := len(ctrl_r);
-  constant c_MON_LEN        : integer := len(mon_r);
+  signal ctrl_r             : HPS_CTRL_t;
+  signal mon_r              : HPS_MON_t;
+  constant  c_CTRL_LEN      : integer := HPS_CTRL_t'w;--len(ctrl_r);
+  constant c_MON_LEN        : integer := HPS_MON_t'w;--len(mon_r);
   signal ctrl_v             : std_logic_vector(c_CTRL_LEN -1 downto 0);
   signal mon_v              : std_logic_vector(c_MON_LEN -1 downto 0);
 
-  signal i_uCM2hps_av        : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal i_mdt_tar_av        : tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
-  signal o_sf2pt_av          : sf2pt_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal i_uCM2hps_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal i_mdt_tar_av        : tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+  signal o_sf2pt_av          : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
 
 begin
 
-  ctrl : entity shared_lib.vhdl_utils_deserializer generic map (c_CTRL_LEN) port map(clk,rst,ctrl_b,ctrl_v);
+  ctrl : entity shared_lib.vhdl_utils_deserializer 
+    generic map (g_DATA_WIDTH => c_CTRL_LEN) 
+    port map(clk => clk,rst  => rst,i_data => ctrl_b,o_data => ctrl_v);
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
   for0: for i_th in c_NUM_THREADS -1 downto 0 generate

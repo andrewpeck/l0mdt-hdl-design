@@ -1,18 +1,18 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: tar
+-- File: tar_station.vhd
+-- Module: TAR
+-- File PATH: /src/tar_station.vhd
+-- -----
+-- File Created: Tuesday, 23rd November 2021 2:24:35 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Wednesday, 15th December 2021 2:46:20 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: Tube Adress Remap
---  Description: aplies the fiber mapping to identify the origin of the hits
---
---------------------------------------------------------------------------------
---  Revisions: 
---    v0  - 2020.08.23 creation
---      
---------------------------------------------------------------------------------
-
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -52,52 +52,45 @@ entity tar_station is
     -- supervisor
     i_freeze          : in std_logic :=  '0';
     -- data
-    i_tdc_hits_av    : in  mdt_polmux_bus_avt (g_ARRAY_LEN -1 downto 0);
-    o_tdc_hits_av    : out mdt_polmux_bus_avt(g_ARRAY_LEN -1 downto 0);
-    o_tar_hits_av    : out tar2hps_bus_avt(g_ARRAY_LEN -1 downto 0)
+    i_tdc_hits_av    : in  tdcpolmux2tar_avt (g_ARRAY_LEN -1 downto 0);
+    o_tdc_hits_av    : out tdcpolmux2tar_avt(g_ARRAY_LEN -1 downto 0);
+    o_tar_hits_av    : out tar2hps_avt(g_ARRAY_LEN -1 downto 0)
     
   );
 end entity tar_station;
 
 architecture beh of tar_station is
 
-  signal ctrl_r : TAR_PL_ST_PL_ST_CTRL_t;
-  signal mon_r  : TAR_PL_ST_PL_ST_MON_t;
+  signal ctrl_r : TAR_PL_ST_CTRL_t;
+  signal mon_r  : TAR_PL_ST_MON_t;
 
-  -- signal ctrl_apb_mem_r : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
-  -- signal mon_apb_mem_r  : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; 
+  constant CTRL_LEN : integer := width(ctrl_r.PL_MEM(0));--71;
+  constant MON_LEN : integer := width(mon_r.PL_MEM(0));--43;
 
-  constant TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_LEN : integer := 71;
-  constant TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_LEN : integer := 43;
-
-  type ctrl_apb_mem_avt is array (5 downto 0) of std_logic_vector(TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_LEN-1  downto 0);
-  type mon_apb_mem_avt  is array (5 downto 0) of std_logic_vector(TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_LEN-1  downto 0);
+  type ctrl_apb_mem_avt is array (5 downto 0) of std_logic_vector(CTRL_LEN-1  downto 0);
+  type mon_apb_mem_avt  is array (5 downto 0) of std_logic_vector(MON_LEN-1  downto 0);
 
   signal ctrl_apb_mem_av : ctrl_apb_mem_avt;
   signal mon_apb_mem_av  : mon_apb_mem_avt; 
 
-  signal i_tdc_hits_ar : mdt_polmux_bus_at(g_ARRAY_LEN -1 downto 0);
-  signal int_tdc_hits_av : mdt_polmux_bus_avt(g_ARRAY_LEN -1 downto 0);
+  signal i_tdc_hits_ar : tdcpolmux2tar_art(g_ARRAY_LEN -1 downto 0);
+  signal int_tdc_hits_av : tdcpolmux2tar_avt(g_ARRAY_LEN -1 downto 0);
 
-  -- signal i_freeze : std_logic :=  '0';
 
-  -- signal apb_ctr_v : std_logic_vector(len(ctrl) - 1 downto 0);
-  -- signal apb_mon_v : std_logic_vector(len(mon) - 1 downto 0);
-
-  -- signal apb_ctrl_mem_v : std_logic_vector(len(ctrl) - 1 downto 0); 
-  -- signal apb_mon_mem_v  : std_logic_vector(len(mon) - 1 downto 0);
-  
 begin
 
   ctrl_r <= convert(ctrl_v,ctrl_r);
   mon_v <= convert(mon_r,mon_v);
 
-  i_tdc_hits_ar <= structify(i_tdc_hits_av);
+  tdc_loop: for b_i in g_ARRAY_LEN -1 downto 0 generate
+    i_tdc_hits_ar(b_i) <= convert(i_tdc_hits_av(b_i),i_tdc_hits_ar(b_i));
+  end generate tdc_loop;
+  
   
   PL_ARRAY : for b_i in g_ARRAY_LEN -1 downto 0 generate
 
-    ctrl_apb_mem_av(b_i) <= convert(ctrl_r.PL_CHAMBER.PL_MEM(b_i),ctrl_apb_mem_av(b_i));
-    mon_r.PL_CHAMBER.PL_MEM(b_i) <= convert(mon_apb_mem_av(b_i),mon_r.PL_CHAMBER.PL_MEM(b_i));
+    ctrl_apb_mem_av(b_i) <= convert(ctrl_r.PL_MEM(b_i),ctrl_apb_mem_av(b_i));
+    mon_r.PL_MEM(b_i) <= convert(mon_apb_mem_av(b_i),mon_r.PL_MEM(b_i));
 
     POLMUX_EN : if c_HP_SECTOR_STATION(0)(b_i) = '1' generate
 

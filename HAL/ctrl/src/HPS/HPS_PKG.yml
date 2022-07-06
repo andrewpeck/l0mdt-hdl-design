@@ -1,0 +1,376 @@
+# yml2hdl v0.3
+# This file was auto-generated.
+# Modifications might be lost.
+config:
+  basic_functions : False
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg]
+
+types:
+
+- HPS_SUPER_ACTIONS_CTRL_t:
+  - RESET : { type: logic }
+  - ENABLE : { type: logic }
+  - DISABLE : { type: logic }
+  - FREEZE : { type: logic }
+
+
+- HPS_SUPER_CONFIGS_CTRL_t:
+  - THREADS : { type: logic, range : [ 4 - 1 , 0 ] }
+  - INPUT_EN : { type: logic }
+  - OUTPUT_EN : { type: logic }
+  - FLUSH_MEM_RESET : { type: logic }
+
+
+- HPS_SUPER_STATUS_MON_t:
+  - ENABLED : { type: logic }
+  - READY : { type: logic }
+  - ERROR : { type: logic, range : [ 8 - 1 , 0 ] }
+
+
+- HPS_SUPER_MON_t:
+  - STATUS : { type: HPS_SUPER_STATUS_MON_t }
+
+
+- HPS_SUPER_CTRL_t:
+  - ACTIONS : { type: HPS_SUPER_ACTIONS_CTRL_t }
+  - CONFIGS : { type: HPS_SUPER_CONFIGS_CTRL_t }
+
+
+- HPS_MDT_TC_MDT_TC_SIGNALS_MON_t:
+  - rd_rdy : { type: logic }
+  - freeze_ena : { type: logic }
+
+
+- HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t:
+  - wr_req : { type: logic }
+  - wr_ack : { type: logic }
+  - rd_req : { type: logic }
+  - rd_ack : { type: logic }
+  - flush_req : { type: logic }
+  - freeze_req : { type: logic }
+  - mem_sel : { type: logic, range : [ 3 - 1 , 0 ] }
+
+
+- HPS_MDT_TC_MDT_TC_wr_data_CTRL_t:
+  - wr_data_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - wr_data_1 : { type: logic, range : [ 6 - 1 , 0 ] }
+
+
+- HPS_MDT_TC_MDT_TC_rd_data_MON_t:
+  - rd_data_1 : { type: logic, range : [ 6 - 1 , 0 ] }
+  - rd_data_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+
+
+- HPS_MDT_TC_MDT_TC_MON_t:
+  - SIGNALS : { type: HPS_MDT_TC_MDT_TC_SIGNALS_MON_t }
+  - rd_data : { type: HPS_MDT_TC_MDT_TC_rd_data_MON_t }
+
+- HPS_MDT_TC_MDT_TC_MON_t_ARRAY: {array : [ 6 -1 , 0 ], type : HPS_MDT_TC_MDT_TC_MON_t}
+
+- HPS_MDT_TC_MDT_TC_CTRL_t:
+  - SIGNALS : { type: HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t }
+  - wr_addr : { type: logic, range : [ 10 - 1 , 0 ] }
+  - rd_addr : { type: logic, range : [ 10 - 1 , 0 ] }
+  - wr_data : { type: HPS_MDT_TC_MDT_TC_wr_data_CTRL_t }
+
+- HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY: {array : [ 6 -1 , 0 ], type : HPS_MDT_TC_MDT_TC_CTRL_t}
+
+- HPS_MDT_TC_MON_t:
+  - MDT_TC : { type: HPS_MDT_TC_MDT_TC_MON_t_ARRAY }
+
+
+- HPS_MDT_TC_CTRL_t:
+  - MDT_TC : { type: HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY }
+
+
+- HPS_MDT_T0_MDT_T0_SIGNALS_MON_t:
+  - rd_rdy : { type: logic }
+  - freeze_ena : { type: logic }
+
+
+- HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t:
+  - wr_req : { type: logic }
+  - wr_ack : { type: logic }
+  - rd_req : { type: logic }
+  - rd_ack : { type: logic }
+  - flush_req : { type: logic }
+  - freeze_req : { type: logic }
+  - mem_sel : { type: logic, range : [ 3 - 1 , 0 ] }
+
+
+- HPS_MDT_T0_MDT_T0_wr_data_CTRL_t:
+  - wr_data_0 : { type: logic, range : [ 17 - 1 , 0 ] }
+
+
+- HPS_MDT_T0_MDT_T0_rd_data_MON_t:
+  - rd_data_0 : { type: logic, range : [ 17 - 1 , 0 ] }
+
+
+- HPS_MDT_T0_MDT_T0_MON_t:
+  - SIGNALS : { type: HPS_MDT_T0_MDT_T0_SIGNALS_MON_t }
+  - rd_data : { type: HPS_MDT_T0_MDT_T0_rd_data_MON_t }
+
+- HPS_MDT_T0_MDT_T0_MON_t_ARRAY: {array : [ 6 -1 , 0 ], type : HPS_MDT_T0_MDT_T0_MON_t}
+
+- HPS_MDT_T0_MDT_T0_CTRL_t:
+  - SIGNALS : { type: HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t }
+  - wr_addr : { type: logic, range : [ 4 - 1 , 0 ] }
+  - rd_addr : { type: logic, range : [ 4 - 1 , 0 ] }
+  - wr_data : { type: HPS_MDT_T0_MDT_T0_wr_data_CTRL_t }
+
+- HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY: {array : [ 6 -1 , 0 ], type : HPS_MDT_T0_MDT_T0_CTRL_t}
+
+- HPS_MDT_T0_MON_t:
+  - MDT_T0 : { type: HPS_MDT_T0_MDT_T0_MON_t_ARRAY }
+
+
+- HPS_MDT_T0_CTRL_t:
+  - MDT_T0 : { type: HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY }
+
+
+- HPS_HEG_HEG_SUPER_ACTIONS_CTRL_t:
+  - RESET : { type: logic }
+  - ENABLE : { type: logic }
+  - DISABLE : { type: logic }
+  - FREEZE : { type: logic }
+
+
+- HPS_HEG_HEG_SUPER_CONFIGS_CTRL_t:
+  - INPUT_EN : { type: logic }
+  - OUTPUT_EN : { type: logic }
+  - FLUSH_MEM_RESET : { type: logic }
+
+
+- HPS_HEG_HEG_SUPER_STATUS_MON_t:
+  - ENABLED : { type: logic }
+  - READY : { type: logic }
+  - ERROR : { type: logic }
+
+
+- HPS_HEG_HEG_SUPER_COUNTERS_MON_t:
+  - SLC_PROC : { type: logic, range : [ 32 - 1 , 0 ] }
+  - HIT_PROC : { type: logic, range : [ 32 - 1 , 0 ] }
+  - HIT_OK : { type: logic, range : [ 32 - 1 , 0 ] }
+  - ERROR : { type: logic, range : [ 32 - 1 , 0 ] }
+
+
+- HPS_HEG_HEG_SUPER_MON_t:
+  - STATUS : { type: HPS_HEG_HEG_SUPER_STATUS_MON_t }
+  - COUNTERS : { type: HPS_HEG_HEG_SUPER_COUNTERS_MON_t }
+
+
+- HPS_HEG_HEG_SUPER_CTRL_t:
+  - ACTIONS : { type: HPS_HEG_HEG_SUPER_ACTIONS_CTRL_t }
+  - CONFIGS : { type: HPS_HEG_HEG_SUPER_CONFIGS_CTRL_t }
+
+
+- HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_MON_t:
+  - rd_rdy : { type: logic }
+  - freeze_ena : { type: logic }
+
+
+- HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t:
+  - wr_req : { type: logic }
+  - wr_ack : { type: logic }
+  - rd_req : { type: logic }
+  - rd_ack : { type: logic }
+  - flush_req : { type: logic }
+  - freeze_req : { type: logic }
+  - mem_sel : { type: logic, range : [ 3 - 1 , 0 ] }
+
+
+- HPS_HEG_HEG_CTRL_ROI_TC_wr_data_CTRL_t:
+  - wr_data_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - wr_data_1 : { type: logic, range : [ 6 - 1 , 0 ] }
+
+
+- HPS_HEG_HEG_CTRL_ROI_TC_rd_data_MON_t:
+  - rd_data_1 : { type: logic, range : [ 6 - 1 , 0 ] }
+  - rd_data_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+
+
+- HPS_HEG_HEG_CTRL_ROI_TC_MON_t:
+  - SIGNALS : { type: HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_MON_t }
+  - rd_data : { type: HPS_HEG_HEG_CTRL_ROI_TC_rd_data_MON_t }
+
+
+- HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t:
+  - SIGNALS : { type: HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t }
+  - wr_addr : { type: logic, range : [ 10 - 1 , 0 ] }
+  - rd_addr : { type: logic, range : [ 10 - 1 , 0 ] }
+  - wr_data : { type: HPS_HEG_HEG_CTRL_ROI_TC_wr_data_CTRL_t }
+
+
+- HPS_HEG_HEG_CTRL_MON_t:
+  - ROI_TC : { type: HPS_HEG_HEG_CTRL_ROI_TC_MON_t }
+
+
+- HPS_HEG_HEG_CTRL_CTRL_t:
+  - ROI_TC : { type: HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t }
+
+
+- HPS_HEG_HEG_HP_HP_ACTIONS_CTRL_t:
+  - RESET : { type: logic }
+  - ENABLE : { type: logic }
+  - DISABLE : { type: logic }
+  - FREEZE : { type: logic }
+
+
+- HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t:
+  - INPUT_EN : { type: logic }
+  - OUTPUT_EN : { type: logic }
+  - FLUSH_MEM_RESET : { type: logic }
+
+
+- HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t:
+  - rd_rdy : { type: logic }
+  - freeze_ena : { type: logic }
+
+
+- HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t:
+  - wr_req : { type: logic }
+  - wr_ack : { type: logic }
+  - rd_req : { type: logic }
+  - rd_ack : { type: logic }
+  - flush_req : { type: logic }
+  - freeze_req : { type: logic }
+  - mem_sel : { type: logic, range : [ 3 - 1 , 0 ] }
+
+
+- HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t:
+  - wr_data_0 : { type: logic, range : [ 9 - 1 , 0 ] }
+
+
+- HPS_HEG_HEG_HP_HP_MDT_DT2R_rd_data_MON_t:
+  - rd_data_0 : { type: logic, range : [ 9 - 1 , 0 ] }
+
+
+- HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t:
+  - SIGNALS : { type: HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t }
+  - rd_data : { type: HPS_HEG_HEG_HP_HP_MDT_DT2R_rd_data_MON_t }
+
+
+- HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t:
+  - SIGNALS : { type: HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t }
+  - wr_addr : { type: logic, range : [ 10 - 1 , 0 ] }
+  - rd_addr : { type: logic, range : [ 10 - 1 , 0 ] }
+  - wr_data : { type: HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t }
+
+
+- HPS_HEG_HEG_HP_HP_MON_t:
+  - MDT_DT2R : { type: HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t }
+
+- HPS_HEG_HEG_HP_HP_MON_t_ARRAY: {array : [ 6 -1 , 0 ], type : HPS_HEG_HEG_HP_HP_MON_t}
+
+- HPS_HEG_HEG_HP_HP_CTRL_t:
+  - ACTIONS : { type: HPS_HEG_HEG_HP_HP_ACTIONS_CTRL_t }
+  - CONFIGS : { type: HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t }
+  - MDT_DT2R : { type: HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t }
+
+- HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY: {array : [ 6 -1 , 0 ], type : HPS_HEG_HEG_HP_HP_CTRL_t}
+
+- HPS_HEG_HEG_HP_MON_t:
+  - HP : { type: HPS_HEG_HEG_HP_HP_MON_t_ARRAY }
+
+
+- HPS_HEG_HEG_HP_CTRL_t:
+  - HP : { type: HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY }
+
+
+- HPS_HEG_HEG_MON_t:
+  - SUPER : { type: HPS_HEG_HEG_SUPER_MON_t }
+  - CTRL : { type: HPS_HEG_HEG_CTRL_MON_t }
+  - HP : { type: HPS_HEG_HEG_HP_MON_t }
+
+- HPS_HEG_HEG_MON_t_ARRAY: {array : [ 3 -1 , 0 ], type : HPS_HEG_HEG_MON_t}
+
+- HPS_HEG_HEG_CTRL_t:
+  - SUPER : { type: HPS_HEG_HEG_SUPER_CTRL_t }
+  - CTRL : { type: HPS_HEG_HEG_CTRL_CTRL_t }
+  - HP : { type: HPS_HEG_HEG_HP_CTRL_t }
+
+- HPS_HEG_HEG_CTRL_t_ARRAY: {array : [ 3 -1 , 0 ], type : HPS_HEG_HEG_CTRL_t}
+
+- HPS_HEG_MON_t:
+  - HEG : { type: HPS_HEG_HEG_MON_t_ARRAY }
+
+
+- HPS_HEG_CTRL_t:
+  - HEG : { type: HPS_HEG_HEG_CTRL_t_ARRAY }
+
+
+- HPS_LSF_LSF_MON_t:
+  - STATUS : { type: logic }
+  - sb_lsf_mdt_hits_rdata_31_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - sb_lsf_mdt_hits_rdata_40_32 : { type: logic, range : [ 9 - 1 , 0 ] }
+
+- HPS_LSF_LSF_MON_t_ARRAY: {array : [ 3 -1 , 0 ], type : HPS_LSF_LSF_MON_t}
+
+- HPS_LSF_LSF_CTRL_t:
+  - RESET : { type: logic }
+  - HBA_MAX_CLOCKS : { type: logic, range : [ 10 - 1 , 0 ] }
+  - sb_lsf_mdt_hits_freeze : { type: logic }
+  - sb_lsf_mdt_hits_raddr : { type: logic, range : [ 8 - 1 , 0 ] }
+  - sb_lsf_mdt_hits_re : { type: logic }
+
+- HPS_LSF_LSF_CTRL_t_ARRAY: {array : [ 3 -1 , 0 ], type : HPS_LSF_LSF_CTRL_t}
+
+- HPS_LSF_MON_t:
+  - LSF : { type: HPS_LSF_LSF_MON_t_ARRAY }
+
+
+- HPS_LSF_CTRL_t:
+  - LSF : { type: HPS_LSF_LSF_CTRL_t_ARRAY }
+
+
+- HPS_CSF_CSF_ACTIONS_CTRL_t:
+  - RESET : { type: logic }
+  - ENABLE : { type: logic }
+  - DISABLE : { type: logic }
+  - FREEZE : { type: logic }
+
+
+- HPS_CSF_CSF_STATUS_MON_t:
+  - ENABLED : { type: logic }
+  - READY : { type: logic }
+  - ERROR : { type: logic }
+
+
+- HPS_CSF_CSF_MON_t:
+  - STATUS : { type: HPS_CSF_CSF_STATUS_MON_t }
+
+- HPS_CSF_CSF_MON_t_ARRAY: {array : [ 3 -1 , 0 ], type : HPS_CSF_CSF_MON_t}
+
+- HPS_CSF_CSF_CTRL_t:
+  - ACTIONS : { type: HPS_CSF_CSF_ACTIONS_CTRL_t }
+
+- HPS_CSF_CSF_CTRL_t_ARRAY: {array : [ 3 -1 , 0 ], type : HPS_CSF_CSF_CTRL_t}
+
+- HPS_CSF_MON_t:
+  - CSF : { type: HPS_CSF_CSF_MON_t_ARRAY }
+
+
+- HPS_CSF_CTRL_t:
+  - CSF : { type: HPS_CSF_CSF_CTRL_t_ARRAY }
+
+
+- HPS_MON_t:
+  - SUPER : { type: HPS_SUPER_MON_t }
+  - MDT_TC : { type: HPS_MDT_TC_MON_t }
+  - MDT_T0 : { type: HPS_MDT_T0_MON_t }
+  - HEG : { type: HPS_HEG_MON_t }
+  - LSF : { type: HPS_LSF_MON_t }
+  - CSF : { type: HPS_CSF_MON_t }
+
+
+- HPS_CTRL_t:
+  - SUPER : { type: HPS_SUPER_CTRL_t }
+  - MDT_TC : { type: HPS_MDT_TC_CTRL_t }
+  - MDT_T0 : { type: HPS_MDT_T0_CTRL_t }
+  - HEG : { type: HPS_HEG_CTRL_t }
+  - LSF : { type: HPS_LSF_CTRL_t }
+  - CSF : { type: HPS_CSF_CTRL_t }
+
+

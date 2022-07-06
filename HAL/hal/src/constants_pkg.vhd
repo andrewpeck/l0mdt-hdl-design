@@ -58,8 +58,7 @@ package constants_pkg is
   constant c_MAX_DAQ_LINKS : integer := func_count_link_types (c_MGT_MAP, MGT_FELIX);
   constant c_NUM_DAQ_LINKS : integer := 0;
 
-  constant c_NUM_FELIX_UPLINKS : integer := func_count_link_types (c_MGT_MAP, MGT_FELIX)
-                                            + func_count_link_types (c_MGT_MAP, MGT_FELIX_TXRX);
+  constant c_NUM_FELIX_UPLINKS : integer := func_count_link_types (c_MGT_MAP, MGT_FELIX);
   constant c_NUM_FELIX_DOWNLINKS : integer := 1;
 
   --------------------------------------------------------------------------------
@@ -129,47 +128,32 @@ package constants_pkg is
   --
   --------------------------------------------------------------------------------
 
-  -- polling multiplexer configuration
-  --constant inner_polmux_idx_array : int_array_t (0 to c_NUM_POLMUX) :=
-  --  func_fill_polmux_idx (c_NUM_TDC_INPUTS, c_MDT_CONFIG, c_NUM_POLMUX, INNER);
-  --constant middle_polmux_idx_array : int_array_t (0 to c_NUM_POLMUX) :=
-  --  func_fill_polmux_idx (c_NUM_TDC_INPUTS, c_MDT_CONFIG, c_NUM_POLMUX, MIDDLE);
-  --constant outer_polmux_idx_array : int_array_t (0 to c_NUM_POLMUX) :=
-  --  func_fill_polmux_idx (c_NUM_TDC_INPUTS, c_MDT_CONFIG, c_NUM_POLMUX, OUTER);
-  --constant extra_polmux_idx_array : int_array_t (0 to c_NUM_POLMUX) :=
-  --  func_fill_polmux_idx (c_NUM_TDC_INPUTS, c_MDT_CONFIG, c_NUM_POLMUX, EXTRA);
-
   -- list of lpgbt emulator cores
   constant emul_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
-    func_fill_subtype_idx (c_NUM_LPGBT_EMUL_UPLINKS, c_MGT_MAP, MGT_LPGBT_EMUL, MGT_LPGBT_EMUL);
+    func_fill_subtype_idx (c_NUM_LPGBT_EMUL_UPLINKS, c_MGT_MAP, MGT_LPGBT_EMUL);
 
-  -- list of lpgbt mgts, simplex and duplex
-  constant lpgbt_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
-    func_fill_subtype_idx (c_NUM_CSM_UPLINKS, c_MGT_MAP, MGT_LPGBT, MGT_LPGBT_SIMPLEX);
-
-  -- list of lpgbt mgts, simplex and duplex
+  -- list of lpgbt uplinks
   constant lpgbt_uplink_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
-    func_fill_subtype_idx (c_NUM_CSM_UPLINKS, c_MGT_MAP, MGT_LPGBT, MGT_LPGBT_SIMPLEX);
+    func_fill_csm_uplink_idx (c_NUM_CSM_UPLINKS, c_MGT_MAP, c_MDT_CONFIG);
+
+  -- list of lpgbt downlinks
+  constant lpgbt_downlink_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
+    func_fill_csm_downlink_idx (c_NUM_CSM_DOWNLINKS, c_MGT_MAP, c_MDT_CONFIG);
 
   -- list of lpgbt mgts, simplex and duplex
-  constant lpgbt_downlink_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
-    func_fill_subtype_idx (c_NUM_CSM_DOWNLINKS, c_MGT_MAP, MGT_LPGBT, MGT_LPGBT);
-
-  -- list of simplex only lpgbts
-  constant lpgbt_simplex_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
-    func_fill_subtype_idx (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT_SIMPLEX, MGT_LPGBT_SIMPLEX);
+  constant lpgbt_idx_array : int_array_t (0 to c_NUM_MGTS-1) := lpgbt_uplink_idx_array;
 
   -- list of sector logic mgts
   constant sl_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
-    func_fill_subtype_idx (c_NUM_SECTOR_LOGIC_INPUTS, c_MGT_MAP, MGT_SL, MGT_SL);
+    func_fill_subtype_idx (c_NUM_SECTOR_LOGIC_INPUTS, c_MGT_MAP, MGT_SL);
 
   -- list of felix mgts
   constant felix_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
-    func_fill_subtype_idx (c_NUM_FELIX_UPLINKS, c_MGT_MAP, MGT_FELIX, MGT_FELIX_TXRX);
+    func_fill_subtype_idx (c_NUM_FELIX_UPLINKS, c_MGT_MAP, MGT_FELIX);
 
-  -- list of felix mgts
-  constant felix_txrx_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
-    func_fill_subtype_idx (c_NUM_FELIX_UPLINKS, c_MGT_MAP, MGT_FELIX_TXRX, MGT_FELIX_TXRX);
+  -- list of ttc mgts
+  constant ttc_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
+    func_fill_subtype_idx (1, c_MGT_MAP, MGT_TTC);
 
   type hi_lo_t is record
     hi : integer;
@@ -178,7 +162,7 @@ package constants_pkg is
 
   type hi_lo_array_t is array (integer range <>) of hi_lo_t;
 
-  function get_csm_mgt_num (csm_id : integer; mgt_map : mgt_inst_array_t)
+  function get_sl_mgt_num (sl_id : integer; mgt_map : mgt_inst_array_t)
     return integer;
   function get_csm_hi_lo (mdt_config : mdt_config_t)
     return hi_lo_array_t;
@@ -251,19 +235,19 @@ package body constants_pkg is
     return hi_lo;
   end function;
 
-  function get_csm_mgt_num (csm_id : integer; mgt_map : mgt_inst_array_t)
+  function get_sl_mgt_num (sl_id : integer; mgt_map : mgt_inst_array_t)
     return integer is
     variable cnt   : integer := 0;
   begin
-    for I in 0 to mgt_map'length-1 loop
-      if (mgt_map(I).mgt_type = MGT_LPGBT) then
 
-        if (cnt=csm_id) then
+    -- for a given SL (e.g. 0-11) get the MGT link number (e.g. 0-127)
+    -- assumign the same ordination between the SL and MGT numbers
+    for I in 0 to mgt_map'length-1 loop
+      if (mgt_map(I).mgt_type = MGT_SL) then
+        if (cnt=sl_id) then
           return I;
         end if;
-
         cnt := cnt + 1;
-
       end if;
     end loop;
     return -1;
@@ -274,6 +258,7 @@ package body constants_pkg is
     variable hi_lo : hi_lo_array_t (mdt_config'range);
     variable cnt   : integer := 0;
   begin
+    --
 
     -- initialize output
     for I in 0 to hi_lo'length -1 loop

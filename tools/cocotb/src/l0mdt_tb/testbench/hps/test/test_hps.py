@@ -119,6 +119,8 @@ def hps_test(dut):
     inputs_station_id= [["" for x in range(HpsPorts.get_input_interface_ports(y))]for y in range(HpsPorts.n_input_interfaces)]
     outputs_station_id= [["" for x in range(HpsPorts.get_output_interface_ports(y))]for y in range(HpsPorts.n_output_interfaces)]
     tolerance= [["" for x in range(HpsPorts.get_output_interface_ports(y))]for y in range(HpsPorts.n_output_interfaces)]
+    inputs_thread_n= [[0 for x in range(HpsPorts.get_input_interface_ports(y))]for y in range(HpsPorts.n_input_interfaces)]
+    outputs_thread_n= [[0 for x in range(HpsPorts.get_output_interface_ports(y))]for y in range(HpsPorts.n_output_interfaces)]
     for i in range(HpsPorts.n_input_interfaces):
         if "tv_df_type" in testvector_config_inputs[i]:
             inputs_tv_df_type[i] = testvector_config_inputs[i]["tv_df_type"]
@@ -126,11 +128,17 @@ def hps_test(dut):
             inputs_tv_df_type[i] = "SL"
         if "station_ID" in testvector_config_inputs[i] :
             inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+        if "thread_n" in testvector_config_inputs[i]:
+            inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
     for i in range(HpsPorts.n_output_interfaces):
         if "station_ID" in testvector_config_outputs[i] :
             outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
         else :
             outputs_station_id[i] = ['NONE']
+
+        if "thread_n" in testvector_config_outputs[i]:
+            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]
+ 
 
         if "tolerance" in testvector_config_outputs[i] :
             tolerance[i] = testvector_config_outputs[i]["tolerance"]
@@ -257,27 +265,33 @@ def hps_test(dut):
             n_to_load=num_events_to_process,
             station_ID=inputs_station_id[n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
-            tv_df_type = inputs_tv_df_type[n_ip_intf]
+            tv_df_type = inputs_tv_df_type[n_ip_intf],
+            cnd_thrd_id = inputs_thread_n[n_ip_intf]
             ))
         if(n_ip_intf == 0):
+            print("UCM2HPS single_interface_list = ",single_interface_list)
             single_interface_list_ii_delay = events.modify_tv(single_interface_list, ucm2hps_ii)
-            for io in range(HpsPorts.get_input_interface_ports(n_ip_intf)):  #Outputs):
+            for io in range(HpsPorts.get_input_interface_ports(n_ip_intf)): 
                 input_tv_list.append(single_interface_list_ii_delay[io])
         elif(n_ip_intf == 1):
-            print("single_interface_list = ",single_interface_list)
+            print("TAR2HPS single_interface_list = ",single_interface_list)
+            hits_in_event      = []
+            hits_zero_padding  = []
+            hits_ii            = 2 #PRIYA :configure this
             for io in range (len(single_interface_list)):
-                hits_in_event      = len(single_interface_list[io][0])
-                hits_zero_padding  = ucm2hps_ii - hits_in_event - ucm2hps_setup
-                single_interface_list_ii_delay_tmp = events.modify_tv(single_interface_list[io], ucm2hps_ii)
+                for e_i in range(len(single_interface_list[io])):
+                    hits_in_event.append(len(single_interface_list[io][e_i]))
+                    hits_zero_padding.append(ucm2hps_ii - hits_in_event[e_i]*hits_ii - ucm2hps_setup)
+                single_interface_list_ii_delay_tmp = events.modify_tv(single_interface_list[io], hits_ii) 
                 #add zeros
                 single_interface_list_ii_delay_tmp2 = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp,'begin',ucm2hps_setup)
                 single_interface_list_ii_delay      = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp2,'end',hits_zero_padding)
-                single_interface_list_ii_delay_flat = single_interface_list_ii_delay[0]
+                single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)
+                print("TAR2HPS io = ",io," single_interface_list_ii_delay = ",single_interface_list_ii_delay)
+                input_tv_list.append(single_interface_list_ii_delay_flat[0])
 
-                input_tv_list.append(single_interface_list_ii_delay_flat)
 
-
-    #print("Input TV List = ", input_tv_list)
+    print("Input TV List = ", input_tv_list)
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
@@ -288,7 +302,8 @@ def hps_test(dut):
             n_ports = HpsPorts.get_output_interface_ports(n_op_intf),
             n_to_load=num_events_to_process,
             station_ID=outputs_station_id[n_op_intf],
-            tv_type="value"
+            tv_type="value",
+            cnd_thrd_id = outputs_thread_n[n_op_intf]
         ))
         output_tv_list.append(single_interface_list)
     #print("Output TV List = ", output_tv_list)

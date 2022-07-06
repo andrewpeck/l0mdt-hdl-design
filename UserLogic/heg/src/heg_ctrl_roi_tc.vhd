@@ -27,15 +27,16 @@ use shared_lib.config_pkg.all;
 use shared_lib.tdc_mezz_mapping_pkg.all;
 use shared_lib.TC_B3A_pkg.all;
 
--- library hp_lib;
--- use hp_lib.hp_pkg.all;
--- library heg_lib;
--- use heg_lib.heg_pkg.all;
--- library hps_lib;
--- use hps_lib.hps_pkg.all;
+library hp_lib;
+use hp_lib.hp_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 library apbus_lib;
 
@@ -49,8 +50,8 @@ entity heg_ctrl_roi_tc is
     rst               : in std_logic;
     ena               : in std_logic;
     --
-    ctrl_v            : in std_logic_vector;  -- H2S_HPS_MDT_TC_MDT_TC_CTRL_t; 
-    mon_v             : out std_logic_vector; -- H2S_HPS_MDT_TC_MDT_TC_MON_t;
+    ctrl_v            : in std_logic_vector;  -- HPS_MDT_TC_MDT_TC_CTRL_t; 
+    mon_v             : out std_logic_vector; -- HPS_MDT_TC_MDT_TC_MON_t;
     --
     -- i_layer           : in unsigned(TAR2HPS_LAYER_LEN-1 downto 0);  -- 5
     i_tube            : in unsigned(TAR2HPS_TUBE_LEN-1 downto 0);   -- 9
@@ -123,14 +124,14 @@ architecture beh of heg_ctrl_roi_tc is
 
 begin
 
-  -- ctrl_v <= vectorify(ctrl,ctrl_v);
-  -- mon <= structify(mon_v,mon);
+  -- ctrl_v <= convert(ctrl,ctrl_v);
+  -- mon <= convert(mon_v,mon);
 
   apb_mem_interface : entity apbus_lib.apb_imem
   generic map(
     g_XML_NODE_NAME         => "MEM_INT_10A38D",
     g_MEMORY_TYPE           => "distributed",
-    g_INTERNAL_CLK          => '1',
+    -- g_INTERNAL_CLK          => '1',
     g_ADDR_WIDTH            => ADDR_WIDTH,
     g_DATA_WIDTH            => DATA_WIDTH
     -- g_APBUS_CTRL_WIDTH      => ctrl_v'length,

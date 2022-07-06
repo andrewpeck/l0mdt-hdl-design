@@ -1,9 +1,10 @@
 `timescale 1ns/1ps
 
-
-`include "l0mdt_buses_constants.svh"
-
-
+`ifndef L0MDT_BUS_CONSTANTS
+`define L0MDT_BUS_CONSTANTS
+//`include "l0mdt_buses_constants.svh"
+import l0mdt_dataformats_svh::*;
+`endif
 
 
 module legendreEngine(
@@ -853,7 +854,7 @@ end
 	     le_output_vld       <= 0;
 	     le_tb_output        <= 0;
 	     le_tb_output_vld    <= 0;
-	     sf_segquality       <= 0;
+	     //sf_segquality       <= 0;
   	     histogram_reset_n   <= 1'h0;
 	  end
 	else
@@ -1343,7 +1344,8 @@ hls_find_max_bin find_max_bin_inst(
 				  .res_max_bin_theta_V(res_max_bin_theta),
 				  .res_max_bin_theta_V_ap_vld(res_max_bin_theta_vld),
 				  .res_max_bin_r_V(res_max_bin_r),
-				  .res_max_bin_r_V_ap_vld(res_max_bin_r_vld)
+				  .res_max_bin_r_V_ap_vld(res_max_bin_r_vld),
+				  .segquality (sf_segquality)
 				  );
 end
 else

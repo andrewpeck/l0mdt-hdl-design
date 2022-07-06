@@ -48,7 +48,7 @@ entity ucm_mdt_R_comp_top is
     i_phimod      : in std_logic_vector(5 - 1 downto 0);
     i_dv          : in std_logic;
     --
-    o_radius      : out ucm_mdt_r_bus_at(g_STATION_LAYERS - 1 downto 0);
+    o_radius      : out ucm_mdt_r_alt(g_STATION_LAYERS - 1 downto 0);
     o_dv          : out std_logic
   );
 end entity ucm_mdt_R_comp_top;
@@ -60,15 +60,15 @@ architecture beh of ucm_mdt_R_comp_top is
 
   signal dv : std_logic_vector(g_STATION_LAYERS -1 downto 0) := (others => '0');
 
-  type mon_avt is array (0 to g_STATION_LAYERS -1)of std_logic_vector(len(mon_r) -1 downto 0);
+  type mon_avt is array (0 to g_STATION_LAYERS -1)of std_logic_vector(UCM_R_PHI_COMP_MDT_MON_t'w -1 downto 0);
   signal mon_av  : mon_avt;
-  signal mon_null : std_logic_vector(len(mon_r) -1 downto 0)  := (others => '0');
+  signal mon_null : std_logic_vector(UCM_R_PHI_COMP_MDT_MON_t'w -1 downto 0)  := (others => '0');
 
  
 begin
 
-  -- mon_v <= vectorify(mon_r,mon_v);
-  ctrl_r <= structify(ctrl_v,ctrl_r);
+  -- mon_v <= convert(mon_r,mon_v);
+  ctrl_r <= convert(ctrl_v,ctrl_r);
 
   mon_v <=  mon_av(0) when ctrl_r.ext_ctrl =  '1' and to_integer(unsigned(ctrl_r.sel_station)) = 0 else
             mon_av(1) when ctrl_r.ext_ctrl =  '1' and to_integer(unsigned(ctrl_r.sel_station)) = 1 else

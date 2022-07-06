@@ -61,7 +61,7 @@ entity eta_calculator is
     );
     port (
         clk               : in std_logic;
-        i_seg             : in sf2ptcalc_rvt;
+        i_seg             : in sf2ptcalc_vt;
         i_layer           : in std_logic;
         o_eta             : out unsigned(PTCALC2MTC_MDT_ETA_LEN-1 downto 0);
         o_dv_eta          : out std_logic
@@ -126,7 +126,7 @@ begin
         douta => eta_BM
     );
 
-    seg <= structify(i_seg);
+    seg <= convert(i_seg,seg);
 
     EtaProc : process( clk )
     begin

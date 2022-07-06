@@ -15,9 +15,12 @@ class MtcPorts(port_descriptor.PortDescriptor):
 		super().__init__()
 
 
-	n_input_interfaces = 2
+	n_input_interfaces  = 2
 
 	n_output_interfaces = 1
+
+	n_ports             = [3,3]
+
 
 	def get_input_interface_ports(interface):
 		input_ports = [3, 3]
@@ -46,3 +49,5 @@ class MtcPorts(port_descriptor.PortDescriptor):
 		for i in range(self.n_output_interfaces):
 			output_ports = output_ports + self.get_output_interface_ports(i)
 		return output_ports
+                
+       

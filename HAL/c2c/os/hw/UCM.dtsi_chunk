@@ -1,7 +1,0 @@
-  amba_pl {
-    axiSlaveUCM: UCM@44A60000 {
-      compatible = "generic-uio";
-      reg = <0x44A60000 0x10000>;
-      label = "UCM";
-    };
-  };

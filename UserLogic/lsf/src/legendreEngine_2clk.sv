@@ -1,8 +1,12 @@
 `timescale 1ns/1ps
 
 
-`include "l0mdt_buses_constants.svh"
 
+`ifndef L0MDT_BUS_CONSTANTS
+`define L0MDT_BUS_CONSTANTS
+//`include "l0mdt_buses_constants.svh"
+import l0mdt_dataformats_svh::*;
+`endif
 
 
 
@@ -100,6 +104,10 @@ module legendreEngine_2clk #(
    logic [VEC_MDTID_LEN-1:0] 			 slc_mdtid;
    logic [SF2PTCALC_SEGQUALITY_LEN-1:0] 	 sf_segquality;
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 		 sf_segpos;
+   logic [SF2PTCALC_SEGQUALITY_LEN-1:0] 	 hls_sf_segquality;
+   logic 					 hls_sf_segquality_vld;
+   
+
    logic 					 sf_segpos_vld;
 
 
@@ -153,7 +161,7 @@ module legendreEngine_2clk #(
    const logic [3:0] 								    hba_latency             = 3; //7; //5; //8;//7; //12;
 
  //  const logic [3:0] 								    hba_mem_latency         = HBA_MEM_LATENCY; //DMEM-4, REG-3; //4; //3;
-   const logic [3:0] 								    find_max_bin_latency    = 4; //3; //2; //4;
+   const logic [3:0] 								    find_max_bin_latency    = 7; //4; //3; //2; //4;
    const logic [3:0] 								    reset_cycles = 10;
    const logic [7:0] 								    hba_reset_clocks = RBINS-1; //3
 
@@ -277,6 +285,8 @@ module legendreEngine_2clk #(
    logic 			   get_next_rom_addr_d;
    logic  [13:0] theta_global;
    logic 	 theta_global_vld;
+   logic  [13:0] theta_global_rad;
+   logic 	 theta_global_rad_vld;
    logic [13:0]  theta_global_gra;
 
    logic [W_r-1:0]  r_global;
@@ -614,25 +624,27 @@ assign hewindow_pos_Z = hewindow_pos >> (HEG2SFSLC_HEWINDOW_POS_DECB - SF2PTCALC
 	     le_output_vld       <= 0;
 	     le_tb_output        <= 0;
 	     le_tb_output_vld    <= 0;
-	     sf_segquality       <= 0;
+	    //  sf_segquality       <= 0;
   	     histogram_reset_n   <= 1'h0;
 	  end
 	else
 	  begin
 
-    	     le_tb_output_vld    <= sf_segpos_vld;
+    	     le_tb_output_vld    <= sf_segpos_vld;	  
+
+	     
 	     if(sf_segpos_vld)
 	       begin
-		  le_output[SF2PTCALC_MDTID_MSB:SF2PTCALC_MDTID_LSB]           <= slc_mdtid;
+		  le_output[SF2PTCALC_MDTID_MSB:SF2PTCALC_MDTID_LSB]                      <= slc_mdtid;
 		  le_output[SF2PTCALC_SEGQUALITY_MSB:SF2PTCALC_SEGQUALITY_LSB] <= sf_segquality;
-	          le_output[SF2PTCALC_SEGANGLE_MSB:SF2PTCALC_SEGANGLE_LSB]     <= theta_global;
-		  le_output[SF2PTCALC_SEGPOS_MSB:SF2PTCALC_SEGPOS_LSB]         <= sf_segpos;
-		  le_output[SF2PTCALC_MUID_MSB:SF2PTCALC_MUID_LSB]             <= slc_muid;
-		  le_output[SF2PTCALC_DATA_VALID_MSB]                          <= 1'b1;
+	      le_output[SF2PTCALC_SEGANGLE_MSB:SF2PTCALC_SEGANGLE_LSB]      <= theta_global_rad;
+		  le_output[SF2PTCALC_SEGPOS_MSB:SF2PTCALC_SEGPOS_LSB]               <= sf_segpos;
+		  le_output[SF2PTCALC_MUID_MSB:SF2PTCALC_MUID_LSB]                         <= slc_muid;
+		  le_output[SF2PTCALC_DATA_VALID_MSB]                                                    <= 1'b1;
 
 
 		  le_tb_output[63:0]                                           <= res_max_bin_count;
-		  le_output_vld                                                <= 1'b1;
+		  le_output_vld                                                   <= 1'b1;
 		end // if (sf_segpos_vld)
 	     else
 	        begin
@@ -1364,8 +1376,10 @@ hls_find_max_bin find_max_bin_inst(
 				   .max_bin_count_63(max_bin_count[63]),
 				   .max_bin_r_63(max_bin_r[63]),
 
-			       	  .hls_LT_theta_global(theta_global),
+			      .hls_LT_theta_global(theta_global),
 				  .hls_LT_theta_global_ap_vld(theta_global_vld),
+			      .hls_LT_theta_global_rad(theta_global_rad),
+				  .hls_LT_theta_global_rad_ap_vld(theta_global_rad_vld),
 				  .hls_LT_r_global(r_global),
 				  .hls_LT_r_global_ap_vld(r_global_vld),
 				  .hls_LT_theta(theta),
@@ -1377,7 +1391,8 @@ hls_find_max_bin find_max_bin_inst(
 				  .res_max_bin_theta(res_max_bin_theta),
 				  .res_max_bin_theta_ap_vld(rest_max_bin_theta_vld),
 				  .res_max_bin_r(res_max_bin_r),
-				  .res_max_bin_r_ap_vld(res_max_bin_r_vld)
+				  .res_max_bin_r_ap_vld(res_max_bin_r_vld),
+				  .segquality (sf_segquality)
 				  );
 end
 else
@@ -1537,7 +1552,9 @@ hls_find_max_bin_64 find_max_bin_64_inst(
 				  .res_max_bin_theta_V(res_max_bin_theta),
 				  .res_max_bin_theta_V_ap_vld(rest_max_bin_theta_vld),
 				  .res_max_bin_r_V(res_max_bin_r),
-				  .res_max_bin_r_V_ap_vld(res_max_bin_r_vld)
+				  .res_max_bin_r_V_ap_vld(res_max_bin_r_vld),
+				  .segquality( hls_sf_segquality),
+				  .segquality_ap_vld( hls_sf_segquality_vld)
 				  );
 				     end // block: find_max_bin_64
 				     end // block: find_max_bin_tb_64
@@ -1683,7 +1700,6 @@ end
 								  .hls_sin_val(hw_sin_val_gls),
 								  .hls_cos_val(hw_cos_val[0]),
 								  .hls_LT_r_global(r_global),
-
 								  .slcvec_pos_R(slcvec_pos_ref),
 								  .hewindow_pos_R(hewindow_pos_ref),
 								  .hewindow_pos_Z( hewindow_pos_Z),

@@ -1,20 +1,20 @@
-# yml2hdl v2
+# yml2hdl v0.3
 # This file was auto-generated.
 # Modifications might be lost.
 config:
-  basic_convert_functions : off
+  basic_functions : False
   packages:
     - ieee: [std_logic_1164, numeric_std, math_real]
-    - shared_lib: [common_ieee]
+    - shared_lib: [common_ieee_pkg]
 
-hdl:
+types:
 
 - TF_MON_t:
-  - STATUS : [ type: logic ]
-  - READY : [ type: logic ]
+  - STATUS : { type: logic }
+  - READY : { type: logic }
 
 
 - TF_CTRL_t:
-  - RESET : [ type: logic ]
+  - RESET : { type: logic }
 
 

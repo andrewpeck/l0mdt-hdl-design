@@ -22,6 +22,7 @@
 `default_nettype wire
 //`include "l0mdt_buses_constants.svh"
 
+  import l0mdt_dataformats_svh::*;
   module TopLevel_mtc_no_sb #(
 			parameter SLCPIPELINE_WIDTH = PL2MTC_LEN,
 			parameter PTCALC_LEN = PTCALC2MTC_LEN,
@@ -36,15 +37,15 @@
 ) (
     input wire 			       clock,
     input wire 			       reset_n,
-    input wire [SLCPIPELINE_WIDTH-1:0] slcpipeline [MAX_MTC_PER_BCID],
+    input wire [SLCPIPELINE_WIDTH-1:0] slcpipeline [MAX_MTC_PER_BCID-1:0],
    // input wire 			       slcpipeline_vld [MAX_MTC_PER_BCID],
-    input wire [PTCALC_LEN-1:0] 	       ptcalc [TOTAL_PTCALC_BLKS],
-    input wire [1:0] 		       ptcalc_sel[TOTAL_PTCALC_BLKS],
-    output wire [MTC_LEN-1:0] 	       mtc [MAX_MTC_PER_BCID],
-    output wire 		       mtc_valid [MAX_MTC_PER_BCID]
+    input wire [PTCALC_LEN-1:0]        ptcalc [TOTAL_PTCALC_BLKS-1:0],
+    input wire [1:0] 		       ptcalc_sel[TOTAL_PTCALC_BLKS-1:0],
+    output wire [MTC_LEN-1:0] 	       mtc [MAX_MTC_PER_BCID-1:0],
+    output wire 		       mtc_valid [MAX_MTC_PER_BCID-1:0]
 );
-   wire [MTC_LEN-1:0] 		       mtc_out [MAX_MTC_PER_BCID];
-   wire 			       mtc_out_valid [MAX_MTC_PER_BCID];
+   wire [MTC_LEN-1:0] 		       mtc_out [MAX_MTC_PER_BCID-1:0];
+   wire 			       mtc_out_valid [MAX_MTC_PER_BCID-1:0];
    genvar 			       i;
    //Having issues monitoring buses >192 bits
 
@@ -87,8 +88,6 @@
 
     //Verilog Model
    mtc_builder_verilog#(
-			.PTCALC_WIDTH(PTCALC_LEN),
-			.SLCPIPELINE_WIDTH(SLCPIPELINE_WIDTH),
 			.c_NUM_THREADS(TOTAL_PTCALC_BLKS),
 			.c_MAX_NUM_SL(3),
 			.n_PRIMARY_MTC(3)

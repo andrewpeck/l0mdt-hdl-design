@@ -48,9 +48,11 @@ entity mpl_supervisor is
     rst                 : in std_logic;
     glob_en             : in std_logic := '1';
     -- AXI to SoC
-    i_actions             : in  MPL_ACTIONS_CTRL_t;
-    i_configs             : in  MPL_CONFIGS_CTRL_t;
-    o_status              : out MPL_STATUS_MON_t;
+    ctrl_v              : in  std_logic_vector;
+    mon_v               : out std_logic_vector;
+    -- i_actions             : in  MPL_ACTIONS_CTRL_t;
+    -- i_configs             : in  MPL_CONFIGS_CTRL_t;
+    -- o_status              : out MPL_STATUS_MON_t;
     --
 
     --
@@ -63,6 +65,9 @@ entity mpl_supervisor is
 end entity mpl_supervisor;
 
 architecture beh of mpl_supervisor is
+  signal ctrl_r        : MPL_SUPER_CTRL_t;
+  signal mon_r         : MPL_SUPER_MON_t;
+  --
   signal local_rst : std_logic;
   signal local_en  : std_logic;
   --
@@ -76,6 +81,9 @@ architecture beh of mpl_supervisor is
   signal axi_cnt_reset    : std_logic;
   signal axi_rep_clk      : std_logic;
 begin
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
+
   o_local_en <= local_en;
   o_local_rst <= local_rst;
 
@@ -105,19 +113,19 @@ begin
         --    from apb
         --------------------------------------------
         -- if apb_clk_cnt = 0 then
-          if i_actions.reset = '1' then
+          if ctrl_r.actions.reset = '1' then
             int_rst <= '1';
           else
             int_rst <= '0';
           end if;
 
-          if i_actions.enable = '1' then
+          if ctrl_r.actions.enable = '1' then
             int_en <= '1';
-          else--if i_actions.disable = '1' then
+          elsif ctrl_r.actions.disable = '1' then
             int_en <= '0';
           end if;
           
-          if i_actions.freeze = '1' then
+          if ctrl_r.actions.freeze = '1' then
             int_freeze <= '1';
           else
             int_freeze <= '0';
@@ -127,9 +135,10 @@ begin
         --------------------------------------------
         --    to apb
         --------------------------------------------
-        o_status.ENABLED <= local_en;
-        o_status.READY <= not local_rst;
-        o_status.ERROR <= (others => '0');
+        mon_r.status.ENABLED <= local_en;
+        mon_r.status.FREEZED <= o_freeze;
+        mon_r.status.READY <= not local_rst;
+        mon_r.status.ERROR <= (others => '0');
       end if;
     end if;
   end process;

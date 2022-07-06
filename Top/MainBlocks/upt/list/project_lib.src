@@ -1,0 +1,2 @@
+Top/MainBlocks/upt/prj_cfg.vhd lib=project_lib
+UserLogic/upt/upt_lib_ku15p.src lib=upt_lib

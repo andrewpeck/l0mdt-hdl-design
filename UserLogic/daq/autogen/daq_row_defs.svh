@@ -13,7 +13,7 @@
 
 
   typedef struct packed {
-    logic  done;
+    logic  data_ready;
     logic  nempty;
     logic  err;
   } node_to_mngt_rt;
@@ -24,28 +24,53 @@
   } mngt_to_node_rt;
 
   typedef struct packed {
-    forward_rt   counter;
-    forward_rt   payload;
-  } node_to_bconv_rt;
+    logic  wr_en;
+    logic [DAQ_MAX_DATA_WIDTH-1:0] data;
+  } src_to_node_fifo_rt;
 
   typedef struct packed {
-    backward_rt   counter;
-    backward_rt   payload;
-  } bconv_to_node_rt;
+    logic  full;
+  } node_fifo_to_src_rt;
+
+  typedef logic [DAQ_MAX_DATA_WIDTH-1:0] node_fifo_cnt_t;
 
   typedef struct packed {
-    forward_rt   counter;
-    forward_rt   payload;
-  } bconv_to_pbldr_rt;
+    daq_stream_data_t   data;
+    node_fifo_cnt_t   count;
+    logic  nempty;
+  } node_fifo_to_dst_rt;
 
   typedef struct packed {
-    backward_rt   counter;
-    backward_rt   payload;
-  } pbldr_to_bconv_rt;
+    logic  rd_en;
+  } dst_to_node_fifo_rt;
+
+  typedef struct packed {
+    daq_sys_rt   sys;
+    src_to_node_fifo_rt   src;
+    dst_to_node_fifo_rt   dst;
+  } daq_node_fifo_irt;
+
+  typedef struct packed {
+    node_fifo_to_src_rt   src;
+    node_fifo_to_dst_rt   dst;
+  } daq_node_fifo_ort;
+
+  typedef struct packed {
+    daq_node_fifo_irt   i;
+    daq_node_fifo_ort   o;
+  } daq_node_fifo_ert;
+
+  typedef struct packed {
+    int  WRITE_DATA_WIDTH;
+    int  READ_DATA_WIDTH;
+    int  READ_COUNT_WIDTH;
+    int  FIFO_DEPTH;
+  } daq_node_fifo_grt;
 
   typedef struct packed {
     node_to_mngt_rt   mngt;
-    node_to_bconv_rt   bconv;
+    forward_rt   bconv;
+    logic  debug;
   } node_ort;
 
   typedef logic [$bits(node_ort)-1:0] node_ovt;
@@ -54,40 +79,44 @@
     int  DATA_WIDTH;
     int  COUNTER_WIDTH;
     int  FIFO_DEPTH;
-  } dnode_grt;
+  } data_node_grt;
 
   typedef struct packed {
     daq_sys_rt   sys;
     mngt_to_node_rt   mngt;
     req_to_row_common_rt   req;
     daq_stream_rt   stream;
-    bconv_to_node_rt   bconv;
-  } dnode_irt;
+    backward_rt   bconv;
+  } data_node_irt;
+
+  typedef node_ort   data_node_ort;
 
   typedef struct packed {
-    dnode_irt   i;
-    node_ort   o;
-  } dnode_ert;
+    data_node_irt   i;
+    data_node_ort   o;
+  } data_node_ert;
 
-  typedef logic [$bits(dnode_irt)-1:0] dnode_ivt;
+  typedef logic [$bits(data_node_irt)-1:0] data_node_ivt;
 
   typedef struct packed {
     int  COUNTER_WIDTH;
-  } hnode_grt;
+  } header_node_grt;
 
   typedef struct packed {
     daq_sys_rt   sys;
     mngt_to_node_rt   mngt;
     req_to_row_rt   req;
-    bconv_to_node_rt   bconv;
-  } hnode_irt;
+    backward_rt   bconv;
+  } header_node_irt;
+
+  typedef node_ort   header_node_ort;
 
   typedef struct packed {
-    hnode_irt   i;
-    node_ort   o;
-  } hnode_ert;
+    header_node_irt   i;
+    header_node_ort   o;
+  } header_node_ert;
 
-  typedef logic [$bits(hnode_irt)-1:0] hnode_ivt;
+  typedef logic [$bits(header_node_irt)-1:0] header_node_ivt;
 
   typedef struct packed {
     int  INPUT_DATA_WIDTH;
@@ -96,13 +125,13 @@
 
   typedef struct packed {
     daq_sys_rt   sys;
-    forward_rt   src;
-    pbldr_backward_rt   dst;
+    forward_rt   node;
+    backward_rt   pbldr;
   } bconv_irt;
 
   typedef struct packed {
-    backward_rt   src;
-    pbldr_forward_rt   dst;
+    backward_rt   node;
+    forward_rt   pbldr;
   } bconv_ort;
 
   typedef struct packed {
@@ -115,15 +144,15 @@
   typedef logic [$bits(bconv_ort)-1:0] bconv_ovt;
 
   typedef struct packed {
-    pbldr_forward_rt   cnt;
-    pbldr_forward_rt   pld;
-    pbldr_backward_rt   dst;
+    forward_rt   cnt;
+    forward_rt   pld;
+    backward_rt   dst;
   } hub_irt;
 
   typedef struct packed {
-    pbldr_backward_rt   cnt;
-    pbldr_backward_rt   pld;
-    pbldr_forward_rt   dst;
+    backward_rt   cnt;
+    backward_rt   pld;
+    forward_rt   dst;
   } hub_ort;
 
   typedef struct packed {

@@ -54,10 +54,10 @@ entity ucm_cvp is
     i_local_rst         : in std_logic;
     i_in_en             : in std_logic;
     --
-    i_data_v            : in ucm_cde_rvt;
+    i_data_v            : in ucm_cde_vt;
     --
     -- o_phimod            : out signed(UCM2PL_PHIMOD_LEN -1 downto 0);
-    o_ucm2hps_av        : out ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0)
+    o_ucm2hps_av        : out ucm2hps_avt(c_MAX_POSSIBLE_HPS -1 downto 0)
       
   );
 end entity ucm_cvp;
@@ -72,20 +72,20 @@ architecture beh of ucm_cvp is
 
   signal rpc_R_ctrl_r : UCM_R_PHI_COMP_RPC_CTRL_t;
   signal rpc_R_mon_r  : UCM_R_PHI_COMP_RPC_MON_t; 
-  signal rpc_R_ctrl_v : std_logic_vector(len(rpc_R_ctrl_r) - 1 downto 0);
-  signal rpc_R_mon_v  : std_logic_vector(len(rpc_R_mon_r) - 1 downto 0);
+  signal rpc_R_ctrl_v : std_logic_vector(UCM_R_PHI_COMP_RPC_CTRL_t'w - 1 downto 0);
+  signal rpc_R_mon_v  : std_logic_vector(UCM_R_PHI_COMP_RPC_MON_t'w - 1 downto 0);
 
   signal mdt_R_ctrl_r : UCM_R_PHI_COMP_MDT_CTRL_t;
   signal mdt_R_mon_r  : UCM_R_PHI_COMP_MDT_MON_t; 
-  signal mdt_R_ctrl_v : std_logic_vector(len(mdt_R_ctrl_r) - 1 downto 0);
-  signal mdt_R_mon_v  : std_logic_vector(len(mdt_R_mon_r) - 1 downto 0);
+  signal mdt_R_ctrl_v : std_logic_vector(UCM_R_PHI_COMP_MDT_CTRL_t'w - 1 downto 0);
+  signal mdt_R_mon_v  : std_logic_vector(UCM_R_PHI_COMP_MDT_MON_t'w - 1 downto 0);
 
   --
 
-  signal rpc_radius_av  : ucm_rpc_r_bus_at(4 - 1 downto 0);
+  signal rpc_radius_av  : ucm_rpc_r_alt(4 - 1 downto 0);
   signal rpc_radius_dv  : std_logic;
 
-  signal mdt_radius_av  : ucm_mdt_r_bus_at(3 - 1 downto 0);
+  signal mdt_radius_av  : ucm_mdt_r_alt(3 - 1 downto 0);
   signal mdt_radius_dv  : std_logic;
 
   -- 
@@ -93,24 +93,24 @@ architecture beh of ucm_cvp is
   signal local_rst : std_logic;
 
   signal int_data_r     : ucm_cde_rt;
-  signal int_data_v     : ucm_cde_rvt;
+  signal int_data_v     : ucm_cde_vt;
   signal barrel_r       : slc_barrel_rt;
   
-  signal data_v       : ucm_cde_rvt;
+  signal data_v       : ucm_cde_vt;
   signal data_r       : ucm_cde_rt;
 
-  signal data_v_2     : ucm_cde_rvt;
+  signal data_v_2     : ucm_cde_vt;
   signal data_r_2       : ucm_cde_rt;
   
-  signal ucm2hps_buff_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
-  signal ucm2hps_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
+  signal ucm2hps_buff_ar   : ucm2hps_art(c_MAX_NUM_HPS -1 downto 0);
+  signal ucm2hps_ar   : ucm2hps_art(c_MAX_NUM_HPS -1 downto 0);
 
 
   -- signal chamber_ieta_v : std_logic_vector(15 downto 0);
-  signal chamber_ieta_r : chamb_ieta_rpc_bus_at;
+  signal chamber_ieta_r : chamb_ieta_rpc_aut;
 
-  type new_chamb_ieta_at is array(c_MAX_NUM_HPS -1 downto 0) of unsigned(4-1 downto 0);
-  signal new_chamb_ieta_a : new_chamb_ieta_at;
+  type new_chamb_ieta_art is array(c_MAX_NUM_HPS -1 downto 0) of unsigned(4-1 downto 0);
+  signal new_chamb_ieta_a : new_chamb_ieta_art;
   signal new_chamb_ieta_dv : std_logic_vector(c_MAX_NUM_HPS -1 downto 0);
 
   signal offset       : signed(31 downto 0);--signed(126 -1 downto 0);
@@ -131,23 +131,23 @@ architecture beh of ucm_cvp is
   
 begin
 
-  i_data_r <= structify(i_data_v);
+  i_data_r <= convert(i_data_v,i_data_r);
   
 
-  ctrl_r  <= structify(ctrl_v,ctrl_r);
-  mon_v   <= vectorify(mon_r,mon_v);
+  ctrl_r  <= convert(ctrl_v,ctrl_r);
+  mon_v   <= convert(mon_r,mon_v);
 
-  rpc_R_ctrl_v <= vectorify(ctrl_r.RPC,rpc_R_ctrl_v);
-  rpc_R_mon_r <= structify(rpc_R_mon_v,rpc_R_mon_r);
+  rpc_R_ctrl_v <= convert(ctrl_r.RPC,rpc_R_ctrl_v);
+  rpc_R_mon_r <= convert(rpc_R_mon_v,rpc_R_mon_r);
   mon_r.RPC <= rpc_R_mon_r;
 
-  mdt_R_ctrl_v <= vectorify(ctrl_r.MDT,mdt_R_ctrl_v);
-  mdt_R_mon_r <= structify(mdt_R_mon_v,mdt_R_mon_r);
+  mdt_R_ctrl_v <= convert(ctrl_r.MDT,mdt_R_ctrl_v);
+  mdt_R_mon_r <= convert(mdt_R_mon_v,mdt_R_mon_r);
   mon_r.MDT <= mdt_R_mon_r;
 
   local_rst <= rst or i_local_rst;
-  -- data_r <= structify(i_data_v);
-  barrel_r <= structify(int_data_r.specific);
+  -- data_r <= convert(i_data_v,data_r);
+  barrel_r <= convert(int_data_r.specific,barrel_r);
 
   IN_REG: process(clk)
   begin
@@ -163,7 +163,7 @@ begin
       end if;
     end if;
   end process IN_REG;
-  int_data_r <= structify(int_data_v);
+  int_data_r <= convert(int_data_v,int_data_r);
 
   -- PL_in : entity vamc_lib.vamc_sr
   -- generic map(
@@ -179,7 +179,7 @@ begin
   --   o_data      => data_v
   -- );
 
-  -- chamber_ieta_r <= structify(data_v).chamb_ieta;
+  -- chamber_ieta_r <= convert(data_v).chamb_ieta;
 
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
@@ -378,7 +378,7 @@ begin
   --   o_data      => data_v_2
   -- );
 
-  -- data_r_2 <= structify(data_v_2);
+  -- data_r_2 <= convert(data_v_2);
   -- 
 
   -- Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
@@ -416,10 +416,10 @@ begin
 
   UCM_HPS_GEN: for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 generate
     GEN : if c_STATIONS_IN_SECTOR(hps_i) = '1' generate
-      o_ucm2hps_av(hps_i) <= vectorify(ucm2hps_ar(hps_i));
+      o_ucm2hps_av(hps_i) <= convert(ucm2hps_ar(hps_i),o_ucm2hps_av(hps_i));
     end generate;
     DIS : if c_STATIONS_IN_SECTOR(hps_i) = '0' generate
-      o_ucm2hps_av(hps_i) <= nullify(o_ucm2hps_av(hps_i));
+      o_ucm2hps_av(hps_i) <= zero(o_ucm2hps_av(hps_i));
     end generate;
   end generate;
 
@@ -428,8 +428,8 @@ begin
 
       if local_rst= '1' then
         for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-          ucm2hps_buff_ar(hps_i) <= nullify(ucm2hps_buff_ar(hps_i));
-          ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+          ucm2hps_buff_ar(hps_i) <= zero(ucm2hps_buff_ar(hps_i));
+          ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
           -- ucm2hps_ar(hps_i).data_valid    <= '0';
         end loop;
       else 
@@ -515,10 +515,10 @@ begin
                     -- ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= (others => '0'); 
                     -- ucm2hps_ar(hps_i).mdtid.chamber_id    <= (others => '0'); 
 
-                    ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+                    ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
 
                     -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-                    --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+                    --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
                     -- end loop;
 
                   end if;
@@ -567,7 +567,7 @@ end beh;
 
 
         for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-          -- ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+          -- ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
           ucm2hps_ar(hps_i).data_valid    <= '0';
         end loop;
 
@@ -604,7 +604,7 @@ end beh;
                   else
                     ucm2hps_ar(hps_i).data_valid    <= '0';
                     -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-                    --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+                    --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
                     -- end loop;
 
                   end if;
@@ -615,7 +615,7 @@ end beh;
               -- local origin calc : to be done in HEG local origin of window
             -- else
               -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-              --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+              --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
               -- end loop;
             -- end if;
           -- else --LSF
@@ -625,7 +625,7 @@ end beh;
         
         -- else
         -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-        --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+        --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
         -- end loop;
         -- block dissabled
       end if;

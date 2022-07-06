@@ -8,7 +8,7 @@
 `timescale 1ns / 1ps
 `default_nettype wire
 `include "l0mdt_buses_constants.svh"
-
+ import l0mdt_dataformats_svh::*; 
 module TopLevel_ptcalc #(
     parameter DATA_WIDTH = 256, //65,
     parameter FIFO_DEPTH = 6,
@@ -83,9 +83,9 @@ module TopLevel_ptcalc #(
    assign sf2pt_o = BLOCK_input_data[2];
    assign pl2pt   = BLOCK_input_data[3];
 
-   assign BLOCK_output_data[0][PTCALC2MTC_LEN-1:0]          = pt2mtc;
+   assign BLOCK_output_data[0][PTCALC2MTC_LEN-1:0]                     = pt2mtc;
    assign BLOCK_output_data[0][DATA_WIDTH-1:PTCALC2MTC_LEN] = 0;
-   assign BLOCK_output_write_enable[0]                      = pt2mtc[PTCALC2MTC_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[0]                                               = pt2mtc[PTCALC2MTC_DATA_VALID_MSB];
 
 
    top_upt top_upt_inst(

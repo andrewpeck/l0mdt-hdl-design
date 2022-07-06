@@ -28,11 +28,13 @@ library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
+
+
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 entity hps_top_tb is
   generic(
@@ -48,31 +50,31 @@ entity hps_top_tb is
     glob_en             : in std_logic := '1';
 
     -- SLc
-    i_uCM2hps_av        : in ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+    i_uCM2hps_av        : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- MDT hit
     -- i_mdt_polmux_av    : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
-    i_mdt_tar_av        : in tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+    i_mdt_tar_av        : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc
-    o_sf2pt_av          : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
+    o_sf2pt_av          : out sf2ptcalc_avt(c_NUM_THREADS -1 downto 0)
   );
 end entity hps_top_tb;
 
 architecture beh of hps_top_tb is
     -- control
-    signal ctrl              :  H2S_HPS_CTRL_t;
-    signal mon               :  H2S_HPS_MON_t;
+    signal ctrl              :  HPS_CTRL_t;
+    signal mon               :  HPS_MON_t;
     signal ttc_commands      : l0mdt_ttc_rt;
     signal ctrl_len : natural;
-    signal ctrl_v : std_logic_vector(len(ctrl)-1 downto 0) := (others => '0');
-    signal mon_v  : std_logic_vector(len(mon)-1 downto 0);
+    signal ctrl_v : std_logic_vector(HPS_CTRL_t'w-1 downto 0) := (others => '0');
+    signal mon_v  : std_logic_vector(HPS_MON_t'w-1 downto 0);
     -- control
 
   -- signal mdt_polmux_data_av : hps_mdt_input_avt(g_HPS_NUM_MDT_CH -1 downto 0)
 
 begin
-   ctrl_len <= len(ctrl);
+   ctrl_len <=  HPS_CTRL_t'w;
    --ctrl_v(len(ctrl)-1 downto len(ctrl)-12 ) <= x"03e"; NUM_THREADS=3
-   ctrl_v(len(ctrl)-1 downto len(ctrl)-12 ) <= x"01e"; --NUM_THREADS=3
+   ctrl_v(HPS_CTRL_t'w-1 downto HPS_CTRL_t'w-12 ) <= x"01e"; --NUM_THREADS=3
 
   -- IN_GEN : for hp_i in g_HPS_NUM_MDT_CH downto 0 generate
   --   mdt_polmux_data_av(hp_i).polmux <= i_mdt_polmux_av(hp_i);

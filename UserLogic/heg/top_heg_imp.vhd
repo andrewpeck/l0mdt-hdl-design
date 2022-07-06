@@ -22,15 +22,21 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
+-- use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
+-- library hegtypes_lib;
+-- use hegtypes_lib.hp_pkg.all;
+-- use hegtypes_lib.heg_pkg.all;
+
+-- library heg_lib;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
 
 entity top_heg is
   generic(
@@ -60,20 +66,20 @@ architecture beh of top_heg is
   -- variable g_HPS_NUM_MDT_CH    : integer := 6; 
 
 
-  signal ctrl_r             : H2S_HPS_HEG_HEG_CTRL_t;
-  signal mon_r              : H2S_HPS_HEG_HEG_MON_t;
-  constant  c_CTRL_LEN      : integer := len(ctrl_r);
-  constant c_MON_LEN        : integer := len(mon_r);
-  signal ctrl_v             : std_logic_vector(c_CTRL_LEN -1 downto 0);
-  signal mon_v              : std_logic_vector(c_MON_LEN -1 downto 0);
+  signal ctrl_r             : HPS_HEG_HEG_CTRL_t;
+  signal mon_r              : HPS_HEG_HEG_MON_t;
+  -- constant  c_CTRL_LEN      : integer := len(ctrl_r);
+  -- constant c_MON_LEN        : integer := len(mon_r);
+  signal ctrl_v             : std_logic_vector(HPS_HEG_HEG_CTRL_t'w -1 downto 0);
+  signal mon_v              : std_logic_vector(HPS_HEG_HEG_MON_t'w -1 downto 0);
 
-  signal i_uCM_data_rv        : ucm2hps_rvt;
+  signal i_uCM_data_rv        : ucm2hps_vt;
   signal i_uCM_data_v         : std_logic_vector(i_uCM_data_rv'range);
   signal i_mdt_full_data_av   : heg_pc2heg_avt(c_HPS_MAX_ARRAY(FLAVOUR) -1 downto 0);
-  signal o_sf_control_rv      : heg_ctrl2sf_rvt;
+  signal o_sf_control_rv      : heg_ctrl2sf_vt;
   -- signal o_sf_control_v       : std_logic_vector(o_sf_control_rv'range);
-  signal o_sf_slc_data_v      : heg2sfslc_rvt;
-  signal o_sf_mdt_data_v      : heg2sfhit_rvt;
+  signal o_sf_slc_data_v      : heg2sfslc_vt;
+  signal o_sf_mdt_data_v      : heg2sfhit_vt;
 
 begin
 
@@ -94,7 +100,9 @@ begin
 
   -- end generate flavor;
 
-  ctrl : entity shared_lib.vhdl_utils_deserializer generic map (c_CTRL_LEN) port map(clk,rst,ctrl_b,ctrl_v);
+  ctrl : entity shared_lib.vhdl_utils_deserializer 
+  generic map (g_DATA_WIDTH => ctrl_v'length) 
+  port map(clk => clk,rst  => rst,i_data => ctrl_b,o_data => ctrl_v);
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
   des0 : entity shared_lib.vhdl_utils_deserializer 
@@ -107,7 +115,7 @@ begin
       port map(clk => clk,rst  => rst,i_data => i_mdt_full_data_ab(i_h),o_data => i_mdt_full_data_av(i_h));
   end generate;
   
-  -- i_SLC_Window_ar <= structify(i_SLC_Window_v);
+  -- i_SLC_Window_ar <= convert(i_SLC_Window_v);
   --------------------------------------------------------------
   o_sf_control_b <= xor_reduce(o_sf_control_rv);
   o_sf_slc_data_b <= xor_reduce(o_sf_slc_data_v);

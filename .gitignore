@@ -26,6 +26,7 @@ UserLogic/*/IP/*/*/*
 !UserLogic/*/IP/*/*/*.xci
 !IP/**/*.xci
 !IP/**.xci
+HAL/IP/*
 !HAL/IP/*/*.xci
 *.dbg
 *.zip
@@ -50,3 +51,9 @@ Projects/
 __init__.py
 *.vstf
 .nfs*
+kernel/
+package.json
+*/package.json
+Plots
+*.rst
+**/*.yml.old

@@ -38,7 +38,7 @@ entity top_ucm is
     rst                     : in std_logic;
     glob_en                 : in std_logic;
     ttc_commands            : in l0mdt_ttc_rt;
-    i_debug                 : in std_logic;
+    -- i_debug                 : in std_logic;
     -- -- configuration, control & Monitoring
     ctrl_b                    : in  std_logic;
     mon_b                     : out std_logic;
@@ -60,40 +60,54 @@ end entity top_ucm;
 
 architecture beh of top_ucm is
 
-  constant  c_CTRL_LEN :  integer := 394;
-  constant c_MON_LEN : integer := 184;
   signal ctrl_r            : UCM_CTRL_t;
   signal mon_r             : UCM_MON_t;
-  signal ctrl_v            : std_logic_vector(c_CTRL_LEN -1 downto 0);
-  signal mon_v             : std_logic_vector(c_MON_LEN -1 downto 0);
+  -- constant  c_CTRL_LEN :  integer := len(ctrl_r);--394;
+  -- constant c_MON_LEN : integer := len(mon_r);--184;
+  signal ctrl_v            : std_logic_vector(UCM_CTRL_t'w -1 downto 0);
+  signal mon_v             : std_logic_vector(UCM_MON_t'w -1 downto 0);
 
-  signal i_slc_data_mainA_av     : slc_rx_bus_avt(2 downto 0);
-  signal i_slc_data_mainB_av     : slc_rx_bus_avt(2 downto 0);
-  signal i_slc_data_neighborA_v  : slc_rx_rvt;
-  signal i_slc_data_neighborB_v  : slc_rx_rvt;
-  signal o_uCM2hps_inn_av        :  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_mid_av        :  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_out_av        :  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_ext_av        :  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2pl_av             :  ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal i_slc_data_mainA_av     : slc_rx_avt(2 downto 0);
+  signal i_slc_data_mainB_av     : slc_rx_avt(2 downto 0);
+  signal i_slc_data_neighborA_v  : slc_rx_vt;
+  signal i_slc_data_neighborB_v  : slc_rx_vt;
+  signal o_uCM2hps_inn_av        :  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_av        :  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_av        :  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_av        :  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2pl_av             :  ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
 begin
 
-  ctrl : entity shared_lib.vhdl_utils_deserializer generic map (c_CTRL_LEN) port map(clk,rst,ctrl_b,ctrl_v);
+  ctrl : entity shared_lib.vhdl_utils_deserializer 
+  generic map (g_DATA_WIDTH => UCM_CTRL_t'w) 
+    port map(clk => clk, rst => rst, i_data => ctrl_b, o_data => ctrl_v);
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
   slc_mp: for i_h in 2 downto 0 generate
-    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_slc_data_mainA_ab(i_h),o_data => i_slc_data_mainA_av(i_h));
+    des : entity shared_lib.vhdl_utils_deserializer 
+    generic map (g_DATA_WIDTH => i_slc_data_mainA_av(i_h)'length)
+      port map(
+        clk => clk,
+        rst  => rst,
+        i_data => i_slc_data_mainA_ab(i_h),
+        o_data => i_slc_data_mainA_av(i_h));
     -- i_slc_data_mainA(i_h) <= i_slc_data_mainA_av(i_h);
   end generate;
 
   slc_ms: for i_h in 2 downto 0  generate
-    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_slc_data_mainB_ab(i_h),o_data => i_slc_data_mainB_av(i_h));
+    des : entity shared_lib.vhdl_utils_deserializer 
+    generic map (g_DATA_WIDTH => i_slc_data_mainB_av(i_h)'length)
+      port map(clk => clk,rst  => rst,i_data => i_slc_data_mainB_ab(i_h),o_data => i_slc_data_mainB_av(i_h));
     -- i_slc_data_mainB(i_h) <= i_slc_data_mainB_av(i_h);
   end generate;
 
-  des_p : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_slc_data_neighborA_b,o_data => i_slc_data_neighborA_v);
-  des_m : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_slc_data_neighborB_b,o_data => i_slc_data_neighborB_v );
+  des_p : entity shared_lib.vhdl_utils_deserializer 
+  generic map (g_DATA_WIDTH => i_slc_data_neighborA_v'length)
+    port map(clk => clk,rst  => rst,i_data => i_slc_data_neighborA_b,o_data => i_slc_data_neighborA_v);
+  des_m : entity shared_lib.vhdl_utils_deserializer 
+  generic map (g_DATA_WIDTH => i_slc_data_neighborB_v'length)
+    port map(clk => clk,rst  => rst,i_data => i_slc_data_neighborB_b,o_data => i_slc_data_neighborB_v );
   --------------------------------------------------------------
   HPS_INN: for i_th in c_NUM_THREADS - 1 downto 0 generate
     o_uCM2hps_inn_ab(i_th) <= xor_reduce(o_uCM2hps_inn_av(i_th));

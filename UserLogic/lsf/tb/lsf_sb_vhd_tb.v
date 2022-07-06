@@ -5,7 +5,8 @@
 // ==============================================================
  `timescale 1ns/1ps
 
-`include "l0mdt_buses_constants.svh"
+//`include "l0mdt_buses_constants.svh"
+import l0mdt_dataformats_svh::*;
 
 `define AUTOTB_DUT      lsf_vhd_wrapper
 `define AUTOTB_DUT_INST AESL_inst_lsf_spybuffer_wrapper_inst

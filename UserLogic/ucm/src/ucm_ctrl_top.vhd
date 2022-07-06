@@ -34,11 +34,11 @@ entity ucm_ctrl_top is
     rst                 : in std_logic;
     ena             : in std_logic;
     --
-    i_prepro2ctrl_av    : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    i_prepro2ctrl_av    : in ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
     --
     o_csw_ctrl_av       : out ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
-    o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
-    -- o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+    o_pam_ctrl          : out ucm_pam_control_art(c_NUM_THREADS -1 downto 0);
+    -- o_proc_info         : out ucm_proc_info_art(c_NUM_THREADS -1 downto 0);
     o_proc_info_av      : out ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
     --
     o_cvp_rst           : out std_logic_vector(c_NUM_THREADS -1 downto 0);
@@ -55,8 +55,8 @@ architecture beh of ucm_ctrl_top is
   --     rst                 : in std_logic;
   --     ena             : in std_logic;
   --     -- extrnals
-  --     i_data              : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  --     o_csw_ctrl          : out ucm_csw_control_at;
+  --     i_data              : in ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
+  --     o_csw_ctrl          : out ucm_csw_control_art;
   --     -- internals
   --     o_num_cand          : out unsigned(3 downto 0);
   --     o_pam_update        : out std_logic
@@ -73,8 +73,8 @@ architecture beh of ucm_ctrl_top is
   --     i_num_cand          : in unsigned(3 downto 0);
   --     i_pam_update        : in std_logic;
   --     --
-  --     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
-  --     o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+  --     o_pam_ctrl          : out ucm_pam_control_art(c_NUM_THREADS -1 downto 0);
+  --     o_proc_info         : out ucm_proc_info_art(c_NUM_THREADS -1 downto 0);
   --     --
   --     o_cvp_rst           : out std_logic_vector(c_NUM_THREADS -1 downto 0);
   --     o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
@@ -86,12 +86,13 @@ architecture beh of ucm_ctrl_top is
   signal num_cand          : unsigned(3 downto 0);
   signal pam_update        : std_logic;
 
-  signal o_csw_ctrl       :ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
+  signal o_csw_ctrl_ar       :ucm_csw_control_art(c_MAX_NUM_SL -1 downto 0);
 
 
 begin
-
-  o_csw_ctrl_av <= vectorify(o_csw_ctrl);
+  o_csw_loop : for isl in 0 to c_MAX_NUM_SL-1 generate
+    o_csw_ctrl_av(isl) <= convert(o_csw_ctrl_ar(isl),o_csw_ctrl_av(isl));
+  end generate ; -- o_csw_loop
 
   MAIN_CTRL : entity ucm_lib.ucm_ctrl_main
   port map(
@@ -100,7 +101,7 @@ begin
     ena             => ena,
     -- extrnals
     i_data              => i_prepro2ctrl_av,
-    o_csw_ctrl          => o_csw_ctrl,
+    o_csw_ctrl          => o_csw_ctrl_ar,
     -- internals
     o_num_cand          => num_cand,
     o_pam_update        => pam_update

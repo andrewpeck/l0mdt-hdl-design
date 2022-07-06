@@ -1,0 +1,13 @@
+# Basic Configuration
+shared/shared_lib_basic.src
+shared/spybuffers.src
+
+# CSF/PT memories
+shared/memories/src/bram.vhd
+shared/memories/src/rom.v
+shared/memories/src/rom_dp.v
+
+#---------------------------------
+# vhdl utilities
+#---------------------------------
+shared/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd

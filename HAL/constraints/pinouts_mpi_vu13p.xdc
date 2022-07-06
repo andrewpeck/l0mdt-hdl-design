@@ -1,100 +1,90 @@
-create_clock -period 3.125 -name refclk0  [get_ports refclk_i_p[0]]  ;  # C2C_REF0
-create_clock -period 3.125 -name refclk1  [get_ports refclk_i_p[1]]  ;  # CM2CM_REF0
-create_clock -period 4.166 -name refclk2  [get_ports refclk_i_p[2]]  ;  # SL_REF0
-create_clock -period 4.166 -name refclk3  [get_ports refclk_i_p[3]]  ;  # SL_REF1
-create_clock -period 4.166 -name refclk4  [get_ports refclk_i_p[4]]  ;  # SL_REF2
-create_clock -period 3.125 -name refclk5  [get_ports refclk_i_p[5]]  ;  # FELIX_REF0
-create_clock -period 3.125 -name refclk6  [get_ports refclk_i_p[6]]  ;  # FELIX_REF1
-create_clock -period 3.125 -name refclk7  [get_ports refclk_i_p[7]]  ;  # FELIX_REF2
-create_clock -period 3.125 -name refclk8  [get_ports refclk_i_p[8]]  ;  # AD_CLK2_KUP , muxed as C2c or Spare
-create_clock -period 3.125 -name refclk9  [get_ports refclk_i_p[9]]  ;  # B2B_REF0
-create_clock -period 3.125 -name refclk10 [get_ports refclk_i_p[10]] ;  # AD_CLK3_KUP , muxed as sma or spare
-create_clock -period 3.125 -name refclk11 [get_ports refclk_i_p[11]] ;  # B2B_REF2
-create_clock -period 3.125 -name refclk12 [get_ports refclk_i_p[12]] ;  # FE_REF0
-create_clock -period 3.125 -name refclk13 [get_ports refclk_i_p[13]] ;  # FE_REF1
-create_clock -period 3.125 -name refclk14 [get_ports refclk_i_p[14]] ;  # FE_REF2
-create_clock -period 3.125 -name refclk15 [get_ports refclk_i_p[15]] ;  # SPARE_REF1
-create_clock -period 3.125 -name refclk16 [get_ports refclk_i_p[16]] ;  # FE_REF3
-create_clock -period 3.125 -name refclk17 [get_ports refclk_i_p[17]] ;  # SPARE_REF2
-create_clock -period 3.125 -name refclk18 [get_ports refclk_i_p[18]] ;  # FE_REF4
-create_clock -period 3.125 -name refclk19 [get_ports refclk_i_p[19]] ;  # FE_REF5
-create_clock -period 3.125 -name refclk20 [get_ports refclk_i_p[20]] ;  # FE_REF6
-create_clock -period 3.125 -name refclk21 [get_ports refclk_i_p[21]] ;  # FE_REF7
+# asynchronous clock for felix recovery
+create_clock -period 3.125 -name refclk_felix_rx [get_ports tc_clk_i_p]; # Bank 120 -- felix rx
+set_property PACKAGE_PIN BD39 [get_ports tc_clk_i_p]
+set_property PACKAGE_PIN BD40 [get_ports tc_clk_i_n]
 
-# GTY
-set_property -quiet PACKAGE_PIN AG30    [get_ports refclk_i_p[0]    ] ; # C2C_REF0_P
-set_property -quiet PACKAGE_PIN AG31    [get_ports refclk_i_n[0]    ] ; # C2C_REF0_N
-set_property -quiet PACKAGE_PIN AD32    [get_ports refclk_i_p[1]    ] ; # CM2CM_REF0_P
-set_property -quiet PACKAGE_PIN AD33    [get_ports refclk_i_n[1]    ] ; # CM2CM_REF0_N
-set_property -quiet PACKAGE_PIN AB32    [get_ports refclk_i_p[2]    ] ; # SL_REF0_P
-set_property -quiet PACKAGE_PIN AB33    [get_ports refclk_i_n[2]    ] ; # SL_REF0_N
-set_property -quiet PACKAGE_PIN Y32     [get_ports refclk_i_p[3]    ] ; # SL_REF1_P
-set_property -quiet PACKAGE_PIN Y33     [get_ports refclk_i_n[3]    ] ; # SL_REF1_N
-set_property -quiet PACKAGE_PIN V32     [get_ports refclk_i_p[4]    ] ; # SL_REF2_P
-set_property -quiet PACKAGE_PIN V33     [get_ports refclk_i_n[4]    ] ; # SL_REF2_N
-set_property -quiet PACKAGE_PIN T32     [get_ports refclk_i_p[5]    ] ; # FELIX_REF0_P
-set_property -quiet PACKAGE_PIN T33     [get_ports refclk_i_n[5]    ] ; # FELIX_REF0_N
-set_property -quiet PACKAGE_PIN P32     [get_ports refclk_i_p[6]    ] ; # FELIX_REF1_P
-set_property -quiet PACKAGE_PIN P33     [get_ports refclk_i_n[6]    ] ; # FELIX_REF1_N
-set_property -quiet PACKAGE_PIN M32     [get_ports refclk_i_p[7]    ] ; # FELIX_REF2_P
-set_property -quiet PACKAGE_PIN M33     [get_ports refclk_i_n[7]    ] ; # FELIX_REF2_N
+# SLR0 Left
+create_clock -period 3.125 -name refclk0  [get_ports refclk_i_p[0]]  ; # Bank 120 -- felix tx
+create_clock -period 4.166 -name refclk1  [get_ports refclk_i_p[1]]  ; # Bank 121 -- sl
+create_clock -period 4.166 -name refclk2  [get_ports refclk_i_p[2]]  ; # Bank 122 -- sl
+create_clock -period 4.166 -name refclk3  [get_ports refclk_i_p[3]]  ; # Bank 123 -- sl
 
-# GTH
-set_property -quiet PACKAGE_PIN AL12    [get_ports refclk_i_p[8]    ] ; # AD_CLK2_KUP_P
-set_property -quiet PACKAGE_PIN AL11    [get_ports refclk_i_n[8]    ] ; # AD_CLK2_KUP_N
-set_property -quiet PACKAGE_PIN AK10    [get_ports refclk_i_p[9]    ] ; # B2B_REF0_P ;; used for SM-CM link
-set_property -quiet PACKAGE_PIN AK9     [get_ports refclk_i_n[9]    ] ; # B2B_REF0_N ;; used for SM-CM link
-set_property -quiet PACKAGE_PIN AJ12    [get_ports refclk_i_p[10]   ] ; # AD_CLK3_KUP_P
-set_property -quiet PACKAGE_PIN AJ11    [get_ports refclk_i_n[10]   ] ; # AD_CLK3_KUP_N
-set_property -quiet PACKAGE_PIN AH10    [get_ports refclk_i_p[11]   ] ; # B2B_REF2_P
-set_property -quiet PACKAGE_PIN AH9     [get_ports refclk_i_n[11]   ] ; # B2B_REF2_N
-set_property -quiet PACKAGE_PIN AG12    [get_ports refclk_i_p[12]   ] ; # FE_REF0_P
-set_property -quiet PACKAGE_PIN AG11    [get_ports refclk_i_n[12]   ] ; # FE_REF0_N
-set_property -quiet PACKAGE_PIN AE12    [get_ports refclk_i_p[13]   ] ; # FE_REF1_P
-set_property -quiet PACKAGE_PIN AE11    [get_ports refclk_i_n[13]   ] ; # FE_REF1_N
-set_property -quiet PACKAGE_PIN AC12    [get_ports refclk_i_p[14]   ] ; # FE_REF2_P
-set_property -quiet PACKAGE_PIN AC11    [get_ports refclk_i_n[14]   ] ; # FE_REF2_N
-set_property -quiet PACKAGE_PIN AA12    [get_ports refclk_i_p[15]   ] ; # SPARE_REF1_P
-set_property -quiet PACKAGE_PIN AA11    [get_ports refclk_i_n[15]   ] ; # SPARE_REF1_N
-set_property -quiet PACKAGE_PIN W12     [get_ports refclk_i_p[16]   ] ; # FE_REF3_P
-set_property -quiet PACKAGE_PIN W11     [get_ports refclk_i_n[16]   ] ; # FE_REF3_N
-set_property -quiet PACKAGE_PIN V10     [get_ports refclk_i_p[17]   ] ; # SPARE_REF2_P
-set_property -quiet PACKAGE_PIN V9      [get_ports refclk_i_n[17]   ] ; # SPARE_REF2_N
-set_property -quiet PACKAGE_PIN U12     [get_ports refclk_i_p[18]   ] ; # FE_REF4_P
-set_property -quiet PACKAGE_PIN U11     [get_ports refclk_i_n[18]   ] ; # FE_REF4_N
-set_property -quiet PACKAGE_PIN R12     [get_ports refclk_i_p[19]   ] ; # FE_REF5_P
-set_property -quiet PACKAGE_PIN R11     [get_ports refclk_i_n[19]   ] ; # FE_REF5_N
-set_property -quiet PACKAGE_PIN N12     [get_ports refclk_i_p[20]   ] ; # FE_REF6_P
-set_property -quiet PACKAGE_PIN N11     [get_ports refclk_i_n[20]   ] ; # FE_REF6_N
-set_property -quiet PACKAGE_PIN L12     [get_ports refclk_i_p[21]   ] ; # FE_REF7_P
-set_property -quiet PACKAGE_PIN L11     [get_ports refclk_i_n[21]   ] ; # FE_REF7_N
+# SLR0 Right
+create_clock -period 5.000 -name refclk4  [get_ports refclk_i_p[4]]  ; # Bank 220 -- c2c
+create_clock -period 3.125 -name refclk5  [get_ports refclk_i_p[5]]  ; # Bank 221
+create_clock -period 3.125 -name refclk6  [get_ports refclk_i_p[6]]  ; # Bank 222
+create_clock -period 3.125 -name refclk7  [get_ports refclk_i_p[7]]  ; # Bank 223
 
-# LHC REF Inputs
-#set_property -quiet PACKAGE_PIN AT24    [get_ports lhc_clock_in_p] ; # IN: LHC clock ;; SM or SMA or (KUP/ZUP output) --> Si5345 (no ZDM)
-#set_property -quiet PACKAGE_PIN AU24    [get_ports lhc_clock_in_n] ; # IN: LHC clock ;; SM or SMA or (KUP/ZUP output) --> Si5345 (no ZDM)
-create_clock -period 25 -name clock_in_async [get_ports clock_i_p]
+# SLR1 Left
+create_clock -period 3.125 -name refclk8  [get_ports refclk_i_p[8]]  ; # Bank 124
+create_clock -period 3.125 -name refclk9  [get_ports refclk_i_p[9]]  ; # Bank 125
+create_clock -period 3.125 -name refclk10 [get_ports refclk_i_p[10]] ; # Bank 126
+create_clock -period 3.125 -name refclk11 [get_ports refclk_i_p[11]] ; # Bank 127
 
-# CLK_GEN Inputs
-set_property -quiet PACKAGE_PIN AP29    [get_ports clock_i_p] ; # IN: async programmable clock ;; oscillator --> SI5341 (no zdm)
-set_property -quiet PACKAGE_PIN AP30    [get_ports clock_i_n] ; # IN: async programmable clock ;; oscillator --> SI5341 (no zdm)
+# SLR1 Right
+create_clock -period 3.125 -name refclk12 [get_ports refclk_i_p[12]] ; # Bank 224
+create_clock -period 3.125 -name refclk13 [get_ports refclk_i_p[13]] ; # Bank 225
+create_clock -period 3.125 -name refclk14 [get_ports refclk_i_p[14]] ; # Bank 226
+create_clock -period 3.125 -name refclk15 [get_ports refclk_i_p[15]] ; # Bank 227
 
-# 100M Oscillator
-set_property -quiet PACKAGE_PIN AY16    [get_ports clock_100m_i_p] ; # IN: oscillator clock, 100MHz, always on
-set_property -quiet PACKAGE_PIN AY15    [get_ports clock_100m_i_n] ; # IN: oscillator clock, 100MHz, always on
-create_clock -period 10.00 -name clock_100 [get_ports clock_100m_i_p]
+# SLR2 Left
+create_clock -period 3.125 -name refclk16 [get_ports refclk_i_p[16]] ; # Bank 128
+create_clock -period 3.125 -name refclk17 [get_ports refclk_i_p[17]] ; # Bank 129
+create_clock -period 3.125 -name refclk18 [get_ports refclk_i_p[18]] ; # Bank 130
+create_clock -period 3.125 -name refclk19 [get_ports refclk_i_p[19]] ; # Bank 131
+
+# SLR2 Right
+create_clock -period 3.125 -name refclk20 [get_ports refclk_i_p[20]] ; # Bank 228
+create_clock -period 3.125 -name refclk21 [get_ports refclk_i_p[21]] ; # Bank 229
+create_clock -period 3.125 -name refclk22 [get_ports refclk_i_p[22]] ; # Bank 230
+create_clock -period 3.125 -name refclk23 [get_ports refclk_i_p[23]] ; # Bank 231
+
+# SLR3 Left
+create_clock -period 3.125 -name refclk24 [get_ports refclk_i_p[24]] ; # Bank 132
+create_clock -period 3.125 -name refclk25 [get_ports refclk_i_p[25]] ; # Bank 133
+create_clock -period 3.125 -name refclk26 [get_ports refclk_i_p[26]] ; # Bank 134
+create_clock -period 3.125 -name refclk27 [get_ports refclk_i_p[27]] ; # Bank 135
+
+# SLR3 Right
+create_clock -period 3.125 -name refclk28 [get_ports refclk_i_p[28]] ; # Bank 232
+create_clock -period 3.125 -name refclk29 [get_ports refclk_i_p[29]] ; # Bank 233
+create_clock -period 3.125 -name refclk30 [get_ports refclk_i_p[30]] ; # Bank 234
+create_clock -period 3.125 -name refclk31 [get_ports refclk_i_p[31]] ; # Bank 235
+
+# LHC Clock Inputs
+create_clock -period 25 -name clock_in_lhc [get_ports clock_i_p]
+set_property -quiet PACKAGE_PIN AR17 [get_ports clock_in_p] ;
+set_property -quiet PACKAGE_PIN AR16 [get_ports clock_in_n] ;
+
+# 200M Oscillator
+set_property -quiet PACKAGE_PIN AT17 [get_ports clock_async_i_p] ; # IN: oscillator clock
+set_property -quiet PACKAGE_PIN AU16 [get_ports clock_async_i_n] ; # IN: oscillator clock
+create_clock -period 5.00 -name clock_async [get_ports clock_async_i_p]
 
 # LHC REF Output
-set_property -quiet PACKAGE_PIN AT23    [get_ports lhc_refclk_o_p] ; # OUT: recovered LHC Clock to synths
-set_property -quiet PACKAGE_PIN AU23    [get_ports lhc_refclk_o_n] ; # OUT: recovered LHC Clock to synths
+set_property -quiet PACKAGE_PIN BH26 [get_ports tc_clk_o_p] ; # OUT: recovered LHC Clock to synths
+set_property -quiet PACKAGE_PIN BH27 [get_ports tc_clk_o_n] ; # OUT: recovered LHC Clock to synths
 
+# IO standards
 set_property IOSTANDARD LVDS [get_ports  clock_i*]
-set_property IOSTANDARD LVDS [get_ports  clock_100m_i*]
-set_property IOSTANDARD LVDS [get_ports  lhc_refclk_o*]
+set_property IOSTANDARD LVDS [get_ports  clock_async_i*]
+set_property IOSTANDARD LVDS [get_ports  tc_clk_o*]
 
-set_property -quiet PACKAGE_PIN AU12   [get_ports sump]
+set_property -quiet PACKAGE_PIN BJ28   [get_ports sump]
 set_property IOSTANDARD LVCMOS18       [get_ports sump]
 
-set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_scl]
-set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_sda]
-set_property -quiet PACKAGE_PIN AL24     [get_ports sys_mgmt_scl] ;
-set_property -quiet PACKAGE_PIN AL25     [get_ports sys_mgmt_sda];
+set_property PACKAGE_PIN BG20 [get_ports c2c_rxp]
+set_property PACKAGE_PIN BG19 [get_ports c2c_rxn]
+set_property PACKAGE_PIN BH13 [get_ports c2c_txp]
+set_property PACKAGE_PIN BG12 [get_ports c2c_txn]
+
+# set_property IOSTANDARD LVCMOS18 [get_ports led_o*]
+# set_property PACKAGE_PIN BA19 [get_ports led_o[0]]
+# set_property PACKAGE_PIN BA18 [get_ports led_o[1]]
+# set_property PACKAGE_PIN BC19 [get_ports led_o[2]]
+# set_property PACKAGE_PIN BC18 [get_ports led_o[3]]
+# set_property PACKAGE_PIN AV19 [get_ports led_o[4]]
+# set_property PACKAGE_PIN AW15 [get_ports led_o[5]]
+# set_property PACKAGE_PIN AY15 [get_ports led_o[6]]
+# set_property PACKAGE_PIN BA15 [get_ports led_o[7]]
+# set_property PACKAGE_PIN AU17 [get_ports led_o[8]]

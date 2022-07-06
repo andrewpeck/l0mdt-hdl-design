@@ -2,4482 +2,2859 @@
 -- https://gitlab.com/tcpaiva/yml2hdl
 
 library ieee;
-
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 library shared_lib;
-
-use shared_lib.common_ieee.all;
+use shared_lib.common_ieee_pkg.all;
 
 package UCM_CTRL is
 
-  type UCM_SUPER_ACTIONS_CTRL_t is record
-    RESET : std_logic;
-    ENABLE : std_logic;
-    DISABLE : std_logic;
-    FREEZE : std_logic;
-  end record UCM_SUPER_ACTIONS_CTRL_t;
-  function len(x: UCM_SUPER_ACTIONS_CTRL_t) return natural;
-  function width(x: UCM_SUPER_ACTIONS_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
-  function nullify(t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
-  function zeroed(t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
+   -- Custom types and functions --
 
-  type UCM_SUPER_CONFIGS_CTRL_t is record
-    THREADS : std_logic_vector(4-1 downto 0);
-    INPUT_EN : std_logic;
-    OUTPUT_EN : std_logic;
-  end record UCM_SUPER_CONFIGS_CTRL_t;
-  function len(x: UCM_SUPER_CONFIGS_CTRL_t) return natural;
-  function width(x: UCM_SUPER_CONFIGS_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
-  function nullify(t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
-  function zeroed(t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
+   type UCM_SUPER_ACTIONS_CTRL_t is record
+      RESET : std_logic;
+      ENABLE : std_logic;
+      DISABLE : std_logic;
+      FREEZE : std_logic;
+   end record UCM_SUPER_ACTIONS_CTRL_t;
+   attribute w of UCM_SUPER_ACTIONS_CTRL_t : type is 4;
+   function width(x: UCM_SUPER_ACTIONS_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_ACTIONS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
+   function zero(tpl: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
 
-  type UCM_SUPER_STATUS_MON_t is record
-    ENABLED : std_logic;
-    READY : std_logic;
-    ERROR : std_logic_vector(8-1 downto 0);
-  end record UCM_SUPER_STATUS_MON_t;
-  function len(x: UCM_SUPER_STATUS_MON_t) return natural;
-  function width(x: UCM_SUPER_STATUS_MON_t) return natural;
-  function vectorify(x: UCM_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
-  function nullify(t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
-  function zeroed(t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
+   type UCM_SUPER_CONFIGS_CTRL_t is record
+      THREADS : std_logic_vector(4 - 1 downto 0);
+      INPUT_EN : std_logic;
+      OUTPUT_EN : std_logic;
+   end record UCM_SUPER_CONFIGS_CTRL_t;
+   attribute w of UCM_SUPER_CONFIGS_CTRL_t : type is 6;
+   function width(x: UCM_SUPER_CONFIGS_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_CONFIGS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
+   function zero(tpl: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
 
-  type UCM_SUPER_SECTOR_PHI_MON_t is record
-    rd_data : std_logic_vector(10-1 downto 0);
-  end record UCM_SUPER_SECTOR_PHI_MON_t;
-  function len(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural;
-  function width(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural;
-  function vectorify(x: UCM_SUPER_SECTOR_PHI_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_SECTOR_PHI_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
-  function nullify(t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
-  function zeroed(t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
+   type UCM_SUPER_STATUS_MON_t is record
+      ENABLED : std_logic;
+      READY : std_logic;
+      ERROR : std_logic_vector(8 - 1 downto 0);
+   end record UCM_SUPER_STATUS_MON_t;
+   attribute w of UCM_SUPER_STATUS_MON_t : type is 10;
+   function width(x: UCM_SUPER_STATUS_MON_t) return natural;
+   function convert(x: UCM_SUPER_STATUS_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
+   function zero(tpl: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
 
-  type UCM_SUPER_SECTOR_PHI_CTRL_t is record
-    wr_req : std_logic;
-    rd_req : std_logic;
-    wr_data : std_logic_vector(10-1 downto 0);
-  end record UCM_SUPER_SECTOR_PHI_CTRL_t;
-  function len(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural;
-  function width(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_SECTOR_PHI_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_SECTOR_PHI_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
-  function nullify(t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
-  function zeroed(t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
+   type UCM_SUPER_SECTOR_PHI_MON_t is record
+      rd_data : std_logic_vector(10 - 1 downto 0);
+   end record UCM_SUPER_SECTOR_PHI_MON_t;
+   attribute w of UCM_SUPER_SECTOR_PHI_MON_t : type is 10;
+   function width(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural;
+   function convert(x: UCM_SUPER_SECTOR_PHI_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
+   function zero(tpl: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
 
-  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t is record
-    rd_rdy : std_logic;
-  end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return natural;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return natural;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
+   type UCM_SUPER_SECTOR_PHI_CTRL_t is record
+      wr_req : std_logic;
+      rd_req : std_logic;
+      wr_data : std_logic_vector(10 - 1 downto 0);
+   end record UCM_SUPER_SECTOR_PHI_CTRL_t;
+   attribute w of UCM_SUPER_SECTOR_PHI_CTRL_t : type is 12;
+   function width(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_SECTOR_PHI_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
+   function zero(tpl: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
 
-  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t is record
-    wr_req : std_logic;
-    wr_ack : std_logic;
-    rd_req : std_logic;
-    rd_ack : std_logic;
-    flush_req : std_logic;
-  end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return natural;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
+   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t is record
+      rd_rdy : std_logic;
+      freeze_ena : std_logic;
+   end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t : type is 2;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return natural;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
 
-  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t is record
-    wr_data_0 : std_logic_vector(16-1 downto 0);
-  end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return natural;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
+   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t is record
+      wr_req : std_logic;
+      wr_ack : std_logic;
+      rd_req : std_logic;
+      rd_ack : std_logic;
+      flush_req : std_logic;
+      freeze_req : std_logic;
+      mem_sel : std_logic_vector(3 - 1 downto 0);
+   end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t : type is 9;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
 
-  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t is record
-    rd_data_0 : std_logic_vector(16-1 downto 0);
-  end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return natural;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return natural;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
+   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t is record
+      wr_data_0 : std_logic_vector(16 - 1 downto 0);
+   end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t : type is 16;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
 
-  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is record
-    SIGNALS : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
-    rd_data : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
-  end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t is record
+      rd_data_0 : std_logic_vector(16 - 1 downto 0);
+   end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t : type is 16;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return natural;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
 
-  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-  function convert(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-  function nullify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-  function zeroed(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is record
+      SIGNALS : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
+      rd_data : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
+   end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t : type is 18;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
 
-  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is record
-    SIGNALS : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
-    wr_addr : std_logic_vector(8-1 downto 0);
-    rd_addr : std_logic_vector(8-1 downto 0);
-    wr_data : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
-  end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is array(4 -1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY : type is 72;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return integer;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
 
-  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-  function convert(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-  function nullify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-  function zeroed(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is record
+      SIGNALS : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
+      wr_addr : std_logic_vector(8 - 1 downto 0);
+      rd_addr : std_logic_vector(8 - 1 downto 0);
+      wr_data : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
+   end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t : type is 41;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
 
-  type UCM_SUPER_CDE_CHAMB_Z0_MON_t is record
-    CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-  end record UCM_SUPER_CDE_CHAMB_Z0_MON_t;
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
+   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is array(4 -1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY : type is 164;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return integer;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
 
-  type UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is record
-    CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-  end record UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
+   type UCM_SUPER_CDE_CHAMB_Z0_MON_t is record
+      CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+   end record UCM_SUPER_CDE_CHAMB_Z0_MON_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_MON_t : type is 72;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
 
-  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t is record
-    rd_rdy : std_logic;
-  end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return natural;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return natural;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
+   type UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is record
+      CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+   end record UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
+   attribute w of UCM_SUPER_CDE_CHAMB_Z0_CTRL_t : type is 164;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
 
-  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t is record
-    wr_req : std_logic;
-    wr_ack : std_logic;
-    rd_req : std_logic;
-    rd_ack : std_logic;
-    flush_req : std_logic;
-  end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return natural;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
+   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t is record
+      rd_rdy : std_logic;
+      freeze_ena : std_logic;
+   end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t : type is 2;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return natural;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
 
-  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t is record
-    wr_data_0 : std_logic_vector(16-1 downto 0);
-  end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return natural;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
+   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t is record
+      wr_req : std_logic;
+      wr_ack : std_logic;
+      rd_req : std_logic;
+      rd_ack : std_logic;
+      flush_req : std_logic;
+      freeze_req : std_logic;
+      mem_sel : std_logic_vector(3 - 1 downto 0);
+   end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t : type is 9;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
 
-  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t is record
-    rd_data_0 : std_logic_vector(16-1 downto 0);
-  end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return natural;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return natural;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
+   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t is record
+      wr_data_0 : std_logic_vector(16 - 1 downto 0);
+   end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t : type is 16;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
 
-  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is record
-    SIGNALS : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
-    rd_data : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
-  end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t is record
+      rd_data_0 : std_logic_vector(16 - 1 downto 0);
+   end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t : type is 16;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return natural;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
 
-  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
-  function convert(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
-  function nullify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
-  function zeroed(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is record
+      SIGNALS : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
+      rd_data : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
+   end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t : type is 18;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
 
-  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is record
-    SIGNALS : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
-    wr_addr : std_logic_vector(8-1 downto 0);
-    rd_addr : std_logic_vector(8-1 downto 0);
-    wr_data : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
-  end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is array(4 -1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY : type is 72;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return integer;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
 
-  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-  function convert(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-  function nullify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-  function zeroed(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is record
+      SIGNALS : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
+      wr_addr : std_logic_vector(8 - 1 downto 0);
+      rd_addr : std_logic_vector(8 - 1 downto 0);
+      wr_data : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
+   end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t : type is 41;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
 
-  type UCM_SUPER_CVP_CHAMB_Z0_MON_t is record
-    CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
-  end record UCM_SUPER_CVP_CHAMB_Z0_MON_t;
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
+   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is array(4 -1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY : type is 164;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return integer;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
 
-  type UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is record
-    CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-  end record UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
+   type UCM_SUPER_CVP_CHAMB_Z0_MON_t is record
+      CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+   end record UCM_SUPER_CVP_CHAMB_Z0_MON_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_MON_t : type is 72;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
 
-  type UCM_SUPER_MON_t is record
-    STATUS : UCM_SUPER_STATUS_MON_t;
-    SECTOR_PHI : UCM_SUPER_SECTOR_PHI_MON_t;
-    CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_MON_t;
-    CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_MON_t;
-  end record UCM_SUPER_MON_t;
-  function len(x: UCM_SUPER_MON_t) return natural;
-  function width(x: UCM_SUPER_MON_t) return natural;
-  function vectorify(x: UCM_SUPER_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
-  function nullify(t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
-  function zeroed(t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
+   type UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is record
+      CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+   end record UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
+   attribute w of UCM_SUPER_CVP_CHAMB_Z0_CTRL_t : type is 164;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
 
-  type UCM_SUPER_CTRL_t is record
-    ACTIONS : UCM_SUPER_ACTIONS_CTRL_t;
-    CONFIGS : UCM_SUPER_CONFIGS_CTRL_t;
-    SECTOR_PHI : UCM_SUPER_SECTOR_PHI_CTRL_t;
-    CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
-    CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
-  end record UCM_SUPER_CTRL_t;
-  function len(x: UCM_SUPER_CTRL_t) return natural;
-  function width(x: UCM_SUPER_CTRL_t) return natural;
-  function vectorify(x: UCM_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
-  function nullify(t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
-  function zeroed(t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
+   type UCM_SUPER_MON_t is record
+      STATUS : UCM_SUPER_STATUS_MON_t;
+      SECTOR_PHI : UCM_SUPER_SECTOR_PHI_MON_t;
+      CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_MON_t;
+      CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_MON_t;
+   end record UCM_SUPER_MON_t;
+   attribute w of UCM_SUPER_MON_t : type is 164;
+   function width(x: UCM_SUPER_MON_t) return natural;
+   function convert(x: UCM_SUPER_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
+   function zero(tpl: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
 
-  type UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is record
-    rd_rdy : std_logic;
-    rd_data : std_logic_vector(12-1 downto 0);
-  end record UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
-  function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural;
-  function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural;
-  function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
-  function nullify(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
-  function zeroed(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+   type UCM_SUPER_CTRL_t is record
+      ACTIONS : UCM_SUPER_ACTIONS_CTRL_t;
+      CONFIGS : UCM_SUPER_CONFIGS_CTRL_t;
+      SECTOR_PHI : UCM_SUPER_SECTOR_PHI_CTRL_t;
+      CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
+      CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
+   end record UCM_SUPER_CTRL_t;
+   attribute w of UCM_SUPER_CTRL_t : type is 350;
+   function width(x: UCM_SUPER_CTRL_t) return natural;
+   function convert(x: UCM_SUPER_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
+   function zero(tpl: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
 
-  type UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is record
-    wr_req : std_logic;
-    rd_req : std_logic;
-    wr_addr : std_logic_vector(5-1 downto 0);
-    rd_addr : std_logic_vector(5-1 downto 0);
-    wr_data : std_logic_vector(12-1 downto 0);
-  end record UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
-  function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural;
-  function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural;
-  function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
-  function nullify(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
-  function zeroed(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+   type UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is record
+      rd_rdy : std_logic;
+      rd_data : std_logic_vector(12 - 1 downto 0);
+   end record UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+   attribute w of UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t : type is 13;
+   function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural;
+   function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+   function zero(tpl: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
 
-  type UCM_R_PHI_COMP_RPC_MON_t is record
-    MEM_INTERFACE : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
-  end record UCM_R_PHI_COMP_RPC_MON_t;
-  function len(x: UCM_R_PHI_COMP_RPC_MON_t) return natural;
-  function width(x: UCM_R_PHI_COMP_RPC_MON_t) return natural;
-  function vectorify(x: UCM_R_PHI_COMP_RPC_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_R_PHI_COMP_RPC_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
-  function nullify(t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
-  function zeroed(t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
+   type UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is record
+      wr_req : std_logic;
+      rd_req : std_logic;
+      wr_addr : std_logic_vector(5 - 1 downto 0);
+      rd_addr : std_logic_vector(5 - 1 downto 0);
+      wr_data : std_logic_vector(12 - 1 downto 0);
+   end record UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+   attribute w of UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t : type is 24;
+   function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural;
+   function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+   function zero(tpl: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
 
-  type UCM_R_PHI_COMP_RPC_CTRL_t is record
-    sel_thread : std_logic_vector(4-1 downto 0);
-    sel_station : std_logic_vector(4-1 downto 0);
-    sel_layer : std_logic_vector(4-1 downto 0);
-    ext_ctrl : std_logic;
-    MEM_INTERFACE : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
-  end record UCM_R_PHI_COMP_RPC_CTRL_t;
-  function len(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural;
-  function width(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural;
-  function vectorify(x: UCM_R_PHI_COMP_RPC_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_R_PHI_COMP_RPC_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
-  function nullify(t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
-  function zeroed(t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
+   type UCM_R_PHI_COMP_RPC_MON_t is record
+      MEM_INTERFACE : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+   end record UCM_R_PHI_COMP_RPC_MON_t;
+   attribute w of UCM_R_PHI_COMP_RPC_MON_t : type is 13;
+   function width(x: UCM_R_PHI_COMP_RPC_MON_t) return natural;
+   function convert(x: UCM_R_PHI_COMP_RPC_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
+   function zero(tpl: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
 
-  type UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is record
-    rd_rdy : std_logic;
-    rd_data : std_logic_vector(14-1 downto 0);
-  end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
-  function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural;
-  function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural;
-  function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
-  function nullify(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
-  function zeroed(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+   type UCM_R_PHI_COMP_RPC_CTRL_t is record
+      sel_thread : std_logic_vector(4 - 1 downto 0);
+      sel_station : std_logic_vector(4 - 1 downto 0);
+      sel_layer : std_logic_vector(4 - 1 downto 0);
+      ext_ctrl : std_logic;
+      MEM_INTERFACE : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+   end record UCM_R_PHI_COMP_RPC_CTRL_t;
+   attribute w of UCM_R_PHI_COMP_RPC_CTRL_t : type is 37;
+   function width(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural;
+   function convert(x: UCM_R_PHI_COMP_RPC_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
+   function zero(tpl: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
 
-  type UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is record
-    wr_req : std_logic;
-    rd_req : std_logic;
-    wr_addr : std_logic_vector(5-1 downto 0);
-    rd_addr : std_logic_vector(5-1 downto 0);
-    wr_data : std_logic_vector(14-1 downto 0);
-  end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
-  function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural;
-  function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural;
-  function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
-  function nullify(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
-  function zeroed(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+   type UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is record
+      rd_rdy : std_logic;
+      rd_data : std_logic_vector(14 - 1 downto 0);
+   end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+   attribute w of UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t : type is 15;
+   function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural;
+   function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+   function zero(tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
 
-  type UCM_R_PHI_COMP_MDT_MON_t is record
-    MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
-  end record UCM_R_PHI_COMP_MDT_MON_t;
-  function len(x: UCM_R_PHI_COMP_MDT_MON_t) return natural;
-  function width(x: UCM_R_PHI_COMP_MDT_MON_t) return natural;
-  function vectorify(x: UCM_R_PHI_COMP_MDT_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_R_PHI_COMP_MDT_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
-  function nullify(t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
-  function zeroed(t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
+   type UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is record
+      wr_req : std_logic;
+      rd_req : std_logic;
+      wr_addr : std_logic_vector(5 - 1 downto 0);
+      rd_addr : std_logic_vector(5 - 1 downto 0);
+      wr_data : std_logic_vector(14 - 1 downto 0);
+   end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+   attribute w of UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t : type is 26;
+   function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural;
+   function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+   function zero(tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
 
-  type UCM_R_PHI_COMP_MDT_CTRL_t is record
-    sel_thread : std_logic_vector(4-1 downto 0);
-    sel_station : std_logic_vector(4-1 downto 0);
-    sel_layer : std_logic_vector(4-1 downto 0);
-    ext_ctrl : std_logic;
-    MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
-  end record UCM_R_PHI_COMP_MDT_CTRL_t;
-  function len(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural;
-  function width(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural;
-  function vectorify(x: UCM_R_PHI_COMP_MDT_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_R_PHI_COMP_MDT_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
-  function nullify(t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
-  function zeroed(t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
+   type UCM_R_PHI_COMP_MDT_MON_t is record
+      MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+   end record UCM_R_PHI_COMP_MDT_MON_t;
+   attribute w of UCM_R_PHI_COMP_MDT_MON_t : type is 15;
+   function width(x: UCM_R_PHI_COMP_MDT_MON_t) return natural;
+   function convert(x: UCM_R_PHI_COMP_MDT_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
+   function zero(tpl: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
 
-  type UCM_R_PHI_COMP_MON_t is record
-    RPC : UCM_R_PHI_COMP_RPC_MON_t;
-    MDT : UCM_R_PHI_COMP_MDT_MON_t;
-  end record UCM_R_PHI_COMP_MON_t;
-  function len(x: UCM_R_PHI_COMP_MON_t) return natural;
-  function width(x: UCM_R_PHI_COMP_MON_t) return natural;
-  function vectorify(x: UCM_R_PHI_COMP_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_R_PHI_COMP_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
-  function nullify(t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
-  function zeroed(t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
+   type UCM_R_PHI_COMP_MDT_CTRL_t is record
+      sel_thread : std_logic_vector(4 - 1 downto 0);
+      sel_station : std_logic_vector(4 - 1 downto 0);
+      sel_layer : std_logic_vector(4 - 1 downto 0);
+      ext_ctrl : std_logic;
+      MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+   end record UCM_R_PHI_COMP_MDT_CTRL_t;
+   attribute w of UCM_R_PHI_COMP_MDT_CTRL_t : type is 39;
+   function width(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural;
+   function convert(x: UCM_R_PHI_COMP_MDT_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
+   function zero(tpl: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
 
-  type UCM_R_PHI_COMP_CTRL_t is record
-    RPC : UCM_R_PHI_COMP_RPC_CTRL_t;
-    MDT : UCM_R_PHI_COMP_MDT_CTRL_t;
-  end record UCM_R_PHI_COMP_CTRL_t;
-  function len(x: UCM_R_PHI_COMP_CTRL_t) return natural;
-  function width(x: UCM_R_PHI_COMP_CTRL_t) return natural;
-  function vectorify(x: UCM_R_PHI_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_R_PHI_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
-  function nullify(t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
-  function zeroed(t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
+   type UCM_R_PHI_COMP_MON_t is record
+      RPC : UCM_R_PHI_COMP_RPC_MON_t;
+      MDT : UCM_R_PHI_COMP_MDT_MON_t;
+   end record UCM_R_PHI_COMP_MON_t;
+   attribute w of UCM_R_PHI_COMP_MON_t : type is 28;
+   function width(x: UCM_R_PHI_COMP_MON_t) return natural;
+   function convert(x: UCM_R_PHI_COMP_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
+   function zero(tpl: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
 
-  type UCM_MON_t is record
-    SUPER : UCM_SUPER_MON_t;
-    R_PHI_COMP : UCM_R_PHI_COMP_MON_t;
-  end record UCM_MON_t;
-  function len(x: UCM_MON_t) return natural;
-  function width(x: UCM_MON_t) return natural;
-  function vectorify(x: UCM_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_MON_t) return UCM_MON_t;
-  function convert(x: in std_logic_vector; t: UCM_MON_t) return UCM_MON_t;
-  function nullify(t: UCM_MON_t) return UCM_MON_t;
-  function zeroed(t: UCM_MON_t) return UCM_MON_t;
+   type UCM_R_PHI_COMP_CTRL_t is record
+      RPC : UCM_R_PHI_COMP_RPC_CTRL_t;
+      MDT : UCM_R_PHI_COMP_MDT_CTRL_t;
+   end record UCM_R_PHI_COMP_CTRL_t;
+   attribute w of UCM_R_PHI_COMP_CTRL_t : type is 76;
+   function width(x: UCM_R_PHI_COMP_CTRL_t) return natural;
+   function convert(x: UCM_R_PHI_COMP_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
+   function zero(tpl: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
 
-  type UCM_CTRL_t is record
-    SUPER : UCM_SUPER_CTRL_t;
-    R_PHI_COMP : UCM_R_PHI_COMP_CTRL_t;
-  end record UCM_CTRL_t;
-  function len(x: UCM_CTRL_t) return natural;
-  function width(x: UCM_CTRL_t) return natural;
-  function vectorify(x: UCM_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: UCM_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_CTRL_t) return UCM_CTRL_t;
-  function convert(x: in std_logic_vector; t: UCM_CTRL_t) return UCM_CTRL_t;
-  function nullify(t: UCM_CTRL_t) return UCM_CTRL_t;
-  function zeroed(t: UCM_CTRL_t) return UCM_CTRL_t;
+   type UCM_MON_t is record
+      SUPER : UCM_SUPER_MON_t;
+      R_PHI_COMP : UCM_R_PHI_COMP_MON_t;
+   end record UCM_MON_t;
+   attribute w of UCM_MON_t : type is 192;
+   function width(x: UCM_MON_t) return natural;
+   function convert(x: UCM_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_MON_t) return UCM_MON_t;
+   function zero(tpl: UCM_MON_t) return UCM_MON_t;
+
+   type UCM_CTRL_t is record
+      SUPER : UCM_SUPER_CTRL_t;
+      R_PHI_COMP : UCM_R_PHI_COMP_CTRL_t;
+   end record UCM_CTRL_t;
+   attribute w of UCM_CTRL_t : type is 426;
+   function width(x: UCM_CTRL_t) return natural;
+   function convert(x: UCM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: UCM_CTRL_t) return UCM_CTRL_t;
+   function zero(tpl: UCM_CTRL_t) return UCM_CTRL_t;
 
 end package UCM_CTRL;
 
 ------------------------------------------------------------
 
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.math_real.all;
+
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+
 package body UCM_CTRL is
 
-  function len(x: UCM_SUPER_ACTIONS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.RESET);
-    l := l + len(x.ENABLE);
-    l := l + len(x.DISABLE);
-    l := l + len(x.FREEZE);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_ACTIONS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.RESET);
-    l := l + width(x.ENABLE);
-    l := l + width(x.DISABLE);
-    l := l + width(x.FREEZE);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.RESET)-1), vectorify(x.RESET, y(left to left+len(x.RESET)-1)));
-      left := left + len(x.RESET);
-      assign(y(left to left+len(x.ENABLE)-1), vectorify(x.ENABLE, y(left to left+len(x.ENABLE)-1)));
-      left := left + len(x.ENABLE);
-      assign(y(left to left+len(x.DISABLE)-1), vectorify(x.DISABLE, y(left to left+len(x.DISABLE)-1)));
-      left := left + len(x.DISABLE);
-      assign(y(left to left+len(x.FREEZE)-1), vectorify(x.FREEZE, y(left to left+len(x.FREEZE)-1)));
-    else
-      assign(y(left downto left-len(x.RESET)+1), vectorify(x.RESET, y(left downto left-len(x.RESET)+1)));
-      left := left - len(x.RESET);
-      assign(y(left downto left-len(x.ENABLE)+1), vectorify(x.ENABLE, y(left downto left-len(x.ENABLE)+1)));
-      left := left - len(x.ENABLE);
-      assign(y(left downto left-len(x.DISABLE)+1), vectorify(x.DISABLE, y(left downto left-len(x.DISABLE)+1)));
-      left := left - len(x.DISABLE);
-      assign(y(left downto left-len(x.FREEZE)+1), vectorify(x.FREEZE, y(left downto left-len(x.FREEZE)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.RESET)-1), convert(x.RESET, y(left to left+len(x.RESET)-1)));
-      left := left + len(x.RESET);
-      assign(y(left to left+len(x.ENABLE)-1), convert(x.ENABLE, y(left to left+len(x.ENABLE)-1)));
-      left := left + len(x.ENABLE);
-      assign(y(left to left+len(x.DISABLE)-1), convert(x.DISABLE, y(left to left+len(x.DISABLE)-1)));
-      left := left + len(x.DISABLE);
-      assign(y(left to left+len(x.FREEZE)-1), convert(x.FREEZE, y(left to left+len(x.FREEZE)-1)));
-    else
-      assign(y(left downto left-len(x.RESET)+1), convert(x.RESET, y(left downto left-len(x.RESET)+1)));
-      left := left - len(x.RESET);
-      assign(y(left downto left-len(x.ENABLE)+1), convert(x.ENABLE, y(left downto left-len(x.ENABLE)+1)));
-      left := left - len(x.ENABLE);
-      assign(y(left downto left-len(x.DISABLE)+1), convert(x.DISABLE, y(left downto left-len(x.DISABLE)+1)));
-      left := left - len(x.DISABLE);
-      assign(y(left downto left-len(x.FREEZE)+1), convert(x.FREEZE, y(left downto left-len(x.FREEZE)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t is
-    variable y: UCM_SUPER_ACTIONS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.RESET := structify(x(left to left+len(y.RESET)-1), y.RESET);
-      left := left + len(y.RESET);
-      y.ENABLE := structify(x(left to left+len(y.ENABLE)-1), y.ENABLE);
-      left := left + len(y.ENABLE);
-      y.DISABLE := structify(x(left to left+len(y.DISABLE)-1), y.DISABLE);
-      left := left + len(y.DISABLE);
-      y.FREEZE := structify(x(left to left+len(y.FREEZE)-1), y.FREEZE);
-    else
-      y.RESET := structify(x(left downto left-len(y.RESET)+1), y.RESET);
-      left := left - len(y.RESET);
-      y.ENABLE := structify(x(left downto left-len(y.ENABLE)+1), y.ENABLE);
-      left := left - len(y.ENABLE);
-      y.DISABLE := structify(x(left downto left-len(y.DISABLE)+1), y.DISABLE);
-      left := left - len(y.DISABLE);
-      y.FREEZE := structify(x(left downto left-len(y.FREEZE)+1), y.FREEZE);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t is
-    variable y: UCM_SUPER_ACTIONS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.RESET := convert(x(left to left+len(y.RESET)-1), y.RESET);
-      left := left + len(y.RESET);
-      y.ENABLE := convert(x(left to left+len(y.ENABLE)-1), y.ENABLE);
-      left := left + len(y.ENABLE);
-      y.DISABLE := convert(x(left to left+len(y.DISABLE)-1), y.DISABLE);
-      left := left + len(y.DISABLE);
-      y.FREEZE := convert(x(left to left+len(y.FREEZE)-1), y.FREEZE);
-    else
-      y.RESET := convert(x(left downto left-len(y.RESET)+1), y.RESET);
-      left := left - len(y.RESET);
-      y.ENABLE := convert(x(left downto left-len(y.ENABLE)+1), y.ENABLE);
-      left := left - len(y.ENABLE);
-      y.DISABLE := convert(x(left downto left-len(y.DISABLE)+1), y.DISABLE);
-      left := left - len(y.DISABLE);
-      y.FREEZE := convert(x(left downto left-len(y.FREEZE)+1), y.FREEZE);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t is
-  variable y: UCM_SUPER_ACTIONS_CTRL_t;
-  begin
-    y.RESET := nullify(t.RESET);
-    y.ENABLE := nullify(t.ENABLE);
-    y.DISABLE := nullify(t.DISABLE);
-    y.FREEZE := nullify(t.FREEZE);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t is
-  variable y: UCM_SUPER_ACTIONS_CTRL_t;
-  begin
-    y.RESET := zeroed(t.RESET);
-    y.ENABLE := zeroed(t.ENABLE);
-    y.DISABLE := zeroed(t.DISABLE);
-    y.FREEZE := zeroed(t.FREEZE);
-    return y;
-  end function zeroed;
+   -- Custom types and functions --
 
-  function len(x: UCM_SUPER_CONFIGS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.THREADS);
-    l := l + len(x.INPUT_EN);
-    l := l + len(x.OUTPUT_EN);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CONFIGS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.THREADS);
-    l := l + width(x.INPUT_EN);
-    l := l + width(x.OUTPUT_EN);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.THREADS)-1), vectorify(x.THREADS, y(left to left+len(x.THREADS)-1)));
-      left := left + len(x.THREADS);
-      assign(y(left to left+len(x.INPUT_EN)-1), vectorify(x.INPUT_EN, y(left to left+len(x.INPUT_EN)-1)));
-      left := left + len(x.INPUT_EN);
-      assign(y(left to left+len(x.OUTPUT_EN)-1), vectorify(x.OUTPUT_EN, y(left to left+len(x.OUTPUT_EN)-1)));
-    else
-      assign(y(left downto left-len(x.THREADS)+1), vectorify(x.THREADS, y(left downto left-len(x.THREADS)+1)));
-      left := left - len(x.THREADS);
-      assign(y(left downto left-len(x.INPUT_EN)+1), vectorify(x.INPUT_EN, y(left downto left-len(x.INPUT_EN)+1)));
-      left := left - len(x.INPUT_EN);
-      assign(y(left downto left-len(x.OUTPUT_EN)+1), vectorify(x.OUTPUT_EN, y(left downto left-len(x.OUTPUT_EN)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.THREADS)-1), convert(x.THREADS, y(left to left+len(x.THREADS)-1)));
-      left := left + len(x.THREADS);
-      assign(y(left to left+len(x.INPUT_EN)-1), convert(x.INPUT_EN, y(left to left+len(x.INPUT_EN)-1)));
-      left := left + len(x.INPUT_EN);
-      assign(y(left to left+len(x.OUTPUT_EN)-1), convert(x.OUTPUT_EN, y(left to left+len(x.OUTPUT_EN)-1)));
-    else
-      assign(y(left downto left-len(x.THREADS)+1), convert(x.THREADS, y(left downto left-len(x.THREADS)+1)));
-      left := left - len(x.THREADS);
-      assign(y(left downto left-len(x.INPUT_EN)+1), convert(x.INPUT_EN, y(left downto left-len(x.INPUT_EN)+1)));
-      left := left - len(x.INPUT_EN);
-      assign(y(left downto left-len(x.OUTPUT_EN)+1), convert(x.OUTPUT_EN, y(left downto left-len(x.OUTPUT_EN)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t is
-    variable y: UCM_SUPER_CONFIGS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.THREADS := structify(x(left to left+len(y.THREADS)-1), y.THREADS);
-      left := left + len(y.THREADS);
-      y.INPUT_EN := structify(x(left to left+len(y.INPUT_EN)-1), y.INPUT_EN);
-      left := left + len(y.INPUT_EN);
-      y.OUTPUT_EN := structify(x(left to left+len(y.OUTPUT_EN)-1), y.OUTPUT_EN);
-    else
-      y.THREADS := structify(x(left downto left-len(y.THREADS)+1), y.THREADS);
-      left := left - len(y.THREADS);
-      y.INPUT_EN := structify(x(left downto left-len(y.INPUT_EN)+1), y.INPUT_EN);
-      left := left - len(y.INPUT_EN);
-      y.OUTPUT_EN := structify(x(left downto left-len(y.OUTPUT_EN)+1), y.OUTPUT_EN);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t is
-    variable y: UCM_SUPER_CONFIGS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.THREADS := convert(x(left to left+len(y.THREADS)-1), y.THREADS);
-      left := left + len(y.THREADS);
-      y.INPUT_EN := convert(x(left to left+len(y.INPUT_EN)-1), y.INPUT_EN);
-      left := left + len(y.INPUT_EN);
-      y.OUTPUT_EN := convert(x(left to left+len(y.OUTPUT_EN)-1), y.OUTPUT_EN);
-    else
-      y.THREADS := convert(x(left downto left-len(y.THREADS)+1), y.THREADS);
-      left := left - len(y.THREADS);
-      y.INPUT_EN := convert(x(left downto left-len(y.INPUT_EN)+1), y.INPUT_EN);
-      left := left - len(y.INPUT_EN);
-      y.OUTPUT_EN := convert(x(left downto left-len(y.OUTPUT_EN)+1), y.OUTPUT_EN);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t is
-  variable y: UCM_SUPER_CONFIGS_CTRL_t;
-  begin
-    y.THREADS := nullify(t.THREADS);
-    y.INPUT_EN := nullify(t.INPUT_EN);
-    y.OUTPUT_EN := nullify(t.OUTPUT_EN);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t is
-  variable y: UCM_SUPER_CONFIGS_CTRL_t;
-  begin
-    y.THREADS := zeroed(t.THREADS);
-    y.INPUT_EN := zeroed(t.INPUT_EN);
-    y.OUTPUT_EN := zeroed(t.OUTPUT_EN);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_ACTIONS_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.RESET);
+      w := w + width(x.ENABLE);
+      w := w + width(x.DISABLE);
+      w := w + width(x.FREEZE);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_ACTIONS_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.RESET);
+         y(u to u+w-1) := convert(x.RESET, y(u to u+w-1));
+         u := u + w;
+         w := width(x.ENABLE);
+         y(u to u+w-1) := convert(x.ENABLE, y(u to u+w-1));
+         u := u + w;
+         w := width(x.DISABLE);
+         y(u to u+w-1) := convert(x.DISABLE, y(u to u+w-1));
+         u := u + w;
+         w := width(x.FREEZE);
+         y(u to u+w-1) := convert(x.FREEZE, y(u to u+w-1));
+      else
+         w := width(x.RESET);
+         y(u downto u-w+1) := convert(x.RESET, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.ENABLE);
+         y(u downto u-w+1) := convert(x.ENABLE, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.DISABLE);
+         y(u downto u-w+1) := convert(x.DISABLE, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.FREEZE);
+         y(u downto u-w+1) := convert(x.FREEZE, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t is
+      variable y : UCM_SUPER_ACTIONS_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.RESET);
+         y.RESET := convert(x(u to u+w-1), tpl.RESET);
+         u := u + w;
+         w := width(tpl.ENABLE);
+         y.ENABLE := convert(x(u to u+w-1), tpl.ENABLE);
+         u := u + w;
+         w := width(tpl.DISABLE);
+         y.DISABLE := convert(x(u to u+w-1), tpl.DISABLE);
+         u := u + w;
+         w := width(tpl.FREEZE);
+         y.FREEZE := convert(x(u to u+w-1), tpl.FREEZE);
+      else
+         w := width(tpl.RESET);
+         y.RESET := convert(x(u downto u-w+1), tpl.RESET);
+         u := u - w;
+         w := width(tpl.ENABLE);
+         y.ENABLE := convert(x(u downto u-w+1), tpl.ENABLE);
+         u := u - w;
+         w := width(tpl.DISABLE);
+         y.DISABLE := convert(x(u downto u-w+1), tpl.DISABLE);
+         u := u - w;
+         w := width(tpl.FREEZE);
+         y.FREEZE := convert(x(u downto u-w+1), tpl.FREEZE);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_STATUS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.ENABLED);
-    l := l + len(x.READY);
-    l := l + len(x.ERROR);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_STATUS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.ENABLED);
-    l := l + width(x.READY);
-    l := l + width(x.ERROR);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.ENABLED)-1), vectorify(x.ENABLED, y(left to left+len(x.ENABLED)-1)));
-      left := left + len(x.ENABLED);
-      assign(y(left to left+len(x.READY)-1), vectorify(x.READY, y(left to left+len(x.READY)-1)));
-      left := left + len(x.READY);
-      assign(y(left to left+len(x.ERROR)-1), vectorify(x.ERROR, y(left to left+len(x.ERROR)-1)));
-    else
-      assign(y(left downto left-len(x.ENABLED)+1), vectorify(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
-      left := left - len(x.ENABLED);
-      assign(y(left downto left-len(x.READY)+1), vectorify(x.READY, y(left downto left-len(x.READY)+1)));
-      left := left - len(x.READY);
-      assign(y(left downto left-len(x.ERROR)+1), vectorify(x.ERROR, y(left downto left-len(x.ERROR)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.ENABLED)-1), convert(x.ENABLED, y(left to left+len(x.ENABLED)-1)));
-      left := left + len(x.ENABLED);
-      assign(y(left to left+len(x.READY)-1), convert(x.READY, y(left to left+len(x.READY)-1)));
-      left := left + len(x.READY);
-      assign(y(left to left+len(x.ERROR)-1), convert(x.ERROR, y(left to left+len(x.ERROR)-1)));
-    else
-      assign(y(left downto left-len(x.ENABLED)+1), convert(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
-      left := left - len(x.ENABLED);
-      assign(y(left downto left-len(x.READY)+1), convert(x.READY, y(left downto left-len(x.READY)+1)));
-      left := left - len(x.READY);
-      assign(y(left downto left-len(x.ERROR)+1), convert(x.ERROR, y(left downto left-len(x.ERROR)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t is
-    variable y: UCM_SUPER_STATUS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.ENABLED := structify(x(left to left+len(y.ENABLED)-1), y.ENABLED);
-      left := left + len(y.ENABLED);
-      y.READY := structify(x(left to left+len(y.READY)-1), y.READY);
-      left := left + len(y.READY);
-      y.ERROR := structify(x(left to left+len(y.ERROR)-1), y.ERROR);
-    else
-      y.ENABLED := structify(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
-      left := left - len(y.ENABLED);
-      y.READY := structify(x(left downto left-len(y.READY)+1), y.READY);
-      left := left - len(y.READY);
-      y.ERROR := structify(x(left downto left-len(y.ERROR)+1), y.ERROR);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t is
-    variable y: UCM_SUPER_STATUS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.ENABLED := convert(x(left to left+len(y.ENABLED)-1), y.ENABLED);
-      left := left + len(y.ENABLED);
-      y.READY := convert(x(left to left+len(y.READY)-1), y.READY);
-      left := left + len(y.READY);
-      y.ERROR := convert(x(left to left+len(y.ERROR)-1), y.ERROR);
-    else
-      y.ENABLED := convert(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
-      left := left - len(y.ENABLED);
-      y.READY := convert(x(left downto left-len(y.READY)+1), y.READY);
-      left := left - len(y.READY);
-      y.ERROR := convert(x(left downto left-len(y.ERROR)+1), y.ERROR);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t is
-  variable y: UCM_SUPER_STATUS_MON_t;
-  begin
-    y.ENABLED := nullify(t.ENABLED);
-    y.READY := nullify(t.READY);
-    y.ERROR := nullify(t.ERROR);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t is
-  variable y: UCM_SUPER_STATUS_MON_t;
-  begin
-    y.ENABLED := zeroed(t.ENABLED);
-    y.READY := zeroed(t.READY);
-    y.ERROR := zeroed(t.ERROR);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_CONFIGS_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.THREADS);
+      w := w + width(x.INPUT_EN);
+      w := w + width(x.OUTPUT_EN);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CONFIGS_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.THREADS);
+         y(u to u+w-1) := convert(x.THREADS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.INPUT_EN);
+         y(u to u+w-1) := convert(x.INPUT_EN, y(u to u+w-1));
+         u := u + w;
+         w := width(x.OUTPUT_EN);
+         y(u to u+w-1) := convert(x.OUTPUT_EN, y(u to u+w-1));
+      else
+         w := width(x.THREADS);
+         y(u downto u-w+1) := convert(x.THREADS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.INPUT_EN);
+         y(u downto u-w+1) := convert(x.INPUT_EN, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.OUTPUT_EN);
+         y(u downto u-w+1) := convert(x.OUTPUT_EN, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t is
+      variable y : UCM_SUPER_CONFIGS_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.THREADS);
+         y.THREADS := convert(x(u to u+w-1), tpl.THREADS);
+         u := u + w;
+         w := width(tpl.INPUT_EN);
+         y.INPUT_EN := convert(x(u to u+w-1), tpl.INPUT_EN);
+         u := u + w;
+         w := width(tpl.OUTPUT_EN);
+         y.OUTPUT_EN := convert(x(u to u+w-1), tpl.OUTPUT_EN);
+      else
+         w := width(tpl.THREADS);
+         y.THREADS := convert(x(u downto u-w+1), tpl.THREADS);
+         u := u - w;
+         w := width(tpl.INPUT_EN);
+         y.INPUT_EN := convert(x(u downto u-w+1), tpl.INPUT_EN);
+         u := u - w;
+         w := width(tpl.OUTPUT_EN);
+         y.OUTPUT_EN := convert(x(u downto u-w+1), tpl.OUTPUT_EN);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_data);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.rd_data);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_SECTOR_PHI_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_SECTOR_PHI_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t is
-    variable y: UCM_SUPER_SECTOR_PHI_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t is
-    variable y: UCM_SUPER_SECTOR_PHI_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t is
-  variable y: UCM_SUPER_SECTOR_PHI_MON_t;
-  begin
-    y.rd_data := nullify(t.rd_data);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t is
-  variable y: UCM_SUPER_SECTOR_PHI_MON_t;
-  begin
-    y.rd_data := zeroed(t.rd_data);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_STATUS_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.ENABLED);
+      w := w + width(x.READY);
+      w := w + width(x.ERROR);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_STATUS_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.ENABLED);
+         y(u to u+w-1) := convert(x.ENABLED, y(u to u+w-1));
+         u := u + w;
+         w := width(x.READY);
+         y(u to u+w-1) := convert(x.READY, y(u to u+w-1));
+         u := u + w;
+         w := width(x.ERROR);
+         y(u to u+w-1) := convert(x.ERROR, y(u to u+w-1));
+      else
+         w := width(x.ENABLED);
+         y(u downto u-w+1) := convert(x.ENABLED, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.READY);
+         y(u downto u-w+1) := convert(x.READY, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.ERROR);
+         y(u downto u-w+1) := convert(x.ERROR, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t is
+      variable y : UCM_SUPER_STATUS_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.ENABLED);
+         y.ENABLED := convert(x(u to u+w-1), tpl.ENABLED);
+         u := u + w;
+         w := width(tpl.READY);
+         y.READY := convert(x(u to u+w-1), tpl.READY);
+         u := u + w;
+         w := width(tpl.ERROR);
+         y.ERROR := convert(x(u to u+w-1), tpl.ERROR);
+      else
+         w := width(tpl.ENABLED);
+         y.ENABLED := convert(x(u downto u-w+1), tpl.ENABLED);
+         u := u - w;
+         w := width(tpl.READY);
+         y.READY := convert(x(u downto u-w+1), tpl.READY);
+         u := u - w;
+         w := width(tpl.ERROR);
+         y.ERROR := convert(x(u downto u-w+1), tpl.ERROR);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_req);
-    l := l + len(x.rd_req);
-    l := l + len(x.wr_data);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.wr_req);
-    l := l + width(x.rd_req);
-    l := l + width(x.wr_data);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_SECTOR_PHI_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_SECTOR_PHI_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), convert(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.rd_req)-1), convert(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), convert(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.rd_req)+1), convert(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t is
-    variable y: UCM_SUPER_SECTOR_PHI_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t is
-    variable y: UCM_SUPER_SECTOR_PHI_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := convert(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.rd_req := convert(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.wr_req := convert(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.rd_req := convert(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t is
-  variable y: UCM_SUPER_SECTOR_PHI_CTRL_t;
-  begin
-    y.wr_req := nullify(t.wr_req);
-    y.rd_req := nullify(t.rd_req);
-    y.wr_data := nullify(t.wr_data);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t is
-  variable y: UCM_SUPER_SECTOR_PHI_CTRL_t;
-  begin
-    y.wr_req := zeroed(t.wr_req);
-    y.rd_req := zeroed(t.rd_req);
-    y.wr_data := zeroed(t.wr_data);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_SECTOR_PHI_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t is
+      variable y : UCM_SUPER_SECTOR_PHI_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_rdy);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.rd_rdy);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), convert(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), convert(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-    else
-      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := convert(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-    else
-      y.rd_rdy := convert(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
-  begin
-    y.rd_rdy := nullify(t.rd_rdy);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
-  begin
-    y.rd_rdy := zeroed(t.rd_rdy);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.wr_req);
+      w := w + width(x.rd_req);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_SECTOR_PHI_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.wr_req);
+         y(u to u+w-1) := convert(x.wr_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_req);
+         y(u to u+w-1) := convert(x.rd_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.wr_req);
+         y(u downto u-w+1) := convert(x.wr_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_req);
+         y(u downto u-w+1) := convert(x.rd_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t is
+      variable y : UCM_SUPER_SECTOR_PHI_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u to u+w-1), tpl.wr_req);
+         u := u + w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u to u+w-1), tpl.rd_req);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u downto u-w+1), tpl.wr_req);
+         u := u - w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u downto u-w+1), tpl.rd_req);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_req);
-    l := l + len(x.wr_ack);
-    l := l + len(x.rd_req);
-    l := l + len(x.rd_ack);
-    l := l + len(x.flush_req);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.wr_req);
-    l := l + width(x.wr_ack);
-    l := l + width(x.rd_req);
-    l := l + width(x.rd_ack);
-    l := l + width(x.flush_req);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.wr_ack)-1), vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
-      left := left + len(x.wr_ack);
-      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.rd_ack)-1), vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
-      left := left + len(x.rd_ack);
-      assign(y(left to left+len(x.flush_req)-1), vectorify(x.flush_req, y(left to left+len(x.flush_req)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.wr_ack)+1), vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
-      left := left - len(x.wr_ack);
-      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.rd_ack)+1), vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
-      left := left - len(x.rd_ack);
-      assign(y(left downto left-len(x.flush_req)+1), vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), convert(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.wr_ack)-1), convert(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
-      left := left + len(x.wr_ack);
-      assign(y(left to left+len(x.rd_req)-1), convert(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.rd_ack)-1), convert(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
-      left := left + len(x.rd_ack);
-      assign(y(left to left+len(x.flush_req)-1), convert(x.flush_req, y(left to left+len(x.flush_req)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), convert(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.wr_ack)+1), convert(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
-      left := left - len(x.wr_ack);
-      assign(y(left downto left-len(x.rd_req)+1), convert(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.rd_ack)+1), convert(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
-      left := left - len(x.rd_ack);
-      assign(y(left downto left-len(x.flush_req)+1), convert(x.flush_req, y(left downto left-len(x.flush_req)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.wr_ack := structify(x(left to left+len(y.wr_ack)-1), y.wr_ack);
-      left := left + len(y.wr_ack);
-      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.rd_ack := structify(x(left to left+len(y.rd_ack)-1), y.rd_ack);
-      left := left + len(y.rd_ack);
-      y.flush_req := structify(x(left to left+len(y.flush_req)-1), y.flush_req);
-    else
-      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.wr_ack := structify(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
-      left := left - len(y.wr_ack);
-      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.rd_ack := structify(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
-      left := left - len(y.rd_ack);
-      y.flush_req := structify(x(left downto left-len(y.flush_req)+1), y.flush_req);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := convert(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.wr_ack := convert(x(left to left+len(y.wr_ack)-1), y.wr_ack);
-      left := left + len(y.wr_ack);
-      y.rd_req := convert(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.rd_ack := convert(x(left to left+len(y.rd_ack)-1), y.rd_ack);
-      left := left + len(y.rd_ack);
-      y.flush_req := convert(x(left to left+len(y.flush_req)-1), y.flush_req);
-    else
-      y.wr_req := convert(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.wr_ack := convert(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
-      left := left - len(y.wr_ack);
-      y.rd_req := convert(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.rd_ack := convert(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
-      left := left - len(y.rd_ack);
-      y.flush_req := convert(x(left downto left-len(y.flush_req)+1), y.flush_req);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
-  begin
-    y.wr_req := nullify(t.wr_req);
-    y.wr_ack := nullify(t.wr_ack);
-    y.rd_req := nullify(t.rd_req);
-    y.rd_ack := nullify(t.rd_ack);
-    y.flush_req := nullify(t.flush_req);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
-  begin
-    y.wr_req := zeroed(t.wr_req);
-    y.wr_ack := zeroed(t.wr_ack);
-    y.rd_req := zeroed(t.rd_req);
-    y.rd_ack := zeroed(t.rd_ack);
-    y.flush_req := zeroed(t.flush_req);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_rdy);
+      w := w + width(x.freeze_ena);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_rdy);
+         y(u to u+w-1) := convert(x.rd_rdy, y(u to u+w-1));
+         u := u + w;
+         w := width(x.freeze_ena);
+         y(u to u+w-1) := convert(x.freeze_ena, y(u to u+w-1));
+      else
+         w := width(x.rd_rdy);
+         y(u downto u-w+1) := convert(x.rd_rdy, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.freeze_ena);
+         y(u downto u-w+1) := convert(x.freeze_ena, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_rdy);
+         y.rd_rdy := convert(x(u to u+w-1), tpl.rd_rdy);
+         u := u + w;
+         w := width(tpl.freeze_ena);
+         y.freeze_ena := convert(x(u to u+w-1), tpl.freeze_ena);
+      else
+         w := width(tpl.rd_rdy);
+         y.rd_rdy := convert(x(u downto u-w+1), tpl.rd_rdy);
+         u := u - w;
+         w := width(tpl.freeze_ena);
+         y.freeze_ena := convert(x(u downto u-w+1), tpl.freeze_ena);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_data_0);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.wr_data_0);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_data_0)-1), vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1)));
-    else
-      assign(y(left downto left-len(x.wr_data_0)+1), vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_data_0)-1), convert(x.wr_data_0, y(left to left+len(x.wr_data_0)-1)));
-    else
-      assign(y(left downto left-len(x.wr_data_0)+1), convert(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_data_0 := structify(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
-    else
-      y.wr_data_0 := structify(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_data_0 := convert(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
-    else
-      y.wr_data_0 := convert(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
-  begin
-    y.wr_data_0 := nullify(t.wr_data_0);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
-  begin
-    y.wr_data_0 := zeroed(t.wr_data_0);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.wr_req);
+      w := w + width(x.wr_ack);
+      w := w + width(x.rd_req);
+      w := w + width(x.rd_ack);
+      w := w + width(x.flush_req);
+      w := w + width(x.freeze_req);
+      w := w + width(x.mem_sel);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.wr_req);
+         y(u to u+w-1) := convert(x.wr_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_ack);
+         y(u to u+w-1) := convert(x.wr_ack, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_req);
+         y(u to u+w-1) := convert(x.rd_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_ack);
+         y(u to u+w-1) := convert(x.rd_ack, y(u to u+w-1));
+         u := u + w;
+         w := width(x.flush_req);
+         y(u to u+w-1) := convert(x.flush_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.freeze_req);
+         y(u to u+w-1) := convert(x.freeze_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.mem_sel);
+         y(u to u+w-1) := convert(x.mem_sel, y(u to u+w-1));
+      else
+         w := width(x.wr_req);
+         y(u downto u-w+1) := convert(x.wr_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_ack);
+         y(u downto u-w+1) := convert(x.wr_ack, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_req);
+         y(u downto u-w+1) := convert(x.rd_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_ack);
+         y(u downto u-w+1) := convert(x.rd_ack, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.flush_req);
+         y(u downto u-w+1) := convert(x.flush_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.freeze_req);
+         y(u downto u-w+1) := convert(x.freeze_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.mem_sel);
+         y(u downto u-w+1) := convert(x.mem_sel, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u to u+w-1), tpl.wr_req);
+         u := u + w;
+         w := width(tpl.wr_ack);
+         y.wr_ack := convert(x(u to u+w-1), tpl.wr_ack);
+         u := u + w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u to u+w-1), tpl.rd_req);
+         u := u + w;
+         w := width(tpl.rd_ack);
+         y.rd_ack := convert(x(u to u+w-1), tpl.rd_ack);
+         u := u + w;
+         w := width(tpl.flush_req);
+         y.flush_req := convert(x(u to u+w-1), tpl.flush_req);
+         u := u + w;
+         w := width(tpl.freeze_req);
+         y.freeze_req := convert(x(u to u+w-1), tpl.freeze_req);
+         u := u + w;
+         w := width(tpl.mem_sel);
+         y.mem_sel := convert(x(u to u+w-1), tpl.mem_sel);
+      else
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u downto u-w+1), tpl.wr_req);
+         u := u - w;
+         w := width(tpl.wr_ack);
+         y.wr_ack := convert(x(u downto u-w+1), tpl.wr_ack);
+         u := u - w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u downto u-w+1), tpl.rd_req);
+         u := u - w;
+         w := width(tpl.rd_ack);
+         y.rd_ack := convert(x(u downto u-w+1), tpl.rd_ack);
+         u := u - w;
+         w := width(tpl.flush_req);
+         y.flush_req := convert(x(u downto u-w+1), tpl.flush_req);
+         u := u - w;
+         w := width(tpl.freeze_req);
+         y.freeze_req := convert(x(u downto u-w+1), tpl.freeze_req);
+         u := u - w;
+         w := width(tpl.mem_sel);
+         y.mem_sel := convert(x(u downto u-w+1), tpl.mem_sel);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_data_0);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.rd_data_0);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_data_0)-1), vectorify(x.rd_data_0, y(left to left+len(x.rd_data_0)-1)));
-    else
-      assign(y(left downto left-len(x.rd_data_0)+1), vectorify(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_data_0)-1), convert(x.rd_data_0, y(left to left+len(x.rd_data_0)-1)));
-    else
-      assign(y(left downto left-len(x.rd_data_0)+1), convert(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_data_0 := structify(x(left to left+len(y.rd_data_0)-1), y.rd_data_0);
-    else
-      y.rd_data_0 := structify(x(left downto left-len(y.rd_data_0)+1), y.rd_data_0);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_data_0 := convert(x(left to left+len(y.rd_data_0)-1), y.rd_data_0);
-    else
-      y.rd_data_0 := convert(x(left downto left-len(y.rd_data_0)+1), y.rd_data_0);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
-  begin
-    y.rd_data_0 := nullify(t.rd_data_0);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
-  begin
-    y.rd_data_0 := zeroed(t.rd_data_0);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.wr_data_0);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.wr_data_0);
+         y(u to u+w-1) := convert(x.wr_data_0, y(u to u+w-1));
+      else
+         w := width(x.wr_data_0);
+         y(u downto u-w+1) := convert(x.wr_data_0, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.wr_data_0);
+         y.wr_data_0 := convert(x(u to u+w-1), tpl.wr_data_0);
+      else
+         w := width(tpl.wr_data_0);
+         y.wr_data_0 := convert(x(u downto u-w+1), tpl.wr_data_0);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.SIGNALS);
-    l := l + len(x.rd_data);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.SIGNALS);
-    l := l + width(x.rd_data);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), vectorify(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), vectorify(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), convert(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), convert(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := structify(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.SIGNALS := structify(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := convert(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.SIGNALS := convert(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-  begin
-    y.SIGNALS := nullify(t.SIGNALS);
-    y.rd_data := nullify(t.rd_data);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-  begin
-    y.SIGNALS := zeroed(t.SIGNALS);
-    y.rd_data := zeroed(t.rd_data);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data_0);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data_0);
+         y(u to u+w-1) := convert(x.rd_data_0, y(u to u+w-1));
+      else
+         w := width(x.rd_data_0);
+         y(u downto u-w+1) := convert(x.rd_data_0, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data_0);
+         y.rd_data_0 := convert(x(u to u+w-1), tpl.rd_data_0);
+      else
+         w := width(tpl.rd_data_0);
+         y.rd_data_0 := convert(x(u downto u-w+1), tpl.rd_data_0);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_rd_data_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * len(x(x'left));
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * width(x(x'left));
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), vectorify(x(i), y(b to a)));
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SIGNALS);
+      w := w + width(x.rd_data);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SIGNALS);
+         y(u to u+w-1) := convert(x.SIGNALS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+      else
+         w := width(x.SIGNALS);
+         y(u downto u-w+1) := convert(x.SIGNALS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u to u+w-1), tpl.SIGNALS);
+         u := u + w;
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+      else
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u downto u-w+1), tpl.SIGNALS);
+         u := u - w;
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return integer is
+      variable w : integer := x'length * width(x(x'low));
+   begin
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
       end loop;
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), convert(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), convert(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function structify(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := structify(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := structify(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function structify;
-  function convert(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := convert(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := convert(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function nullify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := nullify(y(i));
-    end loop l;
-    return y;
-  end function nullify;
-  function zeroed(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := zeroed(y(i));
-    end loop l;
-    return y;
-  end function zeroed;
+      return y;
+   end function convert;
 
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.SIGNALS);
-    l := l + len(x.wr_addr);
-    l := l + len(x.rd_addr);
-    l := l + len(x.wr_data);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.SIGNALS);
-    l := l + width(x.wr_addr);
-    l := l + width(x.rd_addr);
-    l := l + width(x.wr_data);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), vectorify(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), vectorify(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), convert(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.wr_addr)-1), convert(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), convert(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), convert(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.wr_addr)+1), convert(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), convert(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := structify(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.SIGNALS := structify(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := convert(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.wr_addr := convert(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := convert(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.SIGNALS := convert(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.wr_addr := convert(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := convert(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-  begin
-    y.SIGNALS := nullify(t.SIGNALS);
-    y.wr_addr := nullify(t.wr_addr);
-    y.rd_addr := nullify(t.rd_addr);
-    y.wr_data := nullify(t.wr_data);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-  begin
-    y.SIGNALS := zeroed(t.SIGNALS);
-    y.wr_addr := zeroed(t.wr_addr);
-    y.rd_addr := zeroed(t.rd_addr);
-    y.wr_data := zeroed(t.wr_data);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SIGNALS);
+      w := w + width(x.wr_addr);
+      w := w + width(x.rd_addr);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SIGNALS);
+         y(u to u+w-1) := convert(x.SIGNALS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_addr);
+         y(u to u+w-1) := convert(x.wr_addr, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_addr);
+         y(u to u+w-1) := convert(x.rd_addr, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.SIGNALS);
+         y(u downto u-w+1) := convert(x.SIGNALS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_addr);
+         y(u downto u-w+1) := convert(x.wr_addr, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_addr);
+         y(u downto u-w+1) := convert(x.rd_addr, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u to u+w-1), tpl.SIGNALS);
+         u := u + w;
+         w := width(tpl.wr_addr);
+         y.wr_addr := convert(x(u to u+w-1), tpl.wr_addr);
+         u := u + w;
+         w := width(tpl.rd_addr);
+         y.rd_addr := convert(x(u to u+w-1), tpl.rd_addr);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u downto u-w+1), tpl.SIGNALS);
+         u := u - w;
+         w := width(tpl.wr_addr);
+         y.wr_addr := convert(x(u downto u-w+1), tpl.wr_addr);
+         u := u - w;
+         w := width(tpl.rd_addr);
+         y.rd_addr := convert(x(u downto u-w+1), tpl.rd_addr);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * len(x(x'left));
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * width(x(x'left));
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), vectorify(x(i), y(b to a)));
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return integer is
+      variable w : integer := x'length * width(x(x'low));
+   begin
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), vectorify(x(i), y(a downto b)));
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
       end loop;
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), convert(x(i), y(b to a)));
+      return y;
+   end function convert;
+
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.CDE_CHAMB_Z0);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.CDE_CHAMB_Z0);
+         y(u to u+w-1) := convert(x.CDE_CHAMB_Z0, y(u to u+w-1));
+      else
+         w := width(x.CDE_CHAMB_Z0);
+         y(u downto u-w+1) := convert(x.CDE_CHAMB_Z0, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.CDE_CHAMB_Z0);
+         y.CDE_CHAMB_Z0 := convert(x(u to u+w-1), tpl.CDE_CHAMB_Z0);
+      else
+         w := width(tpl.CDE_CHAMB_Z0);
+         y.CDE_CHAMB_Z0 := convert(x(u downto u-w+1), tpl.CDE_CHAMB_Z0);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.CDE_CHAMB_Z0);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.CDE_CHAMB_Z0);
+         y(u to u+w-1) := convert(x.CDE_CHAMB_Z0, y(u to u+w-1));
+      else
+         w := width(x.CDE_CHAMB_Z0);
+         y(u downto u-w+1) := convert(x.CDE_CHAMB_Z0, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is
+      variable y : UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.CDE_CHAMB_Z0);
+         y.CDE_CHAMB_Z0 := convert(x(u to u+w-1), tpl.CDE_CHAMB_Z0);
+      else
+         w := width(tpl.CDE_CHAMB_Z0);
+         y.CDE_CHAMB_Z0 := convert(x(u downto u-w+1), tpl.CDE_CHAMB_Z0);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_rdy);
+      w := w + width(x.freeze_ena);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_rdy);
+         y(u to u+w-1) := convert(x.rd_rdy, y(u to u+w-1));
+         u := u + w;
+         w := width(x.freeze_ena);
+         y(u to u+w-1) := convert(x.freeze_ena, y(u to u+w-1));
+      else
+         w := width(x.rd_rdy);
+         y(u downto u-w+1) := convert(x.rd_rdy, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.freeze_ena);
+         y(u downto u-w+1) := convert(x.freeze_ena, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_rdy);
+         y.rd_rdy := convert(x(u to u+w-1), tpl.rd_rdy);
+         u := u + w;
+         w := width(tpl.freeze_ena);
+         y.freeze_ena := convert(x(u to u+w-1), tpl.freeze_ena);
+      else
+         w := width(tpl.rd_rdy);
+         y.rd_rdy := convert(x(u downto u-w+1), tpl.rd_rdy);
+         u := u - w;
+         w := width(tpl.freeze_ena);
+         y.freeze_ena := convert(x(u downto u-w+1), tpl.freeze_ena);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.wr_req);
+      w := w + width(x.wr_ack);
+      w := w + width(x.rd_req);
+      w := w + width(x.rd_ack);
+      w := w + width(x.flush_req);
+      w := w + width(x.freeze_req);
+      w := w + width(x.mem_sel);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.wr_req);
+         y(u to u+w-1) := convert(x.wr_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_ack);
+         y(u to u+w-1) := convert(x.wr_ack, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_req);
+         y(u to u+w-1) := convert(x.rd_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_ack);
+         y(u to u+w-1) := convert(x.rd_ack, y(u to u+w-1));
+         u := u + w;
+         w := width(x.flush_req);
+         y(u to u+w-1) := convert(x.flush_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.freeze_req);
+         y(u to u+w-1) := convert(x.freeze_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.mem_sel);
+         y(u to u+w-1) := convert(x.mem_sel, y(u to u+w-1));
+      else
+         w := width(x.wr_req);
+         y(u downto u-w+1) := convert(x.wr_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_ack);
+         y(u downto u-w+1) := convert(x.wr_ack, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_req);
+         y(u downto u-w+1) := convert(x.rd_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_ack);
+         y(u downto u-w+1) := convert(x.rd_ack, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.flush_req);
+         y(u downto u-w+1) := convert(x.flush_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.freeze_req);
+         y(u downto u-w+1) := convert(x.freeze_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.mem_sel);
+         y(u downto u-w+1) := convert(x.mem_sel, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u to u+w-1), tpl.wr_req);
+         u := u + w;
+         w := width(tpl.wr_ack);
+         y.wr_ack := convert(x(u to u+w-1), tpl.wr_ack);
+         u := u + w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u to u+w-1), tpl.rd_req);
+         u := u + w;
+         w := width(tpl.rd_ack);
+         y.rd_ack := convert(x(u to u+w-1), tpl.rd_ack);
+         u := u + w;
+         w := width(tpl.flush_req);
+         y.flush_req := convert(x(u to u+w-1), tpl.flush_req);
+         u := u + w;
+         w := width(tpl.freeze_req);
+         y.freeze_req := convert(x(u to u+w-1), tpl.freeze_req);
+         u := u + w;
+         w := width(tpl.mem_sel);
+         y.mem_sel := convert(x(u to u+w-1), tpl.mem_sel);
+      else
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u downto u-w+1), tpl.wr_req);
+         u := u - w;
+         w := width(tpl.wr_ack);
+         y.wr_ack := convert(x(u downto u-w+1), tpl.wr_ack);
+         u := u - w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u downto u-w+1), tpl.rd_req);
+         u := u - w;
+         w := width(tpl.rd_ack);
+         y.rd_ack := convert(x(u downto u-w+1), tpl.rd_ack);
+         u := u - w;
+         w := width(tpl.flush_req);
+         y.flush_req := convert(x(u downto u-w+1), tpl.flush_req);
+         u := u - w;
+         w := width(tpl.freeze_req);
+         y.freeze_req := convert(x(u downto u-w+1), tpl.freeze_req);
+         u := u - w;
+         w := width(tpl.mem_sel);
+         y.mem_sel := convert(x(u downto u-w+1), tpl.mem_sel);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.wr_data_0);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.wr_data_0);
+         y(u to u+w-1) := convert(x.wr_data_0, y(u to u+w-1));
+      else
+         w := width(x.wr_data_0);
+         y(u downto u-w+1) := convert(x.wr_data_0, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.wr_data_0);
+         y.wr_data_0 := convert(x(u to u+w-1), tpl.wr_data_0);
+      else
+         w := width(tpl.wr_data_0);
+         y.wr_data_0 := convert(x(u downto u-w+1), tpl.wr_data_0);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data_0);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data_0);
+         y(u to u+w-1) := convert(x.rd_data_0, y(u to u+w-1));
+      else
+         w := width(x.rd_data_0);
+         y(u downto u-w+1) := convert(x.rd_data_0, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data_0);
+         y.rd_data_0 := convert(x(u to u+w-1), tpl.rd_data_0);
+      else
+         w := width(tpl.rd_data_0);
+         y.rd_data_0 := convert(x(u downto u-w+1), tpl.rd_data_0);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SIGNALS);
+      w := w + width(x.rd_data);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SIGNALS);
+         y(u to u+w-1) := convert(x.SIGNALS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+      else
+         w := width(x.SIGNALS);
+         y(u downto u-w+1) := convert(x.SIGNALS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u to u+w-1), tpl.SIGNALS);
+         u := u + w;
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+      else
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u downto u-w+1), tpl.SIGNALS);
+         u := u - w;
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return integer is
+      variable w : integer := x'length * width(x(x'low));
+   begin
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), convert(x(i), y(a downto b)));
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
       end loop;
-    end if;
-    return y;
-  end function convert;
-  function structify(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := structify(x(b to a), y(i));
+      return y;
+   end function convert;
+
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SIGNALS);
+      w := w + width(x.wr_addr);
+      w := w + width(x.rd_addr);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SIGNALS);
+         y(u to u+w-1) := convert(x.SIGNALS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_addr);
+         y(u to u+w-1) := convert(x.wr_addr, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_addr);
+         y(u to u+w-1) := convert(x.rd_addr, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.SIGNALS);
+         y(u downto u-w+1) := convert(x.SIGNALS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_addr);
+         y(u downto u-w+1) := convert(x.wr_addr, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_addr);
+         y(u downto u-w+1) := convert(x.rd_addr, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u to u+w-1), tpl.SIGNALS);
+         u := u + w;
+         w := width(tpl.wr_addr);
+         y.wr_addr := convert(x(u to u+w-1), tpl.wr_addr);
+         u := u + w;
+         w := width(tpl.rd_addr);
+         y.rd_addr := convert(x(u to u+w-1), tpl.rd_addr);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.SIGNALS);
+         y.SIGNALS := convert(x(u downto u-w+1), tpl.SIGNALS);
+         u := u - w;
+         w := width(tpl.wr_addr);
+         y.wr_addr := convert(x(u downto u-w+1), tpl.wr_addr);
+         u := u - w;
+         w := width(tpl.rd_addr);
+         y.rd_addr := convert(x(u downto u-w+1), tpl.rd_addr);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return integer is
+      variable w : integer := x'length * width(x(x'low));
+   begin
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := structify(x(a downto b), y(i));
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
       end loop;
-    end if;
-    return y;
-  end function structify;
-  function convert(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := convert(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := convert(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function nullify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := nullify(y(i));
-    end loop l;
-    return y;
-  end function nullify;
-  function zeroed(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := zeroed(y(i));
-    end loop l;
-    return y;
-  end function zeroed;
+      return y;
+   end function convert;
 
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.CDE_CHAMB_Z0);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.CDE_CHAMB_Z0);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.CDE_CHAMB_Z0)-1), vectorify(x.CDE_CHAMB_Z0, y(left to left+len(x.CDE_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.CDE_CHAMB_Z0)+1), vectorify(x.CDE_CHAMB_Z0, y(left downto left-len(x.CDE_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.CDE_CHAMB_Z0)-1), convert(x.CDE_CHAMB_Z0, y(left to left+len(x.CDE_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.CDE_CHAMB_Z0)+1), convert(x.CDE_CHAMB_Z0, y(left downto left-len(x.CDE_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.CDE_CHAMB_Z0 := structify(x(left to left+len(y.CDE_CHAMB_Z0)-1), y.CDE_CHAMB_Z0);
-    else
-      y.CDE_CHAMB_Z0 := structify(x(left downto left-len(y.CDE_CHAMB_Z0)+1), y.CDE_CHAMB_Z0);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.CDE_CHAMB_Z0 := convert(x(left to left+len(y.CDE_CHAMB_Z0)-1), y.CDE_CHAMB_Z0);
-    else
-      y.CDE_CHAMB_Z0 := convert(x(left downto left-len(y.CDE_CHAMB_Z0)+1), y.CDE_CHAMB_Z0);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_MON_t;
-  begin
-    y.CDE_CHAMB_Z0 := nullify(t.CDE_CHAMB_Z0);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_MON_t;
-  begin
-    y.CDE_CHAMB_Z0 := zeroed(t.CDE_CHAMB_Z0);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.CVP_CHAMB_Z0);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.CVP_CHAMB_Z0);
+         y(u to u+w-1) := convert(x.CVP_CHAMB_Z0, y(u to u+w-1));
+      else
+         w := width(x.CVP_CHAMB_Z0);
+         y(u downto u-w+1) := convert(x.CVP_CHAMB_Z0, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.CVP_CHAMB_Z0);
+         y.CVP_CHAMB_Z0 := convert(x(u to u+w-1), tpl.CVP_CHAMB_Z0);
+      else
+         w := width(tpl.CVP_CHAMB_Z0);
+         y.CVP_CHAMB_Z0 := convert(x(u downto u-w+1), tpl.CVP_CHAMB_Z0);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.CDE_CHAMB_Z0);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.CDE_CHAMB_Z0);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.CDE_CHAMB_Z0)-1), vectorify(x.CDE_CHAMB_Z0, y(left to left+len(x.CDE_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.CDE_CHAMB_Z0)+1), vectorify(x.CDE_CHAMB_Z0, y(left downto left-len(x.CDE_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.CDE_CHAMB_Z0)-1), convert(x.CDE_CHAMB_Z0, y(left to left+len(x.CDE_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.CDE_CHAMB_Z0)+1), convert(x.CDE_CHAMB_Z0, y(left downto left-len(x.CDE_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.CDE_CHAMB_Z0 := structify(x(left to left+len(y.CDE_CHAMB_Z0)-1), y.CDE_CHAMB_Z0);
-    else
-      y.CDE_CHAMB_Z0 := structify(x(left downto left-len(y.CDE_CHAMB_Z0)+1), y.CDE_CHAMB_Z0);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is
-    variable y: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.CDE_CHAMB_Z0 := convert(x(left to left+len(y.CDE_CHAMB_Z0)-1), y.CDE_CHAMB_Z0);
-    else
-      y.CDE_CHAMB_Z0 := convert(x(left downto left-len(y.CDE_CHAMB_Z0)+1), y.CDE_CHAMB_Z0);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
-  begin
-    y.CDE_CHAMB_Z0 := nullify(t.CDE_CHAMB_Z0);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is
-  variable y: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
-  begin
-    y.CDE_CHAMB_Z0 := zeroed(t.CDE_CHAMB_Z0);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.CVP_CHAMB_Z0);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.CVP_CHAMB_Z0);
+         y(u to u+w-1) := convert(x.CVP_CHAMB_Z0, y(u to u+w-1));
+      else
+         w := width(x.CVP_CHAMB_Z0);
+         y(u downto u-w+1) := convert(x.CVP_CHAMB_Z0, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is
+      variable y : UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.CVP_CHAMB_Z0);
+         y.CVP_CHAMB_Z0 := convert(x(u to u+w-1), tpl.CVP_CHAMB_Z0);
+      else
+         w := width(tpl.CVP_CHAMB_Z0);
+         y.CVP_CHAMB_Z0 := convert(x(u downto u-w+1), tpl.CVP_CHAMB_Z0);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_rdy);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.rd_rdy);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), convert(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), convert(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-    else
-      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := convert(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-    else
-      y.rd_rdy := convert(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
-  begin
-    y.rd_rdy := nullify(t.rd_rdy);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
-  begin
-    y.rd_rdy := zeroed(t.rd_rdy);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.STATUS);
+      w := w + width(x.SECTOR_PHI);
+      w := w + width(x.CDE_CHAMB_Z0);
+      w := w + width(x.CVP_CHAMB_Z0);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.STATUS);
+         y(u to u+w-1) := convert(x.STATUS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SECTOR_PHI);
+         y(u to u+w-1) := convert(x.SECTOR_PHI, y(u to u+w-1));
+         u := u + w;
+         w := width(x.CDE_CHAMB_Z0);
+         y(u to u+w-1) := convert(x.CDE_CHAMB_Z0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.CVP_CHAMB_Z0);
+         y(u to u+w-1) := convert(x.CVP_CHAMB_Z0, y(u to u+w-1));
+      else
+         w := width(x.STATUS);
+         y(u downto u-w+1) := convert(x.STATUS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SECTOR_PHI);
+         y(u downto u-w+1) := convert(x.SECTOR_PHI, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.CDE_CHAMB_Z0);
+         y(u downto u-w+1) := convert(x.CDE_CHAMB_Z0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.CVP_CHAMB_Z0);
+         y(u downto u-w+1) := convert(x.CVP_CHAMB_Z0, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_MON_t) return UCM_SUPER_MON_t is
+      variable y : UCM_SUPER_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.STATUS);
+         y.STATUS := convert(x(u to u+w-1), tpl.STATUS);
+         u := u + w;
+         w := width(tpl.SECTOR_PHI);
+         y.SECTOR_PHI := convert(x(u to u+w-1), tpl.SECTOR_PHI);
+         u := u + w;
+         w := width(tpl.CDE_CHAMB_Z0);
+         y.CDE_CHAMB_Z0 := convert(x(u to u+w-1), tpl.CDE_CHAMB_Z0);
+         u := u + w;
+         w := width(tpl.CVP_CHAMB_Z0);
+         y.CVP_CHAMB_Z0 := convert(x(u to u+w-1), tpl.CVP_CHAMB_Z0);
+      else
+         w := width(tpl.STATUS);
+         y.STATUS := convert(x(u downto u-w+1), tpl.STATUS);
+         u := u - w;
+         w := width(tpl.SECTOR_PHI);
+         y.SECTOR_PHI := convert(x(u downto u-w+1), tpl.SECTOR_PHI);
+         u := u - w;
+         w := width(tpl.CDE_CHAMB_Z0);
+         y.CDE_CHAMB_Z0 := convert(x(u downto u-w+1), tpl.CDE_CHAMB_Z0);
+         u := u - w;
+         w := width(tpl.CVP_CHAMB_Z0);
+         y.CVP_CHAMB_Z0 := convert(x(u downto u-w+1), tpl.CVP_CHAMB_Z0);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_MON_t) return UCM_SUPER_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_req);
-    l := l + len(x.wr_ack);
-    l := l + len(x.rd_req);
-    l := l + len(x.rd_ack);
-    l := l + len(x.flush_req);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.wr_req);
-    l := l + width(x.wr_ack);
-    l := l + width(x.rd_req);
-    l := l + width(x.rd_ack);
-    l := l + width(x.flush_req);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.wr_ack)-1), vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
-      left := left + len(x.wr_ack);
-      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.rd_ack)-1), vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
-      left := left + len(x.rd_ack);
-      assign(y(left to left+len(x.flush_req)-1), vectorify(x.flush_req, y(left to left+len(x.flush_req)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.wr_ack)+1), vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
-      left := left - len(x.wr_ack);
-      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.rd_ack)+1), vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
-      left := left - len(x.rd_ack);
-      assign(y(left downto left-len(x.flush_req)+1), vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), convert(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.wr_ack)-1), convert(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
-      left := left + len(x.wr_ack);
-      assign(y(left to left+len(x.rd_req)-1), convert(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.rd_ack)-1), convert(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
-      left := left + len(x.rd_ack);
-      assign(y(left to left+len(x.flush_req)-1), convert(x.flush_req, y(left to left+len(x.flush_req)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), convert(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.wr_ack)+1), convert(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
-      left := left - len(x.wr_ack);
-      assign(y(left downto left-len(x.rd_req)+1), convert(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.rd_ack)+1), convert(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
-      left := left - len(x.rd_ack);
-      assign(y(left downto left-len(x.flush_req)+1), convert(x.flush_req, y(left downto left-len(x.flush_req)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.wr_ack := structify(x(left to left+len(y.wr_ack)-1), y.wr_ack);
-      left := left + len(y.wr_ack);
-      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.rd_ack := structify(x(left to left+len(y.rd_ack)-1), y.rd_ack);
-      left := left + len(y.rd_ack);
-      y.flush_req := structify(x(left to left+len(y.flush_req)-1), y.flush_req);
-    else
-      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.wr_ack := structify(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
-      left := left - len(y.wr_ack);
-      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.rd_ack := structify(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
-      left := left - len(y.rd_ack);
-      y.flush_req := structify(x(left downto left-len(y.flush_req)+1), y.flush_req);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := convert(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.wr_ack := convert(x(left to left+len(y.wr_ack)-1), y.wr_ack);
-      left := left + len(y.wr_ack);
-      y.rd_req := convert(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.rd_ack := convert(x(left to left+len(y.rd_ack)-1), y.rd_ack);
-      left := left + len(y.rd_ack);
-      y.flush_req := convert(x(left to left+len(y.flush_req)-1), y.flush_req);
-    else
-      y.wr_req := convert(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.wr_ack := convert(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
-      left := left - len(y.wr_ack);
-      y.rd_req := convert(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.rd_ack := convert(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
-      left := left - len(y.rd_ack);
-      y.flush_req := convert(x(left downto left-len(y.flush_req)+1), y.flush_req);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
-  begin
-    y.wr_req := nullify(t.wr_req);
-    y.wr_ack := nullify(t.wr_ack);
-    y.rd_req := nullify(t.rd_req);
-    y.rd_ack := nullify(t.rd_ack);
-    y.flush_req := nullify(t.flush_req);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
-  begin
-    y.wr_req := zeroed(t.wr_req);
-    y.wr_ack := zeroed(t.wr_ack);
-    y.rd_req := zeroed(t.rd_req);
-    y.rd_ack := zeroed(t.rd_ack);
-    y.flush_req := zeroed(t.flush_req);
-    return y;
-  end function zeroed;
+   function width(x: UCM_SUPER_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.ACTIONS);
+      w := w + width(x.CONFIGS);
+      w := w + width(x.SECTOR_PHI);
+      w := w + width(x.CDE_CHAMB_Z0);
+      w := w + width(x.CVP_CHAMB_Z0);
+      return w;
+   end function width;
+   function convert(x: UCM_SUPER_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.ACTIONS);
+         y(u to u+w-1) := convert(x.ACTIONS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.CONFIGS);
+         y(u to u+w-1) := convert(x.CONFIGS, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SECTOR_PHI);
+         y(u to u+w-1) := convert(x.SECTOR_PHI, y(u to u+w-1));
+         u := u + w;
+         w := width(x.CDE_CHAMB_Z0);
+         y(u to u+w-1) := convert(x.CDE_CHAMB_Z0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.CVP_CHAMB_Z0);
+         y(u to u+w-1) := convert(x.CVP_CHAMB_Z0, y(u to u+w-1));
+      else
+         w := width(x.ACTIONS);
+         y(u downto u-w+1) := convert(x.ACTIONS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.CONFIGS);
+         y(u downto u-w+1) := convert(x.CONFIGS, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SECTOR_PHI);
+         y(u downto u-w+1) := convert(x.SECTOR_PHI, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.CDE_CHAMB_Z0);
+         y(u downto u-w+1) := convert(x.CDE_CHAMB_Z0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.CVP_CHAMB_Z0);
+         y(u downto u-w+1) := convert(x.CVP_CHAMB_Z0, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t is
+      variable y : UCM_SUPER_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.ACTIONS);
+         y.ACTIONS := convert(x(u to u+w-1), tpl.ACTIONS);
+         u := u + w;
+         w := width(tpl.CONFIGS);
+         y.CONFIGS := convert(x(u to u+w-1), tpl.CONFIGS);
+         u := u + w;
+         w := width(tpl.SECTOR_PHI);
+         y.SECTOR_PHI := convert(x(u to u+w-1), tpl.SECTOR_PHI);
+         u := u + w;
+         w := width(tpl.CDE_CHAMB_Z0);
+         y.CDE_CHAMB_Z0 := convert(x(u to u+w-1), tpl.CDE_CHAMB_Z0);
+         u := u + w;
+         w := width(tpl.CVP_CHAMB_Z0);
+         y.CVP_CHAMB_Z0 := convert(x(u to u+w-1), tpl.CVP_CHAMB_Z0);
+      else
+         w := width(tpl.ACTIONS);
+         y.ACTIONS := convert(x(u downto u-w+1), tpl.ACTIONS);
+         u := u - w;
+         w := width(tpl.CONFIGS);
+         y.CONFIGS := convert(x(u downto u-w+1), tpl.CONFIGS);
+         u := u - w;
+         w := width(tpl.SECTOR_PHI);
+         y.SECTOR_PHI := convert(x(u downto u-w+1), tpl.SECTOR_PHI);
+         u := u - w;
+         w := width(tpl.CDE_CHAMB_Z0);
+         y.CDE_CHAMB_Z0 := convert(x(u downto u-w+1), tpl.CDE_CHAMB_Z0);
+         u := u - w;
+         w := width(tpl.CVP_CHAMB_Z0);
+         y.CVP_CHAMB_Z0 := convert(x(u downto u-w+1), tpl.CVP_CHAMB_Z0);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_data_0);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.wr_data_0);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_data_0)-1), vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1)));
-    else
-      assign(y(left downto left-len(x.wr_data_0)+1), vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_data_0)-1), convert(x.wr_data_0, y(left to left+len(x.wr_data_0)-1)));
-    else
-      assign(y(left downto left-len(x.wr_data_0)+1), convert(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_data_0 := structify(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
-    else
-      y.wr_data_0 := structify(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_data_0 := convert(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
-    else
-      y.wr_data_0 := convert(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
-  begin
-    y.wr_data_0 := nullify(t.wr_data_0);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t;
-  begin
-    y.wr_data_0 := zeroed(t.wr_data_0);
-    return y;
-  end function zeroed;
+   function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_rdy);
+      w := w + width(x.rd_data);
+      return w;
+   end function width;
+   function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_rdy);
+         y(u to u+w-1) := convert(x.rd_rdy, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+      else
+         w := width(x.rd_rdy);
+         y(u downto u-w+1) := convert(x.rd_rdy, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is
+      variable y : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_rdy);
+         y.rd_rdy := convert(x(u to u+w-1), tpl.rd_rdy);
+         u := u + w;
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+      else
+         w := width(tpl.rd_rdy);
+         y.rd_rdy := convert(x(u downto u-w+1), tpl.rd_rdy);
+         u := u - w;
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_data_0);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.rd_data_0);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_data_0)-1), vectorify(x.rd_data_0, y(left to left+len(x.rd_data_0)-1)));
-    else
-      assign(y(left downto left-len(x.rd_data_0)+1), vectorify(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_data_0)-1), convert(x.rd_data_0, y(left to left+len(x.rd_data_0)-1)));
-    else
-      assign(y(left downto left-len(x.rd_data_0)+1), convert(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_data_0 := structify(x(left to left+len(y.rd_data_0)-1), y.rd_data_0);
-    else
-      y.rd_data_0 := structify(x(left downto left-len(y.rd_data_0)+1), y.rd_data_0);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_data_0 := convert(x(left to left+len(y.rd_data_0)-1), y.rd_data_0);
-    else
-      y.rd_data_0 := convert(x(left downto left-len(y.rd_data_0)+1), y.rd_data_0);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
-  begin
-    y.rd_data_0 := nullify(t.rd_data_0);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_rd_data_MON_t;
-  begin
-    y.rd_data_0 := zeroed(t.rd_data_0);
-    return y;
-  end function zeroed;
+   function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.wr_req);
+      w := w + width(x.rd_req);
+      w := w + width(x.wr_addr);
+      w := w + width(x.rd_addr);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.wr_req);
+         y(u to u+w-1) := convert(x.wr_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_req);
+         y(u to u+w-1) := convert(x.rd_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_addr);
+         y(u to u+w-1) := convert(x.wr_addr, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_addr);
+         y(u to u+w-1) := convert(x.rd_addr, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.wr_req);
+         y(u downto u-w+1) := convert(x.wr_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_req);
+         y(u downto u-w+1) := convert(x.rd_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_addr);
+         y(u downto u-w+1) := convert(x.wr_addr, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_addr);
+         y(u downto u-w+1) := convert(x.rd_addr, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is
+      variable y : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u to u+w-1), tpl.wr_req);
+         u := u + w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u to u+w-1), tpl.rd_req);
+         u := u + w;
+         w := width(tpl.wr_addr);
+         y.wr_addr := convert(x(u to u+w-1), tpl.wr_addr);
+         u := u + w;
+         w := width(tpl.rd_addr);
+         y.rd_addr := convert(x(u to u+w-1), tpl.rd_addr);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u downto u-w+1), tpl.wr_req);
+         u := u - w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u downto u-w+1), tpl.rd_req);
+         u := u - w;
+         w := width(tpl.wr_addr);
+         y.wr_addr := convert(x(u downto u-w+1), tpl.wr_addr);
+         u := u - w;
+         w := width(tpl.rd_addr);
+         y.rd_addr := convert(x(u downto u-w+1), tpl.rd_addr);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.SIGNALS);
-    l := l + len(x.rd_data);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.SIGNALS);
-    l := l + width(x.rd_data);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), vectorify(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), vectorify(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), convert(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), convert(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := structify(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.SIGNALS := structify(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := convert(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.SIGNALS := convert(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-  begin
-    y.SIGNALS := nullify(t.SIGNALS);
-    y.rd_data := nullify(t.rd_data);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-  begin
-    y.SIGNALS := zeroed(t.SIGNALS);
-    y.rd_data := zeroed(t.rd_data);
-    return y;
-  end function zeroed;
+   function width(x: UCM_R_PHI_COMP_RPC_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.MEM_INTERFACE);
+      return w;
+   end function width;
+   function convert(x: UCM_R_PHI_COMP_RPC_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.MEM_INTERFACE);
+         y(u to u+w-1) := convert(x.MEM_INTERFACE, y(u to u+w-1));
+      else
+         w := width(x.MEM_INTERFACE);
+         y(u downto u-w+1) := convert(x.MEM_INTERFACE, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t is
+      variable y : UCM_R_PHI_COMP_RPC_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.MEM_INTERFACE);
+         y.MEM_INTERFACE := convert(x(u to u+w-1), tpl.MEM_INTERFACE);
+      else
+         w := width(tpl.MEM_INTERFACE);
+         y.MEM_INTERFACE := convert(x(u downto u-w+1), tpl.MEM_INTERFACE);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * len(x(x'left));
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * width(x(x'left));
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), vectorify(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), vectorify(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), convert(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), convert(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function structify(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := structify(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := structify(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function structify;
-  function convert(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := convert(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := convert(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function nullify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := nullify(y(i));
-    end loop l;
-    return y;
-  end function nullify;
-  function zeroed(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := zeroed(y(i));
-    end loop l;
-    return y;
-  end function zeroed;
+   function width(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.sel_thread);
+      w := w + width(x.sel_station);
+      w := w + width(x.sel_layer);
+      w := w + width(x.ext_ctrl);
+      w := w + width(x.MEM_INTERFACE);
+      return w;
+   end function width;
+   function convert(x: UCM_R_PHI_COMP_RPC_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.sel_thread);
+         y(u to u+w-1) := convert(x.sel_thread, y(u to u+w-1));
+         u := u + w;
+         w := width(x.sel_station);
+         y(u to u+w-1) := convert(x.sel_station, y(u to u+w-1));
+         u := u + w;
+         w := width(x.sel_layer);
+         y(u to u+w-1) := convert(x.sel_layer, y(u to u+w-1));
+         u := u + w;
+         w := width(x.ext_ctrl);
+         y(u to u+w-1) := convert(x.ext_ctrl, y(u to u+w-1));
+         u := u + w;
+         w := width(x.MEM_INTERFACE);
+         y(u to u+w-1) := convert(x.MEM_INTERFACE, y(u to u+w-1));
+      else
+         w := width(x.sel_thread);
+         y(u downto u-w+1) := convert(x.sel_thread, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.sel_station);
+         y(u downto u-w+1) := convert(x.sel_station, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.sel_layer);
+         y(u downto u-w+1) := convert(x.sel_layer, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.ext_ctrl);
+         y(u downto u-w+1) := convert(x.ext_ctrl, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.MEM_INTERFACE);
+         y(u downto u-w+1) := convert(x.MEM_INTERFACE, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t is
+      variable y : UCM_R_PHI_COMP_RPC_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.sel_thread);
+         y.sel_thread := convert(x(u to u+w-1), tpl.sel_thread);
+         u := u + w;
+         w := width(tpl.sel_station);
+         y.sel_station := convert(x(u to u+w-1), tpl.sel_station);
+         u := u + w;
+         w := width(tpl.sel_layer);
+         y.sel_layer := convert(x(u to u+w-1), tpl.sel_layer);
+         u := u + w;
+         w := width(tpl.ext_ctrl);
+         y.ext_ctrl := convert(x(u to u+w-1), tpl.ext_ctrl);
+         u := u + w;
+         w := width(tpl.MEM_INTERFACE);
+         y.MEM_INTERFACE := convert(x(u to u+w-1), tpl.MEM_INTERFACE);
+      else
+         w := width(tpl.sel_thread);
+         y.sel_thread := convert(x(u downto u-w+1), tpl.sel_thread);
+         u := u - w;
+         w := width(tpl.sel_station);
+         y.sel_station := convert(x(u downto u-w+1), tpl.sel_station);
+         u := u - w;
+         w := width(tpl.sel_layer);
+         y.sel_layer := convert(x(u downto u-w+1), tpl.sel_layer);
+         u := u - w;
+         w := width(tpl.ext_ctrl);
+         y.ext_ctrl := convert(x(u downto u-w+1), tpl.ext_ctrl);
+         u := u - w;
+         w := width(tpl.MEM_INTERFACE);
+         y.MEM_INTERFACE := convert(x(u downto u-w+1), tpl.MEM_INTERFACE);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.SIGNALS);
-    l := l + len(x.wr_addr);
-    l := l + len(x.rd_addr);
-    l := l + len(x.wr_data);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.SIGNALS);
-    l := l + width(x.wr_addr);
-    l := l + width(x.rd_addr);
-    l := l + width(x.wr_data);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), vectorify(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), vectorify(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SIGNALS)-1), convert(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
-      left := left + len(x.SIGNALS);
-      assign(y(left to left+len(x.wr_addr)-1), convert(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), convert(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.SIGNALS)+1), convert(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
-      left := left - len(x.SIGNALS);
-      assign(y(left downto left-len(x.wr_addr)+1), convert(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), convert(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := structify(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.SIGNALS := structify(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SIGNALS := convert(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
-      left := left + len(y.SIGNALS);
-      y.wr_addr := convert(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := convert(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.SIGNALS := convert(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
-      left := left - len(y.SIGNALS);
-      y.wr_addr := convert(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := convert(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-  begin
-    y.SIGNALS := nullify(t.SIGNALS);
-    y.wr_addr := nullify(t.wr_addr);
-    y.rd_addr := nullify(t.rd_addr);
-    y.wr_data := nullify(t.wr_data);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-  begin
-    y.SIGNALS := zeroed(t.SIGNALS);
-    y.wr_addr := zeroed(t.wr_addr);
-    y.rd_addr := zeroed(t.rd_addr);
-    y.wr_data := zeroed(t.wr_data);
-    return y;
-  end function zeroed;
+   function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_rdy);
+      w := w + width(x.rd_data);
+      return w;
+   end function width;
+   function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_rdy);
+         y(u to u+w-1) := convert(x.rd_rdy, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+      else
+         w := width(x.rd_rdy);
+         y(u downto u-w+1) := convert(x.rd_rdy, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is
+      variable y : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_rdy);
+         y.rd_rdy := convert(x(u to u+w-1), tpl.rd_rdy);
+         u := u + w;
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+      else
+         w := width(tpl.rd_rdy);
+         y.rd_rdy := convert(x(u downto u-w+1), tpl.rd_rdy);
+         u := u - w;
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * len(x(x'left));
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * width(x(x'left));
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), vectorify(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), vectorify(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(b to a), convert(x(i), y(b to a)));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i + y'low + l - 1;
-        b := l*i + y'low;
-        assign(y(a downto b), convert(x(i), y(a downto b)));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function structify(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := structify(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := structify(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function structify;
-  function convert(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i + x'low + l - 1;
-        b := l*i + x'low;
-        y(i) := convert(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i + x'low + l-1;
-        b := l*i + x'low;
-        y(i) := convert(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function convert;
-  function nullify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := nullify(y(i));
-    end loop l;
-    return y;
-  end function nullify;
-  function zeroed(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := zeroed(y(i));
-    end loop l;
-    return y;
-  end function zeroed;
+   function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.wr_req);
+      w := w + width(x.rd_req);
+      w := w + width(x.wr_addr);
+      w := w + width(x.rd_addr);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.wr_req);
+         y(u to u+w-1) := convert(x.wr_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_req);
+         y(u to u+w-1) := convert(x.rd_req, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_addr);
+         y(u to u+w-1) := convert(x.wr_addr, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_addr);
+         y(u to u+w-1) := convert(x.rd_addr, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.wr_req);
+         y(u downto u-w+1) := convert(x.wr_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_req);
+         y(u downto u-w+1) := convert(x.rd_req, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_addr);
+         y(u downto u-w+1) := convert(x.wr_addr, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_addr);
+         y(u downto u-w+1) := convert(x.rd_addr, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is
+      variable y : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u to u+w-1), tpl.wr_req);
+         u := u + w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u to u+w-1), tpl.rd_req);
+         u := u + w;
+         w := width(tpl.wr_addr);
+         y.wr_addr := convert(x(u to u+w-1), tpl.wr_addr);
+         u := u + w;
+         w := width(tpl.rd_addr);
+         y.rd_addr := convert(x(u to u+w-1), tpl.rd_addr);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.wr_req);
+         y.wr_req := convert(x(u downto u-w+1), tpl.wr_req);
+         u := u - w;
+         w := width(tpl.rd_req);
+         y.rd_req := convert(x(u downto u-w+1), tpl.rd_req);
+         u := u - w;
+         w := width(tpl.wr_addr);
+         y.wr_addr := convert(x(u downto u-w+1), tpl.wr_addr);
+         u := u - w;
+         w := width(tpl.rd_addr);
+         y.rd_addr := convert(x(u downto u-w+1), tpl.rd_addr);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.CVP_CHAMB_Z0);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.CVP_CHAMB_Z0);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.CVP_CHAMB_Z0)-1), vectorify(x.CVP_CHAMB_Z0, y(left to left+len(x.CVP_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.CVP_CHAMB_Z0)+1), vectorify(x.CVP_CHAMB_Z0, y(left downto left-len(x.CVP_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.CVP_CHAMB_Z0)-1), convert(x.CVP_CHAMB_Z0, y(left to left+len(x.CVP_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.CVP_CHAMB_Z0)+1), convert(x.CVP_CHAMB_Z0, y(left downto left-len(x.CVP_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.CVP_CHAMB_Z0 := structify(x(left to left+len(y.CVP_CHAMB_Z0)-1), y.CVP_CHAMB_Z0);
-    else
-      y.CVP_CHAMB_Z0 := structify(x(left downto left-len(y.CVP_CHAMB_Z0)+1), y.CVP_CHAMB_Z0);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.CVP_CHAMB_Z0 := convert(x(left to left+len(y.CVP_CHAMB_Z0)-1), y.CVP_CHAMB_Z0);
-    else
-      y.CVP_CHAMB_Z0 := convert(x(left downto left-len(y.CVP_CHAMB_Z0)+1), y.CVP_CHAMB_Z0);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_MON_t;
-  begin
-    y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_MON_t;
-  begin
-    y.CVP_CHAMB_Z0 := zeroed(t.CVP_CHAMB_Z0);
-    return y;
-  end function zeroed;
+   function width(x: UCM_R_PHI_COMP_MDT_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.MEM_INTERFACE);
+      return w;
+   end function width;
+   function convert(x: UCM_R_PHI_COMP_MDT_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.MEM_INTERFACE);
+         y(u to u+w-1) := convert(x.MEM_INTERFACE, y(u to u+w-1));
+      else
+         w := width(x.MEM_INTERFACE);
+         y(u downto u-w+1) := convert(x.MEM_INTERFACE, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t is
+      variable y : UCM_R_PHI_COMP_MDT_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.MEM_INTERFACE);
+         y.MEM_INTERFACE := convert(x(u to u+w-1), tpl.MEM_INTERFACE);
+      else
+         w := width(tpl.MEM_INTERFACE);
+         y.MEM_INTERFACE := convert(x(u downto u-w+1), tpl.MEM_INTERFACE);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.CVP_CHAMB_Z0);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.CVP_CHAMB_Z0);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.CVP_CHAMB_Z0)-1), vectorify(x.CVP_CHAMB_Z0, y(left to left+len(x.CVP_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.CVP_CHAMB_Z0)+1), vectorify(x.CVP_CHAMB_Z0, y(left downto left-len(x.CVP_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.CVP_CHAMB_Z0)-1), convert(x.CVP_CHAMB_Z0, y(left to left+len(x.CVP_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.CVP_CHAMB_Z0)+1), convert(x.CVP_CHAMB_Z0, y(left downto left-len(x.CVP_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.CVP_CHAMB_Z0 := structify(x(left to left+len(y.CVP_CHAMB_Z0)-1), y.CVP_CHAMB_Z0);
-    else
-      y.CVP_CHAMB_Z0 := structify(x(left downto left-len(y.CVP_CHAMB_Z0)+1), y.CVP_CHAMB_Z0);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is
-    variable y: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.CVP_CHAMB_Z0 := convert(x(left to left+len(y.CVP_CHAMB_Z0)-1), y.CVP_CHAMB_Z0);
-    else
-      y.CVP_CHAMB_Z0 := convert(x(left downto left-len(y.CVP_CHAMB_Z0)+1), y.CVP_CHAMB_Z0);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
-  begin
-    y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is
-  variable y: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
-  begin
-    y.CVP_CHAMB_Z0 := zeroed(t.CVP_CHAMB_Z0);
-    return y;
-  end function zeroed;
+   function width(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.sel_thread);
+      w := w + width(x.sel_station);
+      w := w + width(x.sel_layer);
+      w := w + width(x.ext_ctrl);
+      w := w + width(x.MEM_INTERFACE);
+      return w;
+   end function width;
+   function convert(x: UCM_R_PHI_COMP_MDT_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.sel_thread);
+         y(u to u+w-1) := convert(x.sel_thread, y(u to u+w-1));
+         u := u + w;
+         w := width(x.sel_station);
+         y(u to u+w-1) := convert(x.sel_station, y(u to u+w-1));
+         u := u + w;
+         w := width(x.sel_layer);
+         y(u to u+w-1) := convert(x.sel_layer, y(u to u+w-1));
+         u := u + w;
+         w := width(x.ext_ctrl);
+         y(u to u+w-1) := convert(x.ext_ctrl, y(u to u+w-1));
+         u := u + w;
+         w := width(x.MEM_INTERFACE);
+         y(u to u+w-1) := convert(x.MEM_INTERFACE, y(u to u+w-1));
+      else
+         w := width(x.sel_thread);
+         y(u downto u-w+1) := convert(x.sel_thread, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.sel_station);
+         y(u downto u-w+1) := convert(x.sel_station, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.sel_layer);
+         y(u downto u-w+1) := convert(x.sel_layer, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.ext_ctrl);
+         y(u downto u-w+1) := convert(x.ext_ctrl, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.MEM_INTERFACE);
+         y(u downto u-w+1) := convert(x.MEM_INTERFACE, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t is
+      variable y : UCM_R_PHI_COMP_MDT_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.sel_thread);
+         y.sel_thread := convert(x(u to u+w-1), tpl.sel_thread);
+         u := u + w;
+         w := width(tpl.sel_station);
+         y.sel_station := convert(x(u to u+w-1), tpl.sel_station);
+         u := u + w;
+         w := width(tpl.sel_layer);
+         y.sel_layer := convert(x(u to u+w-1), tpl.sel_layer);
+         u := u + w;
+         w := width(tpl.ext_ctrl);
+         y.ext_ctrl := convert(x(u to u+w-1), tpl.ext_ctrl);
+         u := u + w;
+         w := width(tpl.MEM_INTERFACE);
+         y.MEM_INTERFACE := convert(x(u to u+w-1), tpl.MEM_INTERFACE);
+      else
+         w := width(tpl.sel_thread);
+         y.sel_thread := convert(x(u downto u-w+1), tpl.sel_thread);
+         u := u - w;
+         w := width(tpl.sel_station);
+         y.sel_station := convert(x(u downto u-w+1), tpl.sel_station);
+         u := u - w;
+         w := width(tpl.sel_layer);
+         y.sel_layer := convert(x(u downto u-w+1), tpl.sel_layer);
+         u := u - w;
+         w := width(tpl.ext_ctrl);
+         y.ext_ctrl := convert(x(u downto u-w+1), tpl.ext_ctrl);
+         u := u - w;
+         w := width(tpl.MEM_INTERFACE);
+         y.MEM_INTERFACE := convert(x(u downto u-w+1), tpl.MEM_INTERFACE);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.STATUS);
-    l := l + len(x.SECTOR_PHI);
-    l := l + len(x.CDE_CHAMB_Z0);
-    l := l + len(x.CVP_CHAMB_Z0);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.STATUS);
-    l := l + width(x.SECTOR_PHI);
-    l := l + width(x.CDE_CHAMB_Z0);
-    l := l + width(x.CVP_CHAMB_Z0);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.STATUS)-1), vectorify(x.STATUS, y(left to left+len(x.STATUS)-1)));
-      left := left + len(x.STATUS);
-      assign(y(left to left+len(x.SECTOR_PHI)-1), vectorify(x.SECTOR_PHI, y(left to left+len(x.SECTOR_PHI)-1)));
-      left := left + len(x.SECTOR_PHI);
-      assign(y(left to left+len(x.CDE_CHAMB_Z0)-1), vectorify(x.CDE_CHAMB_Z0, y(left to left+len(x.CDE_CHAMB_Z0)-1)));
-      left := left + len(x.CDE_CHAMB_Z0);
-      assign(y(left to left+len(x.CVP_CHAMB_Z0)-1), vectorify(x.CVP_CHAMB_Z0, y(left to left+len(x.CVP_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.STATUS)+1), vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1)));
-      left := left - len(x.STATUS);
-      assign(y(left downto left-len(x.SECTOR_PHI)+1), vectorify(x.SECTOR_PHI, y(left downto left-len(x.SECTOR_PHI)+1)));
-      left := left - len(x.SECTOR_PHI);
-      assign(y(left downto left-len(x.CDE_CHAMB_Z0)+1), vectorify(x.CDE_CHAMB_Z0, y(left downto left-len(x.CDE_CHAMB_Z0)+1)));
-      left := left - len(x.CDE_CHAMB_Z0);
-      assign(y(left downto left-len(x.CVP_CHAMB_Z0)+1), vectorify(x.CVP_CHAMB_Z0, y(left downto left-len(x.CVP_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.STATUS)-1), convert(x.STATUS, y(left to left+len(x.STATUS)-1)));
-      left := left + len(x.STATUS);
-      assign(y(left to left+len(x.SECTOR_PHI)-1), convert(x.SECTOR_PHI, y(left to left+len(x.SECTOR_PHI)-1)));
-      left := left + len(x.SECTOR_PHI);
-      assign(y(left to left+len(x.CDE_CHAMB_Z0)-1), convert(x.CDE_CHAMB_Z0, y(left to left+len(x.CDE_CHAMB_Z0)-1)));
-      left := left + len(x.CDE_CHAMB_Z0);
-      assign(y(left to left+len(x.CVP_CHAMB_Z0)-1), convert(x.CVP_CHAMB_Z0, y(left to left+len(x.CVP_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.STATUS)+1), convert(x.STATUS, y(left downto left-len(x.STATUS)+1)));
-      left := left - len(x.STATUS);
-      assign(y(left downto left-len(x.SECTOR_PHI)+1), convert(x.SECTOR_PHI, y(left downto left-len(x.SECTOR_PHI)+1)));
-      left := left - len(x.SECTOR_PHI);
-      assign(y(left downto left-len(x.CDE_CHAMB_Z0)+1), convert(x.CDE_CHAMB_Z0, y(left downto left-len(x.CDE_CHAMB_Z0)+1)));
-      left := left - len(x.CDE_CHAMB_Z0);
-      assign(y(left downto left-len(x.CVP_CHAMB_Z0)+1), convert(x.CVP_CHAMB_Z0, y(left downto left-len(x.CVP_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t is
-    variable y: UCM_SUPER_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.STATUS := structify(x(left to left+len(y.STATUS)-1), y.STATUS);
-      left := left + len(y.STATUS);
-      y.SECTOR_PHI := structify(x(left to left+len(y.SECTOR_PHI)-1), y.SECTOR_PHI);
-      left := left + len(y.SECTOR_PHI);
-      y.CDE_CHAMB_Z0 := structify(x(left to left+len(y.CDE_CHAMB_Z0)-1), y.CDE_CHAMB_Z0);
-      left := left + len(y.CDE_CHAMB_Z0);
-      y.CVP_CHAMB_Z0 := structify(x(left to left+len(y.CVP_CHAMB_Z0)-1), y.CVP_CHAMB_Z0);
-    else
-      y.STATUS := structify(x(left downto left-len(y.STATUS)+1), y.STATUS);
-      left := left - len(y.STATUS);
-      y.SECTOR_PHI := structify(x(left downto left-len(y.SECTOR_PHI)+1), y.SECTOR_PHI);
-      left := left - len(y.SECTOR_PHI);
-      y.CDE_CHAMB_Z0 := structify(x(left downto left-len(y.CDE_CHAMB_Z0)+1), y.CDE_CHAMB_Z0);
-      left := left - len(y.CDE_CHAMB_Z0);
-      y.CVP_CHAMB_Z0 := structify(x(left downto left-len(y.CVP_CHAMB_Z0)+1), y.CVP_CHAMB_Z0);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t is
-    variable y: UCM_SUPER_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.STATUS := convert(x(left to left+len(y.STATUS)-1), y.STATUS);
-      left := left + len(y.STATUS);
-      y.SECTOR_PHI := convert(x(left to left+len(y.SECTOR_PHI)-1), y.SECTOR_PHI);
-      left := left + len(y.SECTOR_PHI);
-      y.CDE_CHAMB_Z0 := convert(x(left to left+len(y.CDE_CHAMB_Z0)-1), y.CDE_CHAMB_Z0);
-      left := left + len(y.CDE_CHAMB_Z0);
-      y.CVP_CHAMB_Z0 := convert(x(left to left+len(y.CVP_CHAMB_Z0)-1), y.CVP_CHAMB_Z0);
-    else
-      y.STATUS := convert(x(left downto left-len(y.STATUS)+1), y.STATUS);
-      left := left - len(y.STATUS);
-      y.SECTOR_PHI := convert(x(left downto left-len(y.SECTOR_PHI)+1), y.SECTOR_PHI);
-      left := left - len(y.SECTOR_PHI);
-      y.CDE_CHAMB_Z0 := convert(x(left downto left-len(y.CDE_CHAMB_Z0)+1), y.CDE_CHAMB_Z0);
-      left := left - len(y.CDE_CHAMB_Z0);
-      y.CVP_CHAMB_Z0 := convert(x(left downto left-len(y.CVP_CHAMB_Z0)+1), y.CVP_CHAMB_Z0);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t is
-  variable y: UCM_SUPER_MON_t;
-  begin
-    y.STATUS := nullify(t.STATUS);
-    y.SECTOR_PHI := nullify(t.SECTOR_PHI);
-    y.CDE_CHAMB_Z0 := nullify(t.CDE_CHAMB_Z0);
-    y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t is
-  variable y: UCM_SUPER_MON_t;
-  begin
-    y.STATUS := zeroed(t.STATUS);
-    y.SECTOR_PHI := zeroed(t.SECTOR_PHI);
-    y.CDE_CHAMB_Z0 := zeroed(t.CDE_CHAMB_Z0);
-    y.CVP_CHAMB_Z0 := zeroed(t.CVP_CHAMB_Z0);
-    return y;
-  end function zeroed;
+   function width(x: UCM_R_PHI_COMP_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.RPC);
+      w := w + width(x.MDT);
+      return w;
+   end function width;
+   function convert(x: UCM_R_PHI_COMP_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.RPC);
+         y(u to u+w-1) := convert(x.RPC, y(u to u+w-1));
+         u := u + w;
+         w := width(x.MDT);
+         y(u to u+w-1) := convert(x.MDT, y(u to u+w-1));
+      else
+         w := width(x.RPC);
+         y(u downto u-w+1) := convert(x.RPC, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.MDT);
+         y(u downto u-w+1) := convert(x.MDT, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t is
+      variable y : UCM_R_PHI_COMP_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.RPC);
+         y.RPC := convert(x(u to u+w-1), tpl.RPC);
+         u := u + w;
+         w := width(tpl.MDT);
+         y.MDT := convert(x(u to u+w-1), tpl.MDT);
+      else
+         w := width(tpl.RPC);
+         y.RPC := convert(x(u downto u-w+1), tpl.RPC);
+         u := u - w;
+         w := width(tpl.MDT);
+         y.MDT := convert(x(u downto u-w+1), tpl.MDT);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_SUPER_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.ACTIONS);
-    l := l + len(x.CONFIGS);
-    l := l + len(x.SECTOR_PHI);
-    l := l + len(x.CDE_CHAMB_Z0);
-    l := l + len(x.CVP_CHAMB_Z0);
-    return l;
-  end function len;
-  function width(x: UCM_SUPER_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.ACTIONS);
-    l := l + width(x.CONFIGS);
-    l := l + width(x.SECTOR_PHI);
-    l := l + width(x.CDE_CHAMB_Z0);
-    l := l + width(x.CVP_CHAMB_Z0);
-    return l;
-  end function width;
-  function vectorify(x: UCM_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.ACTIONS)-1), vectorify(x.ACTIONS, y(left to left+len(x.ACTIONS)-1)));
-      left := left + len(x.ACTIONS);
-      assign(y(left to left+len(x.CONFIGS)-1), vectorify(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
-      left := left + len(x.CONFIGS);
-      assign(y(left to left+len(x.SECTOR_PHI)-1), vectorify(x.SECTOR_PHI, y(left to left+len(x.SECTOR_PHI)-1)));
-      left := left + len(x.SECTOR_PHI);
-      assign(y(left to left+len(x.CDE_CHAMB_Z0)-1), vectorify(x.CDE_CHAMB_Z0, y(left to left+len(x.CDE_CHAMB_Z0)-1)));
-      left := left + len(x.CDE_CHAMB_Z0);
-      assign(y(left to left+len(x.CVP_CHAMB_Z0)-1), vectorify(x.CVP_CHAMB_Z0, y(left to left+len(x.CVP_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.ACTIONS)+1), vectorify(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
-      left := left - len(x.ACTIONS);
-      assign(y(left downto left-len(x.CONFIGS)+1), vectorify(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
-      left := left - len(x.CONFIGS);
-      assign(y(left downto left-len(x.SECTOR_PHI)+1), vectorify(x.SECTOR_PHI, y(left downto left-len(x.SECTOR_PHI)+1)));
-      left := left - len(x.SECTOR_PHI);
-      assign(y(left downto left-len(x.CDE_CHAMB_Z0)+1), vectorify(x.CDE_CHAMB_Z0, y(left downto left-len(x.CDE_CHAMB_Z0)+1)));
-      left := left - len(x.CDE_CHAMB_Z0);
-      assign(y(left downto left-len(x.CVP_CHAMB_Z0)+1), vectorify(x.CVP_CHAMB_Z0, y(left downto left-len(x.CVP_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.ACTIONS)-1), convert(x.ACTIONS, y(left to left+len(x.ACTIONS)-1)));
-      left := left + len(x.ACTIONS);
-      assign(y(left to left+len(x.CONFIGS)-1), convert(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
-      left := left + len(x.CONFIGS);
-      assign(y(left to left+len(x.SECTOR_PHI)-1), convert(x.SECTOR_PHI, y(left to left+len(x.SECTOR_PHI)-1)));
-      left := left + len(x.SECTOR_PHI);
-      assign(y(left to left+len(x.CDE_CHAMB_Z0)-1), convert(x.CDE_CHAMB_Z0, y(left to left+len(x.CDE_CHAMB_Z0)-1)));
-      left := left + len(x.CDE_CHAMB_Z0);
-      assign(y(left to left+len(x.CVP_CHAMB_Z0)-1), convert(x.CVP_CHAMB_Z0, y(left to left+len(x.CVP_CHAMB_Z0)-1)));
-    else
-      assign(y(left downto left-len(x.ACTIONS)+1), convert(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
-      left := left - len(x.ACTIONS);
-      assign(y(left downto left-len(x.CONFIGS)+1), convert(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
-      left := left - len(x.CONFIGS);
-      assign(y(left downto left-len(x.SECTOR_PHI)+1), convert(x.SECTOR_PHI, y(left downto left-len(x.SECTOR_PHI)+1)));
-      left := left - len(x.SECTOR_PHI);
-      assign(y(left downto left-len(x.CDE_CHAMB_Z0)+1), convert(x.CDE_CHAMB_Z0, y(left downto left-len(x.CDE_CHAMB_Z0)+1)));
-      left := left - len(x.CDE_CHAMB_Z0);
-      assign(y(left downto left-len(x.CVP_CHAMB_Z0)+1), convert(x.CVP_CHAMB_Z0, y(left downto left-len(x.CVP_CHAMB_Z0)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t is
-    variable y: UCM_SUPER_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.ACTIONS := structify(x(left to left+len(y.ACTIONS)-1), y.ACTIONS);
-      left := left + len(y.ACTIONS);
-      y.CONFIGS := structify(x(left to left+len(y.CONFIGS)-1), y.CONFIGS);
-      left := left + len(y.CONFIGS);
-      y.SECTOR_PHI := structify(x(left to left+len(y.SECTOR_PHI)-1), y.SECTOR_PHI);
-      left := left + len(y.SECTOR_PHI);
-      y.CDE_CHAMB_Z0 := structify(x(left to left+len(y.CDE_CHAMB_Z0)-1), y.CDE_CHAMB_Z0);
-      left := left + len(y.CDE_CHAMB_Z0);
-      y.CVP_CHAMB_Z0 := structify(x(left to left+len(y.CVP_CHAMB_Z0)-1), y.CVP_CHAMB_Z0);
-    else
-      y.ACTIONS := structify(x(left downto left-len(y.ACTIONS)+1), y.ACTIONS);
-      left := left - len(y.ACTIONS);
-      y.CONFIGS := structify(x(left downto left-len(y.CONFIGS)+1), y.CONFIGS);
-      left := left - len(y.CONFIGS);
-      y.SECTOR_PHI := structify(x(left downto left-len(y.SECTOR_PHI)+1), y.SECTOR_PHI);
-      left := left - len(y.SECTOR_PHI);
-      y.CDE_CHAMB_Z0 := structify(x(left downto left-len(y.CDE_CHAMB_Z0)+1), y.CDE_CHAMB_Z0);
-      left := left - len(y.CDE_CHAMB_Z0);
-      y.CVP_CHAMB_Z0 := structify(x(left downto left-len(y.CVP_CHAMB_Z0)+1), y.CVP_CHAMB_Z0);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t is
-    variable y: UCM_SUPER_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.ACTIONS := convert(x(left to left+len(y.ACTIONS)-1), y.ACTIONS);
-      left := left + len(y.ACTIONS);
-      y.CONFIGS := convert(x(left to left+len(y.CONFIGS)-1), y.CONFIGS);
-      left := left + len(y.CONFIGS);
-      y.SECTOR_PHI := convert(x(left to left+len(y.SECTOR_PHI)-1), y.SECTOR_PHI);
-      left := left + len(y.SECTOR_PHI);
-      y.CDE_CHAMB_Z0 := convert(x(left to left+len(y.CDE_CHAMB_Z0)-1), y.CDE_CHAMB_Z0);
-      left := left + len(y.CDE_CHAMB_Z0);
-      y.CVP_CHAMB_Z0 := convert(x(left to left+len(y.CVP_CHAMB_Z0)-1), y.CVP_CHAMB_Z0);
-    else
-      y.ACTIONS := convert(x(left downto left-len(y.ACTIONS)+1), y.ACTIONS);
-      left := left - len(y.ACTIONS);
-      y.CONFIGS := convert(x(left downto left-len(y.CONFIGS)+1), y.CONFIGS);
-      left := left - len(y.CONFIGS);
-      y.SECTOR_PHI := convert(x(left downto left-len(y.SECTOR_PHI)+1), y.SECTOR_PHI);
-      left := left - len(y.SECTOR_PHI);
-      y.CDE_CHAMB_Z0 := convert(x(left downto left-len(y.CDE_CHAMB_Z0)+1), y.CDE_CHAMB_Z0);
-      left := left - len(y.CDE_CHAMB_Z0);
-      y.CVP_CHAMB_Z0 := convert(x(left downto left-len(y.CVP_CHAMB_Z0)+1), y.CVP_CHAMB_Z0);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t is
-  variable y: UCM_SUPER_CTRL_t;
-  begin
-    y.ACTIONS := nullify(t.ACTIONS);
-    y.CONFIGS := nullify(t.CONFIGS);
-    y.SECTOR_PHI := nullify(t.SECTOR_PHI);
-    y.CDE_CHAMB_Z0 := nullify(t.CDE_CHAMB_Z0);
-    y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t is
-  variable y: UCM_SUPER_CTRL_t;
-  begin
-    y.ACTIONS := zeroed(t.ACTIONS);
-    y.CONFIGS := zeroed(t.CONFIGS);
-    y.SECTOR_PHI := zeroed(t.SECTOR_PHI);
-    y.CDE_CHAMB_Z0 := zeroed(t.CDE_CHAMB_Z0);
-    y.CVP_CHAMB_Z0 := zeroed(t.CVP_CHAMB_Z0);
-    return y;
-  end function zeroed;
+   function width(x: UCM_R_PHI_COMP_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.RPC);
+      w := w + width(x.MDT);
+      return w;
+   end function width;
+   function convert(x: UCM_R_PHI_COMP_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.RPC);
+         y(u to u+w-1) := convert(x.RPC, y(u to u+w-1));
+         u := u + w;
+         w := width(x.MDT);
+         y(u to u+w-1) := convert(x.MDT, y(u to u+w-1));
+      else
+         w := width(x.RPC);
+         y(u downto u-w+1) := convert(x.RPC, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.MDT);
+         y(u downto u-w+1) := convert(x.MDT, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t is
+      variable y : UCM_R_PHI_COMP_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.RPC);
+         y.RPC := convert(x(u to u+w-1), tpl.RPC);
+         u := u + w;
+         w := width(tpl.MDT);
+         y.MDT := convert(x(u to u+w-1), tpl.MDT);
+      else
+         w := width(tpl.RPC);
+         y.RPC := convert(x(u downto u-w+1), tpl.RPC);
+         u := u - w;
+         w := width(tpl.MDT);
+         y.MDT := convert(x(u downto u-w+1), tpl.MDT);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_rdy);
-    l := l + len(x.rd_data);
-    return l;
-  end function len;
-  function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.rd_rdy);
-    l := l + width(x.rd_data);
-    return l;
-  end function width;
-  function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-      left := left + len(x.rd_rdy);
-      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-      left := left - len(x.rd_rdy);
-      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), convert(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-      left := left + len(x.rd_rdy);
-      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), convert(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-      left := left - len(x.rd_rdy);
-      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is
-    variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-      left := left + len(y.rd_rdy);
-      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-      left := left - len(y.rd_rdy);
-      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is
-    variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := convert(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-      left := left + len(y.rd_rdy);
-      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.rd_rdy := convert(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-      left := left - len(y.rd_rdy);
-      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is
-  variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
-  begin
-    y.rd_rdy := nullify(t.rd_rdy);
-    y.rd_data := nullify(t.rd_data);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is
-  variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
-  begin
-    y.rd_rdy := zeroed(t.rd_rdy);
-    y.rd_data := zeroed(t.rd_data);
-    return y;
-  end function zeroed;
+   function width(x: UCM_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SUPER);
+      w := w + width(x.R_PHI_COMP);
+      return w;
+   end function width;
+   function convert(x: UCM_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SUPER);
+         y(u to u+w-1) := convert(x.SUPER, y(u to u+w-1));
+         u := u + w;
+         w := width(x.R_PHI_COMP);
+         y(u to u+w-1) := convert(x.R_PHI_COMP, y(u to u+w-1));
+      else
+         w := width(x.SUPER);
+         y(u downto u-w+1) := convert(x.SUPER, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.R_PHI_COMP);
+         y(u downto u-w+1) := convert(x.R_PHI_COMP, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_MON_t) return UCM_MON_t is
+      variable y : UCM_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SUPER);
+         y.SUPER := convert(x(u to u+w-1), tpl.SUPER);
+         u := u + w;
+         w := width(tpl.R_PHI_COMP);
+         y.R_PHI_COMP := convert(x(u to u+w-1), tpl.R_PHI_COMP);
+      else
+         w := width(tpl.SUPER);
+         y.SUPER := convert(x(u downto u-w+1), tpl.SUPER);
+         u := u - w;
+         w := width(tpl.R_PHI_COMP);
+         y.R_PHI_COMP := convert(x(u downto u-w+1), tpl.R_PHI_COMP);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_MON_t) return UCM_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
-  function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_req);
-    l := l + len(x.rd_req);
-    l := l + len(x.wr_addr);
-    l := l + len(x.rd_addr);
-    l := l + len(x.wr_data);
-    return l;
-  end function len;
-  function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.wr_req);
-    l := l + width(x.rd_req);
-    l := l + width(x.wr_addr);
-    l := l + width(x.rd_addr);
-    l := l + width(x.wr_data);
-    return l;
-  end function width;
-  function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), convert(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.rd_req)-1), convert(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.wr_addr)-1), convert(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), convert(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), convert(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.rd_req)+1), convert(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.wr_addr)+1), convert(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), convert(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is
-    variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is
-    variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := convert(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.rd_req := convert(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.wr_addr := convert(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := convert(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.wr_req := convert(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.rd_req := convert(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.wr_addr := convert(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := convert(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is
-  variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
-  begin
-    y.wr_req := nullify(t.wr_req);
-    y.rd_req := nullify(t.rd_req);
-    y.wr_addr := nullify(t.wr_addr);
-    y.rd_addr := nullify(t.rd_addr);
-    y.wr_data := nullify(t.wr_data);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is
-  variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
-  begin
-    y.wr_req := zeroed(t.wr_req);
-    y.rd_req := zeroed(t.rd_req);
-    y.wr_addr := zeroed(t.wr_addr);
-    y.rd_addr := zeroed(t.rd_addr);
-    y.wr_data := zeroed(t.wr_data);
-    return y;
-  end function zeroed;
-
-  function len(x: UCM_R_PHI_COMP_RPC_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.MEM_INTERFACE);
-    return l;
-  end function len;
-  function width(x: UCM_R_PHI_COMP_RPC_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.MEM_INTERFACE);
-    return l;
-  end function width;
-  function vectorify(x: UCM_R_PHI_COMP_RPC_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_R_PHI_COMP_RPC_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), convert(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), convert(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t is
-    variable y: UCM_R_PHI_COMP_RPC_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t is
-    variable y: UCM_R_PHI_COMP_RPC_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.MEM_INTERFACE := convert(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.MEM_INTERFACE := convert(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t is
-  variable y: UCM_R_PHI_COMP_RPC_MON_t;
-  begin
-    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t is
-  variable y: UCM_R_PHI_COMP_RPC_MON_t;
-  begin
-    y.MEM_INTERFACE := zeroed(t.MEM_INTERFACE);
-    return y;
-  end function zeroed;
-
-  function len(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.sel_thread);
-    l := l + len(x.sel_station);
-    l := l + len(x.sel_layer);
-    l := l + len(x.ext_ctrl);
-    l := l + len(x.MEM_INTERFACE);
-    return l;
-  end function len;
-  function width(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.sel_thread);
-    l := l + width(x.sel_station);
-    l := l + width(x.sel_layer);
-    l := l + width(x.ext_ctrl);
-    l := l + width(x.MEM_INTERFACE);
-    return l;
-  end function width;
-  function vectorify(x: UCM_R_PHI_COMP_RPC_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.sel_thread)-1), vectorify(x.sel_thread, y(left to left+len(x.sel_thread)-1)));
-      left := left + len(x.sel_thread);
-      assign(y(left to left+len(x.sel_station)-1), vectorify(x.sel_station, y(left to left+len(x.sel_station)-1)));
-      left := left + len(x.sel_station);
-      assign(y(left to left+len(x.sel_layer)-1), vectorify(x.sel_layer, y(left to left+len(x.sel_layer)-1)));
-      left := left + len(x.sel_layer);
-      assign(y(left to left+len(x.ext_ctrl)-1), vectorify(x.ext_ctrl, y(left to left+len(x.ext_ctrl)-1)));
-      left := left + len(x.ext_ctrl);
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.sel_thread)+1), vectorify(x.sel_thread, y(left downto left-len(x.sel_thread)+1)));
-      left := left - len(x.sel_thread);
-      assign(y(left downto left-len(x.sel_station)+1), vectorify(x.sel_station, y(left downto left-len(x.sel_station)+1)));
-      left := left - len(x.sel_station);
-      assign(y(left downto left-len(x.sel_layer)+1), vectorify(x.sel_layer, y(left downto left-len(x.sel_layer)+1)));
-      left := left - len(x.sel_layer);
-      assign(y(left downto left-len(x.ext_ctrl)+1), vectorify(x.ext_ctrl, y(left downto left-len(x.ext_ctrl)+1)));
-      left := left - len(x.ext_ctrl);
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_R_PHI_COMP_RPC_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.sel_thread)-1), convert(x.sel_thread, y(left to left+len(x.sel_thread)-1)));
-      left := left + len(x.sel_thread);
-      assign(y(left to left+len(x.sel_station)-1), convert(x.sel_station, y(left to left+len(x.sel_station)-1)));
-      left := left + len(x.sel_station);
-      assign(y(left to left+len(x.sel_layer)-1), convert(x.sel_layer, y(left to left+len(x.sel_layer)-1)));
-      left := left + len(x.sel_layer);
-      assign(y(left to left+len(x.ext_ctrl)-1), convert(x.ext_ctrl, y(left to left+len(x.ext_ctrl)-1)));
-      left := left + len(x.ext_ctrl);
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), convert(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.sel_thread)+1), convert(x.sel_thread, y(left downto left-len(x.sel_thread)+1)));
-      left := left - len(x.sel_thread);
-      assign(y(left downto left-len(x.sel_station)+1), convert(x.sel_station, y(left downto left-len(x.sel_station)+1)));
-      left := left - len(x.sel_station);
-      assign(y(left downto left-len(x.sel_layer)+1), convert(x.sel_layer, y(left downto left-len(x.sel_layer)+1)));
-      left := left - len(x.sel_layer);
-      assign(y(left downto left-len(x.ext_ctrl)+1), convert(x.ext_ctrl, y(left downto left-len(x.ext_ctrl)+1)));
-      left := left - len(x.ext_ctrl);
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), convert(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t is
-    variable y: UCM_R_PHI_COMP_RPC_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.sel_thread := structify(x(left to left+len(y.sel_thread)-1), y.sel_thread);
-      left := left + len(y.sel_thread);
-      y.sel_station := structify(x(left to left+len(y.sel_station)-1), y.sel_station);
-      left := left + len(y.sel_station);
-      y.sel_layer := structify(x(left to left+len(y.sel_layer)-1), y.sel_layer);
-      left := left + len(y.sel_layer);
-      y.ext_ctrl := structify(x(left to left+len(y.ext_ctrl)-1), y.ext_ctrl);
-      left := left + len(y.ext_ctrl);
-      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.sel_thread := structify(x(left downto left-len(y.sel_thread)+1), y.sel_thread);
-      left := left - len(y.sel_thread);
-      y.sel_station := structify(x(left downto left-len(y.sel_station)+1), y.sel_station);
-      left := left - len(y.sel_station);
-      y.sel_layer := structify(x(left downto left-len(y.sel_layer)+1), y.sel_layer);
-      left := left - len(y.sel_layer);
-      y.ext_ctrl := structify(x(left downto left-len(y.ext_ctrl)+1), y.ext_ctrl);
-      left := left - len(y.ext_ctrl);
-      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t is
-    variable y: UCM_R_PHI_COMP_RPC_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.sel_thread := convert(x(left to left+len(y.sel_thread)-1), y.sel_thread);
-      left := left + len(y.sel_thread);
-      y.sel_station := convert(x(left to left+len(y.sel_station)-1), y.sel_station);
-      left := left + len(y.sel_station);
-      y.sel_layer := convert(x(left to left+len(y.sel_layer)-1), y.sel_layer);
-      left := left + len(y.sel_layer);
-      y.ext_ctrl := convert(x(left to left+len(y.ext_ctrl)-1), y.ext_ctrl);
-      left := left + len(y.ext_ctrl);
-      y.MEM_INTERFACE := convert(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.sel_thread := convert(x(left downto left-len(y.sel_thread)+1), y.sel_thread);
-      left := left - len(y.sel_thread);
-      y.sel_station := convert(x(left downto left-len(y.sel_station)+1), y.sel_station);
-      left := left - len(y.sel_station);
-      y.sel_layer := convert(x(left downto left-len(y.sel_layer)+1), y.sel_layer);
-      left := left - len(y.sel_layer);
-      y.ext_ctrl := convert(x(left downto left-len(y.ext_ctrl)+1), y.ext_ctrl);
-      left := left - len(y.ext_ctrl);
-      y.MEM_INTERFACE := convert(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t is
-  variable y: UCM_R_PHI_COMP_RPC_CTRL_t;
-  begin
-    y.sel_thread := nullify(t.sel_thread);
-    y.sel_station := nullify(t.sel_station);
-    y.sel_layer := nullify(t.sel_layer);
-    y.ext_ctrl := nullify(t.ext_ctrl);
-    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t is
-  variable y: UCM_R_PHI_COMP_RPC_CTRL_t;
-  begin
-    y.sel_thread := zeroed(t.sel_thread);
-    y.sel_station := zeroed(t.sel_station);
-    y.sel_layer := zeroed(t.sel_layer);
-    y.ext_ctrl := zeroed(t.ext_ctrl);
-    y.MEM_INTERFACE := zeroed(t.MEM_INTERFACE);
-    return y;
-  end function zeroed;
-
-  function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_rdy);
-    l := l + len(x.rd_data);
-    return l;
-  end function len;
-  function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.rd_rdy);
-    l := l + width(x.rd_data);
-    return l;
-  end function width;
-  function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-      left := left + len(x.rd_rdy);
-      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-      left := left - len(x.rd_rdy);
-      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), convert(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-      left := left + len(x.rd_rdy);
-      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), convert(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-      left := left - len(x.rd_rdy);
-      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is
-    variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-      left := left + len(y.rd_rdy);
-      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-      left := left - len(y.rd_rdy);
-      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is
-    variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := convert(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-      left := left + len(y.rd_rdy);
-      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.rd_rdy := convert(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-      left := left - len(y.rd_rdy);
-      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is
-  variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
-  begin
-    y.rd_rdy := nullify(t.rd_rdy);
-    y.rd_data := nullify(t.rd_data);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is
-  variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
-  begin
-    y.rd_rdy := zeroed(t.rd_rdy);
-    y.rd_data := zeroed(t.rd_data);
-    return y;
-  end function zeroed;
-
-  function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_req);
-    l := l + len(x.rd_req);
-    l := l + len(x.wr_addr);
-    l := l + len(x.rd_addr);
-    l := l + len(x.wr_data);
-    return l;
-  end function len;
-  function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.wr_req);
-    l := l + width(x.rd_req);
-    l := l + width(x.wr_addr);
-    l := l + width(x.rd_addr);
-    l := l + width(x.wr_data);
-    return l;
-  end function width;
-  function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), convert(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.rd_req)-1), convert(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.wr_addr)-1), convert(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), convert(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), convert(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.rd_req)+1), convert(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.wr_addr)+1), convert(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), convert(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is
-    variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is
-    variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := convert(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.rd_req := convert(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.wr_addr := convert(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := convert(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.wr_req := convert(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.rd_req := convert(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.wr_addr := convert(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := convert(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is
-  variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
-  begin
-    y.wr_req := nullify(t.wr_req);
-    y.rd_req := nullify(t.rd_req);
-    y.wr_addr := nullify(t.wr_addr);
-    y.rd_addr := nullify(t.rd_addr);
-    y.wr_data := nullify(t.wr_data);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is
-  variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
-  begin
-    y.wr_req := zeroed(t.wr_req);
-    y.rd_req := zeroed(t.rd_req);
-    y.wr_addr := zeroed(t.wr_addr);
-    y.rd_addr := zeroed(t.rd_addr);
-    y.wr_data := zeroed(t.wr_data);
-    return y;
-  end function zeroed;
-
-  function len(x: UCM_R_PHI_COMP_MDT_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.MEM_INTERFACE);
-    return l;
-  end function len;
-  function width(x: UCM_R_PHI_COMP_MDT_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.MEM_INTERFACE);
-    return l;
-  end function width;
-  function vectorify(x: UCM_R_PHI_COMP_MDT_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_R_PHI_COMP_MDT_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), convert(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), convert(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t is
-    variable y: UCM_R_PHI_COMP_MDT_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t is
-    variable y: UCM_R_PHI_COMP_MDT_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.MEM_INTERFACE := convert(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.MEM_INTERFACE := convert(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t is
-  variable y: UCM_R_PHI_COMP_MDT_MON_t;
-  begin
-    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t is
-  variable y: UCM_R_PHI_COMP_MDT_MON_t;
-  begin
-    y.MEM_INTERFACE := zeroed(t.MEM_INTERFACE);
-    return y;
-  end function zeroed;
-
-  function len(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.sel_thread);
-    l := l + len(x.sel_station);
-    l := l + len(x.sel_layer);
-    l := l + len(x.ext_ctrl);
-    l := l + len(x.MEM_INTERFACE);
-    return l;
-  end function len;
-  function width(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.sel_thread);
-    l := l + width(x.sel_station);
-    l := l + width(x.sel_layer);
-    l := l + width(x.ext_ctrl);
-    l := l + width(x.MEM_INTERFACE);
-    return l;
-  end function width;
-  function vectorify(x: UCM_R_PHI_COMP_MDT_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.sel_thread)-1), vectorify(x.sel_thread, y(left to left+len(x.sel_thread)-1)));
-      left := left + len(x.sel_thread);
-      assign(y(left to left+len(x.sel_station)-1), vectorify(x.sel_station, y(left to left+len(x.sel_station)-1)));
-      left := left + len(x.sel_station);
-      assign(y(left to left+len(x.sel_layer)-1), vectorify(x.sel_layer, y(left to left+len(x.sel_layer)-1)));
-      left := left + len(x.sel_layer);
-      assign(y(left to left+len(x.ext_ctrl)-1), vectorify(x.ext_ctrl, y(left to left+len(x.ext_ctrl)-1)));
-      left := left + len(x.ext_ctrl);
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.sel_thread)+1), vectorify(x.sel_thread, y(left downto left-len(x.sel_thread)+1)));
-      left := left - len(x.sel_thread);
-      assign(y(left downto left-len(x.sel_station)+1), vectorify(x.sel_station, y(left downto left-len(x.sel_station)+1)));
-      left := left - len(x.sel_station);
-      assign(y(left downto left-len(x.sel_layer)+1), vectorify(x.sel_layer, y(left downto left-len(x.sel_layer)+1)));
-      left := left - len(x.sel_layer);
-      assign(y(left downto left-len(x.ext_ctrl)+1), vectorify(x.ext_ctrl, y(left downto left-len(x.ext_ctrl)+1)));
-      left := left - len(x.ext_ctrl);
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_R_PHI_COMP_MDT_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.sel_thread)-1), convert(x.sel_thread, y(left to left+len(x.sel_thread)-1)));
-      left := left + len(x.sel_thread);
-      assign(y(left to left+len(x.sel_station)-1), convert(x.sel_station, y(left to left+len(x.sel_station)-1)));
-      left := left + len(x.sel_station);
-      assign(y(left to left+len(x.sel_layer)-1), convert(x.sel_layer, y(left to left+len(x.sel_layer)-1)));
-      left := left + len(x.sel_layer);
-      assign(y(left to left+len(x.ext_ctrl)-1), convert(x.ext_ctrl, y(left to left+len(x.ext_ctrl)-1)));
-      left := left + len(x.ext_ctrl);
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), convert(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.sel_thread)+1), convert(x.sel_thread, y(left downto left-len(x.sel_thread)+1)));
-      left := left - len(x.sel_thread);
-      assign(y(left downto left-len(x.sel_station)+1), convert(x.sel_station, y(left downto left-len(x.sel_station)+1)));
-      left := left - len(x.sel_station);
-      assign(y(left downto left-len(x.sel_layer)+1), convert(x.sel_layer, y(left downto left-len(x.sel_layer)+1)));
-      left := left - len(x.sel_layer);
-      assign(y(left downto left-len(x.ext_ctrl)+1), convert(x.ext_ctrl, y(left downto left-len(x.ext_ctrl)+1)));
-      left := left - len(x.ext_ctrl);
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), convert(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t is
-    variable y: UCM_R_PHI_COMP_MDT_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.sel_thread := structify(x(left to left+len(y.sel_thread)-1), y.sel_thread);
-      left := left + len(y.sel_thread);
-      y.sel_station := structify(x(left to left+len(y.sel_station)-1), y.sel_station);
-      left := left + len(y.sel_station);
-      y.sel_layer := structify(x(left to left+len(y.sel_layer)-1), y.sel_layer);
-      left := left + len(y.sel_layer);
-      y.ext_ctrl := structify(x(left to left+len(y.ext_ctrl)-1), y.ext_ctrl);
-      left := left + len(y.ext_ctrl);
-      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.sel_thread := structify(x(left downto left-len(y.sel_thread)+1), y.sel_thread);
-      left := left - len(y.sel_thread);
-      y.sel_station := structify(x(left downto left-len(y.sel_station)+1), y.sel_station);
-      left := left - len(y.sel_station);
-      y.sel_layer := structify(x(left downto left-len(y.sel_layer)+1), y.sel_layer);
-      left := left - len(y.sel_layer);
-      y.ext_ctrl := structify(x(left downto left-len(y.ext_ctrl)+1), y.ext_ctrl);
-      left := left - len(y.ext_ctrl);
-      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t is
-    variable y: UCM_R_PHI_COMP_MDT_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.sel_thread := convert(x(left to left+len(y.sel_thread)-1), y.sel_thread);
-      left := left + len(y.sel_thread);
-      y.sel_station := convert(x(left to left+len(y.sel_station)-1), y.sel_station);
-      left := left + len(y.sel_station);
-      y.sel_layer := convert(x(left to left+len(y.sel_layer)-1), y.sel_layer);
-      left := left + len(y.sel_layer);
-      y.ext_ctrl := convert(x(left to left+len(y.ext_ctrl)-1), y.ext_ctrl);
-      left := left + len(y.ext_ctrl);
-      y.MEM_INTERFACE := convert(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.sel_thread := convert(x(left downto left-len(y.sel_thread)+1), y.sel_thread);
-      left := left - len(y.sel_thread);
-      y.sel_station := convert(x(left downto left-len(y.sel_station)+1), y.sel_station);
-      left := left - len(y.sel_station);
-      y.sel_layer := convert(x(left downto left-len(y.sel_layer)+1), y.sel_layer);
-      left := left - len(y.sel_layer);
-      y.ext_ctrl := convert(x(left downto left-len(y.ext_ctrl)+1), y.ext_ctrl);
-      left := left - len(y.ext_ctrl);
-      y.MEM_INTERFACE := convert(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t is
-  variable y: UCM_R_PHI_COMP_MDT_CTRL_t;
-  begin
-    y.sel_thread := nullify(t.sel_thread);
-    y.sel_station := nullify(t.sel_station);
-    y.sel_layer := nullify(t.sel_layer);
-    y.ext_ctrl := nullify(t.ext_ctrl);
-    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t is
-  variable y: UCM_R_PHI_COMP_MDT_CTRL_t;
-  begin
-    y.sel_thread := zeroed(t.sel_thread);
-    y.sel_station := zeroed(t.sel_station);
-    y.sel_layer := zeroed(t.sel_layer);
-    y.ext_ctrl := zeroed(t.ext_ctrl);
-    y.MEM_INTERFACE := zeroed(t.MEM_INTERFACE);
-    return y;
-  end function zeroed;
-
-  function len(x: UCM_R_PHI_COMP_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.RPC);
-    l := l + len(x.MDT);
-    return l;
-  end function len;
-  function width(x: UCM_R_PHI_COMP_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.RPC);
-    l := l + width(x.MDT);
-    return l;
-  end function width;
-  function vectorify(x: UCM_R_PHI_COMP_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.RPC)-1), vectorify(x.RPC, y(left to left+len(x.RPC)-1)));
-      left := left + len(x.RPC);
-      assign(y(left to left+len(x.MDT)-1), vectorify(x.MDT, y(left to left+len(x.MDT)-1)));
-    else
-      assign(y(left downto left-len(x.RPC)+1), vectorify(x.RPC, y(left downto left-len(x.RPC)+1)));
-      left := left - len(x.RPC);
-      assign(y(left downto left-len(x.MDT)+1), vectorify(x.MDT, y(left downto left-len(x.MDT)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_R_PHI_COMP_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.RPC)-1), convert(x.RPC, y(left to left+len(x.RPC)-1)));
-      left := left + len(x.RPC);
-      assign(y(left to left+len(x.MDT)-1), convert(x.MDT, y(left to left+len(x.MDT)-1)));
-    else
-      assign(y(left downto left-len(x.RPC)+1), convert(x.RPC, y(left downto left-len(x.RPC)+1)));
-      left := left - len(x.RPC);
-      assign(y(left downto left-len(x.MDT)+1), convert(x.MDT, y(left downto left-len(x.MDT)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t is
-    variable y: UCM_R_PHI_COMP_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.RPC := structify(x(left to left+len(y.RPC)-1), y.RPC);
-      left := left + len(y.RPC);
-      y.MDT := structify(x(left to left+len(y.MDT)-1), y.MDT);
-    else
-      y.RPC := structify(x(left downto left-len(y.RPC)+1), y.RPC);
-      left := left - len(y.RPC);
-      y.MDT := structify(x(left downto left-len(y.MDT)+1), y.MDT);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t is
-    variable y: UCM_R_PHI_COMP_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.RPC := convert(x(left to left+len(y.RPC)-1), y.RPC);
-      left := left + len(y.RPC);
-      y.MDT := convert(x(left to left+len(y.MDT)-1), y.MDT);
-    else
-      y.RPC := convert(x(left downto left-len(y.RPC)+1), y.RPC);
-      left := left - len(y.RPC);
-      y.MDT := convert(x(left downto left-len(y.MDT)+1), y.MDT);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t is
-  variable y: UCM_R_PHI_COMP_MON_t;
-  begin
-    y.RPC := nullify(t.RPC);
-    y.MDT := nullify(t.MDT);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t is
-  variable y: UCM_R_PHI_COMP_MON_t;
-  begin
-    y.RPC := zeroed(t.RPC);
-    y.MDT := zeroed(t.MDT);
-    return y;
-  end function zeroed;
-
-  function len(x: UCM_R_PHI_COMP_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.RPC);
-    l := l + len(x.MDT);
-    return l;
-  end function len;
-  function width(x: UCM_R_PHI_COMP_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.RPC);
-    l := l + width(x.MDT);
-    return l;
-  end function width;
-  function vectorify(x: UCM_R_PHI_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.RPC)-1), vectorify(x.RPC, y(left to left+len(x.RPC)-1)));
-      left := left + len(x.RPC);
-      assign(y(left to left+len(x.MDT)-1), vectorify(x.MDT, y(left to left+len(x.MDT)-1)));
-    else
-      assign(y(left downto left-len(x.RPC)+1), vectorify(x.RPC, y(left downto left-len(x.RPC)+1)));
-      left := left - len(x.RPC);
-      assign(y(left downto left-len(x.MDT)+1), vectorify(x.MDT, y(left downto left-len(x.MDT)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_R_PHI_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.RPC)-1), convert(x.RPC, y(left to left+len(x.RPC)-1)));
-      left := left + len(x.RPC);
-      assign(y(left to left+len(x.MDT)-1), convert(x.MDT, y(left to left+len(x.MDT)-1)));
-    else
-      assign(y(left downto left-len(x.RPC)+1), convert(x.RPC, y(left downto left-len(x.RPC)+1)));
-      left := left - len(x.RPC);
-      assign(y(left downto left-len(x.MDT)+1), convert(x.MDT, y(left downto left-len(x.MDT)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t is
-    variable y: UCM_R_PHI_COMP_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.RPC := structify(x(left to left+len(y.RPC)-1), y.RPC);
-      left := left + len(y.RPC);
-      y.MDT := structify(x(left to left+len(y.MDT)-1), y.MDT);
-    else
-      y.RPC := structify(x(left downto left-len(y.RPC)+1), y.RPC);
-      left := left - len(y.RPC);
-      y.MDT := structify(x(left downto left-len(y.MDT)+1), y.MDT);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t is
-    variable y: UCM_R_PHI_COMP_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.RPC := convert(x(left to left+len(y.RPC)-1), y.RPC);
-      left := left + len(y.RPC);
-      y.MDT := convert(x(left to left+len(y.MDT)-1), y.MDT);
-    else
-      y.RPC := convert(x(left downto left-len(y.RPC)+1), y.RPC);
-      left := left - len(y.RPC);
-      y.MDT := convert(x(left downto left-len(y.MDT)+1), y.MDT);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t is
-  variable y: UCM_R_PHI_COMP_CTRL_t;
-  begin
-    y.RPC := nullify(t.RPC);
-    y.MDT := nullify(t.MDT);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t is
-  variable y: UCM_R_PHI_COMP_CTRL_t;
-  begin
-    y.RPC := zeroed(t.RPC);
-    y.MDT := zeroed(t.MDT);
-    return y;
-  end function zeroed;
-
-  function len(x: UCM_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.SUPER);
-    l := l + len(x.R_PHI_COMP);
-    return l;
-  end function len;
-  function width(x: UCM_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.SUPER);
-    l := l + width(x.R_PHI_COMP);
-    return l;
-  end function width;
-  function vectorify(x: UCM_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SUPER)-1), vectorify(x.SUPER, y(left to left+len(x.SUPER)-1)));
-      left := left + len(x.SUPER);
-      assign(y(left to left+len(x.R_PHI_COMP)-1), vectorify(x.R_PHI_COMP, y(left to left+len(x.R_PHI_COMP)-1)));
-    else
-      assign(y(left downto left-len(x.SUPER)+1), vectorify(x.SUPER, y(left downto left-len(x.SUPER)+1)));
-      left := left - len(x.SUPER);
-      assign(y(left downto left-len(x.R_PHI_COMP)+1), vectorify(x.R_PHI_COMP, y(left downto left-len(x.R_PHI_COMP)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SUPER)-1), convert(x.SUPER, y(left to left+len(x.SUPER)-1)));
-      left := left + len(x.SUPER);
-      assign(y(left to left+len(x.R_PHI_COMP)-1), convert(x.R_PHI_COMP, y(left to left+len(x.R_PHI_COMP)-1)));
-    else
-      assign(y(left downto left-len(x.SUPER)+1), convert(x.SUPER, y(left downto left-len(x.SUPER)+1)));
-      left := left - len(x.SUPER);
-      assign(y(left downto left-len(x.R_PHI_COMP)+1), convert(x.R_PHI_COMP, y(left downto left-len(x.R_PHI_COMP)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_MON_t) return UCM_MON_t is
-    variable y: UCM_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SUPER := structify(x(left to left+len(y.SUPER)-1), y.SUPER);
-      left := left + len(y.SUPER);
-      y.R_PHI_COMP := structify(x(left to left+len(y.R_PHI_COMP)-1), y.R_PHI_COMP);
-    else
-      y.SUPER := structify(x(left downto left-len(y.SUPER)+1), y.SUPER);
-      left := left - len(y.SUPER);
-      y.R_PHI_COMP := structify(x(left downto left-len(y.R_PHI_COMP)+1), y.R_PHI_COMP);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_MON_t) return UCM_MON_t is
-    variable y: UCM_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SUPER := convert(x(left to left+len(y.SUPER)-1), y.SUPER);
-      left := left + len(y.SUPER);
-      y.R_PHI_COMP := convert(x(left to left+len(y.R_PHI_COMP)-1), y.R_PHI_COMP);
-    else
-      y.SUPER := convert(x(left downto left-len(y.SUPER)+1), y.SUPER);
-      left := left - len(y.SUPER);
-      y.R_PHI_COMP := convert(x(left downto left-len(y.R_PHI_COMP)+1), y.R_PHI_COMP);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_MON_t) return UCM_MON_t is
-  variable y: UCM_MON_t;
-  begin
-    y.SUPER := nullify(t.SUPER);
-    y.R_PHI_COMP := nullify(t.R_PHI_COMP);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_MON_t) return UCM_MON_t is
-  variable y: UCM_MON_t;
-  begin
-    y.SUPER := zeroed(t.SUPER);
-    y.R_PHI_COMP := zeroed(t.R_PHI_COMP);
-    return y;
-  end function zeroed;
-
-  function len(x: UCM_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.SUPER);
-    l := l + len(x.R_PHI_COMP);
-    return l;
-  end function len;
-  function width(x: UCM_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.SUPER);
-    l := l + width(x.R_PHI_COMP);
-    return l;
-  end function width;
-  function vectorify(x: UCM_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SUPER)-1), vectorify(x.SUPER, y(left to left+len(x.SUPER)-1)));
-      left := left + len(x.SUPER);
-      assign(y(left to left+len(x.R_PHI_COMP)-1), vectorify(x.R_PHI_COMP, y(left to left+len(x.R_PHI_COMP)-1)));
-    else
-      assign(y(left downto left-len(x.SUPER)+1), vectorify(x.SUPER, y(left downto left-len(x.SUPER)+1)));
-      left := left - len(x.SUPER);
-      assign(y(left downto left-len(x.R_PHI_COMP)+1), vectorify(x.R_PHI_COMP, y(left downto left-len(x.R_PHI_COMP)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: UCM_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.SUPER)-1), convert(x.SUPER, y(left to left+len(x.SUPER)-1)));
-      left := left + len(x.SUPER);
-      assign(y(left to left+len(x.R_PHI_COMP)-1), convert(x.R_PHI_COMP, y(left to left+len(x.R_PHI_COMP)-1)));
-    else
-      assign(y(left downto left-len(x.SUPER)+1), convert(x.SUPER, y(left downto left-len(x.SUPER)+1)));
-      left := left - len(x.SUPER);
-      assign(y(left downto left-len(x.R_PHI_COMP)+1), convert(x.R_PHI_COMP, y(left downto left-len(x.R_PHI_COMP)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: UCM_CTRL_t) return UCM_CTRL_t is
-    variable y: UCM_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SUPER := structify(x(left to left+len(y.SUPER)-1), y.SUPER);
-      left := left + len(y.SUPER);
-      y.R_PHI_COMP := structify(x(left to left+len(y.R_PHI_COMP)-1), y.R_PHI_COMP);
-    else
-      y.SUPER := structify(x(left downto left-len(y.SUPER)+1), y.SUPER);
-      left := left - len(y.SUPER);
-      y.R_PHI_COMP := structify(x(left downto left-len(y.R_PHI_COMP)+1), y.R_PHI_COMP);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: UCM_CTRL_t) return UCM_CTRL_t is
-    variable y: UCM_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.SUPER := convert(x(left to left+len(y.SUPER)-1), y.SUPER);
-      left := left + len(y.SUPER);
-      y.R_PHI_COMP := convert(x(left to left+len(y.R_PHI_COMP)-1), y.R_PHI_COMP);
-    else
-      y.SUPER := convert(x(left downto left-len(y.SUPER)+1), y.SUPER);
-      left := left - len(y.SUPER);
-      y.R_PHI_COMP := convert(x(left downto left-len(y.R_PHI_COMP)+1), y.R_PHI_COMP);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: UCM_CTRL_t) return UCM_CTRL_t is
-  variable y: UCM_CTRL_t;
-  begin
-    y.SUPER := nullify(t.SUPER);
-    y.R_PHI_COMP := nullify(t.R_PHI_COMP);
-    return y;
-  end function nullify;
-  function zeroed(t: UCM_CTRL_t) return UCM_CTRL_t is
-  variable y: UCM_CTRL_t;
-  begin
-    y.SUPER := zeroed(t.SUPER);
-    y.R_PHI_COMP := zeroed(t.R_PHI_COMP);
-    return y;
-  end function zeroed;
+   function width(x: UCM_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SUPER);
+      w := w + width(x.R_PHI_COMP);
+      return w;
+   end function width;
+   function convert(x: UCM_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SUPER);
+         y(u to u+w-1) := convert(x.SUPER, y(u to u+w-1));
+         u := u + w;
+         w := width(x.R_PHI_COMP);
+         y(u to u+w-1) := convert(x.R_PHI_COMP, y(u to u+w-1));
+      else
+         w := width(x.SUPER);
+         y(u downto u-w+1) := convert(x.SUPER, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.R_PHI_COMP);
+         y(u downto u-w+1) := convert(x.R_PHI_COMP, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: UCM_CTRL_t) return UCM_CTRL_t is
+      variable y : UCM_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SUPER);
+         y.SUPER := convert(x(u to u+w-1), tpl.SUPER);
+         u := u + w;
+         w := width(tpl.R_PHI_COMP);
+         y.R_PHI_COMP := convert(x(u to u+w-1), tpl.R_PHI_COMP);
+      else
+         w := width(tpl.SUPER);
+         y.SUPER := convert(x(u downto u-w+1), tpl.SUPER);
+         u := u - w;
+         w := width(tpl.R_PHI_COMP);
+         y.R_PHI_COMP := convert(x(u downto u-w+1), tpl.R_PHI_COMP);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: UCM_CTRL_t) return UCM_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
 
 end package body UCM_CTRL;

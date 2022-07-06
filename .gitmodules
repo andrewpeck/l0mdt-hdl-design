@@ -1,6 +1,12 @@
 [submodule "Hog"]
 	path = Hog
 	url = ../../hog/Hog.git
+[submodule "tools/tv"]
+	path = tools/tv
+	url = ../tv.git
+[submodule "tools/tv/pyUtils"]
+	path = tools/tv/pyUtils
+	url = ../../ataffard/pyutils.git
 [submodule "dataformats"]
 	path = dataformats
 	url = ../dataformats.git
@@ -44,6 +50,7 @@
 [submodule "shared/SpyBuffer"]
   path = shared/SpyBuffer
   url = ../../atlas-tdaq-p2-firmware/tdaq_shared_firmware/spybuffer.git
+  branch = master
 [submodule "shared/vamc/vamc-core"]
 	path = shared/vamc/vamc-core
 	url = https://gitlab.com/taquionbcn/vamc.git

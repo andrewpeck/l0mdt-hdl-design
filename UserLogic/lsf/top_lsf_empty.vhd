@@ -28,17 +28,11 @@ entity top_lsf IS
     );
   PORT(
     clock,reset   : in std_logic;
-    slc_roi       : in std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
-    mdt_hit       : in std_logic_vector(HEG2SFHIT_LEN-1 downto 0); -- 14
-    lsf           : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
+    slc_roi       : in std_logic_vector;--(HEG2SFSLC_LEN-1 downto 0);
+    mdt_hit       : in std_logic_vector;--(HEG2SFHIT_LEN-1 downto 0); -- 14
+    lsf           : out std_logic_vector;--(SF2PTCALC_LEN-1 downto 0);
     i_eof         : in std_logic;
-    hba_max_clocks: in std_logic_vector(9 downto 0);
-  --SpyBuffer Interface
-    sb_lsf_mdt_hits_freeze : in std_logic;
-    sb_lsf_mdt_hits_re     : in std_logic;
-    sb_lsf_mdt_hits_raddr  : in std_logic_vector (LSF_SB_MEM_WIDTH-1 downto 0);
-    sb_lsf_mdt_hits_rdata  : out std_logic_vector(HEG2SFHIT_LEN-1 downto 0)
-
+    hba_max_clocks: in std_logic_vector(9 downto 0)
     );
   end entity top_lsf;
 

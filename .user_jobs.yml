@@ -23,7 +23,43 @@
 
 .riviera_vars: &riviera_vars
   GIT_STRATEGY: clone
-#   CI_DEBUG_TRACE: "true"
+  GIT_SUBMODULE_STRATEGY: recursive
+
+
+.chk_variables: &chk_variables 
+  GIT_STRATEGY: clone
+  GIT_SUBMODULE_STRATEGY: recursive
+
+.check_list_and_conf: &check_list_and_conf
+    <<: *only-default
+    <<: *tag-hog
+    variables:
+      <<: *chk_variables
+    stage: generation_and_simulation
+    script:
+        - echo "Creating the project"
+        - ./Hog/CreateProject.sh $PROJECT_NAME
+        - echo "Recreating List and Config file"
+        - vivado -nojournal -nolog -mode batch -notrace -source $CI_PROJECT_DIR/Hog/Tcl/utils/check_list_files.tcl -tclargs -recreate -recreate_conf -force -project $PROJECT_NAME
+        - echo "Checking Git differences..."
+        - git diff --exit-code
+    allow_failure: true
+    interruptible: true
+
+check_auto_generated_code:
+    <<: *only-default
+    <<: *tag-sr
+    image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
+    variables:
+      <<: *chk_variables
+    stage: user_pre
+    script:
+      - make all 
+      - echo "Checking Git differences..."
+      - git diff --exit-code 
+    interruptible: true
+
+
 
 .user_sim: &user_sim
   <<: *only-default
@@ -47,17 +83,23 @@
   artifacts:
     name: user_sim
     paths:
-      - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/$PROJECT_NAME.sim
-      - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
+      - Projects/$PROJECT_NAME/*.sim
+      - SkippedProjects/$PROJECT_NAME
     expire_in: 30 day
   allow_failure: false
   interruptible: true
 
 .riviera_sim: &riviera_sim
   <<: *only-default
-  <<: *tag-hog
+  tags:
+    - riviera
+  variables:
+    HOG_SIMULATION_LIB_PATH: /afs/cern.ch/work/l/l0mdtel/RivieraLibs
+    HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
+    HOG_CHECK_PROJVER : 0
   stage: generation_and_simulation
   script:
+    - git pull
     - export PATH=${HOG_PATH}:$PATH
     - which vsim
     - if [[ -v HOG_CHECK_PROJVER ]] && [[ $HOG_CHECK_PROJVER == '1' ]]; then
@@ -66,24 +108,19 @@
       echo "Project version checker is disabled.";
       fi
     - if [ -f "./Projects/$PROJECT_NAME/skip.me" ]; then
-      echo "CI disabled for $PROJECT_NAME";
-      else
-      if [ -z ${HOG_SIMULATION_LIB_PATH+x} ]; then
-      echo 'Simulation library path is not defined';
+        echo "CI disabled for $PROJECT_NAME";
       else
         sed -i 's/questa/riviera/' ./Top/$PROJECT_NAME/list/project_lib.sim;
         vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_simulation.tcl -tclargs -lib_path $HOG_SIMULATION_LIB_PATH $PROJECT_NAME ;
-      fi;
       fi
   artifacts:
     name: user_sim
     paths:
-      - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/$PROJECT_NAME.sim
-      - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
+      - Projects/${PROJECT_NAME}
+      - Projects/${PROJECT_NAME}/*.sim
+      - SkippedProjects/${PROJECT_NAME}
     expire_in: 30 day
   allow_failure: false
-  tags:
-    - riviera
   interruptible: true
 
 
@@ -118,9 +155,59 @@
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
   stage: user_proj
   script:
-    - PRJ_NAME=$(basename $PROJECT_NAME)
-    - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PRJ_NAME.sim/project_lib_sim/behav/questa
+    # GLdL
+    - export AUX_PRJ_FOLDER=${PROJECT_NAME%/*}
+    - echo $AUX_PRJ_FOLDER
+    - export AUX_PRJ_NAME=${PROJECT_NAME##**/}
+    - echo $AUX_PRJ_NAME
+    - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/$SIMULATOR
+    # - sleep 1h
+    # DAvide
+    # - PRJ_NAME=$(basename $PROJECT_NAME)
+    # - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PRJ_NAME.sim/project_lib_sim/behav/questa
     - mkdir -p bin/$PROJECT_NAME
-    - mv Plots bin/$PROJECT_NAME/SimPlots
+    - if [[ -d Plots ]]; then
+        mv Plots bin/$PROJECT_NAME/SimPlots;
+      fi
   allow_failure: true
   interruptible: true
+
+
+.cocotb:
+  <<: *only-default  
+  tags:
+     - cocotb
+  stage: generation_and_simulation
+  allow_failure: true
+  interruptible: true
+
+  script: 
+      # Create Directory for TV
+      - mkdir tools/cocotb/l0mdt_tv
+      - echo $HOG_PASSWORD | kinit $HOG_USER	
+      # Fetch testvectors from EOS
+      - xrdcp root://eosuser.cern.ch//eos/project/a/atlas-tdaq-phase2-l0mdt-electronics/TestVectors/TV_MC_2022-02-18_DF_v4.1.8b_TV_v1.0.81/B_C_3.xz tools/cocotb/l0mdt_tv/.
+      #PYTHON
+      - export PATH="/home/l0mdtel/.pyenv/bin:$PATH"
+      - eval "$(pyenv init -)"
+      - eval "$(pyenv init --path)"
+      - eval "$(pyenv virtualenv-init -)"
+      #- echo y | pyenv uninstall 3.8.2
+      #- env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.8.2
+      - pyenv global 3.8.2 
+      #- unzip testvecs_6_25_2020.zip
+      - export TESTVECS_PATH="`pwd`/tools/cocotb/l0mdt_tv"
+      - echo Print TESTVECS_PATH-----
+      - echo $TESTVECS_PATH
+      - echo Print HOG_SIMULATION_LIB_PATH-----
+      - echo $HOG_SIMULATION_LIB_PATH
+      - export VIVADO_EXEC=$(which vivado)
+      - export XILINX_VIVADO="${VIVADO_EXEC/bin\/vivado/}"        
+      - echo XILINX_VIVADO = $XILINX_VIVADO
+      - cd tools/cocotb/
+      # Setup testbench environment
+      - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
+      - tb run test_config/config_mpl_mtc.json 2>&1 | tee cocotb_run.log
+      - tb run test_config/config_lsf_inn.json 2>&1 | tee -a cocotb_run.log
+      # Make test fail if cocotb raised a failure
+      - sh -c "! grep cocotb.result.TestFailure cocotb_run.log"

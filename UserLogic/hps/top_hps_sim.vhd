@@ -32,9 +32,10 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.HPS_CTRL.all;
+use ctrl_lib.HPS_CTRL_DEF.all;
 
-entity top_hps_tb is
+entity hps_tb is
   generic(
     -- mdt type
     -- type mdt_type;
@@ -49,30 +50,37 @@ entity top_hps_tb is
     -- glob_en             : in std_logic := '1';
 
     -- -- control
-    -- ctrl_v              : in  H2S_HPS_CTRL_t;
-    -- mon_v               : out H2S_HPS_MON_t;
+    -- ctrl_v              : in  HPS_CTRL_t;
+    -- mon_v               : out HPS_MON_t;
 
     -- -- control
     -- -- SLc
-    -- i_uCM2hps_av        : in ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+    -- i_uCM2hps_av        : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- -- MDT hit
     -- -- i_mdt_polmux_av    : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
-    -- i_mdt_tar_av        : in tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+    -- i_mdt_tar_av        : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- -- to pt calc
-    -- o_sf2pt_av          : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
+    -- o_sf2pt_av          : out sf2ptcalc_avt(c_NUM_THREADS -1 downto 0)
   -- );
-end entity top_hps_tb;
+end entity hps_tb;
 
-architecture beh of top_hps_tb is
+architecture beh of hps_tb is
 
-  signal clk                : std_logic;
-  signal rst                : std_logic;
-  signal glob_en            : std_logic := '1';
-  signal ctrl_v             : H2S_HPS_CTRL_t;
-  signal mon_v              : H2S_HPS_MON_t;
-  signal i_uCM2hps_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal i_mdt_tar_av       : tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
-  signal o_sf2pt_av         : sf2pt_bus_avt(c_NUM_THREADS -1 downto 0);
+  -- clk
+  constant clk_period : time := 3.125 ns;  -- 320Mhz
+  signal clk : std_logic := '0';
+  -- rest
+  constant reset_init_cycles  : integer := 3;
+  signal rst                  : std_logic;
+  signal ena                  : std_logic := '1';
+  --
+  signal ctrl_r             : HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
+  signal mon_r              : HPS_MON_t;
+  signal ctrl_v             : std_logic_vector(HPS_CTRL_t'w -1 downto 0);
+  signal mon_v              : std_logic_vector(HPS_MON_t'w -1 downto 0);
+  signal i_uCM2hps_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tar_av       : tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0) := (others => (others => '0'));
+  signal o_sf2pt_av         : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
 
 begin
 
@@ -80,6 +88,9 @@ begin
   --   mdt_polmux_data_av(hp_i).polmux <= i_mdt_polmux_av(hp_i);
   --   mdt_polmux_data_av(hp_i).tar <= i_mdt_tar_av(hp_i);
   -- end generate;
+
+  ctrl_v <= convert(ctrl_r,ctrl_v);
+  mon_r <= convert(mon_v,mon_r);
 
   HPS : entity hps_lib.hps
     generic map(
@@ -93,7 +104,7 @@ begin
     port map(
       clk                 => clk,
       rst                 => rst,
-      glob_en             => glob_en,
+      glob_en             => ena,
 
       ctrl_v => ctrl_v,
       mon_v => mon_v,
@@ -108,5 +119,25 @@ begin
       o_sf2pt_av          => o_sf2pt_av
     );
 
+  -------------------------------------------------------------------------------------
+	-- clock Generator
+	-------------------------------------------------------------------------------------
+  CLK_MAIN : process begin
+    clk <= '0';
+    wait for CLK_period/2;
+    clk <= '1';
+    wait for CLK_period/2;
+  end process;
+ 	-------------------------------------------------------------------------------------
+	-- Reset Generator
+	-------------------------------------------------------------------------------------
+	rst_process: process begin
+		rst<='0';
+		wait for CLK_period;
+		rst<='1';
+		wait for CLK_period*reset_init_cycles;
+		rst<= '0';
+		wait;
+  end process;
 
 end beh;

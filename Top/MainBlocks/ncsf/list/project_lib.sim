@@ -1,0 +1,9 @@
+#Simulator questa
+UserLogic/csf/sim/csf_tb.vhd
+UserLogic/csf/sim/CSF_in_A3_Barrel.csv
+UserLogic/csf/sim/CSF_out_A3_Barrel.csv
+UserLogic/csf/sim/csf_tb_reader.vhd
+UserLogic/csf/sim/csf_tb_writer.vhd
+UserLogic/csf/sim/csf_textio_pkg.vhd
+UserLogic/csf/sim/ncsf_wave.do
+shared/shared_lib.sim lib=shared_lib

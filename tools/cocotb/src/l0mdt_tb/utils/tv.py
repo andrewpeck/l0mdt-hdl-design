@@ -33,7 +33,3 @@ class tvRTL:
     
     def clear(self):
         self.tv_val.clear()
-
-
-    
-    

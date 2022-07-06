@@ -1,12 +1,8 @@
-# yml2hdl v2
+
 config:
-  basic_convert_functions: on
-  packages:
-    - ieee: [std_logic_1164, numeric_std]
-
-hdl:
-
-- integer_at: [array: open, type: integer]
-
-- bcid_t: [type: unsigned, length: 12]
-
+   basic_functions: True
+   packages:
+      - ieee: [std_logic_1164, numeric_std]
+types:
+   - integer_at: {'array': 'open', 'type': 'integer'}
+   - bcid_t: {'type': 'unsigned', 'range': ['12-1', 0]}

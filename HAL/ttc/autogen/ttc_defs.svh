@@ -4,7 +4,7 @@
 `ifndef TTC_DEFS_SVH
 `define TTC_DEFS_SVH
 
-`include <common_ieee.svh>
+`include <common_ieee_pkg.svh>
 
 
   typedef logic  ttc_clk_t;

@@ -1,4 +1,4 @@
-- daq_data_irt:
+- daq_data_path_irt:
     - sys: [type: ttc_sys_rt]
     - ttc: [type: ttc_fmt_vt]
     - ctrl: [type: ctrl_to_daq_rt]
@@ -6,20 +6,21 @@
     - stream_1: [type: daq_stream_rt]
     - stream_2: [type: daq_stream_rt]
     - stream_3: [type: daq_stream_rt]
-    - stream_4: [type: daq_stream_rt]
-    - stream_5: [type: daq_stream_rt]
-    - stream_6: [type: daq_stream_rt]
-    - stream_7: [type: daq_stream_rt]
-    - stream_8: [type: daq_stream_rt]
     - f2e0: [type: felix_to_daq_rt]
     - f2e1: [type: felix_to_daq_rt]
+    - f2e2: [type: felix_to_daq_rt]
+    - f2e3: [type: felix_to_daq_rt]
 
-- daq_data_ort:
+- daq_data_path_ort:
     - status0: [type: daq_to_status_rt]
-    - status1: [type: daq_to_status_rt]
     - f2e0: [type: daq_to_felix_rt]
+    - status1: [type: daq_to_status_rt]
     - f2e1: [type: daq_to_felix_rt]
+    - status2: [type: daq_to_status_rt]
+    - f2e2: [type: daq_to_felix_rt]
+    - status3: [type: daq_to_status_rt]
+    - f2e3: [type: daq_to_felix_rt]
 
-- daq_data_ert:
-    - i: [type: daq_data_irt]
-    - o: [type: daq_data_ort]
+- daq_data_path_ert:
+    - i: [type: daq_data_path_irt]
+    - o: [type: daq_data_path_ort]

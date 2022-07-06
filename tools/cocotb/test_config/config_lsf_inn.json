@@ -2,7 +2,7 @@
     "testbench_config": {
         "test_name": "lsf",
         "input_args": {
-            "n_events": 5,
+            "n_events": 10,
             "n_hits": 100,
             "n_rois": 1,
             "event_detail": false,
@@ -58,11 +58,11 @@
                     "tolerance": {
                         "segpos": [
                             "abs",
-                            1000000.0
+                            5.0
                         ],
                         "segangle": [
-                            "perc",
-                            50
+                            "abs",
+                            0.015
                         ]
                     }
                 }

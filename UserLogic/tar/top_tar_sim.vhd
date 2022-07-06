@@ -30,10 +30,14 @@ use tar_lib.tar_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.tar_CTRL.all;
+use ctrl_lib.TAR_CTRL_DEF.all;
 
 
-entity top_tar_tb is
+entity tar_tb is
   generic (
+    g_HPS_MAX_HP : integer := 6;
+    g_STATION :   integer := 0;
+    --
     PRJ_INFO            : string  := "BA3";
     IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
     IN_HIT_FILE         : string  := "csm_A3_Barrel.csv";
@@ -45,49 +49,75 @@ entity top_tar_tb is
     -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
     DUMMY               : boolean := false
     );
-end entity top_tar_tb;
+end entity tar_tb;
 
-architecture beh of top_tar_tb is
+architecture beh of tar_tb is
 
-  -- signal o_tar2hps_inn_av      : tar2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- signal o_tar2hps_mid_av      : tar2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- signal o_tar2hps_out_av      : tar2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- signal o_tar2hps_ext_av      : tar2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- -- pipeline
-  -- signal o_tar2pl_av           : tar2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  -- clk
+  constant clk_period : time := 3.125 ns;  -- 320Mhz
+  signal clk : std_logic := '0';
+  -- rest
+  constant reset_init_cycles : integer := 3;
+  signal rst                 : std_logic;
+  signal glob_en             : std_logic := '1';
+  --
+  signal ctrl_r              : TAR_CTRL_t := DEFAULT_TAR_CTRL_t ;
+  signal mon_r               : TAR_MON_t;
+  signal ctrl_v              : std_logic_vector(TAR_CTRL_t'w - 1 downto 0); --  : in  TAR_CTRL_t;
+  signal mon_v               : std_logic_vector(TAR_MON_t'w - 1 downto 0);--  : out TAR_MON_t;
+  -- TDC Hits from Polmux
+  signal i_tdc_hits_av    : tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0):= (others => (others => '0'));
+  -- TDC polmux from Tar
+  signal o_tdc_hits_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
+  -- TDC Hits from Tar
+  signal o_tar_hits_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
 
 begin
 
+  ctrl_v <= convert(ctrl_r,ctrl_v);
+  mon_r <= convert(mon_v,mon_r);
+
   TAR : entity tar_lib.tar
+  generic map(
+    g_HPS_MAX_HP => g_HPS_MAX_HP,
+    g_STATION => g_STATION
+  )
   port map (
     -- clock, control, and monitoring
-    clk             => clock_and_control.clk,
-    rst             => clock_and_control.rst,
+    clk             => clk,
+    rst             => rst,
     glob_en         => glob_en,
     --
     ctrl_v            => ctrl_v,
     mon_v             => mon_v,
     -- TDC Hits from Polmux
-    i_inn_tdc_hits_av  => i_inn_tdc_hits_av,
-    i_mid_tdc_hits_av  => i_mid_tdc_hits_av,
-    i_out_tdc_hits_av  => i_out_tdc_hits_av,
-    i_ext_tdc_hits_av  => i_ext_tdc_hits_av,
-    -- candidates in from hal
-    -- i_inn_tar_hits_av  => i_inn_tar_hits,
-    -- i_mid_tar_hits_av  => i_mid_tar_hits,
-    -- i_out_tar_hits_av  => i_out_tar_hits,
-    -- i_ext_tar_hits_av  => i_ext_tar_hits,
+    i_tdc_hits_av  => i_tdc_hits_av,
     -- to daq
-    o_inn_tdc_hits_av  => o_inn_tdc_hits_av,
-    o_mid_tdc_hits_av  => o_mid_tdc_hits_av,
-    o_out_tdc_hits_av  => o_out_tdc_hits_av,
-    o_ext_tdc_hits_av  => o_ext_tdc_hits_av,
+    o_tdc_hits_av  => o_tdc_hits_av,
     -- outputs to h2s
-    o_inn_tar_hits_av  => o_inn_tar_hits_av,
-    o_mid_tar_hits_av  => o_mid_tar_hits_av,
-    o_out_tar_hits_av  => o_out_tar_hits_av,
-    o_ext_tar_hits_av  => o_ext_tar_hits_av
+    o_tar_hits_av  => o_tar_hits_av
 
   );
+
+  -------------------------------------------------------------------------------------
+	-- clock Generator
+	-------------------------------------------------------------------------------------
+  CLK_MAIN : process begin
+    clk <= '0';
+    wait for CLK_period/2;
+    clk <= '1';
+    wait for CLK_period/2;
+  end process;
+ 	-------------------------------------------------------------------------------------
+	-- Reset Generator
+	-------------------------------------------------------------------------------------
+	rst_process: process begin
+		rst<='0';
+		wait for CLK_period;
+		rst<='1';
+		wait for CLK_period*reset_init_cycles;
+		rst<= '0';
+		wait;
+  end process;
 
 end beh;

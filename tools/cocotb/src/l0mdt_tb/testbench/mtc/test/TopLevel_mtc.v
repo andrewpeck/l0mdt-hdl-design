@@ -7,6 +7,9 @@
 
 `timescale 1ns / 1ps
 `default_nettype wire
+`include "l0mdt_buses_constants.svh"
+  import l0mdt_dataformats_svh::*;
+
 
 module TopLevel_mtc #(
     parameter DATA_WIDTH = 256, //65,
@@ -47,9 +50,9 @@ module TopLevel_mtc #(
    parameter TOTAL_PTCALC_BLKS = 3;
 
 
-   wire [SLCPIPELINE_WIDTH-1:0] slcpipeline [MAX_MTC_PER_BCID];
-   wire [PTCALC_LEN-1:0] 	ptcalc [TOTAL_PTCALC_BLKS];
-   wire [MTC_LEN-1:0] 		mtc_out [MAX_MTC_PER_BCID];
+   wire [SLCPIPELINE_WIDTH-1:0] slcpipeline [MAX_MTC_PER_BCID-1:0];
+   wire [PTCALC_LEN-1:0] 	ptcalc [TOTAL_PTCALC_BLKS-1:0];
+   wire [MTC_LEN-1:0] 		mtc_out [MAX_MTC_PER_BCID-1:0];
 
     //
     // Input buffers
@@ -91,8 +94,6 @@ module TopLevel_mtc #(
      end
 
    mtc_builder_verilog#(
-			.PTCALC_WIDTH(PTCALC_LEN),
-			.SLCPIPELINE_WIDTH(SLCPIPELINE_WIDTH),
 			.c_NUM_THREADS(TOTAL_PTCALC_BLKS),
 			.n_PRIMARY_MTC(3),
 			.c_MAX_NUM_SL(3)

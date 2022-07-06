@@ -40,7 +40,7 @@ end eta_tb;
 
 architecture Behavioral of eta_tb is
     signal clk : std_logic := '0';
-    signal i_seg : sf2ptcalc_rvt;
+    signal i_seg : sf2ptcalc_vt;
     signal seg: sf2ptcalc_rt;
     signal o_eta   : signed(PTCALC2MTC_MDT_ETA_LEN-1 downto 0);
     signal o_dv_eta  :  std_logic := '0';
@@ -63,7 +63,7 @@ begin
         wait for CLK_period/2;
     end process;
 
-    i_seg <= vectorify(seg);
+    i_seg <= convert(seg);
 
     --=== Eta Calculation ===
     --zdigi -39160.0000 rdigi 38046.0000
@@ -80,7 +80,7 @@ begin
         seg.data_valid <= '1';
 
         wait for clk_period;
-        seg <= nullify(seg);
+        seg <= zero(seg);
         wait;
         --assert (dv_sagitta = '1' and inv_sagitta = 3820) report "Correct Sagitta evaluated" severity NOTE ;
         --assert (dv_sagitta = '1' and inv_sagitta /= 3820) report "Wrong Sagitta evaluated" severity Error ;

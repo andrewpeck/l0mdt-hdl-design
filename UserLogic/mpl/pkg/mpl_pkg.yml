@@ -1,0 +1,22 @@
+# yml2hdl v0.3
+config:
+   basic_functions: False
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+      - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
+types:
+   - mpl2csw_ptcalc_rt:
+      - data_valid: {'type': 'logic'}
+      - busy: {'type': 'logic'}
+      - process_ch: {'type': 'logic', 'range': ['UCM2PL_PROCESS_CH_LEN-1', 0]}
+      - muid: {'type': 'slc_muid_rt'}
+      - phimod: {'type': 'signed', 'range': ['UCM2PL_PHIMOD_LEN-1', 0]}
+      - sl_charge: {'type': 'logic'}
+      - nswseg_poseta: {'type': 'unsigned', 'range': ['SLC_ENDCAP_NSWSEG_POSETA_LEN-1', 0]}
+      - nswseg_posphi: {'type': 'unsigned', 'range': ['SLC_ENDCAP_NSWSEG_POSPHI_LEN-1', 0]}
+      - nswseg_angdtheta: {'type': 'signed', 'range': ['SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN-1', 0]}
+   - mpl2csw_ptcalc_vt: {'type': 'logic', 'range': ['mpl2csw_ptcalc_rt-1', 0]}
+   - mpl2csw_ptcalc_art: {'array': 'open', 'type': 'mpl2csw_ptcalc_rt'}
+   - mpl2csw_ptcalc_avt: {'array': 'open', 'type': 'mpl2csw_ptcalc_vt'}
+   - MPL_PL_A_LATENCY: {'qualifier': 'constant', 'type': 'integer', 'value': 10}
+   - MPL_PL_B_LATENCY: {'qualifier': 'constant', 'type': 'integer', 'value': 5}

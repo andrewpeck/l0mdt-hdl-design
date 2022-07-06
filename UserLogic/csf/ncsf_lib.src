@@ -1,0 +1,17 @@
+# Packages
+UserLogic/csf/pkg/csf_pkg.vhd
+UserLogic/csf/pkg/csf_custom_pkg.vhd
+
+# Modules
+UserLogic/csf/src/seg_coord_transform.vhd
+UserLogic/csf/src/csf_clustering.vhd
+UserLogic/csf/src/ncsf.vhd
+UserLogic/csf/src/ncsf_sums.vhd
+UserLogic/csf/src/ncsf_fit.vhd
+
+# ROM LUTs
+UserLogic/csf/src/sqrt_mbar.mem
+UserLogic/csf/src/invsqrt_mbar.mem
+UserLogic/csf/src/fitter_reciprocal.mem
+UserLogic/csf/src/m_to_theta.mem
+

@@ -1,4 +1,18 @@
--- https://cds.cern.ch/record/2703707/files/ATL-COM-DAQ-2019-207.pdf?
+-- Sector Logic Link Wrapper
+--
+-- This module is a wrapper around the sector logic tx/rx ips
+-- (provided by Yasu, and included as a submodule)
+--
+-- It is responsible for
+--
+--  1. instantiating the tx/rx blocks
+--  2. doing type conversion between logic vectors and mdt records
+--  3. clock domain crossing from 240 --> 320 MHz
+--
+-- The SL data format is documented in:
+--
+--    https://cds.cern.ch/record/2703707/files/ATL-COM-DAQ-2019-207.pdf?
+--
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
@@ -33,6 +47,7 @@ entity sector_logic_link_wrapper is
     tx_clk : in std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     rx_clk : in std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
+    clk40          : in std_logic;
     pipeline_clock : in std_logic;
     reset          : in std_logic;
 
@@ -42,10 +57,10 @@ entity sector_logic_link_wrapper is
     sl_tx_mgt_word_array_o : out std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
     -- Data from SL
-    sl_data_o : out slc_rx_bus_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+    sl_data_o : out slc_rx_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
     -- Data to SL
-    mtc_i : in mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+    mtc_i : in mtc_out_avt(c_NUM_MTC-1 downto 0);
 
     -- from mgt
     sl_rx_ctrl_i : in sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
@@ -61,14 +76,16 @@ end sector_logic_link_wrapper;
 architecture Behavioral of sector_logic_link_wrapper is
 
   -- Received packet from SL
-  signal sl_rx_data : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-  signal sl_tx_data : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
-  signal sl_rx_data_pre_cdc  : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-  signal sl_tx_data_post_cdc : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_rx_data, sl_rx_data_pre_cdc  : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_tx_data, sl_tx_data_post_cdc : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
-  signal rx_reset_tree                  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0) := (others => '1');
-  --signal tx_reset_tree : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '1');
+  -- some values in the sector logic data format are represented as
+  -- "signed magnitude" numbers, in which the most significant bit is a sign bit and the remaining bits
+  -- are the magnitude
+  -- c.f. https://en.wikipedia.org/wiki/Signed_number_representations#Signed_magnitude_representation
+  -- the l0mdt firmware uses two's complement internally, so this function was written to
+  -- convert between the two representations
 
   function signed_mag_to_signed (data : std_logic_vector) return signed is
     alias sv                 : std_logic_vector (data'length-1 downto 0) is data;
@@ -91,17 +108,298 @@ architecture Behavioral of sector_logic_link_wrapper is
   end;
 begin
 
-  rxrstgen : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
+  --------------------------------------------------------------------------------
+  -- TX Dataformat Mapping
+  --------------------------------------------------------------------------------
+
+  tx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_OUTPUTS-1 generate
+    signal header  : std_logic_vector (31 downto 0);
+    signal trailer : std_logic_vector (31 downto 0);
+    signal data    : std_logic_vector (127 downto 0);
+    signal mtc     : mtc2sl_rt;
+
+    constant mgt_idx : integer := get_sl_mgt_num(I, c_MGT_MAP);
+
   begin
-    process (rx_clk(I))
+
+    mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
     begin
-      if rising_edge(rx_clk(I)) then    -- rising clock edge
-        rx_reset_tree(I) <= reset;      -- TODO: connect to AXI
-      end if;
-    end process;
+
+      sl : if (I < c_NUM_MTC) generate
+
+        mtc <= convert(mtc_i(I),mtc);
+
+        header  <= convert(mtc.common.header,header);
+        trailer <= convert(mtc.common.trailer,trailer);
+
+        data(2 downto 0)    <= std_logic_vector(mtc.common.slcid);
+        data(3)             <= mtc.common.tcsent;
+        data(17 downto 4)   <= std_logic_vector(mtc.common.poseta);
+        data(26 downto 18)  <= std_logic_vector(mtc.common.posphi);
+        data(34 downto 27)  <= std_logic_vector(mtc.common.sl_pt);
+        data(38 downto 35)  <= std_logic_vector(mtc.common.sl_ptthresh);
+        data(39)            <= mtc.common.sl_charge;
+        data(42 downto 40)  <= mtc.common.cointype;
+        data(56 downto 43)  <= std_logic_vector(mtc.mdt_eta);
+        data(64 downto 57)  <= std_logic_vector(mtc.mdt_pt);
+        data(68 downto 65)  <= std_logic_vector(mtc.mdt_ptthresh);
+        data(69)            <= mtc.mdt_charge;
+        data(73 downto 70)  <= mtc.mdt_procflags;
+        data(75 downto 74)  <= std_logic_vector(mtc.mdt_nsegments);
+        data(78 downto 76)  <= mtc.mdt_quality;
+        data(127 downto 79) <= mtc.m_reserved;
+
+        sl_tx_data(I).valid                <= mtc.data_valid;
+        sl_tx_data(I).data(31 downto 0)    <= header;
+        sl_tx_data(I).data(159 downto 32)  <= data;
+        sl_tx_data(I).data(191 downto 160) <= trailer;
+
+      end generate;
+
+      -- drive disconnected SL links with all zero
+      nosl : if (I >= c_NUM_MTC) generate
+        sl_tx_data(I).data  <= (others => '0');
+        sl_tx_data(I).valid <= '0';
+      end generate;
+
+    end generate;
+
   end generate;
 
-  -- unit test on this conversion function...
+  --------------------------------------------------------------------------------
+  -- RX Dataformat Mapping
+  --------------------------------------------------------------------------------
+
+  rx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
+
+    -- intermediate signals to remap
+    signal slc_barrel_specific : slc_barrel_rt;
+    signal slc_endcap_specific : slc_endcap_rt;
+    signal header              : std_logic_vector (31 downto 0);
+    signal trailer             : std_logic_vector (31 downto 0);
+    signal data                : std_logic_vector (127 downto 0);
+    signal sl_data             : slc_rx_rt;
+    constant station           : station_t := ENDCAP;
+
+    constant mgt_idx : integer := get_sl_mgt_num(I, c_MGT_MAP);
+
+  begin
+
+    mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
+    begin
+
+      process (pipeline_clock) is
+      begin
+        if (rising_edge(pipeline_clock)) then
+          sl_data_o(I) <= convert(sl_data,sl_data_o(I));
+        end if;
+      end process;
+
+      header  <= sl_rx_data(I).data(31 downto 0);
+      data    <= sl_rx_data(I).data(159 downto 32);
+      trailer <= sl_rx_data(I).data(191 downto 160);
+
+      sl_data.common.header  <= convert(header,sl_data.common.header);
+      sl_data.common.trailer <= convert(trailer,sl_data.common.trailer);
+
+      sl_data.common.slcid       <= unsigned(data(2 downto 0));
+      sl_data.common.tcsent      <= data(3);
+      sl_data.common.poseta      <= signed(data(17 downto 4));
+      sl_data.common.posphi      <= unsigned(data(26 downto 18));
+      sl_data.common.sl_pt       <= unsigned(data(34 downto 27));
+      sl_data.common.sl_ptthresh <= unsigned(data(38 downto 35));
+      sl_data.common.sl_charge   <= data(39);
+      sl_data.common.cointype    <= data(42 downto 40);
+
+      slc_barrel_specific.rpc0_posz <= signed(data(54 downto 43));
+      slc_barrel_specific.rpc1_posz <= signed(data(66 downto 55));
+      slc_barrel_specific.rpc2_posz <= signed(data(78 downto 67));
+      slc_barrel_specific.rpc3_posz <= signed(data(90 downto 79));
+      -- slc_barrel_specific.b_reserved <= data(127 downto 91);
+
+      slc_endcap_specific.seg_angdtheta    <= signed_mag_to_signed(data(49 downto 43));
+      slc_endcap_specific.seg_angdphi      <= signed_mag_to_signed(data(53 downto 50));
+      slc_endcap_specific.nswseg_poseta    <= unsigned(data(67 downto 54));
+      slc_endcap_specific.nswseg_posphi    <= unsigned(data(75 downto 68));
+      slc_endcap_specific.nswseg_angdtheta <= signed(data(80 downto 76));
+      slc_endcap_specific.nswseg_mon       <= data(81);
+      slc_endcap_specific.e_reserved       <= data(90 downto 82);
+
+      barrel_spec_gen : if (station = BARREL) generate
+        sl_data.specific <= convert(slc_barrel_specific,sl_data.specific);
+      end generate;
+
+      endcap_spec_gen : if (station = ENDCAP) generate
+        sl_data.specific <= convert(slc_endcap_specific,sl_data.specific);
+      end generate;
+
+      sl_data.data_valid <= sl_rx_data(I).valid;
+
+    end generate;
+  end generate;
+
+  sl_gen : for I in 0 to c_NUM_MGTS-1 generate
+    constant mgt_idx : integer := get_sl_mgt_num(I, c_MGT_MAP);
+  begin
+
+    mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
+    begin
+
+      --------------------------------------------------------------------------------
+      -- TX Encoder Instantiation
+      --------------------------------------------------------------------------------
+
+      tx_gen : if (sl_idx_array(I) /= -1) generate
+        constant idx   : integer := sl_idx_array(I);
+        signal txctrl0 : std_logic_vector (3 downto 0);
+        signal txctrl1 : std_logic_vector (3 downto 0);
+        signal txctrl2 : std_logic_vector (3 downto 0);
+      begin
+
+        assert false report "generating SL TX #" & integer'image(idx) & " on MGT#"
+          & integer'image(I) severity note;
+
+        sector_logic_tx_packet_former_inst : entity sl.sector_logic_tx_packet_former
+          generic map (
+            NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
+            NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
+          port map (
+            tx_usrclk2      => tx_clk(idx),
+            userdata_tx     => sl_tx_mgt_word_array_o(idx),
+            txctrl0         => txctrl0,                       -- 4 bit to mgt
+            txctrl1         => txctrl1,                       -- 4 bit to mgt
+            txctrl2         => txctrl2,                       -- 4 bit to mgt
+            packet_userdata => sl_tx_data_post_cdc(idx).data,
+            packet_valid    => sl_tx_data_post_cdc(idx).valid,
+            packet_txctrl0  => std_logic_vector'(x"000000"),  --
+            packet_txctrl1  => std_logic_vector'(x"000000"),  --
+            packet_txctrl2  => std_logic_vector'(x"100000")   --
+            );
+
+        sl_tx_ctrl_o(idx).ctrl0 <= x"000" & txctrl0;
+        sl_tx_ctrl_o(idx).ctrl1 <= x"000" & txctrl1;
+        sl_tx_ctrl_o(idx).ctrl2 <= x"0" & txctrl2;
+
+        -- sync from pipeline clock-----------------------------------------------------
+        sync_sl_tx : entity work.sync_cdc
+          generic map (
+            WIDTH    => sl_tx_data_post_cdc(idx).data'length,
+            N_STAGES => 2)
+          port map (
+            clk_i   => tx_clk(idx),
+            valid_i => sl_tx_data(idx).valid,
+            data_i  => sl_tx_data(idx).data,
+            valid_o => sl_tx_data_post_cdc(idx).valid,
+            data_o  => sl_tx_data_post_cdc(idx).data
+            );
+
+      end generate;
+
+      --------------------------------------------------------------------------------
+      -- RX Decoder Instantiation
+      --------------------------------------------------------------------------------
+
+      rx_gen : if (sl_idx_array(I) /= -1) generate
+        constant idx           : integer := sl_idx_array(I);
+        signal dec_rxctrl0     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal dec_rxctrl2     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal dec_userdata    : std_logic_vector (31 downto 0);
+        signal rxctrl0         : std_logic_vector (3 downto 0);
+        signal rxctrl1         : std_logic_vector (3 downto 0);
+        signal sl_pre_cdc_vec  : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
+        signal sl_post_cdc_vec : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
+      begin
+
+        assert false report "generating SL RX #" & integer'image(idx) & " on MGT#"
+          & integer'image(I) severity note;
+
+        rxctrl0 <= sl_rx_ctrl_i(idx).ctrl0(3 downto 0);
+        rxctrl1 <= sl_rx_ctrl_i(idx).ctrl1(3 downto 0);
+
+        -- decode 8b10b words
+        rx_comma_detector_inst : entity sl.rx_comma_detection
+          generic map (
+            NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
+            NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
+          port map (
+            reset               => reset,
+            clk_in              => rx_clk(idx),
+            rx_data_in          => sl_rx_mgt_word_array_i(idx),  -- 32 bit from mgt
+            rx_ctrl0_in         => rxctrl0,                      -- 4 bit from mgt
+            rx_ctrl1_in         => rxctrl1,                      -- 4 bit from mgt
+            decoded_data_out    => dec_userdata,                 -- 32 bit to packet former
+            decoded_charisk_out => dec_rxctrl0,                  -- 4 bit to packet former
+            decoded_iscomma_out => dec_rxctrl2,                  -- 4 bit to packet former
+            comma_pulse_out     => open,                         -- not used in my-sl-gty
+            lock_out            => open,                         -- not used in my-sl-gty
+            rxslide_out         => sl_rx_slide_o(idx)            -- 1 bit to mgt
+            );
+
+        -- form 192 bit packets
+        sector_logic_rx_packet_former_inst : entity sl.sector_logic_rx_packet_former
+
+          generic map (
+            NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
+            NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
+          port map (
+            reset => reset,
+
+            rx_usrclk2 => rx_clk(idx),
+
+            userdata_rx => dec_userdata,
+
+            -- 3 downto 0, from rx_comma_detection
+            rxctrl0 => dec_rxctrl0,     -- charisk
+            rxctrl1 => (others => '0'),
+            rxctrl2 => dec_rxctrl2,     -- rxctrl2(0) == is_comma
+            rxctrl3 => (others => '0'),
+
+            -- 23 downto 0
+            packet_rxctrl0 => open,     -- my-sl-gty just connects to led sump
+            packet_rxctrl1 => open,     -- my-sl-gty just connects to led sump
+            packet_rxctrl2 => open,     -- my-sl-gty just connects to led sump
+            packet_rxctrl3 => open,     -- my-sl-gty just connects to led sump
+
+            packet_userdata       => sl_rx_data_pre_cdc(idx).data,
+            packet_locked         => sl_rx_data_pre_cdc(idx).locked,
+            packet_valid          => sl_rx_data_pre_cdc(idx).valid,
+            packet_error_detected => sl_rx_data_pre_cdc(idx).err
+
+            );
+
+        --------------------------------------------------------------------------------
+        -- RX Clock Domain Crossing
+        --------------------------------------------------------------------------------
+
+        -- convert to a std_logic_vector
+        sl_pre_cdc_vec <= sl_rx_data_pre_cdc(idx).data &
+                          sl_rx_data_pre_cdc(idx).err & sl_rx_data_pre_cdc(idx).locked;
+
+        sync_sl_rx_data : entity work.sync_cdc
+          generic map (
+            WIDTH    => 1 + 1 + sl_rx_data_pre_cdc(idx).data'length,
+            N_STAGES => 2)
+          port map (
+            clk_i   => pipeline_clock,
+            valid_i => sl_rx_data_pre_cdc(idx).valid,
+            data_i  => sl_pre_cdc_vec,
+            valid_o => sl_rx_data(idx).valid,
+            data_o  => sl_post_cdc_vec
+            );
+
+        sl_rx_data(idx).data   <= sl_post_cdc_vec(sl_rx_data(idx).data'length+2-1 downto 2);
+        sl_rx_data(idx).err    <= sl_post_cdc_vec(1);
+        sl_rx_data(idx).locked <= sl_post_cdc_vec(0);
+
+      end generate;
+    end generate;
+  end generate;
+
+  --------------------------------------------------------------------------------
+  -- Asserts
+  --------------------------------------------------------------------------------
+
+  -- unit test on the signed magnitude conversion function
   assert -3 = to_integer(signed_mag_to_signed("011"))
     report "failure in signed magnutude conversion of -3 get="
     & integer'image (to_integer(signed_mag_to_signed("011"))) severity error;
@@ -126,257 +424,5 @@ begin
   assert 3 = to_integer(signed_mag_to_signed("111"))
     report "failure in signed magnutude conversion of  3 get="
     & integer'image (to_integer(signed_mag_to_signed("111"))) severity error;
-
-  tx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_OUTPUTS-1 generate
-    signal header  : std_logic_vector (31 downto 0);
-    signal trailer : std_logic_vector (31 downto 0);
-    signal data    : std_logic_vector (127 downto 0);
-    signal mtc     : mtc2sl_rt;
-  begin
-
-    sl : if (I < c_NUM_MTC) generate
-
-      mtc <= structify(mtc_i(I));
-
-      header  <= vectorify(mtc.common.header);
-      trailer <= vectorify(mtc.common.trailer);
-
-      data(2 downto 0)    <= std_logic_vector(mtc.common.slcid);
-      data(3)             <= mtc.common.tcsent;
-      data(17 downto 4)   <= std_logic_vector(mtc.common.poseta);
-      data(26 downto 18)  <= std_logic_vector(mtc.common.posphi);
-      data(34 downto 27)  <= std_logic_vector(mtc.common.sl_pt);
-      data(38 downto 35)  <= std_logic_vector(mtc.common.sl_ptthresh);
-      data(39)            <= mtc.common.sl_charge;
-      data(42 downto 40)  <= mtc.common.cointype;
-      data(56 downto 43)  <= std_logic_vector(mtc.mdt_eta);
-      data(64 downto 57)  <= std_logic_vector(mtc.mdt_pt);
-      data(68 downto 65)  <= std_logic_vector(mtc.mdt_ptthresh);
-      data(69)            <= mtc.mdt_charge;
-      data(73 downto 70)  <= mtc.mdt_procflags;
-      data(75 downto 74)  <= std_logic_vector(mtc.mdt_nsegments);
-      data(78 downto 76)  <= mtc.mdt_quality;
-      data(127 downto 79) <= mtc.m_reserved;
-
-      sl_tx_data(I).valid                <= mtc.data_valid;
-      sl_tx_data(I).data(31 downto 0)    <= header;
-      sl_tx_data(I).data(159 downto 32)  <= data;
-      sl_tx_data(I).data(191 downto 160) <= trailer;
-
-    end generate;
-
-    -- drive disconnected SL links with all zero
-    nosl : if (I >= c_NUM_MTC) generate
-      sl_tx_data(I).data  <= (others => '0');
-      sl_tx_data(I).valid <= '0';
-    end generate;
-
-  end generate;
-
-  rx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
-
-    -- intermediate signals to remap
-    signal slc_barrel_specific : slc_barrel_rt;
-    signal slc_endcap_specific : slc_endcap_rt;
-    signal header              : std_logic_vector (31 downto 0);
-    signal trailer             : std_logic_vector (31 downto 0);
-    signal data                : std_logic_vector (127 downto 0);
-    signal sl_data             : slc_rx_rt;
-    constant station           : station_t := ENDCAP;
-
-  begin
-
-    header  <= sl_rx_data(I).data(31 downto 0);
-    data    <= sl_rx_data(I).data(159 downto 32);
-    trailer <= sl_rx_data(I).data(191 downto 160);
-
-    sl_data_o(I) <= vectorify(sl_data);
-
-    sl_data.common.header  <= structify(header);
-    sl_data.common.trailer <= structify(trailer);
-
-    sl_data.common.slcid       <= unsigned(data(2 downto 0));
-    sl_data.common.tcsent      <= data(3);
-    sl_data.common.poseta      <= signed(data(17 downto 4));
-    sl_data.common.posphi      <= unsigned(data(26 downto 18));
-    sl_data.common.sl_pt       <= unsigned(data(34 downto 27));
-    sl_data.common.sl_ptthresh <= unsigned(data(38 downto 35));
-    sl_data.common.sl_charge   <= data(39);
-    sl_data.common.cointype    <= data(42 downto 40);
-
-    slc_barrel_specific.rpc0_posz  <= signed(data(54 downto 43));
-    slc_barrel_specific.rpc1_posz  <= signed(data(66 downto 55));
-    slc_barrel_specific.rpc2_posz  <= signed(data(78 downto 67));
-    slc_barrel_specific.rpc3_posz  <= signed(data(90 downto 79));
-    -- slc_barrel_specific.b_reserved <= data(127 downto 91);
-
-    slc_endcap_specific.seg_angdtheta    <= signed_mag_to_signed(data(49 downto 43));
-    slc_endcap_specific.seg_angdphi      <= signed_mag_to_signed(data(53 downto 50));
-    slc_endcap_specific.nswseg_poseta    <= unsigned(data(67 downto 54));
-    slc_endcap_specific.nswseg_posphi    <= unsigned(data(75 downto 68));
-    slc_endcap_specific.nswseg_angdtheta <= signed(data(80 downto 76));
-    slc_endcap_specific.nswseg_mon       <= data(81);
-    slc_endcap_specific.e_reserved       <= data(90 downto 82);
-
-    barrel_spec_gen : if (station = BARREL) generate
-      sl_data.specific <= vectorify(slc_barrel_specific);
-    end generate;
-
-    endcap_spec_gen : if (station = ENDCAP) generate
-      sl_data.specific <= vectorify(slc_endcap_specific);
-    end generate;
-
-    sl_data.data_valid <= sl_rx_data(I).valid;
-
-  end generate;
-
-  sl_gen : for I in 0 to c_NUM_MGTS-1 generate
-
-    --------------------------------------------------------------------------------
-    -- Downlink
-    --------------------------------------------------------------------------------
-
-    tx_gen : if (sl_idx_array(I) /= -1) generate
-      constant idx : integer := sl_idx_array(I);
-      signal txctrl0 : std_logic_vector (3 downto 0);
-      signal txctrl1 : std_logic_vector (3 downto 0);
-      signal txctrl2 : std_logic_vector (3 downto 0);
-    begin
-
-      assert false report "generating SL TX #" & integer'image(idx) & " on MGT#" & integer'image(I) severity note;
-
-      sector_logic_tx_packet_former_inst : entity sl.sector_logic_tx_packet_former
-        generic map (
-          NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
-          NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
-        port map (
-          tx_usrclk2      => tx_clk(idx),
-          userdata_tx     => sl_tx_mgt_word_array_o(idx),
-          txctrl0         => txctrl0,      -- 4 bit to mgt
-          txctrl1         => txctrl1,      -- 4 bit to mgt
-          txctrl2         => txctrl2,      -- 4 bit to mgt
-          packet_userdata => sl_tx_data_post_cdc(idx).data,
-          packet_valid    => sl_tx_data_post_cdc(idx).valid,
-          packet_txctrl0  => std_logic_vector'(x"000000"), --
-          packet_txctrl1  => std_logic_vector'(x"000000"), --
-          packet_txctrl2  => std_logic_vector'(x"100000")  --
-          );
-
-      sl_tx_ctrl_o(idx).ctrl0 <= x"000" & txctrl0;
-      sl_tx_ctrl_o(idx).ctrl1 <= x"000" & txctrl1;
-      sl_tx_ctrl_o(idx).ctrl2 <= x"0"   & txctrl2;
-
-      -- sync from pipeline clock-----------------------------------------------------
-      sync_sl_tx : entity work.sync_cdc
-        generic map (
-          WIDTH    => sl_tx_data_post_cdc(idx).data'length,
-          N_STAGES => 2)
-        port map (
-          clk_i   => tx_clk(idx),
-          valid_i => sl_tx_data(idx).valid,
-          data_i  => sl_tx_data(idx).data,
-          valid_o => sl_tx_data_post_cdc(idx).valid,
-          data_o  => sl_tx_data_post_cdc(idx).data
-          );
-
-    end generate;
-
-    --------------------------------------------------------------------------------
-    -- Uplink
-    --------------------------------------------------------------------------------
-
-    rx_gen : if (sl_idx_array(I) /= -1) generate
-      constant idx           : integer := sl_idx_array(I);
-      signal dec_rxctrl0     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
-      signal dec_rxctrl2     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
-      signal dec_userdata    : std_logic_vector (31 downto 0);
-      signal sl_pre_cdc_vec  : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
-      signal sl_post_cdc_vec : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
-
-      signal rxctrl0 : std_logic_vector (3 downto 0);
-      signal rxctrl1 : std_logic_vector (3 downto 0);
-    begin
-
-      assert false report "generating SL RX #" & integer'image(idx) & " on MGT#" & integer'image(I) severity note;
-
-      rxctrl0 <= sl_rx_ctrl_i(idx).ctrl0(3 downto 0);
-      rxctrl1 <= sl_rx_ctrl_i(idx).ctrl1(3 downto 0);
-
-      -- decode 8b10b words
-      rx_comma_detector_inst : entity sl.rx_comma_detection
-        generic map (
-          NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
-          NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
-        port map (
-          reset               => rx_reset_tree(idx),
-          clk_in              => rx_clk(idx),
-          rx_data_in          => sl_rx_mgt_word_array_i(idx),  -- 32 bit from mgt
-          rx_ctrl0_in         => rxctrl0,                      -- 4 bit from mgt
-          rx_ctrl1_in         => rxctrl1,                      -- 4 bit from mgt
-          decoded_data_out    => dec_userdata,                 -- 32 bit to packet former
-          decoded_charisk_out => dec_rxctrl0,                  -- 4 bit to packet former
-          decoded_iscomma_out => dec_rxctrl2,                  -- 4 bit to packet former
-          comma_pulse_out     => open,                         -- not used in my-sl-gty
-          lock_out            => open,                         -- not used in my-sl-gty
-          rxslide_out         => sl_rx_slide_o(idx)            -- 1 bit to mgt
-          );
-
-      -- form 192 bit packets
-      sector_logic_rx_packet_former_inst : entity sl.sector_logic_rx_packet_former
-
-        generic map (
-          NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
-          NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
-        port map (
-          reset => rx_reset_tree (idx),
-
-          rx_usrclk2 => rx_clk(idx),
-
-          userdata_rx => dec_userdata,
-
-          -- 3 downto 0, from rx_comma_detection
-          rxctrl0 => dec_rxctrl0,       -- charisk
-          rxctrl1 => (others => '0'),
-          rxctrl2 => dec_rxctrl2,       -- rxctrl2(0) == is_comma
-          rxctrl3 => (others => '0'),
-
-          -- 23 downto 0
-          packet_rxctrl0 => open, -- my-sl-gty just connects to led sump
-          packet_rxctrl1 => open, -- my-sl-gty just connects to led sump
-          packet_rxctrl2 => open, -- my-sl-gty just connects to led sump
-          packet_rxctrl3 => open, -- my-sl-gty just connects to led sump
-
-          packet_userdata       => sl_rx_data_pre_cdc(idx).data,
-          packet_locked         => sl_rx_data_pre_cdc(idx).locked,
-          packet_valid          => sl_rx_data_pre_cdc(idx).valid,
-          packet_error_detected => sl_rx_data_pre_cdc(idx).err
-
-          );
-
-      --sync to pipeline clock-------------------------------------------------
-
-      -- convert to a std_logic_vector
-      sl_pre_cdc_vec <= sl_rx_data_pre_cdc(idx).data & sl_rx_data_pre_cdc(idx).err & sl_rx_data_pre_cdc(idx).locked;
-
-      -- FIXME: need to make this a smarter cdc.. can't tolerate variable latency due to
-      -- metastability... transition only on known good clock edges.. uhgg...
-      sync_sl_tx_data : entity work.sync_cdc
-        generic map (
-          WIDTH    => 1 + 1 + sl_rx_data_pre_cdc(idx).data'length,
-          N_STAGES => 4)
-        port map (
-          clk_i   => pipeline_clock,
-          valid_i => sl_rx_data_pre_cdc(idx).valid,
-          data_i  => sl_pre_cdc_vec,
-          valid_o => sl_rx_data(idx).valid,
-          data_o  => sl_post_cdc_vec
-          );
-
-      sl_rx_data(idx).data   <= sl_post_cdc_vec(sl_rx_data_pre_cdc(idx).data'length+2-1 downto 2);
-      sl_rx_data(idx).err    <= sl_post_cdc_vec(1);
-      sl_rx_data(idx).locked <= sl_post_cdc_vec(0);
-
-    end generate;
-  end generate;
 
 end Behavioral;
