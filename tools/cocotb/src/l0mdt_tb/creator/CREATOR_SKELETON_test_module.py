@@ -115,9 +115,7 @@ def CREATORTESTNAME_test(dut):
     for i in range(CREATORCLASSNAMEPorts.n_output_interfaces):
         if "station_ID" in testvector_config_outputs[i] :
             outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        else :
-            outputs_station_id[i] = ['NONE']
-
+      
         if "thread_n" in testvector_config_outputs[i]:
             outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]
  
