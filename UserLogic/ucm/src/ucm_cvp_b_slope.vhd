@@ -144,6 +144,9 @@ architecture beh of ucm_cvp_b_slope is
 
   -- signal dv_chain   : std_logic_vector(16 downto 0);
 
+  signal m_axis_dout_tvalid : STD_LOGIC;
+  signal m_axis_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
+  signal m_axis_dout_tdata : STD_LOGIC_VECTOR(79 DOWNTO 0);
 
 
 
@@ -213,27 +216,46 @@ begin
   end process set_data;
 
   SQR_LOOP: for hit_i in 3 downto 0 generate
-    MULT_ZY_ENT : entity shared_lib.VUGPPMATH
+    MULT_ZY_ENT : entity shared_lib.generic_pipelined_MATH
       generic map(
         g_OPERATION => "*",
         g_IN_PIPE_STAGES  => 2,
-        g_OUT_PIPE_STAGES => 2,
-        g_length_in_A => SLC_Z_RPC_LEN, 
-        g_length_in_B => SLC_Z_RPC_LEN
+        g_OUT_PIPE_STAGES => 2
       )
       port map(
         clk         => clk,
         rst         => rst,
         --
-        i_in_A      => rpc_a(hit_i),
-        i_in_B      => rad_a(hit_i),
-        -- i_in_C      => 0,
-        -- i_in_D      => 0,
+        i_in_A      => std_logic_vector(rpc_a(hit_i)),
+        i_in_B      => std_logic_vector(rad_a(hit_i)),
+        i_in_C      => "0",
+        i_in_D      => "0",
         i_dv        => set_data_dv,
         --
         o_result    => mult_zy(hit_i),
         o_dv        => mult_zy_dv(hit_i)
     );
+    -- MULT_ZY_ENT : entity shared_lib.VUGPPMATH
+    --   generic map(
+    --     g_OPERATION => "*",
+    --     g_IN_PIPE_STAGES  => 2,
+    --     g_OUT_PIPE_STAGES => 2,
+    --     g_length_in_A => SLC_Z_RPC_LEN, 
+    --     g_length_in_B => SLC_Z_RPC_LEN
+    --   )
+    --   port map(
+    --     clk         => clk,
+    --     rst         => rst,
+    --     --
+    --     i_in_A      => rpc_a(hit_i),
+    --     i_in_B      => rad_a(hit_i),
+    --     -- i_in_C      => 0,
+    --     -- i_in_D      => 0,
+    --     i_dv        => set_data_dv,
+    --     --
+    --     o_result    => mult_zy(hit_i),
+    --     o_dv        => mult_zy_dv(hit_i)
+    -- );
     MULT_ZZ_ENT : entity shared_lib.generic_pipelined_MATH
       generic map(
         g_OPERATION => "*",
@@ -466,6 +488,18 @@ begin
       --
       o_result    => bdiv,
       o_dv        => bdiv_dv
+  );
+  IP_R2S : div_gen_r2s_v1
+  PORT MAP (
+    aclk => clk,
+    aresetn => not rst,
+    s_axis_divisor_tvalid => bden_dv,
+    s_axis_divisor_tdata => bden,
+    s_axis_dividend_tvalid => bnom_dv,
+    s_axis_dividend_tdata => bnom_sc,
+    m_axis_dout_tvalid => m_axis_dout_tvalid,
+    m_axis_dout_tuser => m_axis_dout_tuser,
+    m_axis_dout_tdata => m_axis_dout_tdata
   );
   --   e_y <= (sum_y(1) * 2048) / num_h_i(6);
   sum_y_sc <= sum_y & "00000000000";
