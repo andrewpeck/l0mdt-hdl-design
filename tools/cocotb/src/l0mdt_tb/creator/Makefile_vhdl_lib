@@ -69,7 +69,8 @@ VERILOG_SOURCES += \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
     $(SBDIR)/asym_ram_tdp_read_first.v \
-    $(SHAREDDIR)/memories/src/rom.v 
+    $(SHAREDDIR)/memories/src/rom.v \
+    $(XILINX_HOME)/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv 
  
 VHDL_SOURCES_project_lib = \
     $(PWD)/prj_cfg.vhd
