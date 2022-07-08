@@ -148,6 +148,19 @@ architecture beh of ucm_cvp_b_slope is
   signal m_axis_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
   signal m_axis_dout_tdata : STD_LOGIC_VECTOR(79 DOWNTO 0);
 
+  COMPONENT div_gen_r2s_v1
+  PORT (
+    aclk : IN STD_LOGIC;
+    aresetn : IN STD_LOGIC;
+    s_axis_divisor_tvalid : IN STD_LOGIC;
+    s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    s_axis_dividend_tvalid : IN STD_LOGIC;
+    s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
+    m_axis_dout_tvalid : OUT STD_LOGIC;
+    m_axis_dout_tuser : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
+  );
+END COMPONENT;
 
 
 begin
@@ -496,7 +509,7 @@ begin
     s_axis_divisor_tvalid => bden_dv,
     s_axis_divisor_tdata => bden,
     s_axis_dividend_tvalid => bnom_dv,
-    s_axis_dividend_tdata => bnom_sc,
+    s_axis_dividend_tdata => "0000" & bnom_sc,
     m_axis_dout_tvalid => m_axis_dout_tvalid,
     m_axis_dout_tuser => m_axis_dout_tuser,
     m_axis_dout_tdata => m_axis_dout_tdata
