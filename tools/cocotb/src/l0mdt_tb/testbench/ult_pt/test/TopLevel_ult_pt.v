@@ -91,6 +91,8 @@ module TopLevel_ult_pt #(
 
    wire [SF2PTCALC_LEN-1 :0] sf2pt_OUT[THREADS_n];
 
+   wire [SF2PTCALC_LEN-1 :0] sf2pt_EXT[THREADS_n];
+
    wire [PL2PTCALC_LEN-1 :0] pl2pt[THREADS_n];
 
 
@@ -122,13 +124,20 @@ module TopLevel_ult_pt #(
 
    assign sf2pt_OUT[2]  = BLOCK_input_data[8];
 
-
+   
+      
    assign pl2pt[0]           = BLOCK_input_data[9];
 
    assign pl2pt[1]           = BLOCK_input_data[10];
 
    assign pl2pt[2]           = BLOCK_input_data[11];
 
+   
+   for( genvar i=0; i < THREADS_n; i++)
+     begin
+	assign dummy_in[i]   = 0;
+	assign sf2pt_EXT[i]  = 0;
+     end
    
    tb_ptcalc tb_ptcalc_inst
        (
@@ -144,7 +153,7 @@ module TopLevel_ult_pt #(
 	      .i_inn_segments(sf2pt_INN),
 	      .i_mid_segments(sf2pt_MID),
 	      .i_out_segments(sf2pt_OUT),
-	      .i_ext_segments(),
+	      .i_ext_segments(sf2pt_EXT),
 	//   -- from pipeline
 	      .i_pl2pt_av(pl2pt),
 	//   -- to mtc

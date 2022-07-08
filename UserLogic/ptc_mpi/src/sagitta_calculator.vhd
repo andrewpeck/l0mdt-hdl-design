@@ -228,27 +228,29 @@ begin
 
             -- Delta Beta calculations
             dvb_01 <= ( (seg0.data_valid and
-                       seg1.data_valid) xor
-                       seg2.data_valid);
-            dvb_02 <= ( seg0.data_valid xor (
+                       seg1.data_valid and seg0.segquality and seg1.segquality) xor
+                       seg2.segquality);
+            dvb_02 <= ( seg0.segquality xor (
                         seg1.data_valid and
-                       seg2.data_valid));
+                       seg2.data_valid and seg1.segquality and
+                       seg2.segquality));
             dvb_12 <= ((seg1.data_valid and
-                       seg2.data_valid) xor seg0.data_valid);
+                       seg2.data_valid and seg1.segquality and
+                       seg2.segquality) xor seg0.segquality);
 
-            if seg0.data_valid = '1' and
-                seg1.data_valid = '1' and
-                seg2.data_valid = '0' then
+            if seg0.segquality = '1' and
+                seg1.segquality = '1' and
+                seg2.segquality = '0' then
                 delta_beta <= resize(
                     unsigned(abs(signed(seg0.segangle) - signed(seg1.segangle))), DBETA_LEN);
-            elsif seg0.data_valid = '1' and
-                seg1.data_valid = '0' and
-                seg2.data_valid = '1' then
+            elsif seg0.segquality = '1' and
+                seg1.segquality = '0' and
+                seg2.segquality = '1' then
                 delta_beta <= resize(
                     unsigned(abs(signed(seg0.segangle) - signed(seg2.segangle))), DBETA_LEN);
-            elsif seg0.data_valid = '0' and
-                seg1.data_valid = '1' and
-                seg2.data_valid = '1' then
+            elsif seg0.segquality = '0' and
+                seg1.segquality = '1' and
+                seg2.segquality = '1' then
                 delta_beta <= resize(
                     unsigned(abs(signed(seg1.segangle) - signed(seg2.segangle))), DBETA_LEN);
             else

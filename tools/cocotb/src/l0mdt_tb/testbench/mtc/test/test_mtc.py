@@ -215,6 +215,7 @@ def mtc_test(dut):
 
         for io in range(MtcPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list_i[sb_port_index] = (single_interface_list[io])
+            input_tv_list_i[sb_port_index].append(0)
             sb_port_index                = sb_port_index + 1
 
         input_tv_list = events.modify_tv_padzeroes(input_tv_list_i)
@@ -257,7 +258,7 @@ def mtc_test(dut):
         )
     dut._log.info("Sending finished!")
 
-    timer = Timer(20, "us")
+    timer = Timer(1, "us")
     dut._log.info("Going to wait 20 microseconds")
     yield timer
 
@@ -271,6 +272,7 @@ def mtc_test(dut):
         recvd_events     = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(n_op_intf))]
         recvd_lineup     = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(n_op_intf))]
         recvd_time       = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(n_op_intf))]
+        
         for n_oport, oport in enumerate(mtc_wrapper.output_ports(n_op_intf)):
 
             ##
@@ -287,7 +289,9 @@ def mtc_test(dut):
         #Multiple ports in this interface, need to lineup events across ports based on time
         #recvd_lineup = events.timebased_lineup(recvd_events, recvd_time,num_events_to_process,MtcPorts.get_output_interface_ports(n_op_intf))
         #recvd_events_intf.append(recvd_lineup)
-        recvd_events_intf.append(recvd_events)
+        o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process)
+        recvd_events_intf.append(o_recvd_events)
+      
 
 
     ##
@@ -305,11 +309,17 @@ def mtc_test(dut):
         expected_output_events = output_tv_list
 
 
-    #print("RECVD_LINEUP :",recvd_lineup)
+
     field_fail_cnt_header = []
     field_fail_cnt        = []
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
+
+    #DEBUG i PRINTING ALL EVENTS
+    #events.print_tv_list(input_tvformats, input_tv_list, MtcPorts.n_input_interfaces, MtcPorts.n_ports, num_events_to_process)
+    #DEBUG i PRINTING EVENT 2
+    events.print_tv_list(input_tvformats, input_tv_list, MtcPorts.n_input_interfaces, MtcPorts.n_ports, num_events_to_process, event_number=2)
+    
 
     for n_op_intf in range (MtcPorts.n_output_interfaces):
         events_are_equal,pass_count , fail_count, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],MtcPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], tolerances=mtc2sl_lsf_tol,output_path=output_dir);

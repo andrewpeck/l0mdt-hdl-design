@@ -220,7 +220,7 @@ proc assign_pblocks {min  max  side fpga} {
         if {[string is space $cells] == 0} {
             puts "Adding [llength $cells] cells to pblock $lQuadBlock with mgt $side$q lRegId=#$lRegId"
             puts "   > quad_$side$q"
-            puts "   > $cells"
+            # puts "   > $cells"
             add_cells_to_pblock $lQuadBlock $cells
         } else {
             puts "No cells in pblock $lQuadBlock with mgt #$lRegId"

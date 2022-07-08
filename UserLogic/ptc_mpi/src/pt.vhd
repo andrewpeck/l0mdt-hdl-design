@@ -380,9 +380,9 @@ begin
       segment_M_v <= i_segment_M;
       segment_O_v <= i_segment_O;
 
-      if segment_I.data_valid = '1' or segment_M.data_valid = '1' or segment_O.data_valid = '1' then
+      if (segment_I.data_valid = '1' and segment_I.segquality = '1') or (segment_M.data_valid = '1' and segment_M.segquality = '1') or (segment_O.data_valid and segment_O.segquality) = '1' then
         dv_combo <= '1';
-        if segment_I.data_valid = '1' then
+        if segment_I.data_valid = '1' and segment_I.segquality = '1' then
           segment_eta <= i_segment_I;
           im <= '0';
         else
@@ -393,13 +393,13 @@ begin
         comboid <= unsigned(segment_O.mdtid.chamber_ieta) &
           unsigned(segment_M.mdtid.chamber_ieta) &
           unsigned(segment_I.mdtid.chamber_ieta);
-        nsegments <= to_unsigned(stdlogic_integer(segment_I.data_valid)
-          + stdlogic_integer(segment_M.data_valid)
-          + stdlogic_integer(segment_O.data_valid),
+        nsegments <= to_unsigned(stdlogic_integer(segment_I.segquality)
+          + stdlogic_integer(segment_M.segquality)
+          + stdlogic_integer(segment_O.segquality),
           MTC_NSEG_LEN);
-        quality <= segment_O.data_valid &
-          segment_M.data_valid &
-          segment_I.data_valid;
+        quality <= segment_O.segquality &
+          segment_M.segquality &
+          segment_I.segquality;
         segment_I_s <= segment_I;
         segment_M_s <= segment_M;
         segment_O_s <= segment_O;

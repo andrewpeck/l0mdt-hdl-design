@@ -55,13 +55,9 @@ entity top_clocking is
     clock_async_i_p : in std_logic;
     clock_async_i_n : in std_logic;
 
-    -- 40MHz programmable ASYNC clock
+    -- 40MHz programmable LHC clock
     clock_i_p : in std_logic;
     clock_i_n : in std_logic;
-
-    -- 320MHz clock out to output pins
-    lhc_refclk_o_p : out std_logic;
-    lhc_refclk_o_n : out std_logic;
 
     --
     clocks_o          : out system_clocks_rt;

@@ -143,37 +143,53 @@ def print_BitFieldsInDataFormat(tvformat, tvformat_val, stationNum=-99):
     print(bitfieldWord[0].print_bitFieldWord())
    
 
-def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id):
+def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id=""):
     port_idx  = 0
     tvRTL_list = []
+    
     for n_intf in range(n_interfaces): # Add concept of interface
         for io in range(n_ports[n_intf]):
             tvRTL_i    = tvRTL()
-            for n_events in range(n_events_to_process):
-                tvRTL_i.set_tv(tv_list[port_idx][n_events], tvformats[n_intf],station=station_id[n_intf][io])
+            for n_events in range(n_events_to_process):     
+                if(station_id == ""):
+                    tvRTL_i.set_tv(tv_list[port_idx][n_events], tvformats[n_intf])
+                else:                    
+                    tvRTL_i.set_tv(tv_list[port_idx][n_events], tvformats[n_intf],station=station_id[n_intf][io])
             tvRTL_list.append(tvRTL_i)
             #tvRTL_i.clear()
             port_idx = port_idx + 1
 
-    #print ("TV RTL")
+    print ("events.py: TV RTL")
     #for port_i in range(len(tvRTL_list)):
     #   tvRTL_p = tvRTL_list[port_i]
     #    tvRTL_p.print_tv()
 
     return tvRTL_list
 
-def   print_tv_bitfields(tvRTL_list): #tvformats, tv_list, n_interfaces, n_ports, n_events_to_process):
+def   print_tv_bitfields(tvRTL_list,print_this_event=-1): #tvformats, tv_list, n_interfaces, n_ports, n_events_to_process):
     port_idx  = 0
-    
+    print ("events.py: print_tv_bitfields")
+    if print_this_event == -1:
+        print_single_event = 1
+    else:
+        print_single_event = 0
+
     for port_i in range(len(tvRTL_list)):
         tvRTL_p = tvRTL_list[port_i]
-        for n_events in range(len(tvRTL_p.tv_val)):
-            print_BitFieldsInDataFormat(tvRTL_p.df, tvRTL_p.tv_val[n_events], stationNum=station_name_to_id(tvRTL_p.station))
-
+        if print_this_event == 0 :
+            print ("events.py: print_tv_bitfields: Printing ", len(tvRTL_p.tv_val), "events")
+            for n_events in range(len(tvRTL_p.tv_val)):
+                print_BitFieldsInDataFormat(tvRTL_p.df, tvRTL_p.tv_val[n_events], stationNum=station_name_to_id(tvRTL_p.station))
+        else :
+            print ("events.py: print_tv_bitfields: Printing event ", print_this_event)
+            print_BitFieldsInDataFormat(tvRTL_p.df, tvRTL_p.tv_val[print_this_event], stationNum=station_name_to_id(tvRTL_p.station))
     
     
 
-
+def print_tv_list(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id="", event_number = -1):
+    tvRTL_list = fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id)
+    print_tv_bitfields(tvRTL_list, print_this_event=event_number)
+    
 
 
 def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99):
@@ -191,8 +207,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
     RTL_DFSL.build_data_format()
     # EXP_DF.build_data_format()
-
-
 
 
     # if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
@@ -335,7 +349,8 @@ def parse_tvlist(
 ):
     events_list = tv_bcid_list
 
-    # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
+    #print("events.py VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
+
 
     tv = [["" for x in range(n_to_load)] for y in range(n_ports)]
     my_cnd_thrd_id = [0 for x in range(n_ports)] 
@@ -393,7 +408,7 @@ def modify_tv(tv, ii):
     for io in range(len(tv)):
         tv_port = []
         tv_index = 0
-        #print("modify_tv (tv,ii) =", tv , ii)
+        print("events.py :modify_tv (tv,ii) =", tv , ii)
         for i in range(len(tv[io])):
             # print("modify_tv (io,i) = (",io,i,")")
             tv_port.append(tv[io][i])
@@ -513,5 +528,58 @@ def get_n_dim_hex_list(int_list):
             hex_list.append(get_hex_list(int_list[dim_i]))
     return hex_list
         
+
+def time_ordering(events, time, num_events):
+    n_ports  = len(events)
+    port_idx = [0 for x in range(n_ports)]
+    o_events = [[0 for x in range(num_events)] for y in range(n_ports)]
+
+    #find earliest time index across all ports
+    
+    for n_event in range(num_events):     
+        #print("time = ", time)
+        #print("events = ",events)
+
+        #Find time which has first arrival of event
+        cur_time = -1        
+        for p_i in range(n_ports):           
+            if(len(time[p_i]) >= 1):
+                this_time = time[p_i][0]
+            else:
+                this_time = cur_time; 
+                
+            if(cur_time == -1):
+                cur_time = this_time
+            else :
+                if(this_time < cur_time):
+                    cur_time = this_time
+                        
+    
+        #Update output list with events arriving at cur_time
+        for p_i in range(n_ports):
+            
+            if(len(time[p_i]) >=  1):
+                this_time = time[p_i][0]                                
+            else:
+                this_time = cur_time; 
+
+            if(len(events[p_i]) >= 1):
+               this_event = events[p_i][0]               
+            else:
+               this_event = 0
+            
+
+            if(this_time == cur_time):
+                o_events[p_i][n_event] = this_event
+                if(len(time[p_i]) >= 1):
+                   time[p_i].pop(0)
+                   events[p_i].pop(0)
+            else:
+                o_events[p_i][n_event] = 0
+            
+
+       
+    #print("o_events = ", o_events)
+    return o_events
                                                                     
         

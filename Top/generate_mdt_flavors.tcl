@@ -59,12 +59,35 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
     # }
 }
 
-proc replace_cfg_std_logic {entry new_value dest_file} {
+proc replace_prj_cfg_std_logic {entry new_value dest_file} {
     exec sed -i s|\\(proj_cfg.${entry}\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${new_value}|g $dest_file
 }
 
-proc replace_cfg_int {entry new_value dest_file} {
-    exec sed -i s|\\(proj_cfg.${entry}\\s*:=\\s*\\)\\(\[0-9\]*\\)|\\1${new_value}|g $dest_file
+proc replace_prj_cfg_int {entry new_value dest_file} {
+    exec sed -i s,\\(proj_cfg.${entry}\\s*:=\\s*\\)\\(\[0-9\]*\\),\\1${new_value},g $dest_file
+}
+
+proc replace_constant_int {entry new_value dest_file} {
+    exec sed -i s,\\(constant\\s*${entry}\\s*:\\s*integer\\s*:=\\s*\\)\\(\\-\\?\[0-9\]*\\),\\1${new_value},g $dest_file
+    # puts sed -i s,\\(constant\\s*${entry}\\s*:\\s*integer\\s*:=\\s*\\)\\(-\?\[0-9\]*\\),\\1${new_value},g $dest_file
+}
+
+proc update_hal_config {dest_file props} {
+    # default values
+    set csm_links -1
+    set tdc_links -1
+    set lpgbt_uplinks -1
+    set lpgbt_downlinks -1
+
+    # destructure the input properties into variables
+    foreach prop [huddle keys $props] {
+        set $prop [huddle get_stripped $props $prop]
+    }
+
+    replace_constant_int user_CSM_LINKS ${csm_links} ${dest_file}
+    replace_constant_int user_TDC_INPUTS ${tdc_links} ${dest_file}
+    replace_constant_int user_LPGBT_UPLINKS ${lpgbt_uplinks} ${dest_file}
+    replace_constant_int user_LPGBT_DOWNLINKS ${lpgbt_downlinks} ${dest_file}
 }
 
 proc update_prj_config {dest_file segment_finder pt_calc props} {
@@ -89,7 +112,17 @@ proc update_prj_config {dest_file segment_finder pt_calc props} {
     set endcap 0
     set large 0
     set en_neighbors 0
+
+    # module enables
     set en_daq 1
+    set en_h2s 1
+    set en_ucm 1
+    set en_mpl 1
+    set en_sf 1
+    set en_fm 1
+    set en_pt 1
+    set en_mtc 1
+    set en_tar 1
 
     # destructure the input properties into variables
     foreach prop [huddle keys $props] {
@@ -97,13 +130,24 @@ proc update_prj_config {dest_file segment_finder pt_calc props} {
     }
 
     # update the SF_TYPE and PT_TYPE
-    replace_cfg_std_logic SF_TYPE ${sf_type} ${dest_file}
-    replace_cfg_std_logic PT_TYPE ${pt_type} ${dest_file}
-    replace_cfg_std_logic ENABLE_NEIGHBORS ${en_neighbors} ${dest_file}
-    replace_cfg_std_logic ENDCAP_nSMALL_LARGE ${large} ${dest_file}
-    replace_cfg_std_logic ST_nBARREL_ENDCAP ${endcap} ${dest_file}
-    replace_cfg_std_logic ENABLE_DAQ ${en_daq} ${dest_file}
-    replace_cfg_int SECTOR_SIDE ${sector_side} ${dest_file}
+    replace_prj_cfg_std_logic SF_TYPE ${sf_type} ${dest_file}
+    replace_prj_cfg_std_logic PT_TYPE ${pt_type} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_NEIGHBORS ${en_neighbors} ${dest_file}
+    replace_prj_cfg_std_logic ENDCAP_nSMALL_LARGE ${large} ${dest_file}
+    replace_prj_cfg_std_logic ST_nBARREL_ENDCAP ${endcap} ${dest_file}
+
+    replace_prj_cfg_std_logic ENABLE_DAQ ${en_daq} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_FM  ${en_fm}  ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_SF  ${en_sf}  ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_PT  ${en_pt}  ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_UCM ${en_ucm} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_H2S ${en_h2s} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_MPL ${en_mpl} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_MTC ${en_mtc} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_TAR ${en_tar} ${dest_file}
+
+    replace_prj_cfg_int SECTOR_SIDE ${sector_side} ${dest_file}
+    replace_prj_cfg_int SECTOR_ID ${sector_id} ${dest_file}
 }
 
 proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints link_map props} {
@@ -132,15 +176,15 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     list/xml.lst list/hal.src list/l0mdt.src
     list/project_lib.src list/shared_lib.src list/xdc.con
     pre-synthesis.tcl
+    user_pkg.vhd
     post-bitstream.tcl
-    post-creation.tcl prj_cfg_default.vhd"
+    post-creation.tcl prj_cfg.vhd"
 
     foreach file $files_to_copy {
         file copy -force ${source_path}/$file ${dest_path}/$file
     }
 
     # update the link mapping
-    # exec sed -i "" "s|HAL/link_maps/.*$|HAL/link_maps/${link_map}.vhd|g" "$dest_path/list/hal.src"
     exec sed -i "s|HAL/link_maps/.*$|HAL/link_maps/${link_map}.vhd|g" "$dest_path/list/hal.src"
 
     # update hog.conf
@@ -181,13 +225,15 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     set re "s|${foo}|${bar}|g"
     exec sed -i $re "$dest_path/list/hal.src"
 
-    # update the project config
-    file rename -force "$dest_path/prj_cfg_default.vhd" "$dest_path/prj_cfg_default.vhd"
-    update_prj_config "$dest_path/prj_cfg_default.vhd" $segment_finder $pt_calc $props
+    # update the project/hal configs
+    update_prj_config "$dest_path/prj_cfg.vhd" $segment_finder $pt_calc $props
+    update_hal_config "$dest_path/user_pkg.vhd" $props
+
+    # update the hal.src file
+    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/hal.src"
 
     # update the project_lib.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
-    #exec sed -i "s|prj_cfg_default|prj_cfg_${name}|g" "$dest_path/list/project_lib.src"
 
     # update the gitlab ci file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/gitlab-ci.yml"
@@ -210,10 +256,10 @@ proc clone_projects {huddle} {
 
         set build [huddle get $huddle $key]
 
-        set fpga [huddle get_stripped $build fpga]
-        set board_pkg [huddle get_stripped $build board_pkg]
-        set pt        [huddle get_stripped $build pt]
-        set sf [huddle get_stripped $build sf]
+        set fpga        [huddle get_stripped $build fpga]
+        set board_pkg   [huddle get_stripped $build board_pkg]
+        set pt          [huddle get_stripped $build pt]
+        set sf          [huddle get_stripped $build sf]
         set constraints [huddle get_stripped $build constraints]
 
         puts " Build: $key"
@@ -228,14 +274,15 @@ proc clone_projects {huddle} {
 
             set link_map       [huddle get_stripped $props link_map]
             set zynq_target    [huddle get_stripped $props zynq_target]
-            #set prj_cfg        [huddle get_stripped $props prj_cfg]
 
             puts "    - Flavor: $variant"
-            puts "        link_map    : $link_map"
-            puts "        zynq_target : $zynq_target"
-            puts "        sf          : $sf"
-            puts "        pt          : $pt"
-           #puts "        prj_cfg     : $prj_cfg"
+            puts "        link_map       : $link_map"
+            puts "        zynq_target    : $zynq_target"
+            puts "        sf             : $sf"
+            puts "        pt             : $pt"
+            foreach prop [huddle keys $props] {
+                puts "        [format %-14s $prop] : [huddle get_stripped $props $prop]"
+            }
 
             global script_path
 
@@ -249,4 +296,4 @@ proc clone_projects {huddle} {
                 $fpga $board_pkg $pt $sf $constraints $link_map $props
             }}}
 
-            clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]
+clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]

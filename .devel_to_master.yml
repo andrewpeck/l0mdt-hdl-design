@@ -2,15 +2,16 @@
   tags:
      - docker
 
-
-
 OpenMR:
-    <<: *tag-sr
-    only:
-        refs:
-            - schedules
     stage: merge
+    variables:
+        GIT_SUBMODULE_STRATEGY: recursive
+    before_script:
+        - git config --global user.name "l0mdtel" && git config --global user.email "l0mdtel@cern.ch"
     script:
-        - git pull
-        - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID}               PRIVATE_TOKEN=GXK25m5GX9Ysf5ySqz6J ./autoMergeRequest.sh       
-
+        - git fetch
+        - git checkout -b $CI_COMMIT_REF_NAME
+        - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${HOG_USER}               PRIVATE_TOKEN=${HOG_PUSH_TOKEN} ./autoMergeRequest.sh       
+    rules:
+        - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    <<: *tag-sr
