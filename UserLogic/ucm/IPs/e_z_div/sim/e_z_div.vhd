@@ -59,6 +59,8 @@ USE div_gen_v5_1_17.div_gen_v5_1_17;
 ENTITY e_z_div IS
   PORT (
     aclk : IN STD_LOGIC;
+    aclken : IN STD_LOGIC;
+    aresetn : IN STD_LOGIC;
     s_axis_divisor_tvalid : IN STD_LOGIC;
     s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
     s_axis_dividend_tvalid : IN STD_LOGIC;
@@ -130,14 +132,18 @@ ARCHITECTURE e_z_div_arch OF e_z_div IS
   ATTRIBUTE X_INTERFACE_INFO OF s_axis_divisor_tdata: SIGNAL IS "xilinx.com:interface:axis:1.0 S_AXIS_DIVISOR TDATA";
   ATTRIBUTE X_INTERFACE_PARAMETER OF s_axis_divisor_tvalid: SIGNAL IS "XIL_INTERFACENAME S_AXIS_DIVISOR, TDATA_NUM_BYTES 1, TDEST_WIDTH 0, TID_WIDTH 0, TUSER_WIDTH 0, HAS_TREADY 0, HAS_TSTRB 0, HAS_TKEEP 0, HAS_TLAST 0, FREQ_HZ 100000000, PHASE 0.000, LAYERED_METADATA undef, INSERT_VIP 0";
   ATTRIBUTE X_INTERFACE_INFO OF s_axis_divisor_tvalid: SIGNAL IS "xilinx.com:interface:axis:1.0 S_AXIS_DIVISOR TVALID";
+  ATTRIBUTE X_INTERFACE_PARAMETER OF aresetn: SIGNAL IS "XIL_INTERFACENAME aresetn_intf, POLARITY ACTIVE_LOW, INSERT_VIP 0";
+  ATTRIBUTE X_INTERFACE_INFO OF aresetn: SIGNAL IS "xilinx.com:signal:reset:1.0 aresetn_intf RST";
+  ATTRIBUTE X_INTERFACE_PARAMETER OF aclken: SIGNAL IS "XIL_INTERFACENAME aclken_intf, POLARITY ACTIVE_HIGH";
+  ATTRIBUTE X_INTERFACE_INFO OF aclken: SIGNAL IS "xilinx.com:signal:clockenable:1.0 aclken_intf CE";
   ATTRIBUTE X_INTERFACE_PARAMETER OF aclk: SIGNAL IS "XIL_INTERFACENAME aclk_intf, ASSOCIATED_BUSIF S_AXIS_DIVIDEND:S_AXIS_DIVISOR:M_AXIS_DOUT, ASSOCIATED_RESET aresetn, ASSOCIATED_CLKEN aclken, FREQ_HZ 1000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, INSERT_VIP 0";
   ATTRIBUTE X_INTERFACE_INFO OF aclk: SIGNAL IS "xilinx.com:signal:clock:1.0 aclk_intf CLK";
 BEGIN
   U0 : div_gen_v5_1_17
     GENERIC MAP (
       C_XDEVICEFAMILY => "virtexuplus",
-      C_HAS_ARESETN => 0,
-      C_HAS_ACLKEN => 0,
+      C_HAS_ARESETN => 1,
+      C_HAS_ACLKEN => 1,
       C_LATENCY => 20,
       ALGORITHM_TYPE => 1,
       DIVISOR_WIDTH => 4,
@@ -162,8 +168,8 @@ BEGIN
     )
     PORT MAP (
       aclk => aclk,
-      aclken => '1',
-      aresetn => '1',
+      aclken => aclken,
+      aresetn => aresetn,
       s_axis_divisor_tvalid => s_axis_divisor_tvalid,
       s_axis_divisor_tuser => STD_LOGIC_VECTOR(TO_UNSIGNED(0, 1)),
       s_axis_divisor_tlast => '0',

@@ -55,6 +55,7 @@
 COMPONENT div_gen_r2s_v1
   PORT (
     aclk : IN STD_LOGIC;
+    aclken : IN STD_LOGIC;
     aresetn : IN STD_LOGIC;
     s_axis_divisor_tvalid : IN STD_LOGIC;
     s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
@@ -74,6 +75,7 @@ END COMPONENT;
 your_instance_name : div_gen_r2s_v1
   PORT MAP (
     aclk => aclk,
+    aclken => aclken,
     aresetn => aresetn,
     s_axis_divisor_tvalid => s_axis_divisor_tvalid,
     s_axis_divisor_tdata => s_axis_divisor_tdata,

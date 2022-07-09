@@ -150,32 +150,52 @@ architecture beh of ucm_cvp_b_slope is
   signal e_z_dout_tvalid : STD_LOGIC;
   signal e_z_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
   signal e_z_dout_tdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
+  signal e_y_dout_tvalid : STD_LOGIC;
+  signal e_y_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
+  signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
 
   COMPONENT div_gen_r2s_v1
-  PORT (
-    aclk : IN STD_LOGIC;
-    aresetn : IN STD_LOGIC;
-    s_axis_divisor_tvalid : IN STD_LOGIC;
-    s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    s_axis_dividend_tvalid : IN STD_LOGIC;
-    s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
-    m_axis_dout_tvalid : OUT STD_LOGIC;
-    -- m_axis_dout_tuser : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
-  );
-END COMPONENT;
+    PORT (
+      aclk : IN STD_LOGIC;
+      aclken : IN STD_LOGIC;
+      aresetn : IN STD_LOGIC;
+      s_axis_divisor_tvalid : IN STD_LOGIC;
+      s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+      s_axis_dividend_tvalid : IN STD_LOGIC;
+      s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
+      m_axis_dout_tvalid : OUT STD_LOGIC;
+      m_axis_dout_tuser : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+      m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
+    );
+  END COMPONENT;
 
-COMPONENT e_z_div
-  PORT (
-    aclk : IN STD_LOGIC;
-    s_axis_divisor_tvalid : IN STD_LOGIC;
-    s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-    s_axis_dividend_tvalid : IN STD_LOGIC;
-    s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-    m_axis_dout_tvalid : OUT STD_LOGIC;
-    m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
-  );
-END COMPONENT;
+  COMPONENT e_z_div
+    PORT (
+      aclk : IN STD_LOGIC;
+      aclken : IN STD_LOGIC;
+      aresetn : IN STD_LOGIC;
+      s_axis_divisor_tvalid : IN STD_LOGIC;
+      s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+      s_axis_dividend_tvalid : IN STD_LOGIC;
+      s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+      m_axis_dout_tvalid : OUT STD_LOGIC;
+      m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
+    );
+  END COMPONENT;
+
+  COMPONENT e_y_div
+    PORT (
+      aclk : IN STD_LOGIC;
+      aclken : IN STD_LOGIC;
+      aresetn : IN STD_LOGIC;
+      s_axis_divisor_tvalid : IN STD_LOGIC;
+      s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+      s_axis_dividend_tvalid : IN STD_LOGIC;
+      s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+      m_axis_dout_tvalid : OUT STD_LOGIC;
+      m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(39 DOWNTO 0)
+    );
+  END COMPONENT;
 
 
 begin
@@ -496,6 +516,7 @@ begin
       o_result    => bden,
       o_dv        => bden_dv
   );
+
   -- int_slope <= (b_nom(c_B_DEN_NOM - 1) * 2048)/b_den(c_B_DEN_NOM -1);
   bnom_sc <= bnom & "00000000000";
   b_div_ent : entity shared_lib.generic_pipelined_MATH
@@ -520,6 +541,7 @@ begin
   IP_R2S : div_gen_r2s_v1
   PORT MAP (
     aclk => clk,
+    aclken => ena,
     aresetn => not rst,
     s_axis_divisor_tvalid => bden_dv,
     s_axis_divisor_tdata => bden,
@@ -529,6 +551,7 @@ begin
     -- m_axis_dout_tuser => m_axis_dout_tuser,
     m_axis_dout_tdata => m_axis_dout_tdata
   );
+
   --   e_y <= (sum_y(1) * 2048) / num_h_i(6);
   sum_y_sc <= sum_y & "00000000000";
   e_y_ent : entity shared_lib.generic_pipelined_MATH
@@ -549,6 +572,18 @@ begin
       --
       o_result    => e_y,
       o_dv        => e_y_dv
+  );
+  your_instance_name : e_y_div
+  PORT MAP (
+    aclk => clk,
+    aclken => ena,
+    aresetn => not rst,
+    s_axis_divisor_tvalid => sum_y_dv,
+    s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
+    s_axis_dividend_tvalid => sum_y_dv,
+    s_axis_dividend_tdata => sum_y_sc,
+    m_axis_dout_tvalid => e_y_axis_dout_tvalid,
+    m_axis_dout_tdata => e_y_axis_dout_tdata
   );
   --   e_z <= sum_Z(1) / num_h_i(6);
   e_z_ent : entity shared_lib.generic_pipelined_MATH
@@ -572,7 +607,9 @@ begin
   );
   IP_e_z_ent : e_z_div
   PORT MAP (
-    aclk => aclk,
+    aclk => clk,
+    aclken => ena,
+    aresetn => not rst,
     s_axis_divisor_tvalid => sum_z_dv,
     s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
     s_axis_dividend_tvalid => sum_z_dv,

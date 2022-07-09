@@ -55,6 +55,8 @@
 COMPONENT e_z_div
   PORT (
     aclk : IN STD_LOGIC;
+    aclken : IN STD_LOGIC;
+    aresetn : IN STD_LOGIC;
     s_axis_divisor_tvalid : IN STD_LOGIC;
     s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
     s_axis_dividend_tvalid : IN STD_LOGIC;
@@ -72,6 +74,8 @@ END COMPONENT;
 your_instance_name : e_z_div
   PORT MAP (
     aclk => aclk,
+    aclken => aclken,
+    aresetn => aresetn,
     s_axis_divisor_tvalid => s_axis_divisor_tvalid,
     s_axis_divisor_tdata => s_axis_divisor_tdata,
     s_axis_dividend_tvalid => s_axis_dividend_tvalid,
