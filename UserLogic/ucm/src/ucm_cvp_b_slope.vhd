@@ -144,15 +144,21 @@ architecture beh of ucm_cvp_b_slope is
 
   -- signal dv_chain   : std_logic_vector(16 downto 0);
 
-  signal m_axis_dout_tvalid : STD_LOGIC;
-  signal m_axis_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
-  signal m_axis_dout_tdata : STD_LOGIC_VECTOR(79 DOWNTO 0);
+  signal div_dout_tvalid : STD_LOGIC;
+  signal div_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
+  signal div_dout_tdata : STD_LOGIC_VECTOR(79 DOWNTO 0);
+  signal div_dout_tdata_q : std_logic_vector(43 downto 0);-- := (others => '0');
+  signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
   signal e_z_dout_tvalid : STD_LOGIC;
   signal e_z_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
   signal e_z_dout_tdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
+  signal e_z_dout_tdata_q : std_logic_vector(15 downto 0);-- := (others => '0');
+  signal e_z_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
   signal e_y_dout_tvalid : STD_LOGIC;
   signal e_y_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
   signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
+  signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
+  signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
 
   COMPONENT div_gen_r2s_v1
     PORT (
@@ -424,7 +430,7 @@ begin
   );
   --------------------------------------------------
   --   b_nom(0) <= (num_h_i(1) * sum_zy) - (sum_y(0) * sum_Z(0));
-  b_nom1_ent : entity shared_lib.generic_pipelined_MATH
+  MULT_b_nom1_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 1,
@@ -458,7 +464,7 @@ begin
       o_data      => sum_z_pl,
       o_dv        => sum_z_pl_dv
   );
-  b_nom2_ent : entity shared_lib.generic_pipelined_MATH
+  MULT_b_nom2_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 2,
@@ -477,7 +483,7 @@ begin
       o_result    => bnom_2,
       o_dv        => bnom_2_dv
   );
-  b_nom_ent : entity shared_lib.generic_pipelined_MATH
+  SUB_b_nom_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 1,
@@ -497,7 +503,7 @@ begin
       o_dv        => bnom_dv
   );
   --   b_den(0) <= (num_h_i(1) * sum_zz) - sqr_sum_z;
-  b_den_ent : entity shared_lib.generic_pipelined_MATH
+  MULTSUB_b_den_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "*-",
       g_IN_PIPE_STAGES  => 3,
@@ -519,7 +525,7 @@ begin
 
   -- int_slope <= (b_nom(c_B_DEN_NOM - 1) * 2048)/b_den(c_B_DEN_NOM -1);
   bnom_sc <= bnom & "00000000000";
-  b_div_ent : entity shared_lib.generic_pipelined_MATH
+  DIV_b_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "/",
       g_IN_PIPE_STAGES  => 5,
@@ -538,7 +544,7 @@ begin
       o_result    => bdiv,
       o_dv        => bdiv_dv
   );
-  IP_R2S : div_gen_r2s_v1
+  DIV_b_IP : div_gen_r2s_v1
   PORT MAP (
     aclk => clk,
     aclken => ena,
@@ -547,14 +553,18 @@ begin
     s_axis_divisor_tdata => bden,
     s_axis_dividend_tvalid => bnom_dv,
     s_axis_dividend_tdata => "0000" & bnom_sc,
-    m_axis_dout_tvalid => m_axis_dout_tvalid,
+    m_axis_dout_tvalid => div_dout_tvalid,
     -- m_axis_dout_tuser => m_axis_dout_tuser,
-    m_axis_dout_tdata => m_axis_dout_tdata
+    m_axis_dout_tdata => div_dout_tdata
   );
-
+  -- signal div_dout_tdata_q : std_logic_vector(43 downto 0);-- := (others => '0');
+  -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
+  div_dout_tdata_q <= div_dout_tdata(75 downto 32);
+  div_dout_tdata_r <= div_dout_tdata(31 downto 0);
   --   e_y <= (sum_y(1) * 2048) / num_h_i(6);
   sum_y_sc <= sum_y & "00000000000";
-  e_y_ent : entity shared_lib.generic_pipelined_MATH
+
+  DIV_e_y_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "/",
       g_IN_PIPE_STAGES  => 11,
@@ -573,7 +583,7 @@ begin
       o_result    => e_y,
       o_dv        => e_y_dv
   );
-  your_instance_name : e_y_div
+  DIV_e_y_IP : e_y_div
   PORT MAP (
     aclk => clk,
     aclken => ena,
@@ -581,12 +591,17 @@ begin
     s_axis_divisor_tvalid => sum_y_dv,
     s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
     s_axis_dividend_tvalid => sum_y_dv,
-    s_axis_dividend_tdata => sum_y_sc,
-    m_axis_dout_tvalid => e_y_axis_dout_tvalid,
-    m_axis_dout_tdata => e_y_axis_dout_tdata
+    s_axis_dividend_tdata => std_logic_vector(resize(signed(sum_y_sc),32)),
+    m_axis_dout_tvalid => e_y_dout_tvalid,
+    m_axis_dout_tdata => e_y_dout_tdata
   );
+  -- signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
+  -- signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
+  -- signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
+  e_y_dout_tdata_q <= e_y_dout_tdata(34 downto 8);
+  e_y_dout_tdata_r <= e_y_dout_tdata(3 downto 0);
   --   e_z <= sum_Z(1) / num_h_i(6);
-  e_z_ent : entity shared_lib.generic_pipelined_MATH
+  DIV_e_z_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "/",
       g_IN_PIPE_STAGES  => 11,
@@ -605,7 +620,7 @@ begin
       o_result    => e_z,
       o_dv        => e_z_dv
   );
-  IP_e_z_ent : e_z_div
+  DIV_e_z_IP : e_z_div
   PORT MAP (
     aclk => clk,
     aclken => ena,
@@ -617,6 +632,11 @@ begin
     m_axis_dout_tvalid => e_z_dout_tvalid,
     m_axis_dout_tdata => e_z_dout_tdata
   );
+  -- signal e_z_dout_tdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
+  -- signal e_z_dout_tdata_q : std_logic_vector(15 downto 0);-- := (others => '0');
+  -- signal e_z_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
+  e_z_dout_tdata_q <= e_z_dout_tdata(23 downto 8);
+  e_z_dout_tdata_r <= e_z_dout_tdata(3 downto 0);
   -- s_e_z <= (int_slope * e_z);
   s_e_z_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
@@ -628,11 +648,11 @@ begin
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => bdiv,
+      i_in_A      => div_dout_tdata_q,--bdiv,
       i_in_B      => e_z,
       i_in_C      => "0",
       i_in_D      => "0",
-      i_dv        => bdiv_dv,
+      i_dv        => div_dout_tvalid,--bdiv_dv,
       --
       o_result    => s_e_z,
       o_dv        => s_e_z_dv
