@@ -690,8 +690,8 @@ begin
       rst         => rst,
       ena         => ena,
       --
-      i_data      => std_logic_vector(resize(signed(bdiv),32)),
-      i_dv        => bdiv_dv,
+      i_data      => std_logic_vector(resize(signed(div_dout_tdata_q),32)),
+      i_dv        => div_dout_tvalid,--bdiv_dv,,
       o_data      => int_slope,
       o_dv        => int_slope_dv
   );
