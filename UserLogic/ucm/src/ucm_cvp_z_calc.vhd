@@ -83,6 +83,8 @@ architecture beh of ucm_cvp_z_calc is
 
   signal vec_pos    : std_logic_vector(max(bnom'length,1 +slope'length)-1 downto 0);
   signal vec_pos_dv : std_logic;
+  signal old_vec_pos    : std_logic_vector(max(bnom'length,1 +slope'length)-1 downto 0);
+  signal old_vec_pos_dv : std_logic;
   signal vec_pos_mult    : std_logic_vector( (mult'length + vec_pos'length)-1 downto 0);
   signal vec_pos_mult_dv : std_logic;
 
@@ -186,19 +188,19 @@ begin
       i_in_D      => "0",
       i_dv        => bnom_dv,
       --
-      o_result    => vec_pos,
-      o_dv        => vec_pos_dv
+      o_result    => old_vec_pos,
+      o_dv        => old_vec_pos_dv
   );
   div_IP : zcalc_vec_pos_div
   PORT MAP (
-    aclk => aclk,
-    aclken => aclken,
-    aresetn => aresetn,
+    aclk => clk,
+    aclken => ena,
+    aresetn => not rst,
     s_axis_divisor_tvalid => bnom_dv,
-    s_axis_divisor_tdata => std_logic_vector(resize(signed(slope),1 +slope'length)),
+    s_axis_divisor_tdata => std_logic_vector(resize(signed(slope),40)),
     s_axis_dividend_tvalid => bnom_dv,
-    s_axis_dividend_tdata => bnom,
-    m_axis_dout_tvalid => div_dout_tvalid,
+    s_axis_dividend_tdata =>  std_logic_vector(resize(signed(bnom),40)),
+    m_axis_dout_tvalid => vec_pos_dv,
     m_axis_dout_tdata => div_dout_tdata
   );
   -- signal div_dout_tvalid : std_logic := '0';  -- TVALID for channel DOUT
