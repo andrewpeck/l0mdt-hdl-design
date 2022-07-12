@@ -86,6 +86,23 @@ architecture beh of ucm_cvp_z_calc is
   signal vec_pos_mult    : std_logic_vector( (mult'length + vec_pos'length)-1 downto 0);
   signal vec_pos_mult_dv : std_logic;
 
+  COMPONENT zcalc_vec_pos_div
+    PORT (
+      aclk : IN STD_LOGIC;
+      aclken : IN STD_LOGIC;
+      aresetn : IN STD_LOGIC;
+      s_axis_divisor_tvalid : IN STD_LOGIC;
+      s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(39 DOWNTO 0);
+      s_axis_dividend_tvalid : IN STD_LOGIC;
+      s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(39 DOWNTO 0);
+      m_axis_dout_tvalid : OUT STD_LOGIC;
+      m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
+    );
+  END COMPONENT;
+  signal div_dout_tvalid : std_logic := '0';  -- TVALID for channel DOUT
+  signal div_dout_tdata  : std_logic_vector(79 downto 0) := (others => '0');  -- TDATA for channel DOUT
+  signal div_q : std_logic_vector(32 downto 0) := (others => '0');
+  signal div_r : std_logic_vector(32 downto 0) := (others => '0');
   
 begin
 
@@ -172,7 +189,26 @@ begin
       o_result    => vec_pos,
       o_dv        => vec_pos_dv
   );
-
+  div_IP : zcalc_vec_pos_div
+  PORT MAP (
+    aclk => aclk,
+    aclken => aclken,
+    aresetn => aresetn,
+    s_axis_divisor_tvalid => bnom_dv,
+    s_axis_divisor_tdata => std_logic_vector(resize(signed(slope),1 +slope'length)),
+    s_axis_dividend_tvalid => bnom_dv,
+    s_axis_dividend_tdata => bnom,
+    m_axis_dout_tvalid => div_dout_tvalid,
+    m_axis_dout_tdata => div_dout_tdata
+  );
+  -- signal div_dout_tvalid : std_logic := '0';  -- TVALID for channel DOUT
+  -- signal div_dout_tdata  : std_logic_vector(79 downto 0) := (others => '0');  -- TDATA for channel DOUT
+  -- signal div_q : std_logic_vector(32 downto 0) := (others => '0');
+  -- signal div_r : std_logic_vector(32 downto 0) := (others => '0');
+  div_r <= div_dout_tdata(32 downto 0);
+  div_q  <= div_dout_tdata(72 downto 40);
+  vec_pos <= div_q;
+  
   res : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "*",

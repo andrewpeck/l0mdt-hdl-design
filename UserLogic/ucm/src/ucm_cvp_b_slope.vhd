@@ -583,18 +583,18 @@ begin
       o_result    => e_y,
       o_dv        => e_y_dv
   );
-  DIV_e_y_IP : e_y_div
-  PORT MAP (
-    aclk => clk,
-    aclken => ena,
-    aresetn => not rst,
-    s_axis_divisor_tvalid => sum_y_dv,
-    s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
-    s_axis_dividend_tvalid => sum_y_dv,
-    s_axis_dividend_tdata => std_logic_vector(resize(signed(sum_y_sc),32)),
-    m_axis_dout_tvalid => e_y_dout_tvalid,
-    m_axis_dout_tdata => e_y_dout_tdata
-  );
+  -- DIV_e_y_IP : e_y_div
+  -- PORT MAP (
+  --   aclk => clk,
+  --   aclken => ena,
+  --   aresetn => not rst,
+  --   s_axis_divisor_tvalid => sum_y_dv,
+  --   s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
+  --   s_axis_dividend_tvalid => sum_y_dv,
+  --   s_axis_dividend_tdata => std_logic_vector(resize(signed(sum_y_sc),32)),
+  --   m_axis_dout_tvalid => e_y_dout_tvalid,
+  --   m_axis_dout_tdata => e_y_dout_tdata
+  -- );
   -- signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
   -- signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
   -- signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
@@ -605,7 +605,7 @@ begin
     generic map(
       g_OPERATION => "/",
       g_IN_PIPE_STAGES  => 11,
-      g_OUT_PIPE_STAGES => 51
+      g_OUT_PIPE_STAGES => 50
     )
     port map(
       clk         => clk,
@@ -620,18 +620,18 @@ begin
       o_result    => e_z,
       o_dv        => e_z_dv
   );
-  DIV_e_z_IP : e_z_div
-  PORT MAP (
-    aclk => clk,
-    aclken => ena,
-    aresetn => not rst,
-    s_axis_divisor_tvalid => sum_z_dv,
-    s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
-    s_axis_dividend_tvalid => sum_z_dv,
-    s_axis_dividend_tdata => sum_z,
-    m_axis_dout_tvalid => e_z_dout_tvalid,
-    m_axis_dout_tdata => e_z_dout_tdata
-  );
+  -- DIV_e_z_IP : e_z_div
+  -- PORT MAP (
+  --   aclk => clk,
+  --   aclken => ena,
+  --   aresetn => not rst,
+  --   s_axis_divisor_tvalid => sum_z_dv,
+  --   s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
+  --   s_axis_dividend_tvalid => sum_z_dv,
+  --   s_axis_dividend_tdata => sum_z,
+  --   m_axis_dout_tvalid => e_z_dout_tvalid,
+  --   m_axis_dout_tdata => e_z_dout_tdata
+  -- );
   -- signal e_z_dout_tdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
   -- signal e_z_dout_tdata_q : std_logic_vector(15 downto 0);-- := (others => '0');
   -- signal e_z_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
