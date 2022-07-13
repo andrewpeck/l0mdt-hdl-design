@@ -106,18 +106,24 @@ architecture beh of ucm_cvp_b_slope is
   signal bden       : std_logic_vector(4 + sum_zz'length-1 downto 0);
   signal bden_dv    : std_logic;
 
+  signal bdiv_aux   : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
+  signal bdiv_aux_dv: std_logic;
   signal bdiv       : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
   signal bdiv_dv    : std_logic;
 
-  signal e_y_aux        : std_logic_vector(max(4,sum_y_sc'length) -1 downto 0);
-  signal e_y_aux_dv     : std_logic;
+  signal e_y_aux    : std_logic_vector(max(4,sum_y_sc'length) -1 downto 0);
+  signal e_y_aux_dv : std_logic;
   signal e_y        : std_logic_vector(max(4,sum_y_sc'length) -1 downto 0);
   signal e_y_dv     : std_logic;
+  signal e_y_pl     : std_logic_vector(max(4,sum_y_sc'length) -1 downto 0);
+  signal e_y_pl_dv  : std_logic;
 
-  signal e_z_aux        : std_logic_vector(max(4,sum_z'length) -1 downto 0);
-  signal e_z_aux_dv     : std_logic;
+  signal e_z_aux    : std_logic_vector(max(4,sum_z'length) -1 downto 0);
+  signal e_z_aux_dv : std_logic;
   signal e_z        : std_logic_vector(max(4,sum_z'length) -1 downto 0);
   signal e_z_dv     : std_logic;
+  signal e_z_pl     : std_logic_vector(max(4,sum_z'length) -1 downto 0);
+  signal e_z_pl_dv  : std_logic;
 
   signal s_e_z      : std_logic_vector(bdiv'length + e_z'length -1 downto 0);
   signal s_e_z_dv   : std_logic;
@@ -549,8 +555,8 @@ begin
       i_in_D      => "0",
       i_dv        => bden_dv,
       --
-      o_result    => bdiv,
-      o_dv        => bdiv_dv
+      o_result    => bdiv_aux,
+      o_dv        => bdiv_aux_dv
   );
   DIV_b_IP : div_gen_r2s_v1
   PORT MAP (
@@ -569,9 +575,12 @@ begin
   -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
   div_dout_tdata_q <= div_dout_tdata(75 downto 32);
   div_dout_tdata_r <= div_dout_tdata(31 downto 0);
+  bdiv <= div_dout_tdata_q  when div_dout_tvalid = '1' else (others => '0') ;
+  bdiv_dv <= div_dout_tvalid;
+  -----------------------------------------------------------------------------------------------
   --   e_y <= (sum_y(1) * 2048) / num_h_i(6);
   sum_y_sc <= sum_y & "00000000000";
-  -----------------------------------------------------------------------------------------------
+  
   DIV_e_y_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "/",
@@ -609,7 +618,7 @@ begin
   e_y_dout_tdata_q <= e_y_dout_tdata(34 downto 8);
   e_y_dout_tdata_r <= e_y_dout_tdata(3 downto 0);
   --   e_z <= sum_Z(1) / num_h_i(6);
-  e_y <= e_y_dout_tdata_q;
+  e_y <= e_y_dout_tdata_q  when e_y_dout_tvalid = '1' else (others => '0');
   e_y_dv <= e_y_dout_tvalid;
   -----------------------------------------------------------------------------------------------
   DIV_e_z_ent : entity shared_lib.generic_pipelined_MATH
@@ -648,9 +657,24 @@ begin
   -- signal e_z_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
   e_z_dout_tdata_q <= e_z_dout_tdata(23 downto 8);
   e_z_dout_tdata_r <= e_z_dout_tdata(3 downto 0);
-  e_z <= e_z_dout_tdata_q;
+  e_z <= e_z_dout_tdata_q  when e_z_dout_tvalid = '1' else (others => '0');
   e_z_dv <= e_z_dout_tvalid;
   -----------------------------------------------------------------------------------------------
+  PL_e_z : entity vamc_lib.vamc_spl
+  generic map(
+    g_DELAY_CYCLES  => 42,
+    g_PIPELINE_WIDTH    => e_z'length
+  )
+  port map(
+    clk         => clk,
+    rst         => rst,
+    ena         => ena,
+    --
+    i_data      => e_z,
+    i_dv        => e_z_dv,--bdiv_dv,,
+    o_data      => e_z_pl,
+    o_dv        => e_z_pl_dv
+);
   -- s_e_z <= (int_slope * e_z);
   s_e_z_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
@@ -662,11 +686,11 @@ begin
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => div_dout_tdata_q,--bdiv,
-      i_in_B      => e_z,
+      i_in_A      => bdiv,
+      i_in_B      => e_z_pl,
       i_in_C      => "0",
       i_in_D      => "0",
-      i_dv        => div_dout_tvalid,--bdiv_dv,
+      i_dv        => bdiv_dv and e_z_pl_dv,
       --
       o_result    => s_e_z,
       o_dv        => s_e_z_dv
