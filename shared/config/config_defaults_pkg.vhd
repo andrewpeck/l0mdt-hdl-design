@@ -85,7 +85,7 @@ package cfg_global_default_pkg is
     ENABLE_H2S                    : std_logic;
     UPT_LATENCY                   : integer;
     MPT_LATENCY                   : integer;  
-    PT_LATENCY                    : integer; --PRIYA
+
     --------------------------------------------------------------------------------
     -- mdt hardware interface config
     --------------------------------------------------------------------------------
@@ -154,8 +154,7 @@ package cfg_global_default_pkg is
     -- (barrel, endcap)
     NUM_MTC                       => 3 ,   -- default 3, connecting to primary SL
     MPT_LATENCY                   => 22,
-    UPT_LATENCY                   => 22,
-    PT_LATENCY                    => 22 --UPT latency is 22 (PRIYA)
+    UPT_LATENCY                   => 22
   );
 
   function get_num_HP(enable_list : std_logic_vector) return integer;

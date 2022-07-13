@@ -43,7 +43,7 @@ proj_cfg.ENABLE_MTC               := '1';
 
 proj_cfg.SF_TYPE   := '1'; -- AUTO: 0: CSF 1:LSF
 proj_cfg.PT_TYPE := '1';
-
+proj_cfg.UPT_LATENCY := 22;
 -- proj_cfg.ENABLE_ST_INN := '1';
 -- proj_cfg.EN_MDT_CH_INN := (others => '1');
 

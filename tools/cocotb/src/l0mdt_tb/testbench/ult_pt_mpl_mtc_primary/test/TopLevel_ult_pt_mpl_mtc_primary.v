@@ -94,15 +94,19 @@ module TopLevel_ult_pt_mpl_mtc_primary #(
 
    for (genvar i=0; i<3; i++)
      begin
-	assign ucm2pl_av[i]             = BLOCK_input_data[9 + i][UCM2PL_LEN-1:0];	
+	assign ucm2pl_av[i][UCM2PL_PROCESS_CH_LSB-1:0]                     = BLOCK_input_data[9 + i][UCM2PL_PROCESS_CH_LSB-1:0];
+	assign ucm2pl_av[i][UCM2PL_PROCESS_CH_MSB:UCM2PL_PROCESS_CH_LSB]   = (BLOCK_input_data[9 + i][UCM2PL_DATA_VALID_MSB] == 1)? i : 0; 
+	assign ucm2pl_av[i][UCM2PL_DATA_VALID_MSB:UCM2PL_PROCESS_CH_MSB+1] = BLOCK_input_data[9 + i][UCM2PL_DATA_VALID_MSB:UCM2PL_PROCESS_CH_MSB+1];
+	
 	assign inn_segments_av[i]  = BLOCK_input_data[i][UCM2PL_LEN-1:0];
-	assign mid_segments_av[i] = BLOCK_input_data[3+i][UCM2PL_LEN-1:0];
+	assign mid_segments_av[i]  = BLOCK_input_data[3+i][UCM2PL_LEN-1:0];
 	assign out_segments_av[i]  = BLOCK_input_data[6+i][UCM2PL_LEN-1:0];
 	assign dummy_in[i]   = 0;
      end
    
    tb_ult_pt_mpl_mtc_primary tb_ult_pt_mpl_mtc_primary_inst(
-							   .clock_and_control(),
+							   .clock(clock),
+							    .rst(~reset_n),
 							   .ttc_commands(),
 							  // .mtc_ctrl_v(0),
 							   //.mtc_mon_v(dummy_out_mtc),
@@ -124,13 +128,13 @@ module TopLevel_ult_pt_mpl_mtc_primary #(
       for (genvar i=0; i<3; i++)
 	begin
 	   assign BLOCK_output_data[i][MTC2SL_LEN-1:0] = o_MTC[i];
-	   assign BLOCK_output_write_enable[i]                  = o_MTC[i][MTC2SL_DATA_VALID_MSB];
+	   assign BLOCK_output_write_enable[i]         = o_MTC[i][MTC2SL_DATA_VALID_MSB];
 	   assign BLOCK_output_data[i][255:MTC2SL_LEN] = 0;
 	   
 	end
 
    
-    //
+    // 
     // Output buffers
     //
    generate

@@ -203,7 +203,7 @@ package config_pkg is
 
   constant c_MPL_PL_A_LATENCY   : integer := c_HEG_PROC_TIME;
 
-  constant c_MPL_PL_B_LATENCY   : integer := get_pt_latency(CFG.PT_TYPE,CFG.UPT_LATENCY, CFG.MPT_LATENCY); 
+  constant c_MPL_PL_B_LATENCY   : integer := get_pt_latency(CFG.PT_TYPE,CFG.UPT_LATENCY, CFG.MPT_LATENCY) + 2; 
 
   ---------------------------------------------------------
   -- FUNCTIONS

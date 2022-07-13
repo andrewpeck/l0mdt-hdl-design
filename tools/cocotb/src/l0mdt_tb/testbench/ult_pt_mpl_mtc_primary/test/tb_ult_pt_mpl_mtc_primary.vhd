@@ -28,7 +28,8 @@ entity tb_ult_pt_mpl_mtc_primary is
     );
   port (
     -- clock and ttc
-    clock_and_control : in l0mdt_control_rt;
+    clock             : in std_logic;
+    rst               : in std_logic;
     ttc_commands      : in l0mdt_ttc_rt;
 
  
@@ -79,15 +80,22 @@ architecture behavioral of  tb_ult_pt_mpl_mtc_primary is
     signal pt_sump  : std_logic := '1';
     signal mtc_sump : std_logic := '1';
   --ACCESS attribute
-    signal mtc_mon_v             : std_logic_vector(MTC_MON_t'w * c_NUM_THREADS-1 downto 0);--  : out MTC_MON_t;
-    signal mpl_mon_v             : std_logic_vector(MPL_MON_t'w * c_MAX_NUM_SL-1 downto 0);-- : out MPL_MON_t; 
-    signal tf_mon_v                 : std_logic_vector(TF_MON_t'w * c_NUM_THREADS-1 downto 0);-- : out TF_MON_t;
-    signal mtc_ctrl_v               : std_logic_vector(MTC_CTRL_t'w * c_NUM_THREADS-1 downto 0); --  : in  MTC_CTRL_t;
-    signal mpl_ctrl_v               : std_logic_vector(MPL_CTRL_t'w * c_MAX_NUM_SL-1 downto 0);-- : out MPL_MON_t;
-    signal tf_ctrl_v                   : std_logic_vector(TF_CTRL_t'w * c_NUM_THREADS-1 downto 0);-- : out TF_MON_t;
-                                                                                              
+    signal mtc_mon_v             : std_logic_vector(MTC_MON_t'w -1 downto 0);--  : out MTC_MON_t;
+    signal mpl_mon_v             : std_logic_vector(MPL_MON_t'w -1 downto 0);-- : out MPL_MON_t; 
+    signal tf_mon_v              : std_logic_vector(TF_MON_t'w * c_NUM_THREADS-1 downto 0);-- : out TF_MON_t;
+    signal mtc_ctrl_v            : std_logic_vector(MTC_CTRL_t'w -1 downto 0):= (others => '0'); --  : in  MTC_CTRL_t;
+    signal mpl_ctrl_v            : std_logic_vector(MPL_CTRL_t'w -1 downto 0):= (others => '0');-- : out MPL_MON_t;
+    signal tf_ctrl_v             : std_logic_vector(TF_CTRL_t'w * c_NUM_THREADS-1 downto 0):= (others => '0');-- : out TF_MON_t;
+
+
+    signal clock_and_control : l0mdt_control_rt;
 begin
 
+  clock_and_control.clk <= clock;
+  clock_and_control.rst <= rst;
+  mpl_ctrl_v(MPL_PL_MEM_PL_MEM_CTRL_t'w-1 downto MPL_PL_MEM_PL_MEM_CTRL_t'w - 12 ) <= x"03e";
+ 
+  
   ULT_MPL : entity ult_lib.pipeline
     port map (
       -- clock, control, and monitoring
@@ -117,7 +125,7 @@ begin
       i_minus_neighbor_segments => i_minus_neighbor_segments,
       -- segments from hps
       i_inn_segments             => inn_segments_av,
-      i_mid_segments            => mid_segments_av,
+      i_mid_segments             => mid_segments_av,
       i_out_segments             => out_segments_av,
       i_ext_segments             => ext_segments_av,     
       -- from pipeline

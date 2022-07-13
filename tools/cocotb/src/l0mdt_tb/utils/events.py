@@ -232,7 +232,7 @@ def   print_tv_bitfields(tvRTL_list): #tvformats, tv_list, n_interfaces, n_ports
     
     
 
-def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99):
+def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99, tv_thread_mapping=[0,1,2]):
     evt                = 0
     ret_val            = 1
     pass_count         = 0
@@ -273,14 +273,14 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
         else:
             print("\nEvent: ", ievent)
             for this_candidate in range(n_candidates):
-                if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=this_candidate):
+                if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate]):
                     EXP_DF.clear()
                     RTL_DFSL.clear()
                     tv_format_val.clear()
                     comparison_data.clear()
 
                     EXP_DF = tv_bcid_list[ievent].DF_SL.copy()               #For comparing hits, will have to look at DF_MDT
-                    EXP_BF = EXP_DF[this_candidate].getBitFieldWord(tvformat, stationID)
+                    EXP_BF = EXP_DF[tv_thread_mapping[this_candidate]].getBitFieldWord(tvformat, stationID)
 
 
                     if evt + 1 <= len(rtl_tv[this_candidate]):
@@ -480,6 +480,20 @@ def prepend_zeroes(tv, num=1):
     return tv_out
 
 
+def append_zeroes(tv, num=1):
+    tv_out = []
+
+   
+    for i in range(len(tv)):
+        tv_out.append(tv[i])
+    for i in range(num):
+        tv_out.append(0)
+
+    print("modify_tv input (tv) =", tv )
+    print("modify_tv output (tv_out) =", tv_out )
+    return tv_out
+
+
 def modify_tv_padzeroes(tv, location="end", num=[]):
     tv_out = []
 
@@ -497,8 +511,8 @@ def modify_tv_padzeroes(tv, location="end", num=[]):
                 for i in range(num[io]):
                     tv_port.append(0)
         tv_out.append(tv_port)
-    #print("modify_tv_padzeroes (tv) =", tv )
-    #print("modify_tv_padzeroes (tv_out) =", tv_out )
+    print("modify_tv_padzeroes (tv) =", tv )
+    print("modify_tv_padzeroes (tv_out) =", tv_out )
     return tv_out
 
 

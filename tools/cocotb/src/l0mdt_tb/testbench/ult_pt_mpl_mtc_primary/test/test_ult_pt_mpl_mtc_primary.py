@@ -84,7 +84,7 @@ def reset(dut):
     dut.reset_n <= 0
     yield ClockCycles(dut.clock, 10)
     dut.reset_n <= 1
-    yield ClockCycles(dut.clock, 20)
+    yield ClockCycles(dut.clock, 100)
 
 ##
 ## TEST
@@ -111,6 +111,7 @@ def ult_pt_mpl_mtc_primary_test(dut):
     testvector_config                = config["testvectors"]
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
+    mpl_latency                      = run_config["mpl_latency"]
     inputs_station_id= [["" for x in range(UltPtMplMtcPrimaryPorts.get_input_interface_ports(y))]for y in range(UltPtMplMtcPrimaryPorts.n_input_interfaces)]
     inputs_thread_n= [[0 for x in range(UltPtMplMtcPrimaryPorts.get_input_interface_ports(y))]for y in range(UltPtMplMtcPrimaryPorts.n_input_interfaces)]
     outputs_station_id= [["" for x in range(UltPtMplMtcPrimaryPorts.get_output_interface_ports(y))]for y in range(UltPtMplMtcPrimaryPorts.n_output_interfaces)]
@@ -242,10 +243,11 @@ def ult_pt_mpl_mtc_primary_test(dut):
         )
 
     ###Get Input Test Vector List for Ports across all input interfaces##
-    input_tv_list         =  []
-    single_interface_list = []
+    input_tv_list           =  []
+    single_interface_list_i = []
+
     for n_ip_intf in range(UltPtMplMtcPrimaryPorts.n_input_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_tvlist(
+        single_interface_list_i = (events.parse_tvlist(
             tv_bcid_list,
             tvformat=input_tvformats[n_ip_intf],
             n_ports = UltPtMplMtcPrimaryPorts.get_input_interface_ports(n_ip_intf),
@@ -254,9 +256,23 @@ def ult_pt_mpl_mtc_primary_test(dut):
             tv_type=input_tvtype[n_ip_intf],
             cnd_thrd_id = inputs_thread_n[n_ip_intf]
             ))
+
+        single_interface_list    = []
+        single_interface_list_ii = []
+        if n_ip_intf < 3 : #"PTCALC2MTC_LSF", delay inputs based on pl block latency
+            for port_n in range(UltPtMplMtcPrimaryPorts.get_input_interface_ports(n_ip_intf)):
+                single_interface_list_ii.append(events.append_zeroes(single_interface_list_i[port_n], num=1))
+                single_interface_list.append(events.prepend_zeroes(single_interface_list_ii[port_n], num=mpl_latency))
+               
+        else:
+            for port_n in range(UltPtMplMtcPrimaryPorts.get_input_interface_ports(n_ip_intf)):
+                single_interface_list_ii.append(events.append_zeroes(single_interface_list_i[port_n], num=1))
+                single_interface_list = single_interface_list_ii
+       
         for io in range(UltPtMplMtcPrimaryPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
 
+        print("\n*************************\nINPUT LIST = ", input_tv_list,"\n*********************************\n")
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
@@ -272,7 +288,7 @@ def ult_pt_mpl_mtc_primary_test(dut):
             ))
         output_tv_list.append(single_interface_list)
 
-
+        print("\n########################## \nOUTPUT LIST = ", output_tv_list, "\n################################\n")
 
     ##
     ## send input events
@@ -288,7 +304,7 @@ def ult_pt_mpl_mtc_primary_test(dut):
             f"ERROR Event sending timed out! Number of expected inputs with events = {len(send_finished_signal)}"
         )
     try:
-        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*2, "us")
+        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*2 + 20, "us")
     except Exception as ex:
         raise cocotb.result.TestFailure(
             f"ERROR Timed out waiting for events to send: {ex}"
@@ -297,7 +313,7 @@ def ult_pt_mpl_mtc_primary_test(dut):
 
 
     #Block Latency
-    yield ClockCycles(dut.clock, 100)
+    yield ClockCycles(dut.clock, mpl_latency * 20 + num_events_to_process)
     ##
 
     ##
@@ -346,7 +362,7 @@ def ult_pt_mpl_mtc_primary_test(dut):
 
 
     for n_op_intf in range (UltPtMplMtcPrimaryPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],UltPtMplMtcPrimaryPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf],output_dir,stationNum=events.station_name_to_id(outputs_station_id[n_op_intf][0]));
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],UltPtMplMtcPrimaryPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf],output_dir,stationNum=events.station_name_to_id(outputs_station_id[n_op_intf][0]), tv_thread_mapping=outputs_thread_n[n_op_intf]);
     all_tests_passed = (all_tests_passed and events_are_equal)
     pass_count       = pass_count + pass_count_i
     fail_count       = fail_count + fail_count_i
