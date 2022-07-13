@@ -53,11 +53,11 @@ package mpl_pkg is
    function convert(x: mpl2csw_ptcalc_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: mpl2csw_ptcalc_avt) return mpl2csw_ptcalc_avt;
 
-   constant MPL_PL_A_LATENCY : integer := 10;
+   constant MPL_PL_A_LATENCY : integer := 10; 
    attribute w of MPL_PL_A_LATENCY : constant is 32;
 
-   constant MPL_PL_B_LATENCY : integer := 5;
-   attribute w of MPL_PL_B_LATENCY : constant is 32;
+--   constant MPL_PL_B_LATENCY : integer := 5;
+--   attribute w of MPL_PL_B_LATENCY : constant is 32;
 
 end package mpl_pkg;
 
