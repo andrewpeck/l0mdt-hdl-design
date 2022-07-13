@@ -202,7 +202,8 @@ package config_pkg is
   constant c_HEG_PROC_TIME : integer := c_HEG_TIME_UNLOAD + get_sf_time(CFG.SF_TYPE,CSF_POST_PROCESSING,LSF_POST_PROCESSING);
 
   constant c_MPL_PL_A_LATENCY   : integer := c_HEG_PROC_TIME;
-  constant c_MPL_PL_B_LATENCY     : integer := 5;
+
+  constant c_MPL_PL_B_LATENCY   : integer := get_pt_latency(CFG.PT_TYPE,CFG.UPT_LATENCY, CFG.MPT_LATENCY); 
 
   ---------------------------------------------------------
   -- FUNCTIONS
@@ -212,7 +213,9 @@ package config_pkg is
 
   function get_proper_chamber(in_chamber : integer) return integer;
 
+  
 
+ 
 end package config_pkg;
 
 package body config_pkg is
@@ -240,5 +243,6 @@ package body config_pkg is
     return out_chamber;
   end function;
 
+  
 
 end package body config_pkg;
