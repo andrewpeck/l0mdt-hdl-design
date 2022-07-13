@@ -1,16 +1,20 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: ATLAS L0MDT Trigger
+-- File: ucm_cvp_b_slope.vhd
+-- Module: ucm_cvp_b_slope
+-- File PATH: /UserLogic/ucm/src/ucm_cvp_b_slope.vhd
+-- -----
+-- File Created: Friday, 8th July 2022 9:42:07 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Wednesday, 13th July 2022 10:51:38 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 2022-07-13	GLdL add IPs for divisions
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: slc vector processor slope calculator
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -105,9 +109,13 @@ architecture beh of ucm_cvp_b_slope is
   signal bdiv       : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
   signal bdiv_dv    : std_logic;
 
+  signal e_y_aux        : std_logic_vector(max(4,sum_y_sc'length) -1 downto 0);
+  signal e_y_aux_dv     : std_logic;
   signal e_y        : std_logic_vector(max(4,sum_y_sc'length) -1 downto 0);
   signal e_y_dv     : std_logic;
 
+  signal e_z_aux        : std_logic_vector(max(4,sum_z'length) -1 downto 0);
+  signal e_z_aux_dv     : std_logic;
   signal e_z        : std_logic_vector(max(4,sum_z'length) -1 downto 0);
   signal e_z_dv     : std_logic;
 
@@ -522,7 +530,7 @@ begin
       o_result    => bden,
       o_dv        => bden_dv
   );
-
+  -----------------------------------------------------------------------------------------------
   -- int_slope <= (b_nom(c_B_DEN_NOM - 1) * 2048)/b_den(c_B_DEN_NOM -1);
   bnom_sc <= bnom & "00000000000";
   DIV_b_ent : entity shared_lib.generic_pipelined_MATH
@@ -563,7 +571,7 @@ begin
   div_dout_tdata_r <= div_dout_tdata(31 downto 0);
   --   e_y <= (sum_y(1) * 2048) / num_h_i(6);
   sum_y_sc <= sum_y & "00000000000";
-
+  -----------------------------------------------------------------------------------------------
   DIV_e_y_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "/",
@@ -580,27 +588,30 @@ begin
       i_in_D      => "0",
       i_dv        => sum_y_dv,
       --
-      o_result    => e_y,
-      o_dv        => e_y_dv
+      o_result    => e_y_aux,
+      o_dv        => e_y_aux_dv
   );
-  -- DIV_e_y_IP : e_y_div
-  -- PORT MAP (
-  --   aclk => clk,
-  --   aclken => ena,
-  --   aresetn => not rst,
-  --   s_axis_divisor_tvalid => sum_y_dv,
-  --   s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
-  --   s_axis_dividend_tvalid => sum_y_dv,
-  --   s_axis_dividend_tdata => std_logic_vector(resize(signed(sum_y_sc),32)),
-  --   m_axis_dout_tvalid => e_y_dout_tvalid,
-  --   m_axis_dout_tdata => e_y_dout_tdata
-  -- );
+  DIV_e_y_IP : e_y_div
+  PORT MAP (
+    aclk => clk,
+    aclken => ena,
+    aresetn => not rst,
+    s_axis_divisor_tvalid => sum_y_dv,
+    s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
+    s_axis_dividend_tvalid => sum_y_dv,
+    s_axis_dividend_tdata => std_logic_vector(resize(signed(sum_y_sc),32)),
+    m_axis_dout_tvalid => e_y_dout_tvalid,
+    m_axis_dout_tdata => e_y_dout_tdata
+  );
   -- signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
   -- signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
   -- signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
   e_y_dout_tdata_q <= e_y_dout_tdata(34 downto 8);
   e_y_dout_tdata_r <= e_y_dout_tdata(3 downto 0);
   --   e_z <= sum_Z(1) / num_h_i(6);
+  e_y <= e_y_dout_tdata_q;
+  e_y_dv <= e_y_dout_tvalid;
+  -----------------------------------------------------------------------------------------------
   DIV_e_z_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "/",
@@ -617,26 +628,29 @@ begin
       i_in_D      => "0",
       i_dv        => sum_z_dv,
       --
-      o_result    => e_z,
-      o_dv        => e_z_dv
+      o_result    => e_z_aux,
+      o_dv        => e_z_aux_dv
   );
-  -- DIV_e_z_IP : e_z_div
-  -- PORT MAP (
-  --   aclk => clk,
-  --   aclken => ena,
-  --   aresetn => not rst,
-  --   s_axis_divisor_tvalid => sum_z_dv,
-  --   s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
-  --   s_axis_dividend_tvalid => sum_z_dv,
-  --   s_axis_dividend_tdata => sum_z,
-  --   m_axis_dout_tvalid => e_z_dout_tvalid,
-  --   m_axis_dout_tdata => e_z_dout_tdata
-  -- );
+  DIV_e_z_IP : e_z_div
+  PORT MAP (
+    aclk => clk,
+    aclken => ena,
+    aresetn => not rst,
+    s_axis_divisor_tvalid => sum_z_dv,
+    s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
+    s_axis_dividend_tvalid => sum_z_dv,
+    s_axis_dividend_tdata => sum_z,
+    m_axis_dout_tvalid => e_z_dout_tvalid,
+    m_axis_dout_tdata => e_z_dout_tdata
+  );
   -- signal e_z_dout_tdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
   -- signal e_z_dout_tdata_q : std_logic_vector(15 downto 0);-- := (others => '0');
   -- signal e_z_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
   e_z_dout_tdata_q <= e_z_dout_tdata(23 downto 8);
   e_z_dout_tdata_r <= e_z_dout_tdata(3 downto 0);
+  e_z <= e_z_dout_tdata_q;
+  e_z_dv <= e_z_dout_tvalid;
+  -----------------------------------------------------------------------------------------------
   -- s_e_z <= (int_slope * e_z);
   s_e_z_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
