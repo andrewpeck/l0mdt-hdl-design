@@ -28,6 +28,7 @@ from l0mdt_tb.utils import test_config
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
+from DataFormats.l0mdt_buses_constants import *
 
 def initialize_spybuffers(fifos=[]):
 
@@ -114,6 +115,7 @@ def ult_pt_mpl_mtc_primary_test(dut):
     mpl_latency                      = run_config["mpl_latency"]
     inputs_station_id= [["" for x in range(UltPtMplMtcPrimaryPorts.get_input_interface_ports(y))]for y in range(UltPtMplMtcPrimaryPorts.n_input_interfaces)]
     inputs_thread_n= [[0 for x in range(UltPtMplMtcPrimaryPorts.get_input_interface_ports(y))]for y in range(UltPtMplMtcPrimaryPorts.n_input_interfaces)]
+    ucm2pl_process_ch =  [[0 for x in range(UltPtMplMtcPrimaryPorts.get_input_interface_ports(y))]for y in range(UltPtMplMtcPrimaryPorts.n_input_interfaces)]
     outputs_station_id= [["" for x in range(UltPtMplMtcPrimaryPorts.get_output_interface_ports(y))]for y in range(UltPtMplMtcPrimaryPorts.n_output_interfaces)]
     tolerance= [["" for x in range(UltPtMplMtcPrimaryPorts.get_output_interface_ports(y))]for y in range(UltPtMplMtcPrimaryPorts.n_output_interfaces)]
     outputs_thread_n= [[0 for x in range(UltPtMplMtcPrimaryPorts.get_output_interface_ports(y))]for y in range(UltPtMplMtcPrimaryPorts.n_output_interfaces)]
@@ -122,6 +124,8 @@ def ult_pt_mpl_mtc_primary_test(dut):
             inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
         if "thread_n" in testvector_config_inputs[i]:
             inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
+        if "process_ch" in testvector_config_inputs[i]:
+            ucm2pl_process_ch[i] = testvector_config_inputs[i]["process_ch"]
     for i in range(UltPtMplMtcPrimaryPorts.n_output_interfaces):
         if "station_ID" in testvector_config_outputs[i] :
             outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
@@ -259,20 +263,22 @@ def ult_pt_mpl_mtc_primary_test(dut):
 
         single_interface_list    = []
         single_interface_list_ii = []
-        if n_ip_intf < 3 : #"PTCALC2MTC_LSF", delay inputs based on pl block latency
+        single_interface_list_process_ch = []
+        if n_ip_intf < 3 : #"SF2PTCALC_LSF", delay inputs based on pl block latency
             for port_n in range(UltPtMplMtcPrimaryPorts.get_input_interface_ports(n_ip_intf)):
                 single_interface_list_ii.append(events.append_zeroes(single_interface_list_i[port_n], num=1))
                 single_interface_list.append(events.prepend_zeroes(single_interface_list_ii[port_n], num=mpl_latency))
                
-        else:
+        else: #UCM2PL: Need to update process_ch
             for port_n in range(UltPtMplMtcPrimaryPorts.get_input_interface_ports(n_ip_intf)):
-                single_interface_list_ii.append(events.append_zeroes(single_interface_list_i[port_n], num=1))
+                single_interface_list_process_ch.append(events.update_tv_bitfield(single_interface_list_i[port_n], UCM2PL_LEN,  ucm2pl_process_ch[n_ip_intf][port_n],UCM2PL_PROCESS_CH_MSB,UCM2PL_PROCESS_CH_LSB));                
+                single_interface_list_ii.append(events.append_zeroes(single_interface_list_process_ch[port_n], num=1))
                 single_interface_list = single_interface_list_ii
        
         for io in range(UltPtMplMtcPrimaryPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
 
-        print("\n*************************\nINPUT LIST = ", input_tv_list,"\n*********************************\n")
+        #print("\n*************************\nINPUT LIST = ", input_tv_list,"\n*********************************\n")
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
@@ -283,12 +289,12 @@ def ult_pt_mpl_mtc_primary_test(dut):
             n_ports = UltPtMplMtcPrimaryPorts.get_output_interface_ports(n_op_intf),
             n_to_load=num_events_to_process,
             station_ID=outputs_station_id[n_op_intf],
-            tv_type="value",
-            cnd_thrd_id = outputs_thread_n[n_op_intf]
+            tv_type="value"
+            #cnd_thrd_id = outputs_thread_n[n_op_intf]
             ))
         output_tv_list.append(single_interface_list)
 
-        print("\n########################## \nOUTPUT LIST = ", output_tv_list, "\n################################\n")
+        #print("\n########################## \nOUTPUT LIST = ", output_tv_list, "\n################################\n")
 
     ##
     ## send input events
