@@ -696,7 +696,21 @@ begin
       o_dv        => s_e_z_dv
   );
   --   
-
+  PL_e_y : entity vamc_lib.vamc_spl
+  generic map(
+    g_DELAY_CYCLES  => 31,
+    g_PIPELINE_WIDTH    => e_y'length
+  )
+  port map(
+    clk         => clk,
+    rst         => rst,
+    ena         => ena,
+    --
+    i_data      => e_y,
+    i_dv        => e_y_dv,--bdiv_dv,,
+    o_data      => e_y_pl,
+    o_dv        => e_y_pl_dv
+);
   --   o_offset <= resize((e_y_2) - s_e_z,32);
   off_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
@@ -708,11 +722,11 @@ begin
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => e_y,
+      i_in_A      => e_y_pl,
       i_in_B      => s_e_z,
       i_in_C      => "0",
       i_in_D      => "0",
-      i_dv        => s_e_z_dv,
+      i_dv        => s_e_z_dv and e_y_pl_dv,
       --
       o_result    => int_off,
       o_dv        => int_off_dv
@@ -720,7 +734,7 @@ begin
 
   PL_slope : entity vamc_lib.vamc_spl
     generic map(
-      g_DELAY_CYCLES  => 6,
+      g_DELAY_CYCLES  => 12,
       g_PIPELINE_WIDTH    => 32
     )
     port map(
@@ -728,8 +742,8 @@ begin
       rst         => rst,
       ena         => ena,
       --
-      i_data      => std_logic_vector(resize(signed(div_dout_tdata_q),32)),
-      i_dv        => div_dout_tvalid,--bdiv_dv,,
+      i_data      => std_logic_vector(resize(signed(bdiv),32)),
+      i_dv        => bdiv_dv,
       o_data      => int_slope,
       o_dv        => int_slope_dv
   );
