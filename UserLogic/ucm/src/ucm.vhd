@@ -113,8 +113,13 @@ architecture beh of ucm is
   -- signal ucm_prepro_av        : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_in_av       : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
+  signal csw_main_in_dv      : std_logic;
+  signal csw_ctrl_dv      : std_logic;
+  
+  
   -- signal csw_main_out_ar      : slc_rx_art(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_out_av      : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
+  signal csw_main_out_dv      : std_logic;
 
   signal slc_endcap_ar        : slc_endcap_art(c_MAX_NUM_SL -1 downto 0);
 
@@ -235,6 +240,7 @@ begin
     i_prepro2ctrl_av  => prepro2ctrl_av,
     --
     o_csw_ctrl_av     => csw_control_av,
+    o_csw_ctrl_dv     => csw_ctrl_dv,
     o_pam_ctrl        => pam_CSW_control,
     -- o_proc_info       => proc_info_av,
     o_proc_info_av    => proc_info_av,
@@ -279,6 +285,7 @@ begin
   -- end generate;
 
   -- main cross switch
+  -- csw_main_in_dv <= or_reduce(csw_control_av); 
   SLC_CSW : entity ucm_lib.ucm_csw
   port map(
     clk         => clk,
@@ -287,8 +294,10 @@ begin
     
     i_control_av   => csw_control_av,
     -- data
-    i_data      => csw_main_in_av,
-    o_data      => csw_main_out_av
+    i_data_av   => csw_main_in_av,
+    i_dv        => csw_ctrl_dv,
+    o_data_av   => csw_main_out_av,
+    o_dv        => csw_main_out_dv
   );
 
 
