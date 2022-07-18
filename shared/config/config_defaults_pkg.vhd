@@ -153,7 +153,7 @@ package cfg_global_default_pkg is
     -- MTC configuration based on links to primary, neighboring sectors
     -- (barrel, endcap)
     NUM_MTC                       => 3 ,   -- default 3, connecting to primary SL
-    MPT_LATENCY                   => 24,
+    MPT_LATENCY                   => 17,
     UPT_LATENCY                   => 24
   );
 
