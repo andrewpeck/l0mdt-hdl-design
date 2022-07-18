@@ -56,8 +56,8 @@ package mpl_pkg is
    constant MPL_PL_A_LATENCY : integer := 10; 
    attribute w of MPL_PL_A_LATENCY : constant is 32;
 
---   constant MPL_PL_B_LATENCY : integer := 5;
---   attribute w of MPL_PL_B_LATENCY : constant is 32;
+   constant MPL_PL_B_LATENCY : integer := 5;
+   attribute w of MPL_PL_B_LATENCY : constant is 32;
 
 end package mpl_pkg;
 
