@@ -656,7 +656,10 @@ def update_tv_bitfield(tv_list, tv_width,bitfield_val, msb, lsb):
     #print ("update_tv_bitfield: bitfield_clr_mask = 0x", f'{int(bitfield_clr_mask):X}', "bitfield_or_mask = 0x", f'{int(bitfield_or_mask):X}')
     for i in range(len(tv_list)):
         #print ("INCOMING TV  = 0x", f'{int(tv_list[i]):X}')
-        updated_tv_list.append( (tv_list[i] & bitfield_clr_mask) | bitfield_or_mask)
+        if tv_list[i] != 0:
+            updated_tv_list.append( (tv_list[i] & bitfield_clr_mask) | bitfield_or_mask)
+        else:
+            updated_tv_list.append(0)
 
         #print ("Updated TV LIST = 0x", f'{int(updated_tv_list[i]):X}')
     return updated_tv_list

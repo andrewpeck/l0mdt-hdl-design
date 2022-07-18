@@ -2,7 +2,7 @@
     "testbench_config": {
         "test_name": "ult_pt_mpl_mtc_primary",
         "input_args": {
-            "n_events": 1,
+            "n_events": 4,
             "event_detail": false,
             "clock_period": 5,
             "clock_time_unit": "ns",
@@ -45,7 +45,7 @@
                     "tv_format": "UCM2PL",
                     "ports": 3,
                     "thread_n"   : [0,1,2],
-		    "process_ch" : [2,1,0]
+		    "process_ch" : [0,1,2]
                 }
             ],
             "outputs": [
@@ -53,7 +53,7 @@
 		    "_COMMENT": "Thread are reverse mapped in firmware, so when reading out they should be reverse of input map",
                     "tv_format": "MTC2SL_LSF",
                     "ports": 3,
-		    "thread_n"   : [2,1,0]
+		    "thread_n"   : [0,1,2]
                 }
             ]
         }

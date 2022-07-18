@@ -75,20 +75,20 @@ module TopLevel_ult_pt_mpl_mtc_primary #(
     // Here place the DUT block(s)
     //
    localparam c_NUM_THREADS  = 3;
-   localparam c_MAX_NUM_SL     = 3;
-   localparam c_NUM_MTC           = 3;
+   localparam c_MAX_NUM_SL   = 3;
+   localparam c_NUM_MTC      = 3;
    
-   logic [UCM2PL_LEN-1:0]      ucm2pl_av[c_MAX_NUM_SL];
-   logic [SF2PTCALC_LEN-1:0] inn_segments_av[c_NUM_THREADS];
-   logic [SF2PTCALC_LEN-1:0] mid_segments_av[c_NUM_THREADS];
-   logic [SF2PTCALC_LEN-1:0] out_segments_av[c_NUM_THREADS];
-   logic [SF2PTCALC_LEN-1:0] dummy_in[c_NUM_THREADS];   
-   logic [255:0] 	     dummy_out_mtc[c_NUM_THREADS];
-   logic [255:0] 	     dummy_out_tf[c_NUM_THREADS];
-   logic [255:0] 	     dummy_out_mpl[c_NUM_THREADS];
+   logic [UCM2PL_LEN-1:0]      ucm2pl_av[c_MAX_NUM_SL-1:0];
+   logic [SF2PTCALC_LEN-1:0]   inn_segments_av[c_NUM_THREADS-1:0];
+   logic [SF2PTCALC_LEN-1:0]   mid_segments_av[c_NUM_THREADS-1:0];
+   logic [SF2PTCALC_LEN-1:0]   out_segments_av[c_NUM_THREADS-1:0];
+   logic [SF2PTCALC_LEN-1:0]   dummy_in[c_NUM_THREADS];   
+   logic [255:0] 	       dummy_out_mtc[c_NUM_THREADS];
+   logic [255:0] 	       dummy_out_tf[c_NUM_THREADS];
+   logic [255:0] 	       dummy_out_mpl[c_NUM_THREADS];
    
 			     
-   logic [MTC2SL_LEN-1:0]    o_MTC[c_NUM_MTC];
+   logic [MTC2SL_LEN-1:0]      o_MTC[c_NUM_MTC-1:0];
 
    
 
