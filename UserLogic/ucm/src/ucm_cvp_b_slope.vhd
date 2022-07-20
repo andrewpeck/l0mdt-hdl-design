@@ -662,7 +662,9 @@ begin
   -----------------------------------------------------------------------------------------------
   PL_e_z : entity vamc_lib.vamc_spl
   generic map(
-    g_DELAY_CYCLES  => 42,
+    g_PIPELINE_TYPE => "ring_buffer",
+    g_RB_TYPE => "simple",
+    g_DELAY_CYCLES  => 38,
     g_PIPELINE_WIDTH    => e_z'length
   )
   port map(
