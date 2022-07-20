@@ -105,6 +105,18 @@ def mtc_test(dut):
 
     testvector_config                = config["testvectors"]
 
+    testvector_config_inputs         = testvector_config["inputs"]
+    testvector_config_outputs        = testvector_config["outputs"]
+    inputs_station_id= [["" for x in range(MtcPorts.get_input_interface_ports(y))]for y in range(MtcPorts.n_input_interfaces)]
+    outputs_station_id= [["" for x in range(MtcPorts.get_output_interface_ports(y))]for y in range(MtcPorts.n_output_interfaces)]
+
+    for i in range(MtcPorts.n_input_interfaces):
+        if "station_ID" in testvector_config_inputs[i] :
+            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+    for i in range(MtcPorts.n_output_interfaces):
+        if "station_ID" in testvector_config_outputs[i] :
+            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+            
 
     mtc2sl_lsf_tol = {
         "mdt_pt": ["abs", 100],
