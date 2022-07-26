@@ -15,7 +15,7 @@ use work.APB_MEM_SIG_Ctrl_DEF.all;
 entity APB_MEM_SIG_map is
   generic (
     READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer := 0
+    ALLOCATED_MEMORY_RANGE : integer := 4096
     );
   port (
     clk_axi          : in  std_logic;
