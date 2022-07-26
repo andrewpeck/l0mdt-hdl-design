@@ -15,7 +15,7 @@ use work.TAR_Ctrl_DEF.all;
 entity TAR_map is
   generic (
     READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer := 4096
+    ALLOCATED_MEMORY_RANGE : integer := 8192
     );
   port (
     clk_axi          : in  std_logic;
