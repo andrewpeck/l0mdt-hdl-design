@@ -15,7 +15,7 @@ use work.FW_INFO_Ctrl_DEF.all;
 entity FW_INFO_map is
   generic (
     READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer
+    ALLOCATED_MEMORY_RANGE : integer := 0
     );
   port (
     clk_axi          : in  std_logic;

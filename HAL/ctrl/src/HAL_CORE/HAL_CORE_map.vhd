@@ -15,7 +15,7 @@ use work.HAL_CORE_Ctrl_DEF.all;
 entity HAL_CORE_map is
   generic (
     READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer
+    ALLOCATED_MEMORY_RANGE : integer := 0
     );
   port (
     clk_axi          : in  std_logic;
