@@ -132,7 +132,7 @@ begin
 
   PL_B : entity vamc_lib.vamc_spl
     generic map(
-      g_DELAY_CYCLES      => MPL_PL_B_LATENCY,
+      g_DELAY_CYCLES      => c_MPL_PL_B_LATENCY,
       g_PIPELINE_WIDTH    => pl2mtc_v'length
     )
     port map(

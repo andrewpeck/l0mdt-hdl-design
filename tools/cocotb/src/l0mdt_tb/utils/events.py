@@ -13,7 +13,7 @@ from l0mdt_tb.utils.tv import tvRTL
 import pandas as pd
 from tabulate import tabulate
 from termcolor import colored, cprint
-
+from l0mdt_tb.utils.tv import tvRTL
 import logging
 import logging.config
 
@@ -192,7 +192,47 @@ def print_tv_list(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process
     
 
 
-def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99):
+  
+    bitfieldWord = DFSL.getBitFieldWord(tvformat,stationID)
+    bitfieldWord[0].set_bitwordvalue(tvformat_val)
+    bitfieldWordList.append(bitfieldWord[0].get_bitwordvalue())
+    
+    DFSL.fillBitFieldWord(tvformat, stationID, bitfieldWordList)  
+    BitFieldWord = DFSL.getBitFieldWord(tvformat,stationID)
+    print(bitfieldWord[0].print_bitFieldWord())
+   
+
+def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id):
+    port_idx  = 0
+    tvRTL_list = []
+    for n_ip_intf in range(n_interfaces): # Add concept of interface
+        for io in range(n_ports[n_ip_intf]):
+            tvRTL_i    = tvRTL()
+            for n_events in range(n_events_to_process):
+                tvRTL_i.set_tv(tv_list[port_idx][n_events], tvformats[n_ip_intf],station=station_id[n_ip_intf][io])
+            tvRTL_list.append(tvRTL_i)
+            #tvRTL_i.clear()
+            port_idx = port_idx + 1
+
+    #print ("TV RTL")
+    #for port_i in range(len(tvRTL_list)):
+    #   tvRTL_p = tvRTL_list[port_i]
+    #    tvRTL_p.print_tv()
+
+    return tvRTL_list
+
+def   print_tv_bitfields(tvRTL_list): #tvformats, tv_list, n_interfaces, n_ports, n_events_to_process):
+    port_idx  = 0
+    
+    for port_i in range(len(tvRTL_list)):
+        tvRTL_p = tvRTL_list[port_i]
+        for n_events in range(len(tvRTL_p.tv_val)):
+            print_BitFieldsInDataFormat(tvRTL_p.df, tvRTL_p.tv_val[n_events], stationNum=station_name_to_id(tvRTL_p.station))
+
+    
+    
+
+def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99, tv_thread_mapping=[0,1,2]):
     evt                = 0
     ret_val            = 1
     pass_count         = 0
@@ -233,14 +273,14 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
         else:
             print("\nEvent: ", ievent)
             for this_candidate in range(n_candidates):
-                if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=this_candidate):
+                if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate]):
                     EXP_DF.clear()
                     RTL_DFSL.clear()
                     tv_format_val.clear()
                     comparison_data.clear()
 
                     EXP_DF = tv_bcid_list[ievent].DF_SL.copy()               #For comparing hits, will have to look at DF_MDT
-                    EXP_BF = EXP_DF[this_candidate].getBitFieldWord(tvformat, stationID)
+                    EXP_BF = EXP_DF[tv_thread_mapping[this_candidate]].getBitFieldWord(tvformat, stationID)
 
 
                     if evt + 1 <= len(rtl_tv[this_candidate]):
@@ -440,6 +480,20 @@ def prepend_zeroes(tv, num=1):
     return tv_out
 
 
+def append_zeroes(tv, num=1):
+    tv_out = []
+
+   
+    for i in range(len(tv)):
+        tv_out.append(tv[i])
+    for i in range(num):
+        tv_out.append(0)
+
+    print("modify_tv input (tv) =", tv )
+    print("modify_tv output (tv_out) =", tv_out )
+    return tv_out
+
+
 def modify_tv_padzeroes(tv, location="end", num=[]):
     tv_out = []
 
@@ -457,8 +511,8 @@ def modify_tv_padzeroes(tv, location="end", num=[]):
                 for i in range(num[io]):
                     tv_port.append(0)
         tv_out.append(tv_port)
-    #print("modify_tv_padzeroes (tv) =", tv )
-    #print("modify_tv_padzeroes (tv_out) =", tv_out )
+    print("modify_tv_padzeroes (tv) =", tv )
+    print("modify_tv_padzeroes (tv_out) =", tv_out )
     return tv_out
 
 
@@ -582,4 +636,31 @@ def time_ordering(events, time, num_events):
     #print("o_events = ", o_events)
     return o_events
                                                                     
+        
+def update_tv_bitfield(tv_list, tv_width,bitfield_val, msb, lsb):
+    updated_tv_list = []
+    field_width     = msb-lsb+1
+
+    upper_ones      = (2 ** (tv_width - msb -1)) -1 
+
+    if lsb != 0:
+        lower_ones  = (2**(lsb-1))-1
+    else:
+        lower_ones  = 0
+
+
+    bitfield_clr_mask   = (upper_ones << (msb+1)) + lower_ones 
+    bitfield_or_mask    = bitfield_val << lsb
+
+
+    #print ("update_tv_bitfield: bitfield_clr_mask = 0x", f'{int(bitfield_clr_mask):X}', "bitfield_or_mask = 0x", f'{int(bitfield_or_mask):X}')
+    for i in range(len(tv_list)):
+        #print ("INCOMING TV  = 0x", f'{int(tv_list[i]):X}')
+        if tv_list[i] != 0:
+            updated_tv_list.append( (tv_list[i] & bitfield_clr_mask) | bitfield_or_mask)
+        else:
+            updated_tv_list.append(0)
+
+        #print ("Updated TV LIST = 0x", f'{int(updated_tv_list[i]):X}')
+    return updated_tv_list
         

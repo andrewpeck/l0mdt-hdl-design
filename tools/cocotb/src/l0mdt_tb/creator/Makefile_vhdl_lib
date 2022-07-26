@@ -69,7 +69,8 @@ VERILOG_SOURCES += \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
     $(SBDIR)/asym_ram_tdp_read_first.v \
-    $(SHAREDDIR)/memories/src/rom.v 
+    $(SHAREDDIR)/memories/src/rom.v \
+    $(XILINX_HOME)/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv 
  
 VHDL_SOURCES_project_lib = \
     $(PWD)/prj_cfg.vhd
@@ -136,6 +137,12 @@ VHDL_SOURCES_vamc_lib = \
 	$(SHAREDDIR)/vamc/vamc-core/src/vamc_top.vhd 
 
 
+VHDL_SOURCES_tar_lib = \
+	$(TARDIR)/../pkg/tar_pkg.vhd \
+	$(TARDIR)/tar_supervisor.vhd \
+	$(TARDIR)/tar_remap.vhd \
+	$(TARDIR)/tar_station.vhd \
+	$(TARDIR)/tar.vhd 
 
 
 VHDL_SOURCES_ctrl_lib = \
@@ -172,7 +179,16 @@ VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/TF/TF_map.vhd \
 	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_PKG.vhd \
 	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_PKG_DEF.vhd \
-	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_map.vhd 
+	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_map.vhd \
+	$(HAL)/ctrl/src/TAR/TAR_PKG.vhd \
+	$(HAL)/ctrl/src/TAR/TAR_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/TAR/TAR_map.vhd \
+	$(HAL)/ctrl/src/MTC/MTC_PKG.vhd \
+	$(HAL)/ctrl/src/MTC/MTC_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/MTC/MTC_map.vhd \
+	$(HAL)/ctrl/src/DAQ/DAQ_PKG.vhd \
+	$(HAL)/ctrl/src/DAQ/DAQ_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/DAQ/DAQ_map.vhd 
 
 
 VHDL_SOURCES_xpm = \
@@ -325,10 +341,34 @@ VHDL_SOURCES_mpl_lib = \
     $(MPLDIR)/mpl.vhd
 
 VHDL_SOURCES_ult_lib =\
-    $(ULTDIR)/ult_pt.vhd
+    $(ULTDIR)/ult_pt.vhd \
+    $(ULTDIR)/ult_h2s.vhd \
+    $(ULTDIR)/ult_tar.vhd \
+    $(ULTDIR)/ult_mpl.vhd \
+    $(ULTDIR)/ult_ucm.vhd \
+    $(ULTDIR)/ult_mtc.vhd \
+    $(ULTDIR)/ult_daq.vhd \
+    $(ULTDIR)/ult_fm.vhd \
+    $(ULTDIR)/sumps/tar_sump.vhd \
+    $(ULTDIR)/sumps/daq_sump.vhd \
+    $(ULTDIR)/sumps/h2s_sump.vhd \
+    $(ULTDIR)/sumps/mpl_sump.vhd \
+    $(ULTDIR)/sumps/mtc_sump.vhd \
+    $(ULTDIR)/sumps/ptc_sump.vhd \
+    $(ULTDIR)/sumps/ucm_sump.vhd \
+    $(ULTDIR)/ult.vhd
 
 VHDL_SOURCES_fm_lib = \
     $(FMDIR)/fm_ult_pkg.vhd
+
+VHDL_SOURCES_mtc_lib = \
+    $(MTCDIR)/../top_mtc_wrapper.vhd
+
+VERILOG_SOURCES_mtc_lib = \
+    $(DFDIR)/l0mdt_buses_constants.svh \
+    $(MTCDIR)/format_mtc_pkt.sv \
+    $(MTCDIR)/mtc_link_map.sv \
+    $(MTCDIR)/mtc_builder_verilog.sv
 
 
 VHDL_SOURCES +=\
@@ -373,10 +413,12 @@ VHDL_LIB_ORDER = xpm \
 	lsf_lib \
 	ucm_lib \
 	mpl_lib \
-	ult_lib \
 	fm_lib \
 	hp_lib \
 	heg_roi_lib \
 	heg_lib \
-	hps_lib
+	hps_lib \
+	tar_lib \
+	mtc_lib \
+	ult_lib 
 
