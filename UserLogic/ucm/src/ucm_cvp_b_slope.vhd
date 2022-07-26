@@ -662,7 +662,9 @@ begin
   -----------------------------------------------------------------------------------------------
   PL_e_z : entity vamc_lib.vamc_spl
   generic map(
-    g_PIPELINE_TYPE => "ring_buffer",
+    g_MEMORY_TYPE => "test",
+    -- g_PIPELINE_Tgit YPE => "ring_buffer",
+    g_PIPELINE_TYPE   => "shift_reg", 
     g_RB_TYPE => "simple",
     g_DELAY_CYCLES  => 38,
     g_PIPELINE_WIDTH    => e_z'length
@@ -700,6 +702,7 @@ begin
   --   
   PL_e_y : entity vamc_lib.vamc_spl
   generic map(
+    g_PIPELINE_TYPE   => "shift_reg", 
     g_DELAY_CYCLES  => 31,
     g_PIPELINE_WIDTH    => e_y'length
   )
@@ -736,6 +739,7 @@ begin
 
   PL_slope : entity vamc_lib.vamc_spl
     generic map(
+    g_PIPELINE_TYPE   => "shift_reg", 
       g_DELAY_CYCLES  => 12,
       g_PIPELINE_WIDTH    => 32
     )
