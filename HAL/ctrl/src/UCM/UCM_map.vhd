@@ -15,7 +15,7 @@ use work.UCM_Ctrl_DEF.all;
 entity UCM_map is
   generic (
     READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer := 256
+    ALLOCATED_MEMORY_RANGE : integer := 512
     );
   port (
     clk_axi          : in  std_logic;

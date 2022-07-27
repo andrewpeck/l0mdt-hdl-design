@@ -15,7 +15,7 @@ use work.MEM_INT_10A38D_Ctrl_DEF.all;
 entity MEM_INT_10A38D_map is
   generic (
     READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer := 16
+    ALLOCATED_MEMORY_RANGE : integer := 32
     );
   port (
     clk_axi          : in  std_logic;
