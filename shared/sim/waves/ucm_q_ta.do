@@ -373,7 +373,7 @@ add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/enable
 add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/tb_curr_tdc_time
 add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/in_slc_file_ok
 add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/in_slc_file_ts
-add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/slc_event_ai
+add wave -noupdate -expand -group CSV_OUT -color Turquoise /ucm_tb/CSV_UCM_OUT/slc_event_ai
 add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/inn_slc_to_h2s_av
 add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/mid_slc_to_h2s_av
 add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/out_slc_to_h2s_av
@@ -381,17 +381,17 @@ add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/ext_slc_to_h2s_av
 add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/ucm2pl_av
 add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/csv_file_1
 add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/csv_file_2
-add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/ucm2pl_ar
-add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/slc_event_u2m_au
-add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/slc_event_u2h_au
-add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/inn_ucm2hps_bus_ar
-add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/mid_ucm2hps_bus_ar
-add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/out_ucm2hps_bus_ar
-add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/ext_ucm2hps_bus_ar
+add wave -noupdate -expand -group CSV_OUT -color Orange /ucm_tb/CSV_UCM_OUT/ucm2pl_ar
+add wave -noupdate -expand -group CSV_OUT -color Orange /ucm_tb/CSV_UCM_OUT/slc_event_u2m_au
+add wave -noupdate -expand -group CSV_OUT -color Turquoise /ucm_tb/CSV_UCM_OUT/slc_event_u2h_au
+add wave -noupdate -expand -group CSV_OUT -color Turquoise /ucm_tb/CSV_UCM_OUT/inn_ucm2hps_bus_ar
+add wave -noupdate -expand -group CSV_OUT -color Turquoise /ucm_tb/CSV_UCM_OUT/mid_ucm2hps_bus_ar
+add wave -noupdate -expand -group CSV_OUT -color Turquoise /ucm_tb/CSV_UCM_OUT/out_ucm2hps_bus_ar
+add wave -noupdate -expand -group CSV_OUT -color Turquoise /ucm_tb/CSV_UCM_OUT/ext_ucm2hps_bus_ar
 add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/g_OUT_FILE_1
 add wave -noupdate -expand -group CSV_OUT /ucm_tb/CSV_UCM_OUT/g_OUT_FILE_2
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {328125000 fs} 0}
+WaveRestoreCursors {{Cursor 1} {2289062500 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 286
 configure wave -valuecolwidth 100
@@ -407,4 +407,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {5250 ns}
+WaveRestoreZoom {2036553524 fs} {2611003230 fs}
