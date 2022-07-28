@@ -410,7 +410,7 @@ def modify_tv(tv, ii):
     for io in range(len(tv)):
         tv_port = []
         tv_index = 0
-        print("events.py :modify_tv (tv,ii) =", tv , ii)
+        #print("events.py :modify_tv (tv,ii) =", tv , ii)
         for i in range(len(tv[io])):
             # print("modify_tv (io,i) = (",io,i,")")
             tv_port.append(tv[io][i])
@@ -473,8 +473,8 @@ def modify_tv_padzeroes(tv, location="end", num=[]):
                 for i in range(num[io]):
                     tv_port.append(0)
         tv_out.append(tv_port)
-    print("modify_tv_padzeroes (tv) =", tv )
-    print("modify_tv_padzeroes (tv_out) =", tv_out )
+    #print("modify_tv_padzeroes (tv) =", tv )
+    #print("modify_tv_padzeroes (tv_out) =", tv_out )
     return tv_out
 
 

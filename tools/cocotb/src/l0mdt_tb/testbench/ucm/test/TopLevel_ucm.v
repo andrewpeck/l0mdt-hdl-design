@@ -103,8 +103,8 @@ module TopLevel_ucm #(
 
 			      .o_uCM2hps_inn_av(ucm2hps_inn),
 			      .o_uCM2hps_mid_av(ucm2hps_mid),
-			      .o_uCM2hps_out_av(ucm2hps_ext),
-			      .o_uCM2hps_ext_av(ucm2hps_out),
+			      .o_uCM2hps_out_av(ucm2hps_out),
+			      .o_uCM2hps_ext_av(ucm2hps_ext),
 
 			      .o_uCM2pl_av(ucm2pl)
 
