@@ -15,7 +15,7 @@ use work.KINTEX_SYS_MGMT_Ctrl_DEF.all;
 entity KINTEX_SYS_MGMT_map is
   generic (
     READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer := 2048
+    ALLOCATED_MEMORY_RANGE : integer 
     );
   port (
     clk_axi          : in  std_logic;

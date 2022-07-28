@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<node id="TOP">
+  <node id="APB_MEM_SIG"        module="file:///home/guille/ATLAS/l0mdt-fpga-design/address_tables/modules/APB_MEM_SIG.xml"        address="0"/>
+</node>
