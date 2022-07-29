@@ -334,10 +334,19 @@ def mtc_test(dut):
     
 
     for n_op_intf in range (MtcPorts.n_output_interfaces):
-        events_are_equal,pass_count , fail_count, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],MtcPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], tolerances=mtc2sl_lsf_tol,output_path=output_dir);
-    all_tests_passed = (all_tests_passed and events_are_equal)
-    field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
-    field_fail_cnt.append(field_fail_count_i)
+        events_are_equal,pass_count , fail_count, field_fail_count_i = events.compare_BitFields(
+            tv_bcid_list, 
+            output_tvformats[n_op_intf],
+            MtcPorts.get_output_interface_ports(n_op_intf) , 
+            num_events_to_process , 
+            recvd_events_intf[n_op_intf], 
+            tolerances=mtc2sl_lsf_tol,
+            output_path=output_dir,
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+        );
+        all_tests_passed = (all_tests_passed and events_are_equal)
+        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
+        field_fail_cnt.append(field_fail_count_i)
 
     events.results_summary(
         num_events_to_process,
