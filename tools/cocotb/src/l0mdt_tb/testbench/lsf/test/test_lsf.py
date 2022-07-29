@@ -393,11 +393,21 @@ def lsf_test(dut):
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
     for n_op_intf in range (LsfPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],LsfPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], sf2ptcalc_tol[n_op_intf],output_path=output_dir,stationNum=events.station_name_to_id(outputs_station_id[n_op_intf][0]));
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(
+            tv_bcid_list, 
+            output_tvformats[n_op_intf],
+            LsfPorts.get_output_interface_ports(n_op_intf) , 
+            num_events_to_process , 
+            recvd_events_intf[n_op_intf], 
+            sf2ptcalc_tol[n_op_intf],
+            output_path=output_dir,
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+        );
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i
-        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
+        for key in field_fail_count_i.keys():
+            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
         field_fail_cnt.append(field_fail_count_i)
 
 
