@@ -238,7 +238,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
         else:
             print("\nEvent: ", ievent)
             for this_candidate in range(n_candidates):
-                print ("this_candidate = ", this_candidate, " thread id = ", tv_thread_mapping[this_candidate], " tv_format = ",tvformat)
+                #print ("this_candidate = ", this_candidate, " thread id = ", tv_thread_mapping[this_candidate], " tv_format = ",tvformat)
                 if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate]):
                     EXP_DF.clear()
                     RTL_DFSL.clear()
@@ -280,9 +280,9 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         RTL_BF[0], tolerances
                     )  # compare_bitfieldwordvalue returns list
                     if stationNum[this_candidate] != -99:
-                        print("\n\tSL candidate ", this_candidate, ":\t",tvformat,", Station:",stationID[this_candidate], "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
+                        print("\n\tSL candidate at port ", this_candidate, ":\t",tvformat,", Station:",stationID[this_candidate], "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
                     else:
-                        print("\n\tSL candidate ", this_candidate, ":\t",tvformat, "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
+                        print("\n\tSL candidate at port", this_candidate, ":\t",tvformat, "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
 
                     if results[0]:
                         cprint("\tPass: RTL Matches expected  value", "green")

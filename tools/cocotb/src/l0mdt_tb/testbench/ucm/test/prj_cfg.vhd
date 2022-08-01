@@ -24,8 +24,8 @@ use shared_cfg_def_lib.cfg_global_default_pkg.all;
 package prj_cfg is
 
 
-  constant c_MAX_POSSIBLE_HPS : integer := 3;
-  constant c_SECTOR_ID            : integer := 3;
+
+ 
   function set_project_cfg return cfg_rt;
 
 end package prj_cfg;
@@ -38,7 +38,7 @@ package body prj_cfg is
   --   --------------------------------------------------------------------------------
   --   -- Sector information
   --   --------------------------------------------------------------------------------
-    proj_cfg.SECTOR_ID               := c_SECTOR_ID ;
+    proj_cfg.SECTOR_ID               := 3;
 
     proj_cfg.ST_nBARREL_ENDCAP       := '0';     -- 0: barrel    1: Endcap
   --   proj_cfg.ENDCAP_nSMALL_LARGE     := '0', -- 0: small     1: large

@@ -69,8 +69,8 @@ architecture beh of ucm_top_tb is
   -- signal o_uCM2pl_av           : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
 begin
-   ctrl_len <= width(ctrl);
-   ctrl_v(width(ctrl)-1 downto width(ctrl)-12 ) <= x"03e";
+   --ctrl_len <= width(ctrl);
+   --ctrl_v(width(ctrl)-1 downto width(ctrl)-12 ) <= x"03e";
    --ttc_commands.bcr <= '0'
     --ocr : std_logic;
     --ecr : std_logic;

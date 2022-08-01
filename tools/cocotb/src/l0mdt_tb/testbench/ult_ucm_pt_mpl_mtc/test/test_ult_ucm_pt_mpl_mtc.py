@@ -84,7 +84,7 @@ def reset(dut):
     dut.reset_n <= 0
     yield ClockCycles(dut.clock, 10)
     dut.reset_n <= 1
-    yield ClockCycles(dut.clock, 20)
+    yield ClockCycles(dut.clock, 100)
 
 ##
 ## TEST
@@ -111,6 +111,8 @@ def ult_ucm_pt_mpl_mtc_test(dut):
     testvector_config                = config["testvectors"]
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
+    mpl_latency                      = run_config["mpl_latency"]
+    ucm_latency                      = run_config["ucm_latency"]
     inputs_station_id= [["" for x in range(UltUcmPtMplMtcPorts.get_input_interface_ports(y))]for y in range(UltUcmPtMplMtcPorts.n_input_interfaces)]
     inputs_thread_n= [[0 for x in range(UltUcmPtMplMtcPorts.get_input_interface_ports(y))]for y in range(UltUcmPtMplMtcPorts.n_input_interfaces)]
     outputs_station_id= [["" for x in range(UltUcmPtMplMtcPorts.get_output_interface_ports(y))]for y in range(UltUcmPtMplMtcPorts.n_output_interfaces)]
@@ -242,9 +244,10 @@ def ult_ucm_pt_mpl_mtc_test(dut):
 
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list         =  []
-    single_interface_list = []
+    
+    single_interface_list_i  = []
     for n_ip_intf in range(UltUcmPtMplMtcPorts.n_input_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_tvlist(
+        single_interface_list_i = (events.parse_tvlist(
             tv_bcid_list,
             tvformat=input_tvformats[n_ip_intf],
             n_ports = UltUcmPtMplMtcPorts.get_input_interface_ports(n_ip_intf),
@@ -253,7 +256,16 @@ def ult_ucm_pt_mpl_mtc_test(dut):
             tv_type=input_tvtype[n_ip_intf],
             cnd_thrd_id = inputs_thread_n[n_ip_intf]
             ))
-        for io in range(UltUcmPtMplMtcPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
+        single_interface_list =  []
+        single_interface_list_ii = []
+
+        for port_n in range(UltUcmPtMplMtcPorts.get_input_interface_ports(n_ip_intf)):
+            if n_ip_intf >= 1 : #"SF2PTCALC_LSF", delay inputs based on pl block latency
+                single_interface_list_ii.append(events.append_zeroes(single_interface_list_i[port_n], num=1))
+                single_interface_list.append(events.prepend_zeroes(single_interface_list_ii[port_n], num=(mpl_latency + ucm_latency)))
+            else:
+                single_interface_list.append(events.append_zeroes(single_interface_list_i[port_n], num=1))
+        for io in range(UltUcmPtMplMtcPorts.get_input_interface_ports(n_ip_intf)): #Outputs):            
             input_tv_list.append(single_interface_list[io])
 
    ###Get Output Test Vector List for Ports across all output interfaces##
@@ -287,7 +299,7 @@ def ult_ucm_pt_mpl_mtc_test(dut):
             f"ERROR Event sending timed out! Number of expected inputs with events = {len(send_finished_signal)}"
         )
     try:
-        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*2, "us")
+        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*2 + 20, "us")
     except Exception as ex:
         raise cocotb.result.TestFailure(
             f"ERROR Timed out waiting for events to send: {ex}"
@@ -296,7 +308,7 @@ def ult_ucm_pt_mpl_mtc_test(dut):
 
 
     #Block Latency
-    yield ClockCycles(dut.clock, 100)
+    yield ClockCycles(dut.clock, mpl_latency * 20 + num_events_to_process)
     ##
 
     ##
@@ -307,6 +319,7 @@ def ult_ucm_pt_mpl_mtc_test(dut):
     recvd_events_intf = []
     for n_op_intf in range(UltUcmPtMplMtcPorts.n_output_interfaces):
         recvd_events     = [["" for x in range(num_events_to_process)]for y in range(UltUcmPtMplMtcPorts.get_output_interface_ports(n_op_intf))]
+        recvd_time       = [["" for x in range(num_events_to_process)]for y in range(UltUcmPtMplMtcPorts.get_output_interface_ports(n_op_intf))]
         for n_oport, oport in enumerate(ult_ucm_pt_mpl_mtc_wrapper.output_ports(n_op_intf)):
 
             ##
@@ -314,12 +327,14 @@ def ult_ucm_pt_mpl_mtc_test(dut):
             ##
             monitor, io, is_active = oport
             words = monitor.observed_words
-
+            time  = monitor.observed_time
             recvd_events[n_oport] = words
+            recvd_time[n_oport]   = time
             cocotb.log.info(
                 f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
             )
-        recvd_events_intf.append(recvd_events)
+        o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process)
+        recvd_events_intf.append(o_recvd_events)
 
     ##
     ## extract the expected data for this output
@@ -360,11 +375,11 @@ def ult_ucm_pt_mpl_mtc_test(dut):
         fail_count       = fail_count + fail_count_i
         field_fail_cnt.append(field_fail_count_i)
 
-        print ("test ULT UCM KEYS ",field_fail_count_i.keys())       
+        
         for key in field_fail_count_i.keys():
             field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ key , "FAIL COUNT"])
 
-        print ("test ULT UCM ",field_fail_cnt_header)       
+        
 
 
     print("test field_fail_cnt",field_fail_cnt)

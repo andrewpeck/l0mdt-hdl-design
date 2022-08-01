@@ -57,7 +57,7 @@ proj_cfg.EN_MDT_CH_EXT := (others => '0');
 proj_cfg.ENABLE_ST_EXT := '0';
 
 
-proj_cfg.NUM_THREADS   := 1;
+proj_cfg.NUM_THREADS   := 3;
 proj_cfg.ENABLE_ST_INN := '1';
 proj_cfg.EN_MDT_CH_INN := (others => '1');
 proj_cfg.EN_MDT_CH_MID := (others => '1');
