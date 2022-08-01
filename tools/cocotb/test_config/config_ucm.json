@@ -31,30 +31,30 @@
                     "tv_format": "UCM2HPS",
                     "ports": 3,
 		    "station_ID": ["INN","INN","INN"],
-                    "thread_n"   : [0,1,2]
+                    "thread_n"   : [2,1,0]
                 },
                 {
                     "tv_format": "UCM2HPS",
                     "ports": 3,
 		    "station_ID": ["MID","MID","MID"],
-                    "thread_n"   : [0,1,2]
+                    "thread_n"   : [2,1,0]
                 },
                 {
                     "tv_format": "UCM2HPS",
                     "ports": 3,
 		    "station_ID": ["OUT","OUT","OUT"],
-                    "thread_n"   : [0,1,2]
+                    "thread_n"   : [2,1,0]
                 },
 		{
                     "tv_format": "UCM2HPS",
                     "ports": 3,
 		    "station_ID": ["EXT","EXT","EXT"],
-                    "thread_n"   : [0,1,2]
+                    "thread_n"   : [2,1,0]
                 },
                 {
                     "tv_format": "UCM2PL",
                     "ports": 3,
-                    "thread_n"   : [0,1,2]
+                    "thread_n"   : [2,1,0]
                 }
             ]
         }

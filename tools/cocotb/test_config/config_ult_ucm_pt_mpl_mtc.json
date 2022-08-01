@@ -14,7 +14,9 @@
             "expected_is_observed": false,
             "components_lib_dir": "${XILINX_LIB_DIR}",
             "configure_rtl": true,
-            "pt_type": "upt"
+            "pt_type": "upt",
+	    "mpl_latency" : 576,
+	    "ucm_latency" : 10
         },
         "testvectors": {
             "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
@@ -23,7 +25,7 @@
                 {
                     "tv_format": "SLC_RX",
                     "ports": 3,
-		    "threads_n" : [0,1,2]
+		    "thread_n" : [0,1,2]
                 },
                 {
                     "tv_format": "SF2PTCALC_LSF",
@@ -36,13 +38,13 @@
                 {
                     "tv_format": "MTC2SL_LSF",
                     "ports": 3,
-		    "threads_n": [0,1,2]
+		    "thread_n": [0,1,2]
                 },
                 {
                     "tv_format": "UCM2HPS",
                     "ports": 9,
 		    "station_ID" : ["INN","INN","INN", "MID", "MID", "MID", "OUT", "OUT", "OUT"],
-		    "thread_n"   : [0,1,2,0,1,2,0,1,2]
+		    "thread_n"   : [2,1,0,2,1,0,2,1,0]
                 }
             ]
         }

@@ -84,8 +84,7 @@ LSFSIMDIR = $(USERLOGIC)/lsf/sim
 
 
 # VHDL source files, required by CocoTB
-VHDL_SOURCES = $(CSFDIR)/csf.vhd
-
+VHDL_SOURCES = $(PWD)/tb_ult_ucm_pt_mpl_mtc_primary.vhd
 
 include ../../../creator/Makefile_vhdl_lib
 

@@ -74,7 +74,82 @@ module TopLevel_ult_ucm_pt_mpl_mtc #(
     //
     // Here place the DUT block(s)
     //
+   localparam c_NUM_THREADS  = 3;
+   localparam c_MAX_NUM_SL   = 3;
+   localparam c_NUM_MTC      = 3;
+   localparam c_PRIMARY_SL   = 3;
+   
+   logic [SLC_RX_LEN-1:0]     slc_rx[c_PRIMARY_SL-1:0];
+   logic [SF2PTCALC_LEN-1 :0] inn_segments_av[c_NUM_THREADS-1:0];
+   logic [SF2PTCALC_LEN-1 :0] out_segments_av[c_NUM_THREADS-1:0];
+   logic [SF2PTCALC_LEN-1 :0] mid_segments_av[c_NUM_THREADS-1:0];
+   logic [SF2PTCALC_LEN-1:0]  dummy_in[c_NUM_THREADS];   
+ 
+   logic [MTC2SL_LEN-1:0] o_MTC[c_NUM_MTC-1:0];
+   
+   logic [UCM2HPS_LEN-1 :0] ucm2hps_inn[c_NUM_THREADS-1:0];
+   logic [UCM2HPS_LEN-1 :0] ucm2hps_mid[c_NUM_THREADS-1:0];
+   logic [UCM2HPS_LEN-1 :0] ucm2hps_out[c_NUM_THREADS-1:0];
 
+   for (genvar i=0; i<3; i++)
+     begin
+	assign slc_rx[i] = BLOCK_input_data[i];	
+     end
+
+   for (genvar i=3; i<6; i++)
+     begin
+	assign inn_segments_av[i-3] = BLOCK_input_data[i];
+	assign mid_segments_av[i-3] = BLOCK_input_data[i+3];
+	assign out_segments_av[i-3] = BLOCK_input_data[i+6];
+	assign dummy_in[i-3]        = 0;	
+     end
+   tb_ult_ucm_pt_mpl_mtc_primary tb_vhdl_inst
+     (
+      .clock(clock),
+      .rst(~reset_n),
+      .ttc_commands(),
+      .i_main_primary_slc(slc_rx),
+      .i_main_secondary_slc(),
+      .i_plus_neighbor_slc(),
+      .i_minus_neighbor_slc(),
+      .inn_segments_av(inn_segments_av),
+      .mid_segments_av(mid_segments_av),
+      .out_segments_av(out_segments_av),
+      .ext_segments_av(dummy_in),
+      .i_plus_neighbor_segments (),
+      .i_minus_neighbor_segments(),
+      .o_MTC(o_MTC),
+      .o_NSP(),
+      .inn_slc_to_h2s_plin_av(ucm2hps_inn),
+      .mid_slc_to_h2s_plin_av(ucm2hps_mid),
+      .out_slc_to_h2s_plin_av(ucm2hps_out),
+      .ext_slc_to_h2s_plin_av()
+      );
+
+    for (genvar i=0; i<3; i++)
+	begin
+	   assign BLOCK_output_data[i][MTC2SL_LEN-1:0] = o_MTC[i];
+	   assign BLOCK_output_write_enable[i]         = o_MTC[i][MTC2SL_DATA_VALID_MSB];
+	   assign BLOCK_output_data[i][255:MTC2SL_LEN] = 0;	   
+	end
+
+      for (genvar i=3; i<6; i++)
+	begin
+	   assign BLOCK_output_data[i][UCM2HPS_LEN-1:0] = ucm2hps_inn[i-3];
+	   assign BLOCK_output_write_enable[i]          = ucm2hps_inn[i-3][UCM2HPS_DATA_VALID_MSB];
+	   assign BLOCK_output_data[i][255:UCM2HPS_LEN] = 0;
+
+	   assign BLOCK_output_data[i+3][UCM2HPS_LEN-1:0] = ucm2hps_mid[i-3];
+	   assign BLOCK_output_write_enable[i+3]          = ucm2hps_mid[i-3][UCM2HPS_DATA_VALID_MSB];
+	   assign BLOCK_output_data[i+3][255:UCM2HPS_LEN] = 0;	   
+
+	   assign BLOCK_output_data[i+6][UCM2HPS_LEN-1:0] = ucm2hps_out[i-3];
+	   assign BLOCK_output_write_enable[i+6]          = ucm2hps_out[i-3][UCM2HPS_DATA_VALID_MSB];
+	   assign BLOCK_output_data[i+6][255:UCM2HPS_LEN] = 0;	   
+	   
+	end
+   
+   
     //
     // Output buffers
     //
