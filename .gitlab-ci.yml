@@ -41,6 +41,8 @@ include:
     # - local: '/Top/MainBlocks/ucm/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/mpl/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/tar/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/tar.0/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/tar.1/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/hp/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/heg.0/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/heg.1/gitlab-ci.yml'

@@ -1,9 +1,9 @@
-#################### tar.0 Project ###########################
-GEN:tar.0:
+#################### tar.1 Project ###########################
+GEN:tar.1:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: MainBlocks/tar.0
+      PROJECT_NAME: MainBlocks/tar.1
       HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
       
     tags:
@@ -12,44 +12,44 @@ GEN:tar.0:
       # - "2020.2"
 
 
-# SIM:tar.0_vivado:
+# SIM:tar.1_vivado:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: MainBlocks/tar.0
+#       PROJECT_NAME: MainBlocks/tar.1
 
-SIM:tar.0_questa:
+SIM:tar.1_questa:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: MainBlocks/tar.0
+      PROJECT_NAME: MainBlocks/tar.1
 
-SIM:tar.0_riviera:
+SIM:tar.1_riviera:
     extends: .riviera_sim
     variables:
       extends: .vars
-      PROJECT_NAME: MainBlocks/tar.0
+      PROJECT_NAME: MainBlocks/tar.1
     # allow_failure: false
 
-COMP:tar.0:
+COMP:tar.1:
   extends: .sim_comp
   variables:
     extends: .vars
-    PROJECT_NAME: MainBlocks/tar.0
-    PROJECT_Q_NAME: MainBlocks/tar.0_questa
-    PROJECT_R_NAME: MainBlocks/tar.0_riviera
-  needs: ["SIM:tar.0_questa","SIM:tar.0_riviera"]
+    PROJECT_NAME: MainBlocks/tar.1
+    PROJECT_Q_NAME: MainBlocks/tar.1_questa
+    PROJECT_R_NAME: MainBlocks/tar.1_riviera
+  needs: ["SIM:tar.1_questa","SIM:tar.1_riviera"]
 
-CHK:tar.0:
+CHK:tar.1:
   extends: .sim_check
   variables: 
     extends: .vars
-    PROJECT_NAME: MainBlocks/tar.0
-    BLOCK: tar.0
+    PROJECT_NAME: MainBlocks/tar.1
+    BLOCK: tar.1
     SIMULATOR: questa
-  needs: ["SIM:tar.0_riviera"]
+  needs: ["SIM:tar.1_riviera"]
   artifacts:
-    name: CHK_MainBlocks_tar.0
+    name: CHK_MainBlocks_tar.1
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
