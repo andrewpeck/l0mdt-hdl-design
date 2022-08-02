@@ -1,0 +1,55 @@
+#################### tar Project ###########################
+GEN:tar:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/tar
+      HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
+      
+    tags:
+      - normal-ops
+      - hog
+      # - "2020.2"
+
+
+# SIM:tar_vivado:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: MainBlocks/tar
+
+SIM:tar_questa:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/tar
+
+SIM:tar_riviera:
+    extends: .riviera_sim
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/tar
+    # allow_failure: false
+
+COMP:tar:
+  extends: .sim_comp
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/tar
+    PROJECT_Q_NAME: MainBlocks/tar_questa
+    PROJECT_R_NAME: MainBlocks/tar_riviera
+  needs: ["SIM:tar_questa","SIM:tar_riviera"]
+
+CHK:tar:
+  extends: .sim_check
+  variables: 
+    extends: .vars
+    PROJECT_NAME: MainBlocks/tar
+    BLOCK: tar
+    SIMULATOR: questa
+  needs: ["SIM:tar_riviera"]
+  artifacts:
+    name: CHK_MainBlocks_tar
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day
