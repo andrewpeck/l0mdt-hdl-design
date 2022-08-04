@@ -1,13 +1,17 @@
 shared/sim/pkg/l0mdt_sim_cstm_pkg.vhd
-# shared/sim/pkg/l0mdt_sim_pkg.vhd
+shared/sim/pkg/l0mdt_sim_pkg.vhd
+
+shared/sim/pkg/mdt_sim_pkg.vhd
+shared/sim/pkg/tar_sim_pkg.vhd
+
 shared/sim/pkg/ucm_sim_pkg.vhd
 
-# shared/sim/src/csv_reader_tar.vhd
-# shared/sim/src/csv_reader_tdc.vhd
+shared/sim/src/csv_reader_mdt.vhd
 shared/sim/src/csv_reader_slc.vhd
+# shared/sim/src/csv_reader_tar.vhd
 
 shared/sim/src/csv_writer_ucm.vhd
-# shared/sim/src/csv_writer_tar.vhd
+shared/sim/src/csv_writer_tar.vhd
 # shared/sim/src/csv_writer_hps.vhd
 # shared/sim/src/csv_writer_heg.vhd
 # shared/sim/src/csv_writer_mpl.vhd

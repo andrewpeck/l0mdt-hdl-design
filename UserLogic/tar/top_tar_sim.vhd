@@ -46,7 +46,7 @@ entity tar_tb is
     g_HPS_MAX_HP : integer := 6;
     g_STATION :   integer := 0;
     --
-    PRJ_INFO            : string  := "BA3";
+    PRJ_INFO            : string  := "TAR_BA3";
     IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
     IN_HIT_FILE         : string  := "csm_A3_Barrel.csv";
     IN_CTRL_FILE        : string  := "ctrl_A3_Barrel.csv";
@@ -116,8 +116,11 @@ architecture beh of tar_tb is
   signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
   signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
-  signal slc_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
-  signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
+  signal i_mdt_tdc_av :  tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0) := (others => (others => '0'));
+
+
+  -- signal mdt_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
+  -- signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
 
 
 
@@ -133,47 +136,31 @@ architecture beh of tar_tb is
   -- signal glob_en             : std_logic := '1';
   -- --
 
-  -- signal ctrl_r              : TAR_CTRL_t := DEFAULT_TAR_CTRL_t ;
-  -- signal mon_r               : TAR_MON_t;
-  -- signal ctrl_v              : std_logic_vector(TAR_CTRL_t'w - 1 downto 0); --  : in  TAR_CTRL_t;
-  -- signal mon_v               : std_logic_vector(TAR_MON_t'w - 1 downto 0);--  : out TAR_MON_t;
+  signal ctrl_r              : TAR_CTRL_t := DEFAULT_TAR_CTRL_t ;
+  signal mon_r               : TAR_MON_t;
+  signal ctrl_v              : std_logic_vector(TAR_CTRL_t'w - 1 downto 0); --  : in  TAR_CTRL_t;
+  signal mon_v               : std_logic_vector(TAR_MON_t'w - 1 downto 0);--  : out TAR_MON_t;
   -- -- TDC Hits from Polmux
   -- signal i_tdc_hits_av    : tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0):= (others => (others => '0'));
-  -- -- TDC polmux from Tar
-  -- signal o_tdc_hits_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
-  -- -- TDC Hits from Tar
-  -- signal o_tar_hits_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
+
+  -- TDC polmux from Tar
+  signal o_tdc_hits_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
+  -- TDC Hits from Tar
+  signal o_tar_hits_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
 
 
-
+  ---------------------------------------------------------------------------
+  -- 
+  ---------------------------------------------------------------------------
+  signal mdt_file_ok              : std_logic;
+  signal mdt_file_ts              : string(1 to LINE_LENGTH_MAX);
+  signal mdt_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
 
 
 begin
 
   ctrl_v <= convert(ctrl_r,ctrl_v);
   mon_r <= convert(mon_v,mon_r);
-
-  TAR : entity tar_lib.tar
-  generic map(
-    g_HPS_MAX_HP => g_HPS_MAX_HP,
-    g_STATION => g_STATION
-  )
-  port map (
-    -- clock, control, and monitoring
-    clk             => clk,
-    rst             => rst,
-    glob_en         => glob_en,
-    --
-    ctrl_v            => ctrl_v,
-    mon_v             => mon_v,
-    -- TDC Hits from Polmux
-    i_tdc_hits_av  => i_tdc_hits_av,
-    -- to daq
-    o_tdc_hits_av  => o_tdc_hits_av,
-    -- outputs to h2s
-    o_tar_hits_av  => o_tar_hits_av
-
-  );
 
   -------------------------------------------------------------------------------------
 	-- clock Generator
@@ -266,6 +253,11 @@ begin
     enable => enable_mdt,
     --
     tb_curr_tdc_time => tb_curr_tdc_time,
+    --
+    o_file_ok         => mdt_file_ok,
+    o_file_ts         => mdt_file_ts, 
+    --
+    -- o_mdt_event_ai        => mdt_event_ai,
     -- TAR Hits for simulation
     i_mdt_tdc_inn_av => i_mdt_tdc_inn_av,
     i_mdt_tdc_mid_av => i_mdt_tdc_mid_av,
@@ -286,10 +278,61 @@ begin
   port map(
     clk                       => clk,
     rst                       => rst,
-    enable                    => enable_slc,
+    enable                    => enable_mdt,
     --
-    tb_curr_tdc_time          => tb_curr_tdc_time
-    -- i_hit_event_ai            => hit_event_ai
+    tb_curr_tdc_time          => tb_curr_tdc_time,
+    --
+    -- in_mdt_file_ok            => mdt_file_ok,
+    -- in_mdt_file_ts            => mdt_file_ts,
+    -- --
+    -- mdt_event_ai              => mdt_event_ai
+    --
+    -- to daq
+    o_tdc_hits_av  => o_tdc_hits_av,
+    -- outputs to h2s
+    o_tar_hits_av  => o_tar_hits_av
+
+  );
+
+  -------------------------------------------------------------------------------------
+	-- TAR
+  -------------------------------------------------------------------------------------
+
+    STAT: case g_STATION generate
+      when 0 =>
+      i_mdt_tdc_av <= i_mdt_tdc_inn_av;
+      when 1 =>
+      i_mdt_tdc_av <= i_mdt_tdc_mid_av;
+      when 2 =>
+      i_mdt_tdc_av <= i_mdt_tdc_out_av;
+      when 3 =>
+      i_mdt_tdc_av <= i_mdt_tdc_ext_av;
+        
+    
+      when others =>
+      
+    
+    end generate;
+
+  TAR : entity tar_lib.tar
+  generic map(
+    g_HPS_MAX_HP => g_HPS_MAX_HP,
+    g_STATION => g_STATION
+  )
+  port map (
+    -- clock, control, and monitoring
+    clk             => clk,
+    rst             => rst,
+    glob_en         => glob_en,
+    --
+    ctrl_v            => ctrl_v,
+    mon_v             => mon_v,
+    -- TDC Hits from Polmux
+    i_tdc_hits_av  => i_mdt_tdc_av,
+    -- to daq
+    o_tdc_hits_av  => o_tdc_hits_av,
+    -- outputs to h2s
+    o_tar_hits_av  => o_tar_hits_av
 
   );
 

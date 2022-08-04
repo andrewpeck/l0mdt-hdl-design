@@ -32,7 +32,8 @@ use shared_lib.detector_param_pkg.all;
 use shared_lib.vhdl_tb_utils_pkg.all;
 
 -- library project_lib;
-use shared_lib.ucm_sim_pkg.all;
+use shared_lib.mdt_sim_pkg.all;
+use shared_lib.tar_sim_pkg.all;
 use shared_lib.l0mdt_sim_cstm_pkg.all;
 -- use project_lib.vhdl_tb_utils_pkg.all;
 use shared_lib.vhdl_textio_csv_pkg.all;
@@ -42,7 +43,7 @@ use shared_lib.vhdl_textio_csv_pkg.all;
 
 entity csv_reader_mdt is
   generic (
-    IN_SLC_FILE         : string  := "csm_TB_A3_Barrel_yt_v04.csv";
+    IN_HIT_FILE         : string  := "csm_A3_Barrel.csv";
     g_verbose         : integer := 1
   );
   port (
@@ -51,6 +52,9 @@ entity csv_reader_mdt is
     enable                : in integer;
     --
     tb_curr_tdc_time  : in unsigned(63 downto 0) := (others => '0');
+    --
+    o_file_ok             : out std_logic;
+    o_file_ts             : out string(1 to LINE_LENGTH_MAX);
     -- Hits from Tar
     i_mdt_tdc_inn_av  : out tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
     i_mdt_tdc_mid_av  : out tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
@@ -98,6 +102,9 @@ architecture sim of csv_reader_mdt is
   
 begin
 
+  o_file_ok <= file_open;
+  o_file_ts <= file_ts;
+  
   open_csv: process
     variable timestamp : string(1 to LINE_LENGTH_MAX);
 
