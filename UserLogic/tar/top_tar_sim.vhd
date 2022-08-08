@@ -44,7 +44,9 @@ use ctrl_lib.TAR_CTRL_DEF.all;
 entity tar_tb is
   generic (
     g_HPS_MAX_HP : integer := 6;
-    g_STATION :   integer := 0;
+    g_STATION : integer := 0;
+    g_ST_ENABLE : integer := 0;
+
     --
     PRJ_INFO            : string  := "TAR_BA3";
     IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
@@ -61,6 +63,8 @@ entity tar_tb is
 end entity tar_tb;
 
 architecture beh of tar_tb is
+
+  signal ST_ENABLE : std_logic_vector(3 downto 0);
 
   signal enable_mdt : integer := 1;
   
@@ -92,22 +96,22 @@ architecture beh of tar_tb is
   signal bx : std_logic := '0'; 
 
 
-  signal tar_inn_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
-  signal tar_inn_mon  :  TAR_MON_t ;
-  signal tar_mid_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
-  signal tar_mid_mon  :  TAR_MON_t ;
-  signal tar_out_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
-  signal tar_out_mon  :  TAR_MON_t ;
-  signal tar_ext_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
-  signal tar_ext_mon  :  TAR_MON_t ;
+  signal tar_inn_ctrl_r :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_mid_ctrl_r :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_out_ctrl_r :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_ext_ctrl_r :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_inn_mon_r  :  TAR_MON_t ;
+  signal tar_mid_mon_r  :  TAR_MON_t ;
+  signal tar_out_mon_r  :  TAR_MON_t ;
+  signal tar_ext_mon_r  :  TAR_MON_t ;
 
   signal tar_inn_ctrl_v : std_logic_vector(TAR_CTRL_t'w - 1 downto 0);
-  signal tar_inn_mon_v  : std_logic_vector(TAR_MON_t'w - 1 downto 0);
   signal tar_mid_ctrl_v : std_logic_vector(TAR_CTRL_t'w - 1 downto 0);
-  signal tar_mid_mon_v  : std_logic_vector(TAR_MON_t'w - 1 downto 0);
   signal tar_out_ctrl_v : std_logic_vector(TAR_CTRL_t'w - 1 downto 0);
-  signal tar_out_mon_v  : std_logic_vector(TAR_MON_t'w - 1 downto 0);
   signal tar_ext_ctrl_v : std_logic_vector(TAR_CTRL_t'w - 1 downto 0);
+  signal tar_inn_mon_v  : std_logic_vector(TAR_MON_t'w - 1 downto 0);
+  signal tar_mid_mon_v  : std_logic_vector(TAR_MON_t'w - 1 downto 0);
+  signal tar_out_mon_v  : std_logic_vector(TAR_MON_t'w - 1 downto 0);
   signal tar_ext_mon_v  : std_logic_vector(TAR_MON_t'w - 1 downto 0);
 
   -- TDC Hits from Polmux
@@ -144,9 +148,15 @@ architecture beh of tar_tb is
   -- signal i_tdc_hits_av    : tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0):= (others => (others => '0'));
 
   -- TDC polmux from Tar
-  signal o_tdc_hits_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tdc_hits_inn_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tdc_hits_mid_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tdc_hits_out_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tdc_hits_ext_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
   -- TDC Hits from Tar
-  signal o_tar_hits_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tar_hits_inn_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tar_hits_mid_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tar_hits_out_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tar_hits_ext_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
 
 
   ---------------------------------------------------------------------------
@@ -158,9 +168,195 @@ architecture beh of tar_tb is
 
 
 begin
+  -------------------------------------------------------------------------------------
+	-- TAR
+  -------------------------------------------------------------------------------------
 
-  ctrl_v <= convert(ctrl_r,ctrl_v);
-  mon_r <= convert(mon_v,mon_r);
+  TAR_INN_GEN: if ST_ENABLE(0)='1' generate
+    TAR_INN : entity tar_lib.tar
+    generic map(
+      g_HPS_MAX_HP => g_HPS_MAX_HP,
+      g_STATION => g_STATION
+    )
+    port map (
+      -- clock, control, and monitoring
+      clk             => clk,
+      rst             => rst,
+      glob_en         => glob_en,
+      --
+      ctrl_v            => tar_inn_ctrl_v,
+      mon_v             => tar_inn_mon_v,
+      -- TDC Hits from Polmux
+      i_tdc_hits_av  => i_mdt_tdc_inn_av,
+      -- to daq
+      o_tdc_hits_av  => o_tdc_hits_inn_av,
+      -- outputs to h2s
+      o_tar_hits_av  => o_tar_hits_inn_av
+  
+    );
+  end generate;
+  TAR_MID_GEN: if ST_ENABLE(1)='1' generate
+    TAR_MID : entity tar_lib.tar
+    generic map(
+      g_HPS_MAX_HP => g_HPS_MAX_HP,
+      g_STATION => g_STATION
+    )
+    port map (
+      -- clock, control, and monitoring
+      clk             => clk,
+      rst             => rst,
+      glob_en         => glob_en,
+      --
+      ctrl_v            => tar_mid_ctrl_v,
+      mon_v             => tar_mid_mon_v,
+      -- TDC Hits from Polmux
+      i_tdc_hits_av  => i_mdt_tdc_mid_av,
+      -- to daq
+      o_tdc_hits_av  => o_tdc_hits_mid_av,
+      -- outputs to h2s
+      o_tar_hits_av  => o_tar_hits_mid_av
+
+    );
+  end generate;
+  TAR_OUT_GEN: if ST_ENABLE(2)='1' generate
+    TAR_OUT : entity tar_lib.tar
+    generic map(
+      g_HPS_MAX_HP => g_HPS_MAX_HP,
+      g_STATION => g_STATION
+    )
+    port map (
+      -- clock, control, and monitoring
+      clk             => clk,
+      rst             => rst,
+      glob_en         => glob_en,
+      --
+      ctrl_v            => tar_out_ctrl_v,
+      mon_v             => tar_out_mon_v,
+      -- TDC Hits from Polmux
+      i_tdc_hits_av  => i_mdt_tdc_out_av,
+      -- to daq
+      o_tdc_hits_av  => o_tdc_hits_out_av,
+      -- outputs to h2s
+      o_tar_hits_av  => o_tar_hits_out_av
+  
+    );
+  end generate;
+  TAR_EXT_GEN: if ST_ENABLE(3)='1' generate
+    TAR_EXT : entity tar_lib.tar
+    generic map(
+      g_HPS_MAX_HP => g_HPS_MAX_HP,
+      g_STATION => g_STATION
+    )
+    port map (
+      -- clock, control, and monitoring
+      clk             => clk,
+      rst             => rst,
+      glob_en         => glob_en,
+      --
+      ctrl_v            => tar_ext_ctrl_v,
+      mon_v             => tar_ext_mon_v,
+      -- TDC Hits from Polmux
+      i_tdc_hits_av  => i_mdt_tdc_ext_av,
+      -- to daq
+      o_tdc_hits_av  => o_tdc_hits_ext_av,
+      -- outputs to h2s
+      o_tar_hits_av  => o_tar_hits_ext_av
+  
+    );
+  end generate;
+
+  -------------------------------------------------------------------------------------
+	-- MDT IN
+  -------------------------------------------------------------------------------------
+  MDT : entity shared_lib.csv_reader_mdt 
+  generic map (
+    IN_HIT_FILE => IN_HIT_FILE,
+    g_verbose => 2
+  )
+  port map(
+    clk => clk,
+    rst => rst,
+    enable => enable_mdt,
+    --
+    tb_curr_tdc_time => tb_curr_tdc_time,
+    --
+    o_file_ok         => mdt_file_ok,
+    o_file_ts         => mdt_file_ts, 
+    --
+    -- o_mdt_event_ai        => mdt_event_ai,
+    -- TAR Hits for simulation
+    i_mdt_tdc_inn_av => i_mdt_tdc_inn_av,
+    i_mdt_tdc_mid_av => i_mdt_tdc_mid_av,
+    i_mdt_tdc_out_av => i_mdt_tdc_out_av,
+    i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
+  );
+  -------------------------------------------------------------------------------------
+	-- TAR OUT
+  -------------------------------------------------------------------------------------
+  TAR2HPS : entity shared_lib.csv_writer_tar
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+    -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
+    -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_mdt,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time,
+    --
+    in_mdt_file_ok            => mdt_file_ok,
+    in_mdt_file_ts            => mdt_file_ts,
+    -- --
+    -- mdt_event_ai              => mdt_event_ai
+    --
+    -- to daq
+    i_tdc_hits_inn_av  => o_tdc_hits_inn_av,
+    i_tdc_hits_mid_av  => o_tdc_hits_mid_av,
+    i_tdc_hits_out_av  => o_tdc_hits_out_av,
+    i_tdc_hits_ext_av  => o_tdc_hits_ext_av,
+    -- outputs to h2s
+    i_tar_hits_inn_av  => o_tar_hits_inn_av,
+    i_tar_hits_mid_av  => o_tar_hits_mid_av,
+    i_tar_hits_out_av  => o_tar_hits_out_av,
+    i_tar_hits_ext_av  => o_tar_hits_ext_av
+
+  );
+
+
+  -- STAT: case g_STATION generate
+  --   when 0 =>
+  --   i_mdt_tdc_av <= i_mdt_tdc_inn_av;
+  --   ctrl_v <= tar_inn_ctrl_v;
+  --   when 1 =>
+  --   i_mdt_tdc_av <= i_mdt_tdc_mid_av;
+  --   ctrl_v <= tar_inn_ctrl_v;
+  --   when 2 =>
+  --   i_mdt_tdc_av <= i_mdt_tdc_out_av;
+  --   ctrl_v <= tar_inn_ctrl_v;
+  --   when 3 =>
+  --   i_mdt_tdc_av <= i_mdt_tdc_ext_av;
+  --   ctrl_v <= tar_inn_ctrl_v;
+  
+  --   when others =>
+    
+  
+  -- end generate;
+
+  tar_inn_ctrl_v <= convert(tar_inn_ctrl_r,tar_inn_ctrl_v);
+  tar_mid_ctrl_v <= convert(tar_mid_ctrl_r,tar_mid_ctrl_v);
+  tar_out_ctrl_v <= convert(tar_out_ctrl_r,tar_out_ctrl_v);
+  tar_ext_ctrl_v <= convert(tar_ext_ctrl_r,tar_ext_ctrl_v);
+  tar_inn_mon_r <= convert(tar_inn_mon_v,tar_inn_mon_r);
+  tar_mid_mon_r <= convert(tar_mid_mon_v,tar_mid_mon_r);
+  tar_out_mon_r <= convert(tar_out_mon_v,tar_out_mon_r);
+  tar_ext_mon_r <= convert(tar_ext_mon_v,tar_ext_mon_r);
+
+  -- ctrl_v <= convert(ctrl_r,ctrl_v);
+  -- mon_r <= convert(mon_v,mon_r);
 
   -------------------------------------------------------------------------------------
 	-- clock Generator
@@ -239,101 +435,6 @@ begin
     end if;
   end process;
 
-  -------------------------------------------------------------------------------------
-	-- MDT IN
-  -------------------------------------------------------------------------------------
-  MDT : entity shared_lib.csv_reader_mdt 
-  generic map (
-    IN_HIT_FILE => IN_HIT_FILE,
-    g_verbose => 2
-  )
-  port map(
-    clk => clk,
-    rst => rst,
-    enable => enable_mdt,
-    --
-    tb_curr_tdc_time => tb_curr_tdc_time,
-    --
-    o_file_ok         => mdt_file_ok,
-    o_file_ts         => mdt_file_ts, 
-    --
-    -- o_mdt_event_ai        => mdt_event_ai,
-    -- TAR Hits for simulation
-    i_mdt_tdc_inn_av => i_mdt_tdc_inn_av,
-    i_mdt_tdc_mid_av => i_mdt_tdc_mid_av,
-    i_mdt_tdc_out_av => i_mdt_tdc_out_av,
-    i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
-  );
-  -------------------------------------------------------------------------------------
-	-- TAR OUT
-  -------------------------------------------------------------------------------------
-  TAR2HPS : entity shared_lib.csv_writer_tar
-  generic map (
-    g_PRJ_INFO    => PRJ_INFO,
-    g_IN_HIT_FILE => IN_HIT_FILE,
-    g_IN_SLC_FILE => IN_SLC_FILE
-    -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
-    -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
-  )
-  port map(
-    clk                       => clk,
-    rst                       => rst,
-    enable                    => enable_mdt,
-    --
-    tb_curr_tdc_time          => tb_curr_tdc_time,
-    --
-    -- in_mdt_file_ok            => mdt_file_ok,
-    -- in_mdt_file_ts            => mdt_file_ts,
-    -- --
-    -- mdt_event_ai              => mdt_event_ai
-    --
-    -- to daq
-    o_tdc_hits_av  => o_tdc_hits_av,
-    -- outputs to h2s
-    o_tar_hits_av  => o_tar_hits_av
-
-  );
-
-  -------------------------------------------------------------------------------------
-	-- TAR
-  -------------------------------------------------------------------------------------
-
-    STAT: case g_STATION generate
-      when 0 =>
-      i_mdt_tdc_av <= i_mdt_tdc_inn_av;
-      when 1 =>
-      i_mdt_tdc_av <= i_mdt_tdc_mid_av;
-      when 2 =>
-      i_mdt_tdc_av <= i_mdt_tdc_out_av;
-      when 3 =>
-      i_mdt_tdc_av <= i_mdt_tdc_ext_av;
-        
-    
-      when others =>
-      
-    
-    end generate;
-
-  TAR : entity tar_lib.tar
-  generic map(
-    g_HPS_MAX_HP => g_HPS_MAX_HP,
-    g_STATION => g_STATION
-  )
-  port map (
-    -- clock, control, and monitoring
-    clk             => clk,
-    rst             => rst,
-    glob_en         => glob_en,
-    --
-    ctrl_v            => ctrl_v,
-    mon_v             => mon_v,
-    -- TDC Hits from Polmux
-    i_tdc_hits_av  => i_mdt_tdc_av,
-    -- to daq
-    o_tdc_hits_av  => o_tdc_hits_av,
-    -- outputs to h2s
-    o_tar_hits_av  => o_tar_hits_av
-
-  );
+  
 
 end beh;
