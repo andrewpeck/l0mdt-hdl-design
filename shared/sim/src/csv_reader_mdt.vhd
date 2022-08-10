@@ -44,22 +44,25 @@ use shared_lib.vhdl_textio_csv_pkg.all;
 entity csv_reader_mdt is
   generic (
     IN_HIT_FILE         : string  := "csm_A3_Barrel.csv";
-    g_verbose         : integer := 1
+    g_verbose           : integer := 1
   );
   port (
-    clk                   : in std_logic;
-    rst                   : in std_logic;
-    enable                : in integer;
+    clk                 : in std_logic;
+    rst                 : in std_logic;
+    enable              : in integer;
     --
-    tb_curr_tdc_time  : in unsigned(63 downto 0) := (others => '0');
+    tb_curr_tdc_time    : in unsigned(63 downto 0) := (others => '0');
     --
-    o_file_ok             : out std_logic;
-    o_file_ts             : out string(1 to LINE_LENGTH_MAX);
+    o_file_ok           : out std_logic;
+    o_file_ts           : out string(1 to LINE_LENGTH_MAX);
+    --
+    o_mdt_event_ai      : out event_tdc_aut;--event_aut(3 downto 0);
+    o_slc_event_ai      : out event_tdc_aut;--event_aut(3 downto 0);
     -- Hits from Tar
-    i_mdt_tdc_inn_av  : out tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-    i_mdt_tdc_mid_av  : out tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-    i_mdt_tdc_out_av  : out tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-    i_mdt_tdc_ext_av  : out tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'))
+    o_mdt_tdc_inn_av    : out tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+    o_mdt_tdc_mid_av    : out tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+    o_mdt_tdc_out_av    : out tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+    o_mdt_tdc_ext_av    : out tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'))
 
   );
 end entity csv_reader_mdt;
@@ -93,8 +96,10 @@ architecture sim of csv_reader_mdt is
   signal mdt_out_counts   : infifo_hit_counts(c_HPS_MAX_HP_OUT -1 downto 0) := (others => 0);
   signal mdt_ext_counts   : infifo_hit_counts(c_HPS_MAX_HP_EXT -1 downto 0) := (others => 0);
 
-  signal mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
-
+  -- signal mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
+  -- signal slc_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
+  -- signal mdt_event_ai     : event_aut(3 downto 0);
+  -- signal slc_event_ai     : event_aut(3 downto 0);
 
   shared variable csv_file  : csv_file_type;
   signal  file_open         : std_logic := '0';   
@@ -159,7 +164,7 @@ begin
     variable tube_z           : integer;
     variable tube_rho         : integer;
     variable drift_time       : real;
-    variable event            : integer;
+    variable event_id            : integer;
     variable muonFixedId      : integer;
     variable csm              : integer;
     variable mezz             : integer;
@@ -202,8 +207,9 @@ begin
 
           for wr_i in c_HPS_MAX_HP_INN -1 downto 0 loop
             if(v_mdt_inn_counts(wr_i) > 0) then
-              i_mdt_tdc_inn_av(wr_i) <= convert(mdt_inn_fifo(wr_i)(0).tdc,i_mdt_tdc_inn_av(wr_i));
-              mdt_event_ai(0)(wr_i) <= mdt_inn_fifo(wr_i)(0).event;
+              o_mdt_tdc_inn_av(wr_i) <= convert(mdt_inn_fifo(wr_i)(0).tdc,o_mdt_tdc_inn_av(wr_i));
+              o_mdt_event_ai(0)(wr_i) <= mdt_inn_fifo(wr_i)(0).hit_id;
+              o_slc_event_ai(0)(wr_i) <= mdt_inn_fifo(wr_i)(0).event_id;
               -- for test input read
               i_mdt_tdc_inn_ar(wr_i) <= mdt_inn_fifo(wr_i)(0).tdc;
               --
@@ -212,17 +218,18 @@ begin
               end loop;
               v_mdt_inn_counts(wr_i) := v_mdt_inn_counts(wr_i) - 1;
             else
-              mdt_event_ai(0)(wr_i) <= (others => '0');
-              i_mdt_tdc_inn_av(wr_i) <= zero(i_mdt_tdc_inn_av(wr_i));
+              o_mdt_event_ai(0)(wr_i) <= (others => '0');
+              o_slc_event_ai(0)(wr_i) <= (others => '0');
+              o_mdt_tdc_inn_av(wr_i) <= zero(o_mdt_tdc_inn_av(wr_i));
               i_mdt_tdc_inn_ar(wr_i) <= zero(i_mdt_tdc_inn_ar(wr_i));
             end if;
           end loop;
 
           for wr_i in c_HPS_MAX_HP_MID -1 downto 0 loop
             if(v_mdt_mid_counts(wr_i) > 0) then
-              i_mdt_tdc_mid_av(wr_i) <= convert(mdt_mid_fifo(wr_i)(0).tdc,i_mdt_tdc_mid_av(wr_i));
-              mdt_event_ai(1)(wr_i) <= mdt_mid_fifo(wr_i)(0).event;
-
+              o_mdt_tdc_mid_av(wr_i) <= convert(mdt_mid_fifo(wr_i)(0).tdc,o_mdt_tdc_mid_av(wr_i));
+              o_mdt_event_ai(1)(wr_i) <= mdt_mid_fifo(wr_i)(0).hit_id;
+              o_slc_event_ai(1)(wr_i) <= mdt_mid_fifo(wr_i)(0).event_id;
               -- for test input read
               i_mdt_tdc_mid_ar(wr_i) <= mdt_mid_fifo(wr_i)(0).tdc;
               --
@@ -231,17 +238,20 @@ begin
               end loop;
               v_mdt_mid_counts(wr_i) := v_mdt_mid_counts(wr_i) - 1;
             else
-              mdt_event_ai(1)(wr_i) <= (others => '0');
-              i_mdt_tdc_mid_av(wr_i) <= zero(i_mdt_tdc_mid_av(wr_i));
+              -- mdt_event_ai(1)(wr_i) <= (others => '0');
+              o_mdt_event_ai(1)(wr_i) <= (others => '0');
+              o_slc_event_ai(1)(wr_i) <= (others => '0');
+              o_mdt_tdc_mid_av(wr_i) <= zero(o_mdt_tdc_mid_av(wr_i));
               i_mdt_tdc_mid_ar(wr_i) <= zero(i_mdt_tdc_mid_ar(wr_i));
             end if;
           end loop;
 
           for wr_i in c_HPS_MAX_HP_OUT -1 downto 0 loop
             if(v_mdt_out_counts(wr_i) > 0) then
-              i_mdt_tdc_out_av(wr_i) <= convert(mdt_out_fifo(wr_i)(0).tdc,i_mdt_tdc_out_av(wr_i));
-              mdt_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).event;
-
+              o_mdt_tdc_out_av(wr_i) <= convert(mdt_out_fifo(wr_i)(0).tdc,o_mdt_tdc_out_av(wr_i));
+              -- mdt_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).event_id;
+              o_mdt_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).hit_id;
+              o_slc_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).event_id;
               -- for test input read
               i_mdt_tdc_out_ar(wr_i) <= mdt_out_fifo(wr_i)(0).tdc;
               --
@@ -250,17 +260,20 @@ begin
               end loop;
               v_mdt_out_counts(wr_i) := v_mdt_out_counts(wr_i) - 1;
             else
-              mdt_event_ai(2)(wr_i) <= (others => '0');
-              i_mdt_tdc_out_av(wr_i) <= zero(i_mdt_tdc_out_av(wr_i));
+              -- mdt_event_ai(2)(wr_i) <= (others => '0');
+              o_mdt_event_ai(2)(wr_i) <= (others => '0');
+              o_slc_event_ai(2)(wr_i) <= (others => '0');
+              o_mdt_tdc_out_av(wr_i) <= zero(o_mdt_tdc_out_av(wr_i));
               i_mdt_tdc_out_ar(wr_i) <= zero(i_mdt_tdc_out_ar(wr_i));
             end if;
           end loop;
 
           for wr_i in c_HPS_MAX_HP_EXT -1 downto 0 loop
             if(v_mdt_ext_counts(wr_i) > 0) then
-              i_mdt_tdc_ext_av(wr_i) <= convert(mdt_ext_fifo(wr_i)(0).tdc,i_mdt_tdc_ext_av(wr_i));
-              mdt_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).event;
-
+              o_mdt_tdc_ext_av(wr_i) <= convert(mdt_ext_fifo(wr_i)(0).tdc,o_mdt_tdc_ext_av(wr_i));
+              -- mdt_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).event_id;
+              o_mdt_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).hit_id;
+              o_slc_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).event_id;
               -- for test input read
               i_mdt_tdc_ext_ar(wr_i) <= mdt_ext_fifo(wr_i)(0).tdc;
               --
@@ -269,8 +282,10 @@ begin
               end loop;
               v_mdt_ext_counts(wr_i) := v_mdt_ext_counts(wr_i) - 1;
             else
-              mdt_event_ai(3)(wr_i) <= (others => '0');
-              i_mdt_tdc_ext_av(wr_i) <= zero(i_mdt_tdc_ext_av(wr_i));
+              -- mdt_event_ai(3)(wr_i) <= (others => '0');
+              o_mdt_event_ai(3)(wr_i) <= (others => '0');
+              o_slc_event_ai(3)(wr_i) <= (others => '0');
+              o_mdt_tdc_ext_av(wr_i) <= zero(o_mdt_tdc_ext_av(wr_i));
               i_mdt_tdc_ext_ar(wr_i) <= zero(i_mdt_tdc_ext_ar(wr_i));
             end if;
           end loop;
@@ -300,7 +315,7 @@ begin
             tube_z           := csv_file.read_integer;
             tube_rho         := csv_file.read_integer;
             drift_time       := csv_file.read_real;
-            event            := csv_file.read_integer;
+            event_id            := csv_file.read_integer;
             muonFixedId      := csv_file.read_integer;
             csm              := csv_file.read_integer;
             mezz             := csv_file.read_integer;
@@ -322,7 +337,7 @@ begin
               " : " & integer'image(tube_z          ) &
               " : " & integer'image(tube_rho        ) &
               " : " & real'image(drift_time      ) &
-              " : " & integer'image(event           ) &
+              " : " & integer'image(event_id           ) &
               " : " & integer'image(muonFixedId     ) &
               " : " & integer'image(csm             ) &
               " : " & integer'image(mezz            ) &
@@ -336,14 +351,8 @@ begin
               ToA => to_unsigned(ToA,64),
               Station => to_unsigned(i_Station,8),
               Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
-              event => to_unsigned(event , 32),
-              -- tar => (  
-              --   tube => to_unsigned(tube_global,MDT_TUBE_LEN),
-              --   layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
-              --   chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
-              --   time => to_unsigned((mdt_time_coarse * 32) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
-              --   data_valid => '1'
-              -- ),
+              event_id => to_unsigned(event_id , 32),
+              hit_id => to_unsigned(ToA , 32),
               tdc => (
                 data_valid => '1',
                 tdc => (
@@ -411,7 +420,7 @@ begin
                 tube_z           := csv_file.read_integer;
                 tube_rho         := csv_file.read_integer;
                 drift_time       := csv_file.read_real;
-                event            := csv_file.read_integer;
+                event_id            := csv_file.read_integer;
                 muonFixedId      := csv_file.read_integer;
                 csm              := csv_file.read_integer;
                 mezz             := csv_file.read_integer;
@@ -434,7 +443,7 @@ begin
                   " : " & integer'image(tube_z          ) &
                   " : " & integer'image(tube_rho        ) &
                   " : " & real'image(drift_time      ) &
-                  " : " & integer'image(event           ) &
+                  " : " & integer'image(event_id           ) &
                   " : " & integer'image(muonFixedId     ) &
                   " : " & integer'image(csm             ) &
                   " : " & integer'image(mezz            ) &
@@ -449,15 +458,8 @@ begin
                   ToA => to_unsigned(ToA,64),
                   Station => to_unsigned(i_Station,8),
                   Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
-              event => to_unsigned(event , 32),
-
-                  -- tar => (  
-                  --   tube => to_unsigned(tube_global,MDT_TUBE_LEN),
-                  --   layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
-                  --   chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
-                  --   time => to_unsigned((mdt_time_coarse * 32) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
-                  --   data_valid => '1'
-                  -- ),
+                  event_id => to_unsigned(event_id , 32),
+                  hit_id => to_unsigned(ToA , 32),
                   tdc => (
                     data_valid => '1',
                     tdc => (

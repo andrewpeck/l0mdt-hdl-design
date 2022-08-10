@@ -44,8 +44,8 @@ use ctrl_lib.TAR_CTRL_DEF.all;
 entity tar_tb is
   generic (
     g_HPS_MAX_HP : integer := 6;
-    g_STATION : integer := 0;
-    g_ST_ENABLE : integer := 0;
+    -- g_STATION : integer := 0;
+    g_ST_ENABLE : integer := 15;
 
     --
     PRJ_INFO            : string  := "TAR_BA3";
@@ -64,7 +64,7 @@ end entity tar_tb;
 
 architecture beh of tar_tb is
 
-  signal ST_ENABLE : std_logic_vector(3 downto 0);
+  constant ST_ENABLE : std_logic_vector(3 downto 0) := std_logic_vector(to_unsigned(g_ST_ENABLE,4));
 
   signal enable_mdt : integer := 1;
   
@@ -95,7 +95,6 @@ architecture beh of tar_tb is
 
   signal bx : std_logic := '0'; 
 
-
   signal tar_inn_ctrl_r :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
   signal tar_mid_ctrl_r :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
   signal tar_out_ctrl_r :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
@@ -122,12 +121,8 @@ architecture beh of tar_tb is
 
   signal i_mdt_tdc_av :  tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0) := (others => (others => '0'));
 
-
   -- signal mdt_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
   -- signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
-
-
-
 
   -------------- OLD ----------------------
 
@@ -146,7 +141,6 @@ architecture beh of tar_tb is
   signal mon_v               : std_logic_vector(TAR_MON_t'w - 1 downto 0);--  : out TAR_MON_t;
   -- -- TDC Hits from Polmux
   -- signal i_tdc_hits_av    : tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0):= (others => (others => '0'));
-
   -- TDC polmux from Tar
   signal o_tdc_hits_inn_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
   signal o_tdc_hits_mid_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
@@ -158,15 +152,16 @@ architecture beh of tar_tb is
   signal o_tar_hits_out_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
   signal o_tar_hits_ext_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
 
-
   ---------------------------------------------------------------------------
   -- 
   ---------------------------------------------------------------------------
-  signal mdt_file_ok              : std_logic;
-  signal mdt_file_ts              : string(1 to LINE_LENGTH_MAX);
-  signal mdt_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
-
-
+  signal mdt_file_ok         : std_logic;
+  signal mdt_file_ts         : string(1 to LINE_LENGTH_MAX);
+  -- signal mdt_event_ai        : event_aut(3 downto 0);
+  -- signal slc_event_ai        : event_aut(3 downto 0);
+  signal mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
+  signal slc_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
+  
 begin
   -------------------------------------------------------------------------------------
 	-- TAR
@@ -176,7 +171,7 @@ begin
     TAR_INN : entity tar_lib.tar
     generic map(
       g_HPS_MAX_HP => g_HPS_MAX_HP,
-      g_STATION => g_STATION
+      g_STATION => 0
     )
     port map (
       -- clock, control, and monitoring
@@ -199,7 +194,7 @@ begin
     TAR_MID : entity tar_lib.tar
     generic map(
       g_HPS_MAX_HP => g_HPS_MAX_HP,
-      g_STATION => g_STATION
+      g_STATION => 1
     )
     port map (
       -- clock, control, and monitoring
@@ -222,7 +217,7 @@ begin
     TAR_OUT : entity tar_lib.tar
     generic map(
       g_HPS_MAX_HP => g_HPS_MAX_HP,
-      g_STATION => g_STATION
+      g_STATION => 2
     )
     port map (
       -- clock, control, and monitoring
@@ -245,7 +240,7 @@ begin
     TAR_EXT : entity tar_lib.tar
     generic map(
       g_HPS_MAX_HP => g_HPS_MAX_HP,
-      g_STATION => g_STATION
+      g_STATION => 3
     )
     port map (
       -- clock, control, and monitoring
@@ -274,21 +269,22 @@ begin
     g_verbose => 2
   )
   port map(
-    clk => clk,
-    rst => rst,
-    enable => enable_mdt,
+    clk               => clk,
+    rst               => rst,
+    enable            => enable_mdt,
     --
-    tb_curr_tdc_time => tb_curr_tdc_time,
+    tb_curr_tdc_time  => tb_curr_tdc_time,
     --
     o_file_ok         => mdt_file_ok,
     o_file_ts         => mdt_file_ts, 
     --
-    -- o_mdt_event_ai        => mdt_event_ai,
+    o_mdt_event_ai    => mdt_event_ai,
+    o_slc_event_ai    => slc_event_ai,
     -- TAR Hits for simulation
-    i_mdt_tdc_inn_av => i_mdt_tdc_inn_av,
-    i_mdt_tdc_mid_av => i_mdt_tdc_mid_av,
-    i_mdt_tdc_out_av => i_mdt_tdc_out_av,
-    i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
+    o_mdt_tdc_inn_av  => i_mdt_tdc_inn_av,
+    o_mdt_tdc_mid_av  => i_mdt_tdc_mid_av,
+    o_mdt_tdc_out_av  => i_mdt_tdc_out_av,
+    o_mdt_tdc_ext_av  => i_mdt_tdc_ext_av
   );
   -------------------------------------------------------------------------------------
 	-- TAR OUT
@@ -302,27 +298,27 @@ begin
     -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
   )
   port map(
-    clk                       => clk,
-    rst                       => rst,
-    enable                    => enable_mdt,
+    clk                 => clk,
+    rst                 => rst,
+    enable              => enable_mdt,
     --
-    tb_curr_tdc_time          => tb_curr_tdc_time,
+    tb_curr_tdc_time    => tb_curr_tdc_time,
     --
-    in_mdt_file_ok            => mdt_file_ok,
-    in_mdt_file_ts            => mdt_file_ts,
+    in_mdt_file_ok      => mdt_file_ok,
+    in_mdt_file_ts      => mdt_file_ts,
     -- --
-    -- mdt_event_ai              => mdt_event_ai
-    --
+    i_mdt_event_ai      => mdt_event_ai,
+    i_slc_event_ai      => slc_event_ai,
     -- to daq
-    i_tdc_hits_inn_av  => o_tdc_hits_inn_av,
-    i_tdc_hits_mid_av  => o_tdc_hits_mid_av,
-    i_tdc_hits_out_av  => o_tdc_hits_out_av,
-    i_tdc_hits_ext_av  => o_tdc_hits_ext_av,
+    i_tdc_hits_inn_av   => o_tdc_hits_inn_av,
+    i_tdc_hits_mid_av   => o_tdc_hits_mid_av,
+    i_tdc_hits_out_av   => o_tdc_hits_out_av,
+    i_tdc_hits_ext_av   => o_tdc_hits_ext_av,
     -- outputs to h2s
-    i_tar_hits_inn_av  => o_tar_hits_inn_av,
-    i_tar_hits_mid_av  => o_tar_hits_mid_av,
-    i_tar_hits_out_av  => o_tar_hits_out_av,
-    i_tar_hits_ext_av  => o_tar_hits_ext_av
+    i_tar_hits_inn_av   => o_tar_hits_inn_av,
+    i_tar_hits_mid_av   => o_tar_hits_mid_av,
+    i_tar_hits_out_av   => o_tar_hits_out_av,
+    i_tar_hits_ext_av   => o_tar_hits_ext_av
 
   );
 

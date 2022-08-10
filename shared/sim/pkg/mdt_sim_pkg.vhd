@@ -21,10 +21,11 @@ package mdt_sim_pkg is
       ToA : unsigned(64-1 downto 0);
       station : unsigned(8-1 downto 0);
       chamber : unsigned(SLC_CHAMBER_LEN-1 downto 0);
-      event : unsigned(32-1 downto 0);
+      event_id : unsigned(32-1 downto 0);
+      hit_id : unsigned(32-1 downto 0);
       tdc : tdcpolmux2tar_rt;
    end record input_mdt_rt;
-   attribute w of input_mdt_rt : type is 150;
+   attribute w of input_mdt_rt : type is 182;
    function width(x: input_mdt_rt) return natural;
    function convert(x: input_mdt_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: input_mdt_rt) return input_mdt_rt;
@@ -34,7 +35,7 @@ package mdt_sim_pkg is
    attribute w of TB_TAR_FIFO_WIDTH : constant is 32;
 
    type input_mdt_art is array(TB_TAR_FIFO_WIDTH-1 downto 0) of input_mdt_rt;
-   attribute w of input_mdt_art : type is 4800;
+   attribute w of input_mdt_art : type is 5824;
    function width(x: input_mdt_art) return integer;
    function convert(x: input_mdt_art; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: input_mdt_art) return input_mdt_art;
@@ -68,7 +69,8 @@ package body mdt_sim_pkg is
       w := w + width(x.ToA);
       w := w + width(x.station);
       w := w + width(x.chamber);
-      w := w + width(x.event);
+      w := w + width(x.event_id);
+      w := w + width(x.hit_id);
       w := w + width(x.tdc);
       return w;
    end function width;
@@ -87,8 +89,11 @@ package body mdt_sim_pkg is
          w := width(x.chamber);
          y(u to u+w-1) := convert(x.chamber, y(u to u+w-1));
          u := u + w;
-         w := width(x.event);
-         y(u to u+w-1) := convert(x.event, y(u to u+w-1));
+         w := width(x.event_id);
+         y(u to u+w-1) := convert(x.event_id, y(u to u+w-1));
+         u := u + w;
+         w := width(x.hit_id);
+         y(u to u+w-1) := convert(x.hit_id, y(u to u+w-1));
          u := u + w;
          w := width(x.tdc);
          y(u to u+w-1) := convert(x.tdc, y(u to u+w-1));
@@ -102,8 +107,11 @@ package body mdt_sim_pkg is
          w := width(x.chamber);
          y(u downto u-w+1) := convert(x.chamber, y(u downto u-w+1));
          u := u - w;
-         w := width(x.event);
-         y(u downto u-w+1) := convert(x.event, y(u downto u-w+1));
+         w := width(x.event_id);
+         y(u downto u-w+1) := convert(x.event_id, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.hit_id);
+         y(u downto u-w+1) := convert(x.hit_id, y(u downto u-w+1));
          u := u - w;
          w := width(x.tdc);
          y(u downto u-w+1) := convert(x.tdc, y(u downto u-w+1));
@@ -125,8 +133,11 @@ package body mdt_sim_pkg is
          w := width(tpl.chamber);
          y.chamber := convert(x(u to u+w-1), tpl.chamber);
          u := u + w;
-         w := width(tpl.event);
-         y.event := convert(x(u to u+w-1), tpl.event);
+         w := width(tpl.event_id);
+         y.event_id := convert(x(u to u+w-1), tpl.event_id);
+         u := u + w;
+         w := width(tpl.hit_id);
+         y.hit_id := convert(x(u to u+w-1), tpl.hit_id);
          u := u + w;
          w := width(tpl.tdc);
          y.tdc := convert(x(u to u+w-1), tpl.tdc);
@@ -140,8 +151,11 @@ package body mdt_sim_pkg is
          w := width(tpl.chamber);
          y.chamber := convert(x(u downto u-w+1), tpl.chamber);
          u := u - w;
-         w := width(tpl.event);
-         y.event := convert(x(u downto u-w+1), tpl.event);
+         w := width(tpl.event_id);
+         y.event_id := convert(x(u downto u-w+1), tpl.event_id);
+         u := u - w;
+         w := width(tpl.hit_id);
+         y.hit_id := convert(x(u downto u-w+1), tpl.hit_id);
          u := u - w;
          w := width(tpl.tdc);
          y.tdc := convert(x(u downto u-w+1), tpl.tdc);
