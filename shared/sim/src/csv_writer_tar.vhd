@@ -108,9 +108,10 @@ architecture sim of csv_writer_tar is
   -- -- alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_avt >>;
   -- signal ucm2pl_ar : ucm2pl_art(g_HPS_MAX_HP-1 downto 0);
 
-  signal mdt_event_u2m_au        : event_at(g_HPS_MAX_HP -1 downto 0);
-  signal mdt_event_u2h_au        : event_at(g_HPS_MAX_HP -1 downto 0);
-
+  signal slc_event_au : event_tdc_aut;--(g_HPS_MAX_HP -1 downto 0);
+  signal mdt_event_au : event_tdc_aut;--(g_HPS_MAX_HP -1 downto 0);
+  signal slc_event_a : event_tdc_at;
+  signal mdt_event_a : event_tdc_at;
     -- TDC polmux from Tar
   signal tdc_hits_inn_ar : tdcpolmux2tar_art(g_HPS_MAX_HP -1 downto 0);
   signal tdc_hits_mid_ar : tdcpolmux2tar_art(g_HPS_MAX_HP -1 downto 0);
@@ -143,7 +144,7 @@ begin
     --
     csv_file_1.write_word("ToA");
     csv_file_1.write_word("event");          
-    csv_file_1.write_word("hit_id");                 
+    csv_file_1.write_word("muonFixedId");                 
     csv_file_1.write_word("station");          
     csv_file_1.write_word("hp#");          
     -- tdc
@@ -163,25 +164,51 @@ begin
     wait;
   end process open_csv;
 
-  -- event_ucm2hps_pl : for sl_i in g_HPS_MAX_HP -1 downto 0 generate
-  --   E_U2H_PL : entity vamc_lib.vamc_spl
-  --   generic map(
-  --     -- pragma translate_off
-  --     g_SIMULATION => '1',
-  --     -- pragma translate_on
-  --     g_PIPELINE_TYPE => "ring_buffer",
-  --     g_DELAY_CYCLES  => 131,
-  --     g_PIPELINE_WIDTH    => 32
-  --   )
-  --   port map(
-  --     clk         => clk,
-  --     rst         => rst,
-  --     ena         => '1',
-  --     --
-  --     i_data      => std_logic_vector(slc_event_ai(sl_i)),
-  --     o_data      => mdt_event_u2h_au(sl_i)
-  --   );
-  -- end generate;
+  h_st_for : for st_i in 0 to 3 generate
+    h_hp_for : for hp_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
+
+      H_PL : entity vamc_lib.vamc_spl
+      generic map(
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
+        g_PIPELINE_TYPE => "ring_buffer",
+        g_DELAY_CYCLES  => 420,
+        g_PIPELINE_WIDTH    => 32
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => '1',
+        --
+        i_data      => std_logic_vector(i_mdt_event_ai(st_i)(hp_i)),
+        o_data      => mdt_event_a(st_i)(hp_i)
+      );
+    end generate;
+  end generate;
+
+  c_st_for : for st_i in 0 to 3 generate
+    c_hp_for : for hp_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
+
+      C_PL : entity vamc_lib.vamc_spl
+      generic map(
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
+        g_PIPELINE_TYPE => "ring_buffer",
+        g_DELAY_CYCLES  => 420,
+        g_PIPELINE_WIDTH    => 32
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => '1',
+        --
+        i_data      => std_logic_vector(i_slc_event_ai(st_i)(hp_i)),
+        o_data      => slc_event_a(st_i)(hp_i)
+      );
+    end generate;
+  end generate;
 
   inn_loop : for i in c_HPS_MAX_ARRAY(0)-1 downto 0 generate
     tar_hits_inn_ar(i) <= convert(i_tar_hits_inn_av(i),tar_hits_inn_ar(i));
@@ -210,8 +237,8 @@ begin
             for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
               if tar_hits_inn_ar(pm_i).data_valid = '1' then
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
-                csv_file_1.write_integer(0);   -- event
-                csv_file_1.write_integer(0);   -- hit_id
+                csv_file_1.write_integer(to_integer(unsigned(slc_event_a(pc_st_id)(pm_i))));   -- event
+                csv_file_1.write_integer(to_integer(unsigned(mdt_event_a(pc_st_id)(pm_i))));   -- hit_id
                 csv_file_1.write_integer(pc_st_id);   -- station
                 csv_file_1.write_integer(pm_i);     -- hp_position   
                 -- tar info
@@ -237,8 +264,8 @@ begin
             for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
               if tar_hits_mid_ar(pm_i).data_valid = '1' then
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
-                csv_file_1.write_integer(0);   -- event
-                csv_file_1.write_integer(0);   -- hit_id
+                csv_file_1.write_integer(to_integer(unsigned(slc_event_a(pc_st_id)(pm_i))));   -- event
+                csv_file_1.write_integer(to_integer(unsigned(mdt_event_a(pc_st_id)(pm_i))));   -- hit_id
                 csv_file_1.write_integer(pc_st_id);   -- station
                 csv_file_1.write_integer(pm_i);     -- hp_position   
                 -- tar info
@@ -264,8 +291,8 @@ begin
             for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
               if tar_hits_out_ar(pm_i).data_valid = '1' then
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
-                csv_file_1.write_integer(0);   -- event
-                csv_file_1.write_integer(0);   -- hit_id
+                csv_file_1.write_integer(to_integer(unsigned(slc_event_a(pc_st_id)(pm_i))));   -- event
+                csv_file_1.write_integer(to_integer(unsigned(mdt_event_a(pc_st_id)(pm_i))));   -- hit_id
                 csv_file_1.write_integer(pc_st_id);   -- station
                 csv_file_1.write_integer(pm_i);     -- hp_position   
                 -- tar info
@@ -291,8 +318,8 @@ begin
             for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
               if tar_hits_ext_ar(pm_i).data_valid = '1' then
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
-                csv_file_1.write_integer(0);   -- event
-                csv_file_1.write_integer(0);   -- hit_id
+                csv_file_1.write_integer(to_integer(unsigned(slc_event_a(pc_st_id)(pm_i))));   -- event
+                csv_file_1.write_integer(to_integer(unsigned(mdt_event_a(pc_st_id)(pm_i))));   -- hit_id
                 csv_file_1.write_integer(pc_st_id);   -- station
                 csv_file_1.write_integer(pm_i);     -- hp_position   
                 -- tar info
@@ -307,246 +334,5 @@ begin
       end if;
     end process;
   end generate TAR2HPS_EXT_GEN;
-
-          
-
-  --       if c_STATIONS_IN_SECTOR(1) = '1' then -- INN
-  --         thread_counter := 0;
-  --         for pm_i in c_NUM_THREADS -1 downto 0 loop
-  --           -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
-  --           if mid_ucm2hps_bus_ar(pm_i).data_valid = '1' then
-  --             -- puts(" hello ",pm_i);
-  --             thread_counter := thread_counter +1;
-
-  --             -- muid
-  --             csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
-  --             -- csv_file_1.write_word("event");          
-  --             csv_file_1.write_integer(unsigned(mdt_event_u2h_au(g_HPS_MAX_HP - thread_counter)));          
-
-  --             csv_file_1.write_integer(pm_i);          
-  --             csv_file_1.write_word("1");          
-  --             -- muid
-  --             csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(pm_i).muid.slcid));
-  --             csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(pm_i).muid.slid));
-  --             csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(pm_i).muid.bcid));
-  --             -- mdtseg_Dest
-  --             csv_file_1.write_integer(to_integer(unsigned(mid_ucm2hps_bus_ar(pm_i).mdtseg_dest)));
-  --             -- mdtid
-  --             csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(pm_i).mdtid.chamber_id));
-  --             csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(pm_i).mdtid.chamber_ieta));
-  --             -- vec_pos
-  --             csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(pm_i).vec_pos));
-  --             -- vec_ang
-  --             csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(pm_i).vec_ang));
-  --             csv_file_1.writeline;
-
-  --           end if;
-  --         end loop;
-  --       end if;
-
-  --       if c_STATIONS_IN_SECTOR(2) = '1' then -- INN
-  --         thread_counter := 0;
-
-  --         for pm_i in c_NUM_THREADS -1 downto 0 loop
-  --           -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
-  --           if out_ucm2hps_bus_ar(pm_i).data_valid = '1' then
-  --             -- puts(" hello ",pm_i);
-  --             thread_counter := thread_counter +1;
-
-  --             -- muid
-  --             csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
-  --             -- csv_file_1.write_word("event");    
-  --             csv_file_1.write_integer(unsigned(mdt_event_u2h_au(g_HPS_MAX_HP - thread_counter)));          
-  --             csv_file_1.write_integer(pm_i);          
-  --             csv_file_1.write_word("2");          
-  --             -- muid
-  --             csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(pm_i).muid.slcid));
-  --             csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(pm_i).muid.slid));
-  --             csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(pm_i).muid.bcid));
-  --             -- mdtseg_Dest
-  --             csv_file_1.write_integer(to_integer(unsigned(out_ucm2hps_bus_ar(pm_i).mdtseg_dest)));
-  --             -- mdtid
-  --             csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(pm_i).mdtid.chamber_id));
-  --             csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(pm_i).mdtid.chamber_ieta));
-  --             -- vec_pos
-  --             csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(pm_i).vec_pos));
-  --             -- vec_ang
-  --             csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(pm_i).vec_ang));
-  --             csv_file_1.writeline;
-
-  --           end if;
-  --         end loop;
-  --       end if;
-
-  --       if c_STATIONS_IN_SECTOR(3) = '1' then -- INN
-  --         thread_counter := 0;
-
-  --         for pm_i in c_NUM_THREADS -1 downto 0 loop
-  --           -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
-  --           if ext_ucm2hps_bus_ar(pm_i).data_valid = '1' then
-  --             -- puts(" hello ",pm_i);
-  --             thread_counter := thread_counter +1;
-
-  --             -- muid
-  --             csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
-  --             -- csv_file_1.write_word("event");          
-  --             csv_file_1.write_integer(unsigned(mdt_event_u2h_au(g_HPS_MAX_HP - thread_counter)));          
-
-  --             csv_file_1.write_integer(pm_i);          
-  --             csv_file_1.write_word("3");          
-  --             -- muid
-  --             csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(pm_i).muid.slcid));
-  --             csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(pm_i).muid.slid));
-  --             csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(pm_i).muid.bcid));
-  --             -- mdtseg_Dest
-  --             csv_file_1.write_integer(to_integer(unsigned(ext_ucm2hps_bus_ar(pm_i).mdtseg_dest)));
-  --             -- mdtid
-  --             csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(pm_i).mdtid.chamber_id));
-  --             csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(pm_i).mdtid.chamber_ieta));
-  --             -- vec_pos
-  --             csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(pm_i).vec_pos));
-  --             -- vec_ang
-  --             csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(pm_i).vec_ang));
-  --             csv_file_1.writeline;
-
-  --           end if;
-  --         end loop;
-  --       end if;
-
-
-  -- event_ucm2mpl_pl : for sl_i in g_HPS_MAX_HP -1 downto 0 generate
-  --   E_U2M_PL : entity vamc_lib.vamc_spl
-  --   generic map(
-  --     -- pragma translate_off
-  --     g_SIMULATION => '1',
-  --     -- pragma translate_on
-  --     g_PIPELINE_TYPE => "ring_buffer",
-  --     g_DELAY_CYCLES  => 10,
-  --     g_PIPELINE_WIDTH    => 32
-  --   )
-  --   port map(
-  --     clk         => clk,
-  --     rst         => rst,
-  --     ena         => '1',
-  --     --
-  --     i_data      => std_logic_vector(slc_event_ai(sl_i)),
-  --     o_data      => mdt_event_u2m_au(sl_i)
-  --   );
-  -- end generate;
-
-  -- sl_loop : for i in g_HPS_MAX_HP - 1 downto 0 generate
-  --   ucm2pl_ar(i) <= convert(ucm2pl_av(i),ucm2pl_ar(i));
-  -- end generate ; -- sl_loop
-
-  -- UCM2MPL_OUT: process(clk, rst)
-
-  --   variable first_write           : std_logic := '1';
-
-  --   -- variable csv_file_2: csv_file_type;
-
-  --   variable common : slc_common_rt;
-
-  -- begin
-  --   if rising_edge(clk) then
-  --     if first_write = '1' then
-  --       -- puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
-  --       -- csv_file_2.initialize(g_OUT_FILE_2,"wr");
-  --       -- csv_file_2.write_string("# --------------------------");
-  --       -- csv_file_2.write_string("#");
-  --       -- csv_file_2.write_string("#");
-  --       -- csv_file_2.write_string("# --------------------------");         
-  --       -- event
-  --       csv_file_2.write_word("ToA");
-  --       csv_file_2.write_word("event");          
-  --       csv_file_2.write_word("sl_pos");                   
-  --       -- multi-thread
-  --       csv_file_2.write_word("busy");
-  --       csv_file_2.write_word("process_ch");
-  --       -- common
-  --       -- -- header
-  --       -- csv_file_2.write_word("h_reserved"); 
-  --       csv_file_2.write_word("tcoverflow"); 
-  --       csv_file_2.write_word("nmtc_sl"); 
-  --       csv_file_2.write_word("nmtc_mdt"); 
-  --       csv_file_2.write_word("nslc"); 
-  --       csv_file_2.write_word("bcid"); 
-  --       -- --
-  --       csv_file_2.write_word("slcid"); 
-  --       csv_file_2.write_word("tcsent"); 
-  --       csv_file_2.write_word("poseta"); 
-  --       csv_file_2.write_word("posphi"); 
-  --       csv_file_2.write_word("sl_pt"); 
-  --       csv_file_2.write_word("sl_ptthresh"); 
-  --       csv_file_2.write_word("sl_charge"); 
-  --       csv_file_2.write_word("cointype"); 
-  --       -- -- trailer
-  --       -- csv_file_2.write_word("t_reserved"); 
-  --       csv_file_2.write_word("crc"); 
-  --       csv_file_2.write_word("fiberid"); 
-  --       csv_file_2.write_word("slid"); 
-  --       csv_file_2.write_word("comma"); 
-  --       -- phimod
-  --       csv_file_2.write_word("phimod");
-  --       -- nsw
-  --       csv_file_2.write_word("nswseg_angdtheta");
-  --       csv_file_2.write_word("nswseg_posphi");
-  --       csv_file_2.write_word("nswseg_poseta");
-  --       csv_file_2.writeline;
-  --       first_write := '0';
-  --     end if;
-  --     if rst = '1' then
-  --     else
-  --       for sl_i in g_HPS_MAX_HP -1 downto 0 loop
-  --         -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
-  --         if ucm2pl_ar(sl_i).data_valid = '1' then
-  --           -- common := convert(ucm2pl_ar(sl_i).common);
-
-  --           -- event
-  --           csv_file_2.write_integer(to_integer(tb_curr_tdc_time));
-  --           csv_file_2.write_integer(unsigned(mdt_event_u2m_au(sl_i)));          
-  --           csv_file_2.write_integer(sl_i);                  
-  --           -- 
-  --           csv_file_2.write_bool(ucm2pl_ar(sl_i).busy);
-  --           csv_file_2.write_integer(unsigned(ucm2pl_ar(sl_i).process_ch));
-  --           -- common
-  --           -- -- header
-  --           -- csv_file_2.write_integer(unsigned(ucm2pl_ar(sl_i).common.header.h_reserved)); 
-  --           csv_file_2.write_bool(ucm2pl_ar(sl_i).common.header.tcoverflow); 
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).common.header.nmtc_sl); 
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).common.header.nmtc_mdt); 
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).common.header.nslc); 
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).common.header.bcid); 
-  --           -- -- --
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).common.slcid); 
-  --           csv_file_2.write_bool(ucm2pl_ar(sl_i).common.tcsent); 
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).common.poseta); 
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).common.posphi); 
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).common.sl_pt); 
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).common.sl_ptthresh); 
-  --           csv_file_2.write_bool(ucm2pl_ar(sl_i).common.sl_charge); 
-  --           csv_file_2.write_integer(unsigned(ucm2pl_ar(sl_i).common.cointype)); 
-  --           -- -- -- trailer
-  --           -- csv_file_2.write_integer(ucm2pl_ar(sl_i).common.trailer.t_reserved); 
-  --           csv_file_2.write_integer(unsigned(ucm2pl_ar(sl_i).common.trailer.crc)); 
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).common.trailer.fiberid); 
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).common.trailer.slid); 
-  --           csv_file_2.write_integer(unsigned(ucm2pl_ar(sl_i).common.trailer.comma)); 
-  --           -- --
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).phimod);
-  --           -- --nsw
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).nswseg_angdtheta);
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).nswseg_posphi);
-  --           csv_file_2.write_integer(ucm2pl_ar(sl_i).nswseg_poseta);
-
-
-
-  --           csv_file_2.writeline;
-
-  --         end if;
-  --       end loop;
-  --     end if;
-  --   end if;
-  -- end process UCM2MPL_OUT;
-  
   
 end architecture sim;

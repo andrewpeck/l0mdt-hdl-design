@@ -352,7 +352,7 @@ begin
               Station => to_unsigned(i_Station,8),
               Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
               event_id => to_unsigned(event_id , 32),
-              hit_id => to_unsigned(ToA , 32),
+              hit_id => to_unsigned(muonFixedId , 32),
               tdc => (
                 data_valid => '1',
                 tdc => (
@@ -459,7 +459,7 @@ begin
                   Station => to_unsigned(i_Station,8),
                   Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
                   event_id => to_unsigned(event_id , 32),
-                  hit_id => to_unsigned(ToA , 32),
+                  hit_id => to_unsigned(muonFixedId , 32),
                   tdc => (
                     data_valid => '1',
                     tdc => (
