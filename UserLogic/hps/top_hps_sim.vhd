@@ -40,7 +40,6 @@ entity hps_tb is
     -- mdt type
     -- type mdt_type;
     -- parameters
-    FLAVOUR             : integer := 0;
     g_STATION_RADIUS    : integer := 0;  --station
     g_HPS_NUM_MDT_CH    : integer := 6 
   );

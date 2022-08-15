@@ -6,9 +6,50 @@ GEN:hps_csf_bp.0:
       PROJECT_NAME: MainBlocks/hps_csf_bp.0
       HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
       
+    tags:
+      - normal-ops
+      - hog
+      # - "2020.2"
 
-# SIM:hps_csf_bp.0:
+
+# SIM:hps_csf_bp.0_vivado:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: hps_csf_bp.0
+#       PROJECT_NAME: MainBlocks/hps_csf_bp.0
+
+SIM:hps_csf_bp.0_questa:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/hps_csf_bp.0
+
+SIM:hps_csf_bp.0_riviera:
+    extends: .riviera_sim
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/hps_csf_bp.0
+    # allow_failure: false
+
+COMP:hps_csf_bp.0:
+  extends: .sim_comp
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/hps_csf_bp.0
+    PROJECT_Q_NAME: MainBlocks/hps_csf_bp.0_questa
+    PROJECT_R_NAME: MainBlocks/hps_csf_bp.0_riviera
+  needs: ["SIM:hps_csf_bp.0_questa","SIM:hps_csf_bp.0_riviera"]
+
+CHK:hps_csf_bp.0:
+  extends: .sim_check
+  variables: 
+    extends: .vars
+    PROJECT_NAME: MainBlocks/hps_csf_bp.0
+    BLOCK: hps_csf_bp.0
+    SIMULATOR: questa
+  needs: ["SIM:hps_csf_bp.0_riviera"]
+  artifacts:
+    name: CHK_MainBlocks_tar.0
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day
