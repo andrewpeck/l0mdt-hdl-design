@@ -9,5 +9,6 @@ set DTSI_DIR [file dirname $dst_bit]/dtsi
 set DTSI_FILES [glob $PATH_REPO/kernel/hw/*.dtsi]
 file mkdir $DTSI_DIR
 foreach dtsi_file $DTSI_FILES {
-    file copy ${dtsi_file}  $DTSI_DIR/
+    file copy -force ${dtsi_file} $DTSI_DIR/
+    exec dtc -@ -O dtb -o $DTSI_DIR/[file rootname [file tail ${dtsi_file}]].dtbo ${dtsi_file}
 }

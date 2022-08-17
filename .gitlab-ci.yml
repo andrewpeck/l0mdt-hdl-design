@@ -1,13 +1,14 @@
 variables:
   HOG_CHECK_PROJVER : 1
   HOG_CHECK_SYNTAX : 1
+  HOG_NO_BITSTREAM : 1
   HOG_SIMULATION_LIB_PATH : "/afs/cern.ch/work/l/l0mdtel/SimulationLib/"
-  HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/Xilinx/Vivado/2020.2/bin:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/"
+  HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/Xilinx/Vivado/2020.2/bin:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/"
 
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'Hog2022.2-4'
+      ref: 'Hog2022.2-6'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
