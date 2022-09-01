@@ -13,6 +13,8 @@ create_bd_design -dir [file normalize ${BD_OUTPUT_PATH}/${BD_SUFFIX}] ${bd_desig
 
 set EXT_CLK clk50Mhz
 set EXT_RESET reset_n
+set EXT_CLK_FREQ 50000000
+
 
 set AXI_MASTER_CLK AXI_CLK
 set AXI_MASTER_RSTN AXI_RST_N
@@ -23,8 +25,7 @@ set AXI_INTERCONNECT_NAME slave_interconnect
 #================================================================================
 #  Setup external clock and reset
 #================================================================================
-
-create_bd_port -dir I -type clk -freq_hz $AXI_MASTER_CLK_FREQ $EXT_CLK
+create_bd_port -dir I -type clk $EXT_CLK -freq_hz ${EXT_CLK_FREQ}
 create_bd_port -dir I -type rst $EXT_RESET
 
 #================================================================================
@@ -34,7 +35,7 @@ create_bd_port -dir I -type rst $EXT_RESET
 puts "Building AXI C2C slave interconnect"
 
 #create AXI clock & reset ports
-create_bd_port -dir I -type clk -freq $AXI_MASTER_CLK_FREQ $AXI_MASTER_CLK
+create_bd_port -dir I -type clk $AXI_MASTER_CLK -freq_hz ${AXI_MASTER_CLK_FREQ} 
 create_bd_port -dir O -type rst $AXI_MASTER_RSTN
 
 #create the reset logic
@@ -53,22 +54,27 @@ connect_bd_net [get_bd_ports $AXI_MASTER_RSTN] [get_bd_pins $SYS_RESETER_AXI_RST
 #  Configure chip 2 chip links
 #================================================================================
 
+
+
 source -quiet ${C2C_PATH}/create_kintex_c2c.tcl
+
+#================================================================================
+#  Create JTAG AXI Master
+#================================================================================
+set JTAG_AXI_MASTER JTAG_AXI_Master
+BUILD_JTAG_AXI_MASTER [dict create device_name ${JTAG_AXI_MASTER} axi_clk ${AXI_MASTER_CLK} axi_rstn ${AXI_MASTER_RSTN}]
+
+
+
 
 #================================================================================
 #  Connect C2C master port to interconnect slave port
 #================================================================================
-
-set mAXI [list ${C2C}/m_axi      ${C2C}/m_axi_lite]
-set mCLK [list ${AXI_MASTER_CLK} ${AXI_MASTER_CLK}]
-set mRST [list $AXI_MASTER_RSTN  $AXI_MASTER_RSTN]
-# set mAXI [list ${C2C}/m_axi ${C2C}/m_axi_lite ${JTAG_AXI_MASTER}/M_AXI]
-# set mCLK [list ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK} ]
-# set mRST [list ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN}]
-
+set mAXI [list ${C2C}/m_axi ${C2CB}/m_axi_lite ${JTAG_AXI_MASTER}/M_AXI]
+set mCLK [list ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK} ]
+set mRST [list ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN}] 
 [BUILD_AXI_INTERCONNECT $AXI_INTERCONNECT_NAME ${AXI_MASTER_CLK} $AXI_MASTER_RSTN $mAXI $mCLK $mRST]
-# BUILD_AXI_INTERCONNECT $AXI_INTERCONNECT_NAME ${AXI_MASTER_CLK} $AXI_MASTER_RSTN $mAXI $mCLK $mRST
-# AXI_DEV_CONNECT ${C2C_PHY} ${AXI_INTERCONNECT_NAME} ${EXT_CLK} ${EXT_RESET} AXI_MASTER_CLK_FREQ 0x83c44000 4K 0
+
 
 #================================================================================
 #  Configure and add AXI slaves
@@ -82,6 +88,12 @@ if {![info exists AXI_BASE_ADDRESS]} {
 
 source -quiet "$BD_PATH/add_slaves_from_yaml.tcl"
 yaml_to_bd "$C2C_PATH/slaves.yaml"
+
+set autogen_dir "${PATH_REPO}/configs/${build_name}/autogen/"
+exec mkdir -p -- $autogen_dir
+GENERATE_AXI_ADDR_MAP_C "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_addrs.h"                                                                                                 
+GENERATE_AXI_ADDR_MAP_VHDL "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_pkg.vhd"                                                                                              
+read_vhdl "${BD_PATH}/../../../configs/${build_name}/autogen/AXI_slave_pkg.vhd"      
 
 #========================================
 #  Finish up

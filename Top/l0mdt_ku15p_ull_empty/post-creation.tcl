@@ -9,7 +9,7 @@ set BD_PATH $PATH_REPO/HAL/c2c/bd_helper
 set BD_OUTPUT_PATH $PATH_REPO/HAL/c2c/bd
 
 set bd_design_name "c2cSlave"
-
+set build_name "l0mdt_ku15p_ull_empty"
 # Regenerate the BD if needed
 
 set sources "${C2C_PATH}/createC2CSlaveInterconnect.tcl
