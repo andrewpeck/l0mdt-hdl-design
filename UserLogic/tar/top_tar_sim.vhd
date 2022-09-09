@@ -45,7 +45,9 @@ entity tar_tb is
   generic (
     g_HPS_MAX_HP : integer := 6;
     -- g_STATION : integer := 0;
-    g_ST_ENABLE : integer := 15;
+    -- g_ST_ENABLE : integer := 15;
+    g_ST_ACT : integer := 0;
+    g_ST_ENABLE : std_logic_vector(3 downto 0) := (others => '0');
 
     --
     PRJ_INFO            : string  := "TAR_BA3";
@@ -64,7 +66,8 @@ end entity tar_tb;
 
 architecture beh of tar_tb is
 
-  constant ST_ENABLE : std_logic_vector(3 downto 0) := std_logic_vector(to_unsigned(g_ST_ENABLE,4));
+  constant ST_ENABLE : std_logic_vector(3 downto 0) := g_ST_ENABLE;
+  -- constant ST_ENABLE : std_logic_vector(3 downto 0) := std_logic_vector(to_unsigned(g_ST_ENABLE,4));
 
   signal enable_mdt : integer := 1;
   
