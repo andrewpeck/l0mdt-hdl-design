@@ -8,7 +8,7 @@ shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 shared/shared_lib.src lib=shared_lib
 
 #_project local configuration files
-Top/MainBlocks/hps_csf_bp.0/prj_cfg.vhd
+Top/MainBlocks/BA3_hps_csf_bp_inn/prj_cfg.vhd
 
 #### top  ####
 UserLogic/hps/top_hps_imp.vhd top=top_hps

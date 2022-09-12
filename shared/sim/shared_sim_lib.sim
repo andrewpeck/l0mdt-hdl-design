@@ -8,7 +8,8 @@ shared/sim/pkg/ucm_sim_pkg.vhd
 
 shared/sim/src/csv_reader_mdt.vhd
 shared/sim/src/csv_reader_slc.vhd
-# shared/sim/src/csv_reader_tar.vhd
+shared/sim/src/csv_reader_ucm2hps.vhd
+shared/sim/src/csv_reader_tar2hps.vhd
 
 shared/sim/src/csv_writer_ucm.vhd
 shared/sim/src/csv_writer_tar.vhd
