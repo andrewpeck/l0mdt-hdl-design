@@ -61,6 +61,9 @@ package constants_pkg is
   constant c_NUM_FELIX_UPLINKS : integer := func_count_link_types (c_MGT_MAP, MGT_FELIX);
   constant c_NUM_FELIX_DOWNLINKS : integer := 1;
 
+
+  constant c_NUM_C2C_LINKS : integer := func_count_link_types (c_MGT_MAP, MGT_C2C);
+
   --------------------------------------------------------------------------------
   -- LPGBT
   --------------------------------------------------------------------------------
@@ -154,6 +157,9 @@ package constants_pkg is
   -- list of ttc mgts
   constant ttc_idx_array : int_array_t (0 to c_NUM_MGTS-1) :=
     func_fill_subtype_idx (1, c_MGT_MAP, MGT_TTC);
+
+  constant c2c_idx_array :  int_array_t (0 to c_NUM_MGTS-1) :=
+    func_fill_subtype_idx (c_NUM_C2C_LINKS, c_MGT_MAP, MGT_C2C);
 
   type hi_lo_t is record
     hi : integer;

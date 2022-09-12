@@ -15,6 +15,7 @@ library hal;
 
 library ctrl_lib;
 use ctrl_lib.FW_INFO_CTRL.all;
+use ctrl_lib.C2C_INTF_CTRL.all;
 use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.HPS_CTRL.all;
@@ -31,6 +32,7 @@ use ctrl_lib.FM_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
 
 use ctrl_lib.c2cslave_pkg.all;
+--use ctrl_lib.AXISlaveAddrPkg.all;
 
 entity top_control is
   port (
@@ -48,6 +50,12 @@ entity top_control is
     c2c_rxp     : in  std_logic;
     c2c_txn     : out std_logic;
     c2c_txp     : out std_logic;
+
+    c2cb_rxn    : in  std_logic;
+    c2cb_rxp    : in  std_logic;
+    c2cb_txn    : out std_logic;
+    c2cb_txp    : out std_logic;
+    
     c2c_refclkp : in  std_logic;
     c2c_refclkn : in  std_logic;
 
@@ -101,10 +109,11 @@ entity top_control is
     hal_core_mon  : in  HAL_CORE_MON_t;
     hal_core_ctrl : out HAL_CORE_CTRL_t;
 
-    fw_info_mon : in FW_INFO_MON_t;
+    fw_info_mon   : in FW_INFO_MON_t;    
 
     fm_mon  : in  FM_MON_t;
     fm_ctrl : out FM_CTRL_t;
+
 
     -- system management
     --sys_mgmt_scl            : inout std_logic;
@@ -123,7 +132,7 @@ architecture control_arch of top_control is
   constant std_logic0 : std_logic := '0';
 
   signal axi_reset_n : std_logic := '0';
-
+  signal clk40_rst_n : std_logic := '0';
   signal fw_info_readmosi  : axireadmosi;
   signal fw_info_readmiso  : axireadmiso;
   signal fw_info_writemosi : axiwritemosi;
@@ -246,10 +255,23 @@ architecture control_arch of top_control is
   signal hal_core_mon_r : HAL_CORE_MON_t;
   signal fm_mon_r       : FM_MON_t;
 
+
+  signal c2c_intf_readmosi  : axireadmosi;
+  signal c2c_intf_readmiso  : axireadmiso;
+  signal c2c_intf_writemosi : axiwritemosi;
+  signal c2c_intf_writemiso : axiwritemiso;
+  signal c2c_ctrl       : C2C_INTF_CTRL_t;
+  signal c2c_mon        : C2C_INTF_MON_t;
+
+  signal clk_K_C2C_PHY_user  : STD_logic_vector(2 downto 1);
+  
   signal strobe : std_logic;
   attribute MAX_FANOUT : string;
   attribute MAX_FANOUT of strobe : signal is "16";
 
+  signal pB_UART_tx : std_logic;
+  signal pB_UART_rx : std_logic;
+  
 begin
 
   clock_strobe_ult : entity hal.clock_strobe
@@ -338,11 +360,14 @@ begin
       clk40     => clk40,
       --clkpipe      => clkpipe,
       axi_rst_n => axi_reset_n,
-
+      clk40_rst_n => clk40_rst_n,
       -- system clock and reset
       clk50mhz => clk50mhz,
       reset_n  => reset_n,
 
+
+      CM1_PB_UART_rxd            => pB_UART_tx,
+      CM1_PB_UART_txd            => pB_UART_rx,
       --------------------------------------------------------------------------------
       -- C2C
       --------------------------------------------------------------------------------
@@ -355,21 +380,155 @@ begin
       k_c2clink_phy_refclk_clk_n => c2c_refclkn,  -- k_c2clink_phy_refclk_clk_n,
       k_c2clink_phy_refclk_clk_p => c2c_refclkp,  -- k_c2clink_phy_refclk_clk_p,
 
+      K_C2CBlink_phy_Rx_rxn              => c2cb_rxn,
+      K_C2CBlink_phy_Rx_rxp              => c2cb_rxp,
+      K_C2CBlink_phy_Tx_txn              => c2cb_txn,
+      K_C2CBlink_phy_Tx_txp              => c2cb_txp,
       -- status outputs
-      k_c2clink_phy_gt_pll_lock             => open,  -- k_c2clink_phy_gt_pll_lock,
-      k_c2clink_phy_hard_err                => open,  -- k_c2clink_phy_hard_err,
-      k_c2clink_phy_lane_up                 => open,  -- k_c2clink_phy_lane_up,
-      k_c2clink_phy_link_reset_out          => open,  -- k_c2clink_phy_link_reset_out,
-      k_c2clink_phy_mmcm_not_locked_out     => open,  -- k_c2clink_phy_mmcm_not_locked_out,
-      k_c2clink_phy_soft_err                => open,  -- k_c2clink_phy_soft_err,
-      k_c2clink_axi_c2c_config_error_out    => open,  -- k_c2clink_axi_c2c_config_error_out,
-      k_c2clink_axi_c2c_link_status_out     => open,  -- k_c2clink_axi_c2c_link_status_out,
-      k_c2clink_axi_c2c_multi_bit_error_out => open,  -- k_c2clink_axi_c2c_multi_bit_error_out,
-      k_c2clink_aurora_do_cc                => open,  -- k_c2clink_aurora_do_cc,
+      --k_c2clink_phy_gt_pll_lock             => open,  -- k_c2clink_phy_gt_pll_lock,
+      --k_c2clink_phy_hard_err                => open,  -- k_c2clink_phy_hard_err,
+      --k_c2clink_phy_lane_up                 => open,  -- k_c2clink_phy_lane_up,
+      --k_c2clink_phy_link_reset_out          => open,  -- k_c2clink_phy_link_reset_out,
+      --k_c2clink_phy_mmcm_not_locked_out     => open,  -- k_c2clink_phy_mmcm_not_locked_out,
+      --k_c2clink_phy_soft_err                => open,  -- k_c2clink_phy_soft_err,
+      --k_c2clink_axi_c2c_config_error_out    => open,  -- k_c2clink_axi_c2c_config_error_out,
+      --k_c2clink_axi_c2c_link_status_out     => open,  -- k_c2clink_axi_c2c_link_status_out,
+      --k_c2clink_axi_c2c_multi_bit_error_out => open,  -- k_c2clink_axi_c2c_multi_bit_error_out,
+      --k_c2clink_aurora_do_cc                => open,  -- k_c2clink_aurora_do_cc,
 
-      -- control inputs
-      k_c2clink_phy_power_down => std_logic0,  -- k_c2clink_phy_power_down,
+      ---- control inputs
+      --k_c2clink_phy_power_down => std_logic0,  -- k_c2clink_phy_power_down,
 
+      --PRIYA
+      K_C2CLINK_PHY_DEBUG_cplllock            => C2C_Mon.C2C(1).DEBUG.CPLL_LOCK,
+      K_C2CLINK_PHY_DEBUG_dmonitorout         => C2C_Mon.C2C(1).DEBUG.DMONITOR,
+      K_C2CLINK_PHY_DEBUG_eyescandataerror    => C2C_Mon.C2C(1).DEBUG.EYESCAN_DATA_ERROR,
+      
+      K_C2CLINK_PHY_DEBUG_eyescanreset        => C2C_Ctrl.C2C(1).DEBUG.EYESCAN_RESET,
+      K_C2CLINK_PHY_DEBUG_eyescantrigger      => C2C_Ctrl.C2C(1).DEBUG.EYESCAN_TRIGGER,
+      K_C2CLINK_PHY_DEBUG_pcsrsvdin           => C2C_Ctrl.C2C(1).DEBUG.PCS_RSV_DIN,
+      K_C2CLINK_PHY_DEBUG_qplllock            =>  C2C_Mon.C2C(1).DEBUG.QPLL_LOCK,
+      K_C2CLINK_PHY_DEBUG_rxbufreset          => C2C_Ctrl.C2C(1).DEBUG.RX.BUF_RESET,
+      K_C2CLINK_PHY_DEBUG_rxbufstatus         =>  C2C_Mon.C2C(1).DEBUG.RX.BUF_STATUS,
+      K_C2CLINK_PHY_DEBUG_rxcdrhold           => C2C_Ctrl.C2C(1).DEBUG.RX.CDR_HOLD,
+      K_C2CLINK_PHY_DEBUG_rxdfelpmreset       => C2C_Ctrl.C2C(1).DEBUG.RX.DFE_LPM_RESET,
+      K_C2CLINK_PHY_DEBUG_rxlpmen             => C2C_Ctrl.C2C(1).DEBUG.RX.LPM_EN,
+      K_C2CLINK_PHY_DEBUG_rxpcsreset          => C2C_Ctrl.C2C(1).DEBUG.RX.PCS_RESET,
+      K_C2CLINK_PHY_DEBUG_rxpmareset          => C2C_Ctrl.C2C(1).DEBUG.RX.PMA_RESET,
+      K_C2CLINK_PHY_DEBUG_rxpmaresetdone      =>  C2C_Mon.C2C(1).DEBUG.RX.PMA_RESET_DONE,
+      K_C2CLINK_PHY_DEBUG_rxprbscntreset      => C2C_Ctrl.C2C(1).DEBUG.RX.PRBS_CNT_RST,
+      K_C2CLINK_PHY_DEBUG_rxprbserr           =>  C2C_Mon.C2C(1).DEBUG.RX.PRBS_ERR,
+      K_C2CLINK_PHY_DEBUG_rxprbssel           => C2C_Ctrl.C2C(1).DEBUG.RX.PRBS_SEL,
+      K_C2CLINK_PHY_DEBUG_rxrate              => C2C_Ctrl.C2C(1).DEBUG.RX.RATE,
+      K_C2CLINK_PHY_DEBUG_rxresetdone         =>  C2C_Mon.C2C(1).DEBUG.RX.RESET_DONE,
+      K_C2CLINK_PHY_DEBUG_txbufstatus         =>  C2C_Mon.C2C(1).DEBUG.TX.BUF_STATUS,
+      K_C2CLINK_PHY_DEBUG_txdiffctrl          => C2C_Ctrl.C2C(1).DEBUG.TX.DIFF_CTRL,
+      K_C2CLINK_PHY_DEBUG_txinhibit           => C2C_Ctrl.C2C(1).DEBUG.TX.INHIBIT,
+      K_C2CLINK_PHY_DEBUG_txpcsreset          => C2C_Ctrl.C2C(1).DEBUG.TX.PCS_RESET,
+      K_C2CLINK_PHY_DEBUG_txpmareset          => C2C_Ctrl.C2C(1).DEBUG.TX.PMA_RESET,
+      K_C2CLINK_PHY_DEBUG_txpolarity          => C2C_Ctrl.C2C(1).DEBUG.TX.POLARITY,
+      K_C2CLINK_PHY_DEBUG_txpostcursor        => C2C_Ctrl.C2C(1).DEBUG.TX.POST_CURSOR,
+      K_C2CLINK_PHY_DEBUG_txprbsforceerr      => C2C_Ctrl.C2C(1).DEBUG.TX.PRBS_FORCE_ERR,
+      K_C2CLINK_PHY_DEBUG_txprbssel           => C2C_Ctrl.C2C(1).DEBUG.TX.PRBS_SEL,
+      K_C2CLINK_PHY_DEBUG_txprecursor         => C2C_Ctrl.C2C(1).DEBUG.TX.PRE_CURSOR,
+      K_C2CLINK_PHY_DEBUG_txresetdone         =>  C2C_MON.C2C(1).DEBUG.TX.RESET_DONE,
+
+      K_C2CLINK_PHY_channel_up         => C2C_Mon.C2C(1).STATUS.CHANNEL_UP,      
+      K_C2CLINK_PHY_gt_pll_lock        => C2C_MON.C2C(1).STATUS.PHY_GT_PLL_LOCK,
+      K_C2CLINK_PHY_hard_err           => C2C_Mon.C2C(1).STATUS.PHY_HARD_ERR,
+      K_C2CLINK_PHY_lane_up            => C2C_Mon.C2C(1).STATUS.PHY_LANE_UP(0), -- downto 0), 
+      K_C2CLINK_PHY_mmcm_not_locked_out    => C2C_Mon.C2C(1).STATUS.PHY_MMCM_LOL,
+      K_C2CLINK_PHY_soft_err           => C2C_Mon.C2C(1).STATUS.PHY_SOFT_ERR,
+
+      K_C2CLINK_aurora_do_cc                =>  C2C_Mon.C2C(1).STATUS.DO_CC,
+      K_C2CLINK_aurora_pma_init_in          => C2C_Ctrl.C2C(1).STATUS.INITIALIZE,
+      K_C2CLINK_axi_c2c_config_error_out    =>  C2C_Mon.C2C(1).STATUS.CONFIG_ERROR,
+      K_C2CLINK_axi_c2c_link_status_out     =>  C2C_MON.C2C(1).STATUS.LINK_GOOD,
+      K_C2CLINK_axi_c2c_multi_bit_error_out =>  C2C_MON.C2C(1).STATUS.MB_ERROR,
+      K_C2CLINK_phy_power_down              => '0',
+      K_C2CLINK_PHY_clk                     => clk_K_C2C_PHY_user(1),
+      K_C2CLINK_PHY_DRP_daddr               => C2C_Ctrl.C2C(1).DRP.address,
+      K_C2CLINK_PHY_DRP_den                 => C2C_Ctrl.C2C(1).DRP.enable,
+      K_C2CLINK_PHY_DRP_di                  => C2C_Ctrl.C2C(1).DRP.wr_data,
+      K_C2CLINK_PHY_DRP_do                  => C2C_MON.C2C(1).DRP.rd_data,
+      K_C2CLINK_PHY_DRP_drdy                => C2C_MON.C2C(1).DRP.rd_data_valid,
+      K_C2CLINK_PHY_DRP_dwe                 => C2C_Ctrl.C2C(1).DRP.wr_enable,
+
+      K_C2CBLINK_PHY_DEBUG_cplllock            => C2C_Mon.C2C(2).DEBUG.CPLL_LOCK,
+      K_C2CBLINK_PHY_DEBUG_dmonitorout         => C2C_Mon.C2C(2).DEBUG.DMONITOR,
+      K_C2CBLINK_PHY_DEBUG_eyescandataerror    => C2C_Mon.C2C(2).DEBUG.EYESCAN_DATA_ERROR,
+      
+      K_C2CBLINK_PHY_DEBUG_eyescanreset        => C2C_Ctrl.C2C(2).DEBUG.EYESCAN_RESET,
+      K_C2CBLINK_PHY_DEBUG_eyescantrigger      => C2C_Ctrl.C2C(2).DEBUG.EYESCAN_TRIGGER,
+      K_C2CBLINK_PHY_DEBUG_pcsrsvdin           => C2C_Ctrl.C2C(2).DEBUG.PCS_RSV_DIN,
+      K_C2CBLINK_PHY_DEBUG_qplllock            =>  C2C_Mon.C2C(2).DEBUG.QPLL_LOCK,
+      K_C2CBLINK_PHY_DEBUG_rxbufreset          => C2C_Ctrl.C2C(2).DEBUG.RX.BUF_RESET,
+      K_C2CBLINK_PHY_DEBUG_rxbufstatus         =>  C2C_Mon.C2C(2).DEBUG.RX.BUF_STATUS,
+      K_C2CBLINK_PHY_DEBUG_rxcdrhold           => C2C_Ctrl.C2C(2).DEBUG.RX.CDR_HOLD,
+      K_C2CBLINK_PHY_DEBUG_rxdfelpmreset       => C2C_Ctrl.C2C(2).DEBUG.RX.DFE_LPM_RESET,
+      K_C2CBLINK_PHY_DEBUG_rxlpmen             => C2C_Ctrl.C2C(2).DEBUG.RX.LPM_EN,
+      K_C2CBLINK_PHY_DEBUG_rxpcsreset          => C2C_Ctrl.C2C(2).DEBUG.RX.PCS_RESET,
+      K_C2CBLINK_PHY_DEBUG_rxpmareset          => C2C_Ctrl.C2C(2).DEBUG.RX.PMA_RESET,
+      K_C2CBLINK_PHY_DEBUG_rxpmaresetdone      =>  C2C_Mon.C2C(2).DEBUG.RX.PMA_RESET_DONE,
+      K_C2CBLINK_PHY_DEBUG_rxprbscntreset      => C2C_Ctrl.C2C(2).DEBUG.RX.PRBS_CNT_RST,
+      K_C2CBLINK_PHY_DEBUG_rxprbserr           =>  C2C_Mon.C2C(2).DEBUG.RX.PRBS_ERR,
+      K_C2CBLINK_PHY_DEBUG_rxprbssel           => C2C_Ctrl.C2C(2).DEBUG.RX.PRBS_SEL,
+      K_C2CBLINK_PHY_DEBUG_rxrate              => C2C_Ctrl.C2C(2).DEBUG.RX.RATE,
+      K_C2CBLINK_PHY_DEBUG_rxresetdone         =>  C2C_Mon.C2C(2).DEBUG.RX.RESET_DONE,
+      K_C2CBLINK_PHY_DEBUG_txbufstatus         =>  C2C_Mon.C2C(2).DEBUG.TX.BUF_STATUS,
+      K_C2CBLINK_PHY_DEBUG_txdiffctrl          => C2C_Ctrl.C2C(2).DEBUG.TX.DIFF_CTRL,
+      K_C2CBLINK_PHY_DEBUG_txinhibit           => C2C_Ctrl.C2C(2).DEBUG.TX.INHIBIT,
+      K_C2CBLINK_PHY_DEBUG_txpcsreset          => C2C_Ctrl.C2C(2).DEBUG.TX.PCS_RESET,
+      K_C2CBLINK_PHY_DEBUG_txpmareset          => C2C_Ctrl.C2C(2).DEBUG.TX.PMA_RESET,
+      K_C2CBLINK_PHY_DEBUG_txpolarity          => C2C_Ctrl.C2C(2).DEBUG.TX.POLARITY,
+      K_C2CBLINK_PHY_DEBUG_txpostcursor        => C2C_Ctrl.C2C(2).DEBUG.TX.POST_CURSOR,
+      K_C2CBLINK_PHY_DEBUG_txprbsforceerr      => C2C_Ctrl.C2C(2).DEBUG.TX.PRBS_FORCE_ERR,
+      K_C2CBLINK_PHY_DEBUG_txprbssel           => C2C_Ctrl.C2C(2).DEBUG.TX.PRBS_SEL,
+      K_C2CBLINK_PHY_DEBUG_txprecursor         => C2C_Ctrl.C2C(2).DEBUG.TX.PRE_CURSOR,
+      K_C2CBLINK_PHY_DEBUG_txresetdone         =>  C2C_MON.C2C(2).DEBUG.TX.RESET_DONE,
+
+      K_C2CBLINK_PHY_channel_up         => C2C_Mon.C2C(2).STATUS.CHANNEL_UP,      
+      K_C2CBLINK_PHY_gt_pll_lock        => C2C_MON.C2C(2).STATUS.PHY_GT_PLL_LOCK,
+      K_C2CBLINK_PHY_hard_err           => C2C_Mon.C2C(2).STATUS.PHY_HARD_ERR,
+      K_C2CBLINK_PHY_lane_up            => C2C_Mon.C2C(2).STATUS.PHY_LANE_UP(0), -- downto 0),
+--      K_C2CBLINK_PHY_mmcm_not_locked    => C2C_Mon.C2C(2).STATUS.PHY_MMCM_LOL,
+      K_C2CBLINK_PHY_soft_err           => C2C_Mon.C2C(2).STATUS.PHY_SOFT_ERR,
+
+      K_C2CBLINK_aurora_do_cc                =>  C2C_Mon.C2C(2).STATUS.DO_CC,
+      K_C2CBLINK_aurora_pma_init_in          => C2C_Ctrl.C2C(2).STATUS.INITIALIZE,
+      K_C2CBLINK_axi_c2c_config_error_out    =>  C2C_Mon.C2C(2).STATUS.CONFIG_ERROR,
+      K_C2CBLINK_axi_c2c_link_status_out     =>  C2C_MON.C2C(2).STATUS.LINK_GOOD,
+      K_C2CBLINK_axi_c2c_multi_bit_error_out =>  C2C_MON.C2C(2).STATUS.MB_ERROR,
+      K_C2CBLINK_phy_power_down              => '0',
+--      K_C2CBLINK_PHY_user_clk_out            => clk_K_C2CBLINK_PHY_user,
+      K_C2CBLINK_PHY_DRP_daddr               => C2C_Ctrl.C2C(2).DRP.address,
+      K_C2CBLINK_PHY_DRP_den                 => C2C_Ctrl.C2C(2).DRP.enable,
+      K_C2CBLINK_PHY_DRP_di                  => C2C_Ctrl.C2C(2).DRP.wr_data,
+      K_C2CBLINK_PHY_DRP_do                  => C2C_MON.C2C(2).DRP.rd_data,
+      K_C2CBLINK_PHY_DRP_drdy                => C2C_MON.C2C(2).DRP.rd_data_valid,
+      K_C2CBLINK_PHY_DRP_dwe                 => C2C_Ctrl.C2C(2).DRP.wr_enable,
+
+      K_C2C_INTF_araddr                   => c2c_intf_ReadMOSI.address,              
+      K_C2C_INTF_arprot                   => c2c_intf_ReadMOSI.protection_type,      
+      K_C2C_INTF_arready                  => c2c_intf_ReadMISO.ready_for_address,    
+      K_C2C_INTF_arvalid                  => c2c_intf_ReadMOSI.address_valid,        
+      K_C2C_INTF_awaddr                   => c2c_intf_WriteMOSI.address,             
+      K_C2C_INTF_awprot                   => c2c_intf_WriteMOSI.protection_type,     
+      K_C2C_INTF_awready                  => c2c_intf_WriteMISO.ready_for_address,   
+      K_C2C_INTF_awvalid                  => c2c_intf_WriteMOSI.address_valid,       
+      K_C2C_INTF_bready                   => c2c_intf_WriteMOSI.ready_for_response,  
+      K_C2C_INTF_bresp                    => c2c_intf_WriteMISO.response,            
+      K_C2C_INTF_bvalid                   => c2c_intf_WriteMISO.response_valid,      
+      K_C2C_INTF_rdata                    => c2c_intf_ReadMISO.data,                 
+      K_C2C_INTF_rready                   => c2c_intf_ReadMOSI.ready_for_data,       
+      K_C2C_INTF_rresp                    => c2c_intf_ReadMISO.response,             
+      K_C2C_INTF_rvalid                   => c2c_intf_ReadMISO.data_valid,           
+      K_C2C_INTF_wdata                    => c2c_intf_WriteMOSI.data,                
+      K_C2C_INTF_wready                   => c2c_intf_WriteMISO.ready_for_data,       
+      K_C2C_INTF_wstrb                    => c2c_intf_WriteMOSI.data_write_strobe,   
+      K_C2C_INTF_wvalid                   => c2c_intf_WriteMOSI.data_valid,
+
+      --PRIYA
       -- AXI PL Slaves
 
       fw_info_araddr  => fw_info_readmosi.address,
@@ -738,7 +897,7 @@ begin
   hal_core_map_inst : entity ctrl_lib.HAL_CORE_map
     port map (
       clk_axi         => axi_clk,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => axi_reset_n,
       slave_readmosi  => hal_core_readmosi,
       slave_readmiso  => hal_core_readmiso,
       slave_writemosi => hal_core_writemosi,
@@ -753,7 +912,7 @@ begin
   hal_map_inst : entity ctrl_lib.HAL_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => hal_readmosi,
       slave_readmiso  => hal_readmiso,
       slave_writemosi => hal_writemosi,
@@ -769,7 +928,7 @@ begin
     hps_inn_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => hps_inn_readmosi,
       slave_readmiso  => hps_inn_readmiso,
       slave_writemosi => hps_inn_writemosi,
@@ -783,7 +942,7 @@ begin
     hps_mid_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => hps_mid_readmosi,
       slave_readmiso  => hps_mid_readmiso,
       slave_writemosi => hps_mid_writemosi,
@@ -797,7 +956,7 @@ begin
     hps_out_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => hps_out_readmosi,
       slave_readmiso  => hps_out_readmiso,
       slave_writemosi => hps_out_writemosi,
@@ -811,7 +970,7 @@ begin
     hps_ext_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => hps_ext_readmosi,
       slave_readmiso  => hps_ext_readmiso,
       slave_writemosi => hps_ext_writemosi,
@@ -825,7 +984,7 @@ begin
     tar_inn_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => tar_inn_readmosi,
       slave_readmiso  => tar_inn_readmiso,
       slave_writemosi => tar_inn_writemosi,
@@ -839,7 +998,7 @@ begin
     tar_mid_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => tar_mid_readmosi,
       slave_readmiso  => tar_mid_readmiso,
       slave_writemosi => tar_mid_writemosi,
@@ -853,7 +1012,7 @@ begin
     tar_out_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => tar_out_readmosi,
       slave_readmiso  => tar_out_readmiso,
       slave_writemosi => tar_out_writemosi,
@@ -867,7 +1026,7 @@ begin
     tar_ext_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => tar_ext_readmosi,
       slave_readmiso  => tar_ext_readmiso,
       slave_writemosi => tar_ext_writemosi,
@@ -881,7 +1040,7 @@ begin
     mtc_map_inst : entity ctrl_lib.mtc_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => mtc_readmosi,
       slave_readmiso  => mtc_readmiso,
       slave_writemosi => mtc_writemosi,
@@ -895,7 +1054,7 @@ begin
     ucm_map_inst : entity ctrl_lib.ucm_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => ucm_readmosi,
       slave_readmiso  => ucm_readmiso,
       slave_writemosi => ucm_writemosi,
@@ -909,7 +1068,7 @@ begin
     daq_map_inst : entity ctrl_lib.daq_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => daq_readmosi,
       slave_readmiso  => daq_readmiso,
       slave_writemosi => daq_writemosi,
@@ -923,7 +1082,7 @@ begin
     tf_map_inst : entity ctrl_lib.tf_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => tf_readmosi,
       slave_readmiso  => tf_readmiso,
       slave_writemosi => tf_writemosi,
@@ -937,7 +1096,7 @@ begin
     mpl_map_inst : entity ctrl_lib.mpl_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => mpl_readmosi,
       slave_readmiso  => mpl_readmiso,
       slave_writemosi => mpl_writemosi,
@@ -958,7 +1117,7 @@ begin
   fm_map_inst : entity ctrl_lib.FM_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => fm_readmosi,
       slave_readmiso  => fm_readmiso,
       slave_writemosi => fm_writemosi,
@@ -973,7 +1132,7 @@ begin
   fw_info_map_inst : entity ctrl_lib.fw_info_map
     port map (
       clk_axi         => axi_clk,
-      reset_axi_n     => std_logic1,
+      reset_axi_n     => clk40_rst_n,
       slave_readmosi  => fw_info_readmosi,
       slave_readmiso  => fw_info_readmiso,
       slave_writemosi => fw_info_writemosi,
@@ -983,6 +1142,24 @@ begin
 
       );
 
+  C2C_INTF_1: entity ctrl_lib.C2C_INTF
+    generic map (
+      ERROR_WAIT_TIME => 90000000
+     -- ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_K_C2C_INTF)
+      )
+    port map (
+      clk_axi          => AXI_CLK,
+      reset_axi_n      => AXI_RESET_N,
+      readMOSI         => c2c_intf_readMOSI,
+      readMISO         => c2c_intf_readMISO,
+      writeMOSI        => c2c_intf_writeMOSI,
+      writeMISO        => c2c_intf_writeMISO,
+      clk_C2C(1)       => clk_K_C2C_PHY_user(1),
+      clk_C2C(2)       => clk_K_C2C_PHY_user(1),
+      UART_Rx          => pb_UART_Rx,
+      UART_Tx          => pb_UART_Tx,
+      Mon              => C2C_Mon,
+      Ctrl             => C2C_Ctrl);
 
 end control_arch;
 

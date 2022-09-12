@@ -86,6 +86,13 @@ entity top_l0mdt is
     c2c_txn : out std_logic;
     c2c_txp : out std_logic;
 
+    c2cb_rxn    : in  std_logic;
+    c2cb_rxp    : in  std_logic;
+    c2cb_txn    : out std_logic;
+    c2cb_txp    : out std_logic;
+
+    c2c_refclkp : in  std_logic;
+    c2c_refclkn : in  std_logic;
     --------------------------------------------------------------------------------
     -- Other IO
     --------------------------------------------------------------------------------
@@ -150,7 +157,7 @@ architecture structural of top_l0mdt is
   signal axi_clk : std_logic;
   signal clk320  : std_logic;
   signal clk40   : std_logic;
-
+  signal global_reset_n : std_logic;
   -- Control and Monitoring Records
 
   signal hps_inn_mon_r  : HPS_MON_t;
@@ -291,6 +298,8 @@ begin
 
       axi_clk_o => axi_clk,
 
+      global_reset_n => global_reset_n,
+
       core_ctrl => hal_core_ctrl,
       core_mon  => hal_core_mon,
 
@@ -412,8 +421,13 @@ begin
       c2c_rxp     => c2c_rxp,
       c2c_txn     => c2c_txn,
       c2c_txp     => c2c_txp,
-      c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC),
-      c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC),
+
+      c2cb_rxn     => c2cb_rxn,
+      c2cb_rxp     => c2cb_rxp,
+      c2cb_txn     => c2cb_txn,
+      c2cb_txp     => c2cb_txp,
+      c2c_refclkp => c2c_refclkp, --refclk_i_p(C2C_REFCLK_SRC),
+      c2c_refclkn => c2c_refclkn, --refclk_i_n(C2C_REFCLK_SRC),
 
       -- HAL Control
 
@@ -463,7 +477,7 @@ begin
       clkpipe                 => clock_and_control.clk,
       axi_clk                 => axi_clk,
       clk50mhz                => axi_clk,
-      reset_n                 => '1',
+      reset_n                 => global_reset_n,
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
       --sys_mgmt_scl            => sys_mgmt_scl,

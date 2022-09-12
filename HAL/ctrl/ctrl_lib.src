@@ -4,7 +4,7 @@ HAL/ctrl/src/axi/types.vhd
 HAL/ctrl/src/axi-vhdl-package/axiRegBlocking.vhd
 #HAL/ctrl/src/axi-vhdl-package/axiRegMaster.vhd
 HAL/ctrl/src/axi-vhdl-package/axiRegPkg.vhd
-#HAL/ctrl/src/axi-vhdl-package/axiReg.vhd
+HAL/ctrl/src/axi-vhdl-package/axiReg.vhd
 HAL/ctrl/src/axi-vhdl-package/axiRegWidthPkg_32.vhd
 HAL/ctrl/src/axi-vhdl-package/bramPortPkg.vhd
 
@@ -15,4 +15,10 @@ HAL/ctrl/src/*/*_PKG_DEF.vhd
 HAL/ctrl/src/*/*_PKG.vhd
 HAL/ctrl/src/*/*_map.vhd
 HAL/ctrl/src/*/*_PKG.svh
+
+#FIX THIS
+HAL/ctrl/src/SM_C2C_INTF/*.vhd
+HAL/ctrl/src/SM_C2C_INTF/*/*.vhd
+HAL/ctrl/src/SM_C2C_INTF/*/*/*.vhd
+#configs/l0mdt_ku15p_ull_empty/autogen/AXI_slave_pkg.vhd
 

@@ -161,7 +161,7 @@ begin
   -- Refclk
   --------------------------------------------------------------------------------
 
-  refclk_gen : for I in 0 to c_NUM_REFCLKS-1 generate
+  refclk_gen : for I in 0 to c_NUM_REFCLKS-2 generate
 
     nil_mask : if (c_REFCLK_MAP(I).FREQ /= REF_NIL and
                    c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
@@ -268,10 +268,10 @@ begin
     -- LPGBT+Emulator+Felix Type Transceiver Generation
     --------------------------------------------------------------------------------
 
-    lpgbt_gen : if ((I mod 4 = 0) and
+    lpgbt_gen : if ((I mod 4 = 0) and c2c_idx_array(I) = -1 and sl_idx_array(I) = -1 and
                     (ttc_idx_array(I) /= -1 or ttc_idx_array(I+1) /= -1 or
                      ttc_idx_array(I+2) /= -1 or ttc_idx_array(I+3) /= -1 or
-                     lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or felix_idx_array(I) /= -1))
+                     lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or felix_idx_array(I) /= -1 ) )
     generate
 
       attribute X_LOC             : integer;
