@@ -1,10 +1,17 @@
 import sys
 import os
 import shutil
+from datetime import date
 
-HOG_PROJECT="l0mdt_ku15p_ull_empty"
+today = date.today()
+# dd/mm/YY
+d1 = today.strftime("%m_%d_%Y")
+print("d1 =", d1)
+
+
 PRJ=sys.argv[1] #"../bin/l0mdt_ku15p_ull_empty-v0.3.65-hogD927A1E-dirty/"
 BIN_DIR="../bin/"+PRJ
+HOG_PROJECT="l0mdt_ku15p_ull_empty"
 SVF_FILE = BIN_DIR +"/" +  PRJ + ".svf"
 DTSI_DIR = BIN_DIR + "/dtsi"
 MODULES_DIR = "modules_"+HOG_PROJECT
@@ -20,7 +27,7 @@ new_dir_dtbo = HOG_PROJECT+"/dtbo"
 os.mkdir(new_dir_dtbo)
 
 
-HOG_PROJECT_DIRECTORY = "../Projects/"+HOG_PROJECT
+#HOG_PROJECT_DIRECTORY = "../Projects/"+HOG_PROJECT
 shutil.copytree("../address_tables/modules", new_dir_addr_table+"/"+MODULES_DIR)
 shutil.copy(SVF_FILE, new_dir_bit)
 
@@ -46,8 +53,8 @@ for file in os.listdir(DTSI_DIR):
     print(dtc_command)
     os.system(dtc_command)
 
-tar_cmd = "tar cvf "+HOG_PROJECT+".tar "+HOG_PROJECT
-gzip_cmd= "gzip "+HOG_PROJECT +".tar "
+tar_cmd = "tar cvf "+HOG_PROJECT+"_"+d1+".tar "+HOG_PROJECT
+gzip_cmd= "gzip "+HOG_PROJECT +"_"+d1+".tar "+".tar "
 
 os.system(tar_cmd)
 os.system(gzip_cmd)
