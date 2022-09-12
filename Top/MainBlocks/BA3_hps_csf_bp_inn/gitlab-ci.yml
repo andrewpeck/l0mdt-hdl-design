@@ -1,9 +1,9 @@
-#################### hps_csf_bp.0 Project ###########################
-GEN:hps_csf_bp.0:
+#################### BA3_hps_csf_bp_inn Project ###########################
+GEN:BA3_hps_csf_bp_inn:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: MainBlocks/hps_csf_bp.0
+      PROJECT_NAME: MainBlocks/BA3_hps_csf_bp_inn
       HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
       
     tags:
@@ -12,44 +12,44 @@ GEN:hps_csf_bp.0:
       # - "2020.2"
 
 
-# SIM:hps_csf_bp.0_vivado:
+# SIM:BA3_hps_csf_bp_inn_vivado:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: MainBlocks/hps_csf_bp.0
+#       PROJECT_NAME: MainBlocks/BA3_hps_csf_bp_inn
 
-SIM:hps_csf_bp.0_questa:
+SIM:BA3_hps_csf_bp_inn_questa:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: MainBlocks/hps_csf_bp.0
+      PROJECT_NAME: MainBlocks/BA3_hps_csf_bp_inn
 
-SIM:hps_csf_bp.0_riviera:
+SIM:BA3_hps_csf_bp_inn_riviera:
     extends: .riviera_sim
     variables:
       extends: .vars
-      PROJECT_NAME: MainBlocks/hps_csf_bp.0
+      PROJECT_NAME: MainBlocks/BA3_hps_csf_bp_inn
     # allow_failure: false
 
-COMP:hps_csf_bp.0:
+COMP:BA3_hps_csf_bp_inn:
   extends: .sim_comp
   variables:
     extends: .vars
-    PROJECT_NAME: MainBlocks/hps_csf_bp.0
-    PROJECT_Q_NAME: MainBlocks/hps_csf_bp.0_questa
-    PROJECT_R_NAME: MainBlocks/hps_csf_bp.0_riviera
-  needs: ["SIM:hps_csf_bp.0_questa","SIM:hps_csf_bp.0_riviera"]
+    PROJECT_NAME: MainBlocks/BA3_hps_csf_bp_inn
+    PROJECT_Q_NAME: MainBlocks/BA3_hps_csf_bp_inn_questa
+    PROJECT_R_NAME: MainBlocks/BA3_hps_csf_bp_inn_riviera
+  needs: ["SIM:BA3_hps_csf_bp_inn_questa","SIM:BA3_hps_csf_bp_inn_riviera"]
 
-CHK:hps_csf_bp.0:
+CHK:BA3_hps_csf_bp_inn:
   extends: .sim_check
   variables: 
     extends: .vars
-    PROJECT_NAME: MainBlocks/hps_csf_bp.0
-    BLOCK: hps_csf_bp.0
+    PROJECT_NAME: MainBlocks/BA3_hps_csf_bp_inn
+    BLOCK: BA3_hps_csf_bp_inn
     SIMULATOR: questa
-  needs: ["SIM:hps_csf_bp.0_riviera"]
+  needs: ["SIM:BA3_hps_csf_bp_inn_riviera"]
   artifacts:
-    name: CHK_MainBlocks_tar.0
+    name: CHK_MainBlocks_BA3_hps_csf_bp_inn
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
