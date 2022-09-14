@@ -93,10 +93,10 @@ architecture beh of hps is
   signal lsf_ctrl_av : lsf_ctrl_avt(c_NUM_THREADS -1 downto 0 );
   signal lsf_mon_av  : lsf_mon_avt (c_NUM_THREADS -1 downto 0 );
 
-  signal pc_t0_ctrl_v : std_logic_vector(HPS_MDT_T0_MDT_T0_CTRL_t'w -1 downto 0);
-  signal pc_tc_ctrl_v : std_logic_vector(HPS_MDT_TC_MDT_TC_CTRL_t'w -1 downto 0);
-  signal pc_t0_mon_v  : std_logic_vector(HPS_MDT_T0_MDT_T0_MON_t'w -1 downto 0);
-  signal pc_tc_mon_v  : std_logic_vector(HPS_MDT_TC_MDT_TC_MON_t'w -1 downto 0);
+  signal pc_t0_ctrl_v : std_logic_vector(HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY'w -1 downto 0);
+  signal pc_tc_ctrl_v : std_logic_vector(HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY'w -1 downto 0);
+  signal pc_t0_mon_v  : std_logic_vector(HPS_MDT_T0_MDT_T0_MON_t_ARRAY'w -1 downto 0);
+  signal pc_tc_mon_v  : std_logic_vector(HPS_MDT_TC_MDT_TC_MON_t_ARRAY'w -1 downto 0);
 
   signal local_freeze : std_logic;
 

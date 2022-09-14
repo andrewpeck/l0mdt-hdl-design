@@ -54,14 +54,14 @@ entity csv_reader_ucm2hps is
   port (
     clk                     : in std_logic;
     rst                     : in std_logic;
-    enable                  : in integer;
+    ena                     : in std_logic;
     --
     tb_curr_tdc_time        : in unsigned(63 downto 0);
     --
     o_file_ok               : out std_logic;
     o_file_ts               : out string;
     --
-    o_slc_event_ai          : out event_aut;
+    o_slc_event_ai          : out event_aut(c_NUM_THREADS -1 downto 0);
     --
     o_ucm2hps_inn_av     : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     o_ucm2hps_mid_av     : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);

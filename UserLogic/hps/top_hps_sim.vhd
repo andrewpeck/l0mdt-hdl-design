@@ -46,11 +46,11 @@ entity hps_tb is
     g_HPS_MAX_HP : integer := 6;
     g_ST_ACT : integer := 0;
     g_ST_ENABLE : std_logic_vector(3 downto 0) := (others => '0');
-
+    SEED : natural := 0;
     --
     PRJ_INFO            : string  := "not defined";
     IN_TAR_FILE         : string  := "ov_tar2hps_TAR_BA3.csv";
-    IN_SLC_FILE         : string  := "ov_ucm2hps_BA3.csv";
+    IN_UCM_FILE         : string  := "ov_ucm2hps_BA3.csv";
     IN_CTRL_FILE        : string  := "ctrl_A3_Barrel.csv"
   );
 end entity hps_tb;
@@ -80,29 +80,45 @@ architecture beh of hps_tb is
   signal glob_en : std_logic := '1';
 
   signal bx : std_logic := '0'; 
+  
 
-
+  signal ucm2hps_file_ok    : std_logic;
+  signal ucm2hps_file_ts    : string(1 to LINE_LENGTH_MAX);
+  signal tar2hps_file_ok    : std_logic;
+  signal tar2hps_file_ts    : string(1 to LINE_LENGTH_MAX);
   --
-  -- signal ctrl_inn_r             : HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
-  -- signal mon_inn_r              : HPS_MON_t;
-  -- signal ctrl_inn_v             : std_logic_vector(HPS_CTRL_t'w -1 downto 0);
-  -- signal mon_inn_v              : std_logic_vector(HPS_MON_t'w -1 downto 0);
+  signal ucm2hps_slc_event_ai : event_aut(c_NUM_THREADS -1 downto 0);
+  signal tar2hps_mdt_event_ai : event_tdc_aut;
+  ----------------------------- C&M -----------------------------
+  signal ctrl_inn_r             : HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
+  signal mon_inn_r              : HPS_MON_t;
+  signal ctrl_inn_v             : std_logic_vector(HPS_CTRL_t'w -1 downto 0);
+  signal mon_inn_v              : std_logic_vector(HPS_MON_t'w -1 downto 0);
+  -----------------------------UCM2HPS------------------------------
+  signal ucm2hps_inn_av     : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal ucm2hps_mid_av     : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal ucm2hps_out_av     : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal ucm2hps_ext_av     : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  -----------------------------TAR2HPS------------------------------
+  signal tar2hps_inn_av     : tar2hps_avt(c_HP_NUM_SECTOR_STATION(0) -1 downto 0);
+  signal tar2hps_mid_av     : tar2hps_avt(c_HP_NUM_SECTOR_STATION(1) -1 downto 0);
+  signal tar2hps_out_av     : tar2hps_avt(c_HP_NUM_SECTOR_STATION(2) -1 downto 0);
+  signal tar2hps_ext_av     : tar2hps_avt(c_HP_NUM_SECTOR_STATION(3) -1 downto 0);
+  -----------------------------HPS2PT ------------------------------
+  signal hps2pt_inn_av       : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+  -- signal hps2pt_mid_av       : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+  -- signal hps2pt_out_av       : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+  -- signal hps2pt_ext_av       : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
 
-  -- signal i_uCM2hps_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0) := (others => (others => '0'));
-  -- signal i_mdt_tar_av       : tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0) := (others => (others => '0'));
-  -- signal o_sf2pt_av         : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
-
-  -----------------------------UCM2TAR------------------------------
-  -- signal tb_curr_tdc_time   : unsigned(63 downto 0);
-  -- signal ucm2hps_file_ok    : std_logic;
-  -- signal ucm2hps_file_ts    : string(1 to LINE_LENGTH_MAX);
-  -- -- signal slc_event_ai       : event_aut;
-  -- signal ucm2hps_inn_av     : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  -- signal ucm2hps_mid_av     : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  -- signal ucm2hps_out_av     : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  -- signal ucm2hps_ext_av     : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  -- signal mti_sim : mti_clocktime_rec := get_clocktime(-1, TRUE);
+     
+  -- constant sim_time_stamp : string := integer'image(mti_sim.year) & "-" & integer'image(mti_sim.month) & "-" &
+  --                                integer'image(mti_sim.day) & "_" & integer'image(mti_sim.hour) & "h" &
+  --                                integer'image(mti_sim.minute) & "m" & integer'image(mti_sim.second) & "s.log";
 
 begin
+  -- assert FALSE report "SEED = " & integer'image(SEED) severity NOTE;
+  
 
   -- IN_GEN : for hp_i in g_HPS_NUM_MDT_CH downto 0 generate
   --   mdt_polmux_data_av(hp_i).polmux <= i_mdt_polmux_av(hp_i);
@@ -114,30 +130,32 @@ begin
   --------------------------------------------------------------
   --
   --------------------------------------------------------------
-  -- INN: if g_ST_ENABLE(0)='1' generate
-  --   ctrl_inn_v <= convert(ctrl_inn_r,ctrl_inn_v);
-  --   mon_inn_r <= convert(mon_inn_v,mon_inn_r);
-  --   --------------------------------------------------------------
-  --   HPS : entity hps_lib.hps
-  --     generic map(
-  --       g_STATION_RADIUS    => 0,
-  --       g_HPS_NUM_MDT_CH     => c_HP_NUM_SECTOR_STATION(0)
-  --     )
-  --     port map(
-  --       clk                 => clk,
-  --       rst                 => rst,
-  --       glob_en             => ena,
-  --       -- configuration & control
-  --       ctrl_v              => ctrl_inn_v,
-  --       mon_v               => mon_inn_v,
-  --       -- SLc
-  --       i_uCM2hps_av        => uCM2hps_inn_av,
-  --       -- MDT hit
-  --       i_mdt_tar_av        => mdt_tar_inn_av,
-  --       -- to pt calc
-  --       o_sf2pt_av          => sf2pt_inn_av
-  --   );
-  -- end generate;
+  INN: if g_ST_ENABLE(0)='1' generate
+    constant caballo : integer := 0;
+  begin
+    ctrl_inn_v <= convert(ctrl_inn_r,ctrl_inn_v);
+    mon_inn_r <= convert(mon_inn_v,mon_inn_r);
+    --------------------------------------------------------------
+    HPS : entity hps_lib.hps
+      generic map(
+        g_STATION_RADIUS    => 0,
+        g_HPS_NUM_MDT_CH     => c_HP_NUM_SECTOR_STATION(0)
+      )
+      port map(
+        clk                 => clk,
+        rst                 => rst,
+        glob_en             => glob_en,
+        -- configuration & control
+        ctrl_v              => ctrl_inn_v,
+        mon_v               => mon_inn_v,
+        -- SLc
+        i_uCM2hps_av        => uCM2hps_inn_av,
+        -- MDT hit
+        i_mdt_tar_av        => tar2hps_inn_av,
+        -- to pt calc
+        o_sf2pt_av          => hps2pt_inn_av
+    );
+  end generate;
   -- HPS_MID_GEN: if ST_ENABLE(1)='1' generate
   -- end generate;
   -- HPS_OUT_GEN: if ST_ENABLE(2)='1' generate
@@ -147,89 +165,84 @@ begin
   -------------------------------------------------------------------------------------
 	-- TAR IN
   -------------------------------------------------------------------------------------
-  -- UCM2HPS : entity shared_lib.csv_reader_mdt 
-  -- generic map (
-  --   IN_HIT_FILE => IN_HIT_FILE,
-  --   g_verbose => 2
-  -- )
-  -- port map(
-  --   clk               => clk,
-  --   rst               => rst,
-  --   enable            => enable_mdt,
-  --   --
-  --   tb_curr_tdc_time  => tb_curr_tdc_time,
-  --   --
-  --   o_file_ok         => ucm2hps_file_ok,
-  --   o_file_ts         => ucm2hps_file_ts, 
-  --   --
-  --   o_slc_event_ai    => slc_event_ai,
-  --   -- TAR Hits for simulation
-  --   o_ucm2hps_inn_av  => ucm2hps_inn_av,
-  --   o_ucm2hps_mid_av  => ucm2hps_mid_av,
-  --   o_ucm2hps_out_av  => ucm2hps_out_av,
-  --   o_ucm2hps_ext_av  => ucm2hps_ext_av
-  -- );
+  UCM2HPS : entity shared_lib.csv_reader_ucm2hps 
+  generic map (
+    g_PRJ_INFO        => PRJ_INFO,
+    g_ST_ENABLE       => g_ST_ENABLE,
+    g_IN_UCM2HPS_FILE => IN_UCM_FILE
+  )
+  port map(
+    clk               => clk,
+    rst               => rst,
+    ena               => glob_en,
+    --
+    tb_curr_tdc_time  => tb_curr_tdc_time,
+    --
+    o_file_ok         => ucm2hps_file_ok,
+    o_file_ts         => ucm2hps_file_ts, 
+    --
+    o_slc_event_ai    => ucm2hps_slc_event_ai,
+    -- TAR Hits for simulation
+    o_ucm2hps_inn_av  => ucm2hps_inn_av,
+    o_ucm2hps_mid_av  => ucm2hps_mid_av,
+    o_ucm2hps_out_av  => ucm2hps_out_av,
+    o_ucm2hps_ext_av  => ucm2hps_ext_av
+  );
 
   -------------------------------------------------------------------------------------
 	-- UCM IN
   -------------------------------------------------------------------------------------
-  -- TAR2HPS : entity shared_lib.csv_reader_ucm2hps 
-  -- generic map (
-  --   IN_HIT_FILE => IN_HIT_FILE,
-  --   g_verbose => 2
-  -- )
-  -- port map(
-  --   clk               => clk,
-  --   rst               => rst,
-  --   enable            => enable_mdt,
-  --   --
-  --   tb_curr_tdc_time  => tb_curr_tdc_time,
-  --   --
-  --   o_file_ok         => mdt_file_ok,
-  --   o_file_ts         => mdt_file_ts, 
-  --   --
-  --   o_slc_event_ai    => slc_event_ai,
-  --   --
-  --   o_ucm2hps_inn_av  => ucm2hps_inn_av,
-  --   o_ucm2hps_mid_av  => ucm2hps_mid_av,
-  --   o_ucm2hps_out_av  => ucm2hps_out_av,
-  --   o_ucm2hps_ext_av  => ucm2hps_ext_av
-  -- );
+  TAR2HPS : entity shared_lib.csv_reader_tar2hps 
+  generic map (
+   g_PRJ_INFO           => PRJ_INFO,
+   g_ST_ENABLE          => g_ST_ENABLE,
+  --  g_HPS_MAX_HP         => 
+   g_IN_TAR2HPS_FILE    => IN_TAR_FILE
+  )
+  port map(
+    clk                 => clk,
+    rst                 => rst,
+    ena                 => glob_en,
+    --
+    tb_curr_tdc_time    => tb_curr_tdc_time,
+    --
+    o_file_ok           => tar2hps_file_ok,
+    o_file_ts           => tar2hps_file_ts, 
+    --
+    o_mdt_event_ai      => tar2hps_mdt_event_ai,
+    -- o_slc_event_ai    => tar2hps_slc_event_ai,
+    --
+    o_tar_hits_inn_av   => tar2hps_inn_av,
+    o_tar_hits_mid_av   => tar2hps_mid_av,
+    o_tar_hits_out_av   => tar2hps_out_av,
+    o_tar_hits_ext_av   => tar2hps_ext_av
+  );
   -------------------------------------------------------------------------------------
 	-- HPS OUT
   -------------------------------------------------------------------------------------
-  -- TAR2HPS : entity shared_lib.csv_writer_tar
-  -- generic map (
-  --   g_PRJ_INFO    => PRJ_INFO,
-  --   g_IN_HIT_FILE => IN_HIT_FILE,
-  --   g_IN_SLC_FILE => IN_SLC_FILE
-  --   -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
-  --   -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
-  -- )
-  -- port map(
-  --   clk                 => clk,
-  --   rst                 => rst,
-  --   enable              => enable_mdt,
-  --   --
-  --   tb_curr_tdc_time    => tb_curr_tdc_time,
-  --   --
-  --   in_mdt_file_ok      => mdt_file_ok,
-  --   in_mdt_file_ts      => mdt_file_ts,
-  --   -- --
-  --   i_mdt_event_ai      => mdt_event_ai,
-  --   i_slc_event_ai      => slc_event_ai,
-  --   -- to daq
-  --   i_tdc_hits_inn_av   => o_tdc_hits_inn_av,
-  --   i_tdc_hits_mid_av   => o_tdc_hits_mid_av,
-  --   i_tdc_hits_out_av   => o_tdc_hits_out_av,
-  --   i_tdc_hits_ext_av   => o_tdc_hits_ext_av,
-  --   -- outputs to h2s
-  --   i_tar_hits_inn_av   => o_tar_hits_inn_av,
-  --   i_tar_hits_mid_av   => o_tar_hits_mid_av,
-  --   i_tar_hits_out_av   => o_tar_hits_out_av,
-  --   i_tar_hits_ext_av   => o_tar_hits_ext_av
-
-  -- );
+  HPSOUT : entity shared_lib.csv_writer_hps
+  generic map (
+    g_PRJ_INFO        => PRJ_INFO,
+    g_ST_ENABLE       => g_ST_ENABLE,
+    g_OUT_HPS2SF_FILE => "ov_" & PRJ_INFO & "_hps2sf.csv",
+    g_OUT_HIT_FILE    => "ov_" & PRJ_INFO & "_hps_inthit.csv",
+    g_OUT_SLC_FILE    => "ov_" & PRJ_INFO & "_hps_intslc.csv"
+  )
+  port map(
+    clk                     => clk,
+    rst                     => rst,
+    enable                  => glob_en,
+    --
+    tb_curr_tdc_time        => tb_curr_tdc_time,
+    --
+    i_ucm2hps_file_ok       => ucm2hps_file_ok,
+    i_ucm2hps_file_ts       => ucm2hps_file_ts,
+    i_tar2hps_file_ok       => tar2hps_file_ok,
+    i_tar2hps_file_ts       => tar2hps_file_ts,
+    -- --
+    i_ucm2hps_slc_event_ai  => ucm2hps_slc_event_ai,
+    i_tar2hps_mdt_event_ai  => tar2hps_mdt_event_ai
+  );
 
   -------------------------------------------------------------------------------------
 	-- clock Generator
@@ -284,6 +297,7 @@ begin
 	-------------------------------------------------------------------------------------
 	rst_process: process begin
 		rst<='0';
+    report "current time = " & time'image(now);
 		wait for CLK_period;
 		rst<='1';
 		wait for CLK_period*reset_init_cycles;

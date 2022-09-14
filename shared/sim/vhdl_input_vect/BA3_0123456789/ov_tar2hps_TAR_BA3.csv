@@ -1,7 +1,7 @@
 # --------------------------
-# HIT TS  : 0123456789
-# PRJ CFG : TAR_BA3
-# SIM TS  : 0 fs
+# TS:0123456789
+# PRJ:TAR_BA3
+# SIM_TS:0 fs
 # --------------------------
 ToA,event,muonFixedId,station,hp#,ieta,layer,tube,time
 3190,116,6307235,0,3,3,3,131,1500
