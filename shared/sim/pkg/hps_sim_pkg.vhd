@@ -34,14 +34,14 @@ package hps_sim_pkg is
    constant TB_TAR2HPS_FIFO_WIDTH : integer := 32;
    attribute w of TB_TAR2HPS_FIFO_WIDTH : constant is 32;
 
-   type input_mdt_art is array(TB_TAR2HPS_FIFO_WIDTH-1 downto 0) of eve_tar2hps_rt;
-   attribute w of input_mdt_art : type is 5632;
-   function width(x: input_mdt_art) return integer;
-   function convert(x: input_mdt_art; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: input_mdt_art) return input_mdt_art;
-   function zero(tpl: input_mdt_art) return input_mdt_art;
-   function convert(x: input_mdt_art; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: input_mdt_art) return input_mdt_art;
+   type eve_tar2hps_art is array(TB_TAR2HPS_FIFO_WIDTH-1 downto 0) of eve_tar2hps_rt;
+   attribute w of eve_tar2hps_art : type is 5632;
+   function width(x: eve_tar2hps_art) return integer;
+   function convert(x: eve_tar2hps_art; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: eve_tar2hps_art) return eve_tar2hps_art;
+   function zero(tpl: eve_tar2hps_art) return eve_tar2hps_art;
+   function convert(x: eve_tar2hps_art; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: eve_tar2hps_art) return eve_tar2hps_art;
 
 end package hps_sim_pkg;
 
@@ -167,12 +167,12 @@ package body hps_sim_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
-   function width(x: input_mdt_art) return integer is
+   function width(x: eve_tar2hps_art) return integer is
       variable w : integer := x'length * width(x(x'low));
    begin
       return w;
    end function width;
-   function convert(x: input_mdt_art; tpl: std_logic_vector) return std_logic_vector is
+   function convert(x: eve_tar2hps_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
       constant W : natural := width(x(x'low));
       variable a : integer;
@@ -193,8 +193,8 @@ package body hps_sim_pkg is
       end if;
       return y;
    end function convert;
-   function convert(x: std_logic_vector; tpl: input_mdt_art) return input_mdt_art is
-      variable y : input_mdt_art;
+   function convert(x: std_logic_vector; tpl: eve_tar2hps_art) return eve_tar2hps_art is
+      variable y : eve_tar2hps_art;
       constant W : natural := width(y(y'low));
       variable a : integer;
       variable b : integer;
@@ -214,11 +214,11 @@ package body hps_sim_pkg is
       end if;
       return y;
    end function convert;
-   function zero(tpl: input_mdt_art) return input_mdt_art is
+   function zero(tpl: eve_tar2hps_art) return eve_tar2hps_art is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
-   function convert(x: input_mdt_art; tpl: std_logic_vector_array) return std_logic_vector_array is
+   function convert(x: eve_tar2hps_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
    begin
       for j in y'range loop
@@ -226,8 +226,8 @@ package body hps_sim_pkg is
       end loop;
       return y;
    end function convert;
-   function convert(x: std_logic_vector_array; tpl: input_mdt_art) return input_mdt_art is
-      variable y : input_mdt_art;
+   function convert(x: std_logic_vector_array; tpl: eve_tar2hps_art) return eve_tar2hps_art is
+      variable y : eve_tar2hps_art;
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));

@@ -3,7 +3,7 @@ shared/sim/pkg/l0mdt_sim_pkg.vhd
 
 shared/sim/pkg/mdt_sim_pkg.vhd
 shared/sim/pkg/tar_sim_pkg.vhd
-
+shared/sim/pkg/hps_sim_pkg.vhd
 shared/sim/pkg/ucm_sim_pkg.vhd
 
 shared/sim/src/csv_reader_mdt.vhd
