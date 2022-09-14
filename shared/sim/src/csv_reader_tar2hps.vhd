@@ -74,6 +74,18 @@ entity csv_reader_tar2hps is
 end entity csv_reader_tar2hps;
 
 architecture sim of csv_reader_tar2hps is
+  type sim_tar2hps_rt is record
+    ToA          : integer;
+    event        : integer;
+    muonFixedId  : integer;
+    station      : integer;
+    hp           : integer;
+    ieta         : integer;
+    layer        : integer;
+    tube         : integer;
+    time         : integer;
+  end record sim_tar2hps_rt;
+
 	
   signal mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
 
@@ -133,17 +145,6 @@ begin
 
   READ_TAR: process(clk)
 
-    type sim_tar2hps_rt is record
-      ToA          : integer;
-      event        : integer;
-      muonFixedId  : integer;
-      station      : integer;
-      hp           : integer;
-      ieta         : integer;
-      layer        : integer;
-      tube         : integer;
-      time         : integer;
-    end record sim_tar2hps_rt;
     variable tar2hps_vr : sim_tar2hps_rt;
 
     variable row_counter          : integer := 0;
