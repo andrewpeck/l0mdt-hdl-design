@@ -104,11 +104,11 @@ set mRST [list ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN}]
 #================================================================================
 #  Configure and add AXI slaves
 #================================================================================
-
-if {![info exists AXI_BASE_ADDRESS]} {
+ 
+if {![info exists AXI_BASE_ADDRESS]} { #If not set in Hog Project (post-creation.tcl)
     # default to US+
-    set AXI_BASE_ADDRESS 0xB0000000 ; # US+
-    #set AXI_BASE_ADDRESS 0x80000000 ; # 7 Series
+    #set AXI_BASE_ADDRESS 0xB0000000 ; # US+
+    set AXI_BASE_ADDRESS 0x80000000 ; # 7 Series
 }
 
 source -quiet "$BD_PATH/add_slaves_from_yaml.tcl"
