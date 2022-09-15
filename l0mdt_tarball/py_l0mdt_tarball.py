@@ -54,7 +54,9 @@ for file in os.listdir(DTSI_DIR):
     os.system(dtc_command)
 
 tar_cmd = "tar cvf "+HOG_PROJECT+"_"+d1+".tar "+HOG_PROJECT
-gzip_cmd= "gzip "+HOG_PROJECT +"_"+d1+".tar "+".tar "
+gzip_cmd= "gzip "+HOG_PROJECT +"_"+d1+".tar"
 
+print("Running tar cmd = ",tar_cmd)
+print("Running gzip cmd = ",gzip_cmd)
 os.system(tar_cmd)
 os.system(gzip_cmd)
