@@ -56,8 +56,8 @@ entity csv_reader_mdt is
     o_file_ok           : out std_logic;
     o_file_ts           : out string(1 to LINE_LENGTH_MAX);
     --
-    o_mdt_event_ai      : out event_tdc_aut;--event_aut(3 downto 0);
-    o_slc_event_ai      : out event_tdc_aut;--event_aut(3 downto 0);
+    o_mdt_event_ai      : out event_tdc_aut;
+    o_slc_event_ai      : out event_tdc_aut;
     -- Hits from Tar
     o_mdt_tdc_inn_av    : out tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
     o_mdt_tdc_mid_av    : out tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
@@ -98,8 +98,7 @@ architecture sim of csv_reader_mdt is
 
   -- signal mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
   -- signal slc_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
-  -- signal mdt_event_ai     : event_aut(3 downto 0);
-  -- signal slc_event_ai     : event_aut(3 downto 0);
+
 
   shared variable csv_file  : csv_file_type;
   signal  file_open         : std_logic := '0';   

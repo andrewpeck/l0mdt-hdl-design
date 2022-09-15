@@ -87,7 +87,7 @@ architecture beh of hps_tb is
   signal tar2hps_file_ok    : std_logic;
   signal tar2hps_file_ts    : string(1 to LINE_LENGTH_MAX);
   --
-  signal ucm2hps_slc_event_ai : event_aut(c_NUM_THREADS -1 downto 0);
+  signal ucm2hps_slc_event_ai : event_xaut(c_NUM_THREADS -1 downto 0);
   signal tar2hps_mdt_event_ai : event_tdc_aut;
   ----------------------------- C&M -----------------------------
   signal ctrl_inn_r             : HPS_CTRL_t := DEFAULT_HPS_CTRL_t;

@@ -61,7 +61,7 @@ entity csv_reader_ucm2hps is
     o_file_ok               : out std_logic;
     o_file_ts               : out string;
     --
-    o_slc_event_ai          : out event_aut(c_NUM_THREADS -1 downto 0);
+    o_slc_event_ai          : out event_xaut(c_NUM_THREADS -1 downto 0);
     --
     o_ucm2hps_inn_av     : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     o_ucm2hps_mid_av     : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);

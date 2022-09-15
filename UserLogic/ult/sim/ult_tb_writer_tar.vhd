@@ -55,7 +55,7 @@ entity ult_tb_writer_tar is
     enable                : in integer;
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0')
-    -- i_hit_event_ai        : in event_aut(c_MAX_NUM_SL -1 downto 0) 
+    -- i_hit_event_ai        : in event_xaut(c_MAX_NUM_SL -1 downto 0) 
   );
 end entity ult_tb_writer_tar;
 

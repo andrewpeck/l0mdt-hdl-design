@@ -62,8 +62,8 @@ entity csv_reader_tar2hps is
     o_file_ok             : out std_logic;
     o_file_ts             : out string(1 to LINE_LENGTH_MAX);
     --
-    o_mdt_event_ai        : out event_tdc_aut;--event_aut(3 downto 0);
-    o_slc_event_ai        : out event_tdc_aut;--event_aut(3 downto 0);
+    o_mdt_event_ai        : out event_tdc_aut;--event_xaut(3 downto 0);
+    o_slc_event_ai        : out event_tdc_aut;--event_xaut(3 downto 0);
     -- TDC Hits from Tar
     o_tar_hits_inn_av     : out tar2hps_avt(c_HP_NUM_SECTOR_STATION(0) -1 downto 0);
     o_tar_hits_mid_av     : out tar2hps_avt(c_HP_NUM_SECTOR_STATION(1) -1 downto 0);
@@ -86,16 +86,30 @@ architecture sim of csv_reader_tar2hps is
     time         : integer;
   end record sim_tar2hps_rt;
   	
-  signal mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
+  -- signal mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
 
   shared variable csv_file  : csv_file_type;
   signal file_open          : std_logic := '0';   
   signal file_ts            : string(1 to LINE_LENGTH_MAX);
   
+  constant tar_event_r0 : eve_tar2hps_rt := (
+    ToA => (others => '0'),
+    event_id => (others => '0'),
+    muonFixedId => (others => '0'),
+    station => (others => '0'),
+    hp => (others => '0'),
+    tar2hps => (
+      data_valid => '0',
+      chamber_ieta => (others => '0'),
+      layer => (others => '0'),
+      tube => (others => '0'),
+      time => (others => '0')
+    )
+  );
   signal tar_event_r  : eve_tar2hps_rt;
   type tar2hps_fifo_at is array (c_TOTAL_MAX_NUM_HP -1 downto 0) of eve_tar2hps_art;
   type tar2hps_fifo_aat is array (c_MAX_NUM_ST -1 downto 0) of tar2hps_fifo_at; 
-  signal tar2hps_fifo : tar2hps_fifo_aat;
+  signal tar2hps_fifo : tar2hps_fifo_aat := (others => (others => (others => tar_event_r0)));
 
   type infifo_hit_counts_ait is array (c_TOTAL_MAX_NUM_HP -1 downto 0) of integer;
   type tar2hps_fifo_counters_aait is array (c_MAX_NUM_ST -1 downto 0) of infifo_hit_counts_ait;
@@ -158,7 +172,9 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        
+        tar2hps_fifo <= (others => (others => (others => tar_event_r0)));
+        o_mdt_event_ai <= (others => (others => (others => (others => '0'))));
+        o_slc_event_ai <= (others => (others => (others => (others => '0'))));
       else
         if ena = '1' then
           -- write to DUT

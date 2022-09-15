@@ -107,7 +107,7 @@ architecture beh of ucm_tb is
   ---------------------------------------------------------------------------
   signal slc_file_ok              : std_logic;
   signal slc_file_ts              : string(1 to LINE_LENGTH_MAX);
-  signal slc_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
+  signal slc_event_ai             : event_xaut(c_MAX_NUM_SL -1 downto 0);
 
 begin
 

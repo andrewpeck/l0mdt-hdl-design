@@ -68,7 +68,7 @@ entity csv_writer_ucm is
     in_slc_file_ok        : in std_logic;
     in_slc_file_ts        : in string;
     --
-    slc_event_ai          : in event_aut;
+    slc_event_ai          : in event_xaut;
     --
     inn_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     mid_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
@@ -92,7 +92,7 @@ architecture sim of csv_writer_ucm is
   shared variable csv_file_1: csv_file_type;
   shared variable csv_file_2: csv_file_type;
 
-  -- alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
+  -- alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
 
   -- alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_plin_av : ucm2hps_avt >>;
   -- alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_plin_av : ucm2hps_avt >>;
@@ -102,8 +102,8 @@ architecture sim of csv_writer_ucm is
   -- alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_avt >>;
   signal ucm2pl_ar : ucm2pl_art(c_MAX_NUM_SL-1 downto 0);
 
-  signal slc_event_u2m_au        : event_at(c_MAX_NUM_SL -1 downto 0);
-  signal slc_event_u2h_au        : event_at(c_MAX_NUM_SL -1 downto 0);
+  signal slc_event_u2m_au        : event_xat(c_MAX_NUM_SL -1 downto 0);
+  signal slc_event_u2h_au        : event_xat(c_MAX_NUM_SL -1 downto 0);
 
   signal inn_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
   signal mid_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);

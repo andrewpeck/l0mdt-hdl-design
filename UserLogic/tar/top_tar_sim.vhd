@@ -124,8 +124,8 @@ architecture beh of tar_tb is
 
   signal i_mdt_tdc_av :  tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0) := (others => (others => '0'));
 
-  -- signal mdt_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
-  -- signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
+  -- signal mdt_event_ai             : event_xaut(c_MAX_NUM_SL -1 downto 0);
+  -- signal hit_event_ai             : event_xaut(c_MAX_NUM_SL -1 downto 0);
 
   -------------- OLD ----------------------
 
@@ -160,8 +160,8 @@ architecture beh of tar_tb is
   ---------------------------------------------------------------------------
   signal mdt_file_ok         : std_logic;
   signal mdt_file_ts         : string(1 to LINE_LENGTH_MAX);
-  -- signal mdt_event_ai        : event_aut(3 downto 0);
-  -- signal slc_event_ai        : event_aut(3 downto 0);
+  -- signal mdt_event_ai        : event_xaut(3 downto 0);
+  -- signal slc_event_ai        : event_xaut(3 downto 0);
   signal mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
   signal slc_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
   

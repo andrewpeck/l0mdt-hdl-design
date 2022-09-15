@@ -69,7 +69,7 @@ entity csv_writer_hps is
     i_tar2hps_file_ok       : in std_logic;
     i_tar2hps_file_ts       : in string(1 to LINE_LENGTH_MAX);
     --
-    i_ucm2hps_slc_event_ai  : in event_aut(c_NUM_THREADS -1 downto 0);
+    i_ucm2hps_slc_event_ai  : in event_xaut(c_NUM_THREADS -1 downto 0);
     i_tar2hps_mdt_event_ai  : in event_tdc_aut
     -- TDC polmux from Tar
     -- i_tdc_hits_inn_av       : in tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
@@ -96,7 +96,7 @@ architecture sim of csv_writer_hps is
   shared variable csv_file_1: csv_file_type;
   shared variable csv_file_2: csv_file_type;
 
-  -- -- alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
+  -- -- alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
 
   -- -- alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_plin_av : ucm2hps_avt >>;
   -- -- alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_plin_av : ucm2hps_avt >>;

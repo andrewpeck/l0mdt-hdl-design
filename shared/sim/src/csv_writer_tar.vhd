@@ -71,8 +71,8 @@ entity csv_writer_tar is
     in_mdt_file_ok        : in std_logic;
     in_mdt_file_ts        : in string;
     --
-    i_mdt_event_ai        : in event_tdc_aut;--event_aut(3 downto 0);
-    i_slc_event_ai        : in event_tdc_aut;--event_aut(3 downto 0);
+    i_mdt_event_ai        : in event_tdc_aut;--event_xaut(3 downto 0);
+    i_slc_event_ai        : in event_tdc_aut;--event_xaut(3 downto 0);
     -- TDC polmux from Tar
     i_tdc_hits_inn_av         : in tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
     i_tdc_hits_mid_av         : in tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
@@ -98,7 +98,7 @@ architecture sim of csv_writer_tar is
   shared variable csv_file_1: csv_file_type;
   shared variable csv_file_2: csv_file_type;
 
-  -- -- alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
+  -- -- alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
 
   -- -- alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_plin_av : ucm2hps_avt >>;
   -- -- alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_plin_av : ucm2hps_avt >>;
