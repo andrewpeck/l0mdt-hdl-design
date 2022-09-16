@@ -136,13 +136,13 @@ begin
     puts("opening TAR2HPS CSV file : " & g_OUT_FILE_1);
     csv_file_1.initialize(g_OUT_FILE_1,"wr");
     csv_file_1.write_string("# --------------------------");
-    csv_file_1.write_string("# HIT TS  : " & in_mdt_file_ts);
+    csv_file_1.write_string("# CSV files TS = " & in_mdt_file_ts);
     -- csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
-    csv_file_1.write_string("# PRJ CFG : " & g_PRJ_INFO);
-    csv_file_1.write_string("# SIM TS  : " & time'image(now));
+    csv_file_1.write_string("# PRJ CFG = " & g_PRJ_INFO);
+    csv_file_1.write_string("# SIM TS  = " & time'image(now));
     csv_file_1.write_string("# --------------------------");   
     --
-    csv_file_1.write_word("ToA");
+    csv_file_1.write_word("ToA[0.78125ns]");
     csv_file_1.write_word("event");          
     csv_file_1.write_word("muonFixedId");                 
     csv_file_1.write_word("station");          
@@ -151,7 +151,7 @@ begin
     csv_file_1.write_word("ieta");
     csv_file_1.write_word("layer");
     csv_file_1.write_word("tube");
-    csv_file_1.write_word("time");
+    csv_file_1.write_word("time[0.78125ns]");
     csv_file_1.writeline;
     puts("opening TAR2DAQ CSV file : " & g_OUT_FILE_2);
     csv_file_2.initialize(g_OUT_FILE_2,"wr");

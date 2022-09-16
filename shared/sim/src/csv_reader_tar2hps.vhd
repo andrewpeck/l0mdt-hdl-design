@@ -173,8 +173,8 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         tar2hps_fifo <= (others => (others => (others => tar_event_r0)));
-        o_mdt_event_ai <= (others => (others => (others => (others => '0'))));
-        o_slc_event_ai <= (others => (others => (others => (others => '0'))));
+        o_mdt_event_ai <= (others => (others => (others => '0')));
+        o_slc_event_ai <= (others => (others => (others => '0')));
       else
         if ena = '1' then
           -- write to DUT
