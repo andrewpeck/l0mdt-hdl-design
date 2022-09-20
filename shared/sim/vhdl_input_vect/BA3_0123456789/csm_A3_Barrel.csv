@@ -1,6 +1,6 @@
 # --------------------------
-# TS:0123456789
-# Side:A Sector:3 Area:Barrel
+# TS = 2022/09/15_12:05:34
+# PRJ CFG = Side:A Sector:3 Area:Barrel
 # --------------------------
 ToA,coarse_time,fine_time,Local_Tube_Number,Tube_Number,Tube_Layer,ChamberId,Chamber_iEta,Station_Type,tube_z,tube_rho,drift_time,event,muonFixedId,csm,mezz,channel,t0,TOF
 1500,46,28,36,132,3,1,4,0,4516,4848,32.7718505859375,116,6307235,1,10,19,542.5,22.103174209594727

@@ -1,3 +1,7 @@
+# --------------------------
+# TS = 2022/09/15_12:05:34
+# PRJ CFG = Side:A Sector:3 Area:Barrel
+# --------------------------
 MuonID,isOnOfflineSeg,dataValid,IdxRawHit,L_localX,L_localY,C_localX,C_localY,DriftTime,DriftTimeCorr,driftRadius_Rt,offIDriftTime,offIDriftTimeCorr
 4733952,1,1,2,151.329833984375,15.017499923706055,0.0,0.0,854.6875,21.7281494140625,1.0,24.049171447753906,21.7281494140625
 4733952,1,1,2,137.8977813720703,15.017499923706055,0.0,0.0,854.6875,21.7281494140625,1.0,24.049171447753906,21.7281494140625

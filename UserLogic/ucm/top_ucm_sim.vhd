@@ -43,8 +43,9 @@ use ctrl_lib.UCM_CTRL.all;
 
 entity ucm_tb is
   generic (
-    PRJ_INFO            : string  := "BA3";
-    IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
+    PRJ_INFO            : string  := "not_defined";
+    IN_SLC_FILE         : string  := "not_defined.csv";
+    IN_CTRL_FILE        : string  := "not_defined.csv";
     DUMMY               : boolean := false
     );
 end entity ucm_tb;

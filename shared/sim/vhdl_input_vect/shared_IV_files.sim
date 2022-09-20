@@ -1,7 +1,7 @@
 #---------------------------------
 # Simulation input vectors folders
 #---------------------------------
-shared/sim/vhdl_input_vect/BA3_0123456789/*.csv
+# shared/sim/vhdl_input_vect/BA3_0123456789/*.csv
 
 #---------------------------------
 # Simulation IV files

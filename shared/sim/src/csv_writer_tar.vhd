@@ -51,10 +51,10 @@ library vamc_lib;
 
 entity csv_writer_tar is
   generic(
-    g_PRJ_INFO            : string  := "A3B";
-    g_IN_SLC_FILE         : string  := "not_defined.csv";
-    g_IN_HIT_FILE         : string  := "not_defined.csv";
-    g_IN_L0_FILE          : string  := "not_defined.csv";
+    g_PRJ_INFO            : string  := "prj_not_defined";
+    g_IN_FILES            : string  := "not_defined.csv";
+    -- g_IN_HIT_FILE         : string  := "not_defined.csv";
+    -- g_IN_L0_FILE          : string  := "not_defined.csv";
     -- g_OUT_FILE            : string  := "ov_ucm2hps_A3B.csv"
     -- OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
     -- OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv"
@@ -66,8 +66,8 @@ entity csv_writer_tar is
     rst                   : in std_logic;
     enable                : in integer;
     --
-    tb_curr_sim_time      : in unsigned(63 downto 0);
-    tb_curr_tdc_time      : in unsigned(63 downto 0);
+    tb_curr_sim_time      : in unsigned(63 downto 0) := (others => '0');
+    tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0');
     --
     in_mdt_file_ok        : in std_logic;
     in_mdt_file_ts        : in string;
@@ -75,15 +75,15 @@ entity csv_writer_tar is
     i_mdt_event_ai        : in event_tdc_aut;--event_xaut(3 downto 0);
     i_slc_event_ai        : in event_tdc_aut;--event_xaut(3 downto 0);
     -- TDC polmux from Tar
-    i_tdc_hits_inn_av         : in tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
-    i_tdc_hits_mid_av         : in tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
-    i_tdc_hits_out_av         : in tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
-    i_tdc_hits_ext_av         : in tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
+    i_tdc_hits_inn_av         : in tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_tdc_hits_mid_av         : in tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_tdc_hits_out_av         : in tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_tdc_hits_ext_av         : in tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC Hits from Tar
-    i_tar_hits_inn_av         : in tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
-    i_tar_hits_mid_av         : in tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
-    i_tar_hits_out_av         : in tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
-    i_tar_hits_ext_av         : in tar2hps_avt(g_HPS_MAX_HP -1 downto 0)
+    i_tar_hits_inn_av         : in tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_tar_hits_mid_av         : in tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_tar_hits_out_av         : in tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_tar_hits_ext_av         : in tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0)
 
   );
 end entity csv_writer_tar;
@@ -114,15 +114,15 @@ architecture sim of csv_writer_tar is
   signal slc_event_a : event_tdc_at;
   signal mdt_event_a : event_tdc_at;
     -- TDC polmux from Tar
-  signal tdc_hits_inn_ar : tdcpolmux2tar_art(g_HPS_MAX_HP -1 downto 0);
-  signal tdc_hits_mid_ar : tdcpolmux2tar_art(g_HPS_MAX_HP -1 downto 0);
-  signal tdc_hits_out_ar : tdcpolmux2tar_art(g_HPS_MAX_HP -1 downto 0);
-  signal tdc_hits_ext_ar : tdcpolmux2tar_art(g_HPS_MAX_HP -1 downto 0);
+  signal tdc_hits_inn_ar : tdcpolmux2tar_art(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal tdc_hits_mid_ar : tdcpolmux2tar_art(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal tdc_hits_out_ar : tdcpolmux2tar_art(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal tdc_hits_ext_ar : tdcpolmux2tar_art(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC Hits from Tar
-  signal tar_hits_inn_ar :tar2hps_art(g_HPS_MAX_HP -1 downto 0);
-  signal tar_hits_mid_ar :tar2hps_art(g_HPS_MAX_HP -1 downto 0);
-  signal tar_hits_out_ar :tar2hps_art(g_HPS_MAX_HP -1 downto 0);
-  signal tar_hits_ext_ar :tar2hps_art(g_HPS_MAX_HP -1 downto 0);
+  signal tar_hits_inn_ar :tar2hps_art(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal tar_hits_mid_ar :tar2hps_art(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal tar_hits_out_ar :tar2hps_art(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal tar_hits_ext_ar :tar2hps_art(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
 
 
@@ -137,12 +137,13 @@ begin
     puts("opening TAR2HPS CSV file : " & g_OUT_FILE_1);
     csv_file_1.initialize(g_OUT_FILE_1,"wr");
     csv_file_1.write_string("# --------------------------");
-    csv_file_1.write_string("# CSV files TS = " & in_mdt_file_ts);
+    csv_file_1.write_string("# CSV files TS = " & g_IN_FILES & " - " & in_mdt_file_ts);
     -- csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
     csv_file_1.write_string("# PRJ CFG = " & g_PRJ_INFO);
     csv_file_1.write_string("# SIM TS  = " & "2022.09.15_12:05:34");--time'image(now));
     csv_file_1.write_string("# --------------------------");   
     --
+    csv_file_1.write_word("ToS[100ps]");
     csv_file_1.write_word("ToA[0.78125ns]");
     csv_file_1.write_word("event");          
     csv_file_1.write_word("muonFixedId");                 
@@ -166,7 +167,7 @@ begin
   end process open_csv;
 
   h_st_for : for st_i in 0 to 3 generate
-    h_hp_for : for hp_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
+    h_hp_for : for hp_i in c_HP_NUM_SECTOR_STATION(st_i) -1 downto 0 generate
 
       H_PL : entity vamc_lib.vamc_spl
       generic map(
@@ -189,7 +190,7 @@ begin
   end generate;
 
   c_st_for : for st_i in 0 to 3 generate
-    c_hp_for : for hp_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
+    c_hp_for : for hp_i in c_HP_NUM_SECTOR_STATION(st_i) -1 downto 0 generate
 
       C_PL : entity vamc_lib.vamc_spl
       generic map(
@@ -211,19 +212,19 @@ begin
     end generate;
   end generate;
 
-  inn_loop : for i in c_HPS_MAX_ARRAY(0)-1 downto 0 generate
+  inn_loop : for i in c_HP_NUM_SECTOR_STATION(0)-1 downto 0 generate
     tar_hits_inn_ar(i) <= convert(i_tar_hits_inn_av(i),tar_hits_inn_ar(i));
     tdc_hits_inn_ar(i) <= convert(i_tdc_hits_inn_av(i),tdc_hits_inn_ar(i));
   end generate ; 
-  mid_loop : for i in c_HPS_MAX_ARRAY(1)-1 downto 0 generate
+  mid_loop : for i in c_HP_NUM_SECTOR_STATION(1)-1 downto 0 generate
     tar_hits_mid_ar(i) <= convert(i_tar_hits_mid_av(i),tar_hits_mid_ar(i));
     tdc_hits_mid_ar(i) <= convert(i_tdc_hits_mid_av(i),tdc_hits_mid_ar(i));
   end generate ; 
-  out_loop : for i in c_HPS_MAX_ARRAY(2)-1 downto 0 generate
+  out_loop : for i in c_HP_NUM_SECTOR_STATION(2)-1 downto 0 generate
     tar_hits_out_ar(i) <= convert(i_tar_hits_out_av(i),tar_hits_out_ar(i));
     tdc_hits_out_ar(i) <= convert(i_tdc_hits_out_av(i),tdc_hits_out_ar(i));
   end generate ; 
-  ext_loop : for i in c_HPS_MAX_ARRAY(3)-1 downto 0 generate
+  ext_loop : for i in c_HP_NUM_SECTOR_STATION(3)-1 downto 0 generate
     tar_hits_ext_ar(i) <= convert(i_tar_hits_ext_av(i),tar_hits_ext_ar(i));
     tdc_hits_ext_ar(i) <= convert(i_tdc_hits_ext_av(i),tdc_hits_ext_ar(i));
   end generate ;
@@ -235,7 +236,7 @@ begin
       if rising_edge(clk) then
         if rst = '1' then
         else     
-            for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
+            for pm_i in c_HP_NUM_SECTOR_STATION(pc_st_id) -1 downto 0 loop
               if tar_hits_inn_ar(pm_i).data_valid = '1' then
                 csv_file_1.write_integer(to_integer(tb_curr_sim_time)); -- ToS                 
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
@@ -263,7 +264,7 @@ begin
       if rising_edge(clk) then
         if rst = '1' then
         else     
-            for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
+            for pm_i in c_HP_NUM_SECTOR_STATION(pc_st_id) -1 downto 0 loop
               if tar_hits_mid_ar(pm_i).data_valid = '1' then
                 csv_file_1.write_integer(to_integer(tb_curr_sim_time)); -- ToS                 
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
@@ -291,7 +292,7 @@ begin
       if rising_edge(clk) then
         if rst = '1' then
         else     
-            for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
+            for pm_i in c_HP_NUM_SECTOR_STATION(pc_st_id) -1 downto 0 loop
               if tar_hits_out_ar(pm_i).data_valid = '1' then
                 csv_file_1.write_integer(to_integer(tb_curr_sim_time)); -- ToS                 
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
@@ -319,7 +320,7 @@ begin
       if rising_edge(clk) then
         if rst = '1' then
         else     
-            for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
+            for pm_i in c_HP_NUM_SECTOR_STATION(pc_st_id) -1 downto 0 loop
               if tar_hits_ext_ar(pm_i).data_valid = '1' then
                 csv_file_1.write_integer(to_integer(tb_curr_sim_time)); -- ToS                 
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 

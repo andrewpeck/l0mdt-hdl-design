@@ -44,22 +44,13 @@ use ctrl_lib.TAR_CTRL_DEF.all;
 entity tar_tb is
   generic (
     g_HPS_MAX_HP : integer := 6;
-    -- g_STATION : integer := 0;
-    -- g_ST_ENABLE : integer := 15;
     g_ST_ACT : integer := 0;
     g_ST_ENABLE : std_logic_vector(3 downto 0) := (others => '0');
 
     --
-    PRJ_INFO            : string  := "TAR_BA3";
-    IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
-    IN_HIT_FILE         : string  := "csm_A3_Barrel.csv";
-    IN_CTRL_FILE        : string  := "ctrl_A3_Barrel.csv";
-    -- OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
-    -- OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv";
-    -- OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
-    -- OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv";
-    -- OUT_MTCIN_PT_FILE   : string  := "mtc_in_pt_A3_Barrel_yt_v04.csv";
-    -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
+    PRJ_INFO            : string  := "not_defined";
+    IN_HIT_FILE         : string  := "not_defined.csv";
+    IN_CTRL_FILE        : string  := "not_defined.csv";
     DUMMY               : boolean := false
     );
 end entity tar_tb;
@@ -67,7 +58,6 @@ end entity tar_tb;
 architecture beh of tar_tb is
 
   constant ST_ENABLE : std_logic_vector(3 downto 0) := g_ST_ENABLE;
-  -- constant ST_ENABLE : std_logic_vector(3 downto 0) := std_logic_vector(to_unsigned(g_ST_ENABLE,4));
 
   signal enable_mdt : integer := 1;
   
@@ -87,8 +77,8 @@ architecture beh of tar_tb is
   constant clk_tdc_time_period : time := 0.78125 ns;  
   signal clk_tdc_time : std_logic := '0';
   signal tb_curr_tdc_time : unsigned(63 downto 0) := (others => '0');
-  -- clk 10ps
-  constant clk_sim_time_period : time := 10 ps;  
+  -- clk 1ps
+  constant clk_sim_time_period : time := 100 ps;  
   signal clk_sim_time : std_logic := '0';
   signal tb_curr_sim_time : unsigned(63 downto 0) := (others => '0');
   -- clk
@@ -121,12 +111,12 @@ architecture beh of tar_tb is
   signal tar_ext_mon_v  : std_logic_vector(TAR_MON_t'w - 1 downto 0);
 
   -- TDC Hits from Polmux
-  signal i_mdt_tdc_inn_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_mid_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_inn_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(0) -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_mid_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(1) -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(2) -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(3) -1 downto 0) := (others => (others => '0'));
 
-  signal i_mdt_tdc_av :  tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tdc_av :  tdcpolmux2tar_avt (c_TOTAL_MAX_NUM_HP -1 downto 0) := (others => (others => '0'));
 
   -- signal mdt_event_ai             : event_xaut(c_MAX_NUM_SL -1 downto 0);
   -- signal hit_event_ai             : event_xaut(c_MAX_NUM_SL -1 downto 0);
@@ -149,15 +139,15 @@ architecture beh of tar_tb is
   -- -- TDC Hits from Polmux
   -- signal i_tdc_hits_av    : tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0):= (others => (others => '0'));
   -- TDC polmux from Tar
-  signal o_tdc_hits_inn_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tdc_hits_mid_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tdc_hits_out_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tdc_hits_ext_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tdc_hits_inn_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(0) -1 downto 0);
+  signal o_tdc_hits_mid_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(1) -1 downto 0);
+  signal o_tdc_hits_out_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(2) -1 downto 0);
+  signal o_tdc_hits_ext_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(3) -1 downto 0);
   -- TDC Hits from Tar
-  signal o_tar_hits_inn_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tar_hits_mid_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tar_hits_out_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tar_hits_ext_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tar_hits_inn_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(0) -1 downto 0);
+  signal o_tar_hits_mid_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(1) -1 downto 0);
+  signal o_tar_hits_out_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(2) -1 downto 0);
+  signal o_tar_hits_ext_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(3) -1 downto 0);
 
   ---------------------------------------------------------------------------
   -- 
@@ -177,7 +167,7 @@ begin
   TAR_INN_GEN: if ST_ENABLE(0)='1' generate
     TAR_INN : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => g_HPS_MAX_HP,
+      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(0),
       g_STATION => 0
     )
     port map (
@@ -200,7 +190,7 @@ begin
   TAR_MID_GEN: if ST_ENABLE(1)='1' generate
     TAR_MID : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => g_HPS_MAX_HP,
+      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(1),
       g_STATION => 1
     )
     port map (
@@ -223,7 +213,7 @@ begin
   TAR_OUT_GEN: if ST_ENABLE(2)='1' generate
     TAR_OUT : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => g_HPS_MAX_HP,
+      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(2),
       g_STATION => 2
     )
     port map (
@@ -246,7 +236,7 @@ begin
   TAR_EXT_GEN: if ST_ENABLE(3)='1' generate
     TAR_EXT : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => g_HPS_MAX_HP,
+      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(3),
       g_STATION => 3
     )
     port map (
@@ -280,6 +270,7 @@ begin
     rst               => rst,
     enable            => enable_mdt,
     --
+    tb_curr_sim_time  => tb_curr_sim_time,
     tb_curr_tdc_time  => tb_curr_tdc_time,
     --
     o_file_ok         => mdt_file_ok,
@@ -299,8 +290,8 @@ begin
   TAR2HPS : entity shared_lib.csv_writer_tar
   generic map (
     g_PRJ_INFO    => PRJ_INFO,
-    g_IN_HIT_FILE => IN_HIT_FILE,
-    g_IN_SLC_FILE => IN_SLC_FILE
+    g_IN_FILES => IN_HIT_FILE
+    -- g_IN_SLC_FILE => IN_SLC_FILE
     -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
     -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
   )
@@ -330,26 +321,6 @@ begin
 
   );
 
-
-  -- STAT: case g_STATION generate
-  --   when 0 =>
-  --   i_mdt_tdc_av <= i_mdt_tdc_inn_av;
-  --   ctrl_v <= tar_inn_ctrl_v;
-  --   when 1 =>
-  --   i_mdt_tdc_av <= i_mdt_tdc_mid_av;
-  --   ctrl_v <= tar_inn_ctrl_v;
-  --   when 2 =>
-  --   i_mdt_tdc_av <= i_mdt_tdc_out_av;
-  --   ctrl_v <= tar_inn_ctrl_v;
-  --   when 3 =>
-  --   i_mdt_tdc_av <= i_mdt_tdc_ext_av;
-  --   ctrl_v <= tar_inn_ctrl_v;
-  
-  --   when others =>
-    
-  
-  -- end generate;
-
   tar_inn_ctrl_v <= convert(tar_inn_ctrl_r,tar_inn_ctrl_v);
   tar_mid_ctrl_v <= convert(tar_mid_ctrl_r,tar_mid_ctrl_v);
   tar_out_ctrl_v <= convert(tar_out_ctrl_r,tar_out_ctrl_v);
@@ -370,6 +341,15 @@ begin
     wait for CLK_time_period/2;
     clk_time <= '1';
     wait for CLK_time_period/2;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- clock Sim Generator
+	-------------------------------------------------------------------------------------
+  CLK_SIM : process begin
+    clk_sim_time <= '0';
+    wait for clk_sim_time_period/2;
+    clk_sim_time <= '1';
+    wait for clk_sim_time_period/2;
   end process;
   -------------------------------------------------------------------------------------
 	-- clock tdc Generator
