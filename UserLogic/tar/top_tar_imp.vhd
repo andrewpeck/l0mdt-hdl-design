@@ -37,10 +37,7 @@ use ctrl_lib.TAR_CTRL_DEF.all;
 
 entity top_tar is
   generic(
-    g_HPS_MAX_HP : integer := 6;
-    g_ST_ACT : integer := 4;
-    g_ST_ENABLE : std_logic_vector(3 downto 0) := x"2";
-    g_STATION :   integer := 0
+    g_ST_ENABLE : std_logic_vector(3 downto 0) := x"2"
   );
   port (
     clk                 : in std_logic;
@@ -56,20 +53,20 @@ entity top_tar is
     mon_out_b             : out std_logic;--  : out TAR_MON_t;
     mon_ext_b             : out std_logic;--  : out TAR_MON_t;
     -- TDC Hits from Polmux
-    i_tdc_hits_inn_ab    : in  std_logic_vector (g_HPS_MAX_HP -1 downto 0);
-    i_tdc_hits_mid_ab    : in  std_logic_vector (g_HPS_MAX_HP -1 downto 0);
-    i_tdc_hits_out_ab    : in  std_logic_vector (g_HPS_MAX_HP -1 downto 0);
-    i_tdc_hits_ext_ab    : in  std_logic_vector (g_HPS_MAX_HP -1 downto 0);
+    i_tdc_hits_inn_ab    : in  std_logic_vector (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_tdc_hits_mid_ab    : in  std_logic_vector (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_tdc_hits_out_ab    : in  std_logic_vector (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_tdc_hits_ext_ab    : in  std_logic_vector (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC polmux from Tar
-    o_tdc_hits_inn_ab    : out std_logic_vector(g_HPS_MAX_HP -1 downto 0);
-    o_tdc_hits_mid_ab    : out std_logic_vector(g_HPS_MAX_HP -1 downto 0);
-    o_tdc_hits_out_ab    : out std_logic_vector(g_HPS_MAX_HP -1 downto 0);
-    o_tdc_hits_ext_ab    : out std_logic_vector(g_HPS_MAX_HP -1 downto 0);
+    o_tdc_hits_inn_ab    : out std_logic_vector(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    o_tdc_hits_mid_ab    : out std_logic_vector(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    o_tdc_hits_out_ab    : out std_logic_vector(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    o_tdc_hits_ext_ab    : out std_logic_vector(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC Hits from Tar
-    o_tar_hits_inn_ab    : out std_logic_vector(g_HPS_MAX_HP -1 downto 0);
-    o_tar_hits_mid_ab    : out std_logic_vector(g_HPS_MAX_HP -1 downto 0);
-    o_tar_hits_out_ab    : out std_logic_vector(g_HPS_MAX_HP -1 downto 0);
-    o_tar_hits_ext_ab    : out std_logic_vector(g_HPS_MAX_HP -1 downto 0)
+    o_tar_hits_inn_ab    : out std_logic_vector(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    o_tar_hits_mid_ab    : out std_logic_vector(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    o_tar_hits_out_ab    : out std_logic_vector(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    o_tar_hits_ext_ab    : out std_logic_vector(c_HPS_NUM_MDT_CH_EXT -1 downto 0)
 
   );
 end entity top_tar;
@@ -106,19 +103,19 @@ architecture beh of top_tar is
   signal i_tdc_hits_out_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
   signal i_tdc_hits_ext_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
   -- TDC polmux from Tar
-  signal o_tdc_hits_inn_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tdc_hits_mid_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tdc_hits_out_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tdc_hits_ext_av    : tdcpolmux2tar_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tdc_hits_inn_av    : tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal o_tdc_hits_mid_av    : tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal o_tdc_hits_out_av    : tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal o_tdc_hits_ext_av    : tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
   -- TDC Hits from Tar
-  signal o_tar_hits_inn_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tar_hits_mid_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tar_hits_out_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
-  signal o_tar_hits_ext_av    : tar2hps_avt(g_HPS_MAX_HP -1 downto 0);
+  signal o_tar_hits_inn_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal o_tar_hits_mid_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal o_tar_hits_out_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal o_tar_hits_ext_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
 begin
 
-  TAR_INN_GEN: if (g_ST_ENABLE(0)='1' and g_ST_ACT=4) or g_ST_ACT=0 generate
+  TAR_INN_GEN: if g_ST_ENABLE(0)='1' generate
     ctrl : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,ctrl_inn_b,tar_inn_ctrl_v);
     mon_inn_b <= xor_reduce(tar_inn_mon_v);
     --------------------------------------------------------------
@@ -159,7 +156,7 @@ begin
   
     );
   end generate;
-  TAR_MID_GEN: if (g_ST_ENABLE(1)='1' and g_ST_ACT=4) or g_ST_ACT=1  generate
+  TAR_MID_GEN: if g_ST_ENABLE(1)='1' generate
     ctrl : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,ctrl_mid_b,tar_mid_ctrl_v);
     mon_mid_b <= xor_reduce(tar_mid_mon_v);
     --------------------------------------------------------------
@@ -200,7 +197,7 @@ begin
 
     );
   end generate;
-  TAR_OUT_GEN: if (g_ST_ENABLE(2)='1' and g_ST_ACT=4) or g_ST_ACT=2  generate
+  TAR_OUT_GEN: if g_ST_ENABLE(2)='1' generate
     ctrl : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,ctrl_out_b,tar_out_ctrl_v);
     mon_out_b <= xor_reduce(tar_out_mon_v);
     --------------------------------------------------------------
@@ -241,7 +238,7 @@ begin
   
     );
   end generate;
-  TAR_EXT_GEN: if (g_ST_ENABLE(3)='1' and g_ST_ACT=4) or g_ST_ACT=3  generate
+  TAR_EXT_GEN: if g_ST_ENABLE(3)='1' generate
     ctrl : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,ctrl_ext_b,tar_ext_ctrl_v);
     mon_ext_b <= xor_reduce(tar_ext_mon_v);
     --------------------------------------------------------------
