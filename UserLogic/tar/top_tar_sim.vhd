@@ -87,6 +87,10 @@ architecture beh of tar_tb is
   constant clk_tdc_time_period : time := 0.78125 ns;  
   signal clk_tdc_time : std_logic := '0';
   signal tb_curr_tdc_time : unsigned(63 downto 0) := (others => '0');
+  -- clk 10ps
+  constant clk_sim_time_period : time := 10 ps;  
+  signal clk_sim_time : std_logic := '0';
+  signal tb_curr_sim_time : unsigned(63 downto 0) := (others => '0');
   -- clk
   constant clk_period : time := 3.125 ns;  -- 320Mhz
   signal clk : std_logic := '0';
@@ -305,6 +309,7 @@ begin
     rst                 => rst,
     enable              => enable_mdt,
     --
+    tb_curr_sim_time    => tb_curr_sim_time,
     tb_curr_tdc_time    => tb_curr_tdc_time,
     --
     in_mdt_file_ok      => mdt_file_ok,
@@ -433,7 +438,14 @@ begin
       tb_curr_tdc_time <= tb_curr_tdc_time + '1';
     end if;
   end process;
-
+  -------------------------------------------------------------------------------------
+	-- Test Bench sim time
+  -------------------------------------------------------------------------------------
+  ToA_sim: process(clk_sim_time) begin
+    if rising_edge(clk_sim_time) then
+      tb_curr_sim_time <= tb_curr_sim_time + '1';
+    end if;
+  end process;
   
 
 end beh;

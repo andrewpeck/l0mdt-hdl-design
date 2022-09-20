@@ -66,6 +66,7 @@ entity csv_writer_tar is
     rst                   : in std_logic;
     enable                : in integer;
     --
+    tb_curr_sim_time      : in unsigned(63 downto 0);
     tb_curr_tdc_time      : in unsigned(63 downto 0);
     --
     in_mdt_file_ok        : in std_logic;
@@ -139,7 +140,7 @@ begin
     csv_file_1.write_string("# CSV files TS = " & in_mdt_file_ts);
     -- csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
     csv_file_1.write_string("# PRJ CFG = " & g_PRJ_INFO);
-    csv_file_1.write_string("# SIM TS  = " & time'image(now));
+    csv_file_1.write_string("# SIM TS  = " & "2022.09.15_12:05:34");--time'image(now));
     csv_file_1.write_string("# --------------------------");   
     --
     csv_file_1.write_word("ToA[0.78125ns]");
@@ -156,10 +157,10 @@ begin
     puts("opening TAR2DAQ CSV file : " & g_OUT_FILE_2);
     csv_file_2.initialize(g_OUT_FILE_2,"wr");
     csv_file_2.write_string("# --------------------------");
-    csv_file_2.write_string("# HIT TS  : " & in_mdt_file_ts);
+    csv_file_2.write_string("# CSV files TS = " & in_mdt_file_ts);
     -- csv_file_2.write_string("# HIT TS  : " & hit_file_ts);
-    csv_file_2.write_string("# PRJ CFG : " & g_PRJ_INFO);
-    csv_file_2.write_string("# SIM TS  : " & time'image(now));
+    csv_file_2.write_string("# PRJ CFG = " & g_PRJ_INFO);
+    csv_file_2.write_string("# SIM TS  = " & "2022.09.15_12:05:34");--time'image(now));
     csv_file_2.write_string("# --------------------------");    
     wait;
   end process open_csv;
@@ -236,6 +237,7 @@ begin
         else     
             for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
               if tar_hits_inn_ar(pm_i).data_valid = '1' then
+                csv_file_1.write_integer(to_integer(tb_curr_sim_time)); -- ToS                 
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
                 csv_file_1.write_integer(to_integer(unsigned(slc_event_a(pc_st_id)(pm_i))));   -- event
                 csv_file_1.write_integer(to_integer(unsigned(mdt_event_a(pc_st_id)(pm_i))));   -- hit_id
@@ -263,6 +265,7 @@ begin
         else     
             for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
               if tar_hits_mid_ar(pm_i).data_valid = '1' then
+                csv_file_1.write_integer(to_integer(tb_curr_sim_time)); -- ToS                 
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
                 csv_file_1.write_integer(to_integer(unsigned(slc_event_a(pc_st_id)(pm_i))));   -- event
                 csv_file_1.write_integer(to_integer(unsigned(mdt_event_a(pc_st_id)(pm_i))));   -- hit_id
@@ -290,6 +293,7 @@ begin
         else     
             for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
               if tar_hits_out_ar(pm_i).data_valid = '1' then
+                csv_file_1.write_integer(to_integer(tb_curr_sim_time)); -- ToS                 
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
                 csv_file_1.write_integer(to_integer(unsigned(slc_event_a(pc_st_id)(pm_i))));   -- event
                 csv_file_1.write_integer(to_integer(unsigned(mdt_event_a(pc_st_id)(pm_i))));   -- hit_id
@@ -317,6 +321,7 @@ begin
         else     
             for pm_i in c_HPS_MAX_ARRAY(pc_st_id) -1 downto 0 loop
               if tar_hits_ext_ar(pm_i).data_valid = '1' then
+                csv_file_1.write_integer(to_integer(tb_curr_sim_time)); -- ToS                 
                 csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
                 csv_file_1.write_integer(to_integer(unsigned(slc_event_a(pc_st_id)(pm_i))));   -- event
                 csv_file_1.write_integer(to_integer(unsigned(mdt_event_a(pc_st_id)(pm_i))));   -- hit_id

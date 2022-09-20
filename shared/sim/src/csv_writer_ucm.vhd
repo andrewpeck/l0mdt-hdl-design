@@ -123,19 +123,76 @@ begin
     puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
     csv_file_1.initialize(g_OUT_FILE_1,"wr");
     csv_file_1.write_string("# --------------------------");
-    csv_file_1.write_string("# SLC TS  : " & in_slc_file_ts);
+    csv_file_1.write_string("# CSV files TS = " & in_mdt_file_ts);
     -- csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
-    csv_file_1.write_string("# PRJ CFG : " & g_PRJ_INFO);
-    csv_file_1.write_string("# SIM TS  : " & time'image(now));
-    csv_file_1.write_string("# --------------------------");   
+    csv_file_1.write_string("# PRJ CFG = " & g_PRJ_INFO);
+    csv_file_1.write_string("# SIM TS  = " & "2022.09.15_12:05:34");--time'image(now));
+    csv_file_1.write_string("# --------------------------");
+    -- muid
+    csv_file_1.write_word("ToS[10ps]");
+    csv_file_1.write_word("ToA[0.78125ns]");
+    csv_file_1.write_word("event");          
+    csv_file_1.write_word("thread");          
+    csv_file_1.write_word("station");          
+    -- muid
+    csv_file_1.write_word("slc_id");
+    csv_file_1.write_word("slid");
+    csv_file_1.write_word("bcid");
+    -- mdtseg_Dest
+    csv_file_1.write_word("mdtseg_Dest");
+    -- mdtid
+    csv_file_1.write_word("chamber_id");
+    csv_file_1.write_word("chamber_ieta");
+    -- vec_pos
+    csv_file_1.write_word("vec_pos[1mm]");
+    -- vec_ang
+    csv_file_1.write_word("vec_ang[1mrad]");
+    csv_file_1.writeline;
     puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
     csv_file_2.initialize(g_OUT_FILE_2,"wr");
     csv_file_2.write_string("# --------------------------");
-    csv_file_2.write_string("# SLC TS  : " & in_slc_file_ts);
+    csv_file_2.write_string("# CSV files TS = " & in_mdt_file_ts);
     -- csv_file_2.write_string("# HIT TS  : " & hit_file_ts);
-    csv_file_2.write_string("# PRJ CFG : " & g_PRJ_INFO);
-    csv_file_2.write_string("# SIM TS  : " & time'image(now));
-    csv_file_2.write_string("# --------------------------");    
+    csv_file_2.write_string("# PRJ CFG = " & g_PRJ_INFO);
+    csv_file_2.write_string("# SIM TS  = " & "2022.09.15_12:05:34");--time'image(now));
+    csv_file_2.write_string("# --------------------------");   
+    -- event
+    csv_file_2.write_word("ToS[10ps]");
+    csv_file_2.write_word("ToA[0.78125ns]");         
+    csv_file_2.write_word("sl_pos");                   
+    -- multi-thread
+    csv_file_2.write_word("busy");
+    csv_file_2.write_word("process_ch");
+    -- common
+    -- -- header
+    -- csv_file_2.write_word("h_reserved"); 
+    csv_file_2.write_word("tcoverflow"); 
+    csv_file_2.write_word("nmtc_sl"); 
+    csv_file_2.write_word("nmtc_mdt"); 
+    csv_file_2.write_word("nslc"); 
+    csv_file_2.write_word("bcid"); 
+    -- --
+    csv_file_2.write_word("slcid"); 
+    csv_file_2.write_word("tcsent"); 
+    csv_file_2.write_word("poseta[0.00024]"); 
+    csv_file_2.write_word("posphi[15.63mrad]"); 
+    csv_file_2.write_word("sl_pt[0.5GeV]"); 
+    csv_file_2.write_word("sl_ptthresh[1GeV]"); 
+    csv_file_2.write_word("sl_charge"); 
+    csv_file_2.write_word("cointype"); 
+    -- -- trailer
+    -- csv_file_2.write_word("t_reserved"); 
+    csv_file_2.write_word("crc"); 
+    csv_file_2.write_word("fiberid"); 
+    csv_file_2.write_word("slid"); 
+    csv_file_2.write_word("comma"); 
+    -- phimod
+    csv_file_2.write_word("phimod[4mrad]");
+    -- nsw
+    csv_file_2.write_word("nswseg_angdtheta[1mrad]");
+    csv_file_2.write_word("nswseg_posphi[20mrad]");
+    csv_file_2.write_word("nswseg_poseta[0.0002]");
+    csv_file_2.writeline;
     wait;
   end process open_csv;
 
@@ -168,7 +225,7 @@ begin
 
 
   UCM2HPS_OUT: process(clk, rst)
-    variable first_write           : std_logic := '1';
+    -- variable first_write           : std_logic := '1';
 
     -- variable csv_file_1: csv_file_type;
 
@@ -176,7 +233,7 @@ begin
 
   begin
     if rising_edge(clk) then
-      if first_write = '1' then
+      -- if first_write = '1' then
         -- wait until not slc_file_ok and not hit_file_ok;
         -- puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
         -- csv_file_1.initialize(g_OUT_FILE_1,"wr");
@@ -184,27 +241,27 @@ begin
         -- csv_file_1.write_word("#");
         -- csv_file_1.write_string("#");
         -- csv_file_1.write_string("# --------------------------");         
-        -- muid
-        csv_file_1.write_word("ToA");
-        csv_file_1.write_word("event");          
-        csv_file_1.write_word("thread");          
-        csv_file_1.write_word("station");          
-        -- muid
-        csv_file_1.write_word("slc_id");
-        csv_file_1.write_word("slid");
-        csv_file_1.write_word("bcid");
-        -- mdtseg_Dest
-        csv_file_1.write_word("mdtseg_Dest");
-        -- mdtid
-        csv_file_1.write_word("chamber_id");
-        csv_file_1.write_word("chamber_ieta");
-        -- vec_pos
-        csv_file_1.write_word("vec_pos");
-        -- vec_ang
-        csv_file_1.write_word("vec_ang");
-        csv_file_1.writeline;
-        first_write := '0';
-      end if;
+        -- -- muid
+        -- csv_file_1.write_word("ToA");
+        -- csv_file_1.write_word("event");          
+        -- csv_file_1.write_word("thread");          
+        -- csv_file_1.write_word("station");          
+        -- -- muid
+        -- csv_file_1.write_word("slc_id");
+        -- csv_file_1.write_word("slid");
+        -- csv_file_1.write_word("bcid");
+        -- -- mdtseg_Dest
+        -- csv_file_1.write_word("mdtseg_Dest");
+        -- -- mdtid
+        -- csv_file_1.write_word("chamber_id");
+        -- csv_file_1.write_word("chamber_ieta");
+        -- -- vec_pos
+        -- csv_file_1.write_word("vec_pos");
+        -- -- vec_ang
+        -- csv_file_1.write_word("vec_ang");
+        -- csv_file_1.writeline;
+        -- first_write := '0';
+      -- end if;
       if rst = '1' then
       else     
         if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
@@ -380,52 +437,52 @@ begin
 
   begin
     if rising_edge(clk) then
-      if first_write = '1' then
+      -- if first_write = '1' then
         -- puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
         -- csv_file_2.initialize(g_OUT_FILE_2,"wr");
         -- csv_file_2.write_string("# --------------------------");
         -- csv_file_2.write_string("#");
         -- csv_file_2.write_string("#");
         -- csv_file_2.write_string("# --------------------------");         
-        -- event
-        csv_file_2.write_word("ToA");
-        csv_file_2.write_word("event");          
-        csv_file_2.write_word("sl_pos");                   
-        -- multi-thread
-        csv_file_2.write_word("busy");
-        csv_file_2.write_word("process_ch");
-        -- common
-        -- -- header
-        -- csv_file_2.write_word("h_reserved"); 
-        csv_file_2.write_word("tcoverflow"); 
-        csv_file_2.write_word("nmtc_sl"); 
-        csv_file_2.write_word("nmtc_mdt"); 
-        csv_file_2.write_word("nslc"); 
-        csv_file_2.write_word("bcid"); 
-        -- --
-        csv_file_2.write_word("slcid"); 
-        csv_file_2.write_word("tcsent"); 
-        csv_file_2.write_word("poseta"); 
-        csv_file_2.write_word("posphi"); 
-        csv_file_2.write_word("sl_pt"); 
-        csv_file_2.write_word("sl_ptthresh"); 
-        csv_file_2.write_word("sl_charge"); 
-        csv_file_2.write_word("cointype"); 
-        -- -- trailer
-        -- csv_file_2.write_word("t_reserved"); 
-        csv_file_2.write_word("crc"); 
-        csv_file_2.write_word("fiberid"); 
-        csv_file_2.write_word("slid"); 
-        csv_file_2.write_word("comma"); 
-        -- phimod
-        csv_file_2.write_word("phimod");
-        -- nsw
-        csv_file_2.write_word("nswseg_angdtheta");
-        csv_file_2.write_word("nswseg_posphi");
-        csv_file_2.write_word("nswseg_poseta");
-        csv_file_2.writeline;
-        first_write := '0';
-      end if;
+        -- -- event
+        -- csv_file_2.write_word("ToA");
+        -- csv_file_2.write_word("event");          
+        -- csv_file_2.write_word("sl_pos");                   
+        -- -- multi-thread
+        -- csv_file_2.write_word("busy");
+        -- csv_file_2.write_word("process_ch");
+        -- -- common
+        -- -- -- header
+        -- -- csv_file_2.write_word("h_reserved"); 
+        -- csv_file_2.write_word("tcoverflow"); 
+        -- csv_file_2.write_word("nmtc_sl"); 
+        -- csv_file_2.write_word("nmtc_mdt"); 
+        -- csv_file_2.write_word("nslc"); 
+        -- csv_file_2.write_word("bcid"); 
+        -- -- --
+        -- csv_file_2.write_word("slcid"); 
+        -- csv_file_2.write_word("tcsent"); 
+        -- csv_file_2.write_word("poseta"); 
+        -- csv_file_2.write_word("posphi"); 
+        -- csv_file_2.write_word("sl_pt"); 
+        -- csv_file_2.write_word("sl_ptthresh"); 
+        -- csv_file_2.write_word("sl_charge"); 
+        -- csv_file_2.write_word("cointype"); 
+        -- -- -- trailer
+        -- -- csv_file_2.write_word("t_reserved"); 
+        -- csv_file_2.write_word("crc"); 
+        -- csv_file_2.write_word("fiberid"); 
+        -- csv_file_2.write_word("slid"); 
+        -- csv_file_2.write_word("comma"); 
+        -- -- phimod
+        -- csv_file_2.write_word("phimod");
+        -- -- nsw
+        -- csv_file_2.write_word("nswseg_angdtheta");
+        -- csv_file_2.write_word("nswseg_posphi");
+        -- csv_file_2.write_word("nswseg_poseta");
+        -- csv_file_2.writeline;
+      --   first_write := '0';
+      -- end if;
       if rst = '1' then
       else
         for sl_i in c_MAX_NUM_SL -1 downto 0 loop
