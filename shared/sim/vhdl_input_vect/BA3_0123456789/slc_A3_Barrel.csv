@@ -1,6 +1,6 @@
 # --------------------------
-# TS:0123456789
-# Side:A Sector:3 Area:Barrel
+# TS = 2022/09/15_12:05:34
+# PRJ CFG = Side:A Sector:3 Area:Barrel
 # --------------------------
 BCID,ToA,nTC,TC_sent,TC_id,Eta,Phi,pT_thr,Charge,Coincidence,z_RPC0,z_RPC1,z_RPC2,z_RPC3,event
 23,2880,1,1,0,0.8294823169708252,948.6010131835938,20,0,5,4747,6320,6908,9030,116

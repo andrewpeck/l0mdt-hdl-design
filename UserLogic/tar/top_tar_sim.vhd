@@ -43,10 +43,7 @@ use ctrl_lib.TAR_CTRL_DEF.all;
 
 entity tar_tb is
   generic (
-    g_HPS_MAX_HP : integer := 6;
-    g_ST_ACT : integer := 0;
     g_ST_ENABLE : std_logic_vector(3 downto 0) := (others => '0');
-
     --
     PRJ_INFO            : string  := "not_defined";
     IN_HIT_FILE         : string  := "not_defined.csv";
@@ -73,11 +70,11 @@ architecture beh of tar_tb is
   constant clk_time_period : time := 1 ns;  -- 1Ghz
   signal clk_time : std_logic := '0';
   signal tb_curr_time : unsigned(63 downto 0) := (others => '0');
-  -- clk 0.78
+  -- clk 0.78125
   constant clk_tdc_time_period : time := 0.78125 ns;  
   signal clk_tdc_time : std_logic := '0';
   signal tb_curr_tdc_time : unsigned(63 downto 0) := (others => '0');
-  -- clk 1ps
+  -- clk 100ps
   constant clk_sim_time_period : time := 100 ps;  
   signal clk_sim_time : std_logic := '0';
   signal tb_curr_sim_time : unsigned(63 downto 0) := (others => '0');

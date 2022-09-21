@@ -50,23 +50,20 @@ library vamc_lib;
 
 entity csv_writer_ucm is
   generic(
-    g_PRJ_INFO            : string  := "A3B";
-    g_IN_SLC_FILE         : string  := "not_defined.csv";
-    g_IN_HIT_FILE         : string  := "not_defined.csv";
-    g_IN_L0_FILE          : string  := "not_defined.csv"
-    -- g_OUT_FILE            : string  := "ov_ucm2hps_A3B.csv"
-    -- OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
-    -- OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv"
+    g_PRJ_INFO            : string  := "not_defined";
+    g_IN_FILES            : string  := "not_defined.csv"
   );
   port (
     clk                   : in std_logic;
     rst                   : in std_logic;
-    enable                : in integer;
+    enable                : in std_logic;
     --
-    tb_curr_tdc_time      : in unsigned(63 downto 0);
+    tb_curr_sim_time      : in unsigned(63 downto 0) := (others => '0');
+    tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0');
     --
     in_slc_file_ok        : in std_logic;
     in_slc_file_ts        : in string;
+    in_files_str          : in string;
     --
     slc_event_ai          : in event_xaut;
     --
@@ -123,13 +120,13 @@ begin
     puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
     csv_file_1.initialize(g_OUT_FILE_1,"wr");
     csv_file_1.write_string("# --------------------------");
-    csv_file_1.write_string("# CSV files TS = " & in_mdt_file_ts);
+    csv_file_1.write_string("# CSV files TS = " & in_files_str);
     -- csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
     csv_file_1.write_string("# PRJ CFG = " & g_PRJ_INFO);
     csv_file_1.write_string("# SIM TS  = " & "2022.09.15_12:05:34");--time'image(now));
     csv_file_1.write_string("# --------------------------");
     -- muid
-    csv_file_1.write_word("ToS[10ps]");
+    csv_file_1.write_word("ToS[100ps]");
     csv_file_1.write_word("ToA[0.78125ns]");
     csv_file_1.write_word("event");          
     csv_file_1.write_word("thread");          
@@ -151,14 +148,15 @@ begin
     puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
     csv_file_2.initialize(g_OUT_FILE_2,"wr");
     csv_file_2.write_string("# --------------------------");
-    csv_file_2.write_string("# CSV files TS = " & in_mdt_file_ts);
+    csv_file_2.write_string("# CSV files TS = " & in_files_str);
     -- csv_file_2.write_string("# HIT TS  : " & hit_file_ts);
     csv_file_2.write_string("# PRJ CFG = " & g_PRJ_INFO);
     csv_file_2.write_string("# SIM TS  = " & "2022.09.15_12:05:34");--time'image(now));
     csv_file_2.write_string("# --------------------------");   
     -- event
-    csv_file_2.write_word("ToS[10ps]");
-    csv_file_2.write_word("ToA[0.78125ns]");         
+    csv_file_2.write_word("ToS[100ps]");
+    csv_file_2.write_word("ToA[0.78125ns]");   
+    csv_file_2.write_word("event");       
     csv_file_2.write_word("sl_pos");                   
     -- multi-thread
     csv_file_2.write_word("busy");
@@ -233,35 +231,6 @@ begin
 
   begin
     if rising_edge(clk) then
-      -- if first_write = '1' then
-        -- wait until not slc_file_ok and not hit_file_ok;
-        -- puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
-        -- csv_file_1.initialize(g_OUT_FILE_1,"wr");
-        -- csv_file_1.write_string("# --------------------------");
-        -- csv_file_1.write_word("#");
-        -- csv_file_1.write_string("#");
-        -- csv_file_1.write_string("# --------------------------");         
-        -- -- muid
-        -- csv_file_1.write_word("ToA");
-        -- csv_file_1.write_word("event");          
-        -- csv_file_1.write_word("thread");          
-        -- csv_file_1.write_word("station");          
-        -- -- muid
-        -- csv_file_1.write_word("slc_id");
-        -- csv_file_1.write_word("slid");
-        -- csv_file_1.write_word("bcid");
-        -- -- mdtseg_Dest
-        -- csv_file_1.write_word("mdtseg_Dest");
-        -- -- mdtid
-        -- csv_file_1.write_word("chamber_id");
-        -- csv_file_1.write_word("chamber_ieta");
-        -- -- vec_pos
-        -- csv_file_1.write_word("vec_pos");
-        -- -- vec_ang
-        -- csv_file_1.write_word("vec_ang");
-        -- csv_file_1.writeline;
-        -- first_write := '0';
-      -- end if;
       if rst = '1' then
       else     
         if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
@@ -272,6 +241,7 @@ begin
               -- puts(" hello ",th_i);
               thread_counter := thread_counter +1;
               -- muid
+              csv_file_1.write_integer(to_integer(tb_curr_sim_time));
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               -- csv_file_1.write_word("event");          
               csv_file_1.write_integer(unsigned(slc_event_u2h_au(c_MAX_NUM_SL - thread_counter)));          
@@ -306,6 +276,7 @@ begin
               thread_counter := thread_counter +1;
 
               -- muid
+              csv_file_1.write_integer(to_integer(tb_curr_sim_time));
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               -- csv_file_1.write_word("event");          
               csv_file_1.write_integer(unsigned(slc_event_u2h_au(c_MAX_NUM_SL - thread_counter)));          
@@ -341,6 +312,7 @@ begin
               thread_counter := thread_counter +1;
 
               -- muid
+              csv_file_1.write_integer(to_integer(tb_curr_sim_time));
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               -- csv_file_1.write_word("event");    
               csv_file_1.write_integer(unsigned(slc_event_u2h_au(c_MAX_NUM_SL - thread_counter)));          
@@ -375,6 +347,7 @@ begin
               thread_counter := thread_counter +1;
 
               -- muid
+              csv_file_1.write_integer(to_integer(tb_curr_sim_time));
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               -- csv_file_1.write_word("event");          
               csv_file_1.write_integer(unsigned(slc_event_u2h_au(c_MAX_NUM_SL - thread_counter)));          
@@ -428,69 +401,16 @@ begin
   end generate ; -- sl_loop
 
   UCM2MPL_OUT: process(clk, rst)
-
     variable first_write           : std_logic := '1';
-
-    -- variable csv_file_2: csv_file_type;
-
     variable common : slc_common_rt;
-
   begin
     if rising_edge(clk) then
-      -- if first_write = '1' then
-        -- puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
-        -- csv_file_2.initialize(g_OUT_FILE_2,"wr");
-        -- csv_file_2.write_string("# --------------------------");
-        -- csv_file_2.write_string("#");
-        -- csv_file_2.write_string("#");
-        -- csv_file_2.write_string("# --------------------------");         
-        -- -- event
-        -- csv_file_2.write_word("ToA");
-        -- csv_file_2.write_word("event");          
-        -- csv_file_2.write_word("sl_pos");                   
-        -- -- multi-thread
-        -- csv_file_2.write_word("busy");
-        -- csv_file_2.write_word("process_ch");
-        -- -- common
-        -- -- -- header
-        -- -- csv_file_2.write_word("h_reserved"); 
-        -- csv_file_2.write_word("tcoverflow"); 
-        -- csv_file_2.write_word("nmtc_sl"); 
-        -- csv_file_2.write_word("nmtc_mdt"); 
-        -- csv_file_2.write_word("nslc"); 
-        -- csv_file_2.write_word("bcid"); 
-        -- -- --
-        -- csv_file_2.write_word("slcid"); 
-        -- csv_file_2.write_word("tcsent"); 
-        -- csv_file_2.write_word("poseta"); 
-        -- csv_file_2.write_word("posphi"); 
-        -- csv_file_2.write_word("sl_pt"); 
-        -- csv_file_2.write_word("sl_ptthresh"); 
-        -- csv_file_2.write_word("sl_charge"); 
-        -- csv_file_2.write_word("cointype"); 
-        -- -- -- trailer
-        -- -- csv_file_2.write_word("t_reserved"); 
-        -- csv_file_2.write_word("crc"); 
-        -- csv_file_2.write_word("fiberid"); 
-        -- csv_file_2.write_word("slid"); 
-        -- csv_file_2.write_word("comma"); 
-        -- -- phimod
-        -- csv_file_2.write_word("phimod");
-        -- -- nsw
-        -- csv_file_2.write_word("nswseg_angdtheta");
-        -- csv_file_2.write_word("nswseg_posphi");
-        -- csv_file_2.write_word("nswseg_poseta");
-        -- csv_file_2.writeline;
-      --   first_write := '0';
-      -- end if;
       if rst = '1' then
       else
         for sl_i in c_MAX_NUM_SL -1 downto 0 loop
-          -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
           if ucm2pl_ar(sl_i).data_valid = '1' then
-            -- common := convert(ucm2pl_ar(sl_i).common);
-
             -- event
+            csv_file_2.write_integer(to_integer(tb_curr_sim_time));
             csv_file_2.write_integer(to_integer(tb_curr_tdc_time));
             csv_file_2.write_integer(unsigned(slc_event_u2m_au(sl_i)));          
             csv_file_2.write_integer(sl_i);                  
@@ -499,7 +419,6 @@ begin
             csv_file_2.write_integer(unsigned(ucm2pl_ar(sl_i).process_ch));
             -- common
             -- -- header
-            -- csv_file_2.write_integer(unsigned(ucm2pl_ar(sl_i).common.header.h_reserved)); 
             csv_file_2.write_bool(ucm2pl_ar(sl_i).common.header.tcoverflow); 
             csv_file_2.write_integer(ucm2pl_ar(sl_i).common.header.nmtc_sl); 
             csv_file_2.write_integer(ucm2pl_ar(sl_i).common.header.nmtc_mdt); 
@@ -526,249 +445,11 @@ begin
             csv_file_2.write_integer(ucm2pl_ar(sl_i).nswseg_angdtheta);
             csv_file_2.write_integer(ucm2pl_ar(sl_i).nswseg_posphi);
             csv_file_2.write_integer(ucm2pl_ar(sl_i).nswseg_poseta);
-
-
-
             csv_file_2.writeline;
-
           end if;
         end loop;
       end if;
     end if;
   end process UCM2MPL_OUT;
   
-  -- HEG_BM: process(clk)
-
-  --   file file_slc_handler : text open write_mode is OUT_HEG_BM_SLC_FILE;
-  --   file file_hit_handler : text open write_mode is OUT_HEG_BM_HIT_FILE;
-
-  --   variable row 		: line;
-
-  --   -- o_sf_control_v
-
-  --   alias heg2sf_inn_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av : heg2sfslc_avt >>;
-  --   alias heg2sf_inn_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av : heg2sfhit_avt >>;
-  --   alias heg2sf_inn_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
-
-  --   alias heg2sf_mid_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfslc_av : heg2sfslc_avt >>;
-  --   alias heg2sf_mid_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfhit_av : heg2sfhit_avt >>;
-  --   alias heg2sf_mid_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
-
-  --   alias heg2sf_out_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfslc_av : heg2sfslc_avt >>;
-  --   alias heg2sf_out_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfhit_av : heg2sfhit_avt >>;
-  --   alias heg2sf_out_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
-  --   -- heg2sf_ctrl_av : hps_ctrl2sf_avt
-
-  --   -- variable fifo_mem_v : heg2sf_hits_fifo_at(OUTPUT_FIFO_LEN -1 downto 0);
-  --   variable fifo_count : integer := 0;
-
-  --   variable hit2write : out_heg_bm_hit_sim_rt;
-  --   variable slc2write : out_heg_bm_slc_sim_rt;
-  --   variable ctrl2write : out_heg_bm_ctrl_sim_rt;
-
-  --   variable read_ctrl  : heg_ctrl2sf_rt;
-  --   variable read_slc   : heg2sfslc_rt;
-  --   variable read_hit   : heg2sfhit_rt;
-
-  --   variable header2write : std_logic := '0';
-
-  -- begin
-  --   if rising_edge(clk) then
-  --     if rst = '1' then
-            
-  --     else
-
-  --       if header2write = '0' then
-  --         SWRITE(row, "#----------------------------------------");
-  --         writeline(file_slc_handler,row);
-  --         SWRITE(row, "# Output : HEG buffer mux");
-  --         writeline(file_slc_handler,row);
-  --         SWRITE(row, "# BUS : heg2sfslc_rt ");
-  --         writeline(file_slc_handler,row);
-  --         SWRITE(row, "# IN_SLC_FILE : " & IN_SLC_FILE);
-  --         writeline(file_slc_handler,row);
-  --         SWRITE(row, "# IN_HIT_FILE : " & IN_HIT_FILE);
-  --         writeline(file_slc_handler,row);
-  --         SWRITE(row, "#----------------------------------------");
-  --         writeline(file_slc_handler,row);
-  --         WRITEHEADER(row,slc2write);
-  --         writeline(file_slc_handler,row);
-  --         ----------------------------------------
-  --         SWRITE(row, "#----------------------------------------");
-  --         writeline(file_hit_handler,row);
-  --         SWRITE(row, "# Output : HEG buffer mux");
-  --         writeline(file_hit_handler,row);
-  --         SWRITE(row, "# BUS : heg2sfhit_rt ");
-  --         writeline(file_hit_handler,row);
-  --         SWRITE(row, "# IN_SLC_FILE : " & IN_SLC_FILE);
-  --         writeline(file_hit_handler,row);
-  --         SWRITE(row, "# IN_HIT_FILE : " & IN_HIT_FILE);
-  --         writeline(file_hit_handler,row);
-  --         SWRITE(row, "#----------------------------------------");
-  --         writeline(file_hit_handler,row);
-  --         WRITEHEADER(row,hit2write);
-  --         writeline(file_hit_handler,row);
-  --         header2write := '1';
-  --       end if;
-
-  --       fifo_count := 0;
-
-  --       -------------------------------------------------------------------
-  --       -- new SLC
-  --       -------------------------------------------------------------------
-
-  --       if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := convert(heg2sf_inn_slc_av(heg_i));
-  --           if read_slc.data_valid = '1' then
-
-  --             slc2write.ToA      := tb_curr_tdc_time;
-  --             slc2write.station  := to_unsigned(0,4);
-  --             slc2write.thread   := to_unsigned(heg_i,4);
-  --             slc2write.data   := read_slc;
-  --             write(row,slc2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := convert(heg2sf_mid_slc_av(heg_i));
-  --           if read_slc.data_valid = '1' then
-
-  --             slc2write.ToA      := tb_curr_tdc_time;
-  --             slc2write.station  := to_unsigned(1,4);
-  --             slc2write.thread   := to_unsigned(heg_i,4);
-  --             slc2write.data   := read_slc;
-  --             write(row,slc2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := convert(heg2sf_out_slc_av(heg_i));
-  --           if read_slc.data_valid = '1' then
-
-  --             slc2write.ToA      := tb_curr_tdc_time;
-  --             slc2write.station  := to_unsigned(2,4);
-  --             slc2write.thread   := to_unsigned(heg_i,4);
-  --             slc2write.data   := read_slc;
-  --             write(row,slc2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-
-  --       -------------------------------------------------------------------
-  --       -- end SLC
-  --       -------------------------------------------------------------------
-
-  --       if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_ctrl := convert(heg2sf_inn_ctrl_av(heg_i));
-  --           -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
-  --           if read_ctrl.eof = '1' then
-  --             read_slc := convert(heg2sf_inn_slc_av(heg_i));
-  --             ctrl2write.ToA      := tb_curr_tdc_time;
-  --             ctrl2write.station  := to_unsigned(0,4);
-  --             ctrl2write.thread   := to_unsigned(heg_i,4);
-  --             ctrl2write.HEG_ctrl := read_ctrl;
-  --             ctrl2write.data    := read_slc;
-  --             write(row,ctrl2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_ctrl := convert(heg2sf_mid_ctrl_av(heg_i));
-  --           -- read_slc := convert(heg2sf_mid_slc_av(heg_i));
-  --           if read_ctrl.eof = '1' then
-  --             read_slc := convert(heg2sf_mid_slc_av(heg_i));
-  --             ctrl2write.ToA      := tb_curr_tdc_time;
-  --             ctrl2write.station  := to_unsigned(0,4);
-  --             ctrl2write.thread   := to_unsigned(heg_i,4);
-  --             ctrl2write.HEG_ctrl := read_ctrl;
-  --             ctrl2write.data    := read_slc;
-  --             write(row,ctrl2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_ctrl := convert(heg2sf_out_ctrl_av(heg_i));
-  --           -- read_slc := convert(heg2sf_out_slc_av(heg_i));
-  --           if read_ctrl.eof = '1' then
-  --             read_slc := convert(heg2sf_out_slc_av(heg_i));
-  --             ctrl2write.ToA      := tb_curr_tdc_time;
-  --             ctrl2write.station  := to_unsigned(0,4);
-  --             ctrl2write.thread   := to_unsigned(heg_i,4);
-  --             ctrl2write.HEG_ctrl := read_ctrl;
-  --             ctrl2write.data    := read_slc;
-  --             write(row,ctrl2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-
-  --       -------------------------------------------------------------------
-  --       -- new HIT
-  --       -------------------------------------------------------------------
-
-  --       if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_hit := convert(heg2sf_inn_hit_av(heg_i));
-  --           if read_hit.data_valid = '1' then
-  --             hit2write.ToA      := tb_curr_tdc_time;
-  --             hit2write.station  := to_unsigned(0,4);
-  --             hit2write.thread   := to_unsigned(heg_i,4);
-  --             hit2write.data   := read_hit;
-  --             write(row,hit2write);
-  --             writeline(file_hit_handler,row);
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_hit := convert(heg2sf_mid_hit_av(heg_i));
-  --           if read_hit.data_valid = '1' then
-  --             hit2write.ToA      := tb_curr_tdc_time;
-  --             hit2write.station  := to_unsigned(1,4);
-  --             hit2write.thread   := to_unsigned(heg_i,4);
-  --             hit2write.data   := read_hit;
-  --             write(row,hit2write);
-  --             writeline(file_hit_handler,row);
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_hit := convert(heg2sf_out_hit_av(heg_i));
-  --           if read_hit.data_valid = '1' then
-  --             hit2write.ToA      := tb_curr_tdc_time;
-  --             hit2write.station  := to_unsigned(2,4);
-  --             hit2write.thread   := to_unsigned(heg_i,4);
-  --             hit2write.data   := read_hit;
-  --             write(row,hit2write);
-  --             writeline(file_hit_handler,row);
-  --           end if;
-  --         end loop;
-  --       end if;
-
-  --     end if;
-  --   end if;
-  -- end process HEG_BM;
-
-
-
-  
-  
-end architecture sim;
+end sim;
