@@ -48,7 +48,6 @@ entity csv_reader_tar2hps is
   generic(
     g_PRJ_INFO            : string  := "not defined";
     g_ST_ENABLE           : std_logic_vector(3 downto 0) := (others => '0');
-    g_HPS_MAX_HP          : integer := 6;
     g_IN_TAR2HPS_FILE     : string  := "not_defined.csv";
     g_verbose             : integer := 2
   );
@@ -94,6 +93,7 @@ architecture sim of csv_reader_tar2hps is
   signal file_ts            : string(1 to LINE_LENGTH_MAX);
   
   constant tar_event_r0 : eve_tar2hps_rt := (
+    ToS => (others => '0'),
     ToA => (others => '0'),
     event_id => (others => '0'),
     muonFixedId => (others => '0'),
@@ -133,27 +133,27 @@ begin
       aux := csv_file.read_string(' ');
       -- puts(aux);
       while not csv_file.end_of_line loop
-        aux := csv_file.read_string(':');
+        aux := csv_file.read_string('=');
         -- puts(aux);
-        if aux(1 to 6) = "SIM_TS" then
+        if aux(1 to 6) = "SIM TS" then
           timestamp := csv_file.read_string(NUL);
           file_ts <= timestamp;
           puts("TS of input file = ",timestamp);
         end if;
-        if aux(1 to 7) = "ORG_PRJ" then
+        if aux(1 to 7) = "PRJ CFG" then
           timestamp := csv_file.read_string(NUL);
           file_ts <= timestamp;
           puts("Prj origin of input file = ",timestamp);
         end if;
-        if aux(1 to 4) = "Side" then
-          puts("     Side = ",csv_file.read_string(' '));
-        end if;
-        if aux(1 to 6) = "Sector" then
-          puts("   Sector = ",csv_file.read_string(' '));
-        end if;
-        if aux(1 to 4) = "Area" then
-          puts("     Area = ",csv_file.read_string(' '));
-        end if;
+        -- if aux(1 to 4) = "Side" then
+        --   puts("     Side = ",csv_file.read_string(' '));
+        -- end if;
+        -- if aux(1 to 6) = "Sector" then
+        --   puts("   Sector = ",csv_file.read_string(' '));
+        -- end if;
+        -- if aux(1 to 4) = "Area" then
+        --   puts("     Area = ",csv_file.read_string(' '));
+        -- end if;
       end loop;
       csv_file.readline;
     end loop;
@@ -246,6 +246,7 @@ begin
               );
             end if;
             tar_event_vr :=(
+              ToS => to_unsigned(tar2hps_vr.ToS,64),
               ToA => to_unsigned(tar2hps_vr.ToA,64),
               event_id => to_unsigned(tar2hps_vr.event,32),
               muonFixedId => to_unsigned(tar2hps_vr.muonFixedId,32),
@@ -275,6 +276,7 @@ begin
                   end if;
                 end loop ; -- FIFO_WR
                 csv_file.readline;
+                tar2hps_vr.ToS          :=csv_file.read_integer;
                 tar2hps_vr.ToA          :=csv_file.read_integer;
                 tar2hps_vr.event        :=csv_file.read_integer;
                 tar2hps_vr.muonFixedId  :=csv_file.read_integer;
@@ -286,7 +288,8 @@ begin
                 tar2hps_vr.time         :=csv_file.read_integer;
                 if g_verbose > 1 then
                   puts("##### TAR2HPS( " & integer'image(row_counter) &
-                  " ): "& integer'image(tar2hps_vr.ToA        ) &
+                  " ): "& integer'image(tar2hps_vr.ToS        ) &
+                  " : "& integer'image(tar2hps_vr.ToA        ) &
                   " : " & integer'image(tar2hps_vr.event      ) &
                   " : " & integer'image(tar2hps_vr.muonFixedId) &
                   " : " & integer'image(tar2hps_vr.station    ) &
@@ -298,6 +301,7 @@ begin
                   );
                 end if;
                 tar_event_vr :=(
+                  ToS => to_unsigned(tar2hps_vr.ToS,64),
                   ToA => to_unsigned(tar2hps_vr.ToA,64),
                   event_id => to_unsigned(tar2hps_vr.event,32),
                   muonFixedId => to_unsigned(tar2hps_vr.muonFixedId,32),
