@@ -11,6 +11,7 @@ config:
 
 types:
   - eve_tar2hps_rt:
+    - ToS: {type: unsigned, range: [64-1, 0]}
     - ToA: {type: unsigned, range: [64-1, 0]}
     - event_id: {type: unsigned, range: [32-1, 0]}
     - muonFixedId: {type: unsigned, range: [32-1, 0]}

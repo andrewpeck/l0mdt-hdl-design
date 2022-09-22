@@ -75,6 +75,7 @@ end entity csv_reader_tar2hps;
 
 architecture sim of csv_reader_tar2hps is
   type sim_tar2hps_rt is record
+    ToS          : integer;
     ToA          : integer;
     event        : integer;
     muonFixedId  : integer;
@@ -220,6 +221,7 @@ begin
           -- read from CSV
           if first_read = '1' then
             csv_file.readline;
+            tar2hps_vr.ToS          :=csv_file.read_integer;
             tar2hps_vr.ToA          :=csv_file.read_integer;
             tar2hps_vr.event        :=csv_file.read_integer;
             tar2hps_vr.muonFixedId  :=csv_file.read_integer;
@@ -231,6 +233,7 @@ begin
             tar2hps_vr.time         :=csv_file.read_integer;
             if g_verbose > 1 then
               puts("##### TAR2HPS( " & integer'image(row_counter) &
+              " ): "& integer'image(tar2hps_vr.ToS        ) &
               " ): "& integer'image(tar2hps_vr.ToA        ) &
               " : " & integer'image(tar2hps_vr.event      ) &
               " : " & integer'image(tar2hps_vr.muonFixedId) &

@@ -7,3 +7,8 @@ shared/sim/waves/BA3_hps_csf_bp_ta.do
 
 # Waveform 
 # UserLogic/ult/sim/ult_tp_sim1.wcfg
+
+#IV
+shared/sim/vhdl_input_vect/BA3_20220915_120534/ov_BA3_ucm_ucm2hps.csv
+shared/sim/vhdl_input_vect/BA3_20220915_120534/ov_BA3_tar_tar2hps.csv
+

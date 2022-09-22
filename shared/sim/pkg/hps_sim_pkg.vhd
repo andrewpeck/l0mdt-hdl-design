@@ -18,6 +18,7 @@ package hps_sim_pkg is
    -- Custom types and functions --
 
    type eve_tar2hps_rt is record
+      ToS : unsigned(64-1 downto 0);
       ToA : unsigned(64-1 downto 0);
       event_id : unsigned(32-1 downto 0);
       muonFixedId : unsigned(32-1 downto 0);
@@ -25,7 +26,7 @@ package hps_sim_pkg is
       hp : unsigned(4-1 downto 0);
       tar2hps : tar2hps_rt;
    end record eve_tar2hps_rt;
-   attribute w of eve_tar2hps_rt : type is 176;
+   attribute w of eve_tar2hps_rt : type is 240;
    function width(x: eve_tar2hps_rt) return natural;
    function convert(x: eve_tar2hps_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: eve_tar2hps_rt) return eve_tar2hps_rt;
@@ -35,7 +36,7 @@ package hps_sim_pkg is
    attribute w of TB_TAR2HPS_FIFO_WIDTH : constant is 32;
 
    type eve_tar2hps_art is array(TB_TAR2HPS_FIFO_WIDTH-1 downto 0) of eve_tar2hps_rt;
-   attribute w of eve_tar2hps_art : type is 5632;
+   attribute w of eve_tar2hps_art : type is 7680;
    function width(x: eve_tar2hps_art) return integer;
    function convert(x: eve_tar2hps_art; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: eve_tar2hps_art) return eve_tar2hps_art;
@@ -66,6 +67,7 @@ package body hps_sim_pkg is
    function width(x: eve_tar2hps_rt) return natural is
       variable w : natural := 0;
    begin
+      w := w + width(x.ToS);
       w := w + width(x.ToA);
       w := w + width(x.event_id);
       w := w + width(x.muonFixedId);
@@ -80,6 +82,9 @@ package body hps_sim_pkg is
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
+         w := width(x.ToS);
+         y(u to u+w-1) := convert(x.ToS, y(u to u+w-1));
+         u := u + w;
          w := width(x.ToA);
          y(u to u+w-1) := convert(x.ToA, y(u to u+w-1));
          u := u + w;
@@ -98,6 +103,9 @@ package body hps_sim_pkg is
          w := width(x.tar2hps);
          y(u to u+w-1) := convert(x.tar2hps, y(u to u+w-1));
       else
+         w := width(x.ToS);
+         y(u downto u-w+1) := convert(x.ToS, y(u downto u-w+1));
+         u := u - w;
          w := width(x.ToA);
          y(u downto u-w+1) := convert(x.ToA, y(u downto u-w+1));
          u := u - w;
@@ -124,6 +132,9 @@ package body hps_sim_pkg is
       variable u : integer := x'left;
    begin
       if x'ascending then
+         w := width(tpl.ToS);
+         y.ToS := convert(x(u to u+w-1), tpl.ToS);
+         u := u + w;
          w := width(tpl.ToA);
          y.ToA := convert(x(u to u+w-1), tpl.ToA);
          u := u + w;
@@ -142,6 +153,9 @@ package body hps_sim_pkg is
          w := width(tpl.tar2hps);
          y.tar2hps := convert(x(u to u+w-1), tpl.tar2hps);
       else
+         w := width(tpl.ToS);
+         y.ToS := convert(x(u downto u-w+1), tpl.ToS);
+         u := u - w;
          w := width(tpl.ToA);
          y.ToA := convert(x(u downto u-w+1), tpl.ToA);
          u := u - w;

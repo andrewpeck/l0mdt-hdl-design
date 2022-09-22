@@ -9,4 +9,4 @@ shared/sim/waves/BA3_tar_ta.do
 # UserLogic/ult/sim/ult_tp_sim1.wcfg
 
 #IV
-shared/sim/vhdl_input_vect/BA3_0123456789/csm_A3_Barrel.csv
+shared/sim/vhdl_input_vect/BA3_20220915_120534/csm_A3_Barrel.csv
