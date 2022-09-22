@@ -44,6 +44,8 @@ package l0mdt_sim_cstm_pkg is
   type event_tdc_aut is array (0 to 3) of event_aut;
   type event_tdc_at is array (0 to 3) of event_at;
 
+  -- type type_string_array is array (integer range <>) of string(1 to LINE_LENGTH_MAX);
+
   
 end package l0mdt_sim_cstm_pkg;
 

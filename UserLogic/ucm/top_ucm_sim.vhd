@@ -113,6 +113,8 @@ architecture beh of ucm_tb is
   signal slc_file_ts              : string(1 to LINE_LENGTH_MAX);
   signal slc_event_ai             : event_xaut(c_MAX_NUM_SL -1 downto 0);
 
+  signal files_str  : string(1 to LINE_LENGTH_MAX);
+
 begin
 
   UCM_DUT : entity ucm_lib.ucm
@@ -260,6 +262,14 @@ begin
 
   );
 
+  -- f_t_p: process begin
+  --   wait until slc_file_ok;
+  --   files_str <= IN_SLC_FILE & "-" & slc_file_ts;
+  --   wait;
+  -- end process f_t_p;
+
+  
+
   CSV_UCM_OUT : entity shared_lib.csv_writer_ucm
   generic map (
     g_PRJ_INFO    => PRJ_INFO,
@@ -275,7 +285,7 @@ begin
     --
     in_slc_file_ok            => slc_file_ok,
     in_slc_file_ts            => slc_file_ts,
-    in_files_str              => "kkkk",--IN_SLC_FILE & "-" & slc_file_ts,
+    in_files_str              => files_str,
     --
     slc_event_ai              => slc_event_ai,
     --

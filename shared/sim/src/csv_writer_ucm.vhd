@@ -63,7 +63,7 @@ entity csv_writer_ucm is
     --
     in_slc_file_ok        : in std_logic;
     in_slc_file_ts        : in string;
-    in_files_str          : in string;
+    in_files_str          : in string(1 to LINE_LENGTH_MAX);
     --
     slc_event_ai          : in event_xaut;
     --
@@ -83,8 +83,8 @@ architecture sim of csv_writer_ucm is
   -- alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
   -- alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
 
-  constant g_OUT_FILE_1     : string  := "ov_ucm2hps_" & g_PRJ_INFO & ".csv";
-  constant g_OUT_FILE_2     : string  := "ov_ucm2mpl_" & g_PRJ_INFO & ".csv";
+  constant g_OUT_FILE_1     : string  := "ov_" & g_PRJ_INFO & "_ucm2hps.csv";
+  constant g_OUT_FILE_2     : string  := "ov_" & g_PRJ_INFO & "_ucm2mpl.csv";
      
   shared variable csv_file_1: csv_file_type;
   shared variable csv_file_2: csv_file_type;
@@ -201,7 +201,7 @@ begin
       g_SIMULATION => '1',
       -- pragma translate_on
       g_PIPELINE_TYPE => "ring_buffer",
-      g_DELAY_CYCLES  => 131,
+      g_DELAY_CYCLES  => 54,
       g_PIPELINE_WIDTH    => 32
     )
     port map(
