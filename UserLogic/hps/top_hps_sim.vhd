@@ -94,6 +94,18 @@ architecture beh of hps_tb is
   signal mon_inn_r              : HPS_MON_t;
   signal ctrl_inn_v             : std_logic_vector(HPS_CTRL_t'w -1 downto 0);
   signal mon_inn_v              : std_logic_vector(HPS_MON_t'w -1 downto 0);
+  signal ctrl_mid_r             : HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
+  signal mon_mid_r              : HPS_MON_t;
+  signal ctrl_mid_v             : std_logic_vector(HPS_CTRL_t'w -1 downto 0);
+  signal mon_mid_v              : std_logic_vector(HPS_MON_t'w -1 downto 0);
+  signal ctrl_out_r             : HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
+  signal mon_out_r              : HPS_MON_t;
+  signal ctrl_out_v             : std_logic_vector(HPS_CTRL_t'w -1 downto 0);
+  signal mon_out_v              : std_logic_vector(HPS_MON_t'w -1 downto 0);
+  signal ctrl_ext_r             : HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
+  signal mon_ext_r              : HPS_MON_t;
+  signal ctrl_ext_v             : std_logic_vector(HPS_CTRL_t'w -1 downto 0);
+  signal mon_ext_v              : std_logic_vector(HPS_MON_t'w -1 downto 0);
   -----------------------------UCM2HPS------------------------------
   signal ucm2hps_inn_av     : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   signal ucm2hps_mid_av     : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
@@ -106,33 +118,93 @@ architecture beh of hps_tb is
   signal tar2hps_ext_av     : tar2hps_avt(c_HP_NUM_SECTOR_STATION(3) -1 downto 0);
   -----------------------------HPS2PT ------------------------------
   signal hps2pt_inn_av       : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
-  -- signal hps2pt_mid_av       : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
-  -- signal hps2pt_out_av       : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
-  -- signal hps2pt_ext_av       : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
-
-  -- signal mti_sim : mti_clocktime_rec := get_clocktime(-1, TRUE);
-     
-  -- constant sim_time_stamp : string := integer'image(mti_sim.year) & "-" & integer'image(mti_sim.month) & "-" &
-  --                                integer'image(mti_sim.day) & "_" & integer'image(mti_sim.hour) & "h" &
-  --                                integer'image(mti_sim.minute) & "m" & integer'image(mti_sim.second) & "s.log";
+  signal hps2pt_mid_av       : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+  signal hps2pt_out_av       : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+  signal hps2pt_ext_av       : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
 
 begin
-  -- assert FALSE report "SEED = " & integer'image(SEED) severity NOTE;
-  
+  -------------------------------------------------------------------------------------
+	-- clock Generator
+	-------------------------------------------------------------------------------------
+  CLK_RT : process begin
+    clk_time <= '0';
+    wait for CLK_time_period/2;
+    clk_time <= '1';
+    wait for CLK_time_period/2;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- clock tdc Generator
+	-------------------------------------------------------------------------------------
+  CLK_TDC : process begin
+    clk_tdc_time <= '0';
+    wait for CLK_tdc_time_period/2;
+    clk_tdc_time <= '1';
+    wait for CLK_tdc_time_period/2;
+  end process;
+  -- clock_and_control.clk <= clk;
+  -------------------------------------------------------------------------------------
+	-- Main FPGA clock
+	-------------------------------------------------------------------------------------
+  CLK_MAIN : process begin
+    clk <= '0';
+    wait for CLK_period/2;
+    clk <= '1';
+    wait for CLK_period/2;
+  end process;
+  -- clk <= clk;
+  -------------------------------------------------------------------------------------
+  --    AXI CLK
+  -------------------------------------------------------------------------------------
+  axi_clk_proc : process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        clk_axi <= '0';
+        clk_axi_cnt <= 0;
+      else
+        if clk_axi_cnt < c_CLK_AXI_MULT then
+          clk_axi_cnt <= clk_axi_cnt + 1;
+        else
+          clk_axi_cnt <= 0;
+          clk_axi <= not clk_axi;
+        end if;
+      end if;
+    end if;
+  end process axi_clk_proc;
+ 	-------------------------------------------------------------------------------------
+	-- Reset Generator
+	-------------------------------------------------------------------------------------
+	rst_process: process begin
+		rst<='0';
+    report "current time = " & time'image(now);
+		wait for CLK_period;
+		rst<='1';
+		wait for CLK_period*reset_init_cycles;
+		rst<= '0';
+		wait;
+  end process;
+  -- rst <= rst;
+  -------------------------------------------------------------------------------------
+	-- Test Bench time
+  -------------------------------------------------------------------------------------
+  ToA: process(clk_time) begin
+    if rising_edge(clk_time) then
+      tb_curr_time <= tb_curr_time + '1';
+    end if;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- Test Bench tdc time
+  -------------------------------------------------------------------------------------
+  ToA_tdc: process(clk_tdc_time) begin
+    if rising_edge(clk_tdc_time) then
+      tb_curr_tdc_time <= tb_curr_tdc_time + '1';
+    end if;
+  end process;
 
-  -- IN_GEN : for hp_i in g_HPS_NUM_MDT_CH downto 0 generate
-  --   mdt_polmux_data_av(hp_i).polmux <= i_mdt_polmux_av(hp_i);
-  --   mdt_polmux_data_av(hp_i).tar <= i_mdt_tar_av(hp_i);
-  -- end generate;
-
-  -- ctrl_v <= convert(ctrl_r,ctrl_v);
-  -- mon_r <= convert(mon_v,mon_r);
   --------------------------------------------------------------
   --
   --------------------------------------------------------------
-  INN: if g_ST_ENABLE(0)='1' generate
-    constant caballo : integer := 0;
-  begin
+  HPS_INN_GEN: if g_ST_ENABLE(0)='1' generate
     ctrl_inn_v <= convert(ctrl_inn_r,ctrl_inn_v);
     mon_inn_r <= convert(mon_inn_v,mon_inn_r);
     --------------------------------------------------------------
@@ -156,12 +228,78 @@ begin
         o_sf2pt_av          => hps2pt_inn_av
     );
   end generate;
-  -- HPS_MID_GEN: if ST_ENABLE(1)='1' generate
-  -- end generate;
-  -- HPS_OUT_GEN: if ST_ENABLE(2)='1' generate
-  -- end generate;
-  -- HPS_EXT_GEN: if ST_ENABLE(3)='1' generate
-  -- end generate;
+  HPS_MID_GEN: if g_ST_ENABLE(1)='1' generate
+    ctrl_mid_v <= convert(ctrl_mid_r,ctrl_mid_v);
+    mon_mid_r <= convert(mon_mid_v,mon_mid_r);
+    --------------------------------------------------------------
+    HPS : entity hps_lib.hps
+      generic map(
+        g_STATION_RADIUS    => 1,
+        g_HPS_NUM_MDT_CH     => c_HP_NUM_SECTOR_STATION(1)
+      )
+      port map(
+        clk                 => clk,
+        rst                 => rst,
+        glob_en             => glob_en,
+        -- configuration & control
+        ctrl_v              => ctrl_mid_v,
+        mon_v               => mon_mid_v,
+        -- SLc
+        i_uCM2hps_av        => uCM2hps_mid_av,
+        -- MDT hit
+        i_mdt_tar_av        => tar2hps_mid_av,
+        -- to pt calc
+        o_sf2pt_av          => hps2pt_mid_av
+    );
+  end generate;
+  HPS_OUT_GEN: if g_ST_ENABLE(2)='1' generate
+    ctrl_out_v <= convert(ctrl_out_r,ctrl_out_v);
+    mon_out_r <= convert(mon_out_v,mon_out_r);
+    --------------------------------------------------------------
+    HPS : entity hps_lib.hps
+      generic map(
+        g_STATION_RADIUS    => 2,
+        g_HPS_NUM_MDT_CH     => c_HP_NUM_SECTOR_STATION(2)
+      )
+      port map(
+        clk                 => clk,
+        rst                 => rst,
+        glob_en             => glob_en,
+        -- configuration & control
+        ctrl_v              => ctrl_out_v,
+        mon_v               => mon_out_v,
+        -- SLc
+        i_uCM2hps_av        => uCM2hps_out_av,
+        -- MDT hit
+        i_mdt_tar_av        => tar2hps_out_av,
+        -- to pt calc
+        o_sf2pt_av          => hps2pt_out_av
+    );
+  end generate;
+  HPS_EXT_GEN: if g_ST_ENABLE(3)='1' generate
+    ctrl_ext_v <= convert(ctrl_ext_r,ctrl_ext_v);
+    mon_ext_r <= convert(mon_ext_v,mon_ext_r);
+    --------------------------------------------------------------
+    HPS : entity hps_lib.hps
+      generic map(
+        g_STATION_RADIUS    => 3,
+        g_HPS_NUM_MDT_CH     => c_HP_NUM_SECTOR_STATION(3)
+      )
+      port map(
+        clk                 => clk,
+        rst                 => rst,
+        glob_en             => glob_en,
+        -- configuration & control
+        ctrl_v              => ctrl_ext_v,
+        mon_v               => mon_ext_v,
+        -- SLc
+        i_uCM2hps_av        => uCM2hps_ext_av,
+        -- MDT hit
+        i_mdt_tar_av        => tar2hps_ext_av,
+        -- to pt calc
+        o_sf2pt_av          => hps2pt_ext_av
+    );
+  end generate;
   -------------------------------------------------------------------------------------
 	-- TAR IN
   -------------------------------------------------------------------------------------
@@ -244,84 +382,7 @@ begin
     i_tar2hps_mdt_event_ai  => tar2hps_mdt_event_ai
   );
 
-  -------------------------------------------------------------------------------------
-	-- clock Generator
-	-------------------------------------------------------------------------------------
-  CLK_RT : process begin
-    clk_time <= '0';
-    wait for CLK_time_period/2;
-    clk_time <= '1';
-    wait for CLK_time_period/2;
-  end process;
-  -------------------------------------------------------------------------------------
-	-- clock tdc Generator
-	-------------------------------------------------------------------------------------
-  CLK_TDC : process begin
-    clk_tdc_time <= '0';
-    wait for CLK_tdc_time_period/2;
-    clk_tdc_time <= '1';
-    wait for CLK_tdc_time_period/2;
-  end process;
-  -- clock_and_control.clk <= clk;
-  -------------------------------------------------------------------------------------
-	-- Main FPGA clock
-	-------------------------------------------------------------------------------------
-  CLK_MAIN : process begin
-    clk <= '0';
-    wait for CLK_period/2;
-    clk <= '1';
-    wait for CLK_period/2;
-  end process;
-  -- clk <= clk;
-  -------------------------------------------------------------------------------------
-  --    AXI CLK
-  -------------------------------------------------------------------------------------
-  axi_clk_proc : process(clk)
-  begin
-    if rising_edge(clk) then
-      if rst = '1' then
-        clk_axi <= '0';
-        clk_axi_cnt <= 0;
-      else
-        if clk_axi_cnt < c_CLK_AXI_MULT then
-          clk_axi_cnt <= clk_axi_cnt + 1;
-        else
-          clk_axi_cnt <= 0;
-          clk_axi <= not clk_axi;
-        end if;
-      end if;
-    end if;
-  end process axi_clk_proc;
- 	-------------------------------------------------------------------------------------
-	-- Reset Generator
-	-------------------------------------------------------------------------------------
-	rst_process: process begin
-		rst<='0';
-    report "current time = " & time'image(now);
-		wait for CLK_period;
-		rst<='1';
-		wait for CLK_period*reset_init_cycles;
-		rst<= '0';
-		wait;
-  end process;
-  -- rst <= rst;
-  -------------------------------------------------------------------------------------
-	-- Test Bench time
-  -------------------------------------------------------------------------------------
-  ToA: process(clk_time) begin
-    if rising_edge(clk_time) then
-      tb_curr_time <= tb_curr_time + '1';
-    end if;
-  end process;
-  -------------------------------------------------------------------------------------
-	-- Test Bench tdc time
-  -------------------------------------------------------------------------------------
-  ToA_tdc: process(clk_tdc_time) begin
-    if rising_edge(clk_tdc_time) then
-      tb_curr_tdc_time <= tb_curr_tdc_time + '1';
-    end if;
-  end process;
-
+  
   
 
 end beh;

@@ -93,8 +93,8 @@ architecture sim of csv_writer_tar is
   -- -- alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
   -- -- alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
 
-  constant g_OUT_FILE_1     : string  := "ov_tar2hps_" & g_PRJ_INFO & ".csv";
-  constant g_OUT_FILE_2     : string  := "ov_tar2daq_" & g_PRJ_INFO & ".csv";
+  constant g_OUT_FILE_1     : string  := "ov_" & g_PRJ_INFO & "_tar2hps.csv";
+  constant g_OUT_FILE_2     : string  := "ov_" & g_PRJ_INFO & "_tar2daq.csv";
      
   shared variable csv_file_1: csv_file_type;
   shared variable csv_file_2: csv_file_type;
