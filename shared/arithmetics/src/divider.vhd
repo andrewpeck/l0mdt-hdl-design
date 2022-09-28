@@ -53,7 +53,7 @@ architecture divider_arc of divider is
 
 begin
 
-  reciprocal_rom : entity shared_lib.rom
+  reciprocal_rom : entity work.rom
   GENERIC MAP(
     MXADRB    => g_DENOMINATOR_LEN,
     MXDATB    => g_DIVIDER_LEN,

@@ -124,7 +124,7 @@ BEGIN
         locseg_i  <= convert(i_locseg, locseg_i);
         o_globseg <= convert(globseg, o_globseg);
 
-        ARCTAN : entity shared_lib.rom
+        ARCTAN : entity work.rom
         GENERIC MAP(
           MXADRB    => CSF_SEG_M_LEN + 1,
           MXDATB    => SF2PTCALC_SEGANGLE_LEN,
