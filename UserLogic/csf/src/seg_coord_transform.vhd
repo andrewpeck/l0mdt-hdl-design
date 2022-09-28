@@ -93,20 +93,20 @@ ARCHITECTURE Behavioral OF seg_coord_transform IS
   SIGNAL dv0, dv1, dv2, dv3 : STD_LOGIC := '0';
 
   -------------------------------------------------------------------------------- COMPONENTS --------
-  --COMPONENT rom
-  --  GENERIC (
-  --    MXADRB    : INTEGER;
-  --    MXDATB    : INTEGER;
-  --    ROM_FILE  : STRING;
-  --    ROM_STYLE : STRING
-  --  );
-  --  PORT (
-  --    clka  : IN STD_LOGIC;
-  --    ena   : IN STD_LOGIC;
-  --    addra : IN STD_LOGIC_VECTOR;
-  --    douta : OUT STD_LOGIC_VECTOR
-  --  );
-  --END COMPONENT;
+  COMPONENT rom
+    GENERIC (
+      MXADRB    : INTEGER;
+      MXDATB    : INTEGER;
+      ROM_FILE  : STRING;
+      ROM_STYLE : STRING
+    );
+    PORT (
+      clka  : IN STD_LOGIC;
+      ena   : IN STD_LOGIC;
+      addra : IN STD_LOGIC_VECTOR;
+      douta : OUT STD_LOGIC_VECTOR
+    );
+  END COMPONENT;
 
 BEGIN
 
@@ -124,7 +124,7 @@ BEGIN
         locseg_i  <= convert(i_locseg, locseg_i);
         o_globseg <= convert(globseg, o_globseg);
 
-        ARCTAN : entity work.rom
+        ARCTAN : rom
         GENERIC MAP(
           MXADRB    => CSF_SEG_M_LEN + 1,
           MXDATB    => SF2PTCALC_SEGANGLE_LEN,
