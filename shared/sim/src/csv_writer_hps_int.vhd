@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------
 -- UMass , Physics Department
 -- Project: src
--- File: csv_writer_hps_pc.vhd
+-- File: csv_writer_hps_int.vhd
 -- Module: <<moduleName>>
--- File PATH: /csv_writer_hps_pc.vhd
+-- File PATH: /csv_writer_hps_int.vhd
 -- -----
 -- File Created: Tuesday, 27th September 2022 6:54:22 pm
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
@@ -13,45 +13,79 @@
 -- -----
 -- HISTORY:
 --------------------------------------------------------------------------------
-
 library ieee;
-use ieee.std_logic_misc.all;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use std.textio.all;
-use std.standard.all;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
+  use ieee.std_logic_misc.all;
 
 library shared_lib;
-use shared_lib.common_ieee_pkg.all;
-use shared_lib.l0mdt_constants_pkg.all;
-use shared_lib.l0mdt_dataformats_pkg.all;
-use shared_lib.common_constants_pkg.all;
-use shared_lib.common_types_pkg.all;
-use shared_lib.config_pkg.all;
--- use shared_lib.vhdl2008_functions_pkg.all;
-use shared_lib.detector_param_pkg.all;
-use shared_lib.vhdl_tb_utils_pkg.all;
-use shared_lib.l0mdt_sim_cstm_pkg.all;
--- use project_lib.vhdl_tb_utils_pkg.all;
-use shared_lib.vhdl_textio_csv_pkg.all;
+  use shared_lib.common_ieee_pkg.all;
+  use shared_lib.l0mdt_constants_pkg.all;
+  use shared_lib.l0mdt_dataformats_pkg.all;
+  use shared_lib.common_constants_pkg.all;
+  use shared_lib.common_types_pkg.all;
+  use shared_lib.config_pkg.all;
+  use shared_lib.detector_param_pkg.all;
+  use shared_lib.detector_time_param_pkg.all;
+  -- use shared_lib.l0mdt_sim_cstm_pkg.all;
+  -- use shared_lib.vhdl_textio_csv_pkg.all;
 
-use shared_lib.tar_sim_pkg.all;
+library hp_lib;
+use hp_lib.hp_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
+library hps_lib;
+use hps_lib.hps_pkg.all;
+
+library ctrl_lib;
+use ctrl_lib.HPS_CTRL.all;
+use ctrl_lib.HPS_CTRL_DEF.all;
+
+package csv_writer_hps_int_pkg is
+  type hps_pc2heg_aavt is array (c_MAX_NUM_ST -1 downto 0) of heg_pc2heg_avt(c_TOTAL_MAX_NUM_HP-1 downto 0);
+  type heg_hp2bm_aavt is array (c_NUM_THREADS -1 downto 0) of heg_hp2bm_avt(c_TOTAL_MAX_NUM_HP-1 downto 0);
+  type heg_hp2bm_aaavt is array (c_MAX_NUM_ST -1 downto 0) of heg_hp2bm_aavt;
+  -- type mon_avt is array (c_MAX_NUM_ST -1 downto 0) of std_logic_vector(HPS_MON_t'w -1 downto 0);
+  -- type ucm2hps_aavt is array (c_MAX_NUM_ST -1 downto 0) of ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  -- type tar2hps_aavt is array (c_MAX_NUM_ST -1 downto 0) of tar2hps_avt(c_TOTAL_MAX_NUM_HP -1 downto 0);
+  -- type hps2pt_aavt is array (c_MAX_NUM_ST -1 downto 0) of sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+end package ;
+
+library ieee;
+  use ieee.std_logic_misc.all;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
+  use std.textio.all;
+  use std.standard.all;
+
+library shared_lib;
+  use shared_lib.common_ieee_pkg.all;
+  use shared_lib.l0mdt_constants_pkg.all;
+  use shared_lib.l0mdt_dataformats_pkg.all;
+  use shared_lib.common_constants_pkg.all;
+  use shared_lib.common_types_pkg.all;
+  use shared_lib.config_pkg.all;
+  use shared_lib.detector_param_pkg.all;
+  use shared_lib.vhdl_tb_utils_pkg.all;
+  use shared_lib.l0mdt_sim_cstm_pkg.all;
+  use shared_lib.vhdl_textio_csv_pkg.all;
+
+-- use shared_lib.tar_sim_pkg.all;
 
 library vamc_lib;
 
--- library heg_lib;
--- use heg_lib.heg_pkg.all;
--- library hps_lib;
--- use hps_lib.hps_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
+library hps_lib;
+use hps_lib.hps_pkg.all;
 
-entity csv_writer_hps_pc is
+library work;
+use work.csv_writer_hps_int_pkg.all;
+
+entity csv_writer_hps_int is
   generic(
     g_PRJ_INFO              : string  := "not_defined";
     g_ST_ENABLE             : std_logic_vector(3 downto 0) := (others => '0')
-    -- g_OUT_HPS2SF_FILE       : string  := "not_defined.csv";
-    -- g_OUT_HPS2NS_FILE       : string  := "not_defined.csv";
-    -- g_OUT_SLC_FILE          : string  := "not_defined.csv";
-    -- g_OUT_HIT_FILE          : string  := "not_defined.csv"
   );
   port (
     clk                     : in std_logic;
@@ -79,22 +113,25 @@ entity csv_writer_hps_pc is
     -- i_tar_hits_ext_av         : in tar2hps_avt(g_HPS_MAX_HP -1 downto 0)
 
   );
-end entity csv_writer_hps_pc;
+end entity csv_writer_hps_int;
 
-architecture sim of csv_writer_hps_pc is
+architecture sim of csv_writer_hps_int is
+  signal in_files_ok : std_logic := '0';
+  signal in_files_ts : string(1 to LINE_LENGTH_MAX);
 
-  -- -- alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
-  -- -- alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
-
-  constant g_OUT_FILE_1     : string  := "ov_" & g_PRJ_INFO & "_hpspc.csv";
-  -- constant g_OUT_FILE_2     : string  := "ov_tar2daq_" & g_PRJ_INFO & ".csv";
-     
+  constant OUT_FILE_1     : string  := "ov_" & g_PRJ_INFO & "_hps_int.csv";
   shared variable csv_file_1: csv_file_type;
-  -- shared variable csv_file_2: csv_file_type;
+
+  signal slc_event_au : event_tdc_aut;
+  signal mdt_event_au : event_tdc_aut;
+  signal slc_event_a : event_tdc_at;
+  signal mdt_event_a : event_tdc_at;
 
   -- -- alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
 
-  -- -- alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  -- alias mdt_full_data_av is  << signal.hps_tb.STATION_GEN(0).HPS.HPS.mdt_full_data_av : heg_pc2heg_avt(c_TOTAL_MAX_NUM_HP-1 downto 0) >>;
+  signal hps_pc_mdt_full_data_aav : hps_pc2heg_aavt;
+  signal hps_heg_hp2bm_aaav : heg_hp2bm_aaavt;
   -- -- alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_plin_av : ucm2hps_avt >>;
   -- -- alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_plin_av : ucm2hps_avt >>;
   -- -- alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_plin_av : ucm2hps_avt >>;
@@ -102,70 +139,58 @@ architecture sim of csv_writer_hps_pc is
   -- -- alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_avt >>;
   -- signal ucm2pl_ar : ucm2pl_art(g_HPS_MAX_HP-1 downto 0);
 
-  signal slc_event_au : event_tdc_aut;--(g_HPS_MAX_HP -1 downto 0);
-  signal mdt_event_au : event_tdc_aut;--(g_HPS_MAX_HP -1 downto 0);
-  signal slc_event_a : event_tdc_at;
-  signal mdt_event_a : event_tdc_at;
-  -- TDC polmux from Tar
-  -- signal tdc_hits_inn_ar : tdcpolmux2tar_art(g_HPS_MAX_HP -1 downto 0);
-  -- signal tdc_hits_mid_ar : tdcpolmux2tar_art(g_HPS_MAX_HP -1 downto 0);
-  -- signal tdc_hits_out_ar : tdcpolmux2tar_art(g_HPS_MAX_HP -1 downto 0);
-  -- signal tdc_hits_ext_ar : tdcpolmux2tar_art(g_HPS_MAX_HP -1 downto 0);
-  -- TDC Hits from Tar
-  -- signal tar_hits_inn_ar :tar2hps_art(g_HPS_MAX_HP -1 downto 0);
-  -- signal tar_hits_mid_ar :tar2hps_art(g_HPS_MAX_HP -1 downto 0);
-  -- signal tar_hits_out_ar :tar2hps_art(g_HPS_MAX_HP -1 downto 0);
-  -- signal tar_hits_ext_ar :tar2hps_art(g_HPS_MAX_HP -1 downto 0);
-
-
-
-  
 begin
+  in_files_ok <= i_ucm2hps_file_ok and i_tar2hps_file_ok;
+  in_files_ts(1 to 15)  <= "not working yet";
 
-  -- gen_hps2pt: if g_OUT_HPS2SF_FILE /= "not_defined.csv" generate
-  -- end generate gen_hps2pt;
-  -- gen_hps2ns: if g_OUT_HPS2NS_FILE /= "not_defined.csv" generate
-  -- end generate gen_hps2ns;
-  -- gen_hps_slc: if g_OUT_SLC_FILE /= "not_defined.csv" generate
-  -- end generate gen_hps_slc;
-  -- gen_hps_hit: if g_OUT_HIT_FILE /= "not_defined.csv" generate
-  -- end generate gen_hps_hit;
+  open_csv: process
+  begin
+    wait until in_files_ok;
+    -- in_files_ts <= str_concat(in_files_ts,i_ucm2hps_file_ts,i_tar2hps_file_ts);
+    puts("opening HPS INTERNALS CSV file : " & OUT_FILE_1);
+    csv_file_1.initialize(OUT_FILE_1,"wr");
+    csv_file_1.write_string("# --------------------------");
+    csv_file_1.write_string("# CSV files TS = " & in_files_ts);
+    -- csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
+    csv_file_1.write_string("# PRJ CFG = " & g_PRJ_INFO);
+    csv_file_1.write_string("# SIM TS  = " & "2022.09.15_12:05:34");--time'image(now));
+    csv_file_1.write_string("# --------------------------");   
+    --
+    csv_file_1.write_word("ToS[100ps]");
+    csv_file_1.write_word("ToA[0.78125ns]");
+    csv_file_1.write_word("event");          
+    csv_file_1.write_word("muonFixedId");                 
+    csv_file_1.write_word("station");          
+    csv_file_1.write_word("hp#");          
+    -- tdc
+    csv_file_1.write_word("ieta");
+    csv_file_1.write_word("layer");
+    csv_file_1.write_word("tube");
+    csv_file_1.write_word("time[0.78125ns]");
+    csv_file_1.writeline;
+    wait;
+  end process open_csv;
 
-  -- -- slc_file_ts <= in_mdt_file_ts;
+  ST_GEN: for st_i in 0 to c_MAX_NUM_ST - 1 generate
+    ST_EN: if g_ST_ENABLE(st_i) = '1' generate
+      alias temp_mdt_full_data_av is  
+        << signal.hps_tb.STATION_GEN(st_i).HPS.HPS.mdt_full_data_av : heg_pc2heg_avt(c_TOTAL_MAX_NUM_HP-1 downto 0) >>;
+    begin
+      TH_GEN: for th_i in 0 to c_NUM_THREADS-1 generate
+        alias temp_hp2bm_av is  
+          << signal.hps_tb.STATION_GEN(st_i).HPS.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_avt(c_HP_NUM_SECTOR_STATION(st_i)-1 downto 0) >>;
+      begin
+        HP_GEN: for hp_i in 0 to c_HP_NUM_SECTOR_STATION(st_i)-1 generate
+          hps_heg_hp2bm_aaav(st_i)(th_i)(hp_i) <= temp_hp2bm_av(hp_i);
+        end generate HP_GEN;
+      end generate;
+      hps_pc_mdt_full_data_aav(st_i) <= temp_mdt_full_data_av;
+    else generate
+      hps_pc_mdt_full_data_aav <= (others => (others => (others => '0')));
+      hps_heg_hp2bm_aaav <= (others => (others => (others => (others => '0'))));
+    end generate;
+  end generate;
 
-  -- open_csv: process
-  -- begin
-  --   wait until in_mdt_file_ok;
-  --   puts("opening TAR2HPS CSV file : " & g_OUT_FILE_1);
-  --   csv_file_1.initialize(g_OUT_FILE_1,"wr");
-  --   csv_file_1.write_string("# --------------------------");
-  --   csv_file_1.write_string("# HIT TS  : " & in_mdt_file_ts);
-  --   -- csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
-  --   csv_file_1.write_string("# PRJ CFG : " & g_PRJ_INFO);
-  --   csv_file_1.write_string("# SIM TS  : " & time'image(now));
-  --   csv_file_1.write_string("# --------------------------");   
-  --   --
-  --   csv_file_1.write_word("ToA");
-  --   csv_file_1.write_word("event");          
-  --   csv_file_1.write_word("muonFixedId");                 
-  --   csv_file_1.write_word("station");          
-  --   csv_file_1.write_word("hp#");          
-  --   -- tdc
-  --   csv_file_1.write_word("ieta");
-  --   csv_file_1.write_word("layer");
-  --   csv_file_1.write_word("tube");
-  --   csv_file_1.write_word("time");
-  --   csv_file_1.writeline;
-  --   puts("opening TAR2DAQ CSV file : " & g_OUT_FILE_2);
-  --   csv_file_2.initialize(g_OUT_FILE_2,"wr");
-  --   csv_file_2.write_string("# --------------------------");
-  --   csv_file_2.write_string("# HIT TS  : " & in_mdt_file_ts);
-  --   -- csv_file_2.write_string("# HIT TS  : " & hit_file_ts);
-  --   csv_file_2.write_string("# PRJ CFG : " & g_PRJ_INFO);
-  --   csv_file_2.write_string("# SIM TS  : " & time'image(now));
-  --   csv_file_2.write_string("# --------------------------");    
-  --   wait;
-  -- end process open_csv;
 
   -- h_st_for : for st_i in 0 to 3 generate
   --   h_hp_for : for hp_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate

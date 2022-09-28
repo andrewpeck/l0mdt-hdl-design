@@ -64,10 +64,10 @@ entity csv_reader_tar2hps is
     o_mdt_event_ai        : out event_tdc_aut;--event_xaut(3 downto 0);
     o_slc_event_ai        : out event_tdc_aut;--event_xaut(3 downto 0);
     -- TDC Hits from Tar
-    o_tar_hits_inn_av     : out tar2hps_avt(c_HP_NUM_SECTOR_STATION(0) -1 downto 0);
-    o_tar_hits_mid_av     : out tar2hps_avt(c_HP_NUM_SECTOR_STATION(1) -1 downto 0);
-    o_tar_hits_out_av     : out tar2hps_avt(c_HP_NUM_SECTOR_STATION(2) -1 downto 0);
-    o_tar_hits_ext_av     : out tar2hps_avt(c_HP_NUM_SECTOR_STATION(3) -1 downto 0)
+    o_tar_hits_inn_av     : out tar2hps_avt(c_TOTAL_MAX_NUM_HP -1 downto 0);
+    o_tar_hits_mid_av     : out tar2hps_avt(c_TOTAL_MAX_NUM_HP -1 downto 0);
+    o_tar_hits_out_av     : out tar2hps_avt(c_TOTAL_MAX_NUM_HP -1 downto 0);
+    o_tar_hits_ext_av     : out tar2hps_avt(c_TOTAL_MAX_NUM_HP -1 downto 0)
 
   );
 end entity csv_reader_tar2hps;
