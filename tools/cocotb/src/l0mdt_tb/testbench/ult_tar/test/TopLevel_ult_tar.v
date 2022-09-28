@@ -76,7 +76,7 @@ module TopLevel_ult_tar #(
     //
     // Here place the DUT block(s)
     //
-   logic dummy_mon[4];
+   logic [255:0] dummy_mon[4];
    logic [TDCPOLMUX2TAR_LEN-1:0] i_inn_tdc_hits[6];
    logic [TDCPOLMUX2TAR_LEN-1:0] i_mid_tdc_hits[6];
    logic [TDCPOLMUX2TAR_LEN-1:0] i_out_tdc_hits[6];
@@ -107,14 +107,16 @@ module TopLevel_ult_tar #(
    tb_mdt_tar mdt_tar_inst(
 			   .clock(clock), // : in  l0mdt_control_rt;
 			   .reset(~reset_n),
-			.tar_inn_ctrl_v(0), //        : in std_logic_vector; -- : in  TAR_CTRL_t;
+/* -----\/----- EXCLUDED -----\/-----
+			.tar_inn_ctrl_v(64'b0), //        : in std_logic_vector; -- : in  TAR_CTRL_t;
 			.tar_inn_mon_v(dummy_mon[0]), //        : out std_logic_vector;-- : out TAR_MON_t;
-			.tar_mid_ctrl_v(0), //        : in std_logic_vector; -- : in  TAR_CTRL_t;
+			.tar_mid_ctrl_v(64'b0), //        : in std_logic_vector; -- : in  TAR_CTRL_t;
 			.tar_mid_mon_v(dummy_mon[1]), //         : out std_logic_vector;-- : out TAR_MON_t;
-			.tar_out_ctrl_v(0), //        : in std_logic_vector; -- : in  TAR_CTRL_t;
+			.tar_out_ctrl_v(64'b0), //        : in std_logic_vector; -- : in  TAR_CTRL_t;
 			.tar_out_mon_v(dummy_mon[2]), //         : out std_logic_vector;-- : out TAR_MON_t;
-			.tar_ext_ctrl_v(0),//        : in std_logic_vector; -- : in  TAR_CTRL_t;
+			.tar_ext_ctrl_v(64'b0),//        : in std_logic_vector; -- : in  TAR_CTRL_t;
 			.tar_ext_mon_v(dummy_mon[3]), //         : out std_logic_vector;-- : out TAR_MON_t;
+ -----/\----- EXCLUDED -----/\----- */
 			//    -- TDC Hits from Polmux
 			.i_inn_tdc_hits_av(i_inn_tdc_hits), // : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
 			.i_mid_tdc_hits_av(i_mid_tdc_hits), // : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
