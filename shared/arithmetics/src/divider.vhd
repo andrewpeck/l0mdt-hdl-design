@@ -38,22 +38,6 @@ END divider;
 
 architecture divider_arc of divider is
 
-  ---COMPONENTS --------
-  COMPONENT rom
-    GENERIC (
-      MXADRB    : INTEGER;
-      MXDATB    : INTEGER;
-      ROM_FILE  : STRING;
-      ROM_STYLE : STRING
-    );
-    PORT (
-      clka  : IN STD_LOGIC;
-      ena   : IN STD_LOGIC;
-      addra : IN STD_LOGIC_VECTOR;
-      douta : OUT STD_LOGIC_VECTOR
-    );
-  END COMPONENT;
-
   -- SIGNALS
   SIGNAL reciprocal_addr : STD_LOGIC_VECTOR(g_DENOMINATOR_LEN-1 DOWNTO 0);
   SIGNAL reciprocal_den : STD_LOGIC_VECTOR(g_DIVIDER_LEN-1 DOWNTO 0);
@@ -69,7 +53,7 @@ architecture divider_arc of divider is
 
 begin
 
-  reciprocal_rom : rom
+  reciprocal_rom : entity shared_lib.rom
   GENERIC MAP(
     MXADRB    => g_DENOMINATOR_LEN,
     MXDATB    => g_DIVIDER_LEN,
