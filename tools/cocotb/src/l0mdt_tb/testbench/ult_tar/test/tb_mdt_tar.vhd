@@ -25,14 +25,14 @@ entity tb_mdt_tar is
     clock : in  std_logic;
     reset : in  std_logic;
     --
-    tar_inn_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
-    tar_inn_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
-    tar_mid_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
-    tar_mid_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
-    tar_out_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
-    tar_out_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
-    tar_ext_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
-    tar_ext_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
+    --tar_inn_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    --tar_inn_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
+    --tar_mid_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    --tar_mid_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
+    --tar_out_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    --tar_out_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
+    --tar_ext_ctrl_v        : in std_logic_vector; -- : in  TAR_CTRL_t;
+    --tar_ext_mon_v         : out std_logic_vector;-- : out TAR_MON_t;
     -- ttc
     -- ttc_commands      : in  l0mdt_ttc_rt;
     -- TDC Hits from Polmux
@@ -63,10 +63,34 @@ end entity tb_mdt_tar;
 
 architecture beh of tb_mdt_tar is
   signal clock_and_control :l0mdt_control_rt;
+  signal tar_inn_ctrl_r       : TAR_CTRL_t;
+  signal tar_inn_mon_r      : TAR_MON_t;
+  signal tar_mid_ctrl_r       :  TAR_CTRL_t;
+  signal tar_mid_mon_r     :  TAR_MON_t;
+  signal tar_out_ctrl_r        : TAR_CTRL_t;
+  signal tar_out_mon_r      : TAR_MON_t;
+  signal tar_ext_ctrl_r        :  TAR_CTRL_t;
+  signal tar_ext_mon_r      : TAR_MON_t;
+
+  signal tar_inn_ctrl_v       : std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0);
+  signal tar_inn_mon_v      : std_logic_vector(width(tar_inn_mon_r) -1 downto 0);
+  signal tar_mid_ctrl_v       :  std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0);
+  signal tar_mid_mon_v     :  std_logic_vector(width(tar_inn_mon_r) -1 downto 0);
+  signal tar_out_ctrl_v        : std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0);
+  signal tar_out_mon_v      : std_logic_vector(width(tar_inn_mon_r) -1 downto 0);
+  signal tar_ext_ctrl_v        :  std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0);
+  signal tar_ext_mon_v      : std_logic_vector(width(tar_inn_mon_r) -1 downto 0);
+
+  
   begin
 
     clock_and_control.clk <= clock;
     clock_and_control.rst <= reset;
+    tar_inn_ctrl_v    <=  convert( tar_inn_ctrl_r,  tar_inn_ctrl_v );
+    tar_mid_ctrl_v   <=  convert( tar_mid_ctrl_r,  tar_mid_ctrl_v );
+    tar_out_ctrl_v    <=  convert( tar_out_ctrl_r,  tar_out_ctrl_v );
+    tar_ext_ctrl_v    <=  convert( tar_ext_ctrl_r,  tar_ext_ctrl_v );
+    
     ULT_TAR : entity ult_lib.mdt_tar
       port map (
         -- clock, control, and monitoring
