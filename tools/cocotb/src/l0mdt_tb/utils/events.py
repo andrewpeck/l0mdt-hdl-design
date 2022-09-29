@@ -56,13 +56,17 @@ def timing_info_gen(filename):
             yield line
 
 
-def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):
-
+def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):  
     station_num = station_name_to_id(station_ID)
+    #print(" _event_belongs_to_sectorID station_ID = ", station_ID, "station_num =", station_num)
     if(station_num == -99):
         sl_trailer = DF[icand].getBitFieldWord("SL_TRAILER", "")
-    else:
+    elif station_ID != "EXT": #EXT station not supported by TV generator
         sl_trailer = DF[station_num].getBitFieldWord("SL_TRAILER", "")
+    else:        
+        print ("TV does not exist for station ID = ", station_ID)
+        return 2; #DF not supported yet (example for EXT station), TODO - check behavior - will probably infer zeroes
+
     fiber_id = sl_trailer[0].get_field_bits("fiberid")
     evt_sector_id = fiber_id + 1
 
@@ -239,7 +243,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
             print("\nEvent: ", ievent)
             for this_candidate in range(n_candidates):
                 #print ("this_candidate = ", this_candidate, " thread id = ", tv_thread_mapping[this_candidate], " tv_format = ",tvformat)
-                if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate]):
+                if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate] == 1, station_ID = stationID[this_candidate]): #TODO - Need to handle EXT station 
                     EXP_DF.clear()
                     RTL_DFSL.clear()
                     tv_format_val.clear()
@@ -322,6 +326,8 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         evt = evt + 1
                     EXP_BF.clear()
                     RTL_BF.clear()
+
+
 
     Path(output_path).mkdir(parents=True, exist_ok=True)    
     for key in pp_comparison_list.keys():
