@@ -37,7 +37,9 @@ use shared_lib.detector_param_pkg.all;
 package l0mdt_sim_cstm_pkg is
   
   type event_xaut is array (integer range <>) of unsigned(31 downto 0);
+  type event_xaaut is array (integer range <>) of event_xaut(0 to c_NUM_THREADS - 1);
   type event_xat is array (integer range <>) of std_logic_vector(31 downto 0);
+  type event_xaat is array (integer range <>) of event_xat(0 to c_NUM_THREADS - 1);
 
   type event_aut is array (0 to c_TOTAL_MAX_NUM_HP - 1) of unsigned(31 downto 0);
   type event_at is array (0 to c_TOTAL_MAX_NUM_HP - 1) of std_logic_vector(31 downto 0);

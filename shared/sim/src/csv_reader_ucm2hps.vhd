@@ -113,6 +113,8 @@ architecture sim of csv_reader_ucm2hps is
   signal file_open          : std_logic := '0';   
   signal file_ts            : string(1 to LINE_LENGTH_MAX);
   --
+  signal slc_event_ai       : event_xaaut(c_MAX_NUM_ST -1 downto 0);
+   
   signal ucm_event_r  : eve_ucm2hps_rt;
   type ucm2hps_fifo_at is array (c_NUM_THREADS -1 downto 0) of eve_ucm2hps_art;
   type ucm2hps_fifo_aat is array (c_MAX_NUM_ST -1 downto 0) of ucm2hps_fifo_at; 
@@ -183,47 +185,41 @@ begin
       ucm2hps_fifo <= (others => (others => (others => ucm_event_r0)));
       -- o_mdt_event_ai <= (others => (others => (others => '0')));
       o_slc_event_ai <= (others => (others => '0'));
+      slc_event_ai <= (others => (others => (others => '0')));
     else
       if ena = '1' then
         -- write to DUT
         FIFO_RD : for st_i in 0 to c_MAX_NUM_ST - 1 loop
-          for th_i in 0 to c_NUM_THREADS - 1 loop
-            if(ucm2hps_fifo_counters_v(st_i)(th_i) > 0) then
-              case( st_i ) is
-                when 0 =>
-                o_ucm2hps_inn_av(th_i) <= convert(ucm2hps_fifo(st_i)(th_i)(0).ucm2hps,o_ucm2hps_inn_av(th_i));
-                when 1 =>
-                o_ucm2hps_mid_av(th_i) <= convert(ucm2hps_fifo(st_i)(th_i)(0).ucm2hps,o_ucm2hps_mid_av(th_i));
-                when 2 =>
-                o_ucm2hps_out_av(th_i) <= convert(ucm2hps_fifo(st_i)(th_i)(0).ucm2hps,o_ucm2hps_ext_av(th_i));
-                when 3 =>
-                o_ucm2hps_ext_av(th_i) <= convert(ucm2hps_fifo(st_i)(th_i)(0).ucm2hps,o_ucm2hps_out_av(th_i));
-                when others =>
-                  assert FALSE report "Error station in FIFO_RD" severity note;
-              end case ;
-              -- o_mdt_event_ai(st_i)(th_i) <= ucm2hps_fifo(st_i)(th_i)(0).muonFixedId;
-              o_slc_event_ai(th_i) <= ucm2hps_fifo(st_i)(th_i)(0).event_id;
-              for mv_i in TB_ucm2HPS_FIFO_WIDTH -1 downto 1 loop
-                ucm2hps_fifo(st_i)(th_i)(mv_i - 1) <= ucm2hps_fifo(st_i)(th_i)(mv_i);
-              end loop;
-                ucm2hps_fifo_counters_v(st_i)(th_i) := ucm2hps_fifo_counters_v(st_i)(th_i) - 1;
-            else
-              -- o_mdt_event_ai(st_i)(th_i) <= (others => '0');
-              o_slc_event_ai(th_i) <= (others => '0');
-              case( st_i ) is
-                when 0 =>
-                o_ucm2hps_inn_av(th_i) <= zero(o_ucm2hps_inn_av(th_i));
-                when 1 =>
-                o_ucm2hps_mid_av(th_i) <= zero(o_ucm2hps_mid_av(th_i));
-                when 2 =>
-                o_ucm2hps_out_av(th_i) <= zero(o_ucm2hps_out_av(th_i));
-                when 3 =>
-                o_ucm2hps_ext_av(th_i) <= zero(o_ucm2hps_ext_av(th_i));
-                when others =>
-                  assert FALSE report "Error station in FIFO_RD" severity note;
-              end case ;
-            end if;
-          end loop;
+          if g_ST_ENABLE(st_i) then
+            for th_i in 0 to c_NUM_THREADS - 1 loop
+              if(ucm2hps_fifo_counters_v(st_i)(th_i) > 0) then
+                case( st_i ) is
+                  when 0 => o_ucm2hps_inn_av(th_i) <= convert(ucm2hps_fifo(st_i)(th_i)(0).ucm2hps,o_ucm2hps_inn_av(th_i));
+                  when 1 => o_ucm2hps_mid_av(th_i) <= convert(ucm2hps_fifo(st_i)(th_i)(0).ucm2hps,o_ucm2hps_mid_av(th_i));
+                  when 2 => o_ucm2hps_out_av(th_i) <= convert(ucm2hps_fifo(st_i)(th_i)(0).ucm2hps,o_ucm2hps_ext_av(th_i));
+                  when 3 => o_ucm2hps_ext_av(th_i) <= convert(ucm2hps_fifo(st_i)(th_i)(0).ucm2hps,o_ucm2hps_out_av(th_i));
+                  when others => assert FALSE report "Error station in FIFO_RD" severity note;
+                end case ;
+                o_slc_event_ai(th_i) <= ucm2hps_fifo(st_i)(th_i)(0).event_id;
+                slc_event_ai(st_i)(th_i) <= ucm2hps_fifo(st_i)(th_i)(0).event_id;
+                for mv_i in TB_ucm2HPS_FIFO_WIDTH -1 downto 1 loop
+                  ucm2hps_fifo(st_i)(th_i)(mv_i - 1) <= ucm2hps_fifo(st_i)(th_i)(mv_i);
+                end loop;
+                  ucm2hps_fifo_counters_v(st_i)(th_i) := ucm2hps_fifo_counters_v(st_i)(th_i) - 1;
+              else
+                -- o_mdt_event_ai(st_i)(th_i) <= (others => '0');
+                -- o_slc_event_ai(th_i) <= (others => '0');
+                case( st_i ) is
+                  when 0 => o_ucm2hps_inn_av(th_i) <= zero(o_ucm2hps_inn_av(th_i)); o_slc_event_ai(th_i) <= (others => '0');  
+                  when 1 => o_ucm2hps_mid_av(th_i) <= zero(o_ucm2hps_mid_av(th_i)); o_slc_event_ai(th_i) <= (others => '0');
+                  when 2 => o_ucm2hps_out_av(th_i) <= zero(o_ucm2hps_out_av(th_i)); o_slc_event_ai(th_i) <= (others => '0');
+                  when 3 => o_ucm2hps_ext_av(th_i) <= zero(o_ucm2hps_ext_av(th_i)); o_slc_event_ai(th_i) <= (others => '0');
+                  when others => assert FALSE report "Error station in FIFO_RD" severity note;
+                end case ;
+              end if;
+            end loop;
+          end if ;
+
         end loop ; -- FIFO_RD
         -- read from CSV
         if first_read = '1' then

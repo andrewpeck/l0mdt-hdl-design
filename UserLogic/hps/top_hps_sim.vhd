@@ -82,6 +82,8 @@ use ctrl_lib.HPS_CTRL_DEF.all;
 library work;
 use work.hps_sim_pkg.all;
 
+library vamc_lib;
+
 entity hps_tb is
   generic(
     g_HPS_MAX_HP : integer := 6;
@@ -109,6 +111,10 @@ architecture beh of hps_tb is
   constant clk_tdc_time_period : time := 0.78125 ns;  
   signal clk_tdc_time : std_logic := '0';
   signal tb_curr_tdc_time : unsigned(63 downto 0) := (others => '0');
+  -- clk 100ps
+  constant clk_sim_time_period : time := 100 ps;  
+  signal clk_sim_time : std_logic := '0';
+  signal tb_curr_sim_time : unsigned(63 downto 0) := (others => '0');
   -- clk
   constant clk_period : time := 3.125 ns;  -- 320Mhz
   signal clk : std_logic := '0';
@@ -126,12 +132,17 @@ architecture beh of hps_tb is
   signal tar2hps_file_ok    : std_logic;
   signal tar2hps_file_ts    : string(1 to LINE_LENGTH_MAX);
   --
-  signal ucm2hps_slc_event_ai : event_xaut(c_NUM_THREADS -1 downto 0);
-  signal tar2hps_mdt_event_ai : event_tdc_aut;
+  signal ucm2hps_slc_event_au : event_xaut(c_NUM_THREADS -1 downto 0);
+  signal pl_ucm2hps_slc_event_au : event_xaut(c_NUM_THREADS -1 downto 0);
+  signal pl_ucm2hps_slc_event_a : event_xat(c_NUM_THREADS -1 downto 0);
+  signal tar2hps_mdt_event_au : event_tdc_aut;
+  signal tar2hps_slc_event_au : event_tdc_aut;
+  
 
   signal ctrl_v             : ctrl_avt;
   signal mon_v              : mon_avt;
   signal ucm2hps_aav        : ucm2hps_aavt;
+  signal pl_ucm2hps_aav     : ucm2hps_aavt;
   signal tar2hps_aav        : tar2hps_aavt;
   signal hps2pt_aav         : hps2pt_aavt; 
 
@@ -184,6 +195,17 @@ begin
       end if;
     end if;
   end process axi_clk_proc;
+  -------------------------------------------------------------------------------------
+	-- AXI Reset Generator
+	-------------------------------------------------------------------------------------
+	axi_rst_process: process begin
+		axi_rst<='0';
+		wait for CLK_period*c_CLK_AXI_MULT;
+		axi_rst<='1';
+		wait for CLK_period*reset_init_cycles*c_CLK_AXI_MULT;
+		axi_rst<= '0';
+		wait;
+  end process;
  	-------------------------------------------------------------------------------------
 	-- Reset Generator
 	-------------------------------------------------------------------------------------
@@ -213,11 +235,46 @@ begin
       tb_curr_tdc_time <= tb_curr_tdc_time + '1';
     end if;
   end process;
-
+  -------------------------------------------------------------------------------------
+	-- clock Sim Generator
+	-------------------------------------------------------------------------------------
+  CLK_SIM : process begin
+    clk_sim_time <= '0';
+    wait for clk_sim_time_period/2;
+    clk_sim_time <= '1';
+    wait for clk_sim_time_period/2;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- Test Bench sim time
+  -------------------------------------------------------------------------------------
+  ToA_sim: process(clk_sim_time) begin
+    if rising_edge(clk_sim_time) then
+      tb_curr_sim_time <= tb_curr_sim_time + '1';
+    end if;
+  end process;
   -------------------------------------------------------------------------------------
 	-- 
   -------------------------------------------------------------------------------------
   STATION_GEN: for st_i in 0 to 3 generate
+    TH_GEN: for th_i in 0 to c_NUM_THREADS-1 generate
+      C_PL : entity vamc_lib.vamc_spl
+        generic map(
+          -- pragma translate_off
+          g_SIMULATION => '1',
+          -- pragma translate_on
+          -- g_PIPELINE_TYPE => "ring_buffer",
+          g_DELAY_CYCLES  => 12,
+          g_PIPELINE_WIDTH    => ucm2hps_vt'w
+        )
+        port map(
+          clk         => clk,
+          rst         => rst,
+          ena         => '1',
+          --
+          i_data      => ucm2hps_aav(st_i)(th_i),
+          o_data      => pl_ucm2hps_aav(st_i)(th_i)
+      );
+    end generate TH_GEN;
     HPS: if g_ST_ENABLE(st_i)='1' generate
       signal ctrl_r             : HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
       signal mon_r              : HPS_MON_t;
@@ -238,12 +295,18 @@ begin
           ctrl_v              => ctrl_v(st_i),
           mon_v               => mon_v(st_i),
           -- SLc
-          i_uCM2hps_av        => ucm2hps_aav(st_i),
+          i_uCM2hps_av        => pl_ucm2hps_aav(st_i),
           -- MDT hit
           i_mdt_tar_av        => tar2hps_aav(st_i),
           -- to pt calc
           o_sf2pt_av          => hps2pt_aav(st_i)
       );
+    else generate
+      mon_v(st_i) <= (others => '0');
+      ctrl_v(st_i) <= (others => '0');
+      pl_ucm2hps_aav(st_i) <= (others => (others => '0'));
+      tar2hps_aav(st_i) <= (others => (others => '0'));
+      hps2pt_aav(st_i) <= (others => (others => '0'));
     end generate;
   end generate STATION_GEN;
   -------------------------------------------------------------------------------------
@@ -265,14 +328,33 @@ begin
     o_file_ok         => ucm2hps_file_ok,
     o_file_ts         => ucm2hps_file_ts, 
     --
-    o_slc_event_ai    => ucm2hps_slc_event_ai,
+    o_slc_event_ai    => ucm2hps_slc_event_au,
     -- TAR Hits for simulation
     o_ucm2hps_inn_av  => ucm2hps_aav(0),
     o_ucm2hps_mid_av  => ucm2hps_aav(1),
     o_ucm2hps_out_av  => ucm2hps_aav(2),
     o_ucm2hps_ext_av  => ucm2hps_aav(3)
   );
-
+  TH_ID_GEN: for th_i in 0 to c_NUM_THREADS-1 generate
+    C_PL : entity vamc_lib.vamc_spl
+      generic map(
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
+        -- g_PIPELINE_TYPE => "ring_buffer",
+        g_DELAY_CYCLES  => 12,
+        g_PIPELINE_WIDTH    => 32
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => '1',
+        --
+        i_data      => std_logic_vector(ucm2hps_slc_event_au(th_i)),
+        o_data      => pl_ucm2hps_slc_event_a(th_i)
+    );
+    pl_ucm2hps_slc_event_au(th_i) <= unsigned(pl_ucm2hps_slc_event_a(th_i));
+  end generate TH_ID_GEN;
   -------------------------------------------------------------------------------------
 	-- UCM IN
   -------------------------------------------------------------------------------------
@@ -293,8 +375,8 @@ begin
     o_file_ok           => tar2hps_file_ok,
     o_file_ts           => tar2hps_file_ts, 
     --
-    o_mdt_event_ai      => tar2hps_mdt_event_ai,
-    -- o_slc_event_ai    => tar2hps_slc_event_ai,
+    o_mdt_event_ai      => tar2hps_mdt_event_au,
+    o_slc_event_ai      => tar2hps_slc_event_au,
     --
     o_tar_hits_inn_av   => tar2hps_aav(0),
     o_tar_hits_mid_av   => tar2hps_aav(1),
@@ -314,6 +396,7 @@ begin
     rst                     => rst,
     enable                  => glob_en,
     --
+    tb_curr_sim_time        => tb_curr_sim_time,
     tb_curr_tdc_time        => tb_curr_tdc_time,
     --
     i_ucm2hps_file_ok       => ucm2hps_file_ok,
@@ -321,108 +404,13 @@ begin
     i_tar2hps_file_ok       => tar2hps_file_ok,
     i_tar2hps_file_ts       => tar2hps_file_ts,
     -- --
-    i_ucm2hps_slc_event_ai  => ucm2hps_slc_event_ai,
-    i_tar2hps_mdt_event_ai  => tar2hps_mdt_event_ai
+    i_ucm2hps_slc_event_au  => pl_ucm2hps_slc_event_au,
+    i_tar2hps_mdt_event_au  => tar2hps_mdt_event_au,
+    i_tar2hps_slc_event_au  => tar2hps_slc_event_au
+
   );
 
   
   
 
 end beh;
-
- -- HPS_INN_GEN: if g_ST_ENABLE(0)='1' generate
-  --   ctrl_inn_v <= convert(ctrl_inn_r,ctrl_inn_v);
-  --   mon_inn_r <= convert(mon_inn_v,mon_inn_r);
-  --   --------------------------------------------------------------
-  --   HPS : entity hps_lib.hps
-  --     generic map(
-  --       g_STATION_RADIUS    => 0,
-  --       g_HPS_NUM_MDT_CH     => c_HP_NUM_SECTOR_STATION(0)
-  --     )
-  --     port map(
-  --       clk                 => clk,
-  --       rst                 => rst,
-  --       glob_en             => glob_en,
-  --       -- configuration & control
-  --       ctrl_v              => ctrl_inn_v,
-  --       mon_v               => mon_inn_v,
-  --       -- SLc
-  --       i_uCM2hps_av        => uCM2hps_inn_av,
-  --       -- MDT hit
-  --       i_mdt_tar_av        => tar2hps_inn_av,
-  --       -- to pt calc
-  --       o_sf2pt_av          => hps2pt_inn_av
-  --   );
-  -- end generate;
-  -- HPS_MID_GEN: if g_ST_ENABLE(1)='1' generate
-  --   ctrl_mid_v <= convert(ctrl_mid_r,ctrl_mid_v);
-  --   mon_mid_r <= convert(mon_mid_v,mon_mid_r);
-  --   --------------------------------------------------------------
-  --   HPS : entity hps_lib.hps
-  --     generic map(
-  --       g_STATION_RADIUS    => 1,
-  --       g_HPS_NUM_MDT_CH     => c_HP_NUM_SECTOR_STATION(1)
-  --     )
-  --     port map(
-  --       clk                 => clk,
-  --       rst                 => rst,
-  --       glob_en             => glob_en,
-  --       -- configuration & control
-  --       ctrl_v              => ctrl_mid_v,
-  --       mon_v               => mon_mid_v,
-  --       -- SLc
-  --       i_uCM2hps_av        => uCM2hps_mid_av,
-  --       -- MDT hit
-  --       i_mdt_tar_av        => tar2hps_mid_av,
-  --       -- to pt calc
-  --       o_sf2pt_av          => hps2pt_mid_av
-  --   );
-  -- end generate;
-  -- HPS_OUT_GEN: if g_ST_ENABLE(2)='1' generate
-  --   ctrl_out_v <= convert(ctrl_out_r,ctrl_out_v);
-  --   mon_out_r <= convert(mon_out_v,mon_out_r);
-  --   --------------------------------------------------------------
-  --   HPS : entity hps_lib.hps
-  --     generic map(
-  --       g_STATION_RADIUS    => 2,
-  --       g_HPS_NUM_MDT_CH     => c_HP_NUM_SECTOR_STATION(2)
-  --     )
-  --     port map(
-  --       clk                 => clk,
-  --       rst                 => rst,
-  --       glob_en             => glob_en,
-  --       -- configuration & control
-  --       ctrl_v              => ctrl_out_v,
-  --       mon_v               => mon_out_v,
-  --       -- SLc
-  --       i_uCM2hps_av        => uCM2hps_out_av,
-  --       -- MDT hit
-  --       i_mdt_tar_av        => tar2hps_out_av,
-  --       -- to pt calc
-  --       o_sf2pt_av          => hps2pt_out_av
-  --   );
-  -- end generate;
-  -- HPS_EXT_GEN: if g_ST_ENABLE(3)='1' generate
-  --   ctrl_ext_v <= convert(ctrl_ext_r,ctrl_ext_v);
-  --   mon_ext_r <= convert(mon_ext_v,mon_ext_r);
-  --   --------------------------------------------------------------
-  --   HPS : entity hps_lib.hps
-  --     generic map(
-  --       g_STATION_RADIUS    => 3,
-  --       g_HPS_NUM_MDT_CH     => c_HP_NUM_SECTOR_STATION(3)
-  --     )
-  --     port map(
-  --       clk                 => clk,
-  --       rst                 => rst,
-  --       glob_en             => glob_en,
-  --       -- configuration & control
-  --       ctrl_v              => ctrl_ext_v,
-  --       mon_v               => mon_ext_v,
-  --       -- SLc
-  --       i_uCM2hps_av        => uCM2hps_ext_av,
-  --       -- MDT hit
-  --       i_mdt_tar_av        => tar2hps_ext_av,
-  --       -- to pt calc
-  --       o_sf2pt_av          => hps2pt_ext_av
-  --   );
-  -- end generate;

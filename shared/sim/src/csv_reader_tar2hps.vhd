@@ -183,16 +183,11 @@ begin
             for hp_i in 0 to c_HP_NUM_SECTOR_STATION(st_i) - 1 loop
               if(tar2hps_fifo_counters_v(st_i)(hp_i) > 0) then
                 case( st_i ) is
-                  when 0 =>
-                  o_tar_hits_inn_av(hp_i) <= convert(tar2hps_fifo(st_i)(hp_i)(0).tar2hps,o_tar_hits_inn_av(hp_i));
-                  when 1 =>
-                  o_tar_hits_mid_av(hp_i) <= convert(tar2hps_fifo(st_i)(hp_i)(0).tar2hps,o_tar_hits_mid_av(hp_i));
-                  when 2 =>
-                  o_tar_hits_out_av(hp_i) <= convert(tar2hps_fifo(st_i)(hp_i)(0).tar2hps,o_tar_hits_ext_av(hp_i));
-                  when 3 =>
-                  o_tar_hits_ext_av(hp_i) <= convert(tar2hps_fifo(st_i)(hp_i)(0).tar2hps,o_tar_hits_out_av(hp_i));
-                  when others =>
-                    assert FALSE report "Error station in FIFO_RD" severity note;
+                  when 0 => o_tar_hits_inn_av(hp_i) <= convert(tar2hps_fifo(st_i)(hp_i)(0).tar2hps,o_tar_hits_inn_av(hp_i));
+                  when 1 => o_tar_hits_mid_av(hp_i) <= convert(tar2hps_fifo(st_i)(hp_i)(0).tar2hps,o_tar_hits_mid_av(hp_i));
+                  when 2 => o_tar_hits_out_av(hp_i) <= convert(tar2hps_fifo(st_i)(hp_i)(0).tar2hps,o_tar_hits_ext_av(hp_i));
+                  when 3 => o_tar_hits_ext_av(hp_i) <= convert(tar2hps_fifo(st_i)(hp_i)(0).tar2hps,o_tar_hits_out_av(hp_i));
+                  when others => assert FALSE report "Error station in FIFO_RD" severity note;
                 end case ;
                 o_mdt_event_ai(st_i)(hp_i) <= tar2hps_fifo(st_i)(hp_i)(0).muonFixedId;
                 o_slc_event_ai(st_i)(hp_i) <= tar2hps_fifo(st_i)(hp_i)(0).event_id;
@@ -204,16 +199,11 @@ begin
                 o_mdt_event_ai(st_i)(hp_i) <= (others => '0');
                 o_slc_event_ai(st_i)(hp_i) <= (others => '0');
                 case( st_i ) is
-                  when 0 =>
-                  o_tar_hits_inn_av(hp_i) <= zero(o_tar_hits_inn_av(hp_i));
-                  when 1 =>
-                  o_tar_hits_mid_av(hp_i) <= zero(o_tar_hits_mid_av(hp_i));
-                  when 2 =>
-                  o_tar_hits_out_av(hp_i) <= zero(o_tar_hits_out_av(hp_i));
-                  when 3 =>
-                  o_tar_hits_ext_av(hp_i) <= zero(o_tar_hits_ext_av(hp_i));
-                  when others =>
-                    assert FALSE report "Error station in FIFO_RD" severity note;
+                  when 0 => o_tar_hits_inn_av(hp_i) <= zero(o_tar_hits_inn_av(hp_i));
+                  when 1 => o_tar_hits_mid_av(hp_i) <= zero(o_tar_hits_mid_av(hp_i));
+                  when 2 => o_tar_hits_out_av(hp_i) <= zero(o_tar_hits_out_av(hp_i));
+                  when 3 => o_tar_hits_ext_av(hp_i) <= zero(o_tar_hits_ext_av(hp_i));
+                  when others => assert FALSE report "Error station in FIFO_RD" severity note;
                 end case ;
               end if;
             end loop;

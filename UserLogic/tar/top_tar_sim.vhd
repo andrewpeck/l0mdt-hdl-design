@@ -367,7 +367,17 @@ begin
     clk <= '1';
     wait for CLK_period/2;
   end process;
-  -- clk <= clk;
+ 	-------------------------------------------------------------------------------------
+	-- Reset Generator
+	-------------------------------------------------------------------------------------
+	rst_process: process begin
+		rst<='0';
+		wait for CLK_period;
+		rst<='1';
+		wait for CLK_period*reset_init_cycles;
+		rst<= '0';
+		wait;
+  end process;
   -------------------------------------------------------------------------------------
   --    AXI CLK
   -------------------------------------------------------------------------------------
@@ -388,14 +398,14 @@ begin
     end if;
   end process axi_clk_proc;
  	-------------------------------------------------------------------------------------
-	-- Reset Generator
+	-- AXI Reset Generator
 	-------------------------------------------------------------------------------------
-	rst_process: process begin
-		rst<='0';
-		wait for CLK_period;
-		rst<='1';
-		wait for CLK_period*reset_init_cycles;
-		rst<= '0';
+	axi_rst_process: process begin
+		axi_rst<='0';
+		wait for CLK_period*c_CLK_AXI_MULT;
+		axi_rst<='1';
+		wait for CLK_period*reset_init_cycles*c_CLK_AXI_MULT;
+		axi_rst<= '0';
 		wait;
   end process;
   -- rst <= rst;
