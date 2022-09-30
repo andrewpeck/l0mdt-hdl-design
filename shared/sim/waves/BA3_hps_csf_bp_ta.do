@@ -117,37 +117,30 @@ add wave -noupdate -group ucm2hps /hps_tb/UCM2HPS/o_ucm2hps_inn_av
 add wave -noupdate -group ucm2hps /hps_tb/UCM2HPS/o_ucm2hps_mid_av
 add wave -noupdate -group ucm2hps /hps_tb/UCM2HPS/o_ucm2hps_out_av
 add wave -noupdate -group ucm2hps /hps_tb/UCM2HPS/o_ucm2hps_ext_av
-add wave -noupdate -expand -group hps_int_out -expand -group cnst /hps_tb/HPSOUT/g_PRJ_INFO
-add wave -noupdate -expand -group hps_int_out -expand -group cnst /hps_tb/HPSOUT/g_ST_ENABLE
-add wave -noupdate -expand -group hps_int_out -expand -group cnst /hps_tb/HPSOUT/csv_file_1
-add wave -noupdate -expand -group hps_int_out -expand -group cnst /hps_tb/HPSOUT/i_tar2hps_file_ok
-add wave -noupdate -expand -group hps_int_out -expand -group cnst /hps_tb/HPSOUT/i_tar2hps_file_ts
-add wave -noupdate -expand -group hps_int_out -expand -group cnst /hps_tb/HPSOUT/i_ucm2hps_file_ok
-add wave -noupdate -expand -group hps_int_out -expand -group cnst /hps_tb/HPSOUT/i_ucm2hps_file_ts
-add wave -noupdate -expand -group hps_int_out -expand -group cnst /hps_tb/HPSOUT/OUT_FILE_1
+add wave -noupdate -expand -group hps_int_out -group cnst /hps_tb/HPSOUT/g_PRJ_INFO
+add wave -noupdate -expand -group hps_int_out -group cnst /hps_tb/HPSOUT/g_ST_ENABLE
+add wave -noupdate -expand -group hps_int_out -group cnst /hps_tb/HPSOUT/i_tar2hps_file_ok
+add wave -noupdate -expand -group hps_int_out -group cnst /hps_tb/HPSOUT/i_tar2hps_file_ts
+add wave -noupdate -expand -group hps_int_out -group cnst /hps_tb/HPSOUT/i_ucm2hps_file_ok
+add wave -noupdate -expand -group hps_int_out -group cnst /hps_tb/HPSOUT/i_ucm2hps_file_ts
 add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/clk
 add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/enable
 add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/rst
 add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/tb_curr_sim_time
 add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/tb_curr_tdc_time
-add wave -noupdate -expand -group hps_int_out -radix unsigned -childformat {{/hps_tb/HPSOUT/i_tar2hps_mdt_event_au(0) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_mdt_event_au(1) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_mdt_event_au(2) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_mdt_event_au(3) -radix unsigned}} -expand -subitemconfig {/hps_tb/HPSOUT/i_tar2hps_mdt_event_au(0) {-radix unsigned} /hps_tb/HPSOUT/i_tar2hps_mdt_event_au(1) {-radix unsigned} /hps_tb/HPSOUT/i_tar2hps_mdt_event_au(2) {-radix unsigned} /hps_tb/HPSOUT/i_tar2hps_mdt_event_au(3) {-radix unsigned}} /hps_tb/HPSOUT/i_tar2hps_mdt_event_au
-add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/i_tar2hps_slc_event_au
+add wave -noupdate -expand -group hps_int_out -radix unsigned -childformat {{/hps_tb/HPSOUT/i_tar2hps_mdt_event_au(0) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_mdt_event_au(1) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_mdt_event_au(2) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_mdt_event_au(3) -radix unsigned}} -subitemconfig {/hps_tb/HPSOUT/i_tar2hps_mdt_event_au(0) {-height 17 -radix unsigned} /hps_tb/HPSOUT/i_tar2hps_mdt_event_au(1) {-height 17 -radix unsigned} /hps_tb/HPSOUT/i_tar2hps_mdt_event_au(2) {-height 17 -radix unsigned} /hps_tb/HPSOUT/i_tar2hps_mdt_event_au(3) {-height 17 -radix unsigned}} /hps_tb/HPSOUT/i_tar2hps_mdt_event_au
+add wave -noupdate -expand -group hps_int_out -radix unsigned -childformat {{/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0) -radix unsigned -childformat {{/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(0) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(1) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(2) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(3) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(4) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(5) -radix unsigned}}} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(1) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(2) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(3) -radix unsigned}} -subitemconfig {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0) {-height 17 -radix unsigned -childformat {{/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(0) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(1) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(2) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(3) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(4) -radix unsigned} {/hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(5) -radix unsigned}} -expand} /hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(0) {-height 17 -radix unsigned} /hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(1) {-height 17 -radix unsigned} /hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(2) {-height 17 -radix unsigned} /hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(3) {-height 17 -radix unsigned} /hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(4) {-height 17 -radix unsigned} /hps_tb/HPSOUT/i_tar2hps_slc_event_au(0)(5) {-height 17 -radix unsigned} /hps_tb/HPSOUT/i_tar2hps_slc_event_au(1) {-height 17 -radix unsigned} /hps_tb/HPSOUT/i_tar2hps_slc_event_au(2) {-height 17 -radix unsigned} /hps_tb/HPSOUT/i_tar2hps_slc_event_au(3) {-height 17 -radix unsigned}} /hps_tb/HPSOUT/i_tar2hps_slc_event_au
 add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/i_ucm2hps_slc_event_au
-add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/tar2hps_mdt_event_a
-add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/tar2hps_mdt_event_au
-add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/tar2hps_slc_event_a
-add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/tar2hps_slc_event_au
-add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/hps_heg_hp2bm_aaar
-add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/hps_heg_hp2bm_aaav
-add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/hps_pc_mdt_full_data_aar
 add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/in_files_ok
 add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/in_files_ts
-add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/OUT_FILE_1
-add wave -noupdate -expand -group hps_int_out -group inn /hps_tb/HPSOUT/SNIFFER_ST_GEN(0)/ST_EN/temp_mdt_full_data_av
-add wave -noupdate -expand -group hps_int_out -group inn -group th2 -expand /hps_tb/HPSOUT/SNIFFER_ST_GEN(0)/ST_EN/TH_GEN(2)/temp_hp2bm_av
-add wave -noupdate -expand -group hps_int_out -radix unsigned /hps_tb/HPSOUT/hps_pc_mdt_full_data_aav
+add wave -noupdate -expand -group hps_int_out -expand -group pc_out /hps_tb/HPSOUT/OUT_CSV_HPS_PC/tar2hps_mdt_event_a
+add wave -noupdate -expand -group hps_int_out -expand -group pc_out /hps_tb/HPSOUT/OUT_CSV_HPS_PC/tar2hps_mdt_event_au
+add wave -noupdate -expand -group hps_int_out -expand -group pc_out /hps_tb/HPSOUT/OUT_CSV_HPS_PC/tar2hps_slc_event_a
+add wave -noupdate -expand -group hps_int_out -expand -group pc_out /hps_tb/HPSOUT/OUT_CSV_HPS_PC/tar2hps_slc_event_au
+add wave -noupdate -expand -group hps_int_out -expand -group pc_out /hps_tb/HPSOUT/OUT_CSV_HPS_PC/hps_pc_mdt_full_data_aar
+add wave -noupdate -expand -group hps_int_out -expand -group pc_out -subitemconfig {/hps_tb/HPSOUT/OUT_CSV_HPS_PC/hps_pc_mdt_full_data_aav(0) -expand} /hps_tb/HPSOUT/OUT_CSV_HPS_PC/hps_pc_mdt_full_data_aav
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2505867585 fs} 0}
+WaveRestoreCursors {{Cursor 1} {2510707735 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 230
 configure wave -valuecolwidth 100
@@ -163,4 +156,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2494790930 fs} {2540612754 fs}
+WaveRestoreZoom {4898875634 fs} {5007142975 fs}

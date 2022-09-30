@@ -12,44 +12,8 @@
 -- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
 -- -----
 -- HISTORY:
+-- 2022-09-30	GLdL	Added PC only output
 --------------------------------------------------------------------------------
--- library ieee;
---   use ieee.std_logic_1164.all;
---   use ieee.numeric_std.all;
---   use ieee.std_logic_misc.all;
-
--- library shared_lib;
---   use shared_lib.common_ieee_pkg.all;
---   use shared_lib.l0mdt_constants_pkg.all;
---   use shared_lib.l0mdt_dataformats_pkg.all;
---   use shared_lib.common_constants_pkg.all;
---   use shared_lib.common_types_pkg.all;
---   use shared_lib.config_pkg.all;
---   use shared_lib.detector_param_pkg.all;
---   use shared_lib.detector_time_param_pkg.all;
---   -- use shared_lib.l0mdt_sim_cstm_pkg.all;
---   -- use shared_lib.vhdl_textio_csv_pkg.all;
-
--- library hp_lib;
--- use hp_lib.hp_pkg.all;
--- library heg_lib;
--- use heg_lib.heg_pkg.all;
--- library hps_lib;
--- use hps_lib.hps_pkg.all;
-
--- library ctrl_lib;
--- use ctrl_lib.HPS_CTRL.all;
--- use ctrl_lib.HPS_CTRL_DEF.all;
-
--- package csv_writer_hps_int_pkg is
---   type hps_pc2heg_aavt is array (c_MAX_NUM_ST -1 downto 0) of heg_pc2heg_avt(c_TOTAL_MAX_NUM_HP-1 downto 0);
---   type heg_hp2bm_aavt is array (c_NUM_THREADS -1 downto 0) of heg_hp2bm_avt(c_TOTAL_MAX_NUM_HP-1 downto 0);
---   type heg_hp2bm_aaavt is array (c_MAX_NUM_ST -1 downto 0) of heg_hp2bm_aavt;
---   type hps_pc2heg_aart is array (c_MAX_NUM_ST -1 downto 0) of heg_pc2heg_art(c_TOTAL_MAX_NUM_HP-1 downto 0);
---   type heg_hp2bm_aart is array (c_NUM_THREADS -1 downto 0) of heg_hp2bm_art(c_TOTAL_MAX_NUM_HP-1 downto 0);
---   type heg_hp2bm_aaart is array (c_MAX_NUM_ST -1 downto 0) of heg_hp2bm_aart;
--- end package ;
-
 library ieee;
   use ieee.std_logic_misc.all;
   use ieee.std_logic_1164.all;
@@ -79,9 +43,6 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
-
--- library work;
--- use work.csv_writer_hps_int_pkg.all;
 
 entity csv_writer_hps_int is
   generic(
@@ -128,10 +89,10 @@ architecture sim of csv_writer_hps_int is
   -- shared variable csv_file_2: csv_file_type;
   -- shared variable csv_file_3: csv_file_type;
 
-  signal tar2hps_slc_event_au : event_tdc_aut;
-  signal tar2hps_slc_event_a : event_tdc_at;
-  signal tar2hps_mdt_event_au : event_tdc_aut;
-  signal tar2hps_mdt_event_a : event_tdc_at;
+  -- signal tar2hps_slc_event_au : event_tdc_aut;
+  -- signal tar2hps_slc_event_a : event_tdc_at;
+  -- signal tar2hps_mdt_event_au : event_tdc_aut;
+  -- signal tar2hps_mdt_event_a : event_tdc_at;
   -- signal tar2hps_slc_event_a : event_tdc_at;
   -- signal tar2hps_mdt_event_a : event_tdc_at;
 
@@ -153,6 +114,10 @@ begin
     signal hps_heg_hp2bm_aaav : heg_hp2bm_aaavt;
     signal hps_pc_mdt_full_data_aar : hps_pc2heg_aart;
     signal hps_heg_hp2bm_aaar : heg_hp2bm_aaart;
+    signal tar2hps_slc_event_au : event_tdc_aut;
+    signal tar2hps_slc_event_a : event_tdc_at;
+    signal tar2hps_mdt_event_au : event_tdc_aut;
+    signal tar2hps_mdt_event_a : event_tdc_at;
   begin
     open_csv: process
     begin
@@ -496,9 +461,11 @@ begin
     constant OUT_FILE_1     : string  := "ov_" & g_PRJ_INFO & "_hps_pc_hits.csv";
     shared variable csv_file_1: csv_file_type;
     signal hps_pc_mdt_full_data_aav : hps_pc2heg_aavt;
-    signal hps_heg_hp2bm_aaav : heg_hp2bm_aaavt;
     signal hps_pc_mdt_full_data_aar : hps_pc2heg_aart;
-    signal hps_heg_hp2bm_aaar : heg_hp2bm_aaart;
+    signal tar2hps_slc_event_au : event_tdc_aut;
+    signal tar2hps_slc_event_a : event_tdc_at;
+    signal tar2hps_mdt_event_au : event_tdc_aut;
+    signal tar2hps_mdt_event_a : event_tdc_at;
   begin
     open_csv: process
     begin
@@ -591,7 +558,7 @@ begin
             g_SIMULATION => '1',
             -- pragma translate_on
             -- g_PIPELINE_TYPE => "ring_buffer",
-            g_DELAY_CYCLES  => 5,
+            g_DELAY_CYCLES  => 3,
             g_PIPELINE_WIDTH    => 32
           )
           port map(
@@ -609,7 +576,7 @@ begin
           g_SIMULATION => '1',
           -- pragma translate_on
           -- g_PIPELINE_TYPE => "ring_buffer",
-          g_DELAY_CYCLES  => 5,
+          g_DELAY_CYCLES  => 3,
           g_PIPELINE_WIDTH    => 32
         )
         port map(
@@ -648,13 +615,6 @@ begin
                   csv_file_1.write_integer(to_integer(hps_pc_mdt_full_data_aar(st_i)(hp_i).time_t0));
                   csv_file_1.write_integer(to_integer(hps_pc_mdt_full_data_aar(st_i)(hp_i).global_z));
                   csv_file_1.write_integer(to_integer(hps_pc_mdt_full_data_aar(st_i)(hp_i).global_x));
-                  -- HEG_BMIN
-                  -- csv_file_1.write_bool(hps_heg_hp2bm_aaar(st_i)(th_i)(hp_i).data_valid);
-                  -- csv_file_1.write_bool(hps_heg_hp2bm_aaar(st_i)(th_i)(hp_i).mdt_valid);
-                  -- csv_file_1.write_integer(to_integer(hps_heg_hp2bm_aaar(st_i)(th_i)(hp_i).data.local_y));
-                  -- csv_file_1.write_integer(to_integer(hps_heg_hp2bm_aaar(st_i)(th_i)(hp_i).data.local_x));
-                  -- csv_file_1.write_integer(to_integer(hps_heg_hp2bm_aaar(st_i)(th_i)(hp_i).data.radius));
-                  -- csv_file_1.write_bool(hps_heg_hp2bm_aaar(st_i)(th_i)(hp_i).data.mlayer);
                   csv_file_1.writeline;
                 end if;
               end loop;
