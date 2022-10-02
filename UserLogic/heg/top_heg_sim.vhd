@@ -1,15 +1,18 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
---------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: 
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
+-- UMass , Physics Department
+-- Project: heg
+-- File: top_heg_sim.vhd
+-- Module: <<moduleName>>
+-- File PATH: /top_heg_sim.vhd
+-- -----
+-- File Created: Thursday, 14th April 2022 8:57:28 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Sunday, 2nd October 2022 9:05:46 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 2022-10-02	GLdL	Update of old TB with new CSV pkg
 --------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -22,8 +25,47 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
--- use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
+-- use shared_lib.l0mdt_sim_cstm_pkg.all;
+-- use shared_lib.vhdl_textio_csv_pkg.all;
+
+-- library hp_lib;
+-- use hp_lib.hp_pkg.all;
+-- library heg_lib;
+-- use heg_lib.heg_pkg.all;
+-- library hps_lib;
+-- use hps_lib.hps_pkg.all;
+
+library ctrl_lib;
+use ctrl_lib.HPS_CTRL.all;
+use ctrl_lib.HPS_CTRL_DEF.all;
+
+package heg_sim_pkg is
+  type ctrl_avt is array (c_MAX_NUM_ST -1 downto 0) of std_logic_vector(HPS_CTRL_t'w -1 downto 0);
+  type mon_avt is array (c_MAX_NUM_ST -1 downto 0) of std_logic_vector(HPS_MON_t'w -1 downto 0);
+  type ucm2hps_aavt is array (c_MAX_NUM_ST -1 downto 0) of ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  type pc2heg_aavt is array (c_MAX_NUM_ST -1 downto 0) of pc2heg_avt(c_TOTAL_MAX_NUM_HP -1 downto 0);
+  type hps2pt_aavt is array (c_MAX_NUM_ST -1 downto 0) of sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+end package ;
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.std_logic_misc.all;
+
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
+use shared_lib.l0mdt_sim_cstm_pkg.all;
+use shared_lib.vhdl_textio_csv_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -37,30 +79,56 @@ library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
 use ctrl_lib.HPS_CTRL_DEF.all;
 
+library work;
+use work.heg_sim_pkg.all;
+
 entity heg_tb is
   generic(
-    PRJ_INFO            : string  := "BA3";
-    g_STATION_RADIUS    : integer := 0;
-    -- IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
-    -- IN_HIT_FILE         : string  := "csm_A3_Barrel.csv";
-    FLAVOUR             : integer := 0;
-    -- OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
-    -- OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv";
-    -- OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
-    -- OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv";
-    -- OUT_MTCIN_PT_FILE   : string  := "mtc_in_pt_A3_Barrel_yt_v04.csv";
-    -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
+    PRJ_INFO            : string  := "not defined";
+    g_ST_ENABLE         : std_logic_vector(3 downto 0) := (others => '0');
+    g_THREAD            : std_logic_vector(3 downto 0) := (others => '0');
+    IN_HPS_PC_FILE      : string  := "not_defined.csv";
+    IN_UCM_FILE         : string  := "not_defined.csv";
+    IN_CTRL_FILE        : string  := "not_defined.csv";
     DUMMY               : boolean := false
   );
 end entity heg_tb;
 
 architecture beh of heg_tb is
+  -- AXI clk & rst
+  signal axi_rst      : std_logic;
+  signal clk_axi      : std_logic;
+  signal clk_axi_cnt  : integer;
+  -- constant c_CLK_AXI_MULT : integer := 5; 
+  -- clk
+  constant clk_time_period : time := 1 ns;  -- 1Ghz
+  signal clk_time : std_logic := '0';
+  signal tb_curr_time : unsigned(63 downto 0) := (others => '0');
+  -- clk 0.78
+  constant clk_tdc_time_period : time := 0.78125 ns;  
+  signal clk_tdc_time : std_logic := '0';
+  signal tb_curr_tdc_time : unsigned(63 downto 0) := (others => '0');
+  -- clk 100ps
+  constant clk_sim_time_period : time := 100 ps;  
+  signal clk_sim_time : std_logic := '0';
+  signal tb_curr_sim_time : unsigned(63 downto 0) := (others => '0');
   -- clk
   constant clk_period : time := 3.125 ns;  -- 320Mhz
   signal clk : std_logic := '0';
   -- rest
-  constant reset_init_cycles  : integer := 3;
-  signal rst                  : std_logic;
+  constant reset_init_cycles : integer := 3;
+  signal rst: std_logic;
+
+  signal glob_en : std_logic := '1';
+
+  signal bx : std_logic := '0'; 
+
+  signal ucm2hps_file_ok    : std_logic;
+  signal ucm2hps_file_ts    : string(1 to LINE_LENGTH_MAX);
+  signal pc2heg_file_ok    : std_logic;
+  signal pc2heg_file_ts    : string(1 to LINE_LENGTH_MAX);
+  ---------------------------------------------
+
   signal ena                  : std_logic := '1';
   --
   signal ctrl_r               : HPS_HEG_HEG_CTRL_t := DEFAULT_HPS_HEG_HEG_CTRL_t ;
@@ -74,20 +142,157 @@ architecture beh of heg_tb is
   -- SLc
   signal i_uCM_data_v         : ucm2hps_vt := (others => '0');
   -- MDT hit
-  signal i_mdt_full_data_av   : heg_pc2heg_avt(c_HPS_MAX_ARRAY(FLAVOUR)-1 downto 0) := (others => (others => '0'));
+  signal i_mdt_full_data_av   : heg_pc2heg_avt(c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS)-1 downto 0) := (others => (others => '0'));
   -- to Segment finder
   signal o_sf_control_v       : heg_ctrl2sf_vt := (others => '0');
   signal o_sf_slc_data_v      : heg2sfslc_vt := (others => '0');
   signal o_sf_mdt_data_v      : heg2sfhit_vt := (others => '0');
 begin
+  -------------------------------------------------------------------------------------
+	-- clock Generator
+	-------------------------------------------------------------------------------------
+  CLK_RT : process begin
+    clk_time <= '0';
+    wait for CLK_time_period/2;
+    clk_time <= '1';
+    wait for CLK_time_period/2;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- clock tdc Generator
+	-------------------------------------------------------------------------------------
+  CLK_TDC : process begin
+    clk_tdc_time <= '0';
+    wait for CLK_tdc_time_period/2;
+    clk_tdc_time <= '1';
+    wait for CLK_tdc_time_period/2;
+  end process;
+  -- clock_and_control.clk <= clk;
+  -------------------------------------------------------------------------------------
+	-- Main FPGA clock
+	-------------------------------------------------------------------------------------
+  CLK_MAIN : process begin
+    clk <= '0';
+    wait for CLK_period/2;
+    clk <= '1';
+    wait for CLK_period/2;
+  end process;
+  -- clk <= clk;
+  -------------------------------------------------------------------------------------
+  --    AXI CLK
+  -------------------------------------------------------------------------------------
+  axi_clk_proc : process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        clk_axi <= '0';
+        clk_axi_cnt <= 0;
+      else
+        if clk_axi_cnt < c_CLK_AXI_MULT then
+          clk_axi_cnt <= clk_axi_cnt + 1;
+        else
+          clk_axi_cnt <= 0;
+          clk_axi <= not clk_axi;
+        end if;
+      end if;
+    end if;
+  end process axi_clk_proc;
+  -------------------------------------------------------------------------------------
+	-- AXI Reset Generator
+	-------------------------------------------------------------------------------------
+	axi_rst_process: process begin
+		axi_rst<='0';
+		wait for CLK_period*c_CLK_AXI_MULT;
+		axi_rst<='1';
+		wait for CLK_period*reset_init_cycles*c_CLK_AXI_MULT;
+		axi_rst<= '0';
+		wait;
+  end process;
+ 	-------------------------------------------------------------------------------------
+	-- Reset Generator
+	-------------------------------------------------------------------------------------
+	rst_process: process begin
+		rst<='0';
+    report "current time = " & time'image(now);
+		wait for CLK_period;
+		rst<='1';
+		wait for CLK_period*reset_init_cycles;
+		rst<= '0';
+		wait;
+  end process;
+  -- rst <= rst;
+  -------------------------------------------------------------------------------------
+	-- Test Bench time
+  -------------------------------------------------------------------------------------
+  ToA: process(clk_time) begin
+    if rising_edge(clk_time) then
+      tb_curr_time <= tb_curr_time + '1';
+    end if;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- Test Bench tdc time
+  -------------------------------------------------------------------------------------
+  ToA_tdc: process(clk_tdc_time) begin
+    if rising_edge(clk_tdc_time) then
+      tb_curr_tdc_time <= tb_curr_tdc_time + '1';
+    end if;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- clock Sim Generator
+	-------------------------------------------------------------------------------------
+  CLK_SIM : process begin
+    clk_sim_time <= '0';
+    wait for clk_sim_time_period/2;
+    clk_sim_time <= '1';
+    wait for clk_sim_time_period/2;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- Test Bench sim time
+  -------------------------------------------------------------------------------------
+  ToA_sim: process(clk_sim_time) begin
+    if rising_edge(clk_sim_time) then
+      tb_curr_sim_time <= tb_curr_sim_time + '1';
+    end if;
+  end process;
 
   ctrl_v <= convert(ctrl_r,ctrl_v);
   mon_r <= convert(mon_v,mon_r);
-
+  -------------------------------------------------------------------------------------
+	-- HPS PC IN
+  -------------------------------------------------------------------------------------
+  HPS_PC2HEG : entity shared_lib.csv_reader_hps_pc2heg 
+  generic map (
+   g_PRJ_INFO           => PRJ_INFO,
+   g_ST_ENABLE          => g_ST_ENABLE,
+   g_IN_TAR2HPS_FILE    => IN_TAR_FILE
+  )
+  port map(
+    clk                 => clk,
+    rst                 => rst,
+    ena                 => glob_en,
+    --
+    tb_curr_tdc_time    => tb_curr_tdc_time,
+    --
+    o_file_ok           => pc2heg_file_ok,
+    o_file_ts           => pc2heg_file_ts, 
+    --
+    o_mdt_event_ai      => pc2heg_mdt_event_au,
+    o_slc_event_ai      => pc2heg_slc_event_au,
+    --
+    o_pc2heg_inn_av   => pc2heg_aav(0),
+    o_pc2heg_mid_av   => pc2heg_aav(1),
+    o_pc2heg_out_av   => pc2heg_aav(2),
+    o_pc2heg_ext_av   => pc2heg_aav(3)
+  );
+  -------------------------------------------------------------------------------------
+	-- 
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+	-- 
+  -------------------------------------------------------------------------------------
   HEG : entity heg_lib.heg
   generic map(
-    g_STATION_RADIUS    => FLAVOUR,
-    g_HPS_NUM_MDT_CH    => c_HPS_MAX_ARRAY(FLAVOUR)
+    g_STATION_RADIUS    => g_STATION_RADIUS,
+    g_HPS_NUM_MDT_CH    => c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS)
   )
   port map(
     clk                 => clk,
@@ -107,27 +312,9 @@ begin
     o_sf_slc_data_v     => o_sf_slc_data_v,
     o_sf_mdt_data_v     => o_sf_mdt_data_v
   );
-
   -------------------------------------------------------------------------------------
-	-- clock Generator
-	-------------------------------------------------------------------------------------
-  CLK_MAIN : process begin
-    clk <= '0';
-    wait for CLK_period/2;
-    clk <= '1';
-    wait for CLK_period/2;
-  end process;
- 	-------------------------------------------------------------------------------------
-	-- Reset Generator
-	-------------------------------------------------------------------------------------
-	rst_process: process begin
-		rst<='0';
-		wait for CLK_period;
-		rst<='1';
-		wait for CLK_period*reset_init_cycles;
-		rst<= '0';
-		wait;
-  end process;
+	-- 
+  -------------------------------------------------------------------------------------
 
 end beh;
 

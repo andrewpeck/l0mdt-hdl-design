@@ -82,25 +82,6 @@ architecture sim of csv_writer_hps_int is
   signal in_files_ok : std_logic := '0';
   signal in_files_ts : string(1 to LINE_LENGTH_MAX);
 
-  -- constant OUT_FILE_1     : string  := "ov_" & g_PRJ_INFO & "_hps_int_hits.csv";
-  -- constant OUT_FILE_2     : string  := "ov_" & g_PRJ_INFO & "_hps_int_slcs.csv";
-  -- constant OUT_FILE_3     : string  := "ov_" & g_PRJ_INFO & "_hps_pc_hits.csv";
-  -- shared variable csv_file_1: csv_file_type;
-  -- shared variable csv_file_2: csv_file_type;
-  -- shared variable csv_file_3: csv_file_type;
-
-  -- signal tar2hps_slc_event_au : event_tdc_aut;
-  -- signal tar2hps_slc_event_a : event_tdc_at;
-  -- signal tar2hps_mdt_event_au : event_tdc_aut;
-  -- signal tar2hps_mdt_event_a : event_tdc_at;
-  -- signal tar2hps_slc_event_a : event_tdc_at;
-  -- signal tar2hps_mdt_event_a : event_tdc_at;
-
-  -- signal hps_pc_mdt_full_data_aav : hps_pc2heg_aavt;
-  -- signal hps_heg_hp2bm_aaav : heg_hp2bm_aaavt;
-  -- signal hps_pc_mdt_full_data_aar : hps_pc2heg_aart;
-  -- signal hps_heg_hp2bm_aaar : heg_hp2bm_aaart;
-
 begin
   in_files_ok <= i_ucm2hps_file_ok and i_tar2hps_file_ok;
   in_files_ts(1 to 15)  <= "not working yet";
@@ -470,7 +451,6 @@ begin
     open_csv: process
     begin
       wait until in_files_ok;
-      -- in_files_ts <= str_concat(in_files_ts,i_ucm2hps_file_ts,i_tar2hps_file_ts);
       puts("opening HPS PC HITs CSV file : " & OUT_FILE_1);
       csv_file_1.initialize(OUT_FILE_1,"wr");
       csv_file_1.write_string("# --------------------------");
@@ -494,13 +474,6 @@ begin
       csv_file_1.write_word("PC_time_t0[781.25ps]");
       csv_file_1.write_word("PC_global_z[31.25um]");
       csv_file_1.write_word("PC_global_x[31.25um]");
-      -- HEG_BMIN
-      -- csv_file_1.write_word("HP2BM_dv");
-      -- csv_file_1.write_word("HP2BM_mdt_valid");
-      -- csv_file_1.write_word("HP2BM_local_y[31.25um]");
-      -- csv_file_1.write_word("HP2BM_local_x[31.25um]");
-      -- csv_file_1.write_word("HP2BM_radius[31.25um]");
-      -- csv_file_1.write_word("HP2BM_mlayer");
       csv_file_1.writeline;
       wait;
     end process open_csv;
@@ -510,45 +483,15 @@ begin
         alias temp_mdt_full_data_av is << signal.hps_tb.STATION_GEN(st_i).HPS.HPS.mdt_full_data_av : heg_pc2heg_avt(c_HP_NUM_SECTOR_STATION(st_i)-1 downto 0) >>;
       begin
         HP_GEN: for hp_i in 0 to c_HP_NUM_SECTOR_STATION(st_i)-1 generate
-        --   C_PL : entity vamc_lib.vamc_spl
-        --     generic map(
-        --       -- pragma translate_off
-        --       g_SIMULATION => '1',
-        --       -- pragma translate_on
-        --       -- g_PIPELINE_TYPE => "ring_buffer",
-        --       g_DELAY_CYCLES  => 2,
-        --       g_PIPELINE_WIDTH    => heg_pc2heg_vt'w
-        --     )
-        --     port map(
-        --       clk         => clk,
-        --       rst         => rst,
-        --       ena         => '1',
-        --       --
-        --       i_data      => temp_mdt_full_data_av(hp_i),
-        --       o_data      => hps_pc_mdt_full_data_aav(st_i)(hp_i)
-        --   );
-        -- end generate HP_GEN;
-        -- TH_GEN: for th_i in 0 to c_NUM_THREADS-1 generate
-        --   alias temp_hp2bm_av is << signal.hps_tb.STATION_GEN(st_i).HPS.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_avt(c_HP_NUM_SECTOR_STATION(st_i)-1 downto 0) >>;
-        -- begin
-        --   -- HP_GEN: for hp_i in 0 to c_HP_NUM_SECTOR_STATION(st_i)-1 generate
-        --   --   hps_heg_hp2bm_aaav(st_i)(th_i)(hp_i) <= temp_hp2bm_av(hp_i);
-        --   -- end generate HP_GEN;
           hps_pc_mdt_full_data_aav(st_i)(hp_i) <= temp_mdt_full_data_av(hp_i);
         end generate;
       else generate
         hps_pc_mdt_full_data_aav(st_i) <= (others => (others => '0'));
-        -- hps_heg_hp2bm_aaav(st_i) <= (others => (others => (others => '0')));
       end generate;
     end generate;
   
     CONV_ST_GEN: for st_i in 0 to c_MAX_NUM_ST - 1 generate
       ST_EN: if g_ST_ENABLE(st_i) = '1' generate
-        -- TH_GEN: for th_i in 0 to c_NUM_THREADS-1 generate
-        --   HP_GEN: for hp_i in 0 to c_HP_NUM_SECTOR_STATION(st_i)-1 generate
-        --     hps_heg_hp2bm_aaar(st_i)(th_i)(hp_i) <= convert(hps_heg_hp2bm_aaav(st_i)(th_i)(hp_i),hps_heg_hp2bm_aaar(st_i)(th_i)(hp_i));
-        --   end generate HP_GEN;
-        -- end generate;
         HP_GEN: for hp_i in 0 to c_HP_NUM_SECTOR_STATION(st_i)-1 generate
           hps_pc_mdt_full_data_aar(st_i)(hp_i) <= convert(hps_pc_mdt_full_data_aav(st_i)(hp_i),hps_pc_mdt_full_data_aar(st_i)(hp_i));
         --
@@ -603,10 +546,9 @@ begin
                 if hps_pc_mdt_full_data_aar(st_i)(hp_i).data_valid = '1' then
                   csv_file_1.write_integer(to_integer(tb_curr_sim_time)); -- ToS                 
                   csv_file_1.write_integer(to_integer(tb_curr_tdc_time)); -- ToA                 
-                  csv_file_1.write_integer(to_integer(tar2hps_slc_event_au(st_i)(hp_i)));--to_integer(unsigned(tar2hps_slc_event_a(pc_st_id)(pm_i))));   -- event
-                  csv_file_1.write_integer(to_integer(tar2hps_mdt_event_au(st_i)(hp_i)));--to_integer(unsigned(tar2hps_mdt_event_a(pc_st_id)(pm_i))));   -- hit_id
-                  csv_file_1.write_integer(st_i);   -- station
-                  -- csv_file_1.write_integer(th_i);     -- hp_position   
+                  csv_file_1.write_integer(to_integer(tar2hps_slc_event_au(st_i)(hp_i)));
+                  csv_file_1.write_integer(to_integer(tar2hps_mdt_event_au(st_i)(hp_i)));
+                  csv_file_1.write_integer(st_i);   -- station 
                   csv_file_1.write_integer(hp_i);     -- hp_position   
                   -- HPS_PC
                   csv_file_1.write_bool(hps_pc_mdt_full_data_aar(st_i)(hp_i).data_valid);

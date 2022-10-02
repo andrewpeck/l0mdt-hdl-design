@@ -63,9 +63,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
--- library project_lib;
 use shared_lib.l0mdt_sim_cstm_pkg.all;
--- use project_lib.vhdl_tb_utils_pkg.all;
 use shared_lib.vhdl_textio_csv_pkg.all;
 
 library hp_lib;
@@ -86,7 +84,6 @@ library vamc_lib;
 
 entity hps_tb is
   generic(
-    g_HPS_MAX_HP : integer := 6;
     g_ST_ENABLE : std_logic_vector(3 downto 0) := (others => '0');
     --
     PRJ_INFO            : string  := "not_defined";
@@ -356,13 +353,12 @@ begin
     pl_ucm2hps_slc_event_au(th_i) <= unsigned(pl_ucm2hps_slc_event_a(th_i));
   end generate TH_ID_GEN;
   -------------------------------------------------------------------------------------
-	-- UCM IN
+	-- TAR IN
   -------------------------------------------------------------------------------------
   TAR2HPS : entity shared_lib.csv_reader_tar2hps 
   generic map (
    g_PRJ_INFO           => PRJ_INFO,
    g_ST_ENABLE          => g_ST_ENABLE,
-  --  g_HPS_MAX_HP         => 
    g_IN_TAR2HPS_FILE    => IN_TAR_FILE
   )
   port map(

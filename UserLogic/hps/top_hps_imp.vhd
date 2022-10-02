@@ -14,9 +14,6 @@
 -- HISTORY:
 --------------------------------------------------------------------------------
 
-
-
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -63,7 +60,7 @@ use ctrl_lib.HPS_CTRL.all;
 
 entity top_hps is
   generic(
-    g_HPS_MAX_HP : integer := 6;
+    -- g_HPS_MAX_HP : integer := 6;
     g_ST_ENABLE : std_logic_vector(3 downto 0) := (others => '0')
   );
   port (
