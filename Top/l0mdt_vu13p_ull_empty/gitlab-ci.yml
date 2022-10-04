@@ -6,5 +6,6 @@ GEN:l0mdt_vu13p_ull_empty:
       PROJECT_NAME: l0mdt_vu13p_ull_empty
       HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
       HOG_CHECK_SYNTAX : 0
+      HOG_NO_BITSTREAM: 1 
     tags:
       - heavy-duty

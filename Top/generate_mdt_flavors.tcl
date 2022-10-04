@@ -154,6 +154,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # default values
     set hog_only_synth 0
+    set hog_no_bitstream 0 
     set hog_chk 0
     set zynq_target usp
 
@@ -240,6 +241,9 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # change the gitlab-ci hog_only_synth property
     exec sed -i "s|\\(.*HOG_ONLY_SYNTH:\\).*\\(#.*\\)|\\1 $hog_only_synth \\2|g" "$dest_path/gitlab-ci.yml"
+
+    # change the gitlab-ci hog_no_bitstream property
+    exec sed -i "s|\\(.*HOG_NO_BITSTREAM:\\).*\\(.*\\)|\\1 $hog_no_bitstream \\2|g" "$dest_path/gitlab-ci.yml"
 
     # remove hog_chk for projects
     if {0 == $hog_chk} {
