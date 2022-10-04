@@ -1,0 +1,31 @@
+# yml2hdl v0.3
+config:
+  basic_functions: False
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    # - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg]
+    - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
+    - hp_lib: [hp_pkg]
+    - heg_lib: [heg_pkg]
+    # - hps_lib: [hps_pkg]
+
+types:
+  - eve_pc2heg_rt:
+    - ToS: {type: unsigned, range: [64-1, 0]}
+    - ToA: {type: unsigned, range: [64-1, 0]}
+    - event_id: {type: unsigned, range: [32-1, 0]}
+    - muonFixedId: {type: unsigned, range: [32-1, 0]}
+    - station: {type: unsigned, range: [8-1, 0]}
+    - hp: {type: unsigned, range: [4-1, 0]}
+    - pc2heg: {type: hp_hpsPc2hp_rt}
+  - TB_PC2HEG_FIFO_WIDTH: {qualifier: constant, type: integer, value: 32}
+  - eve_pc2heg_art: {array: [TB_PC2HEG_FIFO_WIDTH-1, 0], type: eve_pc2heg_rt}
+
+  - eve_ucm2heg_rt:
+    - ToS: {type: unsigned, range: [64-1, 0]}
+    - ToA: {type: unsigned, range: [64-1, 0]}
+    - event_id: {type: unsigned, range: [32-1, 0]}
+    - station: {type: unsigned, range: [8-1, 0]}
+    - ucm2heg: {type: ucm2hps_rt}
+  - TB_UCM2HEG_FIFO_WIDTH: {qualifier: constant, type: integer, value: 32}
+  - eve_ucm2hps_art: {array: [TB_UCM2HEG_FIFO_WIDTH-1, 0], type: eve_ucm2heg_rt}

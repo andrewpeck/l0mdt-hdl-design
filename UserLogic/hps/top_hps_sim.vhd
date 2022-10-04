@@ -307,7 +307,7 @@ begin
     end generate;
   end generate STATION_GEN;
   -------------------------------------------------------------------------------------
-	-- TAR IN
+	-- UCM IN
   -------------------------------------------------------------------------------------
   UCM2HPS : entity shared_lib.csv_reader_ucm2hps 
   generic map (

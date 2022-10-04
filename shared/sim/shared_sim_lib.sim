@@ -3,6 +3,7 @@ shared/sim/pkg/l0mdt_sim_pkg.vhd
 
 shared/sim/pkg/mdt_sim_pkg.vhd
 shared/sim/pkg/tar_sim_pkg.vhd
+shared/sim/pkg/heg_sim_pkg.vhd
 shared/sim/pkg/hps_sim_pkg.vhd
 shared/sim/pkg/ucm_sim_pkg.vhd
 
@@ -10,6 +11,7 @@ shared/sim/src/csv_reader_mdt.vhd
 shared/sim/src/csv_reader_slc.vhd
 shared/sim/src/csv_reader_ucm2hps.vhd
 shared/sim/src/csv_reader_tar2hps.vhd
+shared/sim/src/csv_reader_hps_pc2heg.vhd
 
 shared/sim/src/csv_writer_ucm.vhd
 shared/sim/src/csv_writer_tar.vhd

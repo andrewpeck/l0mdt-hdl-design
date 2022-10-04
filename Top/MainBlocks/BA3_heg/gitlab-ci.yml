@@ -1,0 +1,55 @@
+#################### BA3_heg Project ###########################
+GEN:BA3_heg:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/BA3_heg
+      HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
+      
+    tags:
+      - normal-ops
+      - hog
+      # - "2020.2"
+
+
+# SIM:BA3_heg_vivado:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: MainBlocks/BA3_heg
+
+SIM:BA3_heg_questa:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/BA3_heg
+
+SIM:BA3_heg_riviera:
+    extends: .riviera_sim
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/BA3_heg
+    # allow_failure: false
+
+COMP:BA3_heg:
+  extends: .sim_comp
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_heg
+    PROJECT_Q_NAME: MainBlocks/BA3_heg_questa
+    PROJECT_R_NAME: MainBlocks/BA3_heg_riviera
+  needs: ["SIM:BA3_heg_questa","SIM:BA3_heg_riviera"]
+
+CHK:BA3_heg:
+  extends: .sim_check
+  variables: 
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_heg
+    BLOCK: BA3_heg
+    SIMULATOR: questa
+  needs: ["SIM:BA3_heg_riviera"]
+  artifacts:
+    name: CHK_MainBlocks_BA3_heg
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day

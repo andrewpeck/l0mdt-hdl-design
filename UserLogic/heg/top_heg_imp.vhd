@@ -28,19 +28,6 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
--- use shared_lib.l0mdt_sim_cstm_pkg.all;
--- use shared_lib.vhdl_textio_csv_pkg.all;
-
--- library hp_lib;
--- use hp_lib.hp_pkg.all;
--- library heg_lib;
--- use heg_lib.heg_pkg.all;
--- library hps_lib;
--- use hps_lib.hps_pkg.all;
-
--- library ctrl_lib;
--- use ctrl_lib.HPS_CTRL.all;
--- use ctrl_lib.HPS_CTRL_DEF.all;
 
 package heg_imp_pkg is
   type ctrl_aabt is array (c_MAX_NUM_ST -1 downto 0) of std_logic_vector(c_NUM_THREADS -1 downto 0);
@@ -48,9 +35,6 @@ package heg_imp_pkg is
   type ucm2heg_aabt is array (c_MAX_NUM_ST -1 downto 0) of std_logic_vector(c_NUM_THREADS -1 downto 0);
   type hps_pc2heg_aabt is array (c_MAX_NUM_ST -1 downto 0) of std_logic_vector(c_TOTAL_MAX_NUM_HP -1 downto 0);
   type hps_heg2sf_aabt is array (c_MAX_NUM_ST -1 downto 0) of std_logic_vector(c_NUM_THREADS -1 downto 0);
-  -- type ucm2hps_aavt is array (c_MAX_NUM_ST -1 downto 0) of ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  -- type pc2heg_aavt is array (c_MAX_NUM_ST -1 downto 0) of pc2heg_avt(c_TOTAL_MAX_NUM_HP -1 downto 0);
-  -- type hps2pt_aavt is array (c_MAX_NUM_ST -1 downto 0) of sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
 end package ;
 
 library ieee;
@@ -64,18 +48,12 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
--- use shared_lib.common_types_vectors_pkg.all;
 use shared_lib.config_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
--- library hegtypes_lib;
--- use hegtypes_lib.hp_pkg.all;
--- use hegtypes_lib.heg_pkg.all;
-
--- library heg_lib;
 
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
@@ -107,43 +85,8 @@ entity top_heg is
 end entity top_heg;
 
 architecture beh of top_heg is
-  
-
-  -- signal ctrl_r             : HPS_HEG_HEG_CTRL_t;
-  -- signal mon_r              : HPS_HEG_HEG_MON_t;
-  -- signal ctrl_v             : std_logic_vector(HPS_HEG_HEG_CTRL_t'w -1 downto 0);
-  -- signal mon_v              : std_logic_vector(HPS_HEG_HEG_MON_t'w -1 downto 0);
-
-  -- signal i_uCM_data_rv        : ucm2hps_vt;
-  -- signal i_uCM_data_v         : std_logic_vector(i_uCM_data_rv'range);
-  -- signal i_mdt_full_data_av   : heg_pc2heg_avt(c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS) -1 downto 0);
-  -- signal o_sf_control_rv      : heg_ctrl2sf_vt;
-  -- signal o_sf_slc_data_v      : heg2sfslc_vt;
-  -- signal o_sf_mdt_data_v      : heg2sfhit_vt;
 
 begin
-  -- ctrl : entity shared_lib.vhdl_utils_deserializer 
-  -- generic map (g_DATA_WIDTH => ctrl_v'length) 
-  -- port map(clk => clk,rst  => rst,i_data => ctrl_aab,o_data => ctrl_v);
-  -- mon_aab <= xor_reduce(mon_v);
-  -- --------------------------------------------------------------
-  -- des0 : entity shared_lib.vhdl_utils_deserializer 
-  --   generic map (g_DATA_WIDTH => i_uCM_data_v'length)
-  --   port map(clk => clk,rst  => rst,i_data => i_uCM_data_aab,o_data => i_uCM_data_v);
-  -- i_uCM_data_v <= i_uCM_data_v;
-  -- for1: for hp_i in c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS) -1 downto 0 generate
-  --   des1 : entity shared_lib.vhdl_utils_deserializer 
-  --     generic map (g_DATA_WIDTH => i_mdt_full_data_av(hp_i)'length)
-  --     port map(clk => clk,rst  => rst,i_data => i_mdt_full_data_aab(hp_i),o_data => i_mdt_full_data_av(hp_i));
-  -- end generate;
-  
-  -- -- i_SLC_Window_ar <= convert(i_SLC_Window_v);
-  -- --------------------------------------------------------------
-  -- o_sf_control_aab <= xor_reduce(o_sf_control_rv);
-  -- o_sf_slc_data_aab <= xor_reduce(o_sf_slc_data_v);
-  -- o_sf_mdt_data_aab <= xor_reduce(o_sf_mdt_data_v);
-  -- --------------------------------------------------------------
-
   ST_FOR: for st_i in 0 to c_MAX_NUM_ST-1 generate
     ST_IG: if g_ST_ENABLE(st_i) generate
       signal i_mdt_full_data_av   : heg_pc2heg_avt(c_HP_NUM_SECTOR_STATION(st_i) -1 downto 0);
@@ -205,10 +148,6 @@ begin
       end generate TH_FOR;
     end generate ST_IG;    
   end generate ST_FOR;
-
-
-
-
 end beh;
 
 
