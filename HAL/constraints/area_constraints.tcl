@@ -50,7 +50,7 @@ if {$num_slrs > 0} {
     # SLR Crossings
     #-------------------------------------------------------------------------------
 
-    set_property -quiet USER_SLL_REG True [get_cells "ult_inst/*_PL/SHIFT_GEN.data_pl_reg*"]
+    set_property USER_SLL_REG True [get_cells "ult_inst/*_PL/SHIFT_GEN.data_pl_reg*"]
 
     #-------------------------------------------------------------------------------
     # SLR Placements
