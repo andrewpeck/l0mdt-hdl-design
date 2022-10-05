@@ -114,6 +114,7 @@ entity top_control is
     fm_mon  : in  FM_MON_t;
     fm_ctrl : out FM_CTRL_t;
 
+  
 
     -- system management
     --sys_mgmt_scl            : inout std_logic;
@@ -250,18 +251,18 @@ architecture control_arch of top_control is
   signal hal_ctrl_r      : HAL_CTRL_t;
   signal hal_core_ctrl_r : HAL_CORE_CTRL_t;
   signal fm_ctrl_r       : FM_CTRL_t;
-
+  signal fm_mon_r       : FM_MON_t;
   signal hal_mon_r      : HAL_MON_t;
   signal hal_core_mon_r : HAL_CORE_MON_t;
-  signal fm_mon_r       : FM_MON_t;
+  
 
-
+  signal c2c_mon_r  : C2C_INTF_MON_t;
+  signal c2c_ctrl_r : C2C_INTF_CTRL_t;
   signal c2c_intf_readmosi  : axireadmosi;
   signal c2c_intf_readmiso  : axireadmiso;
   signal c2c_intf_writemosi : axiwritemosi;
   signal c2c_intf_writemiso : axiwritemiso;
-  signal c2c_ctrl       : C2C_INTF_CTRL_t;
-  signal c2c_mon        : C2C_INTF_MON_t;
+
 
   signal clk_K_C2C_PHY_user  : STD_logic_vector(2 downto 1);
   
@@ -320,6 +321,9 @@ begin
         daq_ctrl <= daq_ctrl_r;
         tf_ctrl  <= tf_ctrl_r;
         mpl_ctrl <= mpl_ctrl_r;
+
+        fm_ctrl  <= fm_ctrl_r;
+
       end if;
     end if;
   end process;
@@ -399,113 +403,113 @@ begin
       --k_c2clink_phy_power_down => std_logic0,  -- k_c2clink_phy_power_down,
 
       --PRIYA
-      K_C2CLINK_PHY_DEBUG_cplllock            => C2C_Mon.C2C(1).DEBUG.CPLL_LOCK,
-      K_C2CLINK_PHY_DEBUG_dmonitorout         => C2C_Mon.C2C(1).DEBUG.DMONITOR,
-      K_C2CLINK_PHY_DEBUG_eyescandataerror    => C2C_Mon.C2C(1).DEBUG.EYESCAN_DATA_ERROR,
+      K_C2CLINK_PHY_DEBUG_cplllock            => C2C_Mon_r.C2C(1).DEBUG.CPLL_LOCK,
+      K_C2CLINK_PHY_DEBUG_dmonitorout         => C2c_Mon_R.C2C(1).DEBUG.DMONITOR,
+      K_C2CLINK_PHY_DEBUG_eyescandataerror    => C2c_Mon_R.C2C(1).DEBUG.EYESCAN_DATA_ERROR,
       
-      K_C2CLINK_PHY_DEBUG_eyescanreset        => C2C_Ctrl.C2C(1).DEBUG.EYESCAN_RESET,
-      K_C2CLINK_PHY_DEBUG_eyescantrigger      => C2C_Ctrl.C2C(1).DEBUG.EYESCAN_TRIGGER,
-      K_C2CLINK_PHY_DEBUG_pcsrsvdin           => C2C_Ctrl.C2C(1).DEBUG.PCS_RSV_DIN,
-      K_C2CLINK_PHY_DEBUG_qplllock            =>  C2C_Mon.C2C(1).DEBUG.QPLL_LOCK,
-      K_C2CLINK_PHY_DEBUG_rxbufreset          => C2C_Ctrl.C2C(1).DEBUG.RX.BUF_RESET,
-      K_C2CLINK_PHY_DEBUG_rxbufstatus         =>  C2C_Mon.C2C(1).DEBUG.RX.BUF_STATUS,
-      K_C2CLINK_PHY_DEBUG_rxcdrhold           => C2C_Ctrl.C2C(1).DEBUG.RX.CDR_HOLD,
-      K_C2CLINK_PHY_DEBUG_rxdfelpmreset       => C2C_Ctrl.C2C(1).DEBUG.RX.DFE_LPM_RESET,
-      K_C2CLINK_PHY_DEBUG_rxlpmen             => C2C_Ctrl.C2C(1).DEBUG.RX.LPM_EN,
-      K_C2CLINK_PHY_DEBUG_rxpcsreset          => C2C_Ctrl.C2C(1).DEBUG.RX.PCS_RESET,
-      K_C2CLINK_PHY_DEBUG_rxpmareset          => C2C_Ctrl.C2C(1).DEBUG.RX.PMA_RESET,
-      K_C2CLINK_PHY_DEBUG_rxpmaresetdone      =>  C2C_Mon.C2C(1).DEBUG.RX.PMA_RESET_DONE,
-      K_C2CLINK_PHY_DEBUG_rxprbscntreset      => C2C_Ctrl.C2C(1).DEBUG.RX.PRBS_CNT_RST,
-      K_C2CLINK_PHY_DEBUG_rxprbserr           =>  C2C_Mon.C2C(1).DEBUG.RX.PRBS_ERR,
-      K_C2CLINK_PHY_DEBUG_rxprbssel           => C2C_Ctrl.C2C(1).DEBUG.RX.PRBS_SEL,
-      K_C2CLINK_PHY_DEBUG_rxrate              => C2C_Ctrl.C2C(1).DEBUG.RX.RATE,
-      K_C2CLINK_PHY_DEBUG_rxresetdone         =>  C2C_Mon.C2C(1).DEBUG.RX.RESET_DONE,
-      K_C2CLINK_PHY_DEBUG_txbufstatus         =>  C2C_Mon.C2C(1).DEBUG.TX.BUF_STATUS,
-      K_C2CLINK_PHY_DEBUG_txdiffctrl          => C2C_Ctrl.C2C(1).DEBUG.TX.DIFF_CTRL,
-      K_C2CLINK_PHY_DEBUG_txinhibit           => C2C_Ctrl.C2C(1).DEBUG.TX.INHIBIT,
-      K_C2CLINK_PHY_DEBUG_txpcsreset          => C2C_Ctrl.C2C(1).DEBUG.TX.PCS_RESET,
-      K_C2CLINK_PHY_DEBUG_txpmareset          => C2C_Ctrl.C2C(1).DEBUG.TX.PMA_RESET,
-      K_C2CLINK_PHY_DEBUG_txpolarity          => C2C_Ctrl.C2C(1).DEBUG.TX.POLARITY,
-      K_C2CLINK_PHY_DEBUG_txpostcursor        => C2C_Ctrl.C2C(1).DEBUG.TX.POST_CURSOR,
-      K_C2CLINK_PHY_DEBUG_txprbsforceerr      => C2C_Ctrl.C2C(1).DEBUG.TX.PRBS_FORCE_ERR,
-      K_C2CLINK_PHY_DEBUG_txprbssel           => C2C_Ctrl.C2C(1).DEBUG.TX.PRBS_SEL,
-      K_C2CLINK_PHY_DEBUG_txprecursor         => C2C_Ctrl.C2C(1).DEBUG.TX.PRE_CURSOR,
-      K_C2CLINK_PHY_DEBUG_txresetdone         =>  C2C_MON.C2C(1).DEBUG.TX.RESET_DONE,
+      K_C2CLINK_PHY_DEBUG_eyescanreset        => C2c_Ctrl_R.C2C(1).DEBUG.EYESCAN_RESET,
+      K_C2CLINK_PHY_DEBUG_eyescantrigger      => C2c_Ctrl_R.C2C(1).DEBUG.EYESCAN_TRIGGER,
+      K_C2CLINK_PHY_DEBUG_pcsrsvdin           => C2c_Ctrl_R.C2C(1).DEBUG.PCS_RSV_DIN,
+      K_C2CLINK_PHY_DEBUG_qplllock            =>  C2c_Mon_R.C2C(1).DEBUG.QPLL_LOCK,
+      K_C2CLINK_PHY_DEBUG_rxbufreset          => C2c_Ctrl_R.C2C(1).DEBUG.RX.BUF_RESET,
+      K_C2CLINK_PHY_DEBUG_rxbufstatus         =>  C2c_Mon_R.C2C(1).DEBUG.RX.BUF_STATUS,
+      K_C2CLINK_PHY_DEBUG_rxcdrhold           => C2c_Ctrl_R.C2C(1).DEBUG.RX.CDR_HOLD,
+      K_C2CLINK_PHY_DEBUG_rxdfelpmreset       => C2c_Ctrl_R.C2C(1).DEBUG.RX.DFE_LPM_RESET,
+      K_C2CLINK_PHY_DEBUG_rxlpmen             => C2c_Ctrl_R.C2C(1).DEBUG.RX.LPM_EN,
+      K_C2CLINK_PHY_DEBUG_rxpcsreset          => C2c_Ctrl_R.C2C(1).DEBUG.RX.PCS_RESET,
+      K_C2CLINK_PHY_DEBUG_rxpmareset          => C2c_Ctrl_R.C2C(1).DEBUG.RX.PMA_RESET,
+      K_C2CLINK_PHY_DEBUG_rxpmaresetdone      =>  C2c_Mon_R.C2C(1).DEBUG.RX.PMA_RESET_DONE,
+      K_C2CLINK_PHY_DEBUG_rxprbscntreset      => C2c_Ctrl_R.C2C(1).DEBUG.RX.PRBS_CNT_RST,
+      K_C2CLINK_PHY_DEBUG_rxprbserr           =>  C2c_Mon_R.C2C(1).DEBUG.RX.PRBS_ERR,
+      K_C2CLINK_PHY_DEBUG_rxprbssel           => C2c_Ctrl_R.C2C(1).DEBUG.RX.PRBS_SEL,
+      K_C2CLINK_PHY_DEBUG_rxrate              => C2c_Ctrl_R.C2C(1).DEBUG.RX.RATE,
+      K_C2CLINK_PHY_DEBUG_rxresetdone         =>  C2c_Mon_R.C2C(1).DEBUG.RX.RESET_DONE,
+      K_C2CLINK_PHY_DEBUG_txbufstatus         =>  C2c_Mon_R.C2C(1).DEBUG.TX.BUF_STATUS,
+      K_C2CLINK_PHY_DEBUG_txdiffctrl          => C2c_Ctrl_R.C2C(1).DEBUG.TX.DIFF_CTRL,
+      K_C2CLINK_PHY_DEBUG_txinhibit           => C2c_Ctrl_R.C2C(1).DEBUG.TX.INHIBIT,
+      K_C2CLINK_PHY_DEBUG_txpcsreset          => C2c_Ctrl_R.C2C(1).DEBUG.TX.PCS_RESET,
+      K_C2CLINK_PHY_DEBUG_txpmareset          => C2c_Ctrl_R.C2C(1).DEBUG.TX.PMA_RESET,
+      K_C2CLINK_PHY_DEBUG_txpolarity          => C2c_Ctrl_R.C2C(1).DEBUG.TX.POLARITY,
+      K_C2CLINK_PHY_DEBUG_txpostcursor        => C2c_Ctrl_R.C2C(1).DEBUG.TX.POST_CURSOR,
+      K_C2CLINK_PHY_DEBUG_txprbsforceerr      => C2c_Ctrl_R.C2C(1).DEBUG.TX.PRBS_FORCE_ERR,
+      K_C2CLINK_PHY_DEBUG_txprbssel           => C2c_Ctrl_R.C2C(1).DEBUG.TX.PRBS_SEL,
+      K_C2CLINK_PHY_DEBUG_txprecursor         => C2c_Ctrl_R.C2C(1).DEBUG.TX.PRE_CURSOR,
+      K_C2CLINK_PHY_DEBUG_txresetdone         =>  C2C_MON_R.C2C(1).DEBUG.TX.RESET_DONE,
 
-      K_C2CLINK_PHY_channel_up         => C2C_Mon.C2C(1).STATUS.CHANNEL_UP,      
-      K_C2CLINK_PHY_gt_pll_lock        => C2C_MON.C2C(1).STATUS.PHY_GT_PLL_LOCK,
-      K_C2CLINK_PHY_hard_err           => C2C_Mon.C2C(1).STATUS.PHY_HARD_ERR,
-      K_C2CLINK_PHY_lane_up            => C2C_Mon.C2C(1).STATUS.PHY_LANE_UP(0), -- downto 0), 
-      K_C2CLINK_PHY_mmcm_not_locked_out    => C2C_Mon.C2C(1).STATUS.PHY_MMCM_LOL,
-      K_C2CLINK_PHY_soft_err           => C2C_Mon.C2C(1).STATUS.PHY_SOFT_ERR,
+      K_C2CLINK_PHY_channel_up         => C2c_Mon_R.C2C(1).STATUS.CHANNEL_UP,      
+      K_C2CLINK_PHY_gt_pll_lock        => C2C_MON_R.C2C(1).STATUS.PHY_GT_PLL_LOCK,
+      K_C2CLINK_PHY_hard_err           => C2c_Mon_R.C2C(1).STATUS.PHY_HARD_ERR,
+      K_C2CLINK_PHY_lane_up            => C2c_Mon_R.C2C(1).STATUS.PHY_LANE_UP(0), -- downto 0), 
+      K_C2CLINK_PHY_mmcm_not_locked_out    => C2c_Mon_R.C2C(1).STATUS.PHY_MMCM_LOL,
+      K_C2CLINK_PHY_soft_err           => C2c_Mon_R.C2C(1).STATUS.PHY_SOFT_ERR,
 
-      K_C2CLINK_aurora_do_cc                =>  C2C_Mon.C2C(1).STATUS.DO_CC,
-      K_C2CLINK_aurora_pma_init_in          => C2C_Ctrl.C2C(1).STATUS.INITIALIZE,
-      K_C2CLINK_axi_c2c_config_error_out    =>  C2C_Mon.C2C(1).STATUS.CONFIG_ERROR,
-      K_C2CLINK_axi_c2c_link_status_out     =>  C2C_MON.C2C(1).STATUS.LINK_GOOD,
-      K_C2CLINK_axi_c2c_multi_bit_error_out =>  C2C_MON.C2C(1).STATUS.MB_ERROR,
+      K_C2CLINK_aurora_do_cc                =>  C2c_Mon_R.C2C(1).STATUS.DO_CC,
+      K_C2CLINK_aurora_pma_init_in          => C2c_Ctrl_R.C2C(1).STATUS.INITIALIZE,
+      K_C2CLINK_axi_c2c_config_error_out    =>  C2c_Mon_R.C2C(1).STATUS.CONFIG_ERROR,
+      K_C2CLINK_axi_c2c_link_status_out     =>  C2C_MON_R.C2C(1).STATUS.LINK_GOOD,
+      K_C2CLINK_axi_c2c_multi_bit_error_out =>  C2C_MON_R.C2C(1).STATUS.MB_ERROR,
       K_C2CLINK_phy_power_down              => '0',
       K_C2CLINK_PHY_clk                     => clk_K_C2C_PHY_user(1),
-      K_C2CLINK_PHY_DRP_daddr               => C2C_Ctrl.C2C(1).DRP.address,
-      K_C2CLINK_PHY_DRP_den                 => C2C_Ctrl.C2C(1).DRP.enable,
-      K_C2CLINK_PHY_DRP_di                  => C2C_Ctrl.C2C(1).DRP.wr_data,
-      K_C2CLINK_PHY_DRP_do                  => C2C_MON.C2C(1).DRP.rd_data,
-      K_C2CLINK_PHY_DRP_drdy                => C2C_MON.C2C(1).DRP.rd_data_valid,
-      K_C2CLINK_PHY_DRP_dwe                 => C2C_Ctrl.C2C(1).DRP.wr_enable,
+      K_C2CLINK_PHY_DRP_daddr               => C2c_Ctrl_R.C2C(1).DRP.address,
+      K_C2CLINK_PHY_DRP_den                 => C2c_Ctrl_R.C2C(1).DRP.enable,
+      K_C2CLINK_PHY_DRP_di                  => C2c_Ctrl_R.C2C(1).DRP.wr_data,
+      K_C2CLINK_PHY_DRP_do                  => C2C_MON_R.C2C(1).DRP.rd_data,
+      K_C2CLINK_PHY_DRP_drdy                => C2C_MON_R.C2C(1).DRP.rd_data_valid,
+      K_C2CLINK_PHY_DRP_dwe                 => C2c_Ctrl_R.C2C(1).DRP.wr_enable,
 
-      K_C2CBLINK_PHY_DEBUG_cplllock            => C2C_Mon.C2C(2).DEBUG.CPLL_LOCK,
-      K_C2CBLINK_PHY_DEBUG_dmonitorout         => C2C_Mon.C2C(2).DEBUG.DMONITOR,
-      K_C2CBLINK_PHY_DEBUG_eyescandataerror    => C2C_Mon.C2C(2).DEBUG.EYESCAN_DATA_ERROR,
+      K_C2CBLINK_PHY_DEBUG_cplllock            => C2c_Mon_R.C2C(2).DEBUG.CPLL_LOCK,
+      K_C2CBLINK_PHY_DEBUG_dmonitorout         => C2c_Mon_R.C2C(2).DEBUG.DMONITOR,
+      K_C2CBLINK_PHY_DEBUG_eyescandataerror    => C2c_Mon_R.C2C(2).DEBUG.EYESCAN_DATA_ERROR,
       
-      K_C2CBLINK_PHY_DEBUG_eyescanreset        => C2C_Ctrl.C2C(2).DEBUG.EYESCAN_RESET,
-      K_C2CBLINK_PHY_DEBUG_eyescantrigger      => C2C_Ctrl.C2C(2).DEBUG.EYESCAN_TRIGGER,
-      K_C2CBLINK_PHY_DEBUG_pcsrsvdin           => C2C_Ctrl.C2C(2).DEBUG.PCS_RSV_DIN,
-      K_C2CBLINK_PHY_DEBUG_qplllock            =>  C2C_Mon.C2C(2).DEBUG.QPLL_LOCK,
-      K_C2CBLINK_PHY_DEBUG_rxbufreset          => C2C_Ctrl.C2C(2).DEBUG.RX.BUF_RESET,
-      K_C2CBLINK_PHY_DEBUG_rxbufstatus         =>  C2C_Mon.C2C(2).DEBUG.RX.BUF_STATUS,
-      K_C2CBLINK_PHY_DEBUG_rxcdrhold           => C2C_Ctrl.C2C(2).DEBUG.RX.CDR_HOLD,
-      K_C2CBLINK_PHY_DEBUG_rxdfelpmreset       => C2C_Ctrl.C2C(2).DEBUG.RX.DFE_LPM_RESET,
-      K_C2CBLINK_PHY_DEBUG_rxlpmen             => C2C_Ctrl.C2C(2).DEBUG.RX.LPM_EN,
-      K_C2CBLINK_PHY_DEBUG_rxpcsreset          => C2C_Ctrl.C2C(2).DEBUG.RX.PCS_RESET,
-      K_C2CBLINK_PHY_DEBUG_rxpmareset          => C2C_Ctrl.C2C(2).DEBUG.RX.PMA_RESET,
-      K_C2CBLINK_PHY_DEBUG_rxpmaresetdone      =>  C2C_Mon.C2C(2).DEBUG.RX.PMA_RESET_DONE,
-      K_C2CBLINK_PHY_DEBUG_rxprbscntreset      => C2C_Ctrl.C2C(2).DEBUG.RX.PRBS_CNT_RST,
-      K_C2CBLINK_PHY_DEBUG_rxprbserr           =>  C2C_Mon.C2C(2).DEBUG.RX.PRBS_ERR,
-      K_C2CBLINK_PHY_DEBUG_rxprbssel           => C2C_Ctrl.C2C(2).DEBUG.RX.PRBS_SEL,
-      K_C2CBLINK_PHY_DEBUG_rxrate              => C2C_Ctrl.C2C(2).DEBUG.RX.RATE,
-      K_C2CBLINK_PHY_DEBUG_rxresetdone         =>  C2C_Mon.C2C(2).DEBUG.RX.RESET_DONE,
-      K_C2CBLINK_PHY_DEBUG_txbufstatus         =>  C2C_Mon.C2C(2).DEBUG.TX.BUF_STATUS,
-      K_C2CBLINK_PHY_DEBUG_txdiffctrl          => C2C_Ctrl.C2C(2).DEBUG.TX.DIFF_CTRL,
-      K_C2CBLINK_PHY_DEBUG_txinhibit           => C2C_Ctrl.C2C(2).DEBUG.TX.INHIBIT,
-      K_C2CBLINK_PHY_DEBUG_txpcsreset          => C2C_Ctrl.C2C(2).DEBUG.TX.PCS_RESET,
-      K_C2CBLINK_PHY_DEBUG_txpmareset          => C2C_Ctrl.C2C(2).DEBUG.TX.PMA_RESET,
-      K_C2CBLINK_PHY_DEBUG_txpolarity          => C2C_Ctrl.C2C(2).DEBUG.TX.POLARITY,
-      K_C2CBLINK_PHY_DEBUG_txpostcursor        => C2C_Ctrl.C2C(2).DEBUG.TX.POST_CURSOR,
-      K_C2CBLINK_PHY_DEBUG_txprbsforceerr      => C2C_Ctrl.C2C(2).DEBUG.TX.PRBS_FORCE_ERR,
-      K_C2CBLINK_PHY_DEBUG_txprbssel           => C2C_Ctrl.C2C(2).DEBUG.TX.PRBS_SEL,
-      K_C2CBLINK_PHY_DEBUG_txprecursor         => C2C_Ctrl.C2C(2).DEBUG.TX.PRE_CURSOR,
-      K_C2CBLINK_PHY_DEBUG_txresetdone         =>  C2C_MON.C2C(2).DEBUG.TX.RESET_DONE,
+      K_C2CBLINK_PHY_DEBUG_eyescanreset        => C2c_Ctrl_R.C2C(2).DEBUG.EYESCAN_RESET,
+      K_C2CBLINK_PHY_DEBUG_eyescantrigger      => C2c_Ctrl_R.C2C(2).DEBUG.EYESCAN_TRIGGER,
+      K_C2CBLINK_PHY_DEBUG_pcsrsvdin           => C2c_Ctrl_R.C2C(2).DEBUG.PCS_RSV_DIN,
+      K_C2CBLINK_PHY_DEBUG_qplllock            =>  C2c_Mon_R.C2C(2).DEBUG.QPLL_LOCK,
+      K_C2CBLINK_PHY_DEBUG_rxbufreset          => C2c_Ctrl_R.C2C(2).DEBUG.RX.BUF_RESET,
+      K_C2CBLINK_PHY_DEBUG_rxbufstatus         =>  C2c_Mon_R.C2C(2).DEBUG.RX.BUF_STATUS,
+      K_C2CBLINK_PHY_DEBUG_rxcdrhold           => C2c_Ctrl_R.C2C(2).DEBUG.RX.CDR_HOLD,
+      K_C2CBLINK_PHY_DEBUG_rxdfelpmreset       => C2c_Ctrl_R.C2C(2).DEBUG.RX.DFE_LPM_RESET,
+      K_C2CBLINK_PHY_DEBUG_rxlpmen             => C2c_Ctrl_R.C2C(2).DEBUG.RX.LPM_EN,
+      K_C2CBLINK_PHY_DEBUG_rxpcsreset          => C2c_Ctrl_R.C2C(2).DEBUG.RX.PCS_RESET,
+      K_C2CBLINK_PHY_DEBUG_rxpmareset          => C2c_Ctrl_R.C2C(2).DEBUG.RX.PMA_RESET,
+      K_C2CBLINK_PHY_DEBUG_rxpmaresetdone      =>  C2c_Mon_R.C2C(2).DEBUG.RX.PMA_RESET_DONE,
+      K_C2CBLINK_PHY_DEBUG_rxprbscntreset      => C2c_Ctrl_R.C2C(2).DEBUG.RX.PRBS_CNT_RST,
+      K_C2CBLINK_PHY_DEBUG_rxprbserr           =>  C2c_Mon_R.C2C(2).DEBUG.RX.PRBS_ERR,
+      K_C2CBLINK_PHY_DEBUG_rxprbssel           => C2c_Ctrl_R.C2C(2).DEBUG.RX.PRBS_SEL,
+      K_C2CBLINK_PHY_DEBUG_rxrate              => C2c_Ctrl_R.C2C(2).DEBUG.RX.RATE,
+      K_C2CBLINK_PHY_DEBUG_rxresetdone         =>  C2c_Mon_R.C2C(2).DEBUG.RX.RESET_DONE,
+      K_C2CBLINK_PHY_DEBUG_txbufstatus         =>  C2c_Mon_R.C2C(2).DEBUG.TX.BUF_STATUS,
+      K_C2CBLINK_PHY_DEBUG_txdiffctrl          => C2c_Ctrl_R.C2C(2).DEBUG.TX.DIFF_CTRL,
+      K_C2CBLINK_PHY_DEBUG_txinhibit           => C2c_Ctrl_R.C2C(2).DEBUG.TX.INHIBIT,
+      K_C2CBLINK_PHY_DEBUG_txpcsreset          => C2c_Ctrl_R.C2C(2).DEBUG.TX.PCS_RESET,
+      K_C2CBLINK_PHY_DEBUG_txpmareset          => C2c_Ctrl_R.C2C(2).DEBUG.TX.PMA_RESET,
+      K_C2CBLINK_PHY_DEBUG_txpolarity          => C2c_Ctrl_R.C2C(2).DEBUG.TX.POLARITY,
+      K_C2CBLINK_PHY_DEBUG_txpostcursor        => C2c_Ctrl_R.C2C(2).DEBUG.TX.POST_CURSOR,
+      K_C2CBLINK_PHY_DEBUG_txprbsforceerr      => C2c_Ctrl_R.C2C(2).DEBUG.TX.PRBS_FORCE_ERR,
+      K_C2CBLINK_PHY_DEBUG_txprbssel           => C2c_Ctrl_R.C2C(2).DEBUG.TX.PRBS_SEL,
+      K_C2CBLINK_PHY_DEBUG_txprecursor         => C2c_Ctrl_R.C2C(2).DEBUG.TX.PRE_CURSOR,
+      K_C2CBLINK_PHY_DEBUG_txresetdone         =>  C2C_MON_R.C2C(2).DEBUG.TX.RESET_DONE,
 
-      K_C2CBLINK_PHY_channel_up         => C2C_Mon.C2C(2).STATUS.CHANNEL_UP,      
-      K_C2CBLINK_PHY_gt_pll_lock        => C2C_MON.C2C(2).STATUS.PHY_GT_PLL_LOCK,
-      K_C2CBLINK_PHY_hard_err           => C2C_Mon.C2C(2).STATUS.PHY_HARD_ERR,
-      K_C2CBLINK_PHY_lane_up            => C2C_Mon.C2C(2).STATUS.PHY_LANE_UP(0), -- downto 0),
---      K_C2CBLINK_PHY_mmcm_not_locked    => C2C_Mon.C2C(2).STATUS.PHY_MMCM_LOL,
-      K_C2CBLINK_PHY_soft_err           => C2C_Mon.C2C(2).STATUS.PHY_SOFT_ERR,
+      K_C2CBLINK_PHY_channel_up         => C2c_Mon_R.C2C(2).STATUS.CHANNEL_UP,      
+      K_C2CBLINK_PHY_gt_pll_lock        => C2C_MON_R.C2C(2).STATUS.PHY_GT_PLL_LOCK,
+      K_C2CBLINK_PHY_hard_err           => C2c_Mon_R.C2C(2).STATUS.PHY_HARD_ERR,
+      K_C2CBLINK_PHY_lane_up            => C2c_Mon_R.C2C(2).STATUS.PHY_LANE_UP(0), -- downto 0),
+--      K_C2CBLINK_PHY_mmcm_not_locked    => C2c_Mon_R.C2C(2).STATUS.PHY_MMCM_LOL,
+      K_C2CBLINK_PHY_soft_err           => C2c_Mon_R.C2C(2).STATUS.PHY_SOFT_ERR,
 
-      K_C2CBLINK_aurora_do_cc                =>  C2C_Mon.C2C(2).STATUS.DO_CC,
-      K_C2CBLINK_aurora_pma_init_in          => C2C_Ctrl.C2C(2).STATUS.INITIALIZE,
-      K_C2CBLINK_axi_c2c_config_error_out    =>  C2C_Mon.C2C(2).STATUS.CONFIG_ERROR,
-      K_C2CBLINK_axi_c2c_link_status_out     =>  C2C_MON.C2C(2).STATUS.LINK_GOOD,
-      K_C2CBLINK_axi_c2c_multi_bit_error_out =>  C2C_MON.C2C(2).STATUS.MB_ERROR,
+      K_C2CBLINK_aurora_do_cc                =>  C2c_Mon_R.C2C(2).STATUS.DO_CC,
+      K_C2CBLINK_aurora_pma_init_in          => C2c_Ctrl_R.C2C(2).STATUS.INITIALIZE,
+      K_C2CBLINK_axi_c2c_config_error_out    =>  C2c_Mon_R.C2C(2).STATUS.CONFIG_ERROR,
+      K_C2CBLINK_axi_c2c_link_status_out     =>  C2C_MON_R.C2C(2).STATUS.LINK_GOOD,
+      K_C2CBLINK_axi_c2c_multi_bit_error_out =>  C2C_MON_R.C2C(2).STATUS.MB_ERROR,
       K_C2CBLINK_phy_power_down              => '0',
 --      K_C2CBLINK_PHY_user_clk_out            => clk_K_C2CBLINK_PHY_user,
-      K_C2CBLINK_PHY_DRP_daddr               => C2C_Ctrl.C2C(2).DRP.address,
-      K_C2CBLINK_PHY_DRP_den                 => C2C_Ctrl.C2C(2).DRP.enable,
-      K_C2CBLINK_PHY_DRP_di                  => C2C_Ctrl.C2C(2).DRP.wr_data,
-      K_C2CBLINK_PHY_DRP_do                  => C2C_MON.C2C(2).DRP.rd_data,
-      K_C2CBLINK_PHY_DRP_drdy                => C2C_MON.C2C(2).DRP.rd_data_valid,
-      K_C2CBLINK_PHY_DRP_dwe                 => C2C_Ctrl.C2C(2).DRP.wr_enable,
+      K_C2CBLINK_PHY_DRP_daddr               => C2c_Ctrl_R.C2C(2).DRP.address,
+      K_C2CBLINK_PHY_DRP_den                 => C2c_Ctrl_R.C2C(2).DRP.enable,
+      K_C2CBLINK_PHY_DRP_di                  => C2c_Ctrl_R.C2C(2).DRP.wr_data,
+      K_C2CBLINK_PHY_DRP_do                  => C2C_MON_R.C2C(2).DRP.rd_data,
+      K_C2CBLINK_PHY_DRP_drdy                => C2C_MON_R.C2C(2).DRP.rd_data_valid,
+      K_C2CBLINK_PHY_DRP_dwe                 => C2c_Ctrl_R.C2C(2).DRP.wr_enable,
 
       K_C2C_INTF_araddr                   => c2c_intf_ReadMOSI.address,              
       K_C2C_INTF_arprot                   => c2c_intf_ReadMOSI.protection_type,      
@@ -548,47 +552,47 @@ begin
       fw_info_wdata   => fw_info_writemosi.data,
       fw_info_wready  => fw_info_writemiso.ready_for_data,
       fw_info_wstrb   => fw_info_writemosi.data_write_strobe,
-      fw_info_wvalid  => fw_info_writemosi.data_valid,
+      fw_info_wvalid  => fw_info_writemosi.data_valid
 
-      hal_araddr  => hal_readmosi.address,
-      hal_arprot  => hal_readmosi.protection_type,
-      hal_arready => hal_readmiso.ready_for_address,
-      hal_arvalid => hal_readmosi.address_valid,
-      hal_awaddr  => hal_writemosi.address,
-      hal_awprot  => hal_writemosi.protection_type,
-      hal_awready => hal_writemiso.ready_for_address,
-      hal_awvalid => hal_writemosi.address_valid,
-      hal_bready  => hal_writemosi.ready_for_response,
-      hal_bresp   => hal_writemiso.response,
-      hal_bvalid  => hal_writemiso.response_valid,
-      hal_rdata   => hal_readmiso.data,
-      hal_rready  => hal_readmosi.ready_for_data,
-      hal_rresp   => hal_readmiso.response,
-      hal_rvalid  => hal_readmiso.data_valid,
-      hal_wdata   => hal_writemosi.data,
-      hal_wready  => hal_writemiso.ready_for_data,
-      hal_wstrb   => hal_writemosi.data_write_strobe,
-      hal_wvalid  => hal_writemosi.data_valid,
+      --hal_araddr  => hal_readmosi.address,
+      --hal_arprot  => hal_readmosi.protection_type,
+      --hal_arready => hal_readmiso.ready_for_address,
+      --hal_arvalid => hal_readmosi.address_valid,
+      --hal_awaddr  => hal_writemosi.address,
+      --hal_awprot  => hal_writemosi.protection_type,
+      --hal_awready => hal_writemiso.ready_for_address,
+      --hal_awvalid => hal_writemosi.address_valid,
+      --hal_bready  => hal_writemosi.ready_for_response,
+      --hal_bresp   => hal_writemiso.response,
+      --hal_bvalid  => hal_writemiso.response_valid,
+      --hal_rdata   => hal_readmiso.data,
+      --hal_rready  => hal_readmosi.ready_for_data,
+      --hal_rresp   => hal_readmiso.response,
+      --hal_rvalid  => hal_readmiso.data_valid,
+      --hal_wdata   => hal_writemosi.data,
+      --hal_wready  => hal_writemiso.ready_for_data,
+      --hal_wstrb   => hal_writemosi.data_write_strobe,
+      --hal_wvalid  => hal_writemosi.data_valid,
 
-      hal_core_araddr  => hal_core_readmosi.address,
-      hal_core_arprot  => hal_core_readmosi.protection_type,
-      hal_core_arready => hal_core_readmiso.ready_for_address,
-      hal_core_arvalid => hal_core_readmosi.address_valid,
-      hal_core_awaddr  => hal_core_writemosi.address,
-      hal_core_awprot  => hal_core_writemosi.protection_type,
-      hal_core_awready => hal_core_writemiso.ready_for_address,
-      hal_core_awvalid => hal_core_writemosi.address_valid,
-      hal_core_bready  => hal_core_writemosi.ready_for_response,
-      hal_core_bresp   => hal_core_writemiso.response,
-      hal_core_bvalid  => hal_core_writemiso.response_valid,
-      hal_core_rdata   => hal_core_readmiso.data,
-      hal_core_rready  => hal_core_readmosi.ready_for_data,
-      hal_core_rresp   => hal_core_readmiso.response,
-      hal_core_rvalid  => hal_core_readmiso.data_valid,
-      hal_core_wdata   => hal_core_writemosi.data,
-      hal_core_wready  => hal_core_writemiso.ready_for_data,
-      hal_core_wstrb   => hal_core_writemosi.data_write_strobe,
-      hal_core_wvalid  => hal_core_writemosi.data_valid,
+      --hal_core_araddr  => hal_core_readmosi.address,
+      --hal_core_arprot  => hal_core_readmosi.protection_type,
+      --hal_core_arready => hal_core_readmiso.ready_for_address,
+      --hal_core_arvalid => hal_core_readmosi.address_valid,
+      --hal_core_awaddr  => hal_core_writemosi.address,
+      --hal_core_awprot  => hal_core_writemosi.protection_type,
+      --hal_core_awready => hal_core_writemiso.ready_for_address,
+      --hal_core_awvalid => hal_core_writemosi.address_valid,
+      --hal_core_bready  => hal_core_writemosi.ready_for_response,
+      --hal_core_bresp   => hal_core_writemiso.response,
+      --hal_core_bvalid  => hal_core_writemiso.response_valid,
+      --hal_core_rdata   => hal_core_readmiso.data,
+      --hal_core_rready  => hal_core_readmosi.ready_for_data,
+      --hal_core_rresp   => hal_core_readmiso.response,
+      --hal_core_rvalid  => hal_core_readmiso.data_valid,
+      --hal_core_wdata   => hal_core_writemosi.data,
+      --hal_core_wready  => hal_core_writemiso.ready_for_data,
+      --hal_core_wstrb   => hal_core_writemosi.data_write_strobe,
+      --hal_core_wvalid  => hal_core_writemosi.data_valid,
 
       --------------------------------------------------------------------------------
       -- User Logic
@@ -815,25 +819,25 @@ begin
       --daq_wstrb   => daq_writemosi.data_write_strobe,
       --daq_wvalid  => daq_writemosi.data_valid,
 
-      --pt_araddr  => tf_readmosi.address,
-      --pt_arprot  => tf_readmosi.protection_type,
-      --pt_arready => tf_readmiso.ready_for_address,
-      --pt_arvalid => tf_readmosi.address_valid,
-      --pt_awaddr  => tf_writemosi.address,
-      --pt_awprot  => tf_writemosi.protection_type,
-      --pt_awready => tf_writemiso.ready_for_address,
-      --pt_awvalid => tf_writemosi.address_valid,
-      --pt_bready  => tf_writemosi.ready_for_response,
-      --pt_bresp   => tf_writemiso.response,
-      --pt_bvalid  => tf_writemiso.response_valid,
-      --pt_rdata   => tf_readmiso.data,
-      --pt_rready  => tf_readmosi.ready_for_data,
-      --pt_rresp   => tf_readmiso.response,
-      --pt_rvalid  => tf_readmiso.data_valid,
-      --pt_wdata   => tf_writemosi.data,
-      --pt_wready  => tf_writemiso.ready_for_data,
-      --pt_wstrb   => tf_writemosi.data_write_strobe,
-      --pt_wvalid  => tf_writemosi.data_valid,
+      --tf_araddr  => tf_readmosi.address,
+      --tf_arprot  => tf_readmosi.protection_type,
+      --tf_arready => tf_readmiso.ready_for_address,
+      --tf_arvalid => tf_readmosi.address_valid,
+      --tf_awaddr  => tf_writemosi.address,
+      --tf_awprot  => tf_writemosi.protection_type,
+      --tf_awready => tf_writemiso.ready_for_address,
+      --tf_awvalid => tf_writemosi.address_valid,
+      --tf_bready  => tf_writemosi.ready_for_response,
+      --tf_bresp   => tf_writemiso.response,
+      --tf_bvalid  => tf_writemiso.response_valid,
+      --tf_rdata   => tf_readmiso.data,
+      --tf_rready  => tf_readmosi.ready_for_data,
+      --tf_rresp   => tf_readmiso.response,
+      --tf_rvalid  => tf_readmiso.data_valid,
+      --tf_wdata   => tf_writemosi.data,
+      --tf_wready  => tf_writemiso.ready_for_data,
+      --tf_wstrb   => tf_writemosi.data_write_strobe,
+      --tf_wvalid  => tf_writemosi.data_valid,
 
       --mpl_araddr  => mpl_readmosi.address,
       --mpl_arprot  => mpl_readmosi.protection_type,
@@ -855,38 +859,15 @@ begin
       --mpl_wstrb   => mpl_writemosi.data_write_strobe,
       --mpl_wvalid  => mpl_writemosi.data_valid,
 
- 
-
-
-      --fm_araddr  => fm_readmosi.address,
-      --fm_arprot  => fm_readmosi.protection_type,
-      --fm_arready => fm_readmiso.ready_for_address,
-      --fm_arvalid => fm_readmosi.address_valid,
-      --fm_awaddr  => fm_writemosi.address,
-      --fm_awprot  => fm_writemosi.protection_type,
-      --fm_awready => fm_writemiso.ready_for_address,
-      --fm_awvalid => fm_writemosi.address_valid,
-      --fm_bready  => fm_writemosi.ready_for_response,
-      --fm_bresp   => fm_writemiso.response,
-      --fm_bvalid  => fm_writemiso.response_valid,
-      --fm_rdata   => fm_readmiso.data,
-      --fm_rready  => fm_readmosi.ready_for_data,
-      --fm_rresp   => fm_readmiso.response,
-      --fm_rvalid  => fm_readmiso.data_valid,
-      --fm_wdata   => fm_writemosi.data,
-      --fm_wready  => fm_writemiso.ready_for_data,
-      --fm_wstrb   => fm_writemosi.data_write_strobe,
-      --fm_wvalid  => fm_writemosi.data_valid,
-
       -- END: ULT_PORTS :: DO NOT EDIT
       -- system monitor outputs
 
-      kintex_sys_mgmt_alarm          => sys_mgmt_alarm,
-      kintex_sys_mgmt_overtemp_alarm => sys_mgmt_overtemp_alarm,
-      --kintex_sys_mgmt_scl            => sys_mgmt_scl,
-      --kintex_sys_mgmt_sda            => sys_mgmt_sda,
-      kintex_sys_mgmt_vccaux_alarm   => sys_mgmt_vccaux_alarm,
-      kintex_sys_mgmt_vccint_alarm   => sys_mgmt_vccint_alarm
+      --kintex_sys_mgmt_alarm          => sys_mgmt_alarm,
+      --kintex_sys_mgmt_overtemp_alarm => sys_mgmt_overtemp_alarm,
+      ----kintex_sys_mgmt_scl            => sys_mgmt_scl,
+      ----kintex_sys_mgmt_sda            => sys_mgmt_sda,
+      --kintex_sys_mgmt_vccaux_alarm   => sys_mgmt_vccaux_alarm,
+      --kintex_sys_mgmt_vccint_alarm   => sys_mgmt_vccint_alarm
 
       );
 
@@ -894,41 +875,41 @@ begin
   -- AXI Interfaces
   --------------------------------------------------------------------------------
 
-  hal_core_map_inst : entity ctrl_lib.HAL_CORE_map
-    port map (
-      clk_axi         => axi_clk,
-      reset_axi_n     => axi_reset_n,
-      slave_readmosi  => hal_core_readmosi,
-      slave_readmiso  => hal_core_readmiso,
-      slave_writemosi => hal_core_writemosi,
-      slave_writemiso => hal_core_writemiso,
+  --hal_core_map_inst : entity ctrl_lib.HAL_CORE_map
+  --  port map (
+  --    clk_axi         => axi_clk,
+  --    reset_axi_n     => axi_reset_n,
+  --    slave_readmosi  => hal_core_readmosi,
+  --    slave_readmiso  => hal_core_readmiso,
+  --    slave_writemosi => hal_core_writemosi,
+  --    slave_writemiso => hal_core_writemiso,
 
-      -- monitor signals in
-      mon  => hal_core_mon_r,
-      -- control signals out
-      ctrl => hal_core_ctrl_r
-      );
+  --    -- monitor signals in
+  --    mon  => hal_core_mon_r,
+  --    -- control signals out
+  --    ctrl => hal_core_ctrl_r
+  --    );
 
-  hal_map_inst : entity ctrl_lib.HAL_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
-      slave_readmosi  => hal_readmosi,
-      slave_readmiso  => hal_readmiso,
-      slave_writemosi => hal_writemosi,
-      slave_writemiso => hal_writemiso,
+  --hal_map_inst : entity ctrl_lib.HAL_map
+  --  port map (
+  --    clk_axi         => axi_clk,
+  --    reset_axi_n     => axi_reset_n,
+  --    slave_readmosi  => hal_readmosi,
+  --    slave_readmiso  => hal_readmiso,
+  --    slave_writemosi => hal_writemosi,
+  --    slave_writemiso => hal_writemiso,
 
-      -- monitor signals in
-      mon  => hal_mon_r,
-      -- control signals out
-      ctrl => hal_ctrl_r
-      );
+  --    -- monitor signals in
+  --    mon  => hal_mon_r,
+  --    -- control signals out
+  --    ctrl => hal_ctrl_r
+  --    );
 
-      -- START: ULT_SLAVES :: DO NOT EDIT
+  --    -- START: ULT_SLAVES :: DO NOT EDIT
     hps_inn_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => hps_inn_readmosi,
       slave_readmiso  => hps_inn_readmiso,
       slave_writemosi => hps_inn_writemosi,
@@ -942,7 +923,7 @@ begin
     hps_mid_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => hps_mid_readmosi,
       slave_readmiso  => hps_mid_readmiso,
       slave_writemosi => hps_mid_writemosi,
@@ -956,7 +937,7 @@ begin
     hps_out_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => hps_out_readmosi,
       slave_readmiso  => hps_out_readmiso,
       slave_writemosi => hps_out_writemosi,
@@ -970,7 +951,7 @@ begin
     hps_ext_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => hps_ext_readmosi,
       slave_readmiso  => hps_ext_readmiso,
       slave_writemosi => hps_ext_writemosi,
@@ -984,7 +965,7 @@ begin
     tar_inn_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => tar_inn_readmosi,
       slave_readmiso  => tar_inn_readmiso,
       slave_writemosi => tar_inn_writemosi,
@@ -998,7 +979,7 @@ begin
     tar_mid_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => tar_mid_readmosi,
       slave_readmiso  => tar_mid_readmiso,
       slave_writemosi => tar_mid_writemosi,
@@ -1012,7 +993,7 @@ begin
     tar_out_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => tar_out_readmosi,
       slave_readmiso  => tar_out_readmiso,
       slave_writemosi => tar_out_writemosi,
@@ -1026,7 +1007,7 @@ begin
     tar_ext_map_inst : entity ctrl_lib.tar_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => tar_ext_readmosi,
       slave_readmiso  => tar_ext_readmiso,
       slave_writemosi => tar_ext_writemosi,
@@ -1040,7 +1021,7 @@ begin
     mtc_map_inst : entity ctrl_lib.mtc_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => mtc_readmosi,
       slave_readmiso  => mtc_readmiso,
       slave_writemosi => mtc_writemosi,
@@ -1054,7 +1035,7 @@ begin
     ucm_map_inst : entity ctrl_lib.ucm_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => ucm_readmosi,
       slave_readmiso  => ucm_readmiso,
       slave_writemosi => ucm_writemosi,
@@ -1068,7 +1049,7 @@ begin
     daq_map_inst : entity ctrl_lib.daq_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => daq_readmosi,
       slave_readmiso  => daq_readmiso,
       slave_writemosi => daq_writemosi,
@@ -1082,7 +1063,7 @@ begin
     tf_map_inst : entity ctrl_lib.tf_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => tf_readmosi,
       slave_readmiso  => tf_readmiso,
       slave_writemosi => tf_writemosi,
@@ -1096,7 +1077,7 @@ begin
     mpl_map_inst : entity ctrl_lib.mpl_map
     port map (
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => std_logic1,
       slave_readmosi  => mpl_readmosi,
       slave_readmiso  => mpl_readmiso,
       slave_writemosi => mpl_writemosi,
@@ -1114,25 +1095,25 @@ begin
   -- gated clock that is the ff'd version of itself which would run at 1/2 speed
   -- for each ff stage
 
-  fm_map_inst : entity ctrl_lib.FM_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => clk40_rst_n,
-      slave_readmosi  => fm_readmosi,
-      slave_readmiso  => fm_readmiso,
-      slave_writemosi => fm_writemosi,
-      slave_writemiso => fm_writemiso,
+  --fm_map_inst : entity ctrl_lib.FM_map
+  --  port map (
+  --    clk_axi         => clk40,
+  --    reset_axi_n     => clk40_rst_n,
+  --    slave_readmosi  => fm_readmosi,
+  --    slave_readmiso  => fm_readmiso,
+  --    slave_writemosi => fm_writemosi,
+  --    slave_writemiso => fm_writemiso,
 
-      -- monitor signals in
-      mon  => fm_mon_r,
-      -- control signals out
-      Ctrl => fm_ctrl
-      );
+  --    -- monitor signals in
+  --    mon  => fm_mon_r,
+  --    -- control signals out
+  --    Ctrl => fm_ctrl_r
+  --    );
 
   fw_info_map_inst : entity ctrl_lib.fw_info_map
     port map (
       clk_axi         => axi_clk,
-      reset_axi_n     => clk40_rst_n,
+      reset_axi_n     => axi_reset_n,
       slave_readmosi  => fw_info_readmosi,
       slave_readmiso  => fw_info_readmiso,
       slave_writemosi => fw_info_writemosi,
@@ -1142,7 +1123,7 @@ begin
 
       );
 
-  C2C_INTF_1: entity ctrl_lib.C2C_INTF
+  SM_CM_INTF: entity ctrl_lib.C2C_INTF
     generic map (
       ERROR_WAIT_TIME => 90000000
      -- ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_K_C2C_INTF)
@@ -1158,8 +1139,8 @@ begin
       clk_C2C(2)       => clk_K_C2C_PHY_user(1),
       UART_Rx          => pb_UART_Rx,
       UART_Tx          => pb_UART_Tx,
-      Mon              => C2C_Mon,
-      Ctrl             => C2C_Ctrl);
+      Mon              => C2C_Mon_r,
+      Ctrl             => C2C_Ctrl_r);
 
 end control_arch;
 

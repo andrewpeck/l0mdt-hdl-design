@@ -74,9 +74,10 @@ begin  -- architecture behavioral
   begin  -- process latch_reads
     if reset_axi_n = '0' then
       localRdAck <= '0';
+      localRdData_latch  <= x"00000000"; --priya
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       localRdAck <= '0';
-      
+      localRdData_latch  <= x"00000000"; --priya
       if regRdAck = '1' then
         localRdData_latch <= localRdData;
         localRdAck <= '1';
@@ -90,6 +91,7 @@ begin  -- architecture behavioral
   begin  -- process latch_reads
     if reset_axi_n = '0' then
       regRdAck <= '0';
+      localRdData <= x"00000000";       
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       regRdAck  <= '0';
       localRdData <= x"00000000";

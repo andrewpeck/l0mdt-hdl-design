@@ -40,6 +40,9 @@ architecture behavioral of C2C_INTF_map is
   signal localRdAck         : std_logic;
   signal regRdAck           : std_logic;
 
+  signal Mon_local_r   : C2C_INTF_MON_t;
+  signal Mon_local_r2  : C2C_INTF_MON_t;
+  
   
   constant BRAM_COUNT       : integer := 3;
 --  signal latchBRAM          : std_logic_vector(BRAM_COUNT-1 downto 0);
@@ -87,6 +90,16 @@ begin  -- architecture behavioral
       read_req    => localRdReq,
       read_ack    => localRdAck);
 
+
+
+   double_buffer: process(clk_axi) is
+    begin
+      if clk_axi'event and clk_axi = '1' then
+        Mon_local_r  <= Mon;
+        Mon_local_r2 <= Mon_local_r;
+      end if;
+    end process double_buffer;
+  
   -------------------------------------------------------------------------------
   -- Record read decoding
   -------------------------------------------------------------------------------
@@ -96,9 +109,10 @@ begin  -- architecture behavioral
   begin  -- process latch_reads
     if reset_axi_n = '0' then
       localRdAck <= '0';
+      localRdData_latch <= x"00000000"; --priya
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       localRdAck <= '0';
-      
+      localRdData_latch <= x"00000000"; --priya
       if regRdAck = '1' then
         localRdData_latch <= localRdData;
         localRdAck <= '1';
@@ -111,7 +125,9 @@ elsif BRAM_MISO(1).rd_data_valid = '1' then
 elsif BRAM_MISO(2).rd_data_valid = '1' then
         localRdAck <= '1';
         localRdData_latch <= BRAM_MISO(2).rd_data;
-
+else --priya
+        localRdAck <= '0';
+        localRdData_latch <= x"00000000";
       end if;
     end if;
   end process latch_reads;
@@ -129,33 +145,33 @@ elsif BRAM_MISO(2).rd_data_valid = '1' then
         case to_integer(unsigned(localAddress(13 downto 0))) is
           
         when 1024 => --0x400
-          localRdData( 0)            <=  Mon.C2C(1).STATUS.CONFIG_ERROR;                    --C2C config error
-          localRdData( 1)            <=  Mon.C2C(1).STATUS.LINK_ERROR;                      --C2C link error
-          localRdData( 2)            <=  Mon.C2C(1).STATUS.LINK_GOOD;                       --C2C link FSM in SYNC
-          localRdData( 3)            <=  Mon.C2C(1).STATUS.MB_ERROR;                        --C2C multi-bit error
-          localRdData( 4)            <=  Mon.C2C(1).STATUS.DO_CC;                           --Aurora do CC
+          localRdData( 0)            <=  Mon_local_r2.C2C(1).STATUS.CONFIG_ERROR;                    --C2C config error
+          localRdData( 1)            <=  Mon_local_r2.C2C(1).STATUS.LINK_ERROR;                      --C2C link error
+          localRdData( 2)            <=  Mon_local_r2.C2C(1).STATUS.LINK_GOOD;                       --C2C link FSM in SYNC
+          localRdData( 3)            <=  Mon_local_r2.C2C(1).STATUS.MB_ERROR;                        --C2C multi-bit error
+          localRdData( 4)            <=  Mon_local_r2.C2C(1).STATUS.DO_CC;                           --Aurora do CC
           localRdData( 5)            <=  reg_data(1024)( 5);                                --C2C initialize
-          localRdData( 8)            <=  Mon.C2C(1).STATUS.PHY_RESET;                       --Aurora phy in reset
-          localRdData( 9)            <=  Mon.C2C(1).STATUS.PHY_GT_PLL_LOCK;                 --Aurora phy GT PLL locked
-          localRdData(10)            <=  Mon.C2C(1).STATUS.PHY_MMCM_LOL;                    --Aurora phy mmcm LOL
-          localRdData(13 downto 12)  <=  Mon.C2C(1).STATUS.PHY_LANE_UP;                     --Aurora phy lanes up
-          localRdData(16)            <=  Mon.C2C(1).STATUS.PHY_HARD_ERR;                    --Aurora phy hard error
-          localRdData(17)            <=  Mon.C2C(1).STATUS.PHY_SOFT_ERR;                    --Aurora phy soft error
-          localRdData(18)            <=  Mon.C2C(1).STATUS.CHANNEL_UP;                      --Channel up
-          localRdData(31)            <=  Mon.C2C(1).STATUS.LINK_IN_FW;                      --FW includes this link
+          localRdData( 8)            <=  Mon_local_r2.C2C(1).STATUS.PHY_RESET;                       --Aurora phy in reset
+          localRdData( 9)            <=  Mon_local_r2.C2C(1).STATUS.PHY_GT_PLL_LOCK;                 --Aurora phy GT PLL locked
+          localRdData(10)            <=  Mon_local_r2.C2C(1).STATUS.PHY_MMCM_LOL;                    --Aurora phy mmcm LOL
+          localRdData(13 downto 12)  <=  '0' & Mon_local_r2.C2C(1).STATUS.PHY_LANE_UP;
+          localRdData(16)            <=  Mon_local_r2.C2C(1).STATUS.PHY_HARD_ERR;                    --Aurora phy hard error
+          localRdData(17)            <=  Mon_local_r2.C2C(1).STATUS.PHY_SOFT_ERR;                    --Aurora phy soft error
+          localRdData(18)            <=  Mon_local_r2.C2C(1).STATUS.CHANNEL_UP;                      --Channel up
+          localRdData(31)            <=  Mon_local_r2.C2C(1).STATUS.LINK_IN_FW;                      --FW includes this link
         when 1028 => --0x404
-          localRdData(15 downto  0)  <=  Mon.C2C(1).DEBUG.DMONITOR;                         --DEBUG d monitor
-          localRdData(16)            <=  Mon.C2C(1).DEBUG.QPLL_LOCK;                        --DEBUG cplllock
-          localRdData(20)            <=  Mon.C2C(1).DEBUG.CPLL_LOCK;                        --DEBUG cplllock
-          localRdData(21)            <=  Mon.C2C(1).DEBUG.EYESCAN_DATA_ERROR;               --DEBUG eyescan data error
+          localRdData(15 downto  0)  <=  Mon_local_r2.C2C(1).DEBUG.DMONITOR;                         --DEBUG d monitor
+          localRdData(16)            <=  Mon_local_r2.C2C(1).DEBUG.QPLL_LOCK;                        --DEBUG cplllock
+          localRdData(20)            <=  Mon_local_r2.C2C(1).DEBUG.CPLL_LOCK;                        --DEBUG cplllock
+          localRdData(21)            <=  Mon_local_r2.C2C(1).DEBUG.EYESCAN_DATA_ERROR;               --DEBUG eyescan data error
           localRdData(23)            <=  reg_data(1028)(23);                                --DEBUG eyescan trigger
         when 1029 => --0x405
           localRdData(15 downto  0)  <=  reg_data(1029)(15 downto  0);                      --bit 2 is DRP uber reset
         when 1030 => --0x406
-          localRdData( 2 downto  0)  <=  Mon.C2C(1).DEBUG.RX.BUF_STATUS;                    --DEBUG rx buf status
-          localRdData( 5)            <=  Mon.C2C(1).DEBUG.RX.PMA_RESET_DONE;                --DEBUG rx reset done
-          localRdData(10)            <=  Mon.C2C(1).DEBUG.RX.PRBS_ERR;                      --DEBUG rx PRBS error
-          localRdData(11)            <=  Mon.C2C(1).DEBUG.RX.RESET_DONE;                    --DEBUG rx reset done
+          localRdData( 2 downto  0)  <=  Mon_local_r2.C2C(1).DEBUG.RX.BUF_STATUS;                    --DEBUG rx buf status
+          localRdData( 5)            <=  Mon_local_r2.C2C(1).DEBUG.RX.PMA_RESET_DONE;                --DEBUG rx reset done
+          localRdData(10)            <=  Mon_local_r2.C2C(1).DEBUG.RX.PRBS_ERR;                      --DEBUG rx PRBS error
+          localRdData(11)            <=  Mon_local_r2.C2C(1).DEBUG.RX.RESET_DONE;                    --DEBUG rx reset done
           localRdData(13)            <=  reg_data(1030)(13);                                --DEBUG rx CDR hold
           localRdData(18)            <=  reg_data(1030)(18);                                --DEBUG rx LPM ENABLE
           localRdData(25)            <=  reg_data(1030)(25);                                --DEBUG rx PRBS counter reset
@@ -163,8 +179,8 @@ elsif BRAM_MISO(2).rd_data_valid = '1' then
         when 1031 => --0x407
           localRdData( 2 downto  0)  <=  reg_data(1031)( 2 downto  0);                      --DEBUG rx rate
         when 1032 => --0x408
-          localRdData( 1 downto  0)  <=  Mon.C2C(1).DEBUG.TX.BUF_STATUS;                    --DEBUG tx buf status
-          localRdData( 2)            <=  Mon.C2C(1).DEBUG.TX.RESET_DONE;                    --DEBUG tx reset done
+          localRdData( 1 downto  0)  <=  Mon_local_r2.C2C(1).DEBUG.TX.BUF_STATUS;                    --DEBUG tx buf status
+          localRdData( 2)            <=  Mon_local_r2.C2C(1).DEBUG.TX.RESET_DONE;                    --DEBUG tx reset done
           localRdData( 7)            <=  reg_data(1032)( 7);                                --DEBUG tx inhibit
           localRdData(17)            <=  reg_data(1032)(17);                                --DEBUG tx polarity
           localRdData(22 downto 18)  <=  reg_data(1032)(22 downto 18);                      --DEBUG post cursor
@@ -174,35 +190,35 @@ elsif BRAM_MISO(2).rd_data_valid = '1' then
           localRdData( 3 downto  0)  <=  reg_data(1033)( 3 downto  0);                      --DEBUG PRBS select
           localRdData( 8 downto  4)  <=  reg_data(1033)( 8 downto  4);                      --DEBUG tx diff control
         when 1040 => --0x410
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.ERRORS_ALL_TIME;               --Counter for all errors while locked
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.ERRORS_ALL_TIME;               --Counter for all errors while locked
         when 1041 => --0x411
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.ERRORS_SINCE_LOCKED;           --Counter for errors since locked
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.ERRORS_SINCE_LOCKED;           --Counter for errors since locked
         when 1042 => --0x412
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.CONFIG_ERROR_COUNT;            --Counter for CONFIG_ERROR
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.CONFIG_ERROR_COUNT;            --Counter for CONFIG_ERROR
         when 1043 => --0x413
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.LINK_ERROR_COUNT;              --Counter for LINK_ERROR
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.LINK_ERROR_COUNT;              --Counter for LINK_ERROR
         when 1044 => --0x414
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.MB_ERROR_COUNT;                --Counter for MB_ERROR
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.MB_ERROR_COUNT;                --Counter for MB_ERROR
         when 1045 => --0x415
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.PHY_HARD_ERROR_COUNT;          --Counter for PHY_HARD_ERROR
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.PHY_HARD_ERROR_COUNT;          --Counter for PHY_HARD_ERROR
         when 1046 => --0x416
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.PHY_SOFT_ERROR_COUNT;          --Counter for PHY_SOFT_ERROR
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.PHY_SOFT_ERROR_COUNT;          --Counter for PHY_SOFT_ERROR
         when 1047 => --0x417
-          localRdData( 2 downto  0)  <=  Mon.C2C(1).COUNTERS.PHYLANE_STATE;                 --Current state of phy_lane_control module
+          localRdData( 2 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.PHYLANE_STATE;                 --Current state of phy_lane_control module
         when 1049 => --0x419
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.ERROR_WAITS_SINCE_LOCKED;      --Count for phylane in error state
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.ERROR_WAITS_SINCE_LOCKED;      --Count for phylane in error state
         when 1050 => --0x41a
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.USER_CLK_FREQ;                 --Frequency of the user C2C clk
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.USER_CLK_FREQ;                 --Frequency of the user C2C clk
         when 1051 => --0x41b
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.XCVR_RESETS;                   --Count for phylane in error state
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.XCVR_RESETS;                   --Count for phylane in error state
         when 1052 => --0x41c
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.WAITING_TIMEOUTS;              --Count of initialize cycles
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.WAITING_TIMEOUTS;              --Count of initialize cycles
         when 1053 => --0x41d
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.SB_ERROR_RATE;                 --single bit error rate
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.SB_ERROR_RATE;                 --single bit error rate
         when 1054 => --0x41e
-          localRdData(31 downto  0)  <=  Mon.C2C(1).COUNTERS.MB_ERROR_RATE;                 --multi bit error rate
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).COUNTERS.MB_ERROR_RATE;                 --multi bit error rate
         when 1056 => --0x420
-          localRdData(31 downto  0)  <=  Mon.C2C(1).USER_FREQ;                              --Measured Freq of clock
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(1).USER_FREQ;                              --Measured Freq of clock
         when 1057 => --0x421
           localRdData(23 downto  0)  <=  reg_data(1057)(23 downto  0);                      --Time spent waiting for phylane to stabilize
           localRdData(24)            <=  reg_data(1057)(24);                                --phy_lane_control is enabled
@@ -215,33 +231,35 @@ elsif BRAM_MISO(2).rd_data_valid = '1' then
         when 1061 => --0x425
           localRdData(31 downto  0)  <=  reg_data(1061)(31 downto  0);                      --Max multi bit error rate
         when 5120 => --0x1400
-          localRdData( 0)            <=  Mon.C2C(2).STATUS.CONFIG_ERROR;                    --C2C config error
-          localRdData( 1)            <=  Mon.C2C(2).STATUS.LINK_ERROR;                      --C2C link error
-          localRdData( 2)            <=  Mon.C2C(2).STATUS.LINK_GOOD;                       --C2C link FSM in SYNC
-          localRdData( 3)            <=  Mon.C2C(2).STATUS.MB_ERROR;                        --C2C multi-bit error
-          localRdData( 4)            <=  Mon.C2C(2).STATUS.DO_CC;                           --Aurora do CC
+          localRdData( 0)            <=  Mon_local_r2.C2C(2).STATUS.CONFIG_ERROR;                    --C2C config error
+          localRdData( 1)            <=  Mon_local_r2.C2C(2).STATUS.LINK_ERROR;                      --C2C link error
+          localRdData( 2)            <=  Mon_local_r2.C2C(2).STATUS.LINK_GOOD;                       --C2C link FSM in SYNC
+          localRdData( 3)            <=  Mon_local_r2.C2C(2).STATUS.MB_ERROR;                        --C2C multi-bit error
+          localRdData( 4)            <=  Mon_local_r2.C2C(2).STATUS.DO_CC;                           --Aurora do CC
           localRdData( 5)            <=  reg_data(5120)( 5);                                --C2C initialize
-          localRdData( 8)            <=  Mon.C2C(2).STATUS.PHY_RESET;                       --Aurora phy in reset
-          localRdData( 9)            <=  Mon.C2C(2).STATUS.PHY_GT_PLL_LOCK;                 --Aurora phy GT PLL locked
-          localRdData(10)            <=  Mon.C2C(2).STATUS.PHY_MMCM_LOL;                    --Aurora phy mmcm LOL
-          localRdData(13 downto 12)  <=  Mon.C2C(2).STATUS.PHY_LANE_UP;                     --Aurora phy lanes up
-          localRdData(16)            <=  Mon.C2C(2).STATUS.PHY_HARD_ERR;                    --Aurora phy hard error
-          localRdData(17)            <=  Mon.C2C(2).STATUS.PHY_SOFT_ERR;                    --Aurora phy soft error
-          localRdData(18)            <=  Mon.C2C(2).STATUS.CHANNEL_UP;                      --Channel up
-          localRdData(31)            <=  Mon.C2C(2).STATUS.LINK_IN_FW;                      --FW includes this link
+          localRdData( 8)            <=  Mon_local_r2.C2C(2).STATUS.PHY_RESET;                       --Aurora phy in reset
+          localRdData( 9)            <=  Mon_local_r2.C2C(2).STATUS.PHY_GT_PLL_LOCK;                 --Aurora phy GT PLL locked
+          localRdData(10)            <=  Mon_local_r2.C2C(2).STATUS.PHY_MMCM_LOL;                    --Aurora phy mmcm LOL
+          localRdData(12 downto 12)  <=  Mon_local_r2.C2C(2).STATUS.PHY_LANE_UP;
+--priya Aurora phy lanes up
+          localRdData(13 downto 13)  <=  b"0"; --priya Mon_local_r2.C2C(2).STATUS.PHY_LANE_UP;  
+          localRdData(16)            <=  Mon_local_r2.C2C(2).STATUS.PHY_HARD_ERR;                    --Aurora phy hard error
+          localRdData(17)            <=  Mon_local_r2.C2C(2).STATUS.PHY_SOFT_ERR;                    --Aurora phy soft error
+          localRdData(18)            <=  Mon_local_r2.C2C(2).STATUS.CHANNEL_UP;                      --Channel up
+          localRdData(31)            <=  Mon_local_r2.C2C(2).STATUS.LINK_IN_FW;                      --FW includes this link
         when 5124 => --0x1404
-          localRdData(15 downto  0)  <=  Mon.C2C(2).DEBUG.DMONITOR;                         --DEBUG d monitor
-          localRdData(16)            <=  Mon.C2C(2).DEBUG.QPLL_LOCK;                        --DEBUG cplllock
-          localRdData(20)            <=  Mon.C2C(2).DEBUG.CPLL_LOCK;                        --DEBUG cplllock
-          localRdData(21)            <=  Mon.C2C(2).DEBUG.EYESCAN_DATA_ERROR;               --DEBUG eyescan data error
+          localRdData(15 downto  0)  <=  Mon_local_r2.C2C(2).DEBUG.DMONITOR;                         --DEBUG d monitor
+          localRdData(16)            <=  Mon_local_r2.C2C(2).DEBUG.QPLL_LOCK;                        --DEBUG cplllock
+          localRdData(20)            <=  Mon_local_r2.C2C(2).DEBUG.CPLL_LOCK;                        --DEBUG cplllock
+          localRdData(21)            <=  Mon_local_r2.C2C(2).DEBUG.EYESCAN_DATA_ERROR;               --DEBUG eyescan data error
           localRdData(23)            <=  reg_data(5124)(23);                                --DEBUG eyescan trigger
         when 5125 => --0x1405
           localRdData(15 downto  0)  <=  reg_data(5125)(15 downto  0);                      --bit 2 is DRP uber reset
         when 5126 => --0x1406
-          localRdData( 2 downto  0)  <=  Mon.C2C(2).DEBUG.RX.BUF_STATUS;                    --DEBUG rx buf status
-          localRdData( 5)            <=  Mon.C2C(2).DEBUG.RX.PMA_RESET_DONE;                --DEBUG rx reset done
-          localRdData(10)            <=  Mon.C2C(2).DEBUG.RX.PRBS_ERR;                      --DEBUG rx PRBS error
-          localRdData(11)            <=  Mon.C2C(2).DEBUG.RX.RESET_DONE;                    --DEBUG rx reset done
+          localRdData( 2 downto  0)  <=  Mon_local_r2.C2C(2).DEBUG.RX.BUF_STATUS;                    --DEBUG rx buf status
+          localRdData( 5)            <=  Mon_local_r2.C2C(2).DEBUG.RX.PMA_RESET_DONE;                --DEBUG rx reset done
+          localRdData(10)            <=  Mon_local_r2.C2C(2).DEBUG.RX.PRBS_ERR;                      --DEBUG rx PRBS error
+          localRdData(11)            <=  Mon_local_r2.C2C(2).DEBUG.RX.RESET_DONE;                    --DEBUG rx reset done
           localRdData(13)            <=  reg_data(5126)(13);                                --DEBUG rx CDR hold
           localRdData(18)            <=  reg_data(5126)(18);                                --DEBUG rx LPM ENABLE
           localRdData(25)            <=  reg_data(5126)(25);                                --DEBUG rx PRBS counter reset
@@ -249,8 +267,8 @@ elsif BRAM_MISO(2).rd_data_valid = '1' then
         when 5127 => --0x1407
           localRdData( 2 downto  0)  <=  reg_data(5127)( 2 downto  0);                      --DEBUG rx rate
         when 5128 => --0x1408
-          localRdData( 1 downto  0)  <=  Mon.C2C(2).DEBUG.TX.BUF_STATUS;                    --DEBUG tx buf status
-          localRdData( 2)            <=  Mon.C2C(2).DEBUG.TX.RESET_DONE;                    --DEBUG tx reset done
+          localRdData( 1 downto  0)  <=  Mon_local_r2.C2C(2).DEBUG.TX.BUF_STATUS;                    --DEBUG tx buf status
+          localRdData( 2)            <=  Mon_local_r2.C2C(2).DEBUG.TX.RESET_DONE;                    --DEBUG tx reset done
           localRdData( 7)            <=  reg_data(5128)( 7);                                --DEBUG tx inhibit
           localRdData(17)            <=  reg_data(5128)(17);                                --DEBUG tx polarity
           localRdData(22 downto 18)  <=  reg_data(5128)(22 downto 18);                      --DEBUG post cursor
@@ -260,35 +278,35 @@ elsif BRAM_MISO(2).rd_data_valid = '1' then
           localRdData( 3 downto  0)  <=  reg_data(5129)( 3 downto  0);                      --DEBUG PRBS select
           localRdData( 8 downto  4)  <=  reg_data(5129)( 8 downto  4);                      --DEBUG tx diff control
         when 5136 => --0x1410
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.ERRORS_ALL_TIME;               --Counter for all errors while locked
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.ERRORS_ALL_TIME;               --Counter for all errors while locked
         when 5137 => --0x1411
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.ERRORS_SINCE_LOCKED;           --Counter for errors since locked
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.ERRORS_SINCE_LOCKED;           --Counter for errors since locked
         when 5138 => --0x1412
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.CONFIG_ERROR_COUNT;            --Counter for CONFIG_ERROR
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.CONFIG_ERROR_COUNT;            --Counter for CONFIG_ERROR
         when 5139 => --0x1413
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.LINK_ERROR_COUNT;              --Counter for LINK_ERROR
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.LINK_ERROR_COUNT;              --Counter for LINK_ERROR
         when 5140 => --0x1414
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.MB_ERROR_COUNT;                --Counter for MB_ERROR
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.MB_ERROR_COUNT;                --Counter for MB_ERROR
         when 5141 => --0x1415
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.PHY_HARD_ERROR_COUNT;          --Counter for PHY_HARD_ERROR
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.PHY_HARD_ERROR_COUNT;          --Counter for PHY_HARD_ERROR
         when 5142 => --0x1416
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.PHY_SOFT_ERROR_COUNT;          --Counter for PHY_SOFT_ERROR
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.PHY_SOFT_ERROR_COUNT;          --Counter for PHY_SOFT_ERROR
         when 5143 => --0x1417
-          localRdData( 2 downto  0)  <=  Mon.C2C(2).COUNTERS.PHYLANE_STATE;                 --Current state of phy_lane_control module
+          localRdData( 2 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.PHYLANE_STATE;                 --Current state of phy_lane_control module
         when 5145 => --0x1419
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.ERROR_WAITS_SINCE_LOCKED;      --Count for phylane in error state
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.ERROR_WAITS_SINCE_LOCKED;      --Count for phylane in error state
         when 5146 => --0x141a
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.USER_CLK_FREQ;                 --Frequency of the user C2C clk
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.USER_CLK_FREQ;                 --Frequency of the user C2C clk
         when 5147 => --0x141b
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.XCVR_RESETS;                   --Count for phylane in error state
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.XCVR_RESETS;                   --Count for phylane in error state
         when 5148 => --0x141c
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.WAITING_TIMEOUTS;              --Count of initialize cycles
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.WAITING_TIMEOUTS;              --Count of initialize cycles
         when 5149 => --0x141d
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.SB_ERROR_RATE;                 --single bit error rate
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.SB_ERROR_RATE;                 --single bit error rate
         when 5150 => --0x141e
-          localRdData(31 downto  0)  <=  Mon.C2C(2).COUNTERS.MB_ERROR_RATE;                 --multi bit error rate
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).COUNTERS.MB_ERROR_RATE;                 --multi bit error rate
         when 5152 => --0x1420
-          localRdData(31 downto  0)  <=  Mon.C2C(2).USER_FREQ;                              --Measured Freq of clock
+          localRdData(31 downto  0)  <=  Mon_local_r2.C2C(2).USER_FREQ;                              --Measured Freq of clock
         when 5153 => --0x1421
           localRdData(23 downto  0)  <=  reg_data(5153)(23 downto  0);                      --Time spent waiting for phylane to stabilize
           localRdData(24)            <=  reg_data(5153)(24);                                --phy_lane_control is enabled
@@ -601,17 +619,17 @@ elsif BRAM_MISO(2).rd_data_valid = '1' then
   Ctrl.PB.MEM.wr_data   <=  BRAM_MOSI(2).wr_data(18-1 downto 0);
 
 
-  BRAM_MISO(0).rd_data(16-1 downto 0) <= Mon.C2C(1).DRP.rd_data;
+  BRAM_MISO(0).rd_data(16-1 downto 0) <= Mon_local_r2.C2C(1).DRP.rd_data;
   BRAM_MISO(0).rd_data(31 downto 16) <= (others => '0');
-  BRAM_MISO(0).rd_data_valid <= Mon.C2C(1).DRP.rd_data_valid;
+  BRAM_MISO(0).rd_data_valid <= Mon_local_r2.C2C(1).DRP.rd_data_valid;
 
-  BRAM_MISO(1).rd_data(16-1 downto 0) <= Mon.C2C(2).DRP.rd_data;
+  BRAM_MISO(1).rd_data(16-1 downto 0) <= Mon_local_r2.C2C(2).DRP.rd_data;
   BRAM_MISO(1).rd_data(31 downto 16) <= (others => '0');
-  BRAM_MISO(1).rd_data_valid <= Mon.C2C(2).DRP.rd_data_valid;
+  BRAM_MISO(1).rd_data_valid <= Mon_local_r2.C2C(2).DRP.rd_data_valid;
 
-  BRAM_MISO(2).rd_data(18-1 downto 0) <= Mon.PB.MEM.rd_data;
+  BRAM_MISO(2).rd_data(18-1 downto 0) <= Mon_local_r2.PB.MEM.rd_data;
   BRAM_MISO(2).rd_data(31 downto 18) <= (others => '0');
-  BRAM_MISO(2).rd_data_valid <= Mon.PB.MEM.rd_data_valid;
+  BRAM_MISO(2).rd_data_valid <= Mon_local_r2.PB.MEM.rd_data_valid;
 
     
 

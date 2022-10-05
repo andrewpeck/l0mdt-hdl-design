@@ -13,6 +13,7 @@ PRJ=sys.argv[1] #"../bin/l0mdt_ku15p_ull_empty-v0.3.65-hogD927A1E-dirty/"
 BIN_DIR="../bin/"+PRJ
 HOG_PROJECT="l0mdt_ku15p_ull_empty"
 SVF_FILE = BIN_DIR +"/" +  PRJ + ".svf"
+BIT_FILE = BIN_DIR +"/" +  PRJ + ".bit"
 DTSI_DIR = BIN_DIR + "/dtsi"
 MODULES_DIR = "modules_"+HOG_PROJECT
 print ("Creating tarball for ",HOG_PROJECT)
@@ -30,6 +31,7 @@ os.mkdir(new_dir_dtbo)
 #HOG_PROJECT_DIRECTORY = "../Projects/"+HOG_PROJECT
 shutil.copytree("../address_tables/modules", new_dir_addr_table+"/"+MODULES_DIR)
 shutil.copy(SVF_FILE, new_dir_bit)
+shutil.copy(BIT_FILE, new_dir_bit)
 
 fptr = open("../address_tables/address_apollo.xml")
 fptr_w = open(new_dir_addr_table + "/address_apollo.xml","w")

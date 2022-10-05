@@ -67,8 +67,10 @@ entity top_clocking is
     out_of_sync_o : out std_logic;
 
     locked_o     : out std_logic;
-    locked_clk50 : out std_logic
+    locked_clk50 : out std_logic;
 
+    axi_clk_o : out std_logic;
+    clk40_o   : out std_logic
     );
 
 end entity top_clocking;
@@ -117,7 +119,8 @@ begin  -- architecture behavioral
   clocks_o.clock_pipeline <= clkpipe;
   clocks_o.locked         <= mmcm_locked;
   locked_o                <= mmcm_locked;
-
+  axi_clk_o               <= clk50;
+  clk40_o                 <= clk40;
   --------------------------------------------------------------------------------
   -- ASYNC + 50MHz free-running clocks
   --------------------------------------------------------------------------------

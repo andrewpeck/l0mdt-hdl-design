@@ -27,6 +27,7 @@ use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.FM_CTRL.all;
 
+
 library shared_lib;
 use shared_lib.spybuffer_pkg.all;
 use shared_lib.common_ieee_pkg.all;
@@ -37,22 +38,24 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
 library ult_lib;
+library xil_defaultlib;
+use xil_defaultlib.all;
 
 entity top_l0mdt is
   generic (
     -- these generics get set by hog at synthesis
-    GLOBAL_FWDATE       : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_FWTIME       : std_logic_vector (31 downto 0) := x"00000000";
-    OFFICIAL            : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_FWHASH       : std_logic_vector (31 downto 0) := x"00000000";
-    TOP_FWHASH          : std_logic_vector (31 downto 0) := x"00000000";
-    XML_HASH            : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_FWVERSION    : std_logic_vector (31 downto 0) := x"00000000";
-    TOP_FWVERSION       : std_logic_vector (31 downto 0) := x"00000000";
-    XML_VERSION         : std_logic_vector (31 downto 0) := x"00000000";
-    HOG_FWHASH          : std_logic_vector (31 downto 0) := x"00000000";
-    FRAMEWORK_FWVERSION : std_logic_vector (31 downto 0) := x"00000000";
-    FRAMEWORK_FWHASH    : std_logic_vector (31 downto 0) := x"00000000"
+    GLOBAL_DATE       : std_logic_vector (31 downto 0) := x"00000000";
+    GLOBAL_TIME       : std_logic_vector (31 downto 0) := x"00000000";
+    OFFICIAL          : std_logic_vector (31 downto 0) := x"00000000";
+    GLOBAL_SHA        : std_logic_vector (31 downto 0) := x"00000000";
+    TOP_SHA           : std_logic_vector (31 downto 0) := x"00000000";
+    XML_HASH          : std_logic_vector (31 downto 0) := x"00000000";
+    GLOBAL_VER        : std_logic_vector (31 downto 0) := x"00000000";
+    TOP_VER           : std_logic_vector (31 downto 0) := x"00000000";
+    XML_VERSION       : std_logic_vector (31 downto 0) := x"00000000";
+    HOG_SHA           : std_logic_vector (31 downto 0) := x"00000000";
+    FRAMEWORK_VER     : std_logic_vector (31 downto 0) := x"00000000";
+    FRAMEWORK_SHA     : std_logic_vector (31 downto 0) := x"00000000"
     );
   port (
 
@@ -68,19 +71,22 @@ entity top_l0mdt is
     -- LHC clock
     --------------------------------------------------------------------------------
 
-    clock_i_p : in std_logic;
-    clock_i_n : in std_logic;
+--    clock_i_p : in std_logic;
+--    clock_i_n : in std_logic;
 
-    tc_clk_o_p : out std_logic;
-    tc_clk_o_n : out std_logic;
+--    tc_clk_o_p : out std_logic;
+--    tc_clk_o_n : out std_logic;
 
     --------------------------------------------------------------------------------
     -- AXI C2C
     --------------------------------------------------------------------------------
 
-    clock_async_i_p : in std_logic;
-    clock_async_i_n : in std_logic;
-
+   -- clock_async_i_p : in std_logic;
+   -- clock_async_i_n : in std_logic;
+  -- clocks
+    p_clk_100 : in std_logic;
+    n_clk_100 : in std_logic;           -- 100 MHz system clock
+    
     c2c_rxn : in  std_logic;
     c2c_rxp : in  std_logic;
     c2c_txn : out std_logic;
@@ -115,10 +121,21 @@ entity top_l0mdt is
 end top_l0mdt;
 
 architecture structural of top_l0mdt is
-
+  component onboardclk
+    port (
+      clk_200MHz   : out std_logic;
+      clk_50Mhz    : out std_logic;
+      reset     : in std_logic;
+      locked    : out std_logic; 
+      clk_in1_p : in std_logic;
+      clk_in1_n : in std_logic
+    );
+  end component;
+  
   --
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
+  constant  TEST_GLOBAL_DATE       : std_logic_vector (31 downto 0) := x"10052022";  
   -- signal tts_commands          : TTS_CMD_rt;
 
   -- hal <--> ult
@@ -158,6 +175,9 @@ architecture structural of top_l0mdt is
   signal clk320  : std_logic;
   signal clk40   : std_logic;
   signal global_reset_n : std_logic;
+  signal clk_200         : std_logic;
+  signal clk_50          : std_logic;
+  signal locked_clk200   : std_logic;
   -- Control and Monitoring Records
 
   signal hps_inn_mon_r  : HPS_MON_t;
@@ -191,6 +211,7 @@ architecture structural of top_l0mdt is
 
   signal fm_mon_r  : FM_MON_t;
   signal fm_ctrl_r : FM_CTRL_t;
+
 
   signal hps_inn_ctrl_v : std_logic_vector(width(hps_inn_ctrl_r) -1 downto 0);
   signal hps_inn_mon_v  : std_logic_vector(width(hps_inn_mon_r) -1 downto 0);
@@ -238,6 +259,8 @@ architecture structural of top_l0mdt is
   signal hal_sump  : std_logic;
   signal user_sump : std_logic;
 
+  constant ZERO : std_logic := '0';
+
 begin
 
   -- in sector 3 we only have 0 chambers in the EXTRA station and 6
@@ -251,134 +274,134 @@ begin
     (c_HPS_MAX_HP_EXT = 0 or c_HPS_MAX_HP_EXT = 6)
     report "The ULT only accepts values of 0 or 6 for c_HPS_MAX_HP_{INN,MID,OUT,EXT}. Please correct your constants." severity error;
 
-  top_hal : entity hal.top_hal
-    port map (
+  --top_hal : entity hal.top_hal
+  --  port map (
 
-      -- clock io
-      clock_i_p       => clock_i_p,
-      clock_i_n       => clock_i_n,
+  --    -- clock io
+  --    clock_i_p       => clock_i_p,
+  --    clock_i_n       => clock_i_n,
 
-      clock_async_i_p => clock_async_i_p,
-      clock_async_i_n => clock_async_i_n,
+  --    clock_async_i_p => clock_async_i_p,
+  --    clock_async_i_n => clock_async_i_n,
 
-      lhc_refclk_o_p  => tc_clk_o_p,
-      lhc_refclk_o_n  => tc_clk_o_n,
+  --    lhc_refclk_o_p  => tc_clk_o_p,
+  --    lhc_refclk_o_n  => tc_clk_o_n,
 
-      refclk_i_p      => refclk_i_p,
-      refclk_i_n      => refclk_i_n,
+  --    refclk_i_p      => refclk_i_p,
+  --    refclk_i_n      => refclk_i_n,
 
-      -- clocks to user logic
-      clock_and_control_o => clock_and_control,
-      ttc_commands_o      => ttc_commands,
+  --    -- clocks to user logic
+  --    clock_and_control_o => clock_and_control,
+  --    ttc_commands_o      => ttc_commands,
 
-      --  tdc data
-      tdc_hits_inner  => inner_tdc_hits,
-      tdc_hits_middle => middle_tdc_hits,
-      tdc_hits_outer  => outer_tdc_hits,
-      tdc_hits_extra  => extra_tdc_hits,
+  --    --  tdc data
+  --    tdc_hits_inner  => inner_tdc_hits,
+  --    tdc_hits_middle => middle_tdc_hits,
+  --    tdc_hits_outer  => outer_tdc_hits,
+  --    tdc_hits_extra  => extra_tdc_hits,
 
-      -- SLC
-      main_primary_slc   => main_primary_slc,
-      main_secondary_slc => main_secondary_slc,
-      plus_neighbor_slc  => plus_neighbor_slc,
-      minus_neighbor_slc => minus_neighbor_slc,
+  --    -- SLC
+  --    main_primary_slc   => main_primary_slc,
+  --    main_secondary_slc => main_secondary_slc,
+  --    plus_neighbor_slc  => plus_neighbor_slc,
+  --    minus_neighbor_slc => minus_neighbor_slc,
 
-      -- segment out to neighbor
-      plus_neighbor_segments_i  => plus_neighbor_segments_o,
-      minus_neighbor_segments_i => minus_neighbor_segments_o,
+  --    -- segment out to neighbor
+  --    plus_neighbor_segments_i  => plus_neighbor_segments_o,
+  --    minus_neighbor_segments_i => minus_neighbor_segments_o,
 
-      -- segment in from neighbor
-      plus_neighbor_segments_o  => plus_neighbor_segments_i,
-      minus_neighbor_segments_o => minus_neighbor_segments_i,
+  --    -- segment in from neighbor
+  --    plus_neighbor_segments_o  => plus_neighbor_segments_i,
+  --    minus_neighbor_segments_o => minus_neighbor_segments_i,
 
-      -- AXI
+  --    -- AXI
 
-      clk320_o => clk320,
-      clk40_o  => clk40,
+  --    clk320_o => clk320,
+  --    clk40_o  => clk40,
 
-      axi_clk_o => axi_clk,
+  --    axi_clk_o => axi_clk,
 
-      global_reset_n => global_reset_n,
+  --    global_reset_n => global_reset_n,
 
-      core_ctrl => hal_core_ctrl,
-      core_mon  => hal_core_mon,
+  --    core_ctrl => hal_core_ctrl,
+  --    core_mon  => hal_core_mon,
 
-      ctrl => hal_ctrl,
-      mon  => hal_mon,
+  --    ctrl => hal_ctrl,
+  --    mon  => hal_mon,
 
-      mtc_i => mtc,
-      nsp_i => nsp,
+  --    mtc_i => mtc,
+  --    nsp_i => nsp,
 
-      daq_streams => daq_streams,
+  --    daq_streams => daq_streams,
 
-      sump => hal_sump
-      );
+  --    sump => hal_sump
+  --    );
 
-  ult_inst : entity ult_lib.ult
-    generic map (
-      DUMMY => false
-      )
-    port map (
-      clock_and_control => clock_and_control,
-      ttc_commands      => ttc_commands,
+  --ult_inst : entity ult_lib.ult
+  --  generic map (
+  --    DUMMY => false
+  --    )
+  --  port map (
+  --    clock_and_control => clock_and_control,
+  --    ttc_commands      => ttc_commands,
 
-      i_inn_tdc_hits_av => inner_tdc_hits,
-      i_mid_tdc_hits_av => middle_tdc_hits,
-      i_out_tdc_hits_av => outer_tdc_hits,
-      i_ext_tdc_hits_av => extra_tdc_hits,
+  --    i_inn_tdc_hits_av => inner_tdc_hits,
+  --    i_mid_tdc_hits_av => middle_tdc_hits,
+  --    i_out_tdc_hits_av => outer_tdc_hits,
+  --    i_ext_tdc_hits_av => extra_tdc_hits,
 
-      i_plus_neighbor_segments     => plus_neighbor_segments_i,
-      i_minus_neighbor_segments    => minus_neighbor_segments_i,
-      o_plus_neighbor_segments_av  => plus_neighbor_segments_o,
-      o_minus_neighbor_segments_av => minus_neighbor_segments_o,
+  --    i_plus_neighbor_segments     => plus_neighbor_segments_i,
+  --    i_minus_neighbor_segments    => minus_neighbor_segments_i,
+  --    o_plus_neighbor_segments_av  => plus_neighbor_segments_o,
+  --    o_minus_neighbor_segments_av => minus_neighbor_segments_o,
 
-      -- SLC
-      i_main_primary_slc   => main_primary_slc,
-      i_main_secondary_slc => main_secondary_slc,
-      i_plus_neighbor_slc  => plus_neighbor_slc,
-      i_minus_neighbor_slc => minus_neighbor_slc,
+  --    -- SLC
+  --    i_main_primary_slc   => main_primary_slc,
+  --    i_main_secondary_slc => main_secondary_slc,
+  --    i_plus_neighbor_slc  => plus_neighbor_slc,
+  --    i_minus_neighbor_slc => minus_neighbor_slc,
 
-      o_mtc => mtc,
-      o_nsp => nsp,
+  --    o_mtc => mtc,
+  --    o_nsp => nsp,
 
-      o_daq_streams => daq_streams,
+  --    o_daq_streams => daq_streams,
 
-      -- Control and Monitoring
+  --    -- Control and Monitoring
 
-      hps_inn_ctrl_v => hps_inn_ctrl_v,
-      hps_inn_mon_v  => hps_inn_mon_v,
-      hps_mid_ctrl_v => hps_mid_ctrl_v,
-      hps_mid_mon_v  => hps_mid_mon_v,
-      hps_out_ctrl_v => hps_out_ctrl_v,
-      hps_out_mon_v  => hps_out_mon_v,
-      hps_ext_ctrl_v => hps_ext_ctrl_v,
-      hps_ext_mon_v  => hps_ext_mon_v,
+  --    hps_inn_ctrl_v => hps_inn_ctrl_v,
+  --    hps_inn_mon_v  => hps_inn_mon_v,
+  --    hps_mid_ctrl_v => hps_mid_ctrl_v,
+  --    hps_mid_mon_v  => hps_mid_mon_v,
+  --    hps_out_ctrl_v => hps_out_ctrl_v,
+  --    hps_out_mon_v  => hps_out_mon_v,
+  --    hps_ext_ctrl_v => hps_ext_ctrl_v,
+  --    hps_ext_mon_v  => hps_ext_mon_v,
 
-      tar_inn_ctrl_v => tar_inn_ctrl_v,
-      tar_inn_mon_v  => tar_inn_mon_v,
-      tar_mid_ctrl_v => tar_mid_ctrl_v,
-      tar_mid_mon_v  => tar_mid_mon_v,
-      tar_out_ctrl_v => tar_out_ctrl_v,
-      tar_out_mon_v  => tar_out_mon_v,
-      tar_ext_ctrl_v => tar_ext_ctrl_v,
-      tar_ext_mon_v  => tar_ext_mon_v,
+  --    tar_inn_ctrl_v => tar_inn_ctrl_v,
+  --    tar_inn_mon_v  => tar_inn_mon_v,
+  --    tar_mid_ctrl_v => tar_mid_ctrl_v,
+  --    tar_mid_mon_v  => tar_mid_mon_v,
+  --    tar_out_ctrl_v => tar_out_ctrl_v,
+  --    tar_out_mon_v  => tar_out_mon_v,
+  --    tar_ext_ctrl_v => tar_ext_ctrl_v,
+  --    tar_ext_mon_v  => tar_ext_mon_v,
 
-      mtc_ctrl_v => mtc_ctrl_v,
-      mtc_mon_v  => mtc_mon_v,
-      ucm_ctrl_v => ucm_ctrl_v,
-      ucm_mon_v  => ucm_mon_v,
-      daq_ctrl_v => daq_ctrl_v,
-      daq_mon_v  => daq_mon_v,
-      tf_ctrl_v  => tf_ctrl_v,
-      tf_mon_v   => tf_mon_v,
-      mpl_ctrl_v => mpl_ctrl_v,
-      mpl_mon_v  => mpl_mon_v,
-      fm_ctrl_v  => fm_ctrl_v,
-      fm_mon_v   => fm_mon_v,
-      --
+  --    mtc_ctrl_v => mtc_ctrl_v,
+  --    mtc_mon_v  => mtc_mon_v,
+  --    ucm_ctrl_v => ucm_ctrl_v,
+  --    ucm_mon_v  => ucm_mon_v,
+  --    daq_ctrl_v => daq_ctrl_v,
+  --    daq_mon_v  => daq_mon_v,
+  --    tf_ctrl_v  => tf_ctrl_v,
+  --    tf_mon_v   => tf_mon_v,
+  --    mpl_ctrl_v => mpl_ctrl_v,
+  --    mpl_mon_v  => mpl_mon_v,
+  --    fm_ctrl_v  => fm_ctrl_v,
+  --    fm_mon_v   => fm_mon_v,     
+  --    --
 
-      sump => user_sump
-      );
+  --    sump => user_sump
+  --    );
 
   -- ctrl/mon
   ucm_ctrl_v     <= convert(ucm_ctrl_r, ucm_ctrl_v);
@@ -413,6 +436,23 @@ begin
   fm_ctrl_v      <= convert(fm_ctrl_r, fm_ctrl_v);
   fm_mon_r       <= convert(fm_mon_v, fm_mon_r);
 
+
+
+
+  --Clocking
+  --Clocking
+  Local_Clocking:  onboardclk
+    port map (
+      clk_200MHz   => clk_200,
+      clk_50Mhz    => clk_50,
+      reset        => ZERO, --'0',
+      locked       => locked_clk200,
+      clk_in1_p    => p_clk_100,
+      clk_in1_n    => n_clk_100);
+  
+  axi_clk <= clk_50;
+  
+  
   top_control_inst : entity work.top_control
     port map (
 
@@ -470,14 +510,14 @@ begin
       fw_info_mon => fw_info_mon,
       fm_ctrl     => fm_ctrl_r,
       fm_mon      => fm_mon_r,
-
+     
       -- axi common
       clk320                  => clk320,
       clk40                   => clk40,
       clkpipe                 => clock_and_control.clk,
       axi_clk                 => axi_clk,
-      clk50mhz                => axi_clk,
-      reset_n                 => global_reset_n,
+      clk50mhz                => clk_50,
+      reset_n                 => locked_clk200,
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
       --sys_mgmt_scl            => sys_mgmt_scl,
@@ -500,18 +540,18 @@ begin
   fw_info_mon.FW_INFO.BUILD_TIME.min               <= (others => '0');  -- TS_MIN;
   fw_info_mon.FW_INFO.BUILD_TIME.HOUR              <= (others => '0');  -- TS_HOUR
 
-  fw_info_mon.HOG_INFO.GLOBAL_FWDATE       <= GLOBAL_FWDATE;
-  fw_info_mon.HOG_INFO.GLOBAL_FWTIME       <= GLOBAL_FWTIME;
+  fw_info_mon.HOG_INFO.GLOBAL_FWDATE       <= TEST_GLOBAL_DATE;
+  fw_info_mon.HOG_INFO.GLOBAL_FWTIME       <= GLOBAL_TIME;
   fw_info_mon.HOG_INFO.OFFICIAL            <= OFFICIAL;
-  fw_info_mon.HOG_INFO.GLOBAL_FWHASH       <= GLOBAL_FWHASH;
-  fw_info_mon.HOG_INFO.TOP_FWHASH          <= TOP_FWHASH;
+  fw_info_mon.HOG_INFO.GLOBAL_FWHASH       <= GLOBAL_SHA;
+  fw_info_mon.HOG_INFO.TOP_FWHASH          <= TOP_SHA;
   fw_info_mon.HOG_INFO.XML_HASH            <= XML_HASH;
-  fw_info_mon.HOG_INFO.GLOBAL_FWVERSION    <= GLOBAL_FWVERSION;
-  fw_info_mon.HOG_INFO.TOP_FWVERSION       <= TOP_FWVERSION;
+  fw_info_mon.HOG_INFO.GLOBAL_FWVERSION    <= GLOBAL_VER;
+  fw_info_mon.HOG_INFO.TOP_FWVERSION       <= TOP_VER;
   fw_info_mon.HOG_INFO.XML_VERSION         <= XML_VERSION;
-  fw_info_mon.HOG_INFO.HOG_FWHASH          <= HOG_FWHASH;
-  fw_info_mon.HOG_INFO.FRAMEWORK_FWVERSION <= FRAMEWORK_FWVERSION;
-  fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH    <= FRAMEWORK_FWHASH;
+  fw_info_mon.HOG_INFO.HOG_FWHASH          <= HOG_SHA;
+  fw_info_mon.HOG_INFO.FRAMEWORK_FWVERSION <= FRAMEWORK_VER;
+  fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH    <= FRAMEWORK_SHA;
 
   fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW <= MAIN_CFG_COMPILE_HW;
   fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL <= MAIN_CFG_COMPILE_UL;

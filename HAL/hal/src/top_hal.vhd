@@ -252,9 +252,9 @@ begin  -- architecture behavioral
 
 
   global_reset   <= not(clocks.locked);
-  axi_clk_o    <= clocks.axiclock;
+--  axi_clk_o    <= clocks.axiclock;
   clk320_o     <= clocks.clock320;
-  clk40_o      <= clocks.clock40;
+--  clk40_o      <= clocks.clock40;
 
   --------------------------------------------------------------------------------
   -- AXI Interface
@@ -298,7 +298,10 @@ begin  -- architecture behavioral
 
       -- mmcm status
       locked_o     => clocks.locked,
-      locked_clk50 => global_reset_n
+      locked_clk50 => global_reset_n,
+
+      axi_clk_o    => axi_clk_o,
+      clk40_o      => clk40_o
       );
 
   clock_strobe_1 : entity work.clock_strobe

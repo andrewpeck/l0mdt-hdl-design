@@ -61,7 +61,7 @@ architecture behavioral of C2C_INTF is
   signal Mon_local  : C2C_INTF_MON_t;
   signal Ctrl_local : C2C_INTF_CTRL_t;
 
-
+  
   signal single_bit_error_rate : slv32_array_t(HW_LINK_COUNT downto 1);
   signal multi_bit_error_rate : slv32_array_t(HW_LINK_COUNT downto 1);
   signal link_INFO_out : uC_Link_out_t_array(0 to HW_LINK_COUNT-1);
@@ -93,7 +93,7 @@ begin
   -------------------------------------------------------------------------------
   -- AXI 
   -------------------------------------------------------------------------------
-
+ 
   rd_dv: process(clk_axi) is
   begin
     if clk_axi'event and clk_axi = '1' then
@@ -174,15 +174,45 @@ begin
         Ctrl.C2C(iLane).DEBUG.RX.PMA_RESET <= Ctrl_local.C2C(iLane).DEBUG.RX.PMA_RESET;
       end if;
 
-      
-      Mon_local.C2C(iLane).STATUS <= Mon.C2C(iLane).STATUS;
-      Mon_local.C2C(iLane).DEBUG  <= Mon.C2C(iLane).DEBUG;
-      Mon_local.C2C(iLane).DRP    <= Mon.C2C(iLane).DRP;
-      Mon_local.C2C(iLane).USER_FREQ <= Mon.C2C(iLane).USER_FREQ;
-      
+     
     end process assignment;
 
-    
+    process(clk_axi) is
+      begin
+           if clk_axi'event and clk_axi = '1' then
+              
+             --priya Mon_local.C2C(iLane).STATUS <= Mon.C2C(iLane).STATUS;
+
+             Mon_local.C2C(iLane).STATUS.CONFIG_ERROR <= Mon.C2C(iLane).STATUS.CONFIG_ERROR;
+             Mon_local.C2C(iLane).STATUS.LINK_ERROR   <= Mon.C2C(iLane).STATUS.LINK_ERROR;
+             Mon_local.C2C(iLane).STATUS.LINK_GOOD    <= Mon.C2C(iLane).STATUS.LINK_GOOD;
+             Mon_local.C2C(iLane).STATUS.MB_ERROR     <= Mon.C2C(iLane).STATUS.MB_ERROR;
+             Mon_local.C2C(iLane).STATUS.DO_CC        <= Mon.C2C(iLane).STATUS.DO_CC;
+             Mon_local.C2C(iLane).STATUS.PHY_RESET    <= Mon.C2C(iLane).STATUS.PHY_RESET;
+             Mon_local.C2C(iLane).STATUS.PHY_GT_PLL_LOCK <= Mon.C2C(iLane).STATUS.PHY_GT_PLL_LOCK;
+             Mon_local.C2C(iLane).STATUS.PHY_MMCM_LOL    <= Mon.C2C(iLane).STATUS.PHY_MMCM_LOL;
+             Mon_local.C2C(iLane).STATUS.PHY_LANE_UP     <= Mon.C2C(iLane).STATUS.PHY_LANE_UP;
+             Mon_local.C2C(iLane).STATUS.PHY_HARD_ERR    <= Mon.C2C(iLane).STATUS.PHY_HARD_ERR;
+             Mon_local.C2C(iLane).STATUS.PHY_SOFT_ERR    <= Mon.C2C(iLane).STATUS.PHY_SOFT_ERR;
+             Mon_local.C2C(iLane).STATUS.CHANNEL_UP      <= Mon.C2C(iLane).STATUS.CHANNEL_UP;
+             Mon_local.C2C(iLane).STATUS.LINK_IN_FW      <= Mon.C2C(iLane).STATUS.LINK_IN_FW;
+             
+             Mon_local.C2C(iLane).DEBUG  <= Mon.C2C(iLane).DEBUG;
+             Mon_local.C2C(iLane).DRP    <= Mon.C2C(iLane).DRP;
+             Mon_local.C2C(iLane).USER_FREQ <= Mon.C2C(iLane).USER_FREQ;
+             Mon_local.C2C(iLane).COUNTERS.SB_ERROR_RATE <= single_bit_error_rate(iLane);
+             Mon_local.C2C(iLane).COUNTERS.MB_ERROR_RATE <= multi_bit_error_rate(iLane);
+             Mon_local.C2C(iLane).COUNTERS.PHYLANE_STATE  <= link_INFO_out(iLane-1).state(2 downto 0);
+              --setting counters, run 1 to COUNTER_COUNT
+             Mon_local.C2C(iLane).COUNTERS.CONFIG_ERROR_COUNT   <= C2C_Counter((iLane-1)*COUNTER_COUNT + 0);
+             Mon_local.C2C(iLane).COUNTERS.LINK_ERROR_COUNT     <= C2C_Counter((iLane-1)*COUNTER_COUNT + 1);
+             Mon_local.C2C(iLane).COUNTERS.MB_ERROR_COUNT       <= C2C_Counter((iLane-1)*COUNTER_COUNT + 2);
+             Mon_local.C2C(iLane).COUNTERS.PHY_HARD_ERROR_COUNT <= C2C_Counter((iLane-1)*COUNTER_COUNT + 3);
+             Mon_local.C2C(iLane).COUNTERS.PHY_SOFT_ERROR_COUNT <= C2C_Counter((iLane-1)*COUNTER_COUNT + 4);
+
+             Mon_local.C2C(iLane).STATUS.LINK_ERROR             <= Mon.C2C(iLane).STATUS.LINK_ERROR;
+           end if;
+      end process;    
 
     -------------------------------------------------------------------------------
     -- Phy_lane_control
@@ -224,9 +254,9 @@ begin
         clk_A             => clk_axi,
         clk_B             => clk_axi,
         reset_A_async     => zero,--'0',
-        event_b           => Mon_local.C2C(iLane).STATUS.LINK_ERROR,
+        event_b           => Mon.C2C(iLane).STATUS.LINK_ERROR, --Mon_local.C2C(iLane).STATUS.LINK_ERROR,
         rate              => single_bit_error_rate(iLane));
-    Mon_local.C2C(iLane).COUNTERS.SB_ERROR_RATE <= single_bit_error_rate(iLane);
+   
     multi_bit_error_rate_counter: entity work.rate_counter
       generic map (
         CLK_A_1_SECOND => CLKFREQ)
@@ -236,11 +266,11 @@ begin
         reset_A_async     => zero,--'0',
         event_b           => Mon_local.C2C(iLane).STATUS.MB_ERROR,
         rate              => multi_bit_error_rate(iLane));
-    Mon_local.C2C(iLane).COUNTERS.MB_ERROR_RATE <= multi_bit_error_rate(iLane);
+    
 
     phy_reset(iLane)                             <= link_INFO_out(iLane-1).link_reset;        
     aurora_init_buf(iLane)                       <= link_INFO_out(iLane-1).link_init;         
-    Mon_local.C2C(iLane).COUNTERS.PHYLANE_STATE  <= link_INFO_out(iLane-1).state(2 downto 0); 
+    
                                   
     link_INFO_in(iLane-1).link_reset_done          <= Mon_local.C2C(iLane).DEBUG.RX.PMA_RESET_DONE;     
     link_INFO_in(iLane-1).link_good                <= Mon_local.C2C(iLane).status.LINK_GOOD;
@@ -279,11 +309,6 @@ begin
     counter_events((iLane-1)*COUNTER_COUNT + 2) <= Mon.C2C(iLane).STATUS.MB_ERROR;
     counter_events((iLane-1)*COUNTER_COUNT + 3) <= Mon.C2C(iLane).STATUS.PHY_HARD_ERR;
     counter_events((iLane-1)*COUNTER_COUNT + 4) <= Mon.C2C(iLane).STATUS.PHY_SOFT_ERR;
-    --setting counters, run 1 to COUNTER_COUNT
-    Mon_local.C2C(iLane).COUNTERS.CONFIG_ERROR_COUNT   <= C2C_Counter((iLane-1)*COUNTER_COUNT + 0);
-    Mon_local.C2C(iLane).COUNTERS.LINK_ERROR_COUNT     <= C2C_Counter((iLane-1)*COUNTER_COUNT + 1);
-    Mon_local.C2C(iLane).COUNTERS.MB_ERROR_COUNT       <= C2C_Counter((iLane-1)*COUNTER_COUNT + 2);
-    Mon_local.C2C(iLane).COUNTERS.PHY_HARD_ERROR_COUNT <= C2C_Counter((iLane-1)*COUNTER_COUNT + 3);
-    Mon_local.C2C(iLane).COUNTERS.PHY_SOFT_ERROR_COUNT <= C2C_Counter((iLane-1)*COUNTER_COUNT + 4);   
+     
   end generate GENERATE_LANE_LOOP;
 end architecture behavioral;
