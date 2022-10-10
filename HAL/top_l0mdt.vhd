@@ -135,7 +135,6 @@ architecture structural of top_l0mdt is
   --
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
-  constant  TEST_GLOBAL_DATE       : std_logic_vector (31 downto 0) := x"10052022";  
   -- signal tts_commands          : TTS_CMD_rt;
 
   -- hal <--> ult
@@ -540,7 +539,7 @@ begin
   fw_info_mon.FW_INFO.BUILD_TIME.min               <= (others => '0');  -- TS_MIN;
   fw_info_mon.FW_INFO.BUILD_TIME.HOUR              <= (others => '0');  -- TS_HOUR
 
-  fw_info_mon.HOG_INFO.GLOBAL_FWDATE       <= TEST_GLOBAL_DATE;
+  fw_info_mon.HOG_INFO.GLOBAL_FWDATE       <= GLOBAL_DATE;
   fw_info_mon.HOG_INFO.GLOBAL_FWTIME       <= GLOBAL_TIME;
   fw_info_mon.HOG_INFO.OFFICIAL            <= OFFICIAL;
   fw_info_mon.HOG_INFO.GLOBAL_FWHASH       <= GLOBAL_SHA;

@@ -361,10 +361,10 @@ begin
 
       -- axi clock and reset
       axi_clk   => axi_clk,
-      clk40     => clk40,
+     -- clk40     => clk40,
       --clkpipe      => clkpipe,
       axi_rst_n => axi_reset_n,
-      clk40_rst_n => clk40_rst_n,
+      --clk40_rst_n => clk40_rst_n,
       -- system clock and reset
       clk50mhz => clk50mhz,
       reset_n  => reset_n,

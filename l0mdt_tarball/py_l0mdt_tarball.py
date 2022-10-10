@@ -16,6 +16,7 @@ SVF_FILE = BIN_DIR +"/" +  PRJ + ".svf"
 BIT_FILE = BIN_DIR +"/" +  PRJ + ".bit"
 DTSI_DIR = BIN_DIR + "/dtsi"
 MODULES_DIR = "modules_"+HOG_PROJECT
+LTX_FILE= "../Projects/"+HOG_PROJECT+"/"+HOG_PROJECT+".runs/impl_1/top_l0mdt.ltx"
 print ("Creating tarball for ",HOG_PROJECT)
 print ("BIN_DIR is ",BIN_DIR)
 
@@ -32,6 +33,7 @@ os.mkdir(new_dir_dtbo)
 shutil.copytree("../address_tables/modules", new_dir_addr_table+"/"+MODULES_DIR)
 shutil.copy(SVF_FILE, new_dir_bit)
 shutil.copy(BIT_FILE, new_dir_bit)
+shutil.copy(LTX_FILE, HOG_PROJECT)
 
 fptr = open("../address_tables/address_apollo.xml")
 fptr_w = open(new_dir_addr_table + "/address_apollo.xml","w")
