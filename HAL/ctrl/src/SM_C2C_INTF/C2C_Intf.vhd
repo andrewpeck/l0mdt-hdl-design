@@ -276,7 +276,7 @@ begin
                                   
     link_INFO_in(iLane-1).link_reset_done          <= Mon_local.C2C(iLane).DEBUG.RX.PMA_RESET_DONE;     
     link_INFO_in(iLane-1).link_good                <= Mon_local.C2C(iLane).status.LINK_GOOD;
-    link_INFO_in(iLane-1).lane_up                  <= Mon_local.C2C(iLane).status.phy_lane_up(0);
+    link_INFO_in(iLane-1).lane_up                  <= Mon_local.C2C(iLane).status.phy_lane_up; --(0);
     link_INFO_in(iLane-1).sb_err_rate              <= single_bit_error_rate(iLane);
     link_INFO_in(iLane-1).sb_err_rate_threshold    <= CTRL_local.C2C(iLane).PHY_MAX_SINGLE_BIT_ERROR_RATE;
     link_INFO_in(iLane-1).mb_err_rate              <= multi_bit_error_rate(iLane);

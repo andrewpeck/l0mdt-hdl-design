@@ -32,11 +32,11 @@ package C2C_INTF_CTRL is
     PHY_RESET                  :std_logic;     -- Aurora phy in reset
     PHY_GT_PLL_LOCK            :std_logic;     -- Aurora phy GT PLL locked
     PHY_MMCM_LOL               :std_logic;     -- Aurora phy mmcm LOL
-    PHY_LANE_UP                :std_logic_vector( 0 downto 0); --priya std_logic_vector( 1 downto 0);  -- Aurora phy lanes up
-    PHY_HARD_ERR               :std_logic;                      -- Aurora phy hard error
-    PHY_SOFT_ERR               :std_logic;                      -- Aurora phy soft error
-    CHANNEL_UP                 :std_logic;                      -- Channel up
-    LINK_IN_FW                 :std_logic;                      -- FW includes this link
+    PHY_LANE_UP                :std_logic;     -- Aurora phy lanes up
+    PHY_HARD_ERR               :std_logic;     -- Aurora phy hard error
+    PHY_SOFT_ERR               :std_logic;     -- Aurora phy soft error
+    CHANNEL_UP                 :std_logic;     -- Channel up
+    LINK_IN_FW                 :std_logic;     -- FW includes this link
   end record C2C_INTF_C2C_STATUS_MON_t;
 
 
@@ -236,7 +236,8 @@ package C2C_INTF_CTRL is
     C2C                        :C2C_INTF_C2C_MON_t_ARRAY;
     PB                         :C2C_INTF_PB_MON_t;       
   end record C2C_INTF_MON_t;
- 
+
+
   type C2C_INTF_CTRL_t is record
     C2C                        :C2C_INTF_C2C_CTRL_t_ARRAY;
     PB                         :C2C_INTF_PB_CTRL_t;       
@@ -250,5 +251,3 @@ package C2C_INTF_CTRL is
 
 
 end package C2C_INTF_CTRL;
-
-
