@@ -59,30 +59,12 @@ entity top_l0mdt is
     );
   port (
 
-    --------------------------------------------------------------------------------
-    -- MGT
-    -- MGT links are set through LOC constraints and not routed to the top level
-    --------------------------------------------------------------------------------
-    -- ref clocks
-    refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
-    refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
-
-    --------------------------------------------------------------------------------
-    -- LHC clock
-    --------------------------------------------------------------------------------
-
---    clock_i_p : in std_logic;
---    clock_i_n : in std_logic;
-
---    tc_clk_o_p : out std_logic;
---    tc_clk_o_n : out std_logic;
-
+   
     --------------------------------------------------------------------------------
     -- AXI C2C
     --------------------------------------------------------------------------------
 
-   -- clock_async_i_p : in std_logic;
-   -- clock_async_i_n : in std_logic;
+ 
   -- clocks
     p_clk_100 : in std_logic;
     n_clk_100 : in std_logic;           -- 100 MHz system clock
@@ -444,7 +426,7 @@ begin
     port map (
       clk_200MHz   => clk_200,
       clk_50Mhz    => clk_50,
-      reset        => ZERO, --'0',
+      reset        => '0',
       locked       => locked_clk200,
       clk_in1_p    => p_clk_100,
       clk_in1_n    => n_clk_100);

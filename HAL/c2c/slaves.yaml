@@ -25,7 +25,7 @@ AXI_SLAVES:
     XML: "address_table/modules/KINTEX_SYS_MGMT.xml"
     UHAL_BASE: 0x80000000
 
-  FW_INFO:
+  K_CM_FW_INFO:
     TCL_CALL:
       command: AXI_PL_DEV_CONNECT 
       axi_control: "${::AXI_MASTER_CTRL}"
@@ -59,7 +59,7 @@ AXI_SLAVES:
           addr:
             offset: "0x01008000"
             range: "4K"
-          irq_port: "K_C2CBLINK/axi_c2c_s2m_intr_in"
+          irq_port: "K_C2CB/axi_c2c_s2m_intr_in"
           baud_rate: "115200"  
           axi_control: "${::AXI_MASTER_CTRL}"
           manual_load_dtsi: "1"
