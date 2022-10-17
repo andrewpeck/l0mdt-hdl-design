@@ -241,7 +241,7 @@ architecture behavioral of top_hal is
   -- Save this here so we can extract it from the hierarchy later
   -- this is used in log_mgts.tcl so please do not remove it
   attribute NUM_MGTS                       : integer;
---PRIYA  attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;
+  attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;
 --PRIYA  attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
 
 begin  -- architecture behavioral
@@ -252,9 +252,9 @@ begin  -- architecture behavioral
 
 
   global_reset   <= not(clocks.locked);
---  axi_clk_o    <= clocks.axiclock;
+  axi_clk_o    <= clocks.axiclock;
   clk320_o     <= clocks.clock320;
---  clk40_o      <= clocks.clock40;
+  clk40_o      <= clocks.clock40;
 
   --------------------------------------------------------------------------------
   -- AXI Interface
@@ -298,10 +298,10 @@ begin  -- architecture behavioral
 
       -- mmcm status
       locked_o     => clocks.locked,
-      locked_clk50 => global_reset_n,
+      locked_clk50 => global_reset_n
 
-      axi_clk_o    => axi_clk_o,
-      clk40_o      => clk40_o
+     -- axi_clk_o    => axi_clk_o,
+     -- clk40_o      => clk40_o
       );
 
   clock_strobe_1 : entity work.clock_strobe
@@ -343,51 +343,51 @@ begin  -- architecture behavioral
   --PRIYA COMMENTING - NEED TO FIX GTY LOCATION CONSTRAINTS
   --------------------------------------------------------------------------------
 
-  --mgt_wrapper_inst : entity hal.mgt_wrapper
-  --  port map (
+  mgt_wrapper_inst : entity hal.mgt_wrapper
+    port map (
 
-  --    -- clocks
-  --    clocks => clocks,
+      -- clocks
+      clocks => clocks,
 
-  --    -- reset
-  --    reset => global_reset, --PRIYA '0',                     -- need a separate reset from the mmcm due to recovered links
+      -- reset
+      reset => '0' , --PRIYA need to hook up to PLL lock signal for clk100  -- need a separate reset from the mmcm due to recovered links
 
-  --    ctrl => core_ctrl.mgt,
-  --    mon  => core_mon.mgt,
+      ctrl => core_ctrl.mgt,
+      mon  => core_mon.mgt,
 
-  --    -- reference clocks
-  --    refclk_i_p => refclk_i_p,
-  --    refclk_i_n => refclk_i_n,
+      -- reference clocks
+      refclk_i_p => refclk_i_p,
+      refclk_i_n => refclk_i_n,
 
-  --    -- sector logic
-  --    sl_rx_mgt_word_array_o => sl_rx_mgt_word_array,
-  --    sl_tx_mgt_word_array_i => sl_tx_mgt_word_array,
-  --    sl_tx_ctrl_i           => sl_tx_ctrl,
-  --    sl_rx_ctrl_o           => sl_rx_ctrl,
-  --    sl_rx_slide_i          => sl_rx_slide,
-  --    sl_tx_clk              => sl_tx_clks,
-  --    sl_rx_clk              => sl_rx_clks,
+      -- sector logic
+      sl_rx_mgt_word_array_o => sl_rx_mgt_word_array,
+      sl_tx_mgt_word_array_i => sl_tx_mgt_word_array,
+      sl_tx_ctrl_i           => sl_tx_ctrl,
+      sl_rx_ctrl_o           => sl_rx_ctrl,
+      sl_rx_slide_i          => sl_rx_slide,
+      sl_tx_clk              => sl_tx_clks,
+      sl_rx_clk              => sl_rx_clks,
 
-  --    -- lpgbt
-  --    lpgbt_rxslide_i                 => lpgbt_uplink_bitslip,
-  --    lpgbt_downlink_mgt_word_array_i => lpgbt_downlink_mgt_word_array,
-  --    lpgbt_uplink_mgt_word_array_o   => lpgbt_uplink_mgt_word_array,
+      -- lpgbt
+      lpgbt_rxslide_i                 => lpgbt_uplink_bitslip,
+      lpgbt_downlink_mgt_word_array_i => lpgbt_downlink_mgt_word_array,
+      lpgbt_uplink_mgt_word_array_o   => lpgbt_uplink_mgt_word_array,
 
-  --    -- lpgbt emulator
-  --    lpgbt_emul_rxslide_i                 => lpgbt_emul_downlink_bitslip,
-  --    lpgbt_emul_downlink_mgt_word_array_o => lpgbt_emul_downlink_mgt_word_array,
-  --    lpgbt_emul_uplink_mgt_word_array_i   => lpgbt_emul_uplink_mgt_word_array,
+      -- lpgbt emulator
+      lpgbt_emul_rxslide_i                 => lpgbt_emul_downlink_bitslip,
+      lpgbt_emul_downlink_mgt_word_array_o => lpgbt_emul_downlink_mgt_word_array,
+      lpgbt_emul_uplink_mgt_word_array_i   => lpgbt_emul_uplink_mgt_word_array,
 
-  --    -- Felix TTC
-  --    ttc_bitslip_i  => ttc_bitslip,
-  --    ttc_mgt_word_o => ttc_mgt_word,
-  --    ttc_mgt_word_i => (others => '1'),
-  --    ttc_recclk_o   => lhc_recclk,
+      -- Felix TTC
+      ttc_bitslip_i  => ttc_bitslip,
+      ttc_mgt_word_o => ttc_mgt_word,
+      ttc_mgt_word_i => (others => '1'),
+      ttc_recclk_o   => lhc_recclk,
 
-  --    -- Felix DAQ
-  --    felix_uplink_mgt_word_array_i => felix_uplink_mgt_word_array,
-  --    felix_mgt_txusrclk_o          => felix_mgt_txusrclk
-  --    );
+      -- Felix DAQ
+      felix_uplink_mgt_word_array_i => felix_uplink_mgt_word_array,
+      felix_mgt_txusrclk_o          => felix_mgt_txusrclk
+      );
 
   --------------------------------------------------------------------------------
   -- LPGBT Emulator
@@ -440,11 +440,12 @@ begin  -- architecture behavioral
     constant mgt_idx  : integer := c_MDT_CONFIG(CSM).mgt_id_m;
     constant mgt_id_m : integer := c_MDT_CONFIG(CSM).mgt_id_m;
     constant mgt_id_s : integer := c_MDT_CONFIG(CSM).mgt_id_s;
+     
   begin
 
     csm_ifgen : if (CSM < c_NUM_CSMS_ACTIVE and tdc_cnt > 0) generate
+      
     begin
-
       assert c_MGT_MAP(mgt_id_m).mgt_type=MGT_LPGBT
         report "CSM Master assigned to non-lpgbt link!" severity error;
       assert c_MGT_MAP(mgt_id_s).mgt_type=MGT_LPGBT

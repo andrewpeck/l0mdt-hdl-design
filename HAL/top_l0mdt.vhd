@@ -58,14 +58,28 @@ entity top_l0mdt is
     FRAMEWORK_SHA     : std_logic_vector (31 downto 0) := x"00000000"
     );
   port (
+--------------------------------------------------------------------------------
+    -- MGT
+    -- MGT links are set through LOC constraints and not routed to the top level
+    --------------------------------------------------------------------------------
+    -- ref clocks
+    refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+    refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
-   
+     --------------------------------------------------------------------------------
+    -- LHC clock
+    --------------------------------------------------------------------------------
+
+    clock_i_p : in std_logic;
+    clock_i_n : in std_logic;
+
+    tc_clk_o_p : out std_logic;
+    tc_clk_o_n : out std_logic;
+    
     --------------------------------------------------------------------------------
     -- AXI C2C
     --------------------------------------------------------------------------------
 
- 
-  -- clocks
     p_clk_100 : in std_logic;
     n_clk_100 : in std_logic;           -- 100 MHz system clock
     
@@ -106,6 +120,7 @@ architecture structural of top_l0mdt is
   component onboardclk
     port (
       clk_200MHz   : out std_logic;
+      clk_100MHz   : out std_logic;
       clk_50Mhz    : out std_logic;
       reset     : in std_logic;
       locked    : out std_logic; 
@@ -158,6 +173,9 @@ architecture structural of top_l0mdt is
   signal global_reset_n : std_logic;
   signal clk_200         : std_logic;
   signal clk_50          : std_logic;
+  signal axi_clk_i       : std_logic; --priya temp
+  signal clk_50_i         : std_logic; --priya temp
+  signal clk_100_i       : std_logic; --priya temp
   signal locked_clk200   : std_logic;
   -- Control and Monitoring Records
 
@@ -255,134 +273,134 @@ begin
     (c_HPS_MAX_HP_EXT = 0 or c_HPS_MAX_HP_EXT = 6)
     report "The ULT only accepts values of 0 or 6 for c_HPS_MAX_HP_{INN,MID,OUT,EXT}. Please correct your constants." severity error;
 
-  --top_hal : entity hal.top_hal
-  --  port map (
+  top_hal : entity hal.top_hal
+    port map (
 
-  --    -- clock io
-  --    clock_i_p       => clock_i_p,
-  --    clock_i_n       => clock_i_n,
+      -- clock io
+      clock_i_p       => clock_i_p,
+      clock_i_n       => clock_i_n,
 
-  --    clock_async_i_p => clock_async_i_p,
-  --    clock_async_i_n => clock_async_i_n,
+      clock_async_i_p => p_clk_100,
+      clock_async_i_n => n_clk_100,
 
-  --    lhc_refclk_o_p  => tc_clk_o_p,
-  --    lhc_refclk_o_n  => tc_clk_o_n,
+      lhc_refclk_o_p  => tc_clk_o_p,
+      lhc_refclk_o_n  => tc_clk_o_n,
 
-  --    refclk_i_p      => refclk_i_p,
-  --    refclk_i_n      => refclk_i_n,
+      refclk_i_p      => refclk_i_p,
+      refclk_i_n      => refclk_i_n,
 
-  --    -- clocks to user logic
-  --    clock_and_control_o => clock_and_control,
-  --    ttc_commands_o      => ttc_commands,
+      -- clocks to user logic
+      clock_and_control_o => clock_and_control,
+      ttc_commands_o      => ttc_commands,
 
-  --    --  tdc data
-  --    tdc_hits_inner  => inner_tdc_hits,
-  --    tdc_hits_middle => middle_tdc_hits,
-  --    tdc_hits_outer  => outer_tdc_hits,
-  --    tdc_hits_extra  => extra_tdc_hits,
+      --  tdc data
+      tdc_hits_inner  => inner_tdc_hits,
+      tdc_hits_middle => middle_tdc_hits,
+      tdc_hits_outer  => outer_tdc_hits,
+      tdc_hits_extra  => extra_tdc_hits,
 
-  --    -- SLC
-  --    main_primary_slc   => main_primary_slc,
-  --    main_secondary_slc => main_secondary_slc,
-  --    plus_neighbor_slc  => plus_neighbor_slc,
-  --    minus_neighbor_slc => minus_neighbor_slc,
+      -- SLC
+      main_primary_slc   => main_primary_slc,
+      main_secondary_slc => main_secondary_slc,
+      plus_neighbor_slc  => plus_neighbor_slc,
+      minus_neighbor_slc => minus_neighbor_slc,
 
-  --    -- segment out to neighbor
-  --    plus_neighbor_segments_i  => plus_neighbor_segments_o,
-  --    minus_neighbor_segments_i => minus_neighbor_segments_o,
+      -- segment out to neighbor
+      plus_neighbor_segments_i  => plus_neighbor_segments_o,
+      minus_neighbor_segments_i => minus_neighbor_segments_o,
 
-  --    -- segment in from neighbor
-  --    plus_neighbor_segments_o  => plus_neighbor_segments_i,
-  --    minus_neighbor_segments_o => minus_neighbor_segments_i,
+      -- segment in from neighbor
+      plus_neighbor_segments_o  => plus_neighbor_segments_i,
+      minus_neighbor_segments_o => minus_neighbor_segments_i,
 
-  --    -- AXI
+      -- AXI
 
-  --    clk320_o => clk320,
-  --    clk40_o  => clk40,
+      clk320_o => clk320,
+      clk40_o  => clk40,
 
-  --    axi_clk_o => axi_clk,
+      axi_clk_o => axi_clk, --priya temp
 
-  --    global_reset_n => global_reset_n,
+      global_reset_n => global_reset_n,
 
-  --    core_ctrl => hal_core_ctrl,
-  --    core_mon  => hal_core_mon,
+      core_ctrl => hal_core_ctrl,
+      core_mon  => hal_core_mon,
 
-  --    ctrl => hal_ctrl,
-  --    mon  => hal_mon,
+      ctrl => hal_ctrl,
+      mon  => hal_mon,
 
-  --    mtc_i => mtc,
-  --    nsp_i => nsp,
+      mtc_i => mtc,
+      nsp_i => nsp,
 
-  --    daq_streams => daq_streams,
+      daq_streams => daq_streams,
 
-  --    sump => hal_sump
-  --    );
+      sump => hal_sump
+      );
 
-  --ult_inst : entity ult_lib.ult
-  --  generic map (
-  --    DUMMY => false
-  --    )
-  --  port map (
-  --    clock_and_control => clock_and_control,
-  --    ttc_commands      => ttc_commands,
+  ult_inst : entity ult_lib.ult
+    generic map (
+      DUMMY => false
+      )
+    port map (
+      clock_and_control => clock_and_control,
+      ttc_commands      => ttc_commands,
 
-  --    i_inn_tdc_hits_av => inner_tdc_hits,
-  --    i_mid_tdc_hits_av => middle_tdc_hits,
-  --    i_out_tdc_hits_av => outer_tdc_hits,
-  --    i_ext_tdc_hits_av => extra_tdc_hits,
+      i_inn_tdc_hits_av => inner_tdc_hits,
+      i_mid_tdc_hits_av => middle_tdc_hits,
+      i_out_tdc_hits_av => outer_tdc_hits,
+      i_ext_tdc_hits_av => extra_tdc_hits,
 
-  --    i_plus_neighbor_segments     => plus_neighbor_segments_i,
-  --    i_minus_neighbor_segments    => minus_neighbor_segments_i,
-  --    o_plus_neighbor_segments_av  => plus_neighbor_segments_o,
-  --    o_minus_neighbor_segments_av => minus_neighbor_segments_o,
+      i_plus_neighbor_segments     => plus_neighbor_segments_i,
+      i_minus_neighbor_segments    => minus_neighbor_segments_i,
+      o_plus_neighbor_segments_av  => plus_neighbor_segments_o,
+      o_minus_neighbor_segments_av => minus_neighbor_segments_o,
 
-  --    -- SLC
-  --    i_main_primary_slc   => main_primary_slc,
-  --    i_main_secondary_slc => main_secondary_slc,
-  --    i_plus_neighbor_slc  => plus_neighbor_slc,
-  --    i_minus_neighbor_slc => minus_neighbor_slc,
+      -- SLC
+      i_main_primary_slc   => main_primary_slc,
+      i_main_secondary_slc => main_secondary_slc,
+      i_plus_neighbor_slc  => plus_neighbor_slc,
+      i_minus_neighbor_slc => minus_neighbor_slc,
 
-  --    o_mtc => mtc,
-  --    o_nsp => nsp,
+      o_mtc => mtc,
+      o_nsp => nsp,
 
-  --    o_daq_streams => daq_streams,
+      o_daq_streams => daq_streams,
 
-  --    -- Control and Monitoring
+      -- Control and Monitoring
 
-  --    hps_inn_ctrl_v => hps_inn_ctrl_v,
-  --    hps_inn_mon_v  => hps_inn_mon_v,
-  --    hps_mid_ctrl_v => hps_mid_ctrl_v,
-  --    hps_mid_mon_v  => hps_mid_mon_v,
-  --    hps_out_ctrl_v => hps_out_ctrl_v,
-  --    hps_out_mon_v  => hps_out_mon_v,
-  --    hps_ext_ctrl_v => hps_ext_ctrl_v,
-  --    hps_ext_mon_v  => hps_ext_mon_v,
+      hps_inn_ctrl_v => hps_inn_ctrl_v,
+      hps_inn_mon_v  => hps_inn_mon_v,
+      hps_mid_ctrl_v => hps_mid_ctrl_v,
+      hps_mid_mon_v  => hps_mid_mon_v,
+      hps_out_ctrl_v => hps_out_ctrl_v,
+      hps_out_mon_v  => hps_out_mon_v,
+      hps_ext_ctrl_v => hps_ext_ctrl_v,
+      hps_ext_mon_v  => hps_ext_mon_v,
 
-  --    tar_inn_ctrl_v => tar_inn_ctrl_v,
-  --    tar_inn_mon_v  => tar_inn_mon_v,
-  --    tar_mid_ctrl_v => tar_mid_ctrl_v,
-  --    tar_mid_mon_v  => tar_mid_mon_v,
-  --    tar_out_ctrl_v => tar_out_ctrl_v,
-  --    tar_out_mon_v  => tar_out_mon_v,
-  --    tar_ext_ctrl_v => tar_ext_ctrl_v,
-  --    tar_ext_mon_v  => tar_ext_mon_v,
+      tar_inn_ctrl_v => tar_inn_ctrl_v,
+      tar_inn_mon_v  => tar_inn_mon_v,
+      tar_mid_ctrl_v => tar_mid_ctrl_v,
+      tar_mid_mon_v  => tar_mid_mon_v,
+      tar_out_ctrl_v => tar_out_ctrl_v,
+      tar_out_mon_v  => tar_out_mon_v,
+      tar_ext_ctrl_v => tar_ext_ctrl_v,
+      tar_ext_mon_v  => tar_ext_mon_v,
 
-  --    mtc_ctrl_v => mtc_ctrl_v,
-  --    mtc_mon_v  => mtc_mon_v,
-  --    ucm_ctrl_v => ucm_ctrl_v,
-  --    ucm_mon_v  => ucm_mon_v,
-  --    daq_ctrl_v => daq_ctrl_v,
-  --    daq_mon_v  => daq_mon_v,
-  --    tf_ctrl_v  => tf_ctrl_v,
-  --    tf_mon_v   => tf_mon_v,
-  --    mpl_ctrl_v => mpl_ctrl_v,
-  --    mpl_mon_v  => mpl_mon_v,
-  --    fm_ctrl_v  => fm_ctrl_v,
-  --    fm_mon_v   => fm_mon_v,     
-  --    --
+      mtc_ctrl_v => mtc_ctrl_v,
+      mtc_mon_v  => mtc_mon_v,
+      ucm_ctrl_v => ucm_ctrl_v,
+      ucm_mon_v  => ucm_mon_v,
+      daq_ctrl_v => daq_ctrl_v,
+      daq_mon_v  => daq_mon_v,
+      tf_ctrl_v  => tf_ctrl_v,
+      tf_mon_v   => tf_mon_v,
+      mpl_ctrl_v => mpl_ctrl_v,
+      mpl_mon_v  => mpl_mon_v,
+      fm_ctrl_v  => fm_ctrl_v,
+      fm_mon_v   => fm_mon_v,     
+      --
 
-  --    sump => user_sump
-  --    );
+      sump => user_sump
+      );
 
   -- ctrl/mon
   ucm_ctrl_v     <= convert(ucm_ctrl_r, ucm_ctrl_v);
@@ -422,17 +440,18 @@ begin
 
   --Clocking
   --Clocking
-  Local_Clocking:  onboardclk
-    port map (
-      clk_200MHz   => clk_200,
-      clk_50Mhz    => clk_50,
-      reset        => '0',
-      locked       => locked_clk200,
-      clk_in1_p    => p_clk_100,
-      clk_in1_n    => n_clk_100);
+  --Local_Clocking:  onboardclk
+  --  port map (
+  --    clk_200MHz   => clk_200,
+  --    clk_100MHz   => clk_100_i,    
+  --    clk_50Mhz      => clk_50,
+  --    reset        => '0',
+  --    locked       => locked_clk200,
+  --    clk_in1_p    => p_clk_100,
+  --    clk_in1_n    => n_clk_100);
   
-  axi_clk <= clk_50;
-  
+--  axi_clk <= clk_50;
+  clk_50 <= axi_clk;
   
   top_control_inst : entity work.top_control
     port map (
@@ -498,7 +517,7 @@ begin
       clkpipe                 => clock_and_control.clk,
       axi_clk                 => axi_clk,
       clk50mhz                => clk_50,
-      reset_n                 => locked_clk200,
+      reset_n                 => global_reset_n, --locked_clk200,
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
       --sys_mgmt_scl            => sys_mgmt_scl,

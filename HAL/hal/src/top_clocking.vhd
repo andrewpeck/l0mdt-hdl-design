@@ -67,10 +67,10 @@ entity top_clocking is
     out_of_sync_o : out std_logic;
 
     locked_o     : out std_logic;
-    locked_clk50 : out std_logic;
+    locked_clk50 : out std_logic
 
-    axi_clk_o : out std_logic;
-    clk40_o   : out std_logic
+    --axi_clk_o : out std_logic;
+    --clk40_o   : out std_logic
     );
 
 end entity top_clocking;
@@ -84,6 +84,7 @@ architecture behavioral of top_clocking is
   component onboardclk
     port (
       clk_200MHz   : out std_logic;
+      clk_100MHz   : out std_logic;
       clk_50Mhz    : out std_logic;
       reset     : in std_logic;
       locked    : out std_logic; 
@@ -119,15 +120,16 @@ begin  -- architecture behavioral
   clocks_o.clock_pipeline <= clkpipe;
   clocks_o.locked         <= mmcm_locked;
   locked_o                <= mmcm_locked;
-  axi_clk_o               <= clk50;
-  clk40_o                 <= clk40;
+--  axi_clk_o               <= clk50;
+--  clk40_o                 <= clk40;
   --------------------------------------------------------------------------------
   -- ASYNC + 50MHz free-running clocks
   --------------------------------------------------------------------------------
 
-   Local_Clocking: onboardclk
+   Clocking_inst: onboardclk
     port map (
       clk_200MHz   => clk200,
+      clk_100Mhz  => clk100,
       clk_50Mhz    => clk50,
       reset     => '0',
       locked    => locked_clk50,
