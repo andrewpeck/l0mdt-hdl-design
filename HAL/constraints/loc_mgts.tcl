@@ -49,7 +49,7 @@ for {set i 0} {$i < $imax} {incr i} {
         set x_loc [get_property X_LOC $cell]
         set y_loc [get_property Y_LOC $cell]
     }
-    puts [format " DEBUG2 $cell $x_loc $y_loc"]
+    
     # b) apply the LOC to the CHANNEL_PRIM_INST
 
     if {$x_loc >= 0 && $y_loc >= 0} {

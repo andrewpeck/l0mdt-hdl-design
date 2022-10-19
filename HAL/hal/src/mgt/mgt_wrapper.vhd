@@ -202,6 +202,7 @@ begin
     drp_i(I).drpclk_in(0) <= clocks.axiclock;  -- 50MHz from MMCM
 
     -- some of these are crossing clock domains so add one ff to help metastability
+    --PRIYA -TODO -> double buffer and add false path constraint
     process (clocks.axiclock) is
     begin
       if (rising_edge(clocks.axiclock)) then

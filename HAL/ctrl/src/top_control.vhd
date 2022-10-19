@@ -294,13 +294,13 @@ begin
   --  end if;
   --end process;
 
-  --process (axi_clk) is
-  --begin
-  --  if (rising_edge(axi_clk)) then
-  --    hal_core_mon_r <= hal_core_mon;     -- inputs
-  --    hal_core_ctrl  <= hal_core_ctrl_r;  -- outputs
-  --  end if;
-  --end process;
+  process (axi_clk) is
+  begin
+    if (rising_edge(axi_clk)) then
+      hal_core_mon_r <= hal_core_mon;     -- inputs
+      hal_core_ctrl  <= hal_core_ctrl_r;  -- outputs
+    end if;
+  end process;
 
   --process (clkpipe) is
   --begin
@@ -376,6 +376,9 @@ begin
       K_C2CB_phy_Tx_txp(0)                  => c2cb_txp, --p_mgt_k2z(2 downto 2),
       K_C2C_phy_refclk_clk_n            => c2c_refclkn, --n_util_clk_chan0,
       K_C2C_phy_refclk_clk_p            => c2c_refclkp, --p_util_clk_chan0,
+
+      -- AXI PL Slaves
+      
       --K_IO_araddr                         => local_AXI_ReadMOSI(0).address,              
       --K_IO_arprot                         => local_AXI_ReadMOSI(0).protection_type,      
       --K_IO_arready                        => local_AXI_ReadMISO(0).ready_for_address,    
@@ -415,43 +418,27 @@ begin
       K_CM_FW_INFO_wstrb                     => fw_info_WriteMOSI.data_write_strobe,   
       K_CM_FW_INFO_wvalid(0)                 => fw_info_WriteMOSI.data_valid,          
 
-      --KINTEX_BRAM_araddr                 => ext_AXI_ReadMOSI.address,              
-      --KINTEX_BRAM_arburst                => ext_AXI_ReadMOSI.burst_type,
-      --KINTEX_BRAM_arcache                => ext_AXI_ReadMOSI.cache_type,
-      --KINTEX_BRAM_arlen                  => ext_AXI_ReadMOSI.burst_length,
-      --KINTEX_BRAM_arlock(0)              => ext_AXI_ReadMOSI.lock_type,
-      --KINTEX_BRAM_arprot                 => ext_AXI_ReadMOSI.protection_type,      
-      --KINTEX_BRAM_arqos                  => ext_AXI_ReadMOSI.qos,
-      --KINTEX_BRAM_arready(0)             => ext_AXI_ReadMISO.ready_for_address,
-      --KINTEX_BRAM_arregion               => ext_AXI_ReadMOSI.region,
-      --KINTEX_BRAM_arsize                 => ext_AXI_ReadMOSI.burst_size,
-      --KINTEX_BRAM_arvalid(0)             => ext_AXI_ReadMOSI.address_valid,        
-      --KINTEX_BRAM_awaddr                 => ext_AXI_WriteMOSI.address,             
-      --KINTEX_BRAM_awburst                => ext_AXI_WriteMOSI.burst_type,
-      --KINTEX_BRAM_awcache                => ext_AXI_WriteMOSI.cache_type,
-      --KINTEX_BRAM_awlen                  => ext_AXI_WriteMOSI.burst_length,
-      --KINTEX_BRAM_awlock(0)              => ext_AXI_WriteMOSI.lock_type,
-      --KINTEX_BRAM_awprot                 => ext_AXI_WriteMOSI.protection_type,
-      --KINTEX_BRAM_awqos                  => ext_AXI_WriteMOSI.qos,
-      --KINTEX_BRAM_awready(0)             => ext_AXI_WriteMISO.ready_for_address,   
-      --KINTEX_BRAM_awregion               => ext_AXI_WriteMOSI.region,
-      --KINTEX_BRAM_awsize                 => ext_AXI_WriteMOSI.burst_size,
-      --KINTEX_BRAM_awvalid(0)             => ext_AXI_WriteMOSI.address_valid,       
-      --KINTEX_BRAM_bready(0)              => ext_AXI_WriteMOSI.ready_for_response,  
-      --KINTEX_BRAM_bresp                  => ext_AXI_WriteMISO.response,            
-      --KINTEX_BRAM_bvalid(0)              => ext_AXI_WriteMISO.response_valid,      
-      --KINTEX_BRAM_rdata                  => ext_AXI_ReadMISO.data,
-      --KINTEX_BRAM_rlast(0)               => ext_AXI_ReadMISO.last,
-      --KINTEX_BRAM_rready(0)              => ext_AXI_ReadMOSI.ready_for_data,       
-      --KINTEX_BRAM_rresp                  => ext_AXI_ReadMISO.response,             
-      --KINTEX_BRAM_rvalid(0)              => ext_AXI_ReadMISO.data_valid,           
-      --KINTEX_BRAM_wdata                  => ext_AXI_WriteMOSI.data,
-      --KINTEX_BRAM_wlast(0)               => ext_AXI_WriteMOSI.last,
-      --KINTEX_BRAM_wready(0)              => ext_AXI_WriteMISO.ready_for_data,       
-      --KINTEX_BRAM_wstrb                  => ext_AXI_WriteMOSI.data_write_strobe,   
-      --KINTEX_BRAM_wvalid(0)              => ext_AXI_WriteMOSI.data_valid,          
 
 
+      hal_core_araddr                            => hal_core_readmosi.address,        
+      hal_core_arprot                             => hal_core_readmosi.protection_type,
+      hal_core_arready(0)                      => hal_core_readmiso.ready_for_address,
+      hal_core_arvalid(0)                       => hal_core_readmosi.address_valid,
+      hal_core_awaddr                           => hal_core_writemosi.address,
+      hal_core_awprot                            => hal_core_writemosi.protection_type,
+      hal_core_awready(0)                     => hal_core_writemiso.ready_for_address,
+      hal_core_awvalid(0)                      => hal_core_writemosi.address_valid,
+      hal_core_bready(0)                       => hal_core_writemosi.ready_for_response,
+      hal_core_bresp                              => hal_core_writemiso.response,
+      hal_core_bvalid(0)                        => hal_core_writemiso.response_valid,
+      hal_core_rdata                              => hal_core_readmiso.data,
+      hal_core_rready(0)                       => hal_core_readmosi.ready_for_data,
+      hal_core_rresp                              => hal_core_readmiso.response,
+      hal_core_rvalid(0)                        => hal_core_readmiso.data_valid,
+      hal_core_wdata                            => hal_core_writemosi.data,
+      hal_core_wready(0)                     => hal_core_writemiso.ready_for_data,
+      hal_core_wstrb                             => hal_core_writemosi.data_write_strobe,
+      hal_core_wvalid(0)                      => hal_core_writemosi.data_valid,
       
       reset_n                             => reset_n, --locked_clk200,--reset,
       K_C2C_PHY_DEBUG_cplllock(0)         => C2C_Mon.C2C(1).DEBUG.CPLL_LOCK,
@@ -580,6 +567,8 @@ begin
       K_C2C_INTF_wready(0)                => c2c_intf_WriteMISO.ready_for_data,       
       K_C2C_INTF_wstrb                    => c2c_intf_WriteMOSI.data_write_strobe,   
       K_C2C_INTF_wvalid(0)                   => c2c_intf_WriteMOSI.data_valid
+
+      
 
       
 );
@@ -801,25 +790,7 @@ begin
 --      --hal_wstrb   => hal_writemosi.data_write_strobe,
 --      --hal_wvalid  => hal_writemosi.data_valid,
 
---      --hal_core_araddr  => hal_core_readmosi.address,
---      --hal_core_arprot  => hal_core_readmosi.protection_type,
---      --hal_core_arready => hal_core_readmiso.ready_for_address,
---      --hal_core_arvalid => hal_core_readmosi.address_valid,
---      --hal_core_awaddr  => hal_core_writemosi.address,
---      --hal_core_awprot  => hal_core_writemosi.protection_type,
---      --hal_core_awready => hal_core_writemiso.ready_for_address,
---      --hal_core_awvalid => hal_core_writemosi.address_valid,
---      --hal_core_bready  => hal_core_writemosi.ready_for_response,
---      --hal_core_bresp   => hal_core_writemiso.response,
---      --hal_core_bvalid  => hal_core_writemiso.response_valid,
---      --hal_core_rdata   => hal_core_readmiso.data,
---      --hal_core_rready  => hal_core_readmosi.ready_for_data,
---      --hal_core_rresp   => hal_core_readmiso.response,
---      --hal_core_rvalid  => hal_core_readmiso.data_valid,
---      --hal_core_wdata   => hal_core_writemosi.data,
---      --hal_core_wready  => hal_core_writemiso.ready_for_data,
---      --hal_core_wstrb   => hal_core_writemosi.data_write_strobe,
---      --hal_core_wvalid  => hal_core_writemosi.data_valid,
+  
 
 --      --------------------------------------------------------------------------------
 --      -- User Logic
@@ -1102,20 +1073,20 @@ begin
   -- AXI Interfaces
   --------------------------------------------------------------------------------
 
-  --hal_core_map_inst : entity ctrl_lib.HAL_CORE_map
-  --  port map (
-  --    clk_axi         => axi_clk,
-  --    reset_axi_n     => axi_reset_n,
-  --    slave_readmosi  => hal_core_readmosi,
-  --    slave_readmiso  => hal_core_readmiso,
-  --    slave_writemosi => hal_core_writemosi,
-  --    slave_writemiso => hal_core_writemiso,
+  hal_core_map_inst : entity ctrl_lib.HAL_CORE_map
+    port map (
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
+      slave_readmosi  => hal_core_readmosi,
+      slave_readmiso  => hal_core_readmiso,
+      slave_writemosi => hal_core_writemosi,
+      slave_writemiso => hal_core_writemiso,
 
-  --    -- monitor signals in
-  --    mon  => hal_core_mon_r,
-  --    -- control signals out
-  --    ctrl => hal_core_ctrl_r
-  --    );
+      -- monitor signals in
+      mon  => hal_core_mon_r,
+      -- control signals out
+      ctrl => hal_core_ctrl_r
+      );
 
   --hal_map_inst : entity ctrl_lib.HAL_map
   --  port map (
