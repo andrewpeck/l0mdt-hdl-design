@@ -18,6 +18,7 @@ shared/sim/src/csv_writer_tar.vhd
 shared/sim/src/csv_writer_hps.vhd
 shared/sim/src/csv_writer_hps_int.vhd
 # shared/sim/src/csv_writer_heg.vhd
+shared/sim/src/csv_writer_heg_int.vhd
 # shared/sim/src/csv_writer_mpl.vhd
 # shared/sim/src/csv_writer_sf_in.vhd
 # shared/sim/src/csv_writer_sf_out.vhd

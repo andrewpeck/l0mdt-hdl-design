@@ -96,13 +96,13 @@ architecture beh of heg_tb is
     signal i_freeze             : std_logic := '0';
     signal bx : std_logic := '0'; 
 
-    signal ucm2hps_file_ok    : std_logic;
-    signal ucm2hps_file_ts    : string(1 to LINE_LENGTH_MAX);
+    signal ucm2heg_file_ok    : std_logic;
+    signal ucm2heg_file_ts    : string(1 to LINE_LENGTH_MAX);
     signal pc2heg_file_ok    : std_logic;
     signal pc2heg_file_ts    : string(1 to LINE_LENGTH_MAX);
       --
-    signal ucm2hps_slc_event_au : event_xaut(c_NUM_THREADS -1 downto 0);
-    signal pl_ucm2hps_slc_event_au : event_xaut(c_NUM_THREADS -1 downto 0);
+    signal ucm2heg_slc_event_au : event_xaut(c_NUM_THREADS -1 downto 0);
+    signal pl_ucm2heg_slc_event_au : event_xaut(c_NUM_THREADS -1 downto 0);
     signal pl_ucm2hps_slc_event_a : event_xat(c_NUM_THREADS -1 downto 0);
     signal pc2heg_mdt_event_au : event_tdc_aut;
     signal pc2heg_slc_event_au : event_tdc_aut;
@@ -299,10 +299,10 @@ begin
     --
     tb_curr_tdc_time  => tb_curr_tdc_time,
     --
-    o_file_ok         => ucm2hps_file_ok,
-    o_file_ts         => ucm2hps_file_ts, 
+    o_file_ok         => ucm2heg_file_ok,
+    o_file_ts         => ucm2heg_file_ts, 
     --
-    o_slc_event_ai    => ucm2hps_slc_event_au,
+    o_slc_event_ai    => ucm2heg_slc_event_au,
     -- TAR Hits for simulation
     o_ucm2hps_inn_av  => ucm2hps_aav(0),
     o_ucm2hps_mid_av  => ucm2hps_aav(1),
@@ -329,39 +329,7 @@ begin
           o_data      => pl_ucm2hps_aav(st_i)(th_i)
       );
     end generate TH_GEN;
-    -- HPS: if g_ST_ENABLE(st_i)='1' generate
-    --   signal ctrl_r             : HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
-    --   signal mon_r              : HPS_MON_t;
-    -- begin
-    --   ctrl_v(st_i) <= convert(ctrl_r,ctrl_v(st_i));
-    --   mon_r <= convert(mon_v(st_i),mon_r);
-    --   --------------------------------------------------------------
-    --   HPS : entity hps_lib.hps
-    --     generic map(
-    --       g_STATION_RADIUS    => st_i,
-    --       g_HPS_NUM_MDT_CH     => c_HP_NUM_SECTOR_STATION(st_i)
-    --     )
-    --     port map(
-    --       clk                 => clk,
-    --       rst                 => rst,
-    --       glob_en             => glob_en,
-    --       -- configuration & control
-    --       ctrl_v              => ctrl_v(st_i),
-    --       mon_v               => mon_v(st_i),
-    --       -- SLc
-    --       i_uCM2hps_av        => pl_ucm2hps_aav(st_i),
-    --       -- MDT hit
-    --       i_mdt_tar_av        => tar2hps_aav(st_i),
-    --       -- to pt calc
-    --       o_sf2pt_av          => hps2pt_aav(st_i)
-    --   );
-    -- else generate
-    --   mon_v(st_i) <= (others => '0');
-    --   ctrl_v(st_i) <= (others => '0');
-    --   pl_ucm2hps_aav(st_i) <= (others => (others => '0'));
-    --   tar2hps_aav(st_i) <= (others => (others => '0'));
-    --   hps2pt_aav(st_i) <= (others => (others => '0'));
-    -- end generate;
+
   end generate STATION_GEN;
   TH_ID_GEN: for th_i in 0 to c_NUM_THREADS-1 generate
     C_PL : entity vamc_lib.vamc_spl
@@ -378,10 +346,10 @@ begin
         rst         => rst,
         ena         => '1',
         --
-        i_data      => std_logic_vector(ucm2hps_slc_event_au(th_i)),
+        i_data      => std_logic_vector(ucm2heg_slc_event_au(th_i)),
         o_data      => pl_ucm2hps_slc_event_a(th_i)
     );
-    pl_ucm2hps_slc_event_au(th_i) <= unsigned(pl_ucm2hps_slc_event_a(th_i));
+    pl_ucm2heg_slc_event_au(th_i) <= unsigned(pl_ucm2hps_slc_event_a(th_i));
   end generate TH_ID_GEN;
   -------------------------------------------------------------------------------------
 	-- HEGs
@@ -421,7 +389,67 @@ begin
   -------------------------------------------------------------------------------------
 	-- 
   -------------------------------------------------------------------------------------
-
+  HPSOUT : entity shared_lib.csv_writer_heg_int
+    generic map (
+      g_PRJ_INFO        => PRJ_INFO,
+      g_ST_ENABLE       => g_ST_ENABLE
+    )
+    port map(
+      clk                     => clk,
+      rst                     => rst,
+      enable                  => glob_en,
+      --
+      tb_curr_sim_time        => tb_curr_sim_time,
+      tb_curr_tdc_time        => tb_curr_tdc_time,
+      --
+      i_ucm2heg_file_ok       => ucm2heg_file_ok,
+      i_ucm2heg_file_ts       => ucm2heg_file_ts,
+      i_pc2heg_file_ok        => pc2heg_file_ok,
+      i_pc2heg_file_ts        => pc2heg_file_ts,
+      -- --
+      i_ucm2heg_slc_event_au  => pl_ucm2heg_slc_event_au,
+      i_pc2heg_mdt_event_au  => pc2heg_mdt_event_au,
+      i_pc2heg_slc_event_au  => pc2heg_slc_event_au
+  );
+  -------------------------------------------------------------------------------------
+	-- 
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+	-- 
+  -------------------------------------------------------------------------------------
 end beh;
 
 
+    -- HPS: if g_ST_ENABLE(st_i)='1' generate
+    --   signal ctrl_r             : HPS_CTRL_t := DEFAULT_HPS_CTRL_t;
+    --   signal mon_r              : HPS_MON_t;
+    -- begin
+    --   ctrl_v(st_i) <= convert(ctrl_r,ctrl_v(st_i));
+    --   mon_r <= convert(mon_v(st_i),mon_r);
+    --   --------------------------------------------------------------
+    --   HPS : entity hps_lib.hps
+    --     generic map(
+    --       g_STATION_RADIUS    => st_i,
+    --       g_HPS_NUM_MDT_CH     => c_HP_NUM_SECTOR_STATION(st_i)
+    --     )
+    --     port map(
+    --       clk                 => clk,
+    --       rst                 => rst,
+    --       glob_en             => glob_en,
+    --       -- configuration & control
+    --       ctrl_v              => ctrl_v(st_i),
+    --       mon_v               => mon_v(st_i),
+    --       -- SLc
+    --       i_uCM2hps_av        => pl_ucm2hps_aav(st_i),
+    --       -- MDT hit
+    --       i_mdt_tar_av        => tar2hps_aav(st_i),
+    --       -- to pt calc
+    --       o_sf2pt_av          => hps2pt_aav(st_i)
+    --   );
+    -- else generate
+    --   mon_v(st_i) <= (others => '0');
+    --   ctrl_v(st_i) <= (others => '0');
+    --   pl_ucm2hps_aav(st_i) <= (others => (others => '0'));
+    --   tar2hps_aav(st_i) <= (others => (others => '0'));
+    --   hps2pt_aav(st_i) <= (others => (others => '0'));
+    -- end generate;
