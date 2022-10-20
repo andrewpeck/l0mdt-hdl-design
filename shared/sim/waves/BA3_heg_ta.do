@@ -93,7 +93,7 @@ add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/H
 add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/HEG/Heg_Control/HEG_SIGNALS/heg_count_en
 add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/HEG/Heg_Control/HEG_SIGNALS/busy_count
 add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/HEG/Heg_Control/HEG_SIGNALS/enables_a
-add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r
+add wave -noupdate -group heg_ctrl_sig -expand /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r
 add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/HEG/Heg_Control/HEG_SIGNALS/o_uCM2hp_data_r
 add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/HEG/Heg_Control/HEG_SIGNALS/b_data
 add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/HEG/Heg_Control/HEG_SIGNALS/csf_slope
@@ -104,31 +104,53 @@ add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/H
 add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/HEG/Heg_Control/HEG_SIGNALS/o_uCM2hp_data_dv
 add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_v
 add wave -noupdate -group heg_ctrl_sig /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(0)/TH_IF/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_dv
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/g_PRJ_INFO
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/g_ST_ENABLE
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/g_IN_UCM2HPS_FILE
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/g_verbose
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/clk
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/rst
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/ena
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/tb_curr_tdc_time
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/csv_file
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/file_open
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/file_ts
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/slc_event_ai
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/ucm_event_r
-add wave -noupdate -expand -group ucm2hps -expand -subitemconfig {/heg_tb/UCM2HPS/ucm2hps_fifo(0) -expand} /heg_tb/UCM2HPS/ucm2hps_fifo
-add wave -noupdate -expand -group ucm2hps -expand /heg_tb/UCM2HPS/ucm2hps_fifo_counters
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/ucm_event_r0
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/o_file_ok
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/o_file_ts
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/o_slc_event_ai
-add wave -noupdate -expand -group ucm2hps -expand /heg_tb/UCM2HPS/o_ucm2hps_inn_av
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/o_ucm2hps_mid_av
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/o_ucm2hps_out_av
-add wave -noupdate -expand -group ucm2hps /heg_tb/UCM2HPS/o_ucm2hps_ext_av
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/g_PRJ_INFO
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/g_ST_ENABLE
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/g_IN_UCM2HPS_FILE
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/g_verbose
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/clk
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/rst
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/ena
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/tb_curr_tdc_time
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/csv_file
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/file_open
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/file_ts
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/slc_event_ai
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/ucm_event_r
+add wave -noupdate -group ucm2hps -expand -subitemconfig {/heg_tb/UCM2HPS/ucm2hps_fifo(0) -expand} /heg_tb/UCM2HPS/ucm2hps_fifo
+add wave -noupdate -group ucm2hps -expand /heg_tb/UCM2HPS/ucm2hps_fifo_counters
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/ucm_event_r0
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/o_file_ok
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/o_file_ts
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/o_slc_event_ai
+add wave -noupdate -group ucm2hps -expand /heg_tb/UCM2HPS/o_ucm2hps_inn_av
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/o_ucm2hps_mid_av
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/o_ucm2hps_out_av
+add wave -noupdate -group ucm2hps /heg_tb/UCM2HPS/o_ucm2hps_ext_av
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/clk
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/enable
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/g_OUT_CSV_HEG_HIT
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/g_OUT_CSV_HEG_SLC
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/g_PRJ_INFO
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/g_ST_ENABLE
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/i_pc2heg_file_ok
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/i_pc2heg_file_ts
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/i_pc2heg_mdt_event_au
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/i_pc2heg_slc_event_au
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/i_ucm2heg_file_ok
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/i_ucm2heg_file_ts
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/i_ucm2heg_slc_event_au
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/rst
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/tb_curr_sim_time
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/tb_curr_tdc_time
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/in_files_ok
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/in_files_ts
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/OUT_CSV_SLC_EN/csv_file_2
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/OUT_CSV_SLC_EN/temp_o_sf_slc_data_aar
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/OUT_CSV_SLC_EN/ucm2heg_slc_event_a
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/OUT_CSV_SLC_EN/ucm2heg_slc_event_au
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1193672840 fs} 0}
+WaveRestoreCursors {{Cursor 1} {4838605397 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -144,4 +166,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {5250 ns}
+WaveRestoreZoom {4765082319 fs} {5012364089 fs}

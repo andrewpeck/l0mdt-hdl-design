@@ -147,8 +147,9 @@ begin
 
         heg_count_en <= '0';
 
-        o_uCM2sf_data_r <= convert((width(o_uCM2sf_data_r) -1 downto 0 => '1'),o_uCM2sf_data_r);
-        o_uCM2hp_data_r <= convert((width(o_uCM2hp_data_r) -1 downto 0 => '1'),o_uCM2hp_data_r);
+
+        o_uCM2sf_data_r <= convert((width(o_uCM2sf_data_r) -1 downto 0 => '0'),o_uCM2sf_data_r);
+        o_uCM2hp_data_r <= convert((width(o_uCM2hp_data_r) -1 downto 0 => '0'),o_uCM2hp_data_r);
         o_uCM2hp_data_dv <= '0';
         o_uCM2sf_data_dv <= '0';
 

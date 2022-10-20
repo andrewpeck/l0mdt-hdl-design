@@ -12,12 +12,12 @@ types:
    - hp_win_tubes_art: {'array': 'open', 'type': 'hp_win_tubes_rt'}
    - hp_win_tubes_avt: {'array': 'open', 'type': 'hp_win_tubes_vt'}
 
-   - hp_win_tubes_limits_rt:
-      - hi: {'type': 'signed', 'range': ['MDT_TUBE_LEN-1', 0]}
-      - lo: {'type': 'signed', 'range': ['MDT_TUBE_LEN-1', 0]}
-   - hp_win_tubes_limits_vt: {'type': 'logic', 'range': ['hp_win_tubes_limits_rt-1', 0]}
-   - hp_win_tubes_limits_art: {'array': 'open', 'type': 'hp_win_tubes_limits_rt'}
-   - hp_win_tubes_limits_avt: {'array': 'open', 'type': 'hp_win_tubes_limits_vt'}
+  #  - hp_win_tubes_limits_rt:
+  #     - hi: {'type': 'signed', 'range': ['MDT_TUBE_LEN-1', 0]}
+  #     - lo: {'type': 'signed', 'range': ['MDT_TUBE_LEN-1', 0]}
+  #  - hp_win_tubes_limits_vt: {'type': 'logic', 'range': ['hp_win_tubes_limits_rt-1', 0]}
+  #  - hp_win_tubes_limits_art: {'array': 'open', 'type': 'hp_win_tubes_limits_rt'}
+  #  - hp_win_tubes_limits_avt: {'array': 'open', 'type': 'hp_win_tubes_limits_vt'}
 
    - hp_heg2hp_slc_b_rt:
       - roi_z: {'type': 'unsigned', 'range': ['MDT_GLOBAL_AXI_LEN-1', 0]}

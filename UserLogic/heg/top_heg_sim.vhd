@@ -389,7 +389,7 @@ begin
   -------------------------------------------------------------------------------------
 	-- 
   -------------------------------------------------------------------------------------
-  HPSOUT : entity shared_lib.csv_writer_heg_int
+  HEGINTOUT : entity shared_lib.csv_writer_heg_int
     generic map (
       g_PRJ_INFO        => PRJ_INFO,
       g_ST_ENABLE       => g_ST_ENABLE
