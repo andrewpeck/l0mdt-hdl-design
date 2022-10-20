@@ -1,16 +1,20 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: heg_ctrl_top.vhd
+-- Module: <<moduleName>>
+-- File PATH: /heg_ctrl_top.vhd
+-- -----
+-- File Created: Thursday, 14th April 2022 8:57:28 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Thursday, 20th October 2022 10:49:20 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 2022-10-20	GLdL	Added dv to internal output ports
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger
---  Module:
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---
---------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -48,8 +52,8 @@ entity heg_ctrl_top is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    ctrl_v            : in std_logic_vector;  
-    mon_v             : out std_logic_vector; 
+    ctrl_v              : in std_logic_vector;  
+    mon_v               : out std_logic_vector; 
     -- configuration
     -- SLc in
     i_uCM_data_v        : in ucm2hps_vt;
@@ -73,29 +77,6 @@ architecture beh of heg_ctrl_top is
   signal ctrl_roi_tc_v    : std_logic_vector(HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t'w-1 downto 0);
   signal  mon_roi_tc_v    : std_logic_vector(HPS_HEG_HEG_CTRL_ROI_TC_MON_t'w-1 downto 0);
 
-  -- component ctrl_signals is
-  --   generic(
-  --     g_STATION_RADIUS    : integer := 0;  --station
-  --     g_HPS_NUM_MDT_CH    : integer := 6
-  --   );
-  --   port (
-  --     clk                 : in std_logic;
-  --     rst                 : in std_logic;
-  --     glob_en             : in std_logic;
-  --     --
-  --     i_uCM_data_r        : in ucm2hps_rt;
-  --     --
-  --     i_Roi_win_origin    : in unsigned(MDT_TUBE_LEN-1 downto 0);
-  --     i_Roi_win_valid     : in std_logic;
-  --     --
-  --     o_hp_control_r      : out heg_ctrl2hp_art(g_HPS_NUM_MDT_CH -1 downto 0);
-  --     o_sf_control_r      : out heg_ctrl2sf_rt;
-  --     --
-  --     o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
-  --     o_uCM2sf_data_v     : out heg2sfslc_vt
-  --   );
-  -- end component ctrl_signals;
-
   signal SLC_Window_av       : hp_win_tubes_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal SLC_Window_ar       : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal win_row_0          : hp_win_tubes_rt; 
@@ -110,6 +91,9 @@ architecture beh of heg_ctrl_top is
   signal roi_global_z        : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal roi_dv              : std_logic;
 
+  signal ctrl_sig_uCM2hp_data_dv : std_logic;
+  signal ctrl_sig_uCM2sf_data_dv : std_logic;
+  
 begin
 
   ctrl_r <= convert(ctrl_v,ctrl_r);
@@ -192,7 +176,9 @@ begin
     o_sf_control_r      => o_sf_control_r,
     --
     o_uCM2hp_data_v     => o_uCM2hp_data_v,
-    o_uCM2sf_data_v     => o_uCM2sf_data_v
+    o_uCM2hp_data_dv    => ctrl_sig_uCM2hp_data_dv,
+    o_uCM2sf_data_v     => o_uCM2sf_data_v,
+    o_uCM2sf_data_dv    => ctrl_sig_uCM2sf_data_dv
   );
 
   -- o_uCM2sf_data_v <= int_uCM_data;

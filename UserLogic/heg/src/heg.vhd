@@ -1,16 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: L0MDT
+-- File: heg.vhd
+-- Module: <<moduleName>>
+-- File PATH: /heg.vhd
+-- -----
+-- File Created: Tuesday, 4th October 2022 3:07:25 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Thursday, 20th October 2022 10:49:55 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: 
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 
 library ieee;
 use ieee.std_logic_1164.all;

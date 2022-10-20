@@ -227,9 +227,9 @@ begin
             pc2heg_vr.global_z     :=csv_file.read_integer;
             pc2heg_vr.global_x     :=csv_file.read_integer;
             if g_verbose > 1 then
-              puts("##### TAR2HPS( " & integer'image(row_counter) &
+              puts("##### PC2HEG( " & integer'image(row_counter) &
               " ): "& integer'image(pc2heg_vr.ToS        ) &
-              " ): "& integer'image(pc2heg_vr.ToA        ) &
+              " : " & integer'image(pc2heg_vr.ToA        ) &
               " : " & integer'image(pc2heg_vr.event      ) &
               " : " & integer'image(pc2heg_vr.muonFixedId) &
               " : " & integer'image(pc2heg_vr.station    ) &
@@ -287,9 +287,9 @@ begin
                 pc2heg_vr.global_z     :=csv_file.read_integer;
                 pc2heg_vr.global_x     :=csv_file.read_integer;
                 if g_verbose > 1 then
-                  puts("##### TAR2HPS( " & integer'image(row_counter) &
+                  puts("##### PC2HEG( " & integer'image(row_counter) &
                   " ): "& integer'image(pc2heg_vr.ToS        ) &
-                  " ): "& integer'image(pc2heg_vr.ToA        ) &
+                  " : " & integer'image(pc2heg_vr.ToA        ) &
                   " : " & integer'image(pc2heg_vr.event      ) &
                   " : " & integer'image(pc2heg_vr.muonFixedId) &
                   " : " & integer'image(pc2heg_vr.station    ) &
