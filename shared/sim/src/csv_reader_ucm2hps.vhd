@@ -92,6 +92,7 @@ architecture sim of csv_reader_ucm2hps is
     ToS => (others => '0'),
     ToA => (others => '0'),
     event_id => (others => '0'),
+    thread => (others => '0'),
     station => (others => '0'),
     ucm2hps => (
       data_valid => '0',
@@ -258,6 +259,7 @@ begin
             ToS => to_unsigned(ucm2hps_vr.ToS,64),
             ToA => to_unsigned(ucm2hps_vr.ToA,64),
             event_id => to_unsigned(ucm2hps_vr.event,32),
+            thread => to_unsigned(ucm2hps_vr.thread,4),
             station => to_unsigned(ucm2hps_vr.station,8),
             ucm2hps => (
               data_valid => '1',
@@ -285,8 +287,8 @@ begin
             if (csv_file.end_of_file = false) then
               FIFO_WR : for st_i in 0 to c_MAX_NUM_ST - 1 loop
                 if c_ENABLED_ST(st_i) = '1' and g_ST_ENABLE(st_i) = '1' and to_integer(ucm_event_vr.station) = st_i then
-                    ucm2hps_fifo(st_i)(to_integer(ucm_event_vr.station))(ucm2hps_fifo_counters_v(st_i)(to_integer(ucm_event_vr.station))) <= ucm_event_vr;
-                    ucm2hps_fifo_counters_v(st_i)(to_integer(ucm_event_vr.station)) := ucm2hps_fifo_counters_v(st_i)(to_integer(ucm_event_vr.station) ) + 1;
+                    ucm2hps_fifo(st_i)(to_integer(ucm_event_vr.thread))(ucm2hps_fifo_counters_v(st_i)(to_integer(ucm_event_vr.thread))) <= ucm_event_vr;
+                    ucm2hps_fifo_counters_v(st_i)(to_integer(ucm_event_vr.thread)) := ucm2hps_fifo_counters_v(st_i)(to_integer(ucm_event_vr.thread) ) + 1;
                 end if;
               end loop ; -- FIFO_WR
                 csv_file.readline;
@@ -324,6 +326,7 @@ begin
                   ToS => to_unsigned(ucm2hps_vr.ToS,64),
                   ToA => to_unsigned(ucm2hps_vr.ToA,64),
                   event_id => to_unsigned(ucm2hps_vr.event,32),
+                  thread => to_unsigned(ucm2hps_vr.thread,4),
                   station => to_unsigned(ucm2hps_vr.station,8),
                   ucm2hps => (
                     data_valid => '1',

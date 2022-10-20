@@ -54,10 +54,11 @@ package heg_sim_pkg is
       ToS : unsigned(64-1 downto 0);
       ToA : unsigned(64-1 downto 0);
       event_id : unsigned(32-1 downto 0);
+      thread : unsigned(4-1 downto 0);
       station : unsigned(8-1 downto 0);
       ucm2heg : ucm2hps_rt;
    end record eve_ucm2heg_rt;
-   attribute w of eve_ucm2heg_rt : type is 226;
+   attribute w of eve_ucm2heg_rt : type is 230;
    function width(x: eve_ucm2heg_rt) return natural;
    function convert(x: eve_ucm2heg_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: eve_ucm2heg_rt) return eve_ucm2heg_rt;
@@ -67,7 +68,7 @@ package heg_sim_pkg is
    attribute w of TB_UCM2HEG_FIFO_WIDTH : constant is 32;
 
    type eve_ucm2hps_art is array(TB_UCM2HEG_FIFO_WIDTH-1 downto 0) of eve_ucm2heg_rt;
-   attribute w of eve_ucm2hps_art : type is 7232;
+   attribute w of eve_ucm2hps_art : type is 7360;
    function width(x: eve_ucm2hps_art) return integer;
    function convert(x: eve_ucm2hps_art; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: eve_ucm2hps_art) return eve_ucm2hps_art;
@@ -292,6 +293,7 @@ package body heg_sim_pkg is
       w := w + width(x.ToS);
       w := w + width(x.ToA);
       w := w + width(x.event_id);
+      w := w + width(x.thread);
       w := w + width(x.station);
       w := w + width(x.ucm2heg);
       return w;
@@ -311,6 +313,9 @@ package body heg_sim_pkg is
          w := width(x.event_id);
          y(u to u+w-1) := convert(x.event_id, y(u to u+w-1));
          u := u + w;
+         w := width(x.thread);
+         y(u to u+w-1) := convert(x.thread, y(u to u+w-1));
+         u := u + w;
          w := width(x.station);
          y(u to u+w-1) := convert(x.station, y(u to u+w-1));
          u := u + w;
@@ -325,6 +330,9 @@ package body heg_sim_pkg is
          u := u - w;
          w := width(x.event_id);
          y(u downto u-w+1) := convert(x.event_id, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.thread);
+         y(u downto u-w+1) := convert(x.thread, y(u downto u-w+1));
          u := u - w;
          w := width(x.station);
          y(u downto u-w+1) := convert(x.station, y(u downto u-w+1));
@@ -349,6 +357,9 @@ package body heg_sim_pkg is
          w := width(tpl.event_id);
          y.event_id := convert(x(u to u+w-1), tpl.event_id);
          u := u + w;
+         w := width(tpl.thread);
+         y.thread := convert(x(u to u+w-1), tpl.thread);
+         u := u + w;
          w := width(tpl.station);
          y.station := convert(x(u to u+w-1), tpl.station);
          u := u + w;
@@ -363,6 +374,9 @@ package body heg_sim_pkg is
          u := u - w;
          w := width(tpl.event_id);
          y.event_id := convert(x(u downto u-w+1), tpl.event_id);
+         u := u - w;
+         w := width(tpl.thread);
+         y.thread := convert(x(u downto u-w+1), tpl.thread);
          u := u - w;
          w := width(tpl.station);
          y.station := convert(x(u downto u-w+1), tpl.station);

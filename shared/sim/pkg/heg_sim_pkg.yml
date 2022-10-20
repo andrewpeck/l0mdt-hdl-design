@@ -25,6 +25,7 @@ types:
     - ToS: {type: unsigned, range: [64-1, 0]}
     - ToA: {type: unsigned, range: [64-1, 0]}
     - event_id: {type: unsigned, range: [32-1, 0]}
+    - thread: {type: unsigned, range: [4-1, 0]}
     - station: {type: unsigned, range: [8-1, 0]}
     - ucm2heg: {type: ucm2hps_rt}
   - TB_UCM2HEG_FIFO_WIDTH: {qualifier: constant, type: integer, value: 32}

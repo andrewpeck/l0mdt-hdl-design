@@ -128,6 +128,8 @@ begin
     o_Roi_win_valid       => Roi_win_valid
   );
 
+  o_SLC_Win_dv <= Roi_win_valid;
+
   for_gen_SW : for il in get_num_layers(g_STATION_RADIUS) -1 downto 0 generate
     SLC_Window_ar(il) <= convert(SLC_Window_av(il),SLC_Window_ar(il));
   end generate ; -- identifier
