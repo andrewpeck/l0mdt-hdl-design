@@ -7,7 +7,7 @@ variables:
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'v6.23.0'
+      ref: 'v6.26.0'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -40,10 +40,10 @@ include:
     # - local: '/Top/MainBlocks/upt_vu13p/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/ucm/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/mpl/gitlab-ci.yml'
-    - local: '/Top/MainBlocks/tar/gitlab-ci.yml'
-    - local: '/Top/MainBlocks/tar.0/gitlab-ci.yml'
-    - local: '/Top/MainBlocks/tar.1/gitlab-ci.yml'
-    - local: '/Top/MainBlocks/tar.2/gitlab-ci.yml'
+    # - local: '/Top/MainBlocks/tar/gitlab-ci.yml'
+    # - local: '/Top/MainBlocks/tar.0/gitlab-ci.yml'
+    # - local: '/Top/MainBlocks/tar.1/gitlab-ci.yml'
+    # - local: '/Top/MainBlocks/tar.2/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/hp/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/heg.0/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/heg.1/gitlab-ci.yml'
@@ -62,9 +62,16 @@ include:
     # - local: '/Top/MainBlocks/hps_lsf.2/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/csf.0/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/ncsf/gitlab-ci.yml'
-    # # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
+    # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
+    #---------------------------------------------
+    #         BA3 Modules
+    #---------------------------------------------
+    - local: '/Top/MainBlocks/BA3_tar/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/BA3_ucm/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/BA3_hps_csf_bp/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/BA3_heg/gitlab-ci.yml'
     #---------------------------------------------
     #         KU15 Projects
     #---------------------------------------------
