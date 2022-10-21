@@ -46,6 +46,35 @@ package hp_pkg is
    function convert(x: hp_win_tubes_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: hp_win_tubes_avt) return hp_win_tubes_avt;
 
+   type hp_win_tubes_limits_rt is record
+      hi : signed(MDT_TUBE_LEN-1 downto 0);
+      lo : signed(MDT_TUBE_LEN-1 downto 0);
+   end record hp_win_tubes_limits_rt;
+   attribute w of hp_win_tubes_limits_rt : type is 18;
+   function width(x: hp_win_tubes_limits_rt) return natural;
+   function convert(x: hp_win_tubes_limits_rt; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt;
+   function zero(tpl: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt;
+
+   subtype hp_win_tubes_limits_vt is std_logic_vector(hp_win_tubes_limits_rt'w-1 downto 0);
+   attribute w of hp_win_tubes_limits_vt : subtype is 18;
+
+   type hp_win_tubes_limits_art is array(integer range <>) of hp_win_tubes_limits_rt;
+   function width(x: hp_win_tubes_limits_art) return integer;
+   function convert(x: hp_win_tubes_limits_art; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: hp_win_tubes_limits_art) return hp_win_tubes_limits_art;
+   function zero(tpl: hp_win_tubes_limits_art) return hp_win_tubes_limits_art;
+   function convert(x: hp_win_tubes_limits_art; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: hp_win_tubes_limits_art) return hp_win_tubes_limits_art;
+
+   type hp_win_tubes_limits_avt is array(integer range <>) of hp_win_tubes_limits_vt;
+   function width(x: hp_win_tubes_limits_avt) return integer;
+   function convert(x: hp_win_tubes_limits_avt; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt;
+   function zero(tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt;
+   function convert(x: hp_win_tubes_limits_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt;
+
    type hp_heg2hp_slc_b_rt is record
       roi_z : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
       roi_x : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
@@ -352,6 +381,194 @@ package body hp_pkg is
    end function convert;
    function convert(x: std_logic_vector_array; tpl: hp_win_tubes_avt) return hp_win_tubes_avt is
       variable y : hp_win_tubes_avt(tpl'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
+   function width(x: hp_win_tubes_limits_rt) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.hi);
+      w := w + width(x.lo);
+      return w;
+   end function width;
+   function convert(x: hp_win_tubes_limits_rt; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.hi);
+         y(u to u+w-1) := convert(x.hi, y(u to u+w-1));
+         u := u + w;
+         w := width(x.lo);
+         y(u to u+w-1) := convert(x.lo, y(u to u+w-1));
+      else
+         w := width(x.hi);
+         y(u downto u-w+1) := convert(x.hi, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.lo);
+         y(u downto u-w+1) := convert(x.lo, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt is
+      variable y : hp_win_tubes_limits_rt;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.hi);
+         y.hi := convert(x(u to u+w-1), tpl.hi);
+         u := u + w;
+         w := width(tpl.lo);
+         y.lo := convert(x(u to u+w-1), tpl.lo);
+      else
+         w := width(tpl.hi);
+         y.hi := convert(x(u downto u-w+1), tpl.hi);
+         u := u - w;
+         w := width(tpl.lo);
+         y.lo := convert(x(u downto u-w+1), tpl.lo);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: hp_win_tubes_limits_art) return integer is
+      variable w : integer := x'length * width(x(x'low));
+   begin
+      return w;
+   end function width;
+   function convert(x: hp_win_tubes_limits_art; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: hp_win_tubes_limits_art) return hp_win_tubes_limits_art is
+      variable y : hp_win_tubes_limits_art(tpl'range);
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: hp_win_tubes_limits_art) return hp_win_tubes_limits_art is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: hp_win_tubes_limits_art; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: hp_win_tubes_limits_art) return hp_win_tubes_limits_art is
+      variable y : hp_win_tubes_limits_art(tpl'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
+   function width(x: hp_win_tubes_limits_avt) return integer is
+      variable w : integer := x'length * width(x(x'low));
+   begin
+      return w;
+   end function width;
+   function convert(x: hp_win_tubes_limits_avt; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
+      variable y : hp_win_tubes_limits_avt(tpl'range);
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: hp_win_tubes_limits_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
+      variable y : hp_win_tubes_limits_avt(tpl'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
