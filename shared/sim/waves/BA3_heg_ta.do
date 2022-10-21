@@ -146,11 +146,12 @@ add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/tb_curr_tdc_time
 add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/in_files_ok
 add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/in_files_ts
 add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/OUT_CSV_SLC_EN/csv_file_2
-add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/OUT_CSV_SLC_EN/temp_o_sf_slc_data_aar
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/OUT_CSV_SLC_EN/temp_hegC2hp_aar
+add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/OUT_CSV_SLC_EN/temp_heg2sf_aar
 add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/OUT_CSV_SLC_EN/ucm2heg_slc_event_a
 add wave -noupdate -expand -group HEG_INT_OUT /heg_tb/HEGINTOUT/OUT_CSV_SLC_EN/ucm2heg_slc_event_au
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {4838605397 fs} 0}
+WaveRestoreCursors {{Cursor 1} {4823849900 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
