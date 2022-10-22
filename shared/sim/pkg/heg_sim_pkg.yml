@@ -30,3 +30,5 @@ types:
     - ucm2heg: {type: ucm2hps_rt}
   - TB_UCM2HEG_FIFO_WIDTH: {qualifier: constant, type: integer, value: 32}
   - eve_ucm2hps_art: {array: [TB_UCM2HEG_FIFO_WIDTH-1, 0], type: eve_ucm2heg_rt}
+
+

@@ -15,30 +15,32 @@
 -- 2022-10-02	GLdL	Update of old TB with new CSV pkg
 --------------------------------------------------------------------------------
 library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use ieee.std_logic_misc.all;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
+  use ieee.std_logic_misc.all;
 
 library shared_lib;
-use shared_lib.common_ieee_pkg.all;
-use shared_lib.l0mdt_constants_pkg.all;
-use shared_lib.l0mdt_dataformats_pkg.all;
-use shared_lib.common_constants_pkg.all;
-use shared_lib.common_types_pkg.all;
-use shared_lib.config_pkg.all;
-use shared_lib.detector_param_pkg.all;
-use shared_lib.detector_time_param_pkg.all;
-use shared_lib.l0mdt_sim_cstm_pkg.all;
-use shared_lib.vhdl_textio_csv_pkg.all;
+  use shared_lib.common_ieee_pkg.all;
+  use shared_lib.l0mdt_constants_pkg.all;
+  use shared_lib.l0mdt_dataformats_pkg.all;
+  use shared_lib.common_constants_pkg.all;
+  use shared_lib.common_types_pkg.all;
+  use shared_lib.config_pkg.all;
+  use shared_lib.detector_param_pkg.all;
+  use shared_lib.detector_time_param_pkg.all;
+  use shared_lib.l0mdt_sim_cstm_pkg.all;
+  use shared_lib.vhdl_textio_csv_pkg.all;
+
+  use shared_lib.heg_sim_cstm_pkg.all;
 
 library hp_lib;
-use hp_lib.hp_pkg.all;
+  use hp_lib.hp_pkg.all;
 library heg_lib;
-use heg_lib.heg_pkg.all;
+  use heg_lib.heg_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.HPS_CTRL.all;
-use ctrl_lib.HPS_CTRL_DEF.all;
+  use ctrl_lib.HPS_CTRL.all;
+  use ctrl_lib.HPS_CTRL_DEF.all;
 
 library vamc_lib;
 
@@ -56,13 +58,13 @@ end entity heg_tb;
 
 architecture beh of heg_tb is
 
-  type ucm2heg_aavt is array (c_MAX_NUM_ST -1 downto 0) of ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  type pc2heg_aavt is array (c_MAX_NUM_ST -1 downto 0) of heg_pc2heg_avt(c_TOTAL_MAX_NUM_HP -1 downto 0);
+  -- type ucm2heg_aavt is array (c_MAX_NUM_ST -1 downto 0) of ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  -- type pc2heg_aavt is array (c_MAX_NUM_ST -1 downto 0) of heg_pc2heg_avt(c_TOTAL_MAX_NUM_HP -1 downto 0);
 
-  type heg_ctrl2sf_avt is array(integer range <>) of heg_ctrl2sf_vt;
-  type heg2sf_control_aavt is array(c_MAX_NUM_ST -1 downto 0) of heg_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
-  type heg2sf_slc_data_aavt is array(c_MAX_NUM_ST -1 downto 0) of heg2sfslc_avt(c_NUM_THREADS -1 downto 0);
-  type heg2sf_mdt_data_aavt is array(c_MAX_NUM_ST -1 downto 0) of heg2sfhit_avt(c_NUM_THREADS -1 downto 0);
+  -- type heg_ctrl2sf_avt is array(integer range <>) of heg_ctrl2sf_vt;
+  -- type heg2sf_control_aavt is array(c_MAX_NUM_ST -1 downto 0) of heg_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
+  -- type heg2sf_slc_data_aavt is array(c_MAX_NUM_ST -1 downto 0) of heg2sfslc_avt(c_NUM_THREADS -1 downto 0);
+  -- type heg2sf_mdt_data_aavt is array(c_MAX_NUM_ST -1 downto 0) of heg2sfhit_avt(c_NUM_THREADS -1 downto 0);
   -------------------------------------------------------------------------------------
   -- control signals
   -------------------------------------------------------------------------------------
@@ -414,6 +416,32 @@ begin
   -------------------------------------------------------------------------------------
 	-- 
   -------------------------------------------------------------------------------------
+  HEG2SF_OUT : entity shared_lib.csv_writer_heg
+  generic map (
+    g_PRJ_INFO        => PRJ_INFO,
+    g_ST_ENABLE       => g_ST_ENABLE
+  )
+  port map(
+    clk                     => clk,
+    rst                     => rst,
+    enable                  => glob_en,
+    --
+    tb_curr_sim_time        => tb_curr_sim_time,
+    tb_curr_tdc_time        => tb_curr_tdc_time,
+    --
+    i_ucm2heg_file_ok       => ucm2heg_file_ok,
+    i_ucm2heg_file_ts       => ucm2heg_file_ts,
+    i_pc2heg_file_ok        => pc2heg_file_ok,
+    i_pc2heg_file_ts        => pc2heg_file_ts,
+    -- --
+    i_ucm2heg_slc_event_au  => pl_ucm2heg_slc_event_au,
+    i_pc2heg_mdt_event_au   => pc2heg_mdt_event_au,
+    i_pc2heg_slc_event_au   => pc2heg_slc_event_au,
+    --
+    i_sf_control_aav        => heg2sf_control_aarv,
+    i_sf_slc_data_aav       => heg2sf_slc_data_aav,
+    i_sf_mdt_data_aav       => heg2sf_mdt_data_aav
+);
   -------------------------------------------------------------------------------------
 	-- 
   -------------------------------------------------------------------------------------
