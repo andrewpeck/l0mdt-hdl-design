@@ -9,6 +9,10 @@ GEN:l0mdt_vu13p_csf_mpt:
       HOG_NO_BITSTREAM: 0 
     tags:
       - heavy-duty
+    artifacts:
+      paths:
+        - bin
+        - Projects
 CHK:l0mdt_vu13p_csf_mpt:
     extends: .check_list_and_conf
     variables:
