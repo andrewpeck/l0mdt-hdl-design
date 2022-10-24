@@ -63,6 +63,14 @@ include:
     # - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
     #---------------------------------------------
+    #         BA3 Modules
+    #---------------------------------------------
+    # - local: '/Top/MainBlocks/BA3_tar/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/BA3_ucm/gitlab-ci.yml'
+    # - local: '/Top/MainBlocks/BA3_hps_csf_bp/gitlab-ci.yml'
+    # - local: '/Top/MainBlocks/BA3_heg/gitlab-ci.yml'
+
+    #---------------------------------------------
     #         KU15 Projects
     #---------------------------------------------
     # - local: '/Top/ull_ku15p/ull_ku15_b3a_ucm_mpl/gitlab-ci.yml'
