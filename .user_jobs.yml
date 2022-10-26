@@ -142,6 +142,7 @@ check_auto_generated_code:
     - source run.sh trig_vals
     - source run.sh load_LE_refPos
   allow_failure: true
+  interruptible: true
 
 .sim_comp: &sim_comp
   <<: *only-default
@@ -152,6 +153,7 @@ check_auto_generated_code:
     - cd tools/simComp
     - python3 comparator.py $PROJECT_NAME
   allow_failure: true
+  interruptible: true
 
 .sim_check: &sim_check
   <<: *only-default
