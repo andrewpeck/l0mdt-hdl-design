@@ -7,10 +7,7 @@ GEN:BA3_tar:
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
     tags:
-      - normal-ops
-      - hog
-      # - "2020.2"
-
+      - mdt-1
 
 # SIM:BA3_tar_vivado:
 #     extends: .simulate_project
