@@ -157,6 +157,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     set hog_no_bitstream 0 
     set hog_check_syntax 0
     set hog_chk 0
+    set hog_tag "heavy-duty"
     set zynq_target usp
 
     # destructure the input properties into variables
@@ -248,6 +249,10 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # change the gitlab-ci hog_no_bitstream property
     exec sed -i "s|\\(.*HOG_NO_BITSTREAM:\\).*\\(.*\\)|\\1 $hog_no_bitstream \\2|g" "$dest_path/gitlab-ci.yml"
+
+    # update the tag
+    exec sed -i "s|- heavy-duty|- ${hog_tag}|g" "$dest_path/gitlab-ci.yml"
+
 
     # remove hog_chk for projects
     if {0 == $hog_chk} {

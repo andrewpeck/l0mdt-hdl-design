@@ -7,7 +7,7 @@ variables:
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'v6.26.0'
+      ref: 'v6.28.0'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -61,9 +61,9 @@ include:
     # - local: '/Top/MainBlocks/hps_lsf.1/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/hps_lsf.2/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/csf.0/gitlab-ci.yml'
-    # - local: '/Top/MainBlocks/ncsf/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/ncsf/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
-    # - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
     #---------------------------------------------
     #         BA3 Modules

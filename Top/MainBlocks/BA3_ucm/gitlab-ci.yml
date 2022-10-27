@@ -6,9 +6,9 @@ GEN:BA3_ucm:
       PROJECT_NAME: MainBlocks/BA3_ucm
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
-    tags:
-      - normal-ops
-      - hog
+    # tags:
+      # - normal-ops
+      # - hog
       # - "2020.2"
 
 
