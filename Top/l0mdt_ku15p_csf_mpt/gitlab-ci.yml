@@ -5,7 +5,7 @@ GEN:l0mdt_ku15p_csf_mpt:
       extends: .vars
       PROJECT_NAME: l0mdt_ku15p_csf_mpt
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-      HOG_CHECK_SYNTAX : 0
+      HOG_CHECK_SYNTAX: 0
       HOG_NO_BITSTREAM: 0 
     tags:
       - heavy-duty
