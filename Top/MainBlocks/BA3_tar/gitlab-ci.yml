@@ -6,8 +6,8 @@ GEN:BA3_tar:
       PROJECT_NAME: MainBlocks/BA3_tar
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
-    tags:
-      - mdt-1
+    # tags:
+      # - mdt-1
 
 # SIM:BA3_tar_vivado:
 #     extends: .simulate_project
