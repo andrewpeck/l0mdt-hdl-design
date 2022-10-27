@@ -6,9 +6,9 @@ GEN:BA3_heg_inn_th2:
       PROJECT_NAME: MainBlocks/BA3_heg_inn_th2
       HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
       
-    tags:
-      - normal-ops
-      - hog
+    # tags:
+    #   - normal-ops
+    #   - hog
       # - "2020.2"
 
 

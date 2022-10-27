@@ -6,9 +6,9 @@ GEN:BA3_hps_csf_bp:
       PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
-    tags:
-      - normal-ops
-      - hog
+    # tags:
+    #   - normal-ops
+    #   - hog
       # - "2020.2"
 
 
