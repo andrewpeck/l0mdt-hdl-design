@@ -1,20 +1,19 @@
 --------------------------------------------------------------------------------
 -- UMass , Physics Department
 -- Project: src
--- File: heg_bm.vhd
+-- File: heg_bm_ctrl.vhd
 -- Module: <<moduleName>>
--- File PATH: /heg_bm.vhd
+-- File PATH: /heg_bm_ctrl.vhd
 -- -----
--- File Created: Wednesday, 8th June 2022 9:54:44 am
+-- File Created: Friday, 28th October 2022 10:43:40 am
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
 -- -----
--- Last Modified: Friday, 28th October 2022 10:51:52 am
+-- Last Modified: Friday, 28th October 2022 10:51:45 am
 -- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
 -- -----
 -- HISTORY:
--- 2022-10-28	GLdL	fixing time issues,
---                  New BM controller block
 --------------------------------------------------------------------------------
+
 
 library ieee;
 use ieee.std_logic_1164.all;
