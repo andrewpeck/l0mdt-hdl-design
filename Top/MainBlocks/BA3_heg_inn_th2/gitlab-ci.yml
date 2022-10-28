@@ -1,0 +1,55 @@
+#################### BA3_heg_inn_th2 Project ###########################
+GEN:BA3_heg_inn_th2:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/BA3_heg_inn_th2
+      HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
+      
+    # tags:
+    #   - normal-ops
+    #   - hog
+      # - "2020.2"
+
+
+# SIM:BA3_heg_inn_th2_vivado:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: MainBlocks/BA3_heg_inn_th2
+
+SIM:BA3_heg_inn_th2_questa:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/BA3_heg_inn_th2
+
+SIM:BA3_heg_inn_th2_riviera:
+    extends: .riviera_sim
+    variables:
+      extends: .vars
+      PROJECT_NAME: MainBlocks/BA3_heg_inn_th2
+    # allow_failure: false
+
+COMP:BA3_heg_inn_th2:
+  extends: .sim_comp
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_heg_inn_th2
+    PROJECT_Q_NAME: MainBlocks/BA3_heg_inn_th2_questa
+    PROJECT_R_NAME: MainBlocks/BA3_heg_inn_th2_riviera
+  needs: ["SIM:BA3_heg_inn_th2_questa","SIM:BA3_heg_inn_th2_riviera"]
+
+CHK:BA3_heg_inn_th2:
+  extends: .sim_check
+  variables: 
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_heg_inn_th2
+    BLOCK: BA3_heg_inn_th2
+    SIMULATOR: questa
+  needs: ["SIM:BA3_heg_inn_th2_riviera"]
+  artifacts:
+    name: CHK_MainBlocks_BA3_heg_inn_th2
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day

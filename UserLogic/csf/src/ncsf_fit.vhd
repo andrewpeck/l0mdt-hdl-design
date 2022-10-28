@@ -36,6 +36,7 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY ncsf_fit IS
   PORT (
     clk        : IN STD_LOGIC;
+    i_rst      : in STD_LOGIC;
     i_sums_ml0 : csf_sums_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
     i_sums_ml1 : csf_sums_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
     o_seg      : OUT csf_locseg_vt
@@ -101,9 +102,10 @@ ARCHITECTURE Behavioral OF ncsf_fit IS
   CONSTANT BFIT_FULL_LEN : INTEGER := NUM_B_LEN - SHIFT_NUM_B + RECIPROCAL_LEN + 1;
 
   -- Fit result signals
-  SIGNAL mfit_full, mfit_full_s : signed(MFIT_FULL_LEN - 1 DOWNTO 0)
+  signal dv_slope, dv_intercept : STD_LOGIC;
+  SIGNAL mfit_full : std_logic_vector(MFIT_FULL_LEN - RECIPROCAL_LEN - 1 DOWNTO 0)
   := (OTHERS => '0');
-  SIGNAL bfit_full, bfit_full_s : signed(BFIT_FULL_LEN - 1 DOWNTO 0)
+  SIGNAL bfit_full : std_logic_vector(BFIT_FULL_LEN - RECIPROCAL_LEN - 1 DOWNTO 0)
   := (OTHERS => '0');
 
   -- DSP valid signals
@@ -115,36 +117,74 @@ ARCHITECTURE Behavioral OF ncsf_fit IS
   -- Output segment
   SIGNAL output_seg : csf_locseg_rt;
 
-  ---COMPONENTS --------
-  COMPONENT rom
-    GENERIC (
-      MXADRB    : INTEGER;
-      MXDATB    : INTEGER;
-      ROM_FILE  : STRING;
-      ROM_STYLE : STRING
-    );
-    PORT (
-      clka  : IN STD_LOGIC;
-      ena   : IN STD_LOGIC;
-      addra : IN STD_LOGIC_VECTOR;
-      douta : OUT STD_LOGIC_VECTOR
-    );
-  END COMPONENT;
+  -----COMPONENTS --------
+  --COMPONENT rom
+  --  GENERIC (
+  --    MXADRB    : INTEGER;
+  --    MXDATB    : INTEGER;
+  --    ROM_FILE  : STRING;
+  --    ROM_STYLE : STRING
+  --  );
+  --  PORT (
+  --    clka  : IN STD_LOGIC;
+  --    ena   : IN STD_LOGIC;
+  --    addra : IN STD_LOGIC_VECTOR;
+  --    douta : OUT STD_LOGIC_VECTOR
+  --  );
+  --END COMPONENT;
 
 BEGIN
 
-  reciprocal_rom : rom
+  --reciprocal_rom : rom
+  --GENERIC MAP(
+  --  MXADRB    => DEN_LEN - SHIFT_DEN,
+  --  MXDATB    => RECIPROCAL_LEN,
+  --  ROM_FILE  => "fitter_reciprocal.mem",
+  --  ROM_STYLE => "distributed"
+  --)
+  --PORT MAP(
+  --  ena   => '1',
+  --  clka  => clk,
+  --  addra => reciprocal_addr,
+  --  douta => reciprocal_den
+  --);
+
+  divider_m : entity shared_lib.divider
   GENERIC MAP(
-    MXADRB    => DEN_LEN - SHIFT_DEN,
-    MXDATB    => RECIPROCAL_LEN,
-    ROM_FILE  => "fitter_reciprocal.mem",
-    ROM_STYLE => "distributed"
+    g_NUMERATOR_LEN => NUM_M_LEN - SHIFT_NUM_M,
+    g_DENOMINATOR_LEN => DEN_LEN - SHIFT_DEN,
+    g_DIVIDER_LEN => RECIPROCAL_LEN,
+    g_QUOTIENT_LEN => MFIT_FULL_LEN - RECIPROCAL_LEN,
+    g_IS_SIGNED => '1',
+    g_ROM_FILE => "fitter_reciprocal.mem"
   )
   PORT MAP(
-    ena   => '1',
-    clka  => clk,
-    addra => reciprocal_addr,
-    douta => reciprocal_den
+    i_clk => clk,
+    i_rst => i_rst,
+    i_enable => dv5,
+    i_numerator => std_logic_vector(numerator_m_red_s),
+    i_denominator => reciprocal_addr,
+    o_valid => dv_slope,
+    o_quotient => mfit_full
+  );
+
+  divider_b : entity shared_lib.divider
+  GENERIC MAP(
+    g_NUMERATOR_LEN => NUM_B_LEN - SHIFT_NUM_B,
+    g_DENOMINATOR_LEN => DEN_LEN - SHIFT_DEN,
+    g_DIVIDER_LEN => RECIPROCAL_LEN,
+    g_QUOTIENT_LEN => BFIT_FULL_LEN - RECIPROCAL_LEN,
+    g_IS_SIGNED => '1',
+    g_ROM_FILE => "fitter_reciprocal.mem"
+  )
+  PORT MAP(
+    i_clk => clk,
+    i_rst => i_rst,
+    i_enable => dv5,
+    i_numerator => std_logic_vector(numerator_b_red_s),
+    i_denominator => reciprocal_addr,
+    o_valid => dv_intercept,
+    o_quotient => bfit_full
   );
 
   clust_loop_gen : FOR i_c IN CSF_MAX_CLUSTERS - 1 DOWNTO 0 GENERATE
@@ -230,46 +270,48 @@ BEGIN
       numerator_b_red_s <= numerator_b_red;
       numerator_m_red_s <= numerator_m_red;
 
-      -- Clock 6
-      dv6                <= dv5;
-      numerator_b_red_ss <= numerator_b_red_s;
-      numerator_m_red_ss <= numerator_m_red_s;
+      -- Clock 11 
 
-      --Clock 7
-      dv7                 <= dv6;
-      numerator_b_red_sss <= numerator_b_red_ss;
-      numerator_m_red_sss <= numerator_m_red_ss;
-      -- Clock 8
-      dv8                  <= dv7;
-      numerator_b_red_ssss <= numerator_b_red_sss;
-      numerator_m_red_ssss <= numerator_m_red_sss;
-      reciprocal_den_s     <= signed('0' & reciprocal_den);
+      ---- Clock 6
+      --dv6                <= dv5;
+      --numerator_b_red_ss <= numerator_b_red_s;
+      --numerator_m_red_ss <= numerator_m_red_s;
 
-      -- Clock 9
-      dv9       <= dv8;
-      mfit_full <= numerator_m_red_sss * reciprocal_den_s;
-      bfit_full <= numerator_b_red_sss * reciprocal_den_s;
+      ----Clock 7
+      --dv7                 <= dv6;
+      --numerator_b_red_sss <= numerator_b_red_ss;
+      --numerator_m_red_sss <= numerator_m_red_ss;
+      ---- Clock 8
+      --dv8                  <= dv7;
+      --numerator_b_red_ssss <= numerator_b_red_sss;
+      --numerator_m_red_ssss <= numerator_m_red_sss;
+      --reciprocal_den_s     <= signed('0' & reciprocal_den);
 
-      -- Clock 10
-      dv10        <= dv9;
-      mfit_full_s <= mfit_full;
-      bfit_full_s <= bfit_full;
+      ---- Clock 9
+      --dv9       <= dv8;
+      --mfit_full <= numerator_m_red_sss * reciprocal_den_s;
+      --bfit_full <= numerator_b_red_sss * reciprocal_den_s;
+
+      ---- Clock 10
+      --dv10        <= dv9;
+      --mfit_full_s <= mfit_full;
+      --bfit_full_s <= bfit_full;
 
       -- Clock 11
-      output_seg.valid <= dv10;
+      output_seg.valid <= dv_slope and dv_intercept;
       output_seg.m     <=
       resize(
-      shift_right(
-      mfit_full_s,
-      RECIPROCAL_LEN + SHIFT_DEN - SHIFT_NUM_M - MFIT_MULTI_LEN
+      shift_left(
+      signed(mfit_full),
+      - SHIFT_DEN + SHIFT_NUM_M + MFIT_MULTI_LEN
       ),
       CSF_SEG_M_LEN);
 
       output_seg.b <=
       resize(
-      shift_right(
-      bfit_full_s,
-      RECIPROCAL_LEN + SHIFT_DEN - SHIFT_NUM_B - B_OVER_Z_MULTI_LEN
+      shift_left(
+      signed(bfit_full),
+      - SHIFT_DEN + SHIFT_NUM_B + B_OVER_Z_MULTI_LEN
       ),
       CSF_SEG_B_LEN);
 
