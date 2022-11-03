@@ -91,7 +91,8 @@ vu13p_lsf_upt:
       hog_chk: 1
       zynq_target: 7s
       hog_only_synth: 1
-      hog_no_bitstream: 1
+      hog_tag: "mdt-2"
+
 
 vu13p_csf_mpt:
   fpga: xcvu13p-flga2577-2-e
@@ -105,7 +106,7 @@ vu13p_csf_mpt:
       link_map: "link_map_vu13p"
       zynq_target: 7s
       hog_only_synth: 1
-      hog_no_bitstream: 1
+      hog_tag: "mdt-1"
 
 ###################################################
 #           EMPTY ULL PROJECTS
@@ -140,6 +141,7 @@ ku15p_ull_empty:
       en_mtc: 0
       csm_links: 1
       tdc_links: 18
+      hog_tag: "mdt-1"
 
 vu13p_ull_empty:
   fpga: xcvu13p-flga2577-2-e
@@ -170,4 +172,5 @@ vu13p_ull_empty:
       en_mtc: 0
       csm_links: 1
       tdc_links: 18
+      hog_tag: "mdt-2"
 

@@ -8,7 +8,8 @@ variables:
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'Hog2022.2-6'
+
+      ref: 'v6.28.0'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -64,6 +65,13 @@ include:
     - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
     #---------------------------------------------
+    #         BA3 Modules
+    #---------------------------------------------
+    - local: '/Top/MainBlocks/BA3_tar/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/BA3_ucm/gitlab-ci.yml'
+    # - local: '/Top/MainBlocks/BA3_hps_csf_bp/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/BA3_heg/gitlab-ci.yml'
+    #---------------------------------------------
     #         KU15 Projects
     #---------------------------------------------
     # - local: '/Top/ull_ku15p/ull_ku15_b3a_ucm_mpl/gitlab-ci.yml'
@@ -77,10 +85,10 @@ include:
     # - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
     #- local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps/gitlab-ci.yml'
     # - local: '/Top/ull_vu13p/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
-    - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_csf_mptc/gitlab-ci.yml'
-    - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_csf_uptc/gitlab-ci.yml'
-    - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_lsf_mptc/gitlab-ci.yml'
-    - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_lsf_uptc/gitlab-ci.yml'
+    # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_csf_mptc/gitlab-ci.yml'
+    # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_csf_uptc/gitlab-ci.yml'
+    # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_lsf_mptc/gitlab-ci.yml'
+    # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_lsf_uptc/gitlab-ci.yml'
     # - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_csf_ptc_mpi/gitlab-ci.yml'
     # - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_lsf_ptc_mpi/gitlab-ci.yml'
 

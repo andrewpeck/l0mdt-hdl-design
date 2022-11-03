@@ -1,20 +1,23 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
---------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: Configurable pipeline Multiplier 
---  Description:
--- 
---------------------------------------------------------------------------------
---  Revisions:
---      
+-- UMass , Physics Department
+-- Project: ATLAS L0MDT Trigger
+-- File: generic_pipelined_MATH_pkg.vhd
+-- Module: <<moduleName>>
+-- File PATH: /shared/arithmetics/pkg/generic_pipelined_MATH_pkg.vhd
+-- -----
+-- File Created: Monday, 15th November 2021 9:29:29 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Wednesday, 21st September 2022 1:43:51 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
 
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.std_logic_misc.all;
 
 library shared_lib;
 use shared_lib.vhdl2008_functions_pkg.all;

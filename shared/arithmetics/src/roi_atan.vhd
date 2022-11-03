@@ -54,17 +54,17 @@ architecture beh of roi_atan is
 
 begin
 
-  dv_guard : process(i_dv) begin
-    int_data_valid <= i_dv;
-  end process;
+  -- dv_guard : process(i_dv) begin
+  --   int_data_valid <= i_dv;
+  -- end process;
 
-  mem_guard : process(i_slope) begin
-    -- if ( to_integer(unsigned(i_chamber)) > 1570) then
-    --   addr_mem <= (others => '0');
-    -- else
-      addr_mem <= i_slope;--(DT2R_LARGE_ADDR_LEN -1 downto 0);
-    -- end if;
-  end process;
+  -- mem_guard : process(i_slope) begin
+  --   -- if ( to_integer(unsigned(i_chamber)) > 1570) then
+  --   --   addr_mem <= (others => '0');
+  --   -- else
+  --     addr_mem <= i_slope;--(DT2R_LARGE_ADDR_LEN -1 downto 0);
+  --   -- end if;
+  -- end process;
   
   MRAD2SLOPE : process(clk)
 
@@ -72,13 +72,22 @@ begin
     if rising_edge(clk) then
       if rst= '1' then
         o_mbar <= (others => '0');
+        addr_mem <= (others => '0');
+        int_data_valid <= '0';
         o_dv <= '0';
       else
-        o_dv <= int_data_valid;
-        if(int_data_valid = '1') then
-          o_mbar <= to_unsigned(integer(mem(to_integer(addr_mem))),g_OUTPUT_LEN);
-        else
-          o_mbar <= (others => '0');
+        if ena = '1' then
+          if i_dv = '1' then
+            int_data_valid <= i_dv;
+            addr_mem <= i_slope;
+          end if;
+
+          o_dv <= int_data_valid;
+          if(int_data_valid = '1') then
+            o_mbar <= to_unsigned(integer(mem(to_integer(addr_mem))),g_OUTPUT_LEN);
+          else
+            o_mbar <= (others => '0');
+          end if;
         end if;
       end if;
     end if ;

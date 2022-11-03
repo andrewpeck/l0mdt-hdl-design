@@ -2,6 +2,9 @@
 shared/shared_lib_basic.src
 shared/spybuffers.src
 
+# DIVIDER
+shared/arithmetics/src/divider.vhd
+
 # CSF/PT memories
 shared/memories/src/bram.vhd
 shared/memories/src/rom.v

@@ -1,6 +1,6 @@
 [submodule "Hog"]
 	path = Hog
-	url = ../../hog/Hog.git
+	url = https://gitlab.com/hog-cern/Hog.git
 [submodule "tools/tv"]
 	path = tools/tv
 	url = ../tv.git

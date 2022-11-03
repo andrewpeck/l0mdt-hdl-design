@@ -352,6 +352,7 @@ BEGIN
   Fitter : ENTITY csf_lib.ncsf_fit
     PORT MAP(
       clk        => clk,
+      i_rst      => i_rst,
       i_sums_ml0 => sums_ml(0),
       i_sums_ml1 => sums_ml(1),
       o_seg      => locseg
