@@ -254,6 +254,9 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     exec sed -i "s|- heavy-duty|- ${hog_tag}|g" "$dest_path/gitlab-ci.yml"
 
 
+    # change the gitlab-ci hog_no_bitstream property
+    exec sed -i "s|\\(.*HOG_NO_BITSTREAM:\\).*\\(#.*\\)|\\1 $hog_no_bitstream \\2|g" "$dest_path/gitlab-ci.yml"
+
     # remove hog_chk for projects
     if {0 == $hog_chk} {
         exec sed -i "/^CHK:/,/PROJECT_NAME.*/d" "$dest_path/gitlab-ci.yml"

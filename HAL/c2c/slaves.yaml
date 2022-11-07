@@ -40,7 +40,18 @@ AXI_CONTROL_SETS:
 # 0x81002000 7 Series
 
 AXI_SLAVES:
-
+  # KINTEX_SYS_MGMT:
+  #   TCL_CALL:
+  #     command: AXI_IP_SYS_MGMT
+  #     enable_i2c_pins: 0
+  #     axi_control: "${::AXI_MASTER_CTRL}"
+  #     addr:
+  #       offset: "0x81001000"
+  #       range: "4K"
+  #     remote_slave: "1"
+  #   XML: "address_table/modules/KINTEX_SYS_MGMT.xml"
+  #   UHAL_BASE: 0x80000000
+    
   KINTEX_SYS_MGMT:
     TCL_CALL:
       command: "AXI_IP_SYS_MGMT"
