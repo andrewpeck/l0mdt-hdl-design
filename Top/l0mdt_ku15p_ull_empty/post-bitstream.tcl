@@ -64,11 +64,12 @@ set DTSI_DIR [file dirname $dst_bit]/dtsi
 set DTSI_FILES [glob $PATH_REPO/kernel/hw/*.dtsi]
 file mkdir $DTSI_DIR
 foreach dtsi_file $DTSI_FILES {
-    puts "Creating dtbo for $dtsi file"
+    puts "Creating dtbo for $dtsi_file file"
     file copy -force ${dtsi_file} $DTSI_DIR/
     exec dtc -O dtb -o $new_dir_dtbo/[file rootname [file tail ${dtsi_file}]].dtbo -b 0 ${dtsi_file}
 }
 
 puts "Creating the tarball"
-exec tar cvf $dst_dir/${proj_name}\-$describe.tar $dst_dir/tarball
-exec gzip $dst_dir/${proj_name}\-$describe.tar
+cd $dst_dir
+exec tar cvf ${proj_name}\-$describe.tar tarball
+exec gzip ${proj_name}\-$describe.tar
