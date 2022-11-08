@@ -38,7 +38,7 @@ shutil.copy(LTX_FILE, HOG_PROJECT)
 fptr = open("../address_tables/address_apollo.xml")
 fptr_w = open(new_dir_addr_table + "/address_apollo.xml","w")
 for line in fptr:
-    fptr_w.write(line.replace("module=\"file:/"," fwinfo=\"uio_endpoint\" module=\"file:///fw/CM/l0mdt_ku15p_ull_empty/address_table/"+MODULES_DIR))
+    fptr_w.write(line.replace("module=\"file://"," fwinfo=\"uio_endpoint\" module=\"file://"+MODULES_DIR+"/"))
 fptr.close()
 fptr_w.close()
 

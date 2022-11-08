@@ -420,25 +420,25 @@ begin
 
 
 
-      hal_core_araddr                            => hal_core_readmosi.address,        
-      hal_core_arprot                             => hal_core_readmosi.protection_type,
-      hal_core_arready(0)                      => hal_core_readmiso.ready_for_address,
-      hal_core_arvalid(0)                       => hal_core_readmosi.address_valid,
-      hal_core_awaddr                           => hal_core_writemosi.address,
-      hal_core_awprot                            => hal_core_writemosi.protection_type,
-      hal_core_awready(0)                     => hal_core_writemiso.ready_for_address,
-      hal_core_awvalid(0)                      => hal_core_writemosi.address_valid,
-      hal_core_bready(0)                       => hal_core_writemosi.ready_for_response,
-      hal_core_bresp                              => hal_core_writemiso.response,
-      hal_core_bvalid(0)                        => hal_core_writemiso.response_valid,
-      hal_core_rdata                              => hal_core_readmiso.data,
-      hal_core_rready(0)                       => hal_core_readmosi.ready_for_data,
-      hal_core_rresp                              => hal_core_readmiso.response,
-      hal_core_rvalid(0)                        => hal_core_readmiso.data_valid,
-      hal_core_wdata                            => hal_core_writemosi.data,
-      hal_core_wready(0)                     => hal_core_writemiso.ready_for_data,
-      hal_core_wstrb                             => hal_core_writemosi.data_write_strobe,
-      hal_core_wvalid(0)                      => hal_core_writemosi.data_valid,
+      --hal_core_araddr                            => hal_core_readmosi.address,        
+      --hal_core_arprot                             => hal_core_readmosi.protection_type,
+      --hal_core_arready(0)                      => hal_core_readmiso.ready_for_address,
+      --hal_core_arvalid(0)                       => hal_core_readmosi.address_valid,
+      --hal_core_awaddr                           => hal_core_writemosi.address,
+      --hal_core_awprot                            => hal_core_writemosi.protection_type,
+      --hal_core_awready(0)                     => hal_core_writemiso.ready_for_address,
+      --hal_core_awvalid(0)                      => hal_core_writemosi.address_valid,
+      --hal_core_bready(0)                       => hal_core_writemosi.ready_for_response,
+      --hal_core_bresp                              => hal_core_writemiso.response,
+      --hal_core_bvalid(0)                        => hal_core_writemiso.response_valid,
+      --hal_core_rdata                              => hal_core_readmiso.data,
+      --hal_core_rready(0)                       => hal_core_readmosi.ready_for_data,
+      --hal_core_rresp                              => hal_core_readmiso.response,
+      --hal_core_rvalid(0)                        => hal_core_readmiso.data_valid,
+      --hal_core_wdata                            => hal_core_writemosi.data,
+      --hal_core_wready(0)                     => hal_core_writemiso.ready_for_data,
+      --hal_core_wstrb                             => hal_core_writemosi.data_write_strobe,
+      --hal_core_wvalid(0)                      => hal_core_writemosi.data_valid,
       
       reset_n                             => reset_n, --locked_clk200,--reset,
       K_C2C_PHY_DEBUG_cplllock(0)         => C2C_Mon.C2C(1).DEBUG.CPLL_LOCK,
@@ -797,265 +797,265 @@ begin
 --      --------------------------------------------------------------------------------
 
 --      -- START: ULT_PORTS :: DO NOT EDIT
---      --hps_inn_araddr  => hps_inn_readmosi.address,
---      --hps_inn_arprot  => hps_inn_readmosi.protection_type,
---      --hps_inn_arready => hps_inn_readmiso.ready_for_address,
---      --hps_inn_arvalid => hps_inn_readmosi.address_valid,
---      --hps_inn_awaddr  => hps_inn_writemosi.address,
---      --hps_inn_awprot  => hps_inn_writemosi.protection_type,
---      --hps_inn_awready => hps_inn_writemiso.ready_for_address,
---      --hps_inn_awvalid => hps_inn_writemosi.address_valid,
---      --hps_inn_bready  => hps_inn_writemosi.ready_for_response,
---      --hps_inn_bresp   => hps_inn_writemiso.response,
---      --hps_inn_bvalid  => hps_inn_writemiso.response_valid,
---      --hps_inn_rdata   => hps_inn_readmiso.data,
---      --hps_inn_rready  => hps_inn_readmosi.ready_for_data,
---      --hps_inn_rresp   => hps_inn_readmiso.response,
---      --hps_inn_rvalid  => hps_inn_readmiso.data_valid,
---      --hps_inn_wdata   => hps_inn_writemosi.data,
---      --hps_inn_wready  => hps_inn_writemiso.ready_for_data,
---      --hps_inn_wstrb   => hps_inn_writemosi.data_write_strobe,
---      --hps_inn_wvalid  => hps_inn_writemosi.data_valid,
+      --hps_inn_araddr  => hps_inn_readmosi.address,
+      --hps_inn_arprot  => hps_inn_readmosi.protection_type,
+      --hps_inn_arready => hps_inn_readmiso.ready_for_address,
+      --hps_inn_arvalid => hps_inn_readmosi.address_valid,
+      --hps_inn_awaddr  => hps_inn_writemosi.address,
+      --hps_inn_awprot  => hps_inn_writemosi.protection_type,
+      --hps_inn_awready => hps_inn_writemiso.ready_for_address,
+      --hps_inn_awvalid => hps_inn_writemosi.address_valid,
+      --hps_inn_bready  => hps_inn_writemosi.ready_for_response,
+      --hps_inn_bresp   => hps_inn_writemiso.response,
+      --hps_inn_bvalid  => hps_inn_writemiso.response_valid,
+      --hps_inn_rdata   => hps_inn_readmiso.data,
+      --hps_inn_rready  => hps_inn_readmosi.ready_for_data,
+      --hps_inn_rresp   => hps_inn_readmiso.response,
+      --hps_inn_rvalid  => hps_inn_readmiso.data_valid,
+      --hps_inn_wdata   => hps_inn_writemosi.data,
+      --hps_inn_wready  => hps_inn_writemiso.ready_for_data,
+      --hps_inn_wstrb   => hps_inn_writemosi.data_write_strobe,
+      --hps_inn_wvalid  => hps_inn_writemosi.data_valid,
 
---      --hps_mid_araddr  => hps_mid_readmosi.address,
---      --hps_mid_arprot  => hps_mid_readmosi.protection_type,
---      --hps_mid_arready => hps_mid_readmiso.ready_for_address,
---      --hps_mid_arvalid => hps_mid_readmosi.address_valid,
---      --hps_mid_awaddr  => hps_mid_writemosi.address,
---      --hps_mid_awprot  => hps_mid_writemosi.protection_type,
---      --hps_mid_awready => hps_mid_writemiso.ready_for_address,
---      --hps_mid_awvalid => hps_mid_writemosi.address_valid,
---      --hps_mid_bready  => hps_mid_writemosi.ready_for_response,
---      --hps_mid_bresp   => hps_mid_writemiso.response,
---      --hps_mid_bvalid  => hps_mid_writemiso.response_valid,
---      --hps_mid_rdata   => hps_mid_readmiso.data,
---      --hps_mid_rready  => hps_mid_readmosi.ready_for_data,
---      --hps_mid_rresp   => hps_mid_readmiso.response,
---      --hps_mid_rvalid  => hps_mid_readmiso.data_valid,
---      --hps_mid_wdata   => hps_mid_writemosi.data,
---      --hps_mid_wready  => hps_mid_writemiso.ready_for_data,
---      --hps_mid_wstrb   => hps_mid_writemosi.data_write_strobe,
---      --hps_mid_wvalid  => hps_mid_writemosi.data_valid,
+      --hps_mid_araddr  => hps_mid_readmosi.address,
+      --hps_mid_arprot  => hps_mid_readmosi.protection_type,
+      --hps_mid_arready => hps_mid_readmiso.ready_for_address,
+      --hps_mid_arvalid => hps_mid_readmosi.address_valid,
+      --hps_mid_awaddr  => hps_mid_writemosi.address,
+      --hps_mid_awprot  => hps_mid_writemosi.protection_type,
+      --hps_mid_awready => hps_mid_writemiso.ready_for_address,
+      --hps_mid_awvalid => hps_mid_writemosi.address_valid,
+      --hps_mid_bready  => hps_mid_writemosi.ready_for_response,
+      --hps_mid_bresp   => hps_mid_writemiso.response,
+      --hps_mid_bvalid  => hps_mid_writemiso.response_valid,
+      --hps_mid_rdata   => hps_mid_readmiso.data,
+      --hps_mid_rready  => hps_mid_readmosi.ready_for_data,
+      --hps_mid_rresp   => hps_mid_readmiso.response,
+      --hps_mid_rvalid  => hps_mid_readmiso.data_valid,
+      --hps_mid_wdata   => hps_mid_writemosi.data,
+      --hps_mid_wready  => hps_mid_writemiso.ready_for_data,
+      --hps_mid_wstrb   => hps_mid_writemosi.data_write_strobe,
+      --hps_mid_wvalid  => hps_mid_writemosi.data_valid,
 
---      --hps_out_araddr  => hps_out_readmosi.address,
---      --hps_out_arprot  => hps_out_readmosi.protection_type,
---      --hps_out_arready => hps_out_readmiso.ready_for_address,
---      --hps_out_arvalid => hps_out_readmosi.address_valid,
---      --hps_out_awaddr  => hps_out_writemosi.address,
---      --hps_out_awprot  => hps_out_writemosi.protection_type,
---      --hps_out_awready => hps_out_writemiso.ready_for_address,
---      --hps_out_awvalid => hps_out_writemosi.address_valid,
---      --hps_out_bready  => hps_out_writemosi.ready_for_response,
---      --hps_out_bresp   => hps_out_writemiso.response,
---      --hps_out_bvalid  => hps_out_writemiso.response_valid,
---      --hps_out_rdata   => hps_out_readmiso.data,
---      --hps_out_rready  => hps_out_readmosi.ready_for_data,
---      --hps_out_rresp   => hps_out_readmiso.response,
---      --hps_out_rvalid  => hps_out_readmiso.data_valid,
---      --hps_out_wdata   => hps_out_writemosi.data,
---      --hps_out_wready  => hps_out_writemiso.ready_for_data,
---      --hps_out_wstrb   => hps_out_writemosi.data_write_strobe,
---      --hps_out_wvalid  => hps_out_writemosi.data_valid,
+      --hps_out_araddr  => hps_out_readmosi.address,
+      --hps_out_arprot  => hps_out_readmosi.protection_type,
+      --hps_out_arready => hps_out_readmiso.ready_for_address,
+      --hps_out_arvalid => hps_out_readmosi.address_valid,
+      --hps_out_awaddr  => hps_out_writemosi.address,
+      --hps_out_awprot  => hps_out_writemosi.protection_type,
+      --hps_out_awready => hps_out_writemiso.ready_for_address,
+      --hps_out_awvalid => hps_out_writemosi.address_valid,
+      --hps_out_bready  => hps_out_writemosi.ready_for_response,
+      --hps_out_bresp   => hps_out_writemiso.response,
+      --hps_out_bvalid  => hps_out_writemiso.response_valid,
+      --hps_out_rdata   => hps_out_readmiso.data,
+      --hps_out_rready  => hps_out_readmosi.ready_for_data,
+      --hps_out_rresp   => hps_out_readmiso.response,
+      --hps_out_rvalid  => hps_out_readmiso.data_valid,
+      --hps_out_wdata   => hps_out_writemosi.data,
+      --hps_out_wready  => hps_out_writemiso.ready_for_data,
+      --hps_out_wstrb   => hps_out_writemosi.data_write_strobe,
+      --hps_out_wvalid  => hps_out_writemosi.data_valid,
 
---      --hps_ext_araddr  => hps_ext_readmosi.address,
---      --hps_ext_arprot  => hps_ext_readmosi.protection_type,
---      --hps_ext_arready => hps_ext_readmiso.ready_for_address,
---      --hps_ext_arvalid => hps_ext_readmosi.address_valid,
---      --hps_ext_awaddr  => hps_ext_writemosi.address,
---      --hps_ext_awprot  => hps_ext_writemosi.protection_type,
---      --hps_ext_awready => hps_ext_writemiso.ready_for_address,
---      --hps_ext_awvalid => hps_ext_writemosi.address_valid,
---      --hps_ext_bready  => hps_ext_writemosi.ready_for_response,
---      --hps_ext_bresp   => hps_ext_writemiso.response,
---      --hps_ext_bvalid  => hps_ext_writemiso.response_valid,
---      --hps_ext_rdata   => hps_ext_readmiso.data,
---      --hps_ext_rready  => hps_ext_readmosi.ready_for_data,
---      --hps_ext_rresp   => hps_ext_readmiso.response,
---      --hps_ext_rvalid  => hps_ext_readmiso.data_valid,
---      --hps_ext_wdata   => hps_ext_writemosi.data,
---      --hps_ext_wready  => hps_ext_writemiso.ready_for_data,
---      --hps_ext_wstrb   => hps_ext_writemosi.data_write_strobe,
---      --hps_ext_wvalid  => hps_ext_writemosi.data_valid,
+      --hps_ext_araddr  => hps_ext_readmosi.address,
+      --hps_ext_arprot  => hps_ext_readmosi.protection_type,
+      --hps_ext_arready => hps_ext_readmiso.ready_for_address,
+      --hps_ext_arvalid => hps_ext_readmosi.address_valid,
+      --hps_ext_awaddr  => hps_ext_writemosi.address,
+      --hps_ext_awprot  => hps_ext_writemosi.protection_type,
+      --hps_ext_awready => hps_ext_writemiso.ready_for_address,
+      --hps_ext_awvalid => hps_ext_writemosi.address_valid,
+      --hps_ext_bready  => hps_ext_writemosi.ready_for_response,
+      --hps_ext_bresp   => hps_ext_writemiso.response,
+      --hps_ext_bvalid  => hps_ext_writemiso.response_valid,
+      --hps_ext_rdata   => hps_ext_readmiso.data,
+      --hps_ext_rready  => hps_ext_readmosi.ready_for_data,
+      --hps_ext_rresp   => hps_ext_readmiso.response,
+      --hps_ext_rvalid  => hps_ext_readmiso.data_valid,
+      --hps_ext_wdata   => hps_ext_writemosi.data,
+      --hps_ext_wready  => hps_ext_writemiso.ready_for_data,
+      --hps_ext_wstrb   => hps_ext_writemosi.data_write_strobe,
+      --hps_ext_wvalid  => hps_ext_writemosi.data_valid,
 
---      --tar_inn_araddr  => tar_inn_readmosi.address,
---      --tar_inn_arprot  => tar_inn_readmosi.protection_type,
---      --tar_inn_arready => tar_inn_readmiso.ready_for_address,
---      --tar_inn_arvalid => tar_inn_readmosi.address_valid,
---      --tar_inn_awaddr  => tar_inn_writemosi.address,
---      --tar_inn_awprot  => tar_inn_writemosi.protection_type,
---      --tar_inn_awready => tar_inn_writemiso.ready_for_address,
---      --tar_inn_awvalid => tar_inn_writemosi.address_valid,
---      --tar_inn_bready  => tar_inn_writemosi.ready_for_response,
---      --tar_inn_bresp   => tar_inn_writemiso.response,
---      --tar_inn_bvalid  => tar_inn_writemiso.response_valid,
---      --tar_inn_rdata   => tar_inn_readmiso.data,
---      --tar_inn_rready  => tar_inn_readmosi.ready_for_data,
---      --tar_inn_rresp   => tar_inn_readmiso.response,
---      --tar_inn_rvalid  => tar_inn_readmiso.data_valid,
---      --tar_inn_wdata   => tar_inn_writemosi.data,
---      --tar_inn_wready  => tar_inn_writemiso.ready_for_data,
---      --tar_inn_wstrb   => tar_inn_writemosi.data_write_strobe,
---      --tar_inn_wvalid  => tar_inn_writemosi.data_valid,
+      --tar_inn_araddr  => tar_inn_readmosi.address,
+      --tar_inn_arprot  => tar_inn_readmosi.protection_type,
+      --tar_inn_arready => tar_inn_readmiso.ready_for_address,
+      --tar_inn_arvalid => tar_inn_readmosi.address_valid,
+      --tar_inn_awaddr  => tar_inn_writemosi.address,
+      --tar_inn_awprot  => tar_inn_writemosi.protection_type,
+      --tar_inn_awready => tar_inn_writemiso.ready_for_address,
+      --tar_inn_awvalid => tar_inn_writemosi.address_valid,
+      --tar_inn_bready  => tar_inn_writemosi.ready_for_response,
+      --tar_inn_bresp   => tar_inn_writemiso.response,
+      --tar_inn_bvalid  => tar_inn_writemiso.response_valid,
+      --tar_inn_rdata   => tar_inn_readmiso.data,
+      --tar_inn_rready  => tar_inn_readmosi.ready_for_data,
+      --tar_inn_rresp   => tar_inn_readmiso.response,
+      --tar_inn_rvalid  => tar_inn_readmiso.data_valid,
+      --tar_inn_wdata   => tar_inn_writemosi.data,
+      --tar_inn_wready  => tar_inn_writemiso.ready_for_data,
+      --tar_inn_wstrb   => tar_inn_writemosi.data_write_strobe,
+      --tar_inn_wvalid  => tar_inn_writemosi.data_valid,
 
---      --tar_mid_araddr  => tar_mid_readmosi.address,
---      --tar_mid_arprot  => tar_mid_readmosi.protection_type,
---      --tar_mid_arready => tar_mid_readmiso.ready_for_address,
---      --tar_mid_arvalid => tar_mid_readmosi.address_valid,
---      --tar_mid_awaddr  => tar_mid_writemosi.address,
---      --tar_mid_awprot  => tar_mid_writemosi.protection_type,
---      --tar_mid_awready => tar_mid_writemiso.ready_for_address,
---      --tar_mid_awvalid => tar_mid_writemosi.address_valid,
---      --tar_mid_bready  => tar_mid_writemosi.ready_for_response,
---      --tar_mid_bresp   => tar_mid_writemiso.response,
---      --tar_mid_bvalid  => tar_mid_writemiso.response_valid,
---      --tar_mid_rdata   => tar_mid_readmiso.data,
---      --tar_mid_rready  => tar_mid_readmosi.ready_for_data,
---      --tar_mid_rresp   => tar_mid_readmiso.response,
---      --tar_mid_rvalid  => tar_mid_readmiso.data_valid,
---      --tar_mid_wdata   => tar_mid_writemosi.data,
---      --tar_mid_wready  => tar_mid_writemiso.ready_for_data,
---      --tar_mid_wstrb   => tar_mid_writemosi.data_write_strobe,
---      --tar_mid_wvalid  => tar_mid_writemosi.data_valid,
+      --tar_mid_araddr  => tar_mid_readmosi.address,
+      --tar_mid_arprot  => tar_mid_readmosi.protection_type,
+      --tar_mid_arready => tar_mid_readmiso.ready_for_address,
+      --tar_mid_arvalid => tar_mid_readmosi.address_valid,
+      --tar_mid_awaddr  => tar_mid_writemosi.address,
+      --tar_mid_awprot  => tar_mid_writemosi.protection_type,
+      --tar_mid_awready => tar_mid_writemiso.ready_for_address,
+      --tar_mid_awvalid => tar_mid_writemosi.address_valid,
+      --tar_mid_bready  => tar_mid_writemosi.ready_for_response,
+      --tar_mid_bresp   => tar_mid_writemiso.response,
+      --tar_mid_bvalid  => tar_mid_writemiso.response_valid,
+      --tar_mid_rdata   => tar_mid_readmiso.data,
+      --tar_mid_rready  => tar_mid_readmosi.ready_for_data,
+      --tar_mid_rresp   => tar_mid_readmiso.response,
+      --tar_mid_rvalid  => tar_mid_readmiso.data_valid,
+      --tar_mid_wdata   => tar_mid_writemosi.data,
+      --tar_mid_wready  => tar_mid_writemiso.ready_for_data,
+      --tar_mid_wstrb   => tar_mid_writemosi.data_write_strobe,
+      --tar_mid_wvalid  => tar_mid_writemosi.data_valid,
 
---      --tar_out_araddr  => tar_out_readmosi.address,
---      --tar_out_arprot  => tar_out_readmosi.protection_type,
---      --tar_out_arready => tar_out_readmiso.ready_for_address,
---      --tar_out_arvalid => tar_out_readmosi.address_valid,
---      --tar_out_awaddr  => tar_out_writemosi.address,
---      --tar_out_awprot  => tar_out_writemosi.protection_type,
---      --tar_out_awready => tar_out_writemiso.ready_for_address,
---      --tar_out_awvalid => tar_out_writemosi.address_valid,
---      --tar_out_bready  => tar_out_writemosi.ready_for_response,
---      --tar_out_bresp   => tar_out_writemiso.response,
---      --tar_out_bvalid  => tar_out_writemiso.response_valid,
---      --tar_out_rdata   => tar_out_readmiso.data,
---      --tar_out_rready  => tar_out_readmosi.ready_for_data,
---      --tar_out_rresp   => tar_out_readmiso.response,
---      --tar_out_rvalid  => tar_out_readmiso.data_valid,
---      --tar_out_wdata   => tar_out_writemosi.data,
---      --tar_out_wready  => tar_out_writemiso.ready_for_data,
---      --tar_out_wstrb   => tar_out_writemosi.data_write_strobe,
---      --tar_out_wvalid  => tar_out_writemosi.data_valid,
+      --tar_out_araddr  => tar_out_readmosi.address,
+      --tar_out_arprot  => tar_out_readmosi.protection_type,
+      --tar_out_arready => tar_out_readmiso.ready_for_address,
+      --tar_out_arvalid => tar_out_readmosi.address_valid,
+      --tar_out_awaddr  => tar_out_writemosi.address,
+      --tar_out_awprot  => tar_out_writemosi.protection_type,
+      --tar_out_awready => tar_out_writemiso.ready_for_address,
+      --tar_out_awvalid => tar_out_writemosi.address_valid,
+      --tar_out_bready  => tar_out_writemosi.ready_for_response,
+      --tar_out_bresp   => tar_out_writemiso.response,
+      --tar_out_bvalid  => tar_out_writemiso.response_valid,
+      --tar_out_rdata   => tar_out_readmiso.data,
+      --tar_out_rready  => tar_out_readmosi.ready_for_data,
+      --tar_out_rresp   => tar_out_readmiso.response,
+      --tar_out_rvalid  => tar_out_readmiso.data_valid,
+      --tar_out_wdata   => tar_out_writemosi.data,
+      --tar_out_wready  => tar_out_writemiso.ready_for_data,
+      --tar_out_wstrb   => tar_out_writemosi.data_write_strobe,
+      --tar_out_wvalid  => tar_out_writemosi.data_valid,
 
---      --tar_ext_araddr  => tar_ext_readmosi.address,
---      --tar_ext_arprot  => tar_ext_readmosi.protection_type,
---      --tar_ext_arready => tar_ext_readmiso.ready_for_address,
---      --tar_ext_arvalid => tar_ext_readmosi.address_valid,
---      --tar_ext_awaddr  => tar_ext_writemosi.address,
---      --tar_ext_awprot  => tar_ext_writemosi.protection_type,
---      --tar_ext_awready => tar_ext_writemiso.ready_for_address,
---      --tar_ext_awvalid => tar_ext_writemosi.address_valid,
---      --tar_ext_bready  => tar_ext_writemosi.ready_for_response,
---      --tar_ext_bresp   => tar_ext_writemiso.response,
---      --tar_ext_bvalid  => tar_ext_writemiso.response_valid,
---      --tar_ext_rdata   => tar_ext_readmiso.data,
---      --tar_ext_rready  => tar_ext_readmosi.ready_for_data,
---      --tar_ext_rresp   => tar_ext_readmiso.response,
---      --tar_ext_rvalid  => tar_ext_readmiso.data_valid,
---      --tar_ext_wdata   => tar_ext_writemosi.data,
---      --tar_ext_wready  => tar_ext_writemiso.ready_for_data,
---      --tar_ext_wstrb   => tar_ext_writemosi.data_write_strobe,
---      --tar_ext_wvalid  => tar_ext_writemosi.data_valid,
+      --tar_ext_araddr  => tar_ext_readmosi.address,
+      --tar_ext_arprot  => tar_ext_readmosi.protection_type,
+      --tar_ext_arready => tar_ext_readmiso.ready_for_address,
+      --tar_ext_arvalid => tar_ext_readmosi.address_valid,
+      --tar_ext_awaddr  => tar_ext_writemosi.address,
+      --tar_ext_awprot  => tar_ext_writemosi.protection_type,
+      --tar_ext_awready => tar_ext_writemiso.ready_for_address,
+      --tar_ext_awvalid => tar_ext_writemosi.address_valid,
+      --tar_ext_bready  => tar_ext_writemosi.ready_for_response,
+      --tar_ext_bresp   => tar_ext_writemiso.response,
+      --tar_ext_bvalid  => tar_ext_writemiso.response_valid,
+      --tar_ext_rdata   => tar_ext_readmiso.data,
+      --tar_ext_rready  => tar_ext_readmosi.ready_for_data,
+      --tar_ext_rresp   => tar_ext_readmiso.response,
+      --tar_ext_rvalid  => tar_ext_readmiso.data_valid,
+      --tar_ext_wdata   => tar_ext_writemosi.data,
+      --tar_ext_wready  => tar_ext_writemiso.ready_for_data,
+      --tar_ext_wstrb   => tar_ext_writemosi.data_write_strobe,
+      --tar_ext_wvalid  => tar_ext_writemosi.data_valid,
 
---      --mtc_araddr  => mtc_readmosi.address,
---      --mtc_arprot  => mtc_readmosi.protection_type,
---      --mtc_arready => mtc_readmiso.ready_for_address,
---      --mtc_arvalid => mtc_readmosi.address_valid,
---      --mtc_awaddr  => mtc_writemosi.address,
---      --mtc_awprot  => mtc_writemosi.protection_type,
---      --mtc_awready => mtc_writemiso.ready_for_address,
---      --mtc_awvalid => mtc_writemosi.address_valid,
---      --mtc_bready  => mtc_writemosi.ready_for_response,
---      --mtc_bresp   => mtc_writemiso.response,
---      --mtc_bvalid  => mtc_writemiso.response_valid,
---      --mtc_rdata   => mtc_readmiso.data,
---      --mtc_rready  => mtc_readmosi.ready_for_data,
---      --mtc_rresp   => mtc_readmiso.response,
---      --mtc_rvalid  => mtc_readmiso.data_valid,
---      --mtc_wdata   => mtc_writemosi.data,
---      --mtc_wready  => mtc_writemiso.ready_for_data,
---      --mtc_wstrb   => mtc_writemosi.data_write_strobe,
---      --mtc_wvalid  => mtc_writemosi.data_valid,
+      --mtc_araddr  => mtc_readmosi.address,
+      --mtc_arprot  => mtc_readmosi.protection_type,
+      --mtc_arready => mtc_readmiso.ready_for_address,
+      --mtc_arvalid => mtc_readmosi.address_valid,
+      --mtc_awaddr  => mtc_writemosi.address,
+      --mtc_awprot  => mtc_writemosi.protection_type,
+      --mtc_awready => mtc_writemiso.ready_for_address,
+      --mtc_awvalid => mtc_writemosi.address_valid,
+      --mtc_bready  => mtc_writemosi.ready_for_response,
+      --mtc_bresp   => mtc_writemiso.response,
+      --mtc_bvalid  => mtc_writemiso.response_valid,
+      --mtc_rdata   => mtc_readmiso.data,
+      --mtc_rready  => mtc_readmosi.ready_for_data,
+      --mtc_rresp   => mtc_readmiso.response,
+      --mtc_rvalid  => mtc_readmiso.data_valid,
+      --mtc_wdata   => mtc_writemosi.data,
+      --mtc_wready  => mtc_writemiso.ready_for_data,
+      --mtc_wstrb   => mtc_writemosi.data_write_strobe,
+      --mtc_wvalid  => mtc_writemosi.data_valid,
 
---      --ucm_araddr  => ucm_readmosi.address,
---      --ucm_arprot  => ucm_readmosi.protection_type,
---      --ucm_arready => ucm_readmiso.ready_for_address,
---      --ucm_arvalid => ucm_readmosi.address_valid,
---      --ucm_awaddr  => ucm_writemosi.address,
---      --ucm_awprot  => ucm_writemosi.protection_type,
---      --ucm_awready => ucm_writemiso.ready_for_address,
---      --ucm_awvalid => ucm_writemosi.address_valid,
---      --ucm_bready  => ucm_writemosi.ready_for_response,
---      --ucm_bresp   => ucm_writemiso.response,
---      --ucm_bvalid  => ucm_writemiso.response_valid,
---      --ucm_rdata   => ucm_readmiso.data,
---      --ucm_rready  => ucm_readmosi.ready_for_data,
---      --ucm_rresp   => ucm_readmiso.response,
---      --ucm_rvalid  => ucm_readmiso.data_valid,
---      --ucm_wdata   => ucm_writemosi.data,
---      --ucm_wready  => ucm_writemiso.ready_for_data,
---      --ucm_wstrb   => ucm_writemosi.data_write_strobe,
---      --ucm_wvalid  => ucm_writemosi.data_valid,
+      --ucm_araddr  => ucm_readmosi.address,
+      --ucm_arprot  => ucm_readmosi.protection_type,
+      --ucm_arready => ucm_readmiso.ready_for_address,
+      --ucm_arvalid => ucm_readmosi.address_valid,
+      --ucm_awaddr  => ucm_writemosi.address,
+      --ucm_awprot  => ucm_writemosi.protection_type,
+      --ucm_awready => ucm_writemiso.ready_for_address,
+      --ucm_awvalid => ucm_writemosi.address_valid,
+      --ucm_bready  => ucm_writemosi.ready_for_response,
+      --ucm_bresp   => ucm_writemiso.response,
+      --ucm_bvalid  => ucm_writemiso.response_valid,
+      --ucm_rdata   => ucm_readmiso.data,
+      --ucm_rready  => ucm_readmosi.ready_for_data,
+      --ucm_rresp   => ucm_readmiso.response,
+      --ucm_rvalid  => ucm_readmiso.data_valid,
+      --ucm_wdata   => ucm_writemosi.data,
+      --ucm_wready  => ucm_writemiso.ready_for_data,
+      --ucm_wstrb   => ucm_writemosi.data_write_strobe,
+      --ucm_wvalid  => ucm_writemosi.data_valid,
 
---      --daq_araddr  => daq_readmosi.address,
---      --daq_arprot  => daq_readmosi.protection_type,
---      --daq_arready => daq_readmiso.ready_for_address,
---      --daq_arvalid => daq_readmosi.address_valid,
---      --daq_awaddr  => daq_writemosi.address,
---      --daq_awprot  => daq_writemosi.protection_type,
---      --daq_awready => daq_writemiso.ready_for_address,
---      --daq_awvalid => daq_writemosi.address_valid,
---      --daq_bready  => daq_writemosi.ready_for_response,
---      --daq_bresp   => daq_writemiso.response,
---      --daq_bvalid  => daq_writemiso.response_valid,
---      --daq_rdata   => daq_readmiso.data,
---      --daq_rready  => daq_readmosi.ready_for_data,
---      --daq_rresp   => daq_readmiso.response,
---      --daq_rvalid  => daq_readmiso.data_valid,
---      --daq_wdata   => daq_writemosi.data,
---      --daq_wready  => daq_writemiso.ready_for_data,
---      --daq_wstrb   => daq_writemosi.data_write_strobe,
---      --daq_wvalid  => daq_writemosi.data_valid,
+      --daq_araddr  => daq_readmosi.address,
+      --daq_arprot  => daq_readmosi.protection_type,
+      --daq_arready => daq_readmiso.ready_for_address,
+      --daq_arvalid => daq_readmosi.address_valid,
+      --daq_awaddr  => daq_writemosi.address,
+      --daq_awprot  => daq_writemosi.protection_type,
+      --daq_awready => daq_writemiso.ready_for_address,
+      --daq_awvalid => daq_writemosi.address_valid,
+      --daq_bready  => daq_writemosi.ready_for_response,
+      --daq_bresp   => daq_writemiso.response,
+      --daq_bvalid  => daq_writemiso.response_valid,
+      --daq_rdata   => daq_readmiso.data,
+      --daq_rready  => daq_readmosi.ready_for_data,
+      --daq_rresp   => daq_readmiso.response,
+      --daq_rvalid  => daq_readmiso.data_valid,
+      --daq_wdata   => daq_writemosi.data,
+      --daq_wready  => daq_writemiso.ready_for_data,
+      --daq_wstrb   => daq_writemosi.data_write_strobe,
+      --daq_wvalid  => daq_writemosi.data_valid,
 
---      --tf_araddr  => tf_readmosi.address,
---      --tf_arprot  => tf_readmosi.protection_type,
---      --tf_arready => tf_readmiso.ready_for_address,
---      --tf_arvalid => tf_readmosi.address_valid,
---      --tf_awaddr  => tf_writemosi.address,
---      --tf_awprot  => tf_writemosi.protection_type,
---      --tf_awready => tf_writemiso.ready_for_address,
---      --tf_awvalid => tf_writemosi.address_valid,
---      --tf_bready  => tf_writemosi.ready_for_response,
---      --tf_bresp   => tf_writemiso.response,
---      --tf_bvalid  => tf_writemiso.response_valid,
---      --tf_rdata   => tf_readmiso.data,
---      --tf_rready  => tf_readmosi.ready_for_data,
---      --tf_rresp   => tf_readmiso.response,
---      --tf_rvalid  => tf_readmiso.data_valid,
---      --tf_wdata   => tf_writemosi.data,
---      --tf_wready  => tf_writemiso.ready_for_data,
---      --tf_wstrb   => tf_writemosi.data_write_strobe,
---      --tf_wvalid  => tf_writemosi.data_valid,
+      --tf_araddr  => tf_readmosi.address,
+      --tf_arprot  => tf_readmosi.protection_type,
+      --tf_arready => tf_readmiso.ready_for_address,
+      --tf_arvalid => tf_readmosi.address_valid,
+      --tf_awaddr  => tf_writemosi.address,
+      --tf_awprot  => tf_writemosi.protection_type,
+      --tf_awready => tf_writemiso.ready_for_address,
+      --tf_awvalid => tf_writemosi.address_valid,
+      --tf_bready  => tf_writemosi.ready_for_response,
+      --tf_bresp   => tf_writemiso.response,
+      --tf_bvalid  => tf_writemiso.response_valid,
+      --tf_rdata   => tf_readmiso.data,
+      --tf_rready  => tf_readmosi.ready_for_data,
+      --tf_rresp   => tf_readmiso.response,
+      --tf_rvalid  => tf_readmiso.data_valid,
+      --tf_wdata   => tf_writemosi.data,
+      --tf_wready  => tf_writemiso.ready_for_data,
+      --tf_wstrb   => tf_writemosi.data_write_strobe,
+      --tf_wvalid  => tf_writemosi.data_valid,
 
---      --mpl_araddr  => mpl_readmosi.address,
---      --mpl_arprot  => mpl_readmosi.protection_type,
---      --mpl_arready => mpl_readmiso.ready_for_address,
---      --mpl_arvalid => mpl_readmosi.address_valid,
---      --mpl_awaddr  => mpl_writemosi.address,
---      --mpl_awprot  => mpl_writemosi.protection_type,
---      --mpl_awready => mpl_writemiso.ready_for_address,
---      --mpl_awvalid => mpl_writemosi.address_valid,
---      --mpl_bready  => mpl_writemosi.ready_for_response,
---      --mpl_bresp   => mpl_writemiso.response,
---      --mpl_bvalid  => mpl_writemiso.response_valid,
---      --mpl_rdata   => mpl_readmiso.data,
---      --mpl_rready  => mpl_readmosi.ready_for_data,
---      --mpl_rresp   => mpl_readmiso.response,
---      --mpl_rvalid  => mpl_readmiso.data_valid,
---      --mpl_wdata   => mpl_writemosi.data,
---      --mpl_wready  => mpl_writemiso.ready_for_data,
---      --mpl_wstrb   => mpl_writemosi.data_write_strobe,
---      --mpl_wvalid  => mpl_writemosi.data_valid,
+      --mpl_araddr  => mpl_readmosi.address,
+      --mpl_arprot  => mpl_readmosi.protection_type,
+      --mpl_arready => mpl_readmiso.ready_for_address,
+      --mpl_arvalid => mpl_readmosi.address_valid,
+      --mpl_awaddr  => mpl_writemosi.address,
+      --mpl_awprot  => mpl_writemosi.protection_type,
+      --mpl_awready => mpl_writemiso.ready_for_address,
+      --mpl_awvalid => mpl_writemosi.address_valid,
+      --mpl_bready  => mpl_writemosi.ready_for_response,
+      --mpl_bresp   => mpl_writemiso.response,
+      --mpl_bvalid  => mpl_writemiso.response_valid,
+      --mpl_rdata   => mpl_readmiso.data,
+      --mpl_rready  => mpl_readmosi.ready_for_data,
+      --mpl_rresp   => mpl_readmiso.response,
+      --mpl_rvalid  => mpl_readmiso.data_valid,
+      --mpl_wdata   => mpl_writemosi.data,
+      --mpl_wready  => mpl_writemiso.ready_for_data,
+      --mpl_wstrb   => mpl_writemosi.data_write_strobe,
+      --mpl_wvalid  => mpl_writemosi.data_valid,
 
 --      -- END: ULT_PORTS :: DO NOT EDIT
 --      -- system monitor outputs
@@ -1073,20 +1073,20 @@ begin
   -- AXI Interfaces
   --------------------------------------------------------------------------------
 
-  hal_core_map_inst : entity ctrl_lib.HAL_CORE_map
-    port map (
-      clk_axi         => axi_clk,
-      reset_axi_n     => axi_reset_n,
-      slave_readmosi  => hal_core_readmosi,
-      slave_readmiso  => hal_core_readmiso,
-      slave_writemosi => hal_core_writemosi,
-      slave_writemiso => hal_core_writemiso,
+  --hal_core_map_inst : entity ctrl_lib.HAL_CORE_map
+  --  port map (
+  --    clk_axi         => axi_clk,
+  --    reset_axi_n     => axi_reset_n,
+  --    slave_readmosi  => hal_core_readmosi,
+  --    slave_readmiso  => hal_core_readmiso,
+  --    slave_writemosi => hal_core_writemosi,
+  --    slave_writemiso => hal_core_writemiso,
 
-      -- monitor signals in
-      mon  => hal_core_mon_r,
-      -- control signals out
-      ctrl => hal_core_ctrl_r
-      );
+  --    -- monitor signals in
+  --    mon  => hal_core_mon_r,
+  --    -- control signals out
+  --    ctrl => hal_core_ctrl_r
+  --    );
 
   --hal_map_inst : entity ctrl_lib.HAL_map
   --  port map (
@@ -1104,187 +1104,187 @@ begin
   --    );
 
   --    -- START: ULT_SLAVES :: DO NOT EDIT
-    --hps_inn_map_inst : entity ctrl_lib.hps_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => hps_inn_readmosi,
-    --  slave_readmiso  => hps_inn_readmiso,
-    --  slave_writemosi => hps_inn_writemosi,
-    --  slave_writemiso => hps_inn_writemiso,
-    --  -- monitor signals in
-    --  mon  => hps_inn_mon_r,
-    --  -- control signals out
-    --  ctrl => hps_inn_ctrl_r
-    --  );
+    hps_inn_map_inst : entity ctrl_lib.hps_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => hps_inn_readmosi,
+      slave_readmiso  => hps_inn_readmiso,
+      slave_writemosi => hps_inn_writemosi,
+      slave_writemiso => hps_inn_writemiso,
+      -- monitor signals in
+      mon  => hps_inn_mon_r,
+      -- control signals out
+      ctrl => hps_inn_ctrl_r
+      );
 
-    --hps_mid_map_inst : entity ctrl_lib.hps_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => hps_mid_readmosi,
-    --  slave_readmiso  => hps_mid_readmiso,
-    --  slave_writemosi => hps_mid_writemosi,
-    --  slave_writemiso => hps_mid_writemiso,
-    --  -- monitor signals in
-    --  mon  => hps_mid_mon_r,
-    --  -- control signals out
-    --  ctrl => hps_mid_ctrl_r
-    --  );
+    hps_mid_map_inst : entity ctrl_lib.hps_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => hps_mid_readmosi,
+      slave_readmiso  => hps_mid_readmiso,
+      slave_writemosi => hps_mid_writemosi,
+      slave_writemiso => hps_mid_writemiso,
+      -- monitor signals in
+      mon  => hps_mid_mon_r,
+      -- control signals out
+      ctrl => hps_mid_ctrl_r
+      );
 
-    --hps_out_map_inst : entity ctrl_lib.hps_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => hps_out_readmosi,
-    --  slave_readmiso  => hps_out_readmiso,
-    --  slave_writemosi => hps_out_writemosi,
-    --  slave_writemiso => hps_out_writemiso,
-    --  -- monitor signals in
-    --  mon  => hps_out_mon_r,
-    --  -- control signals out
-    --  ctrl => hps_out_ctrl_r
-    --  );
+    hps_out_map_inst : entity ctrl_lib.hps_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => hps_out_readmosi,
+      slave_readmiso  => hps_out_readmiso,
+      slave_writemosi => hps_out_writemosi,
+      slave_writemiso => hps_out_writemiso,
+      -- monitor signals in
+      mon  => hps_out_mon_r,
+      -- control signals out
+      ctrl => hps_out_ctrl_r
+      );
 
-    --hps_ext_map_inst : entity ctrl_lib.hps_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => hps_ext_readmosi,
-    --  slave_readmiso  => hps_ext_readmiso,
-    --  slave_writemosi => hps_ext_writemosi,
-    --  slave_writemiso => hps_ext_writemiso,
-    --  -- monitor signals in
-    --  mon  => hps_ext_mon_r,
-    --  -- control signals out
-    --  ctrl => hps_ext_ctrl_r
-    --  );
+    hps_ext_map_inst : entity ctrl_lib.hps_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => hps_ext_readmosi,
+      slave_readmiso  => hps_ext_readmiso,
+      slave_writemosi => hps_ext_writemosi,
+      slave_writemiso => hps_ext_writemiso,
+      -- monitor signals in
+      mon  => hps_ext_mon_r,
+      -- control signals out
+      ctrl => hps_ext_ctrl_r
+      );
 
-    --tar_inn_map_inst : entity ctrl_lib.tar_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => tar_inn_readmosi,
-    --  slave_readmiso  => tar_inn_readmiso,
-    --  slave_writemosi => tar_inn_writemosi,
-    --  slave_writemiso => tar_inn_writemiso,
-    --  -- monitor signals in
-    --  mon  => tar_inn_mon_r,
-    --  -- control signals out
-    --  ctrl => tar_inn_ctrl_r
-    --  );
+    tar_inn_map_inst : entity ctrl_lib.tar_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => tar_inn_readmosi,
+      slave_readmiso  => tar_inn_readmiso,
+      slave_writemosi => tar_inn_writemosi,
+      slave_writemiso => tar_inn_writemiso,
+      -- monitor signals in
+      mon  => tar_inn_mon_r,
+      -- control signals out
+      ctrl => tar_inn_ctrl_r
+      );
 
-    --tar_mid_map_inst : entity ctrl_lib.tar_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => tar_mid_readmosi,
-    --  slave_readmiso  => tar_mid_readmiso,
-    --  slave_writemosi => tar_mid_writemosi,
-    --  slave_writemiso => tar_mid_writemiso,
-    --  -- monitor signals in
-    --  mon  => tar_mid_mon_r,
-    --  -- control signals out
-    --  ctrl => tar_mid_ctrl_r
-    --  );
+    tar_mid_map_inst : entity ctrl_lib.tar_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => tar_mid_readmosi,
+      slave_readmiso  => tar_mid_readmiso,
+      slave_writemosi => tar_mid_writemosi,
+      slave_writemiso => tar_mid_writemiso,
+      -- monitor signals in
+      mon  => tar_mid_mon_r,
+      -- control signals out
+      ctrl => tar_mid_ctrl_r
+      );
 
-    --tar_out_map_inst : entity ctrl_lib.tar_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => tar_out_readmosi,
-    --  slave_readmiso  => tar_out_readmiso,
-    --  slave_writemosi => tar_out_writemosi,
-    --  slave_writemiso => tar_out_writemiso,
-    --  -- monitor signals in
-    --  mon  => tar_out_mon_r,
-    --  -- control signals out
-    --  ctrl => tar_out_ctrl_r
-    --  );
+    tar_out_map_inst : entity ctrl_lib.tar_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => tar_out_readmosi,
+      slave_readmiso  => tar_out_readmiso,
+      slave_writemosi => tar_out_writemosi,
+      slave_writemiso => tar_out_writemiso,
+      -- monitor signals in
+      mon  => tar_out_mon_r,
+      -- control signals out
+      ctrl => tar_out_ctrl_r
+      );
 
-    --tar_ext_map_inst : entity ctrl_lib.tar_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => tar_ext_readmosi,
-    --  slave_readmiso  => tar_ext_readmiso,
-    --  slave_writemosi => tar_ext_writemosi,
-    --  slave_writemiso => tar_ext_writemiso,
-    --  -- monitor signals in
-    --  mon  => tar_ext_mon_r,
-    --  -- control signals out
-    --  ctrl => tar_ext_ctrl_r
-    --  );
+    tar_ext_map_inst : entity ctrl_lib.tar_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => tar_ext_readmosi,
+      slave_readmiso  => tar_ext_readmiso,
+      slave_writemosi => tar_ext_writemosi,
+      slave_writemiso => tar_ext_writemiso,
+      -- monitor signals in
+      mon  => tar_ext_mon_r,
+      -- control signals out
+      ctrl => tar_ext_ctrl_r
+      );
 
-    --mtc_map_inst : entity ctrl_lib.mtc_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => mtc_readmosi,
-    --  slave_readmiso  => mtc_readmiso,
-    --  slave_writemosi => mtc_writemosi,
-    --  slave_writemiso => mtc_writemiso,
-    --  -- monitor signals in
-    --  mon  => mtc_mon_r,
-    --  -- control signals out
-    --  ctrl => mtc_ctrl_r
-    --  );
+    mtc_map_inst : entity ctrl_lib.mtc_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => mtc_readmosi,
+      slave_readmiso  => mtc_readmiso,
+      slave_writemosi => mtc_writemosi,
+      slave_writemiso => mtc_writemiso,
+      -- monitor signals in
+      mon  => mtc_mon_r,
+      -- control signals out
+      ctrl => mtc_ctrl_r
+      );
 
-    --ucm_map_inst : entity ctrl_lib.ucm_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => ucm_readmosi,
-    --  slave_readmiso  => ucm_readmiso,
-    --  slave_writemosi => ucm_writemosi,
-    --  slave_writemiso => ucm_writemiso,
-    --  -- monitor signals in
-    --  mon  => ucm_mon_r,
-    --  -- control signals out
-    --  ctrl => ucm_ctrl_r
-    --  );
+    ucm_map_inst : entity ctrl_lib.ucm_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => ucm_readmosi,
+      slave_readmiso  => ucm_readmiso,
+      slave_writemosi => ucm_writemosi,
+      slave_writemiso => ucm_writemiso,
+      -- monitor signals in
+      mon  => ucm_mon_r,
+      -- control signals out
+      ctrl => ucm_ctrl_r
+      );
 
-    --daq_map_inst : entity ctrl_lib.daq_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => daq_readmosi,
-    --  slave_readmiso  => daq_readmiso,
-    --  slave_writemosi => daq_writemosi,
-    --  slave_writemiso => daq_writemiso,
-    --  -- monitor signals in
-    --  mon  => daq_mon_r,
-    --  -- control signals out
-    --  ctrl => daq_ctrl_r
-    --  );
+    daq_map_inst : entity ctrl_lib.daq_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => daq_readmosi,
+      slave_readmiso  => daq_readmiso,
+      slave_writemosi => daq_writemosi,
+      slave_writemiso => daq_writemiso,
+      -- monitor signals in
+      mon  => daq_mon_r,
+      -- control signals out
+      ctrl => daq_ctrl_r
+      );
 
-    --tf_map_inst : entity ctrl_lib.tf_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => tf_readmosi,
-    --  slave_readmiso  => tf_readmiso,
-    --  slave_writemosi => tf_writemosi,
-    --  slave_writemiso => tf_writemiso,
-    --  -- monitor signals in
-    --  mon  => tf_mon_r,
-    --  -- control signals out
-    --  ctrl => tf_ctrl_r
-    --  );
+    tf_map_inst : entity ctrl_lib.tf_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => tf_readmosi,
+      slave_readmiso  => tf_readmiso,
+      slave_writemosi => tf_writemosi,
+      slave_writemiso => tf_writemiso,
+      -- monitor signals in
+      mon  => tf_mon_r,
+      -- control signals out
+      ctrl => tf_ctrl_r
+      );
 
-    --mpl_map_inst : entity ctrl_lib.mpl_map
-    --port map (
-    --  clk_axi         => clk40,
-    --  reset_axi_n     => std_logic1,
-    --  slave_readmosi  => mpl_readmosi,
-    --  slave_readmiso  => mpl_readmiso,
-    --  slave_writemosi => mpl_writemosi,
-    --  slave_writemiso => mpl_writemiso,
-    --  -- monitor signals in
-    --  mon  => mpl_mon_r,
-    --  -- control signals out
-    --  ctrl => mpl_ctrl_r
-    --  );
+    mpl_map_inst : entity ctrl_lib.mpl_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => mpl_readmosi,
+      slave_readmiso  => mpl_readmiso,
+      slave_writemosi => mpl_writemosi,
+      slave_writemiso => mpl_writemiso,
+      -- monitor signals in
+      mon  => mpl_mon_r,
+      -- control signals out
+      ctrl => mpl_ctrl_r
+      );
 
   -- END: ULT_SLAVES :: DO NOT EDIT
 
