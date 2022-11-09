@@ -33,7 +33,7 @@ package heg_custom_pkg is
     busy    : integer;
   end record;
 
-  type fifo_used_at is array (g_HPS_NUM_MDT_CH -1 downto 0) of integer;--unsigned(integer(log2(real(BM_FIFO_DEPTH))) -1 downto 0);
+  -- type fifo_used_at is array (g_HPS_NUM_MDT_CH -1 downto 0) of integer;--unsigned(integer(log2(real(BM_FIFO_DEPTH))) -1 downto 0);
   type fifo_used_ait is array (integer range <>) of integer;
 
   -- subtype heg_pc2heg_vt is std_logic_vector(70-1 downto 0);

@@ -110,6 +110,8 @@ begin
   o_mdt_hits_r.data_valid <= buff_mdt_dv;
 
   FIFOS: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
+  --   signal local_ena : std_logic;
+  -- begin
     -- input extraction
 
     i_mdt_hits_data_av(hp_i) <= convert(i_mdt_hits_ar(hp_i).data,i_mdt_hits_data_av(hp_i) ); -- joooooor
@@ -117,6 +119,8 @@ begin
     i_mdt_hits_ar(hp_i) <= convert(i_mdt_hits_av(hp_i),i_mdt_hits_ar(hp_i));
 
     fifo_wr(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
+
+    -- local_ena <= glob_en and i_control(hp_i).enable;
 
     rb : entity vamc_lib.vamc_rb
     generic map (
@@ -131,7 +135,8 @@ begin
     )
     port map (
       clk           => clk,
-      rst           => rst,
+      rst           => rst or i_control(hp_i).rst,
+      ena           => glob_en and i_control(hp_i).enable,
       -- delay         => num_delays - 2,
       i_wr          => fifo_wr(hp_i),
       i_wr_data     => i_mdt_hits_data_av(hp_i),
@@ -153,8 +158,9 @@ begin
       if rst = '1' then
         fifo_rd <= (others => '0');
       else
-
-        
+         for i in g_HPS_NUM_MDT_CH - 1 to 0 loop
+          
+        end loop;       
       end if;
     end if;
    end process;
