@@ -58,6 +58,7 @@ ku15p_lsf_upt:
       en_neighbors: 0
       en_daq: 1
       hog_only_synth: 1
+      hog_no_bitstream: 1
       zynq_target: 7s  # 7s or usp
 
 ku15p_csf_mpt:
@@ -73,6 +74,7 @@ ku15p_csf_mpt:
       en_daq: 1
       endcap: 0
       hog_only_synth: 1
+      hog_no_bitstream: 1
       zynq_target: 7s
 
 # vu13p_lsf_upt:
@@ -126,6 +128,7 @@ ku15p_ull_empty:
       large: 0
       en_neighbors: 0
       hog_only_synth: 0
+      hog_no_bitstream: 0
       en_fm: 0
       en_tar: 0
       en_h2s: 0
@@ -169,3 +172,4 @@ vu13p_ull_empty:
       csm_links: 1
       tdc_links: 18
       hog_tag: "mdt-2"
+
