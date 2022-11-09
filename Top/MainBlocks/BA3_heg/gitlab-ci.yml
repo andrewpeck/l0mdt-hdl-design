@@ -23,7 +23,7 @@ SIM:BA3_heg_questa:
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/BA3_heg
-      HOG_APPTAINER_IMAGE: /Data/images/l0mdt_Ubuntu20.04
+      HOG_APPTAINER_IMAGE: /Data/images/l0mdt_Ubuntu20.04.sif
     tags:
       - argos
 
@@ -32,7 +32,7 @@ SIM:BA3_heg_riviera:
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/BA3_heg
-      HOG_APPTAINER_IMAGE: /Data/images/l0mdt_Ubuntu20.04
+      HOG_APPTAINER_IMAGE: /Data/images/l0mdt_Ubuntu20.04.sif
     tags:
       - argos
     # allow_failure: false
