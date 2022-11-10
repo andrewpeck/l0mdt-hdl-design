@@ -12,7 +12,16 @@ create_hw_target ${SVF_TARGET}
 close_hw_target
 open_hw_target [get_hw_targets -regexp .*/${SVF_TARGET}]
 
-#add the virtex to the chain
+#add the uC to the chain
+#create_hw_device -idcode 4BA00477
+
+
+if {${FPGA} == "xcku15p-ffva1760-2-e"} {
+    #add the Zynq to the chain
+    create_hw_device -part xczu11eg-ffvc1760-1-e
+}
+
+#add the fpga in project to the chain
 set DEVICE [create_hw_device -part ${FPGA}]
 set_property PROGRAM.FILE $dst_bit $DEVICE
 set_param xicom.config_chunk_size 0
