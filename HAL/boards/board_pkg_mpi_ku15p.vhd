@@ -114,8 +114,8 @@ package board_pkg is
     6  => (FREQ => REF_SYNC320 ) , -- FELIX_REF1
     7  => (FREQ => REF_SYNC320 ) , -- FELIX_REF2
     8  => (FREQ => REF_NIL     ) , -- AD_CLK2_KUP , muxed as C2c or Spare
---PRIYA    9  => (FREQ => REF_AXI_C2C ) , -- B2B_REF0 to SM
-    9  => (FREQ => REF_NIL ) , 
+    9  => (FREQ => REF_AXI_C2C ) , -- B2B_REF0 to SM
+ --   9  => (FREQ => REF_NIL ) , 
     10 => (FREQ => REF_NIL     ) , -- AD_CLK3_KUP , muxed as sma or spare
     11 => (FREQ => REF_NIL     ) , -- B2B_REF2 to SM
     12 => (FREQ => REF_SYNC320 ) , -- FE_REF0

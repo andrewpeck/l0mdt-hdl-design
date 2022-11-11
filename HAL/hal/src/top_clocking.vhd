@@ -64,22 +64,20 @@ entity top_clocking is
     strobe_pipeline_o : out std_logic;
     strobe_320_o      : out std_logic;
 
-    out_of_sync_o : out std_logic;
+    out_of_sync_o : out std_logic
 
-    locked_o     : out std_logic;
-    locked_clk50 : out std_logic
+--    locked_o     : out std_logic;
+--    locked_clk50 : out std_logic
 
-    --axi_clk_o : out std_logic;
-    --clk40_o   : out std_logic
     );
 
 end entity top_clocking;
 architecture behavioral of top_clocking is
 
   signal clk50, clk100, clk200, clk40, clk320, clkpipe : std_logic;
-  signal mmcm_locked                           : std_logic;
-
-  signal clock_async_ibufds : std_logic;
+  signal lhc_locked                                                       : std_logic;
+ signal locked_clk50                                                    : std_logic;
+  signal clock_async_ibufds                                         : std_logic;
 
   component onboardclk
     port (
@@ -118,15 +116,16 @@ begin  -- architecture behavioral
   clocks_o.clock320       <= clk320;
   clocks_o.freeclock      <= clk100;
   clocks_o.clock_pipeline <= clkpipe;
-  clocks_o.locked         <= mmcm_locked;
-  locked_o                <= mmcm_locked;
+  clocks_o.lhc_locked       <= lhc_locked;
+  clocks_o.b2b_locked      <= locked_clk50;
+--  locked_o                <= lhc_locked;
 --  axi_clk_o               <= clk50;
 --  clk40_o                 <= clk40;
   --------------------------------------------------------------------------------
   -- ASYNC + 50MHz free-running clocks
   --------------------------------------------------------------------------------
 
-   Clocking_inst: onboardclk
+   pll_clk50_inst: onboardclk
     port map (
       clk_200MHz   => clk200,
       clk_100Mhz  => clk100,
@@ -186,7 +185,7 @@ begin  -- architecture behavioral
       reset     => reset_i,
       clk320_o  => clk320,
       clk40_o   => clk40,
-      locked_o  => mmcm_locked
+      locked_o  => lhc_locked
       );
 
   clkpipe <= clk320;

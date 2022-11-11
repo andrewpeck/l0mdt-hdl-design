@@ -131,11 +131,10 @@ entity top_hal is
     Core_Mon  : out HAL_CORE_MON_t;
     Core_Ctrl : in  HAL_CORE_CTRL_t;
 
-    axi_clk_o : out std_logic;
-
+    clk50_o : out std_logic;
     clk320_o : out std_logic;
     clk40_o  : out std_logic;
-    global_reset_n  : out std_logic; 
+    b2b_reset_n  : out std_logic; 
     --sump--------------------------------------------------------------------------
     sump : out std_logic
 
@@ -242,7 +241,7 @@ architecture behavioral of top_hal is
   -- this is used in log_mgts.tcl so please do not remove it
   attribute NUM_MGTS                       : integer;
   attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;
---PRIYA  attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
+  attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
 
 begin  -- architecture behavioral
 
@@ -251,16 +250,16 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
 
-  global_reset   <= not(clocks.locked);
-  axi_clk_o    <= clocks.axiclock;
+  global_reset   <= not(clocks.lhc_locked);
+  clk50_o    <= clocks.axiclock;
   clk320_o     <= clocks.clock320;
   clk40_o      <= clocks.clock40;
-
+  b2b_reset_n <= clocks.b2b_locked;
   --------------------------------------------------------------------------------
   -- AXI Interface
   --------------------------------------------------------------------------------
 
-  core_mon.clocking.mmcm_locked <= clocks.locked;
+  core_mon.clocking.mmcm_locked <= clocks.lhc_locked;
 
   --------------------------------------------------------------------------------
   -- Common Clocking
@@ -294,14 +293,12 @@ begin  -- architecture behavioral
       clock_i_n => clock_i_n,
 
       -- system clocks
-      clocks_o => clocks,
+      clocks_o => clocks
 
       -- mmcm status
-      locked_o     => clocks.locked,
-      locked_clk50 => global_reset_n
+     -- locked_o     => clocks.locked,
+     --  locked_clk50 => global_reset_n
 
-     -- axi_clk_o    => axi_clk_o,
-     -- clk40_o      => clk40_o
       );
 
   clock_strobe_1 : entity work.clock_strobe
@@ -340,7 +337,6 @@ begin  -- architecture behavioral
 
   --------------------------------------------------------------------------------
   -- Common Multi-gigabit transceivers
-  --PRIYA COMMENTING - NEED TO FIX GTY LOCATION CONSTRAINTS
   --------------------------------------------------------------------------------
 
   mgt_wrapper_inst : entity hal.mgt_wrapper

@@ -93,8 +93,8 @@ entity top_l0mdt is
     c2cb_txn    : out std_logic;
     c2cb_txp    : out std_logic;
 
-    c2c_refclkp : in  std_logic;
-    c2c_refclkn : in  std_logic;
+--    c2c_refclkp : in  std_logic;
+--    c2c_refclkn : in  std_logic;
     --------------------------------------------------------------------------------
     -- Other IO
     --------------------------------------------------------------------------------
@@ -117,17 +117,6 @@ entity top_l0mdt is
 end top_l0mdt;
 
 architecture structural of top_l0mdt is
-  component onboardclk
-    port (
-      clk_200MHz   : out std_logic;
-      clk_100MHz   : out std_logic;
-      clk_50Mhz    : out std_logic;
-      reset     : in std_logic;
-      locked    : out std_logic; 
-      clk_in1_p : in std_logic;
-      clk_in1_n : in std_logic
-    );
-  end component;
   
   --
   signal clock_and_control : l0mdt_control_rt;
@@ -170,12 +159,9 @@ architecture structural of top_l0mdt is
   signal axi_clk : std_logic;
   signal clk320  : std_logic;
   signal clk40   : std_logic;
-  signal global_reset_n : std_logic;
+  signal b2b_reset_n : std_logic;
   signal clk_200         : std_logic;
   signal clk_50          : std_logic;
-  signal axi_clk_i       : std_logic; --priya temp
-  signal clk_50_i         : std_logic; --priya temp
-  signal clk_100_i       : std_logic; --priya temp
   signal locked_clk200   : std_logic;
   -- Control and Monitoring Records
 
@@ -318,9 +304,9 @@ begin
       clk320_o => clk320,
       clk40_o  => clk40,
 
-      axi_clk_o => axi_clk, --priya temp
+      clk50_o => clk_50, 
 
-      global_reset_n => global_reset_n,
+      b2b_reset_n => b2b_reset_n,
 
       core_ctrl => hal_core_ctrl,
       core_mon  => hal_core_mon,
@@ -438,20 +424,8 @@ begin
 
 
 
-  --Clocking
-  --Clocking
-  --Local_Clocking:  onboardclk
-  --  port map (
-  --    clk_200MHz   => clk_200,
-  --    clk_100MHz   => clk_100_i,    
-  --    clk_50Mhz      => clk_50,
-  --    reset        => '0',
-  --    locked       => locked_clk200,
-  --    clk_in1_p    => p_clk_100,
-  --    clk_in1_n    => n_clk_100);
-  
---  axi_clk <= clk_50;
-  clk_50 <= axi_clk;
+
+
   
   top_control_inst : entity work.top_control
     port map (
@@ -466,8 +440,8 @@ begin
       c2cb_rxp     => c2cb_rxp,
       c2cb_txn     => c2cb_txn,
       c2cb_txp     => c2cb_txp,
-      c2c_refclkp => c2c_refclkp, --refclk_i_p(C2C_REFCLK_SRC),
-      c2c_refclkn => c2c_refclkn, --refclk_i_n(C2C_REFCLK_SRC),
+      c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC), -- c2c_refclkp, 
+      c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC), --c2c_refclkn,
 
       -- HAL Control
 
@@ -515,9 +489,9 @@ begin
       clk320                  => clk320,
       clk40                   => clk40,
       clkpipe                 => clock_and_control.clk,
-      axi_clk                 => axi_clk,
+      axi_clk                 => clk_50, 
       clk50mhz                => clk_50,
-      reset_n                 => global_reset_n, --locked_clk200,
+      reset_n                 => b2b_reset_n,
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
       --sys_mgmt_scl            => sys_mgmt_scl,

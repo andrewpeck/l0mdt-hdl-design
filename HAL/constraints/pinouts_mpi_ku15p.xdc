@@ -35,6 +35,9 @@ create_clock -period 3.125 -name refclk18 [get_ports {refclk_i_p[18]}]
 create_clock -period 3.125 -name refclk19 [get_ports {refclk_i_p[19]}]
 create_clock -period 3.125 -name refclk20 [get_ports {refclk_i_p[20]}]
 create_clock -period 3.125 -name refclk21 [get_ports {refclk_i_p[21]}]
+create_clock -period 10.000 -name clk100 -waveform {0.000 5.000} -add [get_pins top_hal/top_clocking_inst/pll_clk50_inst/clk_100MHz]
+create_clock -period 20.000 -name clk50 -waveform {0.000 10.000} [get_pins top_hal/top_clocking_inst/pll_clk50_inst/clk_50MHz]
+
 
 # GTY
 set_property PACKAGE_PIN AG30 [get_ports {refclk_i_p[0]}]
@@ -58,10 +61,9 @@ set_property PACKAGE_PIN M32 [get_ports {refclk_i_p[7]}]
 set_property PACKAGE_PIN AL12 [get_ports {refclk_i_p[8]}]
 set_property PACKAGE_PIN AL11 [get_ports {refclk_i_n[8]}]
 
-#set_property -quiet PACKAGE_PIN AL12    [get_ports refclk_i_p[9]    ] ; # B2B_REF0_P ;; used for SM-CM link ; PRIYA
-#set_property -quiet PACKAGE_PIN AL11     [get_ports refclk_i_n[9]    ] ; # B2B_REF0_N ;; used for SM-CM link ; PRIYA
-#set_property PACKAGE_PIN AK9 [get_ports {refclk_i_n[9]}]
-#set_property PACKAGE_PIN AK10 [get_ports {refclk_i_p[9]}]
+
+set_property PACKAGE_PIN AK9 [get_ports {refclk_i_n[9]}]
+set_property PACKAGE_PIN AK10 [get_ports {refclk_i_p[9]}]
 
 set_property PACKAGE_PIN AJ12 [get_ports {refclk_i_p[10]}]
 set_property PACKAGE_PIN AJ11 [get_ports {refclk_i_n[10]}]
@@ -97,7 +99,7 @@ set_property IOSTANDARD LVDS [get_ports clock_i*]
 # ASYNC Oscillator
 set_property PACKAGE_PIN AY16 [get_ports p_clk_100]
 set_property PACKAGE_PIN AY15 [get_ports n_clk_100]
-create_clock -period 10.000 -name clock_100 [get_ports p_clk_100]
+#create_clock -period 10.000 -name clock_100 [get_ports p_clk_100]
 set_property IOSTANDARD LVDS [get_ports *_clk_100]
 set_property DIFF_TERM_ADV TERM_100 [get_ports *_clk_100]
 
@@ -134,6 +136,7 @@ set_property IOSTANDARD LVDS [get_ports tc_clk_*]
 
 set_property BITSTREAM.CONFIG.USERID 32'h00000000 [current_design]
 set_property BITSTREAM.CONFIG.USR_ACCESS 0000000 [current_design]
+
 
 
 

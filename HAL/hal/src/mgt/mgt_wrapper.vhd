@@ -118,6 +118,8 @@ architecture Behavioral of mgt_wrapper is
   signal drp_i     : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
   signal drp_o     : mgt_drp_out_rt_array (c_NUM_MGTS-1 downto 0);
   signal status    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
+  signal status_d    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
+  signal status_2d    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
 
 begin
 
@@ -206,18 +208,20 @@ begin
     process (clocks.axiclock) is
     begin
       if (rising_edge(clocks.axiclock)) then
-        mon.mgt(I).status.rxcdr_stable            <= status(I).rxcdr_stable;
-        mon.mgt(I).status.powergood               <= status(I).powergood;
-        mon.mgt(I).status.txready                 <= status(I).txready;
-        mon.mgt(I).status.rxready                 <= status(I).rxready;
-        mon.mgt(I).status.rx_pma_reset_done       <= status(I).rx_pma_reset_done;
-        mon.mgt(I).status.tx_pma_reset_done       <= status(I).tx_pma_reset_done;
-        mon.mgt(I).status.tx_reset_done           <= status(I).tx_reset_done;
-        mon.mgt(I).status.rx_reset_done           <= status(I).rx_reset_done;
-        mon.mgt(I).status.buffbypass_tx_done_out  <= status(I).buffbypass_tx_done_out;
-        mon.mgt(I).status.buffbypass_tx_error_out <= status(I).buffbypass_tx_error_out;
-        mon.mgt(I).status.buffbypass_rx_done_out  <= status(I).buffbypass_rx_done_out;
-        mon.mgt(I).status.buffbypass_rx_error_out <= status(I).buffbypass_rx_error_out;
+        status_d                                                 <= status;
+        status_2d                                               <= status_d;
+        mon.mgt(I).status.rxcdr_stable            <= status_2d(I).rxcdr_stable;
+        mon.mgt(I).status.powergood               <= status_2d(I).powergood;
+        mon.mgt(I).status.txready                 <= status_2d(I).txready;
+        mon.mgt(I).status.rxready                 <= status_2d(I).rxready;
+        mon.mgt(I).status.rx_pma_reset_done       <= status_2d(I).rx_pma_reset_done;
+        mon.mgt(I).status.tx_pma_reset_done       <= status_2d(I).tx_pma_reset_done;
+        mon.mgt(I).status.tx_reset_done           <= status_2d(I).tx_reset_done;
+        mon.mgt(I).status.rx_reset_done           <= status_2d(I).rx_reset_done;
+        mon.mgt(I).status.buffbypass_tx_done_out  <= status_2d(I).buffbypass_tx_done_out;
+        mon.mgt(I).status.buffbypass_tx_error_out <= status_2d(I).buffbypass_tx_error_out;
+        mon.mgt(I).status.buffbypass_rx_done_out  <= status_2d(I).buffbypass_rx_done_out;
+        mon.mgt(I).status.buffbypass_rx_error_out <= status_2d(I).buffbypass_rx_error_out;
 
         mon.mgt(I).drp.rd_data <= drp_o(I).drpdo_out;
         mon.mgt(I).drp.rd_rdy  <= drp_o(I).drprdy_out;
@@ -341,9 +345,9 @@ begin
 
           -- user clocks
           mgt_rxusrclk_i        => clocks.clock320,
-          mgt_rxusrclk_active_i => clocks.locked,  -- FIXME: this should come from something else for the felix link
+          mgt_rxusrclk_active_i => clocks.lhc_locked,  -- FIXME: this should come from something else for the felix link
           mgt_txusrclk_i        => clocks.clock320,
-          mgt_txusrclk_active_i => clocks.locked,
+          mgt_txusrclk_active_i => clocks.lhc_locked,
 
           -- outputs
           qpll0outclk_out    => open,
