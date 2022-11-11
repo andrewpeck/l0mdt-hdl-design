@@ -98,7 +98,13 @@ architecture beh of heg_buffermux is
   -- signal last_read : integer;
 
   -- signal aux_data_v : std_logic_vector(len(i_mdt_hits_ar(0).data) - 1 downto 0);
+    signal in_dv       : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+    signal in_valid_dv : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+
+    signal output_used : std_logic;
+    signal direct_out_dv : std_logic;
 begin
+
 
   o_mdt_hits_v <= convert(o_mdt_hits_r,o_mdt_hits_v);
   buff_mdt_hit_r <= convert(buff_mdt_hit_v,buff_mdt_hit_r);
@@ -107,23 +113,22 @@ begin
   o_mdt_hits_r.localy <= buff_mdt_hit_r.local_y;
   o_mdt_hits_r.radius <= buff_mdt_hit_r.radius;
   o_mdt_hits_r.mlayer <= buff_mdt_hit_r.mlayer;
-  o_mdt_hits_r.data_valid <= buff_mdt_dv;
+  o_mdt_hits_r.data_valid <= buff_mdt_dv or direct_out_dv;
 
   FIFOS: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
-  --   signal local_ena : std_logic;
-  -- begin
-    -- input extraction
 
-    i_mdt_hits_data_av(hp_i) <= convert(i_mdt_hits_ar(hp_i).data,i_mdt_hits_data_av(hp_i) ); -- joooooor
-    
+
     i_mdt_hits_ar(hp_i) <= convert(i_mdt_hits_av(hp_i),i_mdt_hits_ar(hp_i));
+    i_mdt_hits_data_av(hp_i) <= convert(i_mdt_hits_ar(hp_i).data,i_mdt_hits_data_av(hp_i) ); -- joooooor
 
-    fifo_wr(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
-
+    -- fifo_wr(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
+    in_dv(hp_i)     <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
+    -- in_valid_dv(hp_i) <= 
     -- local_ena <= glob_en and i_control(hp_i).enable;
 
     rb : entity vamc_lib.vamc_rb
     generic map (
+
       g_SIMULATION => '1',
       g_LOGIC_TYPE    => "fifo",
       g_FIFO_TYPE     => "read_ahead",
@@ -152,18 +157,45 @@ begin
 
   end generate;
 
-   BM_ctrl: process(clk)
-   begin
-    if rising_edge(clk) then
-      if rst = '1' then
-        fifo_rd <= (others => '0');
-      else
-         for i in g_HPS_NUM_MDT_CH - 1 to 0 loop
+  IF_6HP : if g_HPS_NUM_MDT_CH = 6 generate
+    BM_ctrl: process(clk)
+      variable found : std_logic := '0';
+      variable frst2read : integer;
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          fifo_rd <= (others => '0');
+        else
+          -- if in_dv(0) then
+            
+          -- end if ;
+          found := '0';
+          if output_used = '0' then
+            for i in g_HPS_NUM_MDT_CH - 1 to 0 loop
+              if not found then
+                if in_dv(i) then
+                  found := '1';
+                  frst2read := i;
+                  direct_out_dv <= '1';
+                else
+                end if;
+              else
+                fifo_wr(i) <= in_dv(i);
+              end if;
+            end loop;
+          else
+            direct_out_dv <= '0';
+            fifo_wr <= in_dv;
+          end if;
+          -------------------------------------------------
           
-        end loop;       
+
+        end if;
       end if;
-    end if;
-   end process;
+    end process;
+  end generate;
+
+
 
     -- bm_ctrl : entity heg_lib.heg_bm_ctrl
     --   generic map(
