@@ -93,7 +93,7 @@ set_false_path -quiet -from [get_pins "top_control_inst/*/sys_reseter/*/*/C"]
 ################################################################################
 
 set_clock_groups -group [get_clocks "clock_async"] -asynchronous
-set_clock_groups -group [get_clocks "axi_clk*"]    -asynchronous
+#set_clock_groups -group [get_clocks "axi_clk*"]    -asynchronous
 
 ################################################################################
 # The input to this reset comes from AXI clock domain but onto the MGT clock
