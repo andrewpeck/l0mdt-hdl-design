@@ -4,6 +4,6 @@ shared/arithmetics/pkg/roi_atan_pkg.vhd
 shared/arithmetics/src/roi_atan.vhd
 shared/arithmetics/pkg/roi_tan_pkg.vhd
 shared/arithmetics/src/roi_tan.vhd
-
+shared/arithmetics/src/divider.vhd
 shared/arithmetics/pkg/generic_pipelined_MATH_pkg.vhd
 shared/arithmetics/src/generic_pipelined_MATH.vhd

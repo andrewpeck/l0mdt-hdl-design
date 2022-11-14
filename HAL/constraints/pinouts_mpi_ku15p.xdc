@@ -139,6 +139,3 @@ set_property BITSTREAM.CONFIG.USR_ACCESS 0000000 [current_design]
 
 
 
-
-
-

@@ -3,7 +3,7 @@ set FPGA [get_property part [current_project]]
 
 #derived from walkthrough https://blog.xjtag.com/2016/07/creating-svf-files-using-xilinx-vivado/
 
-open_hw
+open_hw_manager
 if { [string length [get_hw_targets -quiet -regexp .*/${SVF_TARGET}] ]  } {
     delete_hw_target -quiet [get_hw_targets -regexp .*/${SVF_TARGET}]
 }
@@ -16,11 +16,15 @@ open_hw_target [get_hw_targets -regexp .*/${SVF_TARGET}]
 #add the uC to the chain
 #create_hw_device -idcode 4BA00477
 
-#add the Zynq to the chain
-create_hw_device -part xczu11eg-ffvc1760-1-e
 
+if {${FPGA} == "xcku15p-ffva1760-2-e"} {
+    #add the Zynq to the chain
+    puts "This is the CM demonstrator, adding the ZYNQ to the hardware chain..."
+    create_hw_device -part xczu11eg-ffvc1760-1-e
+}
 
-#add the FPGA in project to the chain
+#add the fpga in project to the chain
+
 set DEVICE [create_hw_device -part ${FPGA}]
 set_property PROGRAM.FILE $dst_bit $DEVICE
 set_param xicom.config_chunk_size 0

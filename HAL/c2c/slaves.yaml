@@ -12,7 +12,7 @@ AXI_CONTROL_SETS:
 # 0x81002000 7 Series
 
 AXI_SLAVES:
- 
+
   KINTEX_SYS_MGMT:
     TCL_CALL:
       command: AXI_IP_SYS_MGMT
