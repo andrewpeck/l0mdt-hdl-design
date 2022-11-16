@@ -61,6 +61,10 @@ puts "=================================================================="
 set AXI_BASE_ADDRESS  0x80000000 ; # 7 Series
 
 source ${SCRIPT_PATH}/../create_c2c.tcl
+
+#Adding files to the project
+add_files -norecurse -fileset "ctrl_lib" "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_pkg.vhd"   
+
 puts "Block design up to date from TCL sources. Skipping build."
 
 set_property PROCESSING_ORDER LATE [get_files timing.tcl]
