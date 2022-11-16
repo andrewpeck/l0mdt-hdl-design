@@ -20,5 +20,3 @@ HAL/ctrl/src/*/*_PKG.svh
 HAL/ctrl/src/SM_C2C_INTF/*.vhd
 HAL/ctrl/src/SM_C2C_INTF/*/*.vhd
 HAL/ctrl/src/SM_C2C_INTF/*/*/*.vhd
-configs/l0mdt_ku15p_ull_empty/autogen/AXI_slave_pkg.vhd
-
