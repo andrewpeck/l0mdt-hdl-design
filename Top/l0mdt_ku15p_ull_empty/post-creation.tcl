@@ -9,7 +9,7 @@ set BD_PATH $PATH_REPO/HAL/c2c/bd_helper
 set BD_OUTPUT_PATH $PATH_REPO/HAL/c2c/bd
 
 set bd_design_name "c2cSlave"
-set build_name "l0mdt_ku15p_ull_empty"
+
 # Regenerate the BD if needed
 
 set sources "${C2C_PATH}/createC2CSlaveInterconnect.tcl
@@ -59,7 +59,6 @@ puts "=================================================================="
 
 # 0xB0000000 for US+; 0x80000000 for 7 Series
 set AXI_BASE_ADDRESS  0x80000000 ; # 7 Series
-#set AXI_BASE_ADDRESS  0xB0000000 ; 
 
 source ${SCRIPT_PATH}/../create_c2c.tcl
 puts "Block design up to date from TCL sources. Skipping build."
