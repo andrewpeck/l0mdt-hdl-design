@@ -8,11 +8,12 @@
 
 
 SIM:ptc_mpi:
-    extends: .riviera_sim
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/ptc_mpi
-      
+  extends: .riviera_sim
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/ptc_mpi
+  tags:
+    - normal-ops
 CHK:ptc_mpi:
   extends: .sim_check
   variables: 
@@ -26,3 +27,5 @@ CHK:ptc_mpi:
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
+  tags:
+    - normal-ops
