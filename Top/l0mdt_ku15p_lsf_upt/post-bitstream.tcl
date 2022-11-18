@@ -40,7 +40,9 @@ close $f
 set w [open $new_dir_addr_table/address_apollo.xml w+]
 
 foreach line $data {
-    set new_line [string map { "module=\"file:/" " fwinfo=\"uio_endpoint\" module=\"file://modules_${proj_name}\-$describe" } $line]
+    set old_string "module=\"file:/"
+    set new_string " fwinfo=\"uio_endpoint\" module=\"file://modules_${proj_name}\-$describe"
+    set new_line [regsub $old_string $line  $new_string]
     puts $w $new_line
 }
 close $w
