@@ -69,7 +69,7 @@ include:
     #---------------------------------------------
     - local: '/Top/MainBlocks/BA3_tar/gitlab-ci.yml'
     - local: '/Top/MainBlocks/BA3_ucm/gitlab-ci.yml'
-    # - local: '/Top/MainBlocks/BA3_hps_csf_bp/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/BA3_hps_csf_bp/gitlab-ci.yml'
     - local: '/Top/MainBlocks/BA3_heg/gitlab-ci.yml'
     #---------------------------------------------
     #         KU15 Projects
