@@ -156,6 +156,7 @@ begin
     );
 
   end generate;
+  
 
   IF_6HP : if g_HPS_NUM_MDT_CH = 6 generate
     BM_ctrl: process(clk)
