@@ -20,7 +20,8 @@ package system_types_pkg is
 
   type system_clocks_rt is record
     sl_locked      : std_logic;
-    locked         : std_logic;
+    lhc_locked    : std_logic;
+    b2b_locked    : std_logic;      
     freeclock      : std_logic;
     axiclock       : std_logic;
     clock40        : std_logic;

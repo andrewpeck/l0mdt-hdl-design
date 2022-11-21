@@ -3,6 +3,7 @@
 source -notrace ${SCRIPT_PATH}/get_fpga_name.tcl
 
 set apollo_root_path $PATH_REPO
+set build_name $globalSettings::DESIGN
 
 source -notrace ${C2C_PATH}/createC2CSlaveInterconnect.tcl
 
