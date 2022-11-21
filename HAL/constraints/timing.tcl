@@ -49,7 +49,7 @@ set_max_delay -quiet -datapath_only 5.0 \
     -to [get_pins -hierarchical -filter \
              "NAME =~ top_hal/*rx_data*s_resync_reg*/D"]
 
-set_max_delay -queit -datapath_only 5.0 \
+set_max_delay -quiet -datapath_only 5.0 \
     -from [get_pins "top_hal/*sector_logic*/*rx_packet_former*/packet_userdata*/C"] \
     -to   [get_pins "top_hal/sector_logic_link_wrapper_inst/*sync_sl_rx_data*/*data_o*/D"]
 
