@@ -77,36 +77,35 @@ ku15p_csf_mpt:
       hog_no_bitstream: 1
       zynq_target: 7s
 
-vu13p_lsf_upt:
-  fpga: xcvu13p-flga2577-2-e
-  board_pkg: board_pkg_mpi_vu13p
-  sf: lsf
-  pt: upt
-  constraints:
-    - "pinouts_mpi_vu13p.xdc"
-  variants:
-    default:
-      link_map: "link_map_vu13p"
-      en_daq: 1
-      hog_chk: 1
-      zynq_target: 7s
-      hog_only_synth: 1
-      hog_tag: "mdt-2"
+# vu13p_lsf_upt:
+#   fpga: xcvu13p-flga2577-2-e
+#   board_pkg: board_pkg_mpi_vu13p
+#   sf: lsf
+#   pt: upt
+#   constraints:
+#     - "pinouts_mpi_vu13p.xdc"
+#   variants:
+#     default:
+#       link_map: "link_map_vu13p"
+#       en_daq: 1
+#       hog_chk: 1
+#       zynq_target: 7s
+#       hog_only_synth: 1
+#       hog_tag: "argos"
 
-
-vu13p_csf_mpt:
-  fpga: xcvu13p-flga2577-2-e
-  board_pkg: board_pkg_mpi_vu13p
-  sf: csf
-  pt: mpt
-  constraints:
-    - "pinouts_mpi_vu13p.xdc"
-  variants:
-    default:
-      link_map: "link_map_vu13p"
-      zynq_target: 7s
-      hog_only_synth: 1
-      hog_tag: "mdt-1"
+# vu13p_csf_mpt:
+#   fpga: xcvu13p-flga2577-2-e
+#   board_pkg: board_pkg_mpi_vu13p
+#   sf: csf
+#   pt: mpt
+#   constraints:
+#     - "pinouts_mpi_vu13p.xdc"
+#   variants:
+#     default:
+#       link_map: "link_map_vu13p"
+#       zynq_target: 7s
+#       hog_only_synth: 1
+#       hog_tag: "argos"
 
 ###################################################
 #           EMPTY ULL PROJECTS

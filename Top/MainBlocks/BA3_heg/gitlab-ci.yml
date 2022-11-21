@@ -1,11 +1,12 @@
 #################### BA3_heg Project ###########################
 GEN:BA3_heg:
-    extends: .generate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/BA3_heg
-      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-      
+  extends: .generate_project
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_heg
+    HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+  tags:
+    - normal-ops
     # tags:
     #   - normal-ops
     #   - hog
@@ -19,16 +20,22 @@ GEN:BA3_heg:
 #       PROJECT_NAME: MainBlocks/BA3_heg
 
 SIM:BA3_heg_questa:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/BA3_heg
+  extends: .simulate_project
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_heg
+    HOG_APPTAINER_IMAGE: /Data/images/l0mdt_Ubuntu20.04.sif
+  tags:
+    - normal-ops
 
 SIM:BA3_heg_riviera:
-    extends: .riviera_sim
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/BA3_heg
+  extends: .riviera_sim
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_heg
+    HOG_APPTAINER_IMAGE: /Data/images/l0mdt_Ubuntu20.04.sif
+  tags:
+    - argos
     # allow_failure: false
 
 COMP:BA3_heg:
@@ -39,6 +46,8 @@ COMP:BA3_heg:
     PROJECT_Q_NAME: MainBlocks/BA3_heg_questa
     PROJECT_R_NAME: MainBlocks/BA3_heg_riviera
   needs: ["SIM:BA3_heg_questa","SIM:BA3_heg_riviera"]
+  tags:
+    - normal-ops
 
 CHK:BA3_heg:
   extends: .sim_check
@@ -53,3 +62,5 @@ CHK:BA3_heg:
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
+  tags:
+    - normal-ops
