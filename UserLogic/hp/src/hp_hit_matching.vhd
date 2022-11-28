@@ -67,6 +67,9 @@ end entity hp_matching;
 
 architecture beh of hp_matching is
 
+  attribute keep_hierarchy : string;
+  attribute keep_hierarchy of beh : architecture is "yes";
+
   constant TIME_LOW_ADJUST : integer := 10;--unsigned(MDT_TIME_LEN-1 downto 0) := to_unsigned(10,MDT_TIME_LEN);
 
   constant c_HP_HITM_NUM_LAYERS : integer := get_num_layers(g_STATION_RADIUS);
@@ -88,9 +91,7 @@ begin
     Roi_window(li) <= convert(i_SLC_Window(li),Roi_window(li));
   end generate ; -- loop1
 
-  time_high_limit <= resize(
-      (i_SLc_BCID & "00000") + to_unsigned(HP_BCID_OFFSET_TIME_078res,i_SLc_BCID'length + 5)
-    ,time_high_limit'length);
+  time_high_limit <= resize((i_SLc_BCID & "00000") + to_unsigned(HP_BCID_OFFSET_TIME_078res,i_SLc_BCID'length + 5),time_high_limit'length);
 
   time_lo_aux <= to_integer(i_SLc_BCID & "00000");
   -- t_lo: if 0 < time_lo_aux - TIME_LOW_ADJUST generate

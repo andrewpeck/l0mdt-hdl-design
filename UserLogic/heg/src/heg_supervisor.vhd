@@ -153,18 +153,18 @@ begin
     end if;
   end process;
 
-  cnt_slc_in : entity shared_lib.vhdl_utils_NinCounter
-    generic map(g_NUM_INPUTS => 1 , g_DATA_WIDTH => 32)
-    port map(clk => clk,rst => rst, ena => '1', i_triggers => i_slcs_in , o_counter => mon_r.counters.slc_proc);
-  cnt_hit_in : entity shared_lib.vhdl_utils_NinCounter
-    generic map(g_NUM_INPUTS => g_HPS_NUM_MDT_CH , g_DATA_WIDTH => 32)
-    port map(clk => clk,rst => rst, ena => '1', i_triggers => i_hits_in, o_counter => mon_r.counters.hit_proc);
-  cnt_hok_in : entity shared_lib.vhdl_utils_NinCounter
-    generic map(g_NUM_INPUTS =>g_HPS_NUM_MDT_CH, g_DATA_WIDTH => 32)
-    port map(clk => clk,rst => rst, ena => '1', i_triggers => i_hits_ok , o_counter => mon_r.counters.hit_ok);
-  cnt_err_in : entity shared_lib.vhdl_utils_NinCounter
-    generic map(g_NUM_INPUTS =>g_HPS_NUM_MDT_CH , g_DATA_WIDTH => 32)
-    port map(clk => clk,rst => rst, ena => '1', i_triggers => i_errors, o_counter => mon_r.counters.error);
+  -- cnt_slc_in : entity shared_lib.vhdl_utils_NinCounter
+  --   generic map(g_NUM_INPUTS => 1 , g_DATA_WIDTH => 32)
+  --   port map(clk => clk,rst => rst, ena => '1', i_triggers => i_slcs_in , o_counter => mon_r.counters.slc_proc);
+  -- cnt_hit_in : entity shared_lib.vhdl_utils_NinCounter
+  --   generic map(g_NUM_INPUTS => g_HPS_NUM_MDT_CH , g_DATA_WIDTH => 32)
+  --   port map(clk => clk,rst => rst, ena => '1', i_triggers => i_hits_in, o_counter => mon_r.counters.hit_proc);
+  -- cnt_hok_in : entity shared_lib.vhdl_utils_NinCounter
+  --   generic map(g_NUM_INPUTS =>g_HPS_NUM_MDT_CH, g_DATA_WIDTH => 32)
+  --   port map(clk => clk,rst => rst, ena => '1', i_triggers => i_hits_ok , o_counter => mon_r.counters.hit_ok);
+  -- cnt_err_in : entity shared_lib.vhdl_utils_NinCounter
+  --   generic map(g_NUM_INPUTS =>g_HPS_NUM_MDT_CH , g_DATA_WIDTH => 32)
+  --   port map(clk => clk,rst => rst, ena => '1', i_triggers => i_errors, o_counter => mon_r.counters.error);
 
 end beh;
 
