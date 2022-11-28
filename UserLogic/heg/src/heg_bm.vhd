@@ -70,6 +70,8 @@ architecture beh of heg_buffermux is
   signal i_mdt_hits_ar : heg_hp2bm_art(g_HPS_NUM_MDT_CH-1 downto 0);
   signal i_mdt_hits_data_av : heg_hp2bm_data_avt(g_HPS_NUM_MDT_CH-1 downto 0);
 
+  -- signal d_mdt_hits_r : heg_hp2bm_rt;
+
   signal fifo_wr    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_rd    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
@@ -85,9 +87,16 @@ architecture beh of heg_buffermux is
 
   signal fifo_used        : fifo_used_ait(g_HPS_NUM_MDT_CH -1 downto 0);
   signal fifo_empty       : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal fifo_not_empty       : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_empty_next  : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal fifo_not_empty_next  : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_full        : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_full_next   : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+
+  signal safeguard : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+
+  signal next_ff2r : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+
 
   -- type read_index_a is array (5 downto 0) of integer;
   -- signal next_read : read_index_a := (5,4,3,2,1,0);
@@ -115,15 +124,17 @@ begin
   o_mdt_hits_r.mlayer <= buff_mdt_hit_r.mlayer;
   o_mdt_hits_r.data_valid <= buff_mdt_dv or direct_out_dv;
 
+ 
+
   FIFOS: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
 
 
     i_mdt_hits_ar(hp_i) <= convert(i_mdt_hits_av(hp_i),i_mdt_hits_ar(hp_i));
     i_mdt_hits_data_av(hp_i) <= convert(i_mdt_hits_ar(hp_i).data,i_mdt_hits_data_av(hp_i) ); -- joooooor
 
-    -- fifo_wr(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
-    in_dv(hp_i)     <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
-    -- in_valid_dv(hp_i) <= 
+    fifo_wr(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
+    in_dv(hp_i)   <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
+    in_valid_dv(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid;
     -- local_ena <= glob_en and i_control(hp_i).enable;
 
     rb : entity vamc_lib.vamc_rb
@@ -155,8 +166,12 @@ begin
       o_used        => fifo_used(hp_i)
     );
 
+    fifo_not_empty(hp_i) <= not fifo_empty(hp_i);
+    fifo_not_empty_next(hp_i) <= not fifo_empty_next(hp_i);
+
   end generate;
   
+  next_ff2r <= fifo_not_empty and not safeguard;
 
   IF_6HP : if g_HPS_NUM_MDT_CH = 6 generate
     BM_ctrl: process(clk)
@@ -166,28 +181,88 @@ begin
       if rising_edge(clk) then
         if rst = '1' then
           fifo_rd <= (others => '0');
+          buff_mdt_hit_v <= (others => '0');
+          direct_out_dv <= '0';
+          buff_mdt_dv <= '0';
+          safeguard <= (others => '0');
+          -- found := '0';
+          -- frst2read := 0;
         else
-          -- if in_dv(0) then
-            
-          -- end if ;
-          found := '0';
-          if output_used = '0' then
-            for i in g_HPS_NUM_MDT_CH - 1 to 0 loop
-              if not found then
-                if in_dv(i) then
-                  found := '1';
-                  frst2read := i;
-                  direct_out_dv <= '1';
-                else
+          safeguard <= (others => '0');
+          -------------------------------------------------
+          case(to_integer(unsigned(next_ff2r))) is
+          
+            when 32 to 63 =>
+              -- if safeguard(5) = '0' then
+                buff_mdt_hit_v <= ff_o_mdt_hit_av(5);
+                direct_out_dv <= '1';
+                fifo_rd <= "100000";
+                if not fifo_not_empty_next(5) then
+                  safeguard(5) <= '1';
                 end if;
-              else
-                fifo_wr(i) <= in_dv(i);
+            when 16 to 31 =>
+              buff_mdt_hit_v <= ff_o_mdt_hit_av(4);
+              direct_out_dv <= '1';
+              fifo_rd <= "010000";
+              if not fifo_not_empty_next(4) then
+                safeguard(4) <= '1';
               end if;
-            end loop;
-          else
-            direct_out_dv <= '0';
-            fifo_wr <= in_dv;
-          end if;
+            when 8 to 15 =>
+              buff_mdt_hit_v <= ff_o_mdt_hit_av(3);
+              direct_out_dv <= '1';
+              fifo_rd <= "001000";
+              if not fifo_not_empty_next(3) then
+                safeguard(3) <= '1';
+              end if;
+            when 4 to 7 =>
+              buff_mdt_hit_v <= ff_o_mdt_hit_av(2);
+              direct_out_dv <= '1';
+              fifo_rd <= "000100";
+              if not fifo_not_empty_next(2) then
+                safeguard(2) <= '1';
+              end if;
+            when 2 to 3 =>
+              buff_mdt_hit_v <= ff_o_mdt_hit_av(1);
+              direct_out_dv <= '1';
+              fifo_rd <= "000010";
+              if not fifo_not_empty_next(1) then
+                safeguard(1) <= '1';
+              end if;
+            when 1 =>  
+              buff_mdt_hit_v <= ff_o_mdt_hit_av(0);
+              direct_out_dv <= '1';
+              fifo_rd <= "000001";
+              if not fifo_not_empty_next(0) then
+                safeguard(0) <= '1';
+              end if;
+            when others =>
+              fifo_rd <= "000000"; 
+          end case ;
+          -- if and_reduce(fifo_empty) then
+          --   if output_used = '0' then
+          --     for i in g_HPS_NUM_MDT_CH - 1 downto 0 loop
+          --       if in_dv(i) then
+          --         buff_mdt_hit_v <= i_mdt_hits_data_av(i);
+          --         direct_out_dv <= '1';
+          --         for j in g_HPS_NUM_MDT_CH - 1 - i downto 0 loop
+          --           fifo_wr(j) <= in_dv(j);
+          --         end loop;
+          --       end if;
+              
+          --     end loop;
+          --   else
+          --     direct_out_dv <= '0';
+          --     fifo_wr <= in_dv;
+          --   end if;
+          -- else
+          --   for i in g_HPS_NUM_MDT_CH - 1 downto 0 loop
+          --       if ff_o_mdt_hit_dv(i) then
+          --         buff_mdt_hit_v <= ff_o_mdt_hit_av(i);
+          --         direct_out_dv <= '1';
+          --       end if;
+              
+          --     end loop;
+          -- end if;
           -------------------------------------------------
           
 

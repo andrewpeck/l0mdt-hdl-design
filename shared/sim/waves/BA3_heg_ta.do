@@ -172,45 +172,116 @@ add wave -noupdate -group HEG2SF_OUT /heg_tb/HEG2SF_OUT/in_files_ts
 add wave -noupdate -group HEG2SF_OUT /heg_tb/HEG2SF_OUT/sf_control_aar
 add wave -noupdate -group HEG2SF_OUT /heg_tb/HEG2SF_OUT/sf_mdt_data_aar
 add wave -noupdate -group HEG2SF_OUT /heg_tb/HEG2SF_OUT/sf_slc_data_aar
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/clk
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/rst
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/glob_en
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/ctrl_v
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/mon_v
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/i_freeze
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/i_uCM_data_v
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/i_mdt_full_data_av
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/o_sf_control_v
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/o_sf_slc_data_v
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/o_sf_mdt_data_v
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/ctrl_r
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/mon_r
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/ctrl_super_v
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/mon_super_v
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/heg_ctrl_ctrl_r
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/heg_ctrl_mon_r
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/heg_ctrl_ctrl_v
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/heg_ctrl_mon_v
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/ctrl_hp_ar
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/mon_hp_ar
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/ctrl_hp_av
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/mon_hp_av
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/i_uCM_data_r
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/i_mdt_full_data_ar
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/roi_b_Window
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/hegC2hp_uCM_data
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/hegC_control
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/hp2bm_ar
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/hp2bm_av
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/int_freeze
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/int_rst
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/int_ena
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/count_slcs_in_trig
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/count_hits_in_trig
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/count_hits_ok_trig
-add wave -noupdate -expand -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/count_errors_trig
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/clk
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/rst
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/glob_en
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/ctrl_v
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/mon_v
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/i_freeze
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/i_uCM_data_v
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/i_mdt_full_data_av
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/o_sf_control_v
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/o_sf_slc_data_v
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/o_sf_mdt_data_v
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/ctrl_r
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/mon_r
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/ctrl_super_v
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/mon_super_v
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/heg_ctrl_ctrl_r
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/heg_ctrl_mon_r
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/heg_ctrl_ctrl_v
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/heg_ctrl_mon_v
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/ctrl_hp_ar
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/mon_hp_ar
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/ctrl_hp_av
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/mon_hp_av
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/i_uCM_data_r
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/i_mdt_full_data_ar
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/roi_b_Window
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/hegC2hp_uCM_data
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/hegC_control
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/hp2bm_ar
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/hp2bm_av
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/int_freeze
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/int_rst
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/int_ena
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/count_slcs_in_trig
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/count_hits_in_trig
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/count_hits_ok_trig
+add wave -noupdate -group heg_0_2 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/count_errors_trig
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/g_HPS_NUM_MDT_CH
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/gc_HPS_NUM_MDT_CH
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/BM_FIFO_DEPTH
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/clk
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/rst
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/glob_en
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/i_control
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/i_mdt_hits_av
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/i_mdt_hits_ar
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/i_mdt_hits_data_av
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/in_dv
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/fifo_wr
+add wave -noupdate -expand -group heg_0_2_bm -expand /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/fifo_rd
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/ff_o_mdt_hit_av
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/ff_o_mdt_hit_dv
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/buff_mdt_hit_v
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/buff_mdt_hit_r
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/buff_mdt_dv
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/fifo_used
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/fifo_empty
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/fifo_empty_next
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/fifo_full
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/fifo_not_empty
+add wave -noupdate -expand -group heg_0_2_bm -expand /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/fifo_not_empty_next
+add wave -noupdate -expand -group heg_0_2_bm -expand /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/safeguard
+add wave -noupdate -expand -group heg_0_2_bm -expand /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/next_ff2r
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/fifo_full_next
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/in_valid_dv
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/output_used
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/direct_out_dv
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/o_mdt_hits_r
+add wave -noupdate -expand -group heg_0_2_bm /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/o_mdt_hits_v
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/g_SIMULATION
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/g_LOGIC_TYPE
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/g_FIFO_TYPE
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/g_MEMORY_TYPE
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/g_RB_TYPE
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/g_PIPELINE_IN_REGS
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/g_PIPELINE_OUT_REGS
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/g_RAM_WIDTH
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/g_RAM_DEPTH
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/clk
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/rst
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/ena
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/i_wr
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/i_wr_data
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/i_rd
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/o_rd_data
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/o_rd_dv
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/o_empty
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/o_empty_next
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/o_full
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/o_full_next
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/o_used
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/i_delay
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/mem
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/mem_dv
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/int_delay
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/mem2pl
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/mem2pl_dv
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/case_options
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/mem_wr_index
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/int_mem_wr_index
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/mem_rd_index
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/int_mem_rd_index
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/dv_wr_index
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/int_dv_wr_index
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/dv_rd_index
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/int_dv_rd_index
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/int_wr_data
+add wave -noupdate -expand -group heg_0_2_bm_rb_4 /heg_tb/ST_FOR(0)/ST_IG/TH_FOR(2)/TH_IF/HEG/Heg_buffer_mux/FIFOS(4)/rb/used_data
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {3482737361 fs} 0}
+WaveRestoreCursors {{Cursor 1} {2567951820 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -226,4 +297,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {10500 ns}
+WaveRestoreZoom {2524621887 fs} {2650333311 fs}
