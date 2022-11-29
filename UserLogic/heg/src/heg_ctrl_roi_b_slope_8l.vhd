@@ -69,9 +69,9 @@ architecture beh of b_slope2roi_8l is
   signal int_data_valid : std_logic;
 
   
-  attribute ROM_STYLE : string;
+  attribute RAM_STYLE : string;
   -- attribute ROM_STYLE of rom_mem_small : signal is "distributed";
-  attribute ROM_STYLE of mem : signal is "distributed";
+  attribute RAM_STYLE of mem : signal is "distributed";
 
   signal roi_edges : std_logic_vector(MDT_TUBE_LEN * get_num_layers(g_STATION_RADIUS) -1 downto 0);
 
