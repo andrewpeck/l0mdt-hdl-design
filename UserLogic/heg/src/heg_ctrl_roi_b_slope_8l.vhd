@@ -59,9 +59,11 @@ architecture beh of b_slope2roi_8l is
   -- signal rom_mem_small  : roi_mbar_lut_small_t(get_roi_mbar_max(g_STATION_RADIUS) - 1 downto 0) := get_roi_mbar_tubes(g_STATION_RADIUS);
   signal mem  : roi_mbar_lut_large_t(2048 - 1 downto 0) := get_roi_mbar_tubes(g_STATION_RADIUS);
   
-  -- VHDL2008 -- signal mem_ouput : roi_mbar_layer_t(0 to get_num_layers(g_STATION_RADIUS) -1);
+  -- VHDL2008 -- signal mem_output : roi_mbar_layer_t(0 to get_num_layers(g_STATION_RADIUS) -1);
   -- signal mem_ouput_small : roi_mbar_layer_small_t;
-  signal mem_ouput : roi_mbar_layer_large_t;
+  signal mem_output : roi_mbar_layer_large_t;
+  signal mem_pl0 : roi_mbar_layer_large_t;
+  signal mem_dv0 : std_logic;
 
   signal addr_mem : unsigned(UCM_VEC_ANG_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
@@ -95,20 +97,26 @@ begin
         if rst= '1' then
           -- o_spaces <= (others => '0');
           o_dv <= '0';
-          mem_ouput <= (others => (others => 0));
+          mem_output <= (others => (others => 0));
+          mem_pl0 <= (others => (others => 0));
         else
-          o_dv <= int_data_valid;
+          mem_dv0 <= int_data_valid;
+          o_dv <= mem_dv0;
+          
           if(int_data_valid = '1') then
-            -- mem_ouput <= get_win_slope_8l(to_integer(addr_mem));
-            mem_ouput <= mem(to_integer(addr_mem));
+            -- mem_output <= get_win_slope_8l(to_integer(addr_mem));
+            mem_pl0 <= mem(to_integer(addr_mem));
+          end if;
+          if(mem_dv0 = '1') then
+            mem_output <= mem_pl0;
           end if;
         end if;
       end if ;
     end process;
 
     OUT_GEN : for l_i in 0 to get_num_layers(g_STATION_RADIUS) -1 generate
-      o_roi_edges(l_i).lo <= to_signed(mem_ouput(l_i)(0),MDT_TUBE_LEN);
-      o_roi_edges(l_i).hi <= to_signed(mem_ouput(l_i)(1),MDT_TUBE_LEN);
+      o_roi_edges(l_i).lo <= to_signed(mem_output(l_i)(0),MDT_TUBE_LEN);
+      o_roi_edges(l_i).hi <= to_signed(mem_output(l_i)(1),MDT_TUBE_LEN);
     end generate;
 
   -- end generate;
