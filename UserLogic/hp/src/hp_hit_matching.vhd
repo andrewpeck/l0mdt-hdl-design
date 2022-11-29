@@ -81,7 +81,7 @@ architecture beh of hp_matching is
 
   signal time_high_limit, time_low_limit : unsigned(MDT_TIME_LEN-1 downto 0);
 
-  signal space_valid,time_valid : std_logic;
+  signal space_valid,time_valid,pl_data_valid : std_logic;
 
   signal Roi_window : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
 
@@ -101,7 +101,7 @@ begin
   -- end generate;
   time_low_limit <= resize(i_SLc_BCID & "00000" ,time_low_limit'length); -- BCID 25ns res to 0.78 ns res
 
-  o_hit_valid <= space_valid and time_valid;
+  -- o_hit_valid <= space_valid and time_valid;
 
   -- time_low_limit <= to_unsigned( to_integer(i_SLc_BCID) ,17); 
   -- time_high_limit <=to_unsigned( to_integer(i_SLc_BCID) + to_integer(time_offset),17); 
@@ -116,11 +116,14 @@ begin
         -- time
         time_valid <= '0';
         o_data_valid <= '0';
+        o_hit_valid <= '0';
       else
 
         if glob_en = '1' then
 
-          o_data_valid <= i_data_valid;
+          o_hit_valid <= space_valid and time_valid;
+          o_data_valid <= pl_data_valid;
+          pl_data_valid <= i_data_valid;
 
           if i_data_valid = '1' then
             -- space
