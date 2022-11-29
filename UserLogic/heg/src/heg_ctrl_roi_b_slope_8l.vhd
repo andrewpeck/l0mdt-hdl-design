@@ -77,6 +77,7 @@ architecture beh of b_slope2roi_8l is
 
 begin
 
+
   dv_guard : process(i_dv) begin
     int_data_valid <= i_dv;
   end process;
