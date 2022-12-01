@@ -1,16 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
-------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger
---  Module:
---  Description:
---
+-- UMass , Physics Department
+-- Project: src
+-- File: heg_ctrl_roi_b_slope_8l.vhd
+-- Module: <<moduleName>>
+-- File PATH: /heg_ctrl_roi_b_slope_8l.vhd
+-- -----
+-- File Created: Wednesday, 8th June 2022 9:54:44 am
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Tuesday, 29th November 2022 3:27:14 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Revisions:
---
---------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -57,38 +60,42 @@ architecture beh of b_slope2roi_8l is
 
   -- VHDL2008 -- signal rom_mem  : roi_mbar_lut_t(get_roi_mbar_max(g_STATION_RADIUS) - 1 downto 0)(0 to get_num_layers(g_STATION_RADIUS) -1) := get_roi_mbar_tubes(g_STATION_RADIUS);
   -- signal rom_mem_small  : roi_mbar_lut_small_t(get_roi_mbar_max(g_STATION_RADIUS) - 1 downto 0) := get_roi_mbar_tubes(g_STATION_RADIUS);
-  signal mem  : roi_mbar_lut_large_t(2048 - 1 downto 0) := get_roi_mbar_tubes(g_STATION_RADIUS);
+
+  -- signal mem  : roi_mbar_lut_large_t(2048 - 1 downto 0) := get_roi_mbar_tubes(g_STATION_RADIUS);
   
+  
+  signal mem : roi_mbar_lut_large_std_t := get_roi_mbar_tubes_std(g_STATION_RADIUS);
+
   -- VHDL2008 -- signal mem_output : roi_mbar_layer_t(0 to get_num_layers(g_STATION_RADIUS) -1);
   -- signal mem_ouput_small : roi_mbar_layer_small_t;
-  signal mem_output : roi_mbar_layer_large_t;
-  signal mem_pl0 : roi_mbar_layer_large_t;
+  signal mem_output : std_logic_vector(MDT_TUBE_LEN*16 -1 downto 0);--roi_mbar_layer_large_t;
+  signal mem_pl0 : std_logic_vector(MDT_TUBE_LEN*16 -1 downto 0);--roi_mbar_layer_large_t;
   signal mem_dv0 : std_logic;
 
   signal addr_mem : unsigned(UCM_VEC_ANG_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
 
   
-  attribute RAM_STYLE : string;
+  attribute ROM_STYLE : string;
   -- attribute ROM_STYLE of rom_mem_small : signal is "distributed";
-  attribute RAM_STYLE of mem : signal is "distributed";
+  attribute ROM_STYLE of mem : signal is "block";
 
   signal roi_edges : std_logic_vector(MDT_TUBE_LEN * get_num_layers(g_STATION_RADIUS) -1 downto 0);
 
 begin
 
 
-  dv_guard : process(i_dv) begin
+  -- dv_guard : process(i_dv) begin
     int_data_valid <= i_dv;
-  end process;
+  -- end process;
 
-  mem_guard : process(i_ang) begin
+  -- mem_guard : process(i_ang) begin
     -- if ( to_integer(unsigned(i_mbar)) > 5) then
     --   addr_mem <= (others => '0');
     -- else
       addr_mem <= i_ang;--(DT2R_LARGE_ADDR_LEN -1 downto 0);
     -- end if;
-  end process;
+  -- end process;
 
   -- LARGE_GEN: if g_STATION_RADIUS = 0 generate
     DT2R : process(clk)
@@ -98,15 +105,16 @@ begin
         if rst= '1' then
           -- o_spaces <= (others => '0');
           o_dv <= '0';
-          mem_output <= (others => (others => 0));
-          mem_pl0 <= (others => (others => 0));
+          mem_output <=  (others => '0');
+          mem_pl0 <= (others => '0');
         else
           mem_dv0 <= int_data_valid;
           o_dv <= mem_dv0;
-          
+          -- o_dv <= int_data_valid;
           if(int_data_valid = '1') then
             -- mem_output <= get_win_slope_8l(to_integer(addr_mem));
             mem_pl0 <= mem(to_integer(addr_mem));
+            -- mem_output <= mem(to_integer(addr_mem));
           end if;
           if(mem_dv0 = '1') then
             mem_output <= mem_pl0;
@@ -115,9 +123,9 @@ begin
       end if ;
     end process;
 
-    OUT_GEN : for l_i in 0 to get_num_layers(g_STATION_RADIUS) -1 generate
-      o_roi_edges(l_i).lo <= to_signed(mem_output(l_i)(0),MDT_TUBE_LEN);
-      o_roi_edges(l_i).hi <= to_signed(mem_output(l_i)(1),MDT_TUBE_LEN);
+    OUT_GEN : for l_i in get_num_layers(g_STATION_RADIUS) downto 1 generate
+      o_roi_edges(l_i - 1).lo <= signed(mem_output(l_i*MDT_TUBE_LEN*2 - 1 downto l_i*MDT_TUBE_LEN*2 - MDT_TUBE_LEN ));
+      o_roi_edges(l_i - 1).hi <= signed(mem_output(l_i*MDT_TUBE_LEN*2 - MDT_TUBE_LEN - 1 downto l_i*MDT_TUBE_LEN*2 - MDT_TUBE_LEN*2));
     end generate;
 
   -- end generate;

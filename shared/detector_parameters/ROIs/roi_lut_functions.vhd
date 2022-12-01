@@ -39,6 +39,7 @@ package roi_func_pkg is
 
   -- Z LUT functions
   function get_roi_z_tubes(station : integer) return roi_z_lut_t;
+  function get_roi_z_tubes_std(station : integer) return roi_z_lut_std_t;
   function get_roi_z_max(station : integer) return integer;
   -- slope LUT functions
 
@@ -46,6 +47,8 @@ package roi_func_pkg is
   function get_roi_mbar_tubes(station : integer) return roi_mbar_lut_small_t;
   function get_roi_mbar_tubes(station : integer) return roi_mbar_lut_large_t;
   
+  function get_roi_mbar_tubes_std(station : integer) return roi_mbar_lut_large_std_t;
+
   function get_roi_mbar_max(station : integer) return integer;
 
 
@@ -161,6 +164,39 @@ package body roi_func_pkg is
     return out_mem;
   end function;
 
+  function get_roi_z_tubes_std(station : integer) return roi_z_lut_std_t is
+    -- variable out_mem : roi_mbar_lut_std(0 to get_roi_mbar_max(station) - 1) := (others => (others => '0')) ;
+    variable out_mem : roi_z_lut_std_t(0 to get_roi_z_max(station) - 1);
+  begin
+
+    if c_SECTOR_ID = 0 then
+    elsif c_SECTOR_ID = 3 then
+      if station = 0 then
+        for i in 0 to ROM_BILA3_Z_MAX_SIZE - 1 loop
+          out_mem(i) := std_logic_vector(to_unsigned(ROI_BILA3_Z_MEM(i)(0),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_unsigned(ROI_BILA3_Z_MEM(i)(1),MDT_TUBE_LEN));
+        end loop;
+        
+      elsif station = 1 then
+        -- out_mem := ROI_BMLA3_Z_MEM;
+        for i in 0 to ROM_BMLA3_Z_MAX_SIZE - 1 loop
+          out_mem(i) := std_logic_vector(to_unsigned(ROI_BMLA3_Z_MEM(i)(0),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_unsigned(ROI_BMLA3_Z_MEM(i)(1),MDT_TUBE_LEN));
+        end loop;
+      elsif station = 2 then
+        -- out_mem := ROI_BOLA3_Z_MEM;
+        for i in 0 to ROM_BOLA3_Z_MAX_SIZE - 1 loop
+          out_mem(i) := std_logic_vector(to_unsigned(ROI_BOLA3_Z_MEM(i)(0),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_unsigned(ROI_BOLA3_Z_MEM(i)(1),MDT_TUBE_LEN));
+        end loop;
+      -- elsif station = 3 then
+      end if;
+    else
+    end if;
+    --
+    return out_mem;
+  end function;
+
   function get_roi_z_max(station : integer) return integer is
     variable out_max : integer := 0;
   begin
@@ -197,6 +233,45 @@ package body roi_func_pkg is
         out_mem := ROI_BMLA3_ANGLE_MEM;
       elsif station = 2 then
         out_mem := ROI_BOLA3_ANGLE_MEM;
+      -- elsif station = 3 then
+      end if;
+    else
+    end if;
+    --
+    return out_mem;
+  end function;
+
+  function get_roi_mbar_tubes_std(station : integer) return roi_mbar_lut_large_std_t is
+    -- variable out_mem : roi_mbar_lut_std(0 to get_roi_mbar_max(station) - 1) := (others => (others => '0')) ;
+    variable out_mem : roi_mbar_lut_large_std_t;--roi_mbar_lut_small_t(get_roi_mbar_max(station) - 1 downto 0);
+  begin
+
+    if c_SECTOR_ID = 0 then
+    elsif c_SECTOR_ID = 3 then
+      if station = 0 then
+        mem_init : for i in 0 to 2047 loop
+          out_mem(i) := std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(7)(0),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(7)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(6)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(6)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(5)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(5)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(4)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(4)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(3)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(3)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(2)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(2)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(1)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(1)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(0)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BILA3_ANGLE_MEM(i)(0)(1),MDT_TUBE_LEN));
+        end loop ;
+        -- ERROR
+      -- elsif station = 1 then
+      --   out_mem := ROI_BMLA3_ANGLE_MEM;
+      -- elsif station = 2 then
+      --   out_mem := ROI_BOLA3_ANGLE_MEM;
       -- elsif station = 3 then
       end if;
     else
