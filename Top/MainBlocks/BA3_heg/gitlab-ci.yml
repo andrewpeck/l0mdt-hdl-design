@@ -27,6 +27,7 @@ SIM:BA3_heg_questa:
     HOG_APPTAINER_IMAGE: /Data/images/l0mdt_Ubuntu20.04.sif
   tags:
     - argos
+  allow_failure: false
 
 SIM:BA3_heg_riviera:
   extends: .riviera_sim
@@ -36,7 +37,7 @@ SIM:BA3_heg_riviera:
     HOG_APPTAINER_IMAGE: /Data/images/l0mdt_Ubuntu20.04.sif
   tags:
     - argos
-    # allow_failure: false
+  allow_failure: false
 
 COMP:BA3_heg:
   extends: .sim_comp
