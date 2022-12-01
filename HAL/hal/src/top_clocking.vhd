@@ -64,20 +64,33 @@ entity top_clocking is
     strobe_pipeline_o : out std_logic;
     strobe_320_o      : out std_logic;
 
-    out_of_sync_o : out std_logic;
+    out_of_sync_o : out std_logic
 
-    locked_o : out std_logic
+--    locked_o     : out std_logic;
+--    locked_clk50 : out std_logic
 
     );
 
 end entity top_clocking;
 architecture behavioral of top_clocking is
 
-  signal clk50, clk100, clk40, clk320, clkpipe : std_logic;
-  signal mmcm_locked                           : std_logic;
+  signal clk50, clk100, clk200, clk40, clk320, clkpipe : std_logic;
+  signal lhc_locked                                                       : std_logic;
+ signal locked_clk50                                                    : std_logic;
+  signal clock_async_ibufds                                         : std_logic;
 
-  signal clock_async_ibufds : std_logic;
-
+  component onboardclk
+    port (
+      clk_200MHz   : out std_logic;
+      clk_100MHz   : out std_logic;
+      clk_50Mhz    : out std_logic;
+      reset     : in std_logic;
+      locked    : out std_logic; 
+      clk_in1_p : in std_logic;
+      clk_in1_n : in std_logic
+    );
+  end component;
+  
   component framework_mmcm
     port (
       -- Clock out ports
@@ -103,51 +116,63 @@ begin  -- architecture behavioral
   clocks_o.clock320       <= clk320;
   clocks_o.freeclock      <= clk100;
   clocks_o.clock_pipeline <= clkpipe;
-  clocks_o.locked         <= mmcm_locked;
-  locked_o                <= mmcm_locked;
-
+  clocks_o.lhc_locked       <= lhc_locked;
+  clocks_o.b2b_locked      <= locked_clk50;
+--  locked_o                <= lhc_locked;
+--  axi_clk_o               <= clk50;
+--  clk40_o                 <= clk40;
   --------------------------------------------------------------------------------
   -- ASYNC + 50MHz free-running clocks
   --------------------------------------------------------------------------------
 
-  clock_async_in_ibufds : IBUFDS
-    generic map(
-      DIFF_TERM    => true,             --DifferentialTermination
-      IBUF_LOW_PWR => false,            --Lowpower(TRUE)vs.performance(FALSE)
-      IOSTANDARD   => "LVDS")
-    port map(
-      O  => clock_async_ibufds,
-      I  => clock_async_i_p,
-      IB => clock_async_i_n
-      );
-
-  -- create a freerunnning clock for
-  -- initialization of the mgts, AXI, etc.
-  -- this could be put on a PLL / MMCM if the frequency needs to change
-  -- or just a BUFG_DIV if we want to go from ASYNC to 50M for example
-
-  BUFG_clk100_inst : BUFGCE_DIV
-    generic map (
-      BUFGCE_DIVIDE => CLK_FREQ/100
-      )
+   pll_clk50_inst: onboardclk
     port map (
-      I   => clock_async_ibufds,
-      CLR => '0',
-      CE  => '1',
-      O   => clk100
-      );
+      clk_200MHz   => clk200,
+      clk_100Mhz  => clk100,
+      clk_50Mhz    => clk50,
+      reset     => '0',
+      locked    => locked_clk50,
+      clk_in1_p => clock_async_i_p,
+      clk_in1_n => clock_async_i_n);
+  
+  --clock_async_in_ibufds : IBUFDS
+  --  generic map(
+  --    DIFF_TERM    => true,             --DifferentialTermination
+  --    IBUF_LOW_PWR => false,            --Lowpower(TRUE)vs.performance(FALSE)
+  --    IOSTANDARD   => "LVDS")
+  --  port map(
+  --    O  => clock_async_ibufds,
+  --    I  => clock_async_i_p,
+  --    IB => clock_async_i_n
+  --    );
+
+   --create a freerunnning clock for
+   --initialization of the mgts, AXI, etc.
+   --this could be put on a PLL / MMCM if the frequency needs to change
+   --or just a BUFG_DIV if we want to go from ASYNC to 50M for example
+
+  --BUFG_clk100_inst : BUFGCE_DIV
+  --  generic map (
+  --    BUFGCE_DIVIDE => CLK_FREQ/100
+  --    )
+  --  port map (
+  --    I   => clock_async_ibufds,
+  --    CLR => '0',
+  --    CE  => '1',
+  --    O   => clk100
+  --    );
 
   -- 50MHz divided copy for AXI  (should increase this later)
-  BUFG_clk50_inst : BUFGCE_DIV
-    generic map (
-      BUFGCE_DIVIDE => CLK_FREQ/50
-      )
-    port map (
-      I   => clock_async_ibufds,
-      CLR => '0',
-      CE  => '1',
-      O   => clk50
-      );
+  --BUFG_clk50_inst : BUFGCE_DIV
+  --  generic map (
+  --    BUFGCE_DIVIDE => CLK_FREQ/50
+  --    )
+  --  port map (
+  --    I   => clock_async_ibufds,
+  --    CLR => '0',
+  --    CE  => '1',
+  --    O   => clk50
+  --    );
 
   -------------------------------------------------------------------------------
   -- MMCM
@@ -160,7 +185,7 @@ begin  -- architecture behavioral
       reset     => reset_i,
       clk320_o  => clk320,
       clk40_o   => clk40,
-      locked_o  => mmcm_locked
+      locked_o  => lhc_locked
       );
 
   clkpipe <= clk320;

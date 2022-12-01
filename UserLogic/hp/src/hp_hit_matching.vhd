@@ -67,6 +67,9 @@ end entity hp_matching;
 
 architecture beh of hp_matching is
 
+  attribute keep_hierarchy : string;
+  attribute keep_hierarchy of beh : architecture is "yes";
+
   constant TIME_LOW_ADJUST : integer := 10;--unsigned(MDT_TIME_LEN-1 downto 0) := to_unsigned(10,MDT_TIME_LEN);
 
   constant c_HP_HITM_NUM_LAYERS : integer := get_num_layers(g_STATION_RADIUS);
@@ -78,7 +81,7 @@ architecture beh of hp_matching is
 
   signal time_high_limit, time_low_limit : unsigned(MDT_TIME_LEN-1 downto 0);
 
-  signal space_valid,time_valid : std_logic;
+  signal space_valid,time_valid,pl_data_valid : std_logic;
 
   signal Roi_window : hp_win_tubes_art(get_num_layers(g_STATION_RADIUS) -1 downto 0);
 
@@ -88,9 +91,7 @@ begin
     Roi_window(li) <= convert(i_SLC_Window(li),Roi_window(li));
   end generate ; -- loop1
 
-  time_high_limit <= resize(
-      (i_SLc_BCID & "00000") + to_unsigned(HP_BCID_OFFSET_TIME_078res,i_SLc_BCID'length + 5)
-    ,time_high_limit'length);
+  time_high_limit <= resize((i_SLc_BCID & "00000") + to_unsigned(HP_BCID_OFFSET_TIME_078res,i_SLc_BCID'length + 5),time_high_limit'length);
 
   time_lo_aux <= to_integer(i_SLc_BCID & "00000");
   -- t_lo: if 0 < time_lo_aux - TIME_LOW_ADJUST generate
@@ -100,7 +101,7 @@ begin
   -- end generate;
   time_low_limit <= resize(i_SLc_BCID & "00000" ,time_low_limit'length); -- BCID 25ns res to 0.78 ns res
 
-  o_hit_valid <= space_valid and time_valid;
+  -- o_hit_valid <= space_valid and time_valid;
 
   -- time_low_limit <= to_unsigned( to_integer(i_SLc_BCID) ,17); 
   -- time_high_limit <=to_unsigned( to_integer(i_SLc_BCID) + to_integer(time_offset),17); 
@@ -115,11 +116,14 @@ begin
         -- time
         time_valid <= '0';
         o_data_valid <= '0';
+        o_hit_valid <= '0';
       else
 
         if glob_en = '1' then
 
-          o_data_valid <= i_data_valid;
+          o_hit_valid <= space_valid and time_valid;
+          o_data_valid <= pl_data_valid;
+          pl_data_valid <= i_data_valid;
 
           if i_data_valid = '1' then
             -- space

@@ -31,8 +31,8 @@ shared/vhdl_utilities/pkg/vhdl2008_functions_pkg.vhd
 shared/vhdl_utilities/src/vhdl_utils_deserializer.vhd
 shared/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
 
-shared/vhdl_utilities/pkg/VUGPPMATH_pkg.vhd
-shared/vhdl_utilities/src/VUGPPMATH.vhd
+#shared/vhdl_utilities/pkg/VUGPPMATH_pkg.vhd
+#shared/vhdl_utilities/src/VUGPPMATH.vhd
 
 shared/arithmetics/arithmetics_lib.src
 # shared/functions/trigonometrics/roi_atan_pkg.vhd

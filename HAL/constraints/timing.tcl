@@ -12,6 +12,8 @@ foreach clock [concat \
     puts $clock
     set_clock_groups -group [get_clocks $clock] -asynchronous
 }
+set_clock_groups -name axi_clk -asynchronous -group [get_clocks clk50]
+
 
 # asynchronous clock relationship for tx/rx clocks to/from axi
 foreach clock_b \
@@ -32,7 +34,12 @@ foreach clock_b \
 ################################################################################
 
 set_clock_groups \
-    -group [get_clocks -of_objects [get_pins top_hal/top_clocking_inst/BUFG_clk100_inst/O]] \
+    -group [get_clocks clk100] \
+    -group [get_clocks *XOUTCLK*] \
+    -asynchronous
+
+set_clock_groups \
+    -group [get_clocks clk50] \
     -group [get_clocks *XOUTCLK*] \
     -asynchronous
 
@@ -86,7 +93,7 @@ set_false_path -quiet -from [get_pins "top_control_inst/*/sys_reseter/*/*/C"]
 ################################################################################
 
 set_clock_groups -group [get_clocks "clock_async"] -asynchronous
-set_clock_groups -group [get_clocks "axi_clk*"]    -asynchronous
+#set_clock_groups -group [get_clocks "axi_clk*"]    -asynchronous
 
 ################################################################################
 # The input to this reset comes from AXI clock domain but onto the MGT clock
