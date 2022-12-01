@@ -47,6 +47,7 @@ package roi_types_pkg is
   type roi_mbar_lut_small_t is array(integer range <>) of roi_mbar_layer_small_t;
 
   type roi_mbar_lut_large_std_t is array (2048 - 1 downto 0) of std_logic_vector(MDT_TUBE_LEN*16 -1 downto 0);
+  type roi_mbar_lut_small_std_t is array (integer range <>) of std_logic_vector(MDT_TUBE_LEN*12 -1 downto 0);
   -------------------------
   -- VHDL-2008
   -------------------------

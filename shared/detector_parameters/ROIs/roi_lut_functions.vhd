@@ -45,6 +45,7 @@ package roi_func_pkg is
 
   -- VHDL2008 -- function get_roi_mbar_tubes(station : integer) return roi_mbar_lut_t;
   function get_roi_mbar_tubes(station : integer) return roi_mbar_lut_small_t;
+  function get_roi_mbar_tubes(station : integer) return roi_mbar_lut_small_std_t;
   function get_roi_mbar_tubes(station : integer) return roi_mbar_lut_large_t;
   
   function get_roi_mbar_tubes_std(station : integer) return roi_mbar_lut_large_std_t;
@@ -219,6 +220,56 @@ package body roi_func_pkg is
   -------------------------
   -- VHDL-2001
   -------------------------
+  function get_roi_mbar_tubes(station : integer) return roi_mbar_lut_small_std_t is
+    -- variable out_mem : roi_mbar_lut_std(0 to get_roi_mbar_max(station) - 1) := (others => (others => '0')) ;
+    variable out_mem : roi_mbar_lut_small_std_t(get_roi_mbar_max(station) - 1 downto 0);
+  begin
+
+    if c_SECTOR_ID = 0 then
+    elsif c_SECTOR_ID = 3 then
+      if station = 0 then
+        -- out_mem := ROI_BILA3_ANGLE_MEM;
+        -- ERROR
+      elsif station = 1 then
+        -- out_mem := ROI_BMLA3_ANGLE_MEM;
+        for i in 0 to get_roi_mbar_max(station) - 1 loop
+          out_mem(i) := std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(5)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(5)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(4)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(4)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(3)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(3)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(2)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(2)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(1)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(1)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(0)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BMLA3_ANGLE_MEM(i)(0)(1),MDT_TUBE_LEN));
+        end loop ;
+      elsif station = 2 then
+        -- out_mem := ROI_BOLA3_ANGLE_MEM;
+        for i in 0 to get_roi_mbar_max(station) - 1 loop
+          out_mem(i) := std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(5)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(5)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(4)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(4)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(3)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(3)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(2)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(2)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(1)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(1)(1),MDT_TUBE_LEN)) &
+                        std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(0)(0),MDT_TUBE_LEN)) & 
+                        std_logic_vector(to_signed(ROI_BOLA3_ANGLE_MEM(i)(0)(1),MDT_TUBE_LEN));
+        end loop ;
+      -- elsif station = 3 then
+      end if;
+    else
+    end if;
+    --
+    return out_mem;
+  end function;
+
   function get_roi_mbar_tubes(station : integer) return roi_mbar_lut_small_t is
     -- variable out_mem : roi_mbar_lut_std(0 to get_roi_mbar_max(station) - 1) := (others => (others => '0')) ;
     variable out_mem : roi_mbar_lut_small_t(get_roi_mbar_max(station) - 1 downto 0);
