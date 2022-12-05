@@ -1,16 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: L0MDT
+-- File: heg.vhd
+-- Module: <<moduleName>>
+-- File PATH: /heg.vhd
+-- -----
+-- File Created: Tuesday, 4th October 2022 3:07:25 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Thursday, 20th October 2022 10:49:55 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: 
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -55,7 +58,7 @@ entity heg is
     -- SLc
     i_uCM_data_v        : in ucm2hps_vt;
     -- MDT hit
-    i_mdt_full_data_av  : in heg_pc2heg_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+    i_mdt_full_data_av  : in heg_pc2heg_avt(c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS)-1 downto 0);
     -- to Segment finder
     o_sf_control_v      : out heg_ctrl2sf_vt;
     o_sf_slc_data_v     : out heg2sfslc_vt;
@@ -69,8 +72,8 @@ architecture beh of heg is
   
   -- constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
   -- constant SUPER_MON_LEN  : integer := len(mon_r.super);
-  signal ctrl_super_v : std_logic_vector(HPS_HEG_HEG_CTRL_t'w -1 downto 0);
-  signal mon_super_v  : std_logic_vector(HPS_HEG_HEG_MON_t'w -1 downto 0);
+  signal ctrl_super_v : std_logic_vector(HPS_HEG_HEG_SUPER_CTRL_t'w -1 downto 0);
+  signal mon_super_v  : std_logic_vector(HPS_HEG_HEG_SUPER_MON_t'w -1 downto 0);
 
   signal heg_ctrl_ctrl_r  : HPS_HEG_HEG_CTRL_CTRL_t;
   signal heg_ctrl_mon_r   : HPS_HEG_HEG_CTRL_MON_t;
@@ -80,15 +83,15 @@ architecture beh of heg is
   signal ctrl_hp_ar : HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY ;
   signal mon_hp_ar  : HPS_HEG_HEG_HP_HP_MON_t_ARRAY ;
 
-  type ctrl_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(width(ctrl_hp_ar(0))-1 downto 0);
-  type mon_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(width(mon_hp_ar(0))-1 downto 0);
+  type ctrl_hp_avt is array (c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS) -1 downto 0) of std_logic_vector(width(ctrl_hp_ar(0))-1 downto 0);
+  type mon_hp_avt is array (c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS) -1 downto 0) of std_logic_vector(width(mon_hp_ar(0))-1 downto 0);
 
   signal ctrl_hp_av : ctrl_hp_avt;
   signal mon_hp_av  : mon_hp_avt;
 
   --------------------------------------------
   signal i_uCM_data_r       : ucm2hps_rt;
-  signal i_mdt_full_data_ar : heg_pc2heg_art(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal i_mdt_full_data_ar : heg_pc2heg_art(c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS)-1 downto 0);
 
   --------------------------------------------
 
@@ -97,10 +100,10 @@ architecture beh of heg is
   signal hegC2hp_uCM_data   : hp_heg2hp_slc_vt;
   
   -- signal heg_Sf_control : heg_ctrl2sf_rt;
-  signal hegC_control : heg_ctrl2hp_art(g_HPS_NUM_MDT_CH -1 downto 0);
+  signal hegC_control : heg_ctrl2hp_art(c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS) -1 downto 0);
 
-  signal hp2bm_ar : heg_hp2bm_art(g_HPS_NUM_MDT_CH-1 downto 0);
-  signal hp2bm_av : heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal hp2bm_ar : heg_hp2bm_art(c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS)-1 downto 0);
+  signal hp2bm_av : heg_hp2bm_avt(c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS)-1 downto 0);
 
   -- signal time_offset  : unsigned(7 downto 0);
   signal int_freeze : std_logic; 
@@ -108,9 +111,9 @@ architecture beh of heg is
   signal int_ena : std_logic; 
 
   signal count_slcs_in_trig : std_logic_vector(0 downto 0);
-  signal count_hits_in_trig : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
-  signal count_hits_ok_trig : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
-  signal count_errors_trig  : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
+  signal count_hits_in_trig : std_logic_vector(c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS) -1 downto 0);
+  signal count_hits_ok_trig : std_logic_vector(c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS) -1 downto 0);
+  signal count_errors_trig  : std_logic_vector(c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS) -1 downto 0);
 
 begin
 
@@ -137,7 +140,7 @@ begin
   SUPER : entity heg_lib.heg_supervisor
   generic map(
     g_STATION_RADIUS    => g_STATION_RADIUS,
-    g_HPS_NUM_MDT_CH    => g_HPS_NUM_MDT_CH
+    g_HPS_NUM_MDT_CH    => c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS)
   )
   port map(
     clk                 => clk,
@@ -167,7 +170,7 @@ begin
   Heg_Control : entity heg_lib.heg_ctrl_top
   generic map(
     g_STATION_RADIUS    => g_STATION_RADIUS,
-    g_HPS_NUM_MDT_CH    => g_HPS_NUM_MDT_CH
+    g_HPS_NUM_MDT_CH    => c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS)
   )
   port map(
     clk                 => clk,
@@ -188,7 +191,7 @@ begin
 
 
 
-  hp_gen: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
+  hp_gen: for hp_i in c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS)-1 downto 0 generate
 
     i_mdt_full_data_ar(hp_i) <= convert(i_mdt_full_data_av(hp_i),i_mdt_full_data_ar(hp_i));
     hp2bm_ar(hp_i) <= convert(hp2bm_av(hp_i),hp2bm_ar(hp_i));
@@ -232,7 +235,7 @@ begin
 
   Heg_buffer_mux : entity heg_lib.heg_buffermux
   generic map(
-    g_HPS_NUM_MDT_CH    => g_HPS_NUM_MDT_CH
+    g_HPS_NUM_MDT_CH    => c_HP_NUM_SECTOR_STATION(g_STATION_RADIUS)
   )
   port map(
     clk                 => clk,

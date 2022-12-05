@@ -118,6 +118,8 @@ architecture Behavioral of mgt_wrapper is
   signal drp_i     : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
   signal drp_o     : mgt_drp_out_rt_array (c_NUM_MGTS-1 downto 0);
   signal status    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
+  signal status_d    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
+  signal status_2d    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
 
 begin
 
@@ -161,7 +163,7 @@ begin
   -- Refclk
   --------------------------------------------------------------------------------
 
-  refclk_gen : for I in 0 to c_NUM_REFCLKS-1 generate
+  refclk_gen : for I in 0 to c_NUM_REFCLKS-2 generate
 
     nil_mask : if (c_REFCLK_MAP(I).FREQ /= REF_NIL and
                    c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
@@ -202,21 +204,24 @@ begin
     drp_i(I).drpclk_in(0) <= clocks.axiclock;  -- 50MHz from MMCM
 
     -- some of these are crossing clock domains so add one ff to help metastability
+    --PRIYA -TODO -> double buffer and add false path constraint
     process (clocks.axiclock) is
     begin
       if (rising_edge(clocks.axiclock)) then
-        mon.mgt(I).status.rxcdr_stable            <= status(I).rxcdr_stable;
-        mon.mgt(I).status.powergood               <= status(I).powergood;
-        mon.mgt(I).status.txready                 <= status(I).txready;
-        mon.mgt(I).status.rxready                 <= status(I).rxready;
-        mon.mgt(I).status.rx_pma_reset_done       <= status(I).rx_pma_reset_done;
-        mon.mgt(I).status.tx_pma_reset_done       <= status(I).tx_pma_reset_done;
-        mon.mgt(I).status.tx_reset_done           <= status(I).tx_reset_done;
-        mon.mgt(I).status.rx_reset_done           <= status(I).rx_reset_done;
-        mon.mgt(I).status.buffbypass_tx_done_out  <= status(I).buffbypass_tx_done_out;
-        mon.mgt(I).status.buffbypass_tx_error_out <= status(I).buffbypass_tx_error_out;
-        mon.mgt(I).status.buffbypass_rx_done_out  <= status(I).buffbypass_rx_done_out;
-        mon.mgt(I).status.buffbypass_rx_error_out <= status(I).buffbypass_rx_error_out;
+        status_d                                                 <= status;
+        status_2d                                               <= status_d;
+        mon.mgt(I).status.rxcdr_stable            <= status_2d(I).rxcdr_stable;
+        mon.mgt(I).status.powergood               <= status_2d(I).powergood;
+        mon.mgt(I).status.txready                 <= status_2d(I).txready;
+        mon.mgt(I).status.rxready                 <= status_2d(I).rxready;
+        mon.mgt(I).status.rx_pma_reset_done       <= status_2d(I).rx_pma_reset_done;
+        mon.mgt(I).status.tx_pma_reset_done       <= status_2d(I).tx_pma_reset_done;
+        mon.mgt(I).status.tx_reset_done           <= status_2d(I).tx_reset_done;
+        mon.mgt(I).status.rx_reset_done           <= status_2d(I).rx_reset_done;
+        mon.mgt(I).status.buffbypass_tx_done_out  <= status_2d(I).buffbypass_tx_done_out;
+        mon.mgt(I).status.buffbypass_tx_error_out <= status_2d(I).buffbypass_tx_error_out;
+        mon.mgt(I).status.buffbypass_rx_done_out  <= status_2d(I).buffbypass_rx_done_out;
+        mon.mgt(I).status.buffbypass_rx_error_out <= status_2d(I).buffbypass_rx_error_out;
 
         mon.mgt(I).drp.rd_data <= drp_o(I).drpdo_out;
         mon.mgt(I).drp.rd_rdy  <= drp_o(I).drprdy_out;
@@ -268,10 +273,10 @@ begin
     -- LPGBT+Emulator+Felix Type Transceiver Generation
     --------------------------------------------------------------------------------
 
-    lpgbt_gen : if ((I mod 4 = 0) and
+    lpgbt_gen : if ((I mod 4 = 0) and c2c_idx_array(I) = -1 and sl_idx_array(I) = -1 and c_MGT_MAP(I).mgt_type /= MGT_NIL and
                     (ttc_idx_array(I) /= -1 or ttc_idx_array(I+1) /= -1 or
                      ttc_idx_array(I+2) /= -1 or ttc_idx_array(I+3) /= -1 or
-                     lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or felix_idx_array(I) /= -1))
+                     lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or felix_idx_array(I) /= -1 ) )
     generate
 
       attribute X_LOC             : integer;
@@ -340,9 +345,9 @@ begin
 
           -- user clocks
           mgt_rxusrclk_i        => clocks.clock320,
-          mgt_rxusrclk_active_i => clocks.locked,  -- FIXME: this should come from something else for the felix link
+          mgt_rxusrclk_active_i => clocks.lhc_locked,  -- FIXME: this should come from something else for the felix link
           mgt_txusrclk_i        => clocks.clock320,
-          mgt_txusrclk_active_i => clocks.locked,
+          mgt_txusrclk_active_i => clocks.lhc_locked,
 
           -- outputs
           qpll0outclk_out    => open,

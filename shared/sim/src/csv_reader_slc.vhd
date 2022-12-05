@@ -48,21 +48,21 @@ entity csv_reader_slc is
   port (
     clk                   : in std_logic;
     rst                   : in std_logic;
-    enable                : in integer;
+    enable                : in std_logic;
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0');
     -- Sector Logic Candidates
     o_file_ok             : out std_logic;
     o_file_ts             : out string(1 to LINE_LENGTH_MAX);
     --
-    o_slc_event_ai        : out event_aut(c_MAX_NUM_SL -1 downto 0);
+    o_slc_event_ai        : out event_xaut(c_MAX_NUM_SL -1 downto 0);
     --
     o_main_primary_slc    : out slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
     o_main_secondary_slc  : out slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
     o_plus_neighbor_slc   : out slc_rx_vt := (others => '0');
     o_minus_neighbor_slc  : out slc_rx_vt := (others => '0')
 
-    -- o_slc_event_ai : out event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'))
+    -- o_slc_event_ai : out event_xaut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'))
   );
 end entity csv_reader_slc;
 
@@ -93,7 +93,7 @@ architecture sim of csv_reader_slc is
   signal slc_new_event        : input_slc_rt;
 
   signal event_main_prim_fifo : infifo_event_mem_at(2 downto 0) := (others => zero(event_element));
-  signal slc_event_ai         : event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'));
+  signal slc_event_ai         : event_xaut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'));
 
   signal slc_main_prim_fifo   : infifo_slc_mem_at(2 downto 0) := (others => zero(slc_element));
   signal slc_main_seco_fifo   : infifo_slc_mem_at(2 downto 0) := (others => zero(slc_element));
@@ -213,7 +213,7 @@ begin
 
       else
 
-        if enable = 1 then
+        if enable = '1' then
 
           -- write to DUT
 

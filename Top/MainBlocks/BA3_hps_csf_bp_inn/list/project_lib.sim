@@ -1,0 +1,9 @@
+#Simulator questa
+shared/shared_lib.sim lib=shared_lib
+# UserLogic/ult/ult_lib.sim
+UserLogic/hps/top_hps_sim.vhd 
+shared/sim/waves/BA3_hps_csf_bp_inn_ta.do 
+# topsim=hps_tb runtime=150us
+
+# Waveform 
+# UserLogic/ult/sim/ult_tp_sim1.wcfg

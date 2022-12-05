@@ -1,3 +1,4 @@
 HAL/IP/framework_mmcm/framework_mmcm.xci
+HAL/IP/onboardclk/onboardclk.xci
 HAL/IP/mgt_10g24_gth/mgt_10g24_gth.xci
 HAL/IP/mgt_10g24_gty/mgt_10g24_gty.xci

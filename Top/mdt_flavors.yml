@@ -58,6 +58,7 @@ ku15p_lsf_upt:
       en_neighbors: 0
       en_daq: 1
       hog_only_synth: 1
+      hog_no_bitstream: 1
       zynq_target: 7s  # 7s or usp
 
 ku15p_csf_mpt:
@@ -73,35 +74,38 @@ ku15p_csf_mpt:
       en_daq: 1
       endcap: 0
       hog_only_synth: 1
+      hog_no_bitstream: 1
       zynq_target: 7s
 
-vu13p_lsf_upt:
-  fpga: xcvu13p-flga2577-2-e
-  board_pkg: board_pkg_mpi_vu13p
-  sf: lsf
-  pt: upt
-  constraints:
-    - "pinouts_mpi_vu13p.xdc"
-  variants:
-    default:
-      link_map: "link_map_vu13p"
-      en_daq: 1
-      hog_chk: 1
-      zynq_target: 7s
-      hog_only_synth: 1
+# vu13p_lsf_upt:
+#   fpga: xcvu13p-flga2577-2-e
+#   board_pkg: board_pkg_mpi_vu13p
+#   sf: lsf
+#   pt: upt
+#   constraints:
+#     - "pinouts_mpi_vu13p.xdc"
+#   variants:
+#     default:
+#       link_map: "link_map_vu13p"
+#       en_daq: 1
+#       hog_chk: 1
+#       zynq_target: 7s
+#       hog_only_synth: 1
+#       hog_tag: "argos"
 
-vu13p_csf_mpt:
-  fpga: xcvu13p-flga2577-2-e
-  board_pkg: board_pkg_mpi_vu13p
-  sf: csf
-  pt: mpt
-  constraints:
-    - "pinouts_mpi_vu13p.xdc"
-  variants:
-    default:
-      link_map: "link_map_vu13p"
-      zynq_target: 7s
-      hog_only_synth: 1
+# vu13p_csf_mpt:
+#   fpga: xcvu13p-flga2577-2-e
+#   board_pkg: board_pkg_mpi_vu13p
+#   sf: csf
+#   pt: mpt
+#   constraints:
+#     - "pinouts_mpi_vu13p.xdc"
+#   variants:
+#     default:
+#       link_map: "link_map_vu13p"
+#       zynq_target: 7s
+#       hog_only_synth: 1
+#       hog_tag: "argos"
 
 ###################################################
 #           EMPTY ULL PROJECTS
@@ -124,6 +128,7 @@ ku15p_ull_empty:
       large: 0
       en_neighbors: 0
       hog_only_synth: 0
+      hog_no_bitstream: 0
       en_fm: 0
       en_tar: 0
       en_h2s: 0
@@ -135,6 +140,7 @@ ku15p_ull_empty:
       en_mtc: 0
       csm_links: 1
       tdc_links: 18
+      hog_tag: "mdt-1"
 
 vu13p_ull_empty:
   fpga: xcvu13p-flga2577-2-e
@@ -153,6 +159,7 @@ vu13p_ull_empty:
       large: 0
       en_neighbors: 0
       hog_only_synth: 0
+      hog_no_bitstream: 1
       en_fm: 0
       en_tar: 0
       en_h2s: 0
@@ -164,3 +171,5 @@ vu13p_ull_empty:
       en_mtc: 0
       csm_links: 1
       tdc_links: 18
+      hog_tag: "mdt-2"
+

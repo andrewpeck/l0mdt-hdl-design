@@ -44,6 +44,8 @@ package config_pkg is
 
   constant CFG : cfg_rt := set_project_cfg;
 
+  constant c_MAX_NUM_ST : integer := 4;
+
 -- =============================================================================
 -- SETTING CONSTANTS FROM CONFIGURATION FILE
 -- =============================================================================
@@ -87,17 +89,20 @@ package config_pkg is
   constant c_HPS_MAX_HP_OUT             : integer := 6;
 
   type integer_array_t is array (integer range <>) of integer;
-  constant c_HPS_MAX_ARRAY : integer_array_t(0 to 3) := (c_HPS_MAX_HP_INN,c_HPS_MAX_HP_MID,c_HPS_MAX_HP_OUT,c_HPS_MAX_HP_EXT);
+  constant c_HPS_MAX_ARRAY : integer_array_t(0 to c_MAX_NUM_ST - 1) := (c_HPS_MAX_HP_INN,c_HPS_MAX_HP_MID,c_HPS_MAX_HP_OUT,c_HPS_MAX_HP_EXT);
+
+  constant c_ENABLED_ST : std_logic_vector(0 to c_MAX_NUM_ST -1 ) := (
+    c_HPS_ENABLE_ST_INN,c_HPS_ENABLE_ST_MID,c_HPS_ENABLE_ST_OUT,c_HPS_ENABLE_ST_EXT
+  );
 
   constant c_TOTAL_MAX_NUM_HP   : integer :=
       max(to_integer(unsigned'('0' & c_HPS_ENABLE_ST_INN))*c_HPS_NUM_MDT_CH_INN,
       max(to_integer(unsigned'('0' & c_HPS_ENABLE_ST_EXT))*c_HPS_NUM_MDT_CH_EXT,
-      max(to_integer(unsigned'('0' & c_HPS_ENABLE_ST_MID))*c_HPS_NUM_MDT_CH_MID,
-          to_integer(unsigned'('0' & c_HPS_ENABLE_ST_OUT))*c_HPS_NUM_MDT_CH_OUT)
+      max(to_integer(unsigned'('0' & c_HPS_ENABLE_ST_MID))*c_HPS_NUM_MDT_CH_MID,to_integer(unsigned'('0' & c_HPS_ENABLE_ST_OUT))*c_HPS_NUM_MDT_CH_OUT)
     )
   );
 
-  type hp_num_in_station_a is array (0 to 3) of integer;
+  type hp_num_in_station_a is array (0 to c_MAX_NUM_ST -1 ) of integer;
   constant c_HP_NUM_SECTOR_STATION : hp_num_in_station_a := (
     c_HPS_NUM_MDT_CH_INN,
     c_HPS_NUM_MDT_CH_MID,
@@ -105,7 +110,7 @@ package config_pkg is
     c_HPS_NUM_MDT_CH_EXT
   );
 
-  type hp_in_station_a is array (0 to 3) of std_logic_vector(CFG_MAX_HP -1 downto 0);
+  type hp_in_station_a is array (0 to c_MAX_NUM_ST -1 ) of std_logic_vector(CFG_MAX_HP -1 downto 0);
   constant c_HP_SECTOR_STATION : hp_in_station_a := (
     c_HPS_ENABLED_HP_INN,
     c_HPS_ENABLED_HP_MID,
@@ -113,10 +118,10 @@ package config_pkg is
     c_HPS_ENABLED_HP_EXT
   );
 
-  constant c_STATIONS_IN_SECTOR         : std_logic_vector(0 to 3) :=
+  constant c_STATIONS_IN_SECTOR : std_logic_vector(0 to c_MAX_NUM_ST -1 ) :=
       CFG.ENABLE_ST_INN & CFG.ENABLE_ST_MID & CFG.ENABLE_ST_OUT & CFG.ENABLE_ST_EXT;
 
-  constant c_STATIONS_IN_FPGA           : std_logic_vector(0 to 3) :=
+  constant c_STATIONS_IN_FPGA : std_logic_vector(0 to c_MAX_NUM_ST -1 ) :=
       CFG.FPGA_EN_ST_INN & CFG.FPGA_EN_ST_MID & CFG.FPGA_EN_ST_OUT & CFG.FPGA_EN_ST_EXT;
 
 
@@ -161,7 +166,7 @@ package config_pkg is
 
 
 
-  constant c_MAX_POSSIBLE_HPS : integer := 4;
+  constant c_MAX_POSSIBLE_HPS : integer := 4;--c_MAX_NUM_ST 
 
   constant c_MAX_NUM_HPS  : integer :=
           to_integer(unsigned'('0' & CFG.ENABLE_ST_INN)) +

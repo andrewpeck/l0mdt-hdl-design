@@ -55,7 +55,7 @@ entity ult_tb_reader_slc is
     o_plus_neighbor_slc   : out slc_rx_vt := (others => '0');
     o_minus_neighbor_slc  : out slc_rx_vt := (others => '0')
 
-    -- o_slc_event_ai : out event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'))
+    -- o_slc_event_ai : out event_xaut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'))
   );
 end entity ult_tb_reader_slc;
 
@@ -86,7 +86,7 @@ architecture sim of ult_tb_reader_slc is
   signal slc_new_event        : input_slc_rt;
 
   signal event_main_prim_fifo : infifo_event_mem_at(2 downto 0) := (others => zero(event_element));
-  signal slc_event_ai         : event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'));
+  signal slc_event_ai         : event_xaut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'));
 
   signal slc_main_prim_fifo   : infifo_slc_mem_at(2 downto 0) := (others => zero(slc_element));
   signal slc_main_seco_fifo   : infifo_slc_mem_at(2 downto 0) := (others => zero(slc_element));

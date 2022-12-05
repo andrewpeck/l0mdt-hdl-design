@@ -2,13 +2,17 @@
    rules:
       - if: '$CI_COMMIT_REF_NAME =~ /^test\/.*$/i'
         when: never
+      - if: '$CI_COMMIT_MESSAGE =~ /DOXYGEN_ONLY/'
+        when: never
       - if: '$CI_MERGE_REQUEST_TITLE =~ /^Draft:.*$/ && $CI_COMMIT_MESSAGE !~ /^RESOLVE_WIP:/'
         when: never
-      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^master.*$/ && $HOG_TARGET_BRANCH == null && $INTERMEDIATE_BUILD == null'
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_DEVELOP_BRANCH && $HOG_DEVELOP_BRANCH != null'
         when: on_success
-      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_TARGET_BRANCH && $HOG_TARGET_BRANCH != null && $INTERMEDIATE_BUILD == null'
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^master|main|release.*$/ && $HOG_TARGET_BRANCH == null && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME != $HOG_DEVELOP_BRANCH'
+        when: on_success        
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_TARGET_BRANCH && $HOG_TARGET_BRANCH != null && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME != $HOG_DEVELOP_BRANCH'
         when: on_success
-      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_INTERMEDIATE_BRANCH && $INTERMEDIATE_BUILD == "1"'
+      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_INTERMEDIATE_BRANCH && $INTERMEDIATE_BUILD == "1" && $HOG_INTERMEDIATE_BRANCH != null' 
         when: on_success
       - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_INTERMEDIATE_BRANCH && $CI_BUILD_STAGE == "collect" && $HOG_INTERMEDIATE_BRANCH != null'
         when: on_success
@@ -138,6 +142,7 @@ check_auto_generated_code:
     - source run.sh trig_vals
     - source run.sh load_LE_refPos
   allow_failure: true
+  interruptible: true
 
 .sim_comp: &sim_comp
   <<: *only-default
@@ -149,6 +154,7 @@ check_auto_generated_code:
     - python3 tools/simComp/comparator.py -Q Projects/$PROJECT_Q_NAME -R Projects/$PROJECT_R_NAME -v 1
     # - sleep 1h
   allow_failure: true
+  interruptible: true
 
 .sim_check: &sim_check
   <<: *only-default

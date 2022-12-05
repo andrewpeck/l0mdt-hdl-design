@@ -80,11 +80,11 @@ architecture sim of ult_tb_writer_heg is
   shared variable csv_file_1: csv_file_type;
 
 
-  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
+  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_h2b_au : event_tdc_at;
-  signal slc_event_au : event_at(0 to c_NUM_THREADS -1);
+  signal slc_event_au : event_xat(0 to c_NUM_THREADS -1);
 
   -- alias heg2sf_inn_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
   -- alias heg2sf_inn_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
