@@ -10,12 +10,9 @@ use work.types.all;
 
 use work.UCM_Ctrl.all;
 use work.UCM_Ctrl_DEF.all;
-
-
 entity UCM_map is
   generic (
-    READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer 
+    READ_TIMEOUT     : integer := 2048
     );
   port (
     clk_axi          : in  std_logic;
@@ -52,13 +49,6 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*87) <= ALLOCATED_MEMORY_RANGE)
-    report "UCM: Regmap addressing range " & integer'image(4*87) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
-  severity ERROR;
-  assert ((4*87) > ALLOCATED_MEMORY_RANGE)
-    report "UCM: Regmap addressing range " & integer'image(4*87) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
-  severity NOTE;
-
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
@@ -330,90 +320,52 @@ begin  -- architecture behavioral
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data(16)( 0)  <= DEFAULT_UCM_CTRL_t.SUPER.ACTIONS.RESET;
-      reg_data(16)( 1)  <= DEFAULT_UCM_CTRL_t.SUPER.ACTIONS.ENABLE;
-      reg_data(16)( 2)  <= DEFAULT_UCM_CTRL_t.SUPER.ACTIONS.DISABLE;
-      reg_data(16)( 3)  <= DEFAULT_UCM_CTRL_t.SUPER.ACTIONS.FREEZE;
       reg_data(17)( 3 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CONFIGS.THREADS;
       reg_data(17)( 4)  <= DEFAULT_UCM_CTRL_t.SUPER.CONFIGS.INPUT_EN;
       reg_data(17)( 5)  <= DEFAULT_UCM_CTRL_t.SUPER.CONFIGS.OUTPUT_EN;
-      reg_data(32)( 0)  <= DEFAULT_UCM_CTRL_t.SUPER.SECTOR_PHI.wr_req;
-      reg_data(32)( 1)  <= DEFAULT_UCM_CTRL_t.SUPER.SECTOR_PHI.rd_req;
       reg_data(33)(25 downto 16)  <= DEFAULT_UCM_CTRL_t.SUPER.SECTOR_PHI.wr_data;
-      reg_data(48)( 0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).SIGNALS.wr_req;
-      reg_data(48)( 1)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).SIGNALS.wr_ack;
-      reg_data(48)( 2)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).SIGNALS.rd_req;
-      reg_data(48)( 3)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).SIGNALS.rd_ack;
       reg_data(48)( 4)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).SIGNALS.flush_req;
       reg_data(48)( 5)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).SIGNALS.freeze_req;
       reg_data(48)( 8 downto  6)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).SIGNALS.mem_sel;
       reg_data(50)( 7 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).wr_addr;
       reg_data(50)(23 downto 16)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).rd_addr;
       reg_data(51)(15 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).wr_data.wr_data_0;
-      reg_data(51)( 0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(1).SIGNALS.wr_req;
-      reg_data(51)( 1)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(1).SIGNALS.wr_ack;
-      reg_data(51)( 2)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(1).SIGNALS.rd_req;
-      reg_data(51)( 3)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(1).SIGNALS.rd_ack;
       reg_data(51)( 4)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(1).SIGNALS.flush_req;
       reg_data(51)( 5)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(1).SIGNALS.freeze_req;
       reg_data(51)( 8 downto  6)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(1).SIGNALS.mem_sel;
       reg_data(53)( 7 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(1).wr_addr;
       reg_data(53)(23 downto 16)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(1).rd_addr;
       reg_data(54)(15 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(1).wr_data.wr_data_0;
-      reg_data(54)( 0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(2).SIGNALS.wr_req;
-      reg_data(54)( 1)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(2).SIGNALS.wr_ack;
-      reg_data(54)( 2)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(2).SIGNALS.rd_req;
-      reg_data(54)( 3)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(2).SIGNALS.rd_ack;
       reg_data(54)( 4)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(2).SIGNALS.flush_req;
       reg_data(54)( 5)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(2).SIGNALS.freeze_req;
       reg_data(54)( 8 downto  6)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(2).SIGNALS.mem_sel;
       reg_data(56)( 7 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(2).wr_addr;
       reg_data(56)(23 downto 16)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(2).rd_addr;
       reg_data(57)(15 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(2).wr_data.wr_data_0;
-      reg_data(57)( 0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(3).SIGNALS.wr_req;
-      reg_data(57)( 1)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(3).SIGNALS.wr_ack;
-      reg_data(57)( 2)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(3).SIGNALS.rd_req;
-      reg_data(57)( 3)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(3).SIGNALS.rd_ack;
       reg_data(57)( 4)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(3).SIGNALS.flush_req;
       reg_data(57)( 5)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(3).SIGNALS.freeze_req;
       reg_data(57)( 8 downto  6)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(3).SIGNALS.mem_sel;
       reg_data(59)( 7 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(3).wr_addr;
       reg_data(59)(23 downto 16)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(3).rd_addr;
       reg_data(60)(15 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CDE_CHAMB_Z0.CDE_CHAMB_Z0(3).wr_data.wr_data_0;
-      reg_data(64)( 0)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(0).SIGNALS.wr_req;
-      reg_data(64)( 1)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(0).SIGNALS.wr_ack;
-      reg_data(64)( 2)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(0).SIGNALS.rd_req;
-      reg_data(64)( 3)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(0).SIGNALS.rd_ack;
       reg_data(64)( 4)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(0).SIGNALS.flush_req;
       reg_data(64)( 5)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(0).SIGNALS.freeze_req;
       reg_data(64)( 8 downto  6)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(0).SIGNALS.mem_sel;
       reg_data(66)( 7 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(0).wr_addr;
       reg_data(66)(23 downto 16)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(0).rd_addr;
       reg_data(67)(15 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(0).wr_data.wr_data_0;
-      reg_data(67)( 0)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(1).SIGNALS.wr_req;
-      reg_data(67)( 1)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(1).SIGNALS.wr_ack;
-      reg_data(67)( 2)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(1).SIGNALS.rd_req;
-      reg_data(67)( 3)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(1).SIGNALS.rd_ack;
       reg_data(67)( 4)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(1).SIGNALS.flush_req;
       reg_data(67)( 5)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(1).SIGNALS.freeze_req;
       reg_data(67)( 8 downto  6)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(1).SIGNALS.mem_sel;
       reg_data(69)( 7 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(1).wr_addr;
       reg_data(69)(23 downto 16)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(1).rd_addr;
       reg_data(70)(15 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(1).wr_data.wr_data_0;
-      reg_data(70)( 0)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(2).SIGNALS.wr_req;
-      reg_data(70)( 1)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(2).SIGNALS.wr_ack;
-      reg_data(70)( 2)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(2).SIGNALS.rd_req;
-      reg_data(70)( 3)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(2).SIGNALS.rd_ack;
       reg_data(70)( 4)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(2).SIGNALS.flush_req;
       reg_data(70)( 5)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(2).SIGNALS.freeze_req;
       reg_data(70)( 8 downto  6)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(2).SIGNALS.mem_sel;
       reg_data(72)( 7 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(2).wr_addr;
       reg_data(72)(23 downto 16)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(2).rd_addr;
       reg_data(73)(15 downto  0)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(2).wr_data.wr_data_0;
-      reg_data(73)( 0)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).SIGNALS.wr_req;
-      reg_data(73)( 1)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).SIGNALS.wr_ack;
-      reg_data(73)( 2)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).SIGNALS.rd_req;
-      reg_data(73)( 3)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).SIGNALS.rd_ack;
       reg_data(73)( 4)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).SIGNALS.flush_req;
       reg_data(73)( 5)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).SIGNALS.freeze_req;
       reg_data(73)( 8 downto  6)  <= DEFAULT_UCM_CTRL_t.SUPER.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).SIGNALS.mem_sel;
@@ -424,8 +376,6 @@ begin  -- architecture behavioral
       reg_data(80)( 7 downto  4)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.RPC.sel_station;
       reg_data(80)(11 downto  8)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.RPC.sel_layer;
       reg_data(80)(12)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.RPC.ext_ctrl;
-      reg_data(81)( 0)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.RPC.MEM_INTERFACE.wr_req;
-      reg_data(81)( 1)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.RPC.MEM_INTERFACE.rd_req;
       reg_data(82)( 4 downto  0)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.RPC.MEM_INTERFACE.wr_addr;
       reg_data(82)(20 downto 16)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.RPC.MEM_INTERFACE.rd_addr;
       reg_data(83)(27 downto 16)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.RPC.MEM_INTERFACE.wr_data;
@@ -433,8 +383,6 @@ begin  -- architecture behavioral
       reg_data(84)( 7 downto  4)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.sel_station;
       reg_data(84)(11 downto  8)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.sel_layer;
       reg_data(84)(12)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.ext_ctrl;
-      reg_data(85)( 0)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.MEM_INTERFACE.wr_req;
-      reg_data(85)( 1)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.MEM_INTERFACE.rd_req;
       reg_data(86)( 4 downto  0)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.MEM_INTERFACE.wr_addr;
       reg_data(86)(20 downto 16)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.MEM_INTERFACE.rd_addr;
       reg_data(87)(29 downto 16)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.MEM_INTERFACE.wr_data;

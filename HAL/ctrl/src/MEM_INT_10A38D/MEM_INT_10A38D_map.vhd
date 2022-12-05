@@ -10,12 +10,9 @@ use work.types.all;
 
 use work.MEM_INT_10A38D_Ctrl.all;
 use work.MEM_INT_10A38D_Ctrl_DEF.all;
-
-
 entity MEM_INT_10A38D_map is
   generic (
-    READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer 
+    READ_TIMEOUT     : integer := 2048
     );
   port (
     clk_axi          : in  std_logic;
@@ -52,13 +49,6 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*6) <= ALLOCATED_MEMORY_RANGE)
-    report "MEM_INT_10A38D: Regmap addressing range " & integer'image(4*6) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
-  severity ERROR;
-  assert ((4*6) > ALLOCATED_MEMORY_RANGE)
-    report "MEM_INT_10A38D: Regmap addressing range " & integer'image(4*6) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
-  severity NOTE;
-
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
@@ -155,10 +145,6 @@ begin  -- architecture behavioral
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data( 0)( 0)  <= DEFAULT_MEM_INT_10A38D_CTRL_t.SIGNALS.wr_req;
-      reg_data( 0)( 1)  <= DEFAULT_MEM_INT_10A38D_CTRL_t.SIGNALS.wr_ack;
-      reg_data( 0)( 2)  <= DEFAULT_MEM_INT_10A38D_CTRL_t.SIGNALS.rd_req;
-      reg_data( 0)( 3)  <= DEFAULT_MEM_INT_10A38D_CTRL_t.SIGNALS.rd_ack;
       reg_data( 0)( 4)  <= DEFAULT_MEM_INT_10A38D_CTRL_t.SIGNALS.flush_req;
       reg_data( 0)( 5)  <= DEFAULT_MEM_INT_10A38D_CTRL_t.SIGNALS.freeze_req;
       reg_data( 0)( 8 downto  6)  <= DEFAULT_MEM_INT_10A38D_CTRL_t.SIGNALS.mem_sel;

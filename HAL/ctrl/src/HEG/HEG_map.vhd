@@ -10,12 +10,9 @@ use work.types.all;
 
 use work.HEG_Ctrl.all;
 use work.HEG_Ctrl_DEF.all;
-
-
 entity HEG_map is
   generic (
-    READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer 
+    READ_TIMEOUT     : integer := 2048
     );
   port (
     clk_axi          : in  std_logic;
@@ -52,13 +49,6 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*152) <= ALLOCATED_MEMORY_RANGE)
-    report "HEG: Regmap addressing range " & integer'image(4*152) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
-  severity ERROR;
-  assert ((4*152) > ALLOCATED_MEMORY_RANGE)
-    report "HEG: Regmap addressing range " & integer'image(4*152) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
-  severity NOTE;
-
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
@@ -329,17 +319,9 @@ begin  -- architecture behavioral
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data( 0)( 0)  <= DEFAULT_HEG_CTRL_t.SUPER.ACTIONS.RESET;
-      reg_data( 0)( 1)  <= DEFAULT_HEG_CTRL_t.SUPER.ACTIONS.ENABLE;
-      reg_data( 0)( 2)  <= DEFAULT_HEG_CTRL_t.SUPER.ACTIONS.DISABLE;
-      reg_data( 0)( 3)  <= DEFAULT_HEG_CTRL_t.SUPER.ACTIONS.FREEZE;
       reg_data( 1)( 4)  <= DEFAULT_HEG_CTRL_t.SUPER.CONFIGS.INPUT_EN;
       reg_data( 1)( 5)  <= DEFAULT_HEG_CTRL_t.SUPER.CONFIGS.OUTPUT_EN;
       reg_data( 1)( 6)  <= DEFAULT_HEG_CTRL_t.SUPER.CONFIGS.FLUSH_MEM_RESET;
-      reg_data(48)( 0)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.SIGNALS.wr_req;
-      reg_data(48)( 1)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.SIGNALS.wr_ack;
-      reg_data(48)( 2)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.SIGNALS.rd_req;
-      reg_data(48)( 3)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.SIGNALS.rd_ack;
       reg_data(48)( 4)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.SIGNALS.flush_req;
       reg_data(48)( 5)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.SIGNALS.freeze_req;
       reg_data(48)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.SIGNALS.mem_sel;
@@ -347,102 +329,54 @@ begin  -- architecture behavioral
       reg_data(50)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.rd_addr;
       reg_data(51)(31 downto  0)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.wr_data.wr_data_0;
       reg_data(52)( 5 downto  0)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.wr_data.wr_data_1;
-      reg_data(64)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).ACTIONS.RESET;
-      reg_data(64)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).ACTIONS.ENABLE;
-      reg_data(64)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).ACTIONS.DISABLE;
-      reg_data(64)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).ACTIONS.FREEZE;
       reg_data(65)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).CONFIGS.INPUT_EN;
       reg_data(65)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).CONFIGS.OUTPUT_EN;
       reg_data(65)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).CONFIGS.FLUSH_MEM_RESET;
-      reg_data(67)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.wr_req;
-      reg_data(67)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.wr_ack;
-      reg_data(67)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.rd_req;
-      reg_data(67)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(67)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.flush_req;
       reg_data(67)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(67)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(69)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.wr_addr;
       reg_data(69)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.rd_addr;
       reg_data(70)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.wr_data.wr_data_0;
-      reg_data(80)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).ACTIONS.RESET;
-      reg_data(80)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).ACTIONS.ENABLE;
-      reg_data(80)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).ACTIONS.DISABLE;
-      reg_data(80)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).ACTIONS.FREEZE;
       reg_data(81)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).CONFIGS.INPUT_EN;
       reg_data(81)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).CONFIGS.OUTPUT_EN;
       reg_data(81)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).CONFIGS.FLUSH_MEM_RESET;
-      reg_data(83)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.wr_req;
-      reg_data(83)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.wr_ack;
-      reg_data(83)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.rd_req;
-      reg_data(83)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(83)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.flush_req;
       reg_data(83)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(83)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(85)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.wr_addr;
       reg_data(85)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.rd_addr;
       reg_data(86)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.wr_data.wr_data_0;
-      reg_data(96)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).ACTIONS.RESET;
-      reg_data(96)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).ACTIONS.ENABLE;
-      reg_data(96)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).ACTIONS.DISABLE;
-      reg_data(96)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).ACTIONS.FREEZE;
       reg_data(97)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).CONFIGS.INPUT_EN;
       reg_data(97)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).CONFIGS.OUTPUT_EN;
       reg_data(97)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).CONFIGS.FLUSH_MEM_RESET;
-      reg_data(99)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.wr_req;
-      reg_data(99)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.wr_ack;
-      reg_data(99)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.rd_req;
-      reg_data(99)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(99)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.flush_req;
       reg_data(99)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(99)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(101)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.wr_addr;
       reg_data(101)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.rd_addr;
       reg_data(102)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.wr_data.wr_data_0;
-      reg_data(112)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).ACTIONS.RESET;
-      reg_data(112)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).ACTIONS.ENABLE;
-      reg_data(112)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).ACTIONS.DISABLE;
-      reg_data(112)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).ACTIONS.FREEZE;
       reg_data(113)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).CONFIGS.INPUT_EN;
       reg_data(113)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).CONFIGS.OUTPUT_EN;
       reg_data(113)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).CONFIGS.FLUSH_MEM_RESET;
-      reg_data(115)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.wr_req;
-      reg_data(115)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.wr_ack;
-      reg_data(115)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.rd_req;
-      reg_data(115)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(115)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.flush_req;
       reg_data(115)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(115)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(117)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.wr_addr;
       reg_data(117)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.rd_addr;
       reg_data(118)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.wr_data.wr_data_0;
-      reg_data(128)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).ACTIONS.RESET;
-      reg_data(128)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).ACTIONS.ENABLE;
-      reg_data(128)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).ACTIONS.DISABLE;
-      reg_data(128)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).ACTIONS.FREEZE;
       reg_data(129)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).CONFIGS.INPUT_EN;
       reg_data(129)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).CONFIGS.OUTPUT_EN;
       reg_data(129)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).CONFIGS.FLUSH_MEM_RESET;
-      reg_data(131)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.wr_req;
-      reg_data(131)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.wr_ack;
-      reg_data(131)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.rd_req;
-      reg_data(131)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(131)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.flush_req;
       reg_data(131)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(131)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(133)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.wr_addr;
       reg_data(133)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.rd_addr;
       reg_data(134)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.wr_data.wr_data_0;
-      reg_data(144)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).ACTIONS.RESET;
-      reg_data(144)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).ACTIONS.ENABLE;
-      reg_data(144)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).ACTIONS.DISABLE;
-      reg_data(144)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).ACTIONS.FREEZE;
       reg_data(145)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).CONFIGS.INPUT_EN;
       reg_data(145)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).CONFIGS.OUTPUT_EN;
       reg_data(145)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).CONFIGS.FLUSH_MEM_RESET;
-      reg_data(147)( 0)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.wr_req;
-      reg_data(147)( 1)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.wr_ack;
-      reg_data(147)( 2)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.rd_req;
-      reg_data(147)( 3)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(147)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.flush_req;
       reg_data(147)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.freeze_req;
       reg_data(147)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.mem_sel;

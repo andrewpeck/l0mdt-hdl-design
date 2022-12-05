@@ -10,12 +10,9 @@ use work.types.all;
 use work.BRAMPortPkg.all;
 use work.FM_Ctrl.all;
 use work.FM_Ctrl_DEF.all;
-
-
 entity FM_map is
   generic (
-    READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer 
+    READ_TIMEOUT     : integer := 2048
     );
   port (
     clk_axi          : in  std_logic;
@@ -166,13 +163,6 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*27712) <= ALLOCATED_MEMORY_RANGE)
-    report "FM: Regmap addressing range " & integer'image(4*27712) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
-  severity ERROR;
-  assert ((4*27712) > ALLOCATED_MEMORY_RANGE)
-    report "FM: Regmap addressing range " & integer'image(4*27712) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
-  severity NOTE;
-
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
@@ -407,12 +397,6 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data( 0)( 0)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_FREEZE;
-      reg_data( 0)( 2 downto  1)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_PLAYBACK_MODE;
-      reg_data( 1)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_0;
-      reg_data( 2)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_1;
-      reg_data( 5)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_0;
-      reg_data( 6)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_1;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       Ctrl.SPY_CTRL.GLOBAL_FREEZE <= '0';

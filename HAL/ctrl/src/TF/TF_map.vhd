@@ -10,12 +10,9 @@ use work.types.all;
 
 use work.TF_Ctrl.all;
 use work.TF_Ctrl_DEF.all;
-
-
 entity TF_map is
   generic (
-    READ_TIMEOUT     : integer := 2048;
-    ALLOCATED_MEMORY_RANGE : integer 
+    READ_TIMEOUT     : integer := 2048
     );
   port (
     clk_axi          : in  std_logic;
@@ -52,13 +49,6 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*1) <= ALLOCATED_MEMORY_RANGE)
-    report "TF: Regmap addressing range " & integer'image(4*1) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
-  severity ERROR;
-  assert ((4*1) > ALLOCATED_MEMORY_RANGE)
-    report "TF: Regmap addressing range " & integer'image(4*1) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
-  severity NOTE;
-
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
@@ -134,7 +124,6 @@ begin  -- architecture behavioral
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data( 0)( 0)  <= DEFAULT_TF_CTRL_t.RESET;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       Ctrl.RESET <= '0';
