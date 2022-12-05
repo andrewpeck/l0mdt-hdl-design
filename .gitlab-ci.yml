@@ -66,8 +66,8 @@ include:
     # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
     - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
-    - local: '/Top/MainBlocks/ucm_r/gitlab-ci.yml'
-    - local: '/Top/MainBlocks/ucm_q/gitlab-ci.yml'
+    # - local: '/Top/MainBlocks/ucm_r/gitlab-ci.yml'
+    # - local: '/Top/MainBlocks/ucm_q/gitlab-ci.yml'
     - local: '/Top/MainBlocks/ucm/gitlab-ci.yml'
     #---------------------------------------------
     #         BA3 Modules
