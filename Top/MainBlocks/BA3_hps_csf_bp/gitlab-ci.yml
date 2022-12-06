@@ -1,17 +1,13 @@
 #################### BA3_hps_csf_bp Project ###########################
 GEN:BA3_hps_csf_bp:
-    extends: .generate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
-      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-    tags:
-    - normal-ops
-      
-    # tags:
-    #   - normal-ops
-    #   - hog
-      # - "2020.2"
+  extends: .generate_project
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
+    HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+  tags:
+  - normal-ops
+
 
 
 # SIM:BA3_hps_csf_bp_vivado:
@@ -61,5 +57,4 @@ CHK:BA3_hps_csf_bp:
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
-  tags:
-    - normal-ops
+
