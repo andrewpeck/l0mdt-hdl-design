@@ -59,5 +59,4 @@ CHK:BA3_ucm:
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
-  tags:
-    - normal-ops
+
