@@ -7,11 +7,6 @@ GEN:BA3_heg_inn_th2:
     HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
   tags:
     - normal-ops    
-    # tags:
-    #   - normal-ops
-    #   - hog
-      # - "2020.2"
-
 
 # SIM:BA3_heg_inn_th2_vivado:
 #     extends: .simulate_project
@@ -60,5 +55,4 @@ CHK:BA3_heg_inn_th2:
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
-  tags:
-    - normal-ops
+
