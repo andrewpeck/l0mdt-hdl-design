@@ -38,7 +38,8 @@ library  vamc_lib;
 
 entity ucm_cvp_b_slope is
   generic(
-    g_NUM_RPC_LAYERS : integer := 4
+    g_NUM_RPC_LAYERS : integer := 4;
+    g_DEBUG_TYPE : string := "old"
   );
   port (
     clk           : in std_logic;
@@ -106,10 +107,12 @@ architecture beh of ucm_cvp_b_slope is
   signal bden       : std_logic_vector(4 + sum_zz'length-1 downto 0);
   signal bden_dv    : std_logic;
 
-  signal bdiv_aux   : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
-  signal bdiv_aux_dv: std_logic;
-  signal bdiv       : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
-  signal bdiv_dv    : std_logic;
+  signal bdiv_aux     : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
+  signal bdiv_aux_dv  : std_logic;
+  signal bdiv         : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
+  signal bdiv_dv      : std_logic;
+  signal bdiv_vu_res  : std_logic_vector(bden'length -1 downto 0);
+  signal bdiv_vu_dv   : std_logic;
 
   signal e_y_aux    : std_logic_vector(max(4,sum_y_sc'length) -1 downto 0);
   signal e_y_aux_dv : std_logic;
@@ -557,6 +560,24 @@ begin
       --
       o_result    => bdiv_aux,
       o_dv        => bdiv_aux_dv
+  );
+  DIV_b_VU : entity shared_lib.VU_custom_div
+    generic map(
+      g_DENOMINATOR_LEN => bden'length,
+      g_QUOTIENT_LEN    => bden'length,
+      g_MEM_WIDTH       => 2097152,
+      g_SCALAR          => 2048,
+      g_SCALAR_10X      => 0
+    )
+    port map(
+      clk         => clk,
+      rst         => rst,
+      ena         => ena,
+      --
+      i_den       => bden,
+      i_dv        => bden_dv,
+      o_res       => bdiv_vu_res,
+      o_dv        => bdiv_vu_dv
   );
   DIV_b_IP : div_gen_r2s_v1
   PORT MAP (
