@@ -8,7 +8,7 @@ variables:
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'add_apptainer_support'
+      ref: '208-hog-logs'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
