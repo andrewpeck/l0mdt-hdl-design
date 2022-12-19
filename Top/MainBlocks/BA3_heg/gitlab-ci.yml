@@ -21,7 +21,7 @@ SIM:BA3_heg_questa:
     PROJECT_NAME: MainBlocks/BA3_heg
     HOG_APPTAINER_IMAGE: /Data/images/l0mdt_Ubuntu20.04.sif
   tags:
-    - argos
+    - normal-ops
   allow_failure: false
 
 SIM:BA3_heg_riviera:
@@ -31,7 +31,7 @@ SIM:BA3_heg_riviera:
     PROJECT_NAME: MainBlocks/BA3_heg
     HOG_APPTAINER_IMAGE: /Data/images/l0mdt_Ubuntu20.04.sif
   tags:
-    - argos
+    - normal-ops
   allow_failure: false
 
 COMP:BA3_heg:
