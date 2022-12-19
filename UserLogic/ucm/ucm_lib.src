@@ -37,5 +37,7 @@ UserLogic/ucm/src/ucm_cvp_phimod.vhd
 
 UserLogic/ucm/src/ucm.vhd
 
+UserLogic/ucm/src/main_div.mem
+
 
 

@@ -111,8 +111,14 @@ architecture beh of ucm_cvp_b_slope is
   signal bdiv_aux_dv  : std_logic;
   signal bdiv         : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
   signal bdiv_dv      : std_logic;
-  signal bdiv_vu_res  : std_logic_vector(bden'length -1 downto 0);
-  signal bdiv_vu_dv   : std_logic;
+  signal bden_inv_res : std_logic_vector(50 -1 downto 0);
+  signal bden_inv_dv  : std_logic;
+
+  signal bdiv_vu_res_descale  : std_logic_vector(39 -1 downto 0);
+  
+  signal bdiv_vu_res          : std_logic_vector(83 -1 downto 0);
+  signal bdiv_vu_dv           : std_logic;
+
 
   signal e_y_aux    : std_logic_vector(max(4,sum_y_sc'length) -1 downto 0);
   signal e_y_aux_dv : std_logic;
@@ -177,20 +183,20 @@ architecture beh of ucm_cvp_b_slope is
   signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
   signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
 
-  COMPONENT div_gen_r2s_v1
-    PORT (
-      aclk : IN STD_LOGIC;
-      aclken : IN STD_LOGIC;
-      aresetn : IN STD_LOGIC;
-      s_axis_divisor_tvalid : IN STD_LOGIC;
-      s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-      s_axis_dividend_tvalid : IN STD_LOGIC;
-      s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
-      m_axis_dout_tvalid : OUT STD_LOGIC;
-      m_axis_dout_tuser : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-      m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
-    );
-  END COMPONENT;
+  -- COMPONENT div_gen_r2s_v1
+  --   PORT (
+  --     aclk : IN STD_LOGIC;
+  --     aclken : IN STD_LOGIC;
+  --     aresetn : IN STD_LOGIC;
+  --     s_axis_divisor_tvalid : IN STD_LOGIC;
+  --     s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+  --     s_axis_dividend_tvalid : IN STD_LOGIC;
+  --     s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
+  --     m_axis_dout_tvalid : OUT STD_LOGIC;
+  --     m_axis_dout_tuser : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+  --     m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
+  --   );
+  -- END COMPONENT;
 
   COMPONENT e_z_div
     PORT (
@@ -220,6 +226,20 @@ architecture beh of ucm_cvp_b_slope is
     );
   END COMPONENT;
 
+  COMPONENT rom
+    GENERIC (
+      MXADRB : INTEGER;
+      MXDATB : INTEGER;
+      ROM_FILE : STRING;
+      ROM_STYLE : STRING
+    );
+    PORT (
+      clka : IN STD_LOGIC;
+      ena : IN STD_LOGIC;
+      addra : IN STD_LOGIC_VECTOR;
+      douta : OUT STD_LOGIC_VECTOR
+    );
+    END COMPONENT;
 
 begin
 
@@ -504,7 +524,7 @@ begin
     generic map(
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 3
+      g_OUT_PIPE_STAGES => 5
     )
     port map(
       clk         => clk,
@@ -540,64 +560,103 @@ begin
       o_dv        => bden_dv
   );
   -----------------------------------------------------------------------------------------------
+  -----------------------------------------------------------------------------------------------
   -- int_slope <= (b_nom(c_B_DEN_NOM - 1) * 2048)/b_den(c_B_DEN_NOM -1);
   bnom_sc <= bnom & "00000000000";
-  DIV_b_ent : entity shared_lib.generic_pipelined_MATH
-    generic map(
-      g_OPERATION => "/",
-      g_IN_PIPE_STAGES  => 5,
-      g_OUT_PIPE_STAGES => 5
-    )
-    port map(
-      clk         => clk,
-      rst         => rst,
-      --
-      i_in_A      => bnom_sc,
-      i_in_B      => bden,
-      i_in_C      => "0",
-      i_in_D      => "0",
-      i_dv        => bden_dv,
-      --
-      o_result    => bdiv_aux,
-      o_dv        => bdiv_aux_dv
-  );
-  DIV_b_VU : entity shared_lib.VU_custom_div
-    generic map(
-      g_DENOMINATOR_LEN => bden'length,
-      g_QUOTIENT_LEN    => bden'length,
-      g_MEM_WIDTH       => 2097152,
-      g_SCALAR          => 2048,
-      g_SCALAR_10X      => 0
-    )
-    port map(
-      clk         => clk,
-      rst         => rst,
-      ena         => ena,
-      --
-      i_den       => bden,
-      i_dv        => bden_dv,
-      o_res       => bdiv_vu_res,
-      o_dv        => bdiv_vu_dv
-  );
-  DIV_b_IP : div_gen_r2s_v1
-  PORT MAP (
-    aclk => clk,
-    aclken => ena,
-    aresetn => not rst,
-    s_axis_divisor_tvalid => bden_dv,
-    s_axis_divisor_tdata => bden,
-    s_axis_dividend_tvalid => bnom_dv,
-    s_axis_dividend_tdata => "0000" & bnom_sc,
-    m_axis_dout_tvalid => div_dout_tvalid,
-    -- m_axis_dout_tuser => m_axis_dout_tuser,
-    m_axis_dout_tdata => div_dout_tdata
-  );
+  -- DIV_b_ent : entity shared_lib.generic_pipelined_MATH
+  --   generic map(
+  --     g_OPERATION => "/",
+  --     g_IN_PIPE_STAGES  => 5,
+  --     g_OUT_PIPE_STAGES => 5
+  --   )
+  --   port map(
+  --     clk         => clk,
+  --     rst         => rst,
+  --     --
+  --     i_in_A      => bnom_sc,
+  --     i_in_B      => bden,
+  --     i_in_C      => "0",
+  --     i_in_D      => "0",
+  --     i_dv        => bden_dv,
+  --     --
+  --     o_result    => bdiv_aux,
+  --     o_dv        => bdiv_aux_dv
+  -- );
+
+  -- DIV_b_IP : div_gen_r2s_v1
+  -- PORT MAP (
+  --   aclk => clk,
+  --   aclken => ena,
+  --   aresetn => not rst,
+  --   s_axis_divisor_tvalid => bden_dv,
+  --   s_axis_divisor_tdata => bden,
+  --   s_axis_dividend_tvalid => bnom_dv,
+  --   s_axis_dividend_tdata => "0000" & bnom_sc,
+  --   m_axis_dout_tvalid => div_dout_tvalid,
+  --   -- m_axis_dout_tuser => m_axis_dout_tuser,
+  --   m_axis_dout_tdata => div_dout_tdata
+  -- );
   -- signal div_dout_tdata_q : std_logic_vector(43 downto 0);-- := (others => '0');
   -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
   div_dout_tdata_q <= div_dout_tdata(75 downto 32);
   div_dout_tdata_r <= div_dout_tdata(31 downto 0);
   bdiv <= div_dout_tdata_q  when div_dout_tvalid = '1' else (others => '0') ;
   bdiv_dv <= div_dout_tvalid;
+  -----------------------------------------------------------------------------------------------
+  -- DIV_b_VU : entity shared_lib.VU_custom_div
+  --   generic map(
+  --     g_DENOMINATOR_LEN => bden'length,
+  --     g_QUOTIENT_LEN    => bden_inv_res'length,
+  --     g_MEM_WIDTH       => 2097152,
+  --     g_SCALAR          => x"200000",
+  --     g_SCALAR_10X      => x"800"
+  --   )
+  --   port map(
+  --     clk         => clk,
+  --     rst         => rst,
+  --     ena         => ena,
+  --     --
+  --     i_den       => bden,
+  --     i_dv        => bden_dv,
+  --     o_res       => bden_inv_res,
+  --     o_dv        => bden_inv_dv
+  -- );
+  div_main_den_gen : rom
+    GENERIC MAP(
+        MXADRB => bden'length,
+        MXDATB => bden_inv_res'length,
+        ROM_FILE => "main_div.mem",
+        ROM_STYLE => "auto"
+    )
+    PORT MAP(
+        ena => '1',
+        clka => clk,
+        addra => bden,
+        douta => bden_inv_res
+    );
+    
+
+  DIV_b_VUX : entity shared_lib.generic_pipelined_MATH
+  generic map(
+    g_OPERATION => "*",
+    g_IN_PIPE_STAGES  => 5,
+    g_OUT_PIPE_STAGES => 5
+  )
+  port map(
+    clk         => clk,
+    rst         => rst,
+    --
+    i_in_A      => bnom,
+    i_in_B      => bden_inv_res,
+    i_in_C      => "0",
+    i_in_D      => "0",
+    i_dv        => bden_inv_dv,
+    --
+    o_result    => bdiv_vu_res,
+    o_dv        => bdiv_vu_dv 
+);
+  bdiv_vu_res_descale <= bdiv_vu_res(60 -1 downto 21);
+  -----------------------------------------------------------------------------------------------
   -----------------------------------------------------------------------------------------------
   --   e_y <= (sum_y(1) * 2048) / num_h_i(6);
   sum_y_sc <= sum_y & "00000000000";
