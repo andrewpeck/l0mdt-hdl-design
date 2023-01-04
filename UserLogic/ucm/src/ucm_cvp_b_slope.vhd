@@ -621,7 +621,22 @@ begin
   --     o_res       => bden_inv_res,
   --     o_dv        => bden_inv_dv
   -- );
-  div_main_den_gen : rom
+
+  -- div_main_den_gen : rom
+  --   GENERIC MAP(
+  --       MXADRB => bden'length,
+  --       MXDATB => bden_inv_res'length,
+  --       ROM_FILE => "main_div.mem",
+  --       ROM_STYLE => "auto"
+  --   )
+  --   PORT MAP(
+  --       ena => '1',
+  --       clka => clk,
+  --       addra => bden,
+  --       douta => bden_inv_res
+  --   );
+
+  div_main_den_gen : VU_rom
     GENERIC MAP(
         MXADRB => bden'length,
         MXDATB => bden_inv_res'length,
@@ -632,7 +647,9 @@ begin
         ena => '1',
         clka => clk,
         addra => bden,
-        douta => bden_inv_res
+        dvin => bden_dv,
+        douta => bden_inv_res,
+        dvout => bden_inv_dv
     );
     
 

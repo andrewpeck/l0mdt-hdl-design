@@ -1,8 +1,10 @@
-module rom #(parameter MXADRB       = 9,
-parameter MXDATB       = 11,
-parameter ROMLENGTH    = 1 << MXADRB,
-parameter ROM_FILE     = "a0.mem",
-parameter ROM_STYLE    = "auto") (
+module VU_rom #(
+  parameter MXADRB = 9,
+  parameter MXDATB       = 11,
+  parameter ROMLENGTH    = 1 << MXADRB,
+  parameter ROM_FILE     = "a0.mem",
+  parameter ROM_STYLE    = "auto"
+) (
   input clka,
   input ena,
   input      [MXADRB-1:0] addra,

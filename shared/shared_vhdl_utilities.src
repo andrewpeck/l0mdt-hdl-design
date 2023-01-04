@@ -12,5 +12,10 @@ shared/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
 
 shared/vhdl_utilities/pkg/VU_custom_div_pkg.vhd
 shared/vhdl_utilities/pkg/VU_custom_div.vhd
+#---------------------------------
+# verilod
+#---------------------------------
+shared/vhdl_utilities/src/VU_rom.v
+
 
 
