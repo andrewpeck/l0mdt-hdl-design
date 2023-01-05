@@ -1,3 +1,4 @@
+UserLogic/daq/autogen/yml2hdl.vhd
 UserLogic/daq/autogen/daq_v3.vhd
 
 UserLogic/daq/daq-lxa-core/pkg/daq_defs.vhd
