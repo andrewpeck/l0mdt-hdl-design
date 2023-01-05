@@ -57,3 +57,4 @@ package.json
 Plots
 *.rst
 **/*.yml.old
+xproj

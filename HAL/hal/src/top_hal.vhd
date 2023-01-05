@@ -117,10 +117,12 @@ entity top_hal is
     --
     -- FIXME: this is a pipeline of 18 things, which may be partially stuffed
     --
-    daq_streams : in felix_stream_avt (c_HPS_MAX_HP_INN
-                                           + c_HPS_MAX_HP_MID
-                                           + c_HPS_MAX_HP_OUT - 1 downto 0);
+    -- daq_streams : in felix_stream_avt (c_HPS_MAX_HP_INN
+    --                                        + c_HPS_MAX_HP_MID
+    --                                        + c_HPS_MAX_HP_OUT - 1 downto 0);
 
+    daq_streams : in felix_stream_avt(c_DAQ_LINKS-1 downto 0);
+    
     --------------------------------------------------------------------------------
     -- AXI
     --------------------------------------------------------------------------------

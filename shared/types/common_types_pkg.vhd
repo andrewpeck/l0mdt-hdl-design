@@ -348,21 +348,24 @@ package common_types_pkg is
    function convert(x: mtc2nsp_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: mtc2nsp_avt) return mtc2nsp_avt;
 
-   subtype felix_data is std_logic_vector(250-1 downto 0);
-   attribute w of felix_data : subtype is 250;
+   subtype felix_data is std_logic_vector(34-1 downto 0);
+   attribute w of felix_data : subtype is 34;
+
+   type felix_data_avt is array(integer range <>) of felix_data;
+   attribute w of felix_data_avt : type is 136;
 
    type felix_stream_rt is record
       valid : std_logic;
       data : felix_data;
    end record felix_stream_rt;
-   attribute w of felix_stream_rt : type is 251;
+   attribute w of felix_stream_rt : type is 35;
    function width(x: felix_stream_rt) return natural;
    function convert(x: felix_stream_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: felix_stream_rt) return felix_stream_rt;
    function zero(tpl: felix_stream_rt) return felix_stream_rt;
 
    subtype felix_stream_vt is std_logic_vector(felix_stream_rt'w-1 downto 0);
-   attribute w of felix_stream_vt : subtype is 251;
+   attribute w of felix_stream_vt : subtype is 35;
 
    type felix_stream_art is array(integer range <>) of felix_stream_rt;
    function width(x: felix_stream_art) return integer;

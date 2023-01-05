@@ -28,7 +28,8 @@ entity felix_tx is
     clk40   : in std_logic;
     reset_i : in std_logic;
 
-    daq_streams : in felix_stream_avt (g_NUM_UPLINKS-1 downto 0);
+    -- daq_streams : in felix_stream_avt (g_NUM_UPLINKS-1 downto 0);
+    daq_streams : in felix_data_avt(g_NUM_UPLINKS-1 downto 0);
 
     -- 256 bits / bx from mgt
     mgt_word_array_o : out std32_array_t (g_NUM_UPLINKS-1 downto 0);
@@ -87,8 +88,8 @@ begin
           mgt_tx_usrclk_i          => clk320,
           mgt_tx_ready_i           => not reset_i,
           mgt_tx_data_o            => mgt_word_array_o(I),
-          tx_data_i(66 downto 0)   => daq_streams(I)(66 downto 0),
-          tx_data_i(233 downto 67) => (others => '1'),
+          tx_data_i(33 downto 0)   => daq_streams(I)(33 downto 0),
+          tx_data_i(233 downto 34) => (others => '1'),
           tx_ready_o               => ready_o(I),
           tx_had_not_ready_o       => was_not_ready_o(I)
           );

@@ -41,7 +41,7 @@ package cfg_global_default_pkg is
     -- NUM_MDT_CH_INN                : integer;    -- set the number of hir processors on the station
 
     ENABLE_ST_EXT                 : std_logic;  -- enable or disable extra processing station
-    EN_MDT_CH_EXT                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
+    EN_MDT_CH_EXT                 : std_logic_vector(-1 downto 0);
     -- NUM_MDT_CH_EXT                : integer;    -- set the number of hir processors on the station
 
     ENABLE_ST_MID                 : std_logic;  -- enable or disable middle processing station

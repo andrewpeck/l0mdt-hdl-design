@@ -116,10 +116,11 @@ entity ult is
     i_minus_neighbor_segments : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    o_daq_streams : out felix_stream_avt (c_HPS_MAX_HP_INN
-                                              + c_HPS_MAX_HP_MID
-                                              + c_HPS_MAX_HP_OUT - 1 downto 0);
+    -- o_daq_streams : out felix_stream_avt (c_HPS_MAX_HP_INN
+    --                                           + c_HPS_MAX_HP_MID
+    --                                           + c_HPS_MAX_HP_OUT - 1 downto 0);
     -- o_daq_streams             : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    o_daq_streams             : out felix_data_avt(4-1 downto 0);
 
     -- Segments Out to Neighbor
     o_plus_neighbor_segments_av  : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
