@@ -34,11 +34,9 @@ entity daq is
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
     ttc_commands      : in  l0mdt_ttc_rt;
-    -- ctrl_v            : in  std_logic_vector; -- : in  DAQ_CTRL_t;
-    -- mon_v             : out std_logic_vector;-- : out DAQ_MON_t;
+    ctrl_v            : in  std_logic_vector; -- : in  DAQ_CTRL_t;
+    mon_v             : out std_logic_vector;-- : out DAQ_MON_t;
     ----------------------------------------------------------------------
-    i_lxa_strb        : in  std_logic;
-    i_ecr_strb        : in  std_logic;
     i_flags           : in  std_logic_vector(6 downto 0);
     i_ec              : in  std_logic;
     i_sector_id       : in  std_logic_vector(3 downto 0);
@@ -152,8 +150,8 @@ begin
                 i_sys_rst      => clock_and_control.rst,
                 i_sys_bx       => clock_and_control.bx,
                 ------------------------------------------------------------------
-                i_lxa_strb => i_lxa_strb,
-                i_ecr_strb => i_ecr_strb,
+                i_lxa_strb => ttc_commands.lxa,
+                i_ecr_strb => ttc_commands.ecr,
                 i_bcid_cnt => ttc_commands.bcid,
                 o_event_id => event_id,
                 ------------------------------------------------------------------
