@@ -28,8 +28,8 @@ entity felix_tx is
     clk40   : in std_logic;
     reset_i : in std_logic;
 
-    -- daq_streams : in felix_stream_avt (g_NUM_UPLINKS-1 downto 0);
-    daq_streams : in felix_data_avt(g_NUM_UPLINKS-1 downto 0);
+    daq_streams : in felix_stream_avt (g_NUM_UPLINKS-1 downto 0);
+    -- daq_streams : in felix_data_avt(g_NUM_UPLINKS-1 downto 0);
 
     -- 256 bits / bx from mgt
     mgt_word_array_o : out std32_array_t (g_NUM_UPLINKS-1 downto 0);
