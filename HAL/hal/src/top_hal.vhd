@@ -644,7 +644,7 @@ begin  -- architecture behavioral
       -- this needs some kind of translation layer to map user logic daq links
       -- onto felix links
 
-      daq_streams      => daq_streams (c_NUM_DAQ_STREAMS-1 downto 0),
+      daq_streams      => daq_streams, -- (c_NUM_DAQ_STREAMS-1 downto 0),
       mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
       ready_o          => open,
       was_not_ready_o  => open,
