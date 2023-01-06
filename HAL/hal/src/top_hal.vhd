@@ -645,7 +645,8 @@ begin  -- architecture behavioral
       -- onto felix links
 
       daq_streams      => daq_streams, -- (c_NUM_DAQ_STREAMS-1 downto 0),
-      mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
+      mgt_word_array_o => felix_uplink_mgt_word_array(c_DAQ_LINKS-1 downto 0),
+      -- mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
       ready_o          => open,
       was_not_ready_o  => open,
       strobe_320       => strobe_320
