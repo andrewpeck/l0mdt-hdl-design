@@ -153,7 +153,7 @@ begin
     G0: if jj = 0  generate
       u_daq_fifo_pipeline : entity daq_lib.daq_fifo_pipeline
         generic map (g_FIFO_DEPTH       => 16, -- : integer;
-                   g_FIFO_MEMORY_TYPE => "auto") -- : string)
+                     g_FIFO_MEMORY_TYPE => "auto") -- : string)
         port map (i_clk => clock_and_control.clk, -- : std_logic;
                   i_rst => clock_and_control.rst, -- : std_logic;
                   -- priority -----------------------------------
@@ -170,7 +170,7 @@ begin
      else generate
       u_daq_fifo_pipeline : entity daq_lib.daq_fifo_pipeline
         generic map (g_FIFO_DEPTH       => 2**(jj+5), -- : integer;
-                   g_FIFO_MEMORY_TYPE => "auto") -- : string)
+                     g_FIFO_MEMORY_TYPE => "auto") -- : string)
         port map (i_clk => clock_and_control.clk, -- : std_logic;
                   i_rst => clock_and_control.rst, -- : std_logic;
                   -- priority -----------------------------------
