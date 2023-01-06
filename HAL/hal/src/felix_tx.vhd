@@ -69,11 +69,17 @@ begin
 
   felix_tx_gen : for I in 0 to g_NUM_UPLINKS-1 generate
     constant station : integer := stream_to_station
-                                  (c_HPS_NUM_MDT_CH_INN,
-                                   c_HPS_NUM_MDT_CH_MID,
-                                   c_HPS_NUM_MDT_CH_OUT,
-                                   c_HPS_NUM_MDT_CH_EXT,
+                                  (c_DAQ_INN_LINKS,
+                                   c_DAQ_MID_LINKS,
+                                   c_DAQ_OUT_LINKS,
+                                   c_DAQ_EXT_LINKS,
                                    I);
+--                                   (c_HPS_NUM_MDT_CH_INN,
+--                                    c_HPS_NUM_MDT_CH_MID,
+--                                    c_HPS_NUM_MDT_CH_OUT,
+--                                    c_HPS_NUM_MDT_CH_EXT,
+--                                    I);
+
   begin
     station_tag : for STATION_NUM in station to station generate
 
