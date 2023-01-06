@@ -625,7 +625,7 @@ begin  -- architecture behavioral
 
   felix_tx_inst : entity work.felix_tx
     generic map (
-      g_NUM_UPLINKS => c_NUM_DAQ_STREAMS
+      g_NUM_UPLINKS => c_DAQ_LINKS -- c_NUM_DAQ_STREAMS
       )
     port map (
       clk320           => clocks.clock320,
