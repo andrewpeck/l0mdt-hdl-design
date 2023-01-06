@@ -150,7 +150,7 @@ begin
                 i_sys_rst      => clock_and_control.rst,
                 i_sys_bx       => clock_and_control.bx,
                 ------------------------------------------------------------------
-                i_lxa_strb => ttc_commands.lxa,
+                i_lxa_strb => ttc_commands.l0a,
                 i_ecr_strb => ttc_commands.ecr,
                 i_bcid_cnt => ttc_commands.bcid,
                 o_event_id => event_id,
