@@ -1,15 +1,12 @@
 #################### BA3_ucm Project ###########################
 GEN:BA3_ucm:
-    extends: .generate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/BA3_ucm
-      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-      
-    # tags:
-      # - normal-ops
-      # - hog
-      # - "2020.2"
+  extends: .generate_project
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_ucm
+    HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+  tags:
+    - normal-ops
 
 
 # SIM:BA3_ucm_vivado:
