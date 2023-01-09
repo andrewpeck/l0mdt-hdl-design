@@ -311,7 +311,9 @@ begin
       generic map(
         g_OPERATION => "*",
         g_IN_PIPE_STAGES  => 2,
-        g_OUT_PIPE_STAGES => 2
+        g_OUT_PIPE_STAGES => 2,
+        g_in_A_WIDTH => rpc_a(hit_i)'length,
+        g_in_B_WIDTH => rad_a(hit_i)'length
       )
       port map(
         clk         => clk,
@@ -351,7 +353,9 @@ begin
       generic map(
         g_OPERATION => "*",
         g_IN_PIPE_STAGES  => 2,
-        g_OUT_PIPE_STAGES => 2
+        g_OUT_PIPE_STAGES => 2,
+        g_in_A_WIDTH => rpc_a(hit_i)'length,
+        g_in_B_WIDTH => rpc_a(hit_i)'length
       )
       port map(
         clk         => clk,
@@ -371,7 +375,11 @@ begin
     generic map(
       g_OPERATION => "+++",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_OUT_PIPE_STAGES => 1,
+      g_in_A_WIDTH => rpc_a(0)'length,
+      g_in_B_WIDTH => rpc_a(1)'length,
+      g_in_C_WIDTH => rpc_a(2)'length,
+      g_in_D_WIDTH => rpc_a(3)'length
     )
     port map(
       clk         => clk,
@@ -390,7 +398,11 @@ begin
     generic map(
       g_OPERATION => "+++",
       g_IN_PIPE_STAGES  => 2,
-      g_OUT_PIPE_STAGES => 3
+      g_OUT_PIPE_STAGES => 3,
+      g_in_A_WIDTH => rad_a(0)'length,
+      g_in_B_WIDTH => rad_a(1)'length,
+      g_in_C_WIDTH => rad_a(2)'length,
+      g_in_D_WIDTH => rad_a(3)'length
     )
     port map(
       clk         => clk,
@@ -412,7 +424,11 @@ begin
     generic map(
       g_OPERATION => "+++",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_OUT_PIPE_STAGES => 1,
+      g_in_A_WIDTH => mult_zy(0)'length,
+      g_in_B_WIDTH => mult_zy(1)'length,
+      g_in_C_WIDTH => mult_zy(2)'length,
+      g_in_D_WIDTH => mult_zy(3)'length
     )
     port map(
       clk         => clk,
@@ -431,7 +447,11 @@ begin
     generic map(
       g_OPERATION => "+++",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_OUT_PIPE_STAGES => 1,
+      g_in_A_WIDTH => mult_zz(0)'length,
+      g_in_B_WIDTH => mult_zz(1)'length,
+      g_in_C_WIDTH => mult_zz(2)'length,
+      g_in_D_WIDTH => mult_zz(3)'length
     )
     port map(
       clk         => clk,
@@ -450,7 +470,9 @@ begin
     generic map(
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 2,
-      g_OUT_PIPE_STAGES => 2
+      g_OUT_PIPE_STAGES => 2,
+      g_in_A_WIDTH => sum_z'length,
+      g_in_B_WIDTH => sum_z'length
     )
     port map(
       clk         => clk,
@@ -471,7 +493,9 @@ begin
     generic map(
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 2
+      g_OUT_PIPE_STAGES => 2,
+      g_in_A_WIDTH => std_logic_vector(to_unsigned(num_h_i,4))'length,
+      g_in_B_WIDTH => sum_zy'length
     )
     port map(
       clk         => clk,
@@ -603,24 +627,24 @@ begin
   bdiv <= div_dout_tdata_q  when div_dout_tvalid = '1' else (others => '0') ;
   bdiv_dv <= div_dout_tvalid;
   -----------------------------------------------------------------------------------------------
-  -- DIV_b_VU : entity shared_lib.VU_custom_div
-  --   generic map(
-  --     g_DENOMINATOR_LEN => bden'length,
-  --     g_QUOTIENT_LEN    => bden_inv_res'length,
-  --     g_MEM_WIDTH       => 2097152,
-  --     g_SCALAR          => x"200000",
-  --     g_SCALAR_10X      => x"800"
-  --   )
-  --   port map(
-  --     clk         => clk,
-  --     rst         => rst,
-  --     ena         => ena,
-  --     --
-  --     i_den       => bden,
-  --     i_dv        => bden_dv,
-  --     o_res       => bden_inv_res,
-  --     o_dv        => bden_inv_dv
-  -- );
+  DIV_b_VU : entity shared_lib.VU_custom_div
+    generic map(
+      g_DENOMINATOR_LEN => bden'length,
+      g_QUOTIENT_LEN    => bden_inv_res'length,
+      g_MEM_WIDTH       => 2097152,
+      g_SCALAR          => x"200000",
+      g_SCALAR_10X      => x"800"
+    )
+    port map(
+      clk         => clk,
+      rst         => rst,
+      ena         => ena,
+      --
+      i_den       => bden,
+      i_dv        => bden_dv,
+      o_res       => bden_inv_res,
+      o_dv        => bden_inv_dv
+  );
 
   -- div_main_den_gen : rom
   --   GENERIC MAP(

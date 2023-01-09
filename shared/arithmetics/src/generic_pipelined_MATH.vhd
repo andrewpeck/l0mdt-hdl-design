@@ -31,17 +31,21 @@ entity generic_pipelined_MATH is
     -- g_OPERAND_B_WIDTH : integer := 16;     -- width of the second multiplier operand
     g_OUT_PIPE_STAGES : integer := 2;       -- number of the pipeline registers to instantiate at the output of multiplier
     -- g_RESULT_WIDTH    : integer := arith_get_out_width(g_OPERATION,g_OPERAND_A_WIDTH,g_OPERAND_B_WIDTH)
-    g_IN_DEFAULT_VAL : std_logic_vector(0 downto 0) := (others => '0')
+    g_IN_DEFAULT_VAL : std_logic_vector(0 downto 0) := (others => '0');
+    g_in_A_WIDTH : integer := 0;
+    g_in_B_WIDTH : integer := 0;
+    g_in_C_WIDTH : integer := 0;
+    g_in_D_WIDTH : integer := 0
   );
   port (
     -- clock and reset signals
     clk           : in std_logic;
     rst           : in std_logic;
     -- input operands
-    i_in_A        : in std_logic_vector ;--:= g_IN_DEFAULT_VAL;--(g_OPERAND_A_WIDTH-1 downto 0);
-    i_in_B        : in std_logic_vector ;--:= g_IN_DEFAULT_VAL;--(g_OPERAND_B_WIDTH-1 downto 0);
-    i_in_C        : in std_logic_vector ;--:= g_IN_DEFAULT_VAL;--(g_OPERAND_C_WIDTH-1 downto 0);
-    i_in_D        : in std_logic_vector ;--:= g_IN_DEFAULT_VAL;--(g_OPERAND_C_WIDTH-1 downto 0);
+    i_in_A        : in std_logic_vector(g_in_A_WIDTH -1 downto 0) ;--:= g_IN_DEFAULT_VAL;--(g_OPERAND_A_WIDTH-1 downto 0);
+    i_in_B        : in std_logic_vector(g_in_B_WIDTH -1 downto 0) ;--:= g_IN_DEFAULT_VAL;--(g_OPERAND_B_WIDTH-1 downto 0);
+    i_in_C        : in std_logic_vector(g_in_C_WIDTH -1 downto 0) ;--:= g_IN_DEFAULT_VAL;--(g_OPERAND_C_WIDTH-1 downto 0);
+    i_in_D        : in std_logic_vector(g_in_D_WIDTH -1 downto 0) ;--:= g_IN_DEFAULT_VAL;--(g_OPERAND_C_WIDTH-1 downto 0);
     i_dv          : in std_logic; -- specifies that A and B inputs are valid, so their values can be propagated through the pipeline
     -- output product
     o_result      : out std_logic_vector;--((g_RESULT_WIDTH-1) downto 0);

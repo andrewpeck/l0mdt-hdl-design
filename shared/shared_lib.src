@@ -34,6 +34,9 @@ shared/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
 
 shared/vhdl_utilities/pkg/VU_custom_div_pkg.vhd
 shared/vhdl_utilities/src/VU_custom_div.vhd
+shared/vhdl_utilities/pkg/VU_generic_pipelined_MATH_pkg.vhd
+shared/vhdl_utilities/src/VU_generic_pipelined_MATH.vhd
+shared/vhdl_utilities/src/VU_rom.v
 
 #shared/vhdl_utilities/pkg/VUGPPMATH_pkg.vhd
 #shared/vhdl_utilities/src/VUGPPMATH.vhd
