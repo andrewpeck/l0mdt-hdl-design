@@ -111,13 +111,15 @@ architecture beh of ucm_cvp_b_slope is
   signal bdiv_aux_dv  : std_logic;
   signal bdiv         : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
   signal bdiv_dv      : std_logic;
-  signal bden_inv_res : std_logic_vector(50 -1 downto 0);
-  signal bden_inv_dv  : std_logic;
+  signal bdiv_vu     : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
+  signal bdiv_vu_dv  : std_logic;
+  -- signal bden_inv_res : std_logic_vector(50 -1 downto 0);
+  -- signal bden_inv_dv  : std_logic;
 
-  signal bdiv_vu_res_descale  : std_logic_vector(39 -1 downto 0);
+  -- signal bdiv_vu_res_descale  : std_logic_vector(39 -1 downto 0);
   
-  signal bdiv_vu_res          : std_logic_vector(83 -1 downto 0);
-  signal bdiv_vu_dv           : std_logic;
+  -- signal bdiv_vu_res          : std_logic_vector(83 -1 downto 0);
+  -- signal bdiv_vu_dv           : std_logic;
 
 
   signal e_y_aux    : std_logic_vector(max(4,sum_y_sc'length) -1 downto 0);
@@ -183,20 +185,20 @@ architecture beh of ucm_cvp_b_slope is
   signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
   signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
 
-  -- COMPONENT div_gen_r2s_v1
-  --   PORT (
-  --     aclk : IN STD_LOGIC;
-  --     aclken : IN STD_LOGIC;
-  --     aresetn : IN STD_LOGIC;
-  --     s_axis_divisor_tvalid : IN STD_LOGIC;
-  --     s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-  --     s_axis_dividend_tvalid : IN STD_LOGIC;
-  --     s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
-  --     m_axis_dout_tvalid : OUT STD_LOGIC;
-  --     m_axis_dout_tuser : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-  --     m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
-  --   );
-  -- END COMPONENT;
+  COMPONENT div_gen_r2s_v1
+    PORT (
+      aclk : IN STD_LOGIC;
+      aclken : IN STD_LOGIC;
+      aresetn : IN STD_LOGIC;
+      s_axis_divisor_tvalid : IN STD_LOGIC;
+      s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+      s_axis_dividend_tvalid : IN STD_LOGIC;
+      s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
+      m_axis_dout_tvalid : OUT STD_LOGIC;
+      m_axis_dout_tuser : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+      m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
+    );
+  END COMPONENT;
 
   COMPONENT e_z_div
     PORT (
@@ -329,25 +331,25 @@ begin
         o_dv        => mult_zy_dv(hit_i)
     );
     -- MULT_ZY_ENT : entity shared_lib.VUGPPMATH
-    --   generic map(
-    --     g_OPERATION => "*",
-    --     g_IN_PIPE_STAGES  => 2,
-    --     g_OUT_PIPE_STAGES => 2,
-    --     g_length_in_A => SLC_Z_RPC_LEN, 
-    --     g_length_in_B => SLC_Z_RPC_LEN
-    --   )
-    --   port map(
-    --     clk         => clk,
-    --     rst         => rst,
-    --     --
-    --     i_in_A      => rpc_a(hit_i),
-    --     i_in_B      => rad_a(hit_i),
-    --     -- i_in_C      => 0,
-    --     -- i_in_D      => 0,
-    --     i_dv        => set_data_dv,
-    --     --
-    --     o_result    => mult_zy(hit_i),
-    --     o_dv        => mult_zy_dv(hit_i)
+      --   generic map(
+      --     g_OPERATION => "*",
+      --     g_IN_PIPE_STAGES  => 2,
+      --     g_OUT_PIPE_STAGES => 2,
+      --     g_length_in_A => SLC_Z_RPC_LEN, 
+      --     g_length_in_B => SLC_Z_RPC_LEN
+      --   )
+      --   port map(
+      --     clk         => clk,
+      --     rst         => rst,
+      --     --
+      --     i_in_A      => rpc_a(hit_i),
+      --     i_in_B      => rad_a(hit_i),
+      --     -- i_in_C      => 0,
+      --     -- i_in_D      => 0,
+      --     i_dv        => set_data_dv,
+      --     --
+      --     o_result    => mult_zy(hit_i),
+      --     o_dv        => mult_zy_dv(hit_i)
     -- );
     MULT_ZZ_ENT : entity shared_lib.generic_pipelined_MATH
       generic map(
@@ -494,7 +496,7 @@ begin
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 1,
       g_OUT_PIPE_STAGES => 2,
-      g_in_A_WIDTH => std_logic_vector(to_unsigned(num_h_i,4))'length,
+      g_in_A_WIDTH => 4,
       g_in_B_WIDTH => sum_zy'length
     )
     port map(
@@ -607,19 +609,19 @@ begin
   --     o_dv        => bdiv_aux_dv
   -- );
 
-  -- DIV_b_IP : div_gen_r2s_v1
-  -- PORT MAP (
-  --   aclk => clk,
-  --   aclken => ena,
-  --   aresetn => not rst,
-  --   s_axis_divisor_tvalid => bden_dv,
-  --   s_axis_divisor_tdata => bden,
-  --   s_axis_dividend_tvalid => bnom_dv,
-  --   s_axis_dividend_tdata => "0000" & bnom_sc,
-  --   m_axis_dout_tvalid => div_dout_tvalid,
-  --   -- m_axis_dout_tuser => m_axis_dout_tuser,
-  --   m_axis_dout_tdata => div_dout_tdata
-  -- );
+  DIV_b_IP : div_gen_r2s_v1
+  PORT MAP (
+    aclk => clk,
+    aclken => ena,
+    aresetn => not rst,
+    s_axis_divisor_tvalid => bden_dv,
+    s_axis_divisor_tdata => bden,
+    s_axis_dividend_tvalid => bnom_dv,
+    s_axis_dividend_tdata => "0000" & bnom_sc,
+    m_axis_dout_tvalid => div_dout_tvalid,
+    -- m_axis_dout_tuser => m_axis_dout_tuser,
+    m_axis_dout_tdata => div_dout_tdata
+  );
   -- signal div_dout_tdata_q : std_logic_vector(43 downto 0);-- := (others => '0');
   -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
   div_dout_tdata_q <= div_dout_tdata(75 downto 32);
@@ -629,21 +631,28 @@ begin
   -----------------------------------------------------------------------------------------------
   DIV_b_VU : entity shared_lib.VU_custom_div
     generic map(
+      g_NUMERATOR_LEN   => bnom'length,
       g_DENOMINATOR_LEN => bden'length,
-      g_QUOTIENT_LEN    => bden_inv_res'length,
-      g_MEM_WIDTH       => 2097152,
-      g_SCALAR          => x"200000",
-      g_SCALAR_10X      => x"800"
+      g_QUOTIENT_LEN    => bdiv_vu'length,
+      -- g_MEM_WIDTH       => 2097152,
+      -- g_SCALAR          => x"200000",
+      -- g_SCALAR_10X      => x"800"
+      g_MEMORY_FILE => "main_div.mem",
+      g_ROM_STYLE => "auto",
+      g_IN_PIPE_STAGES  => 5,
+      g_OUT_PIPE_STAGES => 5
     )
     port map(
       clk         => clk,
       rst         => rst,
       ena         => ena,
       --
+      i_num       => bnom,
+      i_num_dv    => bnom_dv,
       i_den       => bden,
-      i_dv        => bden_dv,
-      o_res       => bden_inv_res,
-      o_dv        => bden_inv_dv
+      i_den_dv        => bden_dv,
+      o_res       => bdiv_vu,
+      o_dv        => bdiv_vu_dv
   );
 
   -- div_main_den_gen : rom
@@ -660,43 +669,43 @@ begin
   --       douta => bden_inv_res
   --   );
 
-  div_main_den_gen : VU_rom
-    GENERIC MAP(
-        MXADRB => bden'length,
-        MXDATB => bden_inv_res'length,
-        ROM_FILE => "main_div.mem",
-        ROM_STYLE => "auto"
-    )
-    PORT MAP(
-        ena => '1',
-        clka => clk,
-        addra => bden,
-        dvin => bden_dv,
-        douta => bden_inv_res,
-        dvout => bden_inv_dv
-    );
+--   div_main_den_gen : VU_rom
+--     GENERIC MAP(
+--         MXADRB => bden'length,
+--         MXDATB => bden_inv_res'length,
+--         ROM_FILE => "main_div.mem",
+--         ROM_STYLE => "auto"
+--     )
+--     PORT MAP(
+--         ena => '1',
+--         clka => clk,
+--         addra => bden,
+--         dvin => bden_dv,
+--         douta => bden_inv_res,
+--         dvout => bden_inv_dv
+--     );
     
 
-  DIV_b_VUX : entity shared_lib.generic_pipelined_MATH
-  generic map(
-    g_OPERATION => "*",
-    g_IN_PIPE_STAGES  => 5,
-    g_OUT_PIPE_STAGES => 5
-  )
-  port map(
-    clk         => clk,
-    rst         => rst,
-    --
-    i_in_A      => bnom,
-    i_in_B      => bden_inv_res,
-    i_in_C      => "0",
-    i_in_D      => "0",
-    i_dv        => bden_inv_dv,
-    --
-    o_result    => bdiv_vu_res,
-    o_dv        => bdiv_vu_dv 
-);
-  bdiv_vu_res_descale <= bdiv_vu_res(60 -1 downto 21);
+--   DIV_b_VUX : entity shared_lib.generic_pipelined_MATH
+--   generic map(
+--     g_OPERATION => "*",
+--     g_IN_PIPE_STAGES  => 5,
+--     g_OUT_PIPE_STAGES => 5
+--   )
+--   port map(
+--     clk         => clk,
+--     rst         => rst,
+--     --
+--     i_in_A      => bnom,
+--     i_in_B      => bden_inv_res,
+--     i_in_C      => "0",
+--     i_in_D      => "0",
+--     i_dv        => bden_inv_dv,
+--     --
+--     o_result    => bdiv_vu_res,
+--     o_dv        => bdiv_vu_dv 
+-- );
+--   bdiv_vu_res_descale <= bdiv_vu_res(60 -1 downto 21);
   -----------------------------------------------------------------------------------------------
   -----------------------------------------------------------------------------------------------
   --   e_y <= (sum_y(1) * 2048) / num_h_i(6);
