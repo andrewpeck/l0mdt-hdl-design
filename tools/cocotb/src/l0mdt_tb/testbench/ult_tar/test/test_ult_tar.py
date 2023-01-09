@@ -243,7 +243,15 @@ def ult_tar_test(dut):
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list         =  []
     single_interface_list = []
+    print("IACOPO - Get Input Test Vector List for Ports across all input interfaces")
     for n_ip_intf in range(UltTarPorts.n_input_interfaces): # Add concept of interface
+        ### IACOPO - This if/else was added to avoid issue with 
+        ### processing of EXT 
+        print("AAAAAA1")
+        # if inputs_station_id[n_ip_intf] == "EXT":
+            
+        #     single_interface_list = [0 for _ in range(len(tv_bcid_list))]
+        # else:
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
             tvformat=input_tvformats[n_ip_intf],
@@ -252,14 +260,16 @@ def ult_tar_test(dut):
             station_ID=inputs_station_id[n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
             cnd_thrd_id = inputs_thread_n[n_ip_intf]
-            ))
+        ))
         for io in range(UltTarPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
-
+        print("AAAAAA2")
    ###Get Output Test Vector List for Ports across all output interfaces##
+    print("IACOPO - Get Output Test Vector List for Ports across all output interfaces")
     output_tv_list        =  []
     single_interface_list = []
     for n_op_intf in range(UltTarPorts.n_output_interfaces): # Add concept of interface
+        print("IACOPO - Adding output interfaces", n_op_intf)
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
             tvformat=output_tvformats[n_op_intf],

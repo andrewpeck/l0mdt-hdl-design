@@ -17,8 +17,6 @@ from l0mdt_tb.utils.tv import tvRTL
 import logging
 import logging.config
 
-
-
 def timing_file_from_data_filename(data_file):
 
     path = Path(data_file)
@@ -58,7 +56,7 @@ def timing_info_gen(filename):
 
 def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):  
     station_num = station_name_to_id(station_ID)
-    #print(" _event_belongs_to_sectorID station_ID = ", station_ID, "station_num =", station_num)
+    #print("IACOPO - _event_belongs_to_sectorID station_ID = ", station_ID, "station_num =", station_num)
     if(station_num == -99):
         sl_trailer = DF[icand].getBitFieldWord("SL_TRAILER", "")
     elif station_ID != "EXT": #EXT station not supported by TV generator
@@ -71,7 +69,7 @@ def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):
     evt_sector_id = fiber_id + 1
 
     if sectorID == evt_sector_id:
-        #print("events.py: sectorID = ",sectorID," fiber_id = ",fiber_id," evt_sector_id =",evt_sector_id)
+        #print("IACOPO@AAA events.py: sectorID = ",sectorID," fiber_id = ",fiber_id," evt_sector_id =",evt_sector_id)
         return 1
     else:
         return 0
@@ -240,9 +238,13 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
         if evt == e_idx:
             break
         else:
-            print("\nEvent: ", ievent)
+            print("\nEvent: ", ievent,flush=True)
             for this_candidate in range(n_candidates):
-                #print ("this_candidate = ", this_candidate, " thread id = ", tv_thread_mapping[this_candidate], " tv_format = ",tvformat)
+                print("CHECK - ievent",ievent)
+                print("CHECK - this_candidate = ", this_candidate)
+                print("CHECK - len(tv_bcid_list)",len(tv_bcid_list))
+                print("CHECK - len(tv_thread_mapping)",len(tv_thread_mapping))
+                #print ("this_candidate = ", this_candidate, " thread id = ", tv_thread_mapping[this_candidate], " tv_format = ",tvformat,flush=True)
                 if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate] == 1, station_ID = stationID[this_candidate]): #TODO - Need to handle EXT station 
                     EXP_DF.clear()
                     RTL_DFSL.clear()
@@ -367,6 +369,10 @@ def parse_tvlist(
 ):
     events_list = tv_bcid_list
 
+    print("parse_tvlist - ", "station_ID", station_ID)
+    print("n_to_load", n_to_load)
+    print("n_ports",n_ports)
+
     #print("events.py VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
 
 
@@ -380,10 +386,11 @@ def parse_tvlist(
     else:
         my_cnd_thrd_id = cnd_thrd_id
     
-    #print("Events.py : my_cnd_thread_id = ",my_cnd_thrd_id)
+    print("IACOPO - before reading events")
 
     #    tv_reader_pkl.dump_event(events_list[0])
     for ievent in range(len(events_list)):  # range(n_to_load):
+        print(f"IACOPO - event {ievent} started")
         if valid_events < n_to_load:
             event_found_for_port_interface = 0
             for my_port in range(n_ports):                
@@ -399,16 +406,16 @@ def parse_tvlist(
                     #tvtools.dump_event(events_list,ievent)
                     #print(events_list[ievent].DF_SL[my_port].print_blocks())
                     #print("Transaction %d, Candidate %d n_to_load %d tvformat=%s tv_type=%s" %(ievent,my_port,n_to_load,tvformat,tv_type))
-
                     event_found_for_port_interface = 1
                     tv[my_port][valid_events] = get_bitfield(
                         events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type
                     )
 
-                    # print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
+                    print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
             if event_found_for_port_interface:
                 valid_events = valid_events + 1
         else:
+            print("IACOPO - called break, loaded events")
             break
 
     if valid_events < n_to_load :        
@@ -418,6 +425,11 @@ def parse_tvlist(
         print (" ****************************************")
         print (" ****************************************")
         sys.exit("Exiting due to Errors")
+
+
+    print("IACOPO _ print tv _ BEGIN")
+    print(tv)
+    print("IACOPO _ print tv _ END")
     return tv
 
 

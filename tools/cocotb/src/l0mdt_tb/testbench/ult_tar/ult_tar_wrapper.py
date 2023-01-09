@@ -36,7 +36,7 @@ class UltTarWrapper(block_wrapper.BlockWrapper):
         self, input_testvectors,n_to_send=-1, l0id_request=-1, event_delays=False
     ):
 
-
+        print("send_input_events - called")
 
         hooks           = []
         input_interface = 0
@@ -58,18 +58,20 @@ class UltTarWrapper(block_wrapper.BlockWrapper):
 
 
             cocotb.log.info(
-                f"Sending {len(input_events)} events to input (port_num) = ({io})"
+                f"Sending {len(input_events)} events to input (interface) = ({input_interface}) (port_num) = ({io})"
             )
 
             hook = None
             for iword, word in enumerate(input_events):
                     flow_kwargs = {}
-
+                    print(f"IACOPO - Sending word n. {iword}",word)
                     # delays are entered at event boundaries
                     hook = (
                         Event()
                     )  # used to tell outside world that all events have been queued to be sent into the fifos
                     driver.append(word, event=hook, **flow_kwargs)
+                    
+            print("IACOPO - Aho")
             if hook:
                 hooks.append(hook.wait())
 
