@@ -156,7 +156,9 @@ begin
     generic map(
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_OUT_PIPE_STAGES => 1,
+      g_in_A_WIDTH => mdt_R_sc'length + 1,
+      g_in_B_WIDTH => 1 + i_offset'length
     )
     port map(
       clk         => clk,
@@ -164,8 +166,8 @@ begin
       --
       i_in_A      => '0' & mdt_R_sc,
       i_in_B      => std_logic_vector(resize(i_offset,1 +i_offset'length)),--off_sc,
-      i_in_C      => "0",
-      i_in_D      => "0",
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
       i_dv        => i_data_valid,--off_sc_dv,
       --
       o_result    => bnom,
@@ -176,7 +178,9 @@ begin
     generic map(
       g_OPERATION => "/",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_OUT_PIPE_STAGES => 1,
+      g_in_A_WIDTH => bnom'length,
+      g_in_B_WIDTH => 1 + slope'length
     )
     port map(
       clk         => clk,
@@ -184,8 +188,8 @@ begin
       --
       i_in_A      => bnom,
       i_in_B      => std_logic_vector(resize(signed(slope),1 +slope'length)),
-      i_in_C      => "0",
-      i_in_D      => "0",
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
       i_dv        => bnom_dv,
       --
       o_result    => old_vec_pos,
@@ -215,7 +219,9 @@ begin
     generic map(
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_OUT_PIPE_STAGES => 1,
+      g_in_A_WIDTH => vec_pos'length,
+      g_in_B_WIDTH => mult'length
     )
     port map(
       clk         => clk,
@@ -223,8 +229,8 @@ begin
       --
       i_in_A      => vec_pos,
       i_in_B      => mult,
-      i_in_C      => "0",
-      i_in_D      => "0",
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
       i_dv        => vec_pos_dv,
       --
       o_result    => vec_pos_mult,
