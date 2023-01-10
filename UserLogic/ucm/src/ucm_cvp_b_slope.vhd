@@ -323,8 +323,8 @@ begin
         --
         i_in_A      => std_logic_vector(rpc_a(hit_i)),
         i_in_B      => std_logic_vector(rad_a(hit_i)),
-        i_in_C      => "0",
-        i_in_D      => "0",
+        -- i_in_C      => "0",
+        -- i_in_D      => "0",
         i_dv        => set_data_dv,
         --
         o_result    => mult_zy(hit_i),
@@ -365,8 +365,8 @@ begin
         --
         i_in_A      => std_logic_vector(rpc_a(hit_i)),
         i_in_B      => std_logic_vector(rpc_a(hit_i)),
-        i_in_C      => "0",
-        i_in_D      => "0",
+        -- i_in_C      => "0",
+        -- i_in_D      => "0",
         i_dv        => set_data_dv,
         --
         o_result    => mult_zz(hit_i),
@@ -482,8 +482,8 @@ begin
       --
       i_in_A      => sum_z,
       i_in_B      => sum_z,
-      i_in_C      => "0",
-      i_in_D      => "0",
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
       i_dv        => sum_z_dv,
       --
       o_result    => sqr_zz,
@@ -505,8 +505,8 @@ begin
       --
       i_in_A      => std_logic_vector(to_unsigned(num_h_i,4)),
       i_in_B      => sum_zy,
-      i_in_C      => "0",
-      i_in_D      => "0",
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
       i_dv        => sum_zy_dv,
       --
       o_result    => bnom_1,
@@ -531,7 +531,9 @@ begin
     generic map(
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 2,
-      g_OUT_PIPE_STAGES => 3
+      g_OUT_PIPE_STAGES => 3,
+      g_in_A_WIDTH => sum_y'length,
+      g_in_B_WIDTH => sum_z_pl'length
     )
     port map(
       clk         => clk,
@@ -539,8 +541,8 @@ begin
       --
       i_in_A      => sum_y,
       i_in_B      => sum_z_pl,
-      i_in_C      => "0",
-      i_in_D      => "0",
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
       i_dv        => sum_z_pl_dv,
       --
       o_result    => bnom_2,
@@ -550,7 +552,9 @@ begin
     generic map(
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 5
+      g_OUT_PIPE_STAGES => 5,
+      g_in_A_WIDTH => bnom_1'length + 1,
+      g_in_B_WIDTH => bnom_2'length + 1
     )
     port map(
       clk         => clk,
@@ -558,8 +562,8 @@ begin
       --
       i_in_A      => '0' & bnom_1,
       i_in_B      => '0' & bnom_2,
-      i_in_C      => "0",
-      i_in_D      => "0",
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
       i_dv        => bnom_2_dv,
       --
       o_result    => bnom,
@@ -570,7 +574,10 @@ begin
     generic map(
       g_OPERATION => "*-",
       g_IN_PIPE_STAGES  => 3,
-      g_OUT_PIPE_STAGES => 5
+      g_OUT_PIPE_STAGES => 5,
+      g_in_A_WIDTH => 4,
+      g_in_B_WIDTH => sum_zz'length,
+      g_in_C_WIDTH => sqr_zz'length
     )
     port map(
       clk         => clk,
@@ -579,7 +586,7 @@ begin
       i_in_A      => std_logic_vector(to_unsigned(num_h_i,4)),
       i_in_B      => sum_zz,
       i_in_C      => sqr_zz,
-      i_in_D      => "0",
+      -- i_in_D      => "0",
       i_dv        => sum_zz_dv,
       --
       o_result    => bden,
@@ -715,7 +722,9 @@ begin
     generic map(
       g_OPERATION => "/",
       g_IN_PIPE_STAGES  => 11,
-      g_OUT_PIPE_STAGES => 11
+      g_OUT_PIPE_STAGES => 11,
+      g_in_A_WIDTH => sum_y_sc'length,
+      g_in_B_WIDTH => 4
     )
     port map(
       clk         => clk,
@@ -723,8 +732,8 @@ begin
       --
       i_in_A      => sum_y_sc,
       i_in_B      => std_logic_vector(to_unsigned(num_h_i,4)),
-      i_in_C      => "0",
-      i_in_D      => "0",
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
       i_dv        => sum_y_dv,
       --
       o_result    => e_y_aux,
@@ -755,7 +764,9 @@ begin
     generic map(
       g_OPERATION => "/",
       g_IN_PIPE_STAGES  => 11,
-      g_OUT_PIPE_STAGES => 50
+      g_OUT_PIPE_STAGES => 50,
+      g_in_A_WIDTH => sum_z'length,
+      g_in_B_WIDTH => 4
     )
     port map(
       clk         => clk,
@@ -763,8 +774,8 @@ begin
       --
       i_in_A      => sum_z,
       i_in_B      => std_logic_vector(to_unsigned(num_h_i,4)),
-      i_in_C      => "0",
-      i_in_D      => "0",
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
       i_dv        => sum_z_dv,
       --
       o_result    => e_z_aux,
@@ -814,7 +825,9 @@ begin
     generic map(
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_OUT_PIPE_STAGES => 1,
+      g_in_A_WIDTH => bdiv'length,
+      g_in_B_WIDTH => e_z_pl'length
     )
     port map(
       clk         => clk,
@@ -822,8 +835,8 @@ begin
       --
       i_in_A      => bdiv,
       i_in_B      => e_z_pl,
-      i_in_C      => "0",
-      i_in_D      => "0",
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
       i_dv        => bdiv_dv and e_z_pl_dv,
       --
       o_result    => s_e_z,
@@ -851,7 +864,9 @@ begin
     generic map(
       g_OPERATION => "--",
       g_IN_PIPE_STAGES  => 4,
-      g_OUT_PIPE_STAGES => 4
+      g_OUT_PIPE_STAGES => 4,
+      g_in_A_WIDTH => e_y_pl'length,
+      g_in_B_WIDTH => s_e_z'length
     )
     port map(
       clk         => clk,
@@ -859,8 +874,8 @@ begin
       --
       i_in_A      => e_y_pl,
       i_in_B      => s_e_z,
-      i_in_C      => "0",
-      i_in_D      => "0",
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
       i_dv        => s_e_z_dv and e_y_pl_dv,
       --
       o_result    => int_off,

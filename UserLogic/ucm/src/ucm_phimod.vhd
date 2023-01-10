@@ -169,7 +169,9 @@ begin
           g_IN_PIPE_STAGES  => 2,
           -- g_OPERAND_A_WIDTH => SLC_COMMON_POSPHI_LEN,
           -- g_OPERAND_B_WIDTH => 3,
-          g_OUT_PIPE_STAGES => 2
+          g_OUT_PIPE_STAGES => 2,
+          g_in_A_WIDTH => int_phimod'length,
+          g_in_B_WIDTH => 3
         )
         port map(
           clk         => clk,
@@ -177,8 +179,8 @@ begin
           --
           i_in_A      => int_phimod,
           i_in_B      => std_logic_vector(to_unsigned(integer(3),3)),
-          i_in_C      => "0",
-          i_in_D      => "0",
+          -- i_in_C      => "0",
+          -- i_in_D      => "0",
           i_dv        => int_phimod_dv,
           --
           o_result    => int_phimod_pl,

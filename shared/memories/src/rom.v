@@ -1,4 +1,4 @@
-module VU_rom #(
+module rom #(
   parameter MXADRB = 9,
   parameter MXDATB       = 11,
   parameter ROMLENGTH    = 1 << MXADRB,
