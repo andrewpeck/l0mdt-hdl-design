@@ -72,16 +72,16 @@ architecture beh of hps is
 
   -- signal ctrl_super_r : HPS_SUPER_CTRL_t;
   -- signal mon_super_r  : HPS_SUPER_MON_t;
-  constant SUPER_CTRL_LEN : integer := width(ctrl_r.super); 
-  constant SUPER_MON_LEN  : integer := width(mon_r.super);
+  constant SUPER_CTRL_LEN : integer := HPS_SUPER_CTRL_t'w; --width(ctrl_r.super); 
+  constant SUPER_MON_LEN  : integer := HPS_SUPER_MON_t'w; -- width(mon_r.super);
   signal ctrl_super_v : std_logic_vector(SUPER_CTRL_LEN -1 downto 0);
   signal mon_super_v  : std_logic_vector(SUPER_MON_LEN -1 downto 0);
 
 
-  constant CSF_CTRL_LEN : integer := width(ctrl_r.csf.csf(0)); 
-  constant CSF_MON_LEN  : integer := width(mon_r.csf.csf(0));
-  constant LSF_CTRL_LEN : integer := width(ctrl_r.lsf.lsf(0));
-  constant LSF_MON_LEN  : integer := width(mon_r.lsf.lsf(0));
+  constant CSF_CTRL_LEN : integer := HPS_CSF_CSF_CTRL_t'w; --width(ctrl_r.csf.csf(0)); 
+  constant CSF_MON_LEN  : integer := HPS_CSF_CSF_MON_t'w; --width(mon_r.csf.csf(0));
+  constant LSF_CTRL_LEN : integer := HPS_LSF_LSF_CTRL_t'w; --width(ctrl_r.lsf.lsf(0));
+  constant LSF_MON_LEN  : integer := HPS_LSF_LSF_MON_t'w;--width(mon_r.lsf.lsf(0));
 
   type csf_ctrl_avt is array (integer range <>) of std_logic_vector(CSF_CTRL_LEN -1 downto 0);
   type csf_mon_avt  is array (integer range <>) of std_logic_vector(CSF_MON_LEN  -1 downto 0);
@@ -93,17 +93,17 @@ architecture beh of hps is
   signal lsf_ctrl_av : lsf_ctrl_avt(c_NUM_THREADS -1 downto 0 );
   signal lsf_mon_av  : lsf_mon_avt (c_NUM_THREADS -1 downto 0 );
 
-  signal pc_t0_ctrl_v  : std_logic_vector(width(ctrl_r.MDT_T0.MDT_T0)-1 downto 0);
-  signal pc_tc_ctrl_v  : std_logic_vector(width(ctrl_r.MDT_TC.MDT_TC)-1 downto 0);
-  signal pc_t0_mon_v  : std_logic_vector(width(mon_r.MDT_T0.MDT_T0)-1 downto 0);
-  signal pc_tc_mon_v  : std_logic_vector(width(mon_r.MDT_TC.MDT_TC)-1 downto 0);
+  signal pc_t0_ctrl_v : std_logic_vector(HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY'w -1 downto 0);
+  signal pc_tc_ctrl_v : std_logic_vector(HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY'w -1 downto 0);
+  signal pc_t0_mon_v  : std_logic_vector(HPS_MDT_T0_MDT_T0_MON_t_ARRAY'w -1 downto 0);
+  signal pc_tc_mon_v  : std_logic_vector(HPS_MDT_TC_MDT_TC_MON_t_ARRAY'w -1 downto 0);
 
   signal local_freeze : std_logic;
 
   -- type heg_ctrl_at is array (0 to 3 ) of  HPS_HEG_HEG_CTRL_t;
   -- type heg_mon_at is array (0 to 3 ) of  HPS_HEG_HEG_MON_t;
-  type heg_ctrl_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(width(ctrl_r.heg.heg(0))-1 downto 0);
-  type heg_mon_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(width(mon_r.heg.heg(0))-1 downto 0);
+  type heg_ctrl_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(HPS_HEG_HEG_CTRL_t'w -1 downto 0);
+  type heg_mon_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(HPS_HEG_HEG_MON_t'w -1 downto 0);
 
   signal heg_ctrl_av : heg_ctrl_avt;
   signal heg_mon_av : heg_mon_avt;

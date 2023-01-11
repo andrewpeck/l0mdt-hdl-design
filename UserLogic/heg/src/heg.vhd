@@ -72,8 +72,8 @@ architecture beh of heg is
   
   -- constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
   -- constant SUPER_MON_LEN  : integer := len(mon_r.super);
-  signal ctrl_super_v : std_logic_vector(HPS_HEG_HEG_CTRL_t'w -1 downto 0);
-  signal mon_super_v  : std_logic_vector(HPS_HEG_HEG_MON_t'w -1 downto 0);
+  signal ctrl_super_v : std_logic_vector(HPS_HEG_HEG_SUPER_CTRL_t'w -1 downto 0);
+  signal mon_super_v  : std_logic_vector(HPS_HEG_HEG_SUPER_MON_t'w -1 downto 0);
 
   signal heg_ctrl_ctrl_r  : HPS_HEG_HEG_CTRL_CTRL_t;
   signal heg_ctrl_mon_r   : HPS_HEG_HEG_CTRL_MON_t;

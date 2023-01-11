@@ -146,9 +146,6 @@ architecture beh of heg_tb is
   signal heg2sf_slc_data_aav  : heg2sf_slc_data_aavt;
   signal heg2sf_mdt_data_aav  : heg2sf_mdt_data_aavt;
 
-
-
-
 begin
   -------------------------------------------------------------------------------------
   -- control signals

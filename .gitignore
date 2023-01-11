@@ -58,3 +58,4 @@ Plots
 *.rst
 **/*.yml.old
 xproj
+*.xlsx

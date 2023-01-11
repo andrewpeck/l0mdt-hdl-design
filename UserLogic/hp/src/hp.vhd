@@ -147,24 +147,24 @@ begin
 
   );
 
-  dv_delay : entity vamc_lib.vamc_spl
-  generic map(
-    g_DELAY_CYCLES        => 1,
-    g_PIPELINE_WIDTH      => 2
-  )
-  port map(
-    clk         => clk,
-    rst         => hp_rst,
-    ena         => hp_ena,
-    --
-    i_data      => hm2pl,
-    -- i_dv        => i_mdt_tar_r.data_valid,
-    o_data      => plout_hm
-    -- o_dv        => pl_mdt_tar_dv
-  );
+  -- dv_delay : entity vamc_lib.vamc_spl
+  -- generic map(
+  --   g_DELAY_CYCLES        => 1,
+  --   g_PIPELINE_WIDTH      => 2
+  -- )
+  -- port map(
+  --   clk         => clk,
+  --   rst         => hp_rst,
+  --   ena         => hp_ena,
+  --   --
+  --   i_data      => hm2pl,
+  --   -- i_dv        => i_mdt_tar_r.data_valid,
+  --   o_data      => plout_hm
+  --   -- o_dv        => pl_mdt_tar_dv
+  -- );
 
-  data_2_sf_r.mdt_valid <= plout_hm(0);
-  data_2_sf_r.data_valid <= plout_hm(1) and tdc_paramcalc_valid;
+  data_2_sf_r.mdt_valid <= hm2pl(0);
+  data_2_sf_r.data_valid <= hm2pl(1) and tdc_paramcalc_valid;
 
 end beh;
 
