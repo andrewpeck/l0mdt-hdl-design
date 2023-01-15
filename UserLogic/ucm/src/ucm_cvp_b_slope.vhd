@@ -42,6 +42,7 @@ entity ucm_cvp_b_slope is
     g_DEBUG_TYPE : string := "old";
     g_MAIN_DIV_SIM_ENABLE : std_logic := '1';
     g_MAIN_DIV_IPR2_ENABLE : std_logic := '1';
+    g_MAIN_DIV_LUT_ENABLE : std_logic := '1';
     g_MAIN_DIV_SEL : string := "IPR2"
   );
   port (
@@ -116,6 +117,8 @@ architecture beh of ucm_cvp_b_slope is
   signal bdiv_ipr2_dv : std_logic;
   signal bdiv_vu      : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
   signal bdiv_vu_dv   : std_logic;
+  signal bdiv_lut      : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
+  signal bdiv_lut_dv   : std_logic;
   signal bdiv         : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
   signal bdiv_dv      : std_logic;
   -- signal bden_inv_res : std_logic_vector(50 -1 downto 0);
@@ -507,82 +510,89 @@ begin
       o_dv        => bnom_dv
     );
   --   b_den(0) <= (num_h_i(1) * sum_zz) - sqr_sum_z;
-  -- MULTSUB_b_den_ent : entity shared_lib.generic_pipelined_MATH
-  --   generic map(
-  --     g_OPERATION => "*-",
-  --     g_IN_PIPE_STAGES  => 3,
-  --     g_OUT_PIPE_STAGES => 5,
-  --     g_in_A_WIDTH => 4,
-  --     g_in_B_WIDTH => sum_zz'length,
-  --     g_in_C_WIDTH => sqr_zz'length
-  --   )
-  --   port map(
-  --     clk         => clk,
-  --     rst         => rst,
-  --     --
-  --     i_in_A      => std_logic_vector(to_unsigned(num_h_i,4)),
-  --     i_in_B      => sum_zz,
-  --     i_in_C      => sqr_zz,
-  --     -- i_in_D      => "0",
-  --     i_dv        => sum_zz_dv,
-  --     --
-  --     o_result    => bden,
-  --     o_dv        => bden_dv
-  --   );
-  -----------------------------------------------------------------------------------------------
-  -----------------------------------------------------------------------------------------------
--- int_slope <= (b_nom(c_B_DEN_NOM - 1) * 2048)/b_den(c_B_DEN_NOM -1);
-bnom_sc <= bnom & "00000000000";
-MAIN_DIV_SIM: if g_MAIN_DIV_SIM_ENABLE generate
-  DIV_b_ent : entity shared_lib.generic_pipelined_MATH
+  MULTSUB_b_den_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
-      g_OPERATION => "/",
-      g_IN_PIPE_STAGES  => 5,
+      g_OPERATION => "*-",
+      g_IN_PIPE_STAGES  => 3,
       g_OUT_PIPE_STAGES => 5,
-      g_in_A_WIDTH => bnom_sc'length,
-      g_in_B_WIDTH => bden'length
+      g_in_A_WIDTH => 4,
+      g_in_B_WIDTH => sum_zz'length,
+      g_in_C_WIDTH => sqr_zz'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => bnom_sc,
-      i_in_B      => bden,
-      -- i_in_C      => "0",
+      i_in_A      => std_logic_vector(to_unsigned(num_h_i,4)),
+      i_in_B      => sum_zz,
+      i_in_C      => sqr_zz,
       -- i_in_D      => "0",
-      i_dv        => bden_dv,
+      i_dv        => sum_zz_dv,
       --
-      o_result    => bdiv_sim,
-      o_dv        => bdiv_sim_dv
+      o_result    => bden,
+      o_dv        => bden_dv
     );
-end generate MAIN_DIV_SIM;
-MAIN_DIV_IPR2: if g_MAIN_DIV_IPR2_ENABLE generate
-  DIV_b_IP : div_gen_r2s_v1
-    PORT MAP (
-      aclk => clk,
-      aclken => ena,
-      aresetn => not rst,
-      s_axis_divisor_tvalid => bden_dv,
-      s_axis_divisor_tdata => bden,
-      s_axis_dividend_tvalid => bnom_dv,
-      s_axis_dividend_tdata => "0000" & bnom_sc,
-      m_axis_dout_tvalid => div_dout_tvalid,
-      -- m_axis_dout_tuser => m_axis_dout_tuser,
-      m_axis_dout_tdata => div_dout_tdata
-    );
-  -- signal div_dout_tdata_q : std_logic_vector(43 downto 0);-- := (others => '0');
-  -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
-  div_dout_tdata_q <= div_dout_tdata(75 downto 32);
-  div_dout_tdata_r <= div_dout_tdata(31 downto 0);
-  bdiv_ipr2 <= div_dout_tdata_q  when div_dout_tvalid = '1' else (others => '0') ;
-  bdiv_ipr2_dv <= div_dout_tvalid;
-end generate MAIN_DIV_IPR2;
+  -----------------------------------------------------------------------------------------------
+  -----------------------------------------------------------------------------------------------
+  -- int_slope <= (b_nom(c_B_DEN_NOM - 1) * 2048)/b_den(c_B_DEN_NOM -1);
+  bnom_sc <= bnom & "00000000000";
+  MAIN_DIV_SIM: if g_MAIN_DIV_SIM_ENABLE generate
+    DIV_b_ent : entity shared_lib.generic_pipelined_MATH
+      generic map(
+        g_OPERATION => "/",
+        g_IN_PIPE_STAGES  => 5,
+        g_OUT_PIPE_STAGES => 5,
+        g_in_A_WIDTH => bnom_sc'length,
+        g_in_B_WIDTH => bden'length
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        --
+        i_in_A      => bnom_sc,
+        i_in_B      => bden,
+        -- i_in_C      => "0",
+        -- i_in_D      => "0",
+        i_dv        => bden_dv,
+        --
+        o_result    => bdiv_sim,
+        o_dv        => bdiv_sim_dv
+      );
+  end generate MAIN_DIV_SIM;
+  MAIN_DIV_IPR2: if g_MAIN_DIV_IPR2_ENABLE generate
+    DIV_b_IP : div_gen_r2s_v1
+      PORT MAP (
+        aclk => clk,
+        aclken => ena,
+        aresetn => not rst,
+        s_axis_divisor_tvalid => bden_dv,
+        s_axis_divisor_tdata => bden,
+        s_axis_dividend_tvalid => bnom_dv,
+        s_axis_dividend_tdata => "0000" & bnom_sc,
+        m_axis_dout_tvalid => div_dout_tvalid,
+        -- m_axis_dout_tuser => m_axis_dout_tuser,
+        m_axis_dout_tdata => div_dout_tdata
+      );
+    -- signal div_dout_tdata_q : std_logic_vector(43 downto 0);-- := (others => '0');
+    -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
+    div_dout_tdata_q <= div_dout_tdata(75 downto 32);
+    div_dout_tdata_r <= div_dout_tdata(31 downto 0);
+    bdiv_ipr2 <= div_dout_tdata_q  when div_dout_tvalid = '1' else (others => '0') ;
+    bdiv_ipr2_dv <= div_dout_tvalid;
+  end generate MAIN_DIV_IPR2;
+  
+  MAIN_DIV_LUT: if g_MAIN_DIV_LUT_ENABLE generate
+    bdiv_lut <= (others => '0');
+  end generate MAIN_DIV_LUT;
 
 
-MAIN_DIV_SEL: if g_MAIN_DIV_SEL = "IPR2" generate
-  bdiv <= bdiv_ipr2;
-  bdiv_dv <= bdiv_ipr2_dv;
-end generate MAIN_DIV_SEL;
+  MAIN_DIV_SEL: if g_MAIN_DIV_SEL = "IPR2" generate
+    bdiv <= bdiv_ipr2;
+    bdiv_dv <= bdiv_ipr2_dv;
+  elsif g_MAIN_DIV_SEL = "LUT" generate
+    bdiv <= bdiv_lut;
+    bdiv_dv <= bdiv_lut_dv;
+  end generate MAIN_DIV_SEL;
   -----------------------------------------------------------------------------------------------
   -- DIV_b_VU : entity shared_lib.VU_custom_div
   --   generic map(
