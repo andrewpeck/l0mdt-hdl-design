@@ -39,7 +39,10 @@ library  vamc_lib;
 entity ucm_cvp_b_slope is
   generic(
     g_NUM_RPC_LAYERS : integer := 4;
-    g_DEBUG_TYPE : string := "old"
+    g_DEBUG_TYPE : string := "old";
+    g_MAIN_DIV_SIM_ENABLE : std_logic := '1';
+    g_MAIN_DIV_IPR2_ENABLE : std_logic := '1';
+    g_MAIN_DIV_SEL : string := "IPR2"
   );
   port (
     clk           : in std_logic;
@@ -107,12 +110,14 @@ architecture beh of ucm_cvp_b_slope is
   signal bden       : std_logic_vector(4 + sum_zz'length-1 downto 0);
   signal bden_dv    : std_logic;
 
-  signal bdiv_aux     : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
-  signal bdiv_aux_dv  : std_logic;
+  signal bdiv_sim     : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
+  signal bdiv_sim_dv  : std_logic;
+  signal bdiv_ipr2    : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
+  signal bdiv_ipr2_dv : std_logic;
+  signal bdiv_vu      : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
+  signal bdiv_vu_dv   : std_logic;
   signal bdiv         : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
   signal bdiv_dv      : std_logic;
-  signal bdiv_vu     : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
-  signal bdiv_vu_dv  : std_logic;
   -- signal bden_inv_res : std_logic_vector(50 -1 downto 0);
   -- signal bden_inv_dv  : std_logic;
 
@@ -329,28 +334,7 @@ begin
         --
         o_result    => mult_zy(hit_i),
         o_dv        => mult_zy_dv(hit_i)
-    );
-    -- MULT_ZY_ENT : entity shared_lib.VUGPPMATH
-      --   generic map(
-      --     g_OPERATION => "*",
-      --     g_IN_PIPE_STAGES  => 2,
-      --     g_OUT_PIPE_STAGES => 2,
-      --     g_length_in_A => SLC_Z_RPC_LEN, 
-      --     g_length_in_B => SLC_Z_RPC_LEN
-      --   )
-      --   port map(
-      --     clk         => clk,
-      --     rst         => rst,
-      --     --
-      --     i_in_A      => rpc_a(hit_i),
-      --     i_in_B      => rad_a(hit_i),
-      --     -- i_in_C      => 0,
-      --     -- i_in_D      => 0,
-      --     i_dv        => set_data_dv,
-      --     --
-      --     o_result    => mult_zy(hit_i),
-      --     o_dv        => mult_zy_dv(hit_i)
-    -- );
+      );
     MULT_ZZ_ENT : entity shared_lib.generic_pipelined_MATH
       generic map(
         g_OPERATION => "*",
@@ -371,7 +355,7 @@ begin
         --
         o_result    => mult_zz(hit_i),
         o_dv        => mult_zz_dv(hit_i)
-    );
+      );
   end generate SQR_LOOP;
   SUM_Z_ENT : entity shared_lib.generic_pipelined_MATH
     generic map(
@@ -395,12 +379,12 @@ begin
       --
       o_result    => sum_z,
       o_dv        => sum_z_dv
-  );
+    );
   SUM_Y_ENT : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "+++",
-      g_IN_PIPE_STAGES  => 2,
-      g_OUT_PIPE_STAGES => 3,
+      g_IN_PIPE_STAGES  => 1,
+      g_OUT_PIPE_STAGES => 1,
       g_in_A_WIDTH => rad_a(0)'length,
       g_in_B_WIDTH => rad_a(1)'length,
       g_in_C_WIDTH => rad_a(2)'length,
@@ -418,9 +402,7 @@ begin
       --
       o_result    => sum_y,
       o_dv        => sum_y_dv
-  );
-
-  -- dv_chain(1) <= or_reduce(mult_zy_dv);
+    );
 
   SUM_ZY_ENT : entity shared_lib.generic_pipelined_MATH
     generic map(
@@ -444,53 +426,8 @@ begin
       --
       o_result    => sum_zy,
       o_dv        => sum_zy_dv
-  );
-  SUM_ZZ_ENT : entity shared_lib.generic_pipelined_MATH
-    generic map(
-      g_OPERATION => "+++",
-      g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1,
-      g_in_A_WIDTH => mult_zz(0)'length,
-      g_in_B_WIDTH => mult_zz(1)'length,
-      g_in_C_WIDTH => mult_zz(2)'length,
-      g_in_D_WIDTH => mult_zz(3)'length
-    )
-    port map(
-      clk         => clk,
-      rst         => rst,
-      --
-      i_in_A      => mult_zz(0),
-      i_in_B      => mult_zz(1),
-      i_in_C      => mult_zz(2),
-      i_in_D      => mult_zz(3),
-      i_dv        => or_reduce(mult_zz_dv),
-      --
-      o_result    => sum_zz,
-      o_dv        => sum_zz_dv
-  );
-  SQR_ZZ_ENT : entity shared_lib.generic_pipelined_MATH
-    generic map(
-      g_OPERATION => "*",
-      g_IN_PIPE_STAGES  => 2,
-      g_OUT_PIPE_STAGES => 2,
-      g_in_A_WIDTH => sum_z'length,
-      g_in_B_WIDTH => sum_z'length
-    )
-    port map(
-      clk         => clk,
-      rst         => rst,
-      --
-      i_in_A      => sum_z,
-      i_in_B      => sum_z,
-      -- i_in_C      => "0",
-      -- i_in_D      => "0",
-      i_dv        => sum_z_dv,
-      --
-      o_result    => sqr_zz,
-      o_dv        => sqr_zz_dv
-  );
-  --------------------------------------------------
-  --   b_nom(0) <= (num_h_i(1) * sum_zy) - (sum_y(0) * sum_Z(0));
+    );
+
   MULT_b_nom1_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "*",
@@ -511,22 +448,22 @@ begin
       --
       o_result    => bnom_1,
       o_dv        => bnom_1_dv
-  );
-  PL_sum_z : entity vamc_lib.vamc_spl
-    generic map(
-      g_DELAY_CYCLES  => 3,
-      g_PIPELINE_WIDTH    => sum_Z'length
-    )
-    port map(
-      clk         => clk,
-      rst         => rst,
-      ena         => ena,
-      --
-      i_data      => sum_z,
-      i_dv        => sum_z_dv,
-      o_data      => sum_z_pl,
-      o_dv        => sum_z_pl_dv
-  );
+    );
+  -- PL_sum_z : entity vamc_lib.vamc_spl
+  --   generic map(
+  --     g_DELAY_CYCLES  => 3,
+  --     g_PIPELINE_WIDTH    => sum_Z'length
+  --   )
+  --   port map(
+  --     clk         => clk,
+  --     rst         => rst,
+  --     ena         => ena,
+  --     --
+  --     i_data      => sum_z,
+  --     i_dv        => sum_z_dv,
+  --     o_data      => sum_z_pl,
+  --     o_dv        => sum_z_pl_dv
+  --   );
   MULT_b_nom2_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "*",
@@ -540,14 +477,14 @@ begin
       rst         => rst,
       --
       i_in_A      => sum_y,
-      i_in_B      => sum_z_pl,
+      i_in_B      => sum_z,
       -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => sum_z_pl_dv,
+      i_dv        => sum_z_dv,
       --
       o_result    => bnom_2,
       o_dv        => bnom_2_dv
-  );
+    );
   SUB_b_nom_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "-",
@@ -568,99 +505,110 @@ begin
       --
       o_result    => bnom,
       o_dv        => bnom_dv
-  );
+    );
   --   b_den(0) <= (num_h_i(1) * sum_zz) - sqr_sum_z;
-  MULTSUB_b_den_ent : entity shared_lib.generic_pipelined_MATH
+  -- MULTSUB_b_den_ent : entity shared_lib.generic_pipelined_MATH
+  --   generic map(
+  --     g_OPERATION => "*-",
+  --     g_IN_PIPE_STAGES  => 3,
+  --     g_OUT_PIPE_STAGES => 5,
+  --     g_in_A_WIDTH => 4,
+  --     g_in_B_WIDTH => sum_zz'length,
+  --     g_in_C_WIDTH => sqr_zz'length
+  --   )
+  --   port map(
+  --     clk         => clk,
+  --     rst         => rst,
+  --     --
+  --     i_in_A      => std_logic_vector(to_unsigned(num_h_i,4)),
+  --     i_in_B      => sum_zz,
+  --     i_in_C      => sqr_zz,
+  --     -- i_in_D      => "0",
+  --     i_dv        => sum_zz_dv,
+  --     --
+  --     o_result    => bden,
+  --     o_dv        => bden_dv
+  --   );
+  -----------------------------------------------------------------------------------------------
+  -----------------------------------------------------------------------------------------------
+-- int_slope <= (b_nom(c_B_DEN_NOM - 1) * 2048)/b_den(c_B_DEN_NOM -1);
+bnom_sc <= bnom & "00000000000";
+MAIN_DIV_SIM: if g_MAIN_DIV_SIM_ENABLE generate
+  DIV_b_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
-      g_OPERATION => "*-",
-      g_IN_PIPE_STAGES  => 3,
+      g_OPERATION => "/",
+      g_IN_PIPE_STAGES  => 5,
       g_OUT_PIPE_STAGES => 5,
-      g_in_A_WIDTH => 4,
-      g_in_B_WIDTH => sum_zz'length,
-      g_in_C_WIDTH => sqr_zz'length
+      g_in_A_WIDTH => bnom_sc'length,
+      g_in_B_WIDTH => bden'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => std_logic_vector(to_unsigned(num_h_i,4)),
-      i_in_B      => sum_zz,
-      i_in_C      => sqr_zz,
+      i_in_A      => bnom_sc,
+      i_in_B      => bden,
+      -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => sum_zz_dv,
+      i_dv        => bden_dv,
       --
-      o_result    => bden,
-      o_dv        => bden_dv
-  );
+      o_result    => bdiv_sim,
+      o_dv        => bdiv_sim_dv
+    );
+end generate MAIN_DIV_SIM;
+MAIN_DIV_IPR2: if g_MAIN_DIV_IPR2_ENABLE generate
+  DIV_b_IP : div_gen_r2s_v1
+    PORT MAP (
+      aclk => clk,
+      aclken => ena,
+      aresetn => not rst,
+      s_axis_divisor_tvalid => bden_dv,
+      s_axis_divisor_tdata => bden,
+      s_axis_dividend_tvalid => bnom_dv,
+      s_axis_dividend_tdata => "0000" & bnom_sc,
+      m_axis_dout_tvalid => div_dout_tvalid,
+      -- m_axis_dout_tuser => m_axis_dout_tuser,
+      m_axis_dout_tdata => div_dout_tdata
+    );
+  -- signal div_dout_tdata_q : std_logic_vector(43 downto 0);-- := (others => '0');
+  -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
+  div_dout_tdata_q <= div_dout_tdata(75 downto 32);
+  div_dout_tdata_r <= div_dout_tdata(31 downto 0);
+  bdiv_ipr2 <= div_dout_tdata_q  when div_dout_tvalid = '1' else (others => '0') ;
+  bdiv_ipr2_dv <= div_dout_tvalid;
+end generate MAIN_DIV_IPR2;
+
+
+MAIN_DIV_SEL: if g_MAIN_DIV_SEL = "IPR2" generate
+  bdiv <= bdiv_ipr2;
+  bdiv_dv <= bdiv_ipr2_dv;
+end generate MAIN_DIV_SEL;
   -----------------------------------------------------------------------------------------------
-  -----------------------------------------------------------------------------------------------
-  -- int_slope <= (b_nom(c_B_DEN_NOM - 1) * 2048)/b_den(c_B_DEN_NOM -1);
-  bnom_sc <= bnom & "00000000000";
-  -- DIV_b_ent : entity shared_lib.generic_pipelined_MATH
+  -- DIV_b_VU : entity shared_lib.VU_custom_div
   --   generic map(
-  --     g_OPERATION => "/",
+  --     g_NUMERATOR_LEN   => bnom'length,
+  --     g_DENOMINATOR_LEN => bden'length,
+  --     g_QUOTIENT_LEN    => bdiv_vu'length,
+  --     -- g_MEM_WIDTH       => 2097152,
+  --     -- g_SCALAR          => x"200000",
+  --     -- g_SCALAR_10X      => x"800"
+  --     g_MEMORY_FILE => "main_div.mem",
+  --     g_ROM_STYLE => "auto",
   --     g_IN_PIPE_STAGES  => 5,
   --     g_OUT_PIPE_STAGES => 5
   --   )
   --   port map(
   --     clk         => clk,
   --     rst         => rst,
+  --     ena         => ena,
   --     --
-  --     i_in_A      => bnom_sc,
-  --     i_in_B      => bden,
-  --     i_in_C      => "0",
-  --     i_in_D      => "0",
-  --     i_dv        => bden_dv,
-  --     --
-  --     o_result    => bdiv_aux,
-  --     o_dv        => bdiv_aux_dv
+  --     i_num       => bnom,
+  --     i_num_dv    => bnom_dv,
+  --     i_den       => bden,
+  --     i_den_dv        => bden_dv,
+  --     o_res       => bdiv_vu,
+  --     o_dv        => bdiv_vu_dv
   -- );
-
-  DIV_b_IP : div_gen_r2s_v1
-  PORT MAP (
-    aclk => clk,
-    aclken => ena,
-    aresetn => not rst,
-    s_axis_divisor_tvalid => bden_dv,
-    s_axis_divisor_tdata => bden,
-    s_axis_dividend_tvalid => bnom_dv,
-    s_axis_dividend_tdata => "0000" & bnom_sc,
-    m_axis_dout_tvalid => div_dout_tvalid,
-    -- m_axis_dout_tuser => m_axis_dout_tuser,
-    m_axis_dout_tdata => div_dout_tdata
-  );
-  -- signal div_dout_tdata_q : std_logic_vector(43 downto 0);-- := (others => '0');
-  -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
-  div_dout_tdata_q <= div_dout_tdata(75 downto 32);
-  div_dout_tdata_r <= div_dout_tdata(31 downto 0);
-  bdiv <= div_dout_tdata_q  when div_dout_tvalid = '1' else (others => '0') ;
-  bdiv_dv <= div_dout_tvalid;
-  -----------------------------------------------------------------------------------------------
-  DIV_b_VU : entity shared_lib.VU_custom_div
-    generic map(
-      g_NUMERATOR_LEN   => bnom'length,
-      g_DENOMINATOR_LEN => bden'length,
-      g_QUOTIENT_LEN    => bdiv_vu'length,
-      -- g_MEM_WIDTH       => 2097152,
-      -- g_SCALAR          => x"200000",
-      -- g_SCALAR_10X      => x"800"
-      g_MEMORY_FILE => "main_div.mem",
-      g_ROM_STYLE => "auto",
-      g_IN_PIPE_STAGES  => 5,
-      g_OUT_PIPE_STAGES => 5
-    )
-    port map(
-      clk         => clk,
-      rst         => rst,
-      ena         => ena,
-      --
-      i_num       => bnom,
-      i_num_dv    => bnom_dv,
-      i_den       => bden,
-      i_den_dv        => bden_dv,
-      o_res       => bdiv_vu,
-      o_dv        => bdiv_vu_dv
-  );
 
   -- div_main_den_gen : rom
   --   GENERIC MAP(
@@ -716,7 +664,7 @@ begin
   -----------------------------------------------------------------------------------------------
   -----------------------------------------------------------------------------------------------
   --   e_y <= (sum_y(1) * 2048) / num_h_i(6);
-  sum_y_sc <= sum_y & "00000000000";
+  -- sum_y_sc <= sum_y & "00000000000";
   
   DIV_e_y_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
@@ -738,19 +686,19 @@ begin
       --
       o_result    => e_y_aux,
       o_dv        => e_y_aux_dv
-  );
+    );
   DIV_e_y_IP : e_y_div
-  PORT MAP (
-    aclk => clk,
-    aclken => ena,
-    aresetn => not rst,
-    s_axis_divisor_tvalid => sum_y_dv,
-    s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
-    s_axis_dividend_tvalid => sum_y_dv,
-    s_axis_dividend_tdata => std_logic_vector(resize(signed(sum_y_sc),32)),
-    m_axis_dout_tvalid => e_y_dout_tvalid,
-    m_axis_dout_tdata => e_y_dout_tdata
-  );
+    PORT MAP (
+      aclk => clk,
+      aclken => ena,
+      aresetn => not rst,
+      s_axis_divisor_tvalid => sum_y_dv,
+      s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
+      s_axis_dividend_tvalid => sum_y_dv,
+      s_axis_dividend_tdata => std_logic_vector(resize(signed(sum_y_sc),32)),
+      m_axis_dout_tvalid => e_y_dout_tvalid,
+      m_axis_dout_tdata => e_y_dout_tdata
+    );
   -- signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
   -- signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
   -- signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
@@ -780,19 +728,19 @@ begin
       --
       o_result    => e_z_aux,
       o_dv        => e_z_aux_dv
-  );
+    );
   DIV_e_z_IP : e_z_div
-  PORT MAP (
-    aclk => clk,
-    aclken => ena,
-    aresetn => not rst,
-    s_axis_divisor_tvalid => sum_z_dv,
-    s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
-    s_axis_dividend_tvalid => sum_z_dv,
-    s_axis_dividend_tdata => sum_z,
-    m_axis_dout_tvalid => e_z_dout_tvalid,
-    m_axis_dout_tdata => e_z_dout_tdata
-  );
+    PORT MAP (
+      aclk => clk,
+      aclken => ena,
+      aresetn => not rst,
+      s_axis_divisor_tvalid => sum_z_dv,
+      s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
+      s_axis_dividend_tvalid => sum_z_dv,
+      s_axis_dividend_tdata => sum_z,
+      m_axis_dout_tvalid => e_z_dout_tvalid,
+      m_axis_dout_tdata => e_z_dout_tdata
+    );
   -- signal e_z_dout_tdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
   -- signal e_z_dout_tdata_q : std_logic_vector(15 downto 0);-- := (others => '0');
   -- signal e_z_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
@@ -802,24 +750,24 @@ begin
   e_z_dv <= e_z_dout_tvalid;
   -----------------------------------------------------------------------------------------------
   PL_e_z : entity vamc_lib.vamc_spl
-  generic map(
-    g_MEMORY_TYPE => "test",
-    -- g_PIPELINE_Tgit YPE => "ring_buffer",
-    g_PIPELINE_TYPE   => "shift_reg", 
-    g_RB_TYPE => "simple",
-    g_DELAY_CYCLES  => 38,
-    g_PIPELINE_WIDTH    => e_z'length
-  )
-  port map(
-    clk         => clk,
-    rst         => rst,
-    ena         => ena,
-    --
-    i_data      => e_z,
-    i_dv        => e_z_dv,--bdiv_dv,,
-    o_data      => e_z_pl,
-    o_dv        => e_z_pl_dv
-);
+    generic map(
+      g_MEMORY_TYPE => "test",
+      -- g_PIPELINE_Tgit YPE => "ring_buffer",
+      g_PIPELINE_TYPE   => "shift_reg", 
+      g_RB_TYPE => "simple",
+      g_DELAY_CYCLES  => 38,
+      g_PIPELINE_WIDTH    => e_z'length
+    )
+    port map(
+      clk         => clk,
+      rst         => rst,
+      ena         => ena,
+      --
+      i_data      => e_z,
+      i_dv        => e_z_dv,--bdiv_dv,,
+      o_data      => e_z_pl,
+      o_dv        => e_z_pl_dv
+    );
   -- s_e_z <= (int_slope * e_z);
   s_e_z_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
@@ -841,24 +789,24 @@ begin
       --
       o_result    => s_e_z,
       o_dv        => s_e_z_dv
-  );
+    );
   --   
   PL_e_y : entity vamc_lib.vamc_spl
-  generic map(
-    g_PIPELINE_TYPE   => "shift_reg", 
-    g_DELAY_CYCLES  => 31,
-    g_PIPELINE_WIDTH    => e_y'length
-  )
-  port map(
-    clk         => clk,
-    rst         => rst,
-    ena         => ena,
-    --
-    i_data      => e_y,
-    i_dv        => e_y_dv,--bdiv_dv,,
-    o_data      => e_y_pl,
-    o_dv        => e_y_pl_dv
-);
+    generic map(
+      g_PIPELINE_TYPE   => "shift_reg", 
+      g_DELAY_CYCLES  => 31,
+      g_PIPELINE_WIDTH    => e_y'length
+    )
+    port map(
+      clk         => clk,
+      rst         => rst,
+      ena         => ena,
+      --
+      i_data      => e_y,
+      i_dv        => e_y_dv,--bdiv_dv,,
+      o_data      => e_y_pl,
+      o_dv        => e_y_pl_dv
+    );
   --   o_offset <= resize((e_y_2) - s_e_z,32);
   off_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
@@ -880,7 +828,7 @@ begin
       --
       o_result    => int_off,
       o_dv        => int_off_dv
-  );
+    );
 
   PL_slope : entity vamc_lib.vamc_spl
     generic map(
@@ -897,311 +845,9 @@ begin
       i_dv        => bdiv_dv,
       o_data      => int_slope,
       o_dv        => int_slope_dv
-  );
+    );
   o_slope <= signed(int_slope);
   o_offset <= resize(signed(int_off),32);
   o_data_valid <= int_slope_dv;
   
 end architecture beh;
-
--- set_data: process(clk) begin
---   if rising_edge(clk) then
---     if rst= '1' then
---       rad_a <= (others => (others => '0'));
---       rpc_a <= (others => (others => '0'));
---       -- dv_chain <= (others => '0');
---       -- int_slope <= (others => '0');
---       -- o_slope <= (others => '0');
---       -- int_offset <= (others => '0');
---       -- o_offset <= (others => '0');
---       -- e_z <= (others => '0');
---       -- e_y <= (others => '0');
---       -- sum_zy <= (others => '0');
---       -- sum_y <= (others => (others => '0'));
---       -- sum_z <= (others => (others => '0'));
---       -- sum_zz <= (others => '0');
---       -- sqr_sum_z <= (others => '0');
---       -- b_nom <= (others => (others => '0'));
---       -- b_den <= (others => (others => '0'));
---       num_h_i <= 0;
---     else
---       if ena =  '1' then
-
---         -- dv_chain(7 downto 0) <= dv_chain(6 downto 0) & i_data_valid;
-
---         -- set_data_dv  <= i_data_valid;
---         -- for i in 0 to 15 loop
---         --   num_h_i(i+1) <= num_h_i(i);
---         -- end loop;
-        
---         -- sum_y(1) <= sum_y(0);
---         -- sum_z(1) <= sum_z(0);
-
---         if i_data_valid = '1' then
---           rad_a(0) <= signed(i_rpc_rad_a(0));
---           rad_a(1) <= signed(i_rpc_rad_a(1));
---           rad_a(2) <= signed(i_rpc_rad_a(2));
---           rad_a(3) <= signed(i_rpc_rad_a(3));
-
---           rpc_a(0) <= barrel_r.rpc0_posz;
---           rpc_a(1) <= barrel_r.rpc1_posz;
---           rpc_a(2) <= barrel_r.rpc2_posz;
---           rpc_a(3) <= barrel_r.rpc3_posz;
-
---           -- coin type
---           case coin is
---             when 0 => num_h_i <=  2;
---             when 1 => num_h_i <=  3;
---             when 2 => num_h_i <=  3;
---             when 3 => num_h_i <=  3;
---             when 4 => num_h_i <=  3;
---             when 5 => num_h_i <=  4;
---             when others =>
---           end case;
---           -- -- set r
---           -- case coin is
---           --   when 0 =>
---           --     rad_a(0) <= signed(i_rpc_rad_a(0));
---           --     rad_a(1) <= signed(i_rpc_rad_a(3));
---           --     rad_a(2) <= (others => '0');
---           --     rad_a(3) <= (others => '0');
---           --   when 1 =>
---           --     rad_a(0) <= signed(i_rpc_rad_a(0));
---           --     rad_a(1) <= signed(i_rpc_rad_a(1));
---           --     rad_a(2) <= signed(i_rpc_rad_a(2));
---           --     rad_a(3) <= (others => '0');
---           --   when 2 =>
---           --     rad_a(0) <= signed(i_rpc_rad_a(0));
---           --     rad_a(1) <= signed(i_rpc_rad_a(1));
---           --     rad_a(2) <= (others => '0');
---           --     rad_a(3) <= (others => '0');
---           --   when 3 =>
---           --     rad_a(0) <= signed(i_rpc_rad_a(0));
---           --     rad_a(1) <= signed(i_rpc_rad_a(0));
---           --     rad_a(2) <= signed(i_rpc_rad_a(3));
---           --     rad_a(3) <= (others => '0');
---           --   when 4 =>
---           --     rad_a(0) <= signed(i_rpc_rad_a(1));
---           --     rad_a(1) <= signed(i_rpc_rad_a(2));
---           --     rad_a(2) <= signed(i_rpc_rad_a(3));
---           --     rad_a(3) <= (others => '0');
---           --   when 5 =>  
---           --     rad_a(0) <= signed(i_rpc_rad_a(0));
---           --     rad_a(1) <= signed(i_rpc_rad_a(1));
---           --     rad_a(2) <= signed(i_rpc_rad_a(2));
---           --     rad_a(3) <= signed(i_rpc_rad_a(3));
-          
---           --   when others => 
---           -- end case;
---           -- -- set_Z
---           -- case coin is
---           --   when 0 =>
---           --     rpc_a(0) <= barrel_r.rpc0_posz;
---           --     rpc_a(1) <= barrel_r.rpc3_posz;
---           --     rpc_a(2) <= (others => '0');
---           --     rpc_a(3) <= (others => '0');
---           --   when 1 =>
---           --     rpc_a(0) <= barrel_r.rpc0_posz;
---           --     rpc_a(1) <= barrel_r.rpc1_posz;
---           --     rpc_a(2) <= barrel_r.rpc2_posz;
---           --     rpc_a(3) <= (others => '0');
---           --   when 2 =>
---           --     rpc_a(0) <= barrel_r.rpc0_posz;
---           --     rpc_a(1) <= barrel_r.rpc1_posz;
---           --     rpc_a(2) <= (others => '0');
---           --     rpc_a(3) <= (others => '0');
---           --   when 3 =>
---           --     rpc_a(0) <= barrel_r.rpc0_posz;
---           --     rpc_a(1) <= barrel_r.rpc2_posz;
---           --     rpc_a(2) <= barrel_r.rpc3_posz;
---           --     rpc_a(3) <= (others => '0');
---           --   when 4 =>
---           --     rpc_a(0) <= barrel_r.rpc1_posz;
---           --     rpc_a(1) <= barrel_r.rpc2_posz;
---           --     rpc_a(2) <= barrel_r.rpc3_posz;
---           --     rpc_a(3) <= (others => '0');
---           --   when 5 =>  
---           --     rpc_a(0) <= barrel_r.rpc0_posz;
---           --     rpc_a(1) <= barrel_r.rpc1_posz;
---           --     rpc_a(2) <= barrel_r.rpc2_posz;
---           --     rpc_a(3) <= barrel_r.rpc3_posz;
-          
---           --   when others => 
---           -- end case;
---           set_data_dv  <= '1';
---         else
---           -- rad_a <= (others => (others => '0'));
---           -- rpc_a <= (others => (others => '0'));
---           -- num_h_i <= 0;
---           set_data_dv  <= '0';
---         end if;
---       end if;
---     end if;
---   end if;
--- end process set_data;
-
--- if set_data_dv = '1' then
---   if num_h_i(0) = 2 then
---     sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
---                   (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2));
---     sum_y(0) <=   resize(rad_a(0),SLC_Z_RPC_LEN +2) + resize(rad_a(1),SLC_Z_RPC_LEN +2);
---     sum_z(0) <=   resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2);
---     sum_zz <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rpc_a(0),SLC_Z_RPC_LEN +2)) + 
---                   (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rpc_a(1),SLC_Z_RPC_LEN +2));
---     sqr_sum_z <=  (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2)) * 
---                   (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2));
---   elsif num_h_i(0) = 3 then
---     sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
---                   (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2)) + 
---                   (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rad_a(2),SLC_Z_RPC_LEN +2));
---     sum_y(0) <=   resize(rad_a(0),SLC_Z_RPC_LEN +2) + resize(rad_a(1),SLC_Z_RPC_LEN +2) + 
---                   resize(rad_a(2),SLC_Z_RPC_LEN +2);
---     sum_z(0) <=   resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + 
---                   resize(rpc_a(2),SLC_Z_RPC_LEN +2);
---     sum_zz <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rpc_a(0),SLC_Z_RPC_LEN +2)) + 
---                   (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rpc_a(1),SLC_Z_RPC_LEN +2)) + 
---                   (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rpc_a(2),SLC_Z_RPC_LEN +2));
---     sqr_sum_z <=  (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2)) * 
---                   (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2));
---   elsif num_h_i(0) = 4 then
---     sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
---                   (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2)) + 
---                   (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rad_a(2),SLC_Z_RPC_LEN +2)) + 
---                   (resize(rpc_a(3),SLC_Z_RPC_LEN +2) * resize(rad_a(3),SLC_Z_RPC_LEN +2));
---     sum_y(0) <=   resize(rad_a(0),SLC_Z_RPC_LEN +2) + resize(rad_a(1),SLC_Z_RPC_LEN +2) + 
---                   resize(rad_a(2),SLC_Z_RPC_LEN +2) + resize(rad_a(3),SLC_Z_RPC_LEN +2);
---     sum_z(0) <=   resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + 
---                   resize(rpc_a(2),SLC_Z_RPC_LEN +2) + resize(rpc_a(3),SLC_Z_RPC_LEN +2);
---     sum_zz <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rpc_a(0),SLC_Z_RPC_LEN +2)) + 
---                   (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rpc_a(1),SLC_Z_RPC_LEN +2)) + 
---                   (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rpc_a(2),SLC_Z_RPC_LEN +2)) +
---                   (resize(rpc_a(3),SLC_Z_RPC_LEN +2) * resize(rpc_a(3),SLC_Z_RPC_LEN +2));
---     sqr_sum_z <=  (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2) + resize(rpc_a(3),SLC_Z_RPC_LEN +2)) * 
---                   (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2) + resize(rpc_a(3),SLC_Z_RPC_LEN +2));
---   else
---     sum_zy <= (others => '0');
---     sum_y(0) <= (others => '0');
---     sum_z(0) <= (others => '0');
---     sum_zz <= (others => '0');
---     sqr_sum_z <= (others => '0');
---   end if;
---   dv_chain(1)  <= '1';
--- else
---   dv_chain(1)  <= '0';
--- end if;
-
--- if dv_chain(1) = '1' then
---   b_nom(0) <= (num_h_i(1) * sum_zy) - (sum_y(0) * sum_Z(0));
---   b_den(0) <= (num_h_i(1) * sum_zz) - sqr_sum_z;
---   dv_chain(2)  <= '1';
--- else
---   dv_chain(2)  <= '0';
--- end if;
-
--- for i in 0 to c_B_DEN_NOM - 2 loop
---   b_nom(i + 1) <= b_nom(i);
---   b_den(i + 1) <= b_den(i);
--- end loop;
-
--- for i in 2 to c_B_DEN_NOM loop
---   dv_chain(i + 1) <= dv_chain(i);
--- end loop;
-
--- if dv_chain(6) = '1' then
---   int_slope <= (b_nom(c_B_DEN_NOM - 1) * 2048)/b_den(c_B_DEN_NOM -1);
---   --
---   e_y <= (sum_y(1) * 2048) / num_h_i(6);
---   e_z <= sum_Z(1) / num_h_i(6);
---   dv_chain(7)  <= '1';
--- else
---   int_slope <= (others => '0');
---   e_y <= (others => '0');
---   e_z <= (others => '0');
---   dv_chain(7)  <= '0';
--- end if;
-
--- if dv_chain(7) = '1' then
---   int_slope_2 <= int_slope;
---   s_e_z <= (int_slope * e_z);
---   e_y_2 <= e_y;
---   dv_chain(8)  <= '1';
--- else
---   dv_chain(8)  <= '0';
---   int_slope_2 <= (others => '0');
---   s_e_z <= (others => '0');
---   e_y_2 <=  (others => '0');
--- end if;
-
--- if dv_chain(8) = '1' then
---   o_slope <= resize(int_slope_2,32);
---   o_offset <= resize((e_y_2) - s_e_z,32);
---   -- o_offset <= (e_y * 1000) - resize((int_slope * e_z * 1000),126);
---   dv_chain(9)  <= '1';
--- else
---   o_slope <= (others => '0');
---   o_offset <= (others => '0');
---   dv_chain(9) <= '0';
--- end if;
-
-
-
-
-
-
--- set coin type
-    -- num_h_i <=  2 when coin = 0 else
-    --           3 when coin = 1 else
-    --           3 when coin = 2 else
-    --           3 when coin = 3 else
-    --           3 when coin = 4 else
-    --           4 when coin = 5 else
-    --           0;
-    -- set z
-    -- rpc_a(0) <= barrel_r.rpc0_posz when coin = 0 else
-    --             barrel_r.rpc0_posz when coin = 1 else
-    --             barrel_r.rpc0_posz when coin = 2 else
-    --             barrel_r.rpc0_posz when coin = 3 else
-    --             barrel_r.rpc1_posz when coin = 4 else
-    --             barrel_r.rpc0_posz when coin = 5 else
-    --             (others => '0');
-    -- rpc_a(1) <= barrel_r.rpc3_posz when coin = 0 else
-    --             barrel_r.rpc1_posz when coin = 1 else
-    --             barrel_r.rpc1_posz when coin = 2 else
-    --             barrel_r.rpc2_posz when coin = 3 else
-    --             barrel_r.rpc2_posz when coin = 4 else
-    --             barrel_r.rpc1_posz when coin = 5 else
-    --               (others => '0');
-    -- rpc_a(2) <= (others => '0') when coin = 0 else
-    --             barrel_r.rpc2_posz when coin = 1 else
-    --             barrel_r.rpc3_posz when coin = 2 else
-    --             barrel_r.rpc3_posz when coin = 3 else
-    --             barrel_r.rpc2_posz when coin = 4 else
-    --             barrel_r.rpc2_posz when coin = 5 else
-    --             (others => '0');
-    -- rpc_a(3) <= barrel_r.rpc3_posz when coin = 5 else
-    --             (others => '0');
-    -- set r
-    -- rad_a(0) <= PHY_BARREL_R0 when coin = 0 else
-    --             PHY_BARREL_R0 when coin = 1 else
-    --             PHY_BARREL_R0 when coin = 2 else
-    --             PHY_BARREL_R0 when coin = 3 else
-    --             PHY_BARREL_R1 when coin = 4 else
-    --             PHY_BARREL_R0 when coin = 5 else
-    --             (others => '0');
-    -- rad_a(1) <= PHY_BARREL_R3 when coin = 0 else
-    --             PHY_BARREL_R1 when coin = 1 else
-    --             PHY_BARREL_R1 when coin = 2 else
-    --             PHY_BARREL_R2 when coin = 3 else
-    --             PHY_BARREL_R2 when coin = 4 else
-    --             PHY_BARREL_R1 when coin = 5 else
-    --             (others => '0');
-    -- rad_a(2) <= (others => '0') when coin = 0 else
-    --             PHY_BARREL_R2 when coin = 1 else
-    --             PHY_BARREL_R3 when coin = 2 else
-    --             PHY_BARREL_R3 when coin = 3 else
-    --             PHY_BARREL_R2 when coin = 4 else
-    --             PHY_BARREL_R2 when coin = 5 else
-    --             (others => '0');
-    -- rad_a(3) <= PHY_BARREL_R3 when coin = 5 else
-    --             (others => '0');
-    
