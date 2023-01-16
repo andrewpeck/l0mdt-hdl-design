@@ -430,6 +430,51 @@ begin
       o_result    => sum_zy,
       o_dv        => sum_zy_dv
     );
+  SUM_ZZ_ENT : entity shared_lib.generic_pipelined_MATH
+    generic map(
+      g_OPERATION => "+++",
+      g_IN_PIPE_STAGES  => 1,
+      g_OUT_PIPE_STAGES => 1,
+      g_in_A_WIDTH => mult_zz(0)'length,
+      g_in_B_WIDTH => mult_zz(1)'length,
+      g_in_C_WIDTH => mult_zz(2)'length,
+      g_in_D_WIDTH => mult_zz(3)'length
+    )
+    port map(
+      clk         => clk,
+      rst         => rst,
+      --
+      i_in_A      => mult_zz(0),
+      i_in_B      => mult_zz(1),
+      i_in_C      => mult_zz(2),
+      i_in_D      => mult_zz(3),
+      i_dv        => or_reduce(mult_zz_dv),
+      --
+      o_result    => sum_zz,
+      o_dv        => sum_zz_dv
+    );
+  SQR_ZZ_ENT : entity shared_lib.generic_pipelined_MATH
+    generic map(
+      g_OPERATION => "*",
+      g_IN_PIPE_STAGES  => 2,
+      g_OUT_PIPE_STAGES => 2,
+      g_in_A_WIDTH => sum_z'length,
+      g_in_B_WIDTH => sum_z'length
+    )
+    port map(
+      clk         => clk,
+      rst         => rst,
+      --
+      i_in_A      => sum_z,
+      i_in_B      => sum_z,
+      -- i_in_C      => "0",
+      -- i_in_D      => "0",
+      i_dv        => sum_z_dv,
+      --
+      o_result    => sqr_zz,
+      o_dv        => sqr_zz_dv
+    );
+  --------------------------------------------------
 
   MULT_b_nom1_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
@@ -471,7 +516,7 @@ begin
     generic map(
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 2,
-      g_OUT_PIPE_STAGES => 3,
+      g_OUT_PIPE_STAGES => 6,
       g_in_A_WIDTH => sum_y'length,
       g_in_B_WIDTH => sum_z_pl'length
     )
@@ -492,7 +537,7 @@ begin
     generic map(
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 5,
+      g_OUT_PIPE_STAGES => 3,
       g_in_A_WIDTH => bnom_1'length + 1,
       g_in_B_WIDTH => bnom_2'length + 1
     )

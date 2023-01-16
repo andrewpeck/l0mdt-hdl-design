@@ -167,6 +167,8 @@ add wave -noupdate -expand -group slc_vp_2_slope /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC
 add wave -noupdate -expand -group slc_vp_2_slope /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/bdiv_sim_dv
 add wave -noupdate -expand -group slc_vp_2_slope /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/bdiv_ipr2
 add wave -noupdate -expand -group slc_vp_2_slope /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/bdiv_ipr2_dv
+add wave -noupdate -expand -group slc_vp_2_slope /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/bdiv_lut
+add wave -noupdate -expand -group slc_vp_2_slope /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/bdiv_lut_dv
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/bdiv
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/bdiv_dv
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/bdiv_vu
@@ -203,7 +205,7 @@ add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/o_slope
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/o_data_valid
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2606990229 fs} 0}
+WaveRestoreCursors {{Cursor 1} {752039082 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 251
 configure wave -valuecolwidth 100
@@ -219,4 +221,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2007500 ps} {5157500 ps}
+WaveRestoreZoom {0 fs} {3150 ns}
