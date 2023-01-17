@@ -1,10 +1,10 @@
 -- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
--- Date        : Tue Jul 12 01:57:22 2022
--- Host        : guille-VirtualBox running 64-bit Ubuntu 18.04.6 LTS
+-- Date        : Tue Jan 17 05:03:53 2023
+-- Host        : VBU2204-1 running 64-bit Ubuntu 22.04.1 LTS
 -- Command     : write_vhdl -force -mode synth_stub
---               /home/guille/ATLAS/l0mdt-fpga-design/UserLogic/ucm/IPs/e_y_div/e_y_div_stub.vhdl
+--               /home/guille/ATLAS/l0mdt-hdl-design/UserLogic/ucm/IPs/e_y_div/e_y_div_stub.vhdl
 -- Design      : e_y_div
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xcvu13p-flga2577-2-e

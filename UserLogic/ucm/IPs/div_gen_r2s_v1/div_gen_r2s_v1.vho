@@ -1,4 +1,4 @@
--- (c) Copyright 1995-2022 Xilinx, Inc. All rights reserved.
+-- (c) Copyright 1995-2023 Xilinx, Inc. All rights reserved.
 -- 
 -- This file contains confidential and proprietary information
 -- of Xilinx, Inc. and is protected under U.S. and
@@ -58,12 +58,12 @@ COMPONENT div_gen_r2s_v1
     aclken : IN STD_LOGIC;
     aresetn : IN STD_LOGIC;
     s_axis_divisor_tvalid : IN STD_LOGIC;
-    s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
     s_axis_dividend_tvalid : IN STD_LOGIC;
-    s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
+    s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
     m_axis_dout_tvalid : OUT STD_LOGIC;
     m_axis_dout_tuser : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
+    m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(55 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
