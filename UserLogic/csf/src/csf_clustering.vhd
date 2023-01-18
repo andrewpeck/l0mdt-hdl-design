@@ -168,7 +168,7 @@ ARCHITECTURE Behavioral OF csf_clustering IS
 BEGIN
   seed <= convert(i_seed, seed);
 
-  invsqrt_mbar : entity rom
+  invsqrt_mbar : rom
   GENERIC MAP(
     MXADRB    => UCM_MBAR_LEN,
     MXDATB    => INV_SQRT_M_LEN,
@@ -182,7 +182,7 @@ BEGIN
     douta => invsqu_m
   );
 
-  sqrt_mbar : entity rom
+  sqrt_mbar : rom
   GENERIC MAP(
     MXADRB    => UCM_MBAR_LEN,
     MXDATB    => SQU_M_LEN,
