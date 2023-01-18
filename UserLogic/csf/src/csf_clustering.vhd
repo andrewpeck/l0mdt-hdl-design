@@ -150,25 +150,25 @@ ARCHITECTURE Behavioral OF csf_clustering IS
   SIGNAL out_cluster : UNSIGNED(MAX_CLUSTERS_LEN - 1 DOWNTO 0) := (OTHERS => '0');
 
   ---COMPONENTS --------
-  COMPONENT rom
-    GENERIC (
-      MXADRB    : INTEGER;
-      MXDATB    : INTEGER;
-      ROM_FILE  : STRING;
-      ROM_STYLE : STRING
-    );
-    PORT (
-      clka  : IN STD_LOGIC;
-      ena   : IN STD_LOGIC;
-      addra : IN STD_LOGIC_VECTOR;
-      douta : OUT STD_LOGIC_VECTOR
-    );
-  END COMPONENT;
+--  COMPONENT rom
+--    GENERIC (
+--      MXADRB    : INTEGER;
+--      MXDATB    : INTEGER;
+--      ROM_FILE  : STRING;
+--      ROM_STYLE : STRING
+--    );
+--    PORT (
+--      clka  : IN STD_LOGIC;
+--      ena   : IN STD_LOGIC;
+--      addra : IN STD_LOGIC_VECTOR;
+--      douta : OUT STD_LOGIC_VECTOR
+--    );
+--  END COMPONENT;
 
 BEGIN
   seed <= convert(i_seed, seed);
 
-  invsqrt_mbar : rom
+  invsqrt_mbar : entity xil_defaultlib.rom
   GENERIC MAP(
     MXADRB    => UCM_MBAR_LEN,
     MXDATB    => INV_SQRT_M_LEN,
@@ -182,7 +182,7 @@ BEGIN
     douta => invsqu_m
   );
 
-  sqrt_mbar : rom
+  sqrt_mbar : entity xil_defaultlib.rom
   GENERIC MAP(
     MXADRB    => UCM_MBAR_LEN,
     MXDATB    => SQU_M_LEN,
