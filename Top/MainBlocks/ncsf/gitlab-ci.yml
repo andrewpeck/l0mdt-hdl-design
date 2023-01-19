@@ -15,6 +15,7 @@ SIM:ncsf:
   allow_failure: false
   tags:
     - normal-ops
+
 CHK:ncsf:
   extends: .sim_check
   variables: 
@@ -28,5 +29,3 @@ CHK:ncsf:
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
-  tags:
-    - normal-ops
