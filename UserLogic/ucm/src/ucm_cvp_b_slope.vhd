@@ -45,11 +45,11 @@ entity ucm_cvp_b_slope is
     g_MAIN_DIV_LUT_ENABLE : std_logic := '1';
     g_MAIN_DIV_SEL : string := "IPR2";
     g_EYN_DIV_VU_ENABLE : std_logic := '1';
-    g_EYN_DIV_IPR2_ENABLE : std_logic := '0';
+    g_EYN_DIV_IPR2_ENABLE : std_logic := '1';
     g_EYN_DIV_LUT_ENABLE : std_logic := '1';
     g_EYN_DIV_SEL : string := "VU";
     g_EZN_DIV_VU_ENABLE : std_logic := '1';
-    g_EZN_DIV_IPR2_ENABLE : std_logic := '0';
+    g_EZN_DIV_IPR2_ENABLE : std_logic := '1';
     g_EZN_DIV_LUT_ENABLE : std_logic := '1';
     g_EZN_DIV_SEL : string := "VU"
   );
@@ -99,7 +99,7 @@ architecture beh of ucm_cvp_b_slope is
   signal sum_z_pl   : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0);
   signal sum_z_pl_dv : std_logic;
   signal sum_y      : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0);
-  signal sum_y_sc   : std_logic_vector(4 + sum_y'length -1 downto 0);
+  signal sum_y_sc   : std_logic_vector(27 -1 downto 0);--(4 + sum_y'length -1 downto 0);
   signal sum_y_dv   : std_logic;
   signal sum_zy     : std_logic_vector(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
   signal sum_zy_dv  : std_logic;
@@ -204,19 +204,19 @@ architecture beh of ucm_cvp_b_slope is
   signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
   signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
 
-  COMPONENT div_gen_r2s_v1
-  PORT (
-    aclk : IN STD_LOGIC;
-    aclken : IN STD_LOGIC;
-    aresetn : IN STD_LOGIC;
-    s_axis_divisor_tvalid : IN STD_LOGIC;
-    s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-    s_axis_dividend_tvalid : IN STD_LOGIC;
-    s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    m_axis_dout_tvalid : OUT STD_LOGIC;
-    m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(55 DOWNTO 0)
-  );
-END COMPONENT;
+--   COMPONENT div_gen_r2s_v1
+--   PORT (
+--     aclk : IN STD_LOGIC;
+--     aclken : IN STD_LOGIC;
+--     aresetn : IN STD_LOGIC;
+--     s_axis_divisor_tvalid : IN STD_LOGIC;
+--     s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+--     s_axis_dividend_tvalid : IN STD_LOGIC;
+--     s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+--     m_axis_dout_tvalid : OUT STD_LOGIC;
+--     m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(55 DOWNTO 0)
+--   );
+-- END COMPONENT;
 
   -- COMPONENT e_z_div
   --   PORT (
@@ -604,6 +604,20 @@ begin
       );
   end generate MAIN_DIV_SIM;
   MAIN_DIV_IPR2: if g_MAIN_DIV_IPR2_ENABLE generate
+    COMPONENT div_gen_r2s_v1
+      PORT (
+        aclk : IN STD_LOGIC;
+        aclken : IN STD_LOGIC;
+        aresetn : IN STD_LOGIC;
+        s_axis_divisor_tvalid : IN STD_LOGIC;
+        s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+        s_axis_dividend_tvalid : IN STD_LOGIC;
+        s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+        m_axis_dout_tvalid : OUT STD_LOGIC;
+        m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(55 DOWNTO 0)
+      );
+    END COMPONENT;
+  begin
     DIV_b_IP : div_gen_r2s_v1
       PORT MAP (
         aclk => clk,
@@ -735,13 +749,13 @@ begin
     o_dv        => sum_z_pl_dv
   );
   --   e_y <= (sum_y(1) * 2048) / num_h_i(6);
-  sum_y_sc <= sum_y & "0000";
+  sum_y_sc <= sum_y & "00000000000";
   EYN_DIV_SIM: if g_EYN_DIV_VU_ENABLE generate
     DIV_e_y_ent : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "/",
-      g_IN_PIPE_STAGES  => 8,
-      g_OUT_PIPE_STAGES => 8,
+      g_IN_PIPE_STAGES  => 1,
+      g_OUT_PIPE_STAGES => 1,
       g_in_A_WIDTH => sum_y_sc'length,
       g_in_B_WIDTH => 4,
       g_MAIN_MATH_MODE => "div4"
@@ -815,7 +829,7 @@ begin
   -----------------------------------------------------------------------------------------------
   -- sum_y_sc <= sum_y & "0000";
   EZN_DIV_SIM: if g_EZN_DIV_VU_ENABLE generate
-    DIV_e_y_ent : entity shared_lib.VU_generic_pipelined_MATH
+    DIV_e_z_ent : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "/",
       g_IN_PIPE_STAGES  => 1,
@@ -928,7 +942,7 @@ begin
       -- g_PIPELINE_Tgit YPE => "ring_buffer",
       g_PIPELINE_TYPE   => "shift_reg", 
       g_RB_TYPE => "simple",
-      g_DELAY_CYCLES  => 38,
+      g_DELAY_CYCLES  => 46,
       g_PIPELINE_WIDTH    => e_z'length
     )
     port map(
@@ -967,7 +981,7 @@ begin
   PL_e_y : entity vamc_lib.vamc_spl
     generic map(
       g_PIPELINE_TYPE   => "shift_reg", 
-      g_DELAY_CYCLES  => 31,
+      g_DELAY_CYCLES  => 49,
       g_PIPELINE_WIDTH    => e_y'length
     )
     port map(
