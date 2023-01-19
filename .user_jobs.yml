@@ -97,6 +97,7 @@ check_auto_generated_code:
   tags:
     - riviera
   variables:
+    <<: *riviera_vars
     HOG_SIMULATION_LIB_PATH: /afs/cern.ch/work/l/l0mdtel/RivieraLibs
     HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
     HOG_CHECK_PROJVER: 0
@@ -146,6 +147,8 @@ check_auto_generated_code:
 .sim_comp: &sim_comp
   <<: *only-default
   <<: *tag-sr
+  variables:
+    <<: *chk_variables
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
   stage: user_proj
   script:
@@ -157,6 +160,8 @@ check_auto_generated_code:
 .sim_check: &sim_check
   <<: *only-default
   <<: *tag-sr
+  variables:
+    <<: *chk_variables
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
   stage: user_proj
   script:
@@ -183,6 +188,8 @@ check_auto_generated_code:
   <<: *only-default
   tags:
     - cocotb
+  variables:
+    <<: *chk_variables
   stage: generation_and_simulation
   allow_failure: true
   interruptible: true
