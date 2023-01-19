@@ -104,7 +104,7 @@ check_auto_generated_code:
   script:
     - git pull
     - export PATH=${HOG_PATH}:$PATH
-    - which vsim
+    - which vsimvim
     - if [[ -v HOG_CHECK_PROJVER ]] && [[ $HOG_CHECK_PROJVER == '1' ]]; then
       vivado -mode batch -notrace -source ./Hog/Tcl/CI/check_proj_ver.tcl -tclargs -ext_path "$HOG_EXTERNAL_PATH" -sim $PROJECT_NAME ;
       else
@@ -165,6 +165,7 @@ check_auto_generated_code:
     - echo $AUX_PRJ_FOLDER
     - export AUX_PRJ_NAME=${PROJECT_NAME##**/}
     - echo $AUX_PRJ_NAME
+    - python --version
     - python tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/$SIMULATOR
     # - sleep 1h
     # DAvide
