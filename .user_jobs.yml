@@ -104,7 +104,7 @@ check_auto_generated_code:
   script:
     - git pull
     - export PATH=${HOG_PATH}:$PATH
-    - which vsimvim
+    - which vsim
     - if [[ -v HOG_CHECK_PROJVER ]] && [[ $HOG_CHECK_PROJVER == '1' ]]; then
       vivado -mode batch -notrace -source ./Hog/Tcl/CI/check_proj_ver.tcl -tclargs -ext_path "$HOG_EXTERNAL_PATH" -sim $PROJECT_NAME ;
       else
