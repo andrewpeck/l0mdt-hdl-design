@@ -188,18 +188,18 @@ architecture beh of ucm_cvp_b_slope is
   -- signal dv_chain   : std_logic_vector(16 downto 0);
 
   signal div_dout_tvalid : STD_LOGIC;
-  signal div_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
+  -- signal div_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
   signal div_dout_tdata : STD_LOGIC_VECTOR(55 DOWNTO 0);
   signal div_dout_tdata_q : std_logic_vector(31 downto 0);-- := (others => '0');
   signal div_dout_tdata_r : std_logic_vector(20 downto 0);-- := (others => '0');
 
   signal e_z_dout_tvalid : STD_LOGIC;
-  signal e_z_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
+  -- signal e_z_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
   signal e_z_dout_tdata : STD_LOGIC_VECTOR(23 DOWNTO 0);
   signal e_z_dout_tdata_q : std_logic_vector(15 downto 0);-- := (others => '0');
   signal e_z_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
   signal e_y_dout_tvalid : STD_LOGIC;
-  signal e_y_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
+  -- signal e_y_dout_tuser : STD_LOGIC_VECTOR(0 DOWNTO 0);
   signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
   signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
   signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
@@ -584,8 +584,8 @@ begin
     DIV_b_ent : entity shared_lib.VU_generic_pipelined_MATH
       generic map(
         g_OPERATION => "/",
-        g_IN_PIPE_STAGES  => 5,
-        g_OUT_PIPE_STAGES => 5,
+        g_IN_PIPE_STAGES  => 1,
+        g_OUT_PIPE_STAGES => 1,
         g_in_A_WIDTH => bnom_sc'length,
         g_in_B_WIDTH => bden'length
       )
@@ -775,56 +775,56 @@ begin
     );
   end generate EYN_DIV_SIM;
   EYN_DIV_IPR2: if g_EYN_DIV_IPR2_ENABLE generate
-    COMPONENT e_y_div
-      PORT (
-        aclk : IN STD_LOGIC;
-        aclken : IN STD_LOGIC;
-        aresetn : IN STD_LOGIC;
-        s_axis_divisor_tvalid : IN STD_LOGIC;
-        s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-        s_axis_dividend_tvalid : IN STD_LOGIC;
-        s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-        m_axis_dout_tvalid : OUT STD_LOGIC;
-        m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(39 DOWNTO 0)
+      COMPONENT e_y_div
+        PORT (
+          aclk : IN STD_LOGIC;
+          aclken : IN STD_LOGIC;
+          aresetn : IN STD_LOGIC;
+          s_axis_divisor_tvalid : IN STD_LOGIC;
+          s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+          s_axis_dividend_tvalid : IN STD_LOGIC;
+          s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+          m_axis_dout_tvalid : OUT STD_LOGIC;
+          m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(39 DOWNTO 0)
+        );
+      END COMPONENT;
+    begin
+      DIV_e_y_IP : e_y_div
+      PORT MAP (
+        aclk                    => clk,
+        aclken                  => ena,
+        aresetn                 => not rst,
+        s_axis_divisor_tvalid   => sum_y_dv,
+        s_axis_divisor_tdata    => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
+        s_axis_dividend_tvalid  => sum_y_dv,
+        s_axis_dividend_tdata   => std_logic_vector(resize(signed(sum_y_sc),32)),
+        m_axis_dout_tvalid      => e_y_dout_tvalid,
+        m_axis_dout_tdata       => e_y_dout_tdata
       );
-    END COMPONENT;
-  begin
-    DIV_e_y_IP : e_y_div
-    PORT MAP (
-      aclk                    => clk,
-      aclken                  => ena,
-      aresetn                 => not rst,
-      s_axis_divisor_tvalid   => sum_y_dv,
-      s_axis_divisor_tdata    => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
-      s_axis_dividend_tvalid  => sum_y_dv,
-      s_axis_dividend_tdata   => std_logic_vector(resize(signed(sum_y_sc),32)),
-      m_axis_dout_tvalid      => e_y_dout_tvalid,
-      m_axis_dout_tdata       => e_y_dout_tdata
-    );
-    -- signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
-    -- signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
-    -- signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
-    e_y_dout_tdata_q <= e_y_dout_tdata(34 downto 8);
-    e_y_dout_tdata_r <= e_y_dout_tdata(3 downto 0);
-    --   e_z <= sum_Z(1) / num_h_i(6);
-    -- e_y <= e_y_dout_tdata_q  when e_y_dout_tvalid = '1' else (others => '0');
-    -- e_y_dv <= e_y_dout_tvalid;
-  end generate EYN_DIV_IPR2;
+      -- signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
+      -- signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
+      -- signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
+      e_y_dout_tdata_q <= e_y_dout_tdata(34 downto 8);
+      e_y_dout_tdata_r <= e_y_dout_tdata(3 downto 0);
+      --   e_z <= sum_Z(1) / num_h_i(6);
+      -- e_y <= e_y_dout_tdata_q  when e_y_dout_tvalid = '1' else (others => '0');
+      -- e_y_dv <= e_y_dout_tvalid;
+    end generate EYN_DIV_IPR2;
   
   -- EYN_DIV_LUT: if g_EYN_DIV_LUT_ENABLE generate
 
-  -- end generate EYN_DIV_LUT;
+    -- end generate EYN_DIV_LUT;
 
 
   EYN_DIV_SEL: if g_EYN_DIV_SEL = "IPR2" generate
     e_y <= e_y_dout_tdata_q  when e_y_dout_tvalid = '1' else (others => '0');
     e_y_dv <= e_y_dout_tvalid;
-  -- elsif g_EYN_DIV_SEL = "LUT" generate
+    -- elsif g_EYN_DIV_SEL = "LUT" generate
 
-  elsif g_EYN_DIV_SEL = "VU" generate
-    e_y <= e_y_aux;
-    e_y_dv <= e_y_aux_dv;
-  end generate EYN_DIV_SEL;
+    elsif g_EYN_DIV_SEL = "VU" generate
+      e_y <= e_y_aux;
+      e_y_dv <= e_y_aux_dv;
+    end generate EYN_DIV_SEL;
 
   -----------------------------------------------------------------------------------------------
   -- sum_y_sc <= sum_y & "0000";
