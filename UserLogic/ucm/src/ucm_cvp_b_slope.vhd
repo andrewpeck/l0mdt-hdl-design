@@ -45,12 +45,12 @@ entity ucm_cvp_b_slope is
     g_MAIN_DIV_LUT_ENABLE : std_logic := '1';
     g_MAIN_DIV_SEL : string := "IPR2";
     g_EYN_DIV_VU_ENABLE : std_logic := '1';
-    g_EYN_DIV_IPR2_ENABLE : std_logic := '1';
-    g_EYN_DIV_LUT_ENABLE : std_logic := '1';
+    g_EYN_DIV_IPR2_ENABLE : std_logic := '0';
+    g_EYN_DIV_LUT_ENABLE : std_logic := '0';
     g_EYN_DIV_SEL : string := "VU";
     g_EZN_DIV_VU_ENABLE : std_logic := '1';
-    g_EZN_DIV_IPR2_ENABLE : std_logic := '1';
-    g_EZN_DIV_LUT_ENABLE : std_logic := '1';
+    g_EZN_DIV_IPR2_ENABLE : std_logic := '0';
+    g_EZN_DIV_LUT_ENABLE : std_logic := '0';
     g_EZN_DIV_SEL : string := "VU"
   );
   port (
