@@ -31,6 +31,9 @@ use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 use shared_lib.vhdl2008_functions_pkg.all;
 
+library UNISIM; 
+use UNISIM.VCOMPONENTS.ALL; 
+
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
@@ -398,7 +401,7 @@ begin
     generic map(
       g_OPERATION => "+++",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1,
+      g_OUT_PIPE_STAGES => 2,
       g_in_A_WIDTH => rad_a(0)'length,
       g_in_B_WIDTH => rad_a(1)'length,
       g_in_C_WIDTH => rad_a(2)'length,
@@ -555,8 +558,8 @@ begin
   MULTSUB_b_den_ent : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "*-",
-      g_IN_PIPE_STAGES  => 3,
-      g_OUT_PIPE_STAGES => 4,
+      g_IN_PIPE_STAGES  => 2,
+      g_OUT_PIPE_STAGES => 5,
       g_in_A_WIDTH => 4,
       g_in_B_WIDTH => sum_zz'length,
       g_in_C_WIDTH => sqr_zz'length,
@@ -774,42 +777,42 @@ begin
       o_dv        => e_y_aux_dv
     );
   end generate EYN_DIV_SIM;
-  EYN_DIV_IPR2: if g_EYN_DIV_IPR2_ENABLE generate
-      COMPONENT e_y_div
-        PORT (
-          aclk : IN STD_LOGIC;
-          aclken : IN STD_LOGIC;
-          aresetn : IN STD_LOGIC;
-          s_axis_divisor_tvalid : IN STD_LOGIC;
-          s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-          s_axis_dividend_tvalid : IN STD_LOGIC;
-          s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-          m_axis_dout_tvalid : OUT STD_LOGIC;
-          m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(39 DOWNTO 0)
-        );
-      END COMPONENT;
-    begin
-      DIV_e_y_IP : e_y_div
-      PORT MAP (
-        aclk                    => clk,
-        aclken                  => ena,
-        aresetn                 => not rst,
-        s_axis_divisor_tvalid   => sum_y_dv,
-        s_axis_divisor_tdata    => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
-        s_axis_dividend_tvalid  => sum_y_dv,
-        s_axis_dividend_tdata   => std_logic_vector(resize(signed(sum_y_sc),32)),
-        m_axis_dout_tvalid      => e_y_dout_tvalid,
-        m_axis_dout_tdata       => e_y_dout_tdata
-      );
-      -- signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
-      -- signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
-      -- signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
-      e_y_dout_tdata_q <= e_y_dout_tdata(34 downto 8);
-      e_y_dout_tdata_r <= e_y_dout_tdata(3 downto 0);
-      --   e_z <= sum_Z(1) / num_h_i(6);
-      -- e_y <= e_y_dout_tdata_q  when e_y_dout_tvalid = '1' else (others => '0');
-      -- e_y_dv <= e_y_dout_tvalid;
-    end generate EYN_DIV_IPR2;
+  -- EYN_DIV_IPR2: if g_EYN_DIV_IPR2_ENABLE generate
+  --     COMPONENT e_y_div
+  --       PORT (
+  --         aclk : IN STD_LOGIC;
+  --         aclken : IN STD_LOGIC;
+  --         aresetn : IN STD_LOGIC;
+  --         s_axis_divisor_tvalid : IN STD_LOGIC;
+  --         s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+  --         s_axis_dividend_tvalid : IN STD_LOGIC;
+  --         s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+  --         m_axis_dout_tvalid : OUT STD_LOGIC;
+  --         m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(39 DOWNTO 0)
+  --       );
+  --     END COMPONENT;
+  --   begin
+  --     DIV_e_y_IP : e_y_div
+  --     PORT MAP (
+  --       aclk                    => clk,
+  --       aclken                  => ena,
+  --       aresetn                 => not rst,
+  --       s_axis_divisor_tvalid   => sum_y_dv,
+  --       s_axis_divisor_tdata    => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
+  --       s_axis_dividend_tvalid  => sum_y_dv,
+  --       s_axis_dividend_tdata   => std_logic_vector(resize(signed(sum_y_sc),32)),
+  --       m_axis_dout_tvalid      => e_y_dout_tvalid,
+  --       m_axis_dout_tdata       => e_y_dout_tdata
+  --     );
+  --     -- signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
+  --     -- signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
+  --     -- signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
+  --     e_y_dout_tdata_q <= e_y_dout_tdata(34 downto 8);
+  --     e_y_dout_tdata_r <= e_y_dout_tdata(3 downto 0);
+  --     --   e_z <= sum_Z(1) / num_h_i(6);
+  --     -- e_y <= e_y_dout_tdata_q  when e_y_dout_tvalid = '1' else (others => '0');
+  --     -- e_y_dv <= e_y_dout_tvalid;
+  --   end generate EYN_DIV_IPR2;
   
   -- EYN_DIV_LUT: if g_EYN_DIV_LUT_ENABLE generate
 
@@ -852,42 +855,42 @@ begin
       o_dv        => e_z_aux_dv
     );
   end generate;
-  EZN_DIV_IPR2: if g_EZN_DIV_IPR2_ENABLE generate
-    COMPONENT e_z_div
-      PORT (
-        aclk : IN STD_LOGIC;
-        aclken : IN STD_LOGIC;
-        aresetn : IN STD_LOGIC;
-        s_axis_divisor_tvalid : IN STD_LOGIC;
-        s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-        s_axis_dividend_tvalid : IN STD_LOGIC;
-        s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-        m_axis_dout_tvalid : OUT STD_LOGIC;
-        m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
-      );
-      END COMPONENT;
-  begin
-    DIV_e_z_IP : e_z_div
-      PORT MAP (
-        aclk => clk,
-        aclken => ena,
-        aresetn => not rst,
-        s_axis_divisor_tvalid => sum_z_dv,
-        s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
-        s_axis_dividend_tvalid => sum_z_dv,
-        s_axis_dividend_tdata => sum_z,
-        m_axis_dout_tvalid => e_z_dout_tvalid,
-        m_axis_dout_tdata => e_z_dout_tdata
-      );
-    -- signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
-    -- signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
-    -- signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
-    e_z_dout_tdata_q <= e_z_dout_tdata(23 downto 8);
-    e_z_dout_tdata_r <= e_z_dout_tdata(3 downto 0);
-    --   e_z <= sum_Z(1) / num_h_i(6);
-    -- e_y <= e_y_dout_tdata_q  when e_y_dout_tvalid = '1' else (others => '0');
-    -- e_y_dv <= e_y_dout_tvalid;
-  end generate EZN_DIV_IPR2;
+  -- EZN_DIV_IPR2: if g_EZN_DIV_IPR2_ENABLE generate
+  --   COMPONENT e_z_div
+  --     PORT (
+  --       aclk : IN STD_LOGIC;
+  --       aclken : IN STD_LOGIC;
+  --       aresetn : IN STD_LOGIC;
+  --       s_axis_divisor_tvalid : IN STD_LOGIC;
+  --       s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+  --       s_axis_dividend_tvalid : IN STD_LOGIC;
+  --       s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+  --       m_axis_dout_tvalid : OUT STD_LOGIC;
+  --       m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(23 DOWNTO 0)
+  --     );
+  --     END COMPONENT;
+  -- begin
+  --   DIV_e_z_IP : e_z_div
+  --     PORT MAP (
+  --       aclk => clk,
+  --       aclken => ena,
+  --       aresetn => not rst,
+  --       s_axis_divisor_tvalid => sum_z_dv,
+  --       s_axis_divisor_tdata => "0000" & std_logic_vector(to_unsigned(num_h_i,4)),
+  --       s_axis_dividend_tvalid => sum_z_dv,
+  --       s_axis_dividend_tdata => sum_z,
+  --       m_axis_dout_tvalid => e_z_dout_tvalid,
+  --       m_axis_dout_tdata => e_z_dout_tdata
+  --     );
+  --   -- signal e_y_dout_tdata : STD_LOGIC_VECTOR(39 DOWNTO 0);
+  --   -- signal e_y_dout_tdata_q : std_logic_vector(26 downto 0);-- := (others => '0');
+  --   -- signal e_y_dout_tdata_r : std_logic_vector(3 downto 0);-- := (others => '0');
+  --   e_z_dout_tdata_q <= e_z_dout_tdata(23 downto 8);
+  --   e_z_dout_tdata_r <= e_z_dout_tdata(3 downto 0);
+  --   --   e_z <= sum_Z(1) / num_h_i(6);
+  --   -- e_y <= e_y_dout_tdata_q  when e_y_dout_tvalid = '1' else (others => '0');
+  --   -- e_y_dv <= e_y_dout_tvalid;
+  -- end generate EZN_DIV_IPR2;
   
   -- EZN_DIV_LUT: if g_EZN_DIV_LUT_ENABLE generate
 
@@ -960,7 +963,7 @@ begin
     generic map(
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1,
+      g_OUT_PIPE_STAGES => 2,
       g_in_A_WIDTH => bdiv'length,
       g_in_B_WIDTH => e_z_pl'length
     )

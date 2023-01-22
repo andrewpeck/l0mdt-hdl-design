@@ -130,7 +130,7 @@ begin
       -- pragma translate_off
       g_SIMULATION => '1',
       -- pragma translate_on
-      g_PIPELINE_TYPE => "ring_buffer",
+      -- g_PIPELINE_TYPE => "ring_buffer",
       g_DELAY_CYCLES  => 1,
       g_PIPELINE_WIDTH    => 32
     )
