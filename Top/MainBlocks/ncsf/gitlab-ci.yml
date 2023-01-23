@@ -15,6 +15,7 @@ SIM:ncsf:
   allow_failure: false
   tags:
     - normal-ops
+
 CHK:ncsf:
   extends: .sim_check
   variables: 
