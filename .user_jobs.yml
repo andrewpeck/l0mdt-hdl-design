@@ -115,7 +115,8 @@ check_auto_generated_code:
         echo "CI disabled for $PROJECT_NAME";
       else
         sed -i 's/questa/riviera/' ./Top/$PROJECT_NAME/list/project_lib.sim;
-        vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_simulation.tcl -tclargs -lib_path $HOG_SIMULATION_LIB_PATH $PROJECT_NAME ;
+        sed -i 's/Questa/Riviera/' ./Top/$PROJECT_NAME/list/hog.conf;
+        ./Hog/LaunchSimulation.sh $PROJECT_NAME -recreate;
       fi
   artifacts:
     name: user_sim
