@@ -151,7 +151,7 @@ check_auto_generated_code:
   stage: user_proj
   script:
     - cd tools/simComp
-    - python3 comparator.py $PROJECT_NAME
+    - python comparator.py $PROJECT_NAME
   allow_failure: true
   interruptible: true
 
@@ -166,11 +166,11 @@ check_auto_generated_code:
     - echo $AUX_PRJ_FOLDER
     - export AUX_PRJ_NAME=${PROJECT_NAME##**/}
     - echo $AUX_PRJ_NAME
-    - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/$SIMULATOR
+    - python tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/$SIMULATOR
     # - sleep 1h
     # DAvide
     # - PRJ_NAME=$(basename $PROJECT_NAME)
-    # - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PRJ_NAME.sim/project_lib_sim/behav/questa
+    # - python tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PRJ_NAME.sim/project_lib_sim/behav/questa
     - mkdir -p bin/$PROJECT_NAME
     - if [[ -d Plots ]]; then
         mv Plots bin/$PROJECT_NAME/SimPlots;
