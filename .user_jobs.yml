@@ -115,7 +115,7 @@ check_auto_generated_code:
         echo "CI disabled for $PROJECT_NAME";
       else
         sed -i 's/questa/riviera/' ./Top/$PROJECT_NAME/list/project_lib.sim;
-        sed -i 's/Questa/Riviera/' ./Top/$PROJECT_NAME/list/hog.conf;
+        sed -i 's/Questa/Riviera/' ./Top/$PROJECT_NAME/hog.conf;
         ./Hog/LaunchSimulation.sh $PROJECT_NAME -recreate;
       fi
   artifacts:
