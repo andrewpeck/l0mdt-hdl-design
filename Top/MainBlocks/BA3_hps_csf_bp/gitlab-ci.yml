@@ -40,9 +40,8 @@ COMP:BA3_hps_csf_bp:
     PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
     PROJECT_Q_NAME: MainBlocks/BA3_hps_csf_bp_questa
     PROJECT_R_NAME: MainBlocks/BA3_hps_csf_bp_riviera
-  needs: ["SIM:BA3_hps_csf_bp_questa","SIM:BA3_hps_csf_bp_riviera"]
-  tags:
-    - normal-ops
+  needs: ["SIM:BA3_hps_csf_bp_questa", "SIM:BA3_hps_csf_bp_riviera"]
+  
 
 CHK:BA3_hps_csf_bp:
   extends: .sim_check

@@ -41,10 +41,8 @@ COMP:BA3_tar:
     PROJECT_NAME: MainBlocks/BA3_tar
     PROJECT_Q_NAME: MainBlocks/BA3_tar_questa
     PROJECT_R_NAME: MainBlocks/BA3_tar_riviera
-  needs: ["SIM:BA3_tar_questa","SIM:BA3_tar_riviera"]
-  tags:
-    - normal-ops
-
+  needs: ["SIM:BA3_tar_questa", "SIM:BA3_tar_riviera"]
+  
 CHK:BA3_tar:
   extends: .sim_check
   variables: 

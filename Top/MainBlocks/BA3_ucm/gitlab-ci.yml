@@ -39,10 +39,8 @@ COMP:BA3_ucm:
     PROJECT_NAME: MainBlocks/BA3_ucm
     PROJECT_Q_NAME: MainBlocks/BA3_ucm_questa
     PROJECT_R_NAME: MainBlocks/BA3_ucm_riviera
-  needs: ["SIM:BA3_ucm_questa","SIM:BA3_ucm_riviera"]
-  tags:
-    - normal-ops
-
+  needs: ["SIM:BA3_ucm_questa", "SIM:BA3_ucm_riviera"]
+  
 CHK:BA3_ucm:
   extends: .sim_check
   variables: 
