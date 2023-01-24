@@ -48,7 +48,7 @@ CHK:BA3_hps_csf_bp:
     PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
     BLOCK: BA3_hps_csf_bp
     SIMULATOR: questa
-  needs: ["SIM:BA3_hps_csf_bp_riviera"]
+  needs: ["RIV:BA3_hps_csf_bp_riviera"]
   artifacts:
     name: CHK_MainBlocks_BA3_hps_csf_bp
     paths:

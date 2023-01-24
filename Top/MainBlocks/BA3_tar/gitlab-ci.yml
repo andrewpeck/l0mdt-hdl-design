@@ -47,7 +47,7 @@ CHK:BA3_tar:
     PROJECT_NAME: MainBlocks/BA3_tar
     BLOCK: BA3_tar
     SIMULATOR: questa
-  needs: ["SIM:BA3_tar_riviera"]
+  needs: ["RIV:BA3_tar_riviera"]
   artifacts:
     name: CHK_MainBlocks_BA3_tar
     paths:

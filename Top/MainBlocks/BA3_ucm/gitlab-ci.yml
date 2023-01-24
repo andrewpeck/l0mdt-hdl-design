@@ -46,7 +46,7 @@ CHK:BA3_ucm:
     PROJECT_NAME: MainBlocks/BA3_ucm
     BLOCK: BA3_ucm
     SIMULATOR: questa
-  needs: ["SIM:BA3_ucm_riviera"]
+  needs: ["RIV:BA3_ucm_riviera"]
   artifacts:
     name: CHK_MainBlocks_BA3_ucm
     paths:

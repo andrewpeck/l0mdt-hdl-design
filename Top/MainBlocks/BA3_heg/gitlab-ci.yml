@@ -48,7 +48,7 @@ CHK:BA3_heg:
     PROJECT_NAME: MainBlocks/BA3_heg
     BLOCK: BA3_heg
     SIMULATOR: questa
-  needs: ["SIM:BA3_heg_riviera"]
+  needs: ["RIV:BA3_heg_riviera"]
   artifacts:
     name: CHK_MainBlocks_BA3_heg
     paths:
