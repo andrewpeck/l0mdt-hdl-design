@@ -400,8 +400,8 @@ begin
   SUM_Y_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "+++",
-      g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1,
+      g_IN_PIPE_STAGES  => 0,
+      g_OUT_PIPE_STAGES => 0,
       g_in_A_WIDTH => rad_a(0)'length,
       g_in_B_WIDTH => rad_a(1)'length,
       g_in_C_WIDTH => rad_a(2)'length,
@@ -493,8 +493,8 @@ begin
   MULT_b_nom1_ent : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "*4",
-      g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 2,
+      g_IN_PIPE_STAGES  => 1,
+      g_OUT_PIPE_STAGES => 1,
       g_in_A_WIDTH => 4,
       g_in_B_WIDTH => sum_zy'length
     )
@@ -558,8 +558,8 @@ begin
   MULTSUB_b_den_ent : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "*-",
-      g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 6,
+      g_IN_PIPE_STAGES  => 3,
+      g_OUT_PIPE_STAGES => 3,
       g_in_A_WIDTH => 4,
       g_in_B_WIDTH => sum_zz'length,
       g_in_C_WIDTH => sqr_zz'length,
@@ -758,7 +758,7 @@ begin
     generic map(
       g_OPERATION => "/",
       g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 1,
+      g_OUT_PIPE_STAGES => 0,
       g_in_A_WIDTH => sum_y_sc'length,
       g_in_B_WIDTH => 4,
       g_MAIN_MATH_MODE => "div4"
@@ -836,7 +836,7 @@ begin
     generic map(
       g_OPERATION => "/",
       g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 1,
+      g_OUT_PIPE_STAGES => 0,
       g_in_A_WIDTH => sum_z'length,
       g_in_B_WIDTH => 4,
       g_MAIN_MATH_MODE => "div4"
