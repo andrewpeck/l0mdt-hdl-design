@@ -154,7 +154,7 @@ check_auto_generated_code:
   stage: user_proj
   script:
     - cd tools/simComp
-    - python comparator.py -Q -R $PROJECT_NAME
+    - python comparator.py -Q ${PROJECT_Q_NAME} -R ${PROJECT_R_NAME} ${PROJECT_NAME}
   allow_failure: true
   interruptible: true
 
