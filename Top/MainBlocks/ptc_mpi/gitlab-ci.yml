@@ -21,7 +21,7 @@ CHK:ptc_mpi:
     PROJECT_NAME: MainBlocks/ptc_mpi
     BLOCK: PTC
     SIMULATOR: riviera
-needs: ["RIV:ptc_mpi"]
+  needs: ["RIV:ptc_mpi"]
   artifacts:
     name: CHK_ptc
     paths:
