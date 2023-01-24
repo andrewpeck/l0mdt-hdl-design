@@ -7,14 +7,13 @@ GEN:ncsf:
     HOG_NO_BITSTREAM: 1 # if 1 runs only the synthesis
   tags:
     - normal-ops
-SIM:ncsf:
+
+RIV:ncsf:
   extends: .riviera_sim
   variables:
     extends: .vars
     PROJECT_NAME: MainBlocks/ncsf
   allow_failure: false
-  tags:
-    - normal-ops
 
 CHK:ncsf:
   extends: .sim_check
@@ -23,7 +22,7 @@ CHK:ncsf:
     PROJECT_NAME: MainBlocks/ncsf
     SIMULATOR: riviera
     BLOCK: CSF
-  needs: ["SIM:ncsf"]
+  needs: ["RIV:ncsf"]
   artifacts:
     name: CHK_ncsf
     paths:
