@@ -133,7 +133,51 @@ add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal -childformat {{/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zy(0) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zy(1) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zy(2) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zy(3) -radix decimal}} -subitemconfig {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zy(0) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zy(1) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zy(2) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zy(3) {-height 17 -radix decimal}} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zy
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zy_dv
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zz
-add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zz_dv
+add wave -noupdate -expand -group slc_vp_2_slope -radix decimal -childformat {{/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zz_dv(3) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zz_dv(2) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zz_dv(1) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zz_dv(0) -radix decimal}} -subitemconfig {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zz_dv(3) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zz_dv(2) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zz_dv(1) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zz_dv(0) {-height 17 -radix decimal}} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/mult_zz_dv
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_INFER_DSP
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_OPERATION
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_IN_PIPE_STAGES
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_OUT_PIPE_STAGES
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_IN_DEFAULT_VAL
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_in_A_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_in_B_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_in_C_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_in_D_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_in_A_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_in_B_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_in_C_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_in_D_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_OUT_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_MAIN_MATH_MODE
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/OPERAND_A_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/OPERAND_B_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/OPERAND_C_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/OPERAND_D_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/OPERAND_O_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/g_RESULT_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/TOTAL_MUL_LATENCY
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/clk
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/rst
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/i_in_A
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/i_in_B
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/i_in_C
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/i_in_D
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/i_dv
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/mul_in_pipe_A
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/mul_in_pipe_B
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/mul_in_pipe_C
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/mul_in_pipe_D
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/pl_transfer_A
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/pl_transfer_B
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/pl_transfer_C
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/pl_transfer_D
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/mul_output_pipe
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/valid_signal_pipe
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/dv_pl_transfer
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/int_Result_sc
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/MATH_MODE/int_Result_s
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/o_result
+add wave -noupdate -expand -group slc_vp_2_slope -group VU_math_sum_z /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SUM_Z_ENT/o_dv
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sum_z
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sum_z_dv
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sum_z_pl
@@ -145,6 +189,50 @@ add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sum_zy_dv
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sum_zz
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sum_zz_dv
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_INFER_DSP
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_OPERATION
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_IN_PIPE_STAGES
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_OUT_PIPE_STAGES
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_IN_DEFAULT_VAL
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_in_A_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_in_B_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_in_C_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_in_D_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_in_A_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_in_B_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_in_C_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_in_D_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_OUT_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_MAIN_MATH_MODE
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/OPERAND_A_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/OPERAND_B_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/OPERAND_C_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/OPERAND_D_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/OPERAND_O_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/g_RESULT_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/TOTAL_MUL_LATENCY
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/clk
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/rst
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/i_in_A
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/i_in_B
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/i_in_C
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/i_in_D
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/i_dv
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/mul_in_pipe_A
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/mul_in_pipe_B
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/mul_in_pipe_C
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/mul_in_pipe_D
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/pl_transfer_A
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/pl_transfer_B
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/pl_transfer_C
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/pl_transfer_D
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/mul_output_pipe
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/valid_signal_pipe
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/dv_pl_transfer
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/int_Result_sc
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/MATH_MODE/int_Result_s
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -color Coral /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/o_result
+add wave -noupdate -expand -group slc_vp_2_slope -expand -group VU_math_sqr_zz -color Coral /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/SQR_ZZ_ENT/o_dv
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sqr_zz
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sqr_zz_dv
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/bnom_1
@@ -227,57 +315,57 @@ add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_z_pl_dv
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/s_e_z
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/s_e_z_dv
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_INFER_DSP
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_OPERATION
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_IN_PIPE_STAGES
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_OUT_PIPE_STAGES
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_IN_DEFAULT_VAL
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_A_WIDTH
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_B_WIDTH
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_C_WIDTH
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_D_WIDTH
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_A_TYPE
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_B_TYPE
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_C_TYPE
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_D_TYPE
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_MAIN_MATH_MODE
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_OUT_WIDTH
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/OPERAND_A_WIDTH
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/OPERAND_B_WIDTH
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/OPERAND_C_WIDTH
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/OPERAND_D_WIDTH
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/OPERAND_O_WIDTH
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_RESULT_WIDTH
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/TOTAL_MUL_LATENCY
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/clk
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/rst
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/i_in_A
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/i_in_B
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/i_in_C
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/i_in_D
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/i_dv
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/o_result
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/o_dv
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/mul_in_pipe_A
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/mul_in_pipe_B
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/mul_in_pipe_C
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/mul_in_pipe_D
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/mul_output_pipe
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/valid_signal_pipe
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix binary /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/div_nom
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/zeros
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/div_nom_sc
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/div_den
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix binary -childformat {{/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(12) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(11) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(10) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(9) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(8) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(7) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(6) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(5) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(4) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(3) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(2) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(1) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(0) -radix binary}} -subitemconfig {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(12) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(11) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(10) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(9) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(8) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(7) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(6) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(5) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(4) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(3) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(2) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(1) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(0) {-height 17 -radix binary}} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix hexadecimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sum
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/int_Result_sc
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/div_out
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_aux
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_aux_dv
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_dout_tvalid
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_dout_tdata
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_dout_tdata_q
-add wave -noupdate -expand -group slc_vp_2_slope -expand -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_dout_tdata_r
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_INFER_DSP
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_OPERATION
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_IN_PIPE_STAGES
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_OUT_PIPE_STAGES
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_IN_DEFAULT_VAL
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_A_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_B_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_C_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_D_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_A_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_B_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_C_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_in_D_TYPE
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_MAIN_MATH_MODE
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_OUT_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/OPERAND_A_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/OPERAND_B_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/OPERAND_C_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/OPERAND_D_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/OPERAND_O_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/g_RESULT_WIDTH
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -group gen -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/TOTAL_MUL_LATENCY
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/clk
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/rst
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/i_in_A
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/i_in_B
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/i_in_C
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/i_in_D
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/i_dv
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/o_result
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/o_dv
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/mul_in_pipe_A
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/mul_in_pipe_B
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/mul_in_pipe_C
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/mul_in_pipe_D
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/mul_output_pipe
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/valid_signal_pipe
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix binary /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/div_nom
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/zeros
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/div_nom_sc
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/div_den
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix binary -childformat {{/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(12) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(11) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(10) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(9) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(8) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(7) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(6) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(5) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(4) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(3) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(2) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(1) -radix binary} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(0) -radix binary}} -subitemconfig {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(12) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(11) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(10) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(9) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(8) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(7) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(6) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(5) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(4) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(3) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(2) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(1) {-height 17 -radix binary} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums(0) {-height 17 -radix binary}} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sums
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix hexadecimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/aux_sum
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/int_Result_sc
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -group ey_vu_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/EYN_DIV_SIM/DIV_e_y_ent/MATH_MODE/div_out
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_aux
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_aux_dv
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_dout_tvalid
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_dout_tdata
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_dout_tdata_q
+add wave -noupdate -expand -group slc_vp_2_slope -group Ey_div -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_dout_tdata_r
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_dv
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_pl
@@ -290,7 +378,7 @@ add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/o_slope
 add wave -noupdate -expand -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/o_data_valid
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2330198521 fs} 0}
+WaveRestoreCursors {{Cursor 1} {2310111638 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 251
 configure wave -valuecolwidth 100
@@ -306,4 +394,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2299337923 fs} {2405784625 fs}
+WaveRestoreZoom {2228436629 fs} {2428734865 fs}
