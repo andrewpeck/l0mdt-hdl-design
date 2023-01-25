@@ -23,7 +23,7 @@ UserLogic/heg/heg_lib.src lib=heg_lib
 UserLogic/hps/hps_lib.src lib=hps_lib
 UserLogic/mtc/mtc_lib.src lib=mtc_lib
 UserLogic/fm/fm_lib.src lib=fm_lib
-UserLogic/daq/daq.src
+UserLogic/daq/daq.src lib=daq_lib
 
 UserLogic/csf/csf_lib.src lib=csf_lib
 # UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib

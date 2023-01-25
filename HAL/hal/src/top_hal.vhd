@@ -117,10 +117,12 @@ entity top_hal is
     --
     -- FIXME: this is a pipeline of 18 things, which may be partially stuffed
     --
-    daq_streams : in felix_stream_avt (c_HPS_MAX_HP_INN
-                                           + c_HPS_MAX_HP_MID
-                                           + c_HPS_MAX_HP_OUT - 1 downto 0);
+    -- daq_streams : in felix_stream_avt (c_HPS_MAX_HP_INN
+    --                                        + c_HPS_MAX_HP_MID
+    --                                        + c_HPS_MAX_HP_OUT - 1 downto 0);
 
+    daq_streams : in felix_stream_avt(c_DAQ_LINKS-1 downto 0);
+    
     --------------------------------------------------------------------------------
     -- AXI
     --------------------------------------------------------------------------------
@@ -623,7 +625,7 @@ begin  -- architecture behavioral
 
   felix_tx_inst : entity work.felix_tx
     generic map (
-      g_NUM_UPLINKS => c_NUM_DAQ_STREAMS
+      g_NUM_UPLINKS => c_DAQ_LINKS -- c_NUM_DAQ_STREAMS
       )
     port map (
       clk320           => clocks.clock320,
@@ -642,8 +644,9 @@ begin  -- architecture behavioral
       -- this needs some kind of translation layer to map user logic daq links
       -- onto felix links
 
-      daq_streams      => daq_streams (c_NUM_DAQ_STREAMS-1 downto 0),
-      mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
+      daq_streams      => daq_streams, -- (c_NUM_DAQ_STREAMS-1 downto 0),
+      mgt_word_array_o => felix_uplink_mgt_word_array(c_DAQ_LINKS-1 downto 0),
+      -- mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
       ready_o          => open,
       was_not_ready_o  => open,
       strobe_320       => strobe_320

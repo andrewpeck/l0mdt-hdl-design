@@ -348,21 +348,29 @@ package common_types_pkg is
    function convert(x: mtc2nsp_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: mtc2nsp_avt) return mtc2nsp_avt;
 
-   subtype felix_data is std_logic_vector(250-1 downto 0);
-   attribute w of felix_data : subtype is 250;
+   subtype felix_data is std_logic_vector(34-1 downto 0);
+   attribute w of felix_data : subtype is 34;
+
+   type felix_data_avt is array(integer range <>) of felix_data;
+   function width(x: felix_data_avt) return integer;
+   function convert(x: felix_data_avt; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: felix_data_avt) return felix_data_avt;
+   function zero(tpl: felix_data_avt) return felix_data_avt;
+   function convert(x: felix_data_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: felix_data_avt) return felix_data_avt;
 
    type felix_stream_rt is record
       valid : std_logic;
       data : felix_data;
    end record felix_stream_rt;
-   attribute w of felix_stream_rt : type is 251;
+   attribute w of felix_stream_rt : type is 35;
    function width(x: felix_stream_rt) return natural;
    function convert(x: felix_stream_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: felix_stream_rt) return felix_stream_rt;
    function zero(tpl: felix_stream_rt) return felix_stream_rt;
 
    subtype felix_stream_vt is std_logic_vector(felix_stream_rt'w-1 downto 0);
-   attribute w of felix_stream_vt : subtype is 251;
+   attribute w of felix_stream_vt : subtype is 35;
 
    type felix_stream_art is array(integer range <>) of felix_stream_rt;
    function width(x: felix_stream_art) return integer;
@@ -2695,6 +2703,74 @@ package body common_types_pkg is
    end function convert;
    function convert(x: std_logic_vector_array; tpl: mtc2nsp_avt) return mtc2nsp_avt is
       variable y : mtc2nsp_avt(tpl'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
+   function width(x: felix_data_avt) return integer is
+      variable w : integer := x'length * width(x(x'low));
+   begin
+      return w;
+   end function width;
+   function convert(x: felix_data_avt; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: felix_data_avt) return felix_data_avt is
+      variable y : felix_data_avt(tpl'range);
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: felix_data_avt) return felix_data_avt is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: felix_data_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: felix_data_avt) return felix_data_avt is
+      variable y : felix_data_avt(tpl'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));

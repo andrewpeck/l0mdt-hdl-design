@@ -27,4 +27,4 @@ UserLogic/upt/upt_lib_empty.src lib=upt_lib
 UserLogic/mtc/mtc_lib.src lib=mtc_lib
 UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
 UserLogic/fm/fm_lib.src lib=fm_lib
-UserLogic/daq/daq.src
+UserLogic/daq/daq.src   lib=daq_lib
