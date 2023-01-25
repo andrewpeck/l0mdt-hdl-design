@@ -378,7 +378,7 @@ begin
     generic map(
       g_OPERATION => "+++",
       g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 0,
+      g_OUT_PIPE_STAGES => 1,
       g_in_A_WIDTH => rpc_a(0)'length,
       g_in_B_WIDTH => rpc_a(1)'length,
       g_in_C_WIDTH => rpc_a(2)'length,
@@ -401,7 +401,7 @@ begin
     generic map(
       g_OPERATION => "+++",
       g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 0,
+      g_OUT_PIPE_STAGES => 1,
       g_in_A_WIDTH => rad_a(0)'length,
       g_in_B_WIDTH => rad_a(1)'length,
       g_in_C_WIDTH => rad_a(2)'length,
@@ -425,7 +425,7 @@ begin
     generic map(
       g_OPERATION => "+++",
       g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 1,
+      g_OUT_PIPE_STAGES => 0,
       g_in_A_WIDTH => mult_zy(0)'length,
       g_in_B_WIDTH => mult_zy(1)'length,
       g_in_C_WIDTH => mult_zy(2)'length,
@@ -447,7 +447,7 @@ begin
   SUM_ZZ_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "+++",
-      g_IN_PIPE_STAGES  => 0,
+      g_IN_PIPE_STAGES  => 1,
       g_OUT_PIPE_STAGES => 2,
       g_in_A_WIDTH => mult_zz(0)'length,
       g_in_B_WIDTH => mult_zz(1)'length,
@@ -470,8 +470,8 @@ begin
   SQR_ZZ_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "*3",
-      g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 0,
+      g_IN_PIPE_STAGES  => 1,
+      g_OUT_PIPE_STAGES => 1,
       g_in_A_WIDTH => sum_z'length,
       g_in_B_WIDTH => sum_z'length
     )
@@ -511,13 +511,28 @@ begin
       o_result    => bnom_1,
       o_dv        => bnom_1_dv
     );
+  -- PL_sum_z : entity vamc_lib.vamc_spl
+  --   generic map(
+  --     g_DELAY_CYCLES  => 48,
+  --     g_PIPELINE_WIDTH    => sum_Z'length
+  --   )
+  --   port map(
+  --     clk         => clk,
+  --     rst         => rst,
+  --     ena         => ena,
+  --     --
+  --     i_data      => sum_z,
+  --     i_dv        => sum_z_dv,
+  --     o_data      => sum_z_pl,
+  --     o_dv        => sum_z_pl_dv
+  --   );
   MULT_b_nom2_ent : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "*5",
       g_IN_PIPE_STAGES  => 0,
       g_OUT_PIPE_STAGES => 2,
       g_in_A_WIDTH => sum_y'length,
-      g_in_B_WIDTH => sum_z_pl'length
+      g_in_B_WIDTH => sum_z'length
     )
     port map(
       clk         => clk,
@@ -536,7 +551,7 @@ begin
     generic map(
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 3,
+      g_OUT_PIPE_STAGES => 5,
       g_in_A_WIDTH => bnom_1'length + 1,
       g_in_B_WIDTH => bnom_2'length + 1,
       g_OUT_WIDTH => 21
@@ -549,7 +564,7 @@ begin
       i_in_B      => '0' & bnom_2,
       -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => bnom_2_dv,
+      i_dv        => bnom_2_dv or bnom_1_dv,
       --
       o_result    => bnom,
       o_dv        => bnom_dv
@@ -558,7 +573,7 @@ begin
   MULTSUB_b_den_ent : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "*-",
-      g_IN_PIPE_STAGES  => 3,
+      g_IN_PIPE_STAGES  => 2,
       g_OUT_PIPE_STAGES => 3,
       g_in_A_WIDTH => 4,
       g_in_B_WIDTH => sum_zz'length,
@@ -736,21 +751,7 @@ begin
   -----------------------------------------------------------------------------------------------
   -- O
   -----------------------------------------------------------------------------------------------
-  PL_sum_z : entity vamc_lib.vamc_spl
-  generic map(
-    g_DELAY_CYCLES  => 49,
-    g_PIPELINE_WIDTH    => sum_Z'length
-  )
-  port map(
-    clk         => clk,
-    rst         => rst,
-    ena         => ena,
-    --
-    i_data      => sum_z,
-    i_dv        => sum_z_dv,
-    o_data      => sum_z_pl,
-    o_dv        => sum_z_pl_dv
-  );
+  
   --   e_y <= (sum_y(1) * 2048) / num_h_i(6);
   sum_y_sc <= sum_y & "00000000000";
   EYN_DIV_SIM: if g_EYN_DIV_VU_ENABLE generate
@@ -945,7 +946,7 @@ begin
       -- g_PIPELINE_Tgit YPE => "ring_buffer",
       g_PIPELINE_TYPE   => "shift_reg", 
       g_RB_TYPE => "simple",
-      g_DELAY_CYCLES  => 46,
+      g_DELAY_CYCLES  => 44,
       g_PIPELINE_WIDTH    => e_z'length
     )
     port map(
@@ -962,8 +963,8 @@ begin
   s_e_z_ent : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "*6",
-      g_IN_PIPE_STAGES  => 3,
-      g_OUT_PIPE_STAGES => 3,
+      g_IN_PIPE_STAGES  => 4,
+      g_OUT_PIPE_STAGES => 4,
       g_in_A_WIDTH => bdiv'length,
       g_in_B_WIDTH => e_z_pl'length
     )
@@ -984,7 +985,7 @@ begin
   PL_e_y : entity vamc_lib.vamc_spl
     generic map(
       g_PIPELINE_TYPE   => "shift_reg", 
-      g_DELAY_CYCLES  => 49,
+      g_DELAY_CYCLES  => 53,
       g_PIPELINE_WIDTH    => e_y'length
     )
     port map(
@@ -1002,7 +1003,7 @@ begin
     generic map(
       g_OPERATION => "--",
       g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 4,
+      g_OUT_PIPE_STAGES => 0,
       g_in_A_WIDTH => e_y_pl'length,
       g_in_B_WIDTH => s_e_z'length
     )
@@ -1023,7 +1024,7 @@ begin
   PL_slope : entity vamc_lib.vamc_spl
     generic map(
     g_PIPELINE_TYPE   => "shift_reg", 
-      g_DELAY_CYCLES  => 12,
+      g_DELAY_CYCLES  => 10,
       g_PIPELINE_WIDTH    => 32
     )
     port map(
