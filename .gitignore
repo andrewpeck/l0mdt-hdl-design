@@ -59,3 +59,4 @@ Plots
 **/*.yml.old
 xproj
 *.xlsx
+test*
