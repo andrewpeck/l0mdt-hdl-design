@@ -97,8 +97,8 @@ if {$num_slrs > 0} {
 
     # ucm
     puts "Applying area constraints to UCM"
-    set_hier_slr_assignment $SLR_EXT "ult_inst/logic_gen.UCM_GEN.ULT_UCM*"
-    set_hier_slr_assignment $SLR_EXT "top_control_inst/*ucm*"
+    set_hier_slr_assignment $SLR_EXT "UCM*"
+    # set_hier_slr_assignment $SLR_EXT "top_control_inst/*ucm*"
 
     # mpl
     # puts "Applying area constraints to MPL"

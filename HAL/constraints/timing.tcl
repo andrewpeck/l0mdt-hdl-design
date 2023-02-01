@@ -51,20 +51,16 @@ set_clock_groups \
 # but the clocks are frequency locked (mesochronous)
 
 set_max_delay -quiet -datapath_only 5.0 \
-    -from [get_pins -hierarchical -filter \
-               "NAME =~ top_hal/*sector_logic*rx_packet_former*packet_valid_reg/C"] \
-    -to [get_pins -hierarchical -filter \
-             "NAME =~ top_hal/*rx_data*s_resync_reg*/D"]
+    -from [get_pins -hierarchical -filter "NAME =~ top_hal/*sector_logic*rx_packet_former*packet_valid_reg/C"] \
+    -to [get_pins -hierarchical -filter "NAME =~ top_hal/*rx_data*s_resync_reg*/D"]
 
 set_max_delay -quiet -datapath_only 5.0 \
     -from [get_pins "top_hal/*sector_logic*/*rx_packet_former*/packet_userdata*/C"] \
     -to   [get_pins "top_hal/sector_logic_link_wrapper_inst/*sync_sl_rx_data*/*data_o*/D"]
 
 set_max_delay -quiet -datapath_only 5.0 \
-    -from [get_pins -hierarchical -filter \
-               "NAME =~ top_hal/*sector_logic*tx_packet_former_inst*packet_userdata*/C"] \
-    -to [get_pins -hierarchical -filter \
-             "NAME =~ top_hal/*sector_logic*cdc_bus_inst*data_o_reg*/D"]
+    -from [get_pins -hierarchical -filter "NAME =~ top_hal/*sector_logic*tx_packet_former_inst*packet_userdata*/C"] \
+    -to [get_pins -hierarchical -filter "NAME =~ top_hal/*sector_logic*cdc_bus_inst*data_o_reg*/D"]
 
 # the TXCLK is something that is controlled by us, since it is locked to the
 # REFCLK that we supply.. there is some phase uncertainty of the 4.1166 ns clock
@@ -101,8 +97,7 @@ set_clock_groups -group [get_clocks "clock_async"] -asynchronous
 ################################################################################
 
 set_false_path \
-    -to [get_pins -hierarchical -filter \
-             "NAME =~ top_hal/mgt_wrapper_inst/*synchronizer*/i_in_meta_reg/D"]
+    -to [get_pins -hierarchical -filter "NAME =~ top_hal/mgt_wrapper_inst/*synchronizer*/i_in_meta_reg/D"]
 
 ################################################################################
 # Uncomment to disable all logic trimming
