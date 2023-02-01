@@ -19,4 +19,6 @@ HAL/ctrl/src/*/*_PKG.svh
 #FIX THIS
 HAL/ctrl/src/SM_C2C_INTF/*.vhd
 HAL/ctrl/src/SM_C2C_INTF/*/*.vhd
-HAL/ctrl/src/SM_C2C_INTF/*/*/*.vhd
+# HAL/ctrl/src/SM_C2C_INTF/*/*/*.vhd
+HAL/ctrl/src/SM_C2C_INTF/*picoblaze/picoblaze/cli.vhd
+# HAL/ctrl/src/SM_C2C_INTF/*picoblaze/picoblaze/kcpsm6.vhd # commented because generates conflict with file with same name
