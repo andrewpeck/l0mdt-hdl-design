@@ -9,7 +9,7 @@ use work.AXIRegPkg.all;
 use work.types.all;
 use work.BRAMPortPkg.all;
 use work.FM_Ctrl.all;
-use work.FM_Ctrl_DEF.all;
+
 entity FM_map is
   generic (
     READ_TIMEOUT     : integer := 2048
@@ -151,11 +151,11 @@ architecture behavioral of FM_map is
 ,			51 => x"00006C00"
 ,			52 => x"00006C00"
 ,			53 => x"00006C20");
-  signal BRAM_MOSI          : BRAMPortMOSI_array_t(0 to BRAM_COUNT-1);
-  signal BRAM_MISO          : BRAMPortMISO_array_t(0 to BRAM_COUNT-1);
+  signal BRAM_MOSI          : BRAMPortMOSI_array_t(0 to BRAM_COUNT-1) := (others => DefaultBRAMPortMOSI);
+  signal BRAM_MISO          : BRAMPortMISO_array_t(0 to BRAM_COUNT-1) := (others => DefaultBRAMPortMISO);
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 27712);
+  signal reg_data :  slv32_array_t(integer range 0 to 27712) := (others=>(others=>'0'));
   constant Default_reg_data : slv32_array_t(integer range 0 to 27712) := (others => x"00000000");
 begin  -- architecture behavioral
 
@@ -186,11 +186,11 @@ begin  -- architecture behavioral
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
 
-  latch_reads: process (clk_axi,reset_axi_n) is
-  begin  -- process latch_reads
-    if reset_axi_n = '0' then
-      localRdAck <= '0';
-    elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
+  
+  latch_reads: process (clk_axi) is
+     begin
+    if clk_axi'event and clk_axi = '1' then  -- rising clock edge
+     
       localRdAck <= '0';
       
       if regRdAck = '1' then
@@ -358,33 +358,41 @@ elsif BRAM_MISO(52).rd_data_valid = '1' then
 elsif BRAM_MISO(53).rd_data_valid = '1' then
         localRdAck <= '1';
         localRdData_latch <= BRAM_MISO(53).rd_data;
-
+end if;
       end if;
-    end if;
-  end process latch_reads;
+    end process latch_reads;
 
-  
-  reads: process (clk_axi,reset_axi_n) is
-  begin  -- process latch_reads
-    if reset_axi_n = '0' then
-      regRdAck <= '0';
-    elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
+    reads: process (localRdReq,localAddress,reg_data) is
+  begin  
+  --  if clk_axi'event and clk_axi = '1' then  -- rising clock edge
       regRdAck  <= '0';
       localRdData <= x"00000000";
       if localRdReq = '1' then
         regRdAck  <= '1';
         case to_integer(unsigned(localAddress(14 downto 0))) is
           
+        when 0 => --0x0
+          localRdData( 0)            <=  reg_data( 0)( 0);                --
+          localRdData( 2 downto  1)  <=  reg_data( 0)( 2 downto  1);      --
+        when 1 => --0x1
+          localRdData(31 downto  0)  <=  reg_data( 1)(31 downto  0);      --
+        when 2 => --0x2
+          localRdData(31 downto  0)  <=  reg_data( 2)(31 downto  0);      --
+        when 5 => --0x5
+          localRdData(31 downto  0)  <=  reg_data( 5)(31 downto  0);      --
+        when 6 => --0x6
+          localRdData(31 downto  0)  <=  reg_data( 6)(31 downto  0);      --
 
 
-          when others =>
-            regRdAck <= '0';
+          when others =>            
             localRdData <= x"00000000";
         end case;
       end if;
-    end if;
+   -- end if;
   end process reads;
+    
 
+ 
 
   -------------------------------------------------------------------------------
   -- Record write decoding
@@ -392,35 +400,44 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
   -------------------------------------------------------------------------------
 
   -- Register mapping to ctrl structures
+  Ctrl.SPY_CTRL.GLOBAL_FREEZE         <=  reg_data( 0)( 0);               
+  Ctrl.SPY_CTRL.GLOBAL_PLAYBACK_MODE  <=  reg_data( 0)( 2 downto  1);     
+  Ctrl.FREEZE_MASK_0                  <=  reg_data( 1)(31 downto  0);     
+  Ctrl.FREEZE_MASK_1                  <=  reg_data( 2)(31 downto  0);     
+  Ctrl.PLAYBACK_MASK_0                <=  reg_data( 5)(31 downto  0);     
+  Ctrl.PLAYBACK_MASK_1                <=  reg_data( 6)(31 downto  0);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
+      --reg_data( 0)( 0)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_FREEZE;
+      --reg_data( 0)( 2 downto  1)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_PLAYBACK_MODE;
+      reg_data(0)(31 downto 0 )    <= x"0000000" & b"0" & DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_PLAYBACK_MODE & DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_FREEZE;
+      reg_data( 1)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_0;
+      reg_data( 2)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_1;
+      reg_data( 3)                <= x"00000000";
+      reg_data( 4)                <= x"00000000";
+      reg_data( 5)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_0;
+      reg_data( 6)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_1;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      Ctrl.SPY_CTRL.GLOBAL_FREEZE <= '0';
-      Ctrl.SPY_CTRL.GLOBAL_PLAYBACK_MODE <= (others => '0');
-      Ctrl.FREEZE_MASK_0 <= (others => '0');
-      Ctrl.FREEZE_MASK_1 <= (others => '0');
-      Ctrl.PLAYBACK_MASK_0 <= (others => '0');
-      Ctrl.PLAYBACK_MASK_1 <= (others => '0');
       
 
       
       if localWrEn = '1' then
         case to_integer(unsigned(localAddress(14 downto 0))) is
         when 0 => --0x0
-          Ctrl.SPY_CTRL.GLOBAL_FREEZE         <=  localWrData( 0);               
-          Ctrl.SPY_CTRL.GLOBAL_PLAYBACK_MODE  <=  localWrData( 2 downto  1);     
+          reg_data( 0)( 0)            <=  localWrData( 0);                --
+          reg_data( 0)( 2 downto  1)  <=  localWrData( 2 downto  1);      --
         when 1 => --0x1
-          Ctrl.FREEZE_MASK_0                  <=  localWrData(31 downto  0);     
+          reg_data( 1)(31 downto  0)  <=  localWrData(31 downto  0);      --
         when 2 => --0x2
-          Ctrl.FREEZE_MASK_1                  <=  localWrData(31 downto  0);     
+          reg_data( 2)(31 downto  0)  <=  localWrData(31 downto  0);      --
         when 5 => --0x5
-          Ctrl.PLAYBACK_MASK_0                <=  localWrData(31 downto  0);     
+          reg_data( 5)(31 downto  0)  <=  localWrData(31 downto  0);      --
         when 6 => --0x6
-          Ctrl.PLAYBACK_MASK_1                <=  localWrData(31 downto  0);     
+          reg_data( 6)(31 downto  0)  <=  localWrData(31 downto  0);      --
 
           when others => null;
         end case;

@@ -1490,6 +1490,7 @@ package FM_CTRL is
     SB12                       :FM_SB12_CTRL_t;               
     SB13                       :FM_SB13_CTRL_t;               
     SB14                       :FM_SB14_CTRL_t;               
+
     SB15                       :FM_SB15_CTRL_t;               
     SB16                       :FM_SB16_CTRL_t;               
     SB17                       :FM_SB17_CTRL_t;               

@@ -1,120 +1,120 @@
 <node id="FM">
   <node id="SPY_CTRL"  address="0x0">
-    <node id="GLOBAL_FREEZE" address = "0x0" permission="w" mask="0x1"/>
-    <node id="GLOBAL_PLAYBACK_MODE" address="0x0" permission="w" mask="0x6"/>
+    <node id="GLOBAL_FREEZE" address = "0x0" permission="rw" mask="0x1"/>
+    <node id="GLOBAL_PLAYBACK_MODE" address="0x0" permission="rw" mask="0x6"/>
   </node>
-  <node id="FREEZE_MASK_0" address="0x1" permission="w" mask="0xFFFFFFFF"/>
-  <node id="FREEZE_MASK_1" address="0x2" permission="w" mask="0xFFFFFFFF"/>
-  <node id="PLAYBACK_MASK_0" address="0x5" permission="w" mask="0xFFFFFFFF"/>
-  <node id="PLAYBACK_MASK_1" address="0x6" permission="w" mask="0xFFFFFFFF"/>
+  <node id="FREEZE_MASK_0" address="0x1" permission="rw" mask="0xFFFFFFFF"/>
+  <node id="FREEZE_MASK_1" address="0x2" permission="rw" mask="0xFFFFFFFF"/>
+  <node id="PLAYBACK_MASK_0" address="0x5" permission="rw" mask="0xFFFFFFFF"/>
+  <node id="PLAYBACK_MASK_1" address="0x6" permission="rw" mask="0xFFFFFFFF"/>
   
   
-  <node id="SB0" address="0x400">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB0" address="0x100">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB1" address="0x800">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x400" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB1" address="0x200">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB2" address="0xC00">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB2" address="0x400">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB3" address="0x1000">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB3" address="0x500">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB4" address="0x1400">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x400" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB4" address="0x600">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB5" address="0x1800">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB5" address="0x800">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB6" address="0x1C00">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB6" address="0x900">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB7" address="0x2000">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x400" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB7" address="0xa00">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB8" address="0x2400">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB8" address="0xc00">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB9" address="0x2800">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB9" address="0xd00">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB10" address="0x2C00">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x400" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB10" address="0xe00">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB11" address="0x3000">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB11" address="0x1000">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
   </node>
- <node id="SB12" address="0x3400">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB12" address="0x1100">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB13" address="0x3800">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x400" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB13" address="0x1200">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB14" address="0x3C00">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB14" address="0x1400">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
   </node>
- <node id="SB15" address="0x4000">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB15" address="0x1500">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB16" address="0x4400">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x400" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB16" address="0x1600">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB17" address="0x4800">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB17" address="0x1800">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
   </node>
- <node id="SB18" address="0x4C00">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB18" address="0x1900">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB19" address="0x5000">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x400" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB19" address="0x1a00">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB20" address="0x5400">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB20" address="0x1c00">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
   </node>
- <node id="SB21" address="0x5800">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB21" address="0x1d00">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB22" address="0x5C00">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x400" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB22" address="0x1e00">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB23" address="0x6000">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB23" address="0x2000">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
   </node>
- <node id="SB24" address="0x6400">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB24" address="0x2100">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB25" address="0x6800">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x400" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB25" address="0x2200">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
   </node>
-  <node id="SB26" address="0x6C00">
-    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB26" address="0x2400">
+    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
   </node>
 </node>
