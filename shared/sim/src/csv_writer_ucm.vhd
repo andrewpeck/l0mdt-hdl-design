@@ -51,7 +51,8 @@ library vamc_lib;
 entity csv_writer_ucm is
   generic(
     g_PRJ_INFO            : string  := "not_defined";
-    g_IN_FILES            : string  := "not_defined.csv"
+    g_IN_FILES            : string  := "not_defined.csv";
+    g_verbose         : integer := 1
   );
   port (
     clk                   : in std_logic;
@@ -263,6 +264,23 @@ begin
               csv_file_1.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang));
               csv_file_1.writeline;
 
+              if g_verbose > 1 then
+                puts("OUT ## UCM2HPS_0 => " & integer'image(to_integer(tb_curr_sim_time)) &
+                " : " & integer'image(to_integer(tb_curr_tdc_time)) &
+                " : " & integer'image(0) &
+                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(th_i) &
+                " : " & integer'image(0) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slcid)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slid)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.bcid)) &
+                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang)));
+              end if;
+              
             end if;
           end loop;
         end if;
@@ -297,6 +315,23 @@ begin
               -- vec_ang
               csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(th_i).vec_ang));
               csv_file_1.writeline;
+
+              if g_verbose > 1 then
+                puts("OUT ## UCM2HPS_1 => " & integer'image(to_integer(tb_curr_sim_time)) &
+                " : " & integer'image(to_integer(tb_curr_tdc_time)) &
+                " : " & integer'image(0) &
+                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(th_i) &
+                " : " & integer'image(1) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slcid)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slid)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.bcid)) &
+                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang)));
+              end if;
 
             end if;
           end loop;
@@ -333,6 +368,23 @@ begin
               csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(th_i).vec_ang));
               csv_file_1.writeline;
 
+              if g_verbose > 1 then
+                puts("OUT ## UCM2HPS_2 => " & integer'image(to_integer(tb_curr_sim_time)) &
+                " : " & integer'image(to_integer(tb_curr_tdc_time)) &
+                " : " & integer'image(0) &
+                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(th_i) &
+                " : " & integer'image(2) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slcid)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slid)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.bcid)) &
+                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang)));
+              end if;
+
             end if;
           end loop;
         end if;
@@ -368,6 +420,23 @@ begin
               -- vec_ang
               csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(th_i).vec_ang));
               csv_file_1.writeline;
+
+              if g_verbose > 1 then
+                puts("OUT ## UCM2HPS_3 => " & integer'image(to_integer(tb_curr_sim_time)) &
+                " : " & integer'image(to_integer(tb_curr_tdc_time)) &
+                " : " & integer'image(0) &
+                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(th_i) &
+                " : " & integer'image(3) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slcid)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slid)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.bcid)) &
+                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang)));
+              end if;
 
             end if;
           end loop;
@@ -446,6 +515,38 @@ begin
             csv_file_2.write_integer(ucm2pl_ar(sl_i).nswseg_posphi);
             csv_file_2.write_integer(ucm2pl_ar(sl_i).nswseg_poseta);
             csv_file_2.writeline;
+
+            if g_verbose > 1 then
+              puts("OUT ## UCM2CPL => " &   
+              " : " & integer'image(to_integer(tb_curr_sim_time)) &
+              " : " & integer'image(to_integer(tb_curr_tdc_time)) &
+              " : " & integer'image(to_integer(unsigned(slc_event_u2m_au(sl_i)))) &
+              " : " & integer'image(sl_i) &
+              " : " & std_logic'image(ucm2pl_ar(sl_i).busy) &
+              " : " & integer'image(to_integer(unsigned(ucm2pl_ar(sl_i).process_ch))) &
+              " : " & std_logic'image(ucm2pl_ar(sl_i).common.header.tcoverflow) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.header.nmtc_sl)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.header.nmtc_mdt)) & 
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.header.nslc)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.header.bcid)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.slcid)) &
+              " : " & std_logic'image(ucm2pl_ar(sl_i).common.tcsent) & 
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.poseta)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.posphi)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.sl_pt)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.sl_ptthresh)) &
+              " : " & std_logic'image(ucm2pl_ar(sl_i).common.sl_charge) &
+              " : " & integer'image(to_integer(unsigned(ucm2pl_ar(sl_i).common.cointype))) &
+              " : " & integer'image(to_integer(unsigned(ucm2pl_ar(sl_i).common.trailer.crc))) & 
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.trailer.fiberid)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.trailer.slid)) &
+              " : " & integer'image(to_integer(unsigned(ucm2pl_ar(sl_i).common.trailer.comma))) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).phimod)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).nswseg_angdtheta)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).nswseg_posphi)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).nswseg_poseta)));
+            end if;
+
           end if;
         end loop;
       end if;
@@ -453,3 +554,4 @@ begin
   end process UCM2MPL_OUT;
   
 end sim;
+

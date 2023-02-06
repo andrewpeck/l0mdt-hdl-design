@@ -1,16 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: ucm.vhd
+-- Module: Muon Candidate manager
+-- File PATH: /ucm.vhd
+-- -----
+-- File Created: Wednesday, 1st February 2023 10:32:58 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Monday, 6th February 2023 6:08:55 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: Muon Candidate Manager
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -113,7 +116,7 @@ architecture beh of ucm is
   -- signal ucm_prepro_av        : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_in_av       : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
-  signal csw_main_in_dv      : std_logic;
+  -- signal csw_main_in_dv      : std_logic;
   signal csw_ctrl_dv      : std_logic;
   
   
@@ -135,7 +138,7 @@ architecture beh of ucm is
   signal cpam_in_av           : ucm_cde_avt(c_NUM_THREADS -1 downto 0);
   signal cpam_out_av          : ucm_cde_avt(c_NUM_THREADS -1 downto 0);
 
-  signal uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
   signal csw_control_av       : ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
   signal pam_CSW_control      : ucm_pam_control_art(c_NUM_THREADS -1 downto 0);

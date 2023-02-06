@@ -1,16 +1,20 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: roi_atan.vhd
+-- Module: <<moduleName>>
+-- File PATH: /roi_atan.vhd
+-- -----
+-- File Created: Monday, 5th December 2022 8:52:26 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Monday, 6th February 2023 7:22:53 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: angle (mrad) to slope 
---  Description: logic for TAN LUT
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -77,8 +81,8 @@ begin
         o_dv <= '0';
       else
         if ena = '1' then
+          int_data_valid <= i_dv;
           if i_dv = '1' then
-            int_data_valid <= i_dv;
             addr_mem <= i_slope;
           end if;
 
@@ -88,6 +92,9 @@ begin
           else
             o_mbar <= (others => '0');
           end if;
+        else
+          o_mbar <= (others => '0');
+          o_dv <= '0';
         end if;
       end if;
     end if ;
