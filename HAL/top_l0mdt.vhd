@@ -585,10 +585,10 @@ begin
   fw_info_mon.HOG_INFO.OFFICIAL            <= OFFICIAL;
   fw_info_mon.HOG_INFO.GLOBAL_FWHASH       <= GLOBAL_SHA;
   fw_info_mon.HOG_INFO.TOP_FWHASH          <= TOP_SHA;
-  fw_info_mon.HOG_INFO.XML_HASH            <= XML_HASH;
+  fw_info_mon.HOG_INFO.XML_HASH            <= XML_SHA;
   fw_info_mon.HOG_INFO.GLOBAL_FWVERSION    <= GLOBAL_VER;
   fw_info_mon.HOG_INFO.TOP_FWVERSION       <= TOP_VER;
-  fw_info_mon.HOG_INFO.XML_VERSION         <= XML_VERSION;
+  fw_info_mon.HOG_INFO.XML_VERSION         <= XML_VER;
   fw_info_mon.HOG_INFO.HOG_FWHASH          <= HOG_SHA;
   fw_info_mon.HOG_INFO.FRAMEWORK_FWVERSION <= FRAMEWORK_VER;
   fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH    <= FRAMEWORK_SHA;
