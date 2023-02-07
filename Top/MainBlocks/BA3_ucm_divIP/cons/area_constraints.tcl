@@ -50,15 +50,15 @@ if {$num_slrs > 0} {
     # SLR Crossings
     #-------------------------------------------------------------------------------
 
-    set_property -quiet USER_SLL_REG True [get_cells "ult_inst/*_PL/SHIFT_GEN.data_pl_reg*"]
+    # set_property -quiet USER_SLL_REG True [get_cells "ult_inst/*_PL/SHIFT_GEN.data_pl_reg*"]
 
     #-------------------------------------------------------------------------------
     # SLR Placements
     #-------------------------------------------------------------------------------
 
     # felix rx
-    puts "Applying area constraints to felix rx"
-    set_hier_slr_assignment $SLR_EXT "top_hal/*felix_decoder*rx*"
+    # puts "Applying area constraints to felix rx"
+    # set_hier_slr_assignment $SLR_EXT "top_hal/*felix_decoder*rx*"
 
     # felix tx
     # puts "Applying area constraints to felix tx"
