@@ -320,17 +320,17 @@ begin
                 puts("OUT ## UCM2HPS_1 => " & integer'image(to_integer(tb_curr_sim_time)) &
                 " : " & integer'image(to_integer(tb_curr_tdc_time)) &
                 " : " & integer'image(0) &
-                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(unsigned(mid_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
                 " : " & integer'image(th_i) &
                 " : " & integer'image(1) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slcid)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slid)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.bcid)) &
-                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang)));
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).muid.slcid)) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).muid.slid)) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).muid.bcid)) &
+                " : " & integer'image(to_integer(unsigned(mid_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).vec_ang)));
               end if;
 
             end if;
@@ -372,17 +372,17 @@ begin
                 puts("OUT ## UCM2HPS_2 => " & integer'image(to_integer(tb_curr_sim_time)) &
                 " : " & integer'image(to_integer(tb_curr_tdc_time)) &
                 " : " & integer'image(0) &
-                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(unsigned(out_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
                 " : " & integer'image(th_i) &
                 " : " & integer'image(2) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slcid)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slid)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.bcid)) &
-                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang)));
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).muid.slcid)) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).muid.slid)) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).muid.bcid)) &
+                " : " & integer'image(to_integer(unsigned(out_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).vec_ang)));
               end if;
 
             end if;
@@ -425,17 +425,17 @@ begin
                 puts("OUT ## UCM2HPS_3 => " & integer'image(to_integer(tb_curr_sim_time)) &
                 " : " & integer'image(to_integer(tb_curr_tdc_time)) &
                 " : " & integer'image(0) &
-                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(unsigned(ext_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
                 " : " & integer'image(th_i) &
                 " : " & integer'image(3) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slcid)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slid)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.bcid)) &
-                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos)) &
-                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang)));
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).muid.slcid)) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).muid.slid)) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).muid.bcid)) &
+                " : " & integer'image(to_integer(unsigned(ext_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).vec_ang)));
               end if;
 
             end if;

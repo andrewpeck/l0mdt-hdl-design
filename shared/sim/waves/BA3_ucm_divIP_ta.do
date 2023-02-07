@@ -178,7 +178,7 @@ add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_c
 add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_local_rst
 add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_in_en
 add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_v
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r
+add wave -noupdate -expand -group slc_vp2 -radix unsigned -childformat {{/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.muid -radix unsigned} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.chamb_ieta -radix unsigned} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.cointype -radix unsigned} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.posphi -radix unsigned} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.phimod -radix unsigned} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.specific -radix unsigned} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.data_valid -radix unsigned}} -subitemconfig {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.muid {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.chamb_ieta {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.cointype {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.posphi {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.phimod {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.specific {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r.data_valid {-height 17 -radix unsigned}} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r
 add wave -noupdate -expand -group slc_vp2 -group c&m /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ctrl_v
 add wave -noupdate -expand -group slc_vp2 -group c&m /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/mon_v
 add wave -noupdate -expand -group slc_vp2 -group c&m /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ctrl_r
@@ -191,14 +191,14 @@ add wave -noupdate -expand -group slc_vp2 -group c&m /ucm_tb/UCM_DUT/SLC_VP_A(2)
 add wave -noupdate -expand -group slc_vp2 -group c&m /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/mdt_R_mon_r
 add wave -noupdate -expand -group slc_vp2 -group c&m /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/mdt_R_ctrl_v
 add wave -noupdate -expand -group slc_vp2 -group c&m /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/mdt_R_mon_v
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/rpc_radius_av
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/rpc_radius_dv
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/mdt_radius_av
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/mdt_radius_dv
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/local_rst
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/int_data_r
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/int_data_v
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/barrel_r
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/rpc_radius_av
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/rpc_radius_dv
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/mdt_radius_av
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/mdt_radius_dv
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/local_rst
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/int_data_r
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/int_data_v
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/barrel_r
 add wave -noupdate -expand -group slc_vp2 -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/g_NUM_RPC_LAYERS
 add wave -noupdate -expand -group slc_vp2 -group slc_vp_2_slope /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/g_DEBUG_TYPE
 add wave -noupdate -expand -group slc_vp2 -group slc_vp_2_slope /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/g_MAIN_DIV_IPR2_ENABLE
@@ -462,21 +462,49 @@ add wave -noupdate -expand -group slc_vp2 -group slc_vp_2_slope -radix decimal /
 add wave -noupdate -expand -group slc_vp2 -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/o_offset
 add wave -noupdate -expand -group slc_vp2 -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/o_slope
 add wave -noupdate -expand -group slc_vp2 -group slc_vp_2_slope -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/o_data_valid
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/offset
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/slope
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/slope_dv
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/atan_slope
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/atan_dv
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/vec_ang_pl
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/vec_pos_array
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/vec_z_pos_dv
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/new_chamb_ieta_a
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/new_chamb_ieta_dv
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_buff_ar
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_ar
-add wave -noupdate -expand -group slc_vp2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/o_ucm2hps_av
+add wave -noupdate -expand -group slc_vp2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/offset
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/slope
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/slope_dv
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/g_STATION_RADIUS
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/g_INPUT_RESOLUTION
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/g_OUTPUT_RESOLUTION
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/g_OUTPUT_WIDTH
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/clk
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/rst
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/ena
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/i_mdt_R
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/i_mdt_R_dv
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/mdt_R
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/mdt_R_sc
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/i_offset
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/i_slope
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/i_data_valid
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/slope
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/bnom
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/bnom_dv
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/vec_pos
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/vec_pos_dv
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/vec_pos_mult
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/vec_pos_mult_dv
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/div_dout_tvalid
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/div_dout_tdata
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/div_q
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/div_r
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/mult
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/o_vec_z_pos
+add wave -noupdate -expand -group slc_vp2 -expand -group z_calc_inn -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/Z_CALC_LOOP(0)/Z_CALC_IF/Z_CALC/o_vec_z_pos_dv
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/atan_slope
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/atan_dv
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/vec_ang_pl
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/vec_pos_array
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/vec_z_pos_dv
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/new_chamb_ieta_a
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/new_chamb_ieta_dv
+add wave -noupdate -expand -group slc_vp2 -radix unsigned -childformat {{/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_buff_ar(2) -radix unsigned} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_buff_ar(1) -radix unsigned} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_buff_ar(0) -radix unsigned}} -expand -subitemconfig {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_buff_ar(2) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_buff_ar(1) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_buff_ar(0) {-height 17 -radix unsigned}} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_buff_ar
+add wave -noupdate -expand -group slc_vp2 -radix unsigned -childformat {{/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_ar(2) -radix unsigned} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_ar(1) -radix unsigned} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_ar(0) -radix unsigned}} -expand -subitemconfig {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_ar(2) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_ar(1) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_ar(0) {-height 17 -radix unsigned}} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_ar
+add wave -noupdate -expand -group slc_vp2 -radix unsigned /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/o_ucm2hps_av
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2513039434 fs} 0}
+WaveRestoreCursors {{Cursor 1} {1730671198 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 251
 configure wave -valuecolwidth 100
@@ -492,4 +520,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2382184964 fs} {2847489229 fs}
+WaveRestoreZoom {0 fs} {5250 ns}
