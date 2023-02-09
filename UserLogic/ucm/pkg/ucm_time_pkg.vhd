@@ -28,12 +28,12 @@ use ieee.math_real.all;
 
 package ucm_time_pkg is
 
-  constant UCM_TIME_TOTAL_TIME_2_HPS : integer := ;
-  constant UCM_TIME_TOTAL_TIME_2_CPL : integer := ;
-  constant UCM_TIME_PRE : integer := ;
-  constant UCM_TIME_CDE : integer := ;
-  constant UCM_TIME_CVP : integer := ;
-  constant UCM_TIME_TOTAL_TIME : integer := ;
+  constant UCM_TIME_TOTAL_TIME_2_HPS : integer := 111; -- slope IPR2 & ZCALC IPR2
+  constant UCM_TIME_TOTAL_TIME_2_CPL : integer := 10;
+  constant UCM_TIME_PRE : integer := 0;
+  constant UCM_TIME_CDE : integer := 0;
+  constant UCM_TIME_CVP : integer := 0;
+  constant UCM_TIME_TOTAL_TIME : integer := 0;
   
   
   
