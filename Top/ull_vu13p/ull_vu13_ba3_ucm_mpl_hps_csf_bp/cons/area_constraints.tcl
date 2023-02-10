@@ -75,35 +75,34 @@ if {$num_slrs > 0} {
     # set_hier_slr_assignment $SLR_EXT "top_hal/station_gen[3].polmux_gen[*].polmux_wrapper*"
 
     # hit extraction groups
-    # puts "Applying area constraints to HPS"
-    # set_hier_slr_assignment $SLR_INN "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_INN.HPS*"
-    # set_hier_slr_assignment $SLR_MID "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_MID.HPS*"
-    # set_hier_slr_assignment $SLR_OUT "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_OUT.HPS*"
-    # set_hier_slr_assignment $SLR_EXT "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_EXT.HPS*"
+    puts "Applying area constraints to HPS"
+    set_hier_slr_assignment $SLR_INN "ULT/logic_gen.H2S_GEN.ULT_H2S/HPS_INN.HPS*"
+    set_hier_slr_assignment $SLR_MID "ULT/logic_gen.H2S_GEN.ULT_H2S/HPS_MID.HPS*"
+    set_hier_slr_assignment $SLR_OUT "ULT/logic_gen.H2S_GEN.ULT_H2S/HPS_OUT.HPS*"
+    set_hier_slr_assignment $SLR_EXT "ULT/logic_gen.H2S_GEN.ULT_H2S/HPS_EXT.HPS*"
 
     # hit extraction groups reset fanout
-    # puts "Applying area constraints to H2S reset"
-    # set_hier_slr_assignment $SLR_INN "ult_inst/logic_gen.H2S_GEN.ULT_H2S/inn_reset*"
-    # set_hier_slr_assignment $SLR_MID "ult_inst/logic_gen.H2S_GEN.ULT_H2S/mid_reset*"
-    # set_hier_slr_assignment $SLR_OUT "ult_inst/logic_gen.H2S_GEN.ULT_H2S/out_reset*"
-    # set_hier_slr_assignment $SLR_EXT "ult_inst/logic_gen.H2S_GEN.ULT_H2S/ext_reset*"
+    puts "Applying area constraints to H2S reset"
+    set_hier_slr_assignment $SLR_INN "ULT/logic_gen.H2S_GEN.ULT_H2S/inn_reset*"
+    set_hier_slr_assignment $SLR_MID "ULT/logic_gen.H2S_GEN.ULT_H2S/mid_reset*"
+    set_hier_slr_assignment $SLR_OUT "ULT/logic_gen.H2S_GEN.ULT_H2S/out_reset*"
+    set_hier_slr_assignment $SLR_EXT "ULT/logic_gen.H2S_GEN.ULT_H2S/ext_reset*"
 
     # tar
-    # puts "Applying area constraints to TAR"
-    # set_hier_slr_assignment $SLR_INN "ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_INN.TAR*"
-    # set_hier_slr_assignment $SLR_MID "ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_MID.TAR*"
-    # set_hier_slr_assignment $SLR_OUT "ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_OUT.TAR*"
-    # set_hier_slr_assignment $SLR_EXT "ult_inst/logic_gen.TAR_GEN.ULT_TAR/HPS_EXT.TAR*"
+    puts "Applying area constraints to TAR"
+    set_hier_slr_assignment $SLR_INN "ULT/logic_gen.TAR_GEN.ULT_TAR/HPS_INN.TAR*"
+    set_hier_slr_assignment $SLR_MID "ULT/logic_gen.TAR_GEN.ULT_TAR/HPS_MID.TAR*"
+    set_hier_slr_assignment $SLR_OUT "ULT/logic_gen.TAR_GEN.ULT_TAR/HPS_OUT.TAR*"
+    set_hier_slr_assignment $SLR_EXT "ULT/logic_gen.TAR_GEN.ULT_TAR/HPS_EXT.TAR*"
 
     # ucm
     puts "Applying area constraints to UCM"
-    set_hier_slr_assignment $SLR_EXT "UCM*"
-    # set_hier_slr_assignment $SLR_EXT -top
+    set_hier_slr_assignment $SLR_EXT "ULT/logic_gen.UCM_GEN.ULT_UCM*"
     # set_hier_slr_assignment $SLR_EXT "top_control_inst/*ucm*"
 
     # mpl
-    # puts "Applying area constraints to MPL"
-    # set_hier_slr_assignment $SLR_EXT "ult_inst/logic_gen.MPL_GEN.ULT_MPL*"
+    puts "Applying area constraints to CPL"
+    set_hier_slr_assignment $SLR_EXT "ULT/logic_gen.MPL_GEN.ULT_MPL*"
     # set_hier_slr_assignment $SLR_EXT "top_control_inst/mpl_map_inst*"
 
     # pt
