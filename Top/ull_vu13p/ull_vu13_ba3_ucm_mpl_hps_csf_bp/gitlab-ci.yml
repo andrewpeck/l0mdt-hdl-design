@@ -4,11 +4,10 @@ GEN:ull_vu13_ba3_ucm_mpl_hps_csf_bp:
     variables:
       extends: .vars
       PROJECT_NAME: ull_vu13p/ull_vu13_ba3_ucm_mpl_hps_csf_bp
-      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      # HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
     tags:
-      - normal-ops
-      - hog
+      - argos
 
 SIM:ull_vu13_ba3_ucm_mpl_hps_csf_bp:
     extends: .simulate_project
