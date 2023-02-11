@@ -1,5 +1,5 @@
 # -*- mode: TCL;-*-
-HAL/ctrl/src/axi/types.vhd
+# HAL/ctrl/src/axi/types.vhd
 
 HAL/ctrl/src/axi-vhdl-package/axiRegBlocking.vhd
 #HAL/ctrl/src/axi-vhdl-package/axiRegMaster.vhd
