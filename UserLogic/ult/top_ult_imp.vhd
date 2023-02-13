@@ -46,8 +46,6 @@ use fm_lib.fm_ult_pkg.all;
 entity top_ult is
   generic (
     DUMMY       : boolean := false
-
-    -- g_h2s_ctrl  : H2S_CTRL_t := zero(g_h2s_ctrl);
     );
 
   port (

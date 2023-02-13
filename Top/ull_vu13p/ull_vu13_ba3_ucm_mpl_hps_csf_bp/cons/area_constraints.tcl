@@ -32,11 +32,13 @@ if {$num_slrs > 0} {
     # set SLR_EXT SLR0
 
     # create pblocks 1/2/3/4
+    puts "******** num_slrs = $num_slrs"
     for {set i 0} {$i < $num_slrs} {incr i} {
         set pblock PBLOCK_SLR_$i
         delete_pblock -quiet [get_pblocks $pblock]
         create_pblock $pblock
         resize_pblock -add [get_slrs SLR$i] $pblock
+        puts " ******* PBLOCK_SLR_$i = $pblock"
     }
 
     set SLR_EXT PBLOCK_SLR_1

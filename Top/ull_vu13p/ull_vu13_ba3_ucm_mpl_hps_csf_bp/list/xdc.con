@@ -1,4 +1,5 @@
-shared/constraints/l0mdt_dev_con.xdc
+# shared/constraints/l0mdt_dev_con.xdc
+shared/constraints/gldl_dev_con.xdc
 #HAL/constraints/false_false_paths.tcl nosynth
 # HAL/constraints/loc_mgts.tcl nosynth
 HAL/constraints/region_constraints_toolbox.tcl nosynth
