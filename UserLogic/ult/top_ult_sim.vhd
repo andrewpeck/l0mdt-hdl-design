@@ -26,8 +26,13 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
--- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
+
+use shared_lib.l0mdt_sim_cstm_pkg.all;
+use shared_lib.vhdl_textio_csv_pkg.all;
+--
+-- use shared_lib.tar_sim_pkg.all;
 
 library ult_lib;
 
@@ -48,23 +53,58 @@ entity ult_tb is
   port (
     PRJ_INFO            : string  := "not_defined";
     IN_SLC_FILE         : string  := "not_defined.csv";
-    IN_CTRL_FILE        : string  := "not_defined.csv";
+    IN_CSM_FILE         : string  := "not_defined.csv";
     DUMMY               : boolean := false
   );
 end entity ult_tb;
 
 architecture beh of ult_tb is
+  ---------------------------------------------------------------------------
+  -- simulation signals generation
+  ---------------------------------------------------------------------------
+  -- AXI clk & rst
+  signal axi_rst      : std_logic := '0';
+  signal clk_axi      : std_logic := '0';
+  signal clk_axi_cnt  : integer;
+  constant c_CLK_AXI_MULT : integer := 5; 
+  -- clk
+  constant clk_time_period : time := 1 ns;  -- 1Ghz
+  signal clk_time : std_logic := '0';
+  signal tb_curr_time : unsigned(63 downto 0) := (others => '0');
+  -- clk 0.78125
+  constant clk_tdc_time_period : time := 0.78125 ns;  
+  signal clk_tdc_time : std_logic := '0';
+  signal tb_curr_tdc_time : unsigned(63 downto 0) := (others => '0');
+  -- clk 100ps
+  constant clk_sim_time_period : time := 100 ps;  
+  signal clk_sim_time : std_logic := '0';
+  signal tb_curr_sim_time : unsigned(63 downto 0) := (others => '0');
+  -- clk
+  constant clk_period : time := 3.125 ns;  -- 320Mhz
+  signal clk : std_logic := '0';
+  -- rest
+  constant reset_init_cycles : integer := 3;
+  signal rst: std_logic;
+
+  signal glob_en : std_logic := '1';
+
+  signal bx : std_logic := '0';
+
+  signal ttc_commands            : l0mdt_ttc_rt;
+  ---------------------------------------------------------------------------
+  -- signals DUT
+  ---------------------------------------------------------------------------
   signal clock_and_control     : l0mdt_control_rt;
 
-  signal i_inner_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_middle_tdc_hits : tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_outer_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_extra_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_mdt_tdc_inn_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
+  signal i_mdt_tdc_mid_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
+  signal i_mdt_tdc_out_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+  signal i_mdt_tdc_ext_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
-  signal i_main_primary_slc        :slc_rx_avt(2 downto 0);  -- is the main SL used
-  signal i_main_secondary_slc      :slc_rx_avt(2 downto 0);  -- only used in the big endcap
-  signal i_plus_neighbor_slc       :slc_rx_vt;
-  signal i_minus_neighbor_slc      :slc_rx_vt;
+  signal i_main_primary_slc       :slc_rx_avt(2 downto 0);  -- is the main SL used
+  signal i_main_secondary_slc     :slc_rx_avt(2 downto 0);  -- only used in the big endcap
+  signal i_plus_neighbor_slc      :slc_rx_vt;
+  signal i_minus_neighbor_slc     :slc_rx_vt;
 
   signal i_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
   signal i_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
@@ -144,6 +184,17 @@ architecture beh of ult_tb is
   signal o_MTC : mtc_out_avt(c_NUM_MTC-1 downto 0);
   signal o_NSP : mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
+  signal slc_file_ok      : std_logic;
+  signal slc_file_ts      : string(1 to LINE_LENGTH_MAX);
+  signal mdt_file_ok      : std_logic;
+  signal mdt_file_ts      : string(1 to LINE_LENGTH_MAX);
+
+  signal slc_event_ai     : event_xaut(c_MAX_NUM_SL -1 downto 0);
+  signal hit_mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
+  signal hit_slc_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
+
+  signal sump : std_logic;
+
 begin
   
   ULT : entity ult_lib.ult
@@ -156,10 +207,10 @@ begin
     ttc_commands      => ttc_commands,
 
     -- TDC Hits from Polmux
-    i_inn_tdc_hits_av => i_inner_tdc_hits,
-    i_mid_tdc_hits_av => i_middle_tdc_hits,
-    i_out_tdc_hits_av => i_outer_tdc_hits,
-    i_ext_tdc_hits_av => i_extra_tdc_hits,
+    i_inn_tdc_hits_av => i_mdt_tdc_inn_av,
+    i_mid_tdc_hits_av => i_mdt_tdc_mid_av,
+    i_out_tdc_hits_av => i_mdt_tdc_out_av,
+    i_ext_tdc_hits_av => i_mdt_tdc_ext_av,
 
     -- TAR Hits for simulation
     -- i_inner_tar_hits  => i_inner_tar_hits,
@@ -222,204 +273,155 @@ begin
 
     sump => sump
 );
+
+-------------------------------------------------------------------------------------
+	-- clock Generator
+	-------------------------------------------------------------------------------------
+  CLK_RT : process begin
+    clk_time <= '0';
+    wait for CLK_time_period/2;
+    clk_time <= '1';
+    wait for CLK_time_period/2;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- clock Sim Generator
+	-------------------------------------------------------------------------------------
+  CLK_SIM : process begin
+    clk_sim_time <= '0';
+    wait for clk_sim_time_period/2;
+    clk_sim_time <= '1';
+    wait for clk_sim_time_period/2;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- clock tdc Generator
+	-------------------------------------------------------------------------------------
+  CLK_TDC : process begin
+    clk_tdc_time <= '0';
+    wait for CLK_tdc_time_period/2;
+    clk_tdc_time <= '1';
+    wait for CLK_tdc_time_period/2;
+  end process;
+  -- clock_and_control.clk <= clk;
+  -------------------------------------------------------------------------------------
+	-- Main FPGA clock
+	-------------------------------------------------------------------------------------
+  CLK_MAIN : process begin
+    clk <= '0';
+    wait for CLK_period/2;
+    clk <= '1';
+    wait for CLK_period/2;
+  end process;
+  -- clk <= clk;
+  -------------------------------------------------------------------------------------
+  --    AXI CLK
+  -------------------------------------------------------------------------------------
+  axi_clk_proc : process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        clk_axi <= '0';
+        clk_axi_cnt <= 0;
+      else
+        if clk_axi_cnt < c_CLK_AXI_MULT then
+          clk_axi_cnt <= clk_axi_cnt + 1;
+        else
+          clk_axi_cnt <= 0;
+          clk_axi <= not clk_axi;
+        end if;
+      end if;
+    end if;
+  end process axi_clk_proc;
+ 	-------------------------------------------------------------------------------------
+	-- Reset Generator
+	-------------------------------------------------------------------------------------
+	rst_process: process begin
+		rst<='0';
+		wait for CLK_period;
+		rst<='1';
+		wait for CLK_period*reset_init_cycles;
+		rst<= '0';
+		wait;
+  end process;
+  -- rst <= rst;
+  -------------------------------------------------------------------------------------
+	-- Test Bench time
+  -------------------------------------------------------------------------------------
+  ToA: process(clk_time) begin
+    if rising_edge(clk_time) then
+      tb_curr_time <= tb_curr_time + '1';
+    end if;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- Test Bench tdc time
+  -------------------------------------------------------------------------------------
+  ToA_tdc: process(clk_tdc_time) begin
+    if rising_edge(clk_tdc_time) then
+      tb_curr_tdc_time <= tb_curr_tdc_time + '1';
+    end if;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- Test Bench sim time
+  -------------------------------------------------------------------------------------
+  ToA_sim: process(clk_sim_time) begin
+    if rising_edge(clk_sim_time) then
+      tb_curr_sim_time <= tb_curr_sim_time + '1';
+    end if;
+  end process;
+
+  -------------------------------------------------------------------------------------
+	-- CSV
+  -------------------------------------------------------------------------------------
+  CSV_SLC_IN : entity shared_lib.csv_reader_slc 
+    generic map (
+      IN_SLC_FILE => IN_SLC_FILE,
+      g_verbose => 2
+    )
+    port map(
+      clk               => clk,
+      rst               => rst,
+      enable            => glob_en,
+      --
+      tb_curr_tdc_time  => tb_curr_tdc_time,
+      --
+      o_file_ok         => slc_file_ok,
+      o_file_ts         => slc_file_ts, 
+      --
+      o_slc_event_ai        => slc_event_ai,
+      --
+      o_main_primary_slc    => i_main_primary_slc,
+      o_main_secondary_slc  => i_main_secondary_slc,
+      o_plus_neighbor_slc   => i_plus_neighbor_slc,
+      o_minus_neighbor_slc  => i_minus_neighbor_slc
+
+    );
+
+  -------------------------------------------------------------------------------------
+	-- MDT IN
+  -------------------------------------------------------------------------------------
+  MDT : entity shared_lib.csv_reader_mdt 
+    generic map (
+      IN_HIT_FILE => IN_CSM_FILE,
+      g_verbose => 2
+    )
+    port map(
+      clk               => clk,
+      rst               => rst,
+      enable            => glob_en,
+      --
+      tb_curr_sim_time  => tb_curr_sim_time,
+      tb_curr_tdc_time  => tb_curr_tdc_time,
+      --
+      o_file_ok         => mdt_file_ok,
+      o_file_ts         => mdt_file_ts, 
+      --
+      o_mdt_event_ai    => hit_mdt_event_ai,
+      o_slc_event_ai    => hit_slc_event_ai,
+      -- TAR Hits for simulation
+      o_mdt_tdc_inn_av  => i_mdt_tdc_inn_av,
+      o_mdt_tdc_mid_av  => i_mdt_tdc_mid_av,
+      o_mdt_tdc_out_av  => i_mdt_tdc_out_av,
+      o_mdt_tdc_ext_av  => i_mdt_tdc_ext_av
+    );
   
   
 end architecture beh;
-
-
-
--- entity top_ult is
---   generic (
---     DUMMY       : boolean := false
-
---     -- g_h2s_ctrl  : H2S_CTRL_t := zero(g_h2s_ctrl);
---     );
-
---   port (
---     -- pipeline clock
---     -- clock_and_control : in l0mdt_control_rt;
---     clk                 : in std_logic;
---     rst                 : in std_logic;
---     bx                  : in std_logic;
-
---     ttc_commands        : in l0mdt_ttc_rt;
-
---     -- axi control
-
---     h2s_ctrl_r            : in  H2S_CTRL_t;
---     h2s_mon_r             : out H2S_MON_t;
-
---     tar_ctrl_r            : in  TAR_CTRL_t;
---     tar_mon_r             : out TAR_MON_t;
-
---     mtc_ctrl_r            : in  MTC_CTRL_t;
---     mtc_mon_r             : out MTC_MON_t;
-
---     ucm_ctrl_r            : in  UCM_CTRL_t;
---     ucm_mon_r             : out UCM_MON_t;
-
---     daq_ctrl_r            : in  DAQ_CTRL_t;
---     daq_mon_r             : out DAQ_MON_t;
-
---     tf_ctrl_r             : in  TF_CTRL_t;
---     tf_mon_r              : out TF_MON_t;
-
---     mpl_ctrl_r            : in  MPL_CTRL_t;
---     mpl_mon_r             : out MPL_MON_t;
-
---     fm_ctrl_r             : in FM_CTRL_t;
---     fm_mon_r              : out FM_MON_t;
-
---     -- TDC Hits from Polmux
---     i_inner_tdc_hits  : in tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
---     i_middle_tdc_hits : in tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
---     i_outer_tdc_hits  : in tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
---     i_extra_tdc_hits  : in tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
-
---     -- TDC Hits from Tar
---     -- i_inner_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
---     -- i_middle_tar_hits : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
---     -- i_outer_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
---     -- i_extra_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
-
---     -- Sector Logic Candidates
---     i_main_primary_slc        : in slc_rx_avt(2 downto 0);  -- is the main SL used
---     i_main_secondary_slc      : in slc_rx_avt(2 downto 0);  -- only used in the big endcap
---     i_plus_neighbor_slc       : in slc_rx_vt;
---     i_minus_neighbor_slc      : in slc_rx_vt;
---     -- Segments in from neighbor
---     i_plus_neighbor_segments  : in sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
---     i_minus_neighbor_segments : in sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
-
---     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
---     o_daq_streams     : out felix_stream_avt (c_HPS_MAX_HP_INN
---                                                   + c_HPS_MAX_HP_MID
---                                                   + c_HPS_MAX_HP_OUT - 1 downto 0);
---     -- o_daq_streams : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
-
---     -- Segments Out to Neighbor
---     o_plus_neighbor_segments  : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
---     o_minus_neighbor_segments : out sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-
---     -- MUCTPI
---     o_MTC : out mtc_out_avt(c_NUM_MTC-1 downto 0);
---     o_NSP : out mtc2nsp_avt(c_NUM_NSP-1 downto 0);
-
---     sump : out std_logic
-
---     );
-
--- end entity top_ult;
-
--- architecture behavioral of top_ult is
---   signal clock_and_control : l0mdt_control_rt;
-
---   signal h2s_ctrl_v            : std_logic_vector(len(h2s_ctrl_r ) -1 downto 0);
---   signal h2s_mon_v             : std_logic_vector(len(h2s_mon_r  ) -1 downto 0);
---   signal tar_ctrl_v            : std_logic_vector(len(tar_ctrl_r ) -1 downto 0);
---   signal tar_mon_v             : std_logic_vector(len(tar_mon_r  ) -1 downto 0);
---   signal mtc_ctrl_v            : std_logic_vector(len(mtc_ctrl_r ) -1 downto 0);
---   signal mtc_mon_v             : std_logic_vector(len(mtc_mon_r  ) -1 downto 0);
---   signal ucm_ctrl_v            : std_logic_vector(len(ucm_ctrl_r ) -1 downto 0);
---   signal ucm_mon_v             : std_logic_vector(len(ucm_mon_r  ) -1 downto 0);
---   signal daq_ctrl_v            : std_logic_vector(len(daq_ctrl_r ) -1 downto 0);
---   signal daq_mon_v             : std_logic_vector(len(daq_mon_r  ) -1 downto 0);
---   signal tf_ctrl_v             : std_logic_vector(len(tf_ctrl_r  ) -1 downto 0);
---   signal tf_mon_v              : std_logic_vector(len(tf_mon_r   ) -1 downto 0);
---   signal mpl_ctrl_v            : std_logic_vector(len(mpl_ctrl_r ) -1 downto 0);
---   signal mpl_mon_v             : std_logic_vector(len(mpl_mon_r  ) -1 downto 0);
---   signal fm_ctrl_v             : std_logic_vector(len(fm_ctrl_r  ) -1 downto 0);
---   signal fm_mon_v              : std_logic_vector(len(fm_mon_r  ) -1 downto 0);
--- begin
-
---   -- ctrl/mon
---   ucm_ctrl_v  <= convert(ucm_ctrl_r,ucm_ctrl_v);
---   ucm_mon_r   <= convert(ucm_mon_v,ucm_mon_r);
---   tar_ctrl_v  <= convert(tar_ctrl_r,tar_ctrl_v);
---   tar_mon_r   <= convert(tar_mon_v,tar_mon_r);
---   h2s_ctrl_v  <= convert(h2s_ctrl_r,h2s_ctrl_v);
---   h2s_mon_r   <= convert(h2s_mon_v,h2s_mon_r);
---   mpl_ctrl_v  <= convert(mpl_ctrl_r,mpl_ctrl_v);
---   mpl_mon_r   <= convert(mpl_mon_v,mpl_mon_r);
---   tf_ctrl_v   <= convert(tf_ctrl_r,tf_ctrl_v);
---   tf_mon_r    <= convert(tf_mon_v,tf_mon_r);
---   mtc_ctrl_v  <= convert(mtc_ctrl_r,mtc_ctrl_v);
---   mtc_mon_r   <= convert(mtc_mon_v,mtc_mon_r);
---   daq_ctrl_v  <= convert(daq_ctrl_r,daq_ctrl_v);
---   daq_mon_r   <= convert(daq_mon_v,daq_mon_r);
---   fm_ctrl_v   <= convert(fm_ctrl_r,fm_ctrl_v);
---   fm_mon_r    <= convert(fm_mon_v,fm_mon_r);
-  
-  
---   clock_and_control.clk <= clk;
---   clock_and_control.rst <= rst;
---   clock_and_control.bx  <= bx;
-
-
---   ULT : entity ult_lib.ult
---     generic map(
---       DUMMY       => DUMMY
---       )
---     port map(
---       -- pipeline clock
---       clock_and_control => clock_and_control,
---       ttc_commands      => ttc_commands,
-
---       -- TDC Hits from Polmux
---       i_inn_tdc_hits_av => i_inner_tdc_hits,
---       i_mid_tdc_hits_av => i_middle_tdc_hits,
---       i_out_tdc_hits_av => i_outer_tdc_hits,
---       i_ext_tdc_hits_av => i_extra_tdc_hits,
-
---       -- TAR Hits for simulation
---       -- i_inner_tar_hits  => i_inner_tar_hits,
---       -- i_middle_tar_hits => i_middle_tar_hits,
---       -- i_outer_tar_hits  => i_outer_tar_hits,
---       -- i_extra_tar_hits  => i_extra_tar_hits,
-
---       -- Sector Logic Candidates
---       i_main_primary_slc   => i_main_primary_slc,
---       i_main_secondary_slc => i_main_secondary_slc,
---       i_plus_neighbor_slc  => i_plus_neighbor_slc,
---       i_minus_neighbor_slc => i_minus_neighbor_slc,
-
---       -- Segments in from neighbor
---       i_plus_neighbor_segments  => i_plus_neighbor_segments,
---       i_minus_neighbor_segments => i_minus_neighbor_segments,
-
---       -- ULT Control
-
---       h2s_ctrl_v => h2s_ctrl_v,
---       h2s_mon_v  => h2s_mon_v,
---       tar_ctrl_v => tar_ctrl_v,
---       tar_mon_v  => tar_mon_v,
---       mtc_ctrl_v => mtc_ctrl_v,
---       mtc_mon_v  => mtc_mon_v,
---       ucm_ctrl_v => ucm_ctrl_v,
---       ucm_mon_v  => ucm_mon_v,
---       daq_ctrl_v => daq_ctrl_v,
---       daq_mon_v  => daq_mon_v,
---       tf_ctrl_v  => tf_ctrl_v,
---       tf_mon_v   => tf_mon_v,
---       mpl_ctrl_v => mpl_ctrl_v,
---       mpl_mon_v  => mpl_mon_v,
-
---       fm_ctrl_v  => fm_ctrl_v,
---       fm_mon_v   => fm_mon_v,
-
---       -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
---       o_daq_streams => o_daq_streams,
-
---       -- Segments Out to Neighbor
---       o_plus_neighbor_segments_av  => o_plus_neighbor_segments,
---       o_minus_neighbor_segments_av => o_minus_neighbor_segments,
-
---       -- MUCTPI
---       o_MTC => o_MTC,
---       o_NSP => o_NSP,
-
---       sump => sump
---       );
-
-
--- end behavioral;

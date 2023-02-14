@@ -17,17 +17,20 @@ set_clock_groups -name axi_clk -asynchronous -group [get_clocks clk50]
 
 # asynchronous clock relationship for tx/rx clocks to/from axi
 foreach clock_b \
-    [concat \
-         [get_clocks axi_clk] \
-         [get_clocks clock_async]] {
-             foreach clock_a [concat \
-                                  [get_clocks *TXOUTCLKPCS*] \
-                                  [get_clocks *RXOUTCLK\[*] \
-                                  [get_clocks *TXOUTCLK\[*]] {
-                 set_clock_groups \
-                     -group [get_clocks $clock_a] \
-                     -group [get_clocks $clock_b] \
-                     -asynchronous}}
+    [concat [get_clocks axi_clk] [get_clocks clock_async]] {
+             foreach clock_a [concat [get_clocks *TXOUTCLKPCS*] [get_clocks *RXOUTCLK\[*]] [get_clocks *TXOUTCLK\[*]]] { set_clock_groups -group [get_clocks $clock_a] -group [get_clocks $clock_b] -asynchronous}}
+# foreach clock_b \
+#     [concat \
+#          [get_clocks axi_clk] \
+#          [get_clocks clock_async]] {
+#              foreach clock_a [concat \
+#                                   [get_clocks *TXOUTCLKPCS*] \
+#                                   [get_clocks *RXOUTCLK\[*] \
+#                                   [get_clocks *TXOUTCLK\[*]] {
+#                                                                 set_clock_groups \
+#                                                                     -group [get_clocks $clock_a] \
+#                                                                     -group [get_clocks $clock_b] \
+#                                                                     -asynchronous}}
 
 ################################################################################
 # Freeclock is asynchronous to the transceiver clocks

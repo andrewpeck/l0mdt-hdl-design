@@ -14,7 +14,7 @@ use shared_lib.config_pkg.all;
 -- library ctrl_lib;
 -- use ctrl_lib.DAQ_CTRL.all;
 
-library l0mdt;
+-- library l0mdt;
 
 library daq_lib;
 library daq_core;
