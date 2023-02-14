@@ -45,6 +45,7 @@ use fm_lib.fm_ult_pkg.all;
 
 entity top_ult is
   generic (
+    PRJ_INFO            : string  := "not_defined";
     DUMMY       : boolean := false
     );
 
