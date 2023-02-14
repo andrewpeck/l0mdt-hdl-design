@@ -8,4 +8,4 @@ GEN:l0mdt_ku15p_ull_empty:
       HOG_CHECK_SYNTAX: 0
       HOG_NO_BITSTREAM: 0 
     tags:
-      - argos
+      - mdt-1
