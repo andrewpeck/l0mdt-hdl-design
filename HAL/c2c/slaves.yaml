@@ -96,16 +96,14 @@ AXI_SLAVES:
           remote_slave: "1"
           dt_data: "compatible = \"xlnx,axi-uartlite-2.0\", \"xlnx,xps-uartlite-1.00.a\";current-speed = <115200>;device_type = \"serial\";interrupt-names = \"interrupt\";interrupt-parent = <&IRQ0_INTR_CTRL>;interrupts = <4 0>;port-number = <101>;xlnx,baudrate = <0x1c200>;xlnx,data-bits = <0x8>;xlnx,odd-parity = <0x0>;xlnx,s-axi-aclk-freq-hz-d = \"49.9995\";xlnx,use-parity = <0x0>;"
 
-
-############################
-HAL_CORE:
-  TCL_CALL:
-    command: "AXI_PL_DEV_CONNECT"
-    axi_control: "${::AXI_MASTER_CTRL}"
-    remote_slave: "1"
-    addr:
-      offset: "0x00003000"
-      range: "4K"
+  HAL_CORE:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_MASTER_CTRL}"
+      remote_slave: "1"
+      addr:
+        offset: "0x00003000"
+        range: "4K"
 
 #  HAL:
 #    TCL_CALL:
