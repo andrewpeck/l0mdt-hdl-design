@@ -101,7 +101,7 @@ AXI_SLAVES:
     TCL_CALL:
       command: "AXI_PL_DEV_CONNECT"
       axi_control: "${::AXI_MASTER_CTRL}"
-      type: "AXI4"
+#      type: "AXI4"
       data_width: "32"
       remote_slave: "1"
       addr:

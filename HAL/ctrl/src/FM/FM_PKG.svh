@@ -12,6 +12,7 @@ package FM_CTRL;
    typedef struct packed {
       logic  GLOBAL_FREEZE;
       logic [2 - 1:0] GLOBAL_PLAYBACK_MODE;
+      logic 	      INITIALIZE_SPY_MEMORY;
    } FM_SPY_CTRL_CTRL_t ;
 
    typedef struct packed {
@@ -31,7 +32,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB0_SB_META_MOSI_t ;
 
@@ -42,19 +43,19 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB0_SB_MEM_MISO_t  SB_MEM;
-      FM_SB0_SB_META_MISO_t  SB_META;
+      //FM_SB0_SB_META_MISO_t  SB_META;
    } FM_SB0_MON_t ;
 
    typedef struct packed {
       FM_SB0_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB0_SB_META_MOSI_t  SB_META;
+      //FM_SB0_SB_META_MOSI_t  SB_META;
    } FM_SB0_CTRL_t ;
 
    typedef struct packed {
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [10 -1:0] address;
+      logic [9 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB1_SB_MEM_MOSI_t ;
 
@@ -67,7 +68,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB1_SB_META_MOSI_t ;
 
@@ -78,12 +79,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB1_SB_MEM_MISO_t  SB_MEM;
-      FM_SB1_SB_META_MISO_t  SB_META;
+//      FM_SB1_SB_META_MISO_t  SB_META;
    } FM_SB1_MON_t ;
 
    typedef struct packed {
       FM_SB1_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB1_SB_META_MOSI_t  SB_META;
+//      FM_SB1_SB_META_MOSI_t  SB_META;
    } FM_SB1_CTRL_t ;
 
    typedef struct packed {
@@ -114,12 +115,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB2_SB_MEM_MISO_t  SB_MEM;
-      FM_SB2_SB_META_MISO_t  SB_META;
+//      FM_SB2_SB_META_MISO_t  SB_META;
    } FM_SB2_MON_t ;
 
    typedef struct packed {
       FM_SB2_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB2_SB_META_MOSI_t  SB_META;
+//      FM_SB2_SB_META_MOSI_t  SB_META;
    } FM_SB2_CTRL_t ;
 
    typedef struct packed {
@@ -139,7 +140,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB3_SB_META_MOSI_t ;
 
@@ -150,19 +151,19 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB3_SB_MEM_MISO_t  SB_MEM;
-      FM_SB3_SB_META_MISO_t  SB_META;
+//      FM_SB3_SB_META_MISO_t  SB_META;
    } FM_SB3_MON_t ;
 
    typedef struct packed {
       FM_SB3_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB3_SB_META_MOSI_t  SB_META;
+//      FM_SB3_SB_META_MOSI_t  SB_META;
    } FM_SB3_CTRL_t ;
 
    typedef struct packed {
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [10 -1:0] address;
+      logic [9 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB4_SB_MEM_MOSI_t ;
 
@@ -175,7 +176,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB4_SB_META_MOSI_t ;
 
@@ -186,12 +187,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB4_SB_MEM_MISO_t  SB_MEM;
-      FM_SB4_SB_META_MISO_t  SB_META;
+//      FM_SB4_SB_META_MISO_t  SB_META;
    } FM_SB4_MON_t ;
 
    typedef struct packed {
       FM_SB4_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB4_SB_META_MOSI_t  SB_META;
+//      FM_SB4_SB_META_MOSI_t  SB_META;
    } FM_SB4_CTRL_t ;
 
    typedef struct packed {
@@ -222,12 +223,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB5_SB_MEM_MISO_t  SB_MEM;
-      FM_SB5_SB_META_MISO_t  SB_META;
+//      FM_SB5_SB_META_MISO_t  SB_META;
    } FM_SB5_MON_t ;
 
    typedef struct packed {
       FM_SB5_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB5_SB_META_MOSI_t  SB_META;
+//      FM_SB5_SB_META_MOSI_t  SB_META;
    } FM_SB5_CTRL_t ;
 
    typedef struct packed {
@@ -247,7 +248,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB6_SB_META_MOSI_t ;
 
@@ -258,19 +259,19 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB6_SB_MEM_MISO_t  SB_MEM;
-      FM_SB6_SB_META_MISO_t  SB_META;
+//      FM_SB6_SB_META_MISO_t  SB_META;
    } FM_SB6_MON_t ;
 
    typedef struct packed {
       FM_SB6_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB6_SB_META_MOSI_t  SB_META;
+//      FM_SB6_SB_META_MOSI_t  SB_META;
    } FM_SB6_CTRL_t ;
 
    typedef struct packed {
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [10 -1:0] address;
+      logic [9 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB7_SB_MEM_MOSI_t ;
 
@@ -283,7 +284,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB7_SB_META_MOSI_t ;
 
@@ -294,12 +295,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB7_SB_MEM_MISO_t  SB_MEM;
-      FM_SB7_SB_META_MISO_t  SB_META;
+//      FM_SB7_SB_META_MISO_t  SB_META;
    } FM_SB7_MON_t ;
 
    typedef struct packed {
       FM_SB7_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB7_SB_META_MOSI_t  SB_META;
+//      FM_SB7_SB_META_MOSI_t  SB_META;
    } FM_SB7_CTRL_t ;
 
    typedef struct packed {
@@ -330,12 +331,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB8_SB_MEM_MISO_t  SB_MEM;
-      FM_SB8_SB_META_MISO_t  SB_META;
+//      FM_SB8_SB_META_MISO_t  SB_META;
    } FM_SB8_MON_t ;
 
    typedef struct packed {
       FM_SB8_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB8_SB_META_MOSI_t  SB_META;
+//      FM_SB8_SB_META_MOSI_t  SB_META;
    } FM_SB8_CTRL_t ;
 
    typedef struct packed {
@@ -355,7 +356,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB9_SB_META_MOSI_t ;
 
@@ -366,19 +367,19 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB9_SB_MEM_MISO_t  SB_MEM;
-      FM_SB9_SB_META_MISO_t  SB_META;
+//      FM_SB9_SB_META_MISO_t  SB_META;
    } FM_SB9_MON_t ;
 
    typedef struct packed {
       FM_SB9_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB9_SB_META_MOSI_t  SB_META;
+//      FM_SB9_SB_META_MOSI_t  SB_META;
    } FM_SB9_CTRL_t ;
 
    typedef struct packed {
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [10 -1:0] address;
+      logic [9 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB10_SB_MEM_MOSI_t ;
 
@@ -391,7 +392,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB10_SB_META_MOSI_t ;
 
@@ -402,12 +403,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB10_SB_MEM_MISO_t  SB_MEM;
-      FM_SB10_SB_META_MISO_t  SB_META;
+//      FM_SB10_SB_META_MISO_t  SB_META;
    } FM_SB10_MON_t ;
 
    typedef struct packed {
       FM_SB10_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB10_SB_META_MOSI_t  SB_META;
+//      FM_SB10_SB_META_MOSI_t  SB_META;
    } FM_SB10_CTRL_t ;
 
    typedef struct packed {
@@ -438,12 +439,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB11_SB_MEM_MISO_t  SB_MEM;
-      FM_SB11_SB_META_MISO_t  SB_META;
+//      FM_SB11_SB_META_MISO_t  SB_META;
    } FM_SB11_MON_t ;
 
    typedef struct packed {
       FM_SB11_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB11_SB_META_MOSI_t  SB_META;
+//      FM_SB11_SB_META_MOSI_t  SB_META;
    } FM_SB11_CTRL_t ;
 
    typedef struct packed {
@@ -474,19 +475,19 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB12_SB_MEM_MISO_t  SB_MEM;
-      FM_SB12_SB_META_MISO_t  SB_META;
+//      FM_SB12_SB_META_MISO_t  SB_META;
    } FM_SB12_MON_t ;
 
    typedef struct packed {
       FM_SB12_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB12_SB_META_MOSI_t  SB_META;
+//      FM_SB12_SB_META_MOSI_t  SB_META;
    } FM_SB12_CTRL_t ;
 
    typedef struct packed {
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [10 -1:0] address;
+      logic [9 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB13_SB_MEM_MOSI_t ;
 
@@ -499,7 +500,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB13_SB_META_MOSI_t ;
 
@@ -510,12 +511,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB13_SB_MEM_MISO_t  SB_MEM;
-      FM_SB13_SB_META_MISO_t  SB_META;
+//      FM_SB13_SB_META_MISO_t  SB_META;
    } FM_SB13_MON_t ;
 
    typedef struct packed {
       FM_SB13_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB13_SB_META_MOSI_t  SB_META;
+//      FM_SB13_SB_META_MOSI_t  SB_META;
    } FM_SB13_CTRL_t ;
 
    typedef struct packed {
@@ -546,12 +547,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB14_SB_MEM_MISO_t  SB_MEM;
-      FM_SB14_SB_META_MISO_t  SB_META;
+//      FM_SB14_SB_META_MISO_t  SB_META;
    } FM_SB14_MON_t ;
 
    typedef struct packed {
       FM_SB14_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB14_SB_META_MOSI_t  SB_META;
+//      FM_SB14_SB_META_MOSI_t  SB_META;
    } FM_SB14_CTRL_t ;
 
    typedef struct packed {
@@ -571,7 +572,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB15_SB_META_MOSI_t ;
 
@@ -582,19 +583,19 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB15_SB_MEM_MISO_t  SB_MEM;
-      FM_SB15_SB_META_MISO_t  SB_META;
+//      FM_SB15_SB_META_MISO_t  SB_META;
    } FM_SB15_MON_t ;
 
    typedef struct packed {
       FM_SB15_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB15_SB_META_MOSI_t  SB_META;
+//      FM_SB15_SB_META_MOSI_t  SB_META;
    } FM_SB15_CTRL_t ;
 
    typedef struct packed {
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [10 -1:0] address;
+      logic [9 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB16_SB_MEM_MOSI_t ;
 
@@ -607,7 +608,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB16_SB_META_MOSI_t ;
 
@@ -618,12 +619,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB16_SB_MEM_MISO_t  SB_MEM;
-      FM_SB16_SB_META_MISO_t  SB_META;
+//      FM_SB16_SB_META_MISO_t  SB_META;
    } FM_SB16_MON_t ;
 
    typedef struct packed {
       FM_SB16_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB16_SB_META_MOSI_t  SB_META;
+//      FM_SB16_SB_META_MOSI_t  SB_META;
    } FM_SB16_CTRL_t ;
 
    typedef struct packed {
@@ -654,12 +655,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB17_SB_MEM_MISO_t  SB_MEM;
-      FM_SB17_SB_META_MISO_t  SB_META;
+//      FM_SB17_SB_META_MISO_t  SB_META;
    } FM_SB17_MON_t ;
 
    typedef struct packed {
       FM_SB17_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB17_SB_META_MOSI_t  SB_META;
+//      FM_SB17_SB_META_MOSI_t  SB_META;
    } FM_SB17_CTRL_t ;
 
    typedef struct packed {
@@ -679,7 +680,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB18_SB_META_MOSI_t ;
 
@@ -690,19 +691,19 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB18_SB_MEM_MISO_t  SB_MEM;
-      FM_SB18_SB_META_MISO_t  SB_META;
+//      FM_SB18_SB_META_MISO_t  SB_META;
    } FM_SB18_MON_t ;
 
    typedef struct packed {
       FM_SB18_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB18_SB_META_MOSI_t  SB_META;
+//      FM_SB18_SB_META_MOSI_t  SB_META;
    } FM_SB18_CTRL_t ;
 
    typedef struct packed {
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [10 -1:0] address;
+      logic [9 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB19_SB_MEM_MOSI_t ;
 
@@ -715,7 +716,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB19_SB_META_MOSI_t ;
 
@@ -726,12 +727,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB19_SB_MEM_MISO_t  SB_MEM;
-      FM_SB19_SB_META_MISO_t  SB_META;
+//      FM_SB19_SB_META_MISO_t  SB_META;
    } FM_SB19_MON_t ;
 
    typedef struct packed {
       FM_SB19_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB19_SB_META_MOSI_t  SB_META;
+//    FM_SB19_SB_META_MOSI_t  SB_META;
    } FM_SB19_CTRL_t ;
 
    typedef struct packed {
@@ -762,12 +763,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB20_SB_MEM_MISO_t  SB_MEM;
-      FM_SB20_SB_META_MISO_t  SB_META;
+//    FM_SB20_SB_META_MISO_t  SB_META;
    } FM_SB20_MON_t ;
 
    typedef struct packed {
       FM_SB20_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB20_SB_META_MOSI_t  SB_META;
+//    FM_SB20_SB_META_MOSI_t  SB_META;
    } FM_SB20_CTRL_t ;
 
    typedef struct packed {
@@ -787,7 +788,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB21_SB_META_MOSI_t ;
 
@@ -798,19 +799,19 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB21_SB_MEM_MISO_t  SB_MEM;
-      FM_SB21_SB_META_MISO_t  SB_META;
+//    FM_SB21_SB_META_MISO_t  SB_META;
    } FM_SB21_MON_t ;
 
    typedef struct packed {
       FM_SB21_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB21_SB_META_MOSI_t  SB_META;
+//    FM_SB21_SB_META_MOSI_t  SB_META;
    } FM_SB21_CTRL_t ;
 
    typedef struct packed {
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [10 -1:0] address;
+      logic [9 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB22_SB_MEM_MOSI_t ;
 
@@ -823,7 +824,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic  [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB22_SB_META_MOSI_t ;
 
@@ -834,12 +835,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB22_SB_MEM_MISO_t  SB_MEM;
-      FM_SB22_SB_META_MISO_t  SB_META;
+//    FM_SB22_SB_META_MISO_t  SB_META;
    } FM_SB22_MON_t ;
 
    typedef struct packed {
       FM_SB22_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB22_SB_META_MOSI_t  SB_META;
+//    FM_SB22_SB_META_MOSI_t  SB_META;
    } FM_SB22_CTRL_t ;
 
    typedef struct packed {
@@ -870,12 +871,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB23_SB_MEM_MISO_t  SB_MEM;
-      FM_SB23_SB_META_MISO_t  SB_META;
+//    FM_SB23_SB_META_MISO_t  SB_META;
    } FM_SB23_MON_t ;
 
    typedef struct packed {
       FM_SB23_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB23_SB_META_MOSI_t  SB_META;
+//    FM_SB23_SB_META_MOSI_t  SB_META;
    } FM_SB23_CTRL_t ;
 
    typedef struct packed {
@@ -895,7 +896,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB24_SB_META_MOSI_t ;
 
@@ -906,19 +907,19 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB24_SB_MEM_MISO_t  SB_MEM;
-      FM_SB24_SB_META_MISO_t  SB_META;
+//    FM_SB24_SB_META_MISO_t  SB_META;
    } FM_SB24_MON_t ;
 
    typedef struct packed {
       FM_SB24_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB24_SB_META_MOSI_t  SB_META;
+//    FM_SB24_SB_META_MOSI_t  SB_META;
    } FM_SB24_CTRL_t ;
 
    typedef struct packed {
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [10 -1:0] address;
+      logic [9 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB25_SB_MEM_MOSI_t ;
 
@@ -931,7 +932,7 @@ package FM_CTRL;
       logic  clk;
       logic  enable;
       logic  wr_enable;
-      logic [4 -1:0] address;
+      logic [5 -1:0] address;
       logic [32 -1:0] wr_data;
    } FM_SB25_SB_META_MOSI_t ;
 
@@ -942,12 +943,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB25_SB_MEM_MISO_t  SB_MEM;
-      FM_SB25_SB_META_MISO_t  SB_META;
+//    FM_SB25_SB_META_MISO_t  SB_META;
    } FM_SB25_MON_t ;
 
    typedef struct packed {
       FM_SB25_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB25_SB_META_MOSI_t  SB_META;
+//    FM_SB25_SB_META_MOSI_t  SB_META;
    } FM_SB25_CTRL_t ;
 
    typedef struct packed {
@@ -978,12 +979,12 @@ package FM_CTRL;
 
    typedef struct packed {
       FM_SB26_SB_MEM_MISO_t  SB_MEM;
-      FM_SB26_SB_META_MISO_t  SB_META;
+//    FM_SB26_SB_META_MISO_t  SB_META;
    } FM_SB26_MON_t ;
 
    typedef struct packed {
       FM_SB26_SB_MEM_MOSI_t  SB_MEM;
-      FM_SB26_SB_META_MOSI_t  SB_META;
+//    FM_SB26_SB_META_MOSI_t  SB_META;
    } FM_SB26_CTRL_t ;
 
    typedef struct packed {

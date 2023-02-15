@@ -1,120 +1,129 @@
 <node id="FM">
-  <node id="SPY_CTRL"  address="0x0">
+  <node id="SPY_CTRL"  address="0x2000">
     <node id="GLOBAL_FREEZE" address = "0x0" permission="rw" mask="0x1"/>
     <node id="GLOBAL_PLAYBACK_MODE" address="0x0" permission="rw" mask="0x6"/>
+    <node id="INITIALIZE_SPY_MEMORY" address="0x0" permission="rw" mask="0x8"/>
   </node>
-  <node id="FREEZE_MASK_0" address="0x1" permission="rw" mask="0xFFFFFFFF"/>
-  <node id="FREEZE_MASK_1" address="0x2" permission="rw" mask="0xFFFFFFFF"/>
-  <node id="PLAYBACK_MASK_0" address="0x5" permission="rw" mask="0xFFFFFFFF"/>
-  <node id="PLAYBACK_MASK_1" address="0x6" permission="rw" mask="0xFFFFFFFF"/>
+  <node id="FREEZE_MASK_0" address="0x2001" permission="rw" mask="0xFFFFFFFF"/>
+  <node id="FREEZE_MASK_1" address="0x2002" permission="rw" mask="0xFFFFFFFF"/>
+  <node id="PLAYBACK_MASK_0" address="0x2003" permission="rw" mask="0xFFFFFFFF"/>
+  <node id="PLAYBACK_MASK_1" address="0x2004" permission="rw" mask="0xFFFFFFFF"/>
   
-  
-  <node id="SB0" address="0x100">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB1" address="0x0"> !-- df  = "HEG2SFHIT_INN_THR0" >
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+    <!-- node id="SB_META" address="0x200" mode="incremental" size="0x100"  fwinfo="type=mem32_0x100"/-->
+  </node> 
+  <node id="SB4" address="0x200"> !-- df  = "HEG2SFHIT_INN_THR1">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+    <!--<node id="SB_META" address="0x200" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/ -->
   </node>
-  <node id="SB1" address="0x200">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB7" address="0x400"> !-- df  = "HEG2SFHIT_INN_THR2">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+    <!--<node id="SB_META" address="0x200" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/ -->
   </node>
-  <node id="SB2" address="0x400">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB10" address="0x600"> !-- df  = "HEG2SFHIT_MID_THR0" >
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+    <!-- <node id="SB_META" address="0x200" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB3" address="0x500">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB13" address="0x800"> !-- df  = "HEG2SFHIT_MID_THR1">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+    <!--<node id="SB_META" address="0x200" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB4" address="0x600">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB16" address="0xa00"> !-- df  = "HEG2SFHIT_MID_THR2">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+    <!--<node id="SB_META" address="0x200" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB5" address="0x800">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB19" address="0xc00"> !-- df  = "HEG2SFHIT_OUT_THR0">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+    <!--<node id="SB_META" address="0x200" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB6" address="0x900">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB22" address="0xe00"> !-- df  = "HEG2SFHIT_OUT_THR1">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+    <!--<node id="SB_META" address="0x200" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB7" address="0xa00">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB25" address="0x1000"> !-- df  = "HEG2SFHIT_OUT_THR2">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+    <!--<node id="SB_META" address="0x200" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB8" address="0xc00">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB0" address="0x1200"> !-- df  = "HEG2SFSLC_INN_THR0">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--<node id="SB_META" address="0x100" mode="incremental" size="0x80"  fwinfo="type=mem32_0x80"/-->
   </node>
-  <node id="SB9" address="0xd00">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ 
+  <node id="SB2" address="0x1220"> !-- df  = "SF2PTCALC_INN_THR0">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--<node id="SB_META" address="0x80" mode="incremental" size="0x80"  fwinfo="type=mem32_0x80"/-->
   </node>
-  <node id="SB10" address="0xe00">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB3" address="0x1240"> !-- df  = "HEG2SFSLC_INN_THR1">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--<node id="SB_META" address="0x80" mode="incremental" size="0x80"  fwinfo="type=mem32_0x80"/-->
   </node>
-  <node id="SB11" address="0x1000">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+
+  <node id="SB5" address="0x1260"> !-- df  = "SF2PTCALC_INN_THR1">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+   <!-- node id="SB_META" address="0x80" mode="incremental" size="0x20"  fwinfo="type=mem32_0x80"/-->
   </node>
- <node id="SB12" address="0x1100">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB6" address="0x1280"> !-- df  = "HEG2SFSLC_INN_THR2">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!-- node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB13" address="0x1200">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+
+  <node id="SB8" address="0x12a0"> !-- df  = "SF2PTCALC_INN_THR2">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB14" address="0x1400">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+  <node id="SB9" address="0x12c0"> !-- df  = "HEG2SFSLC_MID_THR0">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
- <node id="SB15" address="0x1500">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ 
+  <node id="SB11" address="0x12e0"> !-- df  = "SF2PTCALC_MID_THR0">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB16" address="0x1600">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB12" address="0x1300"> !-- df  = "HEG2SFSLC_MID_THR1">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB17" address="0x1800">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+
+  <node id="SB14" address="0x1320"> !-- df  = "SF2PTCALC_MID_THR1">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
- <node id="SB18" address="0x1900">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB15" address="0x1340"> !-- df  = "HEG2SFSLC_MID_THR2">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB19" address="0x1a00">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ 
+  <node id="SB17" address="0x1360"> !-- df  = "SF2PTCALC_MID_THR2">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB20" address="0x1c00">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB18" address="0x1380"> !-- df  = "HEG2SFSLC_OUT_THR0">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
- <node id="SB21" address="0x1d00">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ 
+  <node id="SB20" address="0x13a0"> !-- df  = "SF2PTCALC_OUT_THR0">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB22" address="0x1e00">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB21" address="0x13c0"> !-- df  = "HEG2SFSLC_OUT_THR1">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
-  <node id="SB23" address="0x2000">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+ 
+  <node id="SB23" address="0x13e0"> !-- df  = "SF2PTCALC_OUT_THR1">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/-->
   </node>
- <node id="SB24" address="0x2100">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
+ <node id="SB24" address="0x1400"> !-- df  = "HEG2SFSLC_OUT_THR2">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!--node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/!-->
   </node>
-  <node id="SB25" address="0x2200">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x1f0" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x400" mode="non-incremental" size="0x10" permission="rw" fwinfo="type=mem32"/>
-  </node>
-  <node id="SB26" address="0x2400">
-    <node id="SB_MEM" address="0x0" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
-    <node id="SB_META" address="0x20" mode="non-incremental" size="0x20" permission="rw" fwinfo="type=mem32"/>
+
+  <node id="SB26" address="0x1420"> !-- df  = "SF2PTCALC_OUT_THR2">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!-- node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/ -->
   </node>
 </node>

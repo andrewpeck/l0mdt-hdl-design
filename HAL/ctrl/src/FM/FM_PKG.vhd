@@ -13,13 +13,11 @@ package FM_CTRL is
   type FM_SPY_CTRL_CTRL_t is record
     GLOBAL_FREEZE              :std_logic;   
     GLOBAL_PLAYBACK_MODE       :std_logic_vector( 1 downto 0);
+    INITIALIZE_SPY_MEMORY      :std_logic;
   end record FM_SPY_CTRL_CTRL_t;
 
 
-  constant DEFAULT_FM_SPY_CTRL_CTRL_t : FM_SPY_CTRL_CTRL_t := (
-                                                               GLOBAL_FREEZE => '0',
-                                                               GLOBAL_PLAYBACK_MODE => (others => '0')
-                                                              );
+
   type FM_SB0_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -33,70 +31,49 @@ package FM_CTRL is
   end record FM_SB0_SB_MEM_MISO_t;
 
  
-  constant Default_FM_SB0_SB_MEM_MOSI_t : FM_SB0_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB0_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB0_SB_META_MOSI_t;
   type FM_SB0_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB0_SB_META_MISO_t;
-  constant Default_FM_SB0_SB_META_MOSI_t : FM_SB0_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB0_MON_t is record
     SB_MEM                     :FM_SB0_SB_MEM_MISO_t;
-    SB_META                    :FM_SB0_SB_META_MISO_t;
+--    SB_META                    :FM_SB0_SB_META_MISO_t;
   end record FM_SB0_MON_t;
 
 
   type FM_SB0_CTRL_t is record
     SB_MEM                     :FM_SB0_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB0_SB_META_MOSI_t;
+   -- SB_META                    :FM_SB0_SB_META_MOSI_t;
   end record FM_SB0_CTRL_t;
 
 
-  constant DEFAULT_FM_SB0_CTRL_t : FM_SB0_CTRL_t := (
-                                                     SB_MEM => Default_FM_SB0_SB_MEM_MOSI_t,
-                                                     SB_META => Default_FM_SB0_SB_META_MOSI_t
-                                                    );
+  
   type FM_SB1_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(10-1 downto 0);
+    address   : std_logic_vector(9-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB1_SB_MEM_MOSI_t;
   type FM_SB1_SB_MEM_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB1_SB_MEM_MISO_t;
-  constant Default_FM_SB1_SB_MEM_MOSI_t : FM_SB1_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB1_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB1_SB_META_MOSI_t;
   type FM_SB1_SB_META_MISO_t is record
@@ -105,35 +82,22 @@ package FM_CTRL is
   end record FM_SB1_SB_META_MISO_t;
 
   
-  constant Default_FM_SB1_SB_META_MOSI_t : FM_SB1_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
 
-  constant DefaultSB_MEM_MISO : FM_SB0_SB_MEM_MISO_t :=(
-    rd_data       => x"00000000",
-    rd_data_valid => '0'
-    );
   
   type FM_SB1_MON_t is record
     SB_MEM                     :FM_SB1_SB_MEM_MISO_t;
-    SB_META                    :FM_SB1_SB_META_MISO_t;
+   --SB_META                    :FM_SB1_SB_META_MISO_t;
   end record FM_SB1_MON_t;
 
 
   type FM_SB1_CTRL_t is record
     SB_MEM                     :FM_SB1_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB1_SB_META_MOSI_t;
+   --SB_META                    :FM_SB1_SB_META_MOSI_t;
   end record FM_SB1_CTRL_t;
 
 
-  constant DEFAULT_FM_SB1_CTRL_t : FM_SB1_CTRL_t := (
-                                                     SB_MEM => Default_FM_SB1_SB_MEM_MOSI_t,
-                                                     SB_META => Default_FM_SB1_SB_META_MOSI_t
-                                                    );
+  
   type FM_SB2_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -145,13 +109,7 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB2_SB_MEM_MISO_t;
-  constant Default_FM_SB2_SB_MEM_MOSI_t : FM_SB2_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB2_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -163,29 +121,20 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB2_SB_META_MISO_t;
-  constant Default_FM_SB2_SB_META_MOSI_t : FM_SB2_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB2_MON_t is record
     SB_MEM                     :FM_SB2_SB_MEM_MISO_t;
-    SB_META                    :FM_SB2_SB_META_MISO_t;
+   --SB_META                    :FM_SB2_SB_META_MISO_t;
   end record FM_SB2_MON_t;
 
 
   type FM_SB2_CTRL_t is record
     SB_MEM                     :FM_SB2_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB2_SB_META_MOSI_t;
+   --SB_META                    :FM_SB2_SB_META_MOSI_t;
   end record FM_SB2_CTRL_t;
 
 
-  constant DEFAULT_FM_SB2_CTRL_t : FM_SB2_CTRL_t := (
-                                                     SB_MEM => Default_FM_SB2_SB_MEM_MOSI_t,
-                                                     SB_META => Default_FM_SB2_SB_META_MOSI_t
-                                                    );
+  
   type FM_SB3_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -197,99 +146,69 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB3_SB_MEM_MISO_t;
-  constant Default_FM_SB3_SB_MEM_MOSI_t : FM_SB3_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB3_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB3_SB_META_MOSI_t;
   type FM_SB3_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB3_SB_META_MISO_t;
-  constant Default_FM_SB3_SB_META_MOSI_t : FM_SB3_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB3_MON_t is record
     SB_MEM                     :FM_SB3_SB_MEM_MISO_t;
-    SB_META                    :FM_SB3_SB_META_MISO_t;
+   --SB_META                    :FM_SB3_SB_META_MISO_t;
   end record FM_SB3_MON_t;
 
 
   type FM_SB3_CTRL_t is record
     SB_MEM                     :FM_SB3_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB3_SB_META_MOSI_t;
+   --SB_META                    :FM_SB3_SB_META_MOSI_t;
   end record FM_SB3_CTRL_t;
 
 
-  constant DEFAULT_FM_SB3_CTRL_t : FM_SB3_CTRL_t := (
-                                                     SB_MEM => Default_FM_SB3_SB_MEM_MOSI_t,
-                                                     SB_META => Default_FM_SB3_SB_META_MOSI_t
-                                                    );
+  
   type FM_SB4_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(10-1 downto 0);
+    address   : std_logic_vector(9-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB4_SB_MEM_MOSI_t;
   type FM_SB4_SB_MEM_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB4_SB_MEM_MISO_t;
-  constant Default_FM_SB4_SB_MEM_MOSI_t : FM_SB4_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB4_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB4_SB_META_MOSI_t;
   type FM_SB4_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB4_SB_META_MISO_t;
-  constant Default_FM_SB4_SB_META_MOSI_t : FM_SB4_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB4_MON_t is record
     SB_MEM                     :FM_SB4_SB_MEM_MISO_t;
-    SB_META                    :FM_SB4_SB_META_MISO_t;
+   --SB_META                    :FM_SB4_SB_META_MISO_t;
   end record FM_SB4_MON_t;
 
 
   type FM_SB4_CTRL_t is record
     SB_MEM                     :FM_SB4_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB4_SB_META_MOSI_t;
+   --SB_META                    :FM_SB4_SB_META_MOSI_t;
   end record FM_SB4_CTRL_t;
 
 
-  constant DEFAULT_FM_SB4_CTRL_t : FM_SB4_CTRL_t := (
-                                                     SB_MEM => Default_FM_SB4_SB_MEM_MOSI_t,
-                                                     SB_META => Default_FM_SB4_SB_META_MOSI_t
-                                                    );
+  
   type FM_SB5_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -301,13 +220,7 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB5_SB_MEM_MISO_t;
-  constant Default_FM_SB5_SB_MEM_MOSI_t : FM_SB5_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB5_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -319,29 +232,20 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB5_SB_META_MISO_t;
-  constant Default_FM_SB5_SB_META_MOSI_t : FM_SB5_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB5_MON_t is record
     SB_MEM                     :FM_SB5_SB_MEM_MISO_t;
-    SB_META                    :FM_SB5_SB_META_MISO_t;
+   --SB_META                    :FM_SB5_SB_META_MISO_t;
   end record FM_SB5_MON_t;
 
 
   type FM_SB5_CTRL_t is record
     SB_MEM                     :FM_SB5_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB5_SB_META_MOSI_t;
+   --SB_META                    :FM_SB5_SB_META_MOSI_t;
   end record FM_SB5_CTRL_t;
 
 
-  constant DEFAULT_FM_SB5_CTRL_t : FM_SB5_CTRL_t := (
-                                                     SB_MEM => Default_FM_SB5_SB_MEM_MOSI_t,
-                                                     SB_META => Default_FM_SB5_SB_META_MOSI_t
-                                                    );
+ 
   type FM_SB6_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -353,99 +257,69 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB6_SB_MEM_MISO_t;
-  constant Default_FM_SB6_SB_MEM_MOSI_t : FM_SB6_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB6_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB6_SB_META_MOSI_t;
   type FM_SB6_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB6_SB_META_MISO_t;
-  constant Default_FM_SB6_SB_META_MOSI_t : FM_SB6_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB6_MON_t is record
     SB_MEM                     :FM_SB6_SB_MEM_MISO_t;
-    SB_META                    :FM_SB6_SB_META_MISO_t;
+   --SB_META                    :FM_SB6_SB_META_MISO_t;
   end record FM_SB6_MON_t;
 
 
   type FM_SB6_CTRL_t is record
     SB_MEM                     :FM_SB6_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB6_SB_META_MOSI_t;
+   --SB_META                    :FM_SB6_SB_META_MOSI_t;
   end record FM_SB6_CTRL_t;
 
 
-  constant DEFAULT_FM_SB6_CTRL_t : FM_SB6_CTRL_t := (
-                                                     SB_MEM => Default_FM_SB6_SB_MEM_MOSI_t,
-                                                     SB_META => Default_FM_SB6_SB_META_MOSI_t
-                                                    );
+  
   type FM_SB7_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(10-1 downto 0);
+    address   : std_logic_vector(9-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB7_SB_MEM_MOSI_t;
   type FM_SB7_SB_MEM_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB7_SB_MEM_MISO_t;
-  constant Default_FM_SB7_SB_MEM_MOSI_t : FM_SB7_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB7_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB7_SB_META_MOSI_t;
   type FM_SB7_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB7_SB_META_MISO_t;
-  constant Default_FM_SB7_SB_META_MOSI_t : FM_SB7_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB7_MON_t is record
     SB_MEM                     :FM_SB7_SB_MEM_MISO_t;
-    SB_META                    :FM_SB7_SB_META_MISO_t;
+   --SB_META                    :FM_SB7_SB_META_MISO_t;
   end record FM_SB7_MON_t;
 
 
   type FM_SB7_CTRL_t is record
     SB_MEM                     :FM_SB7_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB7_SB_META_MOSI_t;
+   --SB_META                    :FM_SB7_SB_META_MOSI_t;
   end record FM_SB7_CTRL_t;
 
 
-  constant DEFAULT_FM_SB7_CTRL_t : FM_SB7_CTRL_t := (
-                                                     SB_MEM => Default_FM_SB7_SB_MEM_MOSI_t,
-                                                     SB_META => Default_FM_SB7_SB_META_MOSI_t
-                                                    );
+ 
   type FM_SB8_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -457,13 +331,7 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB8_SB_MEM_MISO_t;
-  constant Default_FM_SB8_SB_MEM_MOSI_t : FM_SB8_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+
   type FM_SB8_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -475,29 +343,20 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB8_SB_META_MISO_t;
-  constant Default_FM_SB8_SB_META_MOSI_t : FM_SB8_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB8_MON_t is record
     SB_MEM                     :FM_SB8_SB_MEM_MISO_t;
-    SB_META                    :FM_SB8_SB_META_MISO_t;
+   --SB_META                    :FM_SB8_SB_META_MISO_t;
   end record FM_SB8_MON_t;
 
 
   type FM_SB8_CTRL_t is record
     SB_MEM                     :FM_SB8_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB8_SB_META_MOSI_t;
+   --SB_META                    :FM_SB8_SB_META_MOSI_t;
   end record FM_SB8_CTRL_t;
 
 
-  constant DEFAULT_FM_SB8_CTRL_t : FM_SB8_CTRL_t := (
-                                                     SB_MEM => Default_FM_SB8_SB_MEM_MOSI_t,
-                                                     SB_META => Default_FM_SB8_SB_META_MOSI_t
-                                                    );
+
   type FM_SB9_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -509,99 +368,69 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB9_SB_MEM_MISO_t;
-  constant Default_FM_SB9_SB_MEM_MOSI_t : FM_SB9_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB9_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB9_SB_META_MOSI_t;
   type FM_SB9_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB9_SB_META_MISO_t;
-  constant Default_FM_SB9_SB_META_MOSI_t : FM_SB9_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB9_MON_t is record
     SB_MEM                     :FM_SB9_SB_MEM_MISO_t;
-    SB_META                    :FM_SB9_SB_META_MISO_t;
+   --SB_META                    :FM_SB9_SB_META_MISO_t;
   end record FM_SB9_MON_t;
 
 
   type FM_SB9_CTRL_t is record
     SB_MEM                     :FM_SB9_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB9_SB_META_MOSI_t;
+   --SB_META                    :FM_SB9_SB_META_MOSI_t;
   end record FM_SB9_CTRL_t;
 
 
-  constant DEFAULT_FM_SB9_CTRL_t : FM_SB9_CTRL_t := (
-                                                     SB_MEM => Default_FM_SB9_SB_MEM_MOSI_t,
-                                                     SB_META => Default_FM_SB9_SB_META_MOSI_t
-                                                    );
+ 
   type FM_SB10_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(10-1 downto 0);
+    address   : std_logic_vector(9-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB10_SB_MEM_MOSI_t;
   type FM_SB10_SB_MEM_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB10_SB_MEM_MISO_t;
-  constant Default_FM_SB10_SB_MEM_MOSI_t : FM_SB10_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB10_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB10_SB_META_MOSI_t;
   type FM_SB10_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB10_SB_META_MISO_t;
-  constant Default_FM_SB10_SB_META_MOSI_t : FM_SB10_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB10_MON_t is record
     SB_MEM                     :FM_SB10_SB_MEM_MISO_t;
-    SB_META                    :FM_SB10_SB_META_MISO_t;
+   --SB_META                    :FM_SB10_SB_META_MISO_t;
   end record FM_SB10_MON_t;
 
 
   type FM_SB10_CTRL_t is record
     SB_MEM                     :FM_SB10_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB10_SB_META_MOSI_t;
+   --SB_META                    :FM_SB10_SB_META_MOSI_t;
   end record FM_SB10_CTRL_t;
 
 
-  constant DEFAULT_FM_SB10_CTRL_t : FM_SB10_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB10_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB10_SB_META_MOSI_t
-                                                      );
+  
   type FM_SB11_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -613,13 +442,7 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB11_SB_MEM_MISO_t;
-  constant Default_FM_SB11_SB_MEM_MOSI_t : FM_SB11_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB11_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -631,29 +454,20 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB11_SB_META_MISO_t;
-  constant Default_FM_SB11_SB_META_MOSI_t : FM_SB11_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB11_MON_t is record
     SB_MEM                     :FM_SB11_SB_MEM_MISO_t;
-    SB_META                    :FM_SB11_SB_META_MISO_t;
+   --SB_META                    :FM_SB11_SB_META_MISO_t;
   end record FM_SB11_MON_t;
 
 
   type FM_SB11_CTRL_t is record
     SB_MEM                     :FM_SB11_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB11_SB_META_MOSI_t;
+   --SB_META                    :FM_SB11_SB_META_MOSI_t;
   end record FM_SB11_CTRL_t;
 
 
-  constant DEFAULT_FM_SB11_CTRL_t : FM_SB11_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB11_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB11_SB_META_MOSI_t
-                                                      );
+  
   type FM_SB12_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -665,13 +479,7 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB12_SB_MEM_MISO_t;
-  constant Default_FM_SB12_SB_MEM_MOSI_t : FM_SB12_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB12_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -683,81 +491,57 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB12_SB_META_MISO_t;
-  constant Default_FM_SB12_SB_META_MOSI_t : FM_SB12_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+
   type FM_SB12_MON_t is record
     SB_MEM                     :FM_SB12_SB_MEM_MISO_t;
-    SB_META                    :FM_SB12_SB_META_MISO_t;
+   --SB_META                    :FM_SB12_SB_META_MISO_t;
   end record FM_SB12_MON_t;
 
 
   type FM_SB12_CTRL_t is record
     SB_MEM                     :FM_SB12_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB12_SB_META_MOSI_t;
+   --SB_META                    :FM_SB12_SB_META_MOSI_t;
   end record FM_SB12_CTRL_t;
 
 
-  constant DEFAULT_FM_SB12_CTRL_t : FM_SB12_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB12_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB12_SB_META_MOSI_t
-                                                      );
+ 
   type FM_SB13_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(10-1 downto 0);
+    address   : std_logic_vector(9-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB13_SB_MEM_MOSI_t;
   type FM_SB13_SB_MEM_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB13_SB_MEM_MISO_t;
-  constant Default_FM_SB13_SB_MEM_MOSI_t : FM_SB13_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB13_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB13_SB_META_MOSI_t;
   type FM_SB13_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB13_SB_META_MISO_t;
-  constant Default_FM_SB13_SB_META_MOSI_t : FM_SB13_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB13_MON_t is record
     SB_MEM                     :FM_SB13_SB_MEM_MISO_t;
-    SB_META                    :FM_SB13_SB_META_MISO_t;
+   --SB_META                    :FM_SB13_SB_META_MISO_t;
   end record FM_SB13_MON_t;
 
 
   type FM_SB13_CTRL_t is record
     SB_MEM                     :FM_SB13_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB13_SB_META_MOSI_t;
+   --SB_META                    :FM_SB13_SB_META_MOSI_t;
   end record FM_SB13_CTRL_t;
 
 
-  constant DEFAULT_FM_SB13_CTRL_t : FM_SB13_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB13_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB13_SB_META_MOSI_t
-                                                      );
+ 
   type FM_SB14_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -769,13 +553,7 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB14_SB_MEM_MISO_t;
-  constant Default_FM_SB14_SB_MEM_MOSI_t : FM_SB14_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB14_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -787,29 +565,20 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB14_SB_META_MISO_t;
-  constant Default_FM_SB14_SB_META_MOSI_t : FM_SB14_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB14_MON_t is record
     SB_MEM                     :FM_SB14_SB_MEM_MISO_t;
-    SB_META                    :FM_SB14_SB_META_MISO_t;
+   --SB_META                    :FM_SB14_SB_META_MISO_t;
   end record FM_SB14_MON_t;
 
 
   type FM_SB14_CTRL_t is record
     SB_MEM                     :FM_SB14_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB14_SB_META_MOSI_t;
+   --SB_META                    :FM_SB14_SB_META_MOSI_t;
   end record FM_SB14_CTRL_t;
 
 
-  constant DEFAULT_FM_SB14_CTRL_t : FM_SB14_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB14_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB14_SB_META_MOSI_t
-                                                      );
+ 
   type FM_SB15_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -821,99 +590,69 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB15_SB_MEM_MISO_t;
-  constant Default_FM_SB15_SB_MEM_MOSI_t : FM_SB15_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB15_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB15_SB_META_MOSI_t;
   type FM_SB15_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB15_SB_META_MISO_t;
-  constant Default_FM_SB15_SB_META_MOSI_t : FM_SB15_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB15_MON_t is record
     SB_MEM                     :FM_SB15_SB_MEM_MISO_t;
-    SB_META                    :FM_SB15_SB_META_MISO_t;
+   --SB_META                    :FM_SB15_SB_META_MISO_t;
   end record FM_SB15_MON_t;
 
 
   type FM_SB15_CTRL_t is record
     SB_MEM                     :FM_SB15_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB15_SB_META_MOSI_t;
+   --SB_META                    :FM_SB15_SB_META_MOSI_t;
   end record FM_SB15_CTRL_t;
 
 
-  constant DEFAULT_FM_SB15_CTRL_t : FM_SB15_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB15_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB15_SB_META_MOSI_t
-                                                      );
+ 
   type FM_SB16_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(10-1 downto 0);
+    address   : std_logic_vector(9-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB16_SB_MEM_MOSI_t;
   type FM_SB16_SB_MEM_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB16_SB_MEM_MISO_t;
-  constant Default_FM_SB16_SB_MEM_MOSI_t : FM_SB16_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+  
   type FM_SB16_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB16_SB_META_MOSI_t;
   type FM_SB16_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB16_SB_META_MISO_t;
-  constant Default_FM_SB16_SB_META_MOSI_t : FM_SB16_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB16_MON_t is record
     SB_MEM                     :FM_SB16_SB_MEM_MISO_t;
-    SB_META                    :FM_SB16_SB_META_MISO_t;
+   --SB_META                    :FM_SB16_SB_META_MISO_t;
   end record FM_SB16_MON_t;
 
 
   type FM_SB16_CTRL_t is record
     SB_MEM                     :FM_SB16_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB16_SB_META_MOSI_t;
+   --SB_META                    :FM_SB16_SB_META_MOSI_t;
   end record FM_SB16_CTRL_t;
 
 
-  constant DEFAULT_FM_SB16_CTRL_t : FM_SB16_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB16_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB16_SB_META_MOSI_t
-                                                      );
+  
   type FM_SB17_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -925,13 +664,7 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB17_SB_MEM_MISO_t;
-  constant Default_FM_SB17_SB_MEM_MOSI_t : FM_SB17_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB17_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -943,29 +676,20 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB17_SB_META_MISO_t;
-  constant Default_FM_SB17_SB_META_MOSI_t : FM_SB17_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB17_MON_t is record
     SB_MEM                     :FM_SB17_SB_MEM_MISO_t;
-    SB_META                    :FM_SB17_SB_META_MISO_t;
+   --SB_META                    :FM_SB17_SB_META_MISO_t;
   end record FM_SB17_MON_t;
 
 
   type FM_SB17_CTRL_t is record
     SB_MEM                     :FM_SB17_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB17_SB_META_MOSI_t;
+   --SB_META                    :FM_SB17_SB_META_MOSI_t;
   end record FM_SB17_CTRL_t;
 
 
-  constant DEFAULT_FM_SB17_CTRL_t : FM_SB17_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB17_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB17_SB_META_MOSI_t
-                                                      );
+ 
   type FM_SB18_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -977,99 +701,69 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB18_SB_MEM_MISO_t;
-  constant Default_FM_SB18_SB_MEM_MOSI_t : FM_SB18_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB18_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB18_SB_META_MOSI_t;
   type FM_SB18_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB18_SB_META_MISO_t;
-  constant Default_FM_SB18_SB_META_MOSI_t : FM_SB18_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+
   type FM_SB18_MON_t is record
     SB_MEM                     :FM_SB18_SB_MEM_MISO_t;
-    SB_META                    :FM_SB18_SB_META_MISO_t;
+   --SB_META                    :FM_SB18_SB_META_MISO_t;
   end record FM_SB18_MON_t;
 
 
   type FM_SB18_CTRL_t is record
     SB_MEM                     :FM_SB18_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB18_SB_META_MOSI_t;
+   --SB_META                    :FM_SB18_SB_META_MOSI_t;
   end record FM_SB18_CTRL_t;
 
 
-  constant DEFAULT_FM_SB18_CTRL_t : FM_SB18_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB18_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB18_SB_META_MOSI_t
-                                                      );
+
   type FM_SB19_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(10-1 downto 0);
+    address   : std_logic_vector(9-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB19_SB_MEM_MOSI_t;
   type FM_SB19_SB_MEM_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB19_SB_MEM_MISO_t;
-  constant Default_FM_SB19_SB_MEM_MOSI_t : FM_SB19_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+
   type FM_SB19_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB19_SB_META_MOSI_t;
   type FM_SB19_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB19_SB_META_MISO_t;
-  constant Default_FM_SB19_SB_META_MOSI_t : FM_SB19_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB19_MON_t is record
     SB_MEM                     :FM_SB19_SB_MEM_MISO_t;
-    SB_META                    :FM_SB19_SB_META_MISO_t;
+   --SB_META                    :FM_SB19_SB_META_MISO_t;
   end record FM_SB19_MON_t;
 
 
   type FM_SB19_CTRL_t is record
     SB_MEM                     :FM_SB19_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB19_SB_META_MOSI_t;
+   --SB_META                    :FM_SB19_SB_META_MOSI_t;
   end record FM_SB19_CTRL_t;
 
 
-  constant DEFAULT_FM_SB19_CTRL_t : FM_SB19_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB19_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB19_SB_META_MOSI_t
-                                                      );
+ 
   type FM_SB20_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -1081,13 +775,7 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB20_SB_MEM_MISO_t;
-  constant Default_FM_SB20_SB_MEM_MOSI_t : FM_SB20_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+
   type FM_SB20_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -1099,29 +787,20 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB20_SB_META_MISO_t;
-  constant Default_FM_SB20_SB_META_MOSI_t : FM_SB20_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB20_MON_t is record
     SB_MEM                     :FM_SB20_SB_MEM_MISO_t;
-    SB_META                    :FM_SB20_SB_META_MISO_t;
+   --SB_META                    :FM_SB20_SB_META_MISO_t;
   end record FM_SB20_MON_t;
 
 
   type FM_SB20_CTRL_t is record
     SB_MEM                     :FM_SB20_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB20_SB_META_MOSI_t;
+   --SB_META                    :FM_SB20_SB_META_MOSI_t;
   end record FM_SB20_CTRL_t;
 
 
-  constant DEFAULT_FM_SB20_CTRL_t : FM_SB20_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB20_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB20_SB_META_MOSI_t
-                                                      );
+ 
   type FM_SB21_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -1133,99 +812,69 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB21_SB_MEM_MISO_t;
-  constant Default_FM_SB21_SB_MEM_MOSI_t : FM_SB21_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB21_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB21_SB_META_MOSI_t;
   type FM_SB21_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB21_SB_META_MISO_t;
-  constant Default_FM_SB21_SB_META_MOSI_t : FM_SB21_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB21_MON_t is record
     SB_MEM                     :FM_SB21_SB_MEM_MISO_t;
-    SB_META                    :FM_SB21_SB_META_MISO_t;
+   --SB_META                    :FM_SB21_SB_META_MISO_t;
   end record FM_SB21_MON_t;
 
 
   type FM_SB21_CTRL_t is record
     SB_MEM                     :FM_SB21_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB21_SB_META_MOSI_t;
+   --SB_META                    :FM_SB21_SB_META_MOSI_t;
   end record FM_SB21_CTRL_t;
 
 
-  constant DEFAULT_FM_SB21_CTRL_t : FM_SB21_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB21_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB21_SB_META_MOSI_t
-                                                      );
+
   type FM_SB22_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(10-1 downto 0);
+    address   : std_logic_vector(9-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB22_SB_MEM_MOSI_t;
   type FM_SB22_SB_MEM_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB22_SB_MEM_MISO_t;
-  constant Default_FM_SB22_SB_MEM_MOSI_t : FM_SB22_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB22_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB22_SB_META_MOSI_t;
   type FM_SB22_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB22_SB_META_MISO_t;
-  constant Default_FM_SB22_SB_META_MOSI_t : FM_SB22_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB22_MON_t is record
     SB_MEM                     :FM_SB22_SB_MEM_MISO_t;
-    SB_META                    :FM_SB22_SB_META_MISO_t;
+   --SB_META                    :FM_SB22_SB_META_MISO_t;
   end record FM_SB22_MON_t;
 
 
   type FM_SB22_CTRL_t is record
     SB_MEM                     :FM_SB22_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB22_SB_META_MOSI_t;
+   --SB_META                    :FM_SB22_SB_META_MOSI_t;
   end record FM_SB22_CTRL_t;
 
 
-  constant DEFAULT_FM_SB22_CTRL_t : FM_SB22_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB22_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB22_SB_META_MOSI_t
-                                                      );
+ 
   type FM_SB23_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -1237,13 +886,7 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB23_SB_MEM_MISO_t;
-  constant Default_FM_SB23_SB_MEM_MOSI_t : FM_SB23_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB23_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -1255,29 +898,20 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB23_SB_META_MISO_t;
-  constant Default_FM_SB23_SB_META_MOSI_t : FM_SB23_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB23_MON_t is record
     SB_MEM                     :FM_SB23_SB_MEM_MISO_t;
-    SB_META                    :FM_SB23_SB_META_MISO_t;
+   --SB_META                    :FM_SB23_SB_META_MISO_t;
   end record FM_SB23_MON_t;
 
 
   type FM_SB23_CTRL_t is record
     SB_MEM                     :FM_SB23_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB23_SB_META_MOSI_t;
+   --SB_META                    :FM_SB23_SB_META_MOSI_t;
   end record FM_SB23_CTRL_t;
 
 
-  constant DEFAULT_FM_SB23_CTRL_t : FM_SB23_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB23_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB23_SB_META_MOSI_t
-                                                      );
+
   type FM_SB24_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -1289,99 +923,69 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB24_SB_MEM_MISO_t;
-  constant Default_FM_SB24_SB_MEM_MOSI_t : FM_SB24_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB24_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB24_SB_META_MOSI_t;
   type FM_SB24_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB24_SB_META_MISO_t;
-  constant Default_FM_SB24_SB_META_MOSI_t : FM_SB24_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB24_MON_t is record
     SB_MEM                     :FM_SB24_SB_MEM_MISO_t;
-    SB_META                    :FM_SB24_SB_META_MISO_t;
+   --SB_META                    :FM_SB24_SB_META_MISO_t;
   end record FM_SB24_MON_t;
 
 
   type FM_SB24_CTRL_t is record
     SB_MEM                     :FM_SB24_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB24_SB_META_MOSI_t;
+   --SB_META                    :FM_SB24_SB_META_MOSI_t;
   end record FM_SB24_CTRL_t;
 
 
-  constant DEFAULT_FM_SB24_CTRL_t : FM_SB24_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB24_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB24_SB_META_MOSI_t
-                                                      );
+
   type FM_SB25_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(10-1 downto 0);
+    address   : std_logic_vector(9-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB25_SB_MEM_MOSI_t;
   type FM_SB25_SB_MEM_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB25_SB_MEM_MISO_t;
-  constant Default_FM_SB25_SB_MEM_MOSI_t : FM_SB25_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB25_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
     wr_enable : std_logic;
-    address   : std_logic_vector(4-1 downto 0);
+    address   : std_logic_vector(5-1 downto 0);
     wr_data   : std_logic_vector(32-1 downto 0);
   end record FM_SB25_SB_META_MOSI_t;
   type FM_SB25_SB_META_MISO_t is record
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB25_SB_META_MISO_t;
-  constant Default_FM_SB25_SB_META_MOSI_t : FM_SB25_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+
   type FM_SB25_MON_t is record
     SB_MEM                     :FM_SB25_SB_MEM_MISO_t;
-    SB_META                    :FM_SB25_SB_META_MISO_t;
+   --SB_META                    :FM_SB25_SB_META_MISO_t;
   end record FM_SB25_MON_t;
 
 
   type FM_SB25_CTRL_t is record
     SB_MEM                     :FM_SB25_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB25_SB_META_MOSI_t;
+   --SB_META                    :FM_SB25_SB_META_MOSI_t;
   end record FM_SB25_CTRL_t;
 
 
-  constant DEFAULT_FM_SB25_CTRL_t : FM_SB25_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB25_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB25_SB_META_MOSI_t
-                                                      );
+
   type FM_SB26_SB_MEM_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -1393,13 +997,7 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB26_SB_MEM_MISO_t;
-  constant Default_FM_SB26_SB_MEM_MOSI_t : FM_SB26_SB_MEM_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+
   type FM_SB26_SB_META_MOSI_t is record
     clk       : std_logic;
     enable    : std_logic;
@@ -1411,29 +1009,20 @@ package FM_CTRL is
     rd_data         : std_logic_vector(32-1 downto 0);
     rd_data_valid   : std_logic;
   end record FM_SB26_SB_META_MISO_t;
-  constant Default_FM_SB26_SB_META_MOSI_t : FM_SB26_SB_META_MOSI_t := ( 
-                                                     clk       => '0',
-                                                     enable    => '0',
-                                                     wr_enable => '0',
-                                                     address   => (others => '0'),
-                                                     wr_data   => (others => '0')
-  );
+ 
   type FM_SB26_MON_t is record
     SB_MEM                     :FM_SB26_SB_MEM_MISO_t;
-    SB_META                    :FM_SB26_SB_META_MISO_t;
+   --SB_META                    :FM_SB26_SB_META_MISO_t;
   end record FM_SB26_MON_t;
 
 
   type FM_SB26_CTRL_t is record
     SB_MEM                     :FM_SB26_SB_MEM_MOSI_t;
-    SB_META                    :FM_SB26_SB_META_MOSI_t;
+   --SB_META                    :FM_SB26_SB_META_MOSI_t;
   end record FM_SB26_CTRL_t;
 
 
-  constant DEFAULT_FM_SB26_CTRL_t : FM_SB26_CTRL_t := (
-                                                       SB_MEM => Default_FM_SB26_SB_MEM_MOSI_t,
-                                                       SB_META => Default_FM_SB26_SB_META_MOSI_t
-                                                      );
+ 
   type FM_MON_t is record
     SB0                        :FM_SB0_MON_t;
     SB1                        :FM_SB1_MON_t;
@@ -1510,40 +1099,7 @@ package FM_CTRL is
   function zero(tpl: FM_CTRL_t) return FM_CTRL_t;
 
 
-  constant DEFAULT_FM_CTRL_t : FM_CTRL_t := (
-                                             SPY_CTRL => DEFAULT_FM_SPY_CTRL_CTRL_t,
-                                             FREEZE_MASK_0 => (others => '1'),
-                                             FREEZE_MASK_1 => (others => '1'),
-                                             PLAYBACK_MASK_0 => (others => '1'),
-                                             PLAYBACK_MASK_1 => (others => '1'),
-                                             SB0 => DEFAULT_FM_SB0_CTRL_t,
-                                             SB1 => DEFAULT_FM_SB1_CTRL_t,
-                                             SB2 => DEFAULT_FM_SB2_CTRL_t,
-                                             SB3 => DEFAULT_FM_SB3_CTRL_t,
-                                             SB4 => DEFAULT_FM_SB4_CTRL_t,
-                                             SB5 => DEFAULT_FM_SB5_CTRL_t,
-                                             SB6 => DEFAULT_FM_SB6_CTRL_t,
-                                             SB7 => DEFAULT_FM_SB7_CTRL_t,
-                                             SB8 => DEFAULT_FM_SB8_CTRL_t,
-                                             SB9 => DEFAULT_FM_SB9_CTRL_t,
-                                             SB10 => DEFAULT_FM_SB10_CTRL_t,
-                                             SB11 => DEFAULT_FM_SB11_CTRL_t,
-                                             SB12 => DEFAULT_FM_SB12_CTRL_t,
-                                             SB13 => DEFAULT_FM_SB13_CTRL_t,
-                                             SB14 => DEFAULT_FM_SB14_CTRL_t,
-                                             SB15 => DEFAULT_FM_SB15_CTRL_t,
-                                             SB16 => DEFAULT_FM_SB16_CTRL_t,
-                                             SB17 => DEFAULT_FM_SB17_CTRL_t,
-                                             SB18 => DEFAULT_FM_SB18_CTRL_t,
-                                             SB19 => DEFAULT_FM_SB19_CTRL_t,
-                                             SB20 => DEFAULT_FM_SB20_CTRL_t,
-                                             SB21 => DEFAULT_FM_SB21_CTRL_t,
-                                             SB22 => DEFAULT_FM_SB22_CTRL_t,
-                                             SB23 => DEFAULT_FM_SB23_CTRL_t,
-                                             SB24 => DEFAULT_FM_SB24_CTRL_t,
-                                             SB25 => DEFAULT_FM_SB25_CTRL_t,
-                                             SB26 => DEFAULT_FM_SB26_CTRL_t
-                                            );
+  
 
 
 end package FM_CTRL;
@@ -1568,6 +1124,7 @@ package body FM_CTRL is
    begin
       w := w + width(x.GLOBAL_FREEZE);
       w := w + width(x.GLOBAL_PLAYBACK_MODE);
+      w := w + width(x.INITIALIZE_SPY_MEMORY);
       return w;
    end function width;
    function convert(x: FM_SPY_CTRL_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -1581,12 +1138,19 @@ package body FM_CTRL is
          u := u + w;
          w := width(x.GLOBAL_PLAYBACK_MODE);
          y(u to u+w-1) := convert(x.GLOBAL_PLAYBACK_MODE, y(u to u+w-1));
+         u := u + w;
+         w := width(x.INITIALIZE_SPY_MEMORY);
+         y(u to u+w-1) := convert(x.INITIALIZE_SPY_MEMORY, y(u to u+w-1));
       else
          w := width(x.GLOBAL_FREEZE);
          y(u downto u-w+1) := convert(x.GLOBAL_FREEZE, y(u downto u-w+1));
          u := u - w;
          w := width(x.GLOBAL_PLAYBACK_MODE);
          y(u downto u-w+1) := convert(x.GLOBAL_PLAYBACK_MODE, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.INITIALIZE_SPY_MEMORY);
+         y(u downto u-w+1) := convert(x.INITIALIZE_SPY_MEMORY, y(u downto u-w+1));
+         
       end if;
       return y;
    end function convert;
@@ -1601,12 +1165,18 @@ package body FM_CTRL is
          u := u + w;
          w := width(tpl.GLOBAL_PLAYBACK_MODE);
          y.GLOBAL_PLAYBACK_MODE := convert(x(u to u+w-1), tpl.GLOBAL_PLAYBACK_MODE);
+         u := u + w;
+         w := width(tpl.INITIALIZE_SPY_MEMORY);
+         y.INITIALIZE_SPY_MEMORY := convert(x(u to u+w-1), tpl.INITIALIZE_SPY_MEMORY);
       else
          w := width(tpl.GLOBAL_FREEZE);
          y.GLOBAL_FREEZE := convert(x(u downto u-w+1), tpl.GLOBAL_FREEZE);
          u := u - w;
          w := width(tpl.GLOBAL_PLAYBACK_MODE);
          y.GLOBAL_PLAYBACK_MODE := convert(x(u downto u-w+1), tpl.GLOBAL_PLAYBACK_MODE);
+         u := u - w;
+         w := width(tpl.INITIALIZE_SPY_MEMORY);
+         y.INITIALIZE_SPY_MEMORY := convert(x(u downto u-w+1), tpl.INITIALIZE_SPY_MEMORY);
       end if;
       return y;
    end function convert;
@@ -1905,7 +1475,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB0_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -1917,14 +1487,14 @@ package body FM_CTRL is
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
          u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
          u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -1937,14 +1507,14 @@ package body FM_CTRL is
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
          u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
          u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -1957,7 +1527,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB0_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -1968,15 +1538,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -1988,15 +1558,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -2295,7 +1865,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB1_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -2306,15 +1876,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -2326,15 +1896,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -2347,7 +1917,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB1_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -2358,15 +1928,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         ---w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -2378,15 +1948,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -2685,7 +2255,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB2_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -2696,15 +2266,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -2716,15 +2286,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -2737,7 +2307,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB2_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -2748,15 +2318,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -2768,15 +2338,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -3075,7 +2645,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB3_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -3086,15 +2656,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -3106,15 +2676,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -3127,7 +2697,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB3_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -3138,15 +2708,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -3158,15 +2728,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -3465,7 +3035,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB4_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -3476,15 +3046,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -3496,15 +3066,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -3517,7 +3087,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB4_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -3528,15 +3098,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -3548,15 +3118,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -3855,7 +3425,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB5_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -3866,15 +3436,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -3886,15 +3456,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -3907,7 +3477,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB5_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -3918,15 +3488,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -3938,15 +3508,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -4245,7 +3815,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB6_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -4256,15 +3826,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -4276,15 +3846,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -4297,7 +3867,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB6_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -4308,15 +3878,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -4328,15 +3898,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -4635,7 +4205,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB7_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -4646,15 +4216,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -4666,15 +4236,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -4687,7 +4257,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB7_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -4698,15 +4268,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+        -- w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -4718,15 +4288,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -5025,7 +4595,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB8_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -5036,15 +4606,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -5056,15 +4626,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -5077,7 +4647,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB8_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -5088,15 +4658,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+        -- u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -5108,15 +4678,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -5415,7 +4985,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB9_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -5426,15 +4996,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -5446,15 +5016,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -5467,7 +5037,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB9_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -5478,15 +5048,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -5498,15 +5068,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -5805,7 +5375,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB10_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -5816,15 +5386,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -5836,15 +5406,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -5857,7 +5427,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB10_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -5868,15 +5438,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -5888,15 +5458,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+        -- w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -6195,7 +5765,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB11_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -6206,15 +5776,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -6226,15 +5796,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+        -- w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -6247,7 +5817,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB11_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -6258,15 +5828,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -6278,15 +5848,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -6585,7 +6155,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB12_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -6596,15 +6166,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+        -- w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -6616,15 +6186,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -6637,7 +6207,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB12_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -6648,15 +6218,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -6668,15 +6238,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -6975,7 +6545,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB13_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -6986,15 +6556,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -7006,15 +6576,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -7027,7 +6597,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB13_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -7038,15 +6608,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -7058,15 +6628,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -7365,7 +6935,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB14_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -7376,15 +6946,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -7396,15 +6966,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -7417,7 +6987,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB14_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -7428,15 +6998,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -7448,15 +7018,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -7755,7 +7325,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB15_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -7766,15 +7336,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+        -- w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -7786,15 +7356,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -7807,7 +7377,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB15_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -7818,15 +7388,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -7838,15 +7408,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -8145,7 +7715,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB16_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -8156,15 +7726,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -8176,15 +7746,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -8197,7 +7767,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB16_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -8208,15 +7778,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -8228,15 +7798,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -8535,7 +8105,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+     -- w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB17_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -8546,15 +8116,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -8566,15 +8136,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -8587,7 +8157,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB17_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -8598,15 +8168,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -8618,15 +8188,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -8925,7 +8495,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB18_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -8936,15 +8506,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -8956,15 +8526,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -8977,7 +8547,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB18_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -8988,15 +8558,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -9008,15 +8578,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -9315,7 +8885,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+     -- w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB19_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -9326,15 +8896,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+        -- u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -9346,15 +8916,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+        -- w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -9367,7 +8937,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB19_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -9378,15 +8948,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -9398,15 +8968,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+         --u := u + w;
+         --w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+         --u := u - w;
+        -- w := width(tpl.SB_META);
+         --y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -9705,7 +9275,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB20_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -9716,15 +9286,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -9736,15 +9306,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -9757,7 +9327,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB20_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -9768,15 +9338,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -9788,15 +9358,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -10095,7 +9665,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB21_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -10106,15 +9676,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -10126,15 +9696,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -10147,7 +9717,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB21_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -10158,15 +9728,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -10178,15 +9748,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+       --  y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -10485,7 +10055,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB22_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -10496,15 +10066,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+        -- u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -10516,15 +10086,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -10537,7 +10107,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB22_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -10548,15 +10118,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -10568,15 +10138,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -10875,7 +10445,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB23_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -10886,15 +10456,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -10906,15 +10476,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -10927,7 +10497,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB23_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -10938,15 +10508,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -10958,15 +10528,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -11265,7 +10835,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB24_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -11276,15 +10846,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -11296,15 +10866,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+         --w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+       --  w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -11317,7 +10887,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB24_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -11328,15 +10898,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -11348,15 +10918,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -11655,7 +11225,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB25_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -11666,15 +11236,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+        -- y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -11686,15 +11256,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -11707,7 +11277,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB25_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -11718,15 +11288,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -11738,15 +11308,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -12045,7 +11615,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB26_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -12056,15 +11626,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -12076,15 +11646,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;
@@ -12097,7 +11667,7 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.SB_MEM);
-      w := w + width(x.SB_META);
+      --w := w + width(x.SB_META);
       return w;
    end function width;
    function convert(x: FM_SB26_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -12108,15 +11678,15 @@ package body FM_CTRL is
       if tpl'ascending then
          w := width(x.SB_MEM);
          y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_META);
-         y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
+         --u := u + w;
+         --w := width(x.SB_META);
+         --y(u to u+w-1) := convert(x.SB_META, y(u to u+w-1));
       else
          w := width(x.SB_MEM);
          y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_META);
-         y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
+         --u := u - w;
+         --w := width(x.SB_META);
+         --y(u downto u-w+1) := convert(x.SB_META, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -12128,15 +11698,15 @@ package body FM_CTRL is
       if x'ascending then
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
-         u := u + w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
+        -- u := u + w;
+       --  w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u to u+w-1), tpl.SB_META);
       else
          w := width(tpl.SB_MEM);
          y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
-         u := u - w;
-         w := width(tpl.SB_META);
-         y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
+        -- u := u - w;
+        -- w := width(tpl.SB_META);
+        -- y.SB_META := convert(x(u downto u-w+1), tpl.SB_META);
       end if;
       return y;
    end function convert;

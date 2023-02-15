@@ -180,23 +180,7 @@ package c2cslave_pkg is
     FM_rdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
     FM_rresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
     FM_rvalid : in std_logic;
-    FM_rready : out std_logic;
-    FM_arburst : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    FM_arcache : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    FM_arlen : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    FM_arlock : out std_logic;
-    FM_arqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    FM_arregion : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    FM_arsize : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    FM_awburst : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    FM_awcache : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    FM_awlen : out STD_LOGIC_VECTOR ( 7 downto 0 );
-    FM_awlock : out std_logic;
-    FM_awqos : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    FM_awregion : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    FM_awsize : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    FM_rlast : in std_logic;
-    FM_wlast : out std_logic
+    FM_rready : out std_logic
   );
   end component c2cSlave;
 end package c2cslave_pkg;
