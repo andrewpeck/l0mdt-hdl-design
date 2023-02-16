@@ -1,0 +1,26 @@
+# yml2hdl v0.3
+# This file was auto-generated.
+# Modifications might be lost.
+config:
+  basic_functions : False
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg]
+
+types:
+
+- HOG_MON_t:
+  - GLOBAL_DATE : { type: logic, range : [ 32 - 1 , 0 ] }
+  - GLOBAL_TIME : { type: logic, range : [ 32 - 1 , 0 ] }
+  - GLOBAL_VER : { type: logic, range : [ 32 - 1 , 0 ] }
+  - GLOBAL_SHA : { type: logic, range : [ 32 - 1 , 0 ] }
+  - TOP_SHA : { type: logic, range : [ 32 - 1 , 0 ] }
+  - TOP_VER : { type: logic, range : [ 32 - 1 , 0 ] }
+  - HOG_SHA : { type: logic, range : [ 32 - 1 , 0 ] }
+  - HOG_VER : { type: logic, range : [ 32 - 1 , 0 ] }
+  - CON_SHA : { type: logic, range : [ 32 - 1 , 0 ] }
+  - CON_VER : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PROJECT_LIB_SHA : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PROJECT_LIB_VER : { type: logic, range : [ 32 - 1 , 0 ] }
+
+
