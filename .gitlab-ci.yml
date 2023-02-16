@@ -9,7 +9,11 @@ variables:
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
+<<<<<<< HEAD
     ref: '208-hog-logs'
+=======
+    ref: 'Hog2023.1-4'
+>>>>>>> missing_hog_generics
   # - local: '/.before_script.yml'
   - local: "/.user_jobs.yml"
   - local: '/.devel_to_master.yml'
