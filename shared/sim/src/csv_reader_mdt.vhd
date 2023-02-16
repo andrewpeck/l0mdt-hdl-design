@@ -51,7 +51,7 @@ entity csv_reader_mdt is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    enable              : in integer;
+    enable              : in std_logic;
     --
     tb_curr_sim_time    : in unsigned(63 downto 0) := (others => '0');
     tb_curr_tdc_time    : in unsigned(63 downto 0) := (others => '0');
@@ -62,10 +62,10 @@ entity csv_reader_mdt is
     o_mdt_event_ai      : out event_tdc_aut;
     o_slc_event_ai      : out event_tdc_aut;
     -- Hits from Tar
-    o_mdt_tdc_inn_av    : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
-    o_mdt_tdc_mid_av    : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
-    o_mdt_tdc_out_av    : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
-    o_mdt_tdc_ext_av    : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'))
+    o_mdt_tdc_inn_av    : out tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+    o_mdt_tdc_mid_av    : out tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+    o_mdt_tdc_out_av    : out tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+    o_mdt_tdc_ext_av    : out tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'))
 
   );
 end entity csv_reader_mdt;
@@ -84,20 +84,20 @@ architecture sim of csv_reader_mdt is
   signal mdt_new_event    : input_mdt_rt;
 
   -- TDC Hits from Tar
-  signal i_mdt_tdc_inn_ar :  tdcpolmux2tar_art (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal i_mdt_tdc_mid_ar :  tdcpolmux2tar_art (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal i_mdt_tdc_out_ar :  tdcpolmux2tar_art (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal i_mdt_tdc_ext_ar :  tdcpolmux2tar_art (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal i_mdt_tdc_inn_ar :  tdcpolmux2tar_art (c_HPS_MAX_HP_INN -1 downto 0);
+  signal i_mdt_tdc_mid_ar :  tdcpolmux2tar_art (c_HPS_MAX_HP_MID -1 downto 0);
+  signal i_mdt_tdc_out_ar :  tdcpolmux2tar_art (c_HPS_MAX_HP_OUT -1 downto 0);
+  signal i_mdt_tdc_ext_ar :  tdcpolmux2tar_art (c_HPS_MAX_HP_EXT -1 downto 0);
 
-  signal mdt_inn_fifo     : infifo_hit_mem_at(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => zero(mdt_tdc_station));
-  signal mdt_mid_fifo     : infifo_hit_mem_at(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => zero(mdt_tdc_station));
-  signal mdt_out_fifo     : infifo_hit_mem_at(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => zero(mdt_tdc_station));
-  signal mdt_ext_fifo     : infifo_hit_mem_at(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => zero(mdt_tdc_station));
+  signal mdt_inn_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_INN -1 downto 0) := (others => zero(mdt_tdc_station));
+  signal mdt_mid_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_MID -1 downto 0) := (others => zero(mdt_tdc_station));
+  signal mdt_out_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_OUT -1 downto 0) := (others => zero(mdt_tdc_station));
+  signal mdt_ext_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_EXT -1 downto 0) := (others => zero(mdt_tdc_station));
   
-  signal mdt_inn_counts   : infifo_hit_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
-  signal mdt_mid_counts   : infifo_hit_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
-  signal mdt_out_counts   : infifo_hit_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
-  signal mdt_ext_counts   : infifo_hit_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
+  signal mdt_inn_counts   : infifo_hit_counts(c_HPS_MAX_HP_INN -1 downto 0) := (others => 0);
+  signal mdt_mid_counts   : infifo_hit_counts(c_HPS_MAX_HP_MID -1 downto 0) := (others => 0);
+  signal mdt_out_counts   : infifo_hit_counts(c_HPS_MAX_HP_OUT -1 downto 0) := (others => 0);
+  signal mdt_ext_counts   : infifo_hit_counts(c_HPS_MAX_HP_EXT -1 downto 0) := (others => 0);
 
   -- signal mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
   -- signal slc_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
@@ -197,10 +197,10 @@ begin
 
     variable first_read           : std_logic := '1';
 
-    variable v_mdt_inn_counts     : infifo_hit_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
-    variable v_mdt_mid_counts     : infifo_hit_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
-    variable v_mdt_out_counts     : infifo_hit_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
-    variable v_mdt_ext_counts     : infifo_hit_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
+    variable v_mdt_inn_counts     : infifo_hit_counts(c_HPS_MAX_HP_INN -1 downto 0) := (others => 0);
+    variable v_mdt_mid_counts     : infifo_hit_counts(c_HPS_MAX_HP_MID -1 downto 0) := (others => 0);
+    variable v_mdt_out_counts     : infifo_hit_counts(c_HPS_MAX_HP_OUT -1 downto 0) := (others => 0);
+    variable v_mdt_ext_counts     : infifo_hit_counts(c_HPS_MAX_HP_EXT -1 downto 0) := (others => 0);
 
   begin
 
@@ -211,10 +211,10 @@ begin
 
       else
 
-        if enable = 1 then
+        if enable = '1' then
         -- write to DUT
 
-          for wr_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 loop
+          for wr_i in c_HPS_MAX_HP_INN -1 downto 0 loop
             if(v_mdt_inn_counts(wr_i) > 0) then
               o_mdt_tdc_inn_av(wr_i) <= convert(mdt_inn_fifo(wr_i)(0).tdc,o_mdt_tdc_inn_av(wr_i));
               o_mdt_event_ai(0)(wr_i) <= mdt_inn_fifo(wr_i)(0).hit_id;
@@ -234,7 +234,7 @@ begin
             end if;
           end loop;
 
-          for wr_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 loop
+          for wr_i in c_HPS_MAX_HP_MID -1 downto 0 loop
             if(v_mdt_mid_counts(wr_i) > 0) then
               o_mdt_tdc_mid_av(wr_i) <= convert(mdt_mid_fifo(wr_i)(0).tdc,o_mdt_tdc_mid_av(wr_i));
               o_mdt_event_ai(1)(wr_i) <= mdt_mid_fifo(wr_i)(0).hit_id;
@@ -255,7 +255,7 @@ begin
             end if;
           end loop;
 
-          for wr_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 loop
+          for wr_i in c_HPS_MAX_HP_OUT -1 downto 0 loop
             if(v_mdt_out_counts(wr_i) > 0) then
               o_mdt_tdc_out_av(wr_i) <= convert(mdt_out_fifo(wr_i)(0).tdc,o_mdt_tdc_out_av(wr_i));
               -- mdt_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).event_id;
@@ -277,7 +277,7 @@ begin
             end if;
           end loop;
 
-          for wr_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 loop
+          for wr_i in c_HPS_MAX_HP_EXT -1 downto 0 loop
             if(v_mdt_ext_counts(wr_i) > 0) then
               o_mdt_tdc_ext_av(wr_i) <= convert(mdt_ext_fifo(wr_i)(0).tdc,o_mdt_tdc_ext_av(wr_i));
               -- mdt_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).event_id;

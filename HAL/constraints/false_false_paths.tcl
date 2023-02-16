@@ -78,8 +78,8 @@ foreach clock_b \
     [concat \
          [get_clocks *TXOUTCLKPCS*]] {
              foreach clock_a [concat \
-                                  [get_clocks *RXOUTCLK\[*] \
-                                  [get_clocks *TXOUTCLK\[*]] {
+                                  [get_clocks *RXOUTCLK\[*]] \
+                                  [get_clocks *TXOUTCLK\[*]]] {
                  set_clock_groups \
                      -group [get_clocks $clock_a] \
                      -group [get_clocks $clock_b] \

@@ -26,8 +26,13 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
--- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
+
+use shared_lib.l0mdt_sim_cstm_pkg.all;
+use shared_lib.vhdl_textio_csv_pkg.all;
+--
+-- use shared_lib.tar_sim_pkg.all;
 
 library ult_lib;
 
@@ -48,7 +53,7 @@ entity ult_tb is
   port (
     PRJ_INFO            : string  := "not_defined";
     IN_SLC_FILE         : string  := "not_defined.csv";
-    IN_CTRL_FILE        : string  := "not_defined.csv";
+    IN_CSM_FILE         : string  := "not_defined.csv";
     DUMMY               : boolean := false
   );
 end entity ult_tb;
@@ -61,7 +66,7 @@ architecture beh of ult_tb is
   signal axi_rst      : std_logic := '0';
   signal clk_axi      : std_logic := '0';
   signal clk_axi_cnt  : integer;
-  -- constant c_CLK_AXI_MULT : integer := 5; 
+  constant c_CLK_AXI_MULT : integer := 5; 
   -- clk
   constant clk_time_period : time := 1 ns;  -- 1Ghz
   signal clk_time : std_logic := '0';
@@ -91,15 +96,15 @@ architecture beh of ult_tb is
   ---------------------------------------------------------------------------
   signal clock_and_control     : l0mdt_control_rt;
 
-  signal i_inner_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_middle_tdc_hits : tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_outer_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_extra_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_mdt_tdc_inn_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
+  signal i_mdt_tdc_mid_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
+  signal i_mdt_tdc_out_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+  signal i_mdt_tdc_ext_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
-  signal i_main_primary_slc        :slc_rx_avt(2 downto 0);  -- is the main SL used
-  signal i_main_secondary_slc      :slc_rx_avt(2 downto 0);  -- only used in the big endcap
-  signal i_plus_neighbor_slc       :slc_rx_vt;
-  signal i_minus_neighbor_slc      :slc_rx_vt;
+  signal i_main_primary_slc       :slc_rx_avt(2 downto 0);  -- is the main SL used
+  signal i_main_secondary_slc     :slc_rx_avt(2 downto 0);  -- only used in the big endcap
+  signal i_plus_neighbor_slc      :slc_rx_vt;
+  signal i_minus_neighbor_slc     :slc_rx_vt;
 
   signal i_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
   signal i_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
@@ -178,6 +183,15 @@ architecture beh of ult_tb is
 
   signal o_MTC : mtc_out_avt(c_NUM_MTC-1 downto 0);
   signal o_NSP : mtc2nsp_avt(c_NUM_NSP-1 downto 0);
+
+  signal slc_file_ok      : std_logic;
+  signal slc_file_ts      : string(1 to LINE_LENGTH_MAX);
+  signal mdt_file_ok      : std_logic;
+  signal mdt_file_ts      : string(1 to LINE_LENGTH_MAX);
+
+  signal slc_event_ai     : event_xaut(c_MAX_NUM_SL -1 downto 0);
+  signal hit_mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
+  signal hit_slc_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
 
   signal sump : std_logic;
 
@@ -374,10 +388,10 @@ begin
       --
       o_slc_event_ai        => slc_event_ai,
       --
-      o_main_primary_slc    => i_slc_data_mainA_av,
-      o_main_secondary_slc  => i_slc_data_mainB_av,
-      o_plus_neighbor_slc   => i_slc_data_neighborA_v,
-      o_minus_neighbor_slc  => i_slc_data_neighborB_v
+      o_main_primary_slc    => i_main_primary_slc,
+      o_main_secondary_slc  => i_main_secondary_slc,
+      o_plus_neighbor_slc   => i_plus_neighbor_slc,
+      o_minus_neighbor_slc  => i_minus_neighbor_slc
 
     );
 
@@ -386,13 +400,13 @@ begin
   -------------------------------------------------------------------------------------
   MDT : entity shared_lib.csv_reader_mdt 
     generic map (
-      IN_HIT_FILE => IN_HIT_FILE,
+      IN_HIT_FILE => IN_CSM_FILE,
       g_verbose => 2
     )
     port map(
       clk               => clk,
       rst               => rst,
-      enable            => enable_mdt,
+      enable            => glob_en,
       --
       tb_curr_sim_time  => tb_curr_sim_time,
       tb_curr_tdc_time  => tb_curr_tdc_time,
@@ -400,8 +414,8 @@ begin
       o_file_ok         => mdt_file_ok,
       o_file_ts         => mdt_file_ts, 
       --
-      o_mdt_event_ai    => mdt_event_ai,
-      o_slc_event_ai    => slc_event_ai,
+      o_mdt_event_ai    => hit_mdt_event_ai,
+      o_slc_event_ai    => hit_slc_event_ai,
       -- TAR Hits for simulation
       o_mdt_tdc_inn_av  => i_mdt_tdc_inn_av,
       o_mdt_tdc_mid_av  => i_mdt_tdc_mid_av,
