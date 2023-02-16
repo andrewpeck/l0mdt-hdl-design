@@ -26,8 +26,8 @@ UserLogic/*/IP/*/*/*
 !UserLogic/*/IP/*/*/*.xci
 !IP/**/*.xci
 !IP/**.xci
-HAL/IP/*
-!HAL/IP/*/*.xci
+HAL/IP/*/*/
+!HAL/IP/*/*/*.xci
 *.dbg
 *.zip
 *.tar
