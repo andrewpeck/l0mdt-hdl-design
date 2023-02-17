@@ -103,19 +103,15 @@ set_property PACKAGE_PIN AY16 [get_ports clock_async_i_p] ; # IN: oscillator clo
 set_property PACKAGE_PIN AY15 [get_ports clock_async_i_n] ; # IN: oscillator clock
 #create_clock -period 10.000 -name clock_100 [get_ports p_clk_100]
 create_clock -period 10.000 -name clock_async [get_ports clock_async_i_p]
-set_property IOSTANDARD LVDS [get_ports *_clk_100]
-set_property DIFF_TERM_ADV TERM_100 [get_ports *_clk_100]
-
+# set_property IOSTANDARD LVDS [get_ports *_clk_100]
+# set_property DIFF_TERM_ADV TERM_100 [get_ports *_clk_100]
+set_property IOSTANDARD LVDS [get_ports clock_async_i_*]
+set_property DIFF_TERM_ADV TERM_100 [get_ports clock_async_i_*]
 # LHC REF Output
 
 
 set_property PACKAGE_PIN AU12 [get_ports sump]
 set_property IOSTANDARD LVCMOS18 [get_ports sump]
-
-
-
-
-
 
 
 set_property PACKAGE_PIN BA4 [get_ports c2cb_rxp]
