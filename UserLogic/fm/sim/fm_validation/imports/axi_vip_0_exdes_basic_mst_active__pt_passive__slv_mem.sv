@@ -35,7 +35,7 @@ module axi_vip_0_exdes_basic_mst_active__pt_passive__slv_mem(
   xil_axi_uint                            comparison_cnt = 0;
 
    parameter clk_period_by_2  = 10;
-   parameter reset_cycles     = 16;
+   parameter reset_cycles     = 8;
    parameter reset_delay      = clk_period_by_2 * 2 * reset_cycles;
  
    

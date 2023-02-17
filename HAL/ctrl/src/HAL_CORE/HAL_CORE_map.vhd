@@ -7,7 +7,7 @@ use work.AXIRegWidthPkg.all;
 use work.AXIRegPkg.all;
 use work.types.all;
 use work.HAL_CORE_Ctrl.all;
-
+use work.HAL_CORE_Ctrl_DEF.all;
 entity HAL_CORE_map is
   port (
     clk_axi          : in  std_logic;

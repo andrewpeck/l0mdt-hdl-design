@@ -53,8 +53,8 @@ import ex_sim_axi_vip_mst_0_pkg::*;
   xil_axi_size_t                                           mtestRDataSize;      // Read SIZE  
   xil_axi_burst_t                                          mtestRBurstType;     // Read Burst Type  
 
-  xil_axi_data_beat [255:0]                                mtestWUSER;         // Write user  
-  xil_axi_data_beat                                        mtestAWUSER;        // Write Awuser 
+  xil_axi_data_beat [255:0]                                mtestWUSER = 0;         // Write user  
+  xil_axi_data_beat                                        mtestAWUSER = 0;        // Write Awuser 
   xil_axi_data_beat                                        mtestARUSER;        // Read Aruser
   
   // Error count to check how many comparison failed
@@ -80,14 +80,16 @@ import ex_sim_axi_vip_mst_0_pkg::*;
     ***********************************************************************************************/
     mst_agent = new("master vip agent",DUT.ex_design.axi_vip_mst.inst.IF);
     mst_agent.start_master();               // mst_agent start to run
+   
 
     // Parallel write/read transaction generation 
     fork                               // Fork process of write/read transaction generation                    
   
-      begin  
+       begin
+	       /*    
         // single write transaction with fully randomization
          multiple_write_transaction_full_rand ("single write",1);
-     /*    
+
         mtestWID = $urandom_range(0,(1<<(0)-1)); 
          mtestWADDR = 6144 ; //priya 0;
         mtestWBurstLength = 0;
@@ -126,39 +128,40 @@ import ex_sim_axi_vip_mst_0_pkg::*;
       end
  
        begin
-
+	  #15000
 	  mtestRID = $urandom_range(0,(1<<(0)-1));
           mtestRADDR = 0; // PRIYA $urandom_range(0,(1<<(32)-1));
-          mtestRBurstLength = 0;
+          mtestRBurstLength = 0; //0; //5185; //0;
           mtestRDataSize =  xil_axi_size_t'(1); //PRIYA xil_axi_size_t'(xil_clog2((32)/8)); 
-          mtestRBurstType = XIL_AXI_BURST_TYPE_FIXED; //PRIYA XIL_AXI_BURST_TYPE_INCR;
+          mtestRBurstType = XIL_AXI_BURST_TYPE_FIXED; //INCR;
           //single read transaction filled in user inputs through API
-	  for (int i = 0; i < 5185; i++)
-	   begin
-              single_read_transaction_api("single read with api",
-					  .id(mtestRID),
-					  .addr(mtestRADDR),
-					  .len(mtestRBurstLength), 
-					  .size(mtestRDataSize),
-					  .burst(mtestRBurstType)
-					  );
-	      
-	      
-	      mtestRADDR += 4 ;
-	      
-	      
-	   end // for (int i = 0; i < 26; i++)
+
+	  for (int i = 0 ; i < 6; i++)
+	    begin
+          single_read_transaction_api("single read with api",
+				      .id(mtestRID),
+				      .addr(mtestRADDR),
+				      .len(mtestRBurstLength), 
+				      .size(mtestRDataSize),
+				      .burst(mtestRBurstType)
+				      );
+	       mtestRADDR += 4;
+	       
+	    end
+
 	  
 	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
           mtestWADDR = (32'h2000 << 2);  //priya 0;
-          mtestWBurstLength = 0;
-          mtestWDataSize = xil_axi_size_t'(xil_clog2((32)/8));
-          mtestWBurstType =  XIL_AXI_BURST_TYPE_INCR;
-          
-	 
-	    for (int i = 0; i < 6; i++)
-	   begin
-	      mtestWData = 0; //$urandom();
+          mtestWBurstLength = 0; //0;
+          mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
+          mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED;
+
+	  for (int i = 0 ; i < 6; i++)
+	    begin
+	  mtestWData = 0; //$urandom();
+	      mtestWUSER      =   $urandom_range(0,15);
+	      mtestAWUSER     =   $urandom_range(0,15); 
+
               //single write transaction filled in user inputs through API 
               single_write_transaction_api("single write with api",
 					   .id(mtestWID),
@@ -172,8 +175,8 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 					   );
 	      mtestWADDR += 4 ;
 	      //if(i == 10)mtestWADDR = 2048;
-	      
-	   end
+	    end
+	 
  
 	
 	 
@@ -182,12 +185,13 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	
         mtestRID = $urandom_range(0,(1<<(0)-1));
          mtestRADDR = 0; // PRIYA $urandom_range(0,(1<<(32)-1));
-        mtestRBurstLength = 0;
+          mtestRBurstLength = 0; //5184;
          mtestRDataSize =  xil_axi_size_t'(1); //PRIYA xil_axi_size_t'(xil_clog2((32)/8)); 
-        mtestRBurstType = XIL_AXI_BURST_TYPE_FIXED; //PRIYA XIL_AXI_BURST_TYPE_INCR;
+        mtestRBurstType = XIL_AXI_BURST_TYPE_FIXED; //XIL_AXI_BURST_TYPE_FIXED; //PRIYA XIL_AXI_BURST_TYPE_INCR;
         //single read transaction filled in user inputs through API
-	 for (int i = 0; i < 5184; i++)
-	   begin
+
+	  for(int i=0;i<5184; i++)
+	    begin
         single_read_transaction_api("single read with api",
                                      .id(mtestRID),
                                      .addr(mtestRADDR),
@@ -199,16 +203,16 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	      
 	      mtestRADDR += 4 ;
 	     
-	      
-	   end // for (int i = 0; i < 26; i++)
+	    end	      
+	  
 
 
 
 	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
           mtestWADDR = (32'h000);  //priya 0;
         mtestWBurstLength = 0;
-         mtestWDataSize = xil_axi_size_t'(xil_clog2((32)/8));
-        mtestWBurstType =  XIL_AXI_BURST_TYPE_INCR;
+          mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
+          mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED; //INCR;
           
 
 	  #12800 
@@ -446,6 +450,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
     wr_trans.set_region(region);
     wr_trans.set_qos(qos);
     wr_trans.set_data_block(data);
+     
     mst_agent.wr_driver.send(wr_trans);   
   endtask  : single_write_transaction_api
 
