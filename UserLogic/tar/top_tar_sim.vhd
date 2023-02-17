@@ -265,7 +265,7 @@ begin
   port map(
     clk               => clk,
     rst               => rst,
-    enable            => enable_mdt,
+    enable            => glob_en,
     --
     tb_curr_sim_time  => tb_curr_sim_time,
     tb_curr_tdc_time  => tb_curr_tdc_time,
