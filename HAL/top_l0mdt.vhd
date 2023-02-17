@@ -334,7 +334,6 @@ begin
       clock_i_p       => clock_i_p,
       clock_i_n       => clock_i_n,
 
-          n_clk_100 : in std_logic;           -- 100 MHz system clock
       clock_async_i_p => clock_async_i_p,
       clock_async_i_n => clock_async_i_n,
 
