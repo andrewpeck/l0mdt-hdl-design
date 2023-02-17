@@ -206,7 +206,7 @@ vu13p_ba3_ucm_mpl_tar_hps:
       en_pt: 0
       en_daq: 0
       en_mtc: 0
-      csm_links: 1
-      tdc_links: 18
+      # csm_links: 1
+      # tdc_links: 18
       hog_tag: "argos"
       # hog_tag: "mdt-2"
