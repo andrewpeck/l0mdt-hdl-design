@@ -1,16 +1,20 @@
 --------------------------------------------------------------------------------
---
---
---
+-- UMass , Physics Department
+-- Project: ult
+-- File: top_ult_imp.vhd
+-- Module: <<moduleName>>
+-- File PATH: /top_ult_imp.vhd
+-- -----
+-- File Created: Friday, 9th June 2020 10:11:27 am
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Friday, 17th February 2023 10:17:41 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: User Logic Top 
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 
 library ieee;
 use ieee.std_logic_misc.all;
