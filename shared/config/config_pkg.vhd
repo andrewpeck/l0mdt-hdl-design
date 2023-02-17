@@ -109,6 +109,12 @@ package config_pkg is
     c_HPS_NUM_MDT_CH_OUT,
     c_HPS_NUM_MDT_CH_EXT
   );
+  constant c_HP_MAX_NUM_SECTOR_STATION : hp_num_in_station_a := (
+    c_HPS_MAX_HP_INN,
+    c_HPS_MAX_HP_MID,
+    c_HPS_MAX_HP_OUT,
+    c_HPS_MAX_HP_EXT
+  );
 
   type hp_in_station_a is array (0 to c_MAX_NUM_ST -1 ) of std_logic_vector(CFG_MAX_HP -1 downto 0);
   constant c_HP_SECTOR_STATION : hp_in_station_a := (

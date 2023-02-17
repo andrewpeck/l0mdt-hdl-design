@@ -75,15 +75,15 @@ entity csv_writer_tar is
     i_mdt_event_ai        : in event_tdc_aut;--event_xaut(3 downto 0);
     i_slc_event_ai        : in event_tdc_aut;--event_xaut(3 downto 0);
     -- TDC polmux from Tar
-    i_tdc_hits_inn_av         : in tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_tdc_hits_mid_av         : in tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_tdc_hits_out_av         : in tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_tdc_hits_ext_av         : in tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_tdc_hits_inn_av         : in tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
+    i_tdc_hits_mid_av         : in tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    i_tdc_hits_out_av         : in tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    i_tdc_hits_ext_av         : in tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
-    i_tar_hits_inn_av         : in tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_tar_hits_mid_av         : in tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_tar_hits_out_av         : in tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_tar_hits_ext_av         : in tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0)
+    i_tar_hits_inn_av         : in tar2hps_avt(c_HPS_MAX_HP_INN -1 downto 0);
+    i_tar_hits_mid_av         : in tar2hps_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    i_tar_hits_out_av         : in tar2hps_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    i_tar_hits_ext_av         : in tar2hps_avt(c_HPS_MAX_HP_EXT -1 downto 0)
 
   );
 end entity csv_writer_tar;
@@ -114,15 +114,15 @@ architecture sim of csv_writer_tar is
   signal slc_event_a : event_tdc_at;
   signal mdt_event_a : event_tdc_at;
     -- TDC polmux from Tar
-  signal tdc_hits_inn_ar : tdcpolmux2tar_art(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal tdc_hits_mid_ar : tdcpolmux2tar_art(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal tdc_hits_out_ar : tdcpolmux2tar_art(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal tdc_hits_ext_ar : tdcpolmux2tar_art(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal tdc_hits_inn_ar : tdcpolmux2tar_art(c_HPS_MAX_HP_INN -1 downto 0);
+  signal tdc_hits_mid_ar : tdcpolmux2tar_art(c_HPS_MAX_HP_MID -1 downto 0);
+  signal tdc_hits_out_ar : tdcpolmux2tar_art(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal tdc_hits_ext_ar : tdcpolmux2tar_art(c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
-  signal tar_hits_inn_ar :tar2hps_art(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal tar_hits_mid_ar :tar2hps_art(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal tar_hits_out_ar :tar2hps_art(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal tar_hits_ext_ar :tar2hps_art(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal tar_hits_inn_ar :tar2hps_art(c_HPS_MAX_HP_INN -1 downto 0);
+  signal tar_hits_mid_ar :tar2hps_art(c_HPS_MAX_HP_MID -1 downto 0);
+  signal tar_hits_out_ar :tar2hps_art(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal tar_hits_ext_ar :tar2hps_art(c_HPS_MAX_HP_EXT -1 downto 0);
 
 
 

@@ -108,10 +108,10 @@ architecture beh of tar_tb is
   signal tar_ext_mon_v  : std_logic_vector(TAR_MON_t'w - 1 downto 0);
 
   -- TDC Hits from Polmux
-  signal i_mdt_tdc_inn_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(0) -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_mid_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(1) -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(2) -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(3) -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_inn_av :  tdcpolmux2tar_avt (c_HP_MAX_NUM_SECTOR_STATION(0) -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_mid_av :  tdcpolmux2tar_avt (c_HP_MAX_NUM_SECTOR_STATION(1) -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HP_MAX_NUM_SECTOR_STATION(2) -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HP_MAX_NUM_SECTOR_STATION(3) -1 downto 0) := (others => (others => '0'));
 
   -- signal i_mdt_tdc_av :  tdcpolmux2tar_avt (c_TOTAL_MAX_NUM_HP -1 downto 0) := (others => (others => '0'));
 
@@ -136,15 +136,15 @@ architecture beh of tar_tb is
   -- -- TDC Hits from Polmux
   -- signal i_tdc_hits_av    : tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0):= (others => (others => '0'));
   -- TDC polmux from Tar
-  signal o_tdc_hits_inn_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(0) -1 downto 0);
-  signal o_tdc_hits_mid_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(1) -1 downto 0);
-  signal o_tdc_hits_out_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(2) -1 downto 0);
-  signal o_tdc_hits_ext_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(3) -1 downto 0);
+  signal o_tdc_hits_inn_av    : tdcpolmux2tar_avt(c_HP_MAX_NUM_SECTOR_STATION(0) -1 downto 0);
+  signal o_tdc_hits_mid_av    : tdcpolmux2tar_avt(c_HP_MAX_NUM_SECTOR_STATION(1) -1 downto 0);
+  signal o_tdc_hits_out_av    : tdcpolmux2tar_avt(c_HP_MAX_NUM_SECTOR_STATION(2) -1 downto 0);
+  signal o_tdc_hits_ext_av    : tdcpolmux2tar_avt(c_HP_MAX_NUM_SECTOR_STATION(3) -1 downto 0);
   -- TDC Hits from Tar
-  signal o_tar_hits_inn_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(0) -1 downto 0);
-  signal o_tar_hits_mid_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(1) -1 downto 0);
-  signal o_tar_hits_out_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(2) -1 downto 0);
-  signal o_tar_hits_ext_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(3) -1 downto 0);
+  signal o_tar_hits_inn_av    : tar2hps_avt(c_HP_MAX_NUM_SECTOR_STATION(0) -1 downto 0);
+  signal o_tar_hits_mid_av    : tar2hps_avt(c_HP_MAX_NUM_SECTOR_STATION(1) -1 downto 0);
+  signal o_tar_hits_out_av    : tar2hps_avt(c_HP_MAX_NUM_SECTOR_STATION(2) -1 downto 0);
+  signal o_tar_hits_ext_av    : tar2hps_avt(c_HP_MAX_NUM_SECTOR_STATION(3) -1 downto 0);
 
   ---------------------------------------------------------------------------
   -- 
@@ -164,7 +164,7 @@ begin
   TAR_INN_GEN: if ST_ENABLE(0)='1' generate
     TAR_INN : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(0),
+      g_HPS_MAX_HP => c_HP_MAX_NUM_SECTOR_STATION(0),
       g_STATION => 0
     )
     port map (
@@ -187,7 +187,7 @@ begin
   TAR_MID_GEN: if ST_ENABLE(1)='1' generate
     TAR_MID : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(1),
+      g_HPS_MAX_HP => c_HP_MAX_NUM_SECTOR_STATION(1),
       g_STATION => 1
     )
     port map (
@@ -210,7 +210,7 @@ begin
   TAR_OUT_GEN: if ST_ENABLE(2)='1' generate
     TAR_OUT : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(2),
+      g_HPS_MAX_HP => c_HP_MAX_NUM_SECTOR_STATION(2),
       g_STATION => 2
     )
     port map (
@@ -233,7 +233,7 @@ begin
   TAR_EXT_GEN: if ST_ENABLE(3)='1' generate
     TAR_EXT : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(3),
+      g_HPS_MAX_HP => c_HP_MAX_NUM_SECTOR_STATION(3),
       g_STATION => 3
     )
     port map (
