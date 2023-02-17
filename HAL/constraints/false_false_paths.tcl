@@ -74,16 +74,16 @@ set_max_delay 8.0 \
     -from [get_pins {ult_inst/logic_gen.FM_GEN.ult_fm_data*/C}]
 
 # asynchronous relationship between TXOUTCLKPCS and TX/RXOUTCLK
-foreach clock_b \
-    [concat \
-         [get_clocks *TXOUTCLKPCS*]] {
-             foreach clock_a [concat \
-                                  [get_clocks *RXOUTCLK\[*]] \
-                                  [get_clocks *TXOUTCLK\[*]]] {
-                 set_clock_groups \
-                     -group [get_clocks $clock_a] \
-                     -group [get_clocks $clock_b] \
-                     -asynchronous}}
+# foreach clock_b \
+#     [concat \
+#          [get_clocks *TXOUTCLKPCS*]] {
+#              foreach clock_a [concat \
+#                                   [get_clocks *RXOUTCLK\[*]] \
+#                                   [get_clocks *TXOUTCLK\[*]]] {
+#                  set_clock_groups \
+#                      -group [get_clocks $clock_a] \
+#                      -group [get_clocks $clock_b] \
+#                      -asynchronous}}
 
 # this damn reset is the source of endless problems.. its fanout is way too high
 # and set_max_fanout doesn't placate it... I could try putting it on a BUFG or

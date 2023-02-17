@@ -144,8 +144,10 @@ entity top_l0mdt is
     -- AXI C2C
     --------------------------------------------------------------------------------
 
-    p_clk_100 : in std_logic;
-    n_clk_100 : in std_logic;           -- 100 MHz system clock
+    -- p_clk_100 : in std_logic; -- i_async!!!!!
+    -- n_clk_100 : in std_logic;           -- 100 MHz system clock
+    clock_async_i_p : in std_logic; -- i_async!!!!!
+    clock_async_i_n : in std_logic;           -- 100 MHz system clock
     
     c2c_rxn : in  std_logic;
     c2c_rxp : in  std_logic;
@@ -332,8 +334,9 @@ begin
       clock_i_p       => clock_i_p,
       clock_i_n       => clock_i_n,
 
-      clock_async_i_p => p_clk_100,
-      clock_async_i_n => n_clk_100,
+          n_clk_100 : in std_logic;           -- 100 MHz system clock
+      clock_async_i_p => clock_async_i_p,
+      clock_async_i_n => clock_async_i_n,
 
       lhc_refclk_o_p  => tc_clk_o_p,
       lhc_refclk_o_n  => tc_clk_o_n,
