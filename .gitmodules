@@ -54,9 +54,6 @@
 [submodule "shared/vamc/vamc-core"]
 	path = shared/vamc/vamc-core
 	url = https://gitlab.com/taquionbcn/vamc.git
-[submodule "UserLogic/daq/daq-core"]
-	path = UserLogic/daq/daq-core
-	url = ../../tcpaiva/atlas-daq-core.git
 [submodule "HAL/ttc/ttc-core"]
 	path = HAL/ttc/ttc-core
 	url = ../../tcpaiva/atlas-ttc-core.git
@@ -66,3 +63,7 @@
 [submodule "shared/vhdl_utilities"]
 	path = shared/vhdl_utilities
 	url = https://gitlab.com/taquionbcn/vhdl-gldl-utilities.git
+[submodule "UserLogic/daq/daq-lxa-core"]
+	path = UserLogic/daq/daq-lxa-core
+	url = https://gitlab.com/tcpaiva/daq-lxa-core.git
+	branch = devel

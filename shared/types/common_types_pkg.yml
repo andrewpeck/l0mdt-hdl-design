@@ -86,7 +86,9 @@ types:
    - mtc2nsp_art: {'array': 'open', 'type': 'mtc2sl_rt'}
    - mtc2nsp_avt: {'array': 'open', 'type': 'mtc2sl_vt'}
   
-   - felix_data: {'type': 'logic', 'range': ['250-1', 0]}
+   - felix_data: {'type': 'logic', 'range': ['34-1', 0]}
+   - felix_data_avt: {'array': 'open', 'type': felix_data}
+     
    - felix_stream_rt:
       - valid: {'type': 'logic'}
       - data: {'type': 'felix_data'}

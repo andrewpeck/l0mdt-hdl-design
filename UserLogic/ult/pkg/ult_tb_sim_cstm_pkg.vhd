@@ -36,11 +36,11 @@ use hps_lib.hps_pkg.all;
 
 package ult_tb_sim_cstm_pkg is
   
-  type event_aut is array (integer range <>) of unsigned(31 downto 0);
-  type event_at is array (integer range <>) of std_logic_vector(31 downto 0);
+  -- type event_xaut is array (integer range <>) of unsigned(31 downto 0);
+  -- type event_xat is array (integer range <>) of std_logic_vector(31 downto 0);
 
-  type event_tdc_aut is array (0 to 3) of event_aut(0 to c_TOTAL_MAX_NUM_HP - 1);
-  type event_tdc_at is array (0 to 3) of event_at(0 to c_TOTAL_MAX_NUM_HP - 1);
+  -- type event_tdc_aut is array (0 to 3) of event_xaut(0 to c_TOTAL_MAX_NUM_HP - 1);
+  -- type event_tdc_at is array (0 to 3) of event_xat(0 to c_TOTAL_MAX_NUM_HP - 1);
 
   
 end package ult_tb_sim_cstm_pkg;

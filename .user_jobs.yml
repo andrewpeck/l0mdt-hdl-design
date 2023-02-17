@@ -1,21 +1,22 @@
+---
 .only-default: &only-default
-   rules:
-      - if: '$CI_COMMIT_REF_NAME =~ /^test\/.*$/i'
-        when: never
-      - if: '$CI_COMMIT_MESSAGE =~ /DOXYGEN_ONLY/'
-        when: never
-      - if: '$CI_MERGE_REQUEST_TITLE =~ /^Draft:.*$/ && $CI_COMMIT_MESSAGE !~ /^RESOLVE_WIP:/'
-        when: never
-      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_DEVELOP_BRANCH && $HOG_DEVELOP_BRANCH != null'
-        when: on_success
-      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^master|main|release.*$/ && $HOG_TARGET_BRANCH == null && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME != $HOG_DEVELOP_BRANCH'
-        when: on_success        
-      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_TARGET_BRANCH && $HOG_TARGET_BRANCH != null && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME != $HOG_DEVELOP_BRANCH'
-        when: on_success
-      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_INTERMEDIATE_BRANCH && $INTERMEDIATE_BUILD == "1" && $HOG_INTERMEDIATE_BRANCH != null' 
-        when: on_success
-      - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_INTERMEDIATE_BRANCH && $CI_BUILD_STAGE == "collect" && $HOG_INTERMEDIATE_BRANCH != null'
-        when: on_success
+  rules:
+    - if: '$CI_COMMIT_REF_NAME =~ /^test\/.*$/i'
+      when: never
+    - if: '$CI_COMMIT_MESSAGE =~ /DOXYGEN_ONLY/'
+      when: never
+    - if: '$CI_MERGE_REQUEST_TITLE =~ /^Draft:.*$/ && $CI_COMMIT_MESSAGE !~ /^RESOLVE_WIP:/'
+      when: never
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_DEVELOP_BRANCH && $HOG_DEVELOP_BRANCH != null'
+      when: on_success
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^master|main|release.*$/ && $HOG_TARGET_BRANCH == null && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME != $HOG_DEVELOP_BRANCH'
+      when: on_success
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_TARGET_BRANCH && $HOG_TARGET_BRANCH != null && $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME != $HOG_DEVELOP_BRANCH'
+      when: on_success
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_INTERMEDIATE_BRANCH && $INTERMEDIATE_BUILD == "1" && $HOG_INTERMEDIATE_BRANCH != null'
+      when: on_success
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $HOG_INTERMEDIATE_BRANCH && $CI_BUILD_STAGE == "collect" && $HOG_INTERMEDIATE_BRANCH != null'
+      when: on_success
 
 .tag-hog: &tag-hog
   tags:
@@ -23,47 +24,45 @@
 
 .tag-sr: &tag-sr
   tags:
-     - docker
+    - docker
 
 .riviera_vars: &riviera_vars
   GIT_STRATEGY: clone
   GIT_SUBMODULE_STRATEGY: recursive
 
 
-.chk_variables: &chk_variables 
+.chk_variables: &chk_variables
   GIT_STRATEGY: clone
   GIT_SUBMODULE_STRATEGY: recursive
 
 .check_list_and_conf: &check_list_and_conf
-    <<: *only-default
-    <<: *tag-hog
-    variables:
-      <<: *chk_variables
-    stage: generation_and_simulation
-    script:
-        - echo "Creating the project"
-        - ./Hog/CreateProject.sh $PROJECT_NAME
-        - echo "Recreating List and Config file"
-        - vivado -nojournal -nolog -mode batch -notrace -source $CI_PROJECT_DIR/Hog/Tcl/utils/check_list_files.tcl -tclargs -recreate -recreate_conf -force -project $PROJECT_NAME
-        - echo "Checking Git differences..."
-        - git diff --exit-code
-    allow_failure: true
-    interruptible: true
+  <<: *only-default
+  <<: *tag-hog
+  variables:
+    <<: *chk_variables
+  stage: generation_and_simulation
+  script:
+    - echo "Creating the project"
+    - ./Hog/CreateProject.sh $PROJECT_NAME
+    - echo "Recreating List and Config file"
+    - vivado -nojournal -nolog -mode batch -notrace -source $CI_PROJECT_DIR/Hog/Tcl/utils/check_list_files.tcl -tclargs -recreate -recreate_conf -force -project $PROJECT_NAME
+    - echo "Checking Git differences..."
+    - git diff --exit-code
+  allow_failure: true
+  interruptible: true
 
 check_auto_generated_code:
-    <<: *only-default
-    <<: *tag-sr
-    image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
-    variables:
-      <<: *chk_variables
-    stage: user_pre
-    script:
-      - make all 
-      - echo "Checking Git differences..."
-      - git diff --exit-code 
-    interruptible: true
-
-
+  <<: *only-default
+  <<: *tag-sr
+  image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
+  variables:
+    <<: *chk_variables
+  stage: user_pre
+  script:
+    - make all
+    - echo "Checking Git differences..."
+    - git diff --exit-code
+  interruptible: true
 
 .user_sim: &user_sim
   <<: *only-default
@@ -98,9 +97,10 @@ check_auto_generated_code:
   tags:
     - riviera
   variables:
+    <<: *riviera_vars
     HOG_SIMULATION_LIB_PATH: /afs/cern.ch/work/l/l0mdtel/RivieraLibs
     HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
-    HOG_CHECK_PROJVER : 0
+    HOG_CHECK_PROJVER: 0
   stage: generation_and_simulation
   script:
     - git pull
@@ -115,7 +115,8 @@ check_auto_generated_code:
         echo "CI disabled for $PROJECT_NAME";
       else
         sed -i 's/questa/riviera/' ./Top/$PROJECT_NAME/list/project_lib.sim;
-        vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_simulation.tcl -tclargs -lib_path $HOG_SIMULATION_LIB_PATH $PROJECT_NAME ;
+        sed -i 's/Questa/Riviera/' ./Top/$PROJECT_NAME/hog.conf;
+        ./Hog/LaunchSimulation.sh $PROJECT_NAME -recreate;
       fi
   artifacts:
     name: user_sim
@@ -147,17 +148,21 @@ check_auto_generated_code:
 .sim_comp: &sim_comp
   <<: *only-default
   <<: *tag-sr
+  variables:
+    <<: *chk_variables
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
   stage: user_proj
   script:
     - cd tools/simComp
-    - python3 comparator.py $PROJECT_NAME
+    - python comparator.py ${PROJECT_NAME} -Q ${PROJECT_Q_NAME} -R ${PROJECT_R_NAME}
   allow_failure: true
   interruptible: true
 
 .sim_check: &sim_check
   <<: *only-default
   <<: *tag-sr
+  variables:
+    <<: *chk_variables
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
   stage: user_proj
   script:
@@ -166,11 +171,11 @@ check_auto_generated_code:
     - echo $AUX_PRJ_FOLDER
     - export AUX_PRJ_NAME=${PROJECT_NAME##**/}
     - echo $AUX_PRJ_NAME
-    - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/$SIMULATOR
+    - python tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/$SIMULATOR
     # - sleep 1h
     # DAvide
     # - PRJ_NAME=$(basename $PROJECT_NAME)
-    # - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PRJ_NAME.sim/project_lib_sim/behav/questa
+    # - python tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PRJ_NAME.sim/project_lib_sim/behav/questa
     - mkdir -p bin/$PROJECT_NAME
     - if [[ -d Plots ]]; then
         mv Plots bin/$PROJECT_NAME/SimPlots;
@@ -180,40 +185,41 @@ check_auto_generated_code:
 
 
 .cocotb:
-  <<: *only-default  
+  <<: *only-default
   tags:
-     - cocotb
+    - cocotb
+  variables:
+    <<: *chk_variables
   stage: generation_and_simulation
   allow_failure: true
   interruptible: true
-
-  script: 
-      # Create Directory for TV
-      - mkdir tools/cocotb/l0mdt_tv
-      - echo $EOS_PASSWORD | kinit $EOS_USER	
-      # Fetch testvectors from EOS
-      - xrdcp root://eosuser.cern.ch//eos/project/a/atlas-tdaq-phase2-l0mdt-electronics/TestVectors/TV_MC_2022-02-18_DF_v4.1.8b_TV_v1.0.81/B_C_3.xz tools/cocotb/l0mdt_tv/.
-      #PYTHON
-      - export PATH="/home/l0mdtel/.pyenv/bin:$PATH"
-      - eval "$(pyenv init -)"
-      - eval "$(pyenv init --path)"
-      - eval "$(pyenv virtualenv-init -)"
-      #- echo y | pyenv uninstall 3.8.2
-      #- env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.8.2
-      - pyenv global 3.8.2 
-      #- unzip testvecs_6_25_2020.zip
-      - export TESTVECS_PATH="`pwd`/tools/cocotb/l0mdt_tv"
-      - echo Print TESTVECS_PATH-----
-      - echo $TESTVECS_PATH
-      - echo Print HOG_SIMULATION_LIB_PATH-----
-      - echo $HOG_SIMULATION_LIB_PATH
-      - export VIVADO_EXEC=$(which vivado)
-      - export XILINX_VIVADO="${VIVADO_EXEC/bin\/vivado/}"        
-      - echo XILINX_VIVADO = $XILINX_VIVADO
-      - cd tools/cocotb/
-      # Setup testbench environment
-      - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
-      - tb run test_config/config_mpl_mtc.json 2>&1 | tee cocotb_run.log
-      - tb run test_config/config_lsf_inn.json 2>&1 | tee -a cocotb_run.log
-      # Make test fail if cocotb raised a failure
-      - sh -c "! grep cocotb.result.TestFailure cocotb_run.log"
+  script:
+    # Create Directory for TV
+    - mkdir tools/cocotb/l0mdt_tv
+    - echo $EOS_PASSWORD | kinit $EOS_USER
+    # Fetch testvectors from EOS
+    - xrdcp root://eosuser.cern.ch//eos/project/a/atlas-tdaq-phase2-l0mdt-electronics/TestVectors/TV_MC_2022-02-18_DF_v4.1.8b_TV_v1.0.81/B_C_3.xz tools/cocotb/l0mdt_tv/.
+    # PYTHON
+    - export PATH="/home/l0mdtel/.pyenv/bin:$PATH"
+    - eval "$(pyenv init -)"
+    - eval "$(pyenv init --path)"
+    - eval "$(pyenv virtualenv-init -)"
+    # - echo y | pyenv uninstall 3.8.2
+    # - env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.8.2
+    - pyenv global 3.8.2
+    # - unzip testvecs_6_25_2020.zip
+    - export TESTVECS_PATH="`pwd`/tools/cocotb/l0mdt_tv"
+    - echo Print TESTVECS_PATH-----
+    - echo $TESTVECS_PATH
+    - echo Print HOG_SIMULATION_LIB_PATH-----
+    - echo $HOG_SIMULATION_LIB_PATH
+    - export VIVADO_EXEC=$(which vivado)
+    - export XILINX_VIVADO="${VIVADO_EXEC/bin\/vivado/}"
+    - echo XILINX_VIVADO = $XILINX_VIVADO
+    - cd tools/cocotb/
+    # Setup testbench environment
+    - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
+    - tb run test_config/config_mpl_mtc.json 2>&1 | tee cocotb_run.log
+    - tb run test_config/config_lsf_inn.json 2>&1 | tee -a cocotb_run.log
+    # Make test fail if cocotb raised a failure
+    - sh -c "! grep cocotb.result.TestFailure cocotb_run.log"

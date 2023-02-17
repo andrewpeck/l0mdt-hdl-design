@@ -76,7 +76,7 @@ architecture sim of ult_tb_writer_sf_out is
   constant g_OUT_FILE_1     : string  := "ov_heg_heg2sf_" & g_PRJ_INFO & ".csv";
   constant g_OUT_FILE_2     : string  := "ov_heg_ctrlRoi_" & g_PRJ_INFO & ".csv";
      
-  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
+  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_u2h_au : event_tdc_at;

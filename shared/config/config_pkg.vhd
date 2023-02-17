@@ -218,6 +218,15 @@ package config_pkg is
 
   function get_proper_chamber(in_chamber : integer) return integer;
 
+  ---------------------------------------------------------
+  -- DAQ
+  ---------------------------------------------------------
+
+  constant c_DAQ_INN_LINKS : integer := 3;
+  constant c_DAQ_MID_LINKS : integer := 3;
+  constant c_DAQ_OUT_LINKS : integer := 3;
+  constant c_DAQ_EXT_LINKS : integer := 0;
+  constant c_DAQ_LINKS : integer := c_DAQ_INN_LINKS + c_DAQ_MID_LINKS + c_DAQ_OUT_LINKS + c_DAQ_EXT_LINKS;
   
 
  

@@ -84,15 +84,15 @@ architecture sim of ult_tb_writer_sf_in is
   constant g_OUT_FILE_1     : string  := "ov_heg2sf_hits" & g_PRJ_INFO & ".csv";
   constant g_OUT_FILE_2     : string  := "ov_heg2sf_seed" & g_PRJ_INFO & ".csv";
      
-  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
+  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_u2h_a : event_tdc_at;
-  signal slc_event_ucm_pp2csw_a : event_at(c_MAX_NUM_SL - 1  downto 0);
-  signal slc_event_ucm_csw2pl_a : event_at(c_MAX_NUM_SL - 1  downto 0);
-  signal slc_event_u2h_a : event_at(c_MAX_NUM_SL - 1  downto 0);
-  signal slc_event_in_ar : event_at(c_NUM_THREADS - 1  downto 0);
-  signal slc_event_ar : event_at(c_NUM_THREADS - 1  downto 0);
+  signal slc_event_ucm_pp2csw_a : event_xat(c_MAX_NUM_SL - 1  downto 0);
+  signal slc_event_ucm_csw2pl_a : event_xat(c_MAX_NUM_SL - 1  downto 0);
+  signal slc_event_u2h_a : event_xat(c_MAX_NUM_SL - 1  downto 0);
+  signal slc_event_in_ar : event_xat(c_NUM_THREADS - 1  downto 0);
+  signal slc_event_ar : event_xat(c_NUM_THREADS - 1  downto 0);
 
   alias csw_control_av is << signal.ult_tp.ULT.logic_gen.UCM_GEN.ULT_UCM.UCM.csw_control_av : ucm_csw_control_avt >>;
   signal csw_control_ar : ucm_csw_control_art(c_MAX_NUM_SL - 1 downto 0);
@@ -326,7 +326,7 @@ begin
       
       signal fifo_wr_pl : std_logic_vector(fifo_wr'length -1 downto 0);
       signal fifo_wr_pl2 : std_logic_vector(fifo_wr'length -1 downto 0);
-      signal event_pf_tdc_a : event_at(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
+      signal event_pf_tdc_a : event_xat(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
       signal event_pf_tdc_dv_a : std_logic_vector(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
       signal event_pff_tdc : std_logic_vector(31 downto 0);
       signal event_ppl_tdc : std_logic_vector(31 downto 0);
@@ -477,7 +477,7 @@ begin
       
       signal fifo_wr_pl : std_logic_vector(fifo_wr'length -1 downto 0);
       signal fifo_wr_pl2 : std_logic_vector(fifo_wr'length -1 downto 0);
-      signal event_pf_tdc_a : event_at(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
+      signal event_pf_tdc_a : event_xat(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
       signal event_pf_tdc_dv_a : std_logic_vector(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
       signal event_pff_tdc : std_logic_vector(31 downto 0);
       signal event_ppl_tdc : std_logic_vector(31 downto 0);
@@ -627,7 +627,7 @@ begin
       
       signal fifo_wr_pl : std_logic_vector(fifo_wr'length -1 downto 0);
       signal fifo_wr_pl2 : std_logic_vector(fifo_wr'length -1 downto 0);
-      signal event_pf_tdc_a : event_at(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
+      signal event_pf_tdc_a : event_xat(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
       signal event_pf_tdc_dv_a : std_logic_vector(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
       signal event_pff_tdc : std_logic_vector(31 downto 0);
       signal event_ppl_tdc : std_logic_vector(31 downto 0);
@@ -776,7 +776,7 @@ TH_LOOP: for th_i in c_NUM_THREADS -1 downto 0 generate
   
   signal fifo_wr_pl : std_logic_vector(fifo_wr'length -1 downto 0);
   signal fifo_wr_pl2 : std_logic_vector(fifo_wr'length -1 downto 0);
-  signal event_pf_tdc_a : event_at(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
+  signal event_pf_tdc_a : event_xat(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
   signal event_pf_tdc_dv_a : std_logic_vector(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
   signal event_pff_tdc : std_logic_vector(31 downto 0);
   signal event_ppl_tdc : std_logic_vector(31 downto 0);

@@ -1,16 +1,20 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: heg_ctrl_roi_b_z.vhd
+-- Module: <<moduleName>>
+-- File PATH: /heg_ctrl_roi_b_z.vhd
+-- -----
+-- File Created: Wednesday, 8th June 2022 9:54:44 am
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Thursday, 1st December 2022 12:43:52 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger
---  Module:
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---
---------------------------------------------------------------------------------
+
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -55,30 +59,32 @@ end entity b_z2roi;
 
 architecture beh of b_z2roi is
 
-
-  signal rom_mem        : roi_z_lut_t(0 to get_roi_z_max(g_STATION_RADIUS) - 1);
   signal addr_mem       : unsigned(UCM_Z_ROI_LEN-1 downto 0); 
+  signal mem : roi_z_lut_std_t(0 to get_roi_z_max(g_STATION_RADIUS) - 1) := get_roi_z_tubes_std(g_STATION_RADIUS);
+  signal mem_pl0        : std_logic_vector(MDT_TUBE_LEN*2 -1 downto 0) := (others => '0');
+  signal centers        : std_logic_vector(MDT_TUBE_LEN*2 -1 downto 0) := (others => '0');
+  
   signal int_data_valid : std_logic;
-  signal centers        : roi_z_centers := (others => 0);
+  signal mem_dv0        : std_logic;
 
   attribute ROM_STYLE : string;
-  attribute ROM_STYLE of rom_mem : signal is "distributed";
+  attribute ROM_STYLE of mem : signal is "block";
 
 begin
 
-  rom_mem <= get_roi_z_tubes(g_STATION_RADIUS);
+  -- mem <= get_roi_z_tubes(g_STATION_RADIUS);
 
-  dv_guard : process(i_dv) begin
+  -- dv_guard : process(i_dv) begin
     int_data_valid <= i_dv;
-  end process;
+  -- end process;
 
-  mem_guard : process(i_z) begin
-    if ( to_integer(unsigned(i_z)) > get_roi_z_max(g_STATION_RADIUS)) then
-      addr_mem <= (others => '0');
-    else
+  -- mem_guard : process(i_z) begin
+    -- if ( to_integer(unsigned(i_z)) > get_roi_z_max(g_STATION_RADIUS)) then
+      -- addr_mem <= (others => '0');
+    -- else
       addr_mem <= i_z;--(DT2R_LARGE_ADDR_LEN -1 downto 0);
-    end if;
-  end process;
+    -- end if;
+  -- end process;
 
   -- INN_GEN: if g_STATION_RADIUS = 0 generate
     DT2R : process(clk)
@@ -86,12 +92,16 @@ begin
     begin
       if rising_edge(clk) then
         if rst= '1' then
-          centers <= (others => 0);
+          centers <= (others => '0');
           o_dv <= '0';
         else
-          o_dv <= int_data_valid;
+          mem_dv0 <= int_data_valid;
+          o_dv <= mem_dv0;
           if(int_data_valid = '1') then
-            centers <= rom_mem(to_integer(addr_mem));
+            mem_pl0 <= mem(to_integer(addr_mem));
+          end if;
+          if(mem_dv0 = '1') then
+            centers <= mem_pl0;
           end if;
         end if;
       end if ;
@@ -100,8 +110,11 @@ begin
 
   OUT_GEN : for l_i in 0 to get_num_layers(g_STATION_RADIUS) -1 generate
 
-      o_roi_center(l_i) <= to_unsigned(centers(0),MDT_TUBE_LEN) when (l_i mod 2) = 0 else
-                           to_unsigned(centers(1),MDT_TUBE_LEN);
+    o_roi_center(l_i) <= unsigned(centers(MDT_TUBE_LEN -1 downto 0)) when (l_i mod 2) = 0 else
+                         unsigned(centers(MDT_TUBE_LEN*2 -1 downto MDT_TUBE_LEN));
+
+    -- o_roi_center(l_i) <= to_unsigned(centers(0),MDT_TUBE_LEN) when (l_i mod 2) = 0 else
+    --                       to_unsigned(centers(1),MDT_TUBE_LEN);
   end generate;
 
 end beh;

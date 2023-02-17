@@ -2,8 +2,10 @@
 # #UserLogic/heg/hegtypes_lib.src lib=hegtypes_lib
 # UserLogic/heg/src/ROMs/heg_rom_b_zholes_pkg.vhd
 # UserLogic/heg/pkg/heg_custom_pkg.vhd
+UserLogic/heg/pkg/heg_custom_pkg.vhd
 UserLogic/heg/pkg/heg_pkg.vhd
 UserLogic/heg/src/heg_bm.vhd
+# UserLogic/heg/src/heg_bm_ctrl.vhd
 UserLogic/heg/src/heg_ctrl_top.vhd
 UserLogic/heg/src/heg_ctrl_sig.vhd
 UserLogic/heg/src/heg_ctrl_roi.vhd
