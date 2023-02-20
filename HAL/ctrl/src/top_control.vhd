@@ -573,25 +573,25 @@ begin
       K_C2CB_PHY_DRP_drdy                => C2C_MON.C2C(2).DRP.rd_data_valid,
       K_C2CB_PHY_DRP_dwe                 => C2C_Ctrl.C2C(2).DRP.wr_enable,
 
-      K_C2C_INTF_araddr                   => c2c_intf_ReadMOSI.address,              
-      K_C2C_INTF_arprot                   => c2c_intf_ReadMOSI.protection_type,      
-      K_C2C_INTF_arready(0)               => c2c_intf_ReadMISO.ready_for_address,    
-      K_C2C_INTF_arvalid(0)               => c2c_intf_ReadMOSI.address_valid,        
-      K_C2C_INTF_awaddr                   => c2c_intf_WriteMOSI.address,             
-      K_C2C_INTF_awprot                   => c2c_intf_WriteMOSI.protection_type,     
-      K_C2C_INTF_awready(0)               => c2c_intf_WriteMISO.ready_for_address,   
-      K_C2C_INTF_awvalid(0)               => c2c_intf_WriteMOSI.address_valid,       
-      K_C2C_INTF_bready(0)                => c2c_intf_WriteMOSI.ready_for_response,  
-      K_C2C_INTF_bresp                    => c2c_intf_WriteMISO.response,            
-      K_C2C_INTF_bvalid(0)                => c2c_intf_WriteMISO.response_valid,      
-      K_C2C_INTF_rdata                    => c2c_intf_ReadMISO.data,                 
-      K_C2C_INTF_rready(0)                => c2c_intf_ReadMOSI.ready_for_data,       
-      K_C2C_INTF_rresp                    => c2c_intf_ReadMISO.response,             
-      K_C2C_INTF_rvalid(0)                => c2c_intf_ReadMISO.data_valid,           
-      K_C2C_INTF_wdata                    => c2c_intf_WriteMOSI.data,                
-      K_C2C_INTF_wready(0)                => c2c_intf_WriteMISO.ready_for_data,       
-      K_C2C_INTF_wstrb                    => c2c_intf_WriteMOSI.data_write_strobe,   
-      K_C2C_INTF_wvalid(0)                   => c2c_intf_WriteMOSI.data_valid
+      C2C_INTFS_araddr                   => c2c_intf_ReadMOSI.address,              
+      C2C_INTFS_arprot                   => c2c_intf_ReadMOSI.protection_type,      
+      C2C_INTFS_arready(0)               => c2c_intf_ReadMISO.ready_for_address,    
+      C2C_INTFS_arvalid(0)               => c2c_intf_ReadMOSI.address_valid,        
+      C2C_INTFS_awaddr                   => c2c_intf_WriteMOSI.address,             
+      C2C_INTFS_awprot                   => c2c_intf_WriteMOSI.protection_type,     
+      C2C_INTFS_awready(0)               => c2c_intf_WriteMISO.ready_for_address,   
+      C2C_INTFS_awvalid(0)               => c2c_intf_WriteMOSI.address_valid,       
+      C2C_INTFS_bready(0)                => c2c_intf_WriteMOSI.ready_for_response,  
+      C2C_INTFS_bresp                    => c2c_intf_WriteMISO.response,            
+      C2C_INTFS_bvalid(0)                => c2c_intf_WriteMISO.response_valid,      
+      C2C_INTFS_rdata                    => c2c_intf_ReadMISO.data,                 
+      C2C_INTFS_rready(0)                => c2c_intf_ReadMOSI.ready_for_data,       
+      C2C_INTFS_rresp                    => c2c_intf_ReadMISO.response,             
+      C2C_INTFS_rvalid(0)                => c2c_intf_ReadMISO.data_valid,           
+      C2C_INTFS_wdata                    => c2c_intf_WriteMOSI.data,                
+      C2C_INTFS_wready(0)                => c2c_intf_WriteMISO.ready_for_data,       
+      C2C_INTFS_wstrb                    => c2c_intf_WriteMOSI.data_write_strobe,   
+      C2C_INTFS_wvalid(0)                   => c2c_intf_WriteMOSI.data_valid
 
       
 
@@ -1332,9 +1332,12 @@ begin
       );
 
     hog_map_inst : entity ctrl_lib.hog_map
+    generic map (
+      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HOG)
+      )
     port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
       slave_readmosi  => hog_readmosi,
       slave_readmiso  => hog_readmiso,
       slave_writemosi => hog_writemosi,
@@ -1367,7 +1370,7 @@ begin
 
   fw_info_map_inst : entity ctrl_lib.fw_info_map
     generic map (
-     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_K_CM_FW_INFO)
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_FW_INFO)
      )
     port map (
       clk_axi         => axi_clk,
@@ -1384,7 +1387,7 @@ begin
   SM_CM_INTF: entity ctrl_lib.C2C_INTF
     generic map (
       ERROR_WAIT_TIME => 90000000,
-      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_K_C2C_INTF)
+      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_C2C_INTFS)
       )
     port map (
       clk_axi          => AXI_CLK,
