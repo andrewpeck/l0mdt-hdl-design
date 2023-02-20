@@ -295,7 +295,6 @@ architecture structural of top_l0mdt is
   signal tf_mon_v   : std_logic_vector(width(tf_mon_r) -1 downto 0);
   signal mpl_ctrl_v : std_logic_vector(width(mpl_ctrl_r) -1 downto 0);
   signal mpl_mon_v  : std_logic_vector(width(mpl_mon_r) -1 downto 0);
-  signal hog_mon_v  : std_logic_vector(width(hog_mon_r) -1 downto 0);
 
   signal fm_mon_v  : std_logic_vector(width(fm_mon_r) -1 downto 0);
   signal fm_ctrl_v : std_logic_vector(width(fm_ctrl_r) -1 downto 0);
@@ -481,7 +480,6 @@ begin
 
   mpl_ctrl_v     <= convert(mpl_ctrl_r, mpl_ctrl_v);
   mpl_mon_r      <= convert(mpl_mon_v, mpl_mon_r);
-  hog_mon_r      <= convert(hog_mon_v, hog_mon_r);
 
   tf_ctrl_v      <= convert(tf_ctrl_r, tf_ctrl_v);
   tf_mon_r       <= convert(tf_mon_v, tf_mon_r);

@@ -55,7 +55,7 @@ AXI_SLAVES:
     XML: "address_table/modules/KINTEX_SYS_MGMT.xml"
     UHAL_BASE: 0x80000000
 
-  K_CM_FW_INFO:
+  FW_INFO:
     TCL_CALL:
       command: AXI_PL_DEV_CONNECT 
       axi_control: "${::AXI_MASTER_CTRL}"
@@ -69,7 +69,7 @@ AXI_SLAVES:
       out_name: "CM_FW_INFO"
       map_template: "axi_generic/template_map.vhd"
   
-  K_C2C_INTF:
+  C2C_INTFS:
     TCL_CALL: 
       command: AXI_PL_DEV_CONNECT
       axi_control: "${::AXI_MASTER_CTRL}"
@@ -109,8 +109,7 @@ AXI_SLAVES:
     HDL: 
       out_name: "HOG"
       map_template: "axi_generic/template_map.vhd"
-
-  
+ 
 #  HAL:
 #    TCL_CALL:
 #      command: "AXI_PL_DEV_CONNECT"

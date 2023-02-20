@@ -34,18 +34,34 @@ output_file_path = args.output_file
 with open(input_file_path, "r") as input_file:
     data = yaml.safe_load(input_file)
 
+with open(args.template, "r+") as template_file:
+    contents = template_file.readlines()
+
+slaves = []
+
 if "AXI_SLAVES" in data:
-    ## Loop into slaves.yml to find the AXI slaves in the project
+    # Loop into slaves.yml to find the AXI slaves in the project
     for slave in data["AXI_SLAVES"]:
         if data["AXI_SLAVES"][slave]["TCL_CALL"][
                 "command"] == "AXI_PL_DEV_CONNECT":
-            print(slave)
+            slaves += [slave]
 else:
     print("ERROR: Input yml file does not contain any AXI slave!")
     exit(1)
 
-# with open(output_file_path, "w") as output_file:
-#     output_file.write(str(data))
+line_number = 0
+for line in contents:
+    if "-- START: LIBRARIES -- DO NOT TOUCH" in line:
+        print(line_number)
+        text_to_insert = ""
+        for slave in slaves:
+            text_to_insert += "use ctrl_lib.%s_ctrl.all;\n" % slave
+        contents.insert(line_number + 1, text_to_insert)
+        line_number += 1
+    line_number += 1
+
+with open(output_file_path, "w") as output_file:
+    output_file.writelines(contents)
 
 # Extract values
 # tcl_call = data["HOG"]["TCL_CALL"]
