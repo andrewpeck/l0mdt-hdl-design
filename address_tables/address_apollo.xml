@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="TOP"> 
  <node id="KINTEX_SYS_MGMT"  address="0x80000000"   module="file://KINTEX_SYS_MGMT.xml" />
- <node id="HOG"              address="0x82000000"  module="file://FW_INFO.xml"/>
+ <node id="K_CM_FW_INFO"     address="0x82000000"  module="file://FW_INFO.xml"/>
  <node id="K_C2C_INTF"       address="0x86000000"  module="file://C2C_INTFS.xml"/>
+ <node id="HOG"              address="0x89000000"  module="file://HOG.xml"/>
 </node>

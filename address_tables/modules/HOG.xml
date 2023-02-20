@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<node id="HOG" address="0x0">
+<node id="HOG">
   <node id="GLOBAL_DATE" address="0x0" permission="r" mask="0xFFFFFFFF"/>
   <node id="GLOBAL_TIME" address="0x1" permission="r" mask="0xFFFFFFFF"/>
   <node id="GLOBAL_VER" address="0x2" permission="r" mask="0xFFFFFFFF"/>
