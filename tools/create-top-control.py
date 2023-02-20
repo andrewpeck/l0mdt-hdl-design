@@ -55,9 +55,18 @@ for line in contents:
         print(line_number)
         text_to_insert = ""
         for slave in slaves:
-            text_to_insert += "use ctrl_lib.%s_ctrl.all;\n" % slave
+            text_to_insert += "use ctrl_lib.%s_ctrl.all;\n" % slave.lower()
         contents.insert(line_number + 1, text_to_insert)
-        line_number += 1
+    if "-- START: ULT_IO :: DO NOT EDIT" in line:
+        text_to_insert = ""
+        for slave in slaves:
+            if slave != "C2C_INTFS":
+                text_to_insert += "    %s_mon : in %s_MON_t;\n" % (
+                    slave.lower(), slave)
+                if slave != "HOG" and slave != "FW_INFO":
+                    text_to_insert += "    %s_ctrl : in %s_CTRL_t;\n" % (
+                        slave.lower(), slave)
+        contents.insert(line_number + 1, text_to_insert)
     line_number += 1
 
 with open(output_file_path, "w") as output_file:

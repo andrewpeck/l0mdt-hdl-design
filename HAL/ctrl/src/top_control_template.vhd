@@ -67,8 +67,6 @@ entity top_control is
     -- control
 
     -- START: ULT_IO :: DO NOT EDIT
-
-
     -- END: ULT_IO :: DO NOT EDIT
   
 
@@ -202,17 +200,13 @@ begin
       AXI_CLK                             => AXI_CLK,
       AXI_RST_N(0)                        => AXI_RESET_N,
       clk50Mhz                            => clk50mhz,   
-      CM1_PB_UART_rxd                     => pB_UART_tx,
-      CM1_PB_UART_txd                     => pB_UART_rx,
+
 
       K_C2C_phy_Rx_rxn(0)                 => c2c_rxn, --n_mgt_z2k(1 downto 1),
       K_C2C_phy_Rx_rxp(0)                 => c2c_rxp, --p_mgt_z2k(1 downto 1),
       K_C2C_phy_Tx_txn(0)                 => c2c_txn, --n_mgt_k2z(1 downto 1),
       K_C2C_phy_Tx_txp(0)                 => c2c_txp, --p_mgt_k2z(1 downto 1),
-      K_C2CB_phy_Rx_rxn(0)                => c2cb_rxn, --n_mgt_z2k(2 downto 2),
-      K_C2CB_phy_Rx_rxp(0)                => c2cb_rxp, --p_mgt_z2k(2 downto 2),
-      K_C2CB_phy_Tx_txn(0)                => c2cb_txn, --n_mgt_k2z(2 downto 2),
-      K_C2CB_phy_Tx_txp(0)                => c2cb_txp, --p_mgt_k2z(2 downto 2),
+
       K_C2C_phy_refclk_clk_n              => c2c_refclkn, --n_util_clk_chan0,
       K_C2C_phy_refclk_clk_p              => c2c_refclkp, --p_util_clk_chan0,
 
@@ -317,12 +311,7 @@ begin
       K_C2CB_axi_c2c_multi_bit_error_out =>  C2C_MON.C2C(2).STATUS.MB_ERROR,
       K_C2CB_phy_power_down              => '0',
 --      K_C2CB_PHY_user_clk_out            => clk_K_C2CB_PHY_user,
-      K_C2CB_PHY_DRP_daddr               => C2C_Ctrl.C2C(2).DRP.address,
-      K_C2CB_PHY_DRP_den                 => C2C_Ctrl.C2C(2).DRP.enable,
-      K_C2CB_PHY_DRP_di                  => C2C_Ctrl.C2C(2).DRP.wr_data,
-      K_C2CB_PHY_DRP_do                  => C2C_MON.C2C(2).DRP.rd_data,
-      K_C2CB_PHY_DRP_drdy                => C2C_MON.C2C(2).DRP.rd_data_valid,
-      K_C2CB_PHY_DRP_dwe                 => C2C_Ctrl.C2C(2).DRP.wr_enable,
+
 
       K_C2C_INTF_araddr                   => c2c_intf_ReadMOSI.address,              
       K_C2C_INTF_arprot                   => c2c_intf_ReadMOSI.protection_type,      
@@ -345,11 +334,22 @@ begin
       K_C2C_INTF_wvalid(0)                => c2c_intf_WriteMOSI.data_valid,
 
       -- START: AXI_PL_SLAVES :: DO NOT EDIT
-      
-
       -- END: AXI_PL_SLAVES :: DO NOT EDIT
-
+       
+      K_C2CB_phy_Rx_rxn(0)                => c2cb_rxn, --n_mgt_z2k(2 downto 2),
+      K_C2CB_phy_Rx_rxp(0)                => c2cb_rxp, --p_mgt_z2k(2 downto 2),
+      K_C2CB_phy_Tx_txn(0)                => c2cb_txn, --n_mgt_k2z(2 downto 2),
+      K_C2CB_phy_Tx_txp(0)                => c2cb_txp, --p_mgt_k2z(2 downto 2),
       
+      CM1_PB_UART_rxd                     => pB_UART_tx,
+      CM1_PB_UART_txd                     => pB_UART_rx,
+
+      K_C2CB_PHY_DRP_daddr               => C2C_Ctrl.C2C(2).DRP.address,
+      K_C2CB_PHY_DRP_den                 => C2C_Ctrl.C2C(2).DRP.enable,
+      K_C2CB_PHY_DRP_di                  => C2C_Ctrl.C2C(2).DRP.wr_data,
+      K_C2CB_PHY_DRP_do                  => C2C_MON.C2C(2).DRP.rd_data,
+      K_C2CB_PHY_DRP_drdy                => C2C_MON.C2C(2).DRP.rd_data_valid,
+      K_C2CB_PHY_DRP_dwe                 => C2C_Ctrl.C2C(2).DRP.wr_enable
       
 
 );
