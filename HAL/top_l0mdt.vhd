@@ -570,18 +570,18 @@ begin
       sys_mgmt_vccint_alarm   => open
       );
 
-    hog_mon.GLOBAL_DATE <= GLOBAL_DATE;
-    hog_mon.GLOBAL_TIME <= GLOBAL_TIME;
-    hog_mon.GLOBAL_VER <= GLOBAL_VER;
-    hog_mon.GLOBAL_SHA <= GLOBAL_SHA;
-    hog_mon.TOP_SHA <= TOP_SHA;
-    hog_mon.TOP_VER <= TOP_VER;
-    hog_mon.HOG_SHA <= HOG_SHA;
-    hog_mon.HOG_VER <= HOG_VER;
-    hog_mon.CON_SHA <= CON_SHA;
-    hog_mon.CON_VER <= CON_VER;
-    hog_mon.PROJECT_LIB_SHA <= PROJECT_LIB_SHA;
-    hog_mon.PROJECT_LIB_VER <= PROJECT_LIB_VER;
+    hog_mon.HOG_INFO.GLOBAL_DATE <= GLOBAL_DATE;
+    hog_mon.HOG_INFO.GLOBAL_TIME <= GLOBAL_TIME;
+    hog_mon.HOG_INFO.GLOBAL_VER <= GLOBAL_VER;
+    hog_mon.HOG_INFO.GLOBAL_SHA <= GLOBAL_SHA;
+    hog_mon.HOG_INFO.TOP_SHA <= TOP_SHA;
+    hog_mon.HOG_INFO.TOP_VER <= TOP_VER;
+    hog_mon.HOG_INFO.HOG_SHA <= HOG_SHA;
+    hog_mon.HOG_INFO.HOG_VER <= HOG_VER;
+    hog_mon.HOG_INFO.CON_SHA <= CON_SHA;
+    hog_mon.HOG_INFO.CON_VER <= CON_VER;
+    hog_mon.HOG_INFO.PROJECT_LIB_SHA <= PROJECT_LIB_SHA;
+    hog_mon.HOG_INFO.PROJECT_LIB_VER <= PROJECT_LIB_VER;
 
     fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW <= MAIN_CFG_COMPILE_HW;
     fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL <= MAIN_CFG_COMPILE_UL;
