@@ -260,7 +260,8 @@ architecture structural of top_l0mdt is
   signal tf_mon_r   : TF_MON_t;
   signal mpl_mon_r  : MPL_MON_t;
   signal mpl_ctrl_r : MPL_CTRL_t;
-  signal hog_mon_r  : HOG_MON_t;
+  signal hog_mon    : HOG_MON_t;
+  signal fw_info_mon : FW_INFO_MON_t;
 
   signal fm_mon_r  : FM_MON_t;
   signal fm_ctrl_r : FM_CTRL_t;
@@ -551,7 +552,8 @@ begin
       tf_mon      => tf_mon_r,
       mpl_ctrl    => mpl_ctrl_r,
       mpl_mon     => mpl_mon_r,
-      hog_mon     => hog_mon_r,
+      hog_mon     => hog_mon,
+      fw_info_mon => fw_info_mon,
       fm_ctrl     => fm_ctrl_r,
       fm_mon      => fm_mon_r,
      
@@ -570,48 +572,48 @@ begin
       sys_mgmt_vccint_alarm   => open
       );
 
-    hog_mon_r.GLOBAL_DATE <= GLOBAL_DATE;
-    hog_mon_r.GLOBAL_TIME <= GLOBAL_TIME;
-    hog_mon_r.GLOBAL_VER <= GLOBAL_VER;
-    hog_mon_r.GLOBAL_SHA <= GLOBAL_SHA;
-    hog_mon_r.TOP_SHA <= TOP_SHA;
-    hog_mon_r.TOP_VER <= TOP_VER;
-    hog_mon_r.HOG_SHA <= HOG_SHA;
-    hog_mon_r.HOG_VER <= HOG_VER;
-    hog_mon_r.CON_SHA <= CON_SHA;
-    hog_mon_r.CON_VER <= CON_VER;
-    hog_mon_r.PROJECT_LIB_SHA <= PROJECT_LIB_SHA;
-    hog_mon_r.PROJECT_LIB_VER <= PROJECT_LIB_VER;
+    hog_mon.GLOBAL_DATE <= GLOBAL_DATE;
+    hog_mon.GLOBAL_TIME <= GLOBAL_TIME;
+    hog_mon.GLOBAL_VER <= GLOBAL_VER;
+    hog_mon.GLOBAL_SHA <= GLOBAL_SHA;
+    hog_mon.TOP_SHA <= TOP_SHA;
+    hog_mon.TOP_VER <= TOP_VER;
+    hog_mon.HOG_SHA <= HOG_SHA;
+    hog_mon.HOG_VER <= HOG_VER;
+    hog_mon.CON_SHA <= CON_SHA;
+    hog_mon.CON_VER <= CON_VER;
+    hog_mon.PROJECT_LIB_SHA <= PROJECT_LIB_SHA;
+    hog_mon.PROJECT_LIB_VER <= PROJECT_LIB_VER;
 
-  --fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW <= MAIN_CFG_COMPILE_HW;
-  --fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL <= MAIN_CFG_COMPILE_UL;
-  --fw_info_mon.CONFIG.ST_nBARREL_ENDCAP   <= c_ST_nBARREL_ENDCAP;
-  --fw_info_mon.CONFIG.ENABLE_NEIGHBORS    <= c_ENABLE_NEIGHBORS;
-  --fw_info_mon.CONFIG.SECTOR_ID           <= std_logic_vector(to_unsigned(c_SECTOR_ID, 32));
-  --fw_info_mon.CONFIG.ENDCAP_nSMALL_LARGE <= c_ENDCAP_nSMALL_LARGE;
-  --fw_info_mon.CONFIG.PHY_BARREL_R0       <= std_logic_vector(resize(PHY_BARREL_R0, 32));
-  --fw_info_mon.CONFIG.PHY_BARREL_R1       <= std_logic_vector(resize(PHY_BARREL_R1, 32));
-  --fw_info_mon.CONFIG.PHY_BARREL_R2       <= std_logic_vector(resize(PHY_BARREL_R2, 32));
-  --fw_info_mon.CONFIG.PHY_BARREL_R3       <= std_logic_vector(resize(PHY_BARREL_R3, 32));
-  --fw_info_mon.CONFIG.HPS_ENABLE_ST_INN   <= c_HPS_ENABLE_ST_INN;
-  --fw_info_mon.CONFIG.HPS_ENABLE_ST_EXT   <= c_HPS_ENABLE_ST_EXT;
-  --fw_info_mon.CONFIG.HPS_ENABLE_ST_MID   <= c_HPS_ENABLE_ST_MID;
-  --fw_info_mon.CONFIG.HPS_ENABLE_ST_OUT   <= c_HPS_ENABLE_ST_OUT;
-  --fw_info_mon.CONFIG.HPS_NUM_MDT_CH_INN  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_INN, 8));
-  --fw_info_mon.CONFIG.HPS_NUM_MDT_CH_EXT  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_EXT, 8));
-  --fw_info_mon.CONFIG.HPS_NUM_MDT_CH_MID  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_MID, 8));
-  --fw_info_mon.CONFIG.HPS_NUM_MDT_CH_OUT  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_OUT, 8));
-  --fw_info_mon.CONFIG.NUM_MTC             <= std_logic_vector(to_unsigned(c_NUM_MTC, 8));
-  --fw_info_mon.CONFIG.NUM_NSP             <= std_logic_vector(to_unsigned(c_NUM_NSP, 8));
-  --fw_info_mon.CONFIG.UCM_ENABLED         <= c_UCM_ENABLED;
-  --fw_info_mon.CONFIG.MPL_ENABLED         <= c_MPL_ENABLED;
-  --fw_info_mon.CONFIG.SF_ENABLED          <= c_SF_ENABLED;
-  --fw_info_mon.CONFIG.SF_TYPE             <= c_SF_TYPE;
-  --fw_info_mon.CONFIG.NUM_DAQ_STREAMS     <= std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8));
-  --fw_info_mon.CONFIG.NUM_SF_INPUTS       <= std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8));
-  --fw_info_mon.CONFIG.NUM_SF_OUTPUTS      <= std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8));
-  --fw_info_mon.CONFIG.MAX_NUM_SL          <= std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8));
-  --fw_info_mon.CONFIG.NUM_THREADS         <= std_logic_vector(to_unsigned(c_NUM_THREADS, 8));
+    fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW <= MAIN_CFG_COMPILE_HW;
+    fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL <= MAIN_CFG_COMPILE_UL;
+    fw_info_mon.CONFIG.ST_nBARREL_ENDCAP   <= c_ST_nBARREL_ENDCAP;
+    fw_info_mon.CONFIG.ENABLE_NEIGHBORS    <= c_ENABLE_NEIGHBORS;
+    fw_info_mon.CONFIG.SECTOR_ID           <= std_logic_vector(to_unsigned(c_SECTOR_ID, 32));
+    fw_info_mon.CONFIG.ENDCAP_nSMALL_LARGE <= c_ENDCAP_nSMALL_LARGE;
+    fw_info_mon.CONFIG.PHY_BARREL_R0       <= std_logic_vector(resize(PHY_BARREL_R0, 32));
+    fw_info_mon.CONFIG.PHY_BARREL_R1       <= std_logic_vector(resize(PHY_BARREL_R1, 32));
+    fw_info_mon.CONFIG.PHY_BARREL_R2       <= std_logic_vector(resize(PHY_BARREL_R2, 32));
+    fw_info_mon.CONFIG.PHY_BARREL_R3       <= std_logic_vector(resize(PHY_BARREL_R3, 32));
+    fw_info_mon.CONFIG.HPS_ENABLE_ST_INN   <= c_HPS_ENABLE_ST_INN;
+    fw_info_mon.CONFIG.HPS_ENABLE_ST_EXT   <= c_HPS_ENABLE_ST_EXT;
+    fw_info_mon.CONFIG.HPS_ENABLE_ST_MID   <= c_HPS_ENABLE_ST_MID;
+    fw_info_mon.CONFIG.HPS_ENABLE_ST_OUT   <= c_HPS_ENABLE_ST_OUT;
+    fw_info_mon.CONFIG.HPS_NUM_MDT_CH_INN  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_INN, 8));
+    fw_info_mon.CONFIG.HPS_NUM_MDT_CH_EXT  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_EXT, 8));
+    fw_info_mon.CONFIG.HPS_NUM_MDT_CH_MID  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_MID, 8));
+    fw_info_mon.CONFIG.HPS_NUM_MDT_CH_OUT  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_OUT, 8));
+    fw_info_mon.CONFIG.NUM_MTC             <= std_logic_vector(to_unsigned(c_NUM_MTC, 8));
+    fw_info_mon.CONFIG.NUM_NSP             <= std_logic_vector(to_unsigned(c_NUM_NSP, 8));
+    fw_info_mon.CONFIG.UCM_ENABLED         <= c_UCM_ENABLED;
+    fw_info_mon.CONFIG.MPL_ENABLED         <= c_MPL_ENABLED;
+    fw_info_mon.CONFIG.SF_ENABLED          <= c_SF_ENABLED;
+    fw_info_mon.CONFIG.SF_TYPE             <= c_SF_TYPE;
+    fw_info_mon.CONFIG.NUM_DAQ_STREAMS     <= std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8));
+    fw_info_mon.CONFIG.NUM_SF_INPUTS       <= std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8));
+    fw_info_mon.CONFIG.NUM_SF_OUTPUTS      <= std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8));
+    fw_info_mon.CONFIG.MAX_NUM_SL          <= std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8));
+    fw_info_mon.CONFIG.NUM_THREADS         <= std_logic_vector(to_unsigned(c_NUM_THREADS, 8));
 
   process (clock_and_control.clk) is
   begin

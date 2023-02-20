@@ -103,6 +103,8 @@ entity top_control is
     mpl_ctrl : out MPL_CTRL_t;
     mpl_mon  : in  MPL_MON_t;
 
+    fw_info_mon   : in FW_INFO_MON_t;    
+
     hog_mon  : in  HOG_MON_t;
 
     -- END: ULT_IO :: DO NOT EDIT
@@ -252,9 +254,6 @@ architecture control_arch of top_control is
   signal hog_readmiso  : axireadmiso;
   signal hog_writemosi : axiwritemosi;
   signal hog_writemiso : axiwritemiso;
-  signal hog_mon_r     : HOG_MON_t;
-
-  signal fw_info_mon : FW_INFO_MON_t;
 
   -- END: ULT_AXI_SIGNALS :: DO NOT EDIT
 
@@ -1341,7 +1340,7 @@ begin
       slave_writemosi => hog_writemosi,
       slave_writemiso => hog_writemiso,
       -- monitor signals in
-      mon  => hog_mon_r
+      mon  => hog_mon
       );
 
   -- END: ULT_SLAVES :: DO NOT EDIT
