@@ -20,7 +20,7 @@ xvlog*
 .vscode/
 BD/*
 !BD/*.bd
-
+UserLogic/*/IP/**/*
 !**/IP/**/*.xci
 UserLogic/*/IP/*/*/*
 !UserLogic/*/IP/*/*/*.xci
@@ -59,3 +59,5 @@ Plots
 **/*.yml.old
 xproj
 *.xlsx
+test*
+configs/
