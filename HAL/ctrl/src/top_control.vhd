@@ -254,6 +254,8 @@ architecture control_arch of top_control is
   signal hog_writemiso : axiwritemiso;
   signal hog_mon_r     : HOG_MON_t;
 
+  signal fw_info_mon : FW_INFO_MON_t;
+
   -- END: ULT_AXI_SIGNALS :: DO NOT EDIT
 
   signal hal_ctrl_r      : HAL_CTRL_t;

@@ -27,6 +27,10 @@ library xil_defaultlib;
 library hal;
 library ctrl_lib;
 
+-- START: LIBRARIES -- DO NOT TOUCH
+
+-- END: LIBRARIES -- DO NOT TOUCH
+
 
 --use ctrl_lib.FW_TIMESTAMP.all;
 --use ctrl_lib.FW_VERSION.all;
@@ -339,7 +343,7 @@ begin
       K_C2C_INTF_wdata                    => c2c_intf_WriteMOSI.data,                
       K_C2C_INTF_wready(0)                => c2c_intf_WriteMISO.ready_for_data,       
       K_C2C_INTF_wstrb                    => c2c_intf_WriteMOSI.data_write_strobe,   
-      K_C2C_INTF_wvalid(0)                   => c2c_intf_WriteMOSI.data_valid,
+      K_C2C_INTF_wvalid(0)                => c2c_intf_WriteMOSI.data_valid,
 
       -- START: AXI_PL_SLAVES :: DO NOT EDIT
       
