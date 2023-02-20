@@ -14,7 +14,7 @@ library xil_defaultlib;
 library hal;
 
 library ctrl_lib;
---use ctrl_lib.FW_INFO_CTRL.all;
+use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.C2C_INTF_CTRL.all;
 use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
@@ -405,25 +405,25 @@ begin
       --K_IO_wready                      => local_AXI_WriteMISO(0).ready_for_data,       
       --K_IO_wstrb                          => local_AXI_WriteMOSI(0).data_write_strobe,   
       --K_IO_wvalid                      => local_AXI_WriteMOSI(0).data_valid,          
-      --K_CM_FW_INFO_araddr                    => fw_info_ReadMOSI.address,              
-      --K_CM_FW_INFO_arprot                    => fw_info_ReadMOSI.protection_type,      
-      --K_CM_FW_INFO_arready(0)                => fw_info_ReadMISO.ready_for_address,    
-      --K_CM_FW_INFO_arvalid(0)                => fw_info_ReadMOSI.address_valid,        
-      --K_CM_FW_INFO_awaddr                    => fw_info_WriteMOSI.address,             
-      --K_CM_FW_INFO_awprot                    => fw_info_WriteMOSI.protection_type,     
-      --K_CM_FW_INFO_awready(0)                => fw_info_WriteMISO.ready_for_address,   
-      --K_CM_FW_INFO_awvalid(0)                => fw_info_WriteMOSI.address_valid,       
-      --K_CM_FW_INFO_bready(0)                 => fw_info_WriteMOSI.ready_for_response,  
-      --K_CM_FW_INFO_bresp                     => fw_info_WriteMISO.response,            
-      --K_CM_FW_INFO_bvalid(0)                 => fw_info_WriteMISO.response_valid,      
-      --K_CM_FW_INFO_rdata                     => fw_info_ReadMISO.data,                 
-      --K_CM_FW_INFO_rready(0)                 => fw_info_ReadMOSI.ready_for_data,       
-      --K_CM_FW_INFO_rresp                     => fw_info_ReadMISO.response,             
-      --K_CM_FW_INFO_rvalid(0)                 => fw_info_ReadMISO.data_valid,           
-      --K_CM_FW_INFO_wdata                     => fw_info_WriteMOSI.data,                
-      --K_CM_FW_INFO_wready(0)                 => fw_info_WriteMISO.ready_for_data,       
-      --K_CM_FW_INFO_wstrb                     => fw_info_WriteMOSI.data_write_strobe,   
-      --K_CM_FW_INFO_wvalid(0)                 => fw_info_WriteMOSI.data_valid,          
+      K_CM_FW_INFO_araddr                    => fw_info_ReadMOSI.address,              
+      K_CM_FW_INFO_arprot                    => fw_info_ReadMOSI.protection_type,      
+      K_CM_FW_INFO_arready(0)                => fw_info_ReadMISO.ready_for_address,    
+      K_CM_FW_INFO_arvalid(0)                => fw_info_ReadMOSI.address_valid,        
+      K_CM_FW_INFO_awaddr                    => fw_info_WriteMOSI.address,             
+      K_CM_FW_INFO_awprot                    => fw_info_WriteMOSI.protection_type,     
+      K_CM_FW_INFO_awready(0)                => fw_info_WriteMISO.ready_for_address,   
+      K_CM_FW_INFO_awvalid(0)                => fw_info_WriteMOSI.address_valid,       
+      K_CM_FW_INFO_bready(0)                 => fw_info_WriteMOSI.ready_for_response,  
+      K_CM_FW_INFO_bresp                     => fw_info_WriteMISO.response,            
+      K_CM_FW_INFO_bvalid(0)                 => fw_info_WriteMISO.response_valid,      
+      K_CM_FW_INFO_rdata                     => fw_info_ReadMISO.data,                 
+      K_CM_FW_INFO_rready(0)                 => fw_info_ReadMOSI.ready_for_data,       
+      K_CM_FW_INFO_rresp                     => fw_info_ReadMISO.response,             
+      K_CM_FW_INFO_rvalid(0)                 => fw_info_ReadMISO.data_valid,           
+      K_CM_FW_INFO_wdata                     => fw_info_WriteMOSI.data,                
+      K_CM_FW_INFO_wready(0)                 => fw_info_WriteMISO.ready_for_data,       
+      K_CM_FW_INFO_wstrb                     => fw_info_WriteMOSI.data_write_strobe,   
+      K_CM_FW_INFO_wvalid(0)                 => fw_info_WriteMOSI.data_valid,          
       HOG_araddr                    => hog_ReadMOSI.address,              
       HOG_arprot                    => hog_ReadMOSI.protection_type,      
       HOG_arready(0)                => hog_ReadMISO.ready_for_address,    
@@ -1364,21 +1364,21 @@ begin
   --    Ctrl => fm_ctrl_r
   --    );
 
-  --fw_info_map_inst : entity ctrl_lib.fw_info_map
-  --  generic map (
-  --   ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_K_CM_FW_INFO)
-  --   )
-  --  port map (
-  --    clk_axi         => axi_clk,
-  --    reset_axi_n     => axi_reset_n,
-  --    slave_readmosi  => fw_info_readmosi,
-  --    slave_readmiso  => fw_info_readmiso,
-  --    slave_writemosi => fw_info_writemosi,
-  --    slave_writemiso => fw_info_writemiso,
+  fw_info_map_inst : entity ctrl_lib.fw_info_map
+    generic map (
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_K_CM_FW_INFO)
+     )
+    port map (
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
+      slave_readmosi  => fw_info_readmosi,
+      slave_readmiso  => fw_info_readmiso,
+      slave_writemosi => fw_info_writemosi,
+      slave_writemiso => fw_info_writemiso,
 
-  --    mon => fw_info_mon
+      mon => fw_info_mon
 
-  --    );
+      );
 
   SM_CM_INTF: entity ctrl_lib.C2C_INTF
     generic map (
