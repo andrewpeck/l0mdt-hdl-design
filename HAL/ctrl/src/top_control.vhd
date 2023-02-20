@@ -1332,9 +1332,6 @@ begin
       );
 
     hog_map_inst : entity ctrl_lib.hog_map
-    generic map (
-      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HOG)
-      )
     port map (
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -1369,6 +1366,9 @@ begin
   --    );
 
   fw_info_map_inst : entity ctrl_lib.fw_info_map
+    generic map (
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_FW_INFO)
+     )
     port map (
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
