@@ -75,7 +75,7 @@ library fm_lib;
 use fm_lib.fm_ult_pkg.all;
 
 
-entity ult_tp is
+entity ult_tb is
   generic (
     PRJ_INFO            : string  := "BA3";
     IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
@@ -88,9 +88,9 @@ entity ult_tp is
     -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
     DUMMY               : boolean := false
     );
-end entity ult_tp;
+end entity ult_tb;
 
-architecture beh of ult_tp is
+architecture beh of ult_tb is
 
   signal enable_mdt : integer := 1;
   signal enable_slc : integer := 1;

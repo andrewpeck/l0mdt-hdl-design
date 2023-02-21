@@ -3,7 +3,7 @@ shared/shared_lib.sim lib=shared_lib
 
 # UserLogic/ult/ult_lib.sim
 UserLogic/ult/top_ult_sim.vhd 
-# topsim=ult_tp runtime=150us
+# topsim=ult_tb runtime=150us
 shared/sim/waves/ull_vu13_b3a_tar_ta.do 
 
 # Waveform 

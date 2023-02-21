@@ -90,8 +90,8 @@ end entity csv_writer_tar;
 
 architecture sim of csv_writer_tar is
 
-  -- -- alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
-  -- -- alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
+  -- -- alias hit_file_ok is  << signal.ult_tb.MDT.file_open : std_logic >>;
+  -- -- alias hit_file_ts is  << signal.ult_tb.MDT.file_ts : string >>;
 
   constant g_OUT_FILE_1     : string  := "ov_" & g_PRJ_INFO & "_tar2hps.csv";
   constant g_OUT_FILE_2     : string  := "ov_" & g_PRJ_INFO & "_tar2daq.csv";
@@ -99,14 +99,14 @@ architecture sim of csv_writer_tar is
   shared variable csv_file_1: csv_file_type;
   shared variable csv_file_2: csv_file_type;
 
-  -- -- alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
+  -- -- alias slc_event_ai is  << signal.ult_tb.SLC.slc_event_ai : event_xaut >>;
 
-  -- -- alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_plin_av : ucm2hps_avt >>;
-  -- -- alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_plin_av : ucm2hps_avt >>;
-  -- -- alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_plin_av : ucm2hps_avt >>;
-  -- -- alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  -- -- alias inn_slc_to_h2s_av is  << signal.ult_tb.ULT.inn_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  -- -- alias mid_slc_to_h2s_av is  << signal.ult_tb.ULT.mid_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  -- -- alias out_slc_to_h2s_av is  << signal.ult_tb.ULT.out_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  -- -- alias ext_slc_to_h2s_av is  << signal.ult_tb.ULT.ext_slc_to_h2s_plin_av : ucm2hps_avt >>;
 
-  -- -- alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_avt >>;
+  -- -- alias ucm2pl_av is  << signal.ult_tb.ULT.ucm2pl_av : ucm2pl_avt >>;
   -- signal ucm2pl_ar : ucm2pl_art(g_HPS_MAX_HP-1 downto 0);
 
   signal slc_event_au : event_tdc_aut;--(g_HPS_MAX_HP -1 downto 0);
