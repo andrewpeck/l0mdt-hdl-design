@@ -50,10 +50,12 @@ library fm_lib;
 use fm_lib.fm_ult_pkg.all;
 
 entity ult_tb is
-  port (
+  generic (
     PRJ_INFO            : string  := "not_defined";
     IN_SLC_FILE         : string  := "not_defined.csv";
-    IN_CSM_FILE         : string  := "not_defined.csv";
+    IN_HIT_FILE         : string  := "not_defined.csv";
+    IN_CTRL_FILE        : string  := "not_defined.csv";
+    g_ST_ENABLE         : std_logic_vector(3 downto 0) := "0111";
     DUMMY               : boolean := false
   );
 end entity ult_tb;
@@ -371,36 +373,39 @@ begin
   -------------------------------------------------------------------------------------
 	-- CSV
   -------------------------------------------------------------------------------------
-  CSV_SLC_IN : entity shared_lib.csv_reader_slc 
-    generic map (
-      IN_SLC_FILE => IN_SLC_FILE,
-      g_verbose => 2
-    )
-    port map(
-      clk               => clk,
-      rst               => rst,
-      enable            => glob_en,
-      --
-      tb_curr_tdc_time  => tb_curr_tdc_time,
-      --
-      o_file_ok         => slc_file_ok,
-      o_file_ts         => slc_file_ts, 
-      --
-      o_slc_event_ai        => slc_event_ai,
-      --
-      o_main_primary_slc    => i_main_primary_slc,
-      o_main_secondary_slc  => i_main_secondary_slc,
-      o_plus_neighbor_slc   => i_plus_neighbor_slc,
-      o_minus_neighbor_slc  => i_minus_neighbor_slc
+  CSV_SLC : if c_UCM_ENABLED generate
+    CSV_SLC_IN : entity shared_lib.csv_reader_slc 
+      generic map (
+        IN_SLC_FILE => IN_SLC_FILE,
+        g_verbose => 2
+      )
+      port map(
+        clk               => clk,
+        rst               => rst,
+        enable            => glob_en,
+        --
+        tb_curr_tdc_time  => tb_curr_tdc_time,
+        --
+        o_file_ok         => slc_file_ok,
+        o_file_ts         => slc_file_ts, 
+        --
+        o_slc_event_ai        => slc_event_ai,
+        --
+        o_main_primary_slc    => i_main_primary_slc,
+        o_main_secondary_slc  => i_main_secondary_slc,
+        o_plus_neighbor_slc   => i_plus_neighbor_slc,
+        o_minus_neighbor_slc  => i_minus_neighbor_slc
 
-    );
+      );
+      end generate;
 
   -------------------------------------------------------------------------------------
 	-- MDT IN
   -------------------------------------------------------------------------------------
-  MDT : entity shared_lib.csv_reader_mdt 
+  CAS_TAR : if c_TAR_ENABLED generate
+    MDT : entity shared_lib.csv_reader_mdt 
     generic map (
-      IN_HIT_FILE => IN_CSM_FILE,
+      IN_HIT_FILE => IN_HIT_FILE,
       g_verbose => 2
     )
     port map(
@@ -422,6 +427,9 @@ begin
       o_mdt_tdc_out_av  => i_mdt_tdc_out_av,
       o_mdt_tdc_ext_av  => i_mdt_tdc_ext_av
     );
+  end generate;
+
+  
   
   
 end architecture beh;

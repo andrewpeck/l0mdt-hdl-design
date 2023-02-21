@@ -26,14 +26,14 @@ if {${FPGA} == "xcku15p-ffva1760-2-e"} {
 #add the fpga in project to the chain
 
 set DEVICE [create_hw_device -part ${FPGA}]
-set_property PROGRAM.FILE $dst_bit $DEVICE
+set_property PROGRAM.FILE $dst_main $DEVICE
 set_param xicom.config_chunk_size 0
 set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
 
-puts "program_hw_devices -force -svf_file [file rootname ${dst_bit}].svf ${DEVICE}"
-program_hw_devices -force -svf_file [file rootname ${dst_bit}].svf ${DEVICE}
+puts "program_hw_devices -force -svf_file [file rootname ${dst_main}].svf ${DEVICE}"
+program_hw_devices -force -svf_file [file rootname ${dst_main}].svf ${DEVICE}
 
-write_cfgmem -force -loadbit "up 0 ${dst_bit}" \
-    -format mcs -size 128 -file "$[file rootname ${dst_bit}].mcs"
+write_cfgmem -force -loadbit "up 0 ${dst_main}" \
+    -format mcs -size 128 -file "$[file rootname ${dst_main}].mcs"
 
 delete_hw_target -quiet [get_hw_targets -regexp .*/${SVF_TARGET}]
