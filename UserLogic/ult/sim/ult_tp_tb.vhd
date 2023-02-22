@@ -166,16 +166,16 @@ architecture beh of ult_tb is
   signal fm_mon_v   : std_logic_vector(FM_MON_t'w-1 downto 0);
 
   -- TDC Hits from Polmux
-  signal i_mdt_tdc_inn_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_mid_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_inn_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_mid_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
 
   -- TDC Hits from Tar
-  -- signal i_mdt_tar_inn_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  -- signal i_mdt_tar_mid_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  -- signal i_mdt_tar_out_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  -- signal i_mdt_tar_ext_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_inn_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_mid_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_out_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_ext_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
 
   -- Sector Logic Candidates
   signal i_main_primary_slc       : slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used

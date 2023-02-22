@@ -123,17 +123,17 @@ begin
 
   o_hit_data_b <= xor_reduce(o_hit_data_v);
 
-  -- tdc_mid: for i_h in c_HPS_MAX_HP_MiD - 1 downto 0 generate
+  -- tdc_mid: for i_h in c_HPS_NUM_MDT_CH_MiD - 1 downto 0 generate
   --   des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2hp_LEN)port map(clk => clk,rst  => rst,i_data => i_mid_tdc_hits_ab(i_h),o_data => i_mid_tdc_hits_av(i_h));
   --   o_mid_tdc_hits_ab(i_h) <= xor_reduce(o_mid_tdc_hits_av(i_h));
   --   o_mid_hp_hits_ab(i_h) <= xor_reduce(o_mid_hp_hits_av(i_h));
   -- end generate;
-  -- tdc_out: for i_h in c_HPS_MAX_HP_OUT - 1 downto 0 generate
+  -- tdc_out: for i_h in c_HPS_NUM_MDT_CH_OUT - 1 downto 0 generate
   --   des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2hp_LEN)port map(clk => clk,rst  => rst,i_data => i_out_tdc_hits_ab(i_h),o_data => i_out_tdc_hits_av(i_h));
   --   o_out_tdc_hits_ab(i_h) <= xor_reduce(o_out_tdc_hits_av(i_h));
   --   o_out_hp_hits_ab(i_h) <= xor_reduce(o_out_hp_hits_av(i_h));
   -- end generate;
-  -- tdc_ext: for i_h in c_HPS_MAX_HP_EXT - 1 downto 0 generate
+  -- tdc_ext: for i_h in c_HPS_NUM_MDT_CH_EXT - 1 downto 0 generate
   --   des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2hp_LEN)port map(clk => clk,rst  => rst,i_data => i_ext_tdc_hits_ab(i_h),o_data => i_ext_tdc_hits_av(i_h));
   --   o_ext_tdc_hits_ab(i_h) <= xor_reduce(o_ext_tdc_hits_av(i_h));
   --   o_ext_hp_hits_ab(i_h) <= xor_reduce(o_ext_hp_hits_av(i_h));
