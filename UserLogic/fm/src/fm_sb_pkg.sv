@@ -72,6 +72,7 @@ package fm_sb_pkg;
 						     $bits(FM_CTRL.SB26.SB_MEM.address)
 						     };
 
+/* -----\/----- EXCLUDED -----\/-----
    parameter reg[31:0]  axi_sm_addr_width[sb_mapped_n] = {
 						     $bits(FM_CTRL.SB0.SB_META.address),
 						     $bits(FM_CTRL.SB1.SB_META.address),
@@ -101,6 +102,7 @@ package fm_sb_pkg;
 						     $bits(FM_CTRL.SB25.SB_META.address),
 						     $bits(FM_CTRL.SB26.SB_META.address)
 						     };
+ -----/\----- EXCLUDED -----/\----- */
 
    logic 	      spy_clock;
    //integer 	      j=0;

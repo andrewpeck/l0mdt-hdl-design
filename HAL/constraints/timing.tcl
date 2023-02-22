@@ -92,7 +92,7 @@ set_false_path -quiet -from [get_pins "top_control_inst/*/sys_reseter/*/*/C"]
 # Transitions to/from the AXI clocks are asynchronous
 ################################################################################
 
-set_clock_groups -group [get_clocks "clock_async"] -asynchronous
+#set_clock_groups -group [get_clocks "clock_async"] -asynchronous
 #set_clock_groups -group [get_clocks "axi_clk*"]    -asynchronous
 
 ################################################################################
@@ -124,8 +124,8 @@ set_property -quiet MAX_FANOUT 256 [get_cells "ult_inst/logic_gen.H2S_GEN.ULT_H2
 # Ctrl & Mon
 ################################################################################
 
-set_max_delay 12.5 \
-    -from [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mon_r_reg*"]
+#set_max_delay 12.5 \
+#    -from [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mon_r_reg*"]
 
 set_max_delay 12.5 \
     -to   [get_cells "top_control_inst/*_ctrl_reg*"]

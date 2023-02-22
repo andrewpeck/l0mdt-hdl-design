@@ -161,7 +161,26 @@ package c2cslave_pkg is
     K_C2C_INTF_rvalid : in std_logic;
     K_C2C_INTF_rready : out std_logic;
     CM1_PB_UART_rxd : in STD_LOGIC;
-    CM1_PB_UART_txd : out STD_LOGIC
+    CM1_PB_UART_txd : out STD_LOGIC;
+    FM_awaddr : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    FM_awprot : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    FM_awvalid : out std_logic;
+    FM_awready : in std_logic;
+    FM_wdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    FM_wstrb : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    FM_wvalid : out std_logic;
+    FM_wready : in std_logic;
+    FM_bresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    FM_bvalid : in std_logic;
+    FM_bready : out std_logic;
+    FM_araddr : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    FM_arprot : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    FM_arvalid : out std_logic;
+    FM_arready : in std_logic;
+    FM_rdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    FM_rresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    FM_rvalid : in std_logic;
+    FM_rready : out std_logic
   );
   end component c2cSlave;
 end package c2cslave_pkg;
