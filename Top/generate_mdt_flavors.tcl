@@ -234,6 +234,12 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     # update the hal.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/hal.src"
 
+    # update the ctrl_lib.src file
+    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/ctrl_lib.src"
+
+    # update the l0mdt.src file
+    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/l0mdt.src"
+
     # update the project_lib.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
 
@@ -260,9 +266,6 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     if {0 == $hog_chk} {
         exec sed -i "/^CHK:/,/PROJECT_NAME.*/d" "$dest_path/gitlab-ci.yml"
     }
-
-    # update the ctrl_lib
-    exec sed -i "s|ku15p|${fpga_shortname}|g" "$dest_path/list/ctrl_lib.src"
 }
 
 proc clone_projects {huddle} {
