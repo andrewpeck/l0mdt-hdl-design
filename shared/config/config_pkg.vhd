@@ -75,14 +75,17 @@ package config_pkg is
   constant c_HPS_ENABLED_HP_INN         : std_logic_vector(CFG_MAX_HP -1 downto 0) := CFG.EN_MDT_CH_INN;
   constant c_HPS_NUM_MDT_CH_INN         : integer := get_num_HP(CFG.EN_MDT_CH_INN);--CFG.NUM_MDT_CH_INN;
   constant c_HPS_MAX_HP_INN             : integer := 6;
+
   constant c_HPS_ENABLE_ST_EXT          : std_logic := CFG.ENABLE_ST_EXT;
   constant c_HPS_ENABLED_HP_EXT         : std_logic_vector(CFG_MAX_HP -1 downto 0) := CFG.EN_MDT_CH_EXT;
   constant c_HPS_NUM_MDT_CH_EXT         : integer   := get_num_HP(CFG.EN_MDT_CH_EXT);--CFG.NUM_MDT_CH_EXT;
-  constant c_HPS_MAX_HP_EXT             : integer := 0;
+  constant c_HPS_MAX_HP_EXT             : integer := 6;
+
   constant c_HPS_ENABLE_ST_MID          : std_logic := CFG.ENABLE_ST_MID;
   constant c_HPS_ENABLED_HP_MID         : std_logic_vector(CFG_MAX_HP -1 downto 0) := CFG.EN_MDT_CH_MID;
   constant c_HPS_NUM_MDT_CH_MID         : integer   := get_num_HP(CFG.EN_MDT_CH_MID);--CFG.NUM_MDT_CH_MID;
   constant c_HPS_MAX_HP_MID             : integer := 6;
+  
   constant c_HPS_ENABLE_ST_OUT          : std_logic := CFG.ENABLE_ST_OUT;
   constant c_HPS_ENABLED_HP_OUT         : std_logic_vector(CFG_MAX_HP -1 downto 0) := CFG.EN_MDT_CH_OUT;
   constant c_HPS_NUM_MDT_CH_OUT         : integer   := get_num_HP(CFG.EN_MDT_CH_OUT);--CFG.NUM_MDT_CH_OUT;
