@@ -57,6 +57,25 @@ for line in contents:
         for slave in slaves:
             text_to_insert += "use ctrl_lib.%s_ctrl.all;\n" % slave.lower()
         contents.insert(line_number + 1, text_to_insert)
+    if "-- START: ULT_AXI_SIGNALS :: DO NOT EDIT" in line:
+        text_to_insert = ""
+        for slave in slaves:
+            if slave != "C2C_INTFS":
+                text_to_insert += "  signal %s_readmosi : axireadmosi;\n" % slave.lower(
+                )
+                text_to_insert += "  signal %s_readmiso : axireadmiso;\n" % slave.lower(
+                )
+                text_to_insert += "  signal %s_writemosi : axiwritemosi;\n" % slave.lower(
+                )
+                text_to_insert += "  signal %s_writemiso : axiwritemiso;\n" % slave.lower(
+                )
+                text_to_insert += "  signal %s_mon_r : %s_MON_t;\n" % (
+                    slave.lower(), slave.upper())
+
+                if slave != "HOG" and slave != "FW_INFO":
+                    text_to_insert += "  signal %s_ctrl_r : %s_CTRL_t;\n" % (
+                        slave.lower(), slave.upper())
+        contents.insert(line_number + 1, text_to_insert)
     if "-- START: ULT_IO :: DO NOT EDIT" in line:
         text_to_insert = ""
         for slave in slaves:
@@ -67,6 +86,29 @@ for line in contents:
                     text_to_insert += "    %s_ctrl : in %s_CTRL_t;\n" % (
                         slave.lower(), slave)
         contents.insert(line_number + 1, text_to_insert)
+    if "-- START: ULT_SLAVES :: DO NOT EDIT" in line:
+        text_to_insert = ""
+        for slave in slaves:
+            if slave != "C2C_INTFS":
+                text_to_insert += "   hps_inn_map_inst : entity ctrl_lib.hps_map\n"
+                
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => hps_inn_readmosi,
+      slave_readmiso  => hps_inn_readmiso,
+      slave_writemosi => hps_inn_writemosi,
+      slave_writemiso => hps_inn_writemiso,
+      -- monitor signals in
+      mon  => hps_inn_mon_r,
+      -- control signals out
+      ctrl => hps_inn_ctrl_r
+      );"
+                text_to_insert += "    %s_mon : in %s_MON_t;\n" % (
+                    slave.lower(), slave)
+                if slave != "HOG" and slave != "FW_INFO":
+                    text_to_insert += "    %s_ctrl : in %s_CTRL_t;\n" % (
+                        slave.lower(), slave)
     line_number += 1
 
 with open(output_file_path, "w") as output_file:
