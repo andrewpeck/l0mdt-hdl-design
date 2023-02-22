@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<node id="GBT-IC">
+  <!-- IC Control-->
+  <node id="TX_START_WRITE"    address="0x0" mask="0x00000001" permission="rw" description="Request a write config to the GBTx (IC)"/>
+  <node id="TX_START_READ"     address="0x0" mask="0x00000002" permission="rw" description="Request a read config to the GBTx (IC)"/>
+
+  <!-- IC Config-->
+  <node id="TX_GBTX_ADDR"         address="0x0" mask="0x0000ff00" permission="rw" description="I2C address of the GBTx"/>
+  <node id="TX_REGISTER_ADDR"     address="0x1" mask="0x0000ffff" permission="rw" description="Address of the first register to be accessed"/>
+  <node id="TX_NUM_BYTES_TO_READ" address="0x1" mask="0xffff0000" permission="rw" description="Number of words/bytes to be read (only for read transactions)"/>
+
+  <!-- IC FIFO -->
+  <node id="TX_DATA_TO_GBTX"   address="0x2"  mask="0x000000ff" permission="rw" description="Data to be written into the internal FIFO"/>
+  <node id="RX_DATA_FROM_GBTX" address="0x2"  mask="0x0000ff00" permission="r"  description="Data from the FIFO"/>
+  <node id="TX_READY"          address="0x2"  mask="0x00010000" permission="r"  description="IC core ready for a transaction"/>
+  <node id="TX_WR"             address="0x3"  mask="0x1"        permission="w"  description="Request a write operation into the internal FIFO (Data to GBTx)"/><!--ACTION-->
+
+  <!-- IC Decoder -->
+  <node id="RX_DATA"           address="0x4"  mask="0xffffffff" permission="r"  description="Up to 4 bytes of GBT-IC read data"/>
+  <node id="RX_CHIP_ADR"       address="0x5"  mask="0x0000007f" permission="r"  description="LPGBT I2C chip address"/>
+  <node id="RX_UP_PARITY_OK"   address="0x5"  mask="0x00000080" permission="r"  description="LPGBT uplink IC parity check was OK"/>
+  <node id="RX_DOWN_PARITY_OK" address="0x5"  mask="0x00000100" permission="r"  description="LPGBT downlink IC parity check was OK"/>
+  <node id="RX_ERR"            address="0x5"  mask="0x00000200" permission="r"  description="LPGBT IC decoder state machine error"/>
+  <node id="RX_VALID"          address="0x5"  mask="0x00000400" permission="r"  description="LPGBT IC decoder output data is valid"/>
+  <node id="RX_LENGTH"         address="0x6"  mask="0xffff0000" permission="r"  description="LPGBT IC decoder received length of the transaction. You only can read the tail 4 bytes due to firmware limitations"/>
+  <node id="RX_REG_ADR"        address="0x6"  mask="0x0000ffff" permission="r"  description="LPGBT IC decoder register address "/>
+</node>

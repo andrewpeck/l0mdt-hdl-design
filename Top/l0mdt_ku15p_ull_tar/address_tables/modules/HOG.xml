@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node id="HOG">
+  <node id="HOG_INFO" address="0x00000000">
+    <node id="GLOBAL_DATE" address="0x0" permission="r" mask="0xFFFFFFFF"/>
+    <node id="GLOBAL_TIME" address="0x1" permission="r" mask="0xFFFFFFFF"/>
+    <node id="GLOBAL_VER" address="0x2" permission="r" mask="0xFFFFFFFF"/>
+    <node id="GLOBAL_SHA" address="0x3" permission="r" mask="0xFFFFFFFF"/>
+    <node id="TOP_SHA" address="0x4" permission="r" mask="0xFFFFFFFF"/>
+    <node id="TOP_VER" address="0x5" permission="r" mask="0xFFFFFFFF"/>
+    <node id="HOG_SHA" address="0x6" permission="r" mask="0xFFFFFFFF"/>
+    <node id="HOG_VER" address="0x7" permission="r" mask="0xFFFFFFFF"/>
+    <node id="CON_SHA" address="0x8" permission="r" mask="0xFFFFFFFF"/>
+    <node id="CON_VER" address="0x9" permission="r" mask="0xFFFFFFFF"/>
+    <node id="PROJECT_LIB_SHA" address="0x10" permission="r" mask="0xFFFFFFFF"/>
+    <node id="PROJECT_LIB_VER" address="0x11" permission="r" mask="0xFFFFFFFF"/>
+  </node>
+</node>
