@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node id="MPL">
+  <node id="SUPER" address="0x00000010">
+    <node id="ACTIONS" address="0x00000000">
+      <node id="RESET"          mask="0x000000001" permission="w"/>
+      <node id="ENABLE"         mask="0x000000002" permission="w"/>
+      <node id="DISABLE"        mask="0x000000004" permission="w"/>
+      <node id="FREEZE"         mask="0x000000008" permission="w"/>
+    </node>
+    <node id="CONFIGS" address="0x00000001">
+      <node id="THREADS"        mask="0x00000000F" parameters="default=3" permission="rw"/>
+      <node id="INPUT_EN"       mask="0x000000010" parameters="default=1" permission="rw"/>
+      <node id="OUTPUT_EN"      mask="0x000000020" parameters="default=1" permission="rw"/>
+      <node id="FLUSH_MEM_RESET"  mask="0x000000040" parameters="default=1" permission="rw"/>
+    </node>
+    <node id="STATUS" address="0x00000002">
+      <node id="ENABLED" mask="0x00000001" permission="r"/>
+      <node id="READY"   mask="0x00000002" permission="r"/>
+      <node id="FREEZED" mask="0x00000004" permission="r"/>
+      <node id="ERROR"   mask="0x00000FF0" permission="r"/>
+    </node>
+  </node>
+
+  <!-- MAIN PIPELINE MEM ACCESS -->
+  <node id="PL_MEM" address="0x00000100">
+    <node id="PL_MEM_0" fwinfo="type=array" address="0x00000000" module="file://MEM_INT_12A148D.xml"/>
+    <node id="PL_MEM_1" fwinfo="type=array" address="0x00000010" module="file://MEM_INT_12A148D.xml"/>
+    <node id="PL_MEM_2" fwinfo="type=array" address="0x00000020" module="file://MEM_INT_12A148D.xml"/>
+    <node id="PL_MEM_3" fwinfo="type=array" address="0x00000030" module="file://MEM_INT_12A148D.xml"/>
+    <node id="PL_MEM_4" fwinfo="type=array" address="0x00000040" module="file://MEM_INT_12A148D.xml"/>
+  </node>
+
+</node>
+
+
+
