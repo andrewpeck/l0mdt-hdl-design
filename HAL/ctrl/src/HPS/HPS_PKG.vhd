@@ -1443,8 +1443,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_MDT_TC_MDT_TC_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_MDT_TC_MDT_TC_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -1589,8 +1594,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -2034,8 +2044,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_MDT_T0_MDT_T0_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_MDT_T0_MDT_T0_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -2180,8 +2195,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -3756,8 +3776,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_HEG_HEG_HP_HP_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_HEG_HEG_HP_HP_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -3889,8 +3914,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -4100,8 +4130,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_HEG_HEG_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_HEG_HEG_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -4233,8 +4268,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_HEG_HEG_CTRL_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_HEG_HEG_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -4444,8 +4484,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_LSF_LSF_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_LSF_LSF_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -4603,8 +4648,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_LSF_LSF_CTRL_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_LSF_LSF_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -4931,8 +4981,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_CSF_CSF_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_CSF_CSF_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -5038,8 +5093,13 @@ package body HPS_CTRL is
    end function zero;
 
    function width(x: HPS_CSF_CSF_CTRL_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HPS_CSF_CSF_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
