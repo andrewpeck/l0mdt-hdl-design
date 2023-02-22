@@ -235,7 +235,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/hal.src"
 
     # update the ctrl_lib.src file
-    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/ctrl_lib.src"
+    # exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/ctrl_lib.src"
 
     # update the l0mdt.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/l0mdt.src"

@@ -61,3 +61,4 @@ xproj
 *.xlsx
 
 Top/*/bd/*
+Top/*/c2cslave_pkg.vhd
