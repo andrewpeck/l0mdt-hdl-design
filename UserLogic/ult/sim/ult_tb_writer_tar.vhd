@@ -61,19 +61,19 @@ end entity ult_tb_writer_tar;
 
 architecture sim of ult_tb_writer_tar is
 
-  alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
-  alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
-  alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
-  alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
+  alias slc_file_ok is  << signal.ult_tb.SLC.file_open : std_logic >>;
+  alias slc_file_ts is  << signal.ult_tb.SLC.file_ts : string >>;
+  alias hit_file_ok is  << signal.ult_tb.MDT.file_open : std_logic >>;
+  alias hit_file_ts is  << signal.ult_tb.MDT.file_ts : string >>;
   shared variable csv_file_1: csv_file_type;
   constant g_OUT_FILE_1     : string  := "ov_tar2hps_" & g_PRJ_INFO & ".csv";
 
-  alias ult_inn_tar_hits_av is  << signal.ult_tp.ULT.ult_inn_tar_hits_out_av : tar2hps_avt >>;
-  alias ult_mid_tar_hits_av is  << signal.ult_tp.ULT.ult_mid_tar_hits_out_av : tar2hps_avt >>;
-  alias ult_out_tar_hits_av is  << signal.ult_tp.ULT.ult_out_tar_hits_out_av : tar2hps_avt >>;
-  alias ult_ext_tar_hits_av is  << signal.ult_tp.ULT.ult_ext_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_inn_tar_hits_av is  << signal.ult_tb.ULT.ult_inn_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_mid_tar_hits_av is  << signal.ult_tb.ULT.ult_mid_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_out_tar_hits_av is  << signal.ult_tb.ULT.ult_out_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_ext_tar_hits_av is  << signal.ult_tb.ULT.ult_ext_tar_hits_out_av : tar2hps_avt >>;
 
-  alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
+  alias mdt_event_ai is  << signal.ult_tb.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_u2h_au : event_tdc_at;
 

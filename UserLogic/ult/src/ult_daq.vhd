@@ -34,8 +34,8 @@ use shared_lib.config_pkg.all;
 
 -- library l0mdt;
 
-library daq_lib;
-library daq_core;
+-- library daq_lib;
+-- library daq_core;
 
 -- library ttc_def;
 -- library daq_def;
@@ -72,80 +72,80 @@ end entity daq;
 architecture behavioral of daq is
 
 
-  signal i_ctrl_opening_offset : unsigned(11 downto 0);
-  signal i_ctrl_request_offset : unsigned(11 downto 0);
-  signal i_ctrl_closing_offset : unsigned(11 downto 0);
-  signal i_ctrl_timeout_window : unsigned(11 downto 0);
+  -- signal i_ctrl_opening_offset : unsigned(11 downto 0);
+  -- signal i_ctrl_request_offset : unsigned(11 downto 0);
+  -- signal i_ctrl_closing_offset : unsigned(11 downto 0);
+  -- signal i_ctrl_timeout_window : unsigned(11 downto 0);
 
-  signal req_stable       : std_logic;
-  signal req_valid        : std_logic;
+  -- signal req_stable       : std_logic;
+  -- signal req_valid        : std_logic;
   
-  signal req_strb          : std_logic;
-  signal win_opening_cnt      : unsigned(11 downto 0);
-  signal win_request_cnt      : unsigned(11 downto 0);
-  signal win_closing_cnt      : unsigned(11 downto 0);
-  signal win_timeout_cnt      : unsigned(11 downto 0);
-  signal win_opening_offset   : unsigned(11 downto 0);
-  signal win_request_offset   : unsigned(11 downto 0);
-  signal win_closing_offset   : unsigned(11 downto 0);
-  signal win_timeout_window   : unsigned(11 downto 0);
+  -- signal req_strb          : std_logic;
+  -- signal win_opening_cnt      : unsigned(11 downto 0);
+  -- signal win_request_cnt      : unsigned(11 downto 0);
+  -- signal win_closing_cnt      : unsigned(11 downto 0);
+  -- signal win_timeout_cnt      : unsigned(11 downto 0);
+  -- signal win_opening_offset   : unsigned(11 downto 0);
+  -- signal win_request_offset   : unsigned(11 downto 0);
+  -- signal win_closing_offset   : unsigned(11 downto 0);
+  -- signal win_timeout_window   : unsigned(11 downto 0);
 
-  signal event_id              : unsigned(31 downto 0);
+  -- signal event_id              : unsigned(31 downto 0);
 
 
-  signal inner_flx_streams_hfull_bus   : std_logic_vector(0 to c_DAQ_INN_LINKS-1);
-  signal inner_flx_streams_wr_strb_bus : std_logic_vector(0 to c_DAQ_INN_LINKS-1);
-  signal inner_flx_streams_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_INN_LINKS-1)(1 downto 0);
-  signal inner_flx_streams_payload_bus : std_logic_vector_array(0 to c_DAQ_INN_LINKS-1)(31 downto 0);
+  -- signal inner_flx_streams_hfull_bus   : std_logic_vector(0 to c_DAQ_INN_LINKS-1);
+  -- signal inner_flx_streams_wr_strb_bus : std_logic_vector(0 to c_DAQ_INN_LINKS-1);
+  -- signal inner_flx_streams_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_INN_LINKS-1)(1 downto 0);
+  -- signal inner_flx_streams_payload_bus : std_logic_vector_array(0 to c_DAQ_INN_LINKS-1)(31 downto 0);
 
-  signal middle_flx_streams_hfull_bus   : std_logic_vector(0 to c_DAQ_MID_LINKS-1);
-  signal middle_flx_streams_wr_strb_bus : std_logic_vector(0 to c_DAQ_MID_LINKS-1);
-  signal middle_flx_streams_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_MID_LINKS-1)(1 downto 0);
-  signal middle_flx_streams_payload_bus : std_logic_vector_array(0 to c_DAQ_MID_LINKS-1)(31 downto 0);
+  -- signal middle_flx_streams_hfull_bus   : std_logic_vector(0 to c_DAQ_MID_LINKS-1);
+  -- signal middle_flx_streams_wr_strb_bus : std_logic_vector(0 to c_DAQ_MID_LINKS-1);
+  -- signal middle_flx_streams_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_MID_LINKS-1)(1 downto 0);
+  -- signal middle_flx_streams_payload_bus : std_logic_vector_array(0 to c_DAQ_MID_LINKS-1)(31 downto 0);
 
-  signal outer_flx_streams_hfull_bus   : std_logic_vector(0 to c_DAQ_OUT_LINKS-1);
-  signal outer_flx_streams_wr_strb_bus : std_logic_vector(0 to c_DAQ_OUT_LINKS-1);
-  signal outer_flx_streams_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_OUT_LINKS-1)(1 downto 0);
-  signal outer_flx_streams_payload_bus : std_logic_vector_array(0 to c_DAQ_OUT_LINKS-1)(31 downto 0);
+  -- signal outer_flx_streams_hfull_bus   : std_logic_vector(0 to c_DAQ_OUT_LINKS-1);
+  -- signal outer_flx_streams_wr_strb_bus : std_logic_vector(0 to c_DAQ_OUT_LINKS-1);
+  -- signal outer_flx_streams_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_OUT_LINKS-1)(1 downto 0);
+  -- signal outer_flx_streams_payload_bus : std_logic_vector_array(0 to c_DAQ_OUT_LINKS-1)(31 downto 0);
 
-  signal extra_flx_streams_hfull_bus   : std_logic_vector(0 to c_DAQ_EXT_LINKS-1);
-  signal extra_flx_streams_wr_strb_bus : std_logic_vector(0 to c_DAQ_EXT_LINKS-1);
-  signal extra_flx_streams_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_EXT_LINKS-1)(1 downto 0);
-  signal extra_flx_streams_payload_bus : std_logic_vector_array(0 to c_DAQ_EXT_LINKS-1)(31 downto 0);
+  -- signal extra_flx_streams_hfull_bus   : std_logic_vector(0 to c_DAQ_EXT_LINKS-1);
+  -- signal extra_flx_streams_wr_strb_bus : std_logic_vector(0 to c_DAQ_EXT_LINKS-1);
+  -- signal extra_flx_streams_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_EXT_LINKS-1)(1 downto 0);
+  -- signal extra_flx_streams_payload_bus : std_logic_vector_array(0 to c_DAQ_EXT_LINKS-1)(31 downto 0);
 
-  signal sys_hdr : std_logic_vector(31 downto 0);
+  -- signal sys_hdr : std_logic_vector(31 downto 0);
 
-  constant INNER_USR_HDR  : std_logic_vector(15 downto 0) := x"AAAA";
-  constant MIDDLE_USR_HDR : std_logic_vector(15 downto 0) := x"BBBB";
-  constant OUTER_USR_HDR  : std_logic_vector(15 downto 0) := x"CCCC";
-  constant EXTRA_USR_HDR  : std_logic_vector(15 downto 0) := x"DDDD";
+  -- constant INNER_USR_HDR  : std_logic_vector(15 downto 0) := x"AAAA";
+  -- constant MIDDLE_USR_HDR : std_logic_vector(15 downto 0) := x"BBBB";
+  -- constant OUTER_USR_HDR  : std_logic_vector(15 downto 0) := x"CCCC";
+  -- constant EXTRA_USR_HDR  : std_logic_vector(15 downto 0) := x"DDDD";
 
-  signal daq_streams_ar : felix_stream_art(c_DAQ_LINKS-1 downto 0);
-  signal daq_streams_v  : std_logic_vector(daq_streams_ar'length*felix_stream_rt'w-1 downto 0);
+  -- signal daq_streams_ar : felix_stream_art(c_DAQ_LINKS-1 downto 0);
+  -- signal daq_streams_v  : std_logic_vector(daq_streams_ar'length*felix_stream_rt'w-1 downto 0);
     
-  -- emulation
+  -- -- emulation
 
-  -- -- signal ptcalc_sump         : std_logic_vector (c_NUM_THREADS -1 downto 0);
-  -- -- signal pl2mtc_sump         : std_logic_vector (c_MAX_NUM_SL -1 downto 0);
-  -- -- signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
-  -- -- signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
-  -- -- signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
-  -- -- signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
+  -- -- -- signal ptcalc_sump         : std_logic_vector (c_NUM_THREADS -1 downto 0);
+  -- -- -- signal pl2mtc_sump         : std_logic_vector (c_MAX_NUM_SL -1 downto 0);
+  -- -- -- signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
+  -- -- -- signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
+  -- -- -- signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
+  -- -- -- signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
 
-  -- implementation
+  -- -- implementation
 
 
-  function streamify_output (wr_strb_bus : std_logic_vector;
-                             ctrl_bus    : std_logic_vector_array;
-                             payload_bus : std_logic_vector_array) return felix_stream_art is
-    variable y : felix_stream_art(wr_strb_bus'range);
-  begin
-    for ii in wr_strb_bus'range loop
-      y(ii).valid := wr_strb_bus(ii);
-      y(ii).data := ctrl_bus(ii) & payload_bus(ii);
-    end loop;
-    return y;
-  end function streamify_output;
+  -- function streamify_output (wr_strb_bus : std_logic_vector;
+  --                            ctrl_bus    : std_logic_vector_array;
+  --                            payload_bus : std_logic_vector_array) return felix_stream_art is
+  --   variable y : felix_stream_art(wr_strb_bus'range);
+  -- begin
+  --   for ii in wr_strb_bus'range loop
+  --     y(ii).valid := wr_strb_bus(ii);
+  --     y(ii).data := ctrl_bus(ii) & payload_bus(ii);
+  --   end loop;
+  --   return y;
+  -- end function streamify_output;
   
 begin
 
