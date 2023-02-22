@@ -98,29 +98,29 @@ begin  -- architecture behavioral
         case to_integer(unsigned(localAddress(4 downto 0))) is
           
         when 0 => --0x0
-          localRdData(31 downto  0)  <=  Mon.GLOBAL_DATE;          --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.GLOBAL_DATE;          --
         when 1 => --0x1
-          localRdData(31 downto  0)  <=  Mon.GLOBAL_TIME;          --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.GLOBAL_TIME;          --
         when 2 => --0x2
-          localRdData(31 downto  0)  <=  Mon.GLOBAL_VER;           --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.GLOBAL_VER;           --
         when 3 => --0x3
-          localRdData(31 downto  0)  <=  Mon.GLOBAL_SHA;           --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.GLOBAL_SHA;           --
         when 4 => --0x4
-          localRdData(31 downto  0)  <=  Mon.TOP_SHA;              --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.TOP_SHA;              --
         when 5 => --0x5
-          localRdData(31 downto  0)  <=  Mon.TOP_VER;              --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.TOP_VER;              --
         when 6 => --0x6
-          localRdData(31 downto  0)  <=  Mon.HOG_SHA;              --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.HOG_SHA;              --
         when 7 => --0x7
-          localRdData(31 downto  0)  <=  Mon.HOG_VER;              --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.HOG_VER;              --
         when 8 => --0x8
-          localRdData(31 downto  0)  <=  Mon.CON_SHA;              --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.CON_SHA;              --
         when 9 => --0x9
-          localRdData(31 downto  0)  <=  Mon.CON_VER;              --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.CON_VER;              --
         when 16 => --0x10
-          localRdData(31 downto  0)  <=  Mon.PROJECT_LIB_SHA;      --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.PROJECT_LIB_SHA;      --
         when 17 => --0x11
-          localRdData(31 downto  0)  <=  Mon.PROJECT_LIB_VER;      --
+          localRdData(31 downto  0)  <=  Mon.HOG_INFO.PROJECT_LIB_VER;      --
 
 
           when others =>

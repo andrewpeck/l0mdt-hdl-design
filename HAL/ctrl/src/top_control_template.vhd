@@ -90,8 +90,6 @@ architecture control_arch of top_control is
   signal clk40_rst_n : std_logic := '0';
 
   -- START: ULT_AXI_SIGNALS :: DO NOT EDIT
-
-
   -- END: ULT_AXI_SIGNALS :: DO NOT EDIT
 
   signal c2c_mon  : C2C_INTF_MON_t;
@@ -312,27 +310,6 @@ begin
       K_C2CB_phy_power_down              => '0',
 --      K_C2CB_PHY_user_clk_out            => clk_K_C2CB_PHY_user,
 
-
-      K_C2C_INTF_araddr                   => c2c_intf_ReadMOSI.address,              
-      K_C2C_INTF_arprot                   => c2c_intf_ReadMOSI.protection_type,      
-      K_C2C_INTF_arready(0)               => c2c_intf_ReadMISO.ready_for_address,    
-      K_C2C_INTF_arvalid(0)               => c2c_intf_ReadMOSI.address_valid,        
-      K_C2C_INTF_awaddr                   => c2c_intf_WriteMOSI.address,             
-      K_C2C_INTF_awprot                   => c2c_intf_WriteMOSI.protection_type,     
-      K_C2C_INTF_awready(0)               => c2c_intf_WriteMISO.ready_for_address,   
-      K_C2C_INTF_awvalid(0)               => c2c_intf_WriteMOSI.address_valid,       
-      K_C2C_INTF_bready(0)                => c2c_intf_WriteMOSI.ready_for_response,  
-      K_C2C_INTF_bresp                    => c2c_intf_WriteMISO.response,            
-      K_C2C_INTF_bvalid(0)                => c2c_intf_WriteMISO.response_valid,      
-      K_C2C_INTF_rdata                    => c2c_intf_ReadMISO.data,                 
-      K_C2C_INTF_rready(0)                => c2c_intf_ReadMOSI.ready_for_data,       
-      K_C2C_INTF_rresp                    => c2c_intf_ReadMISO.response,             
-      K_C2C_INTF_rvalid(0)                => c2c_intf_ReadMISO.data_valid,           
-      K_C2C_INTF_wdata                    => c2c_intf_WriteMOSI.data,                
-      K_C2C_INTF_wready(0)                => c2c_intf_WriteMISO.ready_for_data,       
-      K_C2C_INTF_wstrb                    => c2c_intf_WriteMOSI.data_write_strobe,   
-      K_C2C_INTF_wvalid(0)                => c2c_intf_WriteMOSI.data_valid,
-
       -- START: AXI_PL_SLAVES :: DO NOT EDIT
       -- END: AXI_PL_SLAVES :: DO NOT EDIT
        
@@ -340,7 +317,7 @@ begin
       K_C2CB_phy_Rx_rxp(0)                => c2cb_rxp, --p_mgt_z2k(2 downto 2),
       K_C2CB_phy_Tx_txn(0)                => c2cb_txn, --n_mgt_k2z(2 downto 2),
       K_C2CB_phy_Tx_txp(0)                => c2cb_txp, --p_mgt_k2z(2 downto 2),
-      
+
       CM1_PB_UART_rxd                     => pB_UART_tx,
       CM1_PB_UART_txd                     => pB_UART_rx,
 
@@ -389,7 +366,7 @@ begin
   --    ctrl => hal_ctrl_r
   --    );
 
-  --    -- START: ULT_SLAVES :: DO NOT EDIT
+  -- START: ULT_SLAVES :: DO NOT EDIT
     hps_inn_map_inst : entity ctrl_lib.hps_map
     port map (
       clk_axi         => clk40,

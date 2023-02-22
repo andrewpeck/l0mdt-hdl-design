@@ -13,7 +13,7 @@ package HOG_CTRL is
 
    -- Custom types and functions --
 
-   type HOG_MON_t is record
+   type HOG_HOG_INFO_MON_t is record
       GLOBAL_DATE : std_logic_vector(32 - 1 downto 0);
       GLOBAL_TIME : std_logic_vector(32 - 1 downto 0);
       GLOBAL_VER : std_logic_vector(32 - 1 downto 0);
@@ -26,6 +26,15 @@ package HOG_CTRL is
       CON_VER : std_logic_vector(32 - 1 downto 0);
       PROJECT_LIB_SHA : std_logic_vector(32 - 1 downto 0);
       PROJECT_LIB_VER : std_logic_vector(32 - 1 downto 0);
+   end record HOG_HOG_INFO_MON_t;
+   attribute w of HOG_HOG_INFO_MON_t : type is 384;
+   function width(x: HOG_HOG_INFO_MON_t) return natural;
+   function convert(x: HOG_HOG_INFO_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: HOG_HOG_INFO_MON_t) return HOG_HOG_INFO_MON_t;
+   function zero(tpl: HOG_HOG_INFO_MON_t) return HOG_HOG_INFO_MON_t;
+
+   type HOG_MON_t is record
+      HOG_INFO : HOG_HOG_INFO_MON_t;
    end record HOG_MON_t;
    attribute w of HOG_MON_t : type is 384;
    function width(x: HOG_MON_t) return natural;
@@ -49,7 +58,7 @@ package body HOG_CTRL is
 
    -- Custom types and functions --
 
-   function width(x: HOG_MON_t) return natural is
+   function width(x: HOG_HOG_INFO_MON_t) return natural is
       variable w : natural := 0;
    begin
       w := w + width(x.GLOBAL_DATE);
@@ -66,7 +75,7 @@ package body HOG_CTRL is
       w := w + width(x.PROJECT_LIB_VER);
       return w;
    end function width;
-   function convert(x: HOG_MON_t; tpl: std_logic_vector) return std_logic_vector is
+   function convert(x: HOG_HOG_INFO_MON_t; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
       variable w : integer;
       variable u : integer := tpl'left;
@@ -146,8 +155,8 @@ package body HOG_CTRL is
       end if;
       return y;
    end function convert;
-   function convert(x: std_logic_vector; tpl: HOG_MON_t) return HOG_MON_t is
-      variable y : HOG_MON_t;
+   function convert(x: std_logic_vector; tpl: HOG_HOG_INFO_MON_t) return HOG_HOG_INFO_MON_t is
+      variable y : HOG_HOG_INFO_MON_t;
       variable w : integer;
       variable u : integer := x'left;
    begin
@@ -223,6 +232,45 @@ package body HOG_CTRL is
          u := u - w;
          w := width(tpl.PROJECT_LIB_VER);
          y.PROJECT_LIB_VER := convert(x(u downto u-w+1), tpl.PROJECT_LIB_VER);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: HOG_HOG_INFO_MON_t) return HOG_HOG_INFO_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: HOG_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.HOG_INFO);
+      return w;
+   end function width;
+   function convert(x: HOG_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.HOG_INFO);
+         y(u to u+w-1) := convert(x.HOG_INFO, y(u to u+w-1));
+      else
+         w := width(x.HOG_INFO);
+         y(u downto u-w+1) := convert(x.HOG_INFO, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: HOG_MON_t) return HOG_MON_t is
+      variable y : HOG_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.HOG_INFO);
+         y.HOG_INFO := convert(x(u to u+w-1), tpl.HOG_INFO);
+      else
+         w := width(tpl.HOG_INFO);
+         y.HOG_INFO := convert(x(u downto u-w+1), tpl.HOG_INFO);
       end if;
       return y;
    end function convert;
