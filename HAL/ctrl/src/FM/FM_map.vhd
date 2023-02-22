@@ -12,7 +12,7 @@ use work.FM_Ctrl.all;
 use work.FM_Ctrl_DEF.all;
 entity FM_map is
   generic (
-    READ_TIMEOUT     : integer := 2048
+    READ_TIMEOUT     : integer := 512 --2048
     );
   port (
     clk_axi          : in  std_logic;
@@ -40,123 +40,69 @@ architecture behavioral of FM_map is
   signal regRdAck           : std_logic;
 
   
-  constant BRAM_COUNT       : integer := 54;
+  constant BRAM_COUNT       : integer := 27;
 --  signal latchBRAM          : std_logic_vector(BRAM_COUNT-1 downto 0);
 --  signal delayLatchBRAM          : std_logic_vector(BRAM_COUNT-1 downto 0);
-  constant BRAM_range       : int_array_t(0 to BRAM_COUNT-1) := (0 => 5
-,			1 => 4
-,			2 => 10
-,			3 => 4
-,			4 => 5
-,			5 => 5
-,			6 => 5
-,			7 => 4
-,			8 => 10
-,			9 => 4
+  constant BRAM_range       : int_array_t(0 to BRAM_COUNT-1) := (0 => 9
+,			1 => 9
+,			2 => 9
+,			3 => 9
+,			4 => 9
+,			5 => 9
+,			6 => 9
+,			7 => 9
+,			8 => 9
+,			9 => 5
 ,			10 => 5
 ,			11 => 5
 ,			12 => 5
-,			13 => 4
-,			14 => 10
-,			15 => 4
+,			13 => 5
+,			14 => 5
+,			15 => 5
 ,			16 => 5
 ,			17 => 5
 ,			18 => 5
-,			19 => 4
-,			20 => 10
-,			21 => 4
+,			19 => 5
+,			20 => 5
+,			21 => 5
 ,			22 => 5
 ,			23 => 5
 ,			24 => 5
 ,			25 => 5
-,			26 => 10
-,			27 => 4
-,			28 => 5
-,			29 => 5
-,			30 => 5
-,			31 => 4
-,			32 => 10
-,			33 => 4
-,			34 => 5
-,			35 => 5
-,			36 => 5
-,			37 => 4
-,			38 => 10
-,			39 => 4
-,			40 => 5
-,			41 => 5
-,			42 => 5
-,			43 => 4
-,			44 => 10
-,			45 => 4
-,			46 => 5
-,			47 => 5
-,			48 => 5
-,			49 => 4
-,			50 => 10
-,			51 => 4
-,			52 => 5
-,			53 => 5);
-  constant BRAM_addr        : slv32_array_t(0 to BRAM_COUNT-1) := (0 => x"00000400"
-,			1 => x"00000420"
-,			2 => x"00000800"
-,			3 => x"00000C00"
-,			4 => x"00000C00"
-,			5 => x"00000C20"
-,			6 => x"00001000"
-,			7 => x"00001020"
-,			8 => x"00001400"
-,			9 => x"00001800"
-,			10 => x"00001800"
-,			11 => x"00001820"
-,			12 => x"00001C00"
-,			13 => x"00001C20"
-,			14 => x"00002000"
-,			15 => x"00002400"
-,			16 => x"00002400"
-,			17 => x"00002420"
-,			18 => x"00002800"
-,			19 => x"00002820"
-,			20 => x"00002C00"
-,			21 => x"00003000"
-,			22 => x"00003000"
-,			23 => x"00003020"
-,			24 => x"00003400"
-,			25 => x"00003420"
-,			26 => x"00003800"
-,			27 => x"00003C00"
-,			28 => x"00003C00"
-,			29 => x"00003C20"
-,			30 => x"00004000"
-,			31 => x"00004020"
-,			32 => x"00004400"
-,			33 => x"00004800"
-,			34 => x"00004800"
-,			35 => x"00004820"
-,			36 => x"00004C00"
-,			37 => x"00004C20"
-,			38 => x"00005000"
-,			39 => x"00005400"
-,			40 => x"00005400"
-,			41 => x"00005420"
-,			42 => x"00005800"
-,			43 => x"00005820"
-,			44 => x"00005C00"
-,			45 => x"00006000"
-,			46 => x"00006000"
-,			47 => x"00006020"
-,			48 => x"00006400"
-,			49 => x"00006420"
-,			50 => x"00006800"
-,			51 => x"00006C00"
-,			52 => x"00006C00"
-,			53 => x"00006C20");
+,			26 => 5);
+  constant BRAM_addr        : slv32_array_t(0 to BRAM_COUNT-1) := (0 => x"00000000"
+,			1 => x"00000200"
+,			2 => x"00000400"
+,			3 => x"00000600"
+,			4 => x"00000800"
+,			5 => x"00000A00"
+,			6 => x"00000C00"
+,			7 => x"00000E00"
+,			8 => x"00001000"
+,			9 => x"00001200"
+,			10 => x"00001220"
+,			11 => x"00001240"
+,			12 => x"00001260"
+,			13 => x"00001280"
+,			14 => x"000012A0"
+,			15 => x"000012C0"
+,			16 => x"000012E0"
+,			17 => x"00001300"
+,			18 => x"00001320"
+,			19 => x"00001340"
+,			20 => x"00001360"
+,			21 => x"00001380"
+,			22 => x"000013A0"
+,			23 => x"000013C0"
+,			24 => x"000013E0"
+,			25 => x"00001400"
+,			26 => x"00001420");
   signal BRAM_MOSI          : BRAMPortMOSI_array_t(0 to BRAM_COUNT-1);
   signal BRAM_MISO          : BRAMPortMISO_array_t(0 to BRAM_COUNT-1);
   
-  
-  signal reg_data :  slv32_array_t(integer range 0 to 27712);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 27712) := (others => x"00000000");
+  signal BRAM_not_init      : std_logic_vector(0 to BRAM_COUNT-1);
+  signal reg_data :  slv32_array_t(integer range 0 to 8196);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 8196) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
@@ -196,6 +142,9 @@ begin  -- architecture behavioral
       if regRdAck = '1' then
         localRdData_latch <= localRdData;
         localRdAck <= '1';
+      elsif BRAM_not_init /=  (BRAM_not_init'range => '0') then
+        localRdAck <= '1';      
+        localRdData_latch <= x"00000000";
       elsif BRAM_MISO(0).rd_data_valid = '1' then
         localRdAck <= '1';
         localRdData_latch <= BRAM_MISO(0).rd_data;
@@ -277,87 +226,6 @@ elsif BRAM_MISO(25).rd_data_valid = '1' then
 elsif BRAM_MISO(26).rd_data_valid = '1' then
         localRdAck <= '1';
         localRdData_latch <= BRAM_MISO(26).rd_data;
-elsif BRAM_MISO(27).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(27).rd_data;
-elsif BRAM_MISO(28).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(28).rd_data;
-elsif BRAM_MISO(29).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(29).rd_data;
-elsif BRAM_MISO(30).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(30).rd_data;
-elsif BRAM_MISO(31).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(31).rd_data;
-elsif BRAM_MISO(32).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(32).rd_data;
-elsif BRAM_MISO(33).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(33).rd_data;
-elsif BRAM_MISO(34).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(34).rd_data;
-elsif BRAM_MISO(35).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(35).rd_data;
-elsif BRAM_MISO(36).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(36).rd_data;
-elsif BRAM_MISO(37).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(37).rd_data;
-elsif BRAM_MISO(38).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(38).rd_data;
-elsif BRAM_MISO(39).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(39).rd_data;
-elsif BRAM_MISO(40).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(40).rd_data;
-elsif BRAM_MISO(41).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(41).rd_data;
-elsif BRAM_MISO(42).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(42).rd_data;
-elsif BRAM_MISO(43).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(43).rd_data;
-elsif BRAM_MISO(44).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(44).rd_data;
-elsif BRAM_MISO(45).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(45).rd_data;
-elsif BRAM_MISO(46).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(46).rd_data;
-elsif BRAM_MISO(47).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(47).rd_data;
-elsif BRAM_MISO(48).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(48).rd_data;
-elsif BRAM_MISO(49).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(49).rd_data;
-elsif BRAM_MISO(50).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(50).rd_data;
-elsif BRAM_MISO(51).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(51).rd_data;
-elsif BRAM_MISO(52).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(52).rd_data;
-elsif BRAM_MISO(53).rd_data_valid = '1' then
-        localRdAck <= '1';
-        localRdData_latch <= BRAM_MISO(53).rd_data;
 
       end if;
     end if;
@@ -373,8 +241,20 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
       localRdData <= x"00000000";
       if localRdReq = '1' then
         regRdAck  <= '1';
-        case to_integer(unsigned(localAddress(14 downto 0))) is
+        case to_integer(unsigned(localAddress(13 downto 0))) is
           
+        when 8192 => --0x2000
+          localRdData( 0)            <=  reg_data(8192)( 0);                --
+          localRdData( 2 downto  1)  <=  reg_data(8192)( 2 downto  1);      --
+          localRdData( 3)            <=  reg_data(8192)( 3);                --
+        when 8193 => --0x2001
+          localRdData(31 downto  0)  <=  reg_data(8193)(31 downto  0);      --
+        when 8194 => --0x2002
+          localRdData(31 downto  0)  <=  reg_data(8194)(31 downto  0);      --
+        when 8195 => --0x2003
+          localRdData(31 downto  0)  <=  reg_data(8195)(31 downto  0);      --
+        when 8196 => --0x2004
+          localRdData(31 downto  0)  <=  reg_data(8196)(31 downto  0);      --
 
 
           when others =>
@@ -392,35 +272,44 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
   -------------------------------------------------------------------------------
 
   -- Register mapping to ctrl structures
+  Ctrl.SPY_CTRL.GLOBAL_FREEZE          <=  reg_data(8192)( 0);               
+  Ctrl.SPY_CTRL.GLOBAL_PLAYBACK_MODE   <=  reg_data(8192)( 2 downto  1);     
+  Ctrl.SPY_CTRL.INITIALIZE_SPY_MEMORY  <=  reg_data(8192)( 3);               
+  Ctrl.FREEZE_MASK_0                   <=  reg_data(8193)(31 downto  0);     
+  Ctrl.FREEZE_MASK_1                   <=  reg_data(8194)(31 downto  0);     
+  Ctrl.PLAYBACK_MASK_0                 <=  reg_data(8195)(31 downto  0);     
+  Ctrl.PLAYBACK_MASK_1                 <=  reg_data(8196)(31 downto  0);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
+      reg_data(8192)( 0)            <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_FREEZE;
+      reg_data(8192)( 2 downto  1)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_PLAYBACK_MODE;
+      reg_data(8192)( 3)            <= DEFAULT_FM_CTRL_t.SPY_CTRL.INITIALIZE_SPY_MEMORY;
+      reg_data(8193)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_0;
+      reg_data(8194)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_1;
+      reg_data(8195)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_0;
+      reg_data(8196)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_1;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      Ctrl.SPY_CTRL.GLOBAL_FREEZE <= '0';
-      Ctrl.SPY_CTRL.GLOBAL_PLAYBACK_MODE <= (others => '0');
-      Ctrl.FREEZE_MASK_0 <= (others => '0');
-      Ctrl.FREEZE_MASK_1 <= (others => '0');
-      Ctrl.PLAYBACK_MASK_0 <= (others => '0');
-      Ctrl.PLAYBACK_MASK_1 <= (others => '0');
       
 
       
       if localWrEn = '1' then
-        case to_integer(unsigned(localAddress(14 downto 0))) is
-        when 0 => --0x0
-          Ctrl.SPY_CTRL.GLOBAL_FREEZE         <=  localWrData( 0);               
-          Ctrl.SPY_CTRL.GLOBAL_PLAYBACK_MODE  <=  localWrData( 2 downto  1);     
-        when 1 => --0x1
-          Ctrl.FREEZE_MASK_0                  <=  localWrData(31 downto  0);     
-        when 2 => --0x2
-          Ctrl.FREEZE_MASK_1                  <=  localWrData(31 downto  0);     
-        when 5 => --0x5
-          Ctrl.PLAYBACK_MASK_0                <=  localWrData(31 downto  0);     
-        when 6 => --0x6
-          Ctrl.PLAYBACK_MASK_1                <=  localWrData(31 downto  0);     
+        case to_integer(unsigned(localAddress(13 downto 0))) is
+        when 8192 => --0x2000
+          reg_data(8192)( 0)            <=  localWrData( 0);                --
+          reg_data(8192)( 2 downto  1)  <=  localWrData( 2 downto  1);      --
+          reg_data(8192)( 3)            <=  localWrData( 3);                --
+        when 8193 => --0x2001
+          reg_data(8193)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 8194 => --0x2002
+          reg_data(8194)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 8195 => --0x2003
+          reg_data(8195)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 8196 => --0x2004
+          reg_data(8196)(31 downto  0)  <=  localWrData(31 downto  0);      --
 
           when others => null;
         end case;
@@ -442,14 +331,20 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
       if reset_axi_n = '0' then
 --        latchBRAM(iBRAM) <= '0';
         BRAM_MOSI(iBRAM).enable  <= '0';
+        BRAM_not_init(iBRAM)      <= '0';
       elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
         BRAM_MOSI(iBRAM).address <= localAddress;
 --        latchBRAM(iBRAM) <= '0';
         BRAM_MOSI(iBRAM).enable  <= '0';
-        if localAddress(14 downto BRAM_range(iBRAM)) = BRAM_addr(iBRAM)(14 downto BRAM_range(iBRAM)) then
+        BRAM_not_init(iBRAM)     <= '0';
+        if localAddress(13 downto BRAM_range(iBRAM)) = BRAM_addr(iBRAM)(13 downto BRAM_range(iBRAM)) then
 --          latchBRAM(iBRAM) <= localRdReq;
 --          BRAM_MOSI(iBRAM).enable  <= '1';
-          BRAM_MOSI(iBRAM).enable  <= localRdReq;
+          if Ctrl.SPY_CTRL.INITIALIZE_SPY_MEMORY = '0' then
+            BRAM_MOSI(iBRAM).enable  <= localRdReq;
+            else
+              BRAM_not_init(iBRAM) <= '1';
+          end if;
         end if;
       end if;
     end process BRAM_read;
@@ -462,546 +357,276 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
     BRAM_MOSI(iBRAM).wr_data <= localWrData;
   end generate BRAM_asyncs;
   
-  Ctrl.SB0.SB_MEM.clk       <=  BRAM_MOSI(0).clk;
-  Ctrl.SB0.SB_MEM.enable    <=  BRAM_MOSI(0).enable;
-  Ctrl.SB0.SB_MEM.wr_enable <=  BRAM_MOSI(0).wr_enable;
-  Ctrl.SB0.SB_MEM.address   <=  BRAM_MOSI(0).address(5-1 downto 0);
-  Ctrl.SB0.SB_MEM.wr_data   <=  BRAM_MOSI(0).wr_data(32-1 downto 0);
+  Ctrl.SB1.SB_MEM.clk       <=  BRAM_MOSI(0).clk;
+  Ctrl.SB1.SB_MEM.enable    <=  BRAM_MOSI(0).enable;
+  Ctrl.SB1.SB_MEM.wr_enable <=  BRAM_MOSI(0).wr_enable;
+  Ctrl.SB1.SB_MEM.address   <=  BRAM_MOSI(0).address(9-1 downto 0);
+  Ctrl.SB1.SB_MEM.wr_data   <=  BRAM_MOSI(0).wr_data(32-1 downto 0);
 
-  Ctrl.SB0.SB_META.clk       <=  BRAM_MOSI(1).clk;
-  Ctrl.SB0.SB_META.enable    <=  BRAM_MOSI(1).enable;
-  Ctrl.SB0.SB_META.wr_enable <=  BRAM_MOSI(1).wr_enable;
-  Ctrl.SB0.SB_META.address   <=  BRAM_MOSI(1).address(4-1 downto 0);
-  Ctrl.SB0.SB_META.wr_data   <=  BRAM_MOSI(1).wr_data(32-1 downto 0);
+  Ctrl.SB4.SB_MEM.clk       <=  BRAM_MOSI(1).clk;
+  Ctrl.SB4.SB_MEM.enable    <=  BRAM_MOSI(1).enable;
+  Ctrl.SB4.SB_MEM.wr_enable <=  BRAM_MOSI(1).wr_enable;
+  Ctrl.SB4.SB_MEM.address   <=  BRAM_MOSI(1).address(9-1 downto 0);
+  Ctrl.SB4.SB_MEM.wr_data   <=  BRAM_MOSI(1).wr_data(32-1 downto 0);
 
-  Ctrl.SB1.SB_MEM.clk       <=  BRAM_MOSI(2).clk;
-  Ctrl.SB1.SB_MEM.enable    <=  BRAM_MOSI(2).enable;
-  Ctrl.SB1.SB_MEM.wr_enable <=  BRAM_MOSI(2).wr_enable;
-  Ctrl.SB1.SB_MEM.address   <=  BRAM_MOSI(2).address(10-1 downto 0);
-  Ctrl.SB1.SB_MEM.wr_data   <=  BRAM_MOSI(2).wr_data(32-1 downto 0);
+  Ctrl.SB7.SB_MEM.clk       <=  BRAM_MOSI(2).clk;
+  Ctrl.SB7.SB_MEM.enable    <=  BRAM_MOSI(2).enable;
+  Ctrl.SB7.SB_MEM.wr_enable <=  BRAM_MOSI(2).wr_enable;
+  Ctrl.SB7.SB_MEM.address   <=  BRAM_MOSI(2).address(9-1 downto 0);
+  Ctrl.SB7.SB_MEM.wr_data   <=  BRAM_MOSI(2).wr_data(32-1 downto 0);
 
-  Ctrl.SB1.SB_META.clk       <=  BRAM_MOSI(3).clk;
-  Ctrl.SB1.SB_META.enable    <=  BRAM_MOSI(3).enable;
-  Ctrl.SB1.SB_META.wr_enable <=  BRAM_MOSI(3).wr_enable;
-  Ctrl.SB1.SB_META.address   <=  BRAM_MOSI(3).address(4-1 downto 0);
-  Ctrl.SB1.SB_META.wr_data   <=  BRAM_MOSI(3).wr_data(32-1 downto 0);
+  Ctrl.SB10.SB_MEM.clk       <=  BRAM_MOSI(3).clk;
+  Ctrl.SB10.SB_MEM.enable    <=  BRAM_MOSI(3).enable;
+  Ctrl.SB10.SB_MEM.wr_enable <=  BRAM_MOSI(3).wr_enable;
+  Ctrl.SB10.SB_MEM.address   <=  BRAM_MOSI(3).address(9-1 downto 0);
+  Ctrl.SB10.SB_MEM.wr_data   <=  BRAM_MOSI(3).wr_data(32-1 downto 0);
 
-  Ctrl.SB2.SB_MEM.clk       <=  BRAM_MOSI(4).clk;
-  Ctrl.SB2.SB_MEM.enable    <=  BRAM_MOSI(4).enable;
-  Ctrl.SB2.SB_MEM.wr_enable <=  BRAM_MOSI(4).wr_enable;
-  Ctrl.SB2.SB_MEM.address   <=  BRAM_MOSI(4).address(5-1 downto 0);
-  Ctrl.SB2.SB_MEM.wr_data   <=  BRAM_MOSI(4).wr_data(32-1 downto 0);
+  Ctrl.SB13.SB_MEM.clk       <=  BRAM_MOSI(4).clk;
+  Ctrl.SB13.SB_MEM.enable    <=  BRAM_MOSI(4).enable;
+  Ctrl.SB13.SB_MEM.wr_enable <=  BRAM_MOSI(4).wr_enable;
+  Ctrl.SB13.SB_MEM.address   <=  BRAM_MOSI(4).address(9-1 downto 0);
+  Ctrl.SB13.SB_MEM.wr_data   <=  BRAM_MOSI(4).wr_data(32-1 downto 0);
 
-  Ctrl.SB2.SB_META.clk       <=  BRAM_MOSI(5).clk;
-  Ctrl.SB2.SB_META.enable    <=  BRAM_MOSI(5).enable;
-  Ctrl.SB2.SB_META.wr_enable <=  BRAM_MOSI(5).wr_enable;
-  Ctrl.SB2.SB_META.address   <=  BRAM_MOSI(5).address(5-1 downto 0);
-  Ctrl.SB2.SB_META.wr_data   <=  BRAM_MOSI(5).wr_data(32-1 downto 0);
+  Ctrl.SB16.SB_MEM.clk       <=  BRAM_MOSI(5).clk;
+  Ctrl.SB16.SB_MEM.enable    <=  BRAM_MOSI(5).enable;
+  Ctrl.SB16.SB_MEM.wr_enable <=  BRAM_MOSI(5).wr_enable;
+  Ctrl.SB16.SB_MEM.address   <=  BRAM_MOSI(5).address(9-1 downto 0);
+  Ctrl.SB16.SB_MEM.wr_data   <=  BRAM_MOSI(5).wr_data(32-1 downto 0);
 
-  Ctrl.SB3.SB_MEM.clk       <=  BRAM_MOSI(6).clk;
-  Ctrl.SB3.SB_MEM.enable    <=  BRAM_MOSI(6).enable;
-  Ctrl.SB3.SB_MEM.wr_enable <=  BRAM_MOSI(6).wr_enable;
-  Ctrl.SB3.SB_MEM.address   <=  BRAM_MOSI(6).address(5-1 downto 0);
-  Ctrl.SB3.SB_MEM.wr_data   <=  BRAM_MOSI(6).wr_data(32-1 downto 0);
+  Ctrl.SB19.SB_MEM.clk       <=  BRAM_MOSI(6).clk;
+  Ctrl.SB19.SB_MEM.enable    <=  BRAM_MOSI(6).enable;
+  Ctrl.SB19.SB_MEM.wr_enable <=  BRAM_MOSI(6).wr_enable;
+  Ctrl.SB19.SB_MEM.address   <=  BRAM_MOSI(6).address(9-1 downto 0);
+  Ctrl.SB19.SB_MEM.wr_data   <=  BRAM_MOSI(6).wr_data(32-1 downto 0);
 
-  Ctrl.SB3.SB_META.clk       <=  BRAM_MOSI(7).clk;
-  Ctrl.SB3.SB_META.enable    <=  BRAM_MOSI(7).enable;
-  Ctrl.SB3.SB_META.wr_enable <=  BRAM_MOSI(7).wr_enable;
-  Ctrl.SB3.SB_META.address   <=  BRAM_MOSI(7).address(4-1 downto 0);
-  Ctrl.SB3.SB_META.wr_data   <=  BRAM_MOSI(7).wr_data(32-1 downto 0);
+  Ctrl.SB22.SB_MEM.clk       <=  BRAM_MOSI(7).clk;
+  Ctrl.SB22.SB_MEM.enable    <=  BRAM_MOSI(7).enable;
+  Ctrl.SB22.SB_MEM.wr_enable <=  BRAM_MOSI(7).wr_enable;
+  Ctrl.SB22.SB_MEM.address   <=  BRAM_MOSI(7).address(9-1 downto 0);
+  Ctrl.SB22.SB_MEM.wr_data   <=  BRAM_MOSI(7).wr_data(32-1 downto 0);
 
-  Ctrl.SB4.SB_MEM.clk       <=  BRAM_MOSI(8).clk;
-  Ctrl.SB4.SB_MEM.enable    <=  BRAM_MOSI(8).enable;
-  Ctrl.SB4.SB_MEM.wr_enable <=  BRAM_MOSI(8).wr_enable;
-  Ctrl.SB4.SB_MEM.address   <=  BRAM_MOSI(8).address(10-1 downto 0);
-  Ctrl.SB4.SB_MEM.wr_data   <=  BRAM_MOSI(8).wr_data(32-1 downto 0);
+  Ctrl.SB25.SB_MEM.clk       <=  BRAM_MOSI(8).clk;
+  Ctrl.SB25.SB_MEM.enable    <=  BRAM_MOSI(8).enable;
+  Ctrl.SB25.SB_MEM.wr_enable <=  BRAM_MOSI(8).wr_enable;
+  Ctrl.SB25.SB_MEM.address   <=  BRAM_MOSI(8).address(9-1 downto 0);
+  Ctrl.SB25.SB_MEM.wr_data   <=  BRAM_MOSI(8).wr_data(32-1 downto 0);
 
-  Ctrl.SB4.SB_META.clk       <=  BRAM_MOSI(9).clk;
-  Ctrl.SB4.SB_META.enable    <=  BRAM_MOSI(9).enable;
-  Ctrl.SB4.SB_META.wr_enable <=  BRAM_MOSI(9).wr_enable;
-  Ctrl.SB4.SB_META.address   <=  BRAM_MOSI(9).address(4-1 downto 0);
-  Ctrl.SB4.SB_META.wr_data   <=  BRAM_MOSI(9).wr_data(32-1 downto 0);
+  Ctrl.SB0.SB_MEM.clk       <=  BRAM_MOSI(9).clk;
+  Ctrl.SB0.SB_MEM.enable    <=  BRAM_MOSI(9).enable;
+  Ctrl.SB0.SB_MEM.wr_enable <=  BRAM_MOSI(9).wr_enable;
+  Ctrl.SB0.SB_MEM.address   <=  BRAM_MOSI(9).address(5-1 downto 0);
+  Ctrl.SB0.SB_MEM.wr_data   <=  BRAM_MOSI(9).wr_data(32-1 downto 0);
 
-  Ctrl.SB5.SB_MEM.clk       <=  BRAM_MOSI(10).clk;
-  Ctrl.SB5.SB_MEM.enable    <=  BRAM_MOSI(10).enable;
-  Ctrl.SB5.SB_MEM.wr_enable <=  BRAM_MOSI(10).wr_enable;
-  Ctrl.SB5.SB_MEM.address   <=  BRAM_MOSI(10).address(5-1 downto 0);
-  Ctrl.SB5.SB_MEM.wr_data   <=  BRAM_MOSI(10).wr_data(32-1 downto 0);
+  Ctrl.SB2.SB_MEM.clk       <=  BRAM_MOSI(10).clk;
+  Ctrl.SB2.SB_MEM.enable    <=  BRAM_MOSI(10).enable;
+  Ctrl.SB2.SB_MEM.wr_enable <=  BRAM_MOSI(10).wr_enable;
+  Ctrl.SB2.SB_MEM.address   <=  BRAM_MOSI(10).address(5-1 downto 0);
+  Ctrl.SB2.SB_MEM.wr_data   <=  BRAM_MOSI(10).wr_data(32-1 downto 0);
 
-  Ctrl.SB5.SB_META.clk       <=  BRAM_MOSI(11).clk;
-  Ctrl.SB5.SB_META.enable    <=  BRAM_MOSI(11).enable;
-  Ctrl.SB5.SB_META.wr_enable <=  BRAM_MOSI(11).wr_enable;
-  Ctrl.SB5.SB_META.address   <=  BRAM_MOSI(11).address(5-1 downto 0);
-  Ctrl.SB5.SB_META.wr_data   <=  BRAM_MOSI(11).wr_data(32-1 downto 0);
+  Ctrl.SB3.SB_MEM.clk       <=  BRAM_MOSI(11).clk;
+  Ctrl.SB3.SB_MEM.enable    <=  BRAM_MOSI(11).enable;
+  Ctrl.SB3.SB_MEM.wr_enable <=  BRAM_MOSI(11).wr_enable;
+  Ctrl.SB3.SB_MEM.address   <=  BRAM_MOSI(11).address(5-1 downto 0);
+  Ctrl.SB3.SB_MEM.wr_data   <=  BRAM_MOSI(11).wr_data(32-1 downto 0);
 
-  Ctrl.SB6.SB_MEM.clk       <=  BRAM_MOSI(12).clk;
-  Ctrl.SB6.SB_MEM.enable    <=  BRAM_MOSI(12).enable;
-  Ctrl.SB6.SB_MEM.wr_enable <=  BRAM_MOSI(12).wr_enable;
-  Ctrl.SB6.SB_MEM.address   <=  BRAM_MOSI(12).address(5-1 downto 0);
-  Ctrl.SB6.SB_MEM.wr_data   <=  BRAM_MOSI(12).wr_data(32-1 downto 0);
+  Ctrl.SB5.SB_MEM.clk       <=  BRAM_MOSI(12).clk;
+  Ctrl.SB5.SB_MEM.enable    <=  BRAM_MOSI(12).enable;
+  Ctrl.SB5.SB_MEM.wr_enable <=  BRAM_MOSI(12).wr_enable;
+  Ctrl.SB5.SB_MEM.address   <=  BRAM_MOSI(12).address(5-1 downto 0);
+  Ctrl.SB5.SB_MEM.wr_data   <=  BRAM_MOSI(12).wr_data(32-1 downto 0);
 
-  Ctrl.SB6.SB_META.clk       <=  BRAM_MOSI(13).clk;
-  Ctrl.SB6.SB_META.enable    <=  BRAM_MOSI(13).enable;
-  Ctrl.SB6.SB_META.wr_enable <=  BRAM_MOSI(13).wr_enable;
-  Ctrl.SB6.SB_META.address   <=  BRAM_MOSI(13).address(4-1 downto 0);
-  Ctrl.SB6.SB_META.wr_data   <=  BRAM_MOSI(13).wr_data(32-1 downto 0);
+  Ctrl.SB6.SB_MEM.clk       <=  BRAM_MOSI(13).clk;
+  Ctrl.SB6.SB_MEM.enable    <=  BRAM_MOSI(13).enable;
+  Ctrl.SB6.SB_MEM.wr_enable <=  BRAM_MOSI(13).wr_enable;
+  Ctrl.SB6.SB_MEM.address   <=  BRAM_MOSI(13).address(5-1 downto 0);
+  Ctrl.SB6.SB_MEM.wr_data   <=  BRAM_MOSI(13).wr_data(32-1 downto 0);
 
-  Ctrl.SB7.SB_MEM.clk       <=  BRAM_MOSI(14).clk;
-  Ctrl.SB7.SB_MEM.enable    <=  BRAM_MOSI(14).enable;
-  Ctrl.SB7.SB_MEM.wr_enable <=  BRAM_MOSI(14).wr_enable;
-  Ctrl.SB7.SB_MEM.address   <=  BRAM_MOSI(14).address(10-1 downto 0);
-  Ctrl.SB7.SB_MEM.wr_data   <=  BRAM_MOSI(14).wr_data(32-1 downto 0);
+  Ctrl.SB8.SB_MEM.clk       <=  BRAM_MOSI(14).clk;
+  Ctrl.SB8.SB_MEM.enable    <=  BRAM_MOSI(14).enable;
+  Ctrl.SB8.SB_MEM.wr_enable <=  BRAM_MOSI(14).wr_enable;
+  Ctrl.SB8.SB_MEM.address   <=  BRAM_MOSI(14).address(5-1 downto 0);
+  Ctrl.SB8.SB_MEM.wr_data   <=  BRAM_MOSI(14).wr_data(32-1 downto 0);
 
-  Ctrl.SB7.SB_META.clk       <=  BRAM_MOSI(15).clk;
-  Ctrl.SB7.SB_META.enable    <=  BRAM_MOSI(15).enable;
-  Ctrl.SB7.SB_META.wr_enable <=  BRAM_MOSI(15).wr_enable;
-  Ctrl.SB7.SB_META.address   <=  BRAM_MOSI(15).address(4-1 downto 0);
-  Ctrl.SB7.SB_META.wr_data   <=  BRAM_MOSI(15).wr_data(32-1 downto 0);
+  Ctrl.SB9.SB_MEM.clk       <=  BRAM_MOSI(15).clk;
+  Ctrl.SB9.SB_MEM.enable    <=  BRAM_MOSI(15).enable;
+  Ctrl.SB9.SB_MEM.wr_enable <=  BRAM_MOSI(15).wr_enable;
+  Ctrl.SB9.SB_MEM.address   <=  BRAM_MOSI(15).address(5-1 downto 0);
+  Ctrl.SB9.SB_MEM.wr_data   <=  BRAM_MOSI(15).wr_data(32-1 downto 0);
 
-  Ctrl.SB8.SB_MEM.clk       <=  BRAM_MOSI(16).clk;
-  Ctrl.SB8.SB_MEM.enable    <=  BRAM_MOSI(16).enable;
-  Ctrl.SB8.SB_MEM.wr_enable <=  BRAM_MOSI(16).wr_enable;
-  Ctrl.SB8.SB_MEM.address   <=  BRAM_MOSI(16).address(5-1 downto 0);
-  Ctrl.SB8.SB_MEM.wr_data   <=  BRAM_MOSI(16).wr_data(32-1 downto 0);
+  Ctrl.SB11.SB_MEM.clk       <=  BRAM_MOSI(16).clk;
+  Ctrl.SB11.SB_MEM.enable    <=  BRAM_MOSI(16).enable;
+  Ctrl.SB11.SB_MEM.wr_enable <=  BRAM_MOSI(16).wr_enable;
+  Ctrl.SB11.SB_MEM.address   <=  BRAM_MOSI(16).address(5-1 downto 0);
+  Ctrl.SB11.SB_MEM.wr_data   <=  BRAM_MOSI(16).wr_data(32-1 downto 0);
 
-  Ctrl.SB8.SB_META.clk       <=  BRAM_MOSI(17).clk;
-  Ctrl.SB8.SB_META.enable    <=  BRAM_MOSI(17).enable;
-  Ctrl.SB8.SB_META.wr_enable <=  BRAM_MOSI(17).wr_enable;
-  Ctrl.SB8.SB_META.address   <=  BRAM_MOSI(17).address(5-1 downto 0);
-  Ctrl.SB8.SB_META.wr_data   <=  BRAM_MOSI(17).wr_data(32-1 downto 0);
+  Ctrl.SB12.SB_MEM.clk       <=  BRAM_MOSI(17).clk;
+  Ctrl.SB12.SB_MEM.enable    <=  BRAM_MOSI(17).enable;
+  Ctrl.SB12.SB_MEM.wr_enable <=  BRAM_MOSI(17).wr_enable;
+  Ctrl.SB12.SB_MEM.address   <=  BRAM_MOSI(17).address(5-1 downto 0);
+  Ctrl.SB12.SB_MEM.wr_data   <=  BRAM_MOSI(17).wr_data(32-1 downto 0);
 
-  Ctrl.SB9.SB_MEM.clk       <=  BRAM_MOSI(18).clk;
-  Ctrl.SB9.SB_MEM.enable    <=  BRAM_MOSI(18).enable;
-  Ctrl.SB9.SB_MEM.wr_enable <=  BRAM_MOSI(18).wr_enable;
-  Ctrl.SB9.SB_MEM.address   <=  BRAM_MOSI(18).address(5-1 downto 0);
-  Ctrl.SB9.SB_MEM.wr_data   <=  BRAM_MOSI(18).wr_data(32-1 downto 0);
+  Ctrl.SB14.SB_MEM.clk       <=  BRAM_MOSI(18).clk;
+  Ctrl.SB14.SB_MEM.enable    <=  BRAM_MOSI(18).enable;
+  Ctrl.SB14.SB_MEM.wr_enable <=  BRAM_MOSI(18).wr_enable;
+  Ctrl.SB14.SB_MEM.address   <=  BRAM_MOSI(18).address(5-1 downto 0);
+  Ctrl.SB14.SB_MEM.wr_data   <=  BRAM_MOSI(18).wr_data(32-1 downto 0);
 
-  Ctrl.SB9.SB_META.clk       <=  BRAM_MOSI(19).clk;
-  Ctrl.SB9.SB_META.enable    <=  BRAM_MOSI(19).enable;
-  Ctrl.SB9.SB_META.wr_enable <=  BRAM_MOSI(19).wr_enable;
-  Ctrl.SB9.SB_META.address   <=  BRAM_MOSI(19).address(4-1 downto 0);
-  Ctrl.SB9.SB_META.wr_data   <=  BRAM_MOSI(19).wr_data(32-1 downto 0);
+  Ctrl.SB15.SB_MEM.clk       <=  BRAM_MOSI(19).clk;
+  Ctrl.SB15.SB_MEM.enable    <=  BRAM_MOSI(19).enable;
+  Ctrl.SB15.SB_MEM.wr_enable <=  BRAM_MOSI(19).wr_enable;
+  Ctrl.SB15.SB_MEM.address   <=  BRAM_MOSI(19).address(5-1 downto 0);
+  Ctrl.SB15.SB_MEM.wr_data   <=  BRAM_MOSI(19).wr_data(32-1 downto 0);
 
-  Ctrl.SB10.SB_MEM.clk       <=  BRAM_MOSI(20).clk;
-  Ctrl.SB10.SB_MEM.enable    <=  BRAM_MOSI(20).enable;
-  Ctrl.SB10.SB_MEM.wr_enable <=  BRAM_MOSI(20).wr_enable;
-  Ctrl.SB10.SB_MEM.address   <=  BRAM_MOSI(20).address(10-1 downto 0);
-  Ctrl.SB10.SB_MEM.wr_data   <=  BRAM_MOSI(20).wr_data(32-1 downto 0);
+  Ctrl.SB17.SB_MEM.clk       <=  BRAM_MOSI(20).clk;
+  Ctrl.SB17.SB_MEM.enable    <=  BRAM_MOSI(20).enable;
+  Ctrl.SB17.SB_MEM.wr_enable <=  BRAM_MOSI(20).wr_enable;
+  Ctrl.SB17.SB_MEM.address   <=  BRAM_MOSI(20).address(5-1 downto 0);
+  Ctrl.SB17.SB_MEM.wr_data   <=  BRAM_MOSI(20).wr_data(32-1 downto 0);
 
-  Ctrl.SB10.SB_META.clk       <=  BRAM_MOSI(21).clk;
-  Ctrl.SB10.SB_META.enable    <=  BRAM_MOSI(21).enable;
-  Ctrl.SB10.SB_META.wr_enable <=  BRAM_MOSI(21).wr_enable;
-  Ctrl.SB10.SB_META.address   <=  BRAM_MOSI(21).address(4-1 downto 0);
-  Ctrl.SB10.SB_META.wr_data   <=  BRAM_MOSI(21).wr_data(32-1 downto 0);
+  Ctrl.SB18.SB_MEM.clk       <=  BRAM_MOSI(21).clk;
+  Ctrl.SB18.SB_MEM.enable    <=  BRAM_MOSI(21).enable;
+  Ctrl.SB18.SB_MEM.wr_enable <=  BRAM_MOSI(21).wr_enable;
+  Ctrl.SB18.SB_MEM.address   <=  BRAM_MOSI(21).address(5-1 downto 0);
+  Ctrl.SB18.SB_MEM.wr_data   <=  BRAM_MOSI(21).wr_data(32-1 downto 0);
 
-  Ctrl.SB11.SB_MEM.clk       <=  BRAM_MOSI(22).clk;
-  Ctrl.SB11.SB_MEM.enable    <=  BRAM_MOSI(22).enable;
-  Ctrl.SB11.SB_MEM.wr_enable <=  BRAM_MOSI(22).wr_enable;
-  Ctrl.SB11.SB_MEM.address   <=  BRAM_MOSI(22).address(5-1 downto 0);
-  Ctrl.SB11.SB_MEM.wr_data   <=  BRAM_MOSI(22).wr_data(32-1 downto 0);
+  Ctrl.SB20.SB_MEM.clk       <=  BRAM_MOSI(22).clk;
+  Ctrl.SB20.SB_MEM.enable    <=  BRAM_MOSI(22).enable;
+  Ctrl.SB20.SB_MEM.wr_enable <=  BRAM_MOSI(22).wr_enable;
+  Ctrl.SB20.SB_MEM.address   <=  BRAM_MOSI(22).address(5-1 downto 0);
+  Ctrl.SB20.SB_MEM.wr_data   <=  BRAM_MOSI(22).wr_data(32-1 downto 0);
 
-  Ctrl.SB11.SB_META.clk       <=  BRAM_MOSI(23).clk;
-  Ctrl.SB11.SB_META.enable    <=  BRAM_MOSI(23).enable;
-  Ctrl.SB11.SB_META.wr_enable <=  BRAM_MOSI(23).wr_enable;
-  Ctrl.SB11.SB_META.address   <=  BRAM_MOSI(23).address(5-1 downto 0);
-  Ctrl.SB11.SB_META.wr_data   <=  BRAM_MOSI(23).wr_data(32-1 downto 0);
+  Ctrl.SB21.SB_MEM.clk       <=  BRAM_MOSI(23).clk;
+  Ctrl.SB21.SB_MEM.enable    <=  BRAM_MOSI(23).enable;
+  Ctrl.SB21.SB_MEM.wr_enable <=  BRAM_MOSI(23).wr_enable;
+  Ctrl.SB21.SB_MEM.address   <=  BRAM_MOSI(23).address(5-1 downto 0);
+  Ctrl.SB21.SB_MEM.wr_data   <=  BRAM_MOSI(23).wr_data(32-1 downto 0);
 
-  Ctrl.SB12.SB_MEM.clk       <=  BRAM_MOSI(24).clk;
-  Ctrl.SB12.SB_MEM.enable    <=  BRAM_MOSI(24).enable;
-  Ctrl.SB12.SB_MEM.wr_enable <=  BRAM_MOSI(24).wr_enable;
-  Ctrl.SB12.SB_MEM.address   <=  BRAM_MOSI(24).address(5-1 downto 0);
-  Ctrl.SB12.SB_MEM.wr_data   <=  BRAM_MOSI(24).wr_data(32-1 downto 0);
+  Ctrl.SB23.SB_MEM.clk       <=  BRAM_MOSI(24).clk;
+  Ctrl.SB23.SB_MEM.enable    <=  BRAM_MOSI(24).enable;
+  Ctrl.SB23.SB_MEM.wr_enable <=  BRAM_MOSI(24).wr_enable;
+  Ctrl.SB23.SB_MEM.address   <=  BRAM_MOSI(24).address(5-1 downto 0);
+  Ctrl.SB23.SB_MEM.wr_data   <=  BRAM_MOSI(24).wr_data(32-1 downto 0);
 
-  Ctrl.SB12.SB_META.clk       <=  BRAM_MOSI(25).clk;
-  Ctrl.SB12.SB_META.enable    <=  BRAM_MOSI(25).enable;
-  Ctrl.SB12.SB_META.wr_enable <=  BRAM_MOSI(25).wr_enable;
-  Ctrl.SB12.SB_META.address   <=  BRAM_MOSI(25).address(5-1 downto 0);
-  Ctrl.SB12.SB_META.wr_data   <=  BRAM_MOSI(25).wr_data(32-1 downto 0);
+  Ctrl.SB24.SB_MEM.clk       <=  BRAM_MOSI(25).clk;
+  Ctrl.SB24.SB_MEM.enable    <=  BRAM_MOSI(25).enable;
+  Ctrl.SB24.SB_MEM.wr_enable <=  BRAM_MOSI(25).wr_enable;
+  Ctrl.SB24.SB_MEM.address   <=  BRAM_MOSI(25).address(5-1 downto 0);
+  Ctrl.SB24.SB_MEM.wr_data   <=  BRAM_MOSI(25).wr_data(32-1 downto 0);
 
-  Ctrl.SB13.SB_MEM.clk       <=  BRAM_MOSI(26).clk;
-  Ctrl.SB13.SB_MEM.enable    <=  BRAM_MOSI(26).enable;
-  Ctrl.SB13.SB_MEM.wr_enable <=  BRAM_MOSI(26).wr_enable;
-  Ctrl.SB13.SB_MEM.address   <=  BRAM_MOSI(26).address(10-1 downto 0);
-  Ctrl.SB13.SB_MEM.wr_data   <=  BRAM_MOSI(26).wr_data(32-1 downto 0);
-
-  Ctrl.SB13.SB_META.clk       <=  BRAM_MOSI(27).clk;
-  Ctrl.SB13.SB_META.enable    <=  BRAM_MOSI(27).enable;
-  Ctrl.SB13.SB_META.wr_enable <=  BRAM_MOSI(27).wr_enable;
-  Ctrl.SB13.SB_META.address   <=  BRAM_MOSI(27).address(4-1 downto 0);
-  Ctrl.SB13.SB_META.wr_data   <=  BRAM_MOSI(27).wr_data(32-1 downto 0);
-
-  Ctrl.SB14.SB_MEM.clk       <=  BRAM_MOSI(28).clk;
-  Ctrl.SB14.SB_MEM.enable    <=  BRAM_MOSI(28).enable;
-  Ctrl.SB14.SB_MEM.wr_enable <=  BRAM_MOSI(28).wr_enable;
-  Ctrl.SB14.SB_MEM.address   <=  BRAM_MOSI(28).address(5-1 downto 0);
-  Ctrl.SB14.SB_MEM.wr_data   <=  BRAM_MOSI(28).wr_data(32-1 downto 0);
-
-  Ctrl.SB14.SB_META.clk       <=  BRAM_MOSI(29).clk;
-  Ctrl.SB14.SB_META.enable    <=  BRAM_MOSI(29).enable;
-  Ctrl.SB14.SB_META.wr_enable <=  BRAM_MOSI(29).wr_enable;
-  Ctrl.SB14.SB_META.address   <=  BRAM_MOSI(29).address(5-1 downto 0);
-  Ctrl.SB14.SB_META.wr_data   <=  BRAM_MOSI(29).wr_data(32-1 downto 0);
-
-  Ctrl.SB15.SB_MEM.clk       <=  BRAM_MOSI(30).clk;
-  Ctrl.SB15.SB_MEM.enable    <=  BRAM_MOSI(30).enable;
-  Ctrl.SB15.SB_MEM.wr_enable <=  BRAM_MOSI(30).wr_enable;
-  Ctrl.SB15.SB_MEM.address   <=  BRAM_MOSI(30).address(5-1 downto 0);
-  Ctrl.SB15.SB_MEM.wr_data   <=  BRAM_MOSI(30).wr_data(32-1 downto 0);
-
-  Ctrl.SB15.SB_META.clk       <=  BRAM_MOSI(31).clk;
-  Ctrl.SB15.SB_META.enable    <=  BRAM_MOSI(31).enable;
-  Ctrl.SB15.SB_META.wr_enable <=  BRAM_MOSI(31).wr_enable;
-  Ctrl.SB15.SB_META.address   <=  BRAM_MOSI(31).address(4-1 downto 0);
-  Ctrl.SB15.SB_META.wr_data   <=  BRAM_MOSI(31).wr_data(32-1 downto 0);
-
-  Ctrl.SB16.SB_MEM.clk       <=  BRAM_MOSI(32).clk;
-  Ctrl.SB16.SB_MEM.enable    <=  BRAM_MOSI(32).enable;
-  Ctrl.SB16.SB_MEM.wr_enable <=  BRAM_MOSI(32).wr_enable;
-  Ctrl.SB16.SB_MEM.address   <=  BRAM_MOSI(32).address(10-1 downto 0);
-  Ctrl.SB16.SB_MEM.wr_data   <=  BRAM_MOSI(32).wr_data(32-1 downto 0);
-
-  Ctrl.SB16.SB_META.clk       <=  BRAM_MOSI(33).clk;
-  Ctrl.SB16.SB_META.enable    <=  BRAM_MOSI(33).enable;
-  Ctrl.SB16.SB_META.wr_enable <=  BRAM_MOSI(33).wr_enable;
-  Ctrl.SB16.SB_META.address   <=  BRAM_MOSI(33).address(4-1 downto 0);
-  Ctrl.SB16.SB_META.wr_data   <=  BRAM_MOSI(33).wr_data(32-1 downto 0);
-
-  Ctrl.SB17.SB_MEM.clk       <=  BRAM_MOSI(34).clk;
-  Ctrl.SB17.SB_MEM.enable    <=  BRAM_MOSI(34).enable;
-  Ctrl.SB17.SB_MEM.wr_enable <=  BRAM_MOSI(34).wr_enable;
-  Ctrl.SB17.SB_MEM.address   <=  BRAM_MOSI(34).address(5-1 downto 0);
-  Ctrl.SB17.SB_MEM.wr_data   <=  BRAM_MOSI(34).wr_data(32-1 downto 0);
-
-  Ctrl.SB17.SB_META.clk       <=  BRAM_MOSI(35).clk;
-  Ctrl.SB17.SB_META.enable    <=  BRAM_MOSI(35).enable;
-  Ctrl.SB17.SB_META.wr_enable <=  BRAM_MOSI(35).wr_enable;
-  Ctrl.SB17.SB_META.address   <=  BRAM_MOSI(35).address(5-1 downto 0);
-  Ctrl.SB17.SB_META.wr_data   <=  BRAM_MOSI(35).wr_data(32-1 downto 0);
-
-  Ctrl.SB18.SB_MEM.clk       <=  BRAM_MOSI(36).clk;
-  Ctrl.SB18.SB_MEM.enable    <=  BRAM_MOSI(36).enable;
-  Ctrl.SB18.SB_MEM.wr_enable <=  BRAM_MOSI(36).wr_enable;
-  Ctrl.SB18.SB_MEM.address   <=  BRAM_MOSI(36).address(5-1 downto 0);
-  Ctrl.SB18.SB_MEM.wr_data   <=  BRAM_MOSI(36).wr_data(32-1 downto 0);
-
-  Ctrl.SB18.SB_META.clk       <=  BRAM_MOSI(37).clk;
-  Ctrl.SB18.SB_META.enable    <=  BRAM_MOSI(37).enable;
-  Ctrl.SB18.SB_META.wr_enable <=  BRAM_MOSI(37).wr_enable;
-  Ctrl.SB18.SB_META.address   <=  BRAM_MOSI(37).address(4-1 downto 0);
-  Ctrl.SB18.SB_META.wr_data   <=  BRAM_MOSI(37).wr_data(32-1 downto 0);
-
-  Ctrl.SB19.SB_MEM.clk       <=  BRAM_MOSI(38).clk;
-  Ctrl.SB19.SB_MEM.enable    <=  BRAM_MOSI(38).enable;
-  Ctrl.SB19.SB_MEM.wr_enable <=  BRAM_MOSI(38).wr_enable;
-  Ctrl.SB19.SB_MEM.address   <=  BRAM_MOSI(38).address(10-1 downto 0);
-  Ctrl.SB19.SB_MEM.wr_data   <=  BRAM_MOSI(38).wr_data(32-1 downto 0);
-
-  Ctrl.SB19.SB_META.clk       <=  BRAM_MOSI(39).clk;
-  Ctrl.SB19.SB_META.enable    <=  BRAM_MOSI(39).enable;
-  Ctrl.SB19.SB_META.wr_enable <=  BRAM_MOSI(39).wr_enable;
-  Ctrl.SB19.SB_META.address   <=  BRAM_MOSI(39).address(4-1 downto 0);
-  Ctrl.SB19.SB_META.wr_data   <=  BRAM_MOSI(39).wr_data(32-1 downto 0);
-
-  Ctrl.SB20.SB_MEM.clk       <=  BRAM_MOSI(40).clk;
-  Ctrl.SB20.SB_MEM.enable    <=  BRAM_MOSI(40).enable;
-  Ctrl.SB20.SB_MEM.wr_enable <=  BRAM_MOSI(40).wr_enable;
-  Ctrl.SB20.SB_MEM.address   <=  BRAM_MOSI(40).address(5-1 downto 0);
-  Ctrl.SB20.SB_MEM.wr_data   <=  BRAM_MOSI(40).wr_data(32-1 downto 0);
-
-  Ctrl.SB20.SB_META.clk       <=  BRAM_MOSI(41).clk;
-  Ctrl.SB20.SB_META.enable    <=  BRAM_MOSI(41).enable;
-  Ctrl.SB20.SB_META.wr_enable <=  BRAM_MOSI(41).wr_enable;
-  Ctrl.SB20.SB_META.address   <=  BRAM_MOSI(41).address(5-1 downto 0);
-  Ctrl.SB20.SB_META.wr_data   <=  BRAM_MOSI(41).wr_data(32-1 downto 0);
-
-  Ctrl.SB21.SB_MEM.clk       <=  BRAM_MOSI(42).clk;
-  Ctrl.SB21.SB_MEM.enable    <=  BRAM_MOSI(42).enable;
-  Ctrl.SB21.SB_MEM.wr_enable <=  BRAM_MOSI(42).wr_enable;
-  Ctrl.SB21.SB_MEM.address   <=  BRAM_MOSI(42).address(5-1 downto 0);
-  Ctrl.SB21.SB_MEM.wr_data   <=  BRAM_MOSI(42).wr_data(32-1 downto 0);
-
-  Ctrl.SB21.SB_META.clk       <=  BRAM_MOSI(43).clk;
-  Ctrl.SB21.SB_META.enable    <=  BRAM_MOSI(43).enable;
-  Ctrl.SB21.SB_META.wr_enable <=  BRAM_MOSI(43).wr_enable;
-  Ctrl.SB21.SB_META.address   <=  BRAM_MOSI(43).address(4-1 downto 0);
-  Ctrl.SB21.SB_META.wr_data   <=  BRAM_MOSI(43).wr_data(32-1 downto 0);
-
-  Ctrl.SB22.SB_MEM.clk       <=  BRAM_MOSI(44).clk;
-  Ctrl.SB22.SB_MEM.enable    <=  BRAM_MOSI(44).enable;
-  Ctrl.SB22.SB_MEM.wr_enable <=  BRAM_MOSI(44).wr_enable;
-  Ctrl.SB22.SB_MEM.address   <=  BRAM_MOSI(44).address(10-1 downto 0);
-  Ctrl.SB22.SB_MEM.wr_data   <=  BRAM_MOSI(44).wr_data(32-1 downto 0);
-
-  Ctrl.SB22.SB_META.clk       <=  BRAM_MOSI(45).clk;
-  Ctrl.SB22.SB_META.enable    <=  BRAM_MOSI(45).enable;
-  Ctrl.SB22.SB_META.wr_enable <=  BRAM_MOSI(45).wr_enable;
-  Ctrl.SB22.SB_META.address   <=  BRAM_MOSI(45).address(4-1 downto 0);
-  Ctrl.SB22.SB_META.wr_data   <=  BRAM_MOSI(45).wr_data(32-1 downto 0);
-
-  Ctrl.SB23.SB_MEM.clk       <=  BRAM_MOSI(46).clk;
-  Ctrl.SB23.SB_MEM.enable    <=  BRAM_MOSI(46).enable;
-  Ctrl.SB23.SB_MEM.wr_enable <=  BRAM_MOSI(46).wr_enable;
-  Ctrl.SB23.SB_MEM.address   <=  BRAM_MOSI(46).address(5-1 downto 0);
-  Ctrl.SB23.SB_MEM.wr_data   <=  BRAM_MOSI(46).wr_data(32-1 downto 0);
-
-  Ctrl.SB23.SB_META.clk       <=  BRAM_MOSI(47).clk;
-  Ctrl.SB23.SB_META.enable    <=  BRAM_MOSI(47).enable;
-  Ctrl.SB23.SB_META.wr_enable <=  BRAM_MOSI(47).wr_enable;
-  Ctrl.SB23.SB_META.address   <=  BRAM_MOSI(47).address(5-1 downto 0);
-  Ctrl.SB23.SB_META.wr_data   <=  BRAM_MOSI(47).wr_data(32-1 downto 0);
-
-  Ctrl.SB24.SB_MEM.clk       <=  BRAM_MOSI(48).clk;
-  Ctrl.SB24.SB_MEM.enable    <=  BRAM_MOSI(48).enable;
-  Ctrl.SB24.SB_MEM.wr_enable <=  BRAM_MOSI(48).wr_enable;
-  Ctrl.SB24.SB_MEM.address   <=  BRAM_MOSI(48).address(5-1 downto 0);
-  Ctrl.SB24.SB_MEM.wr_data   <=  BRAM_MOSI(48).wr_data(32-1 downto 0);
-
-  Ctrl.SB24.SB_META.clk       <=  BRAM_MOSI(49).clk;
-  Ctrl.SB24.SB_META.enable    <=  BRAM_MOSI(49).enable;
-  Ctrl.SB24.SB_META.wr_enable <=  BRAM_MOSI(49).wr_enable;
-  Ctrl.SB24.SB_META.address   <=  BRAM_MOSI(49).address(4-1 downto 0);
-  Ctrl.SB24.SB_META.wr_data   <=  BRAM_MOSI(49).wr_data(32-1 downto 0);
-
-  Ctrl.SB25.SB_MEM.clk       <=  BRAM_MOSI(50).clk;
-  Ctrl.SB25.SB_MEM.enable    <=  BRAM_MOSI(50).enable;
-  Ctrl.SB25.SB_MEM.wr_enable <=  BRAM_MOSI(50).wr_enable;
-  Ctrl.SB25.SB_MEM.address   <=  BRAM_MOSI(50).address(10-1 downto 0);
-  Ctrl.SB25.SB_MEM.wr_data   <=  BRAM_MOSI(50).wr_data(32-1 downto 0);
-
-  Ctrl.SB25.SB_META.clk       <=  BRAM_MOSI(51).clk;
-  Ctrl.SB25.SB_META.enable    <=  BRAM_MOSI(51).enable;
-  Ctrl.SB25.SB_META.wr_enable <=  BRAM_MOSI(51).wr_enable;
-  Ctrl.SB25.SB_META.address   <=  BRAM_MOSI(51).address(4-1 downto 0);
-  Ctrl.SB25.SB_META.wr_data   <=  BRAM_MOSI(51).wr_data(32-1 downto 0);
-
-  Ctrl.SB26.SB_MEM.clk       <=  BRAM_MOSI(52).clk;
-  Ctrl.SB26.SB_MEM.enable    <=  BRAM_MOSI(52).enable;
-  Ctrl.SB26.SB_MEM.wr_enable <=  BRAM_MOSI(52).wr_enable;
-  Ctrl.SB26.SB_MEM.address   <=  BRAM_MOSI(52).address(5-1 downto 0);
-  Ctrl.SB26.SB_MEM.wr_data   <=  BRAM_MOSI(52).wr_data(32-1 downto 0);
-
-  Ctrl.SB26.SB_META.clk       <=  BRAM_MOSI(53).clk;
-  Ctrl.SB26.SB_META.enable    <=  BRAM_MOSI(53).enable;
-  Ctrl.SB26.SB_META.wr_enable <=  BRAM_MOSI(53).wr_enable;
-  Ctrl.SB26.SB_META.address   <=  BRAM_MOSI(53).address(5-1 downto 0);
-  Ctrl.SB26.SB_META.wr_data   <=  BRAM_MOSI(53).wr_data(32-1 downto 0);
+  Ctrl.SB26.SB_MEM.clk       <=  BRAM_MOSI(26).clk;
+  Ctrl.SB26.SB_MEM.enable    <=  BRAM_MOSI(26).enable;
+  Ctrl.SB26.SB_MEM.wr_enable <=  BRAM_MOSI(26).wr_enable;
+  Ctrl.SB26.SB_MEM.address   <=  BRAM_MOSI(26).address(5-1 downto 0);
+  Ctrl.SB26.SB_MEM.wr_data   <=  BRAM_MOSI(26).wr_data(32-1 downto 0);
 
 
-  BRAM_MISO(0).rd_data(32-1 downto 0) <= Mon.SB0.SB_MEM.rd_data;
+  BRAM_MISO(0).rd_data(32-1 downto 0) <= Mon.SB1.SB_MEM.rd_data;
   BRAM_MISO(0).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(0).rd_data_valid <= Mon.SB0.SB_MEM.rd_data_valid;
+  BRAM_MISO(0).rd_data_valid <= Mon.SB1.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(1).rd_data(32-1 downto 0) <= Mon.SB0.SB_META.rd_data;
+  BRAM_MISO(1).rd_data(32-1 downto 0) <= Mon.SB4.SB_MEM.rd_data;
   BRAM_MISO(1).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(1).rd_data_valid <= Mon.SB0.SB_META.rd_data_valid;
+  BRAM_MISO(1).rd_data_valid <= Mon.SB4.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(2).rd_data(32-1 downto 0) <= Mon.SB1.SB_MEM.rd_data;
+  BRAM_MISO(2).rd_data(32-1 downto 0) <= Mon.SB7.SB_MEM.rd_data;
   BRAM_MISO(2).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(2).rd_data_valid <= Mon.SB1.SB_MEM.rd_data_valid;
+  BRAM_MISO(2).rd_data_valid <= Mon.SB7.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(3).rd_data(32-1 downto 0) <= Mon.SB1.SB_META.rd_data;
+  BRAM_MISO(3).rd_data(32-1 downto 0) <= Mon.SB10.SB_MEM.rd_data;
   BRAM_MISO(3).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(3).rd_data_valid <= Mon.SB1.SB_META.rd_data_valid;
+  BRAM_MISO(3).rd_data_valid <= Mon.SB10.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(4).rd_data(32-1 downto 0) <= Mon.SB2.SB_MEM.rd_data;
+  BRAM_MISO(4).rd_data(32-1 downto 0) <= Mon.SB13.SB_MEM.rd_data;
   BRAM_MISO(4).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(4).rd_data_valid <= Mon.SB2.SB_MEM.rd_data_valid;
+  BRAM_MISO(4).rd_data_valid <= Mon.SB13.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(5).rd_data(32-1 downto 0) <= Mon.SB2.SB_META.rd_data;
+  BRAM_MISO(5).rd_data(32-1 downto 0) <= Mon.SB16.SB_MEM.rd_data;
   BRAM_MISO(5).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(5).rd_data_valid <= Mon.SB2.SB_META.rd_data_valid;
+  BRAM_MISO(5).rd_data_valid <= Mon.SB16.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(6).rd_data(32-1 downto 0) <= Mon.SB3.SB_MEM.rd_data;
+  BRAM_MISO(6).rd_data(32-1 downto 0) <= Mon.SB19.SB_MEM.rd_data;
   BRAM_MISO(6).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(6).rd_data_valid <= Mon.SB3.SB_MEM.rd_data_valid;
+  BRAM_MISO(6).rd_data_valid <= Mon.SB19.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(7).rd_data(32-1 downto 0) <= Mon.SB3.SB_META.rd_data;
+  BRAM_MISO(7).rd_data(32-1 downto 0) <= Mon.SB22.SB_MEM.rd_data;
   BRAM_MISO(7).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(7).rd_data_valid <= Mon.SB3.SB_META.rd_data_valid;
+  BRAM_MISO(7).rd_data_valid <= Mon.SB22.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(8).rd_data(32-1 downto 0) <= Mon.SB4.SB_MEM.rd_data;
+  BRAM_MISO(8).rd_data(32-1 downto 0) <= Mon.SB25.SB_MEM.rd_data;
   BRAM_MISO(8).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(8).rd_data_valid <= Mon.SB4.SB_MEM.rd_data_valid;
+  BRAM_MISO(8).rd_data_valid <= Mon.SB25.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(9).rd_data(32-1 downto 0) <= Mon.SB4.SB_META.rd_data;
+  BRAM_MISO(9).rd_data(32-1 downto 0) <= Mon.SB0.SB_MEM.rd_data;
   BRAM_MISO(9).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(9).rd_data_valid <= Mon.SB4.SB_META.rd_data_valid;
+  BRAM_MISO(9).rd_data_valid <= Mon.SB0.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(10).rd_data(32-1 downto 0) <= Mon.SB5.SB_MEM.rd_data;
+  BRAM_MISO(10).rd_data(32-1 downto 0) <= Mon.SB2.SB_MEM.rd_data;
   BRAM_MISO(10).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(10).rd_data_valid <= Mon.SB5.SB_MEM.rd_data_valid;
+  BRAM_MISO(10).rd_data_valid <= Mon.SB2.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(11).rd_data(32-1 downto 0) <= Mon.SB5.SB_META.rd_data;
+  BRAM_MISO(11).rd_data(32-1 downto 0) <= Mon.SB3.SB_MEM.rd_data;
   BRAM_MISO(11).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(11).rd_data_valid <= Mon.SB5.SB_META.rd_data_valid;
+  BRAM_MISO(11).rd_data_valid <= Mon.SB3.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(12).rd_data(32-1 downto 0) <= Mon.SB6.SB_MEM.rd_data;
+  BRAM_MISO(12).rd_data(32-1 downto 0) <= Mon.SB5.SB_MEM.rd_data;
   BRAM_MISO(12).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(12).rd_data_valid <= Mon.SB6.SB_MEM.rd_data_valid;
+  BRAM_MISO(12).rd_data_valid <= Mon.SB5.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(13).rd_data(32-1 downto 0) <= Mon.SB6.SB_META.rd_data;
+  BRAM_MISO(13).rd_data(32-1 downto 0) <= Mon.SB6.SB_MEM.rd_data;
   BRAM_MISO(13).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(13).rd_data_valid <= Mon.SB6.SB_META.rd_data_valid;
+  BRAM_MISO(13).rd_data_valid <= Mon.SB6.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(14).rd_data(32-1 downto 0) <= Mon.SB7.SB_MEM.rd_data;
+  BRAM_MISO(14).rd_data(32-1 downto 0) <= Mon.SB8.SB_MEM.rd_data;
   BRAM_MISO(14).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(14).rd_data_valid <= Mon.SB7.SB_MEM.rd_data_valid;
+  BRAM_MISO(14).rd_data_valid <= Mon.SB8.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(15).rd_data(32-1 downto 0) <= Mon.SB7.SB_META.rd_data;
+  BRAM_MISO(15).rd_data(32-1 downto 0) <= Mon.SB9.SB_MEM.rd_data;
   BRAM_MISO(15).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(15).rd_data_valid <= Mon.SB7.SB_META.rd_data_valid;
+  BRAM_MISO(15).rd_data_valid <= Mon.SB9.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(16).rd_data(32-1 downto 0) <= Mon.SB8.SB_MEM.rd_data;
+  BRAM_MISO(16).rd_data(32-1 downto 0) <= Mon.SB11.SB_MEM.rd_data;
   BRAM_MISO(16).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(16).rd_data_valid <= Mon.SB8.SB_MEM.rd_data_valid;
+  BRAM_MISO(16).rd_data_valid <= Mon.SB11.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(17).rd_data(32-1 downto 0) <= Mon.SB8.SB_META.rd_data;
+  BRAM_MISO(17).rd_data(32-1 downto 0) <= Mon.SB12.SB_MEM.rd_data;
   BRAM_MISO(17).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(17).rd_data_valid <= Mon.SB8.SB_META.rd_data_valid;
+  BRAM_MISO(17).rd_data_valid <= Mon.SB12.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(18).rd_data(32-1 downto 0) <= Mon.SB9.SB_MEM.rd_data;
+  BRAM_MISO(18).rd_data(32-1 downto 0) <= Mon.SB14.SB_MEM.rd_data;
   BRAM_MISO(18).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(18).rd_data_valid <= Mon.SB9.SB_MEM.rd_data_valid;
+  BRAM_MISO(18).rd_data_valid <= Mon.SB14.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(19).rd_data(32-1 downto 0) <= Mon.SB9.SB_META.rd_data;
+  BRAM_MISO(19).rd_data(32-1 downto 0) <= Mon.SB15.SB_MEM.rd_data;
   BRAM_MISO(19).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(19).rd_data_valid <= Mon.SB9.SB_META.rd_data_valid;
+  BRAM_MISO(19).rd_data_valid <= Mon.SB15.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(20).rd_data(32-1 downto 0) <= Mon.SB10.SB_MEM.rd_data;
+  BRAM_MISO(20).rd_data(32-1 downto 0) <= Mon.SB17.SB_MEM.rd_data;
   BRAM_MISO(20).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(20).rd_data_valid <= Mon.SB10.SB_MEM.rd_data_valid;
+  BRAM_MISO(20).rd_data_valid <= Mon.SB17.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(21).rd_data(32-1 downto 0) <= Mon.SB10.SB_META.rd_data;
+  BRAM_MISO(21).rd_data(32-1 downto 0) <= Mon.SB18.SB_MEM.rd_data;
   BRAM_MISO(21).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(21).rd_data_valid <= Mon.SB10.SB_META.rd_data_valid;
+  BRAM_MISO(21).rd_data_valid <= Mon.SB18.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(22).rd_data(32-1 downto 0) <= Mon.SB11.SB_MEM.rd_data;
+  BRAM_MISO(22).rd_data(32-1 downto 0) <= Mon.SB20.SB_MEM.rd_data;
   BRAM_MISO(22).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(22).rd_data_valid <= Mon.SB11.SB_MEM.rd_data_valid;
+  BRAM_MISO(22).rd_data_valid <= Mon.SB20.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(23).rd_data(32-1 downto 0) <= Mon.SB11.SB_META.rd_data;
+  BRAM_MISO(23).rd_data(32-1 downto 0) <= Mon.SB21.SB_MEM.rd_data;
   BRAM_MISO(23).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(23).rd_data_valid <= Mon.SB11.SB_META.rd_data_valid;
+  BRAM_MISO(23).rd_data_valid <= Mon.SB21.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(24).rd_data(32-1 downto 0) <= Mon.SB12.SB_MEM.rd_data;
+  BRAM_MISO(24).rd_data(32-1 downto 0) <= Mon.SB23.SB_MEM.rd_data;
   BRAM_MISO(24).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(24).rd_data_valid <= Mon.SB12.SB_MEM.rd_data_valid;
+  BRAM_MISO(24).rd_data_valid <= Mon.SB23.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(25).rd_data(32-1 downto 0) <= Mon.SB12.SB_META.rd_data;
+  BRAM_MISO(25).rd_data(32-1 downto 0) <= Mon.SB24.SB_MEM.rd_data;
   BRAM_MISO(25).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(25).rd_data_valid <= Mon.SB12.SB_META.rd_data_valid;
+  BRAM_MISO(25).rd_data_valid <= Mon.SB24.SB_MEM.rd_data_valid;
 
-  BRAM_MISO(26).rd_data(32-1 downto 0) <= Mon.SB13.SB_MEM.rd_data;
+  BRAM_MISO(26).rd_data(32-1 downto 0) <= Mon.SB26.SB_MEM.rd_data;
   BRAM_MISO(26).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(26).rd_data_valid <= Mon.SB13.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(27).rd_data(32-1 downto 0) <= Mon.SB13.SB_META.rd_data;
-  BRAM_MISO(27).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(27).rd_data_valid <= Mon.SB13.SB_META.rd_data_valid;
-
-  BRAM_MISO(28).rd_data(32-1 downto 0) <= Mon.SB14.SB_MEM.rd_data;
-  BRAM_MISO(28).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(28).rd_data_valid <= Mon.SB14.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(29).rd_data(32-1 downto 0) <= Mon.SB14.SB_META.rd_data;
-  BRAM_MISO(29).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(29).rd_data_valid <= Mon.SB14.SB_META.rd_data_valid;
-
-  BRAM_MISO(30).rd_data(32-1 downto 0) <= Mon.SB15.SB_MEM.rd_data;
-  BRAM_MISO(30).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(30).rd_data_valid <= Mon.SB15.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(31).rd_data(32-1 downto 0) <= Mon.SB15.SB_META.rd_data;
-  BRAM_MISO(31).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(31).rd_data_valid <= Mon.SB15.SB_META.rd_data_valid;
-
-  BRAM_MISO(32).rd_data(32-1 downto 0) <= Mon.SB16.SB_MEM.rd_data;
-  BRAM_MISO(32).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(32).rd_data_valid <= Mon.SB16.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(33).rd_data(32-1 downto 0) <= Mon.SB16.SB_META.rd_data;
-  BRAM_MISO(33).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(33).rd_data_valid <= Mon.SB16.SB_META.rd_data_valid;
-
-  BRAM_MISO(34).rd_data(32-1 downto 0) <= Mon.SB17.SB_MEM.rd_data;
-  BRAM_MISO(34).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(34).rd_data_valid <= Mon.SB17.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(35).rd_data(32-1 downto 0) <= Mon.SB17.SB_META.rd_data;
-  BRAM_MISO(35).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(35).rd_data_valid <= Mon.SB17.SB_META.rd_data_valid;
-
-  BRAM_MISO(36).rd_data(32-1 downto 0) <= Mon.SB18.SB_MEM.rd_data;
-  BRAM_MISO(36).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(36).rd_data_valid <= Mon.SB18.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(37).rd_data(32-1 downto 0) <= Mon.SB18.SB_META.rd_data;
-  BRAM_MISO(37).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(37).rd_data_valid <= Mon.SB18.SB_META.rd_data_valid;
-
-  BRAM_MISO(38).rd_data(32-1 downto 0) <= Mon.SB19.SB_MEM.rd_data;
-  BRAM_MISO(38).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(38).rd_data_valid <= Mon.SB19.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(39).rd_data(32-1 downto 0) <= Mon.SB19.SB_META.rd_data;
-  BRAM_MISO(39).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(39).rd_data_valid <= Mon.SB19.SB_META.rd_data_valid;
-
-  BRAM_MISO(40).rd_data(32-1 downto 0) <= Mon.SB20.SB_MEM.rd_data;
-  BRAM_MISO(40).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(40).rd_data_valid <= Mon.SB20.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(41).rd_data(32-1 downto 0) <= Mon.SB20.SB_META.rd_data;
-  BRAM_MISO(41).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(41).rd_data_valid <= Mon.SB20.SB_META.rd_data_valid;
-
-  BRAM_MISO(42).rd_data(32-1 downto 0) <= Mon.SB21.SB_MEM.rd_data;
-  BRAM_MISO(42).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(42).rd_data_valid <= Mon.SB21.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(43).rd_data(32-1 downto 0) <= Mon.SB21.SB_META.rd_data;
-  BRAM_MISO(43).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(43).rd_data_valid <= Mon.SB21.SB_META.rd_data_valid;
-
-  BRAM_MISO(44).rd_data(32-1 downto 0) <= Mon.SB22.SB_MEM.rd_data;
-  BRAM_MISO(44).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(44).rd_data_valid <= Mon.SB22.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(45).rd_data(32-1 downto 0) <= Mon.SB22.SB_META.rd_data;
-  BRAM_MISO(45).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(45).rd_data_valid <= Mon.SB22.SB_META.rd_data_valid;
-
-  BRAM_MISO(46).rd_data(32-1 downto 0) <= Mon.SB23.SB_MEM.rd_data;
-  BRAM_MISO(46).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(46).rd_data_valid <= Mon.SB23.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(47).rd_data(32-1 downto 0) <= Mon.SB23.SB_META.rd_data;
-  BRAM_MISO(47).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(47).rd_data_valid <= Mon.SB23.SB_META.rd_data_valid;
-
-  BRAM_MISO(48).rd_data(32-1 downto 0) <= Mon.SB24.SB_MEM.rd_data;
-  BRAM_MISO(48).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(48).rd_data_valid <= Mon.SB24.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(49).rd_data(32-1 downto 0) <= Mon.SB24.SB_META.rd_data;
-  BRAM_MISO(49).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(49).rd_data_valid <= Mon.SB24.SB_META.rd_data_valid;
-
-  BRAM_MISO(50).rd_data(32-1 downto 0) <= Mon.SB25.SB_MEM.rd_data;
-  BRAM_MISO(50).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(50).rd_data_valid <= Mon.SB25.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(51).rd_data(32-1 downto 0) <= Mon.SB25.SB_META.rd_data;
-  BRAM_MISO(51).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(51).rd_data_valid <= Mon.SB25.SB_META.rd_data_valid;
-
-  BRAM_MISO(52).rd_data(32-1 downto 0) <= Mon.SB26.SB_MEM.rd_data;
-  BRAM_MISO(52).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(52).rd_data_valid <= Mon.SB26.SB_MEM.rd_data_valid;
-
-  BRAM_MISO(53).rd_data(32-1 downto 0) <= Mon.SB26.SB_META.rd_data;
-  BRAM_MISO(53).rd_data(31 downto 32) <= (others => '0');
-  BRAM_MISO(53).rd_data_valid <= Mon.SB26.SB_META.rd_data_valid;
+  BRAM_MISO(26).rd_data_valid <= Mon.SB26.SB_MEM.rd_data_valid;
 
     
 
@@ -1012,7 +637,7 @@ elsif BRAM_MISO(53).rd_data_valid = '1' then
         BRAM_MOSI(iBRAM).wr_enable   <= '0';
       elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
         BRAM_MOSI(iBRAM).wr_enable   <= '0';
-        if localAddress(14 downto BRAM_range(iBRAM)) = BRAM_addr(iBRAM)(14 downto BRAM_range(iBRAM)) then
+        if localAddress(13 downto BRAM_range(iBRAM)) = BRAM_addr(iBRAM)(13 downto BRAM_range(iBRAM)) then
           BRAM_MOSI(iBRAM).wr_enable   <= localWrEn;
         end if;
       end if;

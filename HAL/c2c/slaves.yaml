@@ -66,7 +66,23 @@ AXI_SLAVES:
     HDL: 
       out_name: "CM_FW_INFO"
       map_template: "axi_generic/template_map.vhd"
-  
+
+  FM:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_MASTER_CTRL}"
+    #  type: "AXI4"
+    #  data_width: "32"
+      remote_slave: "1"
+      addr:
+        offset: "0x00000000"
+        range: "16M"
+    XML: "address_table/modules/FM.xml"
+    UHAL_BASE: 0x85000000
+    HDL: 
+      out_name: "FM"
+      map_template: "axi_generic/template_map_withbram.vhd"
+
   C2C_INTFS:
     TCL_CALL: 
       command: AXI_PL_DEV_CONNECT
@@ -108,193 +124,220 @@ AXI_SLAVES:
       out_name: "HOG"
       map_template: "axi_generic/template_map.vhd"
 
+  HAL_CORE:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_MASTER_CTRL}"
+      remote_slave: "1"
+      addr:
+        offset: "0x01004000"
+        range: "4K"
+      remote_slave: "1"
+    XML: "address_table/modules/HAL_CORE.xml"
+    UHAL_BASE: 0x81000000
+    HDL: 
+      out_name: "HAL_CORE"
+      map_template: "axi_generic/template_map.vhd"
+
+
   HAL:
     TCL_CALL:
       command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_LHC_CTRL}"
+      axi_control: "${::AXI_MASTER_CTRL}"
+#      axi_control: "${::AXI_LHC_CTRL}"
       remote_slave: "1"
       addr:
-        offset: "0x00004000"
+        offset: "0x01005000"
         range: "4K"
-
-  MTC:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_LHC_CTRL}"
       remote_slave: "1"
-      addr:
-        offset: "0x00005000"
-        range: "4K"
+    XML: "address_table/modules/HAL.xml"
+    UHAL_BASE: 0x83000000
+    HDL: 
+      out_name: "HAL"
+      map_template: "axi_generic/template_map.vhd"
 
-  TF:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_LHC_CTRL}"
-      remote_slave: "1"
-      addr:
-        offset: "0x00006000"
-        range: "4K"
-
-  UCM:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_LHC_CTRL}"
-      remote_slave: "1"
-      addr:
-        offset: "0x00007000"
-        range: "4K"
-
-  DAQ:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_LHC_CTRL}"
-      remote_slave: "1"
-      addr:
-        offset: "0x00008000"
-        range: "4K"
-
-  MPL:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_LHC_CTRL}"
-      remote_slave: "1"
-      addr:
-        offset: "0x00009000"
-        range: "4K"
-
-  FM:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_LHC_CTRL}"
-      remote_slave: "1"
-      addr:
-        offset: "0x0000A000"
-        range: "8K"
-
-  INTERCONNECT_INN:
-
-    TCL_CALL:
-      command: "BUILD_CHILD_AXI_INTERCONNECT"
-      name: "INTERCONNECT_INN"
-      axi_clk: "${::AXI_MASTER_CLK}"
-      axi_rstn: "${::AXI_MASTER_RSTN}"
-      parent: "${::AXI_INTERCONNECT_NAME}"
-      master_clk: "${::AXI_MASTER_CLK}"
-      master_rstn: "${::AXI_MASTER_RSTN}"
-      firewall: "0"
-
-    SUB_SLAVES:
-
-      HPS_INN:
-        TCL_CALL:
-          command: "AXI_PL_DEV_CONNECT"
-          axi_control: "${::AXI_INN_CTRL}"
-          remote_slave: "1"
-          addr:
-            offset: "0x00010000"
-            range: "4K"
-
-      TAR_INN:
-        TCL_CALL:
-          command: "AXI_PL_DEV_CONNECT"
-          axi_control: "${::AXI_INN_CTRL}"
-          remote_slave: "1"
-          addr:
-            offset: "0x00012000"
-            range: "4K"
-
-  INTERCONNECT_MID:
-
-    TCL_CALL:
-      command: "BUILD_CHILD_AXI_INTERCONNECT"
-      name: "INTERCONNECT_MID"
-      axi_clk: "${::AXI_MASTER_CLK}"
-      axi_rstn: "${::AXI_MASTER_RSTN}"
-      parent: "${::AXI_INTERCONNECT_NAME}"
-      master_clk: "${::AXI_MASTER_CLK}"
-      master_rstn: "${::AXI_MASTER_RSTN}"
-      firewall: "0"
-
-    SUB_SLAVES:
-
-      HPS_MID:
-        TCL_CALL:
-          command: "AXI_PL_DEV_CONNECT"
-          axi_control: "${::AXI_MID_CTRL}"
-          remote_slave: "1"
-          addr:
-            offset: "0x00020000"
-            range: "4K"
-
-      TAR_MID:
-        TCL_CALL:
-          command: "AXI_PL_DEV_CONNECT"
-          axi_control: "${::AXI_MID_CTRL}"
-          remote_slave: "1"
-          addr:
-            offset: "0x00022000"
-            range: "4K"
-
-  INTERCONNECT_OUT:
-
-    TCL_CALL:
-      command: "BUILD_CHILD_AXI_INTERCONNECT"
-      name: "INTERCONNECT_OUT"
-      axi_clk: "${::AXI_MASTER_CLK}"
-      axi_rstn: "${::AXI_MASTER_RSTN}"
-      parent: "${::AXI_INTERCONNECT_NAME}"
-      master_clk: "${::AXI_MASTER_CLK}"
-      master_rstn: "${::AXI_MASTER_RSTN}"
-      firewall: "0"
-
-    SUB_SLAVES:
-
-      HPS_OUT:
-        TCL_CALL:
-          command: "AXI_PL_DEV_CONNECT"
-          axi_control: "${::AXI_OUT_CTRL}"
-          remote_slave: "1"
-          addr:
-            offset: "0x00030000"
-            range: "4K"
-
-      TAR_OUT:
-        TCL_CALL:
-          command: "AXI_PL_DEV_CONNECT"
-          axi_control: "${::AXI_OUT_CTRL}"
-          remote_slave: "1"
-          addr:
-            offset: "0x00032000"
-            range: "4K"
-
-  # INTERCONNECT_EXT:
-
-  #   TCL_CALL:
-  #     command: "BUILD_CHILD_AXI_INTERCONNECT"
-  #     name: "INTERCONNECT_EXT"
-  #     axi_clk: "${::AXI_MASTER_CLK}"
-  #     axi_rstn: "${::AXI_MASTER_RSTN}"
-  #     parent: "${::AXI_INTERCONNECT_NAME}"
-  #     master_clk: "${::AXI_MASTER_CLK}"
-  #     master_rstn: "${::AXI_MASTER_RSTN}"
-  #     firewall: "0"
-
-  #   SUB_SLAVES:
-
-  #     HPS_EXT:
-  #       TCL_CALL:
-  #         command: "AXI_PL_DEV_CONNECT"
-  #         axi_control: "${::AXI_EXT_CTRL}"
-  #         remote_slave: "1"
-  #         addr:
-  #           offset: "0x00040000"
-  #           range: "4K"
-
-  #     TAR_EXT:
-  #       TCL_CALL:
-  #         command: "AXI_PL_DEV_CONNECT"
-  #         axi_control: "${::AXI_EXT_CTRL}"
-  #         remote_slave: "1"
-  #         addr:
-  #           offset: "0x00042000"
-  #           range: "4K"
+############################
+#  MTC:
+#    TCL_CALL:
+#      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_LHC_CTRL}"
+#      remote_slave: "1"
+#      addr:
+#        offset: "0x00005000"
+#        range: "4K"
+#
+#  TF:
+#    TCL_CALL:
+#      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_LHC_CTRL}"
+#      remote_slave: "1"
+#      addr:
+#        offset: "0x00006000"
+#        range: "4K"
+#
+#  UCM:
+#    TCL_CALL:
+#      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_LHC_CTRL}"
+#      remote_slave: "1"
+#      addr:
+#        offset: "0x00007000"
+#        range: "4K"
+#
+#  DAQ:
+#    TCL_CALL:
+#      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_LHC_CTRL}"
+#      remote_slave: "1"
+#      addr:
+#        offset: "0x00008000"
+#        range: "4K"
+#
+#  MPL:
+#    TCL_CALL:
+#      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_LHC_CTRL}"
+#      remote_slave: "1"
+#      addr:
+#        offset: "0x00009000"
+#        range: "4K"
+#
+#  FM:
+#    TCL_CALL:
+#      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_LHC_CTRL}"
+#      remote_slave: "1"
+#      addr:
+#        offset: "0x0000A000"
+#        range: "8K"
+#
+#  INTERCONNECT_INN:
+#
+#    TCL_CALL:
+#      command: "BUILD_CHILD_AXI_INTERCONNECT"
+#      name: "INTERCONNECT_INN"
+#      axi_clk: "${::AXI_MASTER_CLK}"
+#      axi_rstn: "${::AXI_MASTER_RSTN}"
+#      parent: "${::AXI_INTERCONNECT_NAME}"
+#      master_clk: "${::AXI_MASTER_CLK}"
+#      master_rstn: "${::AXI_MASTER_RSTN}"
+#      firewall: "0"
+#
+#    SUB_SLAVES:
+#
+#      HPS_INN:
+#        TCL_CALL:
+#          command: "AXI_PL_DEV_CONNECT"
+#          axi_control: "${::AXI_INN_CTRL}"
+#          remote_slave: "1"
+#          addr:
+#            offset: "0x00010000"
+#            range: "4K"
+#
+#      TAR_INN:
+#        TCL_CALL:
+#          command: "AXI_PL_DEV_CONNECT"
+#          axi_control: "${::AXI_INN_CTRL}"
+#          remote_slave: "1"
+#          addr:
+#            offset: "0x00012000"
+#            range: "4K"
+#
+#  INTERCONNECT_MID:
+#
+#    TCL_CALL:
+#      command: "BUILD_CHILD_AXI_INTERCONNECT"
+#      name: "INTERCONNECT_MID"
+#      axi_clk: "${::AXI_MASTER_CLK}"
+#      axi_rstn: "${::AXI_MASTER_RSTN}"
+#      parent: "${::AXI_INTERCONNECT_NAME}"
+#      master_clk: "${::AXI_MASTER_CLK}"
+#      master_rstn: "${::AXI_MASTER_RSTN}"
+#      firewall: "0"
+#
+#    SUB_SLAVES:
+#
+#      HPS_MID:
+#        TCL_CALL:
+#          command: "AXI_PL_DEV_CONNECT"
+#          axi_control: "${::AXI_MID_CTRL}"
+#          remote_slave: "1"
+#          addr:
+#            offset: "0x00020000"
+#            range: "4K"
+#
+#      TAR_MID:
+#        TCL_CALL:
+#          command: "AXI_PL_DEV_CONNECT"
+#          axi_control: "${::AXI_MID_CTRL}"
+#          remote_slave: "1"
+#          addr:
+#            offset: "0x00022000"
+#            range: "4K"
+#
+#  INTERCONNECT_OUT:
+#
+#    TCL_CALL:
+#      command: "BUILD_CHILD_AXI_INTERCONNECT"
+#      name: "INTERCONNECT_OUT"
+#      axi_clk: "${::AXI_MASTER_CLK}"
+#      axi_rstn: "${::AXI_MASTER_RSTN}"
+#      parent: "${::AXI_INTERCONNECT_NAME}"
+#      master_clk: "${::AXI_MASTER_CLK}"
+#      master_rstn: "${::AXI_MASTER_RSTN}"
+#      firewall: "0"
+#
+#    SUB_SLAVES:
+#
+#      HPS_OUT:
+#        TCL_CALL:
+#          command: "AXI_PL_DEV_CONNECT"
+#          axi_control: "${::AXI_OUT_CTRL}"
+#          remote_slave: "1"
+#          addr:
+#            offset: "0x00030000"
+#            range: "4K"
+#
+#      TAR_OUT:
+#        TCL_CALL:
+#          command: "AXI_PL_DEV_CONNECT"
+#          axi_control: "${::AXI_OUT_CTRL}"
+#          remote_slave: "1"
+#          addr:
+#            offset: "0x00032000"
+#            range: "4K"
+#
+#  INTERCONNECT_EXT:
+#
+#    TCL_CALL:
+#      command: "BUILD_CHILD_AXI_INTERCONNECT"
+#      name: "INTERCONNECT_EXT"
+#      axi_clk: "${::AXI_MASTER_CLK}"
+#      axi_rstn: "${::AXI_MASTER_RSTN}"
+#      parent: "${::AXI_INTERCONNECT_NAME}"
+#      master_clk: "${::AXI_MASTER_CLK}"
+#      master_rstn: "${::AXI_MASTER_RSTN}"
+#      firewall: "0"
+#
+#    SUB_SLAVES:
+#
+#      HPS_EXT:
+#        TCL_CALL:
+#          command: "AXI_PL_DEV_CONNECT"
+#          axi_control: "${::AXI_EXT_CTRL}"
+#          remote_slave: "1"
+#          addr:
+#            offset: "0x00040000"
+#            range: "4K"
+#
+#      TAR_EXT:
+#        TCL_CALL:
+#          command: "AXI_PL_DEV_CONNECT"
+#          axi_control: "${::AXI_EXT_CTRL}"
+#          remote_slave: "1"
+#          addr:
+#            offset: "0x00042000"
+#            range: "4K"
+# 
+# 
+#

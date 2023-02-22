@@ -406,64 +406,107 @@ begin
       --K_IO_wready                      => local_AXI_WriteMISO(0).ready_for_data,       
       --K_IO_wstrb                          => local_AXI_WriteMOSI(0).data_write_strobe,   
       --K_IO_wvalid                      => local_AXI_WriteMOSI(0).data_valid,          
-      FW_INFO_araddr                    => fw_info_ReadMOSI.address,              
-      FW_INFO_arprot                    => fw_info_ReadMOSI.protection_type,      
-      FW_INFO_arready(0)                => fw_info_ReadMISO.ready_for_address,    
-      FW_INFO_arvalid(0)                => fw_info_ReadMOSI.address_valid,        
-      FW_INFO_awaddr                    => fw_info_WriteMOSI.address,             
-      FW_INFO_awprot                    => fw_info_WriteMOSI.protection_type,     
-      FW_INFO_awready(0)                => fw_info_WriteMISO.ready_for_address,   
-      FW_INFO_awvalid(0)                => fw_info_WriteMOSI.address_valid,       
-      FW_INFO_bready(0)                 => fw_info_WriteMOSI.ready_for_response,  
-      FW_INFO_bresp                     => fw_info_WriteMISO.response,            
-      FW_INFO_bvalid(0)                 => fw_info_WriteMISO.response_valid,      
-      FW_INFO_rdata                     => fw_info_ReadMISO.data,                 
-      FW_INFO_rready(0)                 => fw_info_ReadMOSI.ready_for_data,       
-      FW_INFO_rresp                     => fw_info_ReadMISO.response,             
-      FW_INFO_rvalid(0)                 => fw_info_ReadMISO.data_valid,           
-      FW_INFO_wdata                     => fw_info_WriteMOSI.data,                
-      FW_INFO_wready(0)                 => fw_info_WriteMISO.ready_for_data,       
-      FW_INFO_wstrb                     => fw_info_WriteMOSI.data_write_strobe,   
-      FW_INFO_wvalid(0)                 => fw_info_WriteMOSI.data_valid,          
-      HOG_araddr                    => hog_ReadMOSI.address,              
-      HOG_arprot                    => hog_ReadMOSI.protection_type,      
-      HOG_arready(0)                => hog_ReadMISO.ready_for_address,    
-      HOG_arvalid(0)                => hog_ReadMOSI.address_valid,        
-      HOG_awaddr                    => hog_WriteMOSI.address,             
-      HOG_awprot                    => hog_WriteMOSI.protection_type,     
-      HOG_awready(0)                => hog_WriteMISO.ready_for_address,   
-      HOG_awvalid(0)                => hog_WriteMOSI.address_valid,       
-      HOG_bready(0)                 => hog_WriteMOSI.ready_for_response,  
-      HOG_bresp                     => hog_WriteMISO.response,            
-      HOG_bvalid(0)                 => hog_WriteMISO.response_valid,      
-      HOG_rdata                     => hog_ReadMISO.data,                 
-      HOG_rready(0)                 => hog_ReadMOSI.ready_for_data,       
-      HOG_rresp                     => hog_ReadMISO.response,             
-      HOG_rvalid(0)                 => hog_ReadMISO.data_valid,           
-      HOG_wdata                     => hog_WriteMOSI.data,                
-      HOG_wready(0)                 => hog_WriteMISO.ready_for_data,       
-      HOG_wstrb                     => hog_WriteMOSI.data_write_strobe,   
-      HOG_wvalid(0)                 => hog_WriteMOSI.data_valid,          
+      K_CM_FW_INFO_araddr                    => fw_info_ReadMOSI.address,              
+      K_CM_FW_INFO_arprot                    => fw_info_ReadMOSI.protection_type,      
+      K_CM_FW_INFO_arready(0)                => fw_info_ReadMISO.ready_for_address,    
+      K_CM_FW_INFO_arvalid(0)                => fw_info_ReadMOSI.address_valid,        
+      K_CM_FW_INFO_awaddr                    => fw_info_WriteMOSI.address,             
+      K_CM_FW_INFO_awprot                    => fw_info_WriteMOSI.protection_type,     
+      K_CM_FW_INFO_awready(0)                => fw_info_WriteMISO.ready_for_address,   
+      K_CM_FW_INFO_awvalid(0)                => fw_info_WriteMOSI.address_valid,       
+      K_CM_FW_INFO_bready(0)                 => fw_info_WriteMOSI.ready_for_response,  
+      K_CM_FW_INFO_bresp                     => fw_info_WriteMISO.response,            
+      K_CM_FW_INFO_bvalid(0)                 => fw_info_WriteMISO.response_valid,      
+      K_CM_FW_INFO_rdata                     => fw_info_ReadMISO.data,                 
+      K_CM_FW_INFO_rready(0)                 => fw_info_ReadMOSI.ready_for_data,       
+      K_CM_FW_INFO_rresp                     => fw_info_ReadMISO.response,             
+      K_CM_FW_INFO_rvalid(0)                 => fw_info_ReadMISO.data_valid,           
+      K_CM_FW_INFO_wdata                     => fw_info_WriteMOSI.data,                
+      K_CM_FW_INFO_wready(0)                 => fw_info_WriteMISO.ready_for_data,       
+      K_CM_FW_INFO_wstrb                     => fw_info_WriteMOSI.data_write_strobe,   
+      K_CM_FW_INFO_wvalid(0)                 => fw_info_WriteMOSI.data_valid,          
 
-      --hal_core_araddr                            => hal_core_readmosi.address,        
-      --hal_core_arprot                             => hal_core_readmosi.protection_type,
-      --hal_core_arready(0)                      => hal_core_readmiso.ready_for_address,
-      --hal_core_arvalid(0)                       => hal_core_readmosi.address_valid,
-      --hal_core_awaddr                           => hal_core_writemosi.address,
-      --hal_core_awprot                            => hal_core_writemosi.protection_type,
-      --hal_core_awready(0)                     => hal_core_writemiso.ready_for_address,
-      --hal_core_awvalid(0)                      => hal_core_writemosi.address_valid,
-      --hal_core_bready(0)                       => hal_core_writemosi.ready_for_response,
-      --hal_core_bresp                              => hal_core_writemiso.response,
-      --hal_core_bvalid(0)                        => hal_core_writemiso.response_valid,
-      --hal_core_rdata                              => hal_core_readmiso.data,
-      --hal_core_rready(0)                       => hal_core_readmosi.ready_for_data,
-      --hal_core_rresp                              => hal_core_readmiso.response,
-      --hal_core_rvalid(0)                        => hal_core_readmiso.data_valid,
-      --hal_core_wdata                            => hal_core_writemosi.data,
-      --hal_core_wready(0)                     => hal_core_writemiso.ready_for_data,
-      --hal_core_wstrb                             => hal_core_writemosi.data_write_strobe,
-      --hal_core_wvalid(0)                      => hal_core_writemosi.data_valid,
+
+ --UserLogic
+      --Fast Monitoring
+      FM_araddr                    => fm_ReadMOSI.address,
+      --FM_arburst                   => fm_ReadMOSI.burst_type,
+      --FM_arcache                   => fm_ReadMOSI.cache_type,
+      --FM_arlen                     => fm_ReadMOSI.burst_length,
+      -- FM_arlock(0)                 => fm_ReadMOSI.lock_type,
+      FM_arprot                    => fm_ReadMOSI.protection_type,
+      --FM_arqos                     => fm_ReadMOSI.qos,
+      FM_arready(0)                => fm_ReadMISO.ready_for_address,
+      --FM_arregion                  => fm_ReadMOSI.region,
+      --FM_arsize                    => fm_ReadMOSI.burst_size,      
+      FM_arvalid(0)                => fm_ReadMOSI.address_valid,        
+      FM_awaddr                    => fm_WriteMOSI.address,
+      --FM_awburst                   => fm_WriteMOSI.burst_type,
+      --FM_awcache                   => fm_WriteMOSI.cache_type,
+      --FM_awlen                     => fm_WriteMOSI.burst_length,
+      --FM_awlock(0)                 => fm_WriteMOSI.lock_type,     
+      FM_awprot                    => fm_WriteMOSI.protection_type,
+      --FM_awqos                     => fm_WriteMOSI.qos,
+      FM_awready(0)                => fm_WriteMISO.ready_for_address,
+      --FM_awregion                  => fm_WriteMOSI.region,
+      --FM_awsize                    => fm_WriteMOSI.burst_size,
+      FM_awvalid(0)                => fm_WriteMOSI.address_valid,       
+      FM_bready(0)                 => fm_WriteMOSI.ready_for_response,  
+      FM_bresp                     => fm_WriteMISO.response,            
+      FM_bvalid(0)                 => fm_WriteMISO.response_valid,      
+      FM_rdata                     => fm_ReadMISO.data,
+      --FM_rlast(0)                  => fm_ReadMISO.last,
+      FM_rready(0)                 => fm_ReadMOSI.ready_for_data,       
+      FM_rresp                     => fm_ReadMISO.response,             
+      FM_rvalid(0)                 => fm_ReadMISO.data_valid,           
+      FM_wdata                     => fm_WriteMOSI.data,
+      --FM_wlast(0)                  => fm_WriteMOSI.last,        
+      FM_wready(0)                 => fm_WriteMISO.ready_for_data,       
+      FM_wstrb                     => fm_WriteMOSI.data_write_strobe,   
+      FM_wvalid(0)                 => fm_WriteMOSI.data_valid,          
+      
+
+
+      hal_core_araddr              => hal_core_readmosi.address,        
+      hal_core_arprot              => hal_core_readmosi.protection_type,
+      hal_core_arready(0)          => hal_core_readmiso.ready_for_address,
+      hal_core_arvalid (0)         => hal_core_readmosi.address_valid,
+      hal_core_awaddr              => hal_core_writemosi.address,
+      hal_core_awprot              => hal_core_writemosi.protection_type,
+      hal_core_awready(0)          => hal_core_writemiso.ready_for_address,
+      hal_core_awvalid(0)          => hal_core_writemosi.address_valid,
+      hal_core_bready(0)           => hal_core_writemosi.ready_for_response,
+      hal_core_bresp               => hal_core_writemiso.response,
+      hal_core_bvalid(0)           => hal_core_writemiso.response_valid,
+      hal_core_rdata               => hal_core_readmiso.data,
+      hal_core_rready(0)           => hal_core_readmosi.ready_for_data,
+      hal_core_rresp               => hal_core_readmiso.response,
+      hal_core_rvalid(0)           => hal_core_readmiso.data_valid,
+      hal_core_wdata               => hal_core_writemosi.data,
+      hal_core_wready(0)           => hal_core_writemiso.ready_for_data,
+      hal_core_wstrb               => hal_core_writemosi.data_write_strobe,
+      hal_core_wvalid(0)           => hal_core_writemosi.data_valid,
+
+
+      hal_araddr(31 downto 0)      => hal_readmosi.address,
+      hal_arprot(2 downto 0)       => hal_readmosi.protection_type,
+      hal_arready(0)               => hal_readmiso.ready_for_address,
+      hal_arvalid(0)               => hal_readmosi.address_valid,
+      hal_awaddr(31 downto 0)      => hal_writemosi.address,
+      hal_awprot(2 downto 0)       => hal_writemosi.protection_type,
+      hal_awready(0)               => hal_writemiso.ready_for_address,
+      hal_awvalid(0)               => hal_writemosi.address_valid,
+      hal_bready(0)                => hal_writemosi.ready_for_response,
+      hal_bresp(1 downto 0)        => hal_writemiso.response,
+      hal_bvalid(0)                => hal_writemiso.response_valid,
+      hal_rdata(31 downto 0)       => hal_readmiso.data,
+      hal_rready(0)                => hal_readmosi.ready_for_data,
+      hal_rresp(1 downto 0)        => hal_readmiso.response,
+      hal_rvalid(0)                => hal_readmiso.data_valid,
+      hal_wdata(31 downto 0)       => hal_writemosi.data,
+      hal_wready(0)                => hal_writemiso.ready_for_data,
+      hal_wstrb(3 downto 0)        => hal_writemosi.data_write_strobe,
+      hal_wvalid(0)                => hal_writemosi.data_valid,
       
       reset_n                             => reset_n, --locked_clk200,--reset,
       K_C2C_PHY_DEBUG_cplllock(0)         => C2C_Mon.C2C(1).DEBUG.CPLL_LOCK,
@@ -592,8 +635,8 @@ begin
       C2C_INTFS_wready(0)                => c2c_intf_WriteMISO.ready_for_data,       
       C2C_INTFS_wstrb                    => c2c_intf_WriteMOSI.data_write_strobe,   
       C2C_INTFS_wvalid(0)                   => c2c_intf_WriteMOSI.data_valid
-
       
+   
 
       
 );
@@ -1133,20 +1176,20 @@ begin
       ctrl => hal_core_ctrl_r
       );
 
-  --hal_map_inst : entity ctrl_lib.HAL_map
-  --  port map (
-  --    clk_axi         => axi_clk,
-  --    reset_axi_n     => axi_reset_n,
-  --    slave_readmosi  => hal_readmosi,
-  --    slave_readmiso  => hal_readmiso,
-  --    slave_writemosi => hal_writemosi,
-  --    slave_writemiso => hal_writemiso,
+  hal_map_inst : entity ctrl_lib.HAL_map
+    port map (
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
+      slave_readmosi  => hal_readmosi,
+      slave_readmiso  => hal_readmiso,
+      slave_writemosi => hal_writemosi,
+      slave_writemiso => hal_writemiso,
 
-  --    -- monitor signals in
-  --    mon  => hal_mon_r,
-  --    -- control signals out
-  --    ctrl => hal_ctrl_r
-  --    );
+      -- monitor signals in
+      mon  => hal_mon_r,
+      -- control signals out
+      ctrl => hal_ctrl_r
+      );
 
   --    -- START: ULT_SLAVES :: DO NOT EDIT
     hps_inn_map_inst : entity ctrl_lib.hps_map
@@ -1350,20 +1393,21 @@ begin
   -- gated clock that is the ff'd version of itself which would run at 1/2 speed
   -- for each ff stage
 
-  --fm_map_inst : entity ctrl_lib.FM_map
-  --  port map (
-  --    clk_axi         => clk40,
-  --    reset_axi_n     => clk40_rst_n,
-  --    slave_readmosi  => fm_readmosi,
-  --    slave_readmiso  => fm_readmiso,
-  --    slave_writemosi => fm_writemosi,
-  --    slave_writemiso => fm_writemiso,
+  fm_map_inst : entity ctrl_lib.FM_map
+  
+    port map (
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
+      slave_readmosi  => fm_readmosi,
+      slave_readmiso  => fm_readmiso,
+      slave_writemosi => fm_writemosi,
+      slave_writemiso => fm_writemiso,
 
-  --    -- monitor signals in
-  --    mon  => fm_mon_r,
-  --    -- control signals out
-  --    Ctrl => fm_ctrl_r
-  --    );
+      -- monitor signals in
+      mon  => fm_mon,
+      -- control signals out
+      Ctrl => fm_ctrl
+      );
 
   fw_info_map_inst : entity ctrl_lib.fw_info_map
     generic map (
