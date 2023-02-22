@@ -14,7 +14,7 @@ set bd_design_name "c2cSlave"
 
 set sources "${C2C_PATH}/createC2CSlaveInterconnect.tcl
              ${C2C_PATH}/create_kintex_c2c.tcl
-             ${C2C_PATH}/slaves.yaml"
+             ${SCRIPT_PATH}/slaves.yaml"
 
 set svg_product ${BD_OUTPUT_PATH}/${BD_SUFFIX}/c2cSlave/c2cSlave.svg
 

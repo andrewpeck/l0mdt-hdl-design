@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <node id="PL_STATION">
+    <!-- <node id="STATUS" address="0x00000000">
+      <node id="ENABLED" mask="0x00000001" permission="r"/>
+      <node id="READY"   mask="0x00000002" permission="r"/>
+      <node id="ERROR"   mask="0x00000004" permission="r"/>
+    </node> -->
+    <node id="PL_CHAMBER">
+      <node id="PL_MEM_0" fwinfo="type=array" address="0x00000010" module="file://MEM_INT_12A42D.xml"/>
+      <node id="PL_MEM_1" fwinfo="type=array" address="0x00000020" module="file://MEM_INT_12A42D.xml"/>
+      <node id="PL_MEM_2" fwinfo="type=array" address="0x00000030" module="file://MEM_INT_12A42D.xml"/>
+      <node id="PL_MEM_3" fwinfo="type=array" address="0x00000040" module="file://MEM_INT_12A42D.xml"/>
+      <node id="PL_MEM_4" fwinfo="type=array" address="0x00000050" module="file://MEM_INT_12A42D.xml"/>
+      <node id="PL_MEM_5" fwinfo="type=array" address="0x00000060" module="file://MEM_INT_12A42D.xml"/>
+  </node>
+</node>

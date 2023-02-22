@@ -181,7 +181,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     pre-synthesis.tcl
     user_pkg.vhd
     post-bitstream.tcl
-    post-creation.tcl prj_cfg.vhd"
+    post-creation.tcl prj_cfg.vhd address_tables top_control.vhd top_l0mdt.vhd slaves.yaml"
 
     foreach file $files_to_copy {
         file copy -force ${source_path}/$file ${dest_path}/$file

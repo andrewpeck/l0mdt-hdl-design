@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node id="HPS">
+  <node id="SUPER" address="0x00000000">
+
+    <node id="ACTIONS" address="0x00000000">
+      <node id="RESET"          mask="0x000000001" permission="w"/>
+      <node id="ENABLE"         mask="0x000000002" permission="w"/>
+      <node id="DISABLE"        mask="0x000000004" permission="w"/>
+      <node id="FREEZE"         mask="0x000000008" permission="w"/>
+    </node>
+
+    <node id="CONFIGS" address="0x00000001">
+      <node id="THREADS"          mask="0x00000000F" parameters="default=3" permission="rw"/>
+      <node id="INPUT_EN"         mask="0x000000010" parameters="default=1" permission="rw"/>
+      <node id="OUTPUT_EN"        mask="0x000000020" parameters="default=1" permission="rw"/>
+      <node id="FLUSH_MEM_RESET"  mask="0x000000040" parameters="default=1" permission="rw"/>
+    </node>
+
+    <node id="STATUS" address="0x00000002">
+      <node id="ENABLED" mask="0x00000001" permission="r"/>
+      <node id="READY"   mask="0x00000002" permission="r"/>
+      <node id="ERROR"   mask="0x00000FF0" permission="r"/>
+    </node>
+  </node>
+
+  <node id="MDT_TC" address="0x00001000">
+    <node id="MDT_TC_0" fwinfo="type=array" address="0x00000000" module="file://MEM_INT_10A38D.xml"/>
+    <node id="MDT_TC_1" fwinfo="type=array" address="0x00000010" module="file://MEM_INT_10A38D.xml"/>
+    <node id="MDT_TC_2" fwinfo="type=array" address="0x00000020" module="file://MEM_INT_10A38D.xml"/>
+    <node id="MDT_TC_3" fwinfo="type=array" address="0x00000030" module="file://MEM_INT_10A38D.xml"/>
+    <node id="MDT_TC_4" fwinfo="type=array" address="0x00000040" module="file://MEM_INT_10A38D.xml"/>
+    <node id="MDT_TC_5" fwinfo="type=array" address="0x00000050" module="file://MEM_INT_10A38D.xml"/>
+  </node>  
+
+  <node id="MDT_T0" address="0x00002000">
+    <node id="MDT_T0_0" fwinfo="type=array" address="0x00000000" module="file://MEM_INT_4A17D.xml"/>
+    <node id="MDT_T0_1" fwinfo="type=array" address="0x00000010" module="file://MEM_INT_4A17D.xml"/>
+    <node id="MDT_T0_2" fwinfo="type=array" address="0x00000020" module="file://MEM_INT_4A17D.xml"/>
+    <node id="MDT_T0_3" fwinfo="type=array" address="0x00000030" module="file://MEM_INT_4A17D.xml"/>
+    <node id="MDT_T0_4" fwinfo="type=array" address="0x00000040" module="file://MEM_INT_4A17D.xml"/>
+    <node id="MDT_T0_5" fwinfo="type=array" address="0x00000050" module="file://MEM_INT_4A17D.xml"/>
+  </node>  
+
+  <node id="HEG" address="0x00003000">
+    <node id="HEG_0"  fwinfo="type=array"  address="0x00000000" module="file://HEG.xml"/>
+    <node id="HEG_1"  fwinfo="type=array"  address="0x00000100" module="file://HEG.xml"/>
+    <node id="HEG_2"  fwinfo="type=array"  address="0x00000200" module="file://HEG.xml"/>
+  </node>  
+
+  <node id="LSF" address="0x000004000">
+    <node id="LSF_0"  fwinfo="type=array"  address="0x00000000" module="file://LSF.xml"/>
+    <node id="LSF_1"  fwinfo="type=array"  address="0x00000010" module="file://LSF.xml"/>
+    <node id="LSF_2"  fwinfo="type=array"  address="0x00000020" module="file://LSF.xml"/>
+  </node>
+
+  <node id="CSF" address="0x000005000">
+    <node id="CSF_0"  fwinfo="type=array"  address="0x00000000" module="file://CSF.xml"/>
+    <node id="CSF_1"  fwinfo="type=array"  address="0x00000010" module="file://CSF.xml"/>
+    <node id="CSF_2"  fwinfo="type=array"  address="0x00000020" module="file://CSF.xml"/>
+  </node>
+  
+</node>
+
+

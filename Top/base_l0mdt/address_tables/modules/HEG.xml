@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node id="HEG">
+
+  <node id="SUPER" address="0x00000000">
+    <node id="ACTIONS" address="0x00000000">
+      <node id="RESET"          mask="0x000000001" permission="w"/>
+      <node id="ENABLE"         mask="0x000000002" permission="w"/>
+      <node id="DISABLE"        mask="0x000000004" permission="w"/>
+      <node id="FREEZE"         mask="0x000000008" permission="w"/>
+    </node>
+
+    <node id="CONFIGS" address="0x00000001">
+      <!-- <node id="THREADS"          mask="0x00000000F" parameters="default=3" permission="rw"/> -->
+      <node id="INPUT_EN"         mask="0x000000010" parameters="default=1" permission="rw"/>
+      <node id="OUTPUT_EN"        mask="0x000000020" parameters="default=1" permission="rw"/>
+      <node id="FLUSH_MEM_RESET"  mask="0x000000040" parameters="default=1" permission="rw"/>
+    </node>
+
+    <node id="STATUS" address="0x00000010">
+      <node id="ENABLED" mask="0x00000001" permission="r"/>
+      <node id="READY"   mask="0x00000002" permission="r"/>
+      <node id="ERROR"   mask="0x00000004" permission="r"/>
+    </node>
+
+    <node id="COUNTERS" address="0x00000020">
+      <node id="SLC_PROC" address="0x00000001" mask="0xFFFFFFFF" permission="r"/>
+      <node id="HIT_PROC" address="0x00000001" mask="0xFFFFFFFF" permission="r"/>
+      <node id="HIT_OK"   address="0x00000002" mask="0xFFFFFFFF" permission="r"/>
+      <node id="ERROR"   address="0x00000004" mask="0xFFFFFFFF" permission="r"/>
+    </node>
+  </node>
+
+  
+
+  <node id="CTRL" address="0x00000030">
+    <!-- <node id="ROI_TC" address="0x00000000"> -->
+      <!-- <node id="ext_ctrl"      address="0x0" mask="0x00001000" parameters="default=0" permission="rw"   description="external access to mem"/>
+      <node id="sel_thread"    address="0x0" mask="0x0000000f" parameters="default=0" permission="rw"   description="selected thread"/>
+      <node id="sel_station"   address="0x0" mask="0x000000f0" parameters="default=0" permission="rw"   description="selected station"/>
+      <node id="sel_layer"     address="0x0" mask="0x00000f00" parameters="default=0" permission="rw"   description="selected position 0x:rpc_layer 1x:center chamber"/> -->
+      <node id="ROI_TC" address="0x00000000" module="file://MEM_INT_10A38D.xml"/>
+    <!-- </node> -->
+  </node>
+
+  <!-- Hit Processors -->
+  <node id="HP" address="0x00000040">
+    <node id="HP_0" fwinfo="type=array" address="0x00000000" module="file://HP.xml"/>
+    <node id="HP_1" fwinfo="type=array" address="0x00000010" module="file://HP.xml"/>
+    <node id="HP_2" fwinfo="type=array" address="0x00000020" module="file://HP.xml"/>
+    <node id="HP_3" fwinfo="type=array" address="0x00000030" module="file://HP.xml"/>
+    <node id="HP_4" fwinfo="type=array" address="0x00000040" module="file://HP.xml"/>
+    <node id="HP_5" fwinfo="type=array" address="0x00000050" module="file://HP.xml"/>
+  </node>
+
+</node>
+
