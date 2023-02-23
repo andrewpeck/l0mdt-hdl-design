@@ -12,7 +12,7 @@ use work.FM_Ctrl.all;
 use work.FM_Ctrl_DEF.all;
 entity FM_map is
   generic (
-    READ_TIMEOUT     : integer := 512 --2048
+    READ_TIMEOUT     : integer := 2048
     );
   port (
     clk_axi          : in  std_logic;
@@ -100,7 +100,7 @@ architecture behavioral of FM_map is
   signal BRAM_MOSI          : BRAMPortMOSI_array_t(0 to BRAM_COUNT-1);
   signal BRAM_MISO          : BRAMPortMISO_array_t(0 to BRAM_COUNT-1);
   
-  signal BRAM_not_init      : std_logic_vector(0 to BRAM_COUNT-1);
+  
   signal reg_data :  slv32_array_t(integer range 0 to 8196);
   constant Default_reg_data : slv32_array_t(integer range 0 to 8196) := (others => x"00000000");
 begin  -- architecture behavioral
@@ -142,9 +142,6 @@ begin  -- architecture behavioral
       if regRdAck = '1' then
         localRdData_latch <= localRdData;
         localRdAck <= '1';
-      elsif BRAM_not_init /=  (BRAM_not_init'range => '0') then
-        localRdAck <= '1';      
-        localRdData_latch <= x"00000000";
       elsif BRAM_MISO(0).rd_data_valid = '1' then
         localRdAck <= '1';
         localRdData_latch <= BRAM_MISO(0).rd_data;
@@ -284,9 +281,9 @@ elsif BRAM_MISO(26).rd_data_valid = '1' then
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data(8192)( 0)            <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_FREEZE;
+      reg_data(8192)( 0)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_FREEZE;
       reg_data(8192)( 2 downto  1)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_PLAYBACK_MODE;
-      reg_data(8192)( 3)            <= DEFAULT_FM_CTRL_t.SPY_CTRL.INITIALIZE_SPY_MEMORY;
+      reg_data(8192)( 3)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.INITIALIZE_SPY_MEMORY;
       reg_data(8193)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_0;
       reg_data(8194)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_1;
       reg_data(8195)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_0;
@@ -331,20 +328,14 @@ elsif BRAM_MISO(26).rd_data_valid = '1' then
       if reset_axi_n = '0' then
 --        latchBRAM(iBRAM) <= '0';
         BRAM_MOSI(iBRAM).enable  <= '0';
-        BRAM_not_init(iBRAM)      <= '0';
       elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
         BRAM_MOSI(iBRAM).address <= localAddress;
 --        latchBRAM(iBRAM) <= '0';
         BRAM_MOSI(iBRAM).enable  <= '0';
-        BRAM_not_init(iBRAM)     <= '0';
         if localAddress(13 downto BRAM_range(iBRAM)) = BRAM_addr(iBRAM)(13 downto BRAM_range(iBRAM)) then
 --          latchBRAM(iBRAM) <= localRdReq;
 --          BRAM_MOSI(iBRAM).enable  <= '1';
-          if Ctrl.SPY_CTRL.INITIALIZE_SPY_MEMORY = '0' then
-            BRAM_MOSI(iBRAM).enable  <= localRdReq;
-            else
-              BRAM_not_init(iBRAM) <= '1';
-          end if;
+          BRAM_MOSI(iBRAM).enable  <= localRdReq;
         end if;
       end if;
     end process BRAM_read;
