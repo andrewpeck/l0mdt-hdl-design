@@ -246,6 +246,7 @@ architecture structural of top_l0mdt is
 
   constant ZERO : std_logic := '0';
 
+  signal axi_reset_n : std_logic;
 begin
 
   -- in sector 3 we only have 0 chambers in the EXTRA station and 6
@@ -329,6 +330,7 @@ begin
     port map (
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
+      axi_reset_n       => axi_reset_n,
 
       i_inn_tdc_hits_av => inner_tdc_hits,
       i_mid_tdc_hits_av => middle_tdc_hits,
@@ -442,7 +444,7 @@ begin
       c2cb_txp     => c2cb_txp,
       c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC), -- c2c_refclkp, 
       c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC), --c2c_refclkn,
-
+      axi_reset_n => axi_reset_n,
       -- HAL Control
 
       hal_core_ctrl => hal_core_ctrl,

@@ -60,6 +60,9 @@ entity top_control is
     c2c_refclkp : in  std_logic;
     c2c_refclkn : in  std_logic;
 
+
+    -- axi reset from c2c--
+    axi_reset_n : out std_logic;
     -- control
 
     -- START: ULT_IO :: DO NOT EDIT
@@ -133,7 +136,7 @@ architecture control_arch of top_control is
   constant std_logic1 : std_logic := '1';
   constant std_logic0 : std_logic := '0';
 
-  signal axi_reset_n : std_logic; -- := '0';
+
   signal clk40_rst_n : std_logic := '0';
   signal fw_info_readmosi  : axireadmosi;
   signal fw_info_readmiso  : axireadmiso;
@@ -358,7 +361,7 @@ begin
   --end process;
 
 
-   c2csslave_wrapper_1: entity xil_defaultlib.c2cslave_wrapper
+   c2cslave_wrapper_1: entity xil_defaultlib.c2cslave_wrapper
     port map (
       AXI_CLK                             => AXI_CLK,
       AXI_RST_N(0)                        => AXI_RESET_N,
