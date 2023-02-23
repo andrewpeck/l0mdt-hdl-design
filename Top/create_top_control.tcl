@@ -122,7 +122,7 @@ foreach line $contents {
             puts $output_file "      [string toupper $slave]_wdata          => ${slave}_writemosi.data,"
             puts $output_file "      [string toupper $slave]_wready(0)      => ${slave}_writemiso.ready_for_data,"
             puts $output_file "      [string toupper $slave]_wstrb          => ${slave}_writemosi.data_write_strobe,"
-            puts $output_file "      [string toupper $slave]_wvalid(0)      => ${slave}_writemiso.data_valid,"
+            puts $output_file "      [string toupper $slave]_wvalid(0)      => ${slave}_writemosi.data_valid,"
         }
     }
 

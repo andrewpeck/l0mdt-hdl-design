@@ -327,7 +327,7 @@ begin
       K_C2CB_PHY_DRP_di                  => C2C_Ctrl.C2C(2).DRP.wr_data,
       K_C2CB_PHY_DRP_do                  => C2C_MON.C2C(2).DRP.rd_data,
       K_C2CB_PHY_DRP_drdy                => C2C_MON.C2C(2).DRP.rd_data_valid,
-      K_C2CB_PHY_DRP_dwe                 => C2C_Ctrl.C2C(2).DRP.wr_enable
+      K_C2CB_PHY_DRP_dwe                 => C2C_Ctrl.C2C(2).DRP.wr_enable,
       
       C2C_INTFS_araddr                   => c2c_intf_ReadMOSI.address,              
       C2C_INTFS_arprot                   => c2c_intf_ReadMOSI.protection_type,      

@@ -55,7 +55,7 @@ AXI_SLAVES:
 
   FW_INFO:
     TCL_CALL:
-      command: AXI_PL_DEV_CONNECT 
+      command: AXI_PL_DEV_CONNECT
       axi_control: "${::AXI_MASTER_CTRL}"
       addr:
         offset: "0x01003000"
@@ -63,8 +63,8 @@ AXI_SLAVES:
       remote_slave: "1"
     XML: "address_table/modules/FW_INFO.xml"
     UHAL_BASE: 0x82000000
-    HDL: 
-      out_name: "CM_FW_INFO"
+    HDL:
+      out_name: "FW_INFO"
       map_template: "axi_generic/template_map.vhd"
 
   FM:
@@ -79,22 +79,22 @@ AXI_SLAVES:
         range: "16M"
     XML: "address_table/modules/FM.xml"
     UHAL_BASE: 0x85000000
-    HDL: 
+    HDL:
       out_name: "FM"
       map_template: "axi_generic/template_map_withbram.vhd"
 
   C2C_INTFS:
-    TCL_CALL: 
+    TCL_CALL:
       command: AXI_PL_DEV_CONNECT
       axi_control: "${::AXI_MASTER_CTRL}"
       addr:
         offset: "0x01010000"
         range: "64K"
-      remote_slave: "1"  
-    XML: "address_table/modules/C2C_INTFS.xml" 
+      remote_slave: "1"
+    XML: "address_table/modules/C2C_INTFS.xml"
     UHAL_BASE: 0x86000000
-    HDL: 
-      out_name: "C2C_INTF"
+    HDL:
+      out_name: "C2C_INTFS"
       map_template: "axi_generic/template_map_withbram.vhd"
     SUB_SLAVES:
       CM1_PB_UART:
@@ -104,7 +104,7 @@ AXI_SLAVES:
             offset: "0x01008000"
             range: "4K"
           irq_port: "K_C2CB/axi_c2c_s2m_intr_in"
-          baud_rate: "115200"  
+          baud_rate: "115200"
           axi_control: "${::AXI_MASTER_CTRL}"
           manual_load_dtsi: "1"
           remote_slave: "1"
@@ -132,10 +132,9 @@ AXI_SLAVES:
       addr:
         offset: "0x01004000"
         range: "4K"
-      remote_slave: "1"
     XML: "address_table/modules/HAL_CORE.xml"
     UHAL_BASE: 0x81000000
-    HDL: 
+    HDL:
       out_name: "HAL_CORE"
       map_template: "axi_generic/template_map.vhd"
 
@@ -149,10 +148,9 @@ AXI_SLAVES:
       addr:
         offset: "0x01005000"
         range: "4K"
-      remote_slave: "1"
     XML: "address_table/modules/HAL.xml"
     UHAL_BASE: 0x83000000
-    HDL: 
+    HDL:
       out_name: "HAL"
       map_template: "axi_generic/template_map.vhd"
 
