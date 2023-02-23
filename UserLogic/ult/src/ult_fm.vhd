@@ -40,44 +40,44 @@ entity ult_fm is
     signal ult_fm_data_avt : fm_data_avt(0 to total_sb-1);
     signal ult_fm_data : fm_rt_array(0  to total_sb-1);
     
-    -- component fm is
-    --   generic(
-    --     total_sb : integer := total_sb
-    --     );
-    --   port(
-    --   clk_hs : in std_logic;
-    --   rst_hs : in std_logic;
-    --   fm_ctrl_v     :in std_logic_vector; --FM_CTRL_t;
-    --   fm_mon_v      : out std_logic_vector; --FM_MON_t;
-    --   ult_fm_data_v : in fm_data_avt(0 to total_sb-1) -- fm_rt_array ( 0 to total_sb-1)
-    --     );
-    --   end component;
+    component fm is
+      generic(
+        total_sb : integer := total_sb
+        );
+      port(
+      clk_hs : in std_logic;
+      rst_hs : in std_logic;
+      fm_ctrl_v     :in std_logic_vector; --FM_CTRL_t;
+      fm_mon_v      : out std_logic_vector; --FM_MON_t;
+      ult_fm_data_v : in fm_data_avt(0 to total_sb-1) -- fm_rt_array ( 0 to total_sb-1)
+        );
+      end component;
     begin
-    -- FM_PROC : process (clock_and_control.clk) is
-    --     begin
-    --       if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
-    --         H2S_SPYBUFFERS : for I in 0 to h2s_sb_all_station_n-1 loop
-    --           ult_fm_data(I).fm_data <= h2s_fm_data(I).fm_data;
-    --           ult_fm_data(I).fm_vld  <= h2s_fm_data(I).fm_vld;
-    --         end loop;
-    --       end if;
-    --   end process;
+    FM_PROC : process (clock_and_control.clk) is
+        begin
+          if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
+            H2S_SPYBUFFERS : for I in 0 to h2s_sb_all_station_n-1 loop
+              ult_fm_data(I).fm_data <= h2s_fm_data(I).fm_data;
+              ult_fm_data(I).fm_vld  <= h2s_fm_data(I).fm_vld;
+            end loop;
+          end if;
+      end process;
           
-    --  ult_fm_data_flatten: for sb_i in 0 to total_sb-1 generate
-    --   --  ult_fm_data_avt(sb_i) <= vectorify(ult_fm_data(sb_i));
-    --    ult_fm_data_avt(sb_i) <= vectorify(ult_fm_data(sb_i),ult_fm_data_avt(sb_i));
-    --  end generate ult_fm_data_flatten;
+     ult_fm_data_flatten: for sb_i in 0 to total_sb-1 generate
+      --  ult_fm_data_avt(sb_i) <= vectorify(ult_fm_data(sb_i));
+       ult_fm_data_avt(sb_i) <= vectorify(ult_fm_data(sb_i),ult_fm_data_avt(sb_i));
+     end generate ult_fm_data_flatten;
      
-    --  fm_inst : component fm
-    --    generic map(
-    --      total_sb => total_sb
-    --      )
-    --  port map (
-    --    fm_ctrl_v       => ctrl_v,
-    --    clk_hs          => clock_and_control.clk,
-    --    rst_hs          => clock_and_control.rst,
-    --    fm_mon_v        => mon_v,
-    --    ult_fm_data_v   => ult_fm_data_avt
-    --    );
+     fm_inst : component fm
+       generic map(
+         total_sb => total_sb
+         )
+     port map (
+       fm_ctrl_v       => ctrl_v,
+       clk_hs          => clock_and_control.clk,
+       rst_hs          => clock_and_control.rst,
+       fm_mon_v        => mon_v,
+       ult_fm_data_v   => ult_fm_data_avt
+       );
 
     end architecture beh;
