@@ -1,15 +1,13 @@
 #################### BA3_hps_csf_bp Project ###########################
 GEN:BA3_hps_csf_bp:
-    extends: .generate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
-      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-      
-    # tags:
-    #   - normal-ops
-    #   - hog
-      # - "2020.2"
+  extends: .generate_project
+  variables:
+    extends: .vars
+    PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
+    HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+  tags:
+  - normal-ops
+
 
 
 # SIM:BA3_hps_csf_bp_vivado:
@@ -23,8 +21,10 @@ SIM:BA3_hps_csf_bp_questa:
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
+    tags:
+    - normal-ops
 
-SIM:BA3_hps_csf_bp_riviera:
+RIV:BA3_hps_csf_bp_riviera:
     extends: .riviera_sim
     variables:
       extends: .vars
@@ -38,7 +38,8 @@ COMP:BA3_hps_csf_bp:
     PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
     PROJECT_Q_NAME: MainBlocks/BA3_hps_csf_bp_questa
     PROJECT_R_NAME: MainBlocks/BA3_hps_csf_bp_riviera
-  needs: ["SIM:BA3_hps_csf_bp_questa","SIM:BA3_hps_csf_bp_riviera"]
+  needs: ["SIM:BA3_hps_csf_bp_questa", "RIV:BA3_hps_csf_bp_riviera"]
+  
 
 CHK:BA3_hps_csf_bp:
   extends: .sim_check
@@ -47,9 +48,10 @@ CHK:BA3_hps_csf_bp:
     PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
     BLOCK: BA3_hps_csf_bp
     SIMULATOR: questa
-  needs: ["SIM:BA3_hps_csf_bp_riviera"]
+  needs: ["RIV:BA3_hps_csf_bp_riviera"]
   artifacts:
     name: CHK_MainBlocks_BA3_hps_csf_bp
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
+

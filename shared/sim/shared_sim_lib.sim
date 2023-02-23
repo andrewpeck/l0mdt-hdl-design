@@ -21,8 +21,8 @@ shared/sim/src/csv_reader_hps_pc2heg.vhd
 # csv writers
 shared/sim/src/csv_writer_ucm.vhd
 shared/sim/src/csv_writer_tar.vhd
-# shared/sim/src/csv_writer_hps.vhd
-# shared/sim/src/csv_writer_hps_int.vhd
+shared/sim/src/csv_writer_hps.vhd
+shared/sim/src/csv_writer_hps_int.vhd
 shared/sim/src/csv_writer_heg.vhd
 shared/sim/src/csv_writer_heg_int.vhd
 

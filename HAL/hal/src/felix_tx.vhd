@@ -29,6 +29,7 @@ entity felix_tx is
     reset_i : in std_logic;
 
     daq_streams : in felix_stream_avt (g_NUM_UPLINKS-1 downto 0);
+    -- daq_streams : in felix_data_avt(g_NUM_UPLINKS-1 downto 0);
 
     -- 256 bits / bx from mgt
     mgt_word_array_o : out std32_array_t (g_NUM_UPLINKS-1 downto 0);
@@ -68,11 +69,17 @@ begin
 
   felix_tx_gen : for I in 0 to g_NUM_UPLINKS-1 generate
     constant station : integer := stream_to_station
-                                  (c_HPS_NUM_MDT_CH_INN,
-                                   c_HPS_NUM_MDT_CH_MID,
-                                   c_HPS_NUM_MDT_CH_OUT,
-                                   c_HPS_NUM_MDT_CH_EXT,
+                                  (c_DAQ_INN_LINKS,
+                                   c_DAQ_MID_LINKS,
+                                   c_DAQ_OUT_LINKS,
+                                   c_DAQ_EXT_LINKS,
                                    I);
+--                                   (c_HPS_NUM_MDT_CH_INN,
+--                                    c_HPS_NUM_MDT_CH_MID,
+--                                    c_HPS_NUM_MDT_CH_OUT,
+--                                    c_HPS_NUM_MDT_CH_EXT,
+--                                    I);
+
   begin
     station_tag : for STATION_NUM in station to station generate
 
@@ -87,8 +94,8 @@ begin
           mgt_tx_usrclk_i          => clk320,
           mgt_tx_ready_i           => not reset_i,
           mgt_tx_data_o            => mgt_word_array_o(I),
-          tx_data_i(66 downto 0)   => daq_streams(I)(66 downto 0),
-          tx_data_i(233 downto 67) => (others => '1'),
+          tx_data_i(33 downto 0)   => daq_streams(I)(33 downto 0),
+          tx_data_i(233 downto 34) => (others => '1'),
           tx_ready_o               => ready_o(I),
           tx_had_not_ready_o       => was_not_ready_o(I)
           );
