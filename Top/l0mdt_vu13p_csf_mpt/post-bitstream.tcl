@@ -62,7 +62,7 @@ close $w
 
 
 puts "Copying DTSI Files"
-set DTSI_DIR [file dirname $dst_bit]/dtsi
+set DTSI_DIR [file dirname $dst_main]/dtsi
 set DTSI_FILES [glob $PATH_REPO/kernel/hw/*.dtsi]
 file mkdir $DTSI_DIR
 foreach dtsi_file $DTSI_FILES {
