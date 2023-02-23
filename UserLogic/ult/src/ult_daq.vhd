@@ -60,10 +60,10 @@ entity daq is
     i_sector_id       : in  std_logic_vector(3 downto 0);
     i_frag_id         : in  std_logic_vector(3 downto 0);
     ----------------------------------------------------------------------
-    i_inn_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_INN-1 downto 0);
-    i_mid_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_MID-1 downto 0);
-    i_out_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT-1 downto 0);
-    i_ext_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT-1 downto 0);
+    i_inn_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_INN-1 downto 0);
+    i_mid_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID-1 downto 0);
+    i_out_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+    i_ext_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT-1 downto 0);
     o_daq_streams     : out felix_stream_avt(c_DAQ_LINKS-1 downto 0)
     -- o_sump            : out std_logic
   );
@@ -127,10 +127,10 @@ architecture behavioral of daq is
 
   -- -- -- signal ptcalc_sump         : std_logic_vector (c_NUM_THREADS -1 downto 0);
   -- -- -- signal pl2mtc_sump         : std_logic_vector (c_MAX_NUM_SL -1 downto 0);
-  -- -- -- signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
-  -- -- -- signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
-  -- -- -- signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
-  -- -- -- signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
+  -- -- -- signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+  -- -- -- signal tdc_hit_middle_sump : std_logic_vector (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+  -- -- -- signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+  -- -- -- signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
 
   -- -- implementation
 
@@ -376,22 +376,22 @@ begin
   -- --#     o_data  => mon_v
   -- --# );
   -- --# 
-  -- --# inn_xor : for i in c_HPS_MAX_HP_INN -1 downto 0 generate
+  -- --# inn_xor : for i in c_HPS_NUM_MDT_CH_INN -1 downto 0 generate
   -- --#   inn_tdc_hits_ab(i) <= xor_reduce(i_inn_tdc_hits_av(i));
   -- --# end generate ; -- inn_xor
-  -- --# mid_xor : for i in c_HPS_MAX_HP_mid -1 downto 0 generate
+  -- --# mid_xor : for i in c_HPS_NUM_MDT_CH_mid -1 downto 0 generate
   -- --#   mid_tdc_hits_ab(i) <= xor_reduce(i_mid_tdc_hits_av(i));
   -- --# end generate ; -- mid_xor
-  -- --# out_xor : for i in c_HPS_MAX_HP_out -1 downto 0 generate
+  -- --# out_xor : for i in c_HPS_NUM_MDT_CH_out -1 downto 0 generate
   -- --#   out_tdc_hits_ab(i) <= xor_reduce(i_out_tdc_hits_av(i));
   -- --# end generate ; -- out_xor
-  -- --# -- ext_xor : for i in c_HPS_MAX_HP_ext -1 downto 0 generate
+  -- --# -- ext_xor : for i in c_HPS_NUM_MDT_CH_ext -1 downto 0 generate
   -- --# --   ext_tdc_hits_ab <= xor_reduce(i_ext_tdc_hits_av(i));
   -- --# -- end generate ; -- ext_xor
   -- --# 
   -- --# daq_streams_ab <= inn_tdc_hits_ab & mid_tdc_hits_ab & out_tdc_hits_ab;
   -- --# 
-  -- --# daq_o : for i in c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0 generate
+  -- --# daq_o : for i in c_HPS_NUM_MDT_CH_INN + c_HPS_NUM_MDT_CH_MID + c_HPS_NUM_MDT_CH_OUT - 1 downto 0 generate
   -- --#   daq_o : entity shared_lib.vhdl_utils_deserializer 
   -- --#   generic map (g_DATA_WIDTH => o_daq_streams(i)'length) 
   -- --#   port map(

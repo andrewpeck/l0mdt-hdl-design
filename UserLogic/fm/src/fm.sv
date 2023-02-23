@@ -20,7 +20,7 @@ module fm #(
    
    logic [sb_mapped_n-1:0] 			 freeze;
    logic [pb_mode_width-1:0] 			 playback_mode[sb_mapped_n];
-   
+   logic 					 init_spy_mem;
    
    FM_MON_t fm_mon_out;
    FM_CTRL_t fm_ctrl_in;
@@ -41,7 +41,8 @@ module fm #(
 			      .axi_rst(axi_rst),
 			      .axi_clk(axi_clock),
 			      .freeze(freeze),
-			      .playback_mode(playback_mode)
+			      .playback_mode(playback_mode),
+			      .init_spy_mem(init_spy_mem)
 			);
 
    fm_data  #(
@@ -53,6 +54,7 @@ module fm #(
 			.spy_clock(axi_clock),
 			.freeze(freeze),
 			.playback_mode(playback_mode),
+			    .init_spy_mem(init_spy_mem),
 			.fm_ctrl_in(fm_ctrl_in),
 			.ult_mon_data(ult_fm_data),
 			.fm_mon_out(fm_mon_out)

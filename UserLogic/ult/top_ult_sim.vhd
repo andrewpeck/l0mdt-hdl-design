@@ -98,10 +98,10 @@ architecture beh of ult_tb is
   ---------------------------------------------------------------------------
   signal clock_and_control     : l0mdt_control_rt;
 
-  signal i_mdt_tdc_inn_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_mdt_tdc_mid_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_mdt_tdc_out_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_mdt_tdc_ext_av : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_mdt_tdc_inn_av : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_mdt_tdc_mid_av : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_mdt_tdc_out_av : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_mdt_tdc_ext_av : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   signal i_main_primary_slc       :slc_rx_avt(2 downto 0);  -- is the main SL used
   signal i_main_secondary_slc     :slc_rx_avt(2 downto 0);  -- only used in the big endcap

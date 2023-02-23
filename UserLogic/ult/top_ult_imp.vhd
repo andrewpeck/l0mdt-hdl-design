@@ -102,16 +102,16 @@ entity top_ult is
     
 
     -- TDC Hits from Polmux
-    i_inn_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tdc_hits_ab  : in std_logic_vector(c_HPS_NUM_MDT_CH_INN -1 downto 0);--tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_mid_tdc_hits_ab  : in std_logic_vector(c_HPS_NUM_MDT_CH_MID -1 downto 0);--tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_out_tdc_hits_ab  : in std_logic_vector(c_HPS_NUM_MDT_CH_OUT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_ext_tdc_hits_ab  : in std_logic_vector(c_HPS_NUM_MDT_CH_EXT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
     -- TDC Hits from Tar
-    -- i_inner_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    -- i_middle_tar_hits : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    -- i_outer_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    -- i_extra_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    -- i_inner_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    -- i_middle_tar_hits : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    -- i_outer_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    -- i_extra_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
     -- Sector Logic Candidates
     i_main_primary_slc_ab        : in std_logic_vector(2 downto 0);--slc_rx_avt(2 downto 0);  -- is the main SL used
@@ -123,7 +123,7 @@ entity top_ult is
     i_minus_neighbor_segments_ab : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    o_daq_streams_ab     : out std_logic_vector(c_DAQ_LINKS - 1 downto 0);--felix_stream_avt (c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);
+    o_daq_streams_ab     : out std_logic_vector(c_DAQ_LINKS - 1 downto 0);--felix_stream_avt (c_HPS_NUM_MDT_CH_INN + c_HPS_NUM_MDT_CH_MID + c_HPS_NUM_MDT_CH_OUT - 1 downto 0);
     -- o_daq_streams : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
@@ -210,20 +210,20 @@ architecture behavioral of top_ult is
   signal fm_ctrl_v             : std_logic_vector(FM_CTRL_t'w -1 downto 0);
   signal fm_mon_v              : std_logic_vector(FM_MON_t'w -1 downto 0);
 
-  signal i_inner_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_middle_tdc_hits : tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_outer_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_extra_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_inner_tdc_hits  : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_middle_tdc_hits : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_outer_tdc_hits  : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_extra_tdc_hits  : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   signal temp_tdcpolmux2tar_vt : tdcpolmux2tar_vt;
   constant TDCPOLMUX2TAR_LEN : integer := temp_tdcpolmux2tar_vt'length;
 
   type mdt_polmux_bus_std_avt is array(integer range <>) of std_logic_vector(TDCPOLMUX2TAR_LEN - 1 downto 0);
 
-  signal i_inn_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_mid_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_out_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_ext_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_inn_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_mid_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_out_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_ext_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   signal temp_slc_rx_vt : slc_rx_vt;
   constant SLC_RX_LEN : integer := temp_slc_rx_vt'length;
@@ -314,19 +314,19 @@ begin
   fm_mon_b <= xor_reduce(fm_mon_v);
 
 
-  inn_tdc: for i_h in c_HPS_MAX_HP_INN -1 downto 0 generate
+  inn_tdc: for i_h in c_HPS_NUM_MDT_CH_INN -1 downto 0 generate
     tdc_inn : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_inn_tdc_hits_ab(i_h),o_data => i_inn_tdc_hits_av(i_h));
     i_inner_tdc_hits(i_h) <= i_inn_tdc_hits_av(i_h);
   end generate;
-  mid_tdc: for i_h in c_HPS_MAX_HP_MID -1 downto 0 generate
+  mid_tdc: for i_h in c_HPS_NUM_MDT_CH_MID -1 downto 0 generate
     tdc_mid : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_mid_tdc_hits_ab(i_h),o_data => i_mid_tdc_hits_av(i_h));
     i_middle_tdc_hits(i_h) <= i_mid_tdc_hits_av(i_h);
   end generate;
-  out_tdc: for i_h in c_HPS_MAX_HP_OUT -1 downto 0 generate
+  out_tdc: for i_h in c_HPS_NUM_MDT_CH_OUT -1 downto 0 generate
     tdc_out : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_out_tdc_hits_ab(i_h),o_data => i_out_tdc_hits_av(i_h));
     i_outer_tdc_hits(i_h) <= i_out_tdc_hits_av(i_h);
   end generate;
-  ext_tdc: for i_h in c_HPS_MAX_HP_EXT -1 downto 0 generate
+  ext_tdc: for i_h in c_HPS_NUM_MDT_CH_EXT -1 downto 0 generate
   tdc_ext : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_ext_tdc_hits_ab(i_h),o_data => i_ext_tdc_hits_av(i_h));
     i_extra_tdc_hits(i_h) <= i_ext_tdc_hits_av(i_h);
   end generate;

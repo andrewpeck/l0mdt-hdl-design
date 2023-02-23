@@ -9,7 +9,7 @@ package fm_ult_pkg is
 
   constant mon_dw_max     : integer := 256;
 
-  constant stations_n       : integer := c_MAX_NUM_HPS; -- INN, MID, OUT
+  constant stations_n       : integer := 3; --DEBUG c_MAX_NUM_ST; --c_MAX_NUM_HPS; -- INN, MID, OUT
   constant threads_n        : integer := c_NUM_THREADS;
 
 

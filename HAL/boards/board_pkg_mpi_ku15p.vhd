@@ -59,18 +59,19 @@ package board_pkg is
     37     => (MGT_NIL      , 13     , GTH     , 0 , 5)  , -- BANK 225 LEGACY TTX RX/TX
     38     => (MGT_NIL      , 13     , GTH     , 0 , 6)  , -- BANK 225 TX/RX Spare 0 to SMA
     39     => (MGT_NIL      , 13     , GTH     , 0 , 7)  , -- BANK 225 TX/RX Spare 1 to SMA
-    40     => (MGT_LPGBT    , 14     , GTH     , 0 , 8)  , -- BANK 226 CSM
-    41     => (MGT_LPGBT    , 14     , GTH     , 0 , 9)  , -- BANK 226 CSM
-    42     => (MGT_LPGBT    , 14     , GTH     , 0 , 10) , -- BANK 226 CSM
-    43     => (MGT_LPGBT    , 14     , GTH     , 0 , 11) , -- BANK 226 CSM
-    44     => (MGT_LPGBT    , 14     , GTH     , 0 , 12) , -- BANK 227 CSM
-    45     => (MGT_LPGBT    , 14     , GTH     , 0 , 13) , -- BANK 227 CSM
-    46     => (MGT_LPGBT    , 14     , GTH     , 0 , 14) , -- BANK 227 CSM
-    47     => (MGT_LPGBT    , 14     , GTH     , 0 , 15) , -- BANK 227 CSM
+    40     => (MGT_LPGBT    , 12     , GTH     , 0 , 8)  , -- BANK 226 CSM
+    41     => (MGT_LPGBT    , 12     , GTH     , 0 , 9)  , -- BANK 226 CSM
+    42     => (MGT_LPGBT    , 12     , GTH     , 0 , 10) , -- BANK 226 CSM
+    43     => (MGT_LPGBT    , 12     , GTH     , 0 , 11) , -- BANK 226 CSM
+    44     => (MGT_LPGBT    , 13     , GTH     , 0 , 12) , -- BANK 227 CSM
+    45     => (MGT_LPGBT    , 13     , GTH     , 0 , 13) , -- BANK 227 CSM
+    46     => (MGT_LPGBT    , 13     , GTH     , 0 , 14) , -- BANK 227 CSM
+    47     => (MGT_LPGBT    , 13     , GTH     , 0 , 15) , -- BANK 227 CSM
     48     => (MGT_LPGBT    , 14     , GTH     , 0 , 16) , -- BANK 228 CSM
     49     => (MGT_LPGBT    , 14     , GTH     , 0 , 17) , -- BANK 228 CSM
     50     => (MGT_LPGBT    , 14     , GTH     , 0 , 18) , -- BANK 228 CSM
     51     => (MGT_LPGBT    , 14     , GTH     , 0 , 19) , -- BANK 228 CSM
+    
     52     => (MGT_LPGBT    , 16     , GTH     , 0 , 20) , -- BANK 229 CSM
     53     => (MGT_LPGBT    , 16     , GTH     , 0 , 21) , -- BANK 229 CSM
     54     => (MGT_LPGBT    , 16     , GTH     , 0 , 22) , -- BANK 229 CSM

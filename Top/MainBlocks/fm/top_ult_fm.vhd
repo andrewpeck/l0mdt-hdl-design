@@ -31,8 +31,8 @@ entity top_ult_fm is
   port(
    clock_and_control : in  l0mdt_control_rt;
    ttc_commands       : in  l0mdt_ttc_rt;
-   fm_ctrl_v                : in std_logic_vector(1023 downto 0); --M_CTRL_t;
-   fm_mon_v              : out std_logic_vector(1023 downto 0) --FM_MON_t;
+   fm_ctrl_v                : in std_logic_vector(2318 downto 0); --M_CTRL_t;
+   fm_mon_v              : out std_logic_vector(1781 downto 0); --FM_MON_t;
    h2s_fm_data          : in fm_rt_array(0  to h2s_sb_all_station_n -1)
    --ult_fm_data       : in fm_rt_array ( 0 to total_sb-1)
     );
@@ -51,7 +51,7 @@ entity top_ult_fm is
        clock_and_control => clock_and_control,
        ttc_commands     => ttc_commands,
        ctrl_v           => fm_ctrl_v,
-       mon_v            => fm_mon_v
+       mon_v            => fm_mon_v,
        h2s_fm_data      => h2s_fm_data
        );
 

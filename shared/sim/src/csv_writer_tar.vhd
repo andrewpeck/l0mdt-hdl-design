@@ -64,7 +64,7 @@ entity csv_writer_tar is
   port (
     clk                   : in std_logic;
     rst                   : in std_logic;
-    enable                : in integer;
+    enable                : in std_logic;
     --
     tb_curr_sim_time      : in unsigned(63 downto 0) := (others => '0');
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0');
