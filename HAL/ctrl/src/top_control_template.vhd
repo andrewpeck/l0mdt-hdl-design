@@ -34,6 +34,7 @@ library ctrl_lib;
 --use ctrl_lib.FW_TIMESTAMP.all;
 --use ctrl_lib.FW_VERSION.all;
 use ctrl_lib.axiRegPkg.all;
+use ctrl_lib.c2c_intfs_ctrl.all;
 
 --use ctrl_lib.c2cslave_pkg.all;
 use ctrl_lib.AXISlaveAddrPkg.all;
@@ -328,6 +329,25 @@ begin
       K_C2CB_PHY_DRP_drdy                => C2C_MON.C2C(2).DRP.rd_data_valid,
       K_C2CB_PHY_DRP_dwe                 => C2C_Ctrl.C2C(2).DRP.wr_enable
       
+      C2C_INTFS_araddr                   => c2c_intf_ReadMOSI.address,              
+      C2C_INTFS_arprot                   => c2c_intf_ReadMOSI.protection_type,      
+      C2C_INTFS_arready(0)               => c2c_intf_ReadMISO.ready_for_address,    
+      C2C_INTFS_arvalid(0)               => c2c_intf_ReadMOSI.address_valid,        
+      C2C_INTFS_awaddr                   => c2c_intf_WriteMOSI.address,             
+      C2C_INTFS_awprot                   => c2c_intf_WriteMOSI.protection_type,     
+      C2C_INTFS_awready(0)               => c2c_intf_WriteMISO.ready_for_address,   
+      C2C_INTFS_awvalid(0)               => c2c_intf_WriteMOSI.address_valid,       
+      C2C_INTFS_bready(0)                => c2c_intf_WriteMOSI.ready_for_response,  
+      C2C_INTFS_bresp                    => c2c_intf_WriteMISO.response,            
+      C2C_INTFS_bvalid(0)                => c2c_intf_WriteMISO.response_valid,      
+      C2C_INTFS_rdata                    => c2c_intf_ReadMISO.data,                 
+      C2C_INTFS_rready(0)                => c2c_intf_ReadMOSI.ready_for_data,       
+      C2C_INTFS_rresp                    => c2c_intf_ReadMISO.response,             
+      C2C_INTFS_rvalid(0)                => c2c_intf_ReadMISO.data_valid,           
+      C2C_INTFS_wdata                    => c2c_intf_WriteMOSI.data,                
+      C2C_INTFS_wready(0)                => c2c_intf_WriteMISO.ready_for_data,       
+      C2C_INTFS_wstrb                    => c2c_intf_WriteMOSI.data_write_strobe,   
+      C2C_INTFS_wvalid(0)                => c2c_intf_WriteMOSI.data_valid
 
 );
 
@@ -336,231 +356,7 @@ begin
   -- AXI Interfaces
   --------------------------------------------------------------------------------
 
-  hal_core_map_inst : entity ctrl_lib.HAL_CORE_map
-    port map (
-      clk_axi         => axi_clk,
-      reset_axi_n     => axi_reset_n,
-      slave_readmosi  => hal_core_readmosi,
-      slave_readmiso  => hal_core_readmiso,
-      slave_writemosi => hal_core_writemosi,
-      slave_writemiso => hal_core_writemiso,
-
-      -- monitor signals in
-      mon  => hal_core_mon_r,
-      -- control signals out
-      ctrl => hal_core_ctrl_r
-      );
-
-  --hal_map_inst : entity ctrl_lib.HAL_map
-  --  port map (
-  --    clk_axi         => axi_clk,
-  --    reset_axi_n     => axi_reset_n,
-  --    slave_readmosi  => hal_readmosi,
-  --    slave_readmiso  => hal_readmiso,
-  --    slave_writemosi => hal_writemosi,
-  --    slave_writemiso => hal_writemiso,
-
-  --    -- monitor signals in
-  --    mon  => hal_mon_r,
-  --    -- control signals out
-  --    ctrl => hal_ctrl_r
-  --    );
-
   -- START: ULT_SLAVES :: DO NOT EDIT
-    hps_inn_map_inst : entity ctrl_lib.hps_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => hps_inn_readmosi,
-      slave_readmiso  => hps_inn_readmiso,
-      slave_writemosi => hps_inn_writemosi,
-      slave_writemiso => hps_inn_writemiso,
-      -- monitor signals in
-      mon  => hps_inn_mon_r,
-      -- control signals out
-      ctrl => hps_inn_ctrl_r
-      );
-
-    hps_mid_map_inst : entity ctrl_lib.hps_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => hps_mid_readmosi,
-      slave_readmiso  => hps_mid_readmiso,
-      slave_writemosi => hps_mid_writemosi,
-      slave_writemiso => hps_mid_writemiso,
-      -- monitor signals in
-      mon  => hps_mid_mon_r,
-      -- control signals out
-      ctrl => hps_mid_ctrl_r
-      );
-
-    hps_out_map_inst : entity ctrl_lib.hps_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => hps_out_readmosi,
-      slave_readmiso  => hps_out_readmiso,
-      slave_writemosi => hps_out_writemosi,
-      slave_writemiso => hps_out_writemiso,
-      -- monitor signals in
-      mon  => hps_out_mon_r,
-      -- control signals out
-      ctrl => hps_out_ctrl_r
-      );
-
-    hps_ext_map_inst : entity ctrl_lib.hps_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => hps_ext_readmosi,
-      slave_readmiso  => hps_ext_readmiso,
-      slave_writemosi => hps_ext_writemosi,
-      slave_writemiso => hps_ext_writemiso,
-      -- monitor signals in
-      mon  => hps_ext_mon_r,
-      -- control signals out
-      ctrl => hps_ext_ctrl_r
-      );
-
-    tar_inn_map_inst : entity ctrl_lib.tar_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => tar_inn_readmosi,
-      slave_readmiso  => tar_inn_readmiso,
-      slave_writemosi => tar_inn_writemosi,
-      slave_writemiso => tar_inn_writemiso,
-      -- monitor signals in
-      mon  => tar_inn_mon_r,
-      -- control signals out
-      ctrl => tar_inn_ctrl_r
-      );
-
-    tar_mid_map_inst : entity ctrl_lib.tar_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => tar_mid_readmosi,
-      slave_readmiso  => tar_mid_readmiso,
-      slave_writemosi => tar_mid_writemosi,
-      slave_writemiso => tar_mid_writemiso,
-      -- monitor signals in
-      mon  => tar_mid_mon_r,
-      -- control signals out
-      ctrl => tar_mid_ctrl_r
-      );
-
-    tar_out_map_inst : entity ctrl_lib.tar_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => tar_out_readmosi,
-      slave_readmiso  => tar_out_readmiso,
-      slave_writemosi => tar_out_writemosi,
-      slave_writemiso => tar_out_writemiso,
-      -- monitor signals in
-      mon  => tar_out_mon_r,
-      -- control signals out
-      ctrl => tar_out_ctrl_r
-      );
-
-    tar_ext_map_inst : entity ctrl_lib.tar_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => tar_ext_readmosi,
-      slave_readmiso  => tar_ext_readmiso,
-      slave_writemosi => tar_ext_writemosi,
-      slave_writemiso => tar_ext_writemiso,
-      -- monitor signals in
-      mon  => tar_ext_mon_r,
-      -- control signals out
-      ctrl => tar_ext_ctrl_r
-      );
-
-    mtc_map_inst : entity ctrl_lib.mtc_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => mtc_readmosi,
-      slave_readmiso  => mtc_readmiso,
-      slave_writemosi => mtc_writemosi,
-      slave_writemiso => mtc_writemiso,
-      -- monitor signals in
-      mon  => mtc_mon_r,
-      -- control signals out
-      ctrl => mtc_ctrl_r
-      );
-
-    ucm_map_inst : entity ctrl_lib.ucm_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => ucm_readmosi,
-      slave_readmiso  => ucm_readmiso,
-      slave_writemosi => ucm_writemosi,
-      slave_writemiso => ucm_writemiso,
-      -- monitor signals in
-      mon  => ucm_mon_r,
-      -- control signals out
-      ctrl => ucm_ctrl_r
-      );
-
-    daq_map_inst : entity ctrl_lib.daq_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => daq_readmosi,
-      slave_readmiso  => daq_readmiso,
-      slave_writemosi => daq_writemosi,
-      slave_writemiso => daq_writemiso,
-      -- monitor signals in
-      mon  => daq_mon_r,
-      -- control signals out
-      ctrl => daq_ctrl_r
-      );
-
-    tf_map_inst : entity ctrl_lib.tf_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => tf_readmosi,
-      slave_readmiso  => tf_readmiso,
-      slave_writemosi => tf_writemosi,
-      slave_writemiso => tf_writemiso,
-      -- monitor signals in
-      mon  => tf_mon_r,
-      -- control signals out
-      ctrl => tf_ctrl_r
-      );
-
-    mpl_map_inst : entity ctrl_lib.mpl_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => mpl_readmosi,
-      slave_readmiso  => mpl_readmiso,
-      slave_writemosi => mpl_writemosi,
-      slave_writemiso => mpl_writemiso,
-      -- monitor signals in
-      mon  => mpl_mon_r,
-      -- control signals out
-      ctrl => mpl_ctrl_r
-      );
-
-    hog_map_inst : entity ctrl_lib.hog_map
-    port map (
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => hog_readmosi,
-      slave_readmiso  => hog_readmiso,
-      slave_writemosi => hog_writemosi,
-      slave_writemiso => hog_writemiso,
-      -- monitor signals in
-      mon  => hog_mon_r
-      );
-
   -- END: ULT_SLAVES :: DO NOT EDIT
 
   -- n.b. fast monitoring bram control interfaces can't be registered directly,
@@ -583,21 +379,6 @@ begin
   --    Ctrl => fm_ctrl_r
   --    );
 
-  --fw_info_map_inst : entity ctrl_lib.fw_info_map
-  --  generic map (
-  --   ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_K_CM_FW_INFO)
-  --   )
-  --  port map (
-  --    clk_axi         => axi_clk,
-  --    reset_axi_n     => axi_reset_n,
-  --    slave_readmosi  => fw_info_readmosi,
-  --    slave_readmiso  => fw_info_readmiso,
-  --    slave_writemosi => fw_info_writemosi,
-  --    slave_writemiso => fw_info_writemiso,
-
-  --    mon => fw_info_mon
-
-  --    );
 
   SM_CM_INTF: entity ctrl_lib.C2C_INTF
     generic map (
