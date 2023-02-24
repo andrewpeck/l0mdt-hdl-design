@@ -69,6 +69,22 @@ AXI_SLAVES:
       out_name: "CM_FW_INFO"
       map_template: "axi_generic/template_map.vhd"
 
+  FM:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_MASTER_CTRL}"
+    #  type: "AXI4"
+    #  data_width: "32"
+      remote_slave: "1"
+      addr:
+        offset: "0x00000000"
+        range: "16M"
+    XML: "address_table/modules/FM.xml"
+    UHAL_BASE: 0x85000000
+    HDL: 
+      out_name: "FM"
+      map_template: "axi_generic/template_map_withbram.vhd"
+
   K_C2C_INTF:
     TCL_CALL: 
       command: AXI_PL_DEV_CONNECT
@@ -96,24 +112,43 @@ AXI_SLAVES:
           remote_slave: "1"
           dt_data: "compatible = \"xlnx,axi-uartlite-2.0\", \"xlnx,xps-uartlite-1.00.a\";current-speed = <115200>;device_type = \"serial\";interrupt-names = \"interrupt\";interrupt-parent = <&IRQ0_INTR_CTRL>;interrupts = <4 0>;port-number = <101>;xlnx,baudrate = <0x1c200>;xlnx,data-bits = <0x8>;xlnx,odd-parity = <0x0>;xlnx,s-axi-aclk-freq-hz-d = \"49.9995\";xlnx,use-parity = <0x0>;"
 
+
+      
+
+
   HAL_CORE:
     TCL_CALL:
       command: "AXI_PL_DEV_CONNECT"
       axi_control: "${::AXI_MASTER_CTRL}"
       remote_slave: "1"
       addr:
-        offset: "0x00003000"
+        offset: "0x01004000"
         range: "4K"
+      remote_slave: "1"
+    XML: "address_table/modules/HAL_CORE.xml"
+    UHAL_BASE: 0x81000000
+    HDL: 
+      out_name: "HAL_CORE"
+      map_template: "axi_generic/template_map.vhd"
 
-#  HAL:
-#    TCL_CALL:
-#      command: "AXI_PL_DEV_CONNECT"
+
+  HAL:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_MASTER_CTRL}"
 #      axi_control: "${::AXI_LHC_CTRL}"
-#      remote_slave: "1"
-#      addr:
-#        offset: "0x00004000"
-#        range: "4K"
-#
+      remote_slave: "1"
+      addr:
+        offset: "0x01005000"
+        range: "4K"
+      remote_slave: "1"
+    XML: "address_table/modules/HAL.xml"
+    UHAL_BASE: 0x83000000
+    HDL: 
+      out_name: "HAL"
+      map_template: "axi_generic/template_map.vhd"
+
+############################
 #  MTC:
 #    TCL_CALL:
 #      command: "AXI_PL_DEV_CONNECT"
