@@ -12,6 +12,9 @@ if { [llength $argv] < 1 } {
     exit 1
 } else {
     set project_name [lindex $argv 0]
+    if {[string first "Top/" $project_name] == 0} {
+        set project_name [string map {"Top/" ""} $project_name]
+    }
 }
 
 puts "Updating top_l0mdt.vhd and top_control.vhd for project $project_name.."
