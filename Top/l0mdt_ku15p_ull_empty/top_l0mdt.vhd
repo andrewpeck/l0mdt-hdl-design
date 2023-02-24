@@ -13,12 +13,12 @@ use hal.constants_pkg.all;
 use hal.system_types_pkg.all;
 
 library ctrl_lib;
+
 use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
 use ctrl_lib.HPS_CTRL.all;
-use ctrl_lib.HPS_Ctrl_DEF.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
 use ctrl_lib.UCM_CTRL.all;
@@ -260,8 +260,8 @@ architecture structural of top_l0mdt is
   signal tf_mon_r   : TF_MON_t;
   signal mpl_mon_r  : MPL_MON_t;
   signal mpl_ctrl_r : MPL_CTRL_t;
-  signal hog_mon    : HOG_MON_t;
-  signal fw_info_mon : FW_INFO_MON_t;
+  signal hog_mon_r    : HOG_MON_t;
+  signal fw_info_mon_r : FW_INFO_MON_t;
 
   signal fm_mon_r  : FM_MON_t;
   signal fm_ctrl_r : FM_CTRL_t;
@@ -300,11 +300,11 @@ architecture structural of top_l0mdt is
   signal fm_ctrl_v : std_logic_vector(width(fm_ctrl_r) -1 downto 0);
   --
 
-  signal hal_mon  : HAL_MON_t;
-  signal hal_ctrl : HAL_CTRL_t;
+  signal hal_mon_r  : HAL_MON_t;
+  signal hal_ctrl_r : HAL_CTRL_t;
 
-  signal hal_core_mon  : HAL_CORE_MON_t;
-  signal hal_core_ctrl : HAL_CORE_CTRL_t;
+  signal hal_core_mon_r  : HAL_CORE_MON_t;
+  signal hal_core_ctrl_r : HAL_CORE_CTRL_t;
 
 
   -- sumps
@@ -376,11 +376,11 @@ begin
 
       b2b_reset_n => b2b_reset_n,
 
-      core_ctrl => hal_core_ctrl,
-      core_mon  => hal_core_mon,
+      core_ctrl => hal_core_ctrl_r,
+      core_mon  => hal_core_mon_r,
 
-      ctrl => hal_ctrl,
-      mon  => hal_mon,
+      ctrl => hal_ctrl_r,
+      mon  => hal_mon_r,
 
       mtc_i => mtc,
       nsp_i => nsp,
@@ -512,49 +512,17 @@ begin
       c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC), -- c2c_refclkp, 
       c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC), --c2c_refclkn,
 
-      -- HAL Control
-
-      hal_core_ctrl => hal_core_ctrl,
-      hal_core_mon  => hal_core_mon,
-
-      hal_ctrl => hal_ctrl,
-      hal_mon  => hal_mon,
-
-      -- ULT Control
-
-      --hps_inn_ctrl => hps_inn_ctrl_r,
-      --hps_inn_mon  => hps_inn_mon_r,
-      --hps_mid_ctrl => hps_mid_ctrl_r,
-      --hps_mid_mon  => hps_mid_mon_r,
-      --hps_out_ctrl => hps_out_ctrl_r,
-      --hps_out_mon  => hps_out_mon_r,
-      --hps_ext_ctrl => hps_ext_ctrl_r,
-      --hps_ext_mon  => hps_ext_mon_r,
-
-      --tar_inn_ctrl => tar_inn_ctrl_r,
-      --tar_inn_mon  => tar_inn_mon_r,
-      --tar_mid_ctrl => tar_mid_ctrl_r,
-      --tar_mid_mon  => tar_mid_mon_r,
-      --tar_out_ctrl => tar_out_ctrl_r,
-      --tar_out_mon  => tar_out_mon_r,
-      --tar_ext_ctrl => tar_ext_ctrl_r,
-      --tar_ext_mon  => tar_ext_mon_r,
-
-      --mtc_ctrl    => mtc_ctrl_r,
-      --mtc_mon     => mtc_mon_r,
-      --ucm_ctrl    => ucm_ctrl_r,
-      --ucm_mon     => ucm_mon_r,
-      --daq_ctrl    => daq_ctrl_r,
-      --daq_mon     => daq_mon_r,
-      --tf_ctrl     => tf_ctrl_r,
-      --tf_mon      => tf_mon_r,
-      --mpl_ctrl    => mpl_ctrl_r,
-      --mpl_mon     => mpl_mon_r,
-      hog_mon     => hog_mon,
-      fw_info_mon => fw_info_mon,
-      fm_ctrl     => fm_ctrl_r,
-      fm_mon      => fm_mon_r,
-     
+      -- START: ULT_IO :: DO NOT EDIT
+      fw_info_mon            => fw_info_mon_r,
+      fm_mon            => fm_mon_r,
+      fm_ctrl           => fm_ctrl_r,
+      hal_core_mon            => hal_core_mon_r,
+      hal_core_ctrl           => hal_core_ctrl_r,
+      hal_mon            => hal_mon_r,
+      hal_ctrl           => hal_ctrl_r,
+      hog_mon            => hog_mon_r,
+      -- END: ULT_IO :: DO NOT EDIT
+       
       -- axi common
       clk320                  => clk320,
       clk40                   => clk40,
@@ -622,3 +590,4 @@ begin
 
 
 end structural;
+

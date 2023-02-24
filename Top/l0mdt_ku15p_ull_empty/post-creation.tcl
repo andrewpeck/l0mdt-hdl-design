@@ -74,3 +74,6 @@ puts "Block design up to date from TCL sources. Skipping build."
 
 set_property PROCESSING_ORDER LATE [get_files timing.tcl]
 set_property PROCESSING_ORDER LATE [get_files loc_mgts.tcl]
+
+
+## Create top_control.vhd

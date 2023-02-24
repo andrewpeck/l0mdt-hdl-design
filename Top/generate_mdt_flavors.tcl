@@ -3,6 +3,10 @@
 package require yaml
 
 set script_path "[file normalize [file dirname [info script]]]"
+set repo_path $script_path/..
+
+source $script_path/create_top_modules.tcl
+
 
 proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 
@@ -179,10 +183,13 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     pre-synthesis.tcl
     user_pkg.vhd
     post-bitstream.tcl
-    post-creation.tcl prj_cfg.vhd address_tables top_control.vhd top_l0mdt.vhd slaves.yaml"
+    post-creation.tcl prj_cfg.vhd address_tables slaves.yaml"
 
     foreach file $files_to_copy {
         # file copy -force ${source_path}/$file ${dest_path}
+        if {$file in "address_tables slaves.yaml" && [file exists ${dest_path}/$file]} {
+            puts "INFO: $dest_path/$file already exists, do not overwrite..."
+        }
         exec cp -r ${source_path}/$file ${dest_path}
     }
 
@@ -268,6 +275,8 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     }
 }
 
+
+
 proc clone_projects {huddle} {
 
     foreach key [huddle keys $huddle] {
@@ -303,6 +312,7 @@ proc clone_projects {huddle} {
             }
 
             global script_path
+            global repo_path
 
             # if the variant is "default" don't add a suffix,
             # otherwise add the variant name
@@ -312,6 +322,9 @@ proc clone_projects {huddle} {
             }
             clone_mdt_project "$script_path" "l0mdt_${key}${suffix}" \
                 $fpga $board_pkg $pt $sf $constraints $link_map $props
-            }}}
+            create_top_modules "$script_path/l0mdt_${key}${suffix}" "$repo_path"
+        }
+    }
+}
 
 clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]
