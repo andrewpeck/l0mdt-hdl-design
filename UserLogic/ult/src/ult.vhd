@@ -5,15 +5,6 @@
 -- Module: <<moduleName>>
 -- File PATH: /ult.vhd
 -- -----
-<<<<<<< HEAD
--- File Created: Wednesday, 1st February 2023 10:32:58 pm
--- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
--- -----
--- Last Modified: Wednesday, 15th February 2023 9:43:05 am
--- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
--- -----
--- HISTORY:
-=======
 -- File Created: Wednesday, 22nd February 2023 4:23:11 pm
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
 -- -----
@@ -22,7 +13,6 @@
 -- -----
 -- HISTORY:
 -- 2023-02-22	GLdL	Created New header
->>>>>>> 138-stepbystep-2
 --------------------------------------------------------------------------------
 
 
