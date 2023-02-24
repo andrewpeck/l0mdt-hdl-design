@@ -383,7 +383,7 @@ begin
   SM_CM_INTF: entity ctrl_lib.C2C_INTF
     generic map (
       ERROR_WAIT_TIME => 90000000,
-      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_K_C2C_INTF)
+      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_C2C_INTFS)
       )
     port map (
       clk_axi          => AXI_CLK,
