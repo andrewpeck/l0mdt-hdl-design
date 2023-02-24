@@ -39,7 +39,7 @@ use ctrl_lib.hog_ctrl.all;
 --use ctrl_lib.FW_TIMESTAMP.all;
 --use ctrl_lib.FW_VERSION.all;
 use ctrl_lib.axiRegPkg.all;
-use ctrl_lib.c2c_intfs_ctrl.all;
+use ctrl_lib.c2c_intf_ctrl.all;
 
 --use ctrl_lib.c2cslave_pkg.all;
 use ctrl_lib.AXISlaveAddrPkg.all;
