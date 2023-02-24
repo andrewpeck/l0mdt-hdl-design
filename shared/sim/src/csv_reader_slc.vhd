@@ -12,6 +12,7 @@
 --      2020.11.24 Creation 
 --
 --------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
@@ -270,7 +271,7 @@ begin
             -- puts("BCID = ", BCID);
             -- puts("ToA = ", ToA);
             if g_verbose > 1 then
-              puts("##### SLC( " & integer'image(row_counter) &
+              puts("IN ## SLC( " & integer'image(row_counter) &
               " ): " & integer'image(BCID) &
               " : " & integer'image(ToA) &
               " : " & integer'image(nTC) &
@@ -399,7 +400,7 @@ begin
                 -- puts("BCID = ", BCID);
                 -- puts("ToA = ", ToA);
                 if g_verbose > 1 then
-                  puts("##### SLC( " & integer'image(row_counter) &
+                  puts("IN ## SLC( " & integer'image(row_counter) &
                   " ): " & integer'image(BCID) &
                   " : " & integer'image(ToA) &
                   " : " & integer'image(nTC) &

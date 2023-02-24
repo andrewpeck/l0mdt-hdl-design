@@ -253,8 +253,13 @@ package body hp_pkg is
    end function zero;
 
    function width(x: hp_win_tubes_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: hp_win_tubes_art; tpl: std_logic_vector) return std_logic_vector is
@@ -321,8 +326,13 @@ package body hp_pkg is
    end function convert;
 
    function width(x: hp_win_tubes_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: hp_win_tubes_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -441,8 +451,13 @@ package body hp_pkg is
    end function zero;
 
    function width(x: hp_win_tubes_limits_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: hp_win_tubes_limits_art; tpl: std_logic_vector) return std_logic_vector is
@@ -509,8 +524,13 @@ package body hp_pkg is
    end function convert;
 
    function width(x: hp_win_tubes_limits_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: hp_win_tubes_limits_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -694,8 +714,13 @@ package body hp_pkg is
    end function zero;
 
    function width(x: hp_heg2hp_slc_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: hp_heg2hp_slc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -762,8 +787,13 @@ package body hp_pkg is
    end function convert;
 
    function width(x: hp_heg2hp_slc_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: hp_heg2hp_slc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1012,8 +1042,13 @@ package body hp_pkg is
    end function zero;
 
    function width(x: hp_hp2sf_data_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: hp_hp2sf_data_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1080,8 +1115,13 @@ package body hp_pkg is
    end function convert;
 
    function width(x: hp_hp2sf_data_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: hp_hp2sf_data_avt; tpl: std_logic_vector) return std_logic_vector is

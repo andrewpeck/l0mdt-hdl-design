@@ -56,7 +56,7 @@ architecture beh of tar_tb is
 
   constant ST_ENABLE : std_logic_vector(3 downto 0) := g_ST_ENABLE;
 
-  signal enable_mdt : integer := 1;
+  signal enable_mdt : std_logic := '1';
   
   ---------------------------------------------------------------------------
   -- simulation signals
@@ -108,10 +108,10 @@ architecture beh of tar_tb is
   signal tar_ext_mon_v  : std_logic_vector(TAR_MON_t'w - 1 downto 0);
 
   -- TDC Hits from Polmux
-  signal i_mdt_tdc_inn_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(0) -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_mid_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(1) -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(2) -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HP_NUM_SECTOR_STATION(3) -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_inn_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_mid_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
 
   -- signal i_mdt_tdc_av :  tdcpolmux2tar_avt (c_TOTAL_MAX_NUM_HP -1 downto 0) := (others => (others => '0'));
 
@@ -136,15 +136,15 @@ architecture beh of tar_tb is
   -- -- TDC Hits from Polmux
   -- signal i_tdc_hits_av    : tdcpolmux2tar_avt (g_HPS_MAX_HP -1 downto 0):= (others => (others => '0'));
   -- TDC polmux from Tar
-  signal o_tdc_hits_inn_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(0) -1 downto 0);
-  signal o_tdc_hits_mid_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(1) -1 downto 0);
-  signal o_tdc_hits_out_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(2) -1 downto 0);
-  signal o_tdc_hits_ext_av    : tdcpolmux2tar_avt(c_HP_NUM_SECTOR_STATION(3) -1 downto 0);
+  signal o_tdc_hits_inn_av    : tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal o_tdc_hits_mid_av    : tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal o_tdc_hits_out_av    : tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal o_tdc_hits_ext_av    : tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
   -- TDC Hits from Tar
-  signal o_tar_hits_inn_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(0) -1 downto 0);
-  signal o_tar_hits_mid_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(1) -1 downto 0);
-  signal o_tar_hits_out_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(2) -1 downto 0);
-  signal o_tar_hits_ext_av    : tar2hps_avt(c_HP_NUM_SECTOR_STATION(3) -1 downto 0);
+  signal o_tar_hits_inn_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal o_tar_hits_mid_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal o_tar_hits_out_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal o_tar_hits_ext_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   ---------------------------------------------------------------------------
   -- 

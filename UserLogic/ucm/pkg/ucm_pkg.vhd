@@ -273,8 +273,13 @@ package body ucm_pkg is
    end function zero;
 
    function width(x: ucm_prepro2ctrl_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_prepro2ctrl_art; tpl: std_logic_vector) return std_logic_vector is
@@ -341,8 +346,13 @@ package body ucm_pkg is
    end function convert;
 
    function width(x: ucm_prepro2ctrl_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_prepro2ctrl_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -409,8 +419,13 @@ package body ucm_pkg is
    end function convert;
 
    function width(x: ucm_rpc_r_alt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_rpc_r_alt; tpl: std_logic_vector) return std_logic_vector is
@@ -477,8 +492,13 @@ package body ucm_pkg is
    end function convert;
 
    function width(x: ucm_mdt_r_alt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_mdt_r_alt; tpl: std_logic_vector) return std_logic_vector is
@@ -545,8 +565,13 @@ package body ucm_pkg is
    end function convert;
 
    function width(x: chamb_ieta_rpc_aut) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: chamb_ieta_rpc_aut; tpl: std_logic_vector) return std_logic_vector is
@@ -730,8 +755,13 @@ package body ucm_pkg is
    end function zero;
 
    function width(x: ucm_cde_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_cde_art; tpl: std_logic_vector) return std_logic_vector is
@@ -798,8 +828,13 @@ package body ucm_pkg is
    end function convert;
 
    function width(x: ucm_cde_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_cde_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -918,8 +953,13 @@ package body ucm_pkg is
    end function zero;
 
    function width(x: ucm_csw_control_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_csw_control_art; tpl: std_logic_vector) return std_logic_vector is
@@ -986,8 +1026,13 @@ package body ucm_pkg is
    end function convert;
 
    function width(x: ucm_csw_control_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_csw_control_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1106,8 +1151,13 @@ package body ucm_pkg is
    end function zero;
 
    function width(x: ucm_pam_control_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_pam_control_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1174,8 +1224,13 @@ package body ucm_pkg is
    end function convert;
 
    function width(x: ucm_pam_control_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_pam_control_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1307,8 +1362,13 @@ package body ucm_pkg is
    end function zero;
 
    function width(x: ucm_proc_info_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_proc_info_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1375,8 +1435,13 @@ package body ucm_pkg is
    end function convert;
 
    function width(x: ucm_proc_info_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm_proc_info_avt; tpl: std_logic_vector) return std_logic_vector is

@@ -466,7 +466,6 @@ begin
       FM_wvalid(0)                 => fm_WriteMOSI.data_valid,          
       
 
-
       hal_core_araddr              => hal_core_readmosi.address,        
       hal_core_arprot              => hal_core_readmosi.protection_type,
       hal_core_arready(0)          => hal_core_readmiso.ready_for_address,

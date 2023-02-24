@@ -98,10 +98,10 @@ architecture beh of top_tar is
   signal tar_ext_mon_v  : std_logic_vector(TAR_MON_t'w - 1 downto 0);
 
   -- TDC Hits from Polmux
-  signal i_tdc_hits_inn_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  signal i_tdc_hits_mid_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  signal i_tdc_hits_out_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_tdc_hits_ext_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  signal i_tdc_hits_inn_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+  signal i_tdc_hits_mid_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+  signal i_tdc_hits_out_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_tdc_hits_ext_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
   -- TDC polmux from Tar
   signal o_tdc_hits_inn_av    : tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
   signal o_tdc_hits_mid_av    : tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
