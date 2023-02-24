@@ -422,6 +422,7 @@ begin
       o_mdt_event_ai    => hit_mdt_event_ai,
       o_slc_event_ai    => hit_slc_event_ai,
       -- TAR Hits for simulation
+    );
   end generate;
 
   
