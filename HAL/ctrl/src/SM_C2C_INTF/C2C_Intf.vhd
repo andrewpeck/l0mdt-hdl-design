@@ -79,7 +79,7 @@ begin
   --For AXI
   C2C_INTF_1: entity work.C2C_INTF_map
      generic map (
-       ALLOCATED_MEMORY_RANGE => ALLOCATED_MEMORY_RANGE
+      --  ALLOCATED_MEMORY_RANGE => ALLOCATED_MEMORY_RANGE
        )
     port map (
       clk_axi         => clk_axi,
