@@ -1,3 +1,5 @@
+PROJECT_LIST = $(patsubst %/,%,$(patsubst ./%,%,$(dir $(dir $(shell find ./l0mdt* -name hog.conf)))))
+
 projects:
 	@tclsh generate_mdt_flavors.tcl
 
@@ -6,3 +8,9 @@ list:
 
 clean:
 	@find . -maxdepth 1 -name "l0mdt*" -type d  -exec rm -r {} \;
+
+list_hog_projects:
+	for project in $(PROJECT_LIST); do \
+		tclsh update_top_modules.tcl $$project; \
+	done
+
