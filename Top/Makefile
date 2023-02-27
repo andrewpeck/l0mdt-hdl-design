@@ -9,7 +9,7 @@ list:
 clean:
 	@find . -maxdepth 1 -name "l0mdt*" -type d  -exec rm -r {} \;
 
-list_hog_projects:
+update_tops:
 	for project in $(PROJECT_LIST); do \
 		tclsh update_top_modules.tcl $$project; \
 	done
