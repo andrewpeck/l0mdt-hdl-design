@@ -21,6 +21,7 @@ xvlog*
 BD/*
 !BD/*.bd
 UserLogic/*/IP/**/*
+**/IP/**/*
 !**/IP/**/*.xci
 UserLogic/*/IP/*/*/*
 !UserLogic/*/IP/*/*/*.xci
