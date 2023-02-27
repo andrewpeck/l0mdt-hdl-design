@@ -21,10 +21,12 @@ xvlog*
 BD/*
 !BD/*.bd
 UserLogic/*/IP/**/*
-**/IP/**/*
+HAL/IP/**/*
+!HAL/IP/**/*.xci
 !**/IP/**/*.xci
 UserLogic/*/IP/*/*/*
 !UserLogic/*/IP/*/*/*.xci
+#UserLogic/*/IP/**/*.xci
 !IP/**/*.xci
 !IP/**.xci
 HAL/IP/*
@@ -48,7 +50,6 @@ env/
 compile_simlib.log.bak
 library.cfg
 Projects/
-#UserLogic/*/IP/**/*.xci
 __init__.py
 *.vstf
 .nfs*
