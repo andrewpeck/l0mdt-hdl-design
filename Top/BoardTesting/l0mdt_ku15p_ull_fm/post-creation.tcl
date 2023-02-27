@@ -6,7 +6,7 @@ source ${SCRIPT_PATH}/get_fpga_name.tcl
 
 set C2C_PATH $PATH_REPO/HAL/c2c
 set BD_PATH $PATH_REPO/HAL/c2c/bd_helper
-set BD_OUTPUT_PATH $PATH_REPO/HAL/c2c/bd
+set BD_OUTPUT_PATH ${SCRIPT_PATH}/bd
 
 set bd_design_name "c2cSlave"
 
@@ -14,9 +14,9 @@ set bd_design_name "c2cSlave"
 
 set sources "${C2C_PATH}/createC2CSlaveInterconnect.tcl
              ${C2C_PATH}/create_kintex_c2c.tcl
-             ${C2C_PATH}/slaves.yaml"
+             ${SCRIPT_PATH}/slaves.yaml"
 
-set svg_product ${BD_OUTPUT_PATH}/${BD_SUFFIX}/c2cSlave/c2cSlave.svg
+set svg_product ${SCRIPT_PATH}/c2cSlave.svg
 
 if { [file exist $svg_product] } {
     set svg_modification_time [file mtime $svg_product]
@@ -60,16 +60,20 @@ puts "=================================================================="
 # 0xB0000000 for US+; 0x80000000 for 7 Series
 set AXI_BASE_ADDRESS  0x80000000 ; # 7 Series
 
-source ${SCRIPT_PATH}/../../create_c2c.tcl
+source ${PATH_REPO}/Top/create_c2c.tcl
 
 #Adding files to the project
-set f "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_pkg.vhd"   
-add_files -norecurse -fileset "sources_1" $f
-set file_obj [get_files -of_objects [get_filesets "sources_1"] [list "*$f"]]
-set_property -name "library" -value "ctrl_lib" -objects $file_obj  
-
+set fs "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_pkg.vhd ${SCRIPT_PATH}/c2cslave_pkg.vhd"
+add_files -norecurse -fileset "sources_1" $fs
+foreach f $fs {
+    set file_obj [get_files -of_objects [get_filesets "sources_1"] [list "*$f"]]
+    set_property -name "library" -value "ctrl_lib" -objects $file_obj
+}
 
 puts "Block design up to date from TCL sources. Skipping build."
 
 set_property PROCESSING_ORDER LATE [get_files timing.tcl]
 set_property PROCESSING_ORDER LATE [get_files loc_mgts.tcl]
+
+
+## Create top_control.vhd

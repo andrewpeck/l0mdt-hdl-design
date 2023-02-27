@@ -1,8 +1,8 @@
 set SCRIPT_PATH "[file normalize [file dirname [info script]]]"
-set PATH_REPO   "[file normalize ${SCRIPT_PATH}/../../../]"
+set PATH_REPO   "[file normalize ${SCRIPT_PATH}/../../]"
 
 puts "Creating SVF"
-source [file normalize ${SCRIPT_PATH}/../../create_svf.tcl]
+source [file normalize ${SCRIPT_PATH}/../create_svf.tcl]
 
 set new_dir_addr_table $dst_dir/tarball/address_table
 set new_dir_bit $dst_dir/tarball/bit
@@ -33,7 +33,7 @@ if {[file exists $dst_dir/${proj_name}\-$describe.ltx]} {
 }
 
 # read the data
-set f [open $PATH_REPO/address_tables/address_apollo.xml]
+set f [open $SCRIPT_PATH/address_tables/address_apollo.xml]
 set data [read -nonewline $f]
 close $f
 
@@ -47,7 +47,7 @@ foreach line $data {
 }
 close $w
 
-set f [open $PATH_REPO/address_tables/connections.xml]
+set f [open $SCRIPT_PATH/address_tables/connections.xml]
 set data [read -nonewline $f]
 close $f
 
