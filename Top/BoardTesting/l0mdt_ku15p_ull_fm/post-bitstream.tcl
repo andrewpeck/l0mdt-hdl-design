@@ -1,5 +1,5 @@
 set SCRIPT_PATH "[file normalize [file dirname [info script]]]"
-set PATH_REPO   "[file normalize ${SCRIPT_PATH}/../../]"
+set PATH_REPO   "[file normalize ${SCRIPT_PATH}/../../../]"
 
 puts "Creating SVF"
 source [file normalize ${SCRIPT_PATH}/../../create_svf.tcl]
