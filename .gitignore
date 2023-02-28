@@ -20,10 +20,10 @@ xvlog*
 .vscode/
 BD/*
 !BD/*.bd
-UserLogic/*/IP/**/*
 HAL/IP/**/*
 !HAL/IP/**/*.xci
 !**/IP/**/*.xci
+UserLogic/*/IP/**/*
 UserLogic/*/IP/*/*/*
 !UserLogic/*/IP/*/*/*.xci
 #UserLogic/*/IP/**/*.xci
