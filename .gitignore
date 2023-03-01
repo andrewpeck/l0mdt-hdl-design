@@ -29,8 +29,8 @@ UserLogic/*/IP/*/*/*
 #UserLogic/*/IP/**/*.xci
 !IP/**/*.xci
 !IP/**.xci
-HAL/IP/*
-!HAL/IP/*/*.xci
+HAL/IP/*/*/*
+!HAL/IP/*/*/*.xci
 *.dbg
 *.zip
 *.tar
@@ -61,5 +61,9 @@ Plots
 **/*.yml.old
 xproj
 *.xlsx
+Top/*/bd/*
+Top/*/c2cslave_pkg.vhd
+Top/*/*/bd/*
+Top/*/*/c2cslave_pkg.vhd
 test*
 configs/
