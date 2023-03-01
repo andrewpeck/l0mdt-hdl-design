@@ -10,18 +10,22 @@ module fm_sb_ctrl(
 		  input logic 			   axi_rst,
 		  input logic 			   axi_clk,
 		  output logic [sb_mapped_n-1:0]   freeze,
-		  output logic [pb_mode_width-1:0] playback_mode[sb_mapped_n]
+		  output logic [pb_mode_width-1:0] playback_mode[sb_mapped_n],
+		  output logic 			   init_spy_mem
 		  );
 
    logic 				  global_freeze;
    logic [pb_mode_width-1:0] 		  global_pb_mode;
+   
+   
    logic [axi_dw-1:0] 			  freeze_mask;
    logic [axi_dw-1:0] 			  playback_mask;
 
 
    assign global_freeze  = fm_ctrl_in.SPY_CTRL.GLOBAL_FREEZE;
    assign global_pb_mode = fm_ctrl_in.SPY_CTRL.GLOBAL_PLAYBACK_MODE;
-
+   assign init_spy_mem = fm_ctrl_in.SPY_CTRL.INITIALIZE_SPY_MEMORY;
+   
    always @ (posedge axi_clk)
      begin
 	if(axi_rst)

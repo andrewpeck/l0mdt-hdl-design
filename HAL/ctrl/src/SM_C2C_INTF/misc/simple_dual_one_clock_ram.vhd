@@ -8,6 +8,7 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.std_logic_unsigned.all;
+use IEEE.math_real.all;
 use work.types.all;
 
 entity simple_dual_one_clock is

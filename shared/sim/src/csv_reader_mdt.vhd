@@ -1,17 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: csv_reader_mdt.vhd
+-- Module: <<moduleName>>
+-- File PATH: /csv_reader_mdt.vhd
+-- -----
+-- File Created: Wednesday, 24th November 2020 10:52:06 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Thursday, 16th February 2023 9:33:16 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger
---  Module: Test Bench Module for Logic Trigger Path
---  Description: SLC input vector reader and injector
---
---------------------------------------------------------------------------------
---  Revisions:
---      2020.11.24 Creation 
---
---------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
@@ -49,7 +51,7 @@ entity csv_reader_mdt is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    enable              : in integer;
+    enable              : in std_logic;
     --
     tb_curr_sim_time    : in unsigned(63 downto 0) := (others => '0');
     tb_curr_tdc_time    : in unsigned(63 downto 0) := (others => '0');
@@ -209,7 +211,7 @@ begin
 
       else
 
-        if enable = 1 then
+        if enable = '1' then
         -- write to DUT
 
           for wr_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 loop

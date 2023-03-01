@@ -735,8 +735,13 @@ package body TAR_CTRL is
    end function zero;
 
    function width(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: TAR_PL_ST_PL_MEM_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -881,8 +886,13 @@ package body TAR_CTRL is
    end function zero;
 
    function width(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is

@@ -3,6 +3,10 @@
 package require yaml
 
 set script_path "[file normalize [file dirname [info script]]]"
+set repo_path $script_path/..
+
+source $script_path/create_top_modules.tcl
+
 
 proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 
@@ -175,16 +179,18 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # copy the base files
     set files_to_copy "get_fpga_name.tcl gitlab-ci.yml hog.conf
-    list/ctrl_lib.src list/hal.src list/l0mdt.src
-    list/xml.lst list/hal.src list/l0mdt.src
-    list/project_lib.src list/shared_lib.src list/xdc.con
+    list
     pre-synthesis.tcl
     user_pkg.vhd
     post-bitstream.tcl
-    post-creation.tcl prj_cfg.vhd"
+    post-creation.tcl prj_cfg.vhd address_tables slaves.yaml"
 
     foreach file $files_to_copy {
-        file copy -force ${source_path}/$file ${dest_path}/$file
+        # file copy -force ${source_path}/$file ${dest_path}
+        if {$file in "address_tables slaves.yaml" && [file exists ${dest_path}/$file]} {
+            puts "INFO: $dest_path/$file already exists, do not overwrite..."
+        }
+        exec cp -r ${source_path}/$file ${dest_path}
     }
 
     # update the link mapping
@@ -235,6 +241,12 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     # update the hal.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/hal.src"
 
+    # update the ctrl_lib.src file
+    # exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/ctrl_lib.src"
+
+    # update the l0mdt.src file
+    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/l0mdt.src"
+
     # update the project_lib.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
 
@@ -261,10 +273,9 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     if {0 == $hog_chk} {
         exec sed -i "/^CHK:/,/PROJECT_NAME.*/d" "$dest_path/gitlab-ci.yml"
     }
-
-    # update the ctrl_lib
-    exec sed -i "s|ku15p|${fpga_shortname}|g" "$dest_path/list/ctrl_lib.src"
 }
+
+
 
 proc clone_projects {huddle} {
 
@@ -301,6 +312,7 @@ proc clone_projects {huddle} {
             }
 
             global script_path
+            global repo_path
 
             # if the variant is "default" don't add a suffix,
             # otherwise add the variant name
@@ -310,6 +322,9 @@ proc clone_projects {huddle} {
             }
             clone_mdt_project "$script_path" "l0mdt_${key}${suffix}" \
                 $fpga $board_pkg $pt $sf $constraints $link_map $props
-            }}}
+            create_top_modules "$script_path/l0mdt_${key}${suffix}" "$repo_path"
+        }
+    }
+}
 
 clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]

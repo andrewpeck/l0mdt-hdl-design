@@ -1,16 +1,20 @@
 --------------------------------------------------------------------------------
---
---
---
+-- UMass , Physics Department
+-- Project: ult
+-- File: top_ult_imp.vhd
+-- Module: <<moduleName>>
+-- File PATH: /top_ult_imp.vhd
+-- -----
+-- File Created: Friday, 9th June 2020 10:11:27 am
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Friday, 17th February 2023 10:17:41 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: User Logic Top 
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 
 library ieee;
 use ieee.std_logic_misc.all;
@@ -45,9 +49,8 @@ use fm_lib.fm_ult_pkg.all;
 
 entity top_ult is
   generic (
+    PRJ_INFO            : string  := "not_defined";
     DUMMY       : boolean := false
-
-    -- g_h2s_ctrl  : H2S_CTRL_t := zero(g_h2s_ctrl);
     );
 
   port (
@@ -99,16 +102,16 @@ entity top_ult is
     
 
     -- TDC Hits from Polmux
-    i_inn_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tdc_hits_ab  : in std_logic_vector(c_HPS_NUM_MDT_CH_INN -1 downto 0);--tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_mid_tdc_hits_ab  : in std_logic_vector(c_HPS_NUM_MDT_CH_MID -1 downto 0);--tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_out_tdc_hits_ab  : in std_logic_vector(c_HPS_NUM_MDT_CH_OUT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_ext_tdc_hits_ab  : in std_logic_vector(c_HPS_NUM_MDT_CH_EXT -1 downto 0);--tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
     -- TDC Hits from Tar
-    -- i_inner_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    -- i_middle_tar_hits : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    -- i_outer_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    -- i_extra_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    -- i_inner_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    -- i_middle_tar_hits : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    -- i_outer_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    -- i_extra_tar_hits  : in tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
     -- Sector Logic Candidates
     i_main_primary_slc_ab        : in std_logic_vector(2 downto 0);--slc_rx_avt(2 downto 0);  -- is the main SL used
@@ -120,7 +123,7 @@ entity top_ult is
     i_minus_neighbor_segments_ab : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    o_daq_streams_ab     : out std_logic_vector(c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);--felix_stream_avt (c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);
+    o_daq_streams_ab     : out std_logic_vector(c_DAQ_LINKS - 1 downto 0);--felix_stream_avt (c_HPS_NUM_MDT_CH_INN + c_HPS_NUM_MDT_CH_MID + c_HPS_NUM_MDT_CH_OUT - 1 downto 0);
     -- o_daq_streams : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
@@ -171,53 +174,56 @@ architecture behavioral of top_ult is
   signal fm_ctrl_r             : FM_CTRL_t;
   signal fm_mon_r              : FM_MON_t;
 
-  -- signal h2s_ctrl_v            : std_logic_vector(len(h2s_ctrl_r ) -1 downto 0);
-  -- signal h2s_mon_v             : std_logic_vector(len(h2s_mon_r  ) -1 downto 0);
-  signal hps_inn_ctrl_v        : std_logic_vector(len(hps_inn_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
-  signal hps_inn_mon_v         : std_logic_vector(len(hps_inn_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
-  signal hps_mid_ctrl_v        : std_logic_vector(len(hps_mid_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
-  signal hps_mid_mon_v         : std_logic_vector(len(hps_mid_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
-  signal hps_out_ctrl_v        : std_logic_vector(len(hps_out_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
-  signal hps_out_mon_v         : std_logic_vector(len(hps_out_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
-  signal hps_ext_ctrl_v        : std_logic_vector(len(hps_ext_ctrl_r ) -1 downto 0); -- : in  H2S_CTRL_t;
-  signal hps_ext_mon_v         : std_logic_vector(len(hps_ext_mon_r  ) -1 downto 0);--  : out H2S_MON_t;
+  signal hps_inn_ctrl_v        : std_logic_vector(HPS_CTRL_t'w -1 downto 0); -- : in  H2S_CTRL_t;
+  signal hps_inn_mon_v         : std_logic_vector(HPS_MON_t'w -1 downto 0);--  : out H2S_MON_t;
+  signal hps_mid_ctrl_v        : std_logic_vector(HPS_CTRL_t'w -1 downto 0); -- : in  H2S_CTRL_t;
+  signal hps_mid_mon_v         : std_logic_vector(HPS_MON_t'w -1 downto 0);--  : out H2S_MON_t;
+  signal hps_out_ctrl_v        : std_logic_vector(HPS_CTRL_t'w -1 downto 0); -- : in  H2S_CTRL_t;
+  signal hps_out_mon_v         : std_logic_vector(HPS_MON_t'w -1 downto 0);--  : out H2S_MON_t;
+  signal hps_ext_ctrl_v        : std_logic_vector(HPS_CTRL_t'w -1 downto 0); -- : in  H2S_CTRL_t;
+  signal hps_ext_mon_v         : std_logic_vector(HPS_MON_t'w -1 downto 0);--  : out H2S_MON_t;
   
-  signal tar_inn_ctrl_v        : std_logic_vector(len(tar_inn_ctrl_r ) -1 downto 0);
-  signal tar_inn_mon_v         : std_logic_vector(len(tar_inn_mon_r  ) -1 downto 0);
-  signal tar_mid_ctrl_v        : std_logic_vector(len(tar_mid_ctrl_r ) -1 downto 0);
-  signal tar_mid_mon_v         : std_logic_vector(len(tar_mid_mon_r  ) -1 downto 0);
-  signal tar_out_ctrl_v        : std_logic_vector(len(tar_out_ctrl_r ) -1 downto 0);
-  signal tar_out_mon_v         : std_logic_vector(len(tar_out_mon_r  ) -1 downto 0);
-  signal tar_ext_ctrl_v        : std_logic_vector(len(tar_ext_ctrl_r ) -1 downto 0);
-  signal tar_ext_mon_v         : std_logic_vector(len(tar_ext_mon_r  ) -1 downto 0);
+  signal tar_inn_ctrl_v        : std_logic_vector(TAR_CTRL_t'w -1 downto 0);
+  signal tar_inn_mon_v         : std_logic_vector(TAR_MON_t'w -1 downto 0);
+  signal tar_mid_ctrl_v        : std_logic_vector(TAR_CTRL_t'w -1 downto 0);
+  signal tar_mid_mon_v         : std_logic_vector(TAR_MON_t'w -1 downto 0);
+  signal tar_out_ctrl_v        : std_logic_vector(TAR_CTRL_t'w -1 downto 0);
+  signal tar_out_mon_v         : std_logic_vector(TAR_MON_t'w -1 downto 0);
+  signal tar_ext_ctrl_v        : std_logic_vector(TAR_CTRL_t'w -1 downto 0);
+  signal tar_ext_mon_v         : std_logic_vector(TAR_MON_t'w -1 downto 0);
 
-  signal mtc_ctrl_v            : std_logic_vector(len(mtc_ctrl_r ) -1 downto 0);
-  signal mtc_mon_v             : std_logic_vector(len(mtc_mon_r  ) -1 downto 0);
-  signal ucm_ctrl_v            : std_logic_vector(len(ucm_ctrl_r ) -1 downto 0);
-  signal ucm_mon_v             : std_logic_vector(len(ucm_mon_r  ) -1 downto 0);
-  signal daq_ctrl_v            : std_logic_vector(len(daq_ctrl_r ) -1 downto 0);
-  signal daq_mon_v             : std_logic_vector(len(daq_mon_r  ) -1 downto 0);
-  signal tf_ctrl_v             : std_logic_vector(len(tf_ctrl_r  ) -1 downto 0);
-  signal tf_mon_v              : std_logic_vector(len(tf_mon_r   ) -1 downto 0);
-  signal mpl_ctrl_v            : std_logic_vector(len(mpl_ctrl_r ) -1 downto 0);
-  signal mpl_mon_v             : std_logic_vector(len(mpl_mon_r  ) -1 downto 0);
-  signal fm_ctrl_v             : std_logic_vector(len(fm_ctrl_r ) -1 downto 0);
-  signal fm_mon_v              : std_logic_vector(len(fm_mon_r  ) -1 downto 0);
+  signal mtc_ctrl_v            : std_logic_vector(MTC_CTRL_t'w -1 downto 0);
+  signal mtc_mon_v             : std_logic_vector(MTC_MON_t'w -1 downto 0);
 
-  signal i_inner_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_middle_tdc_hits : tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_outer_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_extra_tdc_hits  : tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  signal ucm_ctrl_v            : std_logic_vector(UCM_CTRL_t'w -1 downto 0);
+  signal ucm_mon_v             : std_logic_vector(UCM_MON_t'w -1 downto 0);
+  
+  signal daq_ctrl_v            : std_logic_vector(DAQ_CTRL_t'w -1 downto 0);
+  signal daq_mon_v             : std_logic_vector(DAQ_MON_t'w -1 downto 0);
+  
+  signal tf_ctrl_v             : std_logic_vector(TF_CTRL_t'w -1 downto 0);
+  signal tf_mon_v              : std_logic_vector(TF_MON_t'w -1 downto 0);
+  
+  signal mpl_ctrl_v            : std_logic_vector(MPL_CTRL_t'w -1 downto 0);
+  signal mpl_mon_v             : std_logic_vector(MPL_MON_t'w -1 downto 0);
+  
+  signal fm_ctrl_v             : std_logic_vector(FM_CTRL_t'w -1 downto 0);
+  signal fm_mon_v              : std_logic_vector(FM_MON_t'w -1 downto 0);
+
+  signal i_inner_tdc_hits  : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_middle_tdc_hits : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_outer_tdc_hits  : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_extra_tdc_hits  : tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   signal temp_tdcpolmux2tar_vt : tdcpolmux2tar_vt;
   constant TDCPOLMUX2TAR_LEN : integer := temp_tdcpolmux2tar_vt'length;
 
   type mdt_polmux_bus_std_avt is array(integer range <>) of std_logic_vector(TDCPOLMUX2TAR_LEN - 1 downto 0);
 
-  signal i_inn_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_mid_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_out_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_ext_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_inn_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_mid_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_out_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_ext_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   signal temp_slc_rx_vt : slc_rx_vt;
   constant SLC_RX_LEN : integer := temp_slc_rx_vt'length;
@@ -245,7 +251,7 @@ architecture behavioral of top_ult is
   signal i_plus_neighbor_segments_av  : sf2pt_bus_std_avt(c_NUM_SF_INPUTS - 1 downto 0);
   signal i_minus_neighbor_segments_av : sf2pt_bus_std_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
-  signal o_daq_streams     : felix_stream_avt (c_HPS_MAX_HP_INN  + c_HPS_MAX_HP_MID  + c_HPS_MAX_HP_OUT - 1 downto 0);
+  signal o_daq_streams     : felix_stream_avt (c_DAQ_LINKS- 1 downto 0);
 
   signal o_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
   signal o_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
@@ -276,51 +282,51 @@ begin
   clock_and_control.bx  <= bx;
 
   -- ser/Des
-  hps_inn : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_inn_ctrl_r )) port map(clk,rst,hps_inn_ctrl_b,hps_inn_ctrl_v); 
+  hps_inn : entity shared_lib.vhdl_utils_deserializer generic map (HPS_CTRL_t'w) port map(clk,rst,hps_inn_ctrl_b,hps_inn_ctrl_v); 
   hps_inn_mon_b <= xor_reduce(hps_inn_mon_v);
-  hps_mid : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_mid_ctrl_r )) port map(clk,rst,hps_mid_ctrl_b,hps_mid_ctrl_v); 
+  hps_mid : entity shared_lib.vhdl_utils_deserializer generic map (HPS_CTRL_t'w) port map(clk,rst,hps_mid_ctrl_b,hps_mid_ctrl_v); 
   hps_mid_mon_b <= xor_reduce(hps_mid_mon_v);
-  hps_out : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_out_ctrl_r )) port map(clk,rst,hps_out_ctrl_b,hps_out_ctrl_v); 
+  hps_out : entity shared_lib.vhdl_utils_deserializer generic map (HPS_CTRL_t'w) port map(clk,rst,hps_out_ctrl_b,hps_out_ctrl_v); 
   hps_out_mon_b <= xor_reduce(hps_out_mon_v);
-  hps_ext : entity shared_lib.vhdl_utils_deserializer generic map (len(hps_ext_ctrl_r )) port map(clk,rst,hps_ext_ctrl_b,hps_ext_ctrl_v); 
+  hps_ext : entity shared_lib.vhdl_utils_deserializer generic map (HPS_CTRL_t'w) port map(clk,rst,hps_ext_ctrl_b,hps_ext_ctrl_v); 
   hps_ext_mon_b <= xor_reduce(hps_ext_mon_v);
 
-  tar_inn : entity shared_lib.vhdl_utils_deserializer generic map (len(tar_inn_ctrl_r )) port map(clk,rst,tar_inn_ctrl_b,tar_inn_ctrl_v); 
+  tar_inn : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,tar_inn_ctrl_b,tar_inn_ctrl_v); 
   tar_inn_mon_b <= xor_reduce(tar_inn_mon_v);
-  tar_mid : entity shared_lib.vhdl_utils_deserializer generic map (len(tar_mid_ctrl_r )) port map(clk,rst,tar_mid_ctrl_b,tar_mid_ctrl_v); 
+  tar_mid : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,tar_mid_ctrl_b,tar_mid_ctrl_v); 
   tar_mid_mon_b <= xor_reduce(tar_mid_mon_v);
-  tar_out : entity shared_lib.vhdl_utils_deserializer generic map (len(tar_out_ctrl_r )) port map(clk,rst,tar_out_ctrl_b,tar_out_ctrl_v); 
+  tar_out : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,tar_out_ctrl_b,tar_out_ctrl_v); 
   tar_out_mon_b <= xor_reduce(tar_out_mon_v);
-  tar_ext : entity shared_lib.vhdl_utils_deserializer generic map (len(tar_ext_ctrl_r )) port map(clk,rst,tar_ext_ctrl_b,tar_ext_ctrl_v); 
+  tar_ext : entity shared_lib.vhdl_utils_deserializer generic map (TAR_CTRL_t'w) port map(clk,rst,tar_ext_ctrl_b,tar_ext_ctrl_v); 
   tar_ext_mon_b <= xor_reduce(tar_ext_mon_v);
 
-  mtc_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(mtc_ctrl_r )) port map(clk,rst,mtc_ctrl_b,mtc_ctrl_v);
+  mtc_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (MTC_CTRL_t'w) port map(clk,rst,mtc_ctrl_b,mtc_ctrl_v);
   mtc_mon_b <= xor_reduce(mtc_mon_v);
-  ucm_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(ucm_ctrl_r )) port map(clk,rst,ucm_ctrl_b,ucm_ctrl_v);
+  ucm_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (UCM_CTRL_t'w) port map(clk,rst,ucm_ctrl_b,ucm_ctrl_v);
   ucm_mon_b <= xor_reduce(ucm_mon_v);
-  daq_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(daq_ctrl_r )) port map(clk,rst,daq_ctrl_b,daq_ctrl_v);
+  daq_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (DAQ_CTRL_t'w) port map(clk,rst,daq_ctrl_b,daq_ctrl_v);
   daq_mon_b <= xor_reduce(daq_mon_v);
-  tf_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(tf_ctrl_r )) port map(clk,rst,tf_ctrl_b,tf_ctrl_v);
+  tf_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (TF_CTRL_t'w) port map(clk,rst,tf_ctrl_b,tf_ctrl_v);
   tf_mon_b <= xor_reduce(tf_mon_v);
-  mpl_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(mpl_ctrl_r )) port map(clk,rst,mpl_ctrl_b,mpl_ctrl_v);
+  mpl_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (MPL_CTRL_t'w) port map(clk,rst,mpl_ctrl_b,mpl_ctrl_v);
   mpl_mon_b <= xor_reduce(mpl_mon_v);
-  fm_ctrl  : entity shared_lib.vhdl_utils_deserializer generic map (len(fm_ctrl_r )) port map(clk,rst,fm_ctrl_b,fm_ctrl_v);
+  fm_ctrl  : entity shared_lib.vhdl_utils_deserializer generic map (FM_CTRL_t'w) port map(clk,rst,fm_ctrl_b,fm_ctrl_v);
   fm_mon_b <= xor_reduce(fm_mon_v);
 
 
-  inn_tdc: for i_h in c_HPS_MAX_HP_INN -1 downto 0 generate
+  inn_tdc: for i_h in c_HPS_NUM_MDT_CH_INN -1 downto 0 generate
     tdc_inn : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_inn_tdc_hits_ab(i_h),o_data => i_inn_tdc_hits_av(i_h));
     i_inner_tdc_hits(i_h) <= i_inn_tdc_hits_av(i_h);
   end generate;
-  mid_tdc: for i_h in c_HPS_MAX_HP_MID -1 downto 0 generate
+  mid_tdc: for i_h in c_HPS_NUM_MDT_CH_MID -1 downto 0 generate
     tdc_mid : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_mid_tdc_hits_ab(i_h),o_data => i_mid_tdc_hits_av(i_h));
     i_middle_tdc_hits(i_h) <= i_mid_tdc_hits_av(i_h);
   end generate;
-  out_tdc: for i_h in c_HPS_MAX_HP_OUT -1 downto 0 generate
+  out_tdc: for i_h in c_HPS_NUM_MDT_CH_OUT -1 downto 0 generate
     tdc_out : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_out_tdc_hits_ab(i_h),o_data => i_out_tdc_hits_av(i_h));
     i_outer_tdc_hits(i_h) <= i_out_tdc_hits_av(i_h);
   end generate;
-  ext_tdc: for i_h in c_HPS_MAX_HP_EXT -1 downto 0 generate
+  ext_tdc: for i_h in c_HPS_NUM_MDT_CH_EXT -1 downto 0 generate
   tdc_ext : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_ext_tdc_hits_ab(i_h),o_data => i_ext_tdc_hits_av(i_h));
     i_extra_tdc_hits(i_h) <= i_ext_tdc_hits_av(i_h);
   end generate;
@@ -350,7 +356,7 @@ begin
     i_minus_neighbor_segments(i_h) <= i_minus_neighbor_segments_av(i_h);
   end generate;
   --------------------------------------------------------------
-  daq: for i_d in c_HPS_MAX_HP_INN  + c_HPS_MAX_HP_MID  + c_HPS_MAX_HP_OUT - 1 downto 0 generate
+  daq: for i_d in c_DAQ_LINKS - 1 downto 0 generate
     o_daq_streams_ab(i_d) <= xor_reduce(o_daq_streams(i_d));
   end generate;
   --------------------------------------------------------------
