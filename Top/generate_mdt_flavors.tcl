@@ -10,6 +10,8 @@ source $script_path/create_top_modules.tcl
 
 proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 
+    puts " ******* ${fpga_short}"
+
     exec sed -i  "s/ku15p/${fpga_short}/g" $lib
 
     exec sed -i  "s/hal_.*.src/hal_[string range ${fpga_short} 0 1].src/g" $lib
@@ -44,6 +46,14 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
         exec sed -i  "s/^UserLogic.*lsf_lib_${fpga_short}.src/#&/g" $lib
         # enable empty lsf
         exec sed -i  "s/^#\\(UserLogic.*lsf_lib_empty.src\\)/\\1/g" $lib
+    }
+
+    if {[string compare "ku15p" $fpga_short]==0} {
+      # disable vu13
+      exec sed -i  "s/^UserLogic.*ucm_lib_vu13.src/#&/g" $lib
+      # enable ku15
+      exec sed -i  "s/^#\\(UserLogic.*ucm_lib_ku15.src\\)/\\1/g" $lib
+      
     }
 
     # need to keep csf lib in the sources for now, since
