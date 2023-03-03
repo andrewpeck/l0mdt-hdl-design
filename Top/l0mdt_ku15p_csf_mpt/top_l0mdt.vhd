@@ -521,6 +521,12 @@ begin
       hal_mon            => hal_mon_r,
       hal_ctrl           => hal_ctrl_r,
       hog_mon            => hog_mon_r,
+      mtc_mon            => mtc_mon_r,
+      mtc_ctrl           => mtc_ctrl_r,
+      tf_mon            => tf_mon_r,
+      tf_ctrl           => tf_ctrl_r,
+      ucm_mon            => ucm_mon_r,
+      ucm_ctrl           => ucm_ctrl_r,
       -- END: ULT_IO :: DO NOT EDIT
        
       -- axi common

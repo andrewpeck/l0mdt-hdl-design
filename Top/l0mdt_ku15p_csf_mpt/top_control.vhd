@@ -33,6 +33,9 @@ use ctrl_lib.fm_ctrl.all;
 use ctrl_lib.hal_core_ctrl.all;
 use ctrl_lib.hal_ctrl.all;
 use ctrl_lib.hog_ctrl.all;
+use ctrl_lib.mtc_ctrl.all;
+use ctrl_lib.tf_ctrl.all;
+use ctrl_lib.ucm_ctrl.all;
 -- END: LIBRARIES -- DO NOT TOUCH
 
 
@@ -81,6 +84,12 @@ entity top_control is
     hal_mon : in HAL_MON_t;
     hal_ctrl : out HAL_CTRL_t;
     hog_mon : in HOG_MON_t;
+    mtc_mon : in MTC_MON_t;
+    mtc_ctrl : out MTC_CTRL_t;
+    tf_mon : in TF_MON_t;
+    tf_ctrl : out TF_CTRL_t;
+    ucm_mon : in UCM_MON_t;
+    ucm_ctrl : out UCM_CTRL_t;
     -- END: ULT_IO :: DO NOT EDIT
   
 
@@ -132,6 +141,24 @@ architecture control_arch of top_control is
   signal hog_writemosi : axiwritemosi;
   signal hog_writemiso : axiwritemiso;
   signal hog_mon_r     : HOG_MON_t;
+  signal mtc_readmosi  : axireadmosi;
+  signal mtc_readmiso  : axireadmiso;
+  signal mtc_writemosi : axiwritemosi;
+  signal mtc_writemiso : axiwritemiso;
+  signal mtc_mon_r     : MTC_MON_t;
+  signal mtc_ctrl_r    : MTC_CTRL_t;
+  signal tf_readmosi  : axireadmosi;
+  signal tf_readmiso  : axireadmiso;
+  signal tf_writemosi : axiwritemosi;
+  signal tf_writemiso : axiwritemiso;
+  signal tf_mon_r     : TF_MON_t;
+  signal tf_ctrl_r    : TF_CTRL_t;
+  signal ucm_readmosi  : axireadmosi;
+  signal ucm_readmiso  : axireadmiso;
+  signal ucm_writemosi : axiwritemosi;
+  signal ucm_writemiso : axiwritemiso;
+  signal ucm_mon_r     : UCM_MON_t;
+  signal ucm_ctrl_r    : UCM_CTRL_t;
   -- END: ULT_AXI_SIGNALS :: DO NOT EDIT
 
   signal c2c_mon  : C2C_INTF_MON_t;
@@ -448,6 +475,63 @@ begin
       HOG_wready(0)      => HOG_writemiso.ready_for_data,
       HOG_wstrb          => HOG_writemosi.data_write_strobe,
       HOG_wvalid(0)      => HOG_writemosi.data_valid,
+      MTC_araddr         => MTC_readmosi.address,
+      MTC_arprot         => MTC_readmosi.protection_type,
+      MTC_arready(0)     => MTC_readmiso.ready_for_address,
+      MTC_arvalid(0)     => MTC_readmosi.address_valid,
+      MTC_awaddr         => MTC_writemosi.address,
+      MTC_awprot         => MTC_writemosi.protection_type,
+      MTC_awready(0)     => MTC_writemiso.ready_for_address,
+      MTC_awvalid(0)     => MTC_writemosi.address_valid,
+      MTC_bready(0)      => MTC_writemosi.ready_for_response,
+      MTC_bvalid(0)      => MTC_writemiso.response_valid,
+      MTC_bresp          => MTC_writemiso.response,
+      MTC_rdata          => MTC_readmiso.data,
+      MTC_rready(0)      => MTC_readmosi.ready_for_data,
+      MTC_rresp          => MTC_readmiso.response,
+      MTC_rvalid(0)      => MTC_readmiso.data_valid,
+      MTC_wdata          => MTC_writemosi.data,
+      MTC_wready(0)      => MTC_writemiso.ready_for_data,
+      MTC_wstrb          => MTC_writemosi.data_write_strobe,
+      MTC_wvalid(0)      => MTC_writemosi.data_valid,
+      TF_araddr         => TF_readmosi.address,
+      TF_arprot         => TF_readmosi.protection_type,
+      TF_arready(0)     => TF_readmiso.ready_for_address,
+      TF_arvalid(0)     => TF_readmosi.address_valid,
+      TF_awaddr         => TF_writemosi.address,
+      TF_awprot         => TF_writemosi.protection_type,
+      TF_awready(0)     => TF_writemiso.ready_for_address,
+      TF_awvalid(0)     => TF_writemosi.address_valid,
+      TF_bready(0)      => TF_writemosi.ready_for_response,
+      TF_bvalid(0)      => TF_writemiso.response_valid,
+      TF_bresp          => TF_writemiso.response,
+      TF_rdata          => TF_readmiso.data,
+      TF_rready(0)      => TF_readmosi.ready_for_data,
+      TF_rresp          => TF_readmiso.response,
+      TF_rvalid(0)      => TF_readmiso.data_valid,
+      TF_wdata          => TF_writemosi.data,
+      TF_wready(0)      => TF_writemiso.ready_for_data,
+      TF_wstrb          => TF_writemosi.data_write_strobe,
+      TF_wvalid(0)      => TF_writemosi.data_valid,
+      UCM_araddr         => UCM_readmosi.address,
+      UCM_arprot         => UCM_readmosi.protection_type,
+      UCM_arready(0)     => UCM_readmiso.ready_for_address,
+      UCM_arvalid(0)     => UCM_readmosi.address_valid,
+      UCM_awaddr         => UCM_writemosi.address,
+      UCM_awprot         => UCM_writemosi.protection_type,
+      UCM_awready(0)     => UCM_writemiso.ready_for_address,
+      UCM_awvalid(0)     => UCM_writemosi.address_valid,
+      UCM_bready(0)      => UCM_writemosi.ready_for_response,
+      UCM_bvalid(0)      => UCM_writemiso.response_valid,
+      UCM_bresp          => UCM_writemiso.response,
+      UCM_rdata          => UCM_readmiso.data,
+      UCM_rready(0)      => UCM_readmosi.ready_for_data,
+      UCM_rresp          => UCM_readmiso.response,
+      UCM_rvalid(0)      => UCM_readmiso.data_valid,
+      UCM_wdata          => UCM_writemosi.data,
+      UCM_wready(0)      => UCM_writemiso.ready_for_data,
+      UCM_wstrb          => UCM_writemosi.data_write_strobe,
+      UCM_wvalid(0)      => UCM_writemosi.data_valid,
       -- END: AXI_PL_SLAVES :: DO NOT EDIT
        
       K_C2CB_phy_Rx_rxn(0)                => c2cb_rxn, --n_mgt_z2k(2 downto 2),
@@ -545,6 +629,39 @@ begin
       slave_writemosi   => HOG_writemosi,
       slave_writemiso   => HOG_writemiso,
       mon   => HOG_mon_r
+    );
+  MTC_map_inst : entity ctrl_lib.mtc_map
+    port map(
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1, 
+      slave_readmosi   => MTC_readmosi,
+      slave_readmiso   => MTC_readmiso,
+      slave_writemosi   => MTC_writemosi,
+      slave_writemiso   => MTC_writemiso,
+      ctrl   => MTC_ctrl_r,
+      mon   => MTC_mon_r
+    );
+  TF_map_inst : entity ctrl_lib.tf_map
+    port map(
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1, 
+      slave_readmosi   => TF_readmosi,
+      slave_readmiso   => TF_readmiso,
+      slave_writemosi   => TF_writemosi,
+      slave_writemiso   => TF_writemiso,
+      ctrl   => TF_ctrl_r,
+      mon   => TF_mon_r
+    );
+  UCM_map_inst : entity ctrl_lib.ucm_map
+    port map(
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1, 
+      slave_readmosi   => UCM_readmosi,
+      slave_readmiso   => UCM_readmiso,
+      slave_writemosi   => UCM_writemosi,
+      slave_writemiso   => UCM_writemiso,
+      ctrl   => UCM_ctrl_r,
+      mon   => UCM_mon_r
     );
   -- END: ULT_SLAVES :: DO NOT EDIT
 
