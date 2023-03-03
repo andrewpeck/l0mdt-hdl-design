@@ -1,16 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: ucm_cvp.vhd
+-- Module: <<moduleName>>
+-- File PATH: /ucm_cvp.vhd
+-- -----
+-- File Created: Wednesday, 8th June 2022 9:54:44 am
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Monday, 6th February 2023 7:18:47 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: slc vector processor
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 library ieee, shared_lib;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -96,18 +99,18 @@ architecture beh of ucm_cvp is
   signal int_data_v     : ucm_cde_vt;
   signal barrel_r       : slc_barrel_rt;
   
-  signal data_v       : ucm_cde_vt;
-  signal data_r       : ucm_cde_rt;
+  -- signal data_v       : ucm_cde_vt;
+  -- signal data_r       : ucm_cde_rt;
 
-  signal data_v_2     : ucm_cde_vt;
-  signal data_r_2       : ucm_cde_rt;
+  -- signal data_v_2     : ucm_cde_vt;
+  -- signal data_r_2       : ucm_cde_rt;
   
   signal ucm2hps_buff_ar   : ucm2hps_art(c_MAX_NUM_HPS -1 downto 0);
   signal ucm2hps_ar   : ucm2hps_art(c_MAX_NUM_HPS -1 downto 0);
 
 
   -- signal chamber_ieta_v : std_logic_vector(15 downto 0);
-  signal chamber_ieta_r : chamb_ieta_rpc_aut;
+  -- signal chamber_ieta_r : chamb_ieta_rpc_aut;
 
   type new_chamb_ieta_art is array(c_MAX_NUM_HPS -1 downto 0) of unsigned(4-1 downto 0);
   signal new_chamb_ieta_a : new_chamb_ieta_art;
@@ -268,8 +271,6 @@ begin
       end generate;
     end generate;
 
-    ----------------------------------------------------------
--- /**
     IETA_INN : entity ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION => 0,
@@ -348,72 +349,6 @@ begin
     o_dv          => atan_dv
   );
 
-
-  -- PL_in : entity vamc_lib.vamc_sr
-  -- generic map(
-  --   g_DELAY_CYCLES  => 10,
-  --   g_PIPELINE_WIDTH    => int_data_v'length
-  -- )
-  -- port map(
-  --   clk         => clk,
-  --   rst         => local_rst,
-  --   ena         => ena,
-  --   --
-  --   i_data      => int_data_v,
-  --   o_data      => data_v
-  -- );
-  
-
-  -- PL_2 : entity vamc_lib.vamc_sr
-  -- generic map(
-  --   g_DELAY_CYCLES  => 10,
-  --   g_PIPELINE_WIDTH    => int_data_v'length
-  -- )
-  -- port map(
-  --   clk         => clk,
-  --   rst         => local_rst,
-  --   ena     => ena,
-  --   --
-  --   i_data      => data_v,
-  --   o_data      => data_v_2
-  -- );
-
-  -- data_r_2 <= convert(data_v_2);
-  -- 
-
-  -- Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
-  --   Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
-  --     Z_CALC : entity ucm_lib.ucm_cvp_z_calc
-  --     generic map(
-  --       g_STATION_RADIUS    => st_i
-  --     )
-  --     port map(
-  --       clk           => clk,
-  --       rst           => local_rst,
-  --       ena       => ena,
-  --       --
-  --       i_chamb_ieta  => chamber_ieta_r(st_i),
-  --       i_offset      => offset,
-  --       i_slope       => slope,
-  --       i_data_valid  => slope_dv,
-  --       --
-  --       o_vec_z_pos   => vec_pos_array(st_i)
-  --     );
-  --   end generate;
-  -- end generate;
-
-  -- A_GEN : for o_i in 0 to c_MAX_NUM_HPS - 1 generate
-  --   B_GEN : for i_i in o_i to c_MAX_POSSIBLE_HPS - 1 generate
-  --     C_GEN : if c_STATIONS_IN_SECTOR(i_i) = '1' generate
-  --       ucm2hps_ar(o_i).vec_pos <= vec_pos_array(i_i);
-  --     end generate;
-  --   end generate;
-  -- end generate;
-  
- 
-
-  
-
   UCM_HPS_GEN: for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 generate
     GEN : if c_STATIONS_IN_SECTOR(hps_i) = '1' generate
       o_ucm2hps_av(hps_i) <= convert(ucm2hps_ar(hps_i),o_ucm2hps_av(hps_i));
@@ -468,27 +403,6 @@ begin
           end loop;
         end if;
 
-        
-        -- for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
-        --   if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-        --     if i_data_r.data_valid = '1' then
-        --       ucm2hps_ar(hps_i).muid <= i_data_r.muid;
-        --     else
-        --       ucm2hps_ar(hps_i).muid <= (others => (others => '0'));
-        --     end if;
-        --     if atan_dv = '1' then
-        --       ucm2hps_ar(hps_i).vec_ang             <= vec_ang_pl;
-        --     else
-        --       ucm2hps_ar(hps_i).vec_ang             <= (others => '0');
-        --     end if;
-        --     if or_reduce(vec_z_pos_dv) = '1' then
-        --       ucm2hps_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
-        --     else
-        --       ucm2hps_ar(hps_i).vec_pos             <=(others => '0');
-        --     end if;
-        --   end if;
-        -- end loop;
-
         if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
           -- if c_SF_TYPE = '0' then --CSF
             -- if int_data_r.data_valid = '1' then
@@ -533,102 +447,4 @@ begin
     end if;
   end process;
 
--- */
-
 end beh;
-
-  -- PHIMOD : entity ucm_lib.ucm_cvp_phimod
-  -- generic map(
-  --   g_PIPELINE => 2
-  -- )
-  -- port map(
-  --   clk         =>clk,
-  --   rst         =>local_rst,
-  --   --
-  --   i_phicenter   => get_sector_phi_center(c_SECTOR_ID),
-  --   --
-  --   i_posphi    => data_r.posphi,
-  --   i_dv        => data_r.data_valid,
-  --   --
-  --   o_phimod    => o_phimod
-  -- );
-
-  /*
-  UCM_CVP_OUT : process(local_rst,clk) begin
-    if rising_edge(clk) then
-
-      -- if slope < 2047 then
-      --   vec_ang_pl <= resize(unsigned(slope),UCM2HPS_VEC_ANG_LEN);
-      -- else
-      --   vec_ang_pl <= (others => '1');
-      -- end if;
-      
-      if local_rst= '1' then
-
-
-        for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-          -- ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
-          ucm2hps_ar(hps_i).data_valid    <= '0';
-        end loop;
-
-      else 
-
-        -- if i_in_en = '1' then
-        --   -- como usar i_in_en? si ocupado deberia mantenerse desactivado
-        --   -- ojo se tiene qu eser previsor para poder empezar a calcular candidato si el proceso esta apunto de acabarse
-        --   -- update i_in_en only controls input data and allows the rest to continue processing
-          
-        --   int_data_v <= i_data_v;
-        -- end if;
-
-
-
-
-
-        if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
-          -- if c_SF_TYPE = '0' then --CSF
-            -- if int_data_r.data_valid = '1' then
-              for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
-                if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-
-                  if data_r_2.data_valid = '1' then
-
-                    ucm2hps_ar(hps_i).muid                <= data_r_2.muid;
-                    ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
-                    ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= new_chamb_ieta_a(hps_i); 
-                    ucm2hps_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(get_b_chamber_type(c_SECTOR_ID,hps_i,to_integer(new_chamb_ieta_a(hps_i))),VEC_MDTID_CHAMBER_ID_LEN);
-                    ucm2hps_ar(hps_i).vec_pos       <= vec_pos_array(hps_i);
-                    ucm2hps_ar(hps_i).vec_ang       <= vec_ang_pl;
-                    ucm2hps_ar(hps_i).data_valid    <= '1';
-                  
-                  else
-                    ucm2hps_ar(hps_i).data_valid    <= '0';
-                    -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-                    --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
-                    -- end loop;
-
-                  end if;
-
-                end if;
-              end loop;
-              -- slope / mbar calc
-              -- local origin calc : to be done in HEG local origin of window
-            -- else
-              -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-              --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
-              -- end loop;
-            -- end if;
-          -- else --LSF
-          -- end if;
-        else -- Endcap
-        end if;
-        
-        -- else
-        -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-        --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
-        -- end loop;
-        -- block dissabled
-      end if;
-    end if;
-  end process;
-  */

@@ -164,7 +164,7 @@ begin
   TAR_INN_GEN: if ST_ENABLE(0)='1' generate
     TAR_INN : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(0),
+      g_HPS_MAX_HP => c_HP_MAX_NUM_SECTOR_STATION(0),
       g_STATION => 0
     )
     port map (
@@ -187,7 +187,7 @@ begin
   TAR_MID_GEN: if ST_ENABLE(1)='1' generate
     TAR_MID : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(1),
+      g_HPS_MAX_HP => c_HP_MAX_NUM_SECTOR_STATION(1),
       g_STATION => 1
     )
     port map (
@@ -210,7 +210,7 @@ begin
   TAR_OUT_GEN: if ST_ENABLE(2)='1' generate
     TAR_OUT : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(2),
+      g_HPS_MAX_HP => c_HP_MAX_NUM_SECTOR_STATION(2),
       g_STATION => 2
     )
     port map (
@@ -233,7 +233,7 @@ begin
   TAR_EXT_GEN: if ST_ENABLE(3)='1' generate
     TAR_EXT : entity tar_lib.tar
     generic map(
-      g_HPS_MAX_HP => c_HP_NUM_SECTOR_STATION(3),
+      g_HPS_MAX_HP => c_HP_MAX_NUM_SECTOR_STATION(3),
       g_STATION => 3
     )
     port map (
@@ -265,7 +265,7 @@ begin
   port map(
     clk               => clk,
     rst               => rst,
-    enable            => enable_mdt,
+    enable            => glob_en,
     --
     tb_curr_sim_time  => tb_curr_sim_time,
     tb_curr_tdc_time  => tb_curr_tdc_time,

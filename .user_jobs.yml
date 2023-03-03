@@ -166,7 +166,7 @@ check_auto_generated_code:
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
   stage: user_proj
   script:
-    # GLdL
+    # GLdL 
     - export AUX_PRJ_FOLDER=${PROJECT_NAME%/*}
     - echo $AUX_PRJ_FOLDER
     - export AUX_PRJ_NAME=${PROJECT_NAME##**/}
