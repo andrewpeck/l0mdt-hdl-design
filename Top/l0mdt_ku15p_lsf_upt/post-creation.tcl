@@ -24,6 +24,12 @@ if { [file exist $svg_product] } {
     set svg_modification_time -1
 }
 
+# Remove BD folder if it already exists
+if {[file exists $BD_OUTPUT_PATH]} {
+    file delete -force $BD_OUTPUT_PATH
+}
+
+
 set regenerate_svg 0
 foreach source_file $sources {
     set source_modification_time [file mtime ${source_file}]
