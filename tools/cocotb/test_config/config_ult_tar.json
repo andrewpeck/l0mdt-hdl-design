@@ -23,14 +23,16 @@
                 {
                     "tv_format": "TDCPOLMUX2TAR",
                     "ports": 24,
-		    "station_ID" : ["INN","INN","INN", "INN","INN","INN", "MID", "MID", "MID", "MID", "MID", "MID", "OUT", "OUT", "OUT","OUT", "OUT", "OUT", "EXT", "EXT", "EXT", "EXT", "EXT", "EXT" ]
+		    "station_ID" : ["INN","INN","INN", "INN","INN","INN", "MID", "MID", "MID", "MID", "MID", "MID", "OUT", "OUT", "OUT","OUT", "OUT", "OUT", "EXT", "EXT", "EXT", "EXT", "EXT", "EXT" ],
+		    "tv_type" : "TDCPOLMUX2TAR"
                 }
             ],
             "outputs": [
                 {
                     "tv_format": "TDCPOLMUX2TAR",
                     "ports": 24,
-		    "station_ID" : ["INN","INN","INN", "INN","INN","INN", "MID", "MID", "MID", "MID", "MID", "MID", "OUT", "OUT", "OUT","OUT", "OUT", "OUT", "EXT", "EXT", "EXT", "EXT", "EXT", "EXT" ]
+		    "station_ID" : ["INN","INN","INN", "INN","INN","INN", "MID", "MID", "MID", "MID", "MID", "MID", "OUT", "OUT", "OUT","OUT", "OUT", "OUT", "EXT", "EXT", "EXT", "EXT", "EXT", "EXT" ],
+                    "tv_type" : "TDCPOLMUX2TAR"
                 },
                 {
                     "tv_format": "TAR2HPS",
@@ -41,3 +43,6 @@
         }
     }
 }
+
+
+

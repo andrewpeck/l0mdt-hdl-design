@@ -97,11 +97,14 @@ module TopLevel_ult_tar #(
    for(genvar i=0; i<c_HPS_MAX_HP;i=i+1)
      begin
 	assign i_inn_tdc_hits[i]                    = BLOCK_input_data[i];
-	assign i_mid_tdc_hits[i + c_HPS_MAX_HP]     = BLOCK_input_data[i + c_HPS_MAX_HP];       
-	assign i_out_tdc_hits[i + 2*c_HPS_MAX_HP]   = BLOCK_input_data[i + 2*c_HPS_MAX_HP];
-	assign i_ext_tdc_hits[i + 3*c_HPS_MAX_HP]   = BLOCK_input_data[i + 3*c_HPS_MAX_HP];
+	assign i_mid_tdc_hits[i]     = BLOCK_input_data[i + c_HPS_MAX_HP];       
+	assign i_out_tdc_hits[i]   = BLOCK_input_data[i + 2*c_HPS_MAX_HP];
+	assign i_ext_tdc_hits[i]   = BLOCK_input_data[i + 3*c_HPS_MAX_HP];
+	// assign i_mid_tdc_hits[i + c_HPS_MAX_HP]     = BLOCK_input_data[i + c_HPS_MAX_HP];       
+	// assign i_out_tdc_hits[i + 2*c_HPS_MAX_HP]   = BLOCK_input_data[i + 2*c_HPS_MAX_HP];
+	// assign i_ext_tdc_hits[i + 3*c_HPS_MAX_HP]   = BLOCK_input_data[i + 3*c_HPS_MAX_HP];
      end
-   
+    
    
 
    tb_mdt_tar mdt_tar_inst(

@@ -36,26 +36,31 @@ class UltTarWrapper(block_wrapper.BlockWrapper):
         self, input_testvectors,n_to_send=-1, l0id_request=-1, event_delays=False
     ):
 
-        print("send_input_events - called")
-
+        print("send_input_events: input_testvectors",input_testvectors)
+        
         hooks           = []
         input_interface = 0
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(UltTarPorts.n_input_ports(UltTarPorts)):
+        for port_num in range(UltTarPorts.n_input_ports(UltTarPorts)):        
             if port_num == (port_index + UltTarPorts.get_input_interface_ports(input_interface)) :
+                # process next interface
                 port_index      = (port_index + UltTarPorts.get_input_interface_ports(input_interface))
                 input_interface = input_interface + 1
 
             if port_num >= port_index:
+                # reset port num index
                 interface_port = port_num - port_index
             else:
+                # increment port to process
                 interface_port = interface_port + 1
 
+            # 
+            print(f"Sending data to DUT input_testvectors[{port_num}] = ",input_testvectors[port_num])
             input_events = input_testvectors[port_num]
             driver, io, active = self.input_ports[input_interface][interface_port]
-
+            print("IACOPO - driver, io, active",driver, io, active)
 
             cocotb.log.info(
                 f"Sending {len(input_events)} events to input (interface) = ({input_interface}) (port_num) = ({io})"
@@ -63,13 +68,13 @@ class UltTarWrapper(block_wrapper.BlockWrapper):
 
             hook = None
             for iword, word in enumerate(input_events):
-                    flow_kwargs = {}
-                    print(f"IACOPO - Sending word n. {iword}",word)
-                    # delays are entered at event boundaries
-                    hook = (
-                        Event()
-                    )  # used to tell outside world that all events have been queued to be sent into the fifos
-                    driver.append(word, event=hook, **flow_kwargs)
+                flow_kwargs = {}
+                print(f"IACOPO - Sending word n. {iword}",word,flush=True)
+                # delays are entered at event boundaries
+                hook = (
+                    Event()
+                )  # used to tell outside world that all events have been queued to be sent into the fifos
+                driver.append(word, event=hook, **flow_kwargs)
                     
             print("IACOPO - Aho")
             if hook:
