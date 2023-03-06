@@ -154,120 +154,50 @@ AXI_SLAVES:
       map_template: "axi_generic/template_map.vhd"
 
 ############################
-  MTC:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_LHC_CTRL}"
-      remote_slave: "1"
-      addr:
-        offset: "0x01300000"
-        range: "4K"
-    UHAL_BASE: 0x90000000
-    XML: "address_table/modules/MTC.xml"
-    HDL:
-      out_name: "MTC"
-      map_template: "axi_generic/template_map.vhd"
-
-  TF:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_LHC_CTRL}"
-      remote_slave: "1"
-      addr:
-        offset: "0x01400000"
-        range: "4K"
-    UHAL_BASE: 0x91000000
-    XML: "address_table/modules/TF.xml"
-    HDL:
-      out_name: "TF"
-      map_template: "axi_generic/template_map.vhd"
-
-  UCM:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_LHC_CTRL}"
-      remote_slave: "1"
-      addr:
-        offset: "0x01500000"
-        range: "4K"
-    UHAL_BASE: 0x92000000
-    XML: "address_table/modules/UCM.xml"
-    HDL:
-      out_name: "UCM"
-      map_template: "axi_generic/template_map.vhd"
-
-  # DAQ:
-  #   TCL_CALL:
-  #     command: "AXI_PL_DEV_CONNECT"
-  #     axi_control: "${::AXI_LHC_CTRL}"
-  #     remote_slave: "1"
-  #     addr:
-  #       offset: "0x01600000"
-  #       range: "4K"
-  #   UHAL_BASE: 0x93000000
-  #   XML: "address_table/modules/DAQ.xml"
-  #   HDL:
-  #     out_name: "DAQ"
-  #     map_template: "axi_generic/template_map.vhd"
-
-  # MPL:
-  #   TCL_CALL:
-  #     command: "AXI_PL_DEV_CONNECT"
-  #     axi_control: "${::AXI_LHC_CTRL}"
-  #     remote_slave: "1"
-  #     addr:
-  #       offset: "0x01700000"
-  #       range: "4K"
-  #   UHAL_BASE: 0x94000000
-  #   XML: "address_table/modules/MPL.xml"
-  #   HDL:
-  #     out_name: "MPL"
-  #     map_template: "axi_generic/template_map.vhd"
-
-  # HPS_INN:
-  #   TCL_CALL:
-  #     command: "AXI_PL_DEV_CONNECT"
-  #     axi_control: "${::AXI_INN_CTRL}"
-  #     remote_slave: "1"
-  #     addr:
-  #       offset: "0x01800000"
-  #       range: "4K"
-  #   XML: "address_table/modules/HPS.xml"
-  #   HDL:
-  #     out_name: "HPS"
-  #     map_template: "axi_generic/template_map.vhd"
-
-  # TAR_INN:
-  #   TCL_CALL:
-  #     command: "AXI_PL_DEV_CONNECT"
-  #     axi_control: "${::AXI_INN_CTRL}"
-  #     remote_slave: "1"
-  #     addr:
-  #       offset: "0x01900000"
-  #       range: "4K"
-  #   XML: "address_table/modules/TAR.xml"
-  #   HDL:
-  #     out_name: "TAR"
-  #     map_template: "axi_generic/template_map.vhd"
-
-
-  # DAQ:
-  #   TCL_CALL:
-  #     command: "AXI_PL_DEV_CONNECT"
-  #     axi_control: "${::AXI_LHC_CTRL}"
-  #     remote_slave: "1"
-  #     addr:
-  #       offset: "0x00008000"
-  #       range: "4K"
-
-  # MPL:
-  #   TCL_CALL:
-  #     command: "AXI_PL_DEV_CONNECT"
-  #     axi_control: "${::AXI_LHC_CTRL}"
-  #     remote_slave: "1"
-  #     addr:
-  #       offset: "0x00009000"
-  #       range: "4K"
+#  MTC:
+#    TCL_CALL:
+#      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_LHC_CTRL}"
+#      remote_slave: "1"
+#      addr:
+#        offset: "0x00005000"
+#        range: "4K"
+#
+#  TF:
+#    TCL_CALL:
+#      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_LHC_CTRL}"
+#      remote_slave: "1"
+#      addr:
+#        offset: "0x00006000"
+#        range: "4K"
+#
+#  UCM:
+#    TCL_CALL:
+#      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_LHC_CTRL}"
+#      remote_slave: "1"
+#      addr:
+#        offset: "0x00007000"
+#        range: "4K"
+#
+#  DAQ:
+#    TCL_CALL:
+#      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_LHC_CTRL}"
+#      remote_slave: "1"
+#      addr:
+#        offset: "0x00008000"
+#        range: "4K"
+#
+#  MPL:
+#    TCL_CALL:
+#      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_LHC_CTRL}"
+#      remote_slave: "1"
+#      addr:
+#        offset: "0x00009000"
+#        range: "4K"
 #
 #  FM:
 #    TCL_CALL:
