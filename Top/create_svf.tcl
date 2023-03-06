@@ -8,6 +8,7 @@ if { [string length [get_hw_targets -quiet -regexp .*/${SVF_TARGET}] ]  } {
     delete_hw_target -quiet [get_hw_targets -regexp .*/${SVF_TARGET}]
 }
 
+set_param labtools.enable_cs_server false
 create_hw_target ${SVF_TARGET}
 close_hw_target
 open_hw_target [get_hw_targets -regexp .*/${SVF_TARGET}]
