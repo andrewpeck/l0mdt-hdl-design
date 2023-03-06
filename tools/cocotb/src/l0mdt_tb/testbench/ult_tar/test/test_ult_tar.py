@@ -92,6 +92,7 @@ def reset(dut):
 @cocotb.test()
 def ult_tar_test(dut):
 
+
     ##
     ## first grab the testbench configuration
     ##
@@ -199,7 +200,13 @@ def ult_tar_test(dut):
 
     (
         input_tvtype
-    ) = test_config.get_tvtype_from_config(config)
+    ) = test_config.get_tvtype_from_config(config,"inputs")
+
+    (
+        output_tvtype
+    ) = test_config.get_tvtype_from_config(config,"outputs")
+
+
 
     sb_iport_index = 0
     for n_ip_intf in range(UltTarPorts.n_input_interfaces): # Add concept of interface
@@ -243,7 +250,7 @@ def ult_tar_test(dut):
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list         =  []
     single_interface_list = []
-    print("IACOPO - Get Input Test Vector List for Ports across all input interfaces")
+    print("\n\n\n\n\nIACOPO - Get Input Test Vector List for Ports across all input interfaces")
     for n_ip_intf in range(UltTarPorts.n_input_interfaces): # Add concept of interface
         ### IACOPO - This if/else was added to avoid issue with 
         ### processing of EXT 
@@ -259,25 +266,28 @@ def ult_tar_test(dut):
             n_to_load=num_events_to_process,
             station_ID=inputs_station_id[n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
-            cnd_thrd_id = inputs_thread_n[n_ip_intf]
+            cnd_thrd_id = inputs_thread_n[n_ip_intf],
+            tv_df_type = "MDT"
         ))
+        print("IACOPO - (input)single_interface_list ",single_interface_list)
         for io in range(UltTarPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
         print("AAAAAA2")
    ###Get Output Test Vector List for Ports across all output interfaces##
-    print("IACOPO - Get Output Test Vector List for Ports across all output interfaces")
+    print("\n\n\n\n\n\nIACOPO - Get Output Test Vector List for Ports across all output interfaces")
     output_tv_list        =  []
     single_interface_list = []
     for n_op_intf in range(UltTarPorts.n_output_interfaces): # Add concept of interface
-        print("IACOPO - Adding output interfaces", n_op_intf)
+        print("\n\n ----> IACOPO - Adding output interface", n_op_intf)
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
             tvformat=output_tvformats[n_op_intf],
             n_ports = UltTarPorts.get_output_interface_ports(n_op_intf),
             n_to_load=num_events_to_process,
             station_ID=outputs_station_id[n_op_intf],
-            tv_type="value",
-            cnd_thrd_id = outputs_thread_n[n_op_intf]
+            tv_type=output_tvtype[n_op_intf],
+            cnd_thrd_id = outputs_thread_n[n_op_intf],
+            tv_df_type = "MDT"
             ))
         output_tv_list.append(single_interface_list)
 
@@ -309,6 +319,7 @@ def ult_tar_test(dut):
     yield ClockCycles(dut.clock, 100)
     ##
 
+    print("\n\n\n * * * perform testvector comparison test * * * \n\n\n")
     ##
     ## perform testvector comparison test
     ##
@@ -366,7 +377,8 @@ def ult_tar_test(dut):
             recvd_events_intf[n_op_intf],
             tolerance[n_op_intf],
             output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]),
+            tv_thread_mapping=[0 for _ in range(24)]
         );
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i

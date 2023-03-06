@@ -56,11 +56,11 @@ def timing_info_gen(filename):
 
 def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):  
     station_num = station_name_to_id(station_ID)
-    print("IACOPO - _event_belongs_to_sectorID ",
-          "sectorID" , sectorID,
-          "icand",icand,
-          "station_ID = ", station_ID, 
-          "station_num =", station_num)
+    # print("IACOPO - _event_belongs_to_sectorID ",
+    #       "sectorID" , sectorID,
+    #       "icand",icand,
+    #       "station_ID = ", station_ID, 
+    #       "station_num =", station_num)
     if(station_num == -99):
         sl_trailer = DF[icand].getBitFieldWord("SL_TRAILER", "")
     elif station_ID != "EXT": #EXT station not supported by TV generator
@@ -71,7 +71,7 @@ def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):
 
     fiber_id = sl_trailer[0].get_field_bits("fiberid")
     evt_sector_id = fiber_id + 1
-    print("IACOPO@AAA events.py: sectorID = ",sectorID," fiber_id = ",fiber_id," evt_sector_id =",evt_sector_id)
+    #print("IACOPO@AAA events.py: sectorID = ",sectorID," fiber_id = ",fiber_id," evt_sector_id =",evt_sector_id)
     if sectorID == evt_sector_id:
         
         return 1
@@ -96,17 +96,18 @@ def get_bitfield(
         candidate=0,
         station_id="",
         tv_type="value",
-        df_type="SL"
+        df_type="SL",
+        port=0
 ):
     BF_list  = []
     val_list = []
 
     
-    print("IACOPO - this is get_bitfield, \n",
-          "tv_type :",tv_type,
-          "station_id :", station_id,
-          "df_type :", df_type,
-          "bitfieldname :", bitfieldname)
+    # print("IACOPO - this is get_bitfield, \n",
+    #       "tv_type :",tv_type,
+    #       "station_id :", station_id,
+    #       "df_type :", df_type,
+    #       "bitfieldname :", bitfieldname)
     
     if tv_type == "value":
         DF_list = event.DF_SL
@@ -115,9 +116,10 @@ def get_bitfield(
 
     if df_type == "SL":
         BF_list = (event.DF_SL[candidate].getBitFieldWord(bitfieldname, station_id))
+
     elif df_type == "MDT":
         station_num = station_name_to_id(station_id)
-        BF_list = event.DF_MDT[station_num].getBitFieldWord(bitfieldname, station_id)
+        BF_list = event.DF_MDT[0].getBitFieldWord(bitfieldname,station_id)
 
     for BF in BF_list:
         val_list.append(BF.get_bitwordvalue())
@@ -127,6 +129,16 @@ def get_bitfield(
 
     if tv_type == "list":
         return val_list
+
+    if tv_type == "TDCPOLMUX2TAR":
+        in_station_num = port % 6
+        if len(BF_list)!=0:
+            val_list = BF_list[in_station_num].get_bitwordvalue()
+            #val_list = 111
+        else:
+            val_list = 0
+        return val_list
+
     else:
         return val_list[0]
 
@@ -276,7 +288,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                 #print("IACOPO - tv_bcid_list[ievent]",tv_bcid_list[ievent])
                 #print("IACOPO - this_candidate",this_candidate)
                 #print("IACOPO - tv_thread_mapping",tv_thread_mapping)
-                print("IACOPO - tv_thread_mapping[this_candidate]",tv_thread_mapping[this_candidate])
+                #print("IACOPO - tv_thread_mapping[this_candidate]",tv_thread_mapping[this_candidate])
 
                 ### Check if DF_SL of this event matches the candidate
                 if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate], station_ID = stationID[this_candidate]): #TODO - Need to handle EXT station 
@@ -303,6 +315,9 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                             rtl_tv_i = rtl_tv[this_candidate][evt]
                     else:
                         rtl_tv_i = 0
+                        
+                    print("ciaociao len of tv_format_bf[this_candidate]",tv_format_bf[this_candidate])
+                    print(f"a test: RTL_DFSL.getBitFieldWord({tvformat},  {stationID[this_candidate]}):",RTL_DFSL.getBitFieldWord(tvformat,  stationID[this_candidate]))
 
                     tv_format_bf[this_candidate][0].set_bitwordvalue(rtl_tv_i)
                     tv_format_val.append(tv_format_bf[this_candidate][0].get_bitwordvalue())
@@ -412,12 +427,14 @@ def parse_tvlist(
     
     print("parse_tvlist - ", "station_ID", station_ID)
     print("parse_tvlist - ", "cnd_thrd_id", cnd_thrd_id)
+    print("parse_tvlist - ", "tv_type", tv_type)
+    print("parse_tvlist - ", "tv_df_type", tv_df_type)
 
     print("n_to_load", n_to_load)
     print("n_ports",n_ports)
     print("events.py VALUE for dataformat (tvformat) ", tvformat)
 
-    
+
     
     
 
@@ -431,13 +448,19 @@ def parse_tvlist(
     else:
         my_cnd_thrd_id = cnd_thrd_id
     
-    print("IACOPO - before reading events")
-    print("IACOPO - events_list", events_list)
-    #    tv_reader_pkl.dump_event(events_list[0])
+    print(f"IACOPO - before reading events, total events: {len(events_list)}, to load {n_to_load}")
+    
     for ievent in range(len(events_list)):  # range(n_to_load):
-        print(f"IACOPO - event {ievent} started")
-        print("IACOPO - ievent.DF_SL",events_list[ievent].DF_SL)
+
         if valid_events < n_to_load:
+            print(f"IACOPO - event {ievent} started")
+            print("IACOPO - ievent",events_list[ievent])
+            print("IACOPO - ievent.DF_SL",events_list[ievent].DF_SL)
+            #print("IACOPO - ievent.DF_MDT",events_list[ievent].DF_MDT[0])
+
+            if tvformat=="TDCPOLMUX2TAR":
+                print(f"manually printing TDCPOLMUX2TAR  for this event",events_list[ievent].DF_MDT[0].av_TDCPOLMUX2TAR)
+
             event_found_for_port_interface = 0
             for my_port in range(n_ports):                
                 if station_ID == [""]:
@@ -447,7 +470,7 @@ def parse_tvlist(
 
                 print("Events.py: tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
                 if this_station_ID=="EXT":
-                    tv[my_port][valid_events]=0
+                    tv[my_port][valid_events]=1
                     print("IACOPO - hack to make EXT station all 0")
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_cnd_thrd_id[my_port], station_ID=this_station_ID):
                     #print ("parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
@@ -455,17 +478,19 @@ def parse_tvlist(
                     #print(events_list[ievent].DF_SL[my_port].print_blocks())
                     #print("Transaction %d, Candidate %d n_to_load %d tvformat=%s tv_type=%s" %(ievent,my_port,n_to_load,tvformat,tv_type))
                     event_found_for_port_interface = 1
-                    print("IACOPO - tv_type is ", tv_type)
+                    #print("IACOPO - tv_type is ", tv_type)
                     tv[my_port][valid_events] = get_bitfield(
-                        events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type
-                    )
+                        events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type, port=my_port)
+                    
+                    # if tvformat=="TDCPOLMUX2TAR":
+                    #     print(f"manually printing TDCPOLMUX2TAR (flattened - my port) for this event",flatten_list(events_list[ievent].DF_MDT[0].av_TDCPOLMUX2TAR)[my_port])
 
-                print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
-                print("after parsing","my_cnd_thrd_id",my_cnd_thrd_id)
+                    print("SECTOR OK - TVFORMAT = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
+                
             if event_found_for_port_interface:
                 valid_events = valid_events + 1
         else:
-            print("IACOPO - called break, loaded events")
+            print("\n\n\n\n\n\n IACOPO - called break, loaded requested events")
             break
 
     if valid_events < n_to_load :        
