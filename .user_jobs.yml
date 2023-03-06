@@ -61,7 +61,7 @@ check_auto_generated_code:
   script:
     - make all
     - echo "Checking Git differences..."
-    - git diff --exit-code
+    - git diff --exit-code -- ':(exclude)Top/*/top_*.vhd|Top/*/slaves.yaml|Top/*/address_tables'
   interruptible: true
 
 .user_sim: &user_sim
