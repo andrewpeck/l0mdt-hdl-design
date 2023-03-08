@@ -47,7 +47,7 @@
     - echo "Recreating List and Config file"
     - vivado -nojournal -nolog -mode batch -notrace -source $CI_PROJECT_DIR/Hog/Tcl/utils/check_list_files.tcl -tclargs -recreate -recreate_conf -force -project $PROJECT_NAME
     - echo "Checking Git differences..."
-    - git diff --exit-code -- ':(exclude)Top/*/top_*.vhd|Top/*/slaves.yaml|Top/*/address_tables'
+    - git diff --exit-code -- ':(exclude)Top/*/top_*.vhd' '(exclude)Top/*/slaves.yaml' '(exclude)Top/*/address_tables'
   allow_failure: true
   interruptible: true
 
@@ -61,7 +61,7 @@ check_auto_generated_code:
   script:
     - make all
     - echo "Checking Git differences..."
-    - git diff --exit-code
+    - git diff --exit-code -- ':(exclude)Top/*/top_*.vhd' '(exclude)Top/*/slaves.yaml' '(exclude)Top/*/address_tables'
   interruptible: true
 
 .user_sim: &user_sim

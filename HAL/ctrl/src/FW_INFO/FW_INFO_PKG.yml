@@ -9,44 +9,6 @@ config:
 
 types:
 
-- FW_INFO_FW_INFO_BUILD_DATE_MON_t:
-  - DAY : { type: logic, range : [ 8 - 1 , 0 ] }
-  - MONTH : { type: logic, range : [ 8 - 1 , 0 ] }
-  - YEAR : { type: logic, range : [ 16 - 1 , 0 ] }
-
-
-- FW_INFO_FW_INFO_BUILD_TIME_MON_t:
-  - SEC : { type: logic, range : [ 8 - 1 , 0 ] }
-  - MIN : { type: logic, range : [ 8 - 1 , 0 ] }
-  - HOUR : { type: logic, range : [ 8 - 1 , 0 ] }
-
-
-- FW_INFO_FW_INFO_MON_t:
-  - GIT_VALID : { type: logic }
-  - GIT_HASH_1 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - GIT_HASH_2 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - GIT_HASH_3 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - GIT_HASH_4 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - GIT_HASH_5 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - BUILD_DATE : { type: FW_INFO_FW_INFO_BUILD_DATE_MON_t }
-  - BUILD_TIME : { type: FW_INFO_FW_INFO_BUILD_TIME_MON_t }
-
-
-- FW_INFO_HOG_INFO_MON_t:
-  - GLOBAL_FWDATE : { type: logic, range : [ 32 - 1 , 0 ] }
-  - GLOBAL_FWTIME : { type: logic, range : [ 32 - 1 , 0 ] }
-  - OFFICIAL : { type: logic, range : [ 32 - 1 , 0 ] }
-  - GLOBAL_FWHASH : { type: logic, range : [ 32 - 1 , 0 ] }
-  - TOP_FWHASH : { type: logic, range : [ 32 - 1 , 0 ] }
-  - XML_HASH : { type: logic, range : [ 32 - 1 , 0 ] }
-  - GLOBAL_FWVERSION : { type: logic, range : [ 32 - 1 , 0 ] }
-  - TOP_FWVERSION : { type: logic, range : [ 32 - 1 , 0 ] }
-  - XML_VERSION : { type: logic, range : [ 32 - 1 , 0 ] }
-  - HOG_FWHASH : { type: logic, range : [ 32 - 1 , 0 ] }
-  - FRAMEWORK_FWVERSION : { type: logic, range : [ 32 - 1 , 0 ] }
-  - FRAMEWORK_FWHASH : { type: logic, range : [ 32 - 1 , 0 ] }
-
-
 - FW_INFO_CONFIG_MON_t:
   - MAIN_CFG_COMPILE_HW : { type: logic }
   - MAIN_CFG_COMPILE_UL : { type: logic }
@@ -80,8 +42,6 @@ types:
 
 
 - FW_INFO_MON_t:
-  - FW_INFO : { type: FW_INFO_FW_INFO_MON_t }
-  - HOG_INFO : { type: FW_INFO_HOG_INFO_MON_t }
   - CONFIG : { type: FW_INFO_CONFIG_MON_t }
 
 
