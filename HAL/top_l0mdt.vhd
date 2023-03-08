@@ -490,6 +490,7 @@ begin
       -- axi common
       clk320                  => clk320,
       clk40                   => clk40,
+      clk40_rstn              => not(clock_and_control.rst),
       clkpipe                 => clock_and_control.clk,
       axi_clk                 => clk_50, 
       clk50mhz                => clk_50,
