@@ -46,6 +46,7 @@ entity top_control is
     -- system clock
     clk50mhz : in std_logic;
     reset_n  : in std_logic;
+    clk40_rstn  : in std_logic;
 
     c2c_rxn     : in  std_logic;
     c2c_rxp     : in  std_logic;
@@ -137,7 +138,7 @@ architecture control_arch of top_control is
   constant std_logic0 : std_logic := '0';
 
 
-  signal clk40_rst_n : std_logic := '0';
+  
   signal fw_info_readmosi  : axireadmosi;
   signal fw_info_readmiso  : axireadmiso;
   signal fw_info_writemosi : axiwritemosi;
@@ -289,13 +290,13 @@ begin
 
   ---- hal just runs on 40M, but add a ff for fanout
 
-  --process (clk40) is
-  --begin
-  --  if (rising_edge(clk40)) then
-  --    hal_mon_r <= hal_mon;
-  --    hal_ctrl  <= hal_ctrl_r;
-  --  end if;
-  --end process;
+  process (clk40) is
+  begin
+    if (rising_edge(clk40)) then
+      hal_mon_r <= hal_mon;
+      hal_ctrl  <= hal_ctrl_r;
+    end if;
+  end process;
 
   process (axi_clk) is
   begin
@@ -365,7 +366,10 @@ begin
     port map (
       AXI_CLK                             => AXI_CLK,
       AXI_RST_N(0)                        => AXI_RESET_N,
-      clk50Mhz                            => clk50mhz,   
+      clk50Mhz                            => clk50mhz,
+      clk40                               => clk40,
+      clk40_rstn                          => clk40_rstn,
+      
       CM1_PB_UART_rxd                     => pB_UART_tx,
       CM1_PB_UART_txd                     => pB_UART_rx,
 
@@ -486,23 +490,23 @@ begin
 
       hal_araddr(31 downto 0)      => hal_readmosi.address,
       hal_arprot(2 downto 0)       => hal_readmosi.protection_type,
-      hal_arready(0)               => hal_readmiso.ready_for_address,
-      hal_arvalid(0)               => hal_readmosi.address_valid,
+      hal_arready                  => hal_readmiso.ready_for_address,
+      hal_arvalid                  => hal_readmosi.address_valid,
       hal_awaddr(31 downto 0)      => hal_writemosi.address,
       hal_awprot(2 downto 0)       => hal_writemosi.protection_type,
-      hal_awready(0)               => hal_writemiso.ready_for_address,
-      hal_awvalid(0)               => hal_writemosi.address_valid,
-      hal_bready(0)                => hal_writemosi.ready_for_response,
+      hal_awready                  => hal_writemiso.ready_for_address,
+      hal_awvalid                  => hal_writemosi.address_valid,
+      hal_bready                   => hal_writemosi.ready_for_response,
       hal_bresp(1 downto 0)        => hal_writemiso.response,
-      hal_bvalid(0)                => hal_writemiso.response_valid,
+      hal_bvalid                   => hal_writemiso.response_valid,
       hal_rdata(31 downto 0)       => hal_readmiso.data,
-      hal_rready(0)                => hal_readmosi.ready_for_data,
+      hal_rready                   => hal_readmosi.ready_for_data,
       hal_rresp(1 downto 0)        => hal_readmiso.response,
-      hal_rvalid(0)                => hal_readmiso.data_valid,
+      hal_rvalid                   => hal_readmiso.data_valid,
       hal_wdata(31 downto 0)       => hal_writemosi.data,
-      hal_wready(0)                => hal_writemiso.ready_for_data,
+      hal_wready                   => hal_writemiso.ready_for_data,
       hal_wstrb(3 downto 0)        => hal_writemosi.data_write_strobe,
-      hal_wvalid(0)                => hal_writemosi.data_valid,
+      hal_wvalid                   => hal_writemosi.data_valid,
       
       reset_n                             => reset_n, --locked_clk200,--reset,
       K_C2C_PHY_DEBUG_cplllock(0)         => C2C_Mon.C2C(1).DEBUG.CPLL_LOCK,
@@ -661,7 +665,7 @@ begin
 
   hal_map_inst : entity ctrl_lib.HAL_map
     port map (
-      clk_axi         => axi_clk,
+      clk_axi         => clk40,
       reset_axi_n     => axi_reset_n,
       slave_readmosi  => hal_readmosi,
       slave_readmiso  => hal_readmiso,
