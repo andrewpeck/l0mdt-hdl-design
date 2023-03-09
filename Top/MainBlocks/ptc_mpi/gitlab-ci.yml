@@ -12,6 +12,7 @@ RIV:ptc_mpi:
   variables:
     extends: .vars
     PROJECT_NAME: MainBlocks/ptc_mpi
+  allow_failure: false
 
 
 CHK:ptc_mpi:

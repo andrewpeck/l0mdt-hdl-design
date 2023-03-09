@@ -21,7 +21,8 @@ SIM:BA3_ucm_questa:
       extends: .vars
       PROJECT_NAME: MainBlocks/BA3_ucm_divIP
     tags:
-    - normal-ops
+      - normal-ops
+    allow_failure: false
 
 # SIM:BA3_ucm_riviera:
 #     extends: .riviera_sim

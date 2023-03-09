@@ -18,8 +18,8 @@ SIM:ull_vu13_b3a_ucm_mpl:
 
     tags:
       - normal-ops
-      # - hog
-      # - "2020.2"
+    allow_failure: false
+    
 # user_sim:ull_vu13_b3a_ucm_mpl:
 #     extends: .user_sim
 #     variables:

@@ -17,7 +17,7 @@ SIM:ull_vu13_b3a_tar:
       HOG_CHECK_PROJVER: 0
     tags:
       - questa
-      # - hog
+    allow_failure: false
       
       
 # user_sim:ull_vu13_b3a_tar:

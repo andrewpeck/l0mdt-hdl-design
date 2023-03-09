@@ -23,13 +23,14 @@ SIM:BA3_hps_csf_bp_questa:
       PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
     tags:
     - normal-ops
+    allow_failure: false
 
 RIV:BA3_hps_csf_bp_riviera:
     extends: .riviera_sim
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
-    # allow_failure: false
+    allow_failure: false
 
 COMP:BA3_hps_csf_bp:
   extends: .sim_comp
