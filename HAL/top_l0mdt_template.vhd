@@ -230,6 +230,8 @@ architecture structural of top_l0mdt is
   signal clk_200         : std_logic;
   signal clk_50          : std_logic;
   signal locked_clk200   : std_logic;
+  signal axi_reset_n : std_logic;
+
   -- Control and Monitoring Records
 
   signal hps_inn_mon_r  : HPS_MON_t;
@@ -375,6 +377,7 @@ begin
       clk50_o => clk_50, 
 
       b2b_reset_n => b2b_reset_n,
+      axi_reset_n       => axi_reset_n,
 
       core_ctrl => hal_core_ctrl_r,
       core_mon  => hal_core_mon_r,
