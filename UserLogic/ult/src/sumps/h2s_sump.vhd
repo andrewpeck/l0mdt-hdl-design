@@ -46,10 +46,10 @@ entity h2s_sump is
     -- mon               : out H2S_MON_t;
 
     -- TDC Hits from Polmux
-    i_inn_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tar_hits_av  : in tar2hps_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tar_hits_av  : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_mid_tar_hits_av  : in tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_out_tar_hits_av  : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_ext_tar_hits_av  : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- Sector Logic Candidates from uCM
     i_inn_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
     i_mid_slc_av       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
@@ -73,10 +73,10 @@ end entity h2s_sump;
 
 architecture beh of h2s_sump is
 
-  signal inn_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
-  signal mid_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
-  signal out_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
-  signal ext_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
+  signal inn_tar_hits_sump            : std_logic_vector (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+  signal mid_tar_hits_sump            : std_logic_vector (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+  signal out_tar_hits_sump            : std_logic_vector (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+  signal ext_tar_hits_sump            : std_logic_vector (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
   signal inn_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
   signal mid_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
   signal out_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
@@ -90,16 +90,16 @@ begin
     o_plus_neighbor_segments_av <= (others => (others => '0'));
     o_minus_neighbor_segments_av <= (others => (others => '0'));
 
-    MDT_INN_SUMP: for I in 0 to c_HPS_MAX_HP_INN-1 generate
+    MDT_INN_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_INN-1 generate
       inn_tar_hits_sump(I) <= xor_reduce(i_inn_tar_hits_av(I));
     end generate;
-    MDT_MID_SUMP: for I in 0 to c_HPS_MAX_HP_MID-1 generate
+    MDT_MID_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_MID-1 generate
       mid_tar_hits_sump(I) <= xor_reduce(i_mid_tar_hits_av(I));
     end generate;
-    MDT_OUT_SUMP: for I in 0 to c_HPS_MAX_HP_OUT-1 generate
+    MDT_OUT_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_OUT-1 generate
       out_tar_hits_sump(I) <= xor_reduce(i_out_tar_hits_av(I));
     end generate;
-    MDT_EXT_SUMP: for I in 0 to c_HPS_MAX_HP_EXT-1 generate
+    MDT_EXT_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_EXT-1 generate
       ext_tar_hits_sump(I) <= xor_reduce(i_ext_tar_hits_av(I));
     end generate;
 

@@ -76,9 +76,6 @@ connect_bd_net [get_bd_ports $AXI_MASTER_RSTN] [get_bd_pins $SYS_RESETER_AXI_RST
 #================================================================================
 #  Configure chip 2 chip links
 #================================================================================
-
-
-
 source -quiet ${C2C_PATH}/create_kintex_c2c.tcl
 #LOCing C2CB to GTHE4_COMMON_X0Y1
 #set_property -dict [list CONFIG.CHANNEL_ENABLE {X0Y1} CONFIG.C_START_LANE {X0Y1}] [get_bd_cells K_C2CB_PHY]
@@ -112,7 +109,7 @@ if {![info exists AXI_BASE_ADDRESS]} { #If not set in Hog Project (post-creation
 }
 
 source -quiet "$BD_PATH/add_slaves_from_yaml.tcl"
-yaml_to_bd "$C2C_PATH/slaves.yaml"
+yaml_to_bd "${SCRIPT_PATH}/slaves.yaml"
 
 set autogen_dir "${PATH_REPO}/configs/${build_name}/autogen/"
 exec mkdir -p -- $autogen_dir

@@ -65,7 +65,7 @@ package body types is
       end if;
     end loop;
     return res;
-  end function Log2;
+  end function;
 
               
   

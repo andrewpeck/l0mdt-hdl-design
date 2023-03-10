@@ -177,8 +177,13 @@ package body heg_pkg is
    -- Custom types and functions --
 
    function width(x: heg_pc2heg_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg_pc2heg_art; tpl: std_logic_vector) return std_logic_vector is
@@ -245,8 +250,13 @@ package body heg_pkg is
    end function convert;
 
    function width(x: heg_pc2heg_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg_pc2heg_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -313,8 +323,13 @@ package body heg_pkg is
    end function convert;
 
    function width(x: heg_roi_center_aut) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg_roi_center_aut; tpl: std_logic_vector) return std_logic_vector is
@@ -433,8 +448,13 @@ package body heg_pkg is
    end function zero;
 
    function width(x: heg_ctrl2hp_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg_ctrl2hp_art; tpl: std_logic_vector) return std_logic_vector is
@@ -501,8 +521,13 @@ package body heg_pkg is
    end function convert;
 
    function width(x: heg_ctrl2hp_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg_ctrl2hp_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -673,8 +698,13 @@ package body heg_pkg is
    end function zero;
 
    function width(x: heg_hp2bm_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg_hp2bm_art; tpl: std_logic_vector) return std_logic_vector is
@@ -741,8 +771,13 @@ package body heg_pkg is
    end function convert;
 
    function width(x: heg_hp2bm_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg_hp2bm_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -861,8 +896,13 @@ package body heg_pkg is
    end function zero;
 
    function width(x: heg_hp2bm_data_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg_hp2bm_data_art; tpl: std_logic_vector) return std_logic_vector is
@@ -929,8 +969,13 @@ package body heg_pkg is
    end function convert;
 
    function width(x: heg_hp2bm_data_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg_hp2bm_data_avt; tpl: std_logic_vector) return std_logic_vector is

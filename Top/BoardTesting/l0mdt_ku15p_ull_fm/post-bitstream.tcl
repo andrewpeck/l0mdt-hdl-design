@@ -33,7 +33,7 @@ if {[file exists $dst_dir/${proj_name}\-$describe.ltx]} {
 }
 
 # read the data
-set f [open $PATH_REPO/address_tables/address_apollo.xml]
+set f [open $SCRIPT_PATH/address_tables/address_apollo.xml]
 set data [read -nonewline $f]
 close $f
 
@@ -47,7 +47,7 @@ foreach line $data {
 }
 close $w
 
-set f [open $PATH_REPO/address_tables/connections.xml]
+set f [open $SCRIPT_PATH/address_tables/connections.xml]
 set data [read -nonewline $f]
 close $f
 
@@ -62,7 +62,7 @@ close $w
 
 
 puts "Copying DTSI Files"
-set DTSI_DIR [file dirname $dst_bit]/dtsi
+set DTSI_DIR [file dirname $dst_main]/dtsi
 set DTSI_FILES [glob $PATH_REPO/kernel/hw/*.dtsi]
 file mkdir $DTSI_DIR
 foreach dtsi_file $DTSI_FILES {

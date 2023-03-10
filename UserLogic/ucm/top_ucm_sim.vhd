@@ -273,7 +273,9 @@ begin
   CSV_UCM_OUT : entity shared_lib.csv_writer_ucm
   generic map (
     g_PRJ_INFO    => PRJ_INFO,
-    g_IN_FILES    => IN_SLC_FILE
+    g_IN_FILES    => IN_SLC_FILE,
+    g_verbose => 2
+
   )
   port map(
     clk                       => clk,

@@ -65,10 +65,10 @@ end entity ult_tb_writer_sf_out;
 architecture sim of ult_tb_writer_sf_out is
   
   
-  alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
-  alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
-  alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
-  alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
+  alias slc_file_ok is  << signal.ult_tb.SLC.file_open : std_logic >>;
+  alias slc_file_ts is  << signal.ult_tb.SLC.file_ts : string >>;
+  alias hit_file_ok is  << signal.ult_tb.MDT.file_open : std_logic >>;
+  alias hit_file_ts is  << signal.ult_tb.MDT.file_ts : string >>;
 
   shared variable csv_file_1: csv_file_type;
   shared variable csv_file_2: csv_file_type;
@@ -76,8 +76,8 @@ architecture sim of ult_tb_writer_sf_out is
   constant g_OUT_FILE_1     : string  := "ov_heg_heg2sf_" & g_PRJ_INFO & ".csv";
   constant g_OUT_FILE_2     : string  := "ov_heg_ctrlRoi_" & g_PRJ_INFO & ".csv";
      
-  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
-  alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
+  alias slc_event_ai is  << signal.ult_tb.SLC.slc_event_ai : event_xaut >>;
+  alias mdt_event_ai is  << signal.ult_tb.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_u2h_au : event_tdc_at;
 
@@ -171,9 +171,9 @@ begin
   HPS_INN: if c_STATIONS_IN_SECTOR(0) = '1' generate
     constant lc_ST_ID : integer := 0;
     --
-    alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
-    alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
-    alias heg2sf_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
+    alias heg2sf_slc_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
+    alias heg2sf_hit_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
+    alias heg2sf_ctrl_av is << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
     signal heg2sf_slc_ar  : heg2sfslc_art(c_NUM_THREADS -1 downto 0);
     signal heg2sf_hit_ar  : heg2sfhit_art(c_NUM_THREADS -1 downto 0);
     signal heg2sf_ctrl_ar : hps_ctrl2sf_art(c_NUM_THREADS -1 downto 0);
@@ -237,9 +237,9 @@ begin
   HPS_MID: if c_STATIONS_IN_SECTOR(1) = '1' generate
     constant lc_ST_ID : integer := 1;
     --
-    alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
-    alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
-    alias heg2sf_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
+    alias heg2sf_slc_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
+    alias heg2sf_hit_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
+    alias heg2sf_ctrl_av is << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
 
   begin
 

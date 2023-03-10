@@ -408,8 +408,13 @@ package body common_types_pkg is
    -- Custom types and functions --
 
    function width(x: integer_bus) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: integer_bus; tpl: std_logic_vector) return std_logic_vector is
@@ -671,8 +676,13 @@ package body common_types_pkg is
    end function zero;
 
    function width(x: slc_rx_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: slc_rx_art; tpl: std_logic_vector) return std_logic_vector is
@@ -739,8 +749,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: slc_rx_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: slc_rx_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -807,8 +822,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: slc_endcap_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: slc_endcap_art; tpl: std_logic_vector) return std_logic_vector is
@@ -875,8 +895,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: slc_endcap_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: slc_endcap_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -943,8 +968,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: slc_barrel_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: slc_barrel_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1011,8 +1041,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: slc_barrel_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: slc_barrel_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1079,8 +1114,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: tdcpolmux2tar_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: tdcpolmux2tar_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1147,8 +1187,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: tdcpolmux2tar_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: tdcpolmux2tar_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1215,8 +1260,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: tar2hps_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: tar2hps_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1283,8 +1333,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: tar2hps_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: tar2hps_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1351,8 +1406,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: ucm2hps_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm2hps_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1419,8 +1479,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: ucm2hps_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm2hps_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1487,8 +1552,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: heg2sfslc_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg2sfslc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1555,8 +1625,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: heg2sfslc_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg2sfslc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1623,8 +1698,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: heg2sfhit_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg2sfhit_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1691,8 +1771,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: heg2sfhit_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: heg2sfhit_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1759,8 +1844,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: sf2ptcalc_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: sf2ptcalc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1827,8 +1917,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: sf2ptcalc_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: sf2ptcalc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1895,8 +1990,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: ucm2pl_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm2pl_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1963,8 +2063,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: ucm2pl_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ucm2pl_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2031,8 +2136,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: pl2ptcalc_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: pl2ptcalc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2099,8 +2209,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: pl2ptcalc_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: pl2ptcalc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2167,8 +2282,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: pl2mtc_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: pl2mtc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2235,8 +2355,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: pl2mtc_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: pl2mtc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2303,8 +2428,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: ptcalc2mtc_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ptcalc2mtc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2371,8 +2501,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: ptcalc2mtc_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: ptcalc2mtc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2439,8 +2574,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: mtc_out_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: mtc_out_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2507,8 +2647,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: mtc_out_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: mtc_out_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2575,8 +2720,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: mtc2nsp_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: mtc2nsp_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2643,8 +2793,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: mtc2nsp_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: mtc2nsp_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2711,8 +2866,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: felix_data_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: felix_data_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2831,8 +2991,13 @@ package body common_types_pkg is
    end function zero;
 
    function width(x: felix_stream_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: felix_stream_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2899,8 +3064,13 @@ package body common_types_pkg is
    end function convert;
 
    function width(x: felix_stream_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: felix_stream_avt; tpl: std_logic_vector) return std_logic_vector is
