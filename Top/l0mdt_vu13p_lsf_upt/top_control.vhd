@@ -493,7 +493,7 @@ begin
   --------------------------------------------------------------------------------
 
   -- START: ULT_SLAVES :: DO NOT EDIT
-  FW_INFO_map_inst : entity ctrl_lib.fw_info ${::axi_master_ctrl}_map
+  FW_INFO_map_inst : entity ctrl_lib.fw_info_map
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -503,7 +503,7 @@ begin
       slave_writemiso   => FW_INFO_writemiso,
       mon   => FW_INFO_mon_r
     );
-  FM_map_inst : entity ctrl_lib.fm ${::axi_master_ctrl}_map
+  FM_map_inst : entity ctrl_lib.fm_map
     port map(
       clk_axi         => clk40,
       reset_axi_n     => std_logic1, 
@@ -514,7 +514,7 @@ begin
       ctrl   => FM_ctrl_r,
       mon   => FM_mon_r
     );
-  HAL_CORE_map_inst : entity ctrl_lib.hal_core ${::axi_master_ctrl}_map
+  HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -525,7 +525,7 @@ begin
       ctrl   => HAL_CORE_ctrl_r,
       mon   => HAL_CORE_mon_r
     );
-  HAL_map_inst : entity ctrl_lib.hal ${::axi_lhc_ctrl}_map
+  HAL_map_inst : entity ctrl_lib.hal_map
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -536,7 +536,7 @@ begin
       ctrl   => HAL_ctrl_r,
       mon   => HAL_mon_r
     );
-  HOG_map_inst : entity ctrl_lib.hog ${::axi_master_ctrl}_map
+  HOG_map_inst : entity ctrl_lib.hog_map
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,

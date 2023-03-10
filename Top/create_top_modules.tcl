@@ -149,7 +149,9 @@ proc create_top_modules {project_path repo_path} {
 
         if {[string match "*  -- START: ULT_SLAVES :: DO NOT EDIT*" $line]} {
             foreach slave [dict keys $slaves] {
-                puts $output_control_file "  ${slave}_map_inst : entity ctrl_lib.[string tolower [dict get $slaves $slave]]_map"
+                set xml_name [lindex [dict get $slaves $slave] 0]
+
+                puts $output_control_file "  ${slave}_map_inst : entity ctrl_lib.[string tolower $xml_name]_map"
                 puts $output_control_file "    port map("
                 if {$slave in "HAL HAL_CORE HOG FW_INFO"} {
                     puts $output_control_file "      clk_axi         => axi_clk,"
@@ -181,6 +183,7 @@ proc create_top_modules {project_path repo_path} {
          if {[string match "*-- START: ULT_IO :: DO NOT EDIT*" $line]} {
             set text_to_insert ""
             foreach slave [dict keys $slaves] {
+                
                 puts $output_top_file "      [string tolower $slave]_mon            => [string tolower $slave]_mon_r,"
 
                 if {$slave != "HOG" && $slave != "FW_INFO"} {
