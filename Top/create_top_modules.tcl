@@ -153,7 +153,7 @@ proc create_top_modules {project_path repo_path} {
 
                 puts $output_control_file "  ${slave}_map_inst : entity ctrl_lib.[string tolower $xml_name]_map"
                 puts $output_control_file "    port map("
-                if {$slave in "HAL HAL_CORE HOG FW_INFO"} {
+                if {$slave in "HAL_CORE HOG FW_INFO"} {
                     puts $output_control_file "      clk_axi         => axi_clk,"
                     puts $output_control_file "      reset_axi_n     => axi_reset_n,"
                 } else {

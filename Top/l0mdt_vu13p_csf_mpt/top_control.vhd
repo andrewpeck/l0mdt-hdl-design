@@ -55,6 +55,7 @@ entity top_control is
 
     -- system clock
     clk50mhz : in std_logic;
+    clk40_rstn  : in std_logic;
     reset_n  : in std_logic;
 
     c2c_rxn     : in  std_logic;
@@ -69,6 +70,9 @@ entity top_control is
     
     c2c_refclkp : in  std_logic;
     c2c_refclkn : in  std_logic;
+
+    -- axi reset from c2c--
+    axi_reset_n : out std_logic;
 
     -- control
 
@@ -100,7 +104,6 @@ architecture control_arch of top_control is
   constant std_logic1 : std_logic := '1';
   constant std_logic0 : std_logic := '0';
 
-  signal axi_reset_n : std_logic; -- := '0';
   signal clk40_rst_n : std_logic := '0';
 
   -- START: ULT_AXI_SIGNALS :: DO NOT EDIT
@@ -163,13 +166,13 @@ begin
 
   ---- hal just runs on 40M, but add a ff for fanout
 
-  --process (clk40) is
-  --begin
-  --  if (rising_edge(clk40)) then
-  --    hal_mon_r <= hal_mon;
-  --    hal_ctrl  <= hal_ctrl_r;
-  --  end if;
-  --end process;
+  process (clk40) is
+  begin
+   if (rising_edge(clk40)) then
+     hal_mon_r <= hal_mon;
+     hal_ctrl  <= hal_ctrl_r;
+   end if;
+  end process;
 
   process (axi_clk) is
   begin
@@ -527,8 +530,8 @@ begin
     );
   HAL_map_inst : entity ctrl_lib.hal_map
     port map(
-      clk_axi         => axi_clk,
-      reset_axi_n     => axi_reset_n,
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1, 
       slave_readmosi   => HAL_readmosi,
       slave_readmiso   => HAL_readmiso,
       slave_writemosi   => HAL_writemosi,

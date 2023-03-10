@@ -377,7 +377,7 @@ begin
       clk50_o => clk_50, 
 
       b2b_reset_n => b2b_reset_n,
-
+      clk40_rstn  => not(clock_and_control.rst),
       core_ctrl => hal_core_ctrl_r,
       core_mon  => hal_core_mon_r,
 
