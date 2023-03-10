@@ -377,7 +377,6 @@ begin
       clk50_o => clk_50, 
 
       b2b_reset_n => b2b_reset_n,
-      clk40_rstn  => not(clock_and_control.rst),
       core_ctrl => hal_core_ctrl_r,
       core_mon  => hal_core_mon_r,
 
@@ -532,6 +531,7 @@ begin
       clkpipe                 => clock_and_control.clk,
       axi_clk                 => clk_50, 
       clk50mhz                => clk_50,
+      clk40_rstn              => not(clock_and_control.rst),
       reset_n                 => b2b_reset_n,
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
