@@ -377,7 +377,6 @@ begin
       clk50_o => clk_50, 
 
       b2b_reset_n => b2b_reset_n,
-      axi_reset_n       => axi_reset_n,
 
       core_ctrl => hal_core_ctrl_r,
       core_mon  => hal_core_mon_r,
@@ -399,6 +398,7 @@ begin
       )
     port map (
       clock_and_control => clock_and_control,
+      axi_reset_n       => axi_reset_n,
       ttc_commands      => ttc_commands,
 
       i_inn_tdc_hits_av => inner_tdc_hits,
