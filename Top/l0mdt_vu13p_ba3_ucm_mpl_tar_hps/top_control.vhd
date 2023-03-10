@@ -412,23 +412,23 @@ begin
       HAL_CORE_wvalid(0)      => HAL_CORE_writemosi.data_valid,
       HAL_araddr         => HAL_readmosi.address,
       HAL_arprot         => HAL_readmosi.protection_type,
-      HAL_arready(0)     => HAL_readmiso.ready_for_address,
-      HAL_arvalid(0)     => HAL_readmosi.address_valid,
+      HAL_arready     => HAL_readmiso.ready_for_address,
+      HAL_arvalid     => HAL_readmosi.address_valid,
       HAL_awaddr         => HAL_writemosi.address,
       HAL_awprot         => HAL_writemosi.protection_type,
-      HAL_awready(0)     => HAL_writemiso.ready_for_address,
-      HAL_awvalid(0)     => HAL_writemosi.address_valid,
-      HAL_bready(0)      => HAL_writemosi.ready_for_response,
-      HAL_bvalid(0)      => HAL_writemiso.response_valid,
+      HAL_awready     => HAL_writemiso.ready_for_address,
+      HAL_awvalid     => HAL_writemosi.address_valid,
+      HAL_bready      => HAL_writemosi.ready_for_response,
+      HAL_bvalid      => HAL_writemiso.response_valid,
       HAL_bresp          => HAL_writemiso.response,
       HAL_rdata          => HAL_readmiso.data,
-      HAL_rready(0)      => HAL_readmosi.ready_for_data,
+      HAL_rready      => HAL_readmosi.ready_for_data,
       HAL_rresp          => HAL_readmiso.response,
-      HAL_rvalid(0)      => HAL_readmiso.data_valid,
+      HAL_rvalid      => HAL_readmiso.data_valid,
       HAL_wdata          => HAL_writemosi.data,
-      HAL_wready(0)      => HAL_writemiso.ready_for_data,
+      HAL_wready      => HAL_writemiso.ready_for_data,
       HAL_wstrb          => HAL_writemosi.data_write_strobe,
-      HAL_wvalid(0)      => HAL_writemosi.data_valid,
+      HAL_wvalid      => HAL_writemosi.data_valid,
       HOG_araddr         => HOG_readmosi.address,
       HOG_arprot         => HOG_readmosi.protection_type,
       HOG_arready(0)     => HOG_readmiso.ready_for_address,
@@ -493,7 +493,7 @@ begin
   --------------------------------------------------------------------------------
 
   -- START: ULT_SLAVES :: DO NOT EDIT
-  FW_INFO_map_inst : entity ctrl_lib.fw_info_map
+  FW_INFO_map_inst : entity ctrl_lib.fw_info ${::axi_master_ctrl}_map
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -503,7 +503,7 @@ begin
       slave_writemiso   => FW_INFO_writemiso,
       mon   => FW_INFO_mon_r
     );
-  FM_map_inst : entity ctrl_lib.fm_map
+  FM_map_inst : entity ctrl_lib.fm ${::axi_master_ctrl}_map
     port map(
       clk_axi         => clk40,
       reset_axi_n     => std_logic1, 
@@ -514,7 +514,7 @@ begin
       ctrl   => FM_ctrl_r,
       mon   => FM_mon_r
     );
-  HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
+  HAL_CORE_map_inst : entity ctrl_lib.hal_core ${::axi_master_ctrl}_map
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -525,7 +525,7 @@ begin
       ctrl   => HAL_CORE_ctrl_r,
       mon   => HAL_CORE_mon_r
     );
-  HAL_map_inst : entity ctrl_lib.hal_map
+  HAL_map_inst : entity ctrl_lib.hal ${::axi_lhc_ctrl}_map
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -536,7 +536,7 @@ begin
       ctrl   => HAL_ctrl_r,
       mon   => HAL_mon_r
     );
-  HOG_map_inst : entity ctrl_lib.hog_map
+  HOG_map_inst : entity ctrl_lib.hog ${::axi_master_ctrl}_map
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,

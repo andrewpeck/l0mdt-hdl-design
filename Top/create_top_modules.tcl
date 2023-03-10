@@ -51,7 +51,18 @@ proc create_top_modules {project_path repo_path} {
             if {[dict exists $slave_dict "HDL"]} {
                 set hdl_dict [dict get $slave_dict "HDL"]
                 if {[dict exists $hdl_dict "out_name"]} {
-                    dict set slaves $s [dict get $hdl_dict "out_name"]
+                    if {[dict exists $slave_dict "TCL_CALL"]} {
+                        set tcl_call_dict [dict get $slave_dict "TCL_CALL"]
+                        if {[dict exists $tcl_call_dict "axi_control"]} {
+                            set xml_name [dict get $hdl_dict "out_name"]
+                            set axi_control [dict get $tcl_call_dict "axi_control"]
+                            dict set slaves $s "$xml_name $axi_control"
+                        } else {
+                            puts "ERROR: Slave $s do not have an axi_control variable defined in the TCL_CALL section, please define it in your slaves.yaml"
+                        }     
+                    } else {
+                        puts "ERROR: Slave $s do not have an TCL_CALL section, please define it in your slaves.yaml"
+                    }
                 } else {
                     puts "ERROR: Slave $s do not have an HDL out_name, please define it in your slaves.yaml"
                 }
@@ -82,49 +93,57 @@ proc create_top_modules {project_path repo_path} {
 
         if {[string match "*-- START: ULT_IO :: DO NOT EDIT*" $line]} {
             foreach slave [dict keys $slaves] {
-                puts $output_control_file "    [string tolower $slave]_mon : in [string toupper [dict get $slaves $slave]]_MON_t;"
+                set xml_name [lindex [dict get $slaves $slave] 0]
+                puts $output_control_file "    [string tolower $slave]_mon : in [string toupper $xml_name]_MON_t;"
 
                 if {$slave != "HOG" && $slave != "FW_INFO"} {
-                    puts $output_control_file "    [string tolower $slave]_ctrl : out [string toupper [dict get $slaves $slave]]_CTRL_t;"
+                    puts $output_control_file "    [string tolower $slave]_ctrl : out [string toupper $xml_name]_CTRL_t;"
                 }
             }
         }
 
         if {[string match "*-- START: ULT_AXI_SIGNALS :: DO NOT EDIT*" $line]} {
             foreach slave [dict keys $slaves] {
+                set xml_name [lindex [dict get $slaves $slave] 0]
                 puts $output_control_file "  signal [string tolower $slave]_readmosi  : axireadmosi;"
                 puts $output_control_file "  signal [string tolower $slave]_readmiso  : axireadmiso;"
                 puts $output_control_file "  signal [string tolower $slave]_writemosi : axiwritemosi;"
                 puts $output_control_file "  signal [string tolower $slave]_writemiso : axiwritemiso;"
-                puts $output_control_file "  signal [string tolower $slave]_mon_r     : [string toupper [dict get $slaves $slave]]_MON_t;"
+                puts $output_control_file "  signal [string tolower $slave]_mon_r     : [string toupper $xml_name]_MON_t;"
 
                 if {$slave != "HOG" && $slave != "FW_INFO"} {
-                    puts $output_control_file "  signal [string tolower $slave]_ctrl_r    : [string toupper [dict get $slaves $slave]]_CTRL_t;"
+                    puts $output_control_file "  signal [string tolower $slave]_ctrl_r    : [string toupper $xml_name]_CTRL_t;"
                 }
             }
         }
 
         if {[string match "*-- START: AXI_PL_SLAVES :: DO NOT EDIT*" $line]} {
             foreach slave [dict keys $slaves] {
+                set axi_control [lindex [dict get $slaves $slave] 1]
+
                 puts $output_control_file "      [string toupper $slave]_araddr         => ${slave}_readmosi.address,"
                 puts $output_control_file "      [string toupper $slave]_arprot         => ${slave}_readmosi.protection_type,"
-                puts $output_control_file "      [string toupper $slave]_arready(0)     => ${slave}_readmiso.ready_for_address,"
-                puts $output_control_file "      [string toupper $slave]_arvalid(0)     => ${slave}_readmosi.address_valid,"
+                set extra_string ""
+                if {[string first "AXI_MASTER_CTRL" $axi_control] != -1 } {
+                    set extra_string "(0)"
+                } 
+                puts $output_control_file "      [string toupper $slave]_arready${extra_string}     => ${slave}_readmiso.ready_for_address,"
+                puts $output_control_file "      [string toupper $slave]_arvalid${extra_string}     => ${slave}_readmosi.address_valid,"
                 puts $output_control_file "      [string toupper $slave]_awaddr         => ${slave}_writemosi.address,"
                 puts $output_control_file "      [string toupper $slave]_awprot         => ${slave}_writemosi.protection_type,"
-                puts $output_control_file "      [string toupper $slave]_awready(0)     => ${slave}_writemiso.ready_for_address,"
-                puts $output_control_file "      [string toupper $slave]_awvalid(0)     => ${slave}_writemosi.address_valid,"
-                puts $output_control_file "      [string toupper $slave]_bready(0)      => ${slave}_writemosi.ready_for_response,"
-                puts $output_control_file "      [string toupper $slave]_bvalid(0)      => ${slave}_writemiso.response_valid,"
+                puts $output_control_file "      [string toupper $slave]_awready${extra_string}     => ${slave}_writemiso.ready_for_address,"
+                puts $output_control_file "      [string toupper $slave]_awvalid${extra_string}     => ${slave}_writemosi.address_valid,"
+                puts $output_control_file "      [string toupper $slave]_bready${extra_string}      => ${slave}_writemosi.ready_for_response,"
+                puts $output_control_file "      [string toupper $slave]_bvalid${extra_string}      => ${slave}_writemiso.response_valid,"
                 puts $output_control_file "      [string toupper $slave]_bresp          => ${slave}_writemiso.response,"
                 puts $output_control_file "      [string toupper $slave]_rdata          => ${slave}_readmiso.data,"
-                puts $output_control_file "      [string toupper $slave]_rready(0)      => ${slave}_readmosi.ready_for_data,"
+                puts $output_control_file "      [string toupper $slave]_rready${extra_string}      => ${slave}_readmosi.ready_for_data,"
                 puts $output_control_file "      [string toupper $slave]_rresp          => ${slave}_readmiso.response,"
-                puts $output_control_file "      [string toupper $slave]_rvalid(0)      => ${slave}_readmiso.data_valid,"
+                puts $output_control_file "      [string toupper $slave]_rvalid${extra_string}      => ${slave}_readmiso.data_valid,"
                 puts $output_control_file "      [string toupper $slave]_wdata          => ${slave}_writemosi.data,"
-                puts $output_control_file "      [string toupper $slave]_wready(0)      => ${slave}_writemiso.ready_for_data,"
+                puts $output_control_file "      [string toupper $slave]_wready${extra_string}      => ${slave}_writemiso.ready_for_data,"
                 puts $output_control_file "      [string toupper $slave]_wstrb          => ${slave}_writemosi.data_write_strobe,"
-                puts $output_control_file "      [string toupper $slave]_wvalid(0)      => ${slave}_writemosi.data_valid,"
+                puts $output_control_file "      [string toupper $slave]_wvalid${extra_string}      => ${slave}_writemosi.data_valid,"
             }
         }
 
