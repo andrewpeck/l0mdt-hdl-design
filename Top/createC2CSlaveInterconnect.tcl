@@ -61,7 +61,7 @@ connect_bd_net [get_bd_ports $AXI_MASTER_RSTN] [get_bd_pins $SYS_RESETER_AXI_RST
 #  Create the system resetter for clk40
 #================================================================================
 create_bd_port -dir O -type rst $EXT_CLK40_RSTN
-create_bd_port -dir I -type clk $EXT_CLK40  -freq_hz $EXT_CLK_FREQ
+create_bd_port -dir I -type clk $EXT_CLK40  -freq_hz $EXT_CLK40_FREQ
 set SYS_RESETER_CLK40 sys_reseter_clk40
 create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == proc_sys_reset}] $SYS_RESETER_CLK40
 #connect external reset
@@ -133,10 +133,11 @@ if {$regenerate_svg && [info exists ::env(DISPLAY) ]} {
    stop_gui
 }
 
+puts "VALIDATING BD DESIGN..."
 validate_bd_design
-
+puts "REGENERATING BD LAYOUT..."
 regenerate_bd_layout
-
+puts "GENERATING BD WRAPPER..."
 make_wrapper -files [get_files ${bd_design_name}.bd] -top -import -force
 save_bd_design
 
