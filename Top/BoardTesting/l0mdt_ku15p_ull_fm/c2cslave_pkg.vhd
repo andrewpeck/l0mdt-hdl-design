@@ -221,23 +221,24 @@ package c2cslave_pkg is
     HAL_CORE_rready : out std_logic;
     HAL_awaddr : out STD_LOGIC_VECTOR ( 31 downto 0 );
     HAL_awprot : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    HAL_awvalid : out std_logic;
-    HAL_awready : in std_logic;
+    HAL_awvalid : out STD_LOGIC;
+    HAL_awready : in STD_LOGIC;
     HAL_wdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
     HAL_wstrb : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    HAL_wvalid : out std_logic;
-    HAL_wready : in std_logic;
+    HAL_wvalid : out STD_LOGIC;
+    HAL_wready : in STD_LOGIC;
     HAL_bresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    HAL_bvalid : in std_logic;
-    HAL_bready : out std_logic;
+    HAL_bvalid : in STD_LOGIC;
+    HAL_bready : out STD_LOGIC;
     HAL_araddr : out STD_LOGIC_VECTOR ( 31 downto 0 );
     HAL_arprot : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    HAL_arvalid : out std_logic;
-    HAL_arready : in std_logic;
+    HAL_arvalid : out STD_LOGIC;
+    HAL_arready : in STD_LOGIC;
     HAL_rdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
     HAL_rresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    HAL_rvalid : in std_logic;
-    HAL_rready : out std_logic
+    HAL_rvalid : in STD_LOGIC;
+    HAL_rready : out STD_LOGIC;
+    clk40 : in STD_LOGIC
   );
   end component c2cSlave;
 end package c2cslave_pkg;

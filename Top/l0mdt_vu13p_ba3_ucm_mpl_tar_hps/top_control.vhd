@@ -508,8 +508,8 @@ begin
     );
   FM_map_inst : entity ctrl_lib.fm_map
     port map(
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1, 
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
       slave_readmosi   => FM_readmosi,
       slave_readmiso   => FM_readmiso,
       slave_writemosi   => FM_writemosi,
@@ -531,7 +531,7 @@ begin
   HAL_map_inst : entity ctrl_lib.hal_map
     port map(
       clk_axi         => clk40,
-      reset_axi_n     => std_logic1, 
+      reset_axi_n     => clk40_rstn, 
       slave_readmosi   => HAL_readmosi,
       slave_readmiso   => HAL_readmiso,
       slave_writemosi   => HAL_writemosi,
