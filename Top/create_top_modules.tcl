@@ -150,16 +150,18 @@ proc create_top_modules {project_path repo_path} {
         if {[string match "*  -- START: ULT_SLAVES :: DO NOT EDIT*" $line]} {
             foreach slave [dict keys $slaves] {
                 set xml_name [lindex [dict get $slaves $slave] 0]
+                set axi_control [lindex [dict get $slaves $slave] 1]
 
                 puts $output_control_file "  ${slave}_map_inst : entity ctrl_lib.[string tolower $xml_name]_map"
                 puts $output_control_file "    port map("
-                if {$slave in "HAL_CORE HOG FW_INFO"} {
+                if {[string first "AXI_MASTER_CTRL" $axi_control] != -1 } {
                     puts $output_control_file "      clk_axi         => axi_clk,"
                     puts $output_control_file "      reset_axi_n     => axi_reset_n,"
-                } else {
+                } elseif {[string first "AXI_LHC_CTRL" $axi_control] != -1} {
                     puts $output_control_file "      clk_axi         => clk40,"
-                    puts $output_control_file "      reset_axi_n     => std_logic1, "
+                    puts $output_control_file "      reset_axi_n     => clk40_rstn, "
                 }
+
                 puts $output_control_file "      slave_readmosi   => ${slave}_readmosi," 
                 puts $output_control_file "      slave_readmiso   => ${slave}_readmiso," 
                 puts $output_control_file "      slave_writemosi   => ${slave}_writemosi," 
