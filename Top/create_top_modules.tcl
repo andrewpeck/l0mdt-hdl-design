@@ -159,7 +159,7 @@ proc create_top_modules {project_path repo_path} {
                     puts $output_control_file "      reset_axi_n     => axi_reset_n,"
                 } elseif {[string first "AXI_LHC_CTRL" $axi_control] != -1} {
                     puts $output_control_file "      clk_axi         => clk40,"
-                    puts $output_control_file "      reset_axi_n     => clk40_rstn, "
+                    puts $output_control_file "      reset_axi_n     => axi_clk40_reset_n, "
                 }
 
                 puts $output_control_file "      slave_readmosi   => ${slave}_readmosi," 
