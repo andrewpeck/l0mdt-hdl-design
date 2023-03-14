@@ -7,6 +7,9 @@ package c2cslave_pkg is
     reset_n : in STD_LOGIC;
     AXI_CLK : in STD_LOGIC;
     AXI_RST_N : out std_logic;
+    clk40 : in STD_LOGIC;
+    CLK40_RSTN : in STD_LOGIC;
+    AXI_CLK40_RST_N : out std_logic;
     K_C2C_aurora_pma_init_in : in STD_LOGIC;
     K_C2C_aurora_do_cc : out STD_LOGIC;
     K_C2C_axi_c2c_config_error_out : out STD_LOGIC;
@@ -237,8 +240,7 @@ package c2cslave_pkg is
     HAL_rdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
     HAL_rresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
     HAL_rvalid : in STD_LOGIC;
-    HAL_rready : out STD_LOGIC;
-    clk40 : in STD_LOGIC
+    HAL_rready : out STD_LOGIC
   );
   end component c2cSlave;
 end package c2cslave_pkg;
