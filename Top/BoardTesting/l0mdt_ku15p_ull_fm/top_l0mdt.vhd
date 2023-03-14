@@ -515,14 +515,14 @@ begin
       c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC), --c2c_refclkn,
 
       -- START: ULT_IO :: DO NOT EDIT
-      fw_info_mon            => fw_info_mon_r,
-      fm_mon            => fm_mon_r,
-      fm_ctrl           => fm_ctrl_r,
-      hog_mon            => hog_mon_r,
-      hal_core_mon            => hal_core_mon_r,
-      hal_core_ctrl           => hal_core_ctrl_r,
-      hal_mon            => hal_mon_r,
-      hal_ctrl           => hal_ctrl_r,
+      fw_info_mon            => fw_info_mon,
+      fm_mon            => fm_mon,
+      fm_ctrl           => fm_ctrl,
+      hog_mon            => hog_mon,
+      hal_core_mon            => hal_core_mon,
+      hal_core_ctrl           => hal_core_ctrl,
+      hal_mon            => hal_mon,
+      hal_ctrl           => hal_ctrl,
       -- END: ULT_IO :: DO NOT EDIT
        
       -- axi common

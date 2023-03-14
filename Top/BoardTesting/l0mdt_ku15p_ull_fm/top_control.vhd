@@ -506,7 +506,7 @@ begin
       slave_readmiso   => FW_INFO_readmiso,
       slave_writemosi   => FW_INFO_writemosi,
       slave_writemiso   => FW_INFO_writemiso,
-      mon   => FW_INFO_mon_r
+      mon   => FW_INFO_mon
     );
   FM_map_inst : entity ctrl_lib.fm_map
     port map(
@@ -516,8 +516,8 @@ begin
       slave_readmiso   => FM_readmiso,
       slave_writemosi   => FM_writemosi,
       slave_writemiso   => FM_writemiso,
-      ctrl   => FM_ctrl_r,
-      mon   => FM_mon_r
+      ctrl   => FM_ctrl,
+      mon   => FM_mon
     );
   HOG_map_inst : entity ctrl_lib.hog_map
     port map(
@@ -527,7 +527,7 @@ begin
       slave_readmiso   => HOG_readmiso,
       slave_writemosi   => HOG_writemosi,
       slave_writemiso   => HOG_writemiso,
-      mon   => HOG_mon_r
+      mon   => HOG_mon
     );
   HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
     port map(
@@ -537,8 +537,8 @@ begin
       slave_readmiso   => HAL_CORE_readmiso,
       slave_writemosi   => HAL_CORE_writemosi,
       slave_writemiso   => HAL_CORE_writemiso,
-      ctrl   => HAL_CORE_ctrl_r,
-      mon   => HAL_CORE_mon_r
+      ctrl   => HAL_CORE_ctrl,
+      mon   => HAL_CORE_mon
     );
   HAL_map_inst : entity ctrl_lib.hal_map
     port map(
@@ -548,8 +548,8 @@ begin
       slave_readmiso   => HAL_readmiso,
       slave_writemosi   => HAL_writemosi,
       slave_writemiso   => HAL_writemiso,
-      ctrl   => HAL_ctrl_r,
-      mon   => HAL_mon_r
+      ctrl   => HAL_ctrl,
+      mon   => HAL_mon
     );
   -- END: ULT_SLAVES :: DO NOT EDIT
 
