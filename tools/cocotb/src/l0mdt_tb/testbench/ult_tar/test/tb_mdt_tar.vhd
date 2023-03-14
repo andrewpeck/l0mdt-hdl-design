@@ -71,18 +71,54 @@ architecture beh of tb_mdt_tar is
   signal tar_out_mon_r      : TAR_MON_t;
   signal tar_ext_ctrl_r        :  TAR_CTRL_t;
   signal tar_ext_mon_r      : TAR_MON_t;
-
-  signal tar_inn_ctrl_v       : std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0);
-  signal tar_inn_mon_v      : std_logic_vector(width(tar_inn_mon_r) -1 downto 0);
-  signal tar_mid_ctrl_v       :  std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0);
-  signal tar_mid_mon_v     :  std_logic_vector(width(tar_inn_mon_r) -1 downto 0);
-  signal tar_out_ctrl_v        : std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0);
-  signal tar_out_mon_v      : std_logic_vector(width(tar_inn_mon_r) -1 downto 0);
-  signal tar_ext_ctrl_v        :  std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0);
-  signal tar_ext_mon_v      : std_logic_vector(width(tar_inn_mon_r) -1 downto 0);
+ 
+  signal tar_inn_ctrl_v : std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0) := (others=> '0');
+  signal tar_inn_mon_v  : std_logic_vector(width(tar_inn_mon_r) -1 downto 0) := (others=> '0');
+  signal tar_mid_ctrl_v : std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0) := (others=> '0');
+  signal tar_mid_mon_v  : std_logic_vector(width(tar_inn_mon_r) -1 downto 0) := (others=> '0');
+  signal tar_out_ctrl_v : std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0) := (others=> '0');
+  signal tar_out_mon_v  : std_logic_vector(width(tar_inn_mon_r) -1 downto 0) := (others=> '0');
+  signal tar_ext_ctrl_v : std_logic_vector(width(tar_inn_ctrl_r) -1 downto 0) := (others=> '0');
+  signal tar_ext_mon_v  : std_logic_vector(width(tar_inn_mon_r) -1 downto 0) := (others=> '0');
 
   
   begin
+
+    tar_inn_ctrl_r.actions.reset <= '0';
+    tar_inn_ctrl_r.actions.enable <= '1';
+    tar_inn_ctrl_r.actions.disable <= '0';
+    tar_inn_ctrl_r.actions.freeze <= '0';
+    tar_inn_ctrl_r.configs.input_en <= '1';
+    tar_inn_ctrl_r.configs.output_en <= '1';
+    tar_inn_ctrl_r.configs.flush_mem_reset <= '0';
+    tar_inn_ctrl_r.pl_st <= zero(tar_inn_ctrl_r.pl_st);
+   
+    tar_mid_ctrl_r.actions.reset <= '0';
+    tar_mid_ctrl_r.actions.enable <= '1';
+    tar_mid_ctrl_r.actions.disable <= '0';
+    tar_mid_ctrl_r.actions.freeze <= '0';
+    tar_mid_ctrl_r.configs.input_en <= '1';
+    tar_mid_ctrl_r.configs.output_en <= '1';
+    tar_mid_ctrl_r.configs.flush_mem_reset <= '0';
+    tar_mid_ctrl_r.pl_st <= zero(tar_mid_ctrl_r.pl_st);
+
+        tar_out_ctrl_r.actions.reset <= '0';
+    tar_out_ctrl_r.actions.enable <= '1';
+    tar_out_ctrl_r.actions.disable <= '0';
+    tar_out_ctrl_r.actions.freeze <= '0';
+    tar_out_ctrl_r.configs.input_en <= '1';
+    tar_out_ctrl_r.configs.output_en <= '1';
+    tar_out_ctrl_r.configs.flush_mem_reset <= '0';
+    tar_out_ctrl_r.pl_st <= zero(tar_out_ctrl_r.pl_st);
+
+        tar_ext_ctrl_r.actions.reset <= '0';
+    tar_ext_ctrl_r.actions.enable <= '1';
+    tar_ext_ctrl_r.actions.disable <= '0';
+    tar_ext_ctrl_r.actions.freeze <= '0';
+    tar_ext_ctrl_r.configs.input_en <= '1';
+    tar_ext_ctrl_r.configs.output_en <= '1';
+    tar_ext_ctrl_r.configs.flush_mem_reset <= '0';
+    tar_ext_ctrl_r.pl_st <= zero(tar_ext_ctrl_r.pl_st);
 
     clock_and_control.clk <= clock;
     clock_and_control.rst <= reset;
