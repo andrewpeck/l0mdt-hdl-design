@@ -94,7 +94,7 @@ include:
   - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
   - local: '/Top/ull_vu13p/ull_vu13_b3a_tar/gitlab-ci.yml'
   # - local: '/Top/ull_vu13p/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
-  # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_csf_mptc/gitlab-ci.yml'
+  - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_csf_mptc/gitlab-ci.yml'
   # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_csf_uptc/gitlab-ci.yml'
   # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_lsf_mptc/gitlab-ci.yml'
   # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_lsf_uptc/gitlab-ci.yml'

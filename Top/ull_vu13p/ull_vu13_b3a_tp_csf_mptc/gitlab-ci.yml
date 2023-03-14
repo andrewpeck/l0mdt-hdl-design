@@ -1,14 +1,13 @@
 #################### ull_vu13_b3a_tp_csf_mptc Project ###########################
-# GEN:ull_vu13_b3a_tp_csf_mptc:
-#     extends: .generate_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
-#       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-#       # HOG_CHECK_SYNTAX : 0
-#     tags:
-#       - heavy-duty
-#       - hog
+GEN:ull_vu13_b3a_tp_csf_mptc:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      HOG_CHECK_SYNTAX : 1
+    tags:
+      - heavy-duty
 
 SIM:ull_vu13_b3a_tp_csf_mptc:
     extends: .simulate_project
@@ -41,6 +40,7 @@ CHK:ull_vu13_b3a_tp_csf_mptc:
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
+    
 # user_sim:ull_vu13_b3a_ucm_mpl:
 #     extends: .user_sim
     # variables
