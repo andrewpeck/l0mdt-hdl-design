@@ -1,20 +1,20 @@
-#################### ull_vu13_b3a_tp_csf_mptc Project ###########################
-# GEN:ull_vu13_b3a_tp_csf_mptc:
-#     extends: .generate_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
-#       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-#       # HOG_CHECK_SYNTAX : 0
-#     tags:
-#       - heavy-duty
-#       - hog
+#################### ull_vu13_e3a_tp_csf_mptc Project ###########################
+GEN:ull_vu13_e3a_tp_csf_mptc:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13p/S3AE/ull_vu13_e3a_tp_csf_mptc
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      # HOG_CHECK_SYNTAX : 0
+    tags:
+      - heavy-duty
+      - hog
 
-SIM:ull_vu13_b3a_tp_csf_mptc:
+SIM:ull_vu13_e3a_tp_csf_mptc:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
+      PROJECT_NAME: ull_vu13p/S3AE/ull_vu13_e3a_tp_csf_mptc
     allow_failure: false
 
     # artifacts:
@@ -28,14 +28,14 @@ SIM:ull_vu13_b3a_tp_csf_mptc:
     #   - hog
     #   - "2020.2"
 
-CHK:ull_vu13_b3a_tp_csf_mptc:
+CHK:ull_vu13_e3a_tp_csf_mptc:
   extends: .sim_check
   variables: 
     extends: .vars
-    PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
+    PROJECT_NAME: ull_vu13p/S3AE/ull_vu13_e3a_tp_csf_mptc
     BLOCK: HEG
     SIMULATOR: questa
-  needs: ["SIM:ull_vu13_b3a_tp_csf_mptc"]
+  needs: ["SIM:ull_vu13_e3a_tp_csf_mptc"]
   artifacts:
     name: CHK_ull_vu13_b3a_ucm_mpl_hps_csf
     paths:

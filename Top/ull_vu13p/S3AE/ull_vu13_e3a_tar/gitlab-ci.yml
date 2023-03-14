@@ -3,7 +3,7 @@ GEN:ull_vu13_e3a_tar:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ull_vu13_e3a_tar
+      PROJECT_NAME: ull_vu13p/S3AE/ull_vu13_e3a_tar
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
     tags:
@@ -14,7 +14,7 @@ SIM:ull_vu13_e3a_tar:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ull_vu13_e3a_tar
+      PROJECT_NAME: ull_vu13p/S3AE/ull_vu13_e3a_tar
       HOG_CHECK_PROJVER: 0
     tags:
       - questa
