@@ -7,13 +7,14 @@
 #       HOG_NO_BITSTREAM: 1 # if 1 runs only the synthesis
 
 
-SIM:ptc_mpi:
+RIV:ptc_mpi:
   extends: .riviera_sim
   variables:
     extends: .vars
     PROJECT_NAME: MainBlocks/ptc_mpi
-  tags:
-    - normal-ops
+  allow_failure: false
+
+
 CHK:ptc_mpi:
   extends: .sim_check
   variables: 
@@ -21,11 +22,9 @@ CHK:ptc_mpi:
     PROJECT_NAME: MainBlocks/ptc_mpi
     BLOCK: PTC
     SIMULATOR: riviera
-  needs: ["SIM:ptc_mpi"]
+  needs: ["RIV:ptc_mpi"]
   artifacts:
     name: CHK_ptc
     paths:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
-  tags:
-    - normal-ops

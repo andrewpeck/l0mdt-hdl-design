@@ -71,10 +71,10 @@ end entity ult_tb_writer_hps;
 
 architecture sim of ult_tb_writer_hps is
   
-  alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
-  alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
-  alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
-  alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
+  alias slc_file_ok is  << signal.ult_tb.SLC.file_open : std_logic >>;
+  alias slc_file_ts is  << signal.ult_tb.SLC.file_ts : string >>;
+  alias hit_file_ok is  << signal.ult_tb.MDT.file_open : std_logic >>;
+  alias hit_file_ts is  << signal.ult_tb.MDT.file_ts : string >>;
 
   shared variable csv_file_1: csv_file_type;
   -- shared variable csv_file_2: csv_file_type;
@@ -84,8 +84,8 @@ architecture sim of ult_tb_writer_hps is
   -- constant g_OUT_FILE_2     : string  := "ov_heg_heg2sf_" & g_PRJ_INFO & ".csv";
   -- constant g_OUT_FILE_3     : string  := "ov_heg_ctrlRoi_" & g_PRJ_INFO & ".csv";
      
-  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
-  alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
+  alias slc_event_ai is  << signal.ult_tb.SLC.slc_event_ai : event_xaut >>;
+  alias mdt_event_ai is  << signal.ult_tb.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_u2h_au : event_tdc_at;
 
@@ -188,7 +188,7 @@ begin
   
   HPS_INN: if c_STATIONS_IN_SECTOR(0) = '1' generate
     constant lc_ST_ID : integer := 0;
-    alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_INN.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
+    alias mdt_full_data_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_INN.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
     array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
@@ -217,7 +217,7 @@ begin
 
   HPS_MID: if c_STATIONS_IN_SECTOR(1) = '1' generate
     constant lc_ST_ID : integer := 1;
-    alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_MID.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
+    alias mdt_full_data_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_MID.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
     array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
@@ -246,7 +246,7 @@ begin
 
   HPS_OUT: if c_STATIONS_IN_SECTOR(2) = '1' generate
     constant lc_ST_ID : integer := 2;
-    alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_OUT.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
+    alias mdt_full_data_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_OUT.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
     array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate
@@ -275,7 +275,7 @@ begin
 
   EXT_MID: if c_STATIONS_IN_SECTOR(3) = '1' generate
     constant lc_ST_ID : integer := 3;
-    alias mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_EXT.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
+    alias mdt_full_data_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_EXT.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
     signal mdt_full_data_ar  : heg_pc2heg_art(c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0);
   begin
     array_loop : for i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 generate

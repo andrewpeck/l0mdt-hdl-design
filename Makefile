@@ -56,7 +56,7 @@ $(OPEN_LIST):
 # Regmap + types
 ################################################################################
 
-XML_FILES=$(shell find HAL/ctrl/src -name *.xml -type l)
+XML_FILES=$(shell find HAL/ctrl/src -name '*.xml' -type l)
 MAP_OBJS = $(patsubst %.xml, %_map.vhd, $(XML_FILES))
 PKG_OBJS = $(patsubst %.xml, %_PKG.vhd, $(XML_FILES))
 YML_OBJS = $(patsubst %.xml, %_PKG.yml, $(XML_FILES))

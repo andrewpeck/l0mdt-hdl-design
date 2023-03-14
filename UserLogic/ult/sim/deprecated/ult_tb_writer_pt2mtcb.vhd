@@ -67,8 +67,8 @@ begin
 
   variable row 		: line;
 
-  alias pt2mtc_av is << signal.ult_tp.ULT.pt2mtc_av : ptcalc2mtc_avt >>;
-  alias pl2mtc_av is << signal.ult_tp.ULT.pl2mtc_av : pl2mtc_avt >>;
+  alias pt2mtc_av is << signal.ult_tb.ULT.pt2mtc_av : ptcalc2mtc_avt >>;
+  alias pl2mtc_av is << signal.ult_tb.ULT.pl2mtc_av : pl2mtc_avt >>;
 
   -- variable fifo_mem_v : heg2sf_hits_fifo_at(OUTPUT_FIFO_LEN -1 downto 0);
   variable fifo_count : integer := 0;

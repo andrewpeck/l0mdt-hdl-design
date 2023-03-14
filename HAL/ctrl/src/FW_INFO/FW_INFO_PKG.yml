@@ -1,0 +1,47 @@
+# yml2hdl v0.3
+# This file was auto-generated.
+# Modifications might be lost.
+config:
+  basic_functions : False
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg]
+
+types:
+
+- FW_INFO_CONFIG_MON_t:
+  - MAIN_CFG_COMPILE_HW : { type: logic }
+  - MAIN_CFG_COMPILE_UL : { type: logic }
+  - ST_nBARREL_ENDCAP : { type: logic }
+  - ENDCAP_nSMALL_LARGE : { type: logic }
+  - ENABLE_NEIGHBORS : { type: logic }
+  - SECTOR_ID : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PHY_BARREL_R0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PHY_BARREL_R1 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PHY_BARREL_R2 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PHY_BARREL_R3 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - HPS_ENABLE_ST_INN : { type: logic }
+  - HPS_ENABLE_ST_EXT : { type: logic }
+  - HPS_ENABLE_ST_MID : { type: logic }
+  - HPS_ENABLE_ST_OUT : { type: logic }
+  - HPS_NUM_MDT_CH_INN : { type: logic, range : [ 8 - 1 , 0 ] }
+  - HPS_NUM_MDT_CH_EXT : { type: logic, range : [ 8 - 1 , 0 ] }
+  - HPS_NUM_MDT_CH_MID : { type: logic, range : [ 8 - 1 , 0 ] }
+  - HPS_NUM_MDT_CH_OUT : { type: logic, range : [ 8 - 1 , 0 ] }
+  - NUM_MTC : { type: logic, range : [ 8 - 1 , 0 ] }
+  - NUM_NSP : { type: logic, range : [ 8 - 1 , 0 ] }
+  - UCM_ENABLED : { type: logic }
+  - MPL_ENABLED : { type: logic }
+  - SF_ENABLED : { type: logic }
+  - SF_TYPE : { type: logic }
+  - NUM_DAQ_STREAMS : { type: logic, range : [ 8 - 1 , 0 ] }
+  - NUM_SF_INPUTS : { type: logic, range : [ 8 - 1 , 0 ] }
+  - NUM_SF_OUTPUTS : { type: logic, range : [ 8 - 1 , 0 ] }
+  - MAX_NUM_SL : { type: logic, range : [ 8 - 1 , 0 ] }
+  - NUM_THREADS : { type: logic, range : [ 8 - 1 , 0 ] }
+
+
+- FW_INFO_MON_t:
+  - CONFIG : { type: FW_INFO_CONFIG_MON_t }
+
+

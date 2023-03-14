@@ -45,6 +45,7 @@ entity ucm_ctrl_pam is
     i_pam_update        : in std_logic;
     --
     o_pam_ctrl          : out ucm_pam_control_art(c_NUM_THREADS -1 downto 0);
+    o_pam_ctrl_dv       : out std_logic;
     -- o_proc_info_ar         : out ucm_proc_info_art(c_NUM_THREADS -1 downto 0);
     o_proc_info_av      : out ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
     
@@ -126,7 +127,7 @@ begin
             if ch_count_av(ch_i) < c_HEG_PROC_TIME then -- c_MPL_PL_A_LATENCY
               ch_count_av(ch_i) <= ch_count_av(ch_i) + '1';
               buff_pam_ctrl_ar(ch_i).data_present <= '0';
-              buff_pam_ctrl_ar(ch_i).addr_orig <= (others => '0');
+              buff_pam_ctrl_ar(ch_i).addr_dest <= (others => '0');
               -- busy := busy + 1;
 
               -- if ch_count_av(ch_i) < (UCM_LATENCY_HPS_CH - 12)then
@@ -163,7 +164,7 @@ begin
               if processed < to_integer(i_num_cand) and processed < (c_NUM_THREADS - busy) then
                 int_cvp_ctrl_v(ch_i) <= '1';
                 buff_pam_ctrl_ar(ch_i).data_present <= '1';
-                buff_pam_ctrl_ar(ch_i).addr_orig <= std_logic_vector(to_unsigned(c_NUM_THREADS -1 - processed,4));
+                buff_pam_ctrl_ar(ch_i).addr_dest <= std_logic_vector(to_unsigned(c_NUM_THREADS -1 - processed,4));
                 proc_info_ar(c_NUM_THREADS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
                 proc_info_ar(c_NUM_THREADS -1 - processed).processed <= '1';
                 proc_info_ar(c_NUM_THREADS -1 - processed).dv <= '1';

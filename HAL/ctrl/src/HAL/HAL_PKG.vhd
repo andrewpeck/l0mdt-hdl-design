@@ -423,8 +423,13 @@ package body HAL_CTRL is
    end function zero;
 
    function width(x: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -530,8 +535,13 @@ package body HAL_CTRL is
    end function zero;
 
    function width(x: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -1261,8 +1271,13 @@ package body HAL_CTRL is
    end function zero;
 
    function width(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -2148,8 +2163,13 @@ package body HAL_CTRL is
    end function zero;
 
    function width(x: HAL_CSM_CSM_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HAL_CSM_CSM_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -2268,8 +2288,13 @@ package body HAL_CTRL is
    end function zero;
 
    function width(x: HAL_CSM_CSM_CTRL_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HAL_CSM_CSM_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is

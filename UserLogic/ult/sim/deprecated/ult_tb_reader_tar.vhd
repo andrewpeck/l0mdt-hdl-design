@@ -32,9 +32,9 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
-library project_lib;
-use project_lib.gldl_ult_tp_sim_pkg.all;
-use project_lib.ult_textio_rd_tdc_pkg.all;
+-- library project_lib;
+-- use project_lib.gldl_ult_tp_sim_pkg.all;
+-- use project_lib.ult_textio_rd_tdc_pkg.all;
 
 entity ult_tb_reader_tar is
   generic (
@@ -47,10 +47,10 @@ entity ult_tb_reader_tar is
     --
     tb_curr_tdc_time  : in unsigned(63 downto 0) := (others => '0');
     -- Hits from Tar
-    i_mdt_tar_inn_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-    i_mdt_tar_mid_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-    i_mdt_tar_out_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-    i_mdt_tar_ext_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'))
+    i_mdt_tar_inn_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+    i_mdt_tar_mid_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+    i_mdt_tar_out_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+    i_mdt_tar_ext_av  : out tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'))
 
   );
 end entity ult_tb_reader_tar;
@@ -67,20 +67,20 @@ architecture sim of ult_tb_reader_tar is
   signal mdt_new_event    : input_mdt_rt;
 
   -- TDC Hits from Tar
-  signal i_mdt_tar_inn_ar :  tar2hps_art (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_mdt_tar_mid_ar :  tar2hps_art (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_mdt_tar_out_ar :  tar2hps_art (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_mdt_tar_ext_ar :  tar2hps_art (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_mdt_tar_inn_ar :  tar2hps_art (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_mdt_tar_mid_ar :  tar2hps_art (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_mdt_tar_out_ar :  tar2hps_art (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_mdt_tar_ext_ar :  tar2hps_art (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
-  signal mdt_inn_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_INN -1 downto 0) := (others => zero(mdt_tar_station));
-  signal mdt_mid_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_MID -1 downto 0) := (others => zero(mdt_tar_station));
-  signal mdt_out_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_OUT -1 downto 0) := (others => zero(mdt_tar_station));
-  signal mdt_ext_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_EXT -1 downto 0) := (others => zero(mdt_tar_station));
+  signal mdt_inn_fifo     : infifo_hit_mem_at(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => zero(mdt_tar_station));
+  signal mdt_mid_fifo     : infifo_hit_mem_at(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => zero(mdt_tar_station));
+  signal mdt_out_fifo     : infifo_hit_mem_at(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => zero(mdt_tar_station));
+  signal mdt_ext_fifo     : infifo_hit_mem_at(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => zero(mdt_tar_station));
   
-  signal mdt_inn_counts   : infifo_hit_counts(c_HPS_MAX_HP_INN -1 downto 0) := (others => 0);
-  signal mdt_mid_counts   : infifo_hit_counts(c_HPS_MAX_HP_MID -1 downto 0) := (others => 0);
-  signal mdt_out_counts   : infifo_hit_counts(c_HPS_MAX_HP_OUT -1 downto 0) := (others => 0);
-  signal mdt_ext_counts   : infifo_hit_counts(c_HPS_MAX_HP_EXT -1 downto 0) := (others => 0);
+  signal mdt_inn_counts   : infifo_hit_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
+  signal mdt_mid_counts   : infifo_hit_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
+  signal mdt_out_counts   : infifo_hit_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
+  signal mdt_ext_counts   : infifo_hit_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
   
 begin
   
@@ -100,10 +100,10 @@ begin
 
     variable first_read           : std_logic := '1';
 
-    variable v_mdt_inn_counts     : infifo_hit_counts(c_HPS_MAX_HP_INN -1 downto 0) := (others => 0);
-    variable v_mdt_mid_counts     : infifo_hit_counts(c_HPS_MAX_HP_MID -1 downto 0) := (others => 0);
-    variable v_mdt_out_counts     : infifo_hit_counts(c_HPS_MAX_HP_OUT -1 downto 0) := (others => 0);
-    variable v_mdt_ext_counts     : infifo_hit_counts(c_HPS_MAX_HP_EXT -1 downto 0) := (others => 0);
+    variable v_mdt_inn_counts     : infifo_hit_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
+    variable v_mdt_mid_counts     : infifo_hit_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
+    variable v_mdt_out_counts     : infifo_hit_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
+    variable v_mdt_ext_counts     : infifo_hit_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
 
   begin
 
@@ -117,7 +117,7 @@ begin
         if enable = 1 then
         -- write to DUT
 
-          for wr_i in c_HPS_MAX_HP_INN -1 downto 0 loop
+          for wr_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 loop
             if(v_mdt_inn_counts(wr_i) > 0) then
               i_mdt_tar_inn_av(wr_i) <= convert(mdt_inn_fifo(wr_i)(0));
               -- for test input read
@@ -133,7 +133,7 @@ begin
             end if;
           end loop;
 
-          for wr_i in c_HPS_MAX_HP_MID -1 downto 0 loop
+          for wr_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 loop
             if(v_mdt_mid_counts(wr_i) > 0) then
               i_mdt_tar_mid_av(wr_i) <= convert(mdt_mid_fifo(wr_i)(0));
               -- for test input read
@@ -149,7 +149,7 @@ begin
             end if;
           end loop;
 
-          for wr_i in c_HPS_MAX_HP_OUT -1 downto 0 loop
+          for wr_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 loop
             if(v_mdt_out_counts(wr_i) > 0) then
               i_mdt_tar_out_av(wr_i) <= convert(mdt_out_fifo(wr_i)(0));
               -- for test input read
@@ -165,7 +165,7 @@ begin
             end if;
           end loop;
 
-          for wr_i in c_HPS_MAX_HP_EXT -1 downto 0 loop
+          for wr_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 loop
             if(v_mdt_ext_counts(wr_i) > 0) then
               i_mdt_tar_ext_av(wr_i) <= convert(mdt_ext_fifo(wr_i)(0));
               -- for test input read

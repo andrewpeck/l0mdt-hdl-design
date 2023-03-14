@@ -1,17 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: pkg
+-- File: ucm_function_pkg.vhd
+-- Module: <<moduleName>>
+-- File PATH: /ucm_function_pkg.vhd
+-- -----
+-- File Created: Wednesday, 8th June 2022 9:54:44 am
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Wednesday, 8th February 2023 11:25:11 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: Muon Candidate Manager
---          Preprocesing
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;

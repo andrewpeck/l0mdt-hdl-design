@@ -1,0 +1,137 @@
+# yml2hdl v0.3
+# This file was auto-generated.
+# Modifications might be lost.
+config:
+  basic_functions : False
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg]
+
+types:
+
+- C2C_INTF_DRP_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 10 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 16 -1 , 0] }
+
+- C2C_INTF_DRP_MISO_t:
+  - rd_data       : { type : logic, range : [ 16 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- C2C_INTF_STATUS_MON_t:
+  - CONFIG_ERROR : { type: logic }
+  - LINK_ERROR : { type: logic }
+  - LINK_GOOD : { type: logic }
+  - MB_ERROR : { type: logic }
+  - DO_CC : { type: logic }
+  - PHY_RESET : { type: logic }
+  - PHY_GT_PLL_LOCK : { type: logic }
+  - PHY_MMCM_LOL : { type: logic }
+  - PHY_LANE_UP : { type: logic }
+  - PHY_HARD_ERR : { type: logic }
+  - PHY_SOFT_ERR : { type: logic }
+  - CHANNEL_UP : { type: logic }
+  - LINK_IN_FW : { type: logic }
+
+
+- C2C_INTF_STATUS_CTRL_t:
+  - INITIALIZE : { type: logic }
+
+
+- C2C_INTF_DEBUG_RX_MON_t:
+  - BUF_STATUS : { type: logic, range : [ 3 - 1 , 0 ] }
+  - PMA_RESET_DONE : { type: logic }
+  - PRBS_ERR : { type: logic }
+  - RESET_DONE : { type: logic }
+
+
+- C2C_INTF_DEBUG_RX_CTRL_t:
+  - BUF_RESET : { type: logic }
+  - CDR_HOLD : { type: logic }
+  - DFE_LPM_RESET : { type: logic }
+  - LPM_EN : { type: logic }
+  - PCS_RESET : { type: logic }
+  - PMA_RESET : { type: logic }
+  - PRBS_CNT_RST : { type: logic }
+  - PRBS_SEL : { type: logic, range : [ 4 - 1 , 0 ] }
+  - RATE : { type: logic, range : [ 3 - 1 , 0 ] }
+
+
+- C2C_INTF_DEBUG_TX_MON_t:
+  - BUF_STATUS : { type: logic, range : [ 2 - 1 , 0 ] }
+  - RESET_DONE : { type: logic }
+
+
+- C2C_INTF_DEBUG_TX_CTRL_t:
+  - INHIBIT : { type: logic }
+  - PCS_RESET : { type: logic }
+  - PMA_RESET : { type: logic }
+  - POLARITY : { type: logic }
+  - POST_CURSOR : { type: logic, range : [ 5 - 1 , 0 ] }
+  - PRBS_FORCE_ERR : { type: logic }
+  - PRE_CURSOR : { type: logic, range : [ 5 - 1 , 0 ] }
+  - PRBS_SEL : { type: logic, range : [ 4 - 1 , 0 ] }
+  - DIFF_CTRL : { type: logic, range : [ 5 - 1 , 0 ] }
+
+
+- C2C_INTF_DEBUG_MON_t:
+  - DMONITOR : { type: logic, range : [ 16 - 1 , 0 ] }
+  - QPLL_LOCK : { type: logic }
+  - CPLL_LOCK : { type: logic }
+  - EYESCAN_DATA_ERROR : { type: logic }
+  - RX : { type: C2C_INTF_DEBUG_RX_MON_t }
+  - TX : { type: C2C_INTF_DEBUG_TX_MON_t }
+
+
+- C2C_INTF_DEBUG_CTRL_t:
+  - EYESCAN_RESET : { type: logic }
+  - EYESCAN_TRIGGER : { type: logic }
+  - PCS_RSV_DIN : { type: logic, range : [ 16 - 1 , 0 ] }
+  - RX : { type: C2C_INTF_DEBUG_RX_CTRL_t }
+  - TX : { type: C2C_INTF_DEBUG_TX_CTRL_t }
+
+
+- C2C_INTF_COUNTERS_MON_t:
+  - ERRORS_ALL_TIME : { type: logic, range : [ 32 - 1 , 0 ] }
+  - ERRORS_SINCE_LOCKED : { type: logic, range : [ 32 - 1 , 0 ] }
+  - CONFIG_ERROR_COUNT : { type: logic, range : [ 32 - 1 , 0 ] }
+  - LINK_ERROR_COUNT : { type: logic, range : [ 32 - 1 , 0 ] }
+  - MB_ERROR_COUNT : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PHY_HARD_ERROR_COUNT : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PHY_SOFT_ERROR_COUNT : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PHYLANE_STATE : { type: logic, range : [ 3 - 1 , 0 ] }
+  - ERROR_WAITS_SINCE_LOCKED : { type: logic, range : [ 32 - 1 , 0 ] }
+  - USER_CLK_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
+  - XCVR_RESETS : { type: logic, range : [ 32 - 1 , 0 ] }
+  - WAITING_TIMEOUTS : { type: logic, range : [ 32 - 1 , 0 ] }
+  - SB_ERROR_RATE : { type: logic, range : [ 32 - 1 , 0 ] }
+  - MB_ERROR_RATE : { type: logic, range : [ 32 - 1 , 0 ] }
+
+
+- C2C_INTF_COUNTERS_CTRL_t:
+  - RESET_COUNTERS : { type: logic }
+
+
+- C2C_INTF_MON_t:
+  - DRP : { type: C2C_INTF_DRP_MISO_t }
+  - STATUS : { type: C2C_INTF_STATUS_MON_t }
+  - DEBUG : { type: C2C_INTF_DEBUG_MON_t }
+  - COUNTERS : { type: C2C_INTF_COUNTERS_MON_t }
+  - USER_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
+
+
+- C2C_INTF_CTRL_t:
+  - DRP : { type: C2C_INTF_DRP_MOSI_t }
+  - STATUS : { type: C2C_INTF_STATUS_CTRL_t }
+  - DEBUG : { type: C2C_INTF_DEBUG_CTRL_t }
+  - COUNTERS : { type: C2C_INTF_COUNTERS_CTRL_t }
+  - PHY_READ_TIME : { type: logic, range : [ 24 - 1 , 0 ] }
+  - ENABLE_PHY_CTRL : { type: logic }
+  - PHY_LANE_STABLE : { type: logic, range : [ 20 - 1 , 0 ] }
+  - PHY_LANE_ERRORS_TO_RESET : { type: logic, range : [ 8 - 1 , 0 ] }
+  - PHY_MAX_SINGLE_BIT_ERROR_RATE : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PHY_MAX_MULTI_BIT_ERROR_RATE : { type: logic, range : [ 32 - 1 , 0 ] }
+
+
