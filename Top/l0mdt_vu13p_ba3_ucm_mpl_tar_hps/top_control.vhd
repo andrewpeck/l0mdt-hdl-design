@@ -153,7 +153,8 @@ architecture control_arch of top_control is
 
   signal pB_UART_tx : std_logic;
   signal pB_UART_rx : std_logic;
-  
+
+  signal axi_clk40_reset_n :std_logic;
 begin
 
   --clock_strobe_ult : entity hal.clock_strobe
@@ -245,7 +246,7 @@ begin
       clk50Mhz                            => clk50mhz,   
       clk40                               => clk40,
       clk40_rstn                          => clk40_rstn,
-
+      AXI_CLK40_RST_N(0)                  => AXI_CLK40_RESET_N,
       K_C2C_phy_Rx_rxn(0)                 => c2c_rxn, --n_mgt_z2k(1 downto 1),
       K_C2C_phy_Rx_rxp(0)                 => c2c_rxp, --p_mgt_z2k(1 downto 1),
       K_C2C_phy_Tx_txn(0)                 => c2c_txn, --n_mgt_k2z(1 downto 1),
@@ -532,7 +533,7 @@ begin
   HAL_map_inst : entity ctrl_lib.hal_map
     port map(
       clk_axi         => clk40,
-      reset_axi_n     => clk40_rstn, 
+      reset_axi_n     => axi_clk40_reset_n, 
       slave_readmosi   => HAL_readmosi,
       slave_readmiso   => HAL_readmiso,
       slave_writemosi   => HAL_writemosi,
