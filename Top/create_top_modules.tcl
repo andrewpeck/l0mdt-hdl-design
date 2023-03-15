@@ -186,10 +186,10 @@ proc create_top_modules {project_path repo_path} {
             set text_to_insert ""
             foreach slave [dict keys $slaves] {
                 
-                puts $output_top_file "      [string tolower $slave]_mon            => [string tolower $slave]_mon,"
+                puts $output_top_file "      [string tolower $slave]_mon            => [string tolower $slave]_mon_r,"
 
                 if {$slave != "HOG" && $slave != "FW_INFO"} {
-                    puts $output_top_file "      [string tolower $slave]_ctrl           => [string tolower $slave]_ctrl,"
+                    puts $output_top_file "      [string tolower $slave]_ctrl           => [string tolower $slave]_ctrl_r,"
                 }
             }
         }

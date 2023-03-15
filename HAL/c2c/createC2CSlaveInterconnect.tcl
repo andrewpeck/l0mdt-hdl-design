@@ -68,7 +68,7 @@ create_bd_port -dir O -type rst $AXI_CLK40_RSTN
 set SYS_RESETER_CLK40 sys_reseter_clk40
 create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == proc_sys_reset}] $SYS_RESETER_CLK40
 # #connect external reset
-connect_bd_net [get_bd_ports $EXT_CLK40_RSTN] [get_bd_pins $SYS_RESETER_CLK40/ext_reset_in]
+connect_bd_net [get_bd_ports $EXT_RESET] [get_bd_pins $SYS_RESETER_CLK40/ext_reset_in]
 # #connect clock
 connect_bd_net [get_bd_ports $EXT_CLK40] [get_bd_pins $SYS_RESETER_CLK40/slowest_sync_clk]
 
