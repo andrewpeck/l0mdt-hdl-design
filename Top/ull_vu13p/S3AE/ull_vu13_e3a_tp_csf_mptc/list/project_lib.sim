@@ -10,4 +10,5 @@ shared/sim/waves/ull_vu13_e3a_tp_csf_mptc_ta.do
 # UserLogic/ult/sim/ult_tp_sim1.wcfg
 
 #IV
-shared/sim/vhdl_input_vect/BA3_20220915_120534/csm_A3_Endcap.csv
+shared/sim/vhdl_input_vect/EA3_20230315/csm_A3_Endcap.csv
+shared/sim/vhdl_input_vect/EA3_20230315/slc_A3_Endcap.csv
