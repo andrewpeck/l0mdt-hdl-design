@@ -104,7 +104,6 @@ architecture control_arch of top_control is
   constant std_logic1 : std_logic := '1';
   constant std_logic0 : std_logic := '0';
 
-  signal clk40_rst_n : std_logic := '0';
 
   -- START: ULT_AXI_SIGNALS :: DO NOT EDIT
   signal fw_info_readmosi  : axireadmosi;
@@ -167,21 +166,7 @@ begin
 
   ---- hal just runs on 40M, but add a ff for fanout
 
-  process (clk40) is
-  begin
-   if (rising_edge(clk40)) then
-     hal_mon_r <= hal_mon;
-     hal_ctrl  <= hal_ctrl_r;
-   end if;
-  end process;
-
-  process (axi_clk) is
-  begin
-    if (rising_edge(axi_clk)) then
-      hal_core_mon_r <= hal_core_mon;     -- inputs
-      hal_core_ctrl  <= hal_core_ctrl_r;  -- outputs
-    end if;
-  end process;
+ 
 
   --process (clkpipe) is
   --begin
@@ -498,6 +483,12 @@ begin
   --------------------------------------------------------------------------------
 
   -- START: ULT_SLAVES :: DO NOT EDIT
+process (axi_clk) is
+begin
+if(rising_edge(axi_clk)) then
+ FW_INFO_mon_r <=  FW_INFO_mon; 
+end if;
+end process;
   FW_INFO_map_inst : entity ctrl_lib.fw_info_map
     port map(
       clk_axi         => axi_clk,
@@ -506,8 +497,15 @@ begin
       slave_readmiso   => FW_INFO_readmiso,
       slave_writemosi   => FW_INFO_writemosi,
       slave_writemiso   => FW_INFO_writemiso,
-      mon   => FW_INFO_mon
+      mon   => FW_INFO_mon_r
     );
+process (axi_clk) is
+begin
+if(rising_edge(axi_clk)) then
+ FM_mon_r <=  FM_mon; 
+ FM_ctrl  <=  FM_ctrl_r;
+end if;
+end process;
   FM_map_inst : entity ctrl_lib.fm_map
     port map(
       clk_axi         => axi_clk,
@@ -516,9 +514,15 @@ begin
       slave_readmiso   => FM_readmiso,
       slave_writemosi   => FM_writemosi,
       slave_writemiso   => FM_writemiso,
-      ctrl   => FM_ctrl,
-      mon   => FM_mon
+      ctrl   => FM_ctrl_r,
+      mon   => FM_mon_r
     );
+process (axi_clk) is
+begin
+if(rising_edge(axi_clk)) then
+ HOG_mon_r <=  HOG_mon; 
+end if;
+end process;
   HOG_map_inst : entity ctrl_lib.hog_map
     port map(
       clk_axi         => axi_clk,
@@ -527,8 +531,15 @@ begin
       slave_readmiso   => HOG_readmiso,
       slave_writemosi   => HOG_writemosi,
       slave_writemiso   => HOG_writemiso,
-      mon   => HOG_mon
+      mon   => HOG_mon_r
     );
+process (axi_clk) is
+begin
+if(rising_edge(axi_clk)) then
+ HAL_CORE_mon_r <=  HAL_CORE_mon; 
+ HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
+end if;
+end process;
   HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
     port map(
       clk_axi         => axi_clk,
@@ -537,9 +548,16 @@ begin
       slave_readmiso   => HAL_CORE_readmiso,
       slave_writemosi   => HAL_CORE_writemosi,
       slave_writemiso   => HAL_CORE_writemiso,
-      ctrl   => HAL_CORE_ctrl,
-      mon   => HAL_CORE_mon
+      ctrl   => HAL_CORE_ctrl_r,
+      mon   => HAL_CORE_mon_r
     );
+process (clk40) is
+begin
+if(rising_edge(clk40)) then
+ HAL_mon_r <=  HAL_mon; 
+ HAL_ctrl  <=  HAL_ctrl_r;
+end if;
+end process;
   HAL_map_inst : entity ctrl_lib.hal_map
     port map(
       clk_axi         => clk40,
@@ -548,8 +566,8 @@ begin
       slave_readmiso   => HAL_readmiso,
       slave_writemosi   => HAL_writemosi,
       slave_writemiso   => HAL_writemiso,
-      ctrl   => HAL_ctrl,
-      mon   => HAL_mon
+      ctrl   => HAL_ctrl_r,
+      mon   => HAL_mon_r
     );
   -- END: ULT_SLAVES :: DO NOT EDIT
 

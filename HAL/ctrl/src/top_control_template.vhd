@@ -125,21 +125,7 @@ begin
 
   ---- hal just runs on 40M, but add a ff for fanout
 
-  process (clk40) is
-  begin
-   if (rising_edge(clk40)) then
-     hal_mon_r <= hal_mon;
-     hal_ctrl  <= hal_ctrl_r;
-   end if;
-  end process;
-
-  process (axi_clk) is
-  begin
-    if (rising_edge(axi_clk)) then
-      hal_core_mon_r <= hal_core_mon;     -- inputs
-      hal_core_ctrl  <= hal_core_ctrl_r;  -- outputs
-    end if;
-  end process;
+ 
 
   --process (clkpipe) is
   --begin

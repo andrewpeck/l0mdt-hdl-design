@@ -111,9 +111,9 @@ proc create_top_modules {project_path repo_path} {
                 puts $output_control_file "  signal [string tolower $slave]_writemiso : axiwritemiso;"
                 puts $output_control_file "  signal [string tolower $slave]_mon_r     : [string toupper $xml_name]_MON_t;"
 
-                if {$slave != "HOG" && $slave != "FW_INFO"} {
-                    puts $output_control_file "  signal [string tolower $slave]_ctrl_r    : [string toupper $xml_name]_CTRL_t;"
-                }
+               if {$slave != "HOG" && $slave != "FW_INFO"} { 
+		puts $output_control_file "  signal [string tolower $slave]_ctrl_r    : [string toupper $xml_name]_CTRL_t;"
+	       }
             }
         }
 
@@ -151,6 +151,22 @@ proc create_top_modules {project_path repo_path} {
             foreach slave [dict keys $slaves] {
                 set xml_name [lindex [dict get $slaves $slave] 0]
                 set axi_control [lindex [dict get $slaves $slave] 1]
+		
+		if {[string first "AXI_MASTER_CTRL" $axi_control] != -1 } {
+		    puts $output_control_file "process (axi_clk) is"
+		    puts $output_control_file "begin"
+		    puts $output_control_file "if(rising_edge(axi_clk)) then"
+		}  elseif {[string first "AXI_LHC_CTRL" $axi_control] != -1} {
+		    puts $output_control_file "process (clk40) is"
+		    puts $output_control_file "begin"
+		    puts $output_control_file "if(rising_edge(clk40)) then"
+		}
+		    puts $output_control_file " ${slave}_mon_r <=  ${slave}_mon; "
+		if {$slave != "HOG" && $slave != "FW_INFO"} {
+		    puts $output_control_file " ${slave}_ctrl  <=  ${slave}_ctrl_r;"
+		}
+		    puts $output_control_file "end if;"
+		    puts $output_control_file "end process;"
 
                 puts $output_control_file "  ${slave}_map_inst : entity ctrl_lib.[string tolower $xml_name]_map"
                 puts $output_control_file "    port map("
@@ -167,9 +183,9 @@ proc create_top_modules {project_path repo_path} {
                 puts $output_control_file "      slave_writemosi   => ${slave}_writemosi," 
                 puts $output_control_file "      slave_writemiso   => ${slave}_writemiso," 
                 if {$slave != "HOG" && $slave != "FW_INFO"} {
-                    puts $output_control_file "      ctrl   => ${slave}_ctrl," 
+                    puts $output_control_file "      ctrl   => ${slave}_ctrl_r," 
                 }
-                puts $output_control_file "      mon   => ${slave}_mon"
+                puts $output_control_file "      mon   => ${slave}_mon_r"
                 puts $output_control_file "    );" 
 
             }
