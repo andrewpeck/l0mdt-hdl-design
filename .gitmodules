@@ -69,4 +69,4 @@
 	branch = devel
 [submodule "shared/detector_parameters/dp_repo"]
 	path = shared/detector_parameters/dp_repo
-	url = https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/detector-parameters.git
+	url = ../detector-parameters.git
