@@ -199,6 +199,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
         # file copy -force ${source_path}/$file ${dest_path}
         if {$file in "address_tables slaves.yaml" && [file exists ${dest_path}/$file]} {
             puts "INFO: $dest_path/$file already exists, do not overwrite..."
+            continue
         }
         exec cp -r ${source_path}/$file ${dest_path}
     }

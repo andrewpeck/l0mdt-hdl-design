@@ -28,6 +28,7 @@ entity ult_fm is
   port(
    clock_and_control : in  l0mdt_control_rt;
    ttc_commands       : in  l0mdt_ttc_rt;
+   axi_reset_n        : in std_logic;
    ctrl_v                      : in std_logic_vector; --FM_CTRL_t;
    mon_v                    : out std_logic_vector; --FM_MON_t;
    h2s_fm_data          : in fm_rt_array(0  to h2s_sb_all_station_n -1)
@@ -47,6 +48,7 @@ entity ult_fm is
       port(
       clk_hs : in std_logic;
       rst_hs : in std_logic;
+      axi_reset_n : in std_logic;
       fm_ctrl_v     :in std_logic_vector; --FM_CTRL_t;
       fm_mon_v      : out std_logic_vector; --FM_MON_t;
       ult_fm_data_v : in fm_data_avt(0 to total_sb-1) -- fm_rt_array ( 0 to total_sb-1)
@@ -76,6 +78,7 @@ entity ult_fm is
        fm_ctrl_v       => ctrl_v,
        clk_hs          => clock_and_control.clk,
        rst_hs          => clock_and_control.rst,
+       axi_reset_n     => axi_reset_n,
        fm_mon_v        => mon_v,
        ult_fm_data_v   => ult_fm_data_avt
        );

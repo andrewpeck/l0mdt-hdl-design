@@ -1,0 +1,14 @@
+#
+shared/detector_parameters/dp_repo/ROIs/roi_types_pkg.vhd
+#
+shared/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BILA3.vhd
+shared/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BILA3_angle.vhd
+# shared/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BILA3_slope.vhd
+shared/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BMLA3.vhd
+shared/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BMLA3_angle.vhd
+# shared/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BMLA3_slope.vhd
+shared/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BOLA3.vhd
+shared/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BOLA3_angle.vhd
+# shared/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BOLA3_slope.vhd
+#
+shared/detector_parameters/functions/roi_lut_functions.vhd
