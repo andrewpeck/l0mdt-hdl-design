@@ -196,6 +196,8 @@ architecture beh of ult_tb is
   signal hit_slc_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
 
   signal sump : std_logic;
+  signal axi_reset_n       : std_logic := '0';
+
 
 begin
   
@@ -207,6 +209,10 @@ begin
     -- pipeline clock
     clock_and_control => clock_and_control,
     ttc_commands      => ttc_commands,
+
+
+    --reset from AXI
+    axi_reset_n       => axi_reset_n,
 
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av => i_mdt_tdc_inn_av,

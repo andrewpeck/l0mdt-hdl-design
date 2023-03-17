@@ -57,6 +57,9 @@ entity ult is
     clock_and_control : in l0mdt_control_rt;
     ttc_commands      : in l0mdt_ttc_rt;
 
+    --reset from AXI
+    axi_reset_n       : in std_logic;
+    
     -- control and monitoring
     hps_inn_ctrl_v        : in std_logic_vector; -- : in  H2S_CTRL_t;
     hps_inn_mon_v         : out std_logic_vector;-- : out H2S_MON_t;
@@ -962,6 +965,7 @@ begin
         -- clock, control, and monitoring
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
+        axi_reset_n       => axi_reset_n,
         ctrl_v            => fm_ctrl_v,
         mon_v             => fm_mon_v,
         --  inputs

@@ -7,7 +7,7 @@ import fm_sb_pkg::*;
 
 module fm_sb_ctrl(
 		  input 			   FM_CTRL_t fm_ctrl_in,
-		  input logic 			   axi_rst,
+		  input logic 			   axi_reset_n,
 		  input logic 			   axi_clk,
 		  output logic [sb_mapped_n-1:0]   freeze,
 		  output logic [pb_mode_width-1:0] playback_mode[sb_mapped_n],
@@ -28,7 +28,7 @@ module fm_sb_ctrl(
    
    always @ (posedge axi_clk)
      begin
-	if(axi_rst)
+	if(~axi_reset_n)
 	  begin
 	     freeze        <= 0;
 	     for (int i=0; i<sb_mapped_n; i=i+1)

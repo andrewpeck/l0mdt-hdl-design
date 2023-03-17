@@ -11,7 +11,7 @@ module fm_data #(
 	       input logic 		       clk_hs,
 	       input logic 		       rst_hs,
 	       input logic 		       spy_clock,
-	       input logic 		       axi_reset,
+	       input logic 		       axi_reset_n,
 	       input logic [sb_mapped_n-1:0]   freeze,
 	       input logic 		       init_spy_mem,
 	       input logic [pb_mode_width-1:0] playback_mode[sb_mapped_n],
@@ -285,7 +285,7 @@ module fm_data #(
  -----/\----- EXCLUDED -----/\----- */
 
 
-   assign axi_sb_wr_enable                = (init_spy_mem_internal)? '1: {
+   assign axi_sb_wr_enable                = (init_spy_mem_internal == 1)? '1: {
 					     fm_ctrl_in.SB0.SB_MEM.wr_enable,
 					     fm_ctrl_in.SB1.SB_MEM.wr_enable,
 					     fm_ctrl_in.SB2.SB_MEM.wr_enable,
@@ -481,7 +481,7 @@ module fm_data #(
 
    always @(posedge spy_clock)
      begin
-	if(axi_reset)
+	if(~axi_reset_n)
 	  begin
 	     for(integer i=0;i<sb_mapped_n;i=i+1)
 	       begin
@@ -519,7 +519,7 @@ module fm_data #(
 
     always @(posedge spy_clock)
      begin
-	if(axi_reset)
+	if(~axi_reset_n)
 	  begin
 	     init_spy_mem_internal <= 1'b1;
 	     

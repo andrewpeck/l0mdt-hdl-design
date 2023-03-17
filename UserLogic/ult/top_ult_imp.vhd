@@ -142,6 +142,7 @@ end entity top_ult;
 
 architecture behavioral of top_ult is
   signal clock_and_control     : l0mdt_control_rt;
+  signal axi_reset_n : std_logic;
 
   signal hps_inn_ctrl_r        : HPS_CTRL_t;
   signal hps_inn_mon_r         : HPS_MON_t;
@@ -386,6 +387,7 @@ begin
     port map(
       -- pipeline clock
       clock_and_control => clock_and_control,
+      axi_reset_n       => axi_reset_n,
       ttc_commands      => ttc_commands,
 
       -- TDC Hits from Polmux
