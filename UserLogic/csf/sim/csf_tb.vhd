@@ -51,6 +51,8 @@ ARCHITECTURE Behavioral OF csf_tb IS
   SIGNAL rst          : STD_LOGIC := '0';
   SIGNAL v_seg        : sf2ptcalc_vt;
   SIGNAL seg          : sf2ptcalc_rt;
+  SIGNAL csf_ctrl_v   : STD_LOGIC_VECTOR;
+  SIGNAL csf_mon_v    : STD_LOGIC_VECTOR;
 BEGIN
 
   reader : ENTITY project_lib.csf_tb_reader
@@ -86,12 +88,15 @@ BEGIN
 
   CSF : ENTITY csf_lib.csf
     PORT MAP(
-      clk       => clk,
-      i_seed    => convert(seed, seed_v),
-      i_mdt_hit => convert(mdt_hit, mdt_hit_v),
-      i_eof     => eof,
-      i_rst     => rst,
-      o_seg     => v_seg      
+      clk          => clk,
+      rst          => rst,
+      glob_en      => '1',
+      i_csf_ctrl_v => csf_ctrl_v,
+      o_csf_mon_v  => csf_mon_v,
+      i_seed       => convert(seed, seed_v),
+      i_mdt_hit    => convert(mdt_hit, mdt_hit_v),
+      i_eof        => eof,
+      o_seg        => v_seg
     );
 
   seg <= convert(v_seg, seg);

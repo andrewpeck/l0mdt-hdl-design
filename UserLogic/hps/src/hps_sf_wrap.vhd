@@ -134,11 +134,13 @@ begin
             )
           port map(
             clk       => clk,
+            rst     => rst,
+            glob_en => glob_en,
+            i_csf_ctrl_v => csf_ctrl_v,
+            o_csf_mon_v => csf_mon_v,
             i_seed    => i_slc_data_v,
             i_mdt_hit => i_mdt_data_v,
             i_eof     => i_control_r.eof,
-            i_rst     => rst,
-            spy_clock => clk,
             o_seg     => o_sf_data_v
         );
 
