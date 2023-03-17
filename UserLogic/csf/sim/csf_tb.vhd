@@ -91,48 +91,7 @@ BEGIN
       i_mdt_hit => convert(mdt_hit, mdt_hit_v),
       i_eof     => eof,
       i_rst     => rst,
-      o_seg     => v_seg,
-
-      --SpuBuffer
-      spy_clock => clk,
-      -- Hit Spybuffer
-      i_spyhit_fc_we   => '0',
-      i_spyhit_fc_re   => '0',
-      i_spyhit_freeze  => '0',
-      i_spyhit_playback => (OTHERS => '0'),
-      i_spyhit_pb_we   => '0',
-      i_spyhit_pb_wdata => (OTHERS => '0'),
-      i_spyhit_re      => '0',
-      i_spyhit_meta_we => '0',
-      i_spyhit_addr => (OTHERS => '0'),
-      i_spyhit_meta_addr => (OTHERS => '0'),
-      i_spyhit_meta_wdata => (OTHERS => '0'),
-
-      -- SLC Spybuffer
-      i_spyslc_fc_we   => '0',
-      i_spyslc_fc_re   => '0',
-      i_spyslc_freeze  => '0',
-      i_spyslc_playback => (OTHERS => '0'),
-      i_spyslc_pb_we   => '0',
-      i_spyslc_pb_wdata => (OTHERS => '0'),
-      i_spyslc_re      => '0',
-      i_spyslc_addr => (OTHERS => '0'),
-      i_spyslc_meta_we => '0',
-      i_spyslc_meta_addr => (OTHERS => '0'),
-      i_spyslc_meta_wdata => (OTHERS => '0'),
-
-      -- Segment Spybuffer
-      i_spyseg_fc_we   => '0',
-      i_spyseg_fc_re   => '0',
-      i_spyseg_freeze  => '0',
-      i_spyseg_playback => (OTHERS => '0'),
-      i_spyseg_pb_we   => '0',
-      i_spyseg_pb_wdata => (OTHERS => '0'),
-      i_spyseg_re      => '0',
-      i_spyseg_addr => (OTHERS => '0'),
-      i_spyseg_meta_addr => (OTHERS => '0'),
-      i_spyseg_meta_we => '0',
-      i_spyseg_meta_wdata => (OTHERS => '0')
+      o_seg     => v_seg      
     );
 
   seg <= convert(v_seg, seg);
