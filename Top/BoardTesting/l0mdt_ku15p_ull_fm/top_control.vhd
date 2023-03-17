@@ -55,6 +55,7 @@ entity top_control is
 
     -- system clock
     clk50mhz : in std_logic;
+    clk40_rstn  : in std_logic;
     reset_n  : in std_logic;
 
     c2c_rxn     : in  std_logic;
@@ -69,6 +70,9 @@ entity top_control is
     
     c2c_refclkp : in  std_logic;
     c2c_refclkn : in  std_logic;
+
+    -- axi reset from c2c--
+    axi_reset_n : out std_logic;
 
     -- control
 
@@ -100,8 +104,6 @@ architecture control_arch of top_control is
   constant std_logic1 : std_logic := '1';
   constant std_logic0 : std_logic := '0';
 
-  signal axi_reset_n : std_logic; -- := '0';
-  signal clk40_rst_n : std_logic := '0';
 
   -- START: ULT_AXI_SIGNALS :: DO NOT EDIT
   signal fw_info_readmosi  : axireadmosi;
@@ -150,7 +152,8 @@ architecture control_arch of top_control is
 
   signal pB_UART_tx : std_logic;
   signal pB_UART_rx : std_logic;
-  
+
+  signal axi_clk40_reset_n :std_logic;
 begin
 
   --clock_strobe_ult : entity hal.clock_strobe
@@ -163,21 +166,7 @@ begin
 
   ---- hal just runs on 40M, but add a ff for fanout
 
-  --process (clk40) is
-  --begin
-  --  if (rising_edge(clk40)) then
-  --    hal_mon_r <= hal_mon;
-  --    hal_ctrl  <= hal_ctrl_r;
-  --  end if;
-  --end process;
-
-  process (axi_clk) is
-  begin
-    if (rising_edge(axi_clk)) then
-      hal_core_mon_r <= hal_core_mon;     -- inputs
-      hal_core_ctrl  <= hal_core_ctrl_r;  -- outputs
-    end if;
-  end process;
+ 
 
   --process (clkpipe) is
   --begin
@@ -240,8 +229,9 @@ begin
       AXI_CLK                             => AXI_CLK,
       AXI_RST_N(0)                        => AXI_RESET_N,
       clk50Mhz                            => clk50mhz,   
-
-
+      clk40                               => clk40,
+      clk40_rstn                          => clk40_rstn,
+      AXI_CLK40_RST_N(0)                  => AXI_CLK40_RESET_N,
       K_C2C_phy_Rx_rxn(0)                 => c2c_rxn, --n_mgt_z2k(1 downto 1),
       K_C2C_phy_Rx_rxp(0)                 => c2c_rxp, --p_mgt_z2k(1 downto 1),
       K_C2C_phy_Tx_txn(0)                 => c2c_txn, --n_mgt_k2z(1 downto 1),
@@ -431,23 +421,23 @@ begin
       HAL_CORE_wvalid(0)      => HAL_CORE_writemosi.data_valid,
       HAL_araddr         => HAL_readmosi.address,
       HAL_arprot         => HAL_readmosi.protection_type,
-      HAL_arready(0)     => HAL_readmiso.ready_for_address,
-      HAL_arvalid(0)     => HAL_readmosi.address_valid,
+      HAL_arready     => HAL_readmiso.ready_for_address,
+      HAL_arvalid     => HAL_readmosi.address_valid,
       HAL_awaddr         => HAL_writemosi.address,
       HAL_awprot         => HAL_writemosi.protection_type,
-      HAL_awready(0)     => HAL_writemiso.ready_for_address,
-      HAL_awvalid(0)     => HAL_writemosi.address_valid,
-      HAL_bready(0)      => HAL_writemosi.ready_for_response,
-      HAL_bvalid(0)      => HAL_writemiso.response_valid,
+      HAL_awready     => HAL_writemiso.ready_for_address,
+      HAL_awvalid     => HAL_writemosi.address_valid,
+      HAL_bready      => HAL_writemosi.ready_for_response,
+      HAL_bvalid      => HAL_writemiso.response_valid,
       HAL_bresp          => HAL_writemiso.response,
       HAL_rdata          => HAL_readmiso.data,
-      HAL_rready(0)      => HAL_readmosi.ready_for_data,
+      HAL_rready      => HAL_readmosi.ready_for_data,
       HAL_rresp          => HAL_readmiso.response,
-      HAL_rvalid(0)      => HAL_readmiso.data_valid,
+      HAL_rvalid      => HAL_readmiso.data_valid,
       HAL_wdata          => HAL_writemosi.data,
-      HAL_wready(0)      => HAL_writemiso.ready_for_data,
+      HAL_wready      => HAL_writemiso.ready_for_data,
       HAL_wstrb          => HAL_writemosi.data_write_strobe,
-      HAL_wvalid(0)      => HAL_writemosi.data_valid,
+      HAL_wvalid      => HAL_writemosi.data_valid,
       -- END: AXI_PL_SLAVES :: DO NOT EDIT
        
       K_C2CB_phy_Rx_rxn(0)                => c2cb_rxn, --n_mgt_z2k(2 downto 2),
@@ -493,6 +483,12 @@ begin
   --------------------------------------------------------------------------------
 
   -- START: ULT_SLAVES :: DO NOT EDIT
+process (axi_clk) is
+begin
+if(rising_edge(axi_clk)) then
+ FW_INFO_mon_r <=  FW_INFO_mon; 
+end if;
+end process;
   FW_INFO_map_inst : entity ctrl_lib.fw_info_map
     port map(
       clk_axi         => axi_clk,
@@ -503,10 +499,17 @@ begin
       slave_writemiso   => FW_INFO_writemiso,
       mon   => FW_INFO_mon_r
     );
+process (axi_clk) is
+begin
+if(rising_edge(axi_clk)) then
+ FM_mon_r <=  FM_mon; 
+ FM_ctrl  <=  FM_ctrl_r;
+end if;
+end process;
   FM_map_inst : entity ctrl_lib.fm_map
     port map(
-      clk_axi         => clk40,
-      reset_axi_n     => std_logic1, 
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
       slave_readmosi   => FM_readmosi,
       slave_readmiso   => FM_readmiso,
       slave_writemosi   => FM_writemosi,
@@ -514,6 +517,12 @@ begin
       ctrl   => FM_ctrl_r,
       mon   => FM_mon_r
     );
+process (axi_clk) is
+begin
+if(rising_edge(axi_clk)) then
+ HOG_mon_r <=  HOG_mon; 
+end if;
+end process;
   HOG_map_inst : entity ctrl_lib.hog_map
     port map(
       clk_axi         => axi_clk,
@@ -524,6 +533,13 @@ begin
       slave_writemiso   => HOG_writemiso,
       mon   => HOG_mon_r
     );
+process (axi_clk) is
+begin
+if(rising_edge(axi_clk)) then
+ HAL_CORE_mon_r <=  HAL_CORE_mon; 
+ HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
+end if;
+end process;
   HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
     port map(
       clk_axi         => axi_clk,
@@ -535,10 +551,17 @@ begin
       ctrl   => HAL_CORE_ctrl_r,
       mon   => HAL_CORE_mon_r
     );
+process (clk40) is
+begin
+if(rising_edge(clk40)) then
+ HAL_mon_r <=  HAL_mon; 
+ HAL_ctrl  <=  HAL_ctrl_r;
+end if;
+end process;
   HAL_map_inst : entity ctrl_lib.hal_map
     port map(
-      clk_axi         => axi_clk,
-      reset_axi_n     => axi_reset_n,
+      clk_axi         => clk40,
+      reset_axi_n     => axi_clk40_reset_n, 
       slave_readmosi   => HAL_readmosi,
       slave_readmiso   => HAL_readmiso,
       slave_writemosi   => HAL_writemosi,

@@ -50,6 +50,7 @@ entity top_control is
 
     -- system clock
     clk50mhz : in std_logic;
+    clk40_rstn  : in std_logic;
     reset_n  : in std_logic;
 
     c2c_rxn     : in  std_logic;
@@ -64,6 +65,9 @@ entity top_control is
     
     c2c_refclkp : in  std_logic;
     c2c_refclkn : in  std_logic;
+
+    -- axi reset from c2c--
+    axi_reset_n : out std_logic;
 
     -- control
 
@@ -87,8 +91,6 @@ architecture control_arch of top_control is
   constant std_logic1 : std_logic := '1';
   constant std_logic0 : std_logic := '0';
 
-  signal axi_reset_n : std_logic; -- := '0';
-  signal clk40_rst_n : std_logic := '0';
 
   -- START: ULT_AXI_SIGNALS :: DO NOT EDIT
   -- END: ULT_AXI_SIGNALS :: DO NOT EDIT
@@ -109,7 +111,8 @@ architecture control_arch of top_control is
 
   signal pB_UART_tx : std_logic;
   signal pB_UART_rx : std_logic;
-  
+
+  signal axi_clk40_reset_n :std_logic;
 begin
 
   --clock_strobe_ult : entity hal.clock_strobe
@@ -122,21 +125,7 @@ begin
 
   ---- hal just runs on 40M, but add a ff for fanout
 
-  --process (clk40) is
-  --begin
-  --  if (rising_edge(clk40)) then
-  --    hal_mon_r <= hal_mon;
-  --    hal_ctrl  <= hal_ctrl_r;
-  --  end if;
-  --end process;
-
-  process (axi_clk) is
-  begin
-    if (rising_edge(axi_clk)) then
-      hal_core_mon_r <= hal_core_mon;     -- inputs
-      hal_core_ctrl  <= hal_core_ctrl_r;  -- outputs
-    end if;
-  end process;
+ 
 
   --process (clkpipe) is
   --begin
@@ -199,8 +188,9 @@ begin
       AXI_CLK                             => AXI_CLK,
       AXI_RST_N(0)                        => AXI_RESET_N,
       clk50Mhz                            => clk50mhz,   
-
-
+      clk40                               => clk40,
+      clk40_rstn                          => clk40_rstn,
+      AXI_CLK40_RST_N(0)                  => AXI_CLK40_RESET_N,
       K_C2C_phy_Rx_rxn(0)                 => c2c_rxn, --n_mgt_z2k(1 downto 1),
       K_C2C_phy_Rx_rxp(0)                 => c2c_rxp, --p_mgt_z2k(1 downto 1),
       K_C2C_phy_Tx_txn(0)                 => c2c_txn, --n_mgt_k2z(1 downto 1),

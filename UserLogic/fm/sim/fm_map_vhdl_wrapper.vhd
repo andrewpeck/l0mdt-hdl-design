@@ -197,6 +197,7 @@ begin  -- architecture behavioral
         ttc_commands      => ttc_commands,
         ctrl_v            => fm_ctrl_v,
         mon_v             => fm_mon_v,
+        axi_reset_n       => reset_axi_n,
         --  inputs
         h2s_fm_data   => h2s_fm_data
 --        ult_fm_data      => ult_fm_data

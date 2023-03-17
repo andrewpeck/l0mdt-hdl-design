@@ -47,7 +47,7 @@
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="WTXSimLaunchSim" Val="20"/>
     <Option Name="WTModelSimLaunchSim" Val="2"/>
-    <Option Name="WTQuestaLaunchSim" Val="287"/>
+    <Option Name="WTQuestaLaunchSim" Val="290"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>

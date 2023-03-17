@@ -39,8 +39,8 @@ architecture behavioral of FW_INFO_map is
 
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 75);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 75) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 11);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 11) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
@@ -95,45 +95,45 @@ begin  -- architecture behavioral
       localRdData <= x"00000000";
       if localRdReq = '1' then
         regRdAck  <= '1';
-        case to_integer(unsigned(localAddress(6 downto 0))) is
+        case to_integer(unsigned(localAddress(3 downto 0))) is
           
-        when 64 => --0x40
+        when 0 => --0x0
           localRdData( 0)            <=  Mon.CONFIG.MAIN_CFG_COMPILE_HW;      --
           localRdData( 1)            <=  Mon.CONFIG.MAIN_CFG_COMPILE_UL;      --
           localRdData( 3)            <=  Mon.CONFIG.ST_nBARREL_ENDCAP;        --
           localRdData( 4)            <=  Mon.CONFIG.ENDCAP_nSMALL_LARGE;      --
           localRdData( 5)            <=  Mon.CONFIG.ENABLE_NEIGHBORS;         --
-        when 65 => --0x41
+        when 1 => --0x1
           localRdData(31 downto  0)  <=  Mon.CONFIG.SECTOR_ID;                --
-        when 66 => --0x42
+        when 2 => --0x2
           localRdData(31 downto  0)  <=  Mon.CONFIG.PHY_BARREL_R0;            --
-        when 67 => --0x43
+        when 3 => --0x3
           localRdData(31 downto  0)  <=  Mon.CONFIG.PHY_BARREL_R1;            --
-        when 68 => --0x44
+        when 4 => --0x4
           localRdData(31 downto  0)  <=  Mon.CONFIG.PHY_BARREL_R2;            --
-        when 69 => --0x45
+        when 5 => --0x5
           localRdData(31 downto  0)  <=  Mon.CONFIG.PHY_BARREL_R3;            --
-        when 70 => --0x46
+        when 6 => --0x6
           localRdData( 0)            <=  Mon.CONFIG.HPS_ENABLE_ST_INN;        --
           localRdData( 1)            <=  Mon.CONFIG.HPS_ENABLE_ST_EXT;        --
           localRdData( 2)            <=  Mon.CONFIG.HPS_ENABLE_ST_MID;        --
           localRdData( 3)            <=  Mon.CONFIG.HPS_ENABLE_ST_OUT;        --
-        when 71 => --0x47
+        when 7 => --0x7
           localRdData( 7 downto  0)  <=  Mon.CONFIG.HPS_NUM_MDT_CH_INN;       --
           localRdData(15 downto  8)  <=  Mon.CONFIG.HPS_NUM_MDT_CH_EXT;       --
           localRdData(23 downto 16)  <=  Mon.CONFIG.HPS_NUM_MDT_CH_MID;       --
           localRdData(31 downto 24)  <=  Mon.CONFIG.HPS_NUM_MDT_CH_OUT;       --
-        when 72 => --0x48
+        when 8 => --0x8
           localRdData( 7 downto  0)  <=  Mon.CONFIG.NUM_MTC;                  --
           localRdData(15 downto  8)  <=  Mon.CONFIG.NUM_NSP;                  --
-        when 73 => --0x49
+        when 9 => --0x9
           localRdData( 0)            <=  Mon.CONFIG.UCM_ENABLED;              --
           localRdData( 1)            <=  Mon.CONFIG.MPL_ENABLED;              --
           localRdData( 2)            <=  Mon.CONFIG.SF_ENABLED;               --
           localRdData( 3)            <=  Mon.CONFIG.SF_TYPE;                  --
-        when 74 => --0x4a
+        when 10 => --0xa
           localRdData( 7 downto  0)  <=  Mon.CONFIG.NUM_DAQ_STREAMS;          --
-        when 75 => --0x4b
+        when 11 => --0xb
           localRdData( 7 downto  0)  <=  Mon.CONFIG.NUM_SF_INPUTS;            --
           localRdData(15 downto  8)  <=  Mon.CONFIG.NUM_SF_OUTPUTS;           --
           localRdData(23 downto 16)  <=  Mon.CONFIG.MAX_NUM_SL;               --
