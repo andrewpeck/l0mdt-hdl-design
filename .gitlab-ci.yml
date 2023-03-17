@@ -101,6 +101,12 @@ include:
   # - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_csf_ptc_mpi/gitlab-ci.yml'
   # - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_lsf_ptc_mpi/gitlab-ci.yml'
   # - local: '/Top/ull_vu13p/ull_vu13_ba3_ucm_mpl_hps_csf_bp/gitlab-ci.yml'
+  
+  #---------------------------------------------
+  #         UserLogicProjects
+  #---------------------------------------------
+  - local: '/Top/UserLogicProjects/Sector3/ull_vu13_3ba_tar_ucm_mpl_hps_csf_bp/gitlab-ci.yml'
+
   #---------------------------------------------
   #         VU13 Projects
   #---------------------------------------------
