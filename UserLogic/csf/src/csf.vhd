@@ -39,14 +39,6 @@ entity csf is
   generic (
     IS_ENDCAP           : integer := 0;
     MDT_STATION         : integer := 0; -- Station 0: Inner, 1: Middle, 2: Outer
-    SPYBUFFER_EN        : integer := 0;
-    SPYHIT_MEM_WIDTH    : integer := 10;
-    SPYHIT_EL_MEM_WIDTH : integer := 10;
-    SPYSLC_MEM_WIDTH    : integer := 10;
-    SPYSLC_EL_MEM_WIDTH : integer := 10;
-    SPYSEG_MEM_WIDTH    : integer := 10;
-    SPYSEG_EL_MEM_WIDTH : integer := 10;
-    SPY_META_DATA_WIDTH : integer := 8
   );
   port (
     clk       : in    std_logic;
@@ -54,63 +46,7 @@ entity csf is
     i_mdt_hit : in    heg2sfhit_vt;
     i_eof     : in    std_logic;
     i_rst     : in    std_logic;
-    o_seg     : out   sf2ptcalc_vt;
-
-    --SpuBuffer -- TODO - This block has been moved to FM block - Can be removed here
-    spy_clock           : in    std_logic;
-    -- Hit Spybuffer
-    i_spyhit_fc_we      : in    std_logic;
-    i_spyhit_fc_re      : in    std_logic;
-    i_spyhit_freeze     : in    std_logic;
-    i_spyhit_playback   : in    std_logic_vector(1 downto 0);
-    i_spyhit_pb_we      : in    std_logic;
-    i_spyhit_pb_wdata   : in    heg2sfhit_vt;
-    i_spyhit_re         : in    std_logic; --this should be enable signal in
-                                           --new Spybuffer interface
-    i_spyhit_meta_we    : in    std_logic;
-    i_spyhit_addr       : in    std_logic_vector(SPYHIT_MEM_WIDTH - 1 downto 0);
-    i_spyhit_meta_addr  : in   std_logic_vector(SPYHIT_EL_MEM_WIDTH - 1 downto 0);
-    o_spyhit_data       : out   heg2sfhit_vt;
-    o_spyhit_meta_rdata : out   std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
-    i_spyhit_meta_wdata : in    std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
-    o_spyhit_af         : out   std_logic;
-    o_spyhit_empty      : out   std_logic;
-
-    -- SLC Spybuffer
-    i_spyslc_fc_we      : in    std_logic;
-    i_spyslc_fc_re      : in    std_logic;
-    i_spyslc_freeze     : in    std_logic;
-    i_spyslc_playback   : in    std_logic_vector(1 downto 0);
-    i_spyslc_pb_we      : in    std_logic;
-    i_spyslc_pb_wdata   : in    heg2sfslc_vt;
-    i_spyslc_re         : in    std_logic; --this should be enable signal in
-                                           --new Spybuffer interface
-    i_spyslc_addr       : in    std_logic_vector(SPYSLC_MEM_WIDTH - 1 downto 0);
-    i_spyslc_meta_we    : in    std_logic;
-    i_spyslc_meta_addr  : in    std_logic_vector(SPYSLC_EL_MEM_WIDTH - 1 downto 0);
-    o_spyslc_data       : out   heg2sfslc_vt;
-    o_spyslc_meta_rdata : out   std_logic_vector( SPY_META_DATA_WIDTH -1 downto 0);
-    i_spyslc_meta_wdata : in    std_logic_vector( SPY_META_DATA_WIDTH -1 downto 0);
-    o_spyslc_af         : out   std_logic;
-    o_spyslc_empty      : out   std_logic;
-
-    -- Segment Spybuffer
-    i_spyseg_fc_we      : in    std_logic;
-    i_spyseg_fc_re      : in    std_logic;
-    i_spyseg_freeze     : in    std_logic;
-    i_spyseg_playback   : in    std_logic_vector(1 downto 0);
-    i_spyseg_pb_we      : in    std_logic;
-    i_spyseg_pb_wdata   : in    sf2ptcalc_vt;
-    i_spyseg_re         : in    std_logic; --this should be enable signal in
-                                           --new Spybuffer interface
-    i_spyseg_addr       : in    std_logic_vector(SPYSEG_MEM_WIDTH - 1 downto 0);
-    i_spyseg_meta_addr  : in    std_logic_vector(SPYSEG_EL_MEM_WIDTH - 1 downto 0);
-    i_spyseg_meta_we    : in    std_logic;
-    o_spyseg_data       : out   sf2ptcalc_vt;
-    o_spyseg_meta_rdata : out   std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
-    i_spyseg_meta_wdata : in    std_logic_vector( SPY_META_DATA_WIDTH - 1 downto 0);
-    o_spyseg_af         : out   std_logic;
-    o_spyseg_empty      : out   std_logic
+    o_seg     : out   sf2ptcalc_vt
   );
 end entity csf;
 
@@ -152,60 +88,10 @@ architecture behavioral of csf is
   -- Coordinate transformation
   signal coord_seed     : heg2sfslc_vt;
 
-
-
   -- Output signal
   signal output_segment : csf_locseg_vt;
   signal out_seg        : csf_locseg_rt;
   signal globseg        : sf2ptcalc_vt;
-
-  -- Components
-  component spybuffer is
-    generic (
-      DATA_WIDTH_A    : integer := 64;
-      DATA_WIDTH_B    : integer := 64;
-      SPY_MEM_WIDTH_A : integer := 10;
-      SPY_MEM_WIDTH_B : integer := 10;
-      FC_FIFO_WIDTH   : integer := 3;
-      EL_MEM_SIZE     : integer := 16;
-      EL_MEM_WIDTH    : integer := 4;
-      PASSTHROUGH     : integer := 1;
-      SPY_META_DATA_WIDTH : integer :=7
-    );
-    port (
-      rclock                : in    std_logic;
-      wclock                : in    std_logic;
-      rresetbar             : in    std_logic;
-      wresetbar             : in    std_logic;
-      write_data            : in    std_logic_vector(DATA_WIDTH_A - 1 downto 0);
-      write_enable          : in    std_logic;
-      read_enable           : in    std_logic;
-      read_data             : out   std_logic_vector(DATA_WIDTH_A - 1 downto 0);
-
-      spy_clock             : in    std_logic;
-      freeze                : in    std_logic;
-      playback              : in    std_logic_vector(1 downto 0);
-      spy_addr              : in    std_logic_vector(SPY_MEM_WIDTH_B - 1 downto 0);
-      spy_write_enable      : in    std_logic;
-      spy_write_data        : in    std_logic_vector(DATA_WIDTH_B - 1 downto 0);
-      spy_en                : in    std_logic;
-      spy_data              : out   std_logic_vector(DATA_WIDTH_B - 1 downto 0);
-
-      spy_clock_meta        : in    std_logic;
-      spy_meta_en           : in    std_logic;
-      spy_meta_addr         : in    std_logic_vector(EL_MEM_WIDTH  - 1 downto 0);
-      spy_meta_read_data    : out   std_logic_vector(SPY_META_DATA_WIDTH -1     downto 0);
-      spy_meta_write_data   : in    std_logic_vector(SPY_META_DATA_WIDTH -1     downto 0);
-      spy_meta_wen          : in    std_logic;
-
-      almost_full           : out   std_logic;
-      empty                 : out   std_logic;
-
-      dbg_spy_meta_write_addr : out   std_logic_vector(EL_MEM_WIDTH  - 1 downto 0);
-      dbg_spy_write_addr      : out   std_logic_vector(SPY_MEM_WIDTH_A - 1 downto 0);
-      dbg_spy_meta_read_data  : out   std_logic_vector(SPY_META_DATA_WIDTH - 1 downto 0)
-    );
-  end component spybuffer;
 
   component csf_histogram is
     generic (
@@ -269,139 +155,9 @@ architecture behavioral of csf is
 
 begin
 
-  -- SpyBuffers Generate
-
-  spybuffer_generate : IF SPYBUFFER_EN = 1 GENERATE
-
-    hit_spybuffer : component spybuffer
-      generic map (
-        DATA_WIDTH_A    => i_mdt_hit'length,
-        DATA_WIDTH_B    => i_mdt_hit'length,
-        SPY_MEM_WIDTH_A => SPYHIT_MEM_WIDTH,
-        SPY_MEM_WIDTH_B => SPYHIT_MEM_WIDTH,
-        FC_FIFO_WIDTH   => 4,
-        EL_MEM_SIZE     => 16,
-        EL_MEM_WIDTH    => SPYHIT_EL_MEM_WIDTH,
-        PASSTHROUGH     => 1,
-        SPY_META_DATA_WIDTH => SPY_META_DATA_WIDTH
-      )
-      port map (
-        rclock                => clk,
-        wclock                => clk,
-        rresetbar             => not i_rst,
-        wresetbar             => not i_rst,
-        write_data            => i_mdt_hit,
-        write_enable          => i_spyhit_fc_we,
-        read_data             => csf_mdt_hit,
-        read_enable           => i_spyhit_fc_re,
-        almost_full           => o_spyhit_af,
-        empty                 => o_spyhit_empty,
-        spy_clock             => spy_clock,
-        freeze                => i_spyhit_freeze,
-        playback              => i_spyhit_playback,
-        spy_addr              => i_spyhit_addr,
-        spy_write_enable      => i_spyhit_pb_we,
-        spy_write_data        => i_spyhit_pb_wdata,
-        spy_en                => i_spyhit_re, 
-        spy_data              => o_spyhit_data,
-        spy_clock_meta        => spy_clock,
- 	      spy_meta_en           => '0',
-        spy_meta_addr         => i_spyhit_meta_addr,
-        spy_meta_read_data    => o_spyhit_meta_rdata,
-        spy_meta_write_data   => i_spyhit_meta_wdata,
-        spy_meta_wen          => i_spyhit_meta_we
-
-      );
-
-    slc_spybuffer : component spybuffer
-      generic map (
-        DATA_WIDTH_A    => i_seed'length,
-        DATA_WIDTH_B    => i_seed'length,
-        SPY_MEM_WIDTH_A => SPYSLC_MEM_WIDTH,
-        SPY_MEM_WIDTH_B => SPYSLC_MEM_WIDTH,
-        FC_FIFO_WIDTH   => 4,
-        EL_MEM_SIZE     => 16,
-        EL_MEM_WIDTH    => SPYSLC_EL_MEM_WIDTH,
-        PASSTHROUGH     => 1,
-        SPY_META_DATA_WIDTH => SPY_META_DATA_WIDTH
-      )
-      port map (
-        rclock                => clk,
-        wclock                => clk,
-        rresetbar             => not i_rst,
-        wresetbar             => not i_rst,
-        write_data            => i_seed,
-        write_enable          => i_spyslc_fc_we,
-        read_data             => csf_seed,
-        read_enable           => i_spyslc_fc_re,
-        almost_full           => o_spyslc_af,
-        empty                 => o_spyslc_empty,
-        freeze                => i_spyslc_freeze,
-        playback              => i_spyslc_playback,
-        spy_clock             => spy_clock,
-        spy_addr              => i_spyslc_addr,
-        spy_write_enable      => i_spyslc_pb_we,
-        spy_write_data        => i_spyslc_pb_wdata,
-        spy_en                => i_spyslc_re,
-        spy_data              => o_spyslc_data,
-        spy_clock_meta        => spy_clock,
-       	spy_meta_en           => '0',   
-        spy_meta_addr         => i_spyslc_meta_addr,
-        spy_meta_read_data    => o_spyslc_meta_rdata,
-        spy_meta_write_data   => i_spyslc_meta_wdata,
-        spy_meta_wen          => i_spyslc_meta_we
-
-
-      );
-
-    seg_spybuffer : component spybuffer
-      generic map (
-        DATA_WIDTH_A    => globseg'length,
-        DATA_WIDTH_B    => globseg'length,
-        SPY_MEM_WIDTH_A => SPYSEG_MEM_WIDTH,
-        SPY_MEM_WIDTH_B => SPYSEG_MEM_WIDTH,
-        FC_FIFO_WIDTH   => 4,
-        EL_MEM_SIZE     => 16,
-        EL_MEM_WIDTH    => SPYSEG_EL_MEM_WIDTH,
-        PASSTHROUGH     => 1,
-        SPY_META_DATA_WIDTH => SPY_META_DATA_WIDTH
-      )
-      port map (
-        rclock                => clk,
-        wclock                => clk,
-        rresetbar             => not i_rst,
-        wresetbar             => not i_rst,
-        write_data            => globseg,
-        write_enable          => i_spyseg_fc_we,
-        read_data             => o_seg,
-        read_enable           => i_spyseg_fc_re,
-        almost_full           => o_spyseg_af,
-        empty                 => o_spyseg_empty,
-        freeze                => i_spyseg_freeze,
-        playback              => i_spyseg_playback,
-        spy_clock             => spy_clock,
-        spy_addr              => i_spyseg_addr,
-        spy_write_enable      => i_spyseg_pb_we,
-        spy_write_data        => i_spyseg_pb_wdata,
-        spy_en                => i_spyseg_re,
-        spy_data              => o_spyseg_data,
-        spy_clock_meta        => spy_clock,
-       	spy_meta_en           => '0',
-        spy_meta_addr         => i_spyseg_meta_addr,
-        spy_meta_read_data    => o_spyseg_meta_rdata,
-        spy_meta_write_data   => i_spyseg_meta_wdata,
-        spy_meta_wen          => i_spyseg_meta_we
-
-      );
-
-    mdt_hit <= convert(csf_mdt_hit,mdt_hit);
-    seed_i  <= convert(csf_seed,seed_i);
-
-  ELSE GENERATE
-    mdt_hit <= convert(i_mdt_hit,mdt_hit);
-    seed_i  <= convert(i_seed,seed_i);
-    o_seg   <= globseg;
-  end generate spybuffer_generate;
+  mdt_hit <= convert(i_mdt_hit,mdt_hit);
+  seed_i  <= convert(i_seed,seed_i);
+  o_seg   <= globseg;
 
   -- Barrel Case
 
