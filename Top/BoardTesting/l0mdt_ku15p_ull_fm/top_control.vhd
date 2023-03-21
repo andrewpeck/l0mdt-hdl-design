@@ -503,7 +503,6 @@ process (axi_clk) is
 begin
 if(rising_edge(axi_clk)) then
  FM_mon_r <=  FM_mon; 
--- FM_ctrl  <=  FM_ctrl_r;
 end if;
 end process;
   FM_map_inst : entity ctrl_lib.fm_map
