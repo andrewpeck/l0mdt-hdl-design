@@ -97,6 +97,7 @@ architecture behavioral of csm is
   signal uplink_data  : lpgbt_uplink_data_rt_array (g_NUM_UPLINKS-1 downto 0);
   signal uplink_reset : std_logic_vector (g_NUM_UPLINKS-1 downto 0);
   signal uplink_ready : std_logic_vector (g_NUM_UPLINKS-1 downto 0);
+  signal uplink_fec_err : std_logic_vector (g_NUM_UPLINKS-1 downto 0);  
 
   signal downlink_data  : lpgbt_downlink_data_rt_array (g_NUM_DOWNLINKS-1 downto 0);
   signal downlink_reset : std_logic_vector (g_NUM_DOWNLINKS-1 downto 0);
@@ -219,7 +220,7 @@ begin
       uplink_data_o    => uplink_data,
       uplink_ready_o   => uplink_ready,
       uplink_bitslip_o => uplink_bitslip_o,
-      uplink_fec_err_o => open          -- TODO: connect to axi
+      uplink_fec_err_o => uplink_fec_err          -- TODO: connect to axi
       );
 
   --cnt_fecerr : entity work.counter
@@ -237,7 +238,12 @@ begin
   ----------------------------------------------------------------------------------
   ---- AXI Control and Monitoring
   ----------------------------------------------------------------------------------
-
+  axi_ctrl_mon_reg : for I in 0 to g_NUM_UPLINKS-1 generate
+           uplink_reset(I)                  <= ctrl.lpgbt.uplink.uplink(I).reset;
+           mon.lpgbt.uplink.uplink(I).ready       <= uplink_ready(I);
+           --FIX this flagging error, need to flag error count
+           mon.lpgbt.uplink.uplink(I).fec_err_cnt <= "000000000000000" & uplink_fec_err(I); 
+  end generate;
   --uplink_reset(I)                  <= ctrl.reset_uplinks or ctrl.uplink.uplink(I).reset;
   --mon.uplink.uplink(I).ready       <= uplink_ready(I);
   --mon.uplink.uplink(I).fec_err_cnt <= fec_err_cnt(I);

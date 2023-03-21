@@ -34,8 +34,9 @@ module fm #(
    assign ult_fm_data = ult_fm_data_v;	
    
    
-   assign axi_clock = fm_ctrl_in.SB0.SB_MEM.clk;
-
+   //assign axi_clock = fm_ctrl_in.SB0.SB_MEM.clk;
+   BUFG bufg_inst(.O(axi_clock), .I(fm_ctrl_in.SB0.SB_MEM.clk));
+   
    
    fm_sb_ctrl fm_sb_ctrl_inst(
 			      .fm_ctrl_in(fm_ctrl_in),

@@ -280,7 +280,7 @@ package FM_CTRL_DEF is
   constant DEFAULT_FM_SPY_CTRL_CTRL_t : FM_SPY_CTRL_CTRL_t := (
                                                                GLOBAL_FREEZE => '0',
                                                                GLOBAL_PLAYBACK_MODE => (others => '0'),
-                                                               INITIALIZE_SPY_MEMORY => '0'
+                                                               INITIALIZE_SPY_MEMORY => '1'
                                                               );
   constant DEFAULT_FM_CTRL_t : FM_CTRL_t := (
                                              SB1 => DEFAULT_FM_SB1_CTRL_t,
