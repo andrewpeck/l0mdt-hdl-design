@@ -109,6 +109,7 @@ include:
   #         KU15 Projects
   #---------------------------------------------
   - local: '/Top/l0mdt_ku15p_ull_tar/gitlab-ci.yml'
+  - local: '/Top/l0mdt_ku15p_ull_ucm/gitlab-ci.yml'
   
   #---------------------------------------------
   #         CocoTB
