@@ -230,8 +230,6 @@ architecture structural of top_l0mdt is
   signal clk_200         : std_logic;
   signal clk_50          : std_logic;
   signal locked_clk200   : std_logic;
-  signal axi_reset_n : std_logic;
-
   -- Control and Monitoring Records
 
   signal hps_inn_mon_r  : HPS_MON_t;
@@ -377,6 +375,7 @@ begin
       clk50_o => clk_50, 
 
       b2b_reset_n => b2b_reset_n,
+
       core_ctrl => hal_core_ctrl_r,
       core_mon  => hal_core_mon_r,
 
@@ -397,7 +396,6 @@ begin
       )
     port map (
       clock_and_control => clock_and_control,
-      axi_reset_n       => axi_reset_n,
       ttc_commands      => ttc_commands,
 
       i_inn_tdc_hits_av => inner_tdc_hits,
@@ -513,10 +511,11 @@ begin
       c2cb_txp     => c2cb_txp,
       c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC), -- c2c_refclkp, 
       c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC), --c2c_refclkn,
-      axi_reset_n => axi_reset_n,
-      
+
       -- START: ULT_IO :: DO NOT EDIT
       fw_info_mon            => fw_info_mon_r,
+      fm_mon            => fm_mon_r,
+      fm_ctrl           => fm_ctrl_r,
       hal_core_mon            => hal_core_mon_r,
       hal_core_ctrl           => hal_core_ctrl_r,
       hal_mon            => hal_mon_r,
@@ -530,7 +529,6 @@ begin
       clkpipe                 => clock_and_control.clk,
       axi_clk                 => clk_50, 
       clk50mhz                => clk_50,
-      clk40_rstn              => not(clock_and_control.rst),
       reset_n                 => b2b_reset_n,
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,

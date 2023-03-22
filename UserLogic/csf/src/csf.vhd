@@ -40,7 +40,7 @@ use ctrl_lib.HPS_CTRL.all;
 entity csf is
   generic (
     IS_ENDCAP   : integer := 0;
-    MDT_STATION : integer := 0; -- Station 0: Inner, 1: Middle, 2: Outer
+    MDT_STATION : integer := 0 -- Station 0: Inner, 1: Middle, 2: Outer
   );
   port (
     clk     : in std_logic;

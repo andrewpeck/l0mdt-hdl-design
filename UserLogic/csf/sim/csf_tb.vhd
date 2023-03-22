@@ -34,6 +34,9 @@ LIBRARY csf_lib;
 USE csf_lib.csf_pkg.ALL;
 USE csf_lib.csf_custom_pkg.ALL;
 
+library ctrl_lib;
+use ctrl_lib.HPS_CTRL.all;
+
 LIBRARY project_lib;
 
 ENTITY csf_tb IS
@@ -51,8 +54,8 @@ ARCHITECTURE Behavioral OF csf_tb IS
   SIGNAL rst          : STD_LOGIC := '0';
   SIGNAL v_seg        : sf2ptcalc_vt;
   SIGNAL seg          : sf2ptcalc_rt;
-  SIGNAL csf_ctrl_v   : STD_LOGIC_VECTOR;
-  SIGNAL csf_mon_v    : STD_LOGIC_VECTOR;
+  SIGNAL csf_ctrl_v   : STD_LOGIC_VECTOR(HPS_CSF_CSF_CTRL_t'w - 1 downto 0);
+  SIGNAL csf_mon_v    : STD_LOGIC_VECTOR(HPS_CSF_CSF_MON_t'w - 1 downto 0);
 BEGIN
 
   reader : ENTITY project_lib.csf_tb_reader
