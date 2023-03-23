@@ -15,95 +15,132 @@
 -- Revision:
 -- Revision 09.02.2022
 -- Additional Comments: New version of CSF using a clustering algorithm instead
--- of the previous 1D histogram 
+-- of the previous 1D histogram
 --
 ----------------------------------------------------------------------------------
 
-LIBRARY ieee;
-USE ieee.std_logic_1164.ALL;
-USE ieee.numeric_std.ALL;
-USE ieee.math_real.ALL;
+library ieee;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
+  use ieee.math_real.all;
 
-LIBRARY shared_lib;
-USE shared_lib.common_ieee_pkg.ALL;
-USE shared_lib.l0mdt_constants_pkg.ALL;
-USE shared_lib.l0mdt_dataformats_pkg.ALL;
-USE shared_lib.common_constants_pkg.ALL;
-USE shared_lib.common_types_pkg.ALL;
+library shared_lib;
+  use shared_lib.common_ieee_pkg.all;
+  use shared_lib.l0mdt_constants_pkg.all;
+  use shared_lib.l0mdt_dataformats_pkg.all;
+  use shared_lib.common_constants_pkg.all;
+  use shared_lib.common_types_pkg.all;
 
-LIBRARY csf_lib;
-USE csf_lib.csf_pkg.ALL;
-USE csf_lib.csf_custom_pkg.ALL;
-ENTITY csf IS
-  GENERIC (
-    IS_ENDCAP           : INTEGER := 0;
-    MDT_STATION         : INTEGER := 0 -- Station 0: Inner, 1: Middle, 2: Outer
+library csf_lib;
+  use csf_lib.csf_pkg.all;
+  use csf_lib.csf_custom_pkg.all;
+
+library ctrl_lib;
+  use ctrl_lib.HPS_CTRL.all;
+
+entity csf is
+  generic (
+    is_endcap   : integer := 0;
+    mdt_station : integer := 0 -- Station 0: Inner, 1: Middle, 2: Outer
   );
   port (
-    clk     : in std_logic;
-    rst     : in std_logic;
-    glob_en : in std_logic;
+    clk     : in    std_logic;
+    rst     : in    std_logic;
+    glob_en : in    std_logic;
     -- control
-    i_csf_ctrl_v : in std_logic_vector; --  HPS_CSF_CSF_CTRL_t;
-    o_csf_mon_v  : out std_logic_vector;
+    i_ctrl_v : in    std_logic_vector; --  HPS_CSF_CSF_CTRL_t;
+    o_mon_v  : out   std_logic_vector;
     -- Data
-    i_seed    : in heg2sfslc_vt;
-    i_mdt_hit : in heg2sfhit_vt;
-    i_eof     : in std_logic;
-    o_seg     : out sf2ptcalc_vt
+    i_seed    : in    heg2sfslc_vt;
+    i_mdt_hit : in    heg2sfhit_vt;
+    i_eof     : in    std_logic;
+    o_seg     : out   sf2ptcalc_vt
   );
-END ENTITY csf;
+end entity csf;
 
-ARCHITECTURE behavioral OF csf IS
+architecture behavioral of csf is
+
+  -- Control and Monitoring
+  signal ctrl_r : HPS_CSF_CSF_CTRL_t;
+  signal mon_r  : HPS_CSF_CSF_MON_t;
+  signal local_en : std_logic;
+  signal local_rst : std_logic;
+  signal int_freeze : std_logic;
 
   -- Input RoI
-  SIGNAL seed_i   : heg2sfslc_rt;
-  SIGNAL seed     : heg2sfslc_vt;
-  SIGNAL csf_seed : heg2sfslc_vt;
+  signal seed_i   : heg2sfslc_rt;
+  signal seed     : heg2sfslc_vt;
+  signal csf_seed : heg2sfslc_vt;
 
   -- Input signals
-  SIGNAL csf_mdt_hit : heg2sfhit_vt;
-  SIGNAL mdt_hit     : heg2sfhit_rt;
-  SIGNAL mdt_hits    : heg2sfhit_avt (1 DOWNTO 0);
-  SIGNAL eof         : STD_LOGIC;
+  signal csf_mdt_hit : heg2sfhit_vt;
+  signal mdt_hit     : heg2sfhit_rt;
+  signal mdt_hits    : heg2sfhit_avt (1 downto 0);
+  signal eof         : std_logic;
 
   -- Clustering signals
-  TYPE t_cluster_hits_ml IS ARRAY (INTEGER RANGE <>) OF csf_hit_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
-  SIGNAL cluster_hits_ml : t_cluster_hits_ml(1 DOWNTO 0);
-  TYPE t_fitter_en_ml IS ARRAY (INTEGER RANGE <>) OF STD_LOGIC_VECTOR(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
-  SIGNAL fitter_en_ml : t_fitter_en_ml(1 DOWNTO 0);
+
+  type t_cluster_hits_ml is ARRAY (integer RANGE <>) OF csf_hit_avt(CSF_MAX_CLUSTERS - 1 downto 0);
+
+  signal cluster_hits_ml : t_cluster_hits_ml(1 downto 0);
+
+  type t_fitter_en_ml is ARRAY (integer RANGE <>) OF std_logic_vector(CSF_MAX_CLUSTERS - 1 downto 0);
+
+  signal fitter_en_ml : t_fitter_en_ml(1 downto 0);
 
   -- Fitters Signals
-  TYPE t_csf_sums_ml IS ARRAY (INTEGER RANGE <>) OF csf_sums_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
-  SIGNAL sums_ml : t_csf_sums_ml(1 DOWNTO 0);
 
-  SIGNAL locseg : csf_locseg_vt;
+  type t_csf_sums_ml is ARRAY (integer RANGE <>) OF csf_sums_avt(CSF_MAX_CLUSTERS - 1 downto 0);
+
+  signal sums_ml : t_csf_sums_ml(1 downto 0);
+
+  signal locseg : csf_locseg_vt;
 
   ---- Coordinate transformation
-  SIGNAL coord_seed : heg2sfslc_vt;
+  signal coord_seed : heg2sfslc_vt;
 
   -- Output signal
-  SIGNAL output_segment : csf_locseg_vt;
-  SIGNAL out_seg        : csf_locseg_rt;
-  SIGNAL globseg        : sf2ptcalc_vt;
+  signal output_segment : csf_locseg_vt;
+  signal out_seg        : csf_locseg_rt;
+  signal globseg        : sf2ptcalc_vt;
 
-  -- Components
-  
-BEGIN
+-- Components
+
+begin
+  ctrl_r <= convert(i_ctrl_v,ctrl_r);
+  o_mon_v <= convert(mon_r,o_mon_v);
+
+  -- Supervisor
+  supervisor : entity csf_lib.csf_supervisor
+    port map (
+      clk     => clk,
+      rst     => rst,
+      glob_en => glob_en,
+      -- AXI to SoC
+      i_actions => ctrl_r.actions,
+      o_status  => mon_r.status,
+      --
+      o_freeze => int_freeze,
+      --
+      o_local_en  => local_en,
+      o_local_rst => local_rst
+    );
 
   mdt_hit <= convert(i_mdt_hit, mdt_hit);
   seed_i  <= convert(i_seed, seed_i);
-
   -- Clustering
 
-  CLUSTERING_GEN : FOR i IN 0 TO 1 GENERATE
-    Cluster : ENTITY csf_lib.csf_clustering
-      GENERIC MAP(
-        MAX_HITS_PER_CLUSTER => real(CSF_MAXHITS_SEG/2),
-        MAX_CLUSTERS         => CSF_MAX_CLUSTERS
+  clustering_gen : for i IN 0 to 1 generate
+
+    cluster : entity csf_lib.csf_clustering
+      generic map (
+        max_hits_per_cluster => real(CSF_MAXHITS_SEG / 2),
+        max_clusters         => CSF_MAX_CLUSTERS
       )
-      PORT MAP(
+      port map (
         clk            => clk,
+        i_en           => local_en,
+        i_rst          => local_rst,
         i_mdthit       => mdt_hits(i),
         i_seed         => i_seed,
         i_eof          => i_eof,
@@ -111,60 +148,65 @@ BEGIN
         o_fitter_en    => fitter_en_ml(i)
       );
 
-    SUMMING : FOR k IN 0 TO CSF_MAX_CLUSTERS - 1 GENERATE
-    BEGIN
-      CSF_SUM : ENTITY csf_lib.ncsf_sums
-        PORT MAP(
+    summing : for k IN 0 to CSF_MAX_CLUSTERS - 1 generate
+    begin
+
+      csf_sum : entity csf_lib.ncsf_sums
+        port map (
           clk      => clk,
+          i_rst    => local_rst,
           i_hit    => cluster_hits_ml(i)(k),
           i_fit_en => fitter_en_ml(i)(k),
           o_sums   => sums_ml(i)(k)
         );
-    END GENERATE SUMMING;
-  END GENERATE CLUSTERING_GEN;
 
-  Fitter : ENTITY csf_lib.ncsf_fit
-    PORT MAP(
+    end generate summing;
+
+  end generate clustering_gen;
+
+  fitter : entity csf_lib.ncsf_fit
+    port map (
       clk        => clk,
-      i_rst      => rst,
+      i_rst      => local_rst,
       i_sums_ml0 => sums_ml(0),
       i_sums_ml1 => sums_ml(1),
       o_seg      => locseg
     );
 
   ---- Coordinate transformation
-  coordtransform : ENTITY csf_lib.seg_coord_transform
-    GENERIC MAP(
-      IS_ENDCAP   => IS_ENDCAP,
-      MDT_STATION => MDT_STATION
+  coordtransform : entity csf_lib.seg_coord_transform
+    generic map (
+      is_endcap   => is_endcap,
+      mdt_station => mdt_station
     )
-    PORT MAP(
+    port map (
       clk       => clk,
       i_locseg  => locseg,
       i_seed    => coord_seed,
       o_globseg => o_seg
     );
-  csf_proc : PROCESS (clk) IS
-  BEGIN
 
-    IF rising_edge(clk) THEN
+  csf_proc : process (clk) is
+  begin
+
+    if rising_edge(clk) then
       mdt_hits                                   <= (OTHERS => (OTHERS => '0'));
       mdt_hits(stdlogic_integer(mdt_hit.mlayer)) <= i_mdt_hit;
 
-      IF (seed_i.data_valid = '1') THEN
+      if (seed_i.data_valid = '1') then
         seed <= i_seed;
-      END IF;
+      end if;
 
-      IF i_eof = '1' THEN
+      if (i_eof = '1') then
         coord_seed <= seed;
-      END IF;
+      end if;
 
       -- Reset the Chi2 and Output
-      IF (rst = '1') THEN
+      if (local_rst = '1') then
         seed <= (OTHERS => '0');
-      END IF;
-    END IF;
+      end if;
+    end if;
 
-  END PROCESS csf_proc;
+  end process csf_proc;
 
-END ARCHITECTURE behavioral;
+end architecture behavioral;

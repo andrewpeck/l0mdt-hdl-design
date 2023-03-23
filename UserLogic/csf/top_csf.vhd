@@ -67,8 +67,8 @@ ARCHITECTURE behavioral OF top_csf IS
       clk          : IN STD_LOGIC;
       rst          : IN STD_LOGIC;
       glob_en      : IN STD_LOGIC;
-      i_csf_ctrl_v : IN STD_LOGIC_VECTOR;
-      o_csf_mon_v  : OUT STD_LOGIC_VECTOR;
+      i_ctrl_v : IN STD_LOGIC_VECTOR;
+      o_mon_v  : OUT STD_LOGIC_VECTOR;
       i_seed       : IN heg2sfslc_vt;
       i_mdt_hit    : IN heg2sfhit_vt;
       i_eof        : IN STD_LOGIC;
@@ -86,8 +86,8 @@ BEGIN
       clk          => clk,
       rst          => rst,
       glob_en      => glob_en,
-      i_csf_ctrl_v => i_csf_ctrl_v,
-      o_csf_mon_v  => o_csf_mon_v,
+      i_ctrl_v => i_csf_ctrl_v,
+      o_mon_v  => o_csf_mon_v,
       i_seed       => i_seed,
       i_mdt_hit    => i_mdt_hit,
       i_eof        => i_eof,
