@@ -1,3 +1,6 @@
+# Top
+UserLogic/ptc_mpi/top_ptc_mpi.vhd
+
 ## Packages
 UserLogic/ptc_mpi/pkg/pt_pkg.vhd
 UserLogic/ptc_mpi/pkg/pt_params_pkg.vhd
