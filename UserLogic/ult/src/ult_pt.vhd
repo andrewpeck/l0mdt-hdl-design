@@ -54,16 +54,18 @@ end entity ptcalc;
 
 architecture behavioral of ptcalc is
 
--- signal inner_segments_sump          : std_logic_vector (c_NUM_THREADS -1 downto 0);
--- signal middle_segments_sump         : std_logic_vector (c_NUM_THREADS -1 downto 0);
--- signal outer_segments_sump          : std_logic_vector (c_NUM_THREADS -1 downto 0);
--- signal extra_segments_sump          : std_logic_vector (c_NUM_THREADS -1 downto 0);
--- signal i_pl2pt_av_sump              : std_logic_vector (c_NUM_THREADS -1 downto 0);
--- signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_INPUTS -1 downto 0);
--- signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_INPUTS -1 downto 0);
+  -- signal inner_segments_sump          : std_logic_vector (c_NUM_THREADS -1 downto 0);
+  -- signal middle_segments_sump         : std_logic_vector (c_NUM_THREADS -1 downto 0);
+  -- signal outer_segments_sump          : std_logic_vector (c_NUM_THREADS -1 downto 0);
+  -- signal extra_segments_sump          : std_logic_vector (c_NUM_THREADS -1 downto 0);
+  -- signal i_pl2pt_av_sump              : std_logic_vector (c_NUM_THREADS -1 downto 0);
+  -- signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_INPUTS -1 downto 0);
+  -- signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_INPUTS -1 downto 0);
+  signal glob_en : std_logic;
 
 begin
 
+  glob_en <= '1';
   -- mon_v <=
 
   pt_en : if c_PT_ENABLED = '1' generate
@@ -78,6 +80,9 @@ begin
         port map (
           clk          => clock_and_control.clk,
           rst          => clock_and_control.rst,
+          glob_en      => glob_en,
+          i_ctrl_v     => ctrl_v,
+          o_mon_v      => mon_v,
           i_slcs       => i_pl2pt_av,
           i_segments_i => i_inn_segments,
           i_segments_m => i_mid_segments,

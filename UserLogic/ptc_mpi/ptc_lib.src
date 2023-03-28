@@ -10,6 +10,7 @@ UserLogic/ptc_mpi/src/sagitta_calculator.vhd
 UserLogic/ptc_mpi/src/eta_calculator.vhd
 UserLogic/ptc_mpi/src/pt.vhd
 UserLogic/ptc_mpi/src/segment_selector.vhd
+UserLogic/ptc_mpi/src/pt_supervisor.vhd
 
 ## ROM contents
 UserLogic/ptc_mpi/src/a0.mem
