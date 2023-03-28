@@ -18,80 +18,80 @@
 --
 ----------------------------------------------------------------------------------
 
-LIBRARY ieee;
-USE ieee.std_logic_1164.ALL;
-USE ieee.numeric_std.ALL;
+library ieee;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
 
-LIBRARY shared_lib;
-USE shared_lib.common_ieee_pkg.ALL;
-USE shared_lib.l0mdt_constants_pkg.ALL;
-USE shared_lib.l0mdt_dataformats_pkg.ALL;
-USE shared_lib.common_constants_pkg.ALL;
-USE shared_lib.common_types_pkg.ALL;
-USE shared_lib.config_pkg.ALL;
-USE shared_lib.detector_param_pkg.ALL;
+library shared_lib;
+  use shared_lib.common_ieee_pkg.all;
+  use shared_lib.l0mdt_constants_pkg.all;
+  use shared_lib.l0mdt_dataformats_pkg.all;
+  use shared_lib.common_constants_pkg.all;
+  use shared_lib.common_types_pkg.all;
+  use shared_lib.config_pkg.all;
+  use shared_lib.detector_param_pkg.all;
 
-LIBRARY csf_lib;
-USE csf_lib.csf_pkg.ALL;
-USE csf_lib.csf_custom_pkg.ALL;
+library csf_lib;
+  use csf_lib.csf_pkg.all;
+  use csf_lib.csf_custom_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.HPS_CTRL.all;
+  use ctrl_lib.hps_ctrl.all;
 
-ENTITY top_csf IS
-  GENERIC (
+entity top_csf is
+  generic (
     -- Project flavour (0: Barrel, 1: Endcap)
-    FLAVOUR : INTEGER := 0
+    flavour : integer := 0
   );
-  PORT (
-    clk          : IN STD_LOGIC;
-    rst          : IN STD_LOGIC;
-    glob_en      : IN STD_LOGIC;
-    i_csf_ctrl_v : IN STD_LOGIC_VECTOR(HPS_CSF_CSF_CTRL_t'w - 1 downto 0); --  HPS_CSF_CSF_CTRL_t;
-    o_csf_mon_v  : OUT STD_LOGIC_VECTOR(HPS_CSF_CSF_MON_t'w - 1 downto 0);
+  port (
+    clk          : in    std_logic;
+    rst          : in    std_logic;
+    glob_en      : in    std_logic;
+    i_csf_ctrl_v : in    std_logic_vector(HPS_CSF_CSF_CTRL_t'w - 1 downto 0); --  HPS_CSF_CSF_CTRL_t;
+    o_csf_mon_v  : out   std_logic_vector(HPS_CSF_CSF_MON_t'w - 1 downto 0);
     -- Data
-    i_seed    : IN heg2sfslc_vt;
-    i_mdt_hit : IN heg2sfhit_vt;
-    i_eof     : IN STD_LOGIC;
-    o_seg     : OUT sf2ptcalc_vt
+    i_seed    : in    heg2sfslc_vt;
+    i_mdt_hit : in    heg2sfhit_vt;
+    i_eof     : in    std_logic;
+    o_seg     : out   sf2ptcalc_vt
   );
-END ENTITY top_csf;
+end entity top_csf;
 
-ARCHITECTURE behavioral OF top_csf IS
+architecture behavioral of top_csf is
 
-  COMPONENT csf IS
-    GENERIC (
-      IS_ENDCAP : INTEGER := 0
+  component csf is
+    generic (
+      is_endcap : integer := 0
     );
-    PORT (
-      clk          : IN STD_LOGIC;
-      rst          : IN STD_LOGIC;
-      glob_en      : IN STD_LOGIC;
-      i_ctrl_v : IN STD_LOGIC_VECTOR;
-      o_mon_v  : OUT STD_LOGIC_VECTOR;
-      i_seed       : IN heg2sfslc_vt;
-      i_mdt_hit    : IN heg2sfhit_vt;
-      i_eof        : IN STD_LOGIC;
-      o_seg        : OUT sf2ptcalc_vt
+    port (
+      clk       : in    std_logic;
+      rst       : in    std_logic;
+      glob_en   : in    std_logic;
+      i_ctrl_v  : in    std_logic_vector;
+      o_mon_v   : out   std_logic_vector;
+      i_seed    : in    heg2sfslc_vt;
+      i_mdt_hit : in    heg2sfhit_vt;
+      i_eof     : in    std_logic;
+      o_seg     : out   sf2ptcalc_vt
     );
-  END COMPONENT csf;
+  end component csf;
 
-BEGIN
+begin
 
-  csf_inst : COMPONENT csf
-    GENERIC MAP(
-      IS_ENDCAP => FLAVOUR
+  csf_inst : component csf
+    generic map (
+      is_endcap => flavour
     )
-    PORT MAP(
-      clk          => clk,
-      rst          => rst,
-      glob_en      => glob_en,
-      i_ctrl_v => i_csf_ctrl_v,
-      o_mon_v  => o_csf_mon_v,
-      i_seed       => i_seed,
-      i_mdt_hit    => i_mdt_hit,
-      i_eof        => i_eof,
-      o_seg        => o_seg
+    port map (
+      clk       => clk,
+      rst       => rst,
+      glob_en   => glob_en,
+      i_ctrl_v  => i_csf_ctrl_v,
+      o_mon_v   => o_csf_mon_v,
+      i_seed    => i_seed,
+      i_mdt_hit => i_mdt_hit,
+      i_eof     => i_eof,
+      o_seg     => o_seg
     );
 
-  END ARCHITECTURE behavioral;
+end architecture behavioral;

@@ -2,13 +2,13 @@
 -- Company: Max-Planck-Institut fuer Physik - Munich
 -- Engineer: Davide Cieri - davide.cieri@cern.ch
 --
--- Create Date: 02/08/2019 11:31:09 AM
+-- Create Date: 24/03/2023
 -- Design Name: Compact Segment Finder
--- Module Name: csf_top - Behavioral
+-- Module Name: csf_supervisor - Behavioral
 -- Project Name:
 -- Target Devices:
--- Tool Versions: 2018.3
--- Description: Compact Segment Finder top module
+-- Tool Versions: 2020.2
+-- Description: Compact Segment Finder supervisor block (ctrl and mon)
 --
 -- Dependencies: csf_pkg
 --
