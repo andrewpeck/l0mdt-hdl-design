@@ -272,7 +272,7 @@ begin  -- architecture behavioral
     port map (
       O  => lhc_refclk_o_p,             -- 1-bit output: Diff_p output (connect directly to top-level port)
       OB => lhc_refclk_o_n,             -- 1-bit output: Diff_n output (connect directly to top-level port)
-      I  => lhc_recclk                  -- 1-bit input: Buffer input
+      I  => clk40_o -- lhc_recclk                  -- 1-bit input: Buffer input
       );
 
   top_clocking_inst : entity hal.top_clocking

@@ -109,6 +109,8 @@ architecture behavioral of csm is
   signal sca0_up, sca1_up, sca2_up                : std_logic_vector (1 downto 0);
   signal sca0_down, sca1_down, sca2_down          : std_logic_vector (1 downto 0);
 
+  type fec_err_cnt_type is array (g_NUM_UPLINKS-1 downto 0) of std_logic_vector(15 downto 0);
+  signal fec_err_cnt : fec_err_cnt_type;
 begin
 
   dl_valid : for I in 0 to g_NUM_DOWNLINKS-1 generate
@@ -223,26 +225,28 @@ begin
       uplink_fec_err_o => uplink_fec_err          -- TODO: connect to axi
       );
 
-  --cnt_fecerr : entity work.counter
-  --  generic map (width => COUNTER_WIDTH)
-  --  port map (
-  --    clk    => uplink_clk,
-  --    reset  => '0',
-  --    enable => '1',
-  --    event  => ufec_err,
-  --    count  => fec_err_cnt(I),
-  --    at_max => open
-  --    );
-
+ 
 
   ----------------------------------------------------------------------------------
   ---- AXI Control and Monitoring
   ----------------------------------------------------------------------------------
   axi_ctrl_mon_reg : for I in 0 to g_NUM_UPLINKS-1 generate
            uplink_reset(I)                  <= ctrl.lpgbt.uplink.uplink(I).reset;
-           mon.lpgbt.uplink.uplink(I).ready       <= uplink_ready(I);
+           mon.lpgbt.uplink.uplink(I).ready <= uplink_ready(I);
            --FIX this flagging error, need to flag error count
-           mon.lpgbt.uplink.uplink(I).fec_err_cnt <= "000000000000000" & uplink_fec_err(I); 
+           mon.lpgbt.uplink.uplink(I).fec_err_cnt <= fec_err_cnt(I);
+
+    cnt_fecerr : entity work.counter
+    generic map (width => 16)
+    port map (
+      clk    => uplink_clk,
+      reset  => '0',
+      enable => '1',
+      event  => uplink_fec_err(I),
+      count  => fec_err_cnt(I),
+      at_max => open
+      );
+
   end generate;
   --uplink_reset(I)                  <= ctrl.reset_uplinks or ctrl.uplink.uplink(I).reset;
   --mon.uplink.uplink(I).ready       <= uplink_ready(I);
