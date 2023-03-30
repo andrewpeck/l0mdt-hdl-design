@@ -21,5 +21,5 @@ shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 #-------------------
 # Detector parameters
 #-------------------
-shared/detector_parameters/detector_param_pkg.vhd
-shared/detector_parameters/detector_time_param_pkg.vhd
+shared/detector_parameters/dp_repo/detector_param_pkg.vhd
+shared/detector_parameters/fw_parameters/detector_time_param_pkg.vhd

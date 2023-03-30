@@ -67,3 +67,6 @@
 	path = UserLogic/daq/daq-lxa-core
 	url = https://gitlab.com/tcpaiva/daq-lxa-core.git
 	branch = devel
+[submodule "shared/detector_parameters/dp_repo"]
+	path = shared/detector_parameters/dp_repo
+	url = ../detector-parameters.git

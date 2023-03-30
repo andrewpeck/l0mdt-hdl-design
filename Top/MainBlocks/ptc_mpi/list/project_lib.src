@@ -1,4 +1,3 @@
 Top/MainBlocks/ptc_mpi/prj_cfg.vhd
-UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
-UserLogic/ptc_mpi/top_ptc_mpi.vhd
+UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib top=top_ptc_mpi
 
