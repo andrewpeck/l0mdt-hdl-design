@@ -10,7 +10,7 @@
         <node id="TX_RESET"    address="0x0" mask="0x00000001" permission="w" description="Reset TX datapath"/>
         <node id="RX_RESET"    address="0x1" mask="0x00000002" permission="w" description="Reset RX datapath"/>
 
-        <node id="IC" address="0x2" permission="rw" module="file://GBT-IC.xml"/>
+        <node id="IC" address="0x2" module="file://GBT-IC.xml"/>
 
         <!--SCA Commands -->
         <node id="TX_CMD"     address="0x9" mask="0x000000ff" permission="rw" description="Command: The Command field is present in the frames received by the SCA and indicates the operation to be performed. Meaning is specific to the channel."/>
@@ -20,9 +20,9 @@
         <node id="TX_DATA"    address="0xA" mask="0xffffffff" permission="rw" description="Command: data field (According to the SCA manual)"/>
 
         <node id="SCA_RX" address="0xB" permission="rw">
-            <node id="RX_0" address="0x0" permission="rw" fwinfo="type=array" module="file://SCA_RX.xml"/>
-            <node id="RX_1" address="0x3" permission="rw" fwinfo="type=array" module="file://SCA_RX.xml"/>
-            <node id="RX_2" address="0x6" permission="rw" fwinfo="type=array" module="file://SCA_RX.xml"/>
+            <node id="RX_0" address="0x0" fwinfo="type=array" module="file://SCA_RX.xml"/>
+            <node id="RX_1" address="0x3" fwinfo="type=array" module="file://SCA_RX.xml"/>
+            <node id="RX_2" address="0x6" fwinfo="type=array" module="file://SCA_RX.xml"/>
         </node>
 
         <!--SCA Control -->
@@ -39,7 +39,7 @@
         <node id="TX_RESET"    address="0x0" mask="0x00000001" permission="w" description="Reset TX datapath"/>
         <node id="RX_RESET"    address="0x1" mask="0x00000002" permission="w" description="Reset RX datapath"/>
 
-        <node id="IC" address="0x2" permission="rw" module="file://GBT-IC.xml"/>
+        <node id="IC" address="0x2" module="file://GBT-IC.xml"/>
 
     </node> <!-- slave -->
 
