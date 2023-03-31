@@ -4,14 +4,14 @@ it runs on an asynchronous clock sources from an oscillator that
 is guaranteed to always be running -->
 <!-- To minimize clock domain crossings, whereever possible
 control logic should run NOT on this asynchronous domain -->
-<node id="HAL_CORE">
+<node id="HAL_CORE" permission="rw" >
 
-  <node id="CLOCKING" address="0x1">
+  <node id="CLOCKING" address="0x1" permission="r" >
     <node id="MMCM_LOCKED"         mask="0x1" permission="r"  description=""/>
     <node id="RESET_MMCM"          mask="0x2" permission="rw" description=""/>
   </node>
 
-  <node id="MGT" address="0x0010">
+  <node id="MGT" address="0x0010" permission="rw" >
       <node id="MGT_0"  address="0x00"  fwinfo="type=array" module="file://MGT.xml"/>
       <node id="MGT_1"  address="0x6"   fwinfo="type=array" module="file://MGT.xml"/>
       <node id="MGT_2"  address="0xC"   fwinfo="type=array" module="file://MGT.xml"/>

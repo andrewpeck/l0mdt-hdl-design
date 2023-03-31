@@ -36,6 +36,7 @@ USE csf_lib.csf_custom_pkg.ALL;
 ENTITY ncsf_sums IS
     PORT (
         clk : IN STD_LOGIC;
+        i_rst : IN STD_LOGIC;
         i_hit : IN csf_hit_vt;
         i_fit_en : in STD_LOGIC;
         o_sums : OUT csf_sums_vt
@@ -87,6 +88,14 @@ BEGIN
                 sums.y <= dsp_SumY;
                 sums.x2 <= dsp_SumX2;
                 sums.n <= dsp_nhits;
+                dsp_SumXY <= (others => '0');
+                dsp_SumX <= (others => '0');
+                dsp_sumY <= (others => '0');
+                dsp_SumX2 <= (others => '0');
+                dsp_nhits <= (others => '0');
+            END IF;
+
+            IF i_rst = '1' THEN
                 dsp_SumXY <= (others => '0');
                 dsp_SumX <= (others => '0');
                 dsp_sumY <= (others => '0');

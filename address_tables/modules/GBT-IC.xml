@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<node id="GBT-IC">
+<node id="GBT-IC" permission="rw">
   <!-- IC Control-->
   <node id="TX_START_WRITE"    address="0x0" mask="0x00000001" permission="rw" description="Request a write config to the GBTx (IC)"/>
   <node id="TX_START_READ"     address="0x0" mask="0x00000002" permission="rw" description="Request a read config to the GBTx (IC)"/>

@@ -14,19 +14,21 @@ package TF_CTRL is
    -- Custom types and functions --
 
    type TF_MON_t is record
-      STATUS : std_logic;
       READY : std_logic;
+      ENABLED : std_logic;
+      ERROR : std_logic;
    end record TF_MON_t;
-   attribute w of TF_MON_t : type is 2;
+   attribute w of TF_MON_t : type is 3;
    function width(x: TF_MON_t) return natural;
    function convert(x: TF_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TF_MON_t) return TF_MON_t;
    function zero(tpl: TF_MON_t) return TF_MON_t;
 
    type TF_CTRL_t is record
+      ENABLE : std_logic;
       RESET : std_logic;
    end record TF_CTRL_t;
-   attribute w of TF_CTRL_t : type is 1;
+   attribute w of TF_CTRL_t : type is 2;
    function width(x: TF_CTRL_t) return natural;
    function convert(x: TF_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TF_CTRL_t) return TF_CTRL_t;
@@ -51,8 +53,9 @@ package body TF_CTRL is
    function width(x: TF_MON_t) return natural is
       variable w : natural := 0;
    begin
-      w := w + width(x.STATUS);
       w := w + width(x.READY);
+      w := w + width(x.ENABLED);
+      w := w + width(x.ERROR);
       return w;
    end function width;
    function convert(x: TF_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -61,17 +64,23 @@ package body TF_CTRL is
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
-         w := width(x.STATUS);
-         y(u to u+w-1) := convert(x.STATUS, y(u to u+w-1));
-         u := u + w;
          w := width(x.READY);
          y(u to u+w-1) := convert(x.READY, y(u to u+w-1));
+         u := u + w;
+         w := width(x.ENABLED);
+         y(u to u+w-1) := convert(x.ENABLED, y(u to u+w-1));
+         u := u + w;
+         w := width(x.ERROR);
+         y(u to u+w-1) := convert(x.ERROR, y(u to u+w-1));
       else
-         w := width(x.STATUS);
-         y(u downto u-w+1) := convert(x.STATUS, y(u downto u-w+1));
-         u := u - w;
          w := width(x.READY);
          y(u downto u-w+1) := convert(x.READY, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.ENABLED);
+         y(u downto u-w+1) := convert(x.ENABLED, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.ERROR);
+         y(u downto u-w+1) := convert(x.ERROR, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -81,17 +90,23 @@ package body TF_CTRL is
       variable u : integer := x'left;
    begin
       if x'ascending then
-         w := width(tpl.STATUS);
-         y.STATUS := convert(x(u to u+w-1), tpl.STATUS);
-         u := u + w;
          w := width(tpl.READY);
          y.READY := convert(x(u to u+w-1), tpl.READY);
+         u := u + w;
+         w := width(tpl.ENABLED);
+         y.ENABLED := convert(x(u to u+w-1), tpl.ENABLED);
+         u := u + w;
+         w := width(tpl.ERROR);
+         y.ERROR := convert(x(u to u+w-1), tpl.ERROR);
       else
-         w := width(tpl.STATUS);
-         y.STATUS := convert(x(u downto u-w+1), tpl.STATUS);
-         u := u - w;
          w := width(tpl.READY);
          y.READY := convert(x(u downto u-w+1), tpl.READY);
+         u := u - w;
+         w := width(tpl.ENABLED);
+         y.ENABLED := convert(x(u downto u-w+1), tpl.ENABLED);
+         u := u - w;
+         w := width(tpl.ERROR);
+         y.ERROR := convert(x(u downto u-w+1), tpl.ERROR);
       end if;
       return y;
    end function convert;
@@ -103,6 +118,7 @@ package body TF_CTRL is
    function width(x: TF_CTRL_t) return natural is
       variable w : natural := 0;
    begin
+      w := w + width(x.ENABLE);
       w := w + width(x.RESET);
       return w;
    end function width;
@@ -112,9 +128,15 @@ package body TF_CTRL is
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
+         w := width(x.ENABLE);
+         y(u to u+w-1) := convert(x.ENABLE, y(u to u+w-1));
+         u := u + w;
          w := width(x.RESET);
          y(u to u+w-1) := convert(x.RESET, y(u to u+w-1));
       else
+         w := width(x.ENABLE);
+         y(u downto u-w+1) := convert(x.ENABLE, y(u downto u-w+1));
+         u := u - w;
          w := width(x.RESET);
          y(u downto u-w+1) := convert(x.RESET, y(u downto u-w+1));
       end if;
@@ -126,9 +148,15 @@ package body TF_CTRL is
       variable u : integer := x'left;
    begin
       if x'ascending then
+         w := width(tpl.ENABLE);
+         y.ENABLE := convert(x(u to u+w-1), tpl.ENABLE);
+         u := u + w;
          w := width(tpl.RESET);
          y.RESET := convert(x(u to u+w-1), tpl.RESET);
       else
+         w := width(tpl.ENABLE);
+         y.ENABLE := convert(x(u downto u-w+1), tpl.ENABLE);
+         u := u - w;
          w := width(tpl.RESET);
          y.RESET := convert(x(u downto u-w+1), tpl.RESET);
       end if;

@@ -29,9 +29,7 @@ package detector_time_param_pkg is
   -------------------------------------------------------------------------
   -- Time & cycles constants
   -------------------------------------------------------------------------
-  constant c_CLK_AXI_MULT       : integer := 8; 
 
-  --
   constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
 
   -- UCM 2 HPS LATENCY

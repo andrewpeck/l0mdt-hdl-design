@@ -8,6 +8,7 @@ use ctrl_lib.TF_CTRL.all;
 
 package TF_CTRL_DEF is
   constant DEFAULT_TF_CTRL_t : TF_CTRL_t := (
+                                             ENABLE => '0',
                                              RESET => '0'
                                             );
 

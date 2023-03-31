@@ -162,7 +162,9 @@ proc create_top_modules {project_path repo_path} {
 		    puts $output_control_file "if(rising_edge(clk40)) then"
 		}
 		    puts $output_control_file " ${slave}_mon_r <=  ${slave}_mon; "
-		if {$slave != "HOG" && $slave != "FW_INFO"} {
+
+		
+		if {$slave != "HOG" && $slave != "FW_INFO" && $slave != "FM"} {
 		    puts $output_control_file " ${slave}_ctrl  <=  ${slave}_ctrl_r;"
 		}
 		    puts $output_control_file "end if;"
@@ -182,9 +184,11 @@ proc create_top_modules {project_path repo_path} {
                 puts $output_control_file "      slave_readmiso   => ${slave}_readmiso," 
                 puts $output_control_file "      slave_writemosi   => ${slave}_writemosi," 
                 puts $output_control_file "      slave_writemiso   => ${slave}_writemiso," 
-                if {$slave != "HOG" && $slave != "FW_INFO"} {
+                if {$slave != "HOG" && $slave != "FW_INFO" && $slave != "FM"} {
                     puts $output_control_file "      ctrl   => ${slave}_ctrl_r," 
-                }
+                } elseif {$slave == "FM"} {
+		    puts $output_control_file "      ctrl   => ${slave}_ctrl," 
+		}
                 puts $output_control_file "      mon   => ${slave}_mon_r"
                 puts $output_control_file "    );" 
 

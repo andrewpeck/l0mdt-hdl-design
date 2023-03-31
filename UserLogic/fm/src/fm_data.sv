@@ -493,7 +493,7 @@ module fm_data #(
 	  begin
 	     for(integer i=0;i<sb_mapped_n;i=i+1)
 	       begin
-		  if(axi_sb_enable[i] == 1'b1 & init_spy_mem_internal == 1'b0)
+		  if(axi_sb_enable[i] == 1'b1) // & init_spy_mem_internal == 1'b0)
 		    begin
 		       axi_spy_rd_vld[i] <= 1'b1;
 		    end
@@ -503,7 +503,7 @@ module fm_data #(
 		    end
 
 
-		  if(axi_sm_enable[i] == 1'b1 & init_spy_mem_internal == 1'b0) 
+		  if(axi_sm_enable[i] == 1'b1) // & init_spy_mem_internal == 1'b0) 
 		    begin
 		       axi_spy_meta_rd_vld[i] <= 1'b1;
 		    end
@@ -525,7 +525,8 @@ module fm_data #(
 	     
 	     for(integer i=0;i<sb_mapped_n;i=i+1)
 	       begin
-		  axi_sb_init_addr[i] <= '0;		  
+		  axi_sb_init_addr[i]    <= '0;
+		  axi_sb_init_wr_data[i] <= 32'h0a0a0a0a;		  
 	       end
 	  end
 	else
