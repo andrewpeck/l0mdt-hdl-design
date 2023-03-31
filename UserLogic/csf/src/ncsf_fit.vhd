@@ -37,8 +37,8 @@ ENTITY ncsf_fit IS
   PORT (
     clk        : IN STD_LOGIC;
     i_rst      : in STD_LOGIC;
-    i_sums_ml0 : csf_sums_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
-    i_sums_ml1 : csf_sums_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+    i_sums_ml0 : in csf_sums_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
+    i_sums_ml1 : in csf_sums_avt(CSF_MAX_CLUSTERS - 1 DOWNTO 0);
     o_seg      : OUT csf_locseg_vt
   );
 END ncsf_fit;

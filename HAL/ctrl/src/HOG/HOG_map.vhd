@@ -39,8 +39,8 @@ architecture behavioral of HOG_map is
 
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 17);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 17) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 11);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 11) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ begin  -- architecture behavioral
       localRdData <= x"00000000";
       if localRdReq = '1' then
         regRdAck  <= '1';
-        case to_integer(unsigned(localAddress(4 downto 0))) is
+        case to_integer(unsigned(localAddress(3 downto 0))) is
           
         when 0 => --0x0
           localRdData(31 downto  0)  <=  Mon.HOG_INFO.GLOBAL_DATE;          --
@@ -117,9 +117,9 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.HOG_INFO.CON_SHA;              --
         when 9 => --0x9
           localRdData(31 downto  0)  <=  Mon.HOG_INFO.CON_VER;              --
-        when 16 => --0x10
+        when 10 => --0xa
           localRdData(31 downto  0)  <=  Mon.HOG_INFO.PROJECT_LIB_SHA;      --
-        when 17 => --0x11
+        when 11 => --0xb
           localRdData(31 downto  0)  <=  Mon.HOG_INFO.PROJECT_LIB_VER;      --
 
 

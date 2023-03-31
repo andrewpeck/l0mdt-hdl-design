@@ -10,11 +10,13 @@ config:
 types:
 
 - TF_MON_t:
-  - STATUS : { type: logic }
   - READY : { type: logic }
+  - ENABLED : { type: logic }
+  - ERROR : { type: logic }
 
 
 - TF_CTRL_t:
+  - ENABLE : { type: logic }
   - RESET : { type: logic }
 
 

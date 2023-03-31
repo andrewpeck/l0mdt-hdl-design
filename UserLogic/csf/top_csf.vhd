@@ -19,212 +19,60 @@
 ----------------------------------------------------------------------------------
 
 library ieee;
-  use ieee.std_logic_1164.ALL;
-  use ieee.numeric_std.ALL;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
 
 library shared_lib;
-  use shared_lib.common_ieee_pkg.ALL;
-  use shared_lib.l0mdt_constants_pkg.ALL;
-  use shared_lib.l0mdt_dataformats_pkg.ALL;
-  use shared_lib.common_constants_pkg.ALL;
-  use shared_lib.common_types_pkg.ALL;
-  use shared_lib.config_pkg.ALL;
-  use shared_lib.detector_param_pkg.ALL;
+  use shared_lib.common_ieee_pkg.all;
+  use shared_lib.l0mdt_constants_pkg.all;
+  use shared_lib.l0mdt_dataformats_pkg.all;
+  use shared_lib.common_constants_pkg.all;
+  use shared_lib.common_types_pkg.all;
+  use shared_lib.config_pkg.all;
+  use shared_lib.detector_param_pkg.all;
 
 library csf_lib;
-  use csf_lib.csf_pkg.ALL;
-  use csf_lib.csf_custom_pkg.ALL;
+  use csf_lib.csf_pkg.all;
+  use csf_lib.csf_custom_pkg.all;
+
+library ctrl_lib;
+  use ctrl_lib.hps_ctrl.all;
 
 entity top_csf is
   generic (
     -- Project flavour (0: Barrel, 1: Endcap)
-    FLAVOUR             : integer := 0;
-    SPYBUFFER_EN        : integer := 0;
-    SPYHIT_MEM_WIDTH    : integer := 10;
-    SPYHIT_EL_MEM_WIDTH : integer := 10;
-    SPYSLC_MEM_WIDTH    : integer := 10;
-    SPYSLC_EL_MEM_WIDTH : integer := 10;
-    SPYSEG_MEM_WIDTH    : integer := 10;
-    SPYSEG_EL_MEM_WIDTH : integer := 10;
-    SPY_META_DATA_WIDTH : integer := 8
+    flavour : integer := 0
   );
   port (
-    clk       : in    std_logic;
+    clk          : in    std_logic;
+    rst          : in    std_logic;
+    glob_en      : in    std_logic;
+    i_csf_ctrl_v : in    std_logic_vector(HPS_CSF_CSF_CTRL_t'w - 1 downto 0); --  HPS_CSF_CSF_CTRL_t;
+    o_csf_mon_v  : out   std_logic_vector(HPS_CSF_CSF_MON_t'w - 1 downto 0);
+    -- Data
     i_seed    : in    heg2sfslc_vt;
     i_mdt_hit : in    heg2sfhit_vt;
     i_eof     : in    std_logic;
-    i_rst     : in    std_logic;
     o_seg     : out   sf2ptcalc_vt
-
-    --SpyBuffer
-  --  spy_clock           : in    std_logic;
-    -- Hit Spybuffer
-    --i_spyhit_fc_we      : in    std_logic;
-    --i_spyhit_fc_re      : in    std_logic;
-    --i_spyhit_freeze     : in    std_logic;
-    --i_spyhit_playback   : in    std_logic_vector(1 downto 0);
-    --i_spyhit_pb_we      : in    std_logic;
-    --i_spyhit_pb_wdata   : in    heg2sfhit_vt;
-    --i_spyhit_en         : in    std_logic;
-    --i_spyhit_meta_we    : in    std_logic;
-    --i_spyhit_addr       : in    std_logic_vector(SPYHIT_MEM_WIDTH - 1 downto 0);
-    --i_spyhit_meta_addr  : in    std_logic_vector(SPYHIT_EL_MEM_WIDTH - 1 downto 0);
-    --o_spyhit_data       : out   heg2sfhit_vt;
-    --o_spyhit_meta_rdata : out   std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-    --i_spyhit_meta_wdata : in    std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-    --o_spyhit_af         : out   std_logic;
-    --o_spyhit_empty      : out   std_logic;
-
-    -- SLC Spybuffer
-    --i_spyslc_fc_we      : in    std_logic;
-    --i_spyslc_fc_re      : in    std_logic;
-    --i_spyslc_freeze     : in    std_logic;
-    --i_spyslc_playback   : in    std_logic_vector(1 downto 0);
-    --i_spyslc_pb_we      : in    std_logic;
-    --i_spyslc_pb_wdata   : in    heg2sfslc_vt;
-    --i_spyslc_en         : in    std_logic;
-    --i_spyslc_addr       : in    std_logic_vector(SPYSLC_MEM_WIDTH - 1 downto 0);
-    --i_spyslc_meta_we    : in    std_logic;
-    --i_spyslc_meta_addr  : in    std_logic_vector(SPYSLC_EL_MEM_WIDTH - 1 downto 0);
-    --o_spyslc_data       : out   heg2sfslc_vt;
-    --o_spyslc_meta_rdata : out   std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-    --i_spyslc_meta_wdata : in    std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-    --o_spyslc_af         : out   std_logic;
-    --o_spyslc_empty      : out   std_logic;
-
-    -- Segment Spybuffer
-    --i_spyseg_fc_we      : in    std_logic;
-    --i_spyseg_fc_re      : in    std_logic;
-    --i_spyseg_freeze     : in    std_logic;
-    --i_spyseg_playback   : in    std_logic_vector(1 downto 0);
-    --i_spyseg_pb_we      : in    std_logic;
-    --i_spyseg_pb_wdata   : in    sf2ptcalc_vt;
-    --i_spyseg_en         : in    std_logic;
-    --i_spyseg_addr       : in    std_logic_vector(SPYSEG_MEM_WIDTH - 1 downto 0);
-    --i_spyseg_meta_addr  : in    std_logic_vector(SPYSEG_EL_MEM_WIDTH - 1 downto 0);
-    --i_spyseg_meta_we    : in    std_logic;
-    --o_spyseg_data       : out   sf2ptcalc_vt;
-    --o_spyseg_meta_rdata : out   std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-    --i_spyseg_meta_wdata : in    std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-    --o_spyseg_af         : out   std_logic;
-    --o_spyseg_empty      : out   std_logic
-
   );
 end entity top_csf;
 
 architecture behavioral of top_csf is
 
-signal i_spyhit_fc_we      : std_logic;
-signal i_spyhit_fc_re      : std_logic;
-signal i_spyhit_freeze     : std_logic;
-signal i_spyhit_playback   : std_logic_vector(1 downto 0);
-signal i_spyhit_pb_we      : std_logic;
-signal i_spyhit_pb_wdata   : heg2sfhit_vt;
-signal i_spyhit_re         : std_logic;
-signal i_spyhit_meta_we    : std_logic;
-signal i_spyhit_addr       : std_logic_vector(SPYHIT_MEM_WIDTH - 1 downto 0);
-signal i_spyhit_meta_addr  : std_logic_vector(SPYHIT_EL_MEM_WIDTH - 1 downto 0);
-signal o_spyhit_data       : heg2sfhit_vt;
-signal o_spyhit_meta_rdata : std_logic_vector(SPY_META_DATA_WIDTH -1 downto 0);
-signal i_spyhit_meta_wdata : std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-signal o_spyhit_af         : std_logic;
-signal o_spyhit_empty      : std_logic;
--- SLC Spybuffer
-signal i_spyslc_fc_we      : std_logic;
-signal i_spyslc_fc_re      : std_logic;
-signal i_spyslc_freeze     : std_logic;
-signal i_spyslc_playback   : std_logic_vector(1 downto 0);
-signal i_spyslc_pb_we      : std_logic;
-signal i_spyslc_pb_wdata   : heg2sfslc_vt;
-signal i_spyslc_re         : std_logic;
-signal i_spyslc_addr       : std_logic_vector(SPYSLC_MEM_WIDTH - 1 downto 0);
-signal i_spyslc_meta_we    : std_logic;
-signal i_spyslc_meta_addr  : std_logic_vector(SPYSLC_EL_MEM_WIDTH - 1 downto 0);
-signal o_spyslc_data       : heg2sfslc_vt;
-signal o_spyslc_meta_rdata : std_logic_vector(SPY_META_DATA_WIDTH -1  downto 0);
-signal i_spyslc_meta_wdata : std_logic_vector(SPY_META_DATA_WIDTH -1 downto 0);
-signal o_spyslc_af         : std_logic;
-signal o_spyslc_empty      : std_logic;
--- Segment Spybuffer
-signal i_spyseg_fc_we      : std_logic;
-signal i_spyseg_fc_re      : std_logic;
-signal i_spyseg_freeze     : std_logic;
-signal i_spyseg_playback   : std_logic_vector(1 downto 0);
-signal i_spyseg_pb_we      : std_logic;
-signal i_spyseg_pb_wdata   : sf2ptcalc_vt;
-signal i_spyseg_re         : std_logic;
-signal i_spyseg_addr       : std_logic_vector(SPYSEG_MEM_WIDTH - 1 downto 0);
-signal i_spyseg_meta_addr  : std_logic_vector(SPYSEG_EL_MEM_WIDTH - 1 downto 0);
-signal i_spyseg_meta_we    : std_logic;
-signal o_spyseg_data       : sf2ptcalc_vt;
-signal o_spyseg_meta_rdata : std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-signal i_spyseg_meta_wdata : std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-signal o_spyseg_af         : std_logic;
-signal o_spyseg_empty      : std_logic;
-
   component csf is
     generic (
-      IS_ENDCAP    : integer := 0;
-      SPYBUFFER_EN : integer := 0
+      is_endcap : integer := 0
     );
     port (
       clk       : in    std_logic;
+      rst       : in    std_logic;
+      glob_en   : in    std_logic;
+      i_ctrl_v  : in    std_logic_vector;
+      o_mon_v   : out   std_logic_vector;
       i_seed    : in    heg2sfslc_vt;
       i_mdt_hit : in    heg2sfhit_vt;
       i_eof     : in    std_logic;
-      i_rst     : in    std_logic;
-      o_seg     : out   sf2ptcalc_vt;
-      spy_clock : in    std_logic;
-      -- Hit Spybuffer --TODO- remove SpyBuffer
-      i_spyhit_fc_we      : in    std_logic;
-      i_spyhit_fc_re      : in    std_logic;
-      i_spyhit_freeze     : in    std_logic;
-      i_spyhit_playback   : in    std_logic_vector(1 downto 0);
-      i_spyhit_pb_we      : in    std_logic;
-      i_spyhit_pb_wdata   : in    heg2sfhit_vt;
-      i_spyhit_re         : in    std_logic;
-      i_spyhit_addr       : in    std_logic_vector(SPYHIT_MEM_WIDTH - 1 downto 0);
-      i_spyhit_meta_addr  : in    std_logic_vector(SPYHIT_EL_MEM_WIDTH - 1 downto 0);
-      i_spyhit_meta_we    : in    std_logic;
-      o_spyhit_data       : out   heg2sfhit_vt;
-      o_spyhit_meta_rdata : out   std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-      i_spyhit_meta_wdata : in    std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-      o_spyhit_af         : out   std_logic;
-      o_spyhit_empty      : out   std_logic;
-
-      -- SLC Spybuffer --TODO- remove SpyBuffer
-      i_spyslc_fc_we      : in    std_logic;
-      i_spyslc_fc_re      : in    std_logic;
-      i_spyslc_freeze     : in    std_logic;
-      i_spyslc_playback   : in    std_logic_vector(1 downto 0);
-      i_spyslc_pb_we      : in    std_logic;
-      i_spyslc_pb_wdata   : in    heg2sfslc_vt;
-      i_spyslc_re         : in    std_logic;
-      i_spyslc_addr       : in    std_logic_vector(SPYSLC_MEM_WIDTH - 1 downto 0);
-      i_spyslc_meta_addr  : in    std_logic_vector(SPYSLC_EL_MEM_WIDTH - 1 downto 0);
-      i_spyslc_meta_we    : in    std_logic;
-      o_spyslc_data       : out   heg2sfslc_vt;
-      o_spyslc_meta_rdata : out   std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-      i_spyslc_meta_wdata : in    std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-      o_spyslc_af         : out   std_logic;
-      o_spyslc_empty      : out   std_logic;
-
-      -- Segment Spybuffer --TODO- remove SpyBuffer
-      i_spyseg_fc_we      : in    std_logic;
-      i_spyseg_fc_re      : in    std_logic;
-      i_spyseg_freeze     : in    std_logic;
-      i_spyseg_playback   : in    std_logic_vector(1 downto 0);
-      i_spyseg_pb_we      : in    std_logic;
-      i_spyseg_pb_wdata   : in    sf2ptcalc_vt;
-      i_spyseg_re         : in    std_logic;
-      i_spyseg_addr       : in    std_logic_vector(SPYSEG_MEM_WIDTH - 1 downto 0);
-      i_spyseg_meta_addr  : in    std_logic_vector(SPYSEG_EL_MEM_WIDTH - 1 downto 0);
-      i_spyseg_meta_we    : in    std_logic;
-      o_spyseg_data       : out   sf2ptcalc_vt;
-      o_spyseg_meta_rdata : out   std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-      i_spyseg_meta_wdata : in    std_logic_vector(SPY_META_DATA_WIDTH-1 downto 0);
-      o_spyseg_af         : out   std_logic;
-      o_spyseg_empty      : out   std_logic
+      o_seg     : out   sf2ptcalc_vt
     );
   end component csf;
 
@@ -232,65 +80,18 @@ begin
 
   csf_inst : component csf
     generic map (
-      IS_ENDCAP    => FLAVOUR,
-      SPYBUFFER_EN => SPYBUFFER_EN
+      is_endcap => flavour
     )
     port map (
       clk       => clk,
+      rst       => rst,
+      glob_en   => glob_en,
+      i_ctrl_v  => i_csf_ctrl_v,
+      o_mon_v   => o_csf_mon_v,
       i_seed    => i_seed,
       i_mdt_hit => i_mdt_hit,
       i_eof     => i_eof,
-      i_rst     => i_rst,
-      o_seg     => o_seg,
-      spy_clock => clk, --Need to change to AXI interface clock
-      -- Hit SpyBuffer
-      i_spyhit_fc_we      => i_spyhit_fc_we,
-      i_spyhit_fc_re      => i_spyhit_fc_re,
-      i_spyhit_freeze     => i_spyhit_freeze,
-      i_spyhit_playback   => i_spyhit_playback,
-      i_spyhit_pb_we      => i_spyhit_pb_we,
-      i_spyhit_pb_wdata   => i_spyhit_pb_wdata,
-      i_spyhit_re         => i_spyhit_re,
-      i_spyhit_addr       => i_spyhit_addr,
-      i_spyhit_meta_addr  => i_spyhit_meta_addr,
-      i_spyhit_meta_we    => i_spyhit_meta_we,
-      o_spyhit_data       => o_spyhit_data,
-      o_spyhit_meta_rdata => o_spyhit_meta_rdata,
-      i_spyhit_meta_wdata => i_spyhit_meta_wdata,
-      o_spyhit_af         => o_spyhit_af,
-      o_spyhit_empty      => o_spyhit_empty,
-      -- SLC Spybuffer
-      i_spyslc_fc_we      => i_spyslc_fc_we,
-      i_spyslc_fc_re      => i_spyslc_fc_re,
-      i_spyslc_freeze     => i_spyslc_freeze,
-      i_spyslc_playback   => i_spyslc_playback,
-      i_spyslc_pb_we      => i_spyslc_pb_we,
-      i_spyslc_pb_wdata   => i_spyslc_pb_wdata,
-      i_spyslc_re         => i_spyslc_re,
-      i_spyslc_addr       => i_spyslc_addr,
-      i_spyslc_meta_addr  => i_spyslc_meta_addr,
-      i_spyslc_meta_we    => i_spyslc_meta_we,
-      o_spyslc_data       => o_spyslc_data,
-      o_spyslc_meta_rdata => o_spyslc_meta_rdata,
-      i_spyslc_meta_wdata => i_spyslc_meta_wdata,
-      o_spyslc_af         => o_spyslc_af,
-      o_spyslc_empty      => o_spyslc_empty,
-      -- Segment Spybuffer
-      i_spyseg_fc_we      => i_spyseg_fc_we,
-      i_spyseg_fc_re      => i_spyseg_fc_re,
-      i_spyseg_freeze     => i_spyseg_freeze,
-      i_spyseg_playback   => i_spyseg_playback,
-      i_spyseg_pb_we      => i_spyseg_pb_we,
-      i_spyseg_pb_wdata   => i_spyseg_pb_wdata,
-      i_spyseg_re         => i_spyseg_re,
-      i_spyseg_addr       => i_spyseg_addr,
-      i_spyseg_meta_addr  => i_spyseg_meta_addr,
-      i_spyseg_meta_we    => i_spyseg_meta_we,
-      o_spyseg_data       => o_spyseg_data,
-      o_spyseg_meta_rdata => o_spyseg_meta_rdata,
-      i_spyseg_meta_wdata => i_spyseg_meta_wdata,
-      o_spyseg_af         => o_spyseg_af,
-      o_spyseg_empty      => o_spyseg_empty
+      o_seg     => o_seg
     );
 
 end architecture behavioral;
