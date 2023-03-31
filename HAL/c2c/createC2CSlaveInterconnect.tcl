@@ -127,10 +127,14 @@ read_vhdl "${BD_PATH}/../../../configs/${build_name}/autogen/AXI_slave_pkg.vhd"
 # why start_gui / stop_gui?
 # see: https://forums.xilinx.com/t5/Vivado-TCL-Community/running-write-bd-layout-in-batch-mode/td-p/948476
 # the gui will open and close for a second to generate the svg outputs
-if {$regenerate_svg && [info exists ::env(DISPLAY) ]} {
-   start_gui
-   write_bd_layout -force -format svg -orientation portrait ${BD_OUTPUT_PATH}/${fpga_shortname}/c2cSlave/c2cSlave.svg
-   stop_gui
+if { [catch start_gui] == 0 } { 
+    if {$regenerate_svg && [info exists ::env(DISPLAY) ]} {
+	start_gui
+	write_bd_layout -force -format svg -orientation portrait ${BD_OUTPUT_PATH}/${fpga_shortname}/c2cSlave/c2cSlave.svg
+	stop_gui
+    }
+} else { 
+    puts "INFO: gui did not open, skip write block design layout"
 }
 
 validate_bd_design
