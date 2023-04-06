@@ -220,6 +220,7 @@ def print_tv_list(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process
 
 
 def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=[-99], tv_thread_mapping=[0,1,2]):
+
     evt                = 0
     ret_val            = 1
     pass_count         = 0
@@ -241,9 +242,12 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
           '\n','n_candidates', n_candidates,
           '\n','e_idx', e_idx,
           '\n','rtl_tv', rtl_tv,
+          '\n','[type(x[0]) for x in rtl,tv]', [type(x[0]) for x in rtl_tv],
           '\n','tolerances', tolerances,
           '\n','output_path',output_path,
           '\n','stationNum',stationNum)
+
+    
 
     stationNum_internal = []
     stationID           = []
@@ -253,9 +257,12 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     else:
         stationNum_internal = stationNum
 
+    ### Populate tv_format_bf with empty bitfieldword(s)
     for this_candidate in range(n_candidates):
         stationID.append(station_id_to_name(stationNum_internal[this_candidate]))
+        print(f"Calling getBitFieldWord with tvformat {tvformat} and stationID[this_candidate] {stationID[this_candidate]} / returning",RTL_DFSL.getBitFieldWord(tvformat,  stationID[this_candidate]))
         tv_format_bf.append(RTL_DFSL.getBitFieldWord(tvformat,  stationID[this_candidate]))
+        
         pp_comparison_list[stationID[this_candidate]] = []
         for object in tv_format_bf[this_candidate]:
             for field in object.fields:
@@ -265,6 +272,8 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     #print ("tv_format_failure_cnt = ",tv_format_failure_cnt)
     #print ("station_failure_cnt = ",station_failure_cnt)
     print ("stationID = ", stationID)
+    print ("tv_format_bf",tv_format_bf)
+    print ("station_failure_cnt",station_failure_cnt)
     print ("len(tv_format_bf) = ",len(tv_format_bf))
     print ("len(tv_bcid_list) = ",len(tv_bcid_list))
 
@@ -277,15 +286,11 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
             print("IACOPO - Just a test:")    
 
             for this_candidate in range(n_candidates):  ## loop over N. ports
-                print("CHECK - ievent",ievent)
-                print("CHECK - this_candidate = ", this_candidate)
-                print("CHECK - len(tv_bcid_list)",len(tv_bcid_list))
-                print("CHECK - len(tv_thread_mapping)",len(tv_thread_mapping))
-                #print ("this_candidate = ", this_candidate, " thread id = ", tv_thread_mapping[this_candidate], " tv_format = ",tvformat,flush=True)
-                
-                print("IACOPO - stationID[this_candidate]",stationID[this_candidate])
                 print("IACOPO - ievent",ievent)
-                #print("IACOPO - tv_bcid_list[ievent]",tv_bcid_list[ievent])
+                print("IACOPO - this_candidate = ", this_candidate)
+                print("IACOPO - len(tv_bcid_list)",len(tv_bcid_list))
+                print("IACOPO - len(tv_thread_mapping)",len(tv_thread_mapping))
+                print("IACOPO - stationID[this_candidate]",stationID[this_candidate])
                 #print("IACOPO - this_candidate",this_candidate)
                 #print("IACOPO - tv_thread_mapping",tv_thread_mapping)
                 #print("IACOPO - tv_thread_mapping[this_candidate]",tv_thread_mapping[this_candidate])
@@ -296,16 +301,35 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     RTL_DFSL.clear()
                     tv_format_val.clear()
                     comparison_data.clear()
+                    
+                    ### Retrieve EXP(ected) DF and BF from TV
+                    if tvformat == "TDCPOLMUX2TAR" or tvformat == "TAR2HPS": ## maybe need to expand this use-case
+                        EXP_DF = tv_bcid_list[ievent].DF_MDT.copy()
+                    else:
+                        EXP_DF = tv_bcid_list[ievent].DF_SL.copy()
 
-                    EXP_DF = tv_bcid_list[ievent].DF_SL.copy()               #For comparing hits, will have to look at DF_MDT
-                    #print("IACOPO - EXP_DF",EXP_DF)
-                    #print("IACOPO - EXP_DF[tv_thread_mapping[this_candidate]]",EXP_DF[tv_thread_mapping[this_candidate]])
-                    EXP_BF = EXP_DF[tv_thread_mapping[this_candidate]].getBitFieldWord(tvformat, stationID[this_candidate],dbg=True)
+                    # print("IACOPO - EXP_DF",EXP_DF)
+                    # print("IACOPO - EXP_DF[tv_thread_mapping[this_candidate]]",EXP_DF[tv_thread_mapping[this_candidate]])
+                    
+
+                    EXP_BF = EXP_DF[tv_thread_mapping[this_candidate]].getBitFieldWord(tvformat, stationID[this_candidate]) 
+                    #EXP_BF = EXP_DF[tv_thread_mapping[6]].getBitFieldWord(tvformat, stationID[6]) 
+                    print("\n\n\n")
+                    print("IACOPO - After retrieving EXP_BF")
                     print("IACOPO - this_candidate",this_candidate)  
                     print("IACOPO - tvformat",tvformat)
                     print("IACOPO - stationID[",this_candidate,"]=",stationID[this_candidate])
                     print("IACOPO - EXP_DF",EXP_DF)
                     print("IACOPO - EXP_BF",EXP_BF)
+                    
+                    ### Workaround for TDCPOLMUX2TAR to have empty TV marked as 0                
+                    if tvformat == "TDCPOLMUX2TAR" or tvformat == "TAR2HPS":
+                        if type(EXP_BF) is list and len(EXP_BF)==0:
+                            RTL_DFSL.fillBitFieldWord(tvformat,data=[0],stationID=stationID[this_candidate])
+                            EXP_BF= RTL_DFSL.getBitFieldWord(tvformat,stationID=stationID[this_candidate])
+                            RTL_DFSL.clear()
+
+                    print("IACOPO - EXP_BF (after workaround)",EXP_BF)
 
                     if evt + 1 <= len(rtl_tv[this_candidate]):
                         if('x' in str(rtl_tv[this_candidate][evt])):
@@ -313,14 +337,22 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                             rtl_tv_i =  0
                         else:
                             rtl_tv_i = rtl_tv[this_candidate][evt]
+                            print("rtl_tv_i seems right:" , rtl_tv_i)
                     else:
                         rtl_tv_i = 0
                         
-                    print("ciaociao len of tv_format_bf[this_candidate]",tv_format_bf[this_candidate])
-                    print(f"a test: RTL_DFSL.getBitFieldWord({tvformat},  {stationID[this_candidate]}):",RTL_DFSL.getBitFieldWord(tvformat,  stationID[this_candidate]))
+                    # print("ciaociao tv_format_bf[this_candidate]",tv_format_bf[this_candidate])
+                    # print(f"a test: RTL_DFSL.getBitFieldWord({tvformat},  {stationID[this_candidate]}):",RTL_DFSL.getBitFieldWord(tvformat,  stationID[this_candidate]))
 
-                    tv_format_bf[this_candidate][0].set_bitwordvalue(rtl_tv_i)
-                    tv_format_val.append(tv_format_bf[this_candidate][0].get_bitwordvalue())
+                    ### Fill tv_format_bf placeholder with bitwords from RTL
+                    if tvformat == "TDCPOLMUX2TAR" or tvformat == "TAR2HPS":  ## special case - maybe need to expand
+                        tv_format_bf[this_candidate]=rtl_tv_i 
+                        tv_format_val.append(tv_format_bf[this_candidate])
+                    else:
+                        tv_format_bf[this_candidate][0].set_bitwordvalue(rtl_tv_i)
+                        tv_format_val.append(tv_format_bf[this_candidate][0].get_bitwordvalue())
+
+                    print("IACOPO - tv_format_val",tv_format_val)
                     if (stationID[this_candidate] != "NONE"):
                         RTL_DFSL.fillBitFieldWord(tvformat, stationID[this_candidate], tv_format_val)
                         RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID[this_candidate])
@@ -328,18 +360,20 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         RTL_DFSL.fillBitFieldWord(tvformat, data=tv_format_val,stationID="")
                         RTL_BF = RTL_DFSL.getBitFieldWord(tvformat)
 
+                    print("IACOPO - tv_format_val",tv_format_val)
 
+                    #print("RTL_DFSL",RTL_DFSL)
+                    print("RTL_BF",RTL_BF)
+                    print("RTL_BF[0].get_bitwordvalue()",RTL_BF[0].get_bitwordvalue())
                     RTL_BF[0].set_bitwordvalue(tv_format_val[0])
-                    # print("events.py: EXP_BF=",EXP_BF[0])
-                    #print("events.py: RTL_BF=",RTL_BF[0].print_bitFieldWord())
-                    #print("events.py ==== Calling DF Print:")
-                    #RTL_DFSL.print_summary()
+                    print("RTL_BF[0].get_bitwordvalue()",RTL_BF[0].get_bitwordvalue())
 
-
-
+                    ### Do the comparison
                     results = EXP_BF[0].compare_bitwordvalue(
                         RTL_BF[0], tolerances
                     )  # compare_bitfieldwordvalue returns list
+
+                    print("IACOPO - results", results)
                     if stationNum[this_candidate] != -99:
                         print("\n\tSL candidate at port ", this_candidate, ":\t",tvformat,", Station:",stationID[this_candidate], "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
                     else:
@@ -360,12 +394,18 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
                     fail_index                     = results[2].index("FAIL")
                     tv_format_failure_cnt          = station_failure_cnt[stationID[this_candidate]]
-                    for row in results[1]:                        
+                    print("IACOPO - fail_index",fail_index)
+                    print("IACOPO - tv_format_failure_cnt",tv_format_failure_cnt)
+                    for row in results[1]:     
+                        if row[0] not in tv_format_failure_cnt.keys():
+                            tv_format_failure_cnt[row[0]]=0
                         tv_format_failure_cnt[row[0]] += row[fail_index]
                     station_failure_cnt[stationID[this_candidate]] = tv_format_failure_cnt  
 
                     #tmp_DF    = tv_bcid_list[ievent].DF_SL[0].getBitFieldWord(tvformat, stationID)
-                    tv_header_bf      = EXP_DF[0].getBitFieldWord(tvformat, stationID[this_candidate])
+                    #tv_header_bf      = EXP_DF[0].getBitFieldWord(tvformat, stationID[this_candidate])
+                    tv_header_bf      = EXP_BF
+                    print("IACOPO - tv_header_bf",tv_header_bf)
                     pd_columns_header = tvtools.get_pd_headers(tv_header_bf[0], True)
                     this_data         = tvtools.make_list(
                         results[1],
