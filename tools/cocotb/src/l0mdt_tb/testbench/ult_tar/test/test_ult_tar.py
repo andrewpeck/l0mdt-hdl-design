@@ -316,7 +316,7 @@ def ult_tar_test(dut):
 
 
     #Block Latency
-    yield ClockCycles(dut.clock, 100)
+    yield ClockCycles(dut.clock, 1000)
     ##
 
     print("\n\n\n * * * perform testvector comparison test * * * \n\n\n")
@@ -367,7 +367,7 @@ def ult_tar_test(dut):
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
 
-
+    print("recvd_events_intf",recvd_events_intf)
     for n_op_intf in range (UltTarPorts.n_output_interfaces):
         events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(
             tv_bcid_list, 
@@ -388,7 +388,6 @@ def ult_tar_test(dut):
         for key in field_fail_count_i.keys():
             field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ key, "FAIL COUNT"])
   
-
     events.results_summary(
         num_events_to_process,
         pass_count,
