@@ -109,8 +109,10 @@ architecture Behavioral of mgt_wrapper is
   attribute DONT_TOUCH               : string;
   attribute DONT_TOUCH of reset_tree : signal is "true";
 
-  signal refclk : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
-  signal recclk : std_logic;
+  signal refclk         : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+  signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+  signal refclk_bufg    : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+  signal recclk         : std_logic;
 
   -- TODO: initialize these so that uninstantiated MGTs will show DEADBEEF or something
   signal tx_resets : mgt_reset_rt_array (c_NUM_MGTS-1 downto 0);
@@ -185,7 +187,7 @@ begin
           )
         port map (
           O     => refclk(I),
-          ODIV2 => open,
+          ODIV2 => refclk_mirrors(I),
           CEB   => '0',
           I     => refclk_i_p(I),
           IB    => refclk_i_n(I)
@@ -504,5 +506,40 @@ begin
     end generate sl_gen;
 
   end generate mgt_gen;
+
+  --------------------------------------------------------------------------------
+  -- Refclk Monitors
+  --------------------------------------------------------------------------------
+
+  refclk_mirror : for I in 0 to c_NUM_REFCLKS-2 generate
+    signal clk_freq : std_logic_vector (31 downto 0) := (others => '0');
+  begin
+
+    mgtclk_img_bufg : BUFG_GT
+      port map(
+        I       => refclk_mirrors(I),
+        O       => refclk_bufg(I),
+        CE      => '1',
+        DIV     => (others => '0'),
+        CLR     => '0',
+        CLRMASK => '0',
+        CEMASK  => '0'
+        );
+
+    i_clk_frequency : entity work.clk_frequency
+      generic map (
+        -- NOTE: this needs to be kept up to date with whatever the axi clock frequency is
+        clk_a_freq => 50_000_000
+        )
+      port map (
+        reset => reset,
+        clk_a => clocks.axiclock,
+        clk_b => refclk_bufg(I),
+        rate  => clk_freq
+        );
+
+    mon.refclk_freq(I) <= clk_freq;
+
+  end generate;
 
 end Behavioral;

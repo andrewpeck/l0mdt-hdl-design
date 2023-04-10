@@ -141,4 +141,38 @@ control logic should run NOT on this asynchronous domain -->
       <node id="MGT_126" address="0x2f4" fwinfo="type=array" module="file://MGT.xml"/>
       <node id="MGT_127" address="0x2fa" fwinfo="type=array" module="file://MGT.xml"/>
   </node>
+
+  <node id="REFCLK_FREQ_0" address="0x400" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_1" address="0x401" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_2" address="0x402" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_3" address="0x403" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_4" address="0x404" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_5" address="0x405" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_6" address="0x406" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_7" address="0x407" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_8" address="0x408" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_9" address="0x409" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_10" address="0x40a" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_11" address="0x40b" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_12" address="0x40c" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_13" address="0x40d" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_14" address="0x40e" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_15" address="0x40f" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_16" address="0x410" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_17" address="0x411" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_18" address="0x412" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_19" address="0x413" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_20" address="0x414" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_21" address="0x415" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_22" address="0x416" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_23" address="0x417" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_24" address="0x418" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_25" address="0x419" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_26" address="0x41a" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_27" address="0x41b" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_28" address="0x41c" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_29" address="0x41d" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_30" address="0x41e" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+  <node id="REFCLK_FREQ_31" address="0x41f" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+
 </node>
