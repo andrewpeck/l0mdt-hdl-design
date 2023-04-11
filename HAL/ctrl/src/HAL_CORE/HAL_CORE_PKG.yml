@@ -73,15 +73,6 @@ types:
 
 - HAL_CORE_MGT_MON_t:
   - MGT : { type: HAL_CORE_MGT_MGT_MON_t_ARRAY }
-
-
-- HAL_CORE_MGT_CTRL_t:
-  - MGT : { type: HAL_CORE_MGT_MGT_CTRL_t_ARRAY }
-
-
-- HAL_CORE_MON_t:
-  - CLOCKING : { type: HAL_CORE_CLOCKING_MON_t }
-  - MGT : { type: HAL_CORE_MGT_MON_t }
   - REFCLK_FREQ_0 : { type: logic, range : [ 32 - 1 , 0 ] }
   - REFCLK_FREQ_1 : { type: logic, range : [ 32 - 1 , 0 ] }
   - REFCLK_FREQ_2 : { type: logic, range : [ 32 - 1 , 0 ] }
@@ -114,6 +105,15 @@ types:
   - REFCLK_FREQ_29 : { type: logic, range : [ 32 - 1 , 0 ] }
   - REFCLK_FREQ_30 : { type: logic, range : [ 32 - 1 , 0 ] }
   - REFCLK_FREQ_31 : { type: logic, range : [ 32 - 1 , 0 ] }
+
+
+- HAL_CORE_MGT_CTRL_t:
+  - MGT : { type: HAL_CORE_MGT_MGT_CTRL_t_ARRAY }
+
+
+- HAL_CORE_MON_t:
+  - CLOCKING : { type: HAL_CORE_CLOCKING_MON_t }
+  - MGT : { type: HAL_CORE_MGT_MON_t }
 
 
 - HAL_CORE_CTRL_t:

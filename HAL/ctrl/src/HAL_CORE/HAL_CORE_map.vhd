@@ -41,8 +41,8 @@ architecture behavioral of HAL_CORE_map is
 
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 1055);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 1055) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 1071);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 1071) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
@@ -3942,70 +3942,70 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  reg_data(783)( 1);                                    --
           localRdData( 2)            <=  reg_data(783)( 2);                                    --
           localRdData( 3)            <=  reg_data(783)( 3);                                    --
-        when 1024 => --0x400
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_0;                                    --Reference clock frequency in Hz
-        when 1025 => --0x401
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_1;                                    --Reference clock frequency in Hz
-        when 1026 => --0x402
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_2;                                    --Reference clock frequency in Hz
-        when 1027 => --0x403
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_3;                                    --Reference clock frequency in Hz
-        when 1028 => --0x404
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_4;                                    --Reference clock frequency in Hz
-        when 1029 => --0x405
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_5;                                    --Reference clock frequency in Hz
-        when 1030 => --0x406
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_6;                                    --Reference clock frequency in Hz
-        when 1031 => --0x407
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_7;                                    --Reference clock frequency in Hz
-        when 1032 => --0x408
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_8;                                    --Reference clock frequency in Hz
-        when 1033 => --0x409
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_9;                                    --Reference clock frequency in Hz
-        when 1034 => --0x40a
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_10;                                   --Reference clock frequency in Hz
-        when 1035 => --0x40b
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_11;                                   --Reference clock frequency in Hz
-        when 1036 => --0x40c
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_12;                                   --Reference clock frequency in Hz
-        when 1037 => --0x40d
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_13;                                   --Reference clock frequency in Hz
-        when 1038 => --0x40e
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_14;                                   --Reference clock frequency in Hz
-        when 1039 => --0x40f
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_15;                                   --Reference clock frequency in Hz
         when 1040 => --0x410
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_16;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_0;                                --Reference clock frequency in Hz
         when 1041 => --0x411
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_17;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_1;                                --Reference clock frequency in Hz
         when 1042 => --0x412
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_18;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_2;                                --Reference clock frequency in Hz
         when 1043 => --0x413
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_19;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_3;                                --Reference clock frequency in Hz
         when 1044 => --0x414
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_20;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_4;                                --Reference clock frequency in Hz
         when 1045 => --0x415
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_21;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_5;                                --Reference clock frequency in Hz
         when 1046 => --0x416
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_22;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_6;                                --Reference clock frequency in Hz
         when 1047 => --0x417
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_23;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_7;                                --Reference clock frequency in Hz
         when 1048 => --0x418
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_24;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_8;                                --Reference clock frequency in Hz
         when 1049 => --0x419
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_25;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_9;                                --Reference clock frequency in Hz
         when 1050 => --0x41a
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_26;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_10;                               --Reference clock frequency in Hz
         when 1051 => --0x41b
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_27;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_11;                               --Reference clock frequency in Hz
         when 1052 => --0x41c
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_28;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_12;                               --Reference clock frequency in Hz
         when 1053 => --0x41d
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_29;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_13;                               --Reference clock frequency in Hz
         when 1054 => --0x41e
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_30;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_14;                               --Reference clock frequency in Hz
         when 1055 => --0x41f
-          localRdData(31 downto  0)  <=  Mon.REFCLK_FREQ_31;                                   --Reference clock frequency in Hz
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_15;                               --Reference clock frequency in Hz
+        when 1056 => --0x420
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_16;                               --Reference clock frequency in Hz
+        when 1057 => --0x421
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_17;                               --Reference clock frequency in Hz
+        when 1058 => --0x422
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_18;                               --Reference clock frequency in Hz
+        when 1059 => --0x423
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_19;                               --Reference clock frequency in Hz
+        when 1060 => --0x424
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_20;                               --Reference clock frequency in Hz
+        when 1061 => --0x425
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_21;                               --Reference clock frequency in Hz
+        when 1062 => --0x426
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_22;                               --Reference clock frequency in Hz
+        when 1063 => --0x427
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_23;                               --Reference clock frequency in Hz
+        when 1064 => --0x428
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_24;                               --Reference clock frequency in Hz
+        when 1065 => --0x429
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_25;                               --Reference clock frequency in Hz
+        when 1066 => --0x42a
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_26;                               --Reference clock frequency in Hz
+        when 1067 => --0x42b
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_27;                               --Reference clock frequency in Hz
+        when 1068 => --0x42c
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_28;                               --Reference clock frequency in Hz
+        when 1069 => --0x42d
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_29;                               --Reference clock frequency in Hz
+        when 1070 => --0x42e
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_30;                               --Reference clock frequency in Hz
+        when 1071 => --0x42f
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK_FREQ_31;                               --Reference clock frequency in Hz
 
 
           when others =>

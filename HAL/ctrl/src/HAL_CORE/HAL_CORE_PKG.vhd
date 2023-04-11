@@ -138,25 +138,6 @@ package HAL_CORE_CTRL is
 
    type HAL_CORE_MGT_MON_t is record
       MGT : HAL_CORE_MGT_MGT_MON_t_ARRAY;
-   end record HAL_CORE_MGT_MON_t;
-   attribute w of HAL_CORE_MGT_MON_t : type is 3712;
-   function width(x: HAL_CORE_MGT_MON_t) return natural;
-   function convert(x: HAL_CORE_MGT_MON_t; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_MON_t) return HAL_CORE_MGT_MON_t;
-   function zero(tpl: HAL_CORE_MGT_MON_t) return HAL_CORE_MGT_MON_t;
-
-   type HAL_CORE_MGT_CTRL_t is record
-      MGT : HAL_CORE_MGT_MGT_CTRL_t_ARRAY;
-   end record HAL_CORE_MGT_CTRL_t;
-   attribute w of HAL_CORE_MGT_CTRL_t : type is 4608;
-   function width(x: HAL_CORE_MGT_CTRL_t) return natural;
-   function convert(x: HAL_CORE_MGT_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_CTRL_t) return HAL_CORE_MGT_CTRL_t;
-   function zero(tpl: HAL_CORE_MGT_CTRL_t) return HAL_CORE_MGT_CTRL_t;
-
-   type HAL_CORE_MON_t is record
-      CLOCKING : HAL_CORE_CLOCKING_MON_t;
-      MGT : HAL_CORE_MGT_MON_t;
       REFCLK_FREQ_0 : std_logic_vector(32 - 1 downto 0);
       REFCLK_FREQ_1 : std_logic_vector(32 - 1 downto 0);
       REFCLK_FREQ_2 : std_logic_vector(32 - 1 downto 0);
@@ -189,6 +170,25 @@ package HAL_CORE_CTRL is
       REFCLK_FREQ_29 : std_logic_vector(32 - 1 downto 0);
       REFCLK_FREQ_30 : std_logic_vector(32 - 1 downto 0);
       REFCLK_FREQ_31 : std_logic_vector(32 - 1 downto 0);
+   end record HAL_CORE_MGT_MON_t;
+   attribute w of HAL_CORE_MGT_MON_t : type is 4736;
+   function width(x: HAL_CORE_MGT_MON_t) return natural;
+   function convert(x: HAL_CORE_MGT_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_MON_t) return HAL_CORE_MGT_MON_t;
+   function zero(tpl: HAL_CORE_MGT_MON_t) return HAL_CORE_MGT_MON_t;
+
+   type HAL_CORE_MGT_CTRL_t is record
+      MGT : HAL_CORE_MGT_MGT_CTRL_t_ARRAY;
+   end record HAL_CORE_MGT_CTRL_t;
+   attribute w of HAL_CORE_MGT_CTRL_t : type is 4608;
+   function width(x: HAL_CORE_MGT_CTRL_t) return natural;
+   function convert(x: HAL_CORE_MGT_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_CTRL_t) return HAL_CORE_MGT_CTRL_t;
+   function zero(tpl: HAL_CORE_MGT_CTRL_t) return HAL_CORE_MGT_CTRL_t;
+
+   type HAL_CORE_MON_t is record
+      CLOCKING : HAL_CORE_CLOCKING_MON_t;
+      MGT : HAL_CORE_MGT_MON_t;
    end record HAL_CORE_MON_t;
    attribute w of HAL_CORE_MON_t : type is 4737;
    function width(x: HAL_CORE_MON_t) return natural;
@@ -1035,85 +1035,6 @@ package body HAL_CORE_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.MGT);
-      return w;
-   end function width;
-   function convert(x: HAL_CORE_MGT_MON_t; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      variable w : integer;
-      variable u : integer := tpl'left;
-   begin
-      if tpl'ascending then
-         w := width(x.MGT);
-         y(u to u+w-1) := convert(x.MGT, y(u to u+w-1));
-      else
-         w := width(x.MGT);
-         y(u downto u-w+1) := convert(x.MGT, y(u downto u-w+1));
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_MON_t) return HAL_CORE_MGT_MON_t is
-      variable y : HAL_CORE_MGT_MON_t;
-      variable w : integer;
-      variable u : integer := x'left;
-   begin
-      if x'ascending then
-         w := width(tpl.MGT);
-         y.MGT := convert(x(u to u+w-1), tpl.MGT);
-      else
-         w := width(tpl.MGT);
-         y.MGT := convert(x(u downto u-w+1), tpl.MGT);
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: HAL_CORE_MGT_MON_t) return HAL_CORE_MGT_MON_t is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-
-   function width(x: HAL_CORE_MGT_CTRL_t) return natural is
-      variable w : natural := 0;
-   begin
-      w := w + width(x.MGT);
-      return w;
-   end function width;
-   function convert(x: HAL_CORE_MGT_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      variable w : integer;
-      variable u : integer := tpl'left;
-   begin
-      if tpl'ascending then
-         w := width(x.MGT);
-         y(u to u+w-1) := convert(x.MGT, y(u to u+w-1));
-      else
-         w := width(x.MGT);
-         y(u downto u-w+1) := convert(x.MGT, y(u downto u-w+1));
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_CTRL_t) return HAL_CORE_MGT_CTRL_t is
-      variable y : HAL_CORE_MGT_CTRL_t;
-      variable w : integer;
-      variable u : integer := x'left;
-   begin
-      if x'ascending then
-         w := width(tpl.MGT);
-         y.MGT := convert(x(u to u+w-1), tpl.MGT);
-      else
-         w := width(tpl.MGT);
-         y.MGT := convert(x(u downto u-w+1), tpl.MGT);
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: HAL_CORE_MGT_CTRL_t) return HAL_CORE_MGT_CTRL_t is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-
-   function width(x: HAL_CORE_MON_t) return natural is
-      variable w : natural := 0;
-   begin
-      w := w + width(x.CLOCKING);
-      w := w + width(x.MGT);
       w := w + width(x.REFCLK_FREQ_0);
       w := w + width(x.REFCLK_FREQ_1);
       w := w + width(x.REFCLK_FREQ_2);
@@ -1148,15 +1069,12 @@ package body HAL_CORE_CTRL is
       w := w + width(x.REFCLK_FREQ_31);
       return w;
    end function width;
-   function convert(x: HAL_CORE_MON_t; tpl: std_logic_vector) return std_logic_vector is
+   function convert(x: HAL_CORE_MGT_MON_t; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
       variable w : integer;
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
-         w := width(x.CLOCKING);
-         y(u to u+w-1) := convert(x.CLOCKING, y(u to u+w-1));
-         u := u + w;
          w := width(x.MGT);
          y(u to u+w-1) := convert(x.MGT, y(u to u+w-1));
          u := u + w;
@@ -1256,9 +1174,6 @@ package body HAL_CORE_CTRL is
          w := width(x.REFCLK_FREQ_31);
          y(u to u+w-1) := convert(x.REFCLK_FREQ_31, y(u to u+w-1));
       else
-         w := width(x.CLOCKING);
-         y(u downto u-w+1) := convert(x.CLOCKING, y(u downto u-w+1));
-         u := u - w;
          w := width(x.MGT);
          y(u downto u-w+1) := convert(x.MGT, y(u downto u-w+1));
          u := u - w;
@@ -1360,15 +1275,12 @@ package body HAL_CORE_CTRL is
       end if;
       return y;
    end function convert;
-   function convert(x: std_logic_vector; tpl: HAL_CORE_MON_t) return HAL_CORE_MON_t is
-      variable y : HAL_CORE_MON_t;
+   function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_MON_t) return HAL_CORE_MGT_MON_t is
+      variable y : HAL_CORE_MGT_MON_t;
       variable w : integer;
       variable u : integer := x'left;
    begin
       if x'ascending then
-         w := width(tpl.CLOCKING);
-         y.CLOCKING := convert(x(u to u+w-1), tpl.CLOCKING);
-         u := u + w;
          w := width(tpl.MGT);
          y.MGT := convert(x(u to u+w-1), tpl.MGT);
          u := u + w;
@@ -1468,9 +1380,6 @@ package body HAL_CORE_CTRL is
          w := width(tpl.REFCLK_FREQ_31);
          y.REFCLK_FREQ_31 := convert(x(u to u+w-1), tpl.REFCLK_FREQ_31);
       else
-         w := width(tpl.CLOCKING);
-         y.CLOCKING := convert(x(u downto u-w+1), tpl.CLOCKING);
-         u := u - w;
          w := width(tpl.MGT);
          y.MGT := convert(x(u downto u-w+1), tpl.MGT);
          u := u - w;
@@ -1569,6 +1478,97 @@ package body HAL_CORE_CTRL is
          u := u - w;
          w := width(tpl.REFCLK_FREQ_31);
          y.REFCLK_FREQ_31 := convert(x(u downto u-w+1), tpl.REFCLK_FREQ_31);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: HAL_CORE_MGT_MON_t) return HAL_CORE_MGT_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: HAL_CORE_MGT_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.MGT);
+      return w;
+   end function width;
+   function convert(x: HAL_CORE_MGT_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.MGT);
+         y(u to u+w-1) := convert(x.MGT, y(u to u+w-1));
+      else
+         w := width(x.MGT);
+         y(u downto u-w+1) := convert(x.MGT, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_CTRL_t) return HAL_CORE_MGT_CTRL_t is
+      variable y : HAL_CORE_MGT_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.MGT);
+         y.MGT := convert(x(u to u+w-1), tpl.MGT);
+      else
+         w := width(tpl.MGT);
+         y.MGT := convert(x(u downto u-w+1), tpl.MGT);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: HAL_CORE_MGT_CTRL_t) return HAL_CORE_MGT_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: HAL_CORE_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.CLOCKING);
+      w := w + width(x.MGT);
+      return w;
+   end function width;
+   function convert(x: HAL_CORE_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.CLOCKING);
+         y(u to u+w-1) := convert(x.CLOCKING, y(u to u+w-1));
+         u := u + w;
+         w := width(x.MGT);
+         y(u to u+w-1) := convert(x.MGT, y(u to u+w-1));
+      else
+         w := width(x.CLOCKING);
+         y(u downto u-w+1) := convert(x.CLOCKING, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.MGT);
+         y(u downto u-w+1) := convert(x.MGT, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: HAL_CORE_MON_t) return HAL_CORE_MON_t is
+      variable y : HAL_CORE_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.CLOCKING);
+         y.CLOCKING := convert(x(u to u+w-1), tpl.CLOCKING);
+         u := u + w;
+         w := width(tpl.MGT);
+         y.MGT := convert(x(u to u+w-1), tpl.MGT);
+      else
+         w := width(tpl.CLOCKING);
+         y.CLOCKING := convert(x(u downto u-w+1), tpl.CLOCKING);
+         u := u - w;
+         w := width(tpl.MGT);
+         y.MGT := convert(x(u downto u-w+1), tpl.MGT);
       end if;
       return y;
    end function convert;
