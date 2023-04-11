@@ -71,40 +71,14 @@ types:
 
 - HAL_CORE_MGT_MGT_CTRL_t_ARRAY: {array : [ 128 -1 , 0 ], type : HAL_CORE_MGT_MGT_CTRL_t}
 
+- HAL_CORE_MGT_REFCLK_MON_t:
+  - FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
+
+- HAL_CORE_MGT_REFCLK_MON_t_ARRAY: {array : [ 32 -1 , 0 ], type : HAL_CORE_MGT_REFCLK_MON_t}
+
 - HAL_CORE_MGT_MON_t:
   - MGT : { type: HAL_CORE_MGT_MGT_MON_t_ARRAY }
-  - REFCLK_FREQ_0 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_1 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_2 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_3 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_4 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_5 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_6 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_7 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_8 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_9 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_10 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_11 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_12 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_13 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_14 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_15 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_16 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_17 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_18 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_19 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_20 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_21 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_22 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_23 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_24 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_25 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_26 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_27 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_28 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_29 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_30 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - REFCLK_FREQ_31 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - REFCLK : { type: HAL_CORE_MGT_REFCLK_MON_t_ARRAY }
 
 
 - HAL_CORE_MGT_CTRL_t:

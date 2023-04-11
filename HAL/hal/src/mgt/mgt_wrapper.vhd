@@ -538,7 +538,7 @@ begin
         rate  => clk_freq
         );
 
-    mon.refclk_freq(I) <= clk_freq;
+    mon.refclk(I).freq <= clk_freq;
 
   end generate;
 
