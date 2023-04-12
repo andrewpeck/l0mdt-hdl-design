@@ -513,32 +513,47 @@ begin
 
   refclk_mirror : for I in 0 to c_NUM_REFCLKS-2 generate
     signal clk_freq : std_logic_vector (31 downto 0) := (others => '0');
+
+    -- NOTE: this needs to be kept up to date with whatever the axi clock
+    -- frequency is
+    constant axi_refclk_freq : integer := 50_000_000;
+
   begin
 
-    mgtclk_img_bufg : BUFG_GT
-      port map(
-        I       => refclk_mirrors(I),
-        O       => refclk_bufg(I),
-        CE      => '1',
-        DIV     => (others => '0'),
-        CLR     => '0',
-        CLRMASK => '0',
-        CEMASK  => '0'
-        );
+    -- NOTE: the AXI C2C conflicts with this and generates an error, so only
+    -- measure the freq of other clocks. It doesn't make sense anyway as we use the
+    -- AXI clock to monitor itself?
+    axi : if (c_REFCLK_MAP(I).freq = REF_AXI_C2C) generate
+      mon.refclk(I).freq <= std_logic_vector(to_unsigned(axi_refclk_freq, 32));
+    end generate;
 
-    i_clk_frequency : entity work.clk_frequency
-      generic map (
-        -- NOTE: this needs to be kept up to date with whatever the axi clock frequency is
-        clk_a_freq => 50_000_000
-        )
-      port map (
-        reset => reset,
-        clk_a => clocks.axiclock,
-        clk_b => refclk_bufg(I),
-        rate  => clk_freq
-        );
+    no_axi : if (c_REFCLK_MAP(I).freq /= REF_AXI_C2C) generate
 
-    mon.refclk(I).freq <= clk_freq;
+      mon.refclk(I).freq <= clk_freq;
+
+      mgtclk_img_bufg : BUFG_GT
+        port map(
+          I       => refclk_mirrors(I),
+          O       => refclk_bufg(I),
+          CE      => '1',
+          DIV     => (others => '0'),
+          CLR     => '0',
+          CLRMASK => '0',
+          CEMASK  => '0'
+          );
+
+      i_clk_frequency : entity work.clk_frequency
+        generic map (
+          clk_a_freq => 50_000_000
+          )
+        port map (
+          reset => reset,
+          clk_a => clocks.axiclock,
+          clk_b => refclk_bufg(I),
+          rate  => clk_freq
+          );
+    end generate;
+
 
   end generate;
 
