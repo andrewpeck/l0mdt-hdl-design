@@ -126,4 +126,9 @@
     <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
     <!-- node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/ -->
   </node>
+
+  <node id="SB_DUMMY" address="0x1440"> !-- df  = "SB_DUMMY">
+    <node id="SB_MEM" address="0x0" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/>
+    <!-- node id="SB_META" address="0x20" mode="incremental" size="0x20"  fwinfo="type=mem32_0x20"/ -->
+  </node>
 </node>

@@ -38,8 +38,9 @@ module fm_data #(
    logic [15:0] 	 axi_sb_init_addr[sb_mapped_n]  = '{default:0};
    logic [axi_dw-1:0] 	 axi_sb_init_wr_data[sb_mapped_n] = '{default:0} ;
    logic 		 init_spy_mem_internal;
+   logic [32:0] 	 dummy_mon_data;
    
-   fm_rt ctrl_mon_data[sb_mapped_n];
+   fm_rt mon_data[sb_mapped_n];
 
 
    generate
@@ -47,11 +48,18 @@ module fm_data #(
 	begin
 	   if(total_sb <= sb_mapped_n)
 	     begin
-		assign ctrl_mon_data[sb_i] = ult_mon_data[sb_i];
+		assign mon_data[sb_i] = ult_mon_data[sb_i];
 	     end
 	   else
 	     begin
-		assign ctrl_mon_data[sb_i] = '{fm_data:0, fm_vld:0};
+		if(sb_i == sb_dummy_index)
+		  begin
+		     assign mon_data[sb_i] = '{dummy_mon_data[31:0], dummy_mon_data[32]};
+		  end
+		else
+		  begin
+		     assign mon_data[sb_i] = '{fm_data:0, fm_vld:0};
+		  end
 
 	     end
 	end
@@ -185,7 +193,9 @@ module fm_data #(
 				fm_ctrl_in.SB23.SB_MEM.address,
 				fm_ctrl_in.SB24.SB_MEM.address,
 				fm_ctrl_in.SB25.SB_MEM.address,
-				fm_ctrl_in.SB26.SB_MEM.address
+				fm_ctrl_in.SB26.SB_MEM.address,
+				fm_ctrl_in.SB_DUMMY.SB_MEM.address
+									    
 				};
 
 /* -----\/----- EXCLUDED -----\/-----
@@ -216,7 +226,8 @@ module fm_data #(
 				fm_ctrl_in.SB23.SB_META.address,
 				fm_ctrl_in.SB24.SB_META.address,
 				fm_ctrl_in.SB25.SB_META.address,
-				fm_ctrl_in.SB26.SB_META.address
+				fm_ctrl_in.SB26.SB_META.address,
+                                fm_ctrl_in.SB_DUMMY.SB_META.address
 				};
  -----/\----- EXCLUDED -----/\----- */
 
@@ -248,7 +259,8 @@ module fm_data #(
 					  fm_ctrl_in.SB23.SB_MEM.enable,
 					  fm_ctrl_in.SB24.SB_MEM.enable,
 					  fm_ctrl_in.SB25.SB_MEM.enable,
-					  fm_ctrl_in.SB26.SB_MEM.enable
+					  fm_ctrl_in.SB26.SB_MEM.enable,
+					  fm_ctrl_in.SB_DUMMY.SB_MEM.enable						     
 					  };
 
 
@@ -280,40 +292,42 @@ module fm_data #(
 					  fm_ctrl_in.SB23.SB_META.enable,
 					  fm_ctrl_in.SB24.SB_META.enable,
 					  fm_ctrl_in.SB25.SB_META.enable,
-					  fm_ctrl_in.SB26.SB_META.enable
+					  fm_ctrl_in.SB26.SB_META.enable,
+ 					  fm_ctrl_in.SB_DUMMY.SB_META.enable
 					  };
  -----/\----- EXCLUDED -----/\----- */
 
 
    assign axi_sb_wr_enable                = (init_spy_mem_internal == 1)? '1: {
-					     fm_ctrl_in.SB0.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB1.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB2.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB3.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB4.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB5.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB6.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB7.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB8.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB9.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB10.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB11.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB12.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB13.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB14.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB15.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB16.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB17.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB18.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB19.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB20.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB21.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB22.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB23.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB24.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB25.SB_MEM.wr_enable,
-					     fm_ctrl_in.SB26.SB_MEM.wr_enable
-					     };
+									       fm_ctrl_in.SB0.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB1.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB2.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB3.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB4.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB5.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB6.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB7.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB8.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB9.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB10.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB11.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB12.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB13.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB14.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB15.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB16.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB17.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB18.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB19.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB20.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB21.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB22.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB23.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB24.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB25.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB26.SB_MEM.wr_enable,
+									       fm_ctrl_in.SB_DUMMY.SB_MEM.wr_enable
+									       };
 
 /* -----\/----- EXCLUDED -----\/-----
    assign axi_sm_wr_enable                = {
@@ -343,41 +357,43 @@ module fm_data #(
 					     fm_ctrl_in.SB23.SB_META.wr_enable,
 					     fm_ctrl_in.SB24.SB_META.wr_enable,
 					     fm_ctrl_in.SB25.SB_META.wr_enable,
-					     fm_ctrl_in.SB26.SB_META.wr_enable
-					     };
+					     fm_ctrl_in.SB26.SB_META.wr_enable,
+ 					     fm_ctrl_in.SB_DUMMY.SB_META.wr_enable
+ };
  -----/\----- EXCLUDED -----/\----- */
-
-
-
-
+   
+   
+   
+   
    assign axi_sb_wr_data               =  (init_spy_mem_internal==1)? axi_sb_init_wr_data : {
-					  fm_ctrl_in.SB0.SB_MEM.wr_data,
-					  fm_ctrl_in.SB1.SB_MEM.wr_data,
-					  fm_ctrl_in.SB2.SB_MEM.wr_data,
-					  fm_ctrl_in.SB3.SB_MEM.wr_data,
-					  fm_ctrl_in.SB4.SB_MEM.wr_data,
-					  fm_ctrl_in.SB5.SB_MEM.wr_data,
-					  fm_ctrl_in.SB6.SB_MEM.wr_data,
-					  fm_ctrl_in.SB7.SB_MEM.wr_data,
-					  fm_ctrl_in.SB8.SB_MEM.wr_data,
-					  fm_ctrl_in.SB9.SB_MEM.wr_data,
-					  fm_ctrl_in.SB10.SB_MEM.wr_data,
-					  fm_ctrl_in.SB11.SB_MEM.wr_data,
-					  fm_ctrl_in.SB12.SB_MEM.wr_data,
-					  fm_ctrl_in.SB13.SB_MEM.wr_data,
-					  fm_ctrl_in.SB14.SB_MEM.wr_data,
-					  fm_ctrl_in.SB15.SB_MEM.wr_data,
-					  fm_ctrl_in.SB16.SB_MEM.wr_data,
-					  fm_ctrl_in.SB17.SB_MEM.wr_data,
-					  fm_ctrl_in.SB18.SB_MEM.wr_data,
-					  fm_ctrl_in.SB19.SB_MEM.wr_data,
-					  fm_ctrl_in.SB20.SB_MEM.wr_data,
-					  fm_ctrl_in.SB21.SB_MEM.wr_data,
-					  fm_ctrl_in.SB22.SB_MEM.wr_data,
-					  fm_ctrl_in.SB23.SB_MEM.wr_data,
-					  fm_ctrl_in.SB24.SB_MEM.wr_data,
-					  fm_ctrl_in.SB25.SB_MEM.wr_data,
-					  fm_ctrl_in.SB26.SB_MEM.wr_data
+											     fm_ctrl_in.SB0.SB_MEM.wr_data,
+											     fm_ctrl_in.SB1.SB_MEM.wr_data,
+											     fm_ctrl_in.SB2.SB_MEM.wr_data,
+											     fm_ctrl_in.SB3.SB_MEM.wr_data,
+											     fm_ctrl_in.SB4.SB_MEM.wr_data,
+											     fm_ctrl_in.SB5.SB_MEM.wr_data,
+											     fm_ctrl_in.SB6.SB_MEM.wr_data,
+											     fm_ctrl_in.SB7.SB_MEM.wr_data,
+											     fm_ctrl_in.SB8.SB_MEM.wr_data,
+											     fm_ctrl_in.SB9.SB_MEM.wr_data,
+											     fm_ctrl_in.SB10.SB_MEM.wr_data,
+											     fm_ctrl_in.SB11.SB_MEM.wr_data,
+											     fm_ctrl_in.SB12.SB_MEM.wr_data,
+											     fm_ctrl_in.SB13.SB_MEM.wr_data,
+											     fm_ctrl_in.SB14.SB_MEM.wr_data,
+											     fm_ctrl_in.SB15.SB_MEM.wr_data,
+											     fm_ctrl_in.SB16.SB_MEM.wr_data,
+											     fm_ctrl_in.SB17.SB_MEM.wr_data,
+											     fm_ctrl_in.SB18.SB_MEM.wr_data,
+											     fm_ctrl_in.SB19.SB_MEM.wr_data,
+											     fm_ctrl_in.SB20.SB_MEM.wr_data,
+											     fm_ctrl_in.SB21.SB_MEM.wr_data,
+											     fm_ctrl_in.SB22.SB_MEM.wr_data,
+											     fm_ctrl_in.SB23.SB_MEM.wr_data,
+											     fm_ctrl_in.SB24.SB_MEM.wr_data,
+											     fm_ctrl_in.SB25.SB_MEM.wr_data,
+											     fm_ctrl_in.SB26.SB_MEM.wr_data,
+											     fm_ctrl_in.SB_DUMMY.SB_MEM.wr_data											     
 					  };
 
 /* -----\/----- EXCLUDED -----\/-----
@@ -408,7 +424,8 @@ module fm_data #(
 					  fm_ctrl_in.SB23.SB_META.wr_data,
 					  fm_ctrl_in.SB24.SB_META.wr_data,
 					  fm_ctrl_in.SB25.SB_META.wr_data,
-					  fm_ctrl_in.SB26.SB_META.wr_data
+					  fm_ctrl_in.SB26.SB_META.wr_data,
+ 					  fm_ctrl_in.SB_DUMMY.SB_META.wr_data
 					  };
  -----/\----- EXCLUDED -----/\----- */
 
@@ -444,8 +461,8 @@ module fm_data #(
 		 .wclock(clk_hs),
 		 .rresetbar(~rst_hs),
 		 .wresetbar(~rst_hs),
-		 .write_data(ctrl_mon_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]), //CHECK IF ALWAYS VALID
-		 .write_enable(ctrl_mon_data[sb_i].fm_vld),
+		 .write_data(mon_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]), //CHECK IF ALWAYS VALID
+		 .write_enable(mon_data[sb_i].fm_vld),
 		 .read_enable(1'b1),
 		 .read_data(),
 		 .almost_full(),
@@ -542,5 +559,13 @@ module fm_data #(
 		 end
 	     
 	  end
-     end
+     end // always @ (posedge spy_clock)
+
+   //Debug
+   fm_dummy_block fm_dummy_block_inst(
+		  .clk(spy_clk),
+		  .rst(~axi_reset_n),
+		  .dummy_mon_data(dummy_mon_data)
+		  );
+   
    endmodule
