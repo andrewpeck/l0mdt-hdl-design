@@ -313,7 +313,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     
 
                     EXP_BF = EXP_DF[tv_thread_mapping[this_candidate]].getBitFieldWord(tvformat, stationID[this_candidate]) 
-                    #EXP_BF = EXP_DF[tv_thread_mapping[6]].getBitFieldWord(tvformat, stationID[6]) 
+                    #EXP_BF = EXP_DF[1].getBitFieldWord(tvformat, stationID[this_candidate]) 
                     print("\n\n\n")
                     print("IACOPO - After retrieving EXP_BF")
                     print("IACOPO - this_candidate",this_candidate)  
@@ -368,8 +368,14 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     RTL_BF[0].set_bitwordvalue(tv_format_val[0])
                     print("RTL_BF[0].get_bitwordvalue()",RTL_BF[0].get_bitwordvalue())
 
+                    candidate_idx=0
+                    if tvformat == "TDCPOLMUX2TAR" or tvformat == "TAR2HPS" and len(EXP_BF)>0:
+                        candidate_idx = this_candidate % len(EXP_BF)
+                        print(f"IACOPO - {candidate_idx} == {this_candidate} % {len(EXP_BF)}")
+                        print("IACOPO - using candidate_idx ", candidate_idx)
+
                     ### Do the comparison
-                    results = EXP_BF[0].compare_bitwordvalue(
+                    results = EXP_BF[candidate_idx].compare_bitwordvalue(
                         RTL_BF[0], tolerances
                     )  # compare_bitfieldwordvalue returns list
 
@@ -411,7 +417,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         results[1],
                         results[2],
                         tv_bcid_list[ievent].header.get_header(),
-                        EXP_BF[0].fields,
+                        EXP_BF[candidate_idx].fields,
                         this_candidate,
                         True)
                     comparison_data.append(this_data)
