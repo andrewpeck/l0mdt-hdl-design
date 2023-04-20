@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node id="REFCLK" permission="rw">
+  <node id="FREQ" address="0x0" permission="r" mask="0xffffffff" description="Reference clock frequency in Hz"/>
+</node>
