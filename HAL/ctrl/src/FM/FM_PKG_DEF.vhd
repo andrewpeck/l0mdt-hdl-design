@@ -277,19 +277,29 @@ package FM_CTRL_DEF is
   constant DEFAULT_FM_SB26_CTRL_t : FM_SB26_CTRL_t := (
                                                        SB_MEM => Default_FM_SB26_SB_MEM_MOSI_t
                                                       );
-  constant Default_FM_SB_DUMMY_SB_MEM_MOSI_t : FM_SB_DUMMY_SB_MEM_MOSI_t := ( 
+  constant Default_FM_SB_DUMMY0_SB_MEM_MOSI_t : FM_SB_DUMMY0_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
                                                      wr_data   => (others => '0')
   );
-  constant DEFAULT_FM_SB_DUMMY_CTRL_t : FM_SB_DUMMY_CTRL_t := (
-                                                               SB_MEM => Default_FM_SB_DUMMY_SB_MEM_MOSI_t
-                                                              );
+  constant DEFAULT_FM_SB_DUMMY0_CTRL_t : FM_SB_DUMMY0_CTRL_t := (
+                                                                 SB_MEM => Default_FM_SB_DUMMY0_SB_MEM_MOSI_t
+                                                                );
+  constant Default_FM_SB_DUMMY1_SB_MEM_MOSI_t : FM_SB_DUMMY1_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB_DUMMY1_CTRL_t : FM_SB_DUMMY1_CTRL_t := (
+                                                                 SB_MEM => Default_FM_SB_DUMMY1_SB_MEM_MOSI_t
+                                                                );
   constant DEFAULT_FM_SPY_CTRL_CTRL_t : FM_SPY_CTRL_CTRL_t := (
-                                                               GLOBAL_FREEZE => '0',
-                                                               GLOBAL_PLAYBACK_MODE => (others => '0'),
+                                                               GLOBAL_FREEZE => '1',
+                                                               GLOBAL_PLAYBACK_MODE => "00",
                                                                INITIALIZE_SPY_MEMORY => '1'
                                                               );
   constant DEFAULT_FM_CTRL_t : FM_CTRL_t := (
@@ -320,12 +330,13 @@ package FM_CTRL_DEF is
                                              SB23 => DEFAULT_FM_SB23_CTRL_t,
                                              SB24 => DEFAULT_FM_SB24_CTRL_t,
                                              SB26 => DEFAULT_FM_SB26_CTRL_t,
-                                             SB_DUMMY => DEFAULT_FM_SB_DUMMY_CTRL_t,
+                                             SB_DUMMY0 => DEFAULT_FM_SB_DUMMY0_CTRL_t,
+                                             SB_DUMMY1 => DEFAULT_FM_SB_DUMMY1_CTRL_t,
                                              SPY_CTRL => DEFAULT_FM_SPY_CTRL_CTRL_t,
-                                             FREEZE_MASK_0 => (others => '0'),
-                                             FREEZE_MASK_1 => (others => '0'),
-                                             PLAYBACK_MASK_0 => (others => '0'),
-                                             PLAYBACK_MASK_1 => (others => '0')
+                                             FREEZE_MASK_0 => x"00000000",
+                                             FREEZE_MASK_1 => x"00000000",
+                                             PLAYBACK_MASK_0 => x"f7ffffff",
+                                             PLAYBACK_MASK_1 => x"ffffffff"
                                             );
 
 end package FM_CTRL_DEF;

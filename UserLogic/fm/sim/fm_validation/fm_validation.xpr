@@ -3,15 +3,15 @@
 <!--                                                         -->
 <!-- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="54" Path="/home/psundara/L0MDT/l0mdt-hdl-design/UserLogic/fm/sim/fm_validation/fm_validation.xpr">
+<Project Version="7" Minor="54" Path="/DFS-L/DATA/atlas/psundara/CERN/ATLAS/L0MDT/GIT/L0MDT_MERGE/l0mdt-hdl-design/UserLogic/fm/sim/fm_validation/fm_validation.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="7dc1482210f34d0bbc93a50f954d4eff"/>
     <Option Name="Part" Val="xcku15p-ffva1760-2-e"/>
-    <Option Name="CompiledLibDir" Val="$PPRDIR/../../../../../../xilinx/compiled_libraries/v2020.2"/>
+    <Option Name="CompiledLibDir" Val="$PPRDIR/../../../../../../../../../../xilinx/compiled_libraries/v2020.2"/>
     <Option Name="CompiledLibDirXSim" Val=""/>
     <Option Name="CompiledLibDirModelSim" Val="$PPRDIR/../../../../../../xilinx/compiled_libraries/v2020.2"/>
-    <Option Name="CompiledLibDirQuesta" Val="$PPRDIR/../../../../../../xilinx/compiled_libraries/v2020.2"/>
+    <Option Name="CompiledLibDirQuesta" Val="$PPRDIR/../../../../../../../../../../xilinx/compiled_libraries/v2020.2"/>
     <Option Name="CompiledLibDirIES" Val="$PCACHEDIR/compile_simlib/ies"/>
     <Option Name="CompiledLibDirXcelium" Val="$PCACHEDIR/compile_simlib/xcelium"/>
     <Option Name="CompiledLibDirVCS" Val="$PCACHEDIR/compile_simlib/vcs"/>
@@ -47,18 +47,18 @@
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="WTXSimLaunchSim" Val="20"/>
     <Option Name="WTModelSimLaunchSim" Val="2"/>
-    <Option Name="WTQuestaLaunchSim" Val="290"/>
+    <Option Name="WTQuestaLaunchSim" Val="357"/>
     <Option Name="WTIesLaunchSim" Val="0"/>
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="45"/>
-    <Option Name="WTModelSimExportSim" Val="45"/>
-    <Option Name="WTQuestaExportSim" Val="45"/>
-    <Option Name="WTIesExportSim" Val="45"/>
-    <Option Name="WTVcsExportSim" Val="45"/>
-    <Option Name="WTRivieraExportSim" Val="45"/>
-    <Option Name="WTActivehdlExportSim" Val="45"/>
+    <Option Name="WTXSimExportSim" Val="59"/>
+    <Option Name="WTModelSimExportSim" Val="59"/>
+    <Option Name="WTQuestaExportSim" Val="59"/>
+    <Option Name="WTIesExportSim" Val="59"/>
+    <Option Name="WTVcsExportSim" Val="59"/>
+    <Option Name="WTRivieraExportSim" Val="59"/>
+    <Option Name="WTActivehdlExportSim" Val="59"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>
@@ -156,15 +156,15 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../dataformats/l0mdt_buses_constants.svh">
+      <File Path="$PPRDIR/../../../../HAL/ctrl/src/FM/FM_PKG.svh">
         <FileInfo>
-          <Attr Name="IsGlobalInclude" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../HAL/ctrl/src/FM/FM_PKG.svh">
+      <File Path="$PPRDIR/../../../../dataformats/l0mdt_buses_constants.svh">
         <FileInfo>
+          <Attr Name="IsGlobalInclude" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
@@ -183,6 +183,13 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../../src/fm_data.sv">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../src/fm_dummy_block.sv">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -301,14 +308,14 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../shared/detector_parameters/detector_param_pkg.vhd">
+      <File Path="$PPRDIR/../../../../shared/detector_parameters/dp_repo/detector_param_pkg.vhd">
         <FileInfo SFType="VHDL2008">
           <Attr Name="Library" Val="shared_lib"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../shared/detector_parameters/detector_time_param_pkg.vhd">
+      <File Path="$PPRDIR/../../../../shared/detector_parameters/fw_parameters/detector_time_param_pkg.vhd">
         <FileInfo SFType="VHDL2008">
           <Attr Name="Library" Val="shared_lib"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -356,12 +363,15 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../axi_vip/axi_vip_0_ex/axi_vip_0_ex.srcs/sources_1/bd/ex_sim/ex_sim.bd">
+      <File Path="$PPRDIR/bd/ex_sim/ex_sim.bd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
+        <CompFileExtendedInfo CompFileName="ex_sim.bd" FileRelPathName="ip/ex_sim_axi_vip_mst_0/ex_sim_axi_vip_mst_0.xci">
+          <Proxy FileSetName="ex_sim_axi_vip_mst_0"/>
+        </CompFileExtendedInfo>
       </File>
       <File Path="$PPRDIR/imports/axi_vip_0_chip.sv">
         <FileInfo>
@@ -404,6 +414,14 @@
       </File>
       <File Path="$PPRDIR/../../../../HAL/link_maps/link_map_ku15p.vhd">
         <FileInfo SFType="VHDL2008">
+          <Attr Name="Library" Val="hal"/>
+          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../../../../HAL/hal/src/constants_pkg.vhd">
+        <FileInfo>
           <Attr Name="Library" Val="hal"/>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -739,7 +757,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../../../../../opt/tools/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/xil_common_vip_pkg.sv">
+      <File Path="$PPRDIR/../../../../../../../../../../../../../../state/opt/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/xil_common_vip_pkg.sv">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -747,7 +765,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../../../../../opt/tools/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi_vip_pkg.sv">
+      <File Path="$PPRDIR/../../../../../../../../../../../../../../state/opt/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi_vip_pkg.sv">
         <FileInfo>
           <Attr Name="UserDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -762,7 +780,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../../../../../opt/tools/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/rst_vip_if.sv">
+      <File Path="$PPRDIR/../../../../../../../../../../../../../../state/opt/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/rst_vip_if.sv">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -770,7 +788,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../../../../../opt/tools/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi_vip_if.sv">
+      <File Path="$PPRDIR/../../../../../../../../../../../../../../state/opt/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi_vip_if.sv">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -778,7 +796,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../../../../../opt/tools/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi4stream_vip_pkg.sv">
+      <File Path="$PPRDIR/../../../../../../../../../../../../../../state/opt/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi4stream_vip_pkg.sv">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -786,7 +804,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../../../../../opt/tools/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi4stream_vip_if.sv">
+      <File Path="$PPRDIR/../../../../../../../../../../../../../../state/opt/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi4stream_vip_if.sv">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -794,7 +812,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../../../../../opt/tools/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi_vip_axi4pc.sv">
+      <File Path="$PPRDIR/../../../../../../../../../../../../../../state/opt/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi_vip_axi4pc.sv">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -802,7 +820,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../../../../../opt/tools/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/clk_vip_if.sv">
+      <File Path="$PPRDIR/../../../../../../../../../../../../../../state/opt/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/clk_vip_if.sv">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -810,7 +828,7 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../../../../../../../opt/tools/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi4stream_vip_axi4streampc.sv">
+      <File Path="$PPRDIR/../../../../../../../../../../../../../../state/opt/Xilinx/Vivado/2020.2/data/xilinx_vip/hdl/axi4stream_vip_axi4streampc.sv">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
@@ -833,7 +851,7 @@
         <Option Name="PamPseudoTop" Val="pseudo_tb"/>
         <Option Name="SrcSet" Val="sources_1"/>
         <Option Name="questa.compile.vhdl_syntax" Val="2008"/>
-        <Option Name="questa.compile.vlog.more_options" Val="-sv +incdir+/home/psundara/L0MDT/l0mdt-hdl-design/dataformats"/>
+        <Option Name="questa.compile.vlog.more_options" Val="-sv +incdir+/DFS-L/DATA/atlas/psundara/CERN/ATLAS/L0MDT/GIT/L0MDT_MERGE/l0mdt-hdl-design/dataformats"/>
       </Config>
     </FileSet>
     <FileSet Name="sim_basic_mst_active_pt_mem__slv_passive" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_basic_mst_active_pt_mem__slv_passive" RelGenDir="$PGENDIR/sim_basic_mst_active_pt_mem__slv_passive">
@@ -983,6 +1001,13 @@
         <Option Name="SrcSet" Val="sources_1"/>
       </Config>
     </FileSet>
+    <FileSet Name="ex_sim_axi_vip_mst_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/ex_sim_axi_vip_mst_0" RelGenDir="$PGENDIR/ex_sim_axi_vip_mst_0">
+      <Config>
+        <Option Name="TopModule" Val="ex_sim_axi_vip_mst_0"/>
+        <Option Name="VerilogDir" Val="$PPRDIR/imports"/>
+        <Option Name="UseBlackboxStub" Val="1"/>
+      </Config>
+    </FileSet>
   </FileSets>
   <Simulators>
     <Simulator Name="XSim">
@@ -1009,7 +1034,7 @@
     </Simulator>
   </Simulators>
   <Runs Version="1" Minor="15">
-    <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xcku15p-ffva1760-2-e" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/synth_1" IncludeInArchive="true" AutoIncrementalDir="$PPRDIR/../axi_vip/axi_vip_0_ex/axi_vip_0_ex.srcs/utils_1/imports/synth_1">
+    <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xcku15p-ffva1760-2-e" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/synth_1" IncludeInArchive="true" AutoIncrementalDir="$PPRDIR/../../../../../../../../../../../../../../home/psundara/L0MDT/l0mdt-hdl-design/UserLogic/fm/sim/axi_vip/axi_vip_0_ex/axi_vip_0_ex.srcs/utils_1/imports/synth_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2020"/>
         <Step Id="synth_design"/>
@@ -1019,7 +1044,17 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xcku15p-ffva1760-2-e" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/impl_1" SynthRun="synth_1" IncludeInArchive="true" GenFullBitstream="true" AutoIncrementalDir="$PPRDIR/../axi_vip/axi_vip_0_ex/axi_vip_0_ex.srcs/utils_1/imports/impl_1">
+    <Run Id="ex_sim_axi_vip_mst_0_synth_1" Type="Ft3:Synth" SrcSet="ex_sim_axi_vip_mst_0" Part="xcku15p-ffva1760-2-e" ConstrsSet="ex_sim_axi_vip_mst_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/ex_sim_axi_vip_mst_0_synth_1" IncludeInArchive="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/ex_sim_axi_vip_mst_0_synth_1">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2020"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2020"/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xcku15p-ffva1760-2-e" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" SynthRun="synth_1" IncludeInArchive="true" GenFullBitstream="true" AutoIncrementalDir="$PPRDIR/../../../../../../../../../../../../../../home/psundara/L0MDT/l0mdt-hdl-design/UserLogic/fm/sim/axi_vip/axi_vip_0_ex/axi_vip_0_ex.srcs/utils_1/imports/impl_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2020"/>
         <Step Id="init_design"/>
@@ -1032,7 +1067,23 @@
         <Step Id="post_route_phys_opt_design"/>
         <Step Id="write_bitstream"/>
       </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2020"/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+      <RQSFiles/>
+    </Run>
+    <Run Id="ex_sim_axi_vip_mst_0_impl_1" Type="Ft2:EntireDesign" Part="xcku15p-ffva1760-2-e" ConstrsSet="ex_sim_axi_vip_mst_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="ex_sim_axi_vip_mst_0_synth_1" IncludeInArchive="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/ex_sim_axi_vip_mst_0_impl_1">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2020"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
       <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2020"/>
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>

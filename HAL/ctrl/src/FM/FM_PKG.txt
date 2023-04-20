@@ -703,26 +703,52 @@ E            wr_enable: logic
 E            address: logic['5 -1', 0]
 E            wr_data: logic['32 -1', 0]
 
-R   FM_SB_DUMMY_SB_MEM_MOSI_t:
+R   FM_SB_DUMMY0_SB_MEM_MOSI_t:
 E      clk: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
 E      wr_data: logic['32 -1', 0]
 
-R   FM_SB_DUMMY_SB_MEM_MISO_t:
+R   FM_SB_DUMMY0_SB_MEM_MISO_t:
 E      rd_data: logic['32 -1', 0]
 E      rd_data_valid: logic
 
-R   FM_SB_DUMMY_MON_t:
-E      SB_MEM: FM_SB_DUMMY_SB_MEM_MISO_t
-R         FM_SB_DUMMY_SB_MEM_MISO_t:
+R   FM_SB_DUMMY0_MON_t:
+E      SB_MEM: FM_SB_DUMMY0_SB_MEM_MISO_t
+R         FM_SB_DUMMY0_SB_MEM_MISO_t:
 E            rd_data: logic['32 -1', 0]
 E            rd_data_valid: logic
 
-R   FM_SB_DUMMY_CTRL_t:
-E      SB_MEM: FM_SB_DUMMY_SB_MEM_MOSI_t
-R         FM_SB_DUMMY_SB_MEM_MOSI_t:
+R   FM_SB_DUMMY0_CTRL_t:
+E      SB_MEM: FM_SB_DUMMY0_SB_MEM_MOSI_t
+R         FM_SB_DUMMY0_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['5 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB_DUMMY1_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['5 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB_DUMMY1_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB_DUMMY1_MON_t:
+E      SB_MEM: FM_SB_DUMMY1_SB_MEM_MISO_t
+R         FM_SB_DUMMY1_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB_DUMMY1_CTRL_t:
+E      SB_MEM: FM_SB_DUMMY1_SB_MEM_MOSI_t
+R         FM_SB_DUMMY1_SB_MEM_MOSI_t:
 E            clk: logic
 E            enable: logic
 E            wr_enable: logic
@@ -897,10 +923,16 @@ E            SB_MEM: FM_SB26_SB_MEM_MISO_t
 R               FM_SB26_SB_MEM_MISO_t:
 E                  rd_data: logic['32 -1', 0]
 E                  rd_data_valid: logic
-E      SB_DUMMY: FM_SB_DUMMY_MON_t
-R         FM_SB_DUMMY_MON_t:
-E            SB_MEM: FM_SB_DUMMY_SB_MEM_MISO_t
-R               FM_SB_DUMMY_SB_MEM_MISO_t:
+E      SB_DUMMY0: FM_SB_DUMMY0_MON_t
+R         FM_SB_DUMMY0_MON_t:
+E            SB_MEM: FM_SB_DUMMY0_SB_MEM_MISO_t
+R               FM_SB_DUMMY0_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB_DUMMY1: FM_SB_DUMMY1_MON_t
+R         FM_SB_DUMMY1_MON_t:
+E            SB_MEM: FM_SB_DUMMY1_SB_MEM_MISO_t
+R               FM_SB_DUMMY1_SB_MEM_MISO_t:
 E                  rd_data: logic['32 -1', 0]
 E                  rd_data_valid: logic
 
@@ -1148,10 +1180,19 @@ E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
 E                  wr_data: logic['32 -1', 0]
-E      SB_DUMMY: FM_SB_DUMMY_CTRL_t
-R         FM_SB_DUMMY_CTRL_t:
-E            SB_MEM: FM_SB_DUMMY_SB_MEM_MOSI_t
-R               FM_SB_DUMMY_SB_MEM_MOSI_t:
+E      SB_DUMMY0: FM_SB_DUMMY0_CTRL_t
+R         FM_SB_DUMMY0_CTRL_t:
+E            SB_MEM: FM_SB_DUMMY0_SB_MEM_MOSI_t
+R               FM_SB_DUMMY0_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['5 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB_DUMMY1: FM_SB_DUMMY1_CTRL_t
+R         FM_SB_DUMMY1_CTRL_t:
+E            SB_MEM: FM_SB_DUMMY1_SB_MEM_MOSI_t
+R               FM_SB_DUMMY1_SB_MEM_MOSI_t:
 E                  clk: logic
 E                  enable: logic
 E                  wr_enable: logic

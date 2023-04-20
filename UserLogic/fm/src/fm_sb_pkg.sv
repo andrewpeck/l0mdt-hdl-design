@@ -27,8 +27,12 @@ package fm_sb_pkg;
    parameter total_sb                 = h2s_sb_all_station_n ;
 */
    //Need to update sb_mapped_n manually from fm_ult_pkg.vhd (total_sb + 1 dummy sb)
-   parameter sb_mapped_n                   = 28;
-   parameter sb_dummy_index             = sb_mapped_n -1 ;
+   parameter total_l0mdt_sb                =  27;
+   parameter sb_total_dummy             = 2;   
+   parameter sb_mapped_n                  = total_l0mdt_sb + sb_total_dummy;
+   
+   parameter sb_master_dummy_index    = total_l0mdt_sb ;
+   parameter sb_slave_dummy_index       = sb_master_dummy_index + 1 ;
    
 
    FM_CTRL_t FM_CTRL;
@@ -42,6 +46,8 @@ package fm_sb_pkg;
       logic [mon_dw_max-1 : 0] fm_data;
       logic 		       fm_vld;
       }fm_rt;
+
+   
    //Above  definitions should match the definition on fm_ult_pkg.vhd
 
    parameter  reg [31:0]       axi_sb_addr_width[sb_mapped_n] = {
@@ -72,7 +78,8 @@ package fm_sb_pkg;
 								 $bits(FM_CTRL.SB24.SB_MEM.address),
 								 $bits(FM_CTRL.SB25.SB_MEM.address),
 								 $bits(FM_CTRL.SB26.SB_MEM.address),
-								 $bits(FM_CTRL.SB_DUMMY.SB_MEM.address)
+								 $bits(FM_CTRL.SB_DUMMY0.SB_MEM.address),
+								 $bits(FM_CTRL.SB_DUMMY1.SB_MEM.address)
 								 };
    
 
@@ -142,7 +149,8 @@ package fm_sb_pkg;
 						"SB24",
 						"SB25",
 						"SB26",
-						"SB_DUMMY"
+						"SB_DUMMY0",
+						"SB_DUMMY1"
 						};
 
    parameter integer  sb_dw[sb_mapped_n] = {
@@ -173,7 +181,8 @@ package fm_sb_pkg;
 				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //OUT - THREAD 2
 				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
 				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
-					    32
+					    32, //sb_dummy0
+					    32 //sb_dummy1
 				       };
 
 
