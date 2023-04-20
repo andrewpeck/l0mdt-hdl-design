@@ -5,8 +5,8 @@ use ieee.numeric_std.all;
 library shared_cfg_def_lib;
 use shared_cfg_def_lib.cfg_global_default_pkg.all;
 
-library hal;
-use hal.constants_pkg.all;
+--library hal;
+--use hal.constants_pkg.all;
 
 package prj_cfg is
 

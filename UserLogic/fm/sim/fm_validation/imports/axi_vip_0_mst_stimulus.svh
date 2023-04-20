@@ -126,17 +126,19 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	 */
  
       end
- 
+
        begin
+	      
 	  #15000
+	
 	  mtestRID = $urandom_range(0,(1<<(0)-1));
-          mtestRADDR = 0; // PRIYA $urandom_range(0,(1<<(32)-1));
+          mtestRADDR = 32'h1440 << 2; // PRIYA $urandom_range(0,(1<<(32)-1));
           mtestRBurstLength = 0; //0; //5185; //0;
           mtestRDataSize =  xil_axi_size_t'(1); //PRIYA xil_axi_size_t'(xil_clog2((32)/8)); 
           mtestRBurstType = XIL_AXI_BURST_TYPE_FIXED; //INCR;
           //single read transaction filled in user inputs through API
 
-	  for (int i = 0 ; i < 6; i++)
+	  for (int i = 0 ; i < 32; i++)
 	    begin
           single_read_transaction_api("single read with api",
 				      .id(mtestRID),
@@ -156,9 +158,9 @@ import ex_sim_axi_vip_mst_0_pkg::*;
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED;
 
-	  for (int i = 0 ; i < 6; i++)
+	  for (int i = 0 ; i < 1; i++)
 	    begin
-	  mtestWData = 0; //$urandom();
+	  mtestWData = 6; //$urandom();
 	      mtestWUSER      =   $urandom_range(0,15);
 	      mtestAWUSER     =   $urandom_range(0,15); 
 
@@ -182,43 +184,18 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	 
         //single read transaction with fully randomization
         //PRIYA multiple_read_transaction_full_rand ("single read",1);
-	
-        mtestRID = $urandom_range(0,(1<<(0)-1));
-         mtestRADDR = 0; // PRIYA $urandom_range(0,(1<<(32)-1));
-          mtestRBurstLength = 0; //5184;
-         mtestRDataSize =  xil_axi_size_t'(1); //PRIYA xil_axi_size_t'(xil_clog2((32)/8)); 
-        mtestRBurstType = XIL_AXI_BURST_TYPE_FIXED; //XIL_AXI_BURST_TYPE_FIXED; //PRIYA XIL_AXI_BURST_TYPE_INCR;
-        //single read transaction filled in user inputs through API
-
-	  for(int i=0;i<5184; i++)
-	    begin
-        single_read_transaction_api("single read with api",
-                                     .id(mtestRID),
-                                     .addr(mtestRADDR),
-                                     .len(mtestRBurstLength), 
-                                     .size(mtestRDataSize),
-                                     .burst(mtestRBurstType)
-                                     );
-
-	      
-	      mtestRADDR += 4 ;
-	     
-	    end	      
-	  
-
-
-
-	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
-          mtestWADDR = (32'h000);  //priya 0;
-        mtestWBurstLength = 0;
+	  #15000
+       	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
+          mtestWADDR = (32'h1440 << 2 ); //(32'h000);  //priya 0;
+          mtestWBurstLength = 0;
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED; //INCR;
           
 
 	  #12800 
-	 for (int i = 0; i < 5184; i++)
+	 for (int i = 0; i < 32; i++)
 	   begin
-	      mtestWData = $urandom();
+	      mtestWData = $urandom() | 32'h8000; //data_valid
         //single write transaction filled in user inputs through API 
         single_write_transaction_api("single write with api",
                                      .id(mtestWID),
@@ -234,9 +211,56 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	      //if(i == 10)mtestWADDR = 2048;
 	      
 	   end
- 
-	  mtestRADDR = 0; //start bram reads
-	  for (int i = 0; i < 5184; i++)
+
+	
+	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
+          mtestWADDR = (32'h2000 << 2);  //priya 0;
+          mtestWBurstLength = 0; //0;
+          mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
+          mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED;
+
+	  for (int i = 0 ; i < 1; i++)
+	    begin
+	  mtestWData = 5; //$urandom();
+	      mtestWUSER      =   $urandom_range(0,15);
+	      mtestAWUSER     =   $urandom_range(0,15); 
+
+              //single write transaction filled in user inputs through API 
+              single_write_transaction_api("single write with api",
+					   .id(mtestWID),
+					   .addr(mtestWADDR),
+					   .len(mtestWBurstLength), 
+					   .size(mtestWDataSize),
+					   .burst(mtestWBurstType),
+					   .wuser(mtestWUSER),
+					   .awuser(mtestAWUSER), 
+					   .data(mtestWData)
+					   );
+	      mtestWADDR += 4 ;
+	      //if(i == 10)mtestWADDR = 2048;
+	    end // for (int i = 0 ; i < 1; i++)
+
+	  
+	  mtestRADDR = 32'h1460 << 2 ; //start bram reads
+	  for (int i = 0; i < 32; i++)
+	    begin
+               single_read_transaction_api("single read with api",
+					   .id(mtestRID),
+					   .addr(mtestRADDR),
+					   .len(mtestRBurstLength), 
+					   .size(mtestRDataSize),
+					   .burst(mtestRBurstType)
+					   );
+	       
+	       
+	       mtestRADDR += 4 ;
+	       //if(i == 10) mtestRADDR = 2048; //start bram reads
+	       
+	    end // for (int i = 0; i < 32; i++)
+
+
+	    mtestRADDR = 32'h1440 << 2 ; //start bram reads
+	  for (int i = 0; i < 32; i++)
 	    begin
                single_read_transaction_api("single read with api",
 					   .id(mtestRID),
@@ -251,6 +275,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	       //if(i == 10) mtestRADDR = 2048; //start bram reads
 	       
 	    end
+
         //multiple read transaction with the same inline randomization 
        /*PRIYA  multiple_read_transaction_partial_rand( .num_xfer(2),
                                                 .start_addr(mtestRADDR),
