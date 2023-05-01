@@ -110,6 +110,8 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/arithmetics/src/roi_tan.vhd \
 	$(SHAREDDIR)/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd \
 	$(SHAREDDIR)/vhdl_utilities/src/vhdl_utils_deserializer.vhd \
+	$(SHAREDDIR)/vhdl_utilities/pkg/VU_generic_pipelined_MATH_pkg.vhd \
+	$(SHAREDDIR)/vhdl_utilities/src/VU_generic_pipelined_MATH.vhd \
 	$(SHAREDDIR)/vhdl_utilities/src/vhdl_utils_NinCounter.vhd 
 
 
@@ -194,14 +196,14 @@ VHDL_SOURCES_xpm = \
 
 
 VHDL_SOURCES_heg_roi_lib = \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_types_pkg.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BILA3.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BMLA3.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BOLA3.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BILA3_angle.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BMLA3_angle.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BOLA3_angle.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_functions.vhd
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/roi_types_pkg.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BILA3.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BMLA3.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BOLA3.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BILA3_angle.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BMLA3_angle.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BOLA3_angle.vhd \
+   $(SHAREDDIR)/detector_parameters/functions/roi_lut_functions.vhd
 
 
 VHDL_SOURCES_heg_lib = \
@@ -329,7 +331,9 @@ VHDL_SOURCES_ptc_lib = \
     $(MPTDIR)/sagitta_calculator.vhd \
     $(MPTDIR)/eta_calculator.vhd \
     $(MPTDIR)/pt.vhd \
-    $(MPTDIR)/segment_selector.vhd
+    $(MPTDIR)/segment_selector.vhd \
+    $(MPTDIR)/pt_supervisor.vhd \
+    $(MPTDIR)/../top_ptc_mpi.vhd
 
 VHDL_SOURCES_mpl_lib = \
     $(PWD)/prj_cfg.vhd \
@@ -422,3 +426,6 @@ VHDL_LIB_ORDER = xpm \
 	mtc_lib \
 	ult_lib 
 
+
+COMPILED_LIB_PATH = $(XILINX_SIM_LIB)/unisim_ver
+COMPILED_LIB = unisim
