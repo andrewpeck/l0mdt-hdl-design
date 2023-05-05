@@ -9,7 +9,7 @@ package fm_ult_pkg is
 
   constant mon_dw_max     : integer := 256;
 
-  constant stations_n       : integer := c_MAX_NUM_HPS; -- INN, MID, OUT
+  constant stations_n       : integer := 3; --DEBUG c_MAX_NUM_ST; --c_MAX_NUM_HPS; -- INN, MID, OUT
   constant threads_n        : integer := c_NUM_THREADS;
 
 
@@ -22,7 +22,7 @@ package fm_ult_pkg is
 
   constant h2s_sb_single_station_n  : integer := sf_sb_single_station_n;
   constant h2s_sb_all_station_n     : integer := h2s_sb_single_station_n * stations_n;
-  constant total_sb                 : integer := h2s_sb_all_station_n ;
+  constant total_l0mdt_sb               : integer := h2s_sb_all_station_n ;
   type fm_rt is record
     fm_data : std_logic_vector(mon_dw_max-1 downto 0);
     fm_vld  : std_logic;

@@ -26,6 +26,7 @@ use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.FM_CTRL.all;
+use ctrl_lib.HOG_CTRL.all;
 
 
 library shared_lib;
@@ -195,6 +196,8 @@ architecture structural of top_l0mdt is
   signal tf_mon_r   : TF_MON_t;
   signal mpl_mon_r  : MPL_MON_t;
   signal mpl_ctrl_r : MPL_CTRL_t;
+  signal hog_mon    : HOG_MON_t;
+  signal fw_info_mon : FW_INFO_MON_t;
 
   signal fm_mon_r  : FM_MON_t;
   signal fm_ctrl_r : FM_CTRL_t;
@@ -239,7 +242,6 @@ architecture structural of top_l0mdt is
   signal hal_core_mon  : HAL_CORE_MON_t;
   signal hal_core_ctrl : HAL_CORE_CTRL_t;
 
-  signal fw_info_mon : FW_INFO_MON_t;
 
   -- sumps
 
@@ -248,6 +250,7 @@ architecture structural of top_l0mdt is
 
   constant ZERO : std_logic := '0';
 
+  signal axi_reset_n : std_logic;
 begin
 
   -- in sector 3 we only have 0 chambers in the EXTRA station and 6
@@ -331,6 +334,7 @@ begin
     port map (
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
+      axi_reset_n       => axi_reset_n,
 
       i_inn_tdc_hits_av => inner_tdc_hits,
       i_mid_tdc_hits_av => middle_tdc_hits,
@@ -414,6 +418,7 @@ begin
 
   mpl_ctrl_v     <= convert(mpl_ctrl_r, mpl_ctrl_v);
   mpl_mon_r      <= convert(mpl_mon_v, mpl_mon_r);
+
   tf_ctrl_v      <= convert(tf_ctrl_r, tf_ctrl_v);
   tf_mon_r       <= convert(tf_mon_v, tf_mon_r);
   mtc_ctrl_v     <= convert(mtc_ctrl_r, mtc_ctrl_v);
@@ -444,7 +449,7 @@ begin
       c2cb_txp     => c2cb_txp,
       c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC), -- c2c_refclkp, 
       c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC), --c2c_refclkn,
-
+      axi_reset_n => axi_reset_n,
       -- HAL Control
 
       hal_core_ctrl => hal_core_ctrl,
@@ -483,6 +488,7 @@ begin
       tf_mon      => tf_mon_r,
       mpl_ctrl    => mpl_ctrl_r,
       mpl_mon     => mpl_mon_r,
+      hog_mon     => hog_mon,
       fw_info_mon => fw_info_mon,
       fm_ctrl     => fm_ctrl_r,
       fm_mon      => fm_mon_r,
@@ -490,6 +496,7 @@ begin
       -- axi common
       clk320                  => clk320,
       clk40                   => clk40,
+      clk40_rstn              => not(clock_and_control.rst),
       clkpipe                 => clock_and_control.clk,
       axi_clk                 => clk_50, 
       clk50mhz                => clk_50,
@@ -502,19 +509,19 @@ begin
       sys_mgmt_vccint_alarm   => open
       );
 
-  fw_info_mon.FW_INFO.GIT_VALID                    <= '0';              -- FW_HASH_VALID;
-  fw_info_mon.FW_INFO.GIT_HASH_1                   <= (others => '0');  -- FW_HASH_1;
-  fw_info_mon.FW_INFO.GIT_HASH_2                   <= (others => '0');  -- FW_HASH_2;
-  fw_info_mon.FW_INFO.GIT_HASH_3                   <= (others => '0');  -- FW_HASH_3;
-  fw_info_mon.FW_INFO.GIT_HASH_4                   <= (others => '0');  -- FW_HASH_4;
-  fw_info_mon.FW_INFO.GIT_HASH_5                   <= (others => '0');  -- FW_HASH_5;
-  fw_info_mon.FW_INFO.BUILD_DATE.DAY               <= (others => '0');  -- TS_DAY;
-  fw_info_mon.FW_INFO.BUILD_DATE.MONTH             <= (others => '0');  -- TS_MONTH;
-  fw_info_mon.FW_INFO.BUILD_DATE.YEAR(7 downto 0)  <= (others => '0');  -- TS_YEAR;
-  fw_info_mon.FW_INFO.BUILD_DATE.YEAR(15 downto 8) <= (others => '0');  -- TS_CENT;
-  fw_info_mon.FW_INFO.BUILD_TIME.sec               <= (others => '0');  -- TS_SEC;
-  fw_info_mon.FW_INFO.BUILD_TIME.min               <= (others => '0');  -- TS_MIN;
-  fw_info_mon.FW_INFO.BUILD_TIME.HOUR              <= (others => '0');  -- TS_HOUR
+    hog_mon.HOG_INFO.GLOBAL_DATE <= GLOBAL_DATE;
+    hog_mon.HOG_INFO.GLOBAL_TIME <= GLOBAL_TIME;
+    hog_mon.HOG_INFO.GLOBAL_VER <= GLOBAL_VER;
+    hog_mon.HOG_INFO.GLOBAL_SHA <= GLOBAL_SHA;
+    hog_mon.HOG_INFO.TOP_SHA <= TOP_SHA;
+    hog_mon.HOG_INFO.TOP_VER <= TOP_VER;
+    hog_mon.HOG_INFO.HOG_SHA <= HOG_SHA;
+    hog_mon.HOG_INFO.HOG_VER <= HOG_VER;
+    hog_mon.HOG_INFO.CON_SHA <= CON_SHA;
+    hog_mon.HOG_INFO.CON_VER <= CON_VER;
+    hog_mon.HOG_INFO.PROJECT_LIB_SHA <= PROJECT_LIB_SHA;
+    hog_mon.HOG_INFO.PROJECT_LIB_VER <= PROJECT_LIB_VER;
+
 
   fw_info_mon.HOG_INFO.GLOBAL_FWDATE       <= GLOBAL_DATE;
   fw_info_mon.HOG_INFO.GLOBAL_FWTIME       <= GLOBAL_TIME;

@@ -21,14 +21,15 @@ SIM:BA3_ucm_questa:
       extends: .vars
       PROJECT_NAME: MainBlocks/BA3_ucm
     tags:
-    - normal-ops
+      - normal-ops
+    allow_failure: false
 
 RIV:BA3_ucm_riviera:
     extends: .riviera_sim
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/BA3_ucm
-    # allow_failure: false
+    allow_failure: false
 
 COMP:BA3_ucm:
   extends: .sim_comp

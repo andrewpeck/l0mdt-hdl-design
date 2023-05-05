@@ -1,0 +1,9 @@
+#Simulator questa
+shared/shared_lib.sim lib=shared_lib
+# UserLogic/ult/ult_lib.sim
+UserLogic/ult/top_ult_sim.vhd 
+# Waveform 
+shared/sim/waves/ull_vu13_ba3_ucm_mpl_hps_csf_bp_ta.do 
+#IV
+shared/sim/vhdl_input_vect/BA3_20220915_120534/slc_A3_Barrel.csv
+shared/sim/vhdl_input_vect/BA3_20220915_120534/csm_A3_Barrel.csv

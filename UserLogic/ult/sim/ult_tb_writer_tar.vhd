@@ -61,26 +61,26 @@ end entity ult_tb_writer_tar;
 
 architecture sim of ult_tb_writer_tar is
 
-  alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
-  alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
-  alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
-  alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
+  alias slc_file_ok is  << signal.ult_tb.SLC.file_open : std_logic >>;
+  alias slc_file_ts is  << signal.ult_tb.SLC.file_ts : string >>;
+  alias hit_file_ok is  << signal.ult_tb.MDT.file_open : std_logic >>;
+  alias hit_file_ts is  << signal.ult_tb.MDT.file_ts : string >>;
   shared variable csv_file_1: csv_file_type;
   constant g_OUT_FILE_1     : string  := "ov_tar2hps_" & g_PRJ_INFO & ".csv";
 
-  alias ult_inn_tar_hits_av is  << signal.ult_tp.ULT.ult_inn_tar_hits_out_av : tar2hps_avt >>;
-  alias ult_mid_tar_hits_av is  << signal.ult_tp.ULT.ult_mid_tar_hits_out_av : tar2hps_avt >>;
-  alias ult_out_tar_hits_av is  << signal.ult_tp.ULT.ult_out_tar_hits_out_av : tar2hps_avt >>;
-  alias ult_ext_tar_hits_av is  << signal.ult_tp.ULT.ult_ext_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_inn_tar_hits_av is  << signal.ult_tb.ULT.ult_inn_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_mid_tar_hits_av is  << signal.ult_tb.ULT.ult_mid_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_out_tar_hits_av is  << signal.ult_tb.ULT.ult_out_tar_hits_out_av : tar2hps_avt >>;
+  alias ult_ext_tar_hits_av is  << signal.ult_tb.ULT.ult_ext_tar_hits_out_av : tar2hps_avt >>;
 
-  alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
+  alias mdt_event_ai is  << signal.ult_tb.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_u2h_au : event_tdc_at;
 
-  signal ult_inn_tar_hits_ar  : tar2hps_art(c_HPS_MAX_HP_INN -1 downto 0);
-  signal ult_mid_tar_hits_ar  : tar2hps_art(c_HPS_MAX_HP_MID -1 downto 0);
-  signal ult_out_tar_hits_ar  : tar2hps_art(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal ult_ext_tar_hits_ar  : tar2hps_art(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal ult_inn_tar_hits_ar  : tar2hps_art(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal ult_mid_tar_hits_ar  : tar2hps_art(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal ult_out_tar_hits_ar  : tar2hps_art(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal ult_ext_tar_hits_ar  : tar2hps_art(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
   
 begin
   
@@ -120,16 +120,16 @@ begin
     end generate;
   end generate;
 
-    loop_inn : for i in c_HPS_MAX_HP_INN -1 downto 0 generate
+    loop_inn : for i in c_HPS_NUM_MDT_CH_INN -1 downto 0 generate
       ult_inn_tar_hits_ar(i) <= convert(ult_inn_tar_hits_av(i),ult_inn_tar_hits_ar(i));
     end generate ; -- identifier
-    loop_mid : for i in c_HPS_MAX_HP_MID -1 downto 0 generate
+    loop_mid : for i in c_HPS_NUM_MDT_CH_MID -1 downto 0 generate
       ult_mid_tar_hits_ar(i) <= convert(ult_mid_tar_hits_av(i),ult_mid_tar_hits_ar(i));
     end generate ; -- identifier
-    loop_out : for i in c_HPS_MAX_HP_OUT -1 downto 0 generate
+    loop_out : for i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 generate
       ult_out_tar_hits_ar(i) <= convert(ult_out_tar_hits_av(i),ult_out_tar_hits_ar(i));
     end generate ; -- identifier
-    loop_ext : for i in c_HPS_MAX_HP_EXT -1 downto 0 generate
+    loop_ext : for i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 generate
       ult_ext_tar_hits_ar(i) <= convert(ult_ext_tar_hits_av(i),ult_ext_tar_hits_ar(i));
     end generate ; -- identifier
 

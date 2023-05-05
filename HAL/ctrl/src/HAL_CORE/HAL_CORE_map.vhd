@@ -2,13 +2,18 @@
 --Modifications might be lost.
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 use work.AXIRegWidthPkg.all;
 use work.AXIRegPkg.all;
 use work.types.all;
-use work.HAL_CORE_Ctrl.all;
 
+use work.HAL_CORE_Ctrl.all;
+use work.HAL_CORE_Ctrl_DEF.all;
 entity HAL_CORE_map is
+  generic (
+    READ_TIMEOUT     : integer := 2048
+    );
   port (
     clk_axi          : in  std_logic;
     reset_axi_n      : in  std_logic;
@@ -16,8 +21,12 @@ entity HAL_CORE_map is
     slave_readMISO   : out AXIReadMISO  := DefaultAXIReadMISO;
     slave_writeMOSI  : in  AXIWriteMOSI;
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
+    
     Mon              : in  HAL_CORE_Mon_t;
+    
+    
     Ctrl             : out HAL_CORE_Ctrl_t
+        
     );
 end entity HAL_CORE_map;
 architecture behavioral of HAL_CORE_map is
@@ -28,17 +37,22 @@ architecture behavioral of HAL_CORE_map is
   signal localWrEn          : std_logic;
   signal localRdReq         : std_logic;
   signal localRdAck         : std_logic;
+  signal regRdAck           : std_logic;
 
-
-  signal reg_data :  slv32_array_t(integer range 0 to 783);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 783) := (others => x"00000000");
+  
+  
+  signal reg_data :  slv32_array_t(integer range 0 to 1071);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 1071) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  AXIRegBridge : entity work.axiLiteReg
+  AXIRegBridge : entity work.axiLiteRegBlocking
+    generic map (
+      READ_TIMEOUT => READ_TIMEOUT
+      )
     port map (
       clk_axi     => clk_axi,
       reset_axi_n => reset_axi_n,
@@ -53,22 +67,38 @@ begin  -- architecture behavioral
       read_req    => localRdReq,
       read_ack    => localRdAck);
 
-  latch_reads: process (clk_axi) is
+  -------------------------------------------------------------------------------
+  -- Record read decoding
+  -------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------
+
+  latch_reads: process (clk_axi,reset_axi_n) is
   begin  -- process latch_reads
-    if clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      if localRdReq = '1' then
-        localRdData_latch <= localRdData;        
+    if reset_axi_n = '0' then
+      localRdAck <= '0';
+    elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
+      localRdAck <= '0';
+      
+      if regRdAck = '1' then
+        localRdData_latch <= localRdData;
+        localRdAck <= '1';
+      
       end if;
     end if;
   end process latch_reads;
-  reads: process (localRdReq,localAddress,reg_data) is
-  begin  -- process reads
-    localRdAck  <= '0';
-    localRdData <= x"00000000";
-    if localRdReq = '1' then
-      localRdAck  <= '1';
-      case to_integer(unsigned(localAddress(9 downto 0))) is
 
+  
+  reads: process (clk_axi,reset_axi_n) is
+  begin  -- process latch_reads
+    if reset_axi_n = '0' then
+      regRdAck <= '0';
+    elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
+      regRdAck  <= '0';
+      localRdData <= x"00000000";
+      if localRdReq = '1' then
+        regRdAck  <= '1';
+        case to_integer(unsigned(localAddress(10 downto 0))) is
+          
         when 1 => --0x1
           localRdData( 0)            <=  Mon.CLOCKING.MMCM_LOCKED;                             --
           localRdData( 1)            <=  reg_data( 1)( 1);                                     --
@@ -3912,16 +3942,85 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  reg_data(783)( 1);                                    --
           localRdData( 2)            <=  reg_data(783)( 2);                                    --
           localRdData( 3)            <=  reg_data(783)( 3);                                    --
+        when 1040 => --0x410
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(0).FREQ;                               --Reference clock frequency in Hz
+        when 1041 => --0x411
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(1).FREQ;                               --Reference clock frequency in Hz
+        when 1042 => --0x412
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(2).FREQ;                               --Reference clock frequency in Hz
+        when 1043 => --0x413
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(3).FREQ;                               --Reference clock frequency in Hz
+        when 1044 => --0x414
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(4).FREQ;                               --Reference clock frequency in Hz
+        when 1045 => --0x415
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(5).FREQ;                               --Reference clock frequency in Hz
+        when 1046 => --0x416
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(6).FREQ;                               --Reference clock frequency in Hz
+        when 1047 => --0x417
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(7).FREQ;                               --Reference clock frequency in Hz
+        when 1048 => --0x418
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(8).FREQ;                               --Reference clock frequency in Hz
+        when 1049 => --0x419
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(9).FREQ;                               --Reference clock frequency in Hz
+        when 1050 => --0x41a
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(10).FREQ;                              --Reference clock frequency in Hz
+        when 1051 => --0x41b
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(11).FREQ;                              --Reference clock frequency in Hz
+        when 1052 => --0x41c
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(12).FREQ;                              --Reference clock frequency in Hz
+        when 1053 => --0x41d
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(13).FREQ;                              --Reference clock frequency in Hz
+        when 1054 => --0x41e
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(14).FREQ;                              --Reference clock frequency in Hz
+        when 1055 => --0x41f
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(15).FREQ;                              --Reference clock frequency in Hz
+        when 1056 => --0x420
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(16).FREQ;                              --Reference clock frequency in Hz
+        when 1057 => --0x421
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(17).FREQ;                              --Reference clock frequency in Hz
+        when 1058 => --0x422
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(18).FREQ;                              --Reference clock frequency in Hz
+        when 1059 => --0x423
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(19).FREQ;                              --Reference clock frequency in Hz
+        when 1060 => --0x424
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(20).FREQ;                              --Reference clock frequency in Hz
+        when 1061 => --0x425
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(21).FREQ;                              --Reference clock frequency in Hz
+        when 1062 => --0x426
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(22).FREQ;                              --Reference clock frequency in Hz
+        when 1063 => --0x427
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(23).FREQ;                              --Reference clock frequency in Hz
+        when 1064 => --0x428
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(24).FREQ;                              --Reference clock frequency in Hz
+        when 1065 => --0x429
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(25).FREQ;                              --Reference clock frequency in Hz
+        when 1066 => --0x42a
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(26).FREQ;                              --Reference clock frequency in Hz
+        when 1067 => --0x42b
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(27).FREQ;                              --Reference clock frequency in Hz
+        when 1068 => --0x42c
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(28).FREQ;                              --Reference clock frequency in Hz
+        when 1069 => --0x42d
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(29).FREQ;                              --Reference clock frequency in Hz
+        when 1070 => --0x42e
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(30).FREQ;                              --Reference clock frequency in Hz
+        when 1071 => --0x42f
+          localRdData(31 downto  0)  <=  Mon.MGT.REFCLK(31).FREQ;                              --Reference clock frequency in Hz
 
 
-        when others =>
-          localRdData <= x"00000000";
-      end case;
+          when others =>
+            regRdAck <= '0';
+            localRdData <= x"00000000";
+        end case;
+      end if;
     end if;
   end process reads;
 
 
-
+  -------------------------------------------------------------------------------
+  -- Record write decoding
+  -------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------
 
   -- Register mapping to ctrl structures
   Ctrl.CLOCKING.RESET_MMCM                            <=  reg_data( 1)( 1);                
@@ -6881,7 +6980,7 @@ begin  -- architecture behavioral
 
       
       if localWrEn = '1' then
-        case to_integer(unsigned(localAddress(9 downto 0))) is
+        case to_integer(unsigned(localAddress(10 downto 0))) is
         when 1 => --0x1
           reg_data( 1)( 1)             <=  localWrData( 1);                --
         when 17 => --0x11
@@ -9068,4 +9167,10 @@ begin  -- architecture behavioral
   end process reg_writes;
 
 
+
+
+
+
+
+  
 end architecture behavioral;

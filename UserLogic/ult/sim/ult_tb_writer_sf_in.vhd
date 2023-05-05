@@ -73,10 +73,10 @@ end entity ult_tb_writer_sf_in;
 architecture sim of ult_tb_writer_sf_in is
   
   
-  alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
-  alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
-  alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
-  alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
+  alias slc_file_ok is  << signal.ult_tb.SLC.file_open : std_logic >>;
+  alias slc_file_ts is  << signal.ult_tb.SLC.file_ts : string >>;
+  alias hit_file_ok is  << signal.ult_tb.MDT.file_open : std_logic >>;
+  alias hit_file_ts is  << signal.ult_tb.MDT.file_ts : string >>;
 
   shared variable csv_file_1: csv_file_type;
   shared variable csv_file_2: csv_file_type;
@@ -84,8 +84,8 @@ architecture sim of ult_tb_writer_sf_in is
   constant g_OUT_FILE_1     : string  := "ov_heg2sf_hits" & g_PRJ_INFO & ".csv";
   constant g_OUT_FILE_2     : string  := "ov_heg2sf_seed" & g_PRJ_INFO & ".csv";
      
-  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
-  alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
+  alias slc_event_ai is  << signal.ult_tb.SLC.slc_event_ai : event_xaut >>;
+  alias mdt_event_ai is  << signal.ult_tb.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_u2h_a : event_tdc_at;
   signal slc_event_ucm_pp2csw_a : event_xat(c_MAX_NUM_SL - 1  downto 0);
@@ -94,10 +94,10 @@ architecture sim of ult_tb_writer_sf_in is
   signal slc_event_in_ar : event_xat(c_NUM_THREADS - 1  downto 0);
   signal slc_event_ar : event_xat(c_NUM_THREADS - 1  downto 0);
 
-  alias csw_control_av is << signal.ult_tp.ULT.logic_gen.UCM_GEN.ULT_UCM.UCM.csw_control_av : ucm_csw_control_avt >>;
+  alias csw_control_av is << signal.ult_tb.ULT.logic_gen.UCM_GEN.ULT_UCM.UCM.csw_control_av : ucm_csw_control_avt >>;
   signal csw_control_ar : ucm_csw_control_art(c_MAX_NUM_SL - 1 downto 0);
 
-  alias proc_info_av is << signal.ult_tp.ULT.logic_gen.UCM_GEN.ULT_UCM.UCM.proc_info_av : ucm_proc_info_avt >>;
+  alias proc_info_av is << signal.ult_tb.ULT.logic_gen.UCM_GEN.ULT_UCM.UCM.proc_info_av : ucm_proc_info_avt >>;
   signal proc_info_ar : ucm_proc_info_art(c_NUM_THREADS - 1 downto 0);
 begin
   
@@ -302,9 +302,9 @@ begin
   HPS_INN: if c_STATIONS_IN_SECTOR(0) = '1' generate
     constant st_i : integer := 0;
     --
-    alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
-    alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
-    alias heg2sf_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
+    alias heg2sf_slc_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
+    alias heg2sf_hit_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
+    alias heg2sf_ctrl_av is << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
     signal heg2sf_slc_ar  : heg2sfslc_art(c_NUM_THREADS -1 downto 0);
     signal heg2sf_hit_ar  : heg2sfhit_art(c_NUM_THREADS -1 downto 0);
     signal heg2sf_ctrl_ar : hps_ctrl2sf_art(c_NUM_THREADS -1 downto 0);
@@ -321,8 +321,8 @@ begin
     -- heg2sf_ctrl_ar <= convert(heg2sf_ctrl_av);
 
     TH_LOOP: for th_i in c_NUM_THREADS -1 downto 0 generate
-      alias fifo_rd is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
-      alias fifo_wr is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_wr : std_logic_vector >>;
+      alias fifo_rd is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
+      alias fifo_wr is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_wr : std_logic_vector >>;
       
       signal fifo_wr_pl : std_logic_vector(fifo_wr'length -1 downto 0);
       signal fifo_wr_pl2 : std_logic_vector(fifo_wr'length -1 downto 0);
@@ -453,9 +453,9 @@ begin
   HPS_MID: if c_STATIONS_IN_SECTOR(1) = '1' generate
     constant st_i : integer := 1;
     --
-    alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
-    alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
-    alias heg2sf_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
+    alias heg2sf_slc_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
+    alias heg2sf_hit_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
+    alias heg2sf_ctrl_av is << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
     signal heg2sf_slc_ar  : heg2sfslc_art(c_NUM_THREADS -1 downto 0);
     signal heg2sf_hit_ar  : heg2sfhit_art(c_NUM_THREADS -1 downto 0);
     signal heg2sf_ctrl_ar : hps_ctrl2sf_art(c_NUM_THREADS -1 downto 0);
@@ -472,8 +472,8 @@ begin
     -- heg2sf_ctrl_ar <= convert(heg2sf_ctrl_av);
 
     TH_LOOP: for th_i in c_NUM_THREADS -1 downto 0 generate
-      alias fifo_rd is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
-      alias fifo_wr is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_wr : std_logic_vector >>;
+      alias fifo_rd is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
+      alias fifo_wr is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_wr : std_logic_vector >>;
       
       signal fifo_wr_pl : std_logic_vector(fifo_wr'length -1 downto 0);
       signal fifo_wr_pl2 : std_logic_vector(fifo_wr'length -1 downto 0);
@@ -604,9 +604,9 @@ begin
   HPS_OUT: if c_STATIONS_IN_SECTOR(2) = '1' generate
     constant st_i : integer := 2;
     --
-    alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
-    alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
-    alias heg2sf_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
+    alias heg2sf_slc_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
+    alias heg2sf_hit_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
+    alias heg2sf_ctrl_av is << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
     signal heg2sf_slc_ar  : heg2sfslc_art(c_NUM_THREADS -1 downto 0);
     signal heg2sf_hit_ar  : heg2sfhit_art(c_NUM_THREADS -1 downto 0);
     signal heg2sf_ctrl_ar : hps_ctrl2sf_art(c_NUM_THREADS -1 downto 0);
@@ -622,8 +622,8 @@ begin
     -- heg2sf_ctrl_ar <= convert(heg2sf_ctrl_av);
 
     TH_LOOP: for th_i in c_NUM_THREADS -1 downto 0 generate
-      alias fifo_rd is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
-      alias fifo_wr is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_wr : std_logic_vector >>;
+      alias fifo_rd is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
+      alias fifo_wr is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_wr : std_logic_vector >>;
       
       signal fifo_wr_pl : std_logic_vector(fifo_wr'length -1 downto 0);
       signal fifo_wr_pl2 : std_logic_vector(fifo_wr'length -1 downto 0);
@@ -753,9 +753,9 @@ begin
   EXT_MID: if c_STATIONS_IN_SECTOR(3) = '1' generate
     constant st_i : integer := 3;
     --
-alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
-alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
-alias heg2sf_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
+alias heg2sf_slc_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg2sfslc_av   : heg2sfslc_avt >>;
+alias heg2sf_hit_av is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg2sfhit_av   : heg2sfhit_avt >>;
+alias heg2sf_ctrl_av is << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
 signal heg2sf_slc_ar  : heg2sfslc_art(c_NUM_THREADS -1 downto 0);
 signal heg2sf_hit_ar  : heg2sfhit_art(c_NUM_THREADS -1 downto 0);
 signal heg2sf_ctrl_ar : hps_ctrl2sf_art(c_NUM_THREADS -1 downto 0);
@@ -771,8 +771,8 @@ begin
 -- heg2sf_ctrl_ar <= convert(heg2sf_ctrl_av);
 
 TH_LOOP: for th_i in c_NUM_THREADS -1 downto 0 generate
-  alias fifo_rd is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
-  alias fifo_wr is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_wr : std_logic_vector >>;
+  alias fifo_rd is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
+  alias fifo_wr is  << signal.ult_tb.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_wr : std_logic_vector >>;
   
   signal fifo_wr_pl : std_logic_vector(fifo_wr'length -1 downto 0);
   signal fifo_wr_pl2 : std_logic_vector(fifo_wr'length -1 downto 0);

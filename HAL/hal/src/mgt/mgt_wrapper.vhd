@@ -109,8 +109,10 @@ architecture Behavioral of mgt_wrapper is
   attribute DONT_TOUCH               : string;
   attribute DONT_TOUCH of reset_tree : signal is "true";
 
-  signal refclk : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
-  signal recclk : std_logic;
+  signal refclk         : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+  signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+  signal refclk_bufg    : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+  signal recclk         : std_logic;
 
   -- TODO: initialize these so that uninstantiated MGTs will show DEADBEEF or something
   signal tx_resets : mgt_reset_rt_array (c_NUM_MGTS-1 downto 0);
@@ -185,7 +187,7 @@ begin
           )
         port map (
           O     => refclk(I),
-          ODIV2 => open,
+          ODIV2 => refclk_mirrors(I),
           CEB   => '0',
           I     => refclk_i_p(I),
           IB    => refclk_i_n(I)
@@ -504,5 +506,70 @@ begin
     end generate sl_gen;
 
   end generate mgt_gen;
+
+  --------------------------------------------------------------------------------
+  -- Refclk Monitors
+  --------------------------------------------------------------------------------
+
+  refclk_mirror : for I in 0 to c_NUM_REFCLKS-2 generate
+    signal clk_freq : std_logic_vector (31 downto 0) := (others => '0');
+    signal ce, clr  : std_logic;
+
+    -- NOTE: this needs to be kept up to date with whatever the axi clock
+    -- frequency is, it should probably be stored somewhere in the board_pkg
+    constant axi_refclk_freq : integer := 50_000_000;
+
+  begin
+
+    -- NOTE: the AXI C2C conflicts with this and generates an error, so only
+    -- measure the freq of other clocks. It doesn't make sense anyway as we use the
+    -- AXI clock to monitor itself?
+    axi : if (c_REFCLK_MAP(I).freq = REF_AXI_C2C) generate
+      mon.refclk(I).freq <= std_logic_vector(to_unsigned(axi_refclk_freq, 32));
+    end generate;
+
+    no_axi : if (c_REFCLK_MAP(I).freq /= REF_AXI_C2C) generate
+
+      mon.refclk(I).freq <= clk_freq;
+
+      -- Despite the documentation stating that "The BUFG_GT_SYNC primitive is
+      -- automatically inserted by the Vivado tools, if not present in the
+      -- design.", this does not appear to be true, and required manual
+      -- instantiation. Previously it would generate an error at DRC complaining
+      -- that the CE/CLR pins are not driven by a BUFG_GT_SYNC.
+
+      BUFG_GT_SYNC_inst : BUFG_GT_SYNC
+        port map (
+          CESYNC  => ce,                -- 1-bit output: Synchronized CE
+          CLRSYNC => clr,               -- 1-bit output: Synchronized CLR
+          CE      => '1',               -- 1-bit input: Asynchronous enable
+          CLK     => refclk_mirrors(I), -- 1-bit input: Clock
+          CLR     => '0'                -- 1-bit input: Asynchronous clear
+          );
+
+      mgtclk_img_bufg : BUFG_GT
+        port map(
+          I       => refclk_mirrors(I),
+          O       => refclk_bufg(I),
+          CE      => ce,
+          DIV     => (others => '0'),
+          CLR     => clr,
+          CLRMASK => '0',
+          CEMASK  => '0'
+          );
+
+      i_clk_frequency : entity work.clk_frequency
+        generic map (
+          clk_a_freq => 50_000_000
+          )
+        port map (
+          reset => reset,
+          clk_a => clocks.axiclock,
+          clk_b => refclk_bufg(I),
+          rate  => clk_freq
+          );
+    end generate;
+
+  end generate;
 
 end Behavioral;

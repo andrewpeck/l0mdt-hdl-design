@@ -23,7 +23,8 @@ set AXI_MASTER_CLK_FREQ 50000000
 
 
 set EXT_CLK40 clk40
-set EXT_CLK40_RSTN CLK40_RST_N
+set EXT_CLK40_RSTN CLK40_RSTN
+set AXI_CLK40_RSTN AXI_CLK40_RST_N
 set EXT_CLK40_FREQ 40000000
 
 set AXI_INTERCONNECT_NAME slave_interconnect
@@ -60,25 +61,24 @@ connect_bd_net [get_bd_ports $AXI_MASTER_RSTN] [get_bd_pins $SYS_RESETER_AXI_RST
 #================================================================================
 #  Create the system resetter for clk40
 #================================================================================
-# create_bd_port -dir O -type rst $EXT_CLK40_RSTN
-# create_bd_port -dir I -type clk $EXT_CLK40  -freq_hz $EXT_CLK_FREQ
-# set SYS_RESETER_CLK40 sys_reseter_clk40
-# create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == proc_sys_reset}] $SYS_RESETER_CLK40
-# #connect external reset
-# connect_bd_net [get_bd_ports $EXT_RESET] [get_bd_pins $SYS_RESETER_CLK40/ext_reset_in]
-# #connect clock
-# connect_bd_net [get_bd_ports $EXT_CLK40] [get_bd_pins $SYS_RESETER_CLK40/slowest_sync_clk]
 
-# set SYS_RESETER_CLK40_RSTN $SYS_RESETER_CLK40/interconnect_aresetn
+create_bd_port -dir I -type clk $EXT_CLK40  -freq_hz $EXT_CLK_FREQ
+create_bd_port -dir I -type rst $EXT_CLK40_RSTN
+create_bd_port -dir O -type rst $AXI_CLK40_RSTN
+set SYS_RESETER_CLK40 sys_reseter_clk40
+create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == proc_sys_reset}] $SYS_RESETER_CLK40
+# #connect external reset
+connect_bd_net [get_bd_ports $EXT_RESET] [get_bd_pins $SYS_RESETER_CLK40/ext_reset_in]
+# #connect clock
+connect_bd_net [get_bd_ports $EXT_CLK40] [get_bd_pins $SYS_RESETER_CLK40/slowest_sync_clk]
+
+set SYS_RESETER_AXI_CLK40_RSTN $SYS_RESETER_CLK40/interconnect_aresetn
 # #create the reset to sys reseter and slave interconnect
-# connect_bd_net [get_bd_ports $EXT_CLK40_RSTN] [get_bd_pins $SYS_RESETER_CLK40_RSTN]
+connect_bd_net [get_bd_ports $AXI_CLK40_RSTN] [get_bd_pins $SYS_RESETER_AXI_CLK40_RSTN]
 
 #================================================================================
 #  Configure chip 2 chip links
 #================================================================================
-
-
-
 source -quiet ${C2C_PATH}/create_kintex_c2c.tcl
 #LOCing C2CB to GTHE4_COMMON_X0Y1
 #set_property -dict [list CONFIG.CHANNEL_ENABLE {X0Y1} CONFIG.C_START_LANE {X0Y1}] [get_bd_cells K_C2CB_PHY]
@@ -112,7 +112,7 @@ if {![info exists AXI_BASE_ADDRESS]} { #If not set in Hog Project (post-creation
 }
 
 source -quiet "$BD_PATH/add_slaves_from_yaml.tcl"
-yaml_to_bd "$C2C_PATH/slaves.yaml"
+yaml_to_bd "${SCRIPT_PATH}/slaves.yaml"
 
 set autogen_dir "${PATH_REPO}/configs/${build_name}/autogen/"
 exec mkdir -p -- $autogen_dir

@@ -4,8 +4,8 @@
 <!--<node id="SEL_SLAVE"     address="0x1" mask="0x100" permission="rw" description="Set to 1 to select the slave link (EC)"/>-->
 <!--<node id="BROADCAST"     address="0x1" mask="0x200" permission="rw" description="Sends data to all LPGBTs (Master + Slave)"/>-->
 
-<node id="SC">
-    <node id="MASTER" address="0x0">
+<node id="SC" permission="rw">
+    <node id="MASTER" address="0x0" permission="rw">
 
         <node id="TX_RESET"    address="0x0" mask="0x00000001" permission="w" description="Reset TX datapath"/>
         <node id="RX_RESET"    address="0x1" mask="0x00000002" permission="w" description="Reset RX datapath"/>
@@ -19,7 +19,7 @@
         <node id="TX_CHANNEL" address="0x9" mask="0xff000000" permission="rw" description="Command: The channel field specifies the destination interface of the request message (ctrl/spi/gpio/i2c/jtag/adc/dac)."/>
         <node id="TX_DATA"    address="0xA" mask="0xffffffff" permission="rw" description="Command: data field (According to the SCA manual)"/>
 
-        <node id="SCA_RX" address="0xB">
+        <node id="SCA_RX" address="0xB" permission="rw">
             <node id="RX_0" address="0x0" fwinfo="type=array" module="file://SCA_RX.xml"/>
             <node id="RX_1" address="0x3" fwinfo="type=array" module="file://SCA_RX.xml"/>
             <node id="RX_2" address="0x6" fwinfo="type=array" module="file://SCA_RX.xml"/>
@@ -34,7 +34,7 @@
 
     </node> <!-- Master -->
 
-    <node id="SLAVE" address="0x20">
+    <node id="SLAVE" address="0x20" permission="rw">
 
         <node id="TX_RESET"    address="0x0" mask="0x00000001" permission="w" description="Reset TX datapath"/>
         <node id="RX_RESET"    address="0x1" mask="0x00000002" permission="w" description="Reset RX datapath"/>

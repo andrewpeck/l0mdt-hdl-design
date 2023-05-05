@@ -51,7 +51,8 @@ library vamc_lib;
 entity csv_writer_ucm is
   generic(
     g_PRJ_INFO            : string  := "not_defined";
-    g_IN_FILES            : string  := "not_defined.csv"
+    g_IN_FILES            : string  := "not_defined.csv";
+    g_verbose         : integer := 1
   );
   port (
     clk                   : in std_logic;
@@ -78,10 +79,10 @@ end entity csv_writer_ucm;
 
 architecture sim of csv_writer_ucm is
 
-  -- alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
-  -- alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
-  -- alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
-  -- alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
+  -- alias slc_file_ok is  << signal.ult_tb.SLC.file_open : std_logic >>;
+  -- alias slc_file_ts is  << signal.ult_tb.SLC.file_ts : string >>;
+  -- alias hit_file_ok is  << signal.ult_tb.MDT.file_open : std_logic >>;
+  -- alias hit_file_ts is  << signal.ult_tb.MDT.file_ts : string >>;
 
   constant g_OUT_FILE_1     : string  := "ov_" & g_PRJ_INFO & "_ucm2hps.csv";
   constant g_OUT_FILE_2     : string  := "ov_" & g_PRJ_INFO & "_ucm2mpl.csv";
@@ -89,14 +90,14 @@ architecture sim of csv_writer_ucm is
   shared variable csv_file_1: csv_file_type;
   shared variable csv_file_2: csv_file_type;
 
-  -- alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_xaut >>;
+  -- alias slc_event_ai is  << signal.ult_tb.SLC.slc_event_ai : event_xaut >>;
 
-  -- alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_plin_av : ucm2hps_avt >>;
-  -- alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_plin_av : ucm2hps_avt >>;
-  -- alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_plin_av : ucm2hps_avt >>;
-  -- alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  -- alias inn_slc_to_h2s_av is  << signal.ult_tb.ULT.inn_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  -- alias mid_slc_to_h2s_av is  << signal.ult_tb.ULT.mid_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  -- alias out_slc_to_h2s_av is  << signal.ult_tb.ULT.out_slc_to_h2s_plin_av : ucm2hps_avt >>;
+  -- alias ext_slc_to_h2s_av is  << signal.ult_tb.ULT.ext_slc_to_h2s_plin_av : ucm2hps_avt >>;
 
-  -- alias ucm2pl_av is  << signal.ult_tp.ULT.ucm2pl_av : ucm2pl_avt >>;
+  -- alias ucm2pl_av is  << signal.ult_tb.ULT.ucm2pl_av : ucm2pl_avt >>;
   signal ucm2pl_ar : ucm2pl_art(c_MAX_NUM_SL-1 downto 0);
 
   signal slc_event_u2m_au        : event_xat(c_MAX_NUM_SL -1 downto 0);
@@ -263,6 +264,23 @@ begin
               csv_file_1.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang));
               csv_file_1.writeline;
 
+              if g_verbose > 1 then
+                puts("OUT ## UCM2HPS_0 => " & integer'image(to_integer(tb_curr_sim_time)) &
+                " : " & integer'image(to_integer(tb_curr_tdc_time)) &
+                " : " & integer'image(0) &
+                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(th_i) &
+                " : " & integer'image(0) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slcid)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slid)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).muid.bcid)) &
+                " : " & integer'image(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang)));
+              end if;
+              
             end if;
           end loop;
         end if;
@@ -297,6 +315,23 @@ begin
               -- vec_ang
               csv_file_1.write_integer(to_integer(mid_ucm2hps_bus_ar(th_i).vec_ang));
               csv_file_1.writeline;
+
+              if g_verbose > 1 then
+                puts("OUT ## UCM2HPS_1 => " & integer'image(to_integer(tb_curr_sim_time)) &
+                " : " & integer'image(to_integer(tb_curr_tdc_time)) &
+                " : " & integer'image(0) &
+                " : " & integer'image(to_integer(unsigned(mid_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(th_i) &
+                " : " & integer'image(1) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).muid.slcid)) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).muid.slid)) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).muid.bcid)) &
+                " : " & integer'image(to_integer(unsigned(mid_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(mid_ucm2hps_bus_ar(th_i).vec_ang)));
+              end if;
 
             end if;
           end loop;
@@ -333,6 +368,23 @@ begin
               csv_file_1.write_integer(to_integer(out_ucm2hps_bus_ar(th_i).vec_ang));
               csv_file_1.writeline;
 
+              if g_verbose > 1 then
+                puts("OUT ## UCM2HPS_2 => " & integer'image(to_integer(tb_curr_sim_time)) &
+                " : " & integer'image(to_integer(tb_curr_tdc_time)) &
+                " : " & integer'image(0) &
+                " : " & integer'image(to_integer(unsigned(out_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(th_i) &
+                " : " & integer'image(2) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).muid.slcid)) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).muid.slid)) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).muid.bcid)) &
+                " : " & integer'image(to_integer(unsigned(out_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(out_ucm2hps_bus_ar(th_i).vec_ang)));
+              end if;
+
             end if;
           end loop;
         end if;
@@ -368,6 +420,23 @@ begin
               -- vec_ang
               csv_file_1.write_integer(to_integer(ext_ucm2hps_bus_ar(th_i).vec_ang));
               csv_file_1.writeline;
+
+              if g_verbose > 1 then
+                puts("OUT ## UCM2HPS_3 => " & integer'image(to_integer(tb_curr_sim_time)) &
+                " : " & integer'image(to_integer(tb_curr_tdc_time)) &
+                " : " & integer'image(0) &
+                " : " & integer'image(to_integer(unsigned(ext_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(th_i) &
+                " : " & integer'image(3) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).muid.slcid)) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).muid.slid)) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).muid.bcid)) &
+                " : " & integer'image(to_integer(unsigned(ext_ucm2hps_bus_ar(th_i).mdtseg_dest))) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).mdtid.chamber_id)) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta)) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).vec_pos)) &
+                " : " & integer'image(to_integer(ext_ucm2hps_bus_ar(th_i).vec_ang)));
+              end if;
 
             end if;
           end loop;
@@ -446,6 +515,38 @@ begin
             csv_file_2.write_integer(ucm2pl_ar(sl_i).nswseg_posphi);
             csv_file_2.write_integer(ucm2pl_ar(sl_i).nswseg_poseta);
             csv_file_2.writeline;
+
+            if g_verbose > 1 then
+              puts("OUT ## UCM2CPL => " &   
+              " : " & integer'image(to_integer(tb_curr_sim_time)) &
+              " : " & integer'image(to_integer(tb_curr_tdc_time)) &
+              " : " & integer'image(to_integer(unsigned(slc_event_u2m_au(sl_i)))) &
+              " : " & integer'image(sl_i) &
+              " : " & std_logic'image(ucm2pl_ar(sl_i).busy) &
+              " : " & integer'image(to_integer(unsigned(ucm2pl_ar(sl_i).process_ch))) &
+              " : " & std_logic'image(ucm2pl_ar(sl_i).common.header.tcoverflow) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.header.nmtc_sl)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.header.nmtc_mdt)) & 
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.header.nslc)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.header.bcid)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.slcid)) &
+              " : " & std_logic'image(ucm2pl_ar(sl_i).common.tcsent) & 
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.poseta)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.posphi)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.sl_pt)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.sl_ptthresh)) &
+              " : " & std_logic'image(ucm2pl_ar(sl_i).common.sl_charge) &
+              " : " & integer'image(to_integer(unsigned(ucm2pl_ar(sl_i).common.cointype))) &
+              " : " & integer'image(to_integer(unsigned(ucm2pl_ar(sl_i).common.trailer.crc))) & 
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.trailer.fiberid)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).common.trailer.slid)) &
+              " : " & integer'image(to_integer(unsigned(ucm2pl_ar(sl_i).common.trailer.comma))) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).phimod)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).nswseg_angdtheta)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).nswseg_posphi)) &
+              " : " & integer'image(to_integer(ucm2pl_ar(sl_i).nswseg_poseta)));
+            end if;
+
           end if;
         end loop;
       end if;
@@ -453,3 +554,4 @@ begin
   end process UCM2MPL_OUT;
   
 end sim;
+

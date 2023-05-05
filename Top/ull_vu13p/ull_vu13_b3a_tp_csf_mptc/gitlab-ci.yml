@@ -43,7 +43,7 @@ CHK:ull_vu13_b3a_tp_csf_mptc:
     expire_in: 30 day
 # user_sim:ull_vu13_b3a_ucm_mpl:
 #     extends: .user_sim
-#     variables:
+    # variables
 #       extends: .vars
 #       PROJECT_NAME: ull_vu13_b3a_ucm_mpl
 

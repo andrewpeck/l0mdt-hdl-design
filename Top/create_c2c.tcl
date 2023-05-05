@@ -23,7 +23,7 @@ set re "/^\\s*component c2cSlave/,/end component/p"
 set slave_component [exec sed -ne $re  ${wrapper_file}]
 
 # create a VHDL package containing the wrapper component
-set outfile [file normalize "${BD_OUTPUT_PATH}/${fpga_shortname}/c2cslave_pkg.vhd"]
+set outfile [file normalize "${SCRIPT_PATH}/c2cslave_pkg.vhd"]
 
 set fp [open $outfile w+]
 

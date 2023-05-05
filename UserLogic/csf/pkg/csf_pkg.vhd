@@ -389,8 +389,13 @@ package body csf_pkg is
    end function zero;
 
    function width(x: csf_hit_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: csf_hit_art; tpl: std_logic_vector) return std_logic_vector is
@@ -457,8 +462,13 @@ package body csf_pkg is
    end function convert;
 
    function width(x: csf_hit_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: csf_hit_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -616,8 +626,13 @@ package body csf_pkg is
    end function zero;
 
    function width(x: csf_locseg_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: csf_locseg_art; tpl: std_logic_vector) return std_logic_vector is
@@ -684,8 +699,13 @@ package body csf_pkg is
    end function convert;
 
    function width(x: csf_locseg_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: csf_locseg_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -856,8 +876,13 @@ package body csf_pkg is
    end function zero;
 
    function width(x: csf_sums_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: csf_sums_art; tpl: std_logic_vector) return std_logic_vector is
@@ -924,8 +949,13 @@ package body csf_pkg is
    end function convert;
 
    function width(x: csf_sums_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: csf_sums_avt; tpl: std_logic_vector) return std_logic_vector is

@@ -98,7 +98,7 @@ begin
     i_configs           => ctrl_r.configs,
     o_status            => mon_r.status ,
     --
-    o_freeze          => int_freeze,
+    o_freeze            => int_freeze,
     -- 
     o_local_en          => local_en,
     o_local_rst         => local_rst

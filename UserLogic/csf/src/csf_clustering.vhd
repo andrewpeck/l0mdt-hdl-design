@@ -40,6 +40,8 @@ ENTITY csf_clustering IS
   );
   PORT (
     clk            : IN STD_LOGIC;
+    i_en           : IN STD_LOGIC;
+    i_rst          : IN STD_LOGIC;
     i_mdthit       : IN heg2sfhit_vt;
     i_seed         : IN heg2sfslc_vt;
     i_eof          : IN STD_LOGIC;
@@ -352,6 +354,12 @@ BEGIN
         reference_b                          <= (OTHERS => (OTHERS => '0'));
         counters                             <= (OTHERS => (OTHERS => '0'));
       END IF;
+
+      IF i_rst = '1' THEN
+        reference_b                          <= (OTHERS => (OTHERS => '0'));
+        counters                             <= (OTHERS => (OTHERS => '0'));
+      END IF;
+
 
     END IF;
   END PROCESS;

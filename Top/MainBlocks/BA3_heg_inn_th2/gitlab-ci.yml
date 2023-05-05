@@ -27,7 +27,7 @@ SIM:BA3_heg_inn_th2_riviera:
   variables:
     extends: .vars
     PROJECT_NAME: MainBlocks/BA3_heg_inn_th2
-  # allow_failure: false
+  allow_failure: false
 
 
 COMP:BA3_heg_inn_th2:

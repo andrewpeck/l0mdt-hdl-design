@@ -34,6 +34,9 @@ LIBRARY csf_lib;
 USE csf_lib.csf_pkg.ALL;
 USE csf_lib.csf_custom_pkg.ALL;
 
+library ctrl_lib;
+use ctrl_lib.HPS_CTRL.all;
+
 LIBRARY project_lib;
 
 ENTITY csf_tb IS
@@ -51,6 +54,8 @@ ARCHITECTURE Behavioral OF csf_tb IS
   SIGNAL rst          : STD_LOGIC := '0';
   SIGNAL v_seg        : sf2ptcalc_vt;
   SIGNAL seg          : sf2ptcalc_rt;
+  SIGNAL csf_ctrl_v   : STD_LOGIC_VECTOR(HPS_CSF_CSF_CTRL_t'w - 1 downto 0);
+  SIGNAL csf_mon_v    : STD_LOGIC_VECTOR(HPS_CSF_CSF_MON_t'w - 1 downto 0);
 BEGIN
 
   reader : ENTITY project_lib.csf_tb_reader
@@ -86,53 +91,15 @@ BEGIN
 
   CSF : ENTITY csf_lib.csf
     PORT MAP(
-      clk       => clk,
-      i_seed    => convert(seed, seed_v),
-      i_mdt_hit => convert(mdt_hit, mdt_hit_v),
-      i_eof     => eof,
-      i_rst     => rst,
-      o_seg     => v_seg,
-
-      --SpuBuffer
-      spy_clock => clk,
-      -- Hit Spybuffer
-      i_spyhit_fc_we   => '0',
-      i_spyhit_fc_re   => '0',
-      i_spyhit_freeze  => '0',
-      i_spyhit_playback => (OTHERS => '0'),
-      i_spyhit_pb_we   => '0',
-      i_spyhit_pb_wdata => (OTHERS => '0'),
-      i_spyhit_re      => '0',
-      i_spyhit_meta_we => '0',
-      i_spyhit_addr => (OTHERS => '0'),
-      i_spyhit_meta_addr => (OTHERS => '0'),
-      i_spyhit_meta_wdata => (OTHERS => '0'),
-
-      -- SLC Spybuffer
-      i_spyslc_fc_we   => '0',
-      i_spyslc_fc_re   => '0',
-      i_spyslc_freeze  => '0',
-      i_spyslc_playback => (OTHERS => '0'),
-      i_spyslc_pb_we   => '0',
-      i_spyslc_pb_wdata => (OTHERS => '0'),
-      i_spyslc_re      => '0',
-      i_spyslc_addr => (OTHERS => '0'),
-      i_spyslc_meta_we => '0',
-      i_spyslc_meta_addr => (OTHERS => '0'),
-      i_spyslc_meta_wdata => (OTHERS => '0'),
-
-      -- Segment Spybuffer
-      i_spyseg_fc_we   => '0',
-      i_spyseg_fc_re   => '0',
-      i_spyseg_freeze  => '0',
-      i_spyseg_playback => (OTHERS => '0'),
-      i_spyseg_pb_we   => '0',
-      i_spyseg_pb_wdata => (OTHERS => '0'),
-      i_spyseg_re      => '0',
-      i_spyseg_addr => (OTHERS => '0'),
-      i_spyseg_meta_addr => (OTHERS => '0'),
-      i_spyseg_meta_we => '0',
-      i_spyseg_meta_wdata => (OTHERS => '0')
+      clk          => clk,
+      rst          => rst,
+      glob_en      => '1',
+      i_csf_ctrl_v => csf_ctrl_v,
+      o_csf_mon_v  => csf_mon_v,
+      i_seed       => convert(seed, seed_v),
+      i_mdt_hit    => convert(mdt_hit, mdt_hit_v),
+      i_eof        => eof,
+      o_seg        => v_seg
     );
 
   seg <= convert(v_seg, seg);

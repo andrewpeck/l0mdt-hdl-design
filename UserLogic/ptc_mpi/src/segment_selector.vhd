@@ -55,17 +55,16 @@ use ptc_lib.pt_params_pkg.all;
 -- use pt_lib.pt_pkg.all;
 
 entity segment_selector is
+    generic(
+        MDTTP_NEIGHBOURS : integer := 0
+    );
     port (
         clk               : in std_logic;
         i_seg_I          : in  sf2ptcalc_vt;
         i_seg_M          : in  sf2ptcalc_vt;
         i_seg_O          : in  sf2ptcalc_vt;
-        i_nsp_seg_I      : in  sf2ptcalc_vt;
-        i_nsp_seg_M      : in  sf2ptcalc_vt;
-        i_nsp_seg_O      : in  sf2ptcalc_vt;
-        i_nsm_seg_I      : in  sf2ptcalc_vt;
-        i_nsm_seg_M      : in  sf2ptcalc_vt;
-        i_nsm_seg_O      : in  sf2ptcalc_vt;
+        i_nsp_seg        : in  sf2ptcalc_avt(MDTTP_NEIGHBOURS-1 downto 0);
+        i_nsm_seg        : in  sf2ptcalc_avt(MDTTP_NEIGHBOURS-1 downto 0);
         o_seg_I          : out sf2ptcalc_vt;
         o_seg_M          : out sf2ptcalc_vt;
         o_seg_O          : out sf2ptcalc_vt
@@ -93,21 +92,16 @@ architecture Behavioral of segment_selector is
     end function select_segment;
 
     signal seg_I, seg_M, seg_O, 
-           nsp_seg_I, nsp_seg_M, nsp_seg_O, 
-           nsm_seg_I, nsm_seg_M, nsm_seg_O : sf2ptcalc_rt;
+           nsp_seg, nsm_seg: sf2ptcalc_rt;
     signal outseg_I, outseg_M, outseg_O : sf2ptcalc_rt;
 
 begin
     seg_I <= convert(i_seg_I,seg_I);
     seg_M <= convert(i_seg_M,seg_M);
     seg_O <= convert(i_seg_O,seg_O);
-    nsm_seg_I <= convert(i_nsm_seg_I,nsm_seg_I);
-    nsm_seg_M <= convert(i_nsm_seg_M,nsm_seg_M);
-    nsm_seg_O <= convert(i_nsm_seg_O,nsm_seg_O);
-    nsp_seg_I <= convert(i_nsp_seg_I,nsp_seg_I);
-    nsp_seg_M <= convert(i_nsp_seg_M,nsp_seg_M);
-    nsp_seg_O <= convert(i_nsp_seg_O,nsp_seg_O);
-
+    nsm_seg <= convert(i_nsm_seg(0),nsm_seg) when MDTTP_NEIGHBOURS = 1;
+    nsp_seg <= convert(i_nsp_seg(0),nsp_seg) when MDTTP_NEIGHBOURS = 1;
+    
     o_seg_I <= convert(outseg_I,o_seg_I);
     o_seg_M <= convert(outseg_M,o_seg_M);
     o_seg_O <= convert(outseg_O,o_seg_O);
@@ -116,9 +110,9 @@ begin
         begin
         if rising_edge(clk) then
             -- Clock 0
-            outseg_I <= select_segment(seg_I, nsp_seg_I, nsm_seg_I);
-            outseg_M <= select_segment(seg_M, nsp_seg_M, nsm_seg_M);
-            outseg_O <= select_segment(seg_O, nsp_seg_O, nsm_seg_O);
+            outseg_I <= select_segment(seg_I, nsp_seg, nsm_seg);
+            outseg_M <= select_segment(seg_M, nsp_seg, nsm_seg);
+            outseg_O <= select_segment(seg_O, nsp_seg, nsm_seg);
         end if ;
     end process ; -- SagittaProc
 

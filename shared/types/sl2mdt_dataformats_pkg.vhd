@@ -809,8 +809,13 @@ package body sl2mdt_dataformats_pkg is
    end function zero;
 
    function width(x: SL2MDT_slc_rx_bus) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: SL2MDT_slc_rx_bus; tpl: std_logic_vector) return std_logic_vector is
@@ -877,8 +882,13 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
 
    function width(x: SL2MDT_slc_endcap_bus) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: SL2MDT_slc_endcap_bus; tpl: std_logic_vector) return std_logic_vector is
@@ -1218,8 +1228,13 @@ package body sl2mdt_dataformats_pkg is
    end function zero;
 
    function width(x: sl2mdt_mtc_out_bus) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: sl2mdt_mtc_out_bus; tpl: std_logic_vector) return std_logic_vector is

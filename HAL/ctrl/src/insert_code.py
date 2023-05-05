@@ -5,11 +5,15 @@ import shutil
 import tempfile
 
 
-def insert_code(input_file_name, output_file_name,
-                marker_start, marker_end, write_function, write_function_args=None):
+def insert_code(input_file_name,
+                output_file_name,
+                marker_start,
+                marker_end,
+                write_function,
+                write_function_args=None):
     """"""
 
-    file = io.open(input_file_name, "r", newline='')
+    file = io.open(input_file_name, "r", newline='', encoding='utf-8')
     lines = file.readlines()
     file.close()
 
@@ -31,10 +35,11 @@ def insert_code(input_file_name, output_file_name,
     ok_to_write = start_found and end_found
 
     if not ok_to_write:
-        raise ValueError(("\n\tStart and end section markers not found in %s" % input_file_name) +
-                          "\n\tplease insert the following lines into the file" +
-                          ("\n\t%s" % marker_start) +
-                          ("\n\t%s" % marker_end))
+        raise ValueError(
+            ("\n\tStart and end section markers not found in %s" %
+             input_file_name) +
+            "\n\tplease insert the following lines into the file" +
+            ("\n\t%s" % marker_start) + ("\n\t%s" % marker_end))
 
     start_found = False
     end_found = False
