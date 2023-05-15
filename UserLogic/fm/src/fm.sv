@@ -5,18 +5,16 @@ import FM_CTRL::*;
 import fm_sb_pkg::*;
 
 module fm #(
-	    parameter total_sb = 27
+	    parameter total_l0mdt_sb = 27
 	    )(
 	      input logic [$bits(FM_CTRL_t)-1:0] fm_ctrl_v,
 	      input logic 			 clk_hs,
 	      input logic 			 rst_hs,
 	      input logic 			 axi_reset_n,
 	      output logic [$bits(FM_MON_t)-1:0] fm_mon_v,
-	      input logic [$bits(fm_rt)-1 :0 ] 	 ult_fm_data_v[total_sb]
+	      input logic [$bits(fm_rt)-1 :0 ] 	 ult_fm_data_v[total_l0mdt_sb]
 	  );
    logic 					 axi_clock;
-   logic 					 axi_rst;
-   logic [2:0] 					 axi_rst_d;
    genvar 					 sb_t;
    
    logic [sb_mapped_n-1:0] 			 freeze;
@@ -25,7 +23,7 @@ module fm #(
    
    FM_MON_t fm_mon_out;
    FM_CTRL_t fm_ctrl_in;
-   fm_rt     ult_fm_data[total_sb];
+   fm_rt     ult_fm_data[total_l0mdt_sb];
    
 
    assign fm_ctrl_in   = fm_ctrl_v;
@@ -48,7 +46,7 @@ module fm #(
 			);
 
    fm_data  #(
-	      .total_sb(total_sb)
+	      .total_l0mdt_sb(total_l0mdt_sb)
 	      )fm_data_inst(
 			.clk_hs(clk_hs),
 			.rst_hs(rst_hs),

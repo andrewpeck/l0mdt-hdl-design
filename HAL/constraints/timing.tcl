@@ -129,3 +129,19 @@ set_property -quiet MAX_FANOUT 256 [get_cells "ult_inst/logic_gen.H2S_GEN.ULT_H2
 
 set_max_delay 12.5 \
     -to   [get_cells "top_control_inst/*_ctrl_reg*"]
+
+################################################################################
+# Clock frequency counters
+################################################################################
+
+set_max_delay -datapath_only \
+    -from [get_clocks] \
+    -to [get_pins -hierarchical -filter { NAME =~ "*i_clk_frequency*/rate_reg[*]/D"}] 8
+
+set_max_delay -datapath_only \
+    -from [get_clocks] \
+    -to [get_pins -hierarchical -filter { NAME =~ "*i_clk_frequency*/valid_sr_reg[0]/D"}] 8
+
+set_max_delay -datapath_only \
+    -from [get_clocks] \
+    -to [get_pins -hierarchical -filter { NAME =~ "*i_clk_frequency*/measure_sr_reg[0]/D"}] 8

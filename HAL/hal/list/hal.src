@@ -1,4 +1,3 @@
-# -*- mode: TCL;-*-
 # Dependencies
 HAL/tdc/list/tdc.src lib=tdc
 
@@ -18,6 +17,7 @@ HAL/hal/src/polmux_wrapper.vhd
 HAL/hal/src/tdc_decoder_wrapper.vhd
 HAL/hal/src/csm.vhd
 HAL/hal/src/display_board_cfg.vhd
+HAL/hal/src/clk_frequency.vhd
 
 # MGT
 HAL/hal/src/mgt/mgt_pkg.vhd

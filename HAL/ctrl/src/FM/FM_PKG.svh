@@ -577,6 +577,48 @@ package FM_CTRL;
    } FM_SB26_CTRL_t ;
 
    typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [5 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB_DUMMY0_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB_DUMMY0_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB_DUMMY0_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB_DUMMY0_MON_t ;
+
+   typedef struct packed {
+      FM_SB_DUMMY0_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB_DUMMY0_CTRL_t ;
+
+   typedef struct packed {
+      logic  clk;
+      logic  enable;
+      logic  wr_enable;
+      logic [5 -1:0] address;
+      logic [32 -1:0] wr_data;
+   } FM_SB_DUMMY1_SB_MEM_MOSI_t ;
+
+   typedef struct packed {
+      logic [32 -1:0] rd_data;
+      logic  rd_data_valid;
+   } FM_SB_DUMMY1_SB_MEM_MISO_t ;
+
+   typedef struct packed {
+      FM_SB_DUMMY1_SB_MEM_MISO_t  SB_MEM;
+   } FM_SB_DUMMY1_MON_t ;
+
+   typedef struct packed {
+      FM_SB_DUMMY1_SB_MEM_MOSI_t  SB_MEM;
+   } FM_SB_DUMMY1_CTRL_t ;
+
+   typedef struct packed {
       logic  GLOBAL_FREEZE;
       logic [2 - 1:0] GLOBAL_PLAYBACK_MODE;
       logic  INITIALIZE_SPY_MEMORY;
@@ -610,6 +652,8 @@ package FM_CTRL;
       FM_SB23_MON_t  SB23;
       FM_SB24_MON_t  SB24;
       FM_SB26_MON_t  SB26;
+      FM_SB_DUMMY0_MON_t  SB_DUMMY0;
+      FM_SB_DUMMY1_MON_t  SB_DUMMY1;
    } FM_MON_t ;
 
    typedef struct packed {
@@ -640,6 +684,8 @@ package FM_CTRL;
       FM_SB23_CTRL_t  SB23;
       FM_SB24_CTRL_t  SB24;
       FM_SB26_CTRL_t  SB26;
+      FM_SB_DUMMY0_CTRL_t  SB_DUMMY0;
+      FM_SB_DUMMY1_CTRL_t  SB_DUMMY1;
       FM_SPY_CTRL_CTRL_t  SPY_CTRL;
       logic [32 - 1:0] FREEZE_MASK_0;
       logic [32 - 1:0] FREEZE_MASK_1;
