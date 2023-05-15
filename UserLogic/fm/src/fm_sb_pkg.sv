@@ -3,7 +3,7 @@
 `include "l0mdt_buses_constants.svh"
 `include "FM_PKG.svh"
 
-// import FM_CTRL::*;
+
 
 package fm_sb_pkg;
 
@@ -26,8 +26,14 @@ package fm_sb_pkg;
    parameter h2s_sb_all_station_n     = h2s_sb_single_station_n * stations_n;
    parameter total_sb                 = h2s_sb_all_station_n ;
 */
-
-   parameter sb_mapped_n                   = 27;
+   //Need to update sb_mapped_n manually from fm_ult_pkg.vhd (total_sb + 1 dummy sb)
+   parameter total_l0mdt_sb                =  27;
+   parameter sb_total_dummy             = 2;   
+   parameter sb_mapped_n                  = total_l0mdt_sb + sb_total_dummy;
+   
+   parameter sb_master_dummy_index    = total_l0mdt_sb ;
+   parameter sb_slave_dummy_index       = sb_master_dummy_index + 1 ;
+   
 
    FM_CTRL_t FM_CTRL;
    FM_MON_t FM_MON;
@@ -40,37 +46,42 @@ package fm_sb_pkg;
       logic [mon_dw_max-1 : 0] fm_data;
       logic 		       fm_vld;
       }fm_rt;
+
+   
    //Above  definitions should match the definition on fm_ult_pkg.vhd
 
-   parameter  reg[31:0] axi_sb_addr_width[sb_mapped_n] = {
-						     $bits(FM_CTRL.SB0.SB_MEM.address),
-						     $bits(FM_CTRL.SB1.SB_MEM.address),
-						     $bits(FM_CTRL.SB2.SB_MEM.address),
-						     $bits(FM_CTRL.SB3.SB_MEM.address),
-						     $bits(FM_CTRL.SB4.SB_MEM.address),
-						     $bits(FM_CTRL.SB5.SB_MEM.address),
-						     $bits(FM_CTRL.SB6.SB_MEM.address),
-						     $bits(FM_CTRL.SB7.SB_MEM.address),
-						     $bits(FM_CTRL.SB8.SB_MEM.address),
-						     $bits(FM_CTRL.SB9.SB_MEM.address),
-						     $bits(FM_CTRL.SB10.SB_MEM.address),
-						     $bits(FM_CTRL.SB11.SB_MEM.address),
-						     $bits(FM_CTRL.SB12.SB_MEM.address),
-						     $bits(FM_CTRL.SB13.SB_MEM.address),
-						     $bits(FM_CTRL.SB14.SB_MEM.address),
-						     $bits(FM_CTRL.SB15.SB_MEM.address),
-						     $bits(FM_CTRL.SB16.SB_MEM.address),
-						     $bits(FM_CTRL.SB17.SB_MEM.address),
-						     $bits(FM_CTRL.SB18.SB_MEM.address),
-						     $bits(FM_CTRL.SB19.SB_MEM.address),
-						     $bits(FM_CTRL.SB20.SB_MEM.address),
-						     $bits(FM_CTRL.SB21.SB_MEM.address),
-						     $bits(FM_CTRL.SB22.SB_MEM.address),
-						     $bits(FM_CTRL.SB23.SB_MEM.address),
-						     $bits(FM_CTRL.SB24.SB_MEM.address),
-						     $bits(FM_CTRL.SB25.SB_MEM.address),
-						     $bits(FM_CTRL.SB26.SB_MEM.address)
-						     };
+   parameter  reg [31:0]       axi_sb_addr_width[sb_mapped_n] = {
+								 $bits(FM_CTRL.SB0.SB_MEM.address),
+								 $bits(FM_CTRL.SB1.SB_MEM.address),
+								 $bits(FM_CTRL.SB2.SB_MEM.address),
+								 $bits(FM_CTRL.SB3.SB_MEM.address),
+								 $bits(FM_CTRL.SB4.SB_MEM.address),
+								 $bits(FM_CTRL.SB5.SB_MEM.address),
+								 $bits(FM_CTRL.SB6.SB_MEM.address),
+								 $bits(FM_CTRL.SB7.SB_MEM.address),
+								 $bits(FM_CTRL.SB8.SB_MEM.address),
+								 $bits(FM_CTRL.SB9.SB_MEM.address),
+								 $bits(FM_CTRL.SB10.SB_MEM.address),
+								 $bits(FM_CTRL.SB11.SB_MEM.address),
+								 $bits(FM_CTRL.SB12.SB_MEM.address),
+								 $bits(FM_CTRL.SB13.SB_MEM.address),
+								 $bits(FM_CTRL.SB14.SB_MEM.address),
+								 $bits(FM_CTRL.SB15.SB_MEM.address),
+								 $bits(FM_CTRL.SB16.SB_MEM.address),
+								 $bits(FM_CTRL.SB17.SB_MEM.address),
+								 $bits(FM_CTRL.SB18.SB_MEM.address),
+								 $bits(FM_CTRL.SB19.SB_MEM.address),
+								 $bits(FM_CTRL.SB20.SB_MEM.address),
+								 $bits(FM_CTRL.SB21.SB_MEM.address),
+								 $bits(FM_CTRL.SB22.SB_MEM.address),
+								 $bits(FM_CTRL.SB23.SB_MEM.address),
+								 $bits(FM_CTRL.SB24.SB_MEM.address),
+								 $bits(FM_CTRL.SB25.SB_MEM.address),
+								 $bits(FM_CTRL.SB26.SB_MEM.address),
+								 $bits(FM_CTRL.SB_DUMMY0.SB_MEM.address),
+								 $bits(FM_CTRL.SB_DUMMY1.SB_MEM.address)
+								 };
+   
 
 /* -----\/----- EXCLUDED -----\/-----
    parameter reg[31:0]  axi_sm_addr_width[sb_mapped_n] = {
@@ -137,7 +148,9 @@ package fm_sb_pkg;
 						"SB23",
 						"SB24",
 						"SB25",
-						"SB26"
+						"SB26",
+						"SB_DUMMY0",
+						"SB_DUMMY1"
 						};
 
    parameter integer  sb_dw[sb_mapped_n] = {
@@ -167,7 +180,9 @@ package fm_sb_pkg;
 				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
 				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //OUT - THREAD 2
 				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
-				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw
+				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
+					    32, //sb_dummy0
+					    32 //sb_dummy1
 				       };
 
 

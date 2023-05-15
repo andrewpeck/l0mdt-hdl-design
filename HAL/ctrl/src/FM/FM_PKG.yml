@@ -522,6 +522,44 @@ types:
   - SB_MEM : { type: FM_SB26_SB_MEM_MOSI_t }
 
 
+- FM_SB_DUMMY0_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 5 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB_DUMMY0_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB_DUMMY0_MON_t:
+  - SB_MEM : { type: FM_SB_DUMMY0_SB_MEM_MISO_t }
+
+
+- FM_SB_DUMMY0_CTRL_t:
+  - SB_MEM : { type: FM_SB_DUMMY0_SB_MEM_MOSI_t }
+
+
+- FM_SB_DUMMY1_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 5 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB_DUMMY1_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB_DUMMY1_MON_t:
+  - SB_MEM : { type: FM_SB_DUMMY1_SB_MEM_MISO_t }
+
+
+- FM_SB_DUMMY1_CTRL_t:
+  - SB_MEM : { type: FM_SB_DUMMY1_SB_MEM_MOSI_t }
+
+
 - FM_SPY_CTRL_CTRL_t:
   - GLOBAL_FREEZE : { type: logic }
   - GLOBAL_PLAYBACK_MODE : { type: logic, range : [ 2 - 1 , 0 ] }
@@ -556,6 +594,8 @@ types:
   - SB23 : { type: FM_SB23_MON_t }
   - SB24 : { type: FM_SB24_MON_t }
   - SB26 : { type: FM_SB26_MON_t }
+  - SB_DUMMY0 : { type: FM_SB_DUMMY0_MON_t }
+  - SB_DUMMY1 : { type: FM_SB_DUMMY1_MON_t }
 
 
 - FM_CTRL_t:
@@ -586,6 +626,8 @@ types:
   - SB23 : { type: FM_SB23_CTRL_t }
   - SB24 : { type: FM_SB24_CTRL_t }
   - SB26 : { type: FM_SB26_CTRL_t }
+  - SB_DUMMY0 : { type: FM_SB_DUMMY0_CTRL_t }
+  - SB_DUMMY1 : { type: FM_SB_DUMMY1_CTRL_t }
   - SPY_CTRL : { type: FM_SPY_CTRL_CTRL_t }
   - FREEZE_MASK_0 : { type: logic, range : [ 32 - 1 , 0 ] }
   - FREEZE_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }

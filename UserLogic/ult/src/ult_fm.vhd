@@ -32,18 +32,18 @@ entity ult_fm is
    ctrl_v                      : in std_logic_vector; --FM_CTRL_t;
    mon_v                    : out std_logic_vector; --FM_MON_t;
    h2s_fm_data          : in fm_rt_array(0  to h2s_sb_all_station_n -1)
-   --ult_fm_data            : in fm_rt_array ( 0 to total_sb-1)
+   --ult_fm_data            : in fm_rt_array ( 0 to total_l0mdt_sb-1)
     );
   end entity ult_fm;
 
   architecture beh of ult_fm is
     
-    signal ult_fm_data_avt : fm_data_avt(0 to total_sb-1);
-    signal ult_fm_data : fm_rt_array(0  to total_sb-1);
+    signal ult_fm_data_avt : fm_data_avt(0 to total_l0mdt_sb-1);
+    signal ult_fm_data : fm_rt_array(0  to total_l0mdt_sb-1);
     
     component fm is
       generic(
-        total_sb : integer := total_sb
+        total_l0mdt_sb : integer := total_l0mdt_sb
         );
       port(
       clk_hs : in std_logic;
@@ -51,7 +51,7 @@ entity ult_fm is
       axi_reset_n : in std_logic;
       fm_ctrl_v     :in std_logic_vector; --FM_CTRL_t;
       fm_mon_v      : out std_logic_vector; --FM_MON_t;
-      ult_fm_data_v : in fm_data_avt(0 to total_sb-1) -- fm_rt_array ( 0 to total_sb-1)
+      ult_fm_data_v : in fm_data_avt(0 to total_l0mdt_sb-1) -- fm_rt_array ( 0 to total_l0mdt_sb-1)
         );
       end component;
     begin
@@ -65,14 +65,14 @@ entity ult_fm is
           end if;
       end process;
           
-     ult_fm_data_flatten: for sb_i in 0 to total_sb-1 generate
+     ult_fm_data_flatten: for sb_i in 0 to total_l0mdt_sb-1 generate
       --  ult_fm_data_avt(sb_i) <= vectorify(ult_fm_data(sb_i));
        ult_fm_data_avt(sb_i) <= vectorify(ult_fm_data(sb_i),ult_fm_data_avt(sb_i));
      end generate ult_fm_data_flatten;
      
      fm_inst : component fm
        generic map(
-         total_sb => total_sb
+         total_l0mdt_sb => total_l0mdt_sb
          )
      port map (
        fm_ctrl_v       => ctrl_v,
