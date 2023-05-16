@@ -1,7 +1,7 @@
 package require inifile 0.2.3
-source "[file dirname [info script]]/../../Hog/Tcl/hog.tcl"
+source "[file dirname [info script]]/../Hog/Tcl/hog.tcl"
 
-set file_name "[file dirname [info script]]/hog.conf"
+set file_name "${SCRIPT_PATH}/hog.conf"
 
 
 # get a full FPGA name, e.g. xcku15p-ffva1760-2-e
