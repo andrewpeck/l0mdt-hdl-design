@@ -81,5 +81,5 @@ puts "Block design up to date from TCL sources. Skipping build."
 set_property PROCESSING_ORDER LATE [get_files timing.tcl]
 set_property PROCESSING_ORDER LATE [get_files loc_mgts.tcl]
 
-
-## Create top_control.vhd
+# Suppress [Common 17-576] 'use_project_ipc' is deprecated message from Vivado 2020.2
+set_msg_config -suppress -id {Common 17-576} 
