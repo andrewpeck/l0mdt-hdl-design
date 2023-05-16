@@ -188,7 +188,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     file mkdir $dest_path/list
 
     # copy the base files
-    set files_to_copy "get_fpga_name.tcl gitlab-ci.yml hog.conf
+    set files_to_copy "gitlab-ci.yml hog.conf
     list
     pre-synthesis.tcl
     user_pkg.vhd
