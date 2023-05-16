@@ -84,10 +84,7 @@ def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):
 # #rtl_tv is two dimensional array for each interface. It it data received from Monitors for all ports across single output interface
 # #Array size is defined by -> rtl_tv[number of ports in interfaces][number_of_events]
 # #For Example for ptcalc it would be expected_tv[1][events_run],as output event has only one port
-
 # **************/
-
-
 
 
 def get_bitfield(
@@ -97,11 +94,11 @@ def get_bitfield(
         station_id="",
         tv_type="value",
         df_type="SL",
-        port=0
+        port=0,
+        keep_bitfieldword=False,
 ):
     BF_list  = []
-    val_list = []
-
+    returnVal = [] 
     
     # print("IACOPO - this is get_bitfield, \n",
     #       "tv_type :",tv_type,
@@ -109,38 +106,50 @@ def get_bitfield(
     #       "df_type :", df_type,
     #       "bitfieldname :", bitfieldname)
     
-    if tv_type == "value":
-        DF_list = event.DF_SL
-    else:
-        DF_list = event.DF_MDT
-
+    ### Extract BitFieldWord using methods of DataFormat() and save it as list (BF_list)
     if df_type == "SL":
         BF_list = (event.DF_SL[candidate].getBitFieldWord(bitfieldname, station_id))
-
     elif df_type == "MDT":
-        station_num = station_name_to_id(station_id)
-        BF_list = event.DF_MDT[0].getBitFieldWord(bitfieldname,station_id)
-
-    for BF in BF_list:
-        val_list.append(BF.get_bitwordvalue())
-
-    if len(val_list) == 0:
-        val_list = [0]
-
-    if tv_type == "list":
-        return val_list
-
-    if tv_type == "TDCPOLMUX2TAR":
-        in_station_num = port % 6
-        if len(BF_list)!=0:
-            val_list = BF_list[in_station_num].get_bitwordvalue()
-            #val_list = 111
+        if tv_type=="list_nested_tdc":
+            ### Case of nested list containing per-mezz information 
+            ### e.g. [ [ [ [] for _ in range(self.maxn_mezz) ] for _ in range(self.maxn_csm) ] for _ in range (self.maxn_layer) ]
+            ### used by TDCPOLMUX2TAR, TAR2HPS        
+            csm_id = port % 6 ### Done up to 6 as the 7th should not be filled as the RTL has 6*4 channels
+            BF_list = event.DF_MDT[0].getBitFieldWord(bitfieldname, station_id, csm_id)
         else:
-            val_list = 0
-        return val_list
+            ###
+            ### NB: This is temporary!!! 
+            raise NotImplementedError("Not sure if it's used for current tests")    
+            BF_list = event.DF_MDT[0].getBitFieldWord(bitfieldname,station_id)
 
-    else:
-        return val_list[0]
+    # ### TEMP
+    # if tv_type == "list_nested_tdc":
+    #     for i, BF in enumerate(BF_list):
+    #         print(f"IACOPO - for port {port} BF {i} is from CSM {BF.get_field('csmid').value}")
+
+
+    ### Extract the content of BF_list to a list of bitwordvalues (or copy them if keep_bitfieldword=True)
+    if tv_type == "list" or tv_type=="list_nested_tdc":
+        ### Case of list of bitfieldwords
+        for BF in BF_list:
+            if not keep_bitfieldword:
+                returnVal.append(BF.get_bitwordvalue())
+            else:
+                returnVal.append(BF)
+        if len(returnVal)==0:
+            returnVal=[0]        
+    else:        
+        ### Case of tvtype is scalar-type
+        if len(BF_list)==0:
+            returnVal = 0
+        else:
+            if not keep_bitfieldword:
+                returnVal = BF_list[0].get_bitwordvalue()
+            else:
+                returnVal = BF_list[0]
+
+
+    return returnVal
 
 
 def print_BitFieldsInDataFormat(tvformat, tvformat_val, stationNum=-99):
@@ -212,15 +221,135 @@ def print_tv_list(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process
     tvRTL_list = fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id)
     print_tv_bitfields(tvRTL_list) #, print_this_event = event_number)
     
+            
+def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tolerances,output_path="./",stationNum=[-99], tv_thread_mapping=[0,1,2], tv_type="value",tv_df_type="SL",pad_size=0):
+
+    """
+    Extracts BitFieldWord objects from simulated TV (using get_bitfield) and compares them with output TV from RTL.
+    
+    Event per event, candidate per candidate, it does the following:
+     - retrieves the DataFormat object from Simulated TV
+     - builds a DataFormat object that is filled each time with RTL information
+     - compares the bitfield from the two above
+    
+    Arguments
+        tv_bcid_list      : sim tv in this bcid
+        tvformat          : test vector format (from json file)
+        n_ports           : usually the number of output ports in current output interface
+        n_events          : num of events to process
+        rtl_tv            : tv as output from rtl
+        tolerances        : dictionary for tolerances - used for comparison
+        output_path       : output dir where to store comparison data csv files
+        stationNum        : map from port to [0,1,2,3] (i.e. [inn, mid, out, ext])
+        tv_thread_mapping : only used by multi-threading rtl, otherwise [ 0 for _ in range(len(n_candidates)) ]
+        tv_type           : type of testvector, can be value, list, list_nested_tdc, etc
+        tv_df_type        : type of DataFormat that should be considered, either SL" or "MDT"
+        pad_size          : length of an event (used to get the right item from rtl_tv)
+    """
+
+    ### Useful map port number -> staion ID
+    stationID = [ station_id_to_name(stationNum[iPort]) if (stationNum[0]!= -99) else -99 for iPort in range(n_ports) ]
+
+    ### Counters
+    events_are_equal = True
+    pass_count           = 0
+    fail_count           = 0
+    station_failure_cnt  = {} ## initialized during loop
+    station_failure_list = {} ## initialized during loop
 
 
-   
+    ### Loop over events, ports
+    for iEvent in range(n_events):
+        for iPort in range(n_ports):                
+            
+            ### Retrieve expected bitfieldword
+            l_EXP_BF = get_bitfield(tv_bcid_list[iEvent], 
+                                  tvformat, 
+                                  tv_thread_mapping[iPort], 
+                                  stationID[iPort], 
+                                  tv_type=tv_type, 
+                                  df_type=tv_df_type, 
+                                  port=iPort,
+                                  keep_bitfieldword=True)
+            
+            
+            ### Add one layer, to behave identically in case of lists or scalars
+            if not (tv_type == "list" or tv_type=="list_nested_tdc"):
+                l_EXP_BF = [EXP_BF]                
 
+            
+            ### Skip case in which both are placeholders (nothing to compare)
+            if (l_EXP_BF==[0] and rtl_tv[iPort][iEvent]==0):
+                continue
 
+            ### Event identifier
+            print(tv_bcid_list[iEvent].header.dump()) 
 
+            ### Loop over entry matching this event/port
+            ### if tvtype is not a list (or list_nested_tdc) the following will be done once
+            for ii in range(len(l_EXP_BF)):                
+
+                if len(l_EXP_BF) > 1:
+                    print(f" Word {1+ii} of {len(l_EXP_BF)} for this event:") 
+
+                ### This EXP BitFieldWord
+                EXP_BF = l_EXP_BF[ii]
+                
+                ### Create RTL BitFieldWord and fill it with output value
+                RTL_BF = EXP_BF.copy()
+                ii_rtl = ii + (iEvent * pad_size) # index along rtl_tv taking pad_size into account
+                RTL_BF.set_bitwordvalue(rtl_tv[iPort][ii_rtl])
+                
+                ### Comparison and table printouts
+                results = EXP_BF.compare_bitwordvalue( RTL_BF, tolerances )
+                print(tabulate(results[1], results[2], tablefmt="psql"))
+                ### Print table results
+                if results[0]:
+                    cprint("\tPass: RTL Matches expected  value", "green")
+                    pass_count = pass_count + 1
+                else:
+                    cprint("\tFail: Mismatch in RTL and expected value", "red")
+                    fail_count = fail_count + 1
+                    events_are_equal = False
+                print("\n\n")
+
+                ### Done comparison, storing error count and useful info
+                ### Initialize dictiornaries storing failures per station
+                if stationID[iPort] not in station_failure_cnt.keys():
+                    station_failure_cnt[stationID[iPort]] = { field.name : 0 for field in EXP_BF.fields }                    
+                if stationID[iPort] not in station_failure_list.keys():
+                    station_failure_list[stationID[iPort]] = []
+
+                ### Storing failure for this station
+                fail_index  = results[2].index("FAIL")
+                for row in results[1]:     
+                    station_failure_cnt[stationID[iPort]][row[0]] += row[fail_index]
+                    
+                ### Data going in csv files
+                station_failure_list[stationID[iPort]].append( tvtools.make_list(
+                    results[1],
+                    results[2],
+                    tv_bcid_list[iEvent].header.get_header(),
+                    EXP_BF.fields,
+                    iPort,
+                    True)
+                )
+
+    ### Save csv with per-station comparison data
+    Path(output_path).mkdir(parents=True, exist_ok=True)    
+    ##header = tvtools.get_pd_headers(EXP_BF, tv_df_type=="SL")
+    header = tvtools.get_pd_headers(EXP_BF, True)
+    for station in station_failure_list.keys():
+        df_file_name =  os.path.join( output_path, "DF_" + tvformat + ( "_"+station if station!="NONE" else "") + ".csv" )
+        df_data = pd.DataFrame(station_failure_list[station], columns = header)        
+        df_data.to_csv(df_file_name)
+        print(f"Saving comparison data to {df_file_name}")
+                                
+
+    return events_are_equal, pass_count, fail_count, station_failure_cnt
+            
 
 def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=[-99], tv_thread_mapping=[0,1,2]):
-
     evt                = 0
     ret_val            = 1
     pass_count         = 0
@@ -236,18 +365,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     
     RTL_DFSL.build_data_format()
 
-    print("IACOPO, called compare_BitFields with:",
-          #'tv_bcid_list', tv_bcid_list,
-          '\n','tvformat', tvformat,
-          '\n','n_candidates', n_candidates,
-          '\n','e_idx', e_idx,
-          '\n','rtl_tv', rtl_tv,
-          '\n','[type(x[0]) for x in rtl,tv]', [type(x[0]) for x in rtl_tv],
-          '\n','tolerances', tolerances,
-          '\n','output_path',output_path,
-          '\n','stationNum',stationNum)
-
-    
 
     stationNum_internal = []
     stationID           = []
@@ -257,79 +374,35 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     else:
         stationNum_internal = stationNum
 
-    ### Populate tv_format_bf with empty bitfieldword(s)
     for this_candidate in range(n_candidates):
         stationID.append(station_id_to_name(stationNum_internal[this_candidate]))
-        print(f"Calling getBitFieldWord with tvformat {tvformat} and stationID[this_candidate] {stationID[this_candidate]} / returning",RTL_DFSL.getBitFieldWord(tvformat,  stationID[this_candidate]))
         tv_format_bf.append(RTL_DFSL.getBitFieldWord(tvformat,  stationID[this_candidate]))
-        
         pp_comparison_list[stationID[this_candidate]] = []
         for object in tv_format_bf[this_candidate]:
             for field in object.fields:
                 tv_format_failure_cnt[field.name] = 0
         station_failure_cnt[stationID[this_candidate]] = tv_format_failure_cnt
 
-    #print ("tv_format_failure_cnt = ",tv_format_failure_cnt)
-    #print ("station_failure_cnt = ",station_failure_cnt)
+    print ("tv_format_failure_cnt = ",tv_format_failure_cnt)
+    print ("station_failure_cnt = ",station_failure_cnt)
     print ("stationID = ", stationID)
-    print ("tv_format_bf",tv_format_bf)
-    print ("station_failure_cnt",station_failure_cnt)
-    print ("len(tv_format_bf) = ",len(tv_format_bf))
-    print ("len(tv_bcid_list) = ",len(tv_bcid_list))
 
-    for ievent in range(len(tv_bcid_list)): ### Loop over events
-        if evt == e_idx: ## maxn events to process as set in config file
+    for ievent in range(len(tv_bcid_list)):
+        if evt == e_idx:
             break
         else:
-            print("\nEvent: ", ievent,flush=True)
-
-            print("IACOPO - Just a test:")    
-
-            for this_candidate in range(n_candidates):  ## loop over N. ports
-                print("IACOPO - ievent",ievent)
-                print("IACOPO - this_candidate = ", this_candidate)
-                print("IACOPO - len(tv_bcid_list)",len(tv_bcid_list))
-                print("IACOPO - len(tv_thread_mapping)",len(tv_thread_mapping))
-                print("IACOPO - stationID[this_candidate]",stationID[this_candidate])
-                #print("IACOPO - this_candidate",this_candidate)
-                #print("IACOPO - tv_thread_mapping",tv_thread_mapping)
-                #print("IACOPO - tv_thread_mapping[this_candidate]",tv_thread_mapping[this_candidate])
-
-                ### Check if DF_SL of this event matches the candidate
-                if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate], station_ID = stationID[this_candidate]): #TODO - Need to handle EXT station 
+            print("\nEvent: ", ievent)
+            for this_candidate in range(n_candidates):
+                #print ("this_candidate = ", this_candidate, " thread id = ", tv_thread_mapping[this_candidate], " tv_format = ",tvformat)
+                if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate] == 1, station_ID = stationID[this_candidate]): #TODO - Need to handle EXT station 
                     EXP_DF.clear()
                     RTL_DFSL.clear()
                     tv_format_val.clear()
                     comparison_data.clear()
-                    
-                    ### Retrieve EXP(ected) DF and BF from TV
-                    if tvformat == "TDCPOLMUX2TAR" or tvformat == "TAR2HPS": ## maybe need to expand this use-case
-                        EXP_DF = tv_bcid_list[ievent].DF_MDT.copy()
-                    else:
-                        EXP_DF = tv_bcid_list[ievent].DF_SL.copy()
 
-                    # print("IACOPO - EXP_DF",EXP_DF)
-                    # print("IACOPO - EXP_DF[tv_thread_mapping[this_candidate]]",EXP_DF[tv_thread_mapping[this_candidate]])
-                    
+                    EXP_DF = tv_bcid_list[ievent].DF_SL.copy()               #For comparing hits, will have to look at DF_MDT
+                    EXP_BF = EXP_DF[tv_thread_mapping[this_candidate]].getBitFieldWord(tvformat, stationID[this_candidate])
 
-                    EXP_BF = EXP_DF[tv_thread_mapping[this_candidate]].getBitFieldWord(tvformat, stationID[this_candidate]) 
-                    #EXP_BF = EXP_DF[1].getBitFieldWord(tvformat, stationID[this_candidate]) 
-                    print("\n\n\n")
-                    print("IACOPO - After retrieving EXP_BF")
-                    print("IACOPO - this_candidate",this_candidate)  
-                    print("IACOPO - tvformat",tvformat)
-                    print("IACOPO - stationID[",this_candidate,"]=",stationID[this_candidate])
-                    print("IACOPO - EXP_DF",EXP_DF)
-                    print("IACOPO - EXP_BF",EXP_BF)
-                    
-                    ### Workaround for TDCPOLMUX2TAR to have empty TV marked as 0                
-                    if tvformat == "TDCPOLMUX2TAR" or tvformat == "TAR2HPS":
-                        if type(EXP_BF) is list and len(EXP_BF)==0:
-                            RTL_DFSL.fillBitFieldWord(tvformat,data=[0],stationID=stationID[this_candidate])
-                            EXP_BF= RTL_DFSL.getBitFieldWord(tvformat,stationID=stationID[this_candidate])
-                            RTL_DFSL.clear()
-
-                    print("IACOPO - EXP_BF (after workaround)",EXP_BF)
 
                     if evt + 1 <= len(rtl_tv[this_candidate]):
                         if('x' in str(rtl_tv[this_candidate][evt])):
@@ -337,22 +410,11 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                             rtl_tv_i =  0
                         else:
                             rtl_tv_i = rtl_tv[this_candidate][evt]
-                            print("rtl_tv_i seems right:" , rtl_tv_i)
                     else:
                         rtl_tv_i = 0
-                        
-                    # print("ciaociao tv_format_bf[this_candidate]",tv_format_bf[this_candidate])
-                    # print(f"a test: RTL_DFSL.getBitFieldWord({tvformat},  {stationID[this_candidate]}):",RTL_DFSL.getBitFieldWord(tvformat,  stationID[this_candidate]))
 
-                    ### Fill tv_format_bf placeholder with bitwords from RTL
-                    if tvformat == "TDCPOLMUX2TAR" or tvformat == "TAR2HPS":  ## special case - maybe need to expand
-                        tv_format_bf[this_candidate]=rtl_tv_i 
-                        tv_format_val.append(tv_format_bf[this_candidate])
-                    else:
-                        tv_format_bf[this_candidate][0].set_bitwordvalue(rtl_tv_i)
-                        tv_format_val.append(tv_format_bf[this_candidate][0].get_bitwordvalue())
-
-                    print("IACOPO - tv_format_val",tv_format_val)
+                    tv_format_bf[this_candidate][0].set_bitwordvalue(rtl_tv_i)
+                    tv_format_val.append(tv_format_bf[this_candidate][0].get_bitwordvalue())
                     if (stationID[this_candidate] != "NONE"):
                         RTL_DFSL.fillBitFieldWord(tvformat, stationID[this_candidate], tv_format_val)
                         RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID[this_candidate])
@@ -360,26 +422,18 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         RTL_DFSL.fillBitFieldWord(tvformat, data=tv_format_val,stationID="")
                         RTL_BF = RTL_DFSL.getBitFieldWord(tvformat)
 
-                    print("IACOPO - tv_format_val",tv_format_val)
 
-                    #print("RTL_DFSL",RTL_DFSL)
-                    print("RTL_BF",RTL_BF)
-                    print("RTL_BF[0].get_bitwordvalue()",RTL_BF[0].get_bitwordvalue())
                     RTL_BF[0].set_bitwordvalue(tv_format_val[0])
-                    print("RTL_BF[0].get_bitwordvalue()",RTL_BF[0].get_bitwordvalue())
+                    # print("events.py: EXP_BF=",EXP_BF[0])
+                    #print("events.py: RTL_BF=",RTL_BF[0].print_bitFieldWord())
+                    #print("events.py ==== Calling DF Print:")
+                    #RTL_DFSL.print_summary()
 
-                    candidate_idx=0
-                    if tvformat == "TDCPOLMUX2TAR" or tvformat == "TAR2HPS" and len(EXP_BF)>0:
-                        candidate_idx = this_candidate % len(EXP_BF)
-                        print(f"IACOPO - {candidate_idx} == {this_candidate} % {len(EXP_BF)}")
-                        print("IACOPO - using candidate_idx ", candidate_idx)
 
-                    ### Do the comparison
-                    results = EXP_BF[candidate_idx].compare_bitwordvalue(
+
+                    results = EXP_BF[0].compare_bitwordvalue(
                         RTL_BF[0], tolerances
                     )  # compare_bitfieldwordvalue returns list
-
-                    print("IACOPO - results", results)
                     if stationNum[this_candidate] != -99:
                         print("\n\tSL candidate at port ", this_candidate, ":\t",tvformat,", Station:",stationID[this_candidate], "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
                     else:
@@ -400,24 +454,18 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
                     fail_index                     = results[2].index("FAIL")
                     tv_format_failure_cnt          = station_failure_cnt[stationID[this_candidate]]
-                    print("IACOPO - fail_index",fail_index)
-                    print("IACOPO - tv_format_failure_cnt",tv_format_failure_cnt)
-                    for row in results[1]:     
-                        if row[0] not in tv_format_failure_cnt.keys():
-                            tv_format_failure_cnt[row[0]]=0
+                    for row in results[1]:                        
                         tv_format_failure_cnt[row[0]] += row[fail_index]
                     station_failure_cnt[stationID[this_candidate]] = tv_format_failure_cnt  
 
                     #tmp_DF    = tv_bcid_list[ievent].DF_SL[0].getBitFieldWord(tvformat, stationID)
-                    #tv_header_bf      = EXP_DF[0].getBitFieldWord(tvformat, stationID[this_candidate])
-                    tv_header_bf      = EXP_BF
-                    print("IACOPO - tv_header_bf",tv_header_bf)
+                    tv_header_bf      = EXP_DF[0].getBitFieldWord(tvformat, stationID[this_candidate])
                     pd_columns_header = tvtools.get_pd_headers(tv_header_bf[0], True)
                     this_data         = tvtools.make_list(
                         results[1],
                         results[2],
                         tv_bcid_list[ievent].header.get_header(),
-                        EXP_BF[candidate_idx].fields,
+                        EXP_BF[0].fields,
                         this_candidate,
                         True)
                     comparison_data.append(this_data)
@@ -429,7 +477,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         evt = evt + 1
                     EXP_BF.clear()
                     RTL_BF.clear()
-
 
 
     Path(output_path).mkdir(parents=True, exist_ok=True)    
@@ -444,8 +491,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
     return ret_val, pass_count, fail_count, station_failure_cnt
 
-
-
+            
 
 def read_tv(filename, n_to_load, region=0, side=3, sector=3):
     path = Path(filename)
@@ -466,8 +512,29 @@ def parse_tvlist(
         station_ID=[""],
         tv_type="",
         tv_df_type="SL",
-        cnd_thrd_id =[0xabcd]
+        cnd_thrd_id =[0xabcd],
+        zero_padding_size = 0,
+        keep_bitfieldword = False,
 ):
+    """
+    Read tv list, parse input for SpyBuffers
+
+    Arguments          :
+     tv_bcid_list      : what was read by read_tv()
+     tvformat          : testvector format
+     n_ports           : n of ports for this interface
+     endian            : endianness (little is default)
+     load_timing_info  : not implemented
+     station_ID        : list mapping port to station id
+     tv_type           : testvector type (e.g. value)
+     tv_df_type        : "SL" or "MDT", relates to TVformat
+     cnd_thrd_id       : used for multithreading, [0xabcd] is a default dummy
+                         which is replaced with [0 for _ in range(n_ports)] if not used
+     zero_padding_size : fixed number of words in each event
+                         zeros are appended to match this size  
+                         (relevant only for `"list" is in "tv_type"`)
+    """
+        
     events_list = tv_bcid_list
 
     
@@ -480,14 +547,14 @@ def parse_tvlist(
     print("n_ports",n_ports)
     print("events.py VALUE for dataformat (tvformat) ", tvformat)
 
-
-    
     
 
     tv = [["" for x in range(n_to_load)] for y in range(n_ports)]
     my_cnd_thrd_id = [0 for x in range(n_ports)] 
     valid_events = 0
 
+    ## Support multi-threaded RTL
+    ## Otherwise fill as [ 0 for _ in range(n_ports) ]
     if cnd_thrd_id[0] == 0xabcd :
         for my_port in range(n_ports):                
             my_cnd_thrd_id[my_port] = my_port
@@ -499,15 +566,15 @@ def parse_tvlist(
     for ievent in range(len(events_list)):  # range(n_to_load):
 
         if valid_events < n_to_load:
-            print(f"IACOPO - event {ievent} started")
+            print(f"\n\n\n{40*'-'}\nIACOPO - event {ievent} started\n{40*'-'}")
             print("IACOPO - ievent",events_list[ievent])
             print("IACOPO - ievent.DF_SL",events_list[ievent].DF_SL)
-            #print("IACOPO - ievent.DF_MDT",events_list[ievent].DF_MDT[0])
+            print("IACOPO - ievent.DF_MDT",events_list[ievent].DF_MDT)
 
             if tvformat=="TDCPOLMUX2TAR":
                 print(f"manually printing TDCPOLMUX2TAR  for this event",events_list[ievent].DF_MDT[0].av_TDCPOLMUX2TAR)
 
-            event_found_for_port_interface = 0
+            event_found_for_port_interface = 0            
             for my_port in range(n_ports):                
                 if station_ID == [""]:
                         this_station_ID = ""
@@ -515,25 +582,33 @@ def parse_tvlist(
                     this_station_ID = station_ID[my_port]
 
                 print("Events.py: tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
-                if this_station_ID=="EXT":
-                    tv[my_port][valid_events]=1
-                    print("IACOPO - hack to make EXT station all 0")
+
+                ### Check if events has SLc in this sector, 
+                ### This check is useless and can probably be removed with new TV output files (saved per sector).
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_cnd_thrd_id[my_port], station_ID=this_station_ID):
-                    #print ("parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
-                    #tvtools.dump_event(events_list,ievent)
-                    #print(events_list[ievent].DF_SL[my_port].print_blocks())
-                    #print("Transaction %d, Candidate %d n_to_load %d tvformat=%s tv_type=%s" %(ievent,my_port,n_to_load,tvformat,tv_type))
-                    event_found_for_port_interface = 1
-                    #print("IACOPO - tv_type is ", tv_type)
-                    tv[my_port][valid_events] = get_bitfield(
-                        events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type, port=my_port)
-                    
-                    # if tvformat=="TDCPOLMUX2TAR":
-                    #     print(f"manually printing TDCPOLMUX2TAR (flattened - my port) for this event",flatten_list(events_list[ievent].DF_MDT[0].av_TDCPOLMUX2TAR)[my_port])
+                    if this_station_ID=="EXT":
+                        # EXT does not exist in TV, set everything to 0 for the moment
+                        tv[my_port][valid_events]=0
+                    else:
+                        tv[my_port][valid_events] = get_bitfield(events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type, port=my_port, keep_bitfieldword=keep_bitfieldword)
+                        event_found_for_port_interface = 1
+                
+                            
+            ### For list_nested_tdc (e.g. TDCPOLMUX2TAR, TAR2HPS...)
+            ### Do a second pass and append zeros to uniformize size of events among ports
+            if tv_type == "list_nested_tdc":                        
+                for my_port in range(n_ports):
+                    if station_ID[my_port] != "EXT":
+                        n_to_append = zero_padding_size - len(tv[my_port][valid_events])
+                        if n_to_append < 0:
+                            raise ValueError(f"Zero-padding size ({zero_padding_size}) smaller than actual event: {len(tv[my_port][valid_events])}")
+                        tv[my_port][valid_events] +=  n_to_append * [0]
+                    else:
+                        tv[my_port][valid_events] = zero_padding_size * [0]
 
                     print("SECTOR OK - TVFORMAT = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
-                
-            if event_found_for_port_interface:
+
+            if event_found_for_port_interface > 0:
                 valid_events = valid_events + 1
         else:
             print("\n\n\n\n\n\n IACOPO - called break, loaded requested events")
@@ -547,9 +622,14 @@ def parse_tvlist(
         print (" ****************************************")
         sys.exit("Exiting due to Errors")
 
+    if tv_type == "list_nested_tdc":
+        for my_port in range(n_ports):
+            tv[my_port] = flatten_list( tv[my_port] )[0]
+        
+
 
     print("IACOPO _ print tv _ BEGIN")
-    print(tv)
+    print("\n".join([str(x) for x in tv]))
     print("IACOPO _ print tv _ END")
     return tv
 

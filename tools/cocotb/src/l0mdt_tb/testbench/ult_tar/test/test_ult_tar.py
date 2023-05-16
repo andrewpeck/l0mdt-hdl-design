@@ -135,6 +135,8 @@ def ult_tar_test(dut):
         else:
             tolerance[i] = {"": ["",""]}
 
+
+    pad_size = config['testvectors']['inputs'][0]['padding_size']
     # CREATORSOFTWAREBLOCK##
     # CREATORSOFTWAREBLOCK## start the software block instance
     # CREATORSOFTWAREBLOCK##
@@ -252,13 +254,6 @@ def ult_tar_test(dut):
     single_interface_list = []
     print("\n\n\n\n\nIACOPO - Get Input Test Vector List for Ports across all input interfaces")
     for n_ip_intf in range(UltTarPorts.n_input_interfaces): # Add concept of interface
-        ### IACOPO - This if/else was added to avoid issue with 
-        ### processing of EXT 
-        print("AAAAAA1")
-        # if inputs_station_id[n_ip_intf] == "EXT":
-            
-        #     single_interface_list = [0 for _ in range(len(tv_bcid_list))]
-        # else:
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
             tvformat=input_tvformats[n_ip_intf],
@@ -267,12 +262,14 @@ def ult_tar_test(dut):
             station_ID=inputs_station_id[n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
             cnd_thrd_id = inputs_thread_n[n_ip_intf],
-            tv_df_type = "MDT"
+            tv_df_type = "MDT",
+            zero_padding_size=pad_size
         ))
         print("IACOPO - (input)single_interface_list ",single_interface_list)
         for io in range(UltTarPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
         print("AAAAAA2")
+
    ###Get Output Test Vector List for Ports across all output interfaces##
     print("\n\n\n\n\n\nIACOPO - Get Output Test Vector List for Ports across all output interfaces")
     output_tv_list        =  []
@@ -287,11 +284,15 @@ def ult_tar_test(dut):
             station_ID=outputs_station_id[n_op_intf],
             tv_type=output_tvtype[n_op_intf],
             cnd_thrd_id = outputs_thread_n[n_op_intf],
-            tv_df_type = "MDT"
+            tv_df_type = "MDT",
+            zero_padding_size=pad_size,
+            keep_bitfieldword=True
             ))
         output_tv_list.append(single_interface_list)
 
 
+    
+                    
 
     ##
     ## send input events
@@ -299,7 +300,7 @@ def ult_tar_test(dut):
     dut._log.info("Sending input events")
     send_finished_signal = ult_tar_wrapper.send_input_events(
         input_tv_list,
-        n_to_send=num_events_to_process
+        n_to_send=num_events_to_process*pad_size
     )
 
     if not send_finished_signal:
@@ -307,7 +308,7 @@ def ult_tar_test(dut):
             f"ERROR Event sending timed out! Number of expected inputs with events = {len(send_finished_signal)}"
         )
     try:
-        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*2, "us")
+        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*2*pad_size, "us")
     except Exception as ex:
         raise cocotb.result.TestFailure(
             f"ERROR Timed out waiting for events to send: {ex}"
@@ -316,8 +317,8 @@ def ult_tar_test(dut):
 
 
     #Block Latency
-    yield ClockCycles(dut.clock, 1000)
-    ##
+    yield ClockCycles(dut.clock, 500+num_events_to_process*2*pad_size)
+    
 
     print("\n\n\n * * * perform testvector comparison test * * * \n\n\n")
     ##
@@ -340,13 +341,16 @@ def ult_tar_test(dut):
             recvd_events[n_oport] = words
             recvd_time[n_oport]   = time
             cocotb.log.info(
+                
                 f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
             )
-        o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process)
+            print(f"IACOPO - recvd words for {n_op_intf} : port num {n_oport}", words)
+        o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process*pad_size)
         recvd_events_intf.append(o_recvd_events)
 
     ##
     ## extract the expected data for this output
+    ## NB: this is not used at the moment!!!
     ##
     if config["run_config"]["expected_is_observed"]:
     # map the "expected" to be the same as the "observed"
@@ -367,9 +371,9 @@ def ult_tar_test(dut):
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
 
-    print("recvd_events_intf",recvd_events_intf)
+    #print("recvd_events_intf",recvd_events_intf)
     for n_op_intf in range (UltTarPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields_new(
             tv_bcid_list, 
             output_tvformats[n_op_intf],
             UltTarPorts.get_output_interface_ports(n_op_intf) , 
@@ -378,8 +382,25 @@ def ult_tar_test(dut):
             tolerance[n_op_intf],
             output_dir,
             stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]),
-            tv_thread_mapping=[0 for _ in range(24)]
-        );
+            tv_thread_mapping=[0 for _ in range(24)],
+            tv_type=output_tvtype[n_op_intf],
+            tv_df_type="MDT" ,
+            pad_size=pad_size
+        )
+
+        # events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields_with_expected(
+        #     output_tvformats[n_op_intf],
+        #     output_tvtype[n_op_intf],
+        #     UltTarPorts.get_output_interface_ports(n_op_intf) , 
+        #     num_events_to_process*pad_size , 
+        #     recvd_events_intf[n_op_intf],
+        #     output_tv_list[n_op_intf],
+        #     tolerance[n_op_intf],
+        #     output_dir,
+        #     stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]),
+        #     tv_thread_mapping=[0 for _ in range(24)]
+        # );
+        
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i
@@ -402,3 +423,5 @@ def ult_tar_test(dut):
         all_tests_passed
     ]
     raise cocotb_result
+
+
