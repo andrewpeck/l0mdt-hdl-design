@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<node id="MGT">
+<node id="MGT" permission="rw">
 
-  <node id="STATUS" address="0x0">
+  <node id="STATUS" address="0x0" permission="r">
     <node id ="rxcdr_stable"            address="0x0" mask="0x00000001" permission = "r" description=""/>
     <node id ="powergood"               address="0x0" mask="0x00000002" permission = "r" description=""/>
     <node id ="txready"                 address="0x0" mask="0x00000004" permission = "r" description=""/>
@@ -16,7 +16,7 @@
     <node id ="buffbypass_rx_error_out" address="0x0" mask="0x00000800" permission = "r" description=""/>
   </node>
 
-  <node id="DRP" address="0x1">
+  <node id="DRP" address="0x1" permission="rw"> 
     <node id="wr_en"   address="0x0" mask="0x00000001" permission="w" description="DRP Write Enable"/>
     <node id="wr_addr" address="0x1" mask="0x000003FF" permission="rw" description="DRP Address"/>
     <node id="en"      address="0x1" mask="0x00001000" permission="rw" description="DRP Enable"/>
@@ -25,14 +25,14 @@
     <node id="rd_data" address="0x2" mask="0x0000ffff" permission="r" description="DRP Read Data"/>
   </node>
 
-  <node id="TX_RESETS" address="0x4">
+  <node id="TX_RESETS" address="0x4" permission="rw">
     <node id ="reset"                  address="0x0" mask="0x00000001" permission = "rw" description=""/>
     <node id ="reset_pll_and_datapath" address="0x0" mask="0x00000002" permission = "rw" description=""/>
     <node id ="reset_datapath"         address="0x0" mask="0x00000004" permission = "rw" description=""/>
     <node id ="reset_bufbypass"        address="0x0" mask="0x00000008" permission = "rw" description=""/>
   </node>
 
-  <node id="RX_RESETS" address="0x5">
+  <node id="RX_RESETS" address="0x5" permission="rw">
     <node id ="reset"                  address="0x0" mask="0x00000001" permission = "rw" description=""/>
     <node id ="reset_pll_and_datapath" address="0x0" mask="0x00000002" permission = "rw" description=""/>
     <node id ="reset_datapath"         address="0x0" mask="0x00000004" permission = "rw" description=""/>

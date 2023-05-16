@@ -20,7 +20,7 @@ module axi_vip_0_exdes_basic_mst_active__pt_passive__slv_mem(
   // Clock signal
   bit                                     clock;
   // Reset signal
-  bit                                     reset;
+  bit                                     reset_n;
   // event to stop simulation
   event                                   done_event;
     typedef enum {
@@ -68,7 +68,7 @@ module axi_vip_0_exdes_basic_mst_active__pt_passive__slv_mem(
 
   // instantiate bd
   chip DUT(
-      .aresetn(reset),
+      .aresetn(reset_n),
   
     .aclk(clock)
   );
@@ -77,9 +77,9 @@ module axi_vip_0_exdes_basic_mst_active__pt_passive__slv_mem(
 //PRIYA `include "axi_vip_0_mem_basic_stimulus.svh"
 
   initial begin
-     reset = 1'b0;
+     reset_n = 1'b0;
      #reset_delay
-    reset <= 1'b1;
+    reset_n <= 1'b1;
   end
   
   always #10 clock <= ~clock;

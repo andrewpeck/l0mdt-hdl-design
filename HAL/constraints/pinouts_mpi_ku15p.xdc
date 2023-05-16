@@ -61,7 +61,7 @@ set_property PACKAGE_PIN M32 [get_ports {refclk_i_p[7]}]
 set_property PACKAGE_PIN AL12 [get_ports {refclk_i_p[8]}]
 set_property PACKAGE_PIN AL11 [get_ports {refclk_i_n[8]}]
 
-
+#200MHz Clk for C2C Aurora IP
 set_property PACKAGE_PIN AK9 [get_ports {refclk_i_n[9]}]
 set_property PACKAGE_PIN AK10 [get_ports {refclk_i_p[9]}]
 
@@ -91,8 +91,11 @@ set_property PACKAGE_PIN L12 [get_ports {refclk_i_p[21]}]
 set_property PACKAGE_PIN L11 [get_ports {refclk_i_n[21]}]
 
 # LHC REF Inputs
-set_property PACKAGE_PIN AT24 [get_ports clock_i_p]
-set_property PACKAGE_PIN AU24 [get_ports clock_i_n]
+#set_property PACKAGE_PIN AT24 [get_ports clock_i_p] #Input 320MHz clock
+#set_property PACKAGE_PIN AU24 [get_ports clock_i_n]
+
+set_property PACKAGE_PIN AP29 [get_ports clock_i_p] #Input 40MHz clock
+set_property PACKAGE_PIN AP30 [get_ports clock_i_n]
 create_clock -period 25.000 -name clock_in_lhc [get_ports clock_i_p]
 set_property IOSTANDARD LVDS [get_ports clock_i*]
 
