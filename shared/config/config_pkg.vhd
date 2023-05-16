@@ -144,11 +144,13 @@ package config_pkg is
   -- Blocks configuration
   --------------------------------------------------------------------------------
   constant c_TAR_ENABLED            : std_logic := CFG.ENABLE_TAR;
+  
   -- constant c_TAR_INSEL              : std_logic := '1';
   -- constant c_EN_MDT_HITS            : integer   := to_integer(unsigned'('0' & c_TAR_INSEL));
   -- constant c_EN_TAR_HITS            : integer   := to_integer(unsigned'('0' & (not c_TAR_INSEL)));
-
+ 
   constant c_UCM_ENABLED            : std_logic := CFG.ENABLE_UCM;
+
 
   constant c_H2S_ENABLED            : std_logic := CFG.ENABLE_H2S;
 
@@ -238,11 +240,13 @@ package config_pkg is
   constant c_DAQ_EXT_LINKS : integer := 0;
   constant c_DAQ_LINKS : integer := c_DAQ_INN_LINKS + c_DAQ_MID_LINKS + c_DAQ_OUT_LINKS + c_DAQ_EXT_LINKS;
   
-
+  function report_cfg (mode : string) return integer;
  
 end package config_pkg;
 
 package body config_pkg is
+
+  
 
   function get_num_layers(station : integer) return integer is
     variable layers : integer;
@@ -267,6 +271,91 @@ package body config_pkg is
     return out_chamber;
   end function;
 
+  function report_cfg (mode : string) return integer is
+      variable outvar : integer;
+  begin
+
+    report "-------------------------------------------";
+    report "------- CONFIGURATION CONSTANTS -----------";
+    report "-------------------------------------------";
+    report "c_MAX_NUM_ST " & integer'image(c_MAX_NUM_ST) ;
+    report "MAIN_CFG_COMPILE_HW " & std_logic'image(MAIN_CFG_COMPILE_HW) ;
+    report "MAIN_CFG_COMPILE_UL " & std_logic'image(MAIN_CFG_COMPILE_UL) ;
+    report "-------------------------------------------";
+    report "c_SECTOR_ID " & integer'image(c_SECTOR_ID) ;
+    report "c_SECTOR_SIDE " & integer'image(c_SECTOR_SIDE) ;
+    report "c_ST_nBARREL_ENDCAP " & std_logic'image(c_ST_nBARREL_ENDCAP) ;
+    report "c_ENDCAP_nSMALL_LARGE " & std_logic'image(c_ENDCAP_nSMALL_LARGE) ;
+    report "c_ENABLE_NEIGHBORS " & std_logic'image(c_ENABLE_NEIGHBORS) ;
+    report "-------------------------------------------";
+    -- report "c_UCM_ENABLED " & std_logic'image(c_UCM_ENABLED) ;
+    -- report "c_UCM_ENABLED " & std_logic'image(c_UCM_ENABLED) ;
+    -- report "c_UCM_ENABLED " & std_logic'image(c_UCM_ENABLED) ;
+    -- report "c_UCM_ENABLED " & std_logic'image(c_UCM_ENABLED) ;
+    report "-------------------------------------------";
+    report "c_HPS_ENABLE_ST_INN " & std_logic'image(c_HPS_ENABLE_ST_INN) ;
+    -- report "c_HPS_ENABLED_HP_INN " & to_string(c_HPS_ENABLED_HP_INN) ;
+    report "c_HPS_NUM_MDT_CH_INN " & integer'image(c_HPS_NUM_MDT_CH_INN) ;
+    report "c_HPS_MAX_HP_INN " & integer'image(c_HPS_MAX_HP_INN) ;
+
+    report "c_HPS_ENABLE_ST_MID " & std_logic'image(c_HPS_ENABLE_ST_MID) ;
+    -- report "c_HPS_ENABLED_HP_MID " & to_string(c_HPS_ENABLED_HP_MID) ;
+    report "c_HPS_NUM_MDT_CH_MID " & integer'image(c_HPS_NUM_MDT_CH_MID) ;
+    report "c_HPS_MAX_HP_MID " & integer'image(c_HPS_MAX_HP_MID) ;
+
+    report "c_HPS_ENABLE_ST_OUT " & std_logic'image(c_HPS_ENABLE_ST_OUT) ;
+    -- report "c_HPS_ENABLED_HP_OUT " & to_string(c_HPS_ENABLED_HP_OUT) ;
+    report "c_HPS_NUM_MDT_CH_OUT " & integer'image(c_HPS_NUM_MDT_CH_OUT) ;
+    report "c_HPS_MAX_HP_OUT " & integer'image(c_HPS_MAX_HP_OUT) ;
+
+    report "c_HPS_ENABLE_ST_EXT " & std_logic'image(c_HPS_ENABLE_ST_EXT) ;
+    -- report "c_HPS_ENABLED_HP_EXT " & to_string(c_HPS_ENABLED_HP_EXT) ;
+    report "c_HPS_NUM_MDT_CH_EXT " & integer'image(c_HPS_NUM_MDT_CH_EXT) ;
+    report "c_HPS_MAX_HP_EXT " & integer'image(c_HPS_MAX_HP_EXT) ;
+    report "-------------------------------------------";
+    report "c_NUM_NSP " & integer'image(c_NUM_NSP) ;
+    report "c_TAR_ENABLED " & std_logic'image(c_TAR_ENABLED) ;
+    report "c_UCM_ENABLED " & std_logic'image(c_UCM_ENABLED) ;
+    report "c_H2S_ENABLED " & std_logic'image(c_H2S_ENABLED) ;
+    report "c_MPL_ENABLED " & std_logic'image(c_MPL_ENABLED) ;
+    report "c_SF_ENABLED " & std_logic'image(c_SF_ENABLED) ;
+    report "c_SF_TYPE " & std_logic'image(c_SF_TYPE) ;
+    report "c_SF_BYPASS " & std_logic'image(c_SF_BYPASS) ;
+    report "c_PT_ENABLED " & std_logic'image(c_PT_ENABLED) ;
+    report "c_PT_TYPE " & std_logic'image(c_PT_TYPE) ;
+    report "c_MTC_ENABLED " & std_logic'image(c_MTC_ENABLED) ;
+    report "c_DAQ_ENABLED " & std_logic'image(c_DAQ_ENABLED) ;
+    report "c_FM_ENABLED " & std_logic'image(c_FM_ENABLED) ;
+    report "c_NUM_DAQ_STREAMS " & integer'image(c_NUM_DAQ_STREAMS) ;
+    report "-------------------------------------------";
+    report "c_MAX_POSSIBLE_HPS " & integer'image(c_MAX_POSSIBLE_HPS) ;
+    report "c_MAX_NUM_HPS " & integer'image(c_MAX_NUM_HPS) ;
+    report "c_NUM_SF_INPUTS " & integer'image(c_NUM_SF_INPUTS) ;
+    report "c_NUM_SF_OUTPUTS " & integer'image(c_NUM_SF_OUTPUTS) ;
+    report "-------------------------------------------";
+
+    report "c_UCM_ENABLED " & std_logic'image(c_UCM_ENABLED) ;
+    report "c_UCM_ENABLED " & std_logic'image(c_UCM_ENABLED) ;
+    report "c_UCM_ENABLED " & std_logic'image(c_UCM_ENABLED) ;
+    report "c_UCM_ENABLED " & std_logic'image(c_UCM_ENABLED) ;
+    report "c_UCM_ENABLED " & std_logic'image(c_UCM_ENABLED) ;
+
+
+
+
+
+    report "-------------------------------------------";
+    report "----- END CONFIGURATION CONSTANTS ---------";
+    report "-------------------------------------------";
+
+    outvar := 0;
+    return outvar;
+
+  end function;
+
+
+
+  
   
 
 end package body config_pkg;

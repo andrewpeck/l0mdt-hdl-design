@@ -40,10 +40,11 @@ library ctrl_lib;
 use ctrl_lib.UCM_CTRL.all;
 
 entity ucm_cvp is
-  -- generic(
+  generic(
   --   g_DELAY_CYCLES          : integer; 
   --   num_bits            : integer
-  -- );
+    g_MAX_POSSIBLE_HPS : integer := c_MAX_POSSIBLE_HPS
+  );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
@@ -112,7 +113,7 @@ architecture beh of ucm_cvp is
   -- signal chamber_ieta_v : std_logic_vector(15 downto 0);
   -- signal chamber_ieta_r : chamb_ieta_rpc_aut;
 
-  type new_chamb_ieta_art is array(c_MAX_NUM_HPS -1 downto 0) of unsigned(4-1 downto 0);
+  type new_chamb_ieta_art is array(g_MAX_POSSIBLE_HPS -1 downto 0) of unsigned(4-1 downto 0);
   signal new_chamb_ieta_a : new_chamb_ieta_art;
   signal new_chamb_ieta_dv : std_logic_vector(c_MAX_NUM_HPS -1 downto 0);
 
