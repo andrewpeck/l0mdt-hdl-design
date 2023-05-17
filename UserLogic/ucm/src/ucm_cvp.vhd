@@ -115,7 +115,7 @@ architecture beh of ucm_cvp is
 
   type new_chamb_ieta_art is array(g_MAX_POSSIBLE_HPS -1 downto 0) of unsigned(4-1 downto 0);
   signal new_chamb_ieta_a : new_chamb_ieta_art;
-  signal new_chamb_ieta_dv : std_logic_vector(c_MAX_NUM_HPS -1 downto 0);
+  signal new_chamb_ieta_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
 
   signal offset       : signed(31 downto 0);--signed(126 -1 downto 0);
   signal slope        : signed(31 downto 0);-- 
@@ -127,9 +127,9 @@ architecture beh of ucm_cvp is
   -- signal atan_mbar    : unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
   signal atan_dv      : std_logic;
 
-  type vec_pos_array_t  is array (0 to c_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
+  type vec_pos_array_t  is array (0 to g_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
   signal vec_pos_array  : vec_pos_array_t;
-  signal vec_z_pos_dv : std_logic_vector(c_MAX_NUM_HPS -1 downto 0);
+  signal vec_z_pos_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
 
   signal vec_ang_pl : unsigned(UCM2HPS_VEC_ANG_LEN-1 downto 0);
   

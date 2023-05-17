@@ -24,6 +24,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.cfg_display_pkg.all;
 
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -77,10 +78,11 @@ architecture beh of top_ucm is
   signal o_uCM2hps_ext_av        :  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   signal o_uCM2pl_av             :  ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
-  signal report_status : integer := report_cfg("ALL");
+  
 
 begin
 
+  report_cfg(true);
 
   ctrl : entity shared_lib.vhdl_utils_deserializer 
   generic map (g_DATA_WIDTH => UCM_CTRL_t'w) 
