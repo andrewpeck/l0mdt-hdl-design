@@ -21,6 +21,7 @@ include:
   - local: '/Top/l0mdt_vu13p_csf_mpt/gitlab-ci.yml'
   - local: '/Top/l0mdt_vu13p_lsf_upt/gitlab-ci.yml'
   - local: '/Top/l0mdt_ku15p_ull_empty/gitlab-ci.yml'
+  - local: '/Top/l0mdt_ku15p_ull_empty_usp/gitlab-ci.yml'
   - local: '/Top/l0mdt_vu13p_ull_empty/gitlab-ci.yml'
   - local: '/Top/l0mdt_ku15p_ull_fm/gitlab-ci.yml'
   # - local: '/Top/l0mdt_ku15p_csf_mpt/gitlab-ci.yml'
