@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------
 -- UMass , Physics Department
 -- Project: functions
--- File: barrel_zholes_chamber_fct_pkg.vhd
+-- File: fct_barrel_zholes_chamber_pkg.vhd
 -- Module: <<moduleName>>
--- File PATH: /barrel_zholes_chamber_fct_pkg.vhd
+-- File PATH: /fct_barrel_zholes_chamber_pkg.vhd
 -- -----
 -- File Created: Thursday, 18th May 2023 3:07:37 pm
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
@@ -31,7 +31,7 @@ use shared_lib.detector_param_pkg.all;
 library dp_repo_lib;
 use dp_repo_lib.barrel_zholes_chamber_pkg.all;
 
-package barrel_zholes_chamber_fct_pkg is
+package fct_barrel_zholes_chamber_pkg is
 
   -- type zhLUT_chamber_integer_t is array (0 to 7) of integer;
   -- type zhLUT_chamber_t is array (0 to 7) of real;
@@ -96,9 +96,9 @@ package barrel_zholes_chamber_fct_pkg is
     
   function b_zh_get_layer(sector : integer ; station : integer) return zhLUT_chamber_integer_t;
     
-end package barrel_zholes_chamber_fct_pkg;
+end package fct_barrel_zholes_chamber_pkg;
 
-package body barrel_zholes_chamber_fct_pkg is
+package body fct_barrel_zholes_chamber_pkg is
   
   function b_zh_get_layer(sector : integer ; station : integer) return zhLUT_chamber_integer_t is
     variable o_layer : zhLUT_chamber_integer_t;
@@ -126,4 +126,4 @@ package body barrel_zholes_chamber_fct_pkg is
     return o_layer;
   end function;
   
-end package body barrel_zholes_chamber_fct_pkg;
+end package body fct_barrel_zholes_chamber_pkg;

@@ -24,7 +24,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-use shared_lib.tdc_mezz_mapping_pkg.all;
+use shared_lib.fct_tdc_mezz_mapping_pkg.all;
 use shared_lib.TC_B3A_pkg.all;
 
 -- use shared_lib.vhdl_tb_utils_pkg.all;

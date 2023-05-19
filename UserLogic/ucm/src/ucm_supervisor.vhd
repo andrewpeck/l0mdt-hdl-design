@@ -28,7 +28,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
-use shared_lib.barrel_chamb_z2origin_pkg.all;
+use shared_lib.fct_barrel_chamb_z2origin_pkg.all;
 
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;

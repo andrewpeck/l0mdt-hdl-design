@@ -1,15 +1,20 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch 
+-- UMass , Physics Department
+-- Project: functions
+-- File: fct_mdt_dt2r_pkg.vhd
+-- Module: <<moduleName>>
+-- File PATH: /fct_mdt_dt2r_pkg.vhd
+-- -----
+-- File Created: Monday, 15th May 2023 12:04:56 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Friday, 19th May 2023 10:59:25 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger
---  Module: drift_time to radius calculation for mdt tubes 
---
---------------------------------------------------------------------------------
---  Revisions: 
---
---------------------------------------------------------------------------------
+
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -26,7 +31,7 @@ library dp_repo_lib;
 use dp_repo_lib.mdt_dt2r_large.all;
 use dp_repo_lib.mdt_dt2r_small.all;
 
-package mdt_dt2r_pkg is
+package fct_mdt_dt2r_pkg is
 
   type dt2r_mem_t is array(1024 - 1 downto 0) of unsigned(8 downto 0);
 
@@ -39,9 +44,9 @@ package mdt_dt2r_pkg is
 
 
   
-end package mdt_dt2r_pkg;
+end package fct_mdt_dt2r_pkg;
 
-package body mdt_dt2r_pkg is
+package body fct_mdt_dt2r_pkg is
   
   function mdt_dt2r_get_addr_len(sector, station ,chamber : integer) return integer is
     variable y : integer;
@@ -76,5 +81,5 @@ package body mdt_dt2r_pkg is
   end function;
   
   
-end package body mdt_dt2r_pkg;
+end package body fct_mdt_dt2r_pkg;
 

@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------
 -- UMass , Physics Department
 -- Project: functions
--- File: barrel_R_mdt_pkg.vhd
+-- File: fct_barrel_R_mdt_pkg.vhd
 -- Module: <<moduleName>>
--- File PATH: /barrel_R_mdt_pkg.vhd
+-- File PATH: /fct_barrel_R_mdt_pkg.vhd
 -- -----
 -- File Created: Tuesday, 4th April 2023 6:39:15 pm
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
@@ -28,7 +28,7 @@ use shared_lib.detector_param_pkg.all;
 library dp_repo_lib;
 use dp_repo_lib.barrel_R_mdt_pkg.all;
 
-package barrel_R_mdt_pkg is
+package fct_barrel_R_mdt_pkg is
 
   type barrel_R_mdt_avt is array (0 to 31) of std_logic_vector(UCM_Z_ROI_LEN - 1 downto 0);
 
@@ -41,9 +41,9 @@ package barrel_R_mdt_pkg is
 
   function get_barrel_R_mdt( sector_id, side_id , station , layer : integer; mult : real; out_width , num : integer) return barrel_R_mdt_avt ;
   
-end package barrel_R_mdt_pkg;
+end package fct_barrel_R_mdt_pkg;
 
-package body barrel_R_mdt_pkg is
+package body fct_barrel_R_mdt_pkg is
   
   function get_barrel_R_mdt( sector_id, side_id , station , layer : integer; mult : real; out_width , num : integer) return barrel_R_mdt_avt is
     variable y : barrel_R_mdt_avt;
@@ -76,4 +76,4 @@ package body barrel_R_mdt_pkg is
   end function;
 
   
-end package body barrel_R_mdt_pkg;
+end package body fct_barrel_R_mdt_pkg;

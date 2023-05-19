@@ -26,7 +26,7 @@ use shared_lib.config_pkg.all;
 library dp_repo_lib;
 use dp_repo_lib.tdc_mezz_mapping_pkg.all;
 
-package tdc_mezz_mapping_pkg is
+package fct_tdc_mezz_mapping_pkg is
   
   -- type hh_mezz_param_t is array (0 to 1) of integer; -- layer , tube
   -- type hh_mezz_t is array(0 to 23) of hh_mezz_param_t;
@@ -484,9 +484,9 @@ package tdc_mezz_mapping_pkg is
 
   function get_num_tubes_layer_chamber(sr , c : integer) return integer ;
   
-end package tdc_mezz_mapping_pkg;
+end package fct_tdc_mezz_mapping_pkg;
 
-package body tdc_mezz_mapping_pkg is
+package body fct_tdc_mezz_mapping_pkg is
   
   function get_tdc_tube_map(
     station : integer; 
@@ -626,4 +626,4 @@ package body tdc_mezz_mapping_pkg is
   end function;
   
   
-end package body tdc_mezz_mapping_pkg;
+end package body fct_tdc_mezz_mapping_pkg;

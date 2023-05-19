@@ -6,13 +6,13 @@ shared/detector_parameters/libs/mdt_t0_lib.src
 shared/detector_parameters/libs/heg_roi_lib.src lib=heg_roi_lib
 shared/detector_parameters/libs/dp_repo_lib.src lib=dp_repo_lib
 
-shared/detector_parameters/functions/barrel_chamb_z2origin_pkg.vhd
-shared/detector_parameters/functions/barrel_R_mdt_pkg.vhd
+shared/detector_parameters/functions/fct_barrel_chamb_z2origin_pkg.vhd
+shared/detector_parameters/functions/fct_barrel_R_mdt_pkg.vhd
 shared/detector_parameters/functions/fct_barrel_R_rpc_pkg.vhd
-shared/detector_parameters/functions/gtube2chamber_pkg.vhd
-shared/detector_parameters/functions/mdt_dt2r_pkg.vhd
-shared/detector_parameters/functions/tdc_mezz_mapping_pkg.vhd
-shared/detector_parameters/functions/barrel_zholes_chamber_fct_pkg.vhd
+shared/detector_parameters/functions/fct_gtube2chamber_pkg.vhd
+shared/detector_parameters/functions/fct_mdt_dt2r_pkg.vhd
+shared/detector_parameters/functions/fct_tdc_mezz_mapping_pkg.vhd
+shared/detector_parameters/functions/fct_barrel_zholes_chamber_pkg.vhd
 shared/detector_parameters/functions/fct_sector_phi_center_pkg.vhd
 shared/detector_parameters/functions/fct_barrel_chamb_r2center_pkg.vhd
 shared/detector_parameters/functions/fct_chamber_type_pkg.vhd
