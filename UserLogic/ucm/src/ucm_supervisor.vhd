@@ -1,16 +1,20 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: ucm_supervisor.vhd
+-- Module: <<moduleName>>
+-- File PATH: /ucm_supervisor.vhd
+-- -----
+-- File Created: Thursday, 16th March 2022 3:06:53 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Thursday, 18th May 2023 5:51:03 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: UCM general supervisor
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -28,6 +32,7 @@ use shared_lib.barrel_chamb_z2origin_pkg.all;
 
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
+use shared_lib.fct_sector_phi_center_pkg.all;
 
 library apbus_lib;
 

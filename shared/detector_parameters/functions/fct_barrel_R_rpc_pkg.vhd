@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------
 -- UMass , Physics Department
 -- Project: functions
--- File: barrel_R_rpc_pkg.vhd
--- Module: barrel_R_rpc_pkg
--- File PATH: /barrel_R_rpc_pkg.vhd
+-- File: fct_barrel_R_rpc_pkg.vhd
+-- Module: fct_barrel_R_rpc_pkg
+-- File PATH: /fct_barrel_R_rpc_pkg.vhd
 -- -----
 -- File Created: Tuesday, 4th April 2023 6:21:03 pm
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
@@ -27,7 +27,7 @@ use shared_lib.detector_param_pkg.all;
 library dp_repo_lib;
 use dp_repo_lib.barrel_R_rpc_pkg.all;
 
-package barrel_R_rpc_pkg is
+package fct_barrel_R_rpc_pkg is
 
 
 
@@ -41,9 +41,9 @@ package barrel_R_rpc_pkg is
 
   function get_barrel_R_rpc( sector_id, side_id , station , layer : integer; mult : real; out_width , num : integer) return barrel_R_rpc_avt ;
 
-end package barrel_R_rpc_pkg;
+end package fct_barrel_R_rpc_pkg;
 
-package body barrel_R_rpc_pkg is
+package body fct_barrel_R_rpc_pkg is
   
   function get_barrel_R_rpc( sector_id, side_id , station , layer : integer; mult : real; out_width , num : integer) return barrel_R_rpc_avt is
     variable y : barrel_R_rpc_avt;
@@ -76,4 +76,4 @@ package body barrel_R_rpc_pkg is
   end function;
 
   
-end package body barrel_R_rpc_pkg;
+end package body fct_barrel_R_rpc_pkg;

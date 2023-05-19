@@ -32,6 +32,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
+use shared_lib.fct_barrel_R_rpc_pkg.all;
 
 
 library shared_cfg_def_lib;
@@ -66,10 +67,10 @@ package config_pkg is
 
   -- physical values
 
-  constant PHY_BARREL_R0            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,0);
-  constant PHY_BARREL_R1            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,1);
-  constant PHY_BARREL_R2            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,2);
-  constant PHY_BARREL_R3            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,3);
+  constant PHY_BARREL_R0 : signed(SLC_Z_RPC_LEN-1 downto 0) := signed(get_barrel_R_rpc(c_SECTOR_ID,c_SECTOR_SIDE,0,0,SLC_Z_RPC_MULT,SLC_Z_RPC_LEN,32)(0));
+  constant PHY_BARREL_R1 : signed(SLC_Z_RPC_LEN-1 downto 0) := signed(get_barrel_R_rpc(c_SECTOR_ID,c_SECTOR_SIDE,1,0,SLC_Z_RPC_MULT,SLC_Z_RPC_LEN,32)(0));
+  constant PHY_BARREL_R2 : signed(SLC_Z_RPC_LEN-1 downto 0) := signed(get_barrel_R_rpc(c_SECTOR_ID,c_SECTOR_SIDE,1,1,SLC_Z_RPC_MULT,SLC_Z_RPC_LEN,32)(0));
+  constant PHY_BARREL_R3 : signed(SLC_Z_RPC_LEN-1 downto 0) := signed(get_barrel_R_rpc(c_SECTOR_ID,c_SECTOR_SIDE,2,0,SLC_Z_RPC_MULT,SLC_Z_RPC_LEN,32)(0));
 
   -- Processing channel/stations
   constant c_HPS_ENABLE_ST_INN          : std_logic := CFG.ENABLE_ST_INN;
