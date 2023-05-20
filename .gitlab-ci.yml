@@ -105,10 +105,12 @@ include:
   #         VU13 Projects
   #---------------------------------------------
   - local: '/Top/l0mdt_vu13p_ba3_ucm_mpl_tar_hps/gitlab-ci.yml'
+  - local: '/Top/l0mdt_vu13p_sm1_ba3_tar/gitlab-ci.yml'
   #---------------------------------------------
   #         KU15 Projects
   #---------------------------------------------
   - local: '/Top/l0mdt_ku15p_ull_tar/gitlab-ci.yml'
+  - local: '/Top/l0mdt_ku15p_sm2_ull_ucm/gitlab-ci.yml'
   
   #---------------------------------------------
   #         CocoTB
