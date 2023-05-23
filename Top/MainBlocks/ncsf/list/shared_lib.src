@@ -14,3 +14,7 @@ shared/memories/src/rom_dp.v
 # vhdl utilities
 #---------------------------------
 shared/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd
+#---------------------------------
+# Detector parameters
+#---------------------------------
+shared/detector_parameters/detector_parameters_lib.src
