@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------
 -- UMass , Physics Department
 -- Project: pkg
--- File: gtube2chamber_pkg.vhd
+-- File: fct_gtube2chamber_pkg.vhd
 -- Module: <<moduleName>>
--- File PATH: /gtube2chamber_pkg.vhd
+-- File PATH: /fct_gtube2chamber_pkg.vhd
 -- -----
 -- File Created: Tuesday, 4th April 2023 9:53:08 am
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
@@ -29,13 +29,13 @@ use shared_lib.detector_param_pkg.all;
 library dp_repo_lib;
 use dp_repo_lib.gtube2chamber_pkg.all;
 
-package gtube2chamber_pkg is
+package fct_gtube2chamber_pkg is
  
   function get_b_chamber_from_tubes(sector : integer ; s_side : integer ; station : integer ; tube : integer) return integer;
   
-end package gtube2chamber_pkg;
+end package fct_gtube2chamber_pkg;
 
-package body gtube2chamber_pkg is
+package body fct_gtube2chamber_pkg is
   
   function get_b_chamber_from_tubes(sector : integer ; s_side : integer ; station : integer ; tube : integer) return integer is
     variable y : tubes_per_chamber_t;
@@ -80,4 +80,4 @@ package body gtube2chamber_pkg is
   
   end function;
   
-end package body gtube2chamber_pkg;
+end package body fct_gtube2chamber_pkg;

@@ -4,9 +4,10 @@
 
 # shared/config/detector_mapping_pkg.vhd
 # shared/config/config_defaults_pkg.vhd
-shared/config/config_pkg.vhd
 #### default config parameters ####
 shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
+shared/config/config_pkg.vhd
+shared/config/cfg_display_pkg.vhd
 
 #---------------------------------
 # common constants and types

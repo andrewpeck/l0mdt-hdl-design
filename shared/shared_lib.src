@@ -3,7 +3,7 @@
 #---------------------------------
 shared/shared_lib_basic.src
 #---------------------------------
-# Detector shared RAMs
+# Detector parameters
 #---------------------------------
 shared/detector_parameters/detector_parameters_lib.src
 #---------------------------------

@@ -1,9 +1,9 @@
 --------------------------------------------------------------------------------
 -- UMass , Physics Department
 -- Project: functions
--- File: barrel_chamb_z2origin_pkg.vhd
+-- File: fct_barrel_chamb_z2origin_pkg.vhd
 -- Module: <<moduleName>>
--- File PATH: /barrel_chamb_z2origin_pkg.vhd
+-- File PATH: /fct_barrel_chamb_z2origin_pkg.vhd
 -- -----
 -- File Created: Tuesday, 4th April 2023 3:16:48 pm
 -- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
@@ -28,7 +28,7 @@ use shared_lib.detector_param_pkg.all;
 library dp_repo_lib;
 use dp_repo_lib.barrel_chamb_z2origin_pkg.all;
 
-package barrel_chamb_z2origin_pkg is
+package fct_barrel_chamb_z2origin_pkg is
 
   type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned(16 - 1 downto 0);
   subtype b_chamber_z_origin_avt is std_logic_vector(16 * MAX_NUM_CHAMBER_POS -1 downto 0);
@@ -102,9 +102,9 @@ package barrel_chamb_z2origin_pkg is
   function convert(x: b_chamber_z_origin_avt) return b_chamber_z_origin_aut;
   
   
-end package barrel_chamb_z2origin_pkg;
+end package fct_barrel_chamb_z2origin_pkg;
 
-package body barrel_chamb_z2origin_pkg is
+package body fct_barrel_chamb_z2origin_pkg is
   
   function get_b_chamber_origin_z_u(sector_id, side_id , station: integer; mult : real; out_width : integer := 16) return b_chamber_z_origin_aut is
     variable y : b_chamber_z_origin_aut;
@@ -143,4 +143,4 @@ package body barrel_chamb_z2origin_pkg is
     return y;
   end function;  
   
-end package body barrel_chamb_z2origin_pkg;
+end package body fct_barrel_chamb_z2origin_pkg;
