@@ -122,11 +122,6 @@ def get_bitfield(
             raise NotImplementedError("Not sure if it's used for current tests")    
             BF_list = event.DF_MDT[0].getBitFieldWord(bitfieldname,station_id)
 
-    # ### TEMP
-    # if tv_type == "list_nested_tdc":
-    #     for i, BF in enumerate(BF_list):
-    #         print(f"IACOPO - for port {port} BF {i} is from CSM {BF.get_field('csmid').value}")
-
 
     ### Extract the content of BF_list to a list of bitwordvalues (or copy them if keep_bitfieldword=True)
     if tv_type == "list" or tv_type=="list_nested_tdc":
@@ -514,6 +509,7 @@ def parse_tvlist(
         tv_df_type="SL",
         cnd_thrd_id =[0xabcd],
         zero_padding_size = 0,
+        prepend_zeros = 0,
         keep_bitfieldword = False,
 ):
     """
@@ -530,9 +526,10 @@ def parse_tvlist(
      tv_df_type        : "SL" or "MDT", relates to TVformat
      cnd_thrd_id       : used for multithreading, [0xabcd] is a default dummy
                          which is replaced with [0 for _ in range(n_ports)] if not used
-     zero_padding_size : fixed number of words in each event
-                         zeros are appended to match this size  
-                         (relevant only for `"list" is in "tv_type"`)
+     zero_padding_size : Append zeros at the end of each event to reach this number of words
+                         This is relevant when multiple words should be processed in an event.
+     prepend_zeros     : Number of zeros to prepend before the actual words of the event are sent
+                         useful if a delay between two TV interfaces is needed (e.g. HPS)
     """
         
     events_list = tv_bcid_list
@@ -581,7 +578,7 @@ def parse_tvlist(
                 else:
                     this_station_ID = station_ID[my_port]
 
-                print("Events.py: tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
+                #print("Events.py: tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
 
                 ### Check if events has SLc in this sector, 
                 ### This check is useless and can probably be removed with new TV output files (saved per sector).
@@ -592,11 +589,22 @@ def parse_tvlist(
                     else:
                         tv[my_port][valid_events] = get_bitfield(events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type, port=my_port, keep_bitfieldword=keep_bitfieldword)
                         event_found_for_port_interface = 1
-                
+                    
+                        # Increase dimensionality if scalar type and need to do padding
+                        if tv_type == 'value' and (zero_padding_size > 0 or prepend_zeros > 0):
+                            tv[my_port][valid_events] = [tv[my_port][valid_events]]
+
+                    #print("SECTOR OK - TVFORMAT = ",tvformat, "thread", my_cnd_thrd_id[my_port]," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
                             
-            ### For list_nested_tdc (e.g. TDCPOLMUX2TAR, TAR2HPS...)
-            ### Do a second pass and append zeros to uniformize size of events among ports
-            if tv_type == "list_nested_tdc":                        
+            ### Prepend zeros
+            if prepend_zeros > 0:
+                for my_port in range(n_ports):
+                    tv[my_port][valid_events] =  (prepend_zeros * [0]) + tv[my_port][valid_events]
+                    #print("PREPEND ZEROS = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
+
+
+            ### Append zeros
+            if zero_padding_size > 0:
                 for my_port in range(n_ports):
                     if station_ID[my_port] != "EXT":
                         n_to_append = zero_padding_size - len(tv[my_port][valid_events])
@@ -620,13 +628,11 @@ def parse_tvlist(
         print ("ERROR:CANNOT run ", n_to_load, " events. Total events available in TV file is = ",valid_events)
         print (" ****************************************")
         print (" ****************************************")
-        sys.exit("Exiting due to Errors")
+        raise Exception("Exiting due to Errors")
 
-    if tv_type == "list_nested_tdc":
+    if tv_type == "list_nested_tdc" or (zero_padding_size > 0) or (prepend_zeros > 0) :
         for my_port in range(n_ports):
             tv[my_port] = flatten_list( tv[my_port] )[0]
-        
-
 
     print("IACOPO _ print tv _ BEGIN")
     print("\n".join([str(x) for x in tv]))
@@ -635,18 +641,24 @@ def parse_tvlist(
 
 
 def modify_tv(tv, ii):
+    ### Assuming tv is list of list
+    ### Append zeros to each sub-list
+    ### to get the size equal to ii
     tv_out = []
+    print("in modify_tv - BEFORE:",tv)
     for io in range(len(tv)):
         tv_port = []
         tv_index = 0
         #print("events.py :modify_tv (tv,ii) =", tv , ii)
         for i in range(len(tv[io])):
-            # print("modify_tv (io,i) = (",io,i,")")
+            #print("modify_tv (io,i) = (",io,i,")")
             tv_port.append(tv[io][i])
             for j in range(ii - 1):
                 tv_index = tv_index + 1
                 tv_port.append(0)
         tv_out.append(tv_port)
+    print("in modify_tv - AFTER:",tv_out)
+
     return tv_out
 
 
@@ -702,8 +714,8 @@ def modify_tv_padzeroes(tv, location="end", num=[]):
                 for i in range(num[io]):
                     tv_port.append(0)
         tv_out.append(tv_port)
-    #print("modify_tv_padzeroes (tv) =", tv )
-    #print("modify_tv_padzeroes (tv_out) =", tv_out )
+    print("modify_tv_padzeroes (tv) =", tv )
+    print("modify_tv_padzeroes (tv_out) =", tv_out )
     return tv_out
 
 
