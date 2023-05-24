@@ -36,7 +36,7 @@ create_clock -period 3.125 -name refclk19 [get_ports {refclk_i_p[19]}]
 create_clock -period 3.125 -name refclk20 [get_ports {refclk_i_p[20]}]
 create_clock -period 3.125 -name refclk21 [get_ports {refclk_i_p[21]}]
 create_clock -period 10.000 -name clk100 -waveform {0.000 5.000} -add [get_pins top_hal/top_clocking_inst/pll_clk50_inst/clk_100MHz]
-create_clock -period 20.000 -name clk50 -waveform {0.000 10.000} [get_pins top_hal/top_clocking_inst/pll_clk50_inst/clk_50MHz]
+#create_clock -period 20.000 -name clk50 -waveform {0.000 10.000} [get_pins top_hal/top_clocking_inst/pll_clk50_inst/clk_50MHz]
 
 
 # GTY
@@ -93,8 +93,8 @@ set_property PACKAGE_PIN L11 [get_ports {refclk_i_n[21]}]
 # LHC REF Inputs
 #set_property PACKAGE_PIN AT24 [get_ports clock_i_p] #Input 320MHz clock
 #set_property PACKAGE_PIN AU24 [get_ports clock_i_n]
-
-set_property PACKAGE_PIN AP29 [get_ports clock_i_p] #Input 40MHz clock
+#Input 40MHz clock
+set_property PACKAGE_PIN AP29 [get_ports clock_i_p] 
 set_property PACKAGE_PIN AP30 [get_ports clock_i_n]
 create_clock -period 25.000 -name clock_in_lhc [get_ports clock_i_p]
 set_property IOSTANDARD LVDS [get_ports clock_i*]
