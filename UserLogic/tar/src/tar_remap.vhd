@@ -1,16 +1,18 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
---------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: Tube Address Remap
---  Description: link information to tube mapper 
---
---------------------------------------------------------------------------------
---  Revisions: 
---    v0  - 2020.11.30 creation
---      
+-- UMass , Physics Department
+-- Project: src
+-- File: tar_remap.vhd
+-- Module: <<moduleName>>
+-- File PATH: /tar_remap.vhd
+-- -----
+-- File Created: Thursday, 30th November 2020 3:06:53 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Monday, 15th May 2023 9:38:38 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 2023-05-15	GLdL	added new detector parameters data repo
 --------------------------------------------------------------------------------
 
 
@@ -27,7 +29,10 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
 use shared_lib.detector_param_pkg.all;
-use shared_lib.tdc_mezz_mapping_pkg.all;
+use shared_lib.fct_tdc_mezz_mapping_pkg.all;
+
+-- library dp_repo_lib;
+-- use dp_repo_lib.fct_tdc_mezz_mapping_pkg.all;
 
 library tar_lib;
 use tar_lib.tar_pkg.all;

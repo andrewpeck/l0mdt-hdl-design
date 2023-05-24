@@ -25,7 +25,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-use shared_lib.mdt_dt2r_pkg.all;
+use shared_lib.fct_mdt_dt2r_pkg.all;
 
 library apbus_lib;
 

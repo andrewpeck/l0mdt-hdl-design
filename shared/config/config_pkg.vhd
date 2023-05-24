@@ -32,6 +32,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
+use shared_lib.fct_barrel_R_rpc_pkg.all;
 
 
 library shared_cfg_def_lib;
@@ -66,10 +67,10 @@ package config_pkg is
 
   -- physical values
 
-  constant PHY_BARREL_R0            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,0);
-  constant PHY_BARREL_R1            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,1);
-  constant PHY_BARREL_R2            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,2);
-  constant PHY_BARREL_R3            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,3);
+  constant PHY_BARREL_R0 : signed(SLC_Z_RPC_LEN-1 downto 0) := signed(get_barrel_R_rpc(c_SECTOR_ID,c_SECTOR_SIDE,0,0,SLC_Z_RPC_MULT,SLC_Z_RPC_LEN,32)(0));
+  constant PHY_BARREL_R1 : signed(SLC_Z_RPC_LEN-1 downto 0) := signed(get_barrel_R_rpc(c_SECTOR_ID,c_SECTOR_SIDE,1,0,SLC_Z_RPC_MULT,SLC_Z_RPC_LEN,32)(0));
+  constant PHY_BARREL_R2 : signed(SLC_Z_RPC_LEN-1 downto 0) := signed(get_barrel_R_rpc(c_SECTOR_ID,c_SECTOR_SIDE,1,1,SLC_Z_RPC_MULT,SLC_Z_RPC_LEN,32)(0));
+  constant PHY_BARREL_R3 : signed(SLC_Z_RPC_LEN-1 downto 0) := signed(get_barrel_R_rpc(c_SECTOR_ID,c_SECTOR_SIDE,2,0,SLC_Z_RPC_MULT,SLC_Z_RPC_LEN,32)(0));
 
   -- Processing channel/stations
   constant c_HPS_ENABLE_ST_INN          : std_logic := CFG.ENABLE_ST_INN;
@@ -144,11 +145,13 @@ package config_pkg is
   -- Blocks configuration
   --------------------------------------------------------------------------------
   constant c_TAR_ENABLED            : std_logic := CFG.ENABLE_TAR;
+  
   -- constant c_TAR_INSEL              : std_logic := '1';
   -- constant c_EN_MDT_HITS            : integer   := to_integer(unsigned'('0' & c_TAR_INSEL));
   -- constant c_EN_TAR_HITS            : integer   := to_integer(unsigned'('0' & (not c_TAR_INSEL)));
-
+ 
   constant c_UCM_ENABLED            : std_logic := CFG.ENABLE_UCM;
+
 
   constant c_H2S_ENABLED            : std_logic := CFG.ENABLE_H2S;
 
@@ -238,11 +241,12 @@ package config_pkg is
   constant c_DAQ_EXT_LINKS : integer := 0;
   constant c_DAQ_LINKS : integer := c_DAQ_INN_LINKS + c_DAQ_MID_LINKS + c_DAQ_OUT_LINKS + c_DAQ_EXT_LINKS;
   
-
  
 end package config_pkg;
 
 package body config_pkg is
+
+  
 
   function get_num_layers(station : integer) return integer is
     variable layers : integer;
@@ -261,12 +265,10 @@ package body config_pkg is
     return layers;
   end function;
 
-  function get_proper_chamber(in_chamber : integer) return integer is
+  function get_proper_chamber(in_chamber : integer)  return integer is
     variable out_chamber : integer := 0;
   begin
     return out_chamber;
   end function;
-
-  
 
 end package body config_pkg;

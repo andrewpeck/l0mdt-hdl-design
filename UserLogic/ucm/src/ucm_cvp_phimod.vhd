@@ -24,6 +24,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
+use shared_lib.fct_sector_phi_center_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
