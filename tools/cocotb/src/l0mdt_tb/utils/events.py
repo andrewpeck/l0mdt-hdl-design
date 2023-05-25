@@ -411,13 +411,15 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     tv_format_bf[this_candidate][0].set_bitwordvalue(rtl_tv_i)
                     tv_format_val.append(tv_format_bf[this_candidate][0].get_bitwordvalue())
                     if (stationID[this_candidate] != "NONE"):
+                        print("IACOPO - 1 - stationID[this_candidate]",stationID[this_candidate])
                         RTL_DFSL.fillBitFieldWord(tvformat, stationID[this_candidate], tv_format_val)
                         RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID[this_candidate])
                     else:
-                        RTL_DFSL.fillBitFieldWord(tvformat, data=tv_format_val,stationID="")
+                        print("IACOPO - 2 -stationID[this_candidate]",stationID[this_candidate])
+                        RTL_DFSL.fillBitFieldWord(tvformat, data=tv_format_val,stationID="INN") ## using INN as dummy, will not do anything
                         RTL_BF = RTL_DFSL.getBitFieldWord(tvformat)
 
-
+                    print("IACOPO -  stationID",stationID)
                     RTL_BF[0].set_bitwordvalue(tv_format_val[0])
                     # print("events.py: EXP_BF=",EXP_BF[0])
                     #print("events.py: RTL_BF=",RTL_BF[0].print_bitFieldWord())
