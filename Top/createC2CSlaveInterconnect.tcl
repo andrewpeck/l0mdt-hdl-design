@@ -1,6 +1,9 @@
-source -quiet "$BD_PATH/dtsi_helpers.tcl"
-source -quiet "$BD_PATH/axi_helpers.tcl"
-source -quiet "$BD_PATH/Xilinx_AXI_slaves.tcl"
+source ${BD_PATH}/axi_helpers.tcl
+source ${BD_PATH}/AXI_Cores/Xilinx_AXI_Endpoints.tcl 
+source ${BD_PATH}/Cores/Xilinx_Cores.tcl
+source ${BD_PATH}/HAL/HAL.tcl
+source ${BD_PATH}/utils/add_slaves_from_yaml.tcl
+
 
 remove_files -quiet [get_files "c2cSlave.bd"]
 remove_files -quiet [get_files "c2cSlave_wrapper.vhd"]
@@ -15,34 +18,36 @@ set EXT_CLK clk50Mhz
 set EXT_RESET reset_n
 set EXT_CLK_FREQ 50000000
 
-
+global AXI_MASTER_CLK
+global AXI_MASTER_RSTN
+global AXI_MASTER_CLK_FREQ
+global AXI_INTERCONNECT_NAME
 
 set AXI_MASTER_CLK AXI_CLK
 set AXI_MASTER_RSTN AXI_RST_N
 set AXI_MASTER_CLK_FREQ 50000000
-
+set AXI_INTERCONNECT_NAME slave_interconnect
 
 set EXT_CLK40 clk40
 set EXT_CLK40_RSTN CLK40_RSTN
 set AXI_CLK40_RSTN AXI_CLK40_RST_N
 set EXT_CLK40_FREQ 40000000
 
-set AXI_INTERCONNECT_NAME slave_interconnect
-
 #================================================================================
 #  Setup external clock and reset
 #================================================================================
-create_bd_port -dir I -type clk $EXT_CLK -freq_hz ${EXT_CLK_FREQ}
+create_bd_port -dir I -type clk $EXT_CLK
+set_property CONFIG.FREQ_HZ ${EXT_CLK_FREQ} [get_bd_ports ${EXT_CLK}]
 create_bd_port -dir I -type rst $EXT_RESET
 
 #================================================================================
-#  Create the system resetter
+#  Create an AXI interconnect
 #================================================================================
-
 puts "Building AXI C2C slave interconnect"
 
 #create AXI clock & reset ports
-create_bd_port -dir I -type clk $AXI_MASTER_CLK -freq_hz ${AXI_MASTER_CLK_FREQ} 
+create_bd_port -dir I -type clk $AXI_MASTER_CLK
+set_property CONFIG.FREQ_HZ ${AXI_MASTER_CLK_FREQ} [get_bd_ports ${AXI_MASTER_CLK}]
 create_bd_port -dir O -type rst $AXI_MASTER_RSTN
 
 #create the reset logic
@@ -57,6 +62,29 @@ set SYS_RESETER_AXI_RSTN $SYS_RESETER/interconnect_aresetn
 #create the reset to sys reseter and slave interconnect
 connect_bd_net [get_bd_ports $AXI_MASTER_RSTN] [get_bd_pins $SYS_RESETER_AXI_RSTN]
 
+
+AXI_IP_C2C [dict create device_name ${C2C} \
+		axi_control [dict create axi_clk $AXI_MASTER_CLK \
+				 axi_rstn $AXI_MASTER_RSTN \
+				 axi_freq $AXI_MASTER_CLK_FREQ] \
+		primary_serdes 1 \
+		init_clk $EXT_CLK \
+		refclk_freq 200 \
+		c2c_master false \
+		speed 5 \
+	       ]
+if { [info exists C2CB] } {
+    AXI_IP_C2C [dict create device_name ${C2CB} \
+		    axi_control [dict create axi_clk $AXI_MASTER_CLK \
+				     axi_rstn $AXI_MASTER_RSTN \
+				     axi_freq $AXI_MASTER_CLK_FREQ] \
+		    primary_serdes ${C2C}_PHY \
+		    init_clk $EXT_CLK \
+		    refclk_freq 200 \
+		    c2c_master false \
+		    speed 5 \
+		   ]
+}
 
 #================================================================================
 #  Create the system resetter for clk40
@@ -98,7 +126,8 @@ BUILD_JTAG_AXI_MASTER [dict create device_name ${JTAG_AXI_MASTER} axi_clk ${AXI_
 set mAXI [list ${C2C}/m_axi ${C2CB}/m_axi_lite ${JTAG_AXI_MASTER}/M_AXI]
 set mCLK [list ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK} ]
 set mRST [list ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN}] 
-[BUILD_AXI_INTERCONNECT $AXI_INTERCONNECT_NAME ${AXI_MASTER_CLK} $AXI_MASTER_RSTN $mAXI $mCLK $mRST]
+BUILD_AXI_INTERCONNECT ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} $mAXI $mCLK $mRST
+
 
 
 #================================================================================
@@ -111,14 +140,16 @@ if {![info exists AXI_BASE_ADDRESS]} { #If not set in Hog Project (post-creation
     set AXI_BASE_ADDRESS 0x80000000 ; # 7 Series
 }
 
-source -quiet "$BD_PATH/add_slaves_from_yaml.tcl"
+#================================================================================
+#  Configure and add AXI slaves
+#================================================================================
 yaml_to_bd "${SCRIPT_PATH}/slaves.yaml"
-
 set autogen_dir "${PATH_REPO}/configs/${build_name}/autogen/"
 exec mkdir -p -- $autogen_dir
-GENERATE_AXI_ADDR_MAP_C "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_addrs.h"                                                                                                 
-GENERATE_AXI_ADDR_MAP_VHDL "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_pkg.vhd"                                                                                              
-read_vhdl "${BD_PATH}/../../../configs/${build_name}/autogen/AXI_slave_pkg.vhd"      
+
+GENERATE_AXI_ADDR_MAP_C "${autogen_dir}/AXI_slave_addrs.h"                                                                                                 
+GENERATE_AXI_ADDR_MAP_VHDL "${autogen_dir}/AXI_slave_pkg.vhd"                                                                                              
+read_vhdl "${autogen_dir}/AXI_slave_pkg.vhd"   
 
 #========================================
 #  Finish up
