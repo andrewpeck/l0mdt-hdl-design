@@ -165,6 +165,12 @@ architecture beh of ucm is
   -- type cvp_cz0_art is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
   -- signal cvp_cz0_a : cvp_cz0_art;
 
+  signal aux_uCM2hps_inn_r  : ucm2hps_rt;
+  signal o_uCM2hps_inn_ar  : ucm2hps_art(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_ar  : ucm2hps_art(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_ar  : ucm2hps_art(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_ar  : ucm2hps_art(c_NUM_THREADS -1 downto 0);
+
 begin
 
   -- SC
@@ -427,27 +433,40 @@ begin
   -- o_uCM2pl_av <= convert(o_uCM2pl_av);
 
   -- VP2HPS: for hps_i in c_MAX_NUM_HPS -1 downto 0 generate
-    VP2HEG: for heg_i in c_NUM_THREADS -1 downto 0 generate
+    VP2HEG: for th_i in c_NUM_THREADS -1 downto 0 generate
+      -- shared variable v_aux_uCM2hps_inn_r  : ucm2hps_rt;
+    begin
       VP2HPS_INN : if c_HPS_ENABLE_ST_INN generate
-        o_uCM2hps_inn_av(heg_i) <= uCM2hps_data(heg_i)(0);
+        o_uCM2hps_inn_av(th_i) <= uCM2hps_data(th_i)(0);
+        -- v_aux_uCM2hps_inn_r := convert(uCM2hps_data(th_i)(0));
+        -- o_uCM2hps_inn_ar(th_i) <= v_aux_uCM2hps_inn_r;
+        -- o_uCM2hps_inn_ar(th_i) <= convert(ucm2hps_vt(uCM2hps_data(th_i)(0)));
       end generate;
       VP2HPS_MID : if c_HPS_ENABLE_ST_MID generate
-        o_uCM2hps_mid_av(heg_i) <= uCM2hps_data(heg_i)(1);
+        o_uCM2hps_mid_av(th_i) <= uCM2hps_data(th_i)(1);
       end generate;
       VP2HPS_OUT : if c_HPS_ENABLE_ST_OUT generate
-        o_uCM2hps_out_av(heg_i) <= uCM2hps_data(heg_i)(2);
+        o_uCM2hps_out_av(th_i) <= uCM2hps_data(th_i)(2);
       end generate;
       VP2HPS_EXT_EN : if c_HPS_ENABLE_ST_EXT generate
-        o_uCM2hps_ext_av(heg_i) <= uCM2hps_data(heg_i)(3);
+        o_uCM2hps_ext_av(th_i) <= uCM2hps_data(th_i)(3);
       end generate;
       VP2HPS_EXT_DIS : if not c_HPS_ENABLE_ST_EXT generate
-        o_uCM2hps_ext_av(heg_i) <= (others => '0');
+        o_uCM2hps_ext_av(th_i) <= (others => '0');
       end generate;
-
+      
+      --convert(o_uCM2hps_inn_av(th_i));
+      -- o_uCM2hps_mid_ar(th_i) <= convert(o_uCM2hps_mid_av(th_i));
+      -- o_uCM2hps_out_ar(th_i) <= convert(o_uCM2hps_out_av(th_i));
+      -- o_uCM2hps_ext_ar(th_i) <= convert(o_uCM2hps_ext_av(th_i));
       -- o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
     end generate;
   -- end generate;
-
+  -- o_uCM2hps_inn_ar <= convert(o_uCM2hps_inn_av);
+  -- o_uCM2hps_mid_ar <= convert(o_uCM2hps_mid_av);
+  -- o_uCM2hps_out_ar <= convert(o_uCM2hps_out_av);
+  -- o_uCM2hps_ext_ar <= convert(o_uCM2hps_ext_av);
+  
 
   -- PAM_CSW: for heg_i in c_NUM_THREADS -1 downto 0 generate
   --   cde_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - heg_i) - 1);
