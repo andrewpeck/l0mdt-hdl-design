@@ -519,11 +519,11 @@ begin
       fw_info_mon            => fw_info_mon_r,
       fm_mon            => fm_mon_r,
       fm_ctrl           => fm_ctrl_r,
-      hog_mon            => hog_mon_r,
       hal_core_mon            => hal_core_mon_r,
       hal_core_ctrl           => hal_core_ctrl_r,
       hal_mon            => hal_mon_r,
       hal_ctrl           => hal_ctrl_r,
+      hog_mon            => hog_mon_r,
       -- END: ULT_IO :: DO NOT EDIT
        
       -- axi common
