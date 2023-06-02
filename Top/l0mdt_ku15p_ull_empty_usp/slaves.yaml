@@ -8,7 +8,7 @@ AXI_CONTROL_SETS:
   AXI_LHC_CTRL:
     axi_interconnect: "${::AXI_INTERCONNECT_NAME}"
     axi_clk: clk40
-    axi_rstn: clk40_rstn
+    axi_rstn: AXI_CLK40_RST_N
     axi_freq: 40000000
     axi_base: "${::AXI_BASE_ADDRESS}"
   # AXI_INN_CTRL:
