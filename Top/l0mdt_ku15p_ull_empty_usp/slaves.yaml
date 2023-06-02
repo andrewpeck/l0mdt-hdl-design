@@ -4,31 +4,37 @@ AXI_CONTROL_SETS:
     axi_clk: "${::AXI_MASTER_CLK}"
     axi_rstn: "${::AXI_MASTER_RSTN}"
     axi_freq: "${::AXI_MASTER_CLK_FREQ}"
+    axi_base: "${::AXI_BASE_ADDRESS}"
   AXI_LHC_CTRL:
     axi_interconnect: "${::AXI_INTERCONNECT_NAME}"
     axi_clk: clk40
     axi_rstn: clk40_rstn
     axi_freq: 40000000
-  AXI_INN_CTRL:
-    axi_interconnect: "INTERCONNECT_INN"
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
-  AXI_MID_CTRL:
-    axi_interconnect: "INTERCONNECT_MID"
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
-  AXI_OUT_CTRL:
-    axi_interconnect: "INTERCONNECT_OUT" 
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
-  AXI_EXT_CTRL:
-    axi_interconnect: "INTERCONNECT_EXT"
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
+    axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_INN_CTRL:
+  #   axi_interconnect: "INTERCONNECT_INN"
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_MID_CTRL:
+  #   axi_interconnect: "INTERCONNECT_MID"
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_OUT_CTRL:
+  #   axi_interconnect: "INTERCONNECT_OUT" 
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_EXT_CTRL:
+  #   axi_interconnect: "INTERCONNECT_EXT"
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
 
 # 0xBE004000 USP
 # 0x81002000 7 Series
@@ -41,7 +47,7 @@ AXI_SLAVES:
       enable_i2c_pins: 0
       axi_control: "${::AXI_MASTER_CTRL}"
       addr:
-        offset: "0xB1001000"
+        offset: "0x01001000"
         range: "4K"
       remote_slave: "1"
     XML: "address_table/modules/KINTEX_SYS_MGMT.xml"
@@ -52,7 +58,7 @@ AXI_SLAVES:
       command: AXI_PL_DEV_CONNECT
       axi_control: "${::AXI_MASTER_CTRL}"
       addr:
-        offset: "0xB1003000"
+        offset: "0x01003000"
         range: "4K"
       remote_slave: "1"
     XML: "address_table/modules/FW_INFO.xml"
@@ -61,28 +67,28 @@ AXI_SLAVES:
       out_name: "FW_INFO"
       map_template: "axi_generic/template_map.vhd"
 
-  FM:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_MASTER_CTRL}"
-    #  type: "AXI4"
-    #  data_width: "32"
-      remote_slave: "1"
-      addr:
-        offset: "0xB0000000"
-        range: "16M"
-    XML: "address_table/modules/FM.xml"
-    UHAL_BASE: 0x85000000
-    HDL:
-      out_name: "FM"
-      map_template: "axi_generic/template_map_withbram.vhd"
+  # FM:
+  #   TCL_CALL:
+  #     command: "AXI_PL_DEV_CONNECT"
+  #     axi_control: "${::AXI_MASTER_CTRL}"
+  #   #  type: "AXI4"
+  #   #  data_width: "32"
+  #     remote_slave: "1"
+  #     addr:
+  #       offset: "0x00000000"
+  #       range: "16M"
+  #   XML: "address_table/modules/FM.xml"
+  #   UHAL_BASE: 0x85000000
+  #   HDL:
+  #     out_name: "FM"
+  #     map_template: "axi_generic/template_map_withbram.vhd"
 
   C2C_INTFS:
     TCL_CALL:
       command: AXI_PL_DEV_CONNECT
       axi_control: "${::AXI_MASTER_CTRL}"
       addr:
-        offset: "0xB1010000"
+        offset: "0x01010000"
         range: "64K"
       remote_slave: "1"
     XML: "address_table/modules/C2C_INTFS.xml"
@@ -95,14 +101,14 @@ AXI_SLAVES:
         TCL_CALL:
           command: "AXI_IP_UART"
           addr:
-            offset: "0xB1008000"
+            offset: "0x01008000"
             range: "4K"
           irq_port: "K_C2CB/axi_c2c_s2m_intr_in"
           baud_rate: "115200"
           axi_control: "${::AXI_MASTER_CTRL}"
           manual_load_dtsi: "1"
           remote_slave: "1"
-          dt_data: "compatible = \"xlnx,axi-uartlite-2.0\", \"xlnx,xps-uartlite-1.00.a\";current-speed = <115200>;device_type = \"serial\";interrupt-names = \"interrupt\";interrupt-parent = <&IRQ0_INTR_CTRL>;interrupts = <4 0>;port-number = <101>;xlnx,baudrate = <0x1c200>;xlnx,data-bits = <0x8>;xlnx,odd-parity = <0xB>;xlnx,s-axi-aclk-freq-hz-d = \"49.9995\";xlnx,use-parity = <0xB>;"
+          dt_data: "compatible = \"xlnx,axi-uartlite-2.0\", \"xlnx,xps-uartlite-1.00.a\";current-speed = <115200>;device_type = \"serial\";interrupt-names = \"interrupt\";interrupt-parent = <&IRQ0_INTR_CTRL>;interrupts = <4 0>;port-number = <101>;xlnx,baudrate = <0x1c200>;xlnx,data-bits = <0x8>;xlnx,odd-parity = <0x0>;xlnx,s-axi-aclk-freq-hz-d = \"49.9995\";xlnx,use-parity = <0x0>;"
 
   HAL_CORE:
     TCL_CALL:
@@ -110,7 +116,7 @@ AXI_SLAVES:
       axi_control: "${::AXI_MASTER_CTRL}"
       remote_slave: "1"
       addr:
-        offset: "0xB1004000"
+        offset: "0x01004000"
         range: "4K"
     XML: "address_table/modules/HAL_CORE.xml"
     UHAL_BASE: 0x81000000
@@ -125,7 +131,7 @@ AXI_SLAVES:
       axi_control: "${::AXI_LHC_CTRL}"
       remote_slave: "1"
       addr:
-        offset: "0xB1005000"
+        offset: "0x01005000"
         range: "4K"
     XML: "address_table/modules/HAL.xml"
     UHAL_BASE: 0x83000000
@@ -139,8 +145,8 @@ AXI_SLAVES:
       axi_control: "${::AXI_MASTER_CTRL}"
       remote_slave: "1"
       addr:
-        offset: "0xB1200000"
-        range: "4K"
+        offset: "0x01200000"
+        range: "64K"
     UHAL_BASE: 0x89000000
     XML: "address_table/modules/HOG.xml"
     HDL:
@@ -154,7 +160,7 @@ AXI_SLAVES:
 #      axi_control: "${::AXI_LHC_CTRL}"
 #      remote_slave: "1"
 #      addr:
-#        offset: "0xB0005000"
+#        offset: "0x00005000"
 #        range: "4K"
 #
 #  TF:
@@ -163,7 +169,7 @@ AXI_SLAVES:
 #      axi_control: "${::AXI_LHC_CTRL}"
 #      remote_slave: "1"
 #      addr:
-#        offset: "0xB0006000"
+#        offset: "0x00006000"
 #        range: "4K"
 #
 #  UCM:
@@ -172,7 +178,7 @@ AXI_SLAVES:
 #      axi_control: "${::AXI_LHC_CTRL}"
 #      remote_slave: "1"
 #      addr:
-#        offset: "0xB0007000"
+#        offset: "0x00007000"
 #        range: "4K"
 #
 #  DAQ:
@@ -181,7 +187,7 @@ AXI_SLAVES:
 #      axi_control: "${::AXI_LHC_CTRL}"
 #      remote_slave: "1"
 #      addr:
-#        offset: "0xB0008000"
+#        offset: "0x00008000"
 #        range: "4K"
 #
 #  MPL:
@@ -190,7 +196,7 @@ AXI_SLAVES:
 #      axi_control: "${::AXI_LHC_CTRL}"
 #      remote_slave: "1"
 #      addr:
-#        offset: "0xB0009000"
+#        offset: "0x00009000"
 #        range: "4K"
 #
 #  FM:
@@ -199,7 +205,7 @@ AXI_SLAVES:
 #      axi_control: "${::AXI_LHC_CTRL}"
 #      remote_slave: "1"
 #      addr:
-#        offset: "0xB000A000"
+#        offset: "0x0000A000"
 #        range: "8K"
 #
 #  INTERCONNECT_INN:
@@ -222,7 +228,7 @@ AXI_SLAVES:
 #          axi_control: "${::AXI_INN_CTRL}"
 #          remote_slave: "1"
 #          addr:
-#            offset: "0xB0010000"
+#            offset: "0x00010000"
 #            range: "4K"
 #
 #      TAR_INN:
@@ -231,7 +237,7 @@ AXI_SLAVES:
 #          axi_control: "${::AXI_INN_CTRL}"
 #          remote_slave: "1"
 #          addr:
-#            offset: "0xB0012000"
+#            offset: "0x00012000"
 #            range: "4K"
 #
 #  INTERCONNECT_MID:
@@ -254,7 +260,7 @@ AXI_SLAVES:
 #          axi_control: "${::AXI_MID_CTRL}"
 #          remote_slave: "1"
 #          addr:
-#            offset: "0xB0020000"
+#            offset: "0x00020000"
 #            range: "4K"
 #
 #      TAR_MID:
@@ -263,7 +269,7 @@ AXI_SLAVES:
 #          axi_control: "${::AXI_MID_CTRL}"
 #          remote_slave: "1"
 #          addr:
-#            offset: "0xB0022000"
+#            offset: "0x00022000"
 #            range: "4K"
 #
 #  INTERCONNECT_OUT:
@@ -286,7 +292,7 @@ AXI_SLAVES:
 #          axi_control: "${::AXI_OUT_CTRL}"
 #          remote_slave: "1"
 #          addr:
-#            offset: "0xB0030000"
+#            offset: "0x00030000"
 #            range: "4K"
 #
 #      TAR_OUT:
@@ -295,7 +301,7 @@ AXI_SLAVES:
 #          axi_control: "${::AXI_OUT_CTRL}"
 #          remote_slave: "1"
 #          addr:
-#            offset: "0xB0032000"
+#            offset: "0x00032000"
 #            range: "4K"
 #
 #  INTERCONNECT_EXT:
@@ -318,7 +324,7 @@ AXI_SLAVES:
 #          axi_control: "${::AXI_EXT_CTRL}"
 #          remote_slave: "1"
 #          addr:
-#            offset: "0xB0040000"
+#            offset: "0x00040000"
 #            range: "4K"
 #
 #      TAR_EXT:
@@ -327,7 +333,7 @@ AXI_SLAVES:
 #          axi_control: "${::AXI_EXT_CTRL}"
 #          remote_slave: "1"
 #          addr:
-#            offset: "0xB0042000"
+#            offset: "0x00042000"
 #            range: "4K"
 # 
 # 

@@ -29,6 +29,7 @@ library ctrl_lib;
 
 -- START: LIBRARIES -- DO NOT TOUCH
 use ctrl_lib.fw_info_ctrl.all;
+use ctrl_lib.fm_ctrl.all;
 use ctrl_lib.hal_core_ctrl.all;
 use ctrl_lib.hal_ctrl.all;
 use ctrl_lib.hog_ctrl.all;
@@ -77,6 +78,8 @@ entity top_control is
 
     -- START: ULT_IO :: DO NOT EDIT
     fw_info_mon : in FW_INFO_MON_t;
+    fm_mon : in FM_MON_t;
+    fm_ctrl : out FM_CTRL_t;
     hal_core_mon : in HAL_CORE_MON_t;
     hal_core_ctrl : out HAL_CORE_CTRL_t;
     hal_mon : in HAL_MON_t;
@@ -108,6 +111,12 @@ architecture control_arch of top_control is
   signal fw_info_writemosi : axiwritemosi;
   signal fw_info_writemiso : axiwritemiso;
   signal fw_info_mon_r     : FW_INFO_MON_t;
+  signal fm_readmosi  : axireadmosi;
+  signal fm_readmiso  : axireadmiso;
+  signal fm_writemosi : axiwritemosi;
+  signal fm_writemiso : axiwritemiso;
+  signal fm_mon_r     : FM_MON_t;
+  signal fm_ctrl_r    : FM_CTRL_t;
   signal hal_core_readmosi  : axireadmosi;
   signal hal_core_readmiso  : axireadmiso;
   signal hal_core_writemosi : axiwritemosi;
@@ -353,6 +362,25 @@ begin
       FW_INFO_wready(0)      => FW_INFO_writemiso.ready_for_data,
       FW_INFO_wstrb          => FW_INFO_writemosi.data_write_strobe,
       FW_INFO_wvalid(0)      => FW_INFO_writemosi.data_valid,
+      FM_araddr         => FM_readmosi.address,
+      FM_arprot         => FM_readmosi.protection_type,
+      FM_arready(0)     => FM_readmiso.ready_for_address,
+      FM_arvalid(0)     => FM_readmosi.address_valid,
+      FM_awaddr         => FM_writemosi.address,
+      FM_awprot         => FM_writemosi.protection_type,
+      FM_awready(0)     => FM_writemiso.ready_for_address,
+      FM_awvalid(0)     => FM_writemosi.address_valid,
+      FM_bready(0)      => FM_writemosi.ready_for_response,
+      FM_bvalid(0)      => FM_writemiso.response_valid,
+      FM_bresp          => FM_writemiso.response,
+      FM_rdata          => FM_readmiso.data,
+      FM_rready(0)      => FM_readmosi.ready_for_data,
+      FM_rresp          => FM_readmiso.response,
+      FM_rvalid(0)      => FM_readmiso.data_valid,
+      FM_wdata          => FM_writemosi.data,
+      FM_wready(0)      => FM_writemiso.ready_for_data,
+      FM_wstrb          => FM_writemosi.data_write_strobe,
+      FM_wvalid(0)      => FM_writemosi.data_valid,
       HAL_CORE_araddr         => HAL_CORE_readmosi.address,
       HAL_CORE_arprot         => HAL_CORE_readmosi.protection_type,
       HAL_CORE_arready(0)     => HAL_CORE_readmiso.ready_for_address,
@@ -470,6 +498,23 @@ end process;
       slave_writemosi   => FW_INFO_writemosi,
       slave_writemiso   => FW_INFO_writemiso,
       mon   => FW_INFO_mon_r
+    );
+process (axi_clk) is
+begin
+if(rising_edge(axi_clk)) then
+ FM_mon_r <=  FM_mon; 
+end if;
+end process;
+  FM_map_inst : entity ctrl_lib.fm_map
+    port map(
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
+      slave_readmosi   => FM_readmosi,
+      slave_readmiso   => FM_readmiso,
+      slave_writemosi   => FM_writemosi,
+      slave_writemiso   => FM_writemiso,
+      ctrl   => FM_ctrl,
+      mon   => FM_mon_r
     );
 process (axi_clk) is
 begin
