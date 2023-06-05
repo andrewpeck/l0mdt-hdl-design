@@ -28,7 +28,9 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
-use shared_lib.barrel_chamb_z2origin_pkg.all;
+use shared_lib.fct_barrel_chamb_z2origin_pkg.all;
+use shared_lib.fct_barrel_R_rpc_pkg.all;
+use shared_lib.fct_chamber_type_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -40,10 +42,11 @@ library ctrl_lib;
 use ctrl_lib.UCM_CTRL.all;
 
 entity ucm_cvp is
-  -- generic(
+  generic(
   --   g_DELAY_CYCLES          : integer; 
   --   num_bits            : integer
-  -- );
+    g_MAX_POSSIBLE_HPS : integer := c_MAX_POSSIBLE_HPS
+  );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
@@ -112,9 +115,9 @@ architecture beh of ucm_cvp is
   -- signal chamber_ieta_v : std_logic_vector(15 downto 0);
   -- signal chamber_ieta_r : chamb_ieta_rpc_aut;
 
-  type new_chamb_ieta_art is array(c_MAX_NUM_HPS -1 downto 0) of unsigned(4-1 downto 0);
+  type new_chamb_ieta_art is array(g_MAX_POSSIBLE_HPS -1 downto 0) of unsigned(4-1 downto 0);
   signal new_chamb_ieta_a : new_chamb_ieta_art;
-  signal new_chamb_ieta_dv : std_logic_vector(c_MAX_NUM_HPS -1 downto 0);
+  signal new_chamb_ieta_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
 
   signal offset       : signed(31 downto 0);--signed(126 -1 downto 0);
   signal slope        : signed(31 downto 0);-- 
@@ -126,9 +129,9 @@ architecture beh of ucm_cvp is
   -- signal atan_mbar    : unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
   signal atan_dv      : std_logic;
 
-  type vec_pos_array_t  is array (0 to c_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
+  type vec_pos_array_t  is array (0 to g_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
   signal vec_pos_array  : vec_pos_array_t;
-  signal vec_z_pos_dv : std_logic_vector(c_MAX_NUM_HPS -1 downto 0);
+  signal vec_z_pos_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
 
   signal vec_ang_pl : unsigned(UCM2HPS_VEC_ANG_LEN-1 downto 0);
   
