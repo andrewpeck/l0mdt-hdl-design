@@ -8,6 +8,13 @@
 #sudo yum install sqlite-devel
 #sudo yum install -y xz-devel Edited
 
+setup:cocotb:
+    stage: 
+    allow_failure: true
+    interruptible: true
+    variables:
+        extends: .vars
+        PROJECT_NAME: tools/cocotb/
 
 
 GEN:cocotb:
