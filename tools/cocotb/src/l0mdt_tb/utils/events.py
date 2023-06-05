@@ -54,13 +54,12 @@ def timing_info_gen(filename):
             yield line
 
 
-def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):  
+def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):
+    """
+    Check if this event has SL candidates in this sector
+    OBSOLETE - should be removed    
+    """
     station_num = station_name_to_id(station_ID)
-    # print("IACOPO - _event_belongs_to_sectorID ",
-    #       "sectorID" , sectorID,
-    #       "icand",icand,
-    #       "station_ID = ", station_ID, 
-    #       "station_num =", station_num)
     if(station_num == -99):
         sl_trailer = DF[icand].getBitFieldWord("SL_TRAILER", "")
     elif station_ID != "EXT": #EXT station not supported by TV generator
@@ -71,7 +70,6 @@ def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):
 
     fiber_id = sl_trailer[0].get_field_bits("fiberid")
     evt_sector_id = fiber_id + 1
-    #print("IACOPO@AAA events.py: sectorID = ",sectorID," fiber_id = ",fiber_id," evt_sector_id =",evt_sector_id)
     if sectorID == evt_sector_id:
         
         return 1
@@ -97,14 +95,27 @@ def get_bitfield(
         port=0,
         keep_bitfieldword=False,
 ):
+    """
+    Function to retrieve bitfieldword or bitwordvalue from events extracted from PKL file
+    
+        event                    event candidate (read from TV PKL file)
+        bitfieldname             TV identifier 
+        candidate=0              SL candidate in case more than 1 are presetn
+        station_id=""            MDT station identifier (INN, MID, OUT, EXT)
+        tv_type="value"          type-id string (can be value, list, list_nested_tdc)
+        df_type="SL"             dataformat type, can be MDT or SL
+        port=0                   port index (on interface)
+        keep_bitfieldword=False  if True return BitfieldWord objects instead of their Bitwordvalue (i.e. the actual bit word passed to the logic)
+
+    """
+
+
+
     BF_list  = []
     returnVal = [] 
-    
-    # print("IACOPO - this is get_bitfield, \n",
-    #       "tv_type :",tv_type,
-    #       "station_id :", station_id,
-    #       "df_type :", df_type,
-    #       "bitfieldname :", bitfieldname)
+
+
+
     
     ### Extract BitFieldWord using methods of DataFormat() and save it as list (BF_list)
     if df_type == "SL":
@@ -188,10 +199,6 @@ def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,s
             #tvRTL_i.clear()
             port_idx = port_idx + 1
 
-    print ("events.py: TV RTL")
-    #for port_i in range(len(tvRTL_list)):
-    #   tvRTL_p = tvRTL_list[port_i]
-    #    tvRTL_p.print_tv()
 
     return tvRTL_list
 
@@ -378,17 +385,11 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                 tv_format_failure_cnt[field.name] = 0
         station_failure_cnt[stationID[this_candidate]] = tv_format_failure_cnt
 
-    print ("tv_format_failure_cnt = ",tv_format_failure_cnt)
-    print ("station_failure_cnt = ",station_failure_cnt)
-    print ("stationID = ", stationID)
-
     for ievent in range(len(tv_bcid_list)):
         if evt == e_idx:
             break
         else:
-            print("\nEvent: ", ievent)
             for this_candidate in range(n_candidates):
-                #print ("this_candidate = ", this_candidate, " thread id = ", tv_thread_mapping[this_candidate], " tv_format = ",tvformat)
                 if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate] == 1, station_ID = stationID[this_candidate]): #TODO - Need to handle EXT station 
                     EXP_DF.clear()
                     RTL_DFSL.clear()
@@ -411,22 +412,13 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     tv_format_bf[this_candidate][0].set_bitwordvalue(rtl_tv_i)
                     tv_format_val.append(tv_format_bf[this_candidate][0].get_bitwordvalue())
                     if (stationID[this_candidate] != "NONE"):
-                        print("IACOPO - 1 - stationID[this_candidate]",stationID[this_candidate])
                         RTL_DFSL.fillBitFieldWord(tvformat, stationID[this_candidate], tv_format_val)
                         RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID[this_candidate])
                     else:
-                        print("IACOPO - 2 -stationID[this_candidate]",stationID[this_candidate])
                         RTL_DFSL.fillBitFieldWord(tvformat, data=tv_format_val,stationID="INN") ## using INN as dummy, will not do anything
                         RTL_BF = RTL_DFSL.getBitFieldWord(tvformat)
 
-                    print("IACOPO -  stationID",stationID)
                     RTL_BF[0].set_bitwordvalue(tv_format_val[0])
-                    # print("events.py: EXP_BF=",EXP_BF[0])
-                    #print("events.py: RTL_BF=",RTL_BF[0].print_bitFieldWord())
-                    #print("events.py ==== Calling DF Print:")
-                    #RTL_DFSL.print_summary()
-
-
 
                     results = EXP_BF[0].compare_bitwordvalue(
                         RTL_BF[0], tolerances
@@ -516,7 +508,8 @@ def parse_tvlist(
 ):
     """
     Read tv list, parse input for SpyBuffers
-
+    will call get bitfield for each port
+    
     Arguments          :
      tv_bcid_list      : what was read by read_tv()
      tvformat          : testvector format
@@ -537,16 +530,6 @@ def parse_tvlist(
     events_list = tv_bcid_list
 
     
-    print("parse_tvlist - ", "station_ID", station_ID)
-    print("parse_tvlist - ", "cnd_thrd_id", cnd_thrd_id)
-    print("parse_tvlist - ", "tv_type", tv_type)
-    print("parse_tvlist - ", "tv_df_type", tv_df_type)
-
-    print("n_to_load", n_to_load)
-    print("n_ports",n_ports)
-    print("events.py VALUE for dataformat (tvformat) ", tvformat)
-
-    
 
     tv = [["" for x in range(n_to_load)] for y in range(n_ports)]
     my_cnd_thrd_id = [0 for x in range(n_ports)] 
@@ -560,18 +543,15 @@ def parse_tvlist(
     else:
         my_cnd_thrd_id = cnd_thrd_id
     
-    print(f"IACOPO - before reading events, total events: {len(events_list)}, to load {n_to_load}")
+    cocotb.log.debug(f"Before reading events, total events: {len(events_list)}, to load {n_to_load}")
     
     for ievent in range(len(events_list)):  # range(n_to_load):
 
         if valid_events < n_to_load:
-            print(f"\n\n\n{40*'-'}\nIACOPO - event {ievent} started\n{40*'-'}")
-            print("IACOPO - ievent",events_list[ievent])
-            print("IACOPO - ievent.DF_SL",events_list[ievent].DF_SL)
-            print("IACOPO - ievent.DF_MDT",events_list[ievent].DF_MDT)
-
-            if tvformat=="TDCPOLMUX2TAR":
-                print(f"manually printing TDCPOLMUX2TAR  for this event",events_list[ievent].DF_MDT[0].av_TDCPOLMUX2TAR)
+            cocotb.log.debug(f"\n\n\n{40*'-'}\n Event {ievent} started\n{40*'-'}")
+            cocotb.log.debug("ievent",events_list[ievent])
+            cocotb.log.debug("ievent.DF_SL",events_list[ievent].DF_SL)
+            cocotb.log.debug("ievent.DF_MDT",events_list[ievent].DF_MDT)
 
             event_found_for_port_interface = 0            
             for my_port in range(n_ports):                
@@ -580,7 +560,7 @@ def parse_tvlist(
                 else:
                     this_station_ID = station_ID[my_port]
 
-                #print("Events.py: tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
+                cocotb.log.debug("Events.py: tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
 
                 ### Check if events has SLc in this sector, 
                 ### This check is useless and can probably be removed with new TV output files (saved per sector).
@@ -596,13 +576,13 @@ def parse_tvlist(
                         if tv_type == 'value' and (zero_padding_size > 0 or prepend_zeros > 0):
                             tv[my_port][valid_events] = [tv[my_port][valid_events]]
 
-                    #print("SECTOR OK - TVFORMAT = ",tvformat, "thread", my_cnd_thrd_id[my_port]," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
                             
             ### Prepend zeros
             if prepend_zeros > 0:
                 for my_port in range(n_ports):
                     tv[my_port][valid_events] =  (prepend_zeros * [0]) + tv[my_port][valid_events]
-                    #print("PREPEND ZEROS = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
+
+            
 
 
             ### Append zeros
@@ -616,12 +596,12 @@ def parse_tvlist(
                     else:
                         tv[my_port][valid_events] = zero_padding_size * [0]
 
-                    print("SECTOR OK - TVFORMAT = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
+                    cocotb.log.debug("SECTOR OK - TVFORMAT = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
 
             if event_found_for_port_interface > 0:
                 valid_events = valid_events + 1
         else:
-            print("\n\n\n\n\n\n IACOPO - called break, loaded requested events")
+            cocotb.log.debug("\n\n\n\n\n\n Loaded requested events")
             break
 
     if valid_events < n_to_load :        
@@ -636,9 +616,9 @@ def parse_tvlist(
         for my_port in range(n_ports):
             tv[my_port] = flatten_list( tv[my_port] )[0]
 
-    print("IACOPO _ print tv _ BEGIN")
-    print("\n".join([str(x) for x in tv]))
-    print("IACOPO _ print tv _ END")
+    # print("_ print tv _ BEGIN")
+    # print("\n".join([str(x) for x in tv]))
+    # print("_ print tv _ END")
     return tv
 
 
@@ -647,7 +627,7 @@ def modify_tv(tv, ii):
     ### Append zeros to each sub-list
     ### to get the size equal to ii
     tv_out = []
-    print("in modify_tv - BEFORE:",tv)
+    #print("in modify_tv - BEFORE:",tv)
     for io in range(len(tv)):
         tv_port = []
         tv_index = 0
@@ -659,7 +639,7 @@ def modify_tv(tv, ii):
                 tv_index = tv_index + 1
                 tv_port.append(0)
         tv_out.append(tv_port)
-    print("in modify_tv - AFTER:",tv_out)
+    #print("in modify_tv - AFTER:",tv_out)
 
     return tv_out
 
@@ -694,8 +674,8 @@ def append_zeroes(tv, num=1):
     for i in range(num):
         tv_out.append(0)
 
-    print("modify_tv input (tv) =", tv )
-    print("modify_tv output (tv_out) =", tv_out )
+    # print("modify_tv input (tv) =", tv )
+    # print("modify_tv output (tv_out) =", tv_out )
     return tv_out
 
 
@@ -716,8 +696,8 @@ def modify_tv_padzeroes(tv, location="end", num=[]):
                 for i in range(num[io]):
                     tv_port.append(0)
         tv_out.append(tv_port)
-    print("modify_tv_padzeroes (tv) =", tv )
-    print("modify_tv_padzeroes (tv_out) =", tv_out )
+    # print("modify_tv_padzeroes (tv) =", tv )
+    # print("modify_tv_padzeroes (tv_out) =", tv_out )
     return tv_out
 
 
