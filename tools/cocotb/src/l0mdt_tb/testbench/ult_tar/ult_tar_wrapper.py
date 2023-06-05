@@ -36,7 +36,7 @@ class UltTarWrapper(block_wrapper.BlockWrapper):
         self, input_testvectors,n_to_send=-1, l0id_request=-1, event_delays=False
     ):
 
-        print("send_input_events: input_testvectors",input_testvectors)
+        cocotb.log.debug("send_input_events: input_testvectors",input_testvectors)
         
         hooks           = []
         input_interface = 0
@@ -57,7 +57,7 @@ class UltTarWrapper(block_wrapper.BlockWrapper):
                 interface_port = interface_port + 1
 
             # 
-            print(f"Sending data to DUT input_testvectors[{port_num}] = ",input_testvectors[port_num])
+            cocotb.log.debug(f"Sending data to DUT input_testvectors[{port_num}] = ",input_testvectors[port_num])
             input_events = input_testvectors[port_num]
             driver, io, active = self.input_ports[input_interface][interface_port]
 
