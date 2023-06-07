@@ -3,6 +3,7 @@ https://gitlab.com/tcpaiva/yml2hdl
 
 R   FM_SB1_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['9 -1', 0]
@@ -22,6 +23,7 @@ R   FM_SB1_CTRL_t:
 E      SB_MEM: FM_SB1_SB_MEM_MOSI_t
 R         FM_SB1_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['9 -1', 0]
@@ -29,6 +31,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB4_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['9 -1', 0]
@@ -48,6 +51,7 @@ R   FM_SB4_CTRL_t:
 E      SB_MEM: FM_SB4_SB_MEM_MOSI_t
 R         FM_SB4_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['9 -1', 0]
@@ -55,6 +59,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB7_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['9 -1', 0]
@@ -74,6 +79,7 @@ R   FM_SB7_CTRL_t:
 E      SB_MEM: FM_SB7_SB_MEM_MOSI_t
 R         FM_SB7_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['9 -1', 0]
@@ -81,6 +87,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB10_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['9 -1', 0]
@@ -100,6 +107,7 @@ R   FM_SB10_CTRL_t:
 E      SB_MEM: FM_SB10_SB_MEM_MOSI_t
 R         FM_SB10_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['9 -1', 0]
@@ -107,6 +115,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB13_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['9 -1', 0]
@@ -126,6 +135,7 @@ R   FM_SB13_CTRL_t:
 E      SB_MEM: FM_SB13_SB_MEM_MOSI_t
 R         FM_SB13_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['9 -1', 0]
@@ -133,6 +143,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB16_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['9 -1', 0]
@@ -152,6 +163,7 @@ R   FM_SB16_CTRL_t:
 E      SB_MEM: FM_SB16_SB_MEM_MOSI_t
 R         FM_SB16_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['9 -1', 0]
@@ -159,6 +171,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB19_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['9 -1', 0]
@@ -178,6 +191,7 @@ R   FM_SB19_CTRL_t:
 E      SB_MEM: FM_SB19_SB_MEM_MOSI_t
 R         FM_SB19_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['9 -1', 0]
@@ -185,6 +199,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB22_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['9 -1', 0]
@@ -204,6 +219,7 @@ R   FM_SB22_CTRL_t:
 E      SB_MEM: FM_SB22_SB_MEM_MOSI_t
 R         FM_SB22_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['9 -1', 0]
@@ -211,6 +227,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB25_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['9 -1', 0]
@@ -230,6 +247,7 @@ R   FM_SB25_CTRL_t:
 E      SB_MEM: FM_SB25_SB_MEM_MOSI_t
 R         FM_SB25_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['9 -1', 0]
@@ -237,6 +255,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB0_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -256,6 +275,7 @@ R   FM_SB0_CTRL_t:
 E      SB_MEM: FM_SB0_SB_MEM_MOSI_t
 R         FM_SB0_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -263,6 +283,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB2_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -282,6 +303,7 @@ R   FM_SB2_CTRL_t:
 E      SB_MEM: FM_SB2_SB_MEM_MOSI_t
 R         FM_SB2_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -289,6 +311,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB3_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -308,6 +331,7 @@ R   FM_SB3_CTRL_t:
 E      SB_MEM: FM_SB3_SB_MEM_MOSI_t
 R         FM_SB3_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -315,6 +339,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB5_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -334,6 +359,7 @@ R   FM_SB5_CTRL_t:
 E      SB_MEM: FM_SB5_SB_MEM_MOSI_t
 R         FM_SB5_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -341,6 +367,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB6_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -360,6 +387,7 @@ R   FM_SB6_CTRL_t:
 E      SB_MEM: FM_SB6_SB_MEM_MOSI_t
 R         FM_SB6_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -367,6 +395,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB8_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -386,6 +415,7 @@ R   FM_SB8_CTRL_t:
 E      SB_MEM: FM_SB8_SB_MEM_MOSI_t
 R         FM_SB8_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -393,6 +423,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB9_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -412,6 +443,7 @@ R   FM_SB9_CTRL_t:
 E      SB_MEM: FM_SB9_SB_MEM_MOSI_t
 R         FM_SB9_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -419,6 +451,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB11_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -438,6 +471,7 @@ R   FM_SB11_CTRL_t:
 E      SB_MEM: FM_SB11_SB_MEM_MOSI_t
 R         FM_SB11_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -445,6 +479,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB12_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -464,6 +499,7 @@ R   FM_SB12_CTRL_t:
 E      SB_MEM: FM_SB12_SB_MEM_MOSI_t
 R         FM_SB12_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -471,6 +507,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB14_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -490,6 +527,7 @@ R   FM_SB14_CTRL_t:
 E      SB_MEM: FM_SB14_SB_MEM_MOSI_t
 R         FM_SB14_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -497,6 +535,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB15_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -516,6 +555,7 @@ R   FM_SB15_CTRL_t:
 E      SB_MEM: FM_SB15_SB_MEM_MOSI_t
 R         FM_SB15_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -523,6 +563,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB17_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -542,6 +583,7 @@ R   FM_SB17_CTRL_t:
 E      SB_MEM: FM_SB17_SB_MEM_MOSI_t
 R         FM_SB17_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -549,6 +591,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB18_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -568,6 +611,7 @@ R   FM_SB18_CTRL_t:
 E      SB_MEM: FM_SB18_SB_MEM_MOSI_t
 R         FM_SB18_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -575,6 +619,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB20_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -594,6 +639,7 @@ R   FM_SB20_CTRL_t:
 E      SB_MEM: FM_SB20_SB_MEM_MOSI_t
 R         FM_SB20_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -601,6 +647,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB21_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -620,6 +667,7 @@ R   FM_SB21_CTRL_t:
 E      SB_MEM: FM_SB21_SB_MEM_MOSI_t
 R         FM_SB21_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -627,6 +675,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB23_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -646,6 +695,7 @@ R   FM_SB23_CTRL_t:
 E      SB_MEM: FM_SB23_SB_MEM_MOSI_t
 R         FM_SB23_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -653,6 +703,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB24_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -672,6 +723,7 @@ R   FM_SB24_CTRL_t:
 E      SB_MEM: FM_SB24_SB_MEM_MOSI_t
 R         FM_SB24_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -679,6 +731,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB26_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -698,6 +751,7 @@ R   FM_SB26_CTRL_t:
 E      SB_MEM: FM_SB26_SB_MEM_MOSI_t
 R         FM_SB26_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -705,6 +759,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB_DUMMY0_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -724,6 +779,7 @@ R   FM_SB_DUMMY0_CTRL_t:
 E      SB_MEM: FM_SB_DUMMY0_SB_MEM_MOSI_t
 R         FM_SB_DUMMY0_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -731,6 +787,7 @@ E            wr_data: logic['32 -1', 0]
 
 R   FM_SB_DUMMY1_SB_MEM_MOSI_t:
 E      clk: logic
+E      reset: logic
 E      enable: logic
 E      wr_enable: logic
 E      address: logic['5 -1', 0]
@@ -750,6 +807,7 @@ R   FM_SB_DUMMY1_CTRL_t:
 E      SB_MEM: FM_SB_DUMMY1_SB_MEM_MOSI_t
 R         FM_SB_DUMMY1_SB_MEM_MOSI_t:
 E            clk: logic
+E            reset: logic
 E            enable: logic
 E            wr_enable: logic
 E            address: logic['5 -1', 0]
@@ -942,6 +1000,7 @@ R         FM_SB1_CTRL_t:
 E            SB_MEM: FM_SB1_SB_MEM_MOSI_t
 R               FM_SB1_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
@@ -951,6 +1010,7 @@ R         FM_SB4_CTRL_t:
 E            SB_MEM: FM_SB4_SB_MEM_MOSI_t
 R               FM_SB4_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
@@ -960,6 +1020,7 @@ R         FM_SB7_CTRL_t:
 E            SB_MEM: FM_SB7_SB_MEM_MOSI_t
 R               FM_SB7_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
@@ -969,6 +1030,7 @@ R         FM_SB10_CTRL_t:
 E            SB_MEM: FM_SB10_SB_MEM_MOSI_t
 R               FM_SB10_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
@@ -978,6 +1040,7 @@ R         FM_SB13_CTRL_t:
 E            SB_MEM: FM_SB13_SB_MEM_MOSI_t
 R               FM_SB13_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
@@ -987,6 +1050,7 @@ R         FM_SB16_CTRL_t:
 E            SB_MEM: FM_SB16_SB_MEM_MOSI_t
 R               FM_SB16_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
@@ -996,6 +1060,7 @@ R         FM_SB19_CTRL_t:
 E            SB_MEM: FM_SB19_SB_MEM_MOSI_t
 R               FM_SB19_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
@@ -1005,6 +1070,7 @@ R         FM_SB22_CTRL_t:
 E            SB_MEM: FM_SB22_SB_MEM_MOSI_t
 R               FM_SB22_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
@@ -1014,6 +1080,7 @@ R         FM_SB25_CTRL_t:
 E            SB_MEM: FM_SB25_SB_MEM_MOSI_t
 R               FM_SB25_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
@@ -1023,6 +1090,7 @@ R         FM_SB0_CTRL_t:
 E            SB_MEM: FM_SB0_SB_MEM_MOSI_t
 R               FM_SB0_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1032,6 +1100,7 @@ R         FM_SB2_CTRL_t:
 E            SB_MEM: FM_SB2_SB_MEM_MOSI_t
 R               FM_SB2_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1041,6 +1110,7 @@ R         FM_SB3_CTRL_t:
 E            SB_MEM: FM_SB3_SB_MEM_MOSI_t
 R               FM_SB3_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1050,6 +1120,7 @@ R         FM_SB5_CTRL_t:
 E            SB_MEM: FM_SB5_SB_MEM_MOSI_t
 R               FM_SB5_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1059,6 +1130,7 @@ R         FM_SB6_CTRL_t:
 E            SB_MEM: FM_SB6_SB_MEM_MOSI_t
 R               FM_SB6_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1068,6 +1140,7 @@ R         FM_SB8_CTRL_t:
 E            SB_MEM: FM_SB8_SB_MEM_MOSI_t
 R               FM_SB8_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1077,6 +1150,7 @@ R         FM_SB9_CTRL_t:
 E            SB_MEM: FM_SB9_SB_MEM_MOSI_t
 R               FM_SB9_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1086,6 +1160,7 @@ R         FM_SB11_CTRL_t:
 E            SB_MEM: FM_SB11_SB_MEM_MOSI_t
 R               FM_SB11_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1095,6 +1170,7 @@ R         FM_SB12_CTRL_t:
 E            SB_MEM: FM_SB12_SB_MEM_MOSI_t
 R               FM_SB12_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1104,6 +1180,7 @@ R         FM_SB14_CTRL_t:
 E            SB_MEM: FM_SB14_SB_MEM_MOSI_t
 R               FM_SB14_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1113,6 +1190,7 @@ R         FM_SB15_CTRL_t:
 E            SB_MEM: FM_SB15_SB_MEM_MOSI_t
 R               FM_SB15_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1122,6 +1200,7 @@ R         FM_SB17_CTRL_t:
 E            SB_MEM: FM_SB17_SB_MEM_MOSI_t
 R               FM_SB17_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1131,6 +1210,7 @@ R         FM_SB18_CTRL_t:
 E            SB_MEM: FM_SB18_SB_MEM_MOSI_t
 R               FM_SB18_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1140,6 +1220,7 @@ R         FM_SB20_CTRL_t:
 E            SB_MEM: FM_SB20_SB_MEM_MOSI_t
 R               FM_SB20_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1149,6 +1230,7 @@ R         FM_SB21_CTRL_t:
 E            SB_MEM: FM_SB21_SB_MEM_MOSI_t
 R               FM_SB21_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1158,6 +1240,7 @@ R         FM_SB23_CTRL_t:
 E            SB_MEM: FM_SB23_SB_MEM_MOSI_t
 R               FM_SB23_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1167,6 +1250,7 @@ R         FM_SB24_CTRL_t:
 E            SB_MEM: FM_SB24_SB_MEM_MOSI_t
 R               FM_SB24_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1176,6 +1260,7 @@ R         FM_SB26_CTRL_t:
 E            SB_MEM: FM_SB26_SB_MEM_MOSI_t
 R               FM_SB26_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1185,6 +1270,7 @@ R         FM_SB_DUMMY0_CTRL_t:
 E            SB_MEM: FM_SB_DUMMY0_SB_MEM_MOSI_t
 R               FM_SB_DUMMY0_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]
@@ -1194,6 +1280,7 @@ R         FM_SB_DUMMY1_CTRL_t:
 E            SB_MEM: FM_SB_DUMMY1_SB_MEM_MOSI_t
 R               FM_SB_DUMMY1_SB_MEM_MOSI_t:
 E                  clk: logic
+E                  reset: logic
 E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['5 -1', 0]

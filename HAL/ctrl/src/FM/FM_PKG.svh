@@ -11,6 +11,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [9 -1:0] address;
@@ -32,6 +33,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [9 -1:0] address;
@@ -53,6 +55,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [9 -1:0] address;
@@ -74,6 +77,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [9 -1:0] address;
@@ -95,6 +99,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [9 -1:0] address;
@@ -116,6 +121,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [9 -1:0] address;
@@ -137,6 +143,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [9 -1:0] address;
@@ -158,6 +165,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [9 -1:0] address;
@@ -179,6 +187,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [9 -1:0] address;
@@ -200,6 +209,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -221,6 +231,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -242,6 +253,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -263,6 +275,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -284,6 +297,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -305,6 +319,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -326,6 +341,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -347,6 +363,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -368,6 +385,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -389,6 +407,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -410,6 +429,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -431,6 +451,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -452,6 +473,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -473,6 +495,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -494,6 +517,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -515,6 +539,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -536,6 +561,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -557,6 +583,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -578,6 +605,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
@@ -599,6 +627,7 @@ package FM_CTRL;
 
    typedef struct packed {
       logic  clk;
+      logic  reset;
       logic  enable;
       logic  wr_enable;
       logic [5 -1:0] address;
