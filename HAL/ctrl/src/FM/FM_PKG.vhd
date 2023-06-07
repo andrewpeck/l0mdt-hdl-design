@@ -15,13 +15,12 @@ package FM_CTRL is
 
    type FM_SB1_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB1_SB_MEM_MOSI_t;
-   attribute w of FM_SB1_SB_MEM_MOSI_t : type is 45;
+   attribute w of FM_SB1_SB_MEM_MOSI_t : type is 44;
    function width(x: FM_SB1_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB1_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB1_SB_MEM_MOSI_t) return FM_SB1_SB_MEM_MOSI_t;
@@ -49,7 +48,7 @@ package FM_CTRL is
    type FM_SB1_CTRL_t is record
       SB_MEM : FM_SB1_SB_MEM_MOSI_t;
    end record FM_SB1_CTRL_t;
-   attribute w of FM_SB1_CTRL_t : type is 45;
+   attribute w of FM_SB1_CTRL_t : type is 44;
    function width(x: FM_SB1_CTRL_t) return natural;
    function convert(x: FM_SB1_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB1_CTRL_t) return FM_SB1_CTRL_t;
@@ -57,13 +56,12 @@ package FM_CTRL is
 
    type FM_SB4_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB4_SB_MEM_MOSI_t;
-   attribute w of FM_SB4_SB_MEM_MOSI_t : type is 45;
+   attribute w of FM_SB4_SB_MEM_MOSI_t : type is 44;
    function width(x: FM_SB4_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB4_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB4_SB_MEM_MOSI_t) return FM_SB4_SB_MEM_MOSI_t;
@@ -91,7 +89,7 @@ package FM_CTRL is
    type FM_SB4_CTRL_t is record
       SB_MEM : FM_SB4_SB_MEM_MOSI_t;
    end record FM_SB4_CTRL_t;
-   attribute w of FM_SB4_CTRL_t : type is 45;
+   attribute w of FM_SB4_CTRL_t : type is 44;
    function width(x: FM_SB4_CTRL_t) return natural;
    function convert(x: FM_SB4_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB4_CTRL_t) return FM_SB4_CTRL_t;
@@ -99,13 +97,12 @@ package FM_CTRL is
 
    type FM_SB7_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB7_SB_MEM_MOSI_t;
-   attribute w of FM_SB7_SB_MEM_MOSI_t : type is 45;
+   attribute w of FM_SB7_SB_MEM_MOSI_t : type is 44;
    function width(x: FM_SB7_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB7_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB7_SB_MEM_MOSI_t) return FM_SB7_SB_MEM_MOSI_t;
@@ -133,7 +130,7 @@ package FM_CTRL is
    type FM_SB7_CTRL_t is record
       SB_MEM : FM_SB7_SB_MEM_MOSI_t;
    end record FM_SB7_CTRL_t;
-   attribute w of FM_SB7_CTRL_t : type is 45;
+   attribute w of FM_SB7_CTRL_t : type is 44;
    function width(x: FM_SB7_CTRL_t) return natural;
    function convert(x: FM_SB7_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB7_CTRL_t) return FM_SB7_CTRL_t;
@@ -141,13 +138,12 @@ package FM_CTRL is
 
    type FM_SB10_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB10_SB_MEM_MOSI_t;
-   attribute w of FM_SB10_SB_MEM_MOSI_t : type is 45;
+   attribute w of FM_SB10_SB_MEM_MOSI_t : type is 44;
    function width(x: FM_SB10_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB10_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB10_SB_MEM_MOSI_t) return FM_SB10_SB_MEM_MOSI_t;
@@ -175,7 +171,7 @@ package FM_CTRL is
    type FM_SB10_CTRL_t is record
       SB_MEM : FM_SB10_SB_MEM_MOSI_t;
    end record FM_SB10_CTRL_t;
-   attribute w of FM_SB10_CTRL_t : type is 45;
+   attribute w of FM_SB10_CTRL_t : type is 44;
    function width(x: FM_SB10_CTRL_t) return natural;
    function convert(x: FM_SB10_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB10_CTRL_t) return FM_SB10_CTRL_t;
@@ -183,13 +179,12 @@ package FM_CTRL is
 
    type FM_SB13_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB13_SB_MEM_MOSI_t;
-   attribute w of FM_SB13_SB_MEM_MOSI_t : type is 45;
+   attribute w of FM_SB13_SB_MEM_MOSI_t : type is 44;
    function width(x: FM_SB13_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB13_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB13_SB_MEM_MOSI_t) return FM_SB13_SB_MEM_MOSI_t;
@@ -217,7 +212,7 @@ package FM_CTRL is
    type FM_SB13_CTRL_t is record
       SB_MEM : FM_SB13_SB_MEM_MOSI_t;
    end record FM_SB13_CTRL_t;
-   attribute w of FM_SB13_CTRL_t : type is 45;
+   attribute w of FM_SB13_CTRL_t : type is 44;
    function width(x: FM_SB13_CTRL_t) return natural;
    function convert(x: FM_SB13_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB13_CTRL_t) return FM_SB13_CTRL_t;
@@ -225,13 +220,12 @@ package FM_CTRL is
 
    type FM_SB16_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB16_SB_MEM_MOSI_t;
-   attribute w of FM_SB16_SB_MEM_MOSI_t : type is 45;
+   attribute w of FM_SB16_SB_MEM_MOSI_t : type is 44;
    function width(x: FM_SB16_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB16_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB16_SB_MEM_MOSI_t) return FM_SB16_SB_MEM_MOSI_t;
@@ -259,7 +253,7 @@ package FM_CTRL is
    type FM_SB16_CTRL_t is record
       SB_MEM : FM_SB16_SB_MEM_MOSI_t;
    end record FM_SB16_CTRL_t;
-   attribute w of FM_SB16_CTRL_t : type is 45;
+   attribute w of FM_SB16_CTRL_t : type is 44;
    function width(x: FM_SB16_CTRL_t) return natural;
    function convert(x: FM_SB16_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB16_CTRL_t) return FM_SB16_CTRL_t;
@@ -267,13 +261,12 @@ package FM_CTRL is
 
    type FM_SB19_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB19_SB_MEM_MOSI_t;
-   attribute w of FM_SB19_SB_MEM_MOSI_t : type is 45;
+   attribute w of FM_SB19_SB_MEM_MOSI_t : type is 44;
    function width(x: FM_SB19_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB19_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB19_SB_MEM_MOSI_t) return FM_SB19_SB_MEM_MOSI_t;
@@ -301,7 +294,7 @@ package FM_CTRL is
    type FM_SB19_CTRL_t is record
       SB_MEM : FM_SB19_SB_MEM_MOSI_t;
    end record FM_SB19_CTRL_t;
-   attribute w of FM_SB19_CTRL_t : type is 45;
+   attribute w of FM_SB19_CTRL_t : type is 44;
    function width(x: FM_SB19_CTRL_t) return natural;
    function convert(x: FM_SB19_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB19_CTRL_t) return FM_SB19_CTRL_t;
@@ -309,13 +302,12 @@ package FM_CTRL is
 
    type FM_SB22_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB22_SB_MEM_MOSI_t;
-   attribute w of FM_SB22_SB_MEM_MOSI_t : type is 45;
+   attribute w of FM_SB22_SB_MEM_MOSI_t : type is 44;
    function width(x: FM_SB22_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB22_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB22_SB_MEM_MOSI_t) return FM_SB22_SB_MEM_MOSI_t;
@@ -343,7 +335,7 @@ package FM_CTRL is
    type FM_SB22_CTRL_t is record
       SB_MEM : FM_SB22_SB_MEM_MOSI_t;
    end record FM_SB22_CTRL_t;
-   attribute w of FM_SB22_CTRL_t : type is 45;
+   attribute w of FM_SB22_CTRL_t : type is 44;
    function width(x: FM_SB22_CTRL_t) return natural;
    function convert(x: FM_SB22_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB22_CTRL_t) return FM_SB22_CTRL_t;
@@ -351,13 +343,12 @@ package FM_CTRL is
 
    type FM_SB25_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(9 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB25_SB_MEM_MOSI_t;
-   attribute w of FM_SB25_SB_MEM_MOSI_t : type is 45;
+   attribute w of FM_SB25_SB_MEM_MOSI_t : type is 44;
    function width(x: FM_SB25_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB25_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB25_SB_MEM_MOSI_t) return FM_SB25_SB_MEM_MOSI_t;
@@ -385,7 +376,7 @@ package FM_CTRL is
    type FM_SB25_CTRL_t is record
       SB_MEM : FM_SB25_SB_MEM_MOSI_t;
    end record FM_SB25_CTRL_t;
-   attribute w of FM_SB25_CTRL_t : type is 45;
+   attribute w of FM_SB25_CTRL_t : type is 44;
    function width(x: FM_SB25_CTRL_t) return natural;
    function convert(x: FM_SB25_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB25_CTRL_t) return FM_SB25_CTRL_t;
@@ -393,13 +384,12 @@ package FM_CTRL is
 
    type FM_SB0_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB0_SB_MEM_MOSI_t;
-   attribute w of FM_SB0_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB0_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB0_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB0_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB0_SB_MEM_MOSI_t) return FM_SB0_SB_MEM_MOSI_t;
@@ -427,7 +417,7 @@ package FM_CTRL is
    type FM_SB0_CTRL_t is record
       SB_MEM : FM_SB0_SB_MEM_MOSI_t;
    end record FM_SB0_CTRL_t;
-   attribute w of FM_SB0_CTRL_t : type is 41;
+   attribute w of FM_SB0_CTRL_t : type is 40;
    function width(x: FM_SB0_CTRL_t) return natural;
    function convert(x: FM_SB0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB0_CTRL_t) return FM_SB0_CTRL_t;
@@ -435,13 +425,12 @@ package FM_CTRL is
 
    type FM_SB2_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB2_SB_MEM_MOSI_t;
-   attribute w of FM_SB2_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB2_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB2_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB2_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB2_SB_MEM_MOSI_t) return FM_SB2_SB_MEM_MOSI_t;
@@ -469,7 +458,7 @@ package FM_CTRL is
    type FM_SB2_CTRL_t is record
       SB_MEM : FM_SB2_SB_MEM_MOSI_t;
    end record FM_SB2_CTRL_t;
-   attribute w of FM_SB2_CTRL_t : type is 41;
+   attribute w of FM_SB2_CTRL_t : type is 40;
    function width(x: FM_SB2_CTRL_t) return natural;
    function convert(x: FM_SB2_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB2_CTRL_t) return FM_SB2_CTRL_t;
@@ -477,13 +466,12 @@ package FM_CTRL is
 
    type FM_SB3_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB3_SB_MEM_MOSI_t;
-   attribute w of FM_SB3_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB3_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB3_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB3_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB3_SB_MEM_MOSI_t) return FM_SB3_SB_MEM_MOSI_t;
@@ -511,7 +499,7 @@ package FM_CTRL is
    type FM_SB3_CTRL_t is record
       SB_MEM : FM_SB3_SB_MEM_MOSI_t;
    end record FM_SB3_CTRL_t;
-   attribute w of FM_SB3_CTRL_t : type is 41;
+   attribute w of FM_SB3_CTRL_t : type is 40;
    function width(x: FM_SB3_CTRL_t) return natural;
    function convert(x: FM_SB3_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB3_CTRL_t) return FM_SB3_CTRL_t;
@@ -519,13 +507,12 @@ package FM_CTRL is
 
    type FM_SB5_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB5_SB_MEM_MOSI_t;
-   attribute w of FM_SB5_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB5_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB5_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB5_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB5_SB_MEM_MOSI_t) return FM_SB5_SB_MEM_MOSI_t;
@@ -553,7 +540,7 @@ package FM_CTRL is
    type FM_SB5_CTRL_t is record
       SB_MEM : FM_SB5_SB_MEM_MOSI_t;
    end record FM_SB5_CTRL_t;
-   attribute w of FM_SB5_CTRL_t : type is 41;
+   attribute w of FM_SB5_CTRL_t : type is 40;
    function width(x: FM_SB5_CTRL_t) return natural;
    function convert(x: FM_SB5_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB5_CTRL_t) return FM_SB5_CTRL_t;
@@ -561,13 +548,12 @@ package FM_CTRL is
 
    type FM_SB6_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB6_SB_MEM_MOSI_t;
-   attribute w of FM_SB6_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB6_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB6_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB6_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB6_SB_MEM_MOSI_t) return FM_SB6_SB_MEM_MOSI_t;
@@ -595,7 +581,7 @@ package FM_CTRL is
    type FM_SB6_CTRL_t is record
       SB_MEM : FM_SB6_SB_MEM_MOSI_t;
    end record FM_SB6_CTRL_t;
-   attribute w of FM_SB6_CTRL_t : type is 41;
+   attribute w of FM_SB6_CTRL_t : type is 40;
    function width(x: FM_SB6_CTRL_t) return natural;
    function convert(x: FM_SB6_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB6_CTRL_t) return FM_SB6_CTRL_t;
@@ -603,13 +589,12 @@ package FM_CTRL is
 
    type FM_SB8_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB8_SB_MEM_MOSI_t;
-   attribute w of FM_SB8_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB8_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB8_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB8_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB8_SB_MEM_MOSI_t) return FM_SB8_SB_MEM_MOSI_t;
@@ -637,7 +622,7 @@ package FM_CTRL is
    type FM_SB8_CTRL_t is record
       SB_MEM : FM_SB8_SB_MEM_MOSI_t;
    end record FM_SB8_CTRL_t;
-   attribute w of FM_SB8_CTRL_t : type is 41;
+   attribute w of FM_SB8_CTRL_t : type is 40;
    function width(x: FM_SB8_CTRL_t) return natural;
    function convert(x: FM_SB8_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB8_CTRL_t) return FM_SB8_CTRL_t;
@@ -645,13 +630,12 @@ package FM_CTRL is
 
    type FM_SB9_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB9_SB_MEM_MOSI_t;
-   attribute w of FM_SB9_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB9_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB9_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB9_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB9_SB_MEM_MOSI_t) return FM_SB9_SB_MEM_MOSI_t;
@@ -679,7 +663,7 @@ package FM_CTRL is
    type FM_SB9_CTRL_t is record
       SB_MEM : FM_SB9_SB_MEM_MOSI_t;
    end record FM_SB9_CTRL_t;
-   attribute w of FM_SB9_CTRL_t : type is 41;
+   attribute w of FM_SB9_CTRL_t : type is 40;
    function width(x: FM_SB9_CTRL_t) return natural;
    function convert(x: FM_SB9_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB9_CTRL_t) return FM_SB9_CTRL_t;
@@ -687,13 +671,12 @@ package FM_CTRL is
 
    type FM_SB11_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB11_SB_MEM_MOSI_t;
-   attribute w of FM_SB11_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB11_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB11_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB11_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB11_SB_MEM_MOSI_t) return FM_SB11_SB_MEM_MOSI_t;
@@ -721,7 +704,7 @@ package FM_CTRL is
    type FM_SB11_CTRL_t is record
       SB_MEM : FM_SB11_SB_MEM_MOSI_t;
    end record FM_SB11_CTRL_t;
-   attribute w of FM_SB11_CTRL_t : type is 41;
+   attribute w of FM_SB11_CTRL_t : type is 40;
    function width(x: FM_SB11_CTRL_t) return natural;
    function convert(x: FM_SB11_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB11_CTRL_t) return FM_SB11_CTRL_t;
@@ -729,13 +712,12 @@ package FM_CTRL is
 
    type FM_SB12_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB12_SB_MEM_MOSI_t;
-   attribute w of FM_SB12_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB12_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB12_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB12_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB12_SB_MEM_MOSI_t) return FM_SB12_SB_MEM_MOSI_t;
@@ -763,7 +745,7 @@ package FM_CTRL is
    type FM_SB12_CTRL_t is record
       SB_MEM : FM_SB12_SB_MEM_MOSI_t;
    end record FM_SB12_CTRL_t;
-   attribute w of FM_SB12_CTRL_t : type is 41;
+   attribute w of FM_SB12_CTRL_t : type is 40;
    function width(x: FM_SB12_CTRL_t) return natural;
    function convert(x: FM_SB12_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB12_CTRL_t) return FM_SB12_CTRL_t;
@@ -771,13 +753,12 @@ package FM_CTRL is
 
    type FM_SB14_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB14_SB_MEM_MOSI_t;
-   attribute w of FM_SB14_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB14_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB14_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB14_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB14_SB_MEM_MOSI_t) return FM_SB14_SB_MEM_MOSI_t;
@@ -805,7 +786,7 @@ package FM_CTRL is
    type FM_SB14_CTRL_t is record
       SB_MEM : FM_SB14_SB_MEM_MOSI_t;
    end record FM_SB14_CTRL_t;
-   attribute w of FM_SB14_CTRL_t : type is 41;
+   attribute w of FM_SB14_CTRL_t : type is 40;
    function width(x: FM_SB14_CTRL_t) return natural;
    function convert(x: FM_SB14_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB14_CTRL_t) return FM_SB14_CTRL_t;
@@ -813,13 +794,12 @@ package FM_CTRL is
 
    type FM_SB15_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB15_SB_MEM_MOSI_t;
-   attribute w of FM_SB15_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB15_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB15_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB15_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB15_SB_MEM_MOSI_t) return FM_SB15_SB_MEM_MOSI_t;
@@ -847,7 +827,7 @@ package FM_CTRL is
    type FM_SB15_CTRL_t is record
       SB_MEM : FM_SB15_SB_MEM_MOSI_t;
    end record FM_SB15_CTRL_t;
-   attribute w of FM_SB15_CTRL_t : type is 41;
+   attribute w of FM_SB15_CTRL_t : type is 40;
    function width(x: FM_SB15_CTRL_t) return natural;
    function convert(x: FM_SB15_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB15_CTRL_t) return FM_SB15_CTRL_t;
@@ -855,13 +835,12 @@ package FM_CTRL is
 
    type FM_SB17_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB17_SB_MEM_MOSI_t;
-   attribute w of FM_SB17_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB17_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB17_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB17_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB17_SB_MEM_MOSI_t) return FM_SB17_SB_MEM_MOSI_t;
@@ -889,7 +868,7 @@ package FM_CTRL is
    type FM_SB17_CTRL_t is record
       SB_MEM : FM_SB17_SB_MEM_MOSI_t;
    end record FM_SB17_CTRL_t;
-   attribute w of FM_SB17_CTRL_t : type is 41;
+   attribute w of FM_SB17_CTRL_t : type is 40;
    function width(x: FM_SB17_CTRL_t) return natural;
    function convert(x: FM_SB17_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB17_CTRL_t) return FM_SB17_CTRL_t;
@@ -897,13 +876,12 @@ package FM_CTRL is
 
    type FM_SB18_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB18_SB_MEM_MOSI_t;
-   attribute w of FM_SB18_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB18_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB18_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB18_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB18_SB_MEM_MOSI_t) return FM_SB18_SB_MEM_MOSI_t;
@@ -931,7 +909,7 @@ package FM_CTRL is
    type FM_SB18_CTRL_t is record
       SB_MEM : FM_SB18_SB_MEM_MOSI_t;
    end record FM_SB18_CTRL_t;
-   attribute w of FM_SB18_CTRL_t : type is 41;
+   attribute w of FM_SB18_CTRL_t : type is 40;
    function width(x: FM_SB18_CTRL_t) return natural;
    function convert(x: FM_SB18_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB18_CTRL_t) return FM_SB18_CTRL_t;
@@ -939,13 +917,12 @@ package FM_CTRL is
 
    type FM_SB20_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB20_SB_MEM_MOSI_t;
-   attribute w of FM_SB20_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB20_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB20_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB20_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB20_SB_MEM_MOSI_t) return FM_SB20_SB_MEM_MOSI_t;
@@ -973,7 +950,7 @@ package FM_CTRL is
    type FM_SB20_CTRL_t is record
       SB_MEM : FM_SB20_SB_MEM_MOSI_t;
    end record FM_SB20_CTRL_t;
-   attribute w of FM_SB20_CTRL_t : type is 41;
+   attribute w of FM_SB20_CTRL_t : type is 40;
    function width(x: FM_SB20_CTRL_t) return natural;
    function convert(x: FM_SB20_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB20_CTRL_t) return FM_SB20_CTRL_t;
@@ -981,13 +958,12 @@ package FM_CTRL is
 
    type FM_SB21_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB21_SB_MEM_MOSI_t;
-   attribute w of FM_SB21_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB21_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB21_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB21_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB21_SB_MEM_MOSI_t) return FM_SB21_SB_MEM_MOSI_t;
@@ -1015,7 +991,7 @@ package FM_CTRL is
    type FM_SB21_CTRL_t is record
       SB_MEM : FM_SB21_SB_MEM_MOSI_t;
    end record FM_SB21_CTRL_t;
-   attribute w of FM_SB21_CTRL_t : type is 41;
+   attribute w of FM_SB21_CTRL_t : type is 40;
    function width(x: FM_SB21_CTRL_t) return natural;
    function convert(x: FM_SB21_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB21_CTRL_t) return FM_SB21_CTRL_t;
@@ -1023,13 +999,12 @@ package FM_CTRL is
 
    type FM_SB23_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB23_SB_MEM_MOSI_t;
-   attribute w of FM_SB23_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB23_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB23_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB23_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB23_SB_MEM_MOSI_t) return FM_SB23_SB_MEM_MOSI_t;
@@ -1057,7 +1032,7 @@ package FM_CTRL is
    type FM_SB23_CTRL_t is record
       SB_MEM : FM_SB23_SB_MEM_MOSI_t;
    end record FM_SB23_CTRL_t;
-   attribute w of FM_SB23_CTRL_t : type is 41;
+   attribute w of FM_SB23_CTRL_t : type is 40;
    function width(x: FM_SB23_CTRL_t) return natural;
    function convert(x: FM_SB23_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB23_CTRL_t) return FM_SB23_CTRL_t;
@@ -1065,13 +1040,12 @@ package FM_CTRL is
 
    type FM_SB24_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB24_SB_MEM_MOSI_t;
-   attribute w of FM_SB24_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB24_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB24_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB24_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB24_SB_MEM_MOSI_t) return FM_SB24_SB_MEM_MOSI_t;
@@ -1099,7 +1073,7 @@ package FM_CTRL is
    type FM_SB24_CTRL_t is record
       SB_MEM : FM_SB24_SB_MEM_MOSI_t;
    end record FM_SB24_CTRL_t;
-   attribute w of FM_SB24_CTRL_t : type is 41;
+   attribute w of FM_SB24_CTRL_t : type is 40;
    function width(x: FM_SB24_CTRL_t) return natural;
    function convert(x: FM_SB24_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB24_CTRL_t) return FM_SB24_CTRL_t;
@@ -1107,13 +1081,12 @@ package FM_CTRL is
 
    type FM_SB26_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB26_SB_MEM_MOSI_t;
-   attribute w of FM_SB26_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB26_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB26_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB26_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB26_SB_MEM_MOSI_t) return FM_SB26_SB_MEM_MOSI_t;
@@ -1141,7 +1114,7 @@ package FM_CTRL is
    type FM_SB26_CTRL_t is record
       SB_MEM : FM_SB26_SB_MEM_MOSI_t;
    end record FM_SB26_CTRL_t;
-   attribute w of FM_SB26_CTRL_t : type is 41;
+   attribute w of FM_SB26_CTRL_t : type is 40;
    function width(x: FM_SB26_CTRL_t) return natural;
    function convert(x: FM_SB26_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB26_CTRL_t) return FM_SB26_CTRL_t;
@@ -1149,13 +1122,12 @@ package FM_CTRL is
 
    type FM_SB_DUMMY0_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB_DUMMY0_SB_MEM_MOSI_t;
-   attribute w of FM_SB_DUMMY0_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB_DUMMY0_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB_DUMMY0_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB_DUMMY0_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB_DUMMY0_SB_MEM_MOSI_t) return FM_SB_DUMMY0_SB_MEM_MOSI_t;
@@ -1183,7 +1155,7 @@ package FM_CTRL is
    type FM_SB_DUMMY0_CTRL_t is record
       SB_MEM : FM_SB_DUMMY0_SB_MEM_MOSI_t;
    end record FM_SB_DUMMY0_CTRL_t;
-   attribute w of FM_SB_DUMMY0_CTRL_t : type is 41;
+   attribute w of FM_SB_DUMMY0_CTRL_t : type is 40;
    function width(x: FM_SB_DUMMY0_CTRL_t) return natural;
    function convert(x: FM_SB_DUMMY0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB_DUMMY0_CTRL_t) return FM_SB_DUMMY0_CTRL_t;
@@ -1191,13 +1163,12 @@ package FM_CTRL is
 
    type FM_SB_DUMMY1_SB_MEM_MOSI_t is record
       clk : std_logic;
-      reset : std_logic;
       enable : std_logic;
       wr_enable : std_logic;
       address : std_logic_vector(5 -1 downto 0);
       wr_data : std_logic_vector(32 -1 downto 0);
    end record FM_SB_DUMMY1_SB_MEM_MOSI_t;
-   attribute w of FM_SB_DUMMY1_SB_MEM_MOSI_t : type is 41;
+   attribute w of FM_SB_DUMMY1_SB_MEM_MOSI_t : type is 40;
    function width(x: FM_SB_DUMMY1_SB_MEM_MOSI_t) return natural;
    function convert(x: FM_SB_DUMMY1_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB_DUMMY1_SB_MEM_MOSI_t) return FM_SB_DUMMY1_SB_MEM_MOSI_t;
@@ -1225,7 +1196,7 @@ package FM_CTRL is
    type FM_SB_DUMMY1_CTRL_t is record
       SB_MEM : FM_SB_DUMMY1_SB_MEM_MOSI_t;
    end record FM_SB_DUMMY1_CTRL_t;
-   attribute w of FM_SB_DUMMY1_CTRL_t : type is 41;
+   attribute w of FM_SB_DUMMY1_CTRL_t : type is 40;
    function width(x: FM_SB_DUMMY1_CTRL_t) return natural;
    function convert(x: FM_SB_DUMMY1_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_SB_DUMMY1_CTRL_t) return FM_SB_DUMMY1_CTRL_t;
@@ -1315,7 +1286,7 @@ package FM_CTRL is
       PLAYBACK_MASK_0 : std_logic_vector(32 - 1 downto 0);
       PLAYBACK_MASK_1 : std_logic_vector(32 - 1 downto 0);
    end record FM_CTRL_t;
-   attribute w of FM_CTRL_t : type is 1357;
+   attribute w of FM_CTRL_t : type is 1328;
    function width(x: FM_CTRL_t) return natural;
    function convert(x: FM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_CTRL_t) return FM_CTRL_t;
@@ -1341,7 +1312,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -1357,9 +1327,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -1374,9 +1341,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -1401,9 +1365,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -1418,9 +1379,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -1575,7 +1533,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -1591,9 +1548,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -1608,9 +1562,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -1635,9 +1586,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -1652,9 +1600,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -1809,7 +1754,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -1825,9 +1769,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -1842,9 +1783,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -1869,9 +1807,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -1886,9 +1821,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -2043,7 +1975,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -2059,9 +1990,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -2076,9 +2004,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -2103,9 +2028,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -2120,9 +2042,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -2277,7 +2196,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -2293,9 +2211,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -2310,9 +2225,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -2337,9 +2249,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -2354,9 +2263,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -2511,7 +2417,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -2527,9 +2432,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -2544,9 +2446,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -2571,9 +2470,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -2588,9 +2484,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -2745,7 +2638,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -2761,9 +2653,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -2778,9 +2667,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -2805,9 +2691,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -2822,9 +2705,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -2979,7 +2859,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -2995,9 +2874,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -3012,9 +2888,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -3039,9 +2912,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -3056,9 +2926,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -3213,7 +3080,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -3229,9 +3095,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -3246,9 +3109,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -3273,9 +3133,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -3290,9 +3147,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -3447,7 +3301,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -3463,9 +3316,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -3480,9 +3330,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -3507,9 +3354,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -3524,9 +3368,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -3681,7 +3522,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -3697,9 +3537,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -3714,9 +3551,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -3741,9 +3575,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -3758,9 +3589,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -3915,7 +3743,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -3931,9 +3758,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -3948,9 +3772,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -3975,9 +3796,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -3992,9 +3810,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -4149,7 +3964,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -4165,9 +3979,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -4182,9 +3993,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -4209,9 +4017,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -4226,9 +4031,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -4383,7 +4185,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -4399,9 +4200,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -4416,9 +4214,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -4443,9 +4238,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -4460,9 +4252,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -4617,7 +4406,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -4633,9 +4421,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -4650,9 +4435,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -4677,9 +4459,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -4694,9 +4473,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -4851,7 +4627,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -4867,9 +4642,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -4884,9 +4656,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -4911,9 +4680,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -4928,9 +4694,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -5085,7 +4848,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -5101,9 +4863,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -5118,9 +4877,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -5145,9 +4901,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -5162,9 +4915,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -5319,7 +5069,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -5335,9 +5084,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -5352,9 +5098,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -5379,9 +5122,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -5396,9 +5136,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -5553,7 +5290,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -5569,9 +5305,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -5586,9 +5319,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -5613,9 +5343,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -5630,9 +5357,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -5787,7 +5511,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -5803,9 +5526,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -5820,9 +5540,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -5847,9 +5564,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -5864,9 +5578,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -6021,7 +5732,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -6037,9 +5747,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -6054,9 +5761,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -6081,9 +5785,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -6098,9 +5799,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -6255,7 +5953,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -6271,9 +5968,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -6288,9 +5982,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -6315,9 +6006,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -6332,9 +6020,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -6489,7 +6174,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -6505,9 +6189,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -6522,9 +6203,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -6549,9 +6227,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -6566,9 +6241,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -6723,7 +6395,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -6739,9 +6410,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -6756,9 +6424,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -6783,9 +6448,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -6800,9 +6462,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -6957,7 +6616,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -6973,9 +6631,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -6990,9 +6645,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -7017,9 +6669,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -7034,9 +6683,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -7191,7 +6837,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -7207,9 +6852,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -7224,9 +6866,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -7251,9 +6890,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -7268,9 +6904,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -7425,7 +7058,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -7441,9 +7073,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -7458,9 +7087,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -7485,9 +7111,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -7502,9 +7125,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -7659,7 +7279,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -7675,9 +7294,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -7692,9 +7308,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -7719,9 +7332,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -7736,9 +7346,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
@@ -7893,7 +7500,6 @@ package body FM_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.clk);
-      w := w + width(x.reset);
       w := w + width(x.enable);
       w := w + width(x.wr_enable);
       w := w + width(x.address);
@@ -7909,9 +7515,6 @@ package body FM_CTRL is
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
          u := u + w;
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.enable);
          y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
          u := u + w;
@@ -7926,9 +7529,6 @@ package body FM_CTRL is
       else
          w := width(x.clk);
          y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
          u := u - w;
          w := width(x.enable);
          y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
@@ -7953,9 +7553,6 @@ package body FM_CTRL is
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
          u := u + w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.enable);
          y.enable := convert(x(u to u+w-1), tpl.enable);
          u := u + w;
@@ -7970,9 +7567,6 @@ package body FM_CTRL is
       else
          w := width(tpl.clk);
          y.clk := convert(x(u downto u-w+1), tpl.clk);
-         u := u - w;
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
          u := u - w;
          w := width(tpl.enable);
          y.enable := convert(x(u downto u-w+1), tpl.enable);
