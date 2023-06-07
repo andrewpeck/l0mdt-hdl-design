@@ -1,15 +1,17 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
---------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: 
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
+-- UMass , Physics Department
+-- Project: ucm
+-- File: top_ucm_imp.vhd
+-- Module: <<moduleName>>
+-- File PATH: /top_ucm_imp.vhd
+-- -----
+-- File Created: Wednesday, 24th May 2023 8:11:53 am
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Wednesday, 24th May 2023 4:57:26 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -34,6 +36,9 @@ use ctrl_lib.UCM_CTRL.all;
 
 
 entity top_ucm is
+  generic (
+    g_MAINDIVTYPE : string := "IP"
+  );
   port (
     clk                     : in std_logic;
     rst                     : in std_logic;
