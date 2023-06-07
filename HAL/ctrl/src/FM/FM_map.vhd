@@ -10,9 +10,12 @@ use work.types.all;
 use work.BRAMPortPkg.all;
 use work.FM_Ctrl.all;
 use work.FM_Ctrl_DEF.all;
+
+
 entity FM_map is
   generic (
-    READ_TIMEOUT     : integer := 2048
+    READ_TIMEOUT     : integer := 2048;
+    ALLOCATED_MEMORY_RANGE : integer 
     );
   port (
     clk_axi          : in  std_logic;
@@ -113,6 +116,13 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
+  assert ((4*8196) <= ALLOCATED_MEMORY_RANGE)
+    report "FM: Regmap addressing range " & integer'image(4*8196) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity ERROR;
+  assert ((4*8196) > ALLOCATED_MEMORY_RANGE)
+    report "FM: Regmap addressing range " & integer'image(4*8196) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity NOTE;
+
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
