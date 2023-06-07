@@ -9,6 +9,7 @@ use ctrl_lib.FM_CTRL.all;
 package FM_CTRL_DEF is
   constant Default_FM_SB1_SB_MEM_MOSI_t : FM_SB1_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -19,6 +20,7 @@ package FM_CTRL_DEF is
                                                     );
   constant Default_FM_SB4_SB_MEM_MOSI_t : FM_SB4_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -29,6 +31,7 @@ package FM_CTRL_DEF is
                                                     );
   constant Default_FM_SB7_SB_MEM_MOSI_t : FM_SB7_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -39,6 +42,7 @@ package FM_CTRL_DEF is
                                                     );
   constant Default_FM_SB10_SB_MEM_MOSI_t : FM_SB10_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -49,6 +53,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB13_SB_MEM_MOSI_t : FM_SB13_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -59,6 +64,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB16_SB_MEM_MOSI_t : FM_SB16_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -69,6 +75,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB19_SB_MEM_MOSI_t : FM_SB19_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -79,6 +86,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB22_SB_MEM_MOSI_t : FM_SB22_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -89,6 +97,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB25_SB_MEM_MOSI_t : FM_SB25_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -99,6 +108,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB0_SB_MEM_MOSI_t : FM_SB0_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -109,6 +119,7 @@ package FM_CTRL_DEF is
                                                     );
   constant Default_FM_SB2_SB_MEM_MOSI_t : FM_SB2_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -119,6 +130,7 @@ package FM_CTRL_DEF is
                                                     );
   constant Default_FM_SB3_SB_MEM_MOSI_t : FM_SB3_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -129,6 +141,7 @@ package FM_CTRL_DEF is
                                                     );
   constant Default_FM_SB5_SB_MEM_MOSI_t : FM_SB5_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -139,6 +152,7 @@ package FM_CTRL_DEF is
                                                     );
   constant Default_FM_SB6_SB_MEM_MOSI_t : FM_SB6_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -149,6 +163,7 @@ package FM_CTRL_DEF is
                                                     );
   constant Default_FM_SB8_SB_MEM_MOSI_t : FM_SB8_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -159,6 +174,7 @@ package FM_CTRL_DEF is
                                                     );
   constant Default_FM_SB9_SB_MEM_MOSI_t : FM_SB9_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -169,6 +185,7 @@ package FM_CTRL_DEF is
                                                     );
   constant Default_FM_SB11_SB_MEM_MOSI_t : FM_SB11_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -179,6 +196,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB12_SB_MEM_MOSI_t : FM_SB12_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -189,6 +207,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB14_SB_MEM_MOSI_t : FM_SB14_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -199,6 +218,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB15_SB_MEM_MOSI_t : FM_SB15_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -209,6 +229,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB17_SB_MEM_MOSI_t : FM_SB17_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -219,6 +240,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB18_SB_MEM_MOSI_t : FM_SB18_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -229,6 +251,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB20_SB_MEM_MOSI_t : FM_SB20_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -239,6 +262,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB21_SB_MEM_MOSI_t : FM_SB21_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -249,6 +273,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB23_SB_MEM_MOSI_t : FM_SB23_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -259,6 +284,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB24_SB_MEM_MOSI_t : FM_SB24_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -269,6 +295,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB26_SB_MEM_MOSI_t : FM_SB26_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -279,6 +306,7 @@ package FM_CTRL_DEF is
                                                       );
   constant Default_FM_SB_DUMMY0_SB_MEM_MOSI_t : FM_SB_DUMMY0_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),
@@ -289,6 +317,7 @@ package FM_CTRL_DEF is
                                                                 );
   constant Default_FM_SB_DUMMY1_SB_MEM_MOSI_t : FM_SB_DUMMY1_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
+                                                     reset     => '0',
                                                      enable    => '0',
                                                      wr_enable => '0',
                                                      address   => (others => '0'),

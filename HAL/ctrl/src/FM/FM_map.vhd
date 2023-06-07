@@ -10,9 +10,12 @@ use work.types.all;
 use work.BRAMPortPkg.all;
 use work.FM_Ctrl.all;
 use work.FM_Ctrl_DEF.all;
+
+
 entity FM_map is
   generic (
-    READ_TIMEOUT     : integer := 2048
+    READ_TIMEOUT     : integer := 2048;
+    ALLOCATED_MEMORY_RANGE : integer 
     );
   port (
     clk_axi          : in  std_logic;
@@ -113,6 +116,13 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
+  assert ((4*8196) <= ALLOCATED_MEMORY_RANGE)
+    report "FM: Regmap addressing range " & integer'image(4*8196) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity ERROR;
+  assert ((4*8196) > ALLOCATED_MEMORY_RANGE)
+    report "FM: Regmap addressing range " & integer'image(4*8196) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity NOTE;
+
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
@@ -359,174 +369,203 @@ elsif BRAM_MISO(28).rd_data_valid = '1' then
   end generate BRAM_asyncs;
   
   Ctrl.SB1.SB_MEM.clk       <=  BRAM_MOSI(0).clk;
+  Ctrl.SB1.SB_MEM.reset       <=  BRAM_MOSI(0).reset;
   Ctrl.SB1.SB_MEM.enable    <=  BRAM_MOSI(0).enable;
   Ctrl.SB1.SB_MEM.wr_enable <=  BRAM_MOSI(0).wr_enable;
   Ctrl.SB1.SB_MEM.address   <=  BRAM_MOSI(0).address(9-1 downto 0);
   Ctrl.SB1.SB_MEM.wr_data   <=  BRAM_MOSI(0).wr_data(32-1 downto 0);
 
   Ctrl.SB4.SB_MEM.clk       <=  BRAM_MOSI(1).clk;
+  Ctrl.SB4.SB_MEM.reset       <=  BRAM_MOSI(1).reset;
   Ctrl.SB4.SB_MEM.enable    <=  BRAM_MOSI(1).enable;
   Ctrl.SB4.SB_MEM.wr_enable <=  BRAM_MOSI(1).wr_enable;
   Ctrl.SB4.SB_MEM.address   <=  BRAM_MOSI(1).address(9-1 downto 0);
   Ctrl.SB4.SB_MEM.wr_data   <=  BRAM_MOSI(1).wr_data(32-1 downto 0);
 
   Ctrl.SB7.SB_MEM.clk       <=  BRAM_MOSI(2).clk;
+  Ctrl.SB7.SB_MEM.reset       <=  BRAM_MOSI(2).reset;
   Ctrl.SB7.SB_MEM.enable    <=  BRAM_MOSI(2).enable;
   Ctrl.SB7.SB_MEM.wr_enable <=  BRAM_MOSI(2).wr_enable;
   Ctrl.SB7.SB_MEM.address   <=  BRAM_MOSI(2).address(9-1 downto 0);
   Ctrl.SB7.SB_MEM.wr_data   <=  BRAM_MOSI(2).wr_data(32-1 downto 0);
 
   Ctrl.SB10.SB_MEM.clk       <=  BRAM_MOSI(3).clk;
+  Ctrl.SB10.SB_MEM.reset       <=  BRAM_MOSI(3).reset;
   Ctrl.SB10.SB_MEM.enable    <=  BRAM_MOSI(3).enable;
   Ctrl.SB10.SB_MEM.wr_enable <=  BRAM_MOSI(3).wr_enable;
   Ctrl.SB10.SB_MEM.address   <=  BRAM_MOSI(3).address(9-1 downto 0);
   Ctrl.SB10.SB_MEM.wr_data   <=  BRAM_MOSI(3).wr_data(32-1 downto 0);
 
   Ctrl.SB13.SB_MEM.clk       <=  BRAM_MOSI(4).clk;
+  Ctrl.SB13.SB_MEM.reset       <=  BRAM_MOSI(4).reset;
   Ctrl.SB13.SB_MEM.enable    <=  BRAM_MOSI(4).enable;
   Ctrl.SB13.SB_MEM.wr_enable <=  BRAM_MOSI(4).wr_enable;
   Ctrl.SB13.SB_MEM.address   <=  BRAM_MOSI(4).address(9-1 downto 0);
   Ctrl.SB13.SB_MEM.wr_data   <=  BRAM_MOSI(4).wr_data(32-1 downto 0);
 
   Ctrl.SB16.SB_MEM.clk       <=  BRAM_MOSI(5).clk;
+  Ctrl.SB16.SB_MEM.reset       <=  BRAM_MOSI(5).reset;
   Ctrl.SB16.SB_MEM.enable    <=  BRAM_MOSI(5).enable;
   Ctrl.SB16.SB_MEM.wr_enable <=  BRAM_MOSI(5).wr_enable;
   Ctrl.SB16.SB_MEM.address   <=  BRAM_MOSI(5).address(9-1 downto 0);
   Ctrl.SB16.SB_MEM.wr_data   <=  BRAM_MOSI(5).wr_data(32-1 downto 0);
 
   Ctrl.SB19.SB_MEM.clk       <=  BRAM_MOSI(6).clk;
+  Ctrl.SB19.SB_MEM.reset       <=  BRAM_MOSI(6).reset;
   Ctrl.SB19.SB_MEM.enable    <=  BRAM_MOSI(6).enable;
   Ctrl.SB19.SB_MEM.wr_enable <=  BRAM_MOSI(6).wr_enable;
   Ctrl.SB19.SB_MEM.address   <=  BRAM_MOSI(6).address(9-1 downto 0);
   Ctrl.SB19.SB_MEM.wr_data   <=  BRAM_MOSI(6).wr_data(32-1 downto 0);
 
   Ctrl.SB22.SB_MEM.clk       <=  BRAM_MOSI(7).clk;
+  Ctrl.SB22.SB_MEM.reset       <=  BRAM_MOSI(7).reset;
   Ctrl.SB22.SB_MEM.enable    <=  BRAM_MOSI(7).enable;
   Ctrl.SB22.SB_MEM.wr_enable <=  BRAM_MOSI(7).wr_enable;
   Ctrl.SB22.SB_MEM.address   <=  BRAM_MOSI(7).address(9-1 downto 0);
   Ctrl.SB22.SB_MEM.wr_data   <=  BRAM_MOSI(7).wr_data(32-1 downto 0);
 
   Ctrl.SB25.SB_MEM.clk       <=  BRAM_MOSI(8).clk;
+  Ctrl.SB25.SB_MEM.reset       <=  BRAM_MOSI(8).reset;
   Ctrl.SB25.SB_MEM.enable    <=  BRAM_MOSI(8).enable;
   Ctrl.SB25.SB_MEM.wr_enable <=  BRAM_MOSI(8).wr_enable;
   Ctrl.SB25.SB_MEM.address   <=  BRAM_MOSI(8).address(9-1 downto 0);
   Ctrl.SB25.SB_MEM.wr_data   <=  BRAM_MOSI(8).wr_data(32-1 downto 0);
 
   Ctrl.SB0.SB_MEM.clk       <=  BRAM_MOSI(9).clk;
+  Ctrl.SB0.SB_MEM.reset       <=  BRAM_MOSI(9).reset;
   Ctrl.SB0.SB_MEM.enable    <=  BRAM_MOSI(9).enable;
   Ctrl.SB0.SB_MEM.wr_enable <=  BRAM_MOSI(9).wr_enable;
   Ctrl.SB0.SB_MEM.address   <=  BRAM_MOSI(9).address(5-1 downto 0);
   Ctrl.SB0.SB_MEM.wr_data   <=  BRAM_MOSI(9).wr_data(32-1 downto 0);
 
   Ctrl.SB2.SB_MEM.clk       <=  BRAM_MOSI(10).clk;
+  Ctrl.SB2.SB_MEM.reset       <=  BRAM_MOSI(10).reset;
   Ctrl.SB2.SB_MEM.enable    <=  BRAM_MOSI(10).enable;
   Ctrl.SB2.SB_MEM.wr_enable <=  BRAM_MOSI(10).wr_enable;
   Ctrl.SB2.SB_MEM.address   <=  BRAM_MOSI(10).address(5-1 downto 0);
   Ctrl.SB2.SB_MEM.wr_data   <=  BRAM_MOSI(10).wr_data(32-1 downto 0);
 
   Ctrl.SB3.SB_MEM.clk       <=  BRAM_MOSI(11).clk;
+  Ctrl.SB3.SB_MEM.reset       <=  BRAM_MOSI(11).reset;
   Ctrl.SB3.SB_MEM.enable    <=  BRAM_MOSI(11).enable;
   Ctrl.SB3.SB_MEM.wr_enable <=  BRAM_MOSI(11).wr_enable;
   Ctrl.SB3.SB_MEM.address   <=  BRAM_MOSI(11).address(5-1 downto 0);
   Ctrl.SB3.SB_MEM.wr_data   <=  BRAM_MOSI(11).wr_data(32-1 downto 0);
 
   Ctrl.SB5.SB_MEM.clk       <=  BRAM_MOSI(12).clk;
+  Ctrl.SB5.SB_MEM.reset       <=  BRAM_MOSI(12).reset;
   Ctrl.SB5.SB_MEM.enable    <=  BRAM_MOSI(12).enable;
   Ctrl.SB5.SB_MEM.wr_enable <=  BRAM_MOSI(12).wr_enable;
   Ctrl.SB5.SB_MEM.address   <=  BRAM_MOSI(12).address(5-1 downto 0);
   Ctrl.SB5.SB_MEM.wr_data   <=  BRAM_MOSI(12).wr_data(32-1 downto 0);
 
   Ctrl.SB6.SB_MEM.clk       <=  BRAM_MOSI(13).clk;
+  Ctrl.SB6.SB_MEM.reset       <=  BRAM_MOSI(13).reset;
   Ctrl.SB6.SB_MEM.enable    <=  BRAM_MOSI(13).enable;
   Ctrl.SB6.SB_MEM.wr_enable <=  BRAM_MOSI(13).wr_enable;
   Ctrl.SB6.SB_MEM.address   <=  BRAM_MOSI(13).address(5-1 downto 0);
   Ctrl.SB6.SB_MEM.wr_data   <=  BRAM_MOSI(13).wr_data(32-1 downto 0);
 
   Ctrl.SB8.SB_MEM.clk       <=  BRAM_MOSI(14).clk;
+  Ctrl.SB8.SB_MEM.reset       <=  BRAM_MOSI(14).reset;
   Ctrl.SB8.SB_MEM.enable    <=  BRAM_MOSI(14).enable;
   Ctrl.SB8.SB_MEM.wr_enable <=  BRAM_MOSI(14).wr_enable;
   Ctrl.SB8.SB_MEM.address   <=  BRAM_MOSI(14).address(5-1 downto 0);
   Ctrl.SB8.SB_MEM.wr_data   <=  BRAM_MOSI(14).wr_data(32-1 downto 0);
 
   Ctrl.SB9.SB_MEM.clk       <=  BRAM_MOSI(15).clk;
+  Ctrl.SB9.SB_MEM.reset       <=  BRAM_MOSI(15).reset;
   Ctrl.SB9.SB_MEM.enable    <=  BRAM_MOSI(15).enable;
   Ctrl.SB9.SB_MEM.wr_enable <=  BRAM_MOSI(15).wr_enable;
   Ctrl.SB9.SB_MEM.address   <=  BRAM_MOSI(15).address(5-1 downto 0);
   Ctrl.SB9.SB_MEM.wr_data   <=  BRAM_MOSI(15).wr_data(32-1 downto 0);
 
   Ctrl.SB11.SB_MEM.clk       <=  BRAM_MOSI(16).clk;
+  Ctrl.SB11.SB_MEM.reset       <=  BRAM_MOSI(16).reset;
   Ctrl.SB11.SB_MEM.enable    <=  BRAM_MOSI(16).enable;
   Ctrl.SB11.SB_MEM.wr_enable <=  BRAM_MOSI(16).wr_enable;
   Ctrl.SB11.SB_MEM.address   <=  BRAM_MOSI(16).address(5-1 downto 0);
   Ctrl.SB11.SB_MEM.wr_data   <=  BRAM_MOSI(16).wr_data(32-1 downto 0);
 
   Ctrl.SB12.SB_MEM.clk       <=  BRAM_MOSI(17).clk;
+  Ctrl.SB12.SB_MEM.reset       <=  BRAM_MOSI(17).reset;
   Ctrl.SB12.SB_MEM.enable    <=  BRAM_MOSI(17).enable;
   Ctrl.SB12.SB_MEM.wr_enable <=  BRAM_MOSI(17).wr_enable;
   Ctrl.SB12.SB_MEM.address   <=  BRAM_MOSI(17).address(5-1 downto 0);
   Ctrl.SB12.SB_MEM.wr_data   <=  BRAM_MOSI(17).wr_data(32-1 downto 0);
 
   Ctrl.SB14.SB_MEM.clk       <=  BRAM_MOSI(18).clk;
+  Ctrl.SB14.SB_MEM.reset       <=  BRAM_MOSI(18).reset;
   Ctrl.SB14.SB_MEM.enable    <=  BRAM_MOSI(18).enable;
   Ctrl.SB14.SB_MEM.wr_enable <=  BRAM_MOSI(18).wr_enable;
   Ctrl.SB14.SB_MEM.address   <=  BRAM_MOSI(18).address(5-1 downto 0);
   Ctrl.SB14.SB_MEM.wr_data   <=  BRAM_MOSI(18).wr_data(32-1 downto 0);
 
   Ctrl.SB15.SB_MEM.clk       <=  BRAM_MOSI(19).clk;
+  Ctrl.SB15.SB_MEM.reset       <=  BRAM_MOSI(19).reset;
   Ctrl.SB15.SB_MEM.enable    <=  BRAM_MOSI(19).enable;
   Ctrl.SB15.SB_MEM.wr_enable <=  BRAM_MOSI(19).wr_enable;
   Ctrl.SB15.SB_MEM.address   <=  BRAM_MOSI(19).address(5-1 downto 0);
   Ctrl.SB15.SB_MEM.wr_data   <=  BRAM_MOSI(19).wr_data(32-1 downto 0);
 
   Ctrl.SB17.SB_MEM.clk       <=  BRAM_MOSI(20).clk;
+  Ctrl.SB17.SB_MEM.reset       <=  BRAM_MOSI(20).reset;
   Ctrl.SB17.SB_MEM.enable    <=  BRAM_MOSI(20).enable;
   Ctrl.SB17.SB_MEM.wr_enable <=  BRAM_MOSI(20).wr_enable;
   Ctrl.SB17.SB_MEM.address   <=  BRAM_MOSI(20).address(5-1 downto 0);
   Ctrl.SB17.SB_MEM.wr_data   <=  BRAM_MOSI(20).wr_data(32-1 downto 0);
 
   Ctrl.SB18.SB_MEM.clk       <=  BRAM_MOSI(21).clk;
+  Ctrl.SB18.SB_MEM.reset       <=  BRAM_MOSI(21).reset;
   Ctrl.SB18.SB_MEM.enable    <=  BRAM_MOSI(21).enable;
   Ctrl.SB18.SB_MEM.wr_enable <=  BRAM_MOSI(21).wr_enable;
   Ctrl.SB18.SB_MEM.address   <=  BRAM_MOSI(21).address(5-1 downto 0);
   Ctrl.SB18.SB_MEM.wr_data   <=  BRAM_MOSI(21).wr_data(32-1 downto 0);
 
   Ctrl.SB20.SB_MEM.clk       <=  BRAM_MOSI(22).clk;
+  Ctrl.SB20.SB_MEM.reset       <=  BRAM_MOSI(22).reset;
   Ctrl.SB20.SB_MEM.enable    <=  BRAM_MOSI(22).enable;
   Ctrl.SB20.SB_MEM.wr_enable <=  BRAM_MOSI(22).wr_enable;
   Ctrl.SB20.SB_MEM.address   <=  BRAM_MOSI(22).address(5-1 downto 0);
   Ctrl.SB20.SB_MEM.wr_data   <=  BRAM_MOSI(22).wr_data(32-1 downto 0);
 
   Ctrl.SB21.SB_MEM.clk       <=  BRAM_MOSI(23).clk;
+  Ctrl.SB21.SB_MEM.reset       <=  BRAM_MOSI(23).reset;
   Ctrl.SB21.SB_MEM.enable    <=  BRAM_MOSI(23).enable;
   Ctrl.SB21.SB_MEM.wr_enable <=  BRAM_MOSI(23).wr_enable;
   Ctrl.SB21.SB_MEM.address   <=  BRAM_MOSI(23).address(5-1 downto 0);
   Ctrl.SB21.SB_MEM.wr_data   <=  BRAM_MOSI(23).wr_data(32-1 downto 0);
 
   Ctrl.SB23.SB_MEM.clk       <=  BRAM_MOSI(24).clk;
+  Ctrl.SB23.SB_MEM.reset       <=  BRAM_MOSI(24).reset;
   Ctrl.SB23.SB_MEM.enable    <=  BRAM_MOSI(24).enable;
   Ctrl.SB23.SB_MEM.wr_enable <=  BRAM_MOSI(24).wr_enable;
   Ctrl.SB23.SB_MEM.address   <=  BRAM_MOSI(24).address(5-1 downto 0);
   Ctrl.SB23.SB_MEM.wr_data   <=  BRAM_MOSI(24).wr_data(32-1 downto 0);
 
   Ctrl.SB24.SB_MEM.clk       <=  BRAM_MOSI(25).clk;
+  Ctrl.SB24.SB_MEM.reset       <=  BRAM_MOSI(25).reset;
   Ctrl.SB24.SB_MEM.enable    <=  BRAM_MOSI(25).enable;
   Ctrl.SB24.SB_MEM.wr_enable <=  BRAM_MOSI(25).wr_enable;
   Ctrl.SB24.SB_MEM.address   <=  BRAM_MOSI(25).address(5-1 downto 0);
   Ctrl.SB24.SB_MEM.wr_data   <=  BRAM_MOSI(25).wr_data(32-1 downto 0);
 
   Ctrl.SB26.SB_MEM.clk       <=  BRAM_MOSI(26).clk;
+  Ctrl.SB26.SB_MEM.reset       <=  BRAM_MOSI(26).reset;
   Ctrl.SB26.SB_MEM.enable    <=  BRAM_MOSI(26).enable;
   Ctrl.SB26.SB_MEM.wr_enable <=  BRAM_MOSI(26).wr_enable;
   Ctrl.SB26.SB_MEM.address   <=  BRAM_MOSI(26).address(5-1 downto 0);
   Ctrl.SB26.SB_MEM.wr_data   <=  BRAM_MOSI(26).wr_data(32-1 downto 0);
 
   Ctrl.SB_DUMMY0.SB_MEM.clk       <=  BRAM_MOSI(27).clk;
+  Ctrl.SB_DUMMY0.SB_MEM.reset       <=  BRAM_MOSI(27).reset;
   Ctrl.SB_DUMMY0.SB_MEM.enable    <=  BRAM_MOSI(27).enable;
   Ctrl.SB_DUMMY0.SB_MEM.wr_enable <=  BRAM_MOSI(27).wr_enable;
   Ctrl.SB_DUMMY0.SB_MEM.address   <=  BRAM_MOSI(27).address(5-1 downto 0);
   Ctrl.SB_DUMMY0.SB_MEM.wr_data   <=  BRAM_MOSI(27).wr_data(32-1 downto 0);
 
   Ctrl.SB_DUMMY1.SB_MEM.clk       <=  BRAM_MOSI(28).clk;
+  Ctrl.SB_DUMMY1.SB_MEM.reset       <=  BRAM_MOSI(28).reset;
   Ctrl.SB_DUMMY1.SB_MEM.enable    <=  BRAM_MOSI(28).enable;
   Ctrl.SB_DUMMY1.SB_MEM.wr_enable <=  BRAM_MOSI(28).wr_enable;
   Ctrl.SB_DUMMY1.SB_MEM.address   <=  BRAM_MOSI(28).address(5-1 downto 0);
