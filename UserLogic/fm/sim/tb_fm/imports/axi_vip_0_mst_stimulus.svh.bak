@@ -26,7 +26,6 @@
 ***************************************************************************************************/
 import axi_vip_pkg::*;
 import ex_sim_axi_vip_mst_0_pkg::*;
-parameter TB_REPRODUCE_AXI_STATE_MACHINE_LOCK=1; //Issue read command first, if zero then issuing write command first
 
   /*************************************************************************************************
   * <component_name>_mst_t for master agent
@@ -54,8 +53,8 @@ parameter TB_REPRODUCE_AXI_STATE_MACHINE_LOCK=1; //Issue read command first, if 
   xil_axi_size_t                                           mtestRDataSize;      // Read SIZE  
   xil_axi_burst_t                                          mtestRBurstType;     // Read Burst Type  
 
-  xil_axi_data_beat [255:0]                                mtestWUSER = 0;         // Write user  
-  xil_axi_data_beat                                        mtestAWUSER = 0;        // Write Awuser 
+  xil_axi_data_beat [255:0]                                mtestWUSER;         // Write user  
+  xil_axi_data_beat                                        mtestAWUSER;        // Write Awuser 
   xil_axi_data_beat                                        mtestARUSER;        // Read Aruser
   
   // Error count to check how many comparison failed
@@ -81,17 +80,14 @@ parameter TB_REPRODUCE_AXI_STATE_MACHINE_LOCK=1; //Issue read command first, if 
     ***********************************************************************************************/
     mst_agent = new("master vip agent",DUT.ex_design.axi_vip_mst.inst.IF);
     mst_agent.start_master();               // mst_agent start to run
-   
 
     // Parallel write/read transaction generation 
     fork                               // Fork process of write/read transaction generation                    
   
-       begin
-	 if (TB_REPRODUCE_AXI_STATE_MACHINE_LOCK == 0)
-	   begin
+      begin  
         // single write transaction with fully randomization
          multiple_write_transaction_full_rand ("single write",1);
-
+         
         mtestWID = $urandom_range(0,(1<<(0)-1)); 
          mtestWADDR = 6144 ; //priya 0;
         mtestWBurstLength = 0;
@@ -117,7 +113,7 @@ parameter TB_REPRODUCE_AXI_STATE_MACHINE_LOCK=1; //Issue read command first, if 
 	   end
  
         //multiple write transactions with the same inline randomization 
-        multiple_write_transaction_partial_rand(.num_xfer(16),
+     /*   multiple_write_transaction_partial_rand(.num_xfer(16),
                                                 .start_addr(mtestWADDR),
                                                 .id(mtestWID),
                                                 .len(mtestWBurstLength),
@@ -125,79 +121,22 @@ parameter TB_REPRODUCE_AXI_STATE_MACHINE_LOCK=1; //Issue read command first, if 
                                                 .burst(mtestWBurstType),
                                                 .no_xfer_delays(1)
                                                );
-	   end
+	 */
  
       end
-
-       begin
-	      
-	  #15000
-	
-	  mtestRID = $urandom_range(0,(1<<(0)-1));
-          mtestRADDR = 32'h1440 << 2; // PRIYA $urandom_range(0,(1<<(32)-1));
-          mtestRBurstLength = 0; //0; //5185; //0;
-          mtestRDataSize =  xil_axi_size_t'(1); //PRIYA xil_axi_size_t'(xil_clog2((32)/8)); 
-          mtestRBurstType = XIL_AXI_BURST_TYPE_FIXED; //INCR;
-          //single read transaction filled in user inputs through API
-
-	  for (int i = 0 ; i < 32; i++)
-	    begin
-          single_read_transaction_api("single read with api",
-				      .id(mtestRID),
-				      .addr(mtestRADDR),
-				      .len(mtestRBurstLength), 
-				      .size(mtestRDataSize),
-				      .burst(mtestRBurstType)
-				      );
-	       mtestRADDR += 4;
-	       
-	    end
-
-	  
-	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
-          mtestWADDR = (32'h2000 << 2);  //priya 0;
-          mtestWBurstLength = 0; //0;
-          mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
-          mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED;
-
-	  for (int i = 0 ; i < 1; i++)
-	    begin
-	  mtestWData = 6; //$urandom();
-	      mtestWUSER      =   $urandom_range(0,15);
-	      mtestAWUSER     =   $urandom_range(0,15); 
-
-              //single write transaction filled in user inputs through API 
-              single_write_transaction_api("single write with api",
-					   .id(mtestWID),
-					   .addr(mtestWADDR),
-					   .len(mtestWBurstLength), 
-					   .size(mtestWDataSize),
-					   .burst(mtestWBurstType),
-					   .wuser(mtestWUSER),
-					   .awuser(mtestAWUSER), 
-					   .data(mtestWData)
-					   );
-	      mtestWADDR += 4 ;
-	      //if(i == 10)mtestWADDR = 2048;
-	    end
-	 
  
-	
-	 
-        //single read transaction with fully randomization
-        //PRIYA multiple_read_transaction_full_rand ("single read",1);
-	  #15000
-       	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
-          mtestWADDR = (32'h1440 << 2 ); //(32'h000);  //priya 0;
-          mtestWBurstLength = 0;
-          mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
-          mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED; //INCR;
+       begin
+
+	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
+         mtestWADDR = 0 ; //priya 0;
+        mtestWBurstLength = 0;
+         mtestWDataSize = xil_axi_size_t'(xil_clog2((32)/8));
+        mtestWBurstType =  XIL_AXI_BURST_TYPE_INCR;
           
 
-	  #12800 
-	 for (int i = 0; i < 32; i++)
+	 for (int i = 0; i < 56; i++)
 	   begin
-	      mtestWData = $urandom() | 32'h8000; //data_valid
+	      mtestWData = $urandom();
         //single write transaction filled in user inputs through API 
         single_write_transaction_api("single write with api",
                                      .id(mtestWID),
@@ -210,41 +149,39 @@ parameter TB_REPRODUCE_AXI_STATE_MACHINE_LOCK=1; //Issue read command first, if 
                                      .data(mtestWData)
                                      );
 	      mtestWADDR += 4 ;
-	      //if(i == 10)mtestWADDR = 2048;
+	      if(i == 10)mtestWADDR = 2048;
 	      
 	   end
-
+ 
 	
-	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
-          mtestWADDR = (32'h2000 << 2);  //priya 0;
-          mtestWBurstLength = 0; //0;
-          mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
-          mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED;
-
-	  for (int i = 0 ; i < 1; i++)
-	    begin
-	  mtestWData = 5; //$urandom();
-	      mtestWUSER      =   $urandom_range(0,15);
-	      mtestAWUSER     =   $urandom_range(0,15); 
-
-              //single write transaction filled in user inputs through API 
-              single_write_transaction_api("single write with api",
-					   .id(mtestWID),
-					   .addr(mtestWADDR),
-					   .len(mtestWBurstLength), 
-					   .size(mtestWDataSize),
-					   .burst(mtestWBurstType),
-					   .wuser(mtestWUSER),
-					   .awuser(mtestAWUSER), 
-					   .data(mtestWData)
-					   );
-	      mtestWADDR += 4 ;
-	      //if(i == 10)mtestWADDR = 2048;
-	    end // for (int i = 0 ; i < 1; i++)
-
 	  
-	  mtestRADDR = 32'h1460 << 2 ; //start bram reads
-	  for (int i = 0; i < 32; i++)
+        //single read transaction with fully randomization
+        //PRIYA multiple_read_transaction_full_rand ("single read",1);
+	
+        mtestRID = $urandom_range(0,(1<<(0)-1));
+         mtestRADDR = 0; // PRIYA $urandom_range(0,(1<<(32)-1));
+        mtestRBurstLength = 0;
+         mtestRDataSize =  xil_axi_size_t'(1); //PRIYA xil_axi_size_t'(xil_clog2((32)/8)); 
+        mtestRBurstType = XIL_AXI_BURST_TYPE_FIXED; //PRIYA XIL_AXI_BURST_TYPE_INCR;
+        //single read transaction filled in user inputs through API
+	 for (int i = 0; i < 10; i++)
+	   begin
+        single_read_transaction_api("single read with api",
+                                     .id(mtestRID),
+                                     .addr(mtestRADDR),
+                                     .len(mtestRBurstLength), 
+                                     .size(mtestRDataSize),
+                                     .burst(mtestRBurstType)
+                                     );
+
+	      
+	      mtestRADDR += 4 ;
+	     
+	      
+	   end // for (int i = 0; i < 26; i++)
+	  
+	  mtestRADDR = 2048; //start bram reads
+	  for (int i = 0; i < 40; i++)
 	    begin
                single_read_transaction_api("single read with api",
 					   .id(mtestRID),
@@ -256,28 +193,9 @@ parameter TB_REPRODUCE_AXI_STATE_MACHINE_LOCK=1; //Issue read command first, if 
 	       
 	       
 	       mtestRADDR += 4 ;
-	       //if(i == 10) mtestRADDR = 2048; //start bram reads
-	       
-	    end // for (int i = 0; i < 32; i++)
-
-
-	    mtestRADDR = 32'h1440 << 2 ; //start bram reads
-	  for (int i = 0; i < 32; i++)
-	    begin
-               single_read_transaction_api("single read with api",
-					   .id(mtestRID),
-					   .addr(mtestRADDR),
-					   .len(mtestRBurstLength), 
-					   .size(mtestRDataSize),
-					   .burst(mtestRBurstType)
-					   );
-	       
-	       
-	       mtestRADDR += 4 ;
-	       //if(i == 10) mtestRADDR = 2048; //start bram reads
+	       if(i == 10) mtestRADDR = 1024; //start bram reads
 	       
 	    end
-
         //multiple read transaction with the same inline randomization 
        /*PRIYA  multiple_read_transaction_partial_rand( .num_xfer(2),
                                                 .start_addr(mtestRADDR),
@@ -302,9 +220,9 @@ parameter TB_REPRODUCE_AXI_STATE_MACHINE_LOCK=1; //Issue read command first, if 
    
  
     //Below shows write two transactions in and then read them back
-/*
+
     mtestWID = $urandom_range(0,(1<<(0)-1)); 
-    mtestWADDR = 2048;
+    mtestWADDR = 1028;
     mtestWBurstLength = 0;
      mtestWDataSize = xil_axi_size_t'(xil_clog2(1)) ; //PRIYAxil_axi_size_t'(xil_clog2((32)/8));
     mtestWBurstType = XIL_AXI_BURST_TYPE_FIXED; //PRIYA XIL_AXI_BURST_TYPE_INCR;
@@ -316,7 +234,7 @@ parameter TB_REPRODUCE_AXI_STATE_MACHINE_LOCK=1; //Issue read command first, if 
                                      .burst(mtestWBurstType),
                                      .no_xfer_delays(1)
                                     );  
-*/
+
     mst_agent.wait_drivers_idle();           // Wait driver is idle then stop the simulation
    
     if(error_cnt ==0) begin
@@ -477,7 +395,6 @@ parameter TB_REPRODUCE_AXI_STATE_MACHINE_LOCK=1; //Issue read command first, if 
     wr_trans.set_region(region);
     wr_trans.set_qos(qos);
     wr_trans.set_data_block(data);
-     
     mst_agent.wr_driver.send(wr_trans);   
   endtask  : single_write_transaction_api
 
