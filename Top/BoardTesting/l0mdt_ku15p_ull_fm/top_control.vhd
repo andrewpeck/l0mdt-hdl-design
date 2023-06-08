@@ -546,7 +546,7 @@ begin
   end process;
   HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
     generic (
-      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_CORE)
+      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL_CORE)
     );
     port map(
       clk_axi         => axi_clk,

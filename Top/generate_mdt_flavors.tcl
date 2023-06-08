@@ -10,7 +10,8 @@ source $script_path/create_top_modules.tcl
 
 proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 
-    puts " ******* ${fpga_short}"
+    puts "INFO: UPDATING TRIGGER LIBS"
+    puts "INFO: FPGA type: ${fpga_short}"
 
     exec sed -i  "s/ku15p/${fpga_short}/g" $lib
 
