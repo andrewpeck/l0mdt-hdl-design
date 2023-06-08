@@ -12,3 +12,6 @@ vivado -source fm_validation_vivado.tcl &
 
 
 
+![Semantic description of image](./ex_sim.pdf)*Block Diagram of Testbench*
+
+
