@@ -1,4 +1,4 @@
-This testbench is built to test the FM endpoint in the AXI C2C interface and FM block in UserLogic. It validates the HAL/ctrl/src/FM VHDL block that is generated using the regmap utility
+This testbench is built to test the FM endpoint in the AXI C2C interface and FM block in UserLogic. It validates the {HAL/ctrl/src/FM](https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/l0mdt-hdl-design/-/tree/devel/HAL/ctrl/src/FM) VHDL block that is generated using the regmap utility
 
 Commands Run Fast Monitoring Testbench
 
@@ -12,9 +12,7 @@ set xilinx_compiled_lib_dir "/home/psundara/xilinx/compiled_libraries/v2020.2"
 ```
 vivado -source fm_validation_vivado.tcl &
 ```
-3.Run Simulation from Vivado GUI
-
-      Testbench works with the Questa simulator
+3.Run Simulation from Vivado GUI.  Testbench works with the Questa simulator
 
 
 
