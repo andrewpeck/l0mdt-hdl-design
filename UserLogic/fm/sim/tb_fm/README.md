@@ -1,3 +1,5 @@
+This testbench is built to test the FM endpoint in the AXI C2C interface and FM block in UserLogic. It validates the HAL/ctrl/src/FM VHDL block that is generated using the regmap utility
+
 Commands Run Fast Monitoring Testbench
 
 1. Edit fm_validation_vivado.tcl - Point to location of Xilinx tools , compiled libraries in your linux machine
@@ -12,6 +14,6 @@ vivado -source fm_validation_vivado.tcl &
 
 
 
-![Semantic description of image](./ex_sim.pdf)*Block Diagram of Testbench*
+![Block Diagram of Testbench](./FM_tb.png)
 
 
