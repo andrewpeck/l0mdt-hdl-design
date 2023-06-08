@@ -171,6 +171,9 @@ proc create_top_modules {project_path repo_path} {
 		    puts $output_control_file "end process;"
 
                 puts $output_control_file "  ${slave}_map_inst : entity ctrl_lib.[string tolower $xml_name]_map"
+                puts $output_control_file "    generic map("
+                puts $output_control_file "     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_[string toupper $xml_name])"
+                puts $output_control_file "    )"
                 puts $output_control_file "    port map("
                 if {[string first "AXI_MASTER_CTRL" $axi_control] != -1 } {
                     puts $output_control_file "      clk_axi         => axi_clk,"

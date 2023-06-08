@@ -483,13 +483,15 @@ begin
   --------------------------------------------------------------------------------
 
   -- START: ULT_SLAVES :: DO NOT EDIT
-process (axi_clk) is
-begin
-if(rising_edge(axi_clk)) then
- FW_INFO_mon_r <=  FW_INFO_mon; 
-end if;
-end process;
+  process (axi_clk) is begin
+    if(rising_edge(axi_clk)) then
+      FW_INFO_mon_r <=  FW_INFO_mon; 
+    end if;
+  end process;
   FW_INFO_map_inst : entity ctrl_lib.fw_info_map
+    generic (
+      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_FW_INFO)
+    );
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -499,13 +501,15 @@ end process;
       slave_writemiso   => FW_INFO_writemiso,
       mon   => FW_INFO_mon_r
     );
-process (axi_clk) is
-begin
-if(rising_edge(axi_clk)) then
- FM_mon_r <=  FM_mon; 
-end if;
-end process;
+  process (axi_clk) is begin
+    if(rising_edge(axi_clk)) then
+      FM_mon_r <=  FM_mon; 
+    end if;
+  end process;
   FM_map_inst : entity ctrl_lib.fm_map
+    generic (
+      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_FM)
+    );
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -516,13 +520,15 @@ end process;
       ctrl   => FM_ctrl,
       mon   => FM_mon_r
     );
-process (axi_clk) is
-begin
-if(rising_edge(axi_clk)) then
- HOG_mon_r <=  HOG_mon; 
-end if;
-end process;
+  process (axi_clk) is begin
+    if(rising_edge(axi_clk)) then
+      HOG_mon_r <=  HOG_mon; 
+    end if;
+  end process;
   HOG_map_inst : entity ctrl_lib.hog_map
+    generic (
+      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HOG)
+    );
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -532,14 +538,16 @@ end process;
       slave_writemiso   => HOG_writemiso,
       mon   => HOG_mon_r
     );
-process (axi_clk) is
-begin
-if(rising_edge(axi_clk)) then
- HAL_CORE_mon_r <=  HAL_CORE_mon; 
- HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
-end if;
-end process;
+  process (axi_clk) is   begin
+    if(rising_edge(axi_clk)) then
+      HAL_CORE_mon_r <=  HAL_CORE_mon; 
+      HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
+    end if;
+  end process;
   HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
+    generic (
+      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_CORE)
+    );
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -550,14 +558,16 @@ end process;
       ctrl   => HAL_CORE_ctrl_r,
       mon   => HAL_CORE_mon_r
     );
-process (clk40) is
-begin
-if(rising_edge(clk40)) then
- HAL_mon_r <=  HAL_mon; 
- HAL_ctrl  <=  HAL_ctrl_r;
-end if;
-end process;
+  process (clk40) is  begin
+    if(rising_edge(clk40)) then
+      HAL_mon_r <=  HAL_mon; 
+      HAL_ctrl  <=  HAL_ctrl_r;
+    end if;
+  end process;
   HAL_map_inst : entity ctrl_lib.hal_map
+    generic (
+      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL)
+    );
     port map(
       clk_axi         => clk40,
       reset_axi_n     => axi_clk40_reset_n, 
