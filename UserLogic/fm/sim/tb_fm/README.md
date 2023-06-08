@@ -1,4 +1,4 @@
-This testbench is built to test the FM endpoint in the AXI C2C interface and FM block in UserLogic. It validates the {HAL/ctrl/src/FM](https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/l0mdt-hdl-design/-/tree/devel/HAL/ctrl/src/FM) VHDL block that is generated using the regmap utility
+This testbench is built to test the FM endpoint in the AXI C2C interface and FM block in UserLogic. It validates the [HAL/ctrl/src/FM](https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/l0mdt-hdl-design/-/tree/devel/HAL/ctrl/src/FM) VHDL block that is generated using the regmap utility
 
 Commands Run Fast Monitoring Testbench
 
