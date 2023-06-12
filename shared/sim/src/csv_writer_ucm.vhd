@@ -52,6 +52,8 @@ entity csv_writer_ucm is
   generic(
     g_PRJ_INFO            : string  := "not_defined";
     g_IN_FILES            : string  := "not_defined.csv";
+    g_SLC_2_HPS_DELAY : integer := 0;
+    g_SLC_2_MPL_DELAY : integer := 0;
     g_verbose         : integer := 1
   );
   port (
@@ -202,7 +204,7 @@ begin
       g_SIMULATION => '1',
       -- pragma translate_on
       g_PIPELINE_TYPE => "ring_buffer",
-      g_DELAY_CYCLES  => 54,
+      g_DELAY_CYCLES  => g_SLC_2_HPS_DELAY,
       g_PIPELINE_WIDTH    => 32
     )
     port map(
@@ -452,7 +454,7 @@ begin
       g_SIMULATION => '1',
       -- pragma translate_on
       g_PIPELINE_TYPE => "ring_buffer",
-      g_DELAY_CYCLES  => 10,
+      g_DELAY_CYCLES  => g_SLC_2_MPL_DELAY,
       g_PIPELINE_WIDTH    => 32
     )
     port map(

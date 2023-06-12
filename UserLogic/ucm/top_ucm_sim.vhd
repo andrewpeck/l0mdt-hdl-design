@@ -275,7 +275,10 @@ begin
   generic map (
     g_PRJ_INFO    => PRJ_INFO,
     g_IN_FILES    => IN_SLC_FILE,
+    g_SLC_2_HPS_DELAY => 111,
+    g_SLC_2_MPL_DELAY => 10,
     g_verbose => 2
+    
 
   )
   port map(
