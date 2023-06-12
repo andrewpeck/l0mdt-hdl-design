@@ -549,9 +549,9 @@ def parse_tvlist(
 
         if valid_events < n_to_load:
             cocotb.log.debug(f"\n\n\n{40*'-'}\n Event {ievent} started\n{40*'-'}")
-            cocotb.log.debug("ievent",events_list[ievent])
-            cocotb.log.debug("ievent.DF_SL",events_list[ievent].DF_SL)
-            cocotb.log.debug("ievent.DF_MDT",events_list[ievent].DF_MDT)
+            cocotb.log.debug(f"ievent {events_list[ievent]}")
+            cocotb.log.debug(f"ievent.DF_SL {events_list[ievent].DF_SL}")
+            cocotb.log.debug("ievent.DF_MDT {events_list[ievent].DF_MDT}")
 
             event_found_for_port_interface = 0            
             for my_port in range(n_ports):                
@@ -560,7 +560,7 @@ def parse_tvlist(
                 else:
                     this_station_ID = station_ID[my_port]
 
-                cocotb.log.debug("Events.py: tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
+                cocotb.log.debug(f"Events.py: tvformat = {tvformat}  my_port = {my_port}, station_ID {this_station_ID}")
 
                 ### Check if events has SLc in this sector, 
                 ### This check is useless and can probably be removed with new TV output files (saved per sector).
@@ -596,7 +596,7 @@ def parse_tvlist(
                     else:
                         tv[my_port][valid_events] = zero_padding_size * [0]
 
-                    cocotb.log.debug("SECTOR OK - TVFORMAT = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
+                    cocotb.log.debug(f"SECTOR OK - TVFORMAT = {tvformat} tv[{my_port}][{valid_events}]={tv[my_port][valid_events]}")
 
             if event_found_for_port_interface > 0:
                 valid_events = valid_events + 1

@@ -28,6 +28,8 @@ from l0mdt_tb.utils import test_config
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
+# import logging
+# cocotb.log.setLevel(logging.DEBUG)
 
 def initialize_spybuffers(fifos=[]):
 
@@ -342,7 +344,7 @@ def ult_tar_test(dut):
                 
                 f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
             )
-            cocotb.log.debug(f" Received words for {n_op_intf} : port num {n_oport}", words)
+            cocotb.log.debug(f" Received words for {n_op_intf} : port num {n_oport}"+str(words))
         o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process*pad_size)
         recvd_events_intf.append(o_recvd_events)
 
