@@ -116,8 +116,8 @@ yaml_to_bd "$C2C_PATH/slaves.yaml"
 
 set autogen_dir "${PATH_REPO}/configs/${build_name}/autogen/"
 exec mkdir -p -- $autogen_dir
-GENERATE_AXI_ADDR_MAP_C "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_addrs.h"                                                                                                 
-GENERATE_AXI_ADDR_MAP_VHDL "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_pkg.vhd"                                                                                              
+GENERATE_AXI_ADDR_MAP_C "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_addrs.h"
+GENERATE_AXI_ADDR_MAP_VHDL "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_pkg.vhd"
 read_vhdl "${BD_PATH}/../../../configs/${build_name}/autogen/AXI_slave_pkg.vhd"      
 
 #========================================

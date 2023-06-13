@@ -146,7 +146,7 @@ AXI_SLAVES:
       remote_slave: "1"
       addr:
         offset: "0x01200000"
-        range: "4K"
+        range: "8K"
     UHAL_BASE: 0x89000000
     XML: "address_table/modules/HOG.xml"
     HDL:
