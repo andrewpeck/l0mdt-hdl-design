@@ -476,10 +476,10 @@ end process;
     );
 process (axi_clk) is
 begin
-if(rising_edge(axi_clk)) then
- HAL_CORE_mon_r <=  HAL_CORE_mon; 
- HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
-end if;
+ if(rising_edge(axi_clk)) then
+   HAL_CORE_mon_r <=  HAL_CORE_mon; 
+   HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
+ end if;
 end process;
   HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
     generic map(
