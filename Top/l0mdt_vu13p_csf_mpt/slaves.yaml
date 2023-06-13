@@ -11,30 +11,30 @@ AXI_CONTROL_SETS:
     axi_rstn: clk40_rstn
     axi_freq: 40000000
     axi_base: "${::AXI_BASE_ADDRESS}"
-  AXI_INN_CTRL:
-    axi_interconnect: "INTERCONNECT_INN"
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
-    axi_base: "${::AXI_BASE_ADDRESS}"
-  AXI_MID_CTRL:
-    axi_interconnect: "INTERCONNECT_MID"
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
-    axi_base: "${::AXI_BASE_ADDRESS}"
-  AXI_OUT_CTRL:
-    axi_interconnect: "INTERCONNECT_OUT" 
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
-    axi_base: "${::AXI_BASE_ADDRESS}"
-  AXI_EXT_CTRL:
-    axi_interconnect: "INTERCONNECT_EXT"
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
-    axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_INN_CTRL:
+  #   axi_interconnect: "INTERCONNECT_INN"
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_MID_CTRL:
+  #   axi_interconnect: "INTERCONNECT_MID"
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_OUT_CTRL:
+  #   axi_interconnect: "INTERCONNECT_OUT" 
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_EXT_CTRL:
+  #   axi_interconnect: "INTERCONNECT_EXT"
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
 
 # 0xBE004000 USP
 # 0x81002000 7 Series
@@ -146,7 +146,7 @@ AXI_SLAVES:
       remote_slave: "1"
       addr:
         offset: "0x01200000"
-        range: "4K"
+        range: "64K"
     UHAL_BASE: 0x89000000
     XML: "address_table/modules/HOG.xml"
     HDL:

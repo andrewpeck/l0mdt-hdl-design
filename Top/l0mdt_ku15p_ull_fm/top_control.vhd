@@ -30,9 +30,9 @@ library ctrl_lib;
 -- START: LIBRARIES -- DO NOT TOUCH
 use ctrl_lib.fw_info_ctrl.all;
 use ctrl_lib.fm_ctrl.all;
-use ctrl_lib.hog_ctrl.all;
 use ctrl_lib.hal_core_ctrl.all;
 use ctrl_lib.hal_ctrl.all;
+use ctrl_lib.hog_ctrl.all;
 -- END: LIBRARIES -- DO NOT TOUCH
 
 
@@ -80,11 +80,11 @@ entity top_control is
     fw_info_mon : in FW_INFO_MON_t;
     fm_mon : in FM_MON_t;
     fm_ctrl : out FM_CTRL_t;
-    hog_mon : in HOG_MON_t;
     hal_core_mon : in HAL_CORE_MON_t;
     hal_core_ctrl : out HAL_CORE_CTRL_t;
     hal_mon : in HAL_MON_t;
     hal_ctrl : out HAL_CTRL_t;
+    hog_mon : in HOG_MON_t;
     -- END: ULT_IO :: DO NOT EDIT
   
 
@@ -117,11 +117,6 @@ architecture control_arch of top_control is
   signal fm_writemiso : axiwritemiso;
   signal fm_mon_r     : FM_MON_t;
   signal fm_ctrl_r    : FM_CTRL_t;
-  signal hog_readmosi  : axireadmosi;
-  signal hog_readmiso  : axireadmiso;
-  signal hog_writemosi : axiwritemosi;
-  signal hog_writemiso : axiwritemiso;
-  signal hog_mon_r     : HOG_MON_t;
   signal hal_core_readmosi  : axireadmosi;
   signal hal_core_readmiso  : axireadmiso;
   signal hal_core_writemosi : axiwritemosi;
@@ -134,6 +129,11 @@ architecture control_arch of top_control is
   signal hal_writemiso : axiwritemiso;
   signal hal_mon_r     : HAL_MON_t;
   signal hal_ctrl_r    : HAL_CTRL_t;
+  signal hog_readmosi  : axireadmosi;
+  signal hog_readmiso  : axireadmiso;
+  signal hog_writemosi : axiwritemosi;
+  signal hog_writemiso : axiwritemiso;
+  signal hog_mon_r     : HOG_MON_t;
   -- END: ULT_AXI_SIGNALS :: DO NOT EDIT
 
   signal c2c_mon  : C2C_INTF_MON_t;
@@ -381,25 +381,6 @@ begin
       FM_wready(0)      => FM_writemiso.ready_for_data,
       FM_wstrb          => FM_writemosi.data_write_strobe,
       FM_wvalid(0)      => FM_writemosi.data_valid,
-      HOG_araddr         => HOG_readmosi.address,
-      HOG_arprot         => HOG_readmosi.protection_type,
-      HOG_arready(0)     => HOG_readmiso.ready_for_address,
-      HOG_arvalid(0)     => HOG_readmosi.address_valid,
-      HOG_awaddr         => HOG_writemosi.address,
-      HOG_awprot         => HOG_writemosi.protection_type,
-      HOG_awready(0)     => HOG_writemiso.ready_for_address,
-      HOG_awvalid(0)     => HOG_writemosi.address_valid,
-      HOG_bready(0)      => HOG_writemosi.ready_for_response,
-      HOG_bvalid(0)      => HOG_writemiso.response_valid,
-      HOG_bresp          => HOG_writemiso.response,
-      HOG_rdata          => HOG_readmiso.data,
-      HOG_rready(0)      => HOG_readmosi.ready_for_data,
-      HOG_rresp          => HOG_readmiso.response,
-      HOG_rvalid(0)      => HOG_readmiso.data_valid,
-      HOG_wdata          => HOG_writemosi.data,
-      HOG_wready(0)      => HOG_writemiso.ready_for_data,
-      HOG_wstrb          => HOG_writemosi.data_write_strobe,
-      HOG_wvalid(0)      => HOG_writemosi.data_valid,
       HAL_CORE_araddr         => HAL_CORE_readmosi.address,
       HAL_CORE_arprot         => HAL_CORE_readmosi.protection_type,
       HAL_CORE_arready(0)     => HAL_CORE_readmiso.ready_for_address,
@@ -438,6 +419,25 @@ begin
       HAL_wready      => HAL_writemiso.ready_for_data,
       HAL_wstrb          => HAL_writemosi.data_write_strobe,
       HAL_wvalid      => HAL_writemosi.data_valid,
+      HOG_araddr         => HOG_readmosi.address,
+      HOG_arprot         => HOG_readmosi.protection_type,
+      HOG_arready(0)     => HOG_readmiso.ready_for_address,
+      HOG_arvalid(0)     => HOG_readmosi.address_valid,
+      HOG_awaddr         => HOG_writemosi.address,
+      HOG_awprot         => HOG_writemosi.protection_type,
+      HOG_awready(0)     => HOG_writemiso.ready_for_address,
+      HOG_awvalid(0)     => HOG_writemosi.address_valid,
+      HOG_bready(0)      => HOG_writemosi.ready_for_response,
+      HOG_bvalid(0)      => HOG_writemiso.response_valid,
+      HOG_bresp          => HOG_writemiso.response,
+      HOG_rdata          => HOG_readmiso.data,
+      HOG_rready(0)      => HOG_readmosi.ready_for_data,
+      HOG_rresp          => HOG_readmiso.response,
+      HOG_rvalid(0)      => HOG_readmiso.data_valid,
+      HOG_wdata          => HOG_writemosi.data,
+      HOG_wready(0)      => HOG_writemiso.ready_for_data,
+      HOG_wstrb          => HOG_writemosi.data_write_strobe,
+      HOG_wvalid(0)      => HOG_writemosi.data_valid,
       -- END: AXI_PL_SLAVES :: DO NOT EDIT
        
       K_C2CB_phy_Rx_rxn(0)                => c2cb_rxn, --n_mgt_z2k(2 downto 2),
@@ -520,30 +520,13 @@ begin
       ctrl   => FM_ctrl,
       mon   => FM_mon_r
     );
-  process (axi_clk) is begin
-    if(rising_edge(axi_clk)) then
-      HOG_mon_r <=  HOG_mon; 
-    end if;
-  end process;
-  HOG_map_inst : entity ctrl_lib.hog_map
-    generic (
-      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HOG)
-    );
-    port map(
-      clk_axi         => axi_clk,
-      reset_axi_n     => axi_reset_n,
-      slave_readmosi   => HOG_readmosi,
-      slave_readmiso   => HOG_readmiso,
-      slave_writemosi   => HOG_writemosi,
-      slave_writemiso   => HOG_writemiso,
-      mon   => HOG_mon_r
-    );
-  process (axi_clk) is   begin
-    if(rising_edge(axi_clk)) then
-      HAL_CORE_mon_r <=  HAL_CORE_mon; 
-      HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
-    end if;
-  end process;
+process (axi_clk) is
+begin
+if(rising_edge(axi_clk)) then
+ HAL_CORE_mon_r <=  HAL_CORE_mon; 
+ HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
+end if;
+end process;
   HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
     generic (
       ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL_CORE)
@@ -577,6 +560,22 @@ begin
       slave_writemiso   => HAL_writemiso,
       ctrl   => HAL_ctrl_r,
       mon   => HAL_mon_r
+    );
+process (axi_clk) is
+begin
+if(rising_edge(axi_clk)) then
+ HOG_mon_r <=  HOG_mon; 
+end if;
+end process;
+  HOG_map_inst : entity ctrl_lib.hog_map
+    port map(
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
+      slave_readmosi   => HOG_readmosi,
+      slave_readmiso   => HOG_readmiso,
+      slave_writemosi   => HOG_writemosi,
+      slave_writemiso   => HOG_writemiso,
+      mon   => HOG_mon_r
     );
   -- END: ULT_SLAVES :: DO NOT EDIT
 

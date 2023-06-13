@@ -93,8 +93,8 @@ set_property PACKAGE_PIN L11 [get_ports {refclk_i_n[21]}]
 # LHC REF Inputs
 #set_property PACKAGE_PIN AT24 [get_ports clock_i_p] #Input 320MHz clock
 #set_property PACKAGE_PIN AU24 [get_ports clock_i_n]
-
-set_property PACKAGE_PIN AP29 [get_ports clock_i_p] #Input 40MHz clock
+#Input 40MHz clock
+set_property PACKAGE_PIN AP29 [get_ports clock_i_p] 
 set_property PACKAGE_PIN AP30 [get_ports clock_i_n]
 create_clock -period 25.000 -name clock_in_lhc [get_ports clock_i_p]
 set_property IOSTANDARD LVDS [get_ports clock_i*]
