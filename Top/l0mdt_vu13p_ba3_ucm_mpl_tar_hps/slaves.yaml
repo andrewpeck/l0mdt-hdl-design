@@ -132,7 +132,7 @@ AXI_SLAVES:
       remote_slave: "1"
       addr:
         offset: "0x01010000"
-        range: "4K"
+        range: "16K"
     XML: "address_table/modules/HAL.xml"
     UHAL_BASE: 0x83000000
     HDL:
