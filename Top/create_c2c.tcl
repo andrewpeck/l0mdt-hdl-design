@@ -1,11 +1,17 @@
 #proc create_c2c {SCRIPT_PATH PATH_REPO BD_OUTPUT_PATH C2C_PATH BD_PATH} {
 
-source -notrace ${SCRIPT_PATH}/get_fpga_name.tcl
+# source -notrace ${SCRIPT_PATH}/get_fpga_name.tcl
 
 set apollo_root_path $PATH_REPO
 set build_name $globalSettings::DESIGN
 
-source -notrace ${C2C_PATH}/createC2CSlaveInterconnect.tcl
+#for c2c
+set C2C K_C2C
+set C2C_PHY ${C2C}_PHY
+set C2CB K_C2CB
+set C2CB_PHY ${C2CB}_PHY
+
+source -notrace ${PATH_REPO}/Top/createC2CSlaveInterconnect.tcl
 
 # The wrapper that is generated randomly changes from std_logic_vector(0 downto 0) to std_logic
 #
