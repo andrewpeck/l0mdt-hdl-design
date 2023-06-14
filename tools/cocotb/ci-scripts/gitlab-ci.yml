@@ -10,8 +10,7 @@
 
 
 cocotb_job:cocotb_test_lsf_inn:
-    tags:
-       - cocotb
+    extends: .cocotb_job
     stage: user_pre
     allow_failure: true
     interruptible: true
