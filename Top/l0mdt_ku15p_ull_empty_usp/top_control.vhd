@@ -457,9 +457,9 @@ begin
   -- START: ULT_SLAVES :: DO NOT EDIT
 process (axi_clk) is
 begin
-if(rising_edge(axi_clk)) then
- FW_INFO_mon_r <=  FW_INFO_mon; 
-end if;
+ if(rising_edge(axi_clk)) then
+   FW_INFO_mon_r <=  FW_INFO_mon; 
+ end if;
 end process;
   FW_INFO_map_inst : entity ctrl_lib.fw_info_map
     generic map(
@@ -476,10 +476,10 @@ end process;
     );
 process (axi_clk) is
 begin
-if(rising_edge(axi_clk)) then
- HAL_CORE_mon_r <=  HAL_CORE_mon; 
- HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
-end if;
+ if(rising_edge(axi_clk)) then
+   HAL_CORE_mon_r <=  HAL_CORE_mon; 
+   HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
+ end if;
 end process;
   HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
     generic map(
@@ -497,10 +497,10 @@ end process;
     );
 process (clk40) is
 begin
-if(rising_edge(clk40)) then
- HAL_mon_r <=  HAL_mon; 
- HAL_ctrl  <=  HAL_ctrl_r;
-end if;
+ if(rising_edge(clk40)) then
+   HAL_mon_r <=  HAL_mon; 
+   HAL_ctrl  <=  HAL_ctrl_r;
+ end if;
 end process;
   HAL_map_inst : entity ctrl_lib.hal_map
     generic map(
@@ -518,9 +518,9 @@ end process;
     );
 process (axi_clk) is
 begin
-if(rising_edge(axi_clk)) then
- HOG_mon_r <=  HOG_mon; 
-end if;
+ if(rising_edge(axi_clk)) then
+   HOG_mon_r <=  HOG_mon; 
+ end if;
 end process;
   HOG_map_inst : entity ctrl_lib.hog_map
     generic map(
