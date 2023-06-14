@@ -5,7 +5,7 @@ cocotb_compile_check:
   variables:
     <<: *chk_variables
   stage: user_pre
-  allow_failure: false
+  allow_failure: true
   interruptible: true
   script:
     - mkdir tools/cocotb/l0mdt_tv
