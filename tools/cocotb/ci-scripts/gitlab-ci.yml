@@ -20,6 +20,34 @@ setupcocotb:
         PROJECT_NAME: tools/cocotb/
 
 
+cocotb_test:
+    extends: .cocotb_setup
+    tags:
+       - cocotb
+    stage: user_proj
+    dependencies:
+       - setupcocotb
+    allow_failure: true
+    interruptible: true
+    variables:
+        extends: .vars
+        PROJECT_NAME: tools/cocotb/
+    script:
+        - pwd
+        - ls -lhtr .
+        - ls -lhtr tools/cocotb/
+	- ls -lhtr tools/cocotb/l0mdt_tv/
+        - export TESTVECS_PATH="`pwd`/tools/cocotb/l0mdt_tv"
+        - echo Print TESTVECS_PATH-----
+        - echo $TESTVECS_PATH
+        - echo Print HOG_SIMULATION_LIB_PATH-----
+        - echo $HOG_SIMULATION_LIB_PATH
+        - export VIVADO_EXEC=$(which vivado)
+        - export XILINX_VIVADO="${VIVADO_EXEC/bin\/vivado/}"
+        - echo XILINX_VIVADO = $XILINX_VIVADO
+	- cd tools/cocotb
+        - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
+
 GEN:cocotb:
     extends: .cocotb
     tags:
