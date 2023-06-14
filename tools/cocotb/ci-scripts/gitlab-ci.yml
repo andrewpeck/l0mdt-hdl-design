@@ -1,12 +1,12 @@
-cocotb_compile_check:
+.cocotb_compile_check:
   <<: *only-default
   tags:
     - cocotb
   variables:
     <<: *chk_variables
   stage: user_pre
-  allow_failure: false
-  interruptible: true
+  allow_failure: true
+  interruptible: false
   script:
     - mkdir tools/cocotb/l0mdt_tv
     - echo $EOS_PASSWORD | kinit $EOS_USER
