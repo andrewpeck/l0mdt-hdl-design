@@ -224,7 +224,7 @@ check_auto_generated_code:
     # Make test fail if cocotb raised a failure
     - sh -c "! grep cocotb.result.TestFailure cocotb_run.log"
 
-.cocotb_job: &cocotb_job
+.cocotb_test: &cocotb_job
   <<: *only-default
   tags:
     - cocotb
