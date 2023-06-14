@@ -70,6 +70,8 @@ entity csv_writer_ucm is
     --
     slc_event_ai          : in event_xaut;
     --
+    in_offset_cvp         : in ucm2hps_avt(c_NUM_THREADS -1 downto 0) := (others => '0');
+    --
     inn_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     mid_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     out_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
@@ -147,6 +149,7 @@ begin
     csv_file_1.write_word("vec_pos[1mm]");
     -- vec_ang
     csv_file_1.write_word("vec_ang[1mrad]");
+    csv_file_1.write_word("vec_off[1mrad]");
     csv_file_1.writeline;
     puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
     csv_file_2.initialize(g_OUT_FILE_2,"wr");
