@@ -45,6 +45,7 @@ entity ucm_tb is
     PRJ_INFO            : string  := "not_defined";
     IN_SLC_FILE         : string  := "not_defined.csv";
     IN_CTRL_FILE        : string  := "not_defined.csv";
+    g_MAINDIVTYPE       : string  := "IP";
     DUMMY               : boolean := false
     );
 end entity ucm_tb;

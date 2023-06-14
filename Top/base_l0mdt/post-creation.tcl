@@ -2,7 +2,7 @@ set SCRIPT_PATH "[file normalize [file dirname [info script]]]"
 set PATH_REPO   "[file normalize ${SCRIPT_PATH}/../../]"
 
 # get the FPGA part number from hog.conf
-source ${SCRIPT_PATH}/get_fpga_name.tcl
+source ${SCRIPT_PATH}/../get_fpga_name.tcl
 
 set C2C_PATH $PATH_REPO/HAL/c2c
 set BD_PATH $PATH_REPO/HAL/c2c/bd_helper
@@ -12,7 +12,7 @@ set bd_design_name "c2cSlave"
 
 # Regenerate the BD if needed
 
-set sources "${C2C_PATH}/createC2CSlaveInterconnect.tcl
+set sources "${SCRIPT_PATH}/../createC2CSlaveInterconnect.tcl
              ${C2C_PATH}/create_kintex_c2c.tcl
              ${SCRIPT_PATH}/slaves.yaml"
 
@@ -65,6 +65,8 @@ puts "=================================================================="
 
 # 0xB0000000 for US+; 0x80000000 for 7 Series
 set AXI_BASE_ADDRESS  0x80000000 ; # 7 Series
+set REMOTE_C2C 1
+set REMOTE_C2C_64 1
 
 source ${SCRIPT_PATH}/../create_c2c.tcl
 
@@ -81,5 +83,5 @@ puts "Block design up to date from TCL sources. Skipping build."
 set_property PROCESSING_ORDER LATE [get_files timing.tcl]
 set_property PROCESSING_ORDER LATE [get_files loc_mgts.tcl]
 
-
-## Create top_control.vhd
+# Suppress [Common 17-576] 'use_project_ipc' is deprecated message from Vivado 2020.2
+set_msg_config -suppress -id {Common 17-576} 

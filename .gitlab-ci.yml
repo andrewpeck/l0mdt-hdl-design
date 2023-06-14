@@ -10,7 +10,7 @@ variables:
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
-    ref: 'Hog2023.1-7'
+    ref: 'v6.52.0'
   # - local: '/.before_script.yml'
   - local: "/.user_jobs.yml"
   - local: '/.devel_to_master.yml'
@@ -21,8 +21,9 @@ include:
   - local: '/Top/l0mdt_vu13p_csf_mpt/gitlab-ci.yml'
   - local: '/Top/l0mdt_vu13p_lsf_upt/gitlab-ci.yml'
   - local: '/Top/l0mdt_ku15p_ull_empty/gitlab-ci.yml'
+  - local: '/Top/l0mdt_ku15p_ull_empty_usp/gitlab-ci.yml'
   - local: '/Top/l0mdt_vu13p_ull_empty/gitlab-ci.yml'
-  - local: '/Top/BoardTesting/l0mdt_ku15p_ull_fm/gitlab-ci.yml'
+  - local: '/Top/l0mdt_ku15p_ull_fm/gitlab-ci.yml'
   # - local: '/Top/l0mdt_ku15p_csf_mpt/gitlab-ci.yml'
   #---------------------------------------------
   #         Modules

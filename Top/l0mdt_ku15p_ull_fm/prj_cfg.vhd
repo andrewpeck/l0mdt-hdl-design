@@ -5,8 +5,8 @@ use ieee.numeric_std.all;
 library shared_cfg_def_lib;
 use shared_cfg_def_lib.cfg_global_default_pkg.all;
 
---library hal;
---use hal.constants_pkg.all;
+library hal;
+use hal.constants_pkg.all;
 
 package prj_cfg is
 
@@ -44,41 +44,48 @@ package body prj_cfg is
     proj_cfg.ENABLE_MPL          := '0';
     proj_cfg.ENABLE_MTC          := '0';
     proj_cfg.ENABLE_TAR          := '0';
-    proj_cfg.ENABLE_FM           := '1';    
 
     -- END of auto-set variables
     proj_cfg.NUM_MTC             := 3;    -- default 3, connecting to primary SL
 
 
     -- take these values from HAL, derived from the link mapping
-    --proj_cfg.NUM_MDT_CH_INN  := c_NUM_POLMUX_INNER;
-    --proj_cfg.NUM_MDT_CH_MID  := c_NUM_POLMUX_MIDDLE;
-    --proj_cfg.NUM_MDT_CH_OUT  := c_NUM_POLMUX_OUTER;
-    --proj_cfg.NUM_MDT_CH_EXT  := c_NUM_POLMUX_EXTRA;
+    -- proj_cfg.NUM_MDT_CH_INN  := c_NUM_POLMUX_INNER;
+    -- proj_cfg.NUM_MDT_CH_MID  := c_NUM_POLMUX_MIDDLE;
+    -- proj_cfg.NUM_MDT_CH_OUT  := c_NUM_POLMUX_OUTER;
+    -- proj_cfg.NUM_MDT_CH_EXT  := c_NUM_POLMUX_EXTRA;
 
-    
+    if (c_NUM_POLMUX_INNER > 0) then
       proj_cfg.ENABLE_ST_INN := '1';
       proj_cfg.EN_MDT_CH_INN := (others => '1');
+    else
+      proj_cfg.ENABLE_ST_INN := '0';
+      proj_cfg.EN_MDT_CH_INN := (others => '0');
+    end if;
 
-
-   
+    if (c_NUM_POLMUX_MIDDLE > 0) then
       proj_cfg.EN_MDT_CH_MID := (others => '1');
       proj_cfg.ENABLE_ST_MID := '1';
- 
+    else
+      proj_cfg.EN_MDT_CH_MID := (others => '0');
+      proj_cfg.ENABLE_ST_MID := '0';
+    end if;
 
-   
+    if (c_NUM_POLMUX_OUTER > 0) then
       proj_cfg.EN_MDT_CH_OUT := (others => '1');
       proj_cfg.ENABLE_ST_OUT := '1';
-   
+    else
+      proj_cfg.EN_MDT_CH_OUT := (others => '0');
+      proj_cfg.ENABLE_ST_OUT := '0';
+    end if;
 
-   
+    if (c_NUM_POLMUX_EXTRA > 0) then
+      proj_cfg.EN_MDT_CH_EXT := (others => '1');
+      proj_cfg.ENABLE_ST_EXT := '1';
+    else
       proj_cfg.EN_MDT_CH_EXT := (others => '0');
       proj_cfg.ENABLE_ST_EXT := '0';
-  
-
-    proj_cfg.ENABLE_ST_INN := '1';
-    proj_cfg.ENABLE_ST_MID := '1';
-    proj_cfg.ENABLE_ST_OUT := '1';        
+    end if;
 
     return proj_cfg;
 

@@ -68,7 +68,7 @@ file mkdir $DTSI_DIR
 foreach dtsi_file $DTSI_FILES {
     puts "Creating dtbo for $dtsi_file file"
     file copy -force ${dtsi_file} $DTSI_DIR/
-    exec dtc -O dtb -o $new_dir_dtbo/[file rootname [file tail ${dtsi_file}]].dtbo -b 0 ${dtsi_file}
+    exec dtc -O dtb -o $new_dir_dtbo/[file rootname [file tail ${dtsi_file}]].dtbo -b 0 ${dtsi_file} -W "no-pci_device_reg" -W "no-pci_device_bus_num" -W "no-simple_bus_reg" -W "no-i2c_bus_reg" -W "no-spi_bus_reg" -W "no-avoid_default_addr_size" -W "no-reg_format"
 }
 
 puts "Creating the tarball"
