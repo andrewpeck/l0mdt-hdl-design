@@ -17,7 +17,7 @@ cocotb_job:cocotb_test_lsf_inn:
     interruptible: true
     variables:
         extends: .vars
-	COCOTB_TEST: lsf_inn
+        COCOTB_TEST: lsf_inn
         PROJECT_NAME: tools/cocotb/
 
 
