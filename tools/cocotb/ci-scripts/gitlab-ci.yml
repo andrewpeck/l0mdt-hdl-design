@@ -1,4 +1,13 @@
-
+cocotb_test:test_compile:
+    extends: .cocotb_test
+    stage: user_pre
+    allow_failure: false
+    interruptible: true
+    variables:
+        extends: .vars
+        COCOTB_TEST: lsf_inn
+        CHECK_COMMAND: '(grep -Eq "INFO +cocotb +Running" cocotb_run.log)'
+        PROJECT_NAME: tools/cocotb/
 
 cocotb_test:test_lsf_inn:
     extends: .cocotb_test
@@ -11,19 +20,6 @@ cocotb_test:test_lsf_inn:
         CHECK_COMMAND: '((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )'
         PROJECT_NAME: tools/cocotb/
 
-
-cocotb_test:test_compile:
-    extends: .cocotb_test
-    stage: user_pre
-    allow_failure: false
-    interruptible: true
-    variables:
-        extends: .vars
-        COCOTB_TEST: lsf_inn
-        CHECK_COMMAND: '(grep -Eq "INFO +cocotb +Running" cocotb_run.log)'
-        PROJECT_NAME: tools/cocotb/
-
-
 cocotb_test:test_lsf_mid:
     extends: .cocotb_test
     stage: user_post
@@ -32,6 +28,7 @@ cocotb_test:test_lsf_mid:
     variables:
         extends: .vars
         COCOTB_TEST: lsf_mid
+        CHECK_COMMAND: '((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )'
         PROJECT_NAME: tools/cocotb/
 
 cocotb_test:test_lsf_out:
@@ -42,6 +39,7 @@ cocotb_test:test_lsf_out:
     variables:
         extends: .vars
         COCOTB_TEST: lsf_out
+        CHECK_COMMAND: '((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )'
         PROJECT_NAME: tools/cocotb/
 
 cocotb_test:test_mtc:
@@ -52,6 +50,7 @@ cocotb_test:test_mtc:
     variables:
         extends: .vars
         COCOTB_TEST: mtc
+        CHECK_COMMAND: '((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )'
         PROJECT_NAME: tools/cocotb/
 
 
@@ -63,6 +62,7 @@ cocotb_test:test_ptcalc:
     variables:
         extends: .vars
         COCOTB_TEST: ptcalc
+        CHECK_COMMAND: '((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )'
         PROJECT_NAME: tools/cocotb/
 
 
@@ -75,6 +75,7 @@ cocotb_test:test_ucm:
     variables:
         extends: .vars
         COCOTB_TEST: ucm
+        CHECK_COMMAND: '((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )'
         PROJECT_NAME: tools/cocotb/
 
 
@@ -86,6 +87,7 @@ cocotb_test:test_ult_tar:
     variables:
         extends: .vars
         COCOTB_TEST: ult_tar
+        CHECK_COMMAND: '((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )'
         PROJECT_NAME: tools/cocotb/
 
 
@@ -97,6 +99,7 @@ cocotb_test:test_hps_inn:
     variables:
         extends: .vars
         COCOTB_TEST: hps_inn
+        CHECK_COMMAND: '((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )'
         PROJECT_NAME: tools/cocotb/
 
 
