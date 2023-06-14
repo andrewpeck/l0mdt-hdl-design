@@ -215,5 +215,4 @@ check_auto_generated_code:
     - cd tools/cocotb/
     - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
     - tb run test_config/config_${COCOTB_TEST}.json 2>&1 | tee cocotb_run.log
-    - ((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )
-
+    - $CHECK_COMMAND
