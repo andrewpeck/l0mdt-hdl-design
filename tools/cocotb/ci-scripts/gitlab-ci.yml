@@ -36,7 +36,7 @@ cocotb_test:
         - pwd
         - ls -lhtr .
         - ls -lhtr tools/cocotb/
-	- ls -lhtr tools/cocotb/l0mdt_tv/
+        - ls -lhtr tools/cocotb/l0mdt_tv/
         - export TESTVECS_PATH="`pwd`/tools/cocotb/l0mdt_tv"
         - echo Print TESTVECS_PATH-----
         - echo $TESTVECS_PATH
@@ -45,7 +45,7 @@ cocotb_test:
         - export VIVADO_EXEC=$(which vivado)
         - export XILINX_VIVADO="${VIVADO_EXEC/bin\/vivado/}"
         - echo XILINX_VIVADO = $XILINX_VIVADO
-	- cd tools/cocotb
+        - cd tools/cocotb
         - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
 
 GEN:cocotb:
