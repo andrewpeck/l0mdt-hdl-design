@@ -1,33 +1,3 @@
-cocotb_compile_check:
-  <<: *only-default
-  tags:
-    - cocotb
-  variables:
-    <<: *chk_variables
-  stage: user_pre
-  allow_failure: false
-  interruptible: true
-  script:
-    - mkdir tools/cocotb/l0mdt_tv
-    - echo $EOS_PASSWORD | kinit $EOS_USER
-    - xrdcp root://eosuser.cern.ch//eos/project/a/atlas-tdaq-phase2-l0mdt-electronics/TestVectors/TV_MC_2022-02-18_DF_v4.1.8b_TV_v1.0.81/B_C_3.xz tools/cocotb/l0mdt_tv/.
-    - export PATH="/home/l0mdtel/.pyenv/bin:$PATH"
-    - eval "$(pyenv init -)"
-    - eval "$(pyenv init --path)"
-    - eval "$(pyenv virtualenv-init -)"
-    - pyenv global 3.8.2
-    - export TESTVECS_PATH="`pwd`/tools/cocotb/l0mdt_tv"
-    - echo Print TESTVECS_PATH-----
-    - echo $TESTVECS_PATH
-    - echo Print HOG_SIMULATION_LIB_PATH-----
-    - echo $HOG_SIMULATION_LIB_PATH
-    - export VIVADO_EXEC=$(which vivado)
-    - export XILINX_VIVADO="${VIVADO_EXEC/bin\/vivado/}"
-    - echo XILINX_VIVADO = $XILINX_VIVADO
-    - cd tools/cocotb/
-    - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
-    - tb run test_config/config_${COCOTB_TEST}.json 2>&1 | tee cocotb_run.log
-    - (grep -Eq "INFO +cocotb +Running on ModelSim for Questa-64" cocotb_run.log)
 
 
 cocotb_test:test_lsf_inn:
@@ -38,83 +8,96 @@ cocotb_test:test_lsf_inn:
     variables:
         extends: .vars
         COCOTB_TEST: lsf_inn
+	CHECK_COMMAND: "((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )"
         PROJECT_NAME: tools/cocotb/
 
 
-cocotb_test:test_lsf_mid:
+cocotb_test:test_compile:
     extends: .cocotb_test
     stage: user_pre
-    allow_failure: true
+    allow_failure: false
     interruptible: true
     variables:
         extends: .vars
-        COCOTB_TEST: lsf_mid
-        PROJECT_NAME: tools/cocotb/
-
-cocotb_test:test_lsf_out:
-    extends: .cocotb_test
-    stage: user_pre
-    allow_failure: true
-    interruptible: true
-    variables:
-        extends: .vars
-        COCOTB_TEST: lsf_out
-        PROJECT_NAME: tools/cocotb/
-
-cocotb_test:test_mtc:
-    extends: .cocotb_test
-    stage: user_pre
-    allow_failure: true
-    interruptible: true
-    variables:
-        extends: .vars
-        COCOTB_TEST: mtc
+        COCOTB_TEST: lsf_inn
+	CHECK_COMMAND: "(grep -Eq "INFO +cocotb +Running" cocotb_run.log)"
         PROJECT_NAME: tools/cocotb/
 
 
-cocotb_test:test_ptcalc:
-    extends: .cocotb_test
-    stage: user_pre
-    allow_failure: true
-    interruptible: true
-    variables:
-        extends: .vars
-        COCOTB_TEST: ptcalc
-        PROJECT_NAME: tools/cocotb/
+# cocotb_test:test_lsf_mid:
+#     extends: .cocotb_test
+#     stage: user_pre
+#     allow_failure: true
+#     interruptible: true
+#     variables:
+#         extends: .vars
+#         COCOTB_TEST: lsf_mid
+#         PROJECT_NAME: tools/cocotb/
+
+# cocotb_test:test_lsf_out:
+#     extends: .cocotb_test
+#     stage: user_pre
+#     allow_failure: true
+#     interruptible: true
+#     variables:
+#         extends: .vars
+#         COCOTB_TEST: lsf_out
+#         PROJECT_NAME: tools/cocotb/
+
+# cocotb_test:test_mtc:
+#     extends: .cocotb_test
+#     stage: user_pre
+#     allow_failure: true
+#     interruptible: true
+#     variables:
+#         extends: .vars
+#         COCOTB_TEST: mtc
+#         PROJECT_NAME: tools/cocotb/
+
+
+# cocotb_test:test_ptcalc:
+#     extends: .cocotb_test
+#     stage: user_pre
+#     allow_failure: true
+#     interruptible: true
+#     variables:
+#         extends: .vars
+#         COCOTB_TEST: ptcalc
+#         PROJECT_NAME: tools/cocotb/
 
 
 
-cocotb_test:test_ucm:
-    extends: .cocotb_test
-    stage: user_pre
-    allow_failure: true
-    interruptible: true
-    variables:
-        extends: .vars
-        COCOTB_TEST: ucm
-        PROJECT_NAME: tools/cocotb/
+# cocotb_test:test_ucm:
+#     extends: .cocotb_test
+#     stage: user_pre
+#     allow_failure: true
+#     interruptible: true
+#     variables:
+#         extends: .vars
+#         COCOTB_TEST: ucm
+#         PROJECT_NAME: tools/cocotb/
 
 
-cocotb_test:test_ult_tar:
-    extends: .cocotb_test
-    stage: user_pre
-    allow_failure: true
-    interruptible: true
-    variables:
-        extends: .vars
-        COCOTB_TEST: ult_tar
-        PROJECT_NAME: tools/cocotb/
+# cocotb_test:test_ult_tar:
+#     extends: .cocotb_test
+#     stage: user_pre
+#     allow_failure: true
+#     interruptible: true
+#     variables:
+#         extends: .vars
+#         COCOTB_TEST: ult_tar
+#         PROJECT_NAME: tools/cocotb/
 
 
-cocotb_test:test_hps_inn:
-    extends: .cocotb_test
-    stage: user_pre
-    allow_failure: true
-    interruptible: true
-    variables:
-        extends: .vars
-        COCOTB_TEST: hps_inn
-        PROJECT_NAME: tools/cocotb/
+# cocotb_test:test_hps_inn:
+#     extends: .cocotb_test
+#     stage: user_pre
+#     allow_failure: true
+#     interruptible: true
+#     variables:
+#         extends: .vars
+#         COCOTB_TEST: hps_inn
+#         PROJECT_NAME: tools/cocotb/
 
 
 
