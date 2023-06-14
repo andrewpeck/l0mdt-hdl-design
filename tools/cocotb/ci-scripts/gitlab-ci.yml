@@ -1,4 +1,4 @@
-cocotb_compile_check
+cocotb_compile_check:
   <<: *only-default
   tags:
     - cocotb
