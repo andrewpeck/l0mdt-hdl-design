@@ -8,7 +8,7 @@ cocotb_test:test_lsf_inn:
     variables:
         extends: .vars
         COCOTB_TEST: lsf_inn
-        CHECK_COMMAND: "((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )"
+        CHECK_COMMAND: '((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )'
         PROJECT_NAME: tools/cocotb/
 
 
@@ -20,7 +20,7 @@ cocotb_test:test_compile:
     variables:
         extends: .vars
         COCOTB_TEST: lsf_inn
-        CHECK_COMMAND: "(grep -Eq "INFO +cocotb +Running" cocotb_run.log)"
+        CHECK_COMMAND: '(grep -Eq "INFO +cocotb +Running" cocotb_run.log)'
         PROJECT_NAME: tools/cocotb/
 
 
