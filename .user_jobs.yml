@@ -230,7 +230,7 @@ check_auto_generated_code:
     - cocotb
   variables:
     <<: *chk_variables
-  stage: generation_and_simulation
+  stage: user_pre
   allow_failure: true
   interruptible: true
   script:
