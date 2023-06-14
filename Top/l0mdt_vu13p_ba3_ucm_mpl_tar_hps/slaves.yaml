@@ -88,7 +88,7 @@ AXI_SLAVES:
       command: AXI_PL_DEV_CONNECT
       axi_control: "${::AXI_MASTER_CTRL}"
       addr:
-        offset: "0x01010000"
+        offset: "0x01100000"
         range: "64K"
       remote_slave: "1"
     XML: "address_table/modules/C2C_INTFS.xml"
@@ -145,8 +145,8 @@ AXI_SLAVES:
       axi_control: "${::AXI_MASTER_CTRL}"
       remote_slave: "1"
       addr:
-        offset: "0x01200000"
-        range: "64K"
+        offset: "0x01300000"
+        range: "4K"
     UHAL_BASE: 0x89000000
     XML: "address_table/modules/HOG.xml"
     HDL:
