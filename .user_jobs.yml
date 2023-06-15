@@ -215,5 +215,5 @@ check_auto_generated_code:
     - cd tools/cocotb/
     - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
     - tb run test_config/config_${COCOTB_TEST}.json 2>&1 | tee cocotb_run.log
-    - echo "will check output with: $CHECK_COMMAND"
+    - echo ${CHECK_COMMAND}
     - $CHECK_COMMAND
