@@ -198,6 +198,18 @@ begin
   end generate;
 
   --------------------------------------------------------------------------------
+  -- Buffering
+  --------------------------------------------------------------------------------
+
+  process (clocks.axiclock) is
+  begin
+    if (rising_edge(clocks.axiclock)) then
+      status_d                                  <= status;
+      status_2d                                 <= status_d;
+    end if;
+  end process;
+
+  --------------------------------------------------------------------------------
   -- AXI Register Decoding
   --------------------------------------------------------------------------------
 
@@ -217,9 +229,6 @@ begin
     process (clocks.axiclock) is
     begin
       if (rising_edge(clocks.axiclock)) then
-
-        status_d                                  <= status;
-        status_2d                                 <= status_d;
 
         mon.mgt(I).status.rxcdr_stable            <= status_2d(I).rxcdr_stable;
         mon.mgt(I).status.powergood               <= status_2d(I).powergood;
