@@ -99,6 +99,7 @@ entity mgt_wrapper is
     sl_tx_ctrl_i  : in  sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_ctrl_o  : out sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_slide_i : in  std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
+
     );
 end mgt_wrapper;
 
@@ -120,8 +121,8 @@ architecture Behavioral of mgt_wrapper is
   signal drp_i     : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
   signal drp_o     : mgt_drp_out_rt_array (c_NUM_MGTS-1 downto 0);
   signal status    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
-  signal status_d    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
-  signal status_2d    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
+  signal status_d  : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
+  signal status_2d : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
 
 begin
 
@@ -203,6 +204,12 @@ begin
   axi_map_gen : for I in 0 to c_NUM_MGTS-1 generate
   begin
 
+    mon.mgt(I).config.mgt_type <= std_logic_vector(to_unsigned(mgt_types_t'POS(c_MGT_MAP(I).mgt_type), 3));
+    mon.mgt(I).config.refclk   <= std_logic_vector(to_unsigned(c_MGT_MAP(I).refclk, 5));
+    mon.mgt(I).config.gt_type  <= std_logic_vector(to_unsigned(gt_types_t'POS(c_MGT_MAP(I).gt_type), 2));
+    mon.mgt(I).config.x_loc    <= std_logic_vector(to_unsigned(c_MGT_MAP(I).x_loc, 2));
+    mon.mgt(I).config.y_loc    <= std_logic_vector(to_unsigned(c_MGT_MAP(I).y_loc, 6));
+
     drp_i(I).drpclk_in(0) <= clocks.axiclock;  -- 50MHz from MMCM
 
     -- some of these are crossing clock domains so add one ff to help metastability
@@ -210,8 +217,10 @@ begin
     process (clocks.axiclock) is
     begin
       if (rising_edge(clocks.axiclock)) then
-        status_d                                                 <= status;
-        status_2d                                               <= status_d;
+
+        status_d                                  <= status;
+        status_2d                                 <= status_d;
+
         mon.mgt(I).status.rxcdr_stable            <= status_2d(I).rxcdr_stable;
         mon.mgt(I).status.powergood               <= status_2d(I).powergood;
         mon.mgt(I).status.txready                 <= status_2d(I).txready;
@@ -275,10 +284,12 @@ begin
     -- LPGBT+Emulator+Felix Type Transceiver Generation
     --------------------------------------------------------------------------------
 
-    lpgbt_gen : if ((I mod 4 = 0) and c2c_idx_array(I) = -1 and sl_idx_array(I) = -1 and c_MGT_MAP(I).mgt_type /= MGT_NIL and
+    lpgbt_gen : if ((I mod 4 = 0) and c2c_idx_array(I) = -1 and sl_idx_array(I) = -1 and
+                    c_MGT_MAP(I).mgt_type /= MGT_NIL and
                     (ttc_idx_array(I) /= -1 or ttc_idx_array(I+1) /= -1 or
                      ttc_idx_array(I+2) /= -1 or ttc_idx_array(I+3) /= -1 or
-                     lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or felix_idx_array(I) /= -1 ) )
+                     lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or
+                     felix_idx_array(I) /= -1 ))
     generate
 
       attribute X_LOC             : integer;
@@ -298,6 +309,8 @@ begin
       signal rx_data : std32_array_t (3 downto 0);
 
     begin
+
+      mon.mgt(I).config.is_active <= '1';
 
       --------------------------------------------------------------------------------
       -- MGT
@@ -359,7 +372,6 @@ begin
 
 
           rxoutclk => rxoutclk(3 downto 0),
-
 
           --------------------------------------------------------------------------------
           -- DRP & Status
@@ -468,6 +480,8 @@ begin
 
     begin
 
+      mon.mgt(I).config.is_active <= '1';
+
       assert false report
         "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I)
         & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
@@ -525,12 +539,14 @@ begin
     -- measure the freq of other clocks. It doesn't make sense anyway as we use the
     -- AXI clock to monitor itself?
     axi : if (c_REFCLK_MAP(I).freq = REF_AXI_C2C) generate
-      mon.refclk(I).freq <= std_logic_vector(to_unsigned(axi_refclk_freq, 32));
+      mon.refclk(I).freq <= std_logic_vector(to_unsigned(axi_refclk_freq, mon.refclk(I).freq'length));
     end generate;
 
     no_axi : if (c_REFCLK_MAP(I).freq /= REF_AXI_C2C) generate
 
-      mon.refclk(I).freq <= clk_freq;
+      mon.refclk(I).freq        <= clk_freq(mon.refclk(I).freq'range);
+      mon.refclk(I).refclk_type <=
+        std_logic_vector(to_unsigned(refclk_freqs_t'POS(c_REFCLK_MAP(I).freq), 3));
 
       -- Despite the documentation stating that "The BUFG_GT_SYNC primitive is
       -- automatically inserted by the Vivado tools, if not present in the

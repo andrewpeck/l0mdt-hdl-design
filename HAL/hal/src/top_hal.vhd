@@ -251,12 +251,12 @@ begin  -- architecture behavioral
   -- Signal Aliasing
   --------------------------------------------------------------------------------
 
-
-  global_reset   <= not(clocks.lhc_locked);
-  clk50_o    <= clocks.axiclock;
+  global_reset <= not(clocks.lhc_locked);
+  clk50_o      <= clocks.axiclock;
   clk320_o     <= clocks.clock320;
   clk40_o      <= clocks.clock40;
-  b2b_reset_n <= clocks.b2b_locked;
+  b2b_reset_n  <= clocks.b2b_locked;
+
   --------------------------------------------------------------------------------
   -- AXI Interface
   --------------------------------------------------------------------------------
@@ -294,12 +294,15 @@ begin  -- architecture behavioral
       clock_i_p => clock_i_p,
       clock_i_n => clock_i_n,
 
+      clk50_freq  => core_mon.clocking.clk50_freq,
+      clk100_freq => core_mon.clocking.clk100_freq,
+      clk200_freq => core_mon.clocking.clk200_freq,
+
+      clk40_freq  => core_mon.clocking.clk40_freq,
+      clk320_freq => core_mon.clocking.clk320_freq,
+
       -- system clocks
       clocks_o => clocks
-
-      -- mmcm status
-     -- locked_o     => clocks.locked,
-     --  locked_clk50 => global_reset_n
 
       );
 
