@@ -154,8 +154,8 @@ types:
   - servant_link_id : { type: logic, range : [ 6 - 1 , 0 ] }
   - station : { type: logic, range : [ 3 - 1 , 0 ] }
   - polmux : { type: logic, range : [ 6 - 1 , 0 ] }
-  - en : { type: logic, range : [ 18 - 1 , 0 ] }
-  - legacy : { type: logic, range : [ 18 - 1 , 0 ] }
+  - en : { type: logic, range : [ 20 - 1 , 0 ] }
+  - legacy : { type: logic, range : [ 20 - 1 , 0 ] }
 
 
 - HAL_CSM_CSM_MON_t:

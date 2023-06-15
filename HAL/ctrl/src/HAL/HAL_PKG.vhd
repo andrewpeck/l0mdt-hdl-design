@@ -282,10 +282,10 @@ package HAL_CTRL is
       servant_link_id : std_logic_vector(6 - 1 downto 0);
       station : std_logic_vector(3 - 1 downto 0);
       polmux : std_logic_vector(6 - 1 downto 0);
-      en : std_logic_vector(18 - 1 downto 0);
-      legacy : std_logic_vector(18 - 1 downto 0);
+      en : std_logic_vector(20 - 1 downto 0);
+      legacy : std_logic_vector(20 - 1 downto 0);
    end record HAL_CSM_CSM_CONFIG_MON_t;
-   attribute w of HAL_CSM_CSM_CONFIG_MON_t : type is 57;
+   attribute w of HAL_CSM_CSM_CONFIG_MON_t : type is 61;
    function width(x: HAL_CSM_CSM_CONFIG_MON_t) return natural;
    function convert(x: HAL_CSM_CSM_CONFIG_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CSM_CSM_CONFIG_MON_t) return HAL_CSM_CSM_CONFIG_MON_t;
@@ -296,14 +296,14 @@ package HAL_CTRL is
       SC : HAL_CSM_CSM_SC_MON_t;
       CONFIG : HAL_CSM_CSM_CONFIG_MON_t;
    end record HAL_CSM_CSM_MON_t;
-   attribute w of HAL_CSM_CSM_MON_t : type is 503;
+   attribute w of HAL_CSM_CSM_MON_t : type is 507;
    function width(x: HAL_CSM_CSM_MON_t) return natural;
    function convert(x: HAL_CSM_CSM_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CSM_CSM_MON_t) return HAL_CSM_CSM_MON_t;
    function zero(tpl: HAL_CSM_CSM_MON_t) return HAL_CSM_CSM_MON_t;
 
    type HAL_CSM_CSM_MON_t_ARRAY is array(36 -1 downto 0) of HAL_CSM_CSM_MON_t;
-   attribute w of HAL_CSM_CSM_MON_t_ARRAY : type is 18108;
+   attribute w of HAL_CSM_CSM_MON_t_ARRAY : type is 18252;
    function width(x: HAL_CSM_CSM_MON_t_ARRAY) return integer;
    function convert(x: HAL_CSM_CSM_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CSM_CSM_MON_t_ARRAY) return HAL_CSM_CSM_MON_t_ARRAY;
@@ -333,7 +333,7 @@ package HAL_CTRL is
    type HAL_CSM_MON_t is record
       CSM : HAL_CSM_CSM_MON_t_ARRAY;
    end record HAL_CSM_MON_t;
-   attribute w of HAL_CSM_MON_t : type is 18108;
+   attribute w of HAL_CSM_MON_t : type is 18252;
    function width(x: HAL_CSM_MON_t) return natural;
    function convert(x: HAL_CSM_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CSM_MON_t) return HAL_CSM_MON_t;
@@ -351,7 +351,7 @@ package HAL_CTRL is
    type HAL_MON_t is record
       CSM : HAL_CSM_MON_t;
    end record HAL_MON_t;
-   attribute w of HAL_MON_t : type is 18108;
+   attribute w of HAL_MON_t : type is 18252;
    function width(x: HAL_MON_t) return natural;
    function convert(x: HAL_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_MON_t) return HAL_MON_t;
