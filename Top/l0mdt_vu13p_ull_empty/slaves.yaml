@@ -11,30 +11,30 @@ AXI_CONTROL_SETS:
     axi_rstn: clk40_rstn
     axi_freq: 40000000
     axi_base: "${::AXI_BASE_ADDRESS}"
-  AXI_INN_CTRL:
-    axi_interconnect: "INTERCONNECT_INN"
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
-    axi_base: "${::AXI_BASE_ADDRESS}"
-  AXI_MID_CTRL:
-    axi_interconnect: "INTERCONNECT_MID"
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
-    axi_base: "${::AXI_BASE_ADDRESS}"
-  AXI_OUT_CTRL:
-    axi_interconnect: "INTERCONNECT_OUT" 
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
-    axi_base: "${::AXI_BASE_ADDRESS}"
-  AXI_EXT_CTRL:
-    axi_interconnect: "INTERCONNECT_EXT"
-    axi_clk: clk40
-    axi_rstn: clk40_rstn
-    axi_freq: 40000000
-    axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_INN_CTRL:
+  #   axi_interconnect: "INTERCONNECT_INN"
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_MID_CTRL:
+  #   axi_interconnect: "INTERCONNECT_MID"
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_OUT_CTRL:
+  #   axi_interconnect: "INTERCONNECT_OUT" 
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
+  # AXI_EXT_CTRL:
+  #   axi_interconnect: "INTERCONNECT_EXT"
+  #   axi_clk: clk40
+  #   axi_rstn: clk40_rstn
+  #   axi_freq: 40000000
+  #   axi_base: "${::AXI_BASE_ADDRESS}"
 
 # 0xBE004000 USP
 # 0x81002000 7 Series
@@ -67,28 +67,28 @@ AXI_SLAVES:
       out_name: "FW_INFO"
       map_template: "axi_generic/template_map.vhd"
 
-  FM:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_MASTER_CTRL}"
-    #  type: "AXI4"
-    #  data_width: "32"
-      remote_slave: "1"
-      addr:
-        offset: "0x00000000"
-        range: "16M"
-    XML: "address_table/modules/FM.xml"
-    UHAL_BASE: 0x85000000
-    HDL:
-      out_name: "FM"
-      map_template: "axi_generic/template_map_withbram.vhd"
+  # FM:
+  #   TCL_CALL:
+  #     command: "AXI_PL_DEV_CONNECT"
+  #     axi_control: "${::AXI_MASTER_CTRL}"
+  #   #  type: "AXI4"
+  #   #  data_width: "32"
+  #     remote_slave: "1"
+  #     addr:
+  #       offset: "0x00000000"
+  #       range: "16M"
+  #   XML: "address_table/modules/FM.xml"
+  #   UHAL_BASE: 0x85000000
+  #   HDL:
+  #     out_name: "FM"
+  #     map_template: "axi_generic/template_map_withbram.vhd"
 
   C2C_INTFS:
     TCL_CALL:
       command: AXI_PL_DEV_CONNECT
       axi_control: "${::AXI_MASTER_CTRL}"
       addr:
-        offset: "0x01010000"
+        offset: "0x01100000"
         range: "64K"
       remote_slave: "1"
     XML: "address_table/modules/C2C_INTFS.xml"
@@ -117,7 +117,7 @@ AXI_SLAVES:
       remote_slave: "1"
       addr:
         offset: "0x01004000"
-        range: "4K"
+        range: "8K"
     XML: "address_table/modules/HAL_CORE.xml"
     UHAL_BASE: 0x81000000
     HDL:
@@ -131,8 +131,8 @@ AXI_SLAVES:
       axi_control: "${::AXI_LHC_CTRL}"
       remote_slave: "1"
       addr:
-        offset: "0x01005000"
-        range: "4K"
+        offset: "0x01010000"
+        range: "16K"
     XML: "address_table/modules/HAL.xml"
     UHAL_BASE: 0x83000000
     HDL:
@@ -145,7 +145,7 @@ AXI_SLAVES:
       axi_control: "${::AXI_MASTER_CTRL}"
       remote_slave: "1"
       addr:
-        offset: "0x01200000"
+        offset: "0x01300000"
         range: "4K"
     UHAL_BASE: 0x89000000
     XML: "address_table/modules/HOG.xml"

@@ -1,21 +1,21 @@
-----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Company: Max-Planck-Institut fuer Physik - Munich
--- Engineer: Davide Cieri - davide.cieri@cern.ch
---
--- Create Date: 17/02/2023
--- Design Name: L0MDT
--- Module Name: top_control
--- Project Name:
--- Target Devices: KU15P 
--- Tool Versions: 2020.2
--- Description: Template file for top_control module
---
+-- Project: L0MDT
+-- File: top_control_template.vhd
+-- Module: top_control
+-- File PATH: /top_control_template.vhd
 -- Dependencies: hal, ctrl_lib, ieee
---
--- Revision: 1.0
--- Revision 17.02.2023
---
-----------------------------------------------------------------------------------
+-- -----
+-- File Created: Friday, 17th February 2023 8:36:30 am
+-- Author: Davide Cieri - davide.cieri@cern.ch
+-- -----
+-- Last Modified: Thursday, 8th June 2023 12:11:11 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 2023-06-08	GLdL	updated regmap and generics in entities
+--------------------------------------------------------------------------------
+
 
 
 library ieee;
@@ -29,7 +29,6 @@ library ctrl_lib;
 
 -- START: LIBRARIES -- DO NOT TOUCH
 use ctrl_lib.fw_info_ctrl.all;
-use ctrl_lib.fm_ctrl.all;
 use ctrl_lib.hal_core_ctrl.all;
 use ctrl_lib.hal_ctrl.all;
 use ctrl_lib.hog_ctrl.all;
@@ -78,8 +77,6 @@ entity top_control is
 
     -- START: ULT_IO :: DO NOT EDIT
     fw_info_mon : in FW_INFO_MON_t;
-    fm_mon : in FM_MON_t;
-    fm_ctrl : out FM_CTRL_t;
     hal_core_mon : in HAL_CORE_MON_t;
     hal_core_ctrl : out HAL_CORE_CTRL_t;
     hal_mon : in HAL_MON_t;
@@ -111,12 +108,6 @@ architecture control_arch of top_control is
   signal fw_info_writemosi : axiwritemosi;
   signal fw_info_writemiso : axiwritemiso;
   signal fw_info_mon_r     : FW_INFO_MON_t;
-  signal fm_readmosi  : axireadmosi;
-  signal fm_readmiso  : axireadmiso;
-  signal fm_writemosi : axiwritemosi;
-  signal fm_writemiso : axiwritemiso;
-  signal fm_mon_r     : FM_MON_t;
-  signal fm_ctrl_r    : FM_CTRL_t;
   signal hal_core_readmosi  : axireadmosi;
   signal hal_core_readmiso  : axireadmiso;
   signal hal_core_writemosi : axiwritemosi;
@@ -362,25 +353,6 @@ begin
       FW_INFO_wready(0)      => FW_INFO_writemiso.ready_for_data,
       FW_INFO_wstrb          => FW_INFO_writemosi.data_write_strobe,
       FW_INFO_wvalid(0)      => FW_INFO_writemosi.data_valid,
-      FM_araddr         => FM_readmosi.address,
-      FM_arprot         => FM_readmosi.protection_type,
-      FM_arready(0)     => FM_readmiso.ready_for_address,
-      FM_arvalid(0)     => FM_readmosi.address_valid,
-      FM_awaddr         => FM_writemosi.address,
-      FM_awprot         => FM_writemosi.protection_type,
-      FM_awready(0)     => FM_writemiso.ready_for_address,
-      FM_awvalid(0)     => FM_writemosi.address_valid,
-      FM_bready(0)      => FM_writemosi.ready_for_response,
-      FM_bvalid(0)      => FM_writemiso.response_valid,
-      FM_bresp          => FM_writemiso.response,
-      FM_rdata          => FM_readmiso.data,
-      FM_rready(0)      => FM_readmosi.ready_for_data,
-      FM_rresp          => FM_readmiso.response,
-      FM_rvalid(0)      => FM_readmiso.data_valid,
-      FM_wdata          => FM_writemosi.data,
-      FM_wready(0)      => FM_writemiso.ready_for_data,
-      FM_wstrb          => FM_writemosi.data_write_strobe,
-      FM_wvalid(0)      => FM_writemosi.data_valid,
       HAL_CORE_araddr         => HAL_CORE_readmosi.address,
       HAL_CORE_arprot         => HAL_CORE_readmosi.protection_type,
       HAL_CORE_arready(0)     => HAL_CORE_readmiso.ready_for_address,
@@ -485,11 +457,14 @@ begin
   -- START: ULT_SLAVES :: DO NOT EDIT
 process (axi_clk) is
 begin
-if(rising_edge(axi_clk)) then
- FW_INFO_mon_r <=  FW_INFO_mon; 
-end if;
+ if(rising_edge(axi_clk)) then
+   FW_INFO_mon_r <=  FW_INFO_mon; 
+ end if;
 end process;
   FW_INFO_map_inst : entity ctrl_lib.fw_info_map
+    generic map(
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_FW_INFO)
+    )
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -501,29 +476,15 @@ end process;
     );
 process (axi_clk) is
 begin
-if(rising_edge(axi_clk)) then
- FM_mon_r <=  FM_mon; 
-end if;
-end process;
-  FM_map_inst : entity ctrl_lib.fm_map
-    port map(
-      clk_axi         => axi_clk,
-      reset_axi_n     => axi_reset_n,
-      slave_readmosi   => FM_readmosi,
-      slave_readmiso   => FM_readmiso,
-      slave_writemosi   => FM_writemosi,
-      slave_writemiso   => FM_writemiso,
-      ctrl   => FM_ctrl,
-      mon   => FM_mon_r
-    );
-process (axi_clk) is
-begin
-if(rising_edge(axi_clk)) then
- HAL_CORE_mon_r <=  HAL_CORE_mon; 
- HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
-end if;
+ if(rising_edge(axi_clk)) then
+   HAL_CORE_mon_r <=  HAL_CORE_mon; 
+   HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
+ end if;
 end process;
   HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
+    generic map(
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL_CORE)
+    )
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -536,12 +497,15 @@ end process;
     );
 process (clk40) is
 begin
-if(rising_edge(clk40)) then
- HAL_mon_r <=  HAL_mon; 
- HAL_ctrl  <=  HAL_ctrl_r;
-end if;
+ if(rising_edge(clk40)) then
+   HAL_mon_r <=  HAL_mon; 
+   HAL_ctrl  <=  HAL_ctrl_r;
+ end if;
 end process;
   HAL_map_inst : entity ctrl_lib.hal_map
+    generic map(
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL)
+    )
     port map(
       clk_axi         => clk40,
       reset_axi_n     => axi_clk40_reset_n, 
@@ -554,11 +518,14 @@ end process;
     );
 process (axi_clk) is
 begin
-if(rising_edge(axi_clk)) then
- HOG_mon_r <=  HOG_mon; 
-end if;
+ if(rising_edge(axi_clk)) then
+   HOG_mon_r <=  HOG_mon; 
+ end if;
 end process;
   HOG_map_inst : entity ctrl_lib.hog_map
+    generic map(
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HOG)
+    )
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,

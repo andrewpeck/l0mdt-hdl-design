@@ -1,21 +1,21 @@
-----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Company: Max-Planck-Institut fuer Physik - Munich
--- Engineer: Davide Cieri - davide.cieri@cern.ch
---
--- Create Date: 17/02/2023
--- Design Name: L0MDT
--- Module Name: top_control
--- Project Name:
--- Target Devices: KU15P 
--- Tool Versions: 2020.2
--- Description: Template file for top_control module
---
+-- Project: L0MDT
+-- File: top_control_template.vhd
+-- Module: top_control
+-- File PATH: /top_control_template.vhd
 -- Dependencies: hal, ctrl_lib, ieee
---
--- Revision: 1.0
--- Revision 17.02.2023
---
-----------------------------------------------------------------------------------
+-- -----
+-- File Created: Friday, 17th February 2023 8:36:30 am
+-- Author: Davide Cieri - davide.cieri@cern.ch
+-- -----
+-- Last Modified: Thursday, 8th June 2023 12:11:11 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 2023-06-08	GLdL	updated regmap and generics in entities
+--------------------------------------------------------------------------------
+
 
 
 library ieee;
@@ -457,11 +457,14 @@ begin
   -- START: ULT_SLAVES :: DO NOT EDIT
 process (axi_clk) is
 begin
-if(rising_edge(axi_clk)) then
- FW_INFO_mon_r <=  FW_INFO_mon; 
-end if;
+ if(rising_edge(axi_clk)) then
+   FW_INFO_mon_r <=  FW_INFO_mon; 
+ end if;
 end process;
   FW_INFO_map_inst : entity ctrl_lib.fw_info_map
+    generic map(
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_FW_INFO)
+    )
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -473,12 +476,15 @@ end process;
     );
 process (axi_clk) is
 begin
-if(rising_edge(axi_clk)) then
- HAL_CORE_mon_r <=  HAL_CORE_mon; 
- HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
-end if;
+ if(rising_edge(axi_clk)) then
+   HAL_CORE_mon_r <=  HAL_CORE_mon; 
+   HAL_CORE_ctrl  <=  HAL_CORE_ctrl_r;
+ end if;
 end process;
   HAL_CORE_map_inst : entity ctrl_lib.hal_core_map
+    generic map(
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL_CORE)
+    )
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
@@ -491,12 +497,15 @@ end process;
     );
 process (clk40) is
 begin
-if(rising_edge(clk40)) then
- HAL_mon_r <=  HAL_mon; 
- HAL_ctrl  <=  HAL_ctrl_r;
-end if;
+ if(rising_edge(clk40)) then
+   HAL_mon_r <=  HAL_mon; 
+   HAL_ctrl  <=  HAL_ctrl_r;
+ end if;
 end process;
   HAL_map_inst : entity ctrl_lib.hal_map
+    generic map(
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL)
+    )
     port map(
       clk_axi         => clk40,
       reset_axi_n     => axi_clk40_reset_n, 
@@ -509,11 +518,14 @@ end process;
     );
 process (axi_clk) is
 begin
-if(rising_edge(axi_clk)) then
- HOG_mon_r <=  HOG_mon; 
-end if;
+ if(rising_edge(axi_clk)) then
+   HOG_mon_r <=  HOG_mon; 
+ end if;
 end process;
   HOG_map_inst : entity ctrl_lib.hog_map
+    generic map(
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HOG)
+    )
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,

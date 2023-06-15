@@ -10,7 +10,8 @@ source $script_path/create_top_modules.tcl
 
 proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 
-    puts " ******* ${fpga_short}"
+    puts "INFO: UPDATING TRIGGER LIBS"
+    puts "INFO: FPGA type: ${fpga_short}"
 
     exec sed -i  "s/ku15p/${fpga_short}/g" $lib
 
@@ -188,7 +189,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     file mkdir $dest_path/list
 
     # copy the base files
-    set files_to_copy "get_fpga_name.tcl gitlab-ci.yml hog.conf
+    set files_to_copy "gitlab-ci.yml hog.conf
     list
     pre-synthesis.tcl
     user_pkg.vhd
@@ -223,6 +224,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
         exec sed -i "s|^set.*AXI_BASE_ADDRESS.*0x.*|set AXI_BASE_ADDRESS 0xB0000000 ; # USP|g" "$dest_path/post-creation.tcl"
     } elseif {$zynq_target == "7s"} {
         exec sed -i "s|^set.*AXI_BASE_ADDRESS.+0x.*|set AXI_BASE_ADDRESS 0x80000000 ; # 7-Series|g" "$dest_path/post-creation.tcl"
+        exec sed -i "s|set REMOTE_C2C_64 1||g" "$dest_path/post-creation.tcl"
     } else {
         error "Unrecognized zynq target \"$zynq_target\""
     }
