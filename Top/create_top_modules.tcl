@@ -155,22 +155,25 @@ proc create_top_modules {project_path repo_path} {
 		if {[string first "AXI_MASTER_CTRL" $axi_control] != -1 } {
 		    puts $output_control_file "process (axi_clk) is"
 		    puts $output_control_file "begin"
-		    puts $output_control_file "if(rising_edge(axi_clk)) then"
+		    puts $output_control_file " if(rising_edge(axi_clk)) then"
 		}  elseif {[string first "AXI_LHC_CTRL" $axi_control] != -1} {
 		    puts $output_control_file "process (clk40) is"
 		    puts $output_control_file "begin"
-		    puts $output_control_file "if(rising_edge(clk40)) then"
+		    puts $output_control_file " if(rising_edge(clk40)) then"
 		}
-		    puts $output_control_file " ${slave}_mon_r <=  ${slave}_mon; "
+		    puts $output_control_file "   ${slave}_mon_r <=  ${slave}_mon; "
 
 		
 		if {$slave != "HOG" && $slave != "FW_INFO" && $slave != "FM"} {
-		    puts $output_control_file " ${slave}_ctrl  <=  ${slave}_ctrl_r;"
+		    puts $output_control_file "   ${slave}_ctrl  <=  ${slave}_ctrl_r;"
 		}
-		    puts $output_control_file "end if;"
+		    puts $output_control_file " end if;"
 		    puts $output_control_file "end process;"
 
                 puts $output_control_file "  ${slave}_map_inst : entity ctrl_lib.[string tolower $xml_name]_map"
+                puts $output_control_file "    generic map("
+                puts $output_control_file "     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_[string toupper $xml_name])"
+                puts $output_control_file "    )"
                 puts $output_control_file "    port map("
                 if {[string first "AXI_MASTER_CTRL" $axi_control] != -1 } {
                     puts $output_control_file "      clk_axi         => axi_clk,"

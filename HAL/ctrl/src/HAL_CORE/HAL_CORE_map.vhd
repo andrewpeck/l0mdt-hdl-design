@@ -10,9 +10,12 @@ use work.types.all;
 
 use work.HAL_CORE_Ctrl.all;
 use work.HAL_CORE_Ctrl_DEF.all;
+
+
 entity HAL_CORE_map is
   generic (
-    READ_TIMEOUT     : integer := 2048
+    READ_TIMEOUT     : integer := 2048;
+    ALLOCATED_MEMORY_RANGE : integer 
     );
   port (
     clk_axi          : in  std_logic;
@@ -49,6 +52,13 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
+  assert ((4*1071) <= ALLOCATED_MEMORY_RANGE)
+    report "HAL_CORE: Regmap addressing range " & integer'image(4*1071) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity ERROR;
+  assert ((4*1071) > ALLOCATED_MEMORY_RANGE)
+    report "HAL_CORE: Regmap addressing range " & integer'image(4*1071) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity NOTE;
+
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
@@ -5438,6 +5448,7 @@ begin  -- architecture behavioral
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
       reg_data( 1)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.CLOCKING.RESET_MMCM;
+      reg_data(17)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(0).DRP.wr_en;
       reg_data(18)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(0).DRP.wr_addr;
       reg_data(18)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(0).DRP.en;
       reg_data(19)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(0).DRP.wr_data;
@@ -5449,6 +5460,7 @@ begin  -- architecture behavioral
       reg_data(21)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(0).RX_RESETS.reset_pll_and_datapath;
       reg_data(21)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(0).RX_RESETS.reset_datapath;
       reg_data(21)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(0).RX_RESETS.reset_bufbypass;
+      reg_data(23)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(1).DRP.wr_en;
       reg_data(24)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(1).DRP.wr_addr;
       reg_data(24)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(1).DRP.en;
       reg_data(25)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(1).DRP.wr_data;
@@ -5460,6 +5472,7 @@ begin  -- architecture behavioral
       reg_data(27)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(1).RX_RESETS.reset_pll_and_datapath;
       reg_data(27)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(1).RX_RESETS.reset_datapath;
       reg_data(27)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(1).RX_RESETS.reset_bufbypass;
+      reg_data(29)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(2).DRP.wr_en;
       reg_data(30)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(2).DRP.wr_addr;
       reg_data(30)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(2).DRP.en;
       reg_data(31)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(2).DRP.wr_data;
@@ -5471,6 +5484,7 @@ begin  -- architecture behavioral
       reg_data(33)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(2).RX_RESETS.reset_pll_and_datapath;
       reg_data(33)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(2).RX_RESETS.reset_datapath;
       reg_data(33)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(2).RX_RESETS.reset_bufbypass;
+      reg_data(35)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(3).DRP.wr_en;
       reg_data(36)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(3).DRP.wr_addr;
       reg_data(36)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(3).DRP.en;
       reg_data(37)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(3).DRP.wr_data;
@@ -5482,6 +5496,7 @@ begin  -- architecture behavioral
       reg_data(39)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(3).RX_RESETS.reset_pll_and_datapath;
       reg_data(39)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(3).RX_RESETS.reset_datapath;
       reg_data(39)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(3).RX_RESETS.reset_bufbypass;
+      reg_data(41)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(4).DRP.wr_en;
       reg_data(42)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(4).DRP.wr_addr;
       reg_data(42)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(4).DRP.en;
       reg_data(43)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(4).DRP.wr_data;
@@ -5493,6 +5508,7 @@ begin  -- architecture behavioral
       reg_data(45)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(4).RX_RESETS.reset_pll_and_datapath;
       reg_data(45)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(4).RX_RESETS.reset_datapath;
       reg_data(45)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(4).RX_RESETS.reset_bufbypass;
+      reg_data(47)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(5).DRP.wr_en;
       reg_data(48)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(5).DRP.wr_addr;
       reg_data(48)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(5).DRP.en;
       reg_data(49)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(5).DRP.wr_data;
@@ -5504,6 +5520,7 @@ begin  -- architecture behavioral
       reg_data(51)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(5).RX_RESETS.reset_pll_and_datapath;
       reg_data(51)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(5).RX_RESETS.reset_datapath;
       reg_data(51)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(5).RX_RESETS.reset_bufbypass;
+      reg_data(53)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(6).DRP.wr_en;
       reg_data(54)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(6).DRP.wr_addr;
       reg_data(54)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(6).DRP.en;
       reg_data(55)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(6).DRP.wr_data;
@@ -5515,6 +5532,7 @@ begin  -- architecture behavioral
       reg_data(57)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(6).RX_RESETS.reset_pll_and_datapath;
       reg_data(57)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(6).RX_RESETS.reset_datapath;
       reg_data(57)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(6).RX_RESETS.reset_bufbypass;
+      reg_data(59)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(7).DRP.wr_en;
       reg_data(60)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(7).DRP.wr_addr;
       reg_data(60)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(7).DRP.en;
       reg_data(61)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(7).DRP.wr_data;
@@ -5526,6 +5544,7 @@ begin  -- architecture behavioral
       reg_data(63)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(7).RX_RESETS.reset_pll_and_datapath;
       reg_data(63)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(7).RX_RESETS.reset_datapath;
       reg_data(63)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(7).RX_RESETS.reset_bufbypass;
+      reg_data(65)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(8).DRP.wr_en;
       reg_data(66)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(8).DRP.wr_addr;
       reg_data(66)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(8).DRP.en;
       reg_data(67)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(8).DRP.wr_data;
@@ -5537,6 +5556,7 @@ begin  -- architecture behavioral
       reg_data(69)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(8).RX_RESETS.reset_pll_and_datapath;
       reg_data(69)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(8).RX_RESETS.reset_datapath;
       reg_data(69)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(8).RX_RESETS.reset_bufbypass;
+      reg_data(71)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(9).DRP.wr_en;
       reg_data(72)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(9).DRP.wr_addr;
       reg_data(72)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(9).DRP.en;
       reg_data(73)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(9).DRP.wr_data;
@@ -5548,6 +5568,7 @@ begin  -- architecture behavioral
       reg_data(75)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(9).RX_RESETS.reset_pll_and_datapath;
       reg_data(75)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(9).RX_RESETS.reset_datapath;
       reg_data(75)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(9).RX_RESETS.reset_bufbypass;
+      reg_data(77)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(10).DRP.wr_en;
       reg_data(78)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(10).DRP.wr_addr;
       reg_data(78)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(10).DRP.en;
       reg_data(79)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(10).DRP.wr_data;
@@ -5559,6 +5580,7 @@ begin  -- architecture behavioral
       reg_data(81)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(10).RX_RESETS.reset_pll_and_datapath;
       reg_data(81)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(10).RX_RESETS.reset_datapath;
       reg_data(81)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(10).RX_RESETS.reset_bufbypass;
+      reg_data(83)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(11).DRP.wr_en;
       reg_data(84)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(11).DRP.wr_addr;
       reg_data(84)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(11).DRP.en;
       reg_data(85)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(11).DRP.wr_data;
@@ -5570,6 +5592,7 @@ begin  -- architecture behavioral
       reg_data(87)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(11).RX_RESETS.reset_pll_and_datapath;
       reg_data(87)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(11).RX_RESETS.reset_datapath;
       reg_data(87)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(11).RX_RESETS.reset_bufbypass;
+      reg_data(89)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(12).DRP.wr_en;
       reg_data(90)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(12).DRP.wr_addr;
       reg_data(90)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(12).DRP.en;
       reg_data(91)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(12).DRP.wr_data;
@@ -5581,6 +5604,7 @@ begin  -- architecture behavioral
       reg_data(93)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(12).RX_RESETS.reset_pll_and_datapath;
       reg_data(93)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(12).RX_RESETS.reset_datapath;
       reg_data(93)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(12).RX_RESETS.reset_bufbypass;
+      reg_data(95)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(13).DRP.wr_en;
       reg_data(96)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(13).DRP.wr_addr;
       reg_data(96)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(13).DRP.en;
       reg_data(97)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(13).DRP.wr_data;
@@ -5592,6 +5616,7 @@ begin  -- architecture behavioral
       reg_data(99)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(13).RX_RESETS.reset_pll_and_datapath;
       reg_data(99)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(13).RX_RESETS.reset_datapath;
       reg_data(99)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(13).RX_RESETS.reset_bufbypass;
+      reg_data(101)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(14).DRP.wr_en;
       reg_data(102)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(14).DRP.wr_addr;
       reg_data(102)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(14).DRP.en;
       reg_data(103)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(14).DRP.wr_data;
@@ -5603,6 +5628,7 @@ begin  -- architecture behavioral
       reg_data(105)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(14).RX_RESETS.reset_pll_and_datapath;
       reg_data(105)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(14).RX_RESETS.reset_datapath;
       reg_data(105)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(14).RX_RESETS.reset_bufbypass;
+      reg_data(107)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(15).DRP.wr_en;
       reg_data(108)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(15).DRP.wr_addr;
       reg_data(108)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(15).DRP.en;
       reg_data(109)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(15).DRP.wr_data;
@@ -5614,6 +5640,7 @@ begin  -- architecture behavioral
       reg_data(111)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(15).RX_RESETS.reset_pll_and_datapath;
       reg_data(111)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(15).RX_RESETS.reset_datapath;
       reg_data(111)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(15).RX_RESETS.reset_bufbypass;
+      reg_data(113)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(16).DRP.wr_en;
       reg_data(114)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(16).DRP.wr_addr;
       reg_data(114)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(16).DRP.en;
       reg_data(115)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(16).DRP.wr_data;
@@ -5625,6 +5652,7 @@ begin  -- architecture behavioral
       reg_data(117)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(16).RX_RESETS.reset_pll_and_datapath;
       reg_data(117)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(16).RX_RESETS.reset_datapath;
       reg_data(117)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(16).RX_RESETS.reset_bufbypass;
+      reg_data(119)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(17).DRP.wr_en;
       reg_data(120)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(17).DRP.wr_addr;
       reg_data(120)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(17).DRP.en;
       reg_data(121)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(17).DRP.wr_data;
@@ -5636,6 +5664,7 @@ begin  -- architecture behavioral
       reg_data(123)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(17).RX_RESETS.reset_pll_and_datapath;
       reg_data(123)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(17).RX_RESETS.reset_datapath;
       reg_data(123)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(17).RX_RESETS.reset_bufbypass;
+      reg_data(125)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(18).DRP.wr_en;
       reg_data(126)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(18).DRP.wr_addr;
       reg_data(126)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(18).DRP.en;
       reg_data(127)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(18).DRP.wr_data;
@@ -5647,6 +5676,7 @@ begin  -- architecture behavioral
       reg_data(129)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(18).RX_RESETS.reset_pll_and_datapath;
       reg_data(129)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(18).RX_RESETS.reset_datapath;
       reg_data(129)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(18).RX_RESETS.reset_bufbypass;
+      reg_data(131)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(19).DRP.wr_en;
       reg_data(132)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(19).DRP.wr_addr;
       reg_data(132)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(19).DRP.en;
       reg_data(133)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(19).DRP.wr_data;
@@ -5658,6 +5688,7 @@ begin  -- architecture behavioral
       reg_data(135)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(19).RX_RESETS.reset_pll_and_datapath;
       reg_data(135)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(19).RX_RESETS.reset_datapath;
       reg_data(135)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(19).RX_RESETS.reset_bufbypass;
+      reg_data(137)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(20).DRP.wr_en;
       reg_data(138)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(20).DRP.wr_addr;
       reg_data(138)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(20).DRP.en;
       reg_data(139)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(20).DRP.wr_data;
@@ -5669,6 +5700,7 @@ begin  -- architecture behavioral
       reg_data(141)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(20).RX_RESETS.reset_pll_and_datapath;
       reg_data(141)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(20).RX_RESETS.reset_datapath;
       reg_data(141)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(20).RX_RESETS.reset_bufbypass;
+      reg_data(143)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(21).DRP.wr_en;
       reg_data(144)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(21).DRP.wr_addr;
       reg_data(144)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(21).DRP.en;
       reg_data(145)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(21).DRP.wr_data;
@@ -5680,6 +5712,7 @@ begin  -- architecture behavioral
       reg_data(147)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(21).RX_RESETS.reset_pll_and_datapath;
       reg_data(147)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(21).RX_RESETS.reset_datapath;
       reg_data(147)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(21).RX_RESETS.reset_bufbypass;
+      reg_data(149)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(22).DRP.wr_en;
       reg_data(150)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(22).DRP.wr_addr;
       reg_data(150)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(22).DRP.en;
       reg_data(151)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(22).DRP.wr_data;
@@ -5691,6 +5724,7 @@ begin  -- architecture behavioral
       reg_data(153)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(22).RX_RESETS.reset_pll_and_datapath;
       reg_data(153)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(22).RX_RESETS.reset_datapath;
       reg_data(153)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(22).RX_RESETS.reset_bufbypass;
+      reg_data(155)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(23).DRP.wr_en;
       reg_data(156)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(23).DRP.wr_addr;
       reg_data(156)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(23).DRP.en;
       reg_data(157)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(23).DRP.wr_data;
@@ -5702,6 +5736,7 @@ begin  -- architecture behavioral
       reg_data(159)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(23).RX_RESETS.reset_pll_and_datapath;
       reg_data(159)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(23).RX_RESETS.reset_datapath;
       reg_data(159)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(23).RX_RESETS.reset_bufbypass;
+      reg_data(161)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(24).DRP.wr_en;
       reg_data(162)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(24).DRP.wr_addr;
       reg_data(162)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(24).DRP.en;
       reg_data(163)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(24).DRP.wr_data;
@@ -5713,6 +5748,7 @@ begin  -- architecture behavioral
       reg_data(165)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(24).RX_RESETS.reset_pll_and_datapath;
       reg_data(165)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(24).RX_RESETS.reset_datapath;
       reg_data(165)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(24).RX_RESETS.reset_bufbypass;
+      reg_data(167)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(25).DRP.wr_en;
       reg_data(168)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(25).DRP.wr_addr;
       reg_data(168)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(25).DRP.en;
       reg_data(169)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(25).DRP.wr_data;
@@ -5724,6 +5760,7 @@ begin  -- architecture behavioral
       reg_data(171)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(25).RX_RESETS.reset_pll_and_datapath;
       reg_data(171)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(25).RX_RESETS.reset_datapath;
       reg_data(171)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(25).RX_RESETS.reset_bufbypass;
+      reg_data(173)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(26).DRP.wr_en;
       reg_data(174)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(26).DRP.wr_addr;
       reg_data(174)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(26).DRP.en;
       reg_data(175)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(26).DRP.wr_data;
@@ -5735,6 +5772,7 @@ begin  -- architecture behavioral
       reg_data(177)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(26).RX_RESETS.reset_pll_and_datapath;
       reg_data(177)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(26).RX_RESETS.reset_datapath;
       reg_data(177)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(26).RX_RESETS.reset_bufbypass;
+      reg_data(179)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(27).DRP.wr_en;
       reg_data(180)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(27).DRP.wr_addr;
       reg_data(180)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(27).DRP.en;
       reg_data(181)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(27).DRP.wr_data;
@@ -5746,6 +5784,7 @@ begin  -- architecture behavioral
       reg_data(183)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(27).RX_RESETS.reset_pll_and_datapath;
       reg_data(183)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(27).RX_RESETS.reset_datapath;
       reg_data(183)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(27).RX_RESETS.reset_bufbypass;
+      reg_data(185)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(28).DRP.wr_en;
       reg_data(186)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(28).DRP.wr_addr;
       reg_data(186)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(28).DRP.en;
       reg_data(187)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(28).DRP.wr_data;
@@ -5757,6 +5796,7 @@ begin  -- architecture behavioral
       reg_data(189)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(28).RX_RESETS.reset_pll_and_datapath;
       reg_data(189)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(28).RX_RESETS.reset_datapath;
       reg_data(189)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(28).RX_RESETS.reset_bufbypass;
+      reg_data(191)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(29).DRP.wr_en;
       reg_data(192)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(29).DRP.wr_addr;
       reg_data(192)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(29).DRP.en;
       reg_data(193)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(29).DRP.wr_data;
@@ -5768,6 +5808,7 @@ begin  -- architecture behavioral
       reg_data(195)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(29).RX_RESETS.reset_pll_and_datapath;
       reg_data(195)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(29).RX_RESETS.reset_datapath;
       reg_data(195)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(29).RX_RESETS.reset_bufbypass;
+      reg_data(197)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(30).DRP.wr_en;
       reg_data(198)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(30).DRP.wr_addr;
       reg_data(198)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(30).DRP.en;
       reg_data(199)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(30).DRP.wr_data;
@@ -5779,6 +5820,7 @@ begin  -- architecture behavioral
       reg_data(201)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(30).RX_RESETS.reset_pll_and_datapath;
       reg_data(201)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(30).RX_RESETS.reset_datapath;
       reg_data(201)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(30).RX_RESETS.reset_bufbypass;
+      reg_data(203)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(31).DRP.wr_en;
       reg_data(204)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(31).DRP.wr_addr;
       reg_data(204)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(31).DRP.en;
       reg_data(205)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(31).DRP.wr_data;
@@ -5790,6 +5832,7 @@ begin  -- architecture behavioral
       reg_data(207)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(31).RX_RESETS.reset_pll_and_datapath;
       reg_data(207)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(31).RX_RESETS.reset_datapath;
       reg_data(207)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(31).RX_RESETS.reset_bufbypass;
+      reg_data(209)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(32).DRP.wr_en;
       reg_data(210)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(32).DRP.wr_addr;
       reg_data(210)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(32).DRP.en;
       reg_data(211)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(32).DRP.wr_data;
@@ -5801,6 +5844,7 @@ begin  -- architecture behavioral
       reg_data(213)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(32).RX_RESETS.reset_pll_and_datapath;
       reg_data(213)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(32).RX_RESETS.reset_datapath;
       reg_data(213)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(32).RX_RESETS.reset_bufbypass;
+      reg_data(215)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(33).DRP.wr_en;
       reg_data(216)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(33).DRP.wr_addr;
       reg_data(216)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(33).DRP.en;
       reg_data(217)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(33).DRP.wr_data;
@@ -5812,6 +5856,7 @@ begin  -- architecture behavioral
       reg_data(219)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(33).RX_RESETS.reset_pll_and_datapath;
       reg_data(219)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(33).RX_RESETS.reset_datapath;
       reg_data(219)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(33).RX_RESETS.reset_bufbypass;
+      reg_data(221)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(34).DRP.wr_en;
       reg_data(222)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(34).DRP.wr_addr;
       reg_data(222)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(34).DRP.en;
       reg_data(223)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(34).DRP.wr_data;
@@ -5823,6 +5868,7 @@ begin  -- architecture behavioral
       reg_data(225)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(34).RX_RESETS.reset_pll_and_datapath;
       reg_data(225)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(34).RX_RESETS.reset_datapath;
       reg_data(225)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(34).RX_RESETS.reset_bufbypass;
+      reg_data(227)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(35).DRP.wr_en;
       reg_data(228)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(35).DRP.wr_addr;
       reg_data(228)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(35).DRP.en;
       reg_data(229)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(35).DRP.wr_data;
@@ -5834,6 +5880,7 @@ begin  -- architecture behavioral
       reg_data(231)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(35).RX_RESETS.reset_pll_and_datapath;
       reg_data(231)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(35).RX_RESETS.reset_datapath;
       reg_data(231)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(35).RX_RESETS.reset_bufbypass;
+      reg_data(233)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(36).DRP.wr_en;
       reg_data(234)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(36).DRP.wr_addr;
       reg_data(234)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(36).DRP.en;
       reg_data(235)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(36).DRP.wr_data;
@@ -5845,6 +5892,7 @@ begin  -- architecture behavioral
       reg_data(237)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(36).RX_RESETS.reset_pll_and_datapath;
       reg_data(237)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(36).RX_RESETS.reset_datapath;
       reg_data(237)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(36).RX_RESETS.reset_bufbypass;
+      reg_data(239)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(37).DRP.wr_en;
       reg_data(240)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(37).DRP.wr_addr;
       reg_data(240)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(37).DRP.en;
       reg_data(241)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(37).DRP.wr_data;
@@ -5856,6 +5904,7 @@ begin  -- architecture behavioral
       reg_data(243)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(37).RX_RESETS.reset_pll_and_datapath;
       reg_data(243)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(37).RX_RESETS.reset_datapath;
       reg_data(243)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(37).RX_RESETS.reset_bufbypass;
+      reg_data(245)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(38).DRP.wr_en;
       reg_data(246)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(38).DRP.wr_addr;
       reg_data(246)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(38).DRP.en;
       reg_data(247)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(38).DRP.wr_data;
@@ -5867,6 +5916,7 @@ begin  -- architecture behavioral
       reg_data(249)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(38).RX_RESETS.reset_pll_and_datapath;
       reg_data(249)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(38).RX_RESETS.reset_datapath;
       reg_data(249)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(38).RX_RESETS.reset_bufbypass;
+      reg_data(251)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(39).DRP.wr_en;
       reg_data(252)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(39).DRP.wr_addr;
       reg_data(252)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(39).DRP.en;
       reg_data(253)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(39).DRP.wr_data;
@@ -5878,6 +5928,7 @@ begin  -- architecture behavioral
       reg_data(255)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(39).RX_RESETS.reset_pll_and_datapath;
       reg_data(255)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(39).RX_RESETS.reset_datapath;
       reg_data(255)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(39).RX_RESETS.reset_bufbypass;
+      reg_data(257)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(40).DRP.wr_en;
       reg_data(258)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(40).DRP.wr_addr;
       reg_data(258)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(40).DRP.en;
       reg_data(259)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(40).DRP.wr_data;
@@ -5889,6 +5940,7 @@ begin  -- architecture behavioral
       reg_data(261)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(40).RX_RESETS.reset_pll_and_datapath;
       reg_data(261)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(40).RX_RESETS.reset_datapath;
       reg_data(261)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(40).RX_RESETS.reset_bufbypass;
+      reg_data(263)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(41).DRP.wr_en;
       reg_data(264)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(41).DRP.wr_addr;
       reg_data(264)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(41).DRP.en;
       reg_data(265)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(41).DRP.wr_data;
@@ -5900,6 +5952,7 @@ begin  -- architecture behavioral
       reg_data(267)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(41).RX_RESETS.reset_pll_and_datapath;
       reg_data(267)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(41).RX_RESETS.reset_datapath;
       reg_data(267)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(41).RX_RESETS.reset_bufbypass;
+      reg_data(269)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(42).DRP.wr_en;
       reg_data(270)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(42).DRP.wr_addr;
       reg_data(270)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(42).DRP.en;
       reg_data(271)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(42).DRP.wr_data;
@@ -5911,6 +5964,7 @@ begin  -- architecture behavioral
       reg_data(273)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(42).RX_RESETS.reset_pll_and_datapath;
       reg_data(273)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(42).RX_RESETS.reset_datapath;
       reg_data(273)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(42).RX_RESETS.reset_bufbypass;
+      reg_data(275)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(43).DRP.wr_en;
       reg_data(276)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(43).DRP.wr_addr;
       reg_data(276)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(43).DRP.en;
       reg_data(277)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(43).DRP.wr_data;
@@ -5922,6 +5976,7 @@ begin  -- architecture behavioral
       reg_data(279)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(43).RX_RESETS.reset_pll_and_datapath;
       reg_data(279)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(43).RX_RESETS.reset_datapath;
       reg_data(279)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(43).RX_RESETS.reset_bufbypass;
+      reg_data(281)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(44).DRP.wr_en;
       reg_data(282)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(44).DRP.wr_addr;
       reg_data(282)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(44).DRP.en;
       reg_data(283)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(44).DRP.wr_data;
@@ -5933,6 +5988,7 @@ begin  -- architecture behavioral
       reg_data(285)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(44).RX_RESETS.reset_pll_and_datapath;
       reg_data(285)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(44).RX_RESETS.reset_datapath;
       reg_data(285)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(44).RX_RESETS.reset_bufbypass;
+      reg_data(287)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(45).DRP.wr_en;
       reg_data(288)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(45).DRP.wr_addr;
       reg_data(288)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(45).DRP.en;
       reg_data(289)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(45).DRP.wr_data;
@@ -5944,6 +6000,7 @@ begin  -- architecture behavioral
       reg_data(291)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(45).RX_RESETS.reset_pll_and_datapath;
       reg_data(291)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(45).RX_RESETS.reset_datapath;
       reg_data(291)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(45).RX_RESETS.reset_bufbypass;
+      reg_data(293)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(46).DRP.wr_en;
       reg_data(294)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(46).DRP.wr_addr;
       reg_data(294)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(46).DRP.en;
       reg_data(295)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(46).DRP.wr_data;
@@ -5955,6 +6012,7 @@ begin  -- architecture behavioral
       reg_data(297)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(46).RX_RESETS.reset_pll_and_datapath;
       reg_data(297)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(46).RX_RESETS.reset_datapath;
       reg_data(297)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(46).RX_RESETS.reset_bufbypass;
+      reg_data(299)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(47).DRP.wr_en;
       reg_data(300)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(47).DRP.wr_addr;
       reg_data(300)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(47).DRP.en;
       reg_data(301)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(47).DRP.wr_data;
@@ -5966,6 +6024,7 @@ begin  -- architecture behavioral
       reg_data(303)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(47).RX_RESETS.reset_pll_and_datapath;
       reg_data(303)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(47).RX_RESETS.reset_datapath;
       reg_data(303)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(47).RX_RESETS.reset_bufbypass;
+      reg_data(305)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(48).DRP.wr_en;
       reg_data(306)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(48).DRP.wr_addr;
       reg_data(306)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(48).DRP.en;
       reg_data(307)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(48).DRP.wr_data;
@@ -5977,6 +6036,7 @@ begin  -- architecture behavioral
       reg_data(309)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(48).RX_RESETS.reset_pll_and_datapath;
       reg_data(309)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(48).RX_RESETS.reset_datapath;
       reg_data(309)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(48).RX_RESETS.reset_bufbypass;
+      reg_data(311)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(49).DRP.wr_en;
       reg_data(312)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(49).DRP.wr_addr;
       reg_data(312)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(49).DRP.en;
       reg_data(313)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(49).DRP.wr_data;
@@ -5988,6 +6048,7 @@ begin  -- architecture behavioral
       reg_data(315)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(49).RX_RESETS.reset_pll_and_datapath;
       reg_data(315)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(49).RX_RESETS.reset_datapath;
       reg_data(315)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(49).RX_RESETS.reset_bufbypass;
+      reg_data(317)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(50).DRP.wr_en;
       reg_data(318)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(50).DRP.wr_addr;
       reg_data(318)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(50).DRP.en;
       reg_data(319)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(50).DRP.wr_data;
@@ -5999,6 +6060,7 @@ begin  -- architecture behavioral
       reg_data(321)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(50).RX_RESETS.reset_pll_and_datapath;
       reg_data(321)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(50).RX_RESETS.reset_datapath;
       reg_data(321)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(50).RX_RESETS.reset_bufbypass;
+      reg_data(323)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(51).DRP.wr_en;
       reg_data(324)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(51).DRP.wr_addr;
       reg_data(324)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(51).DRP.en;
       reg_data(325)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(51).DRP.wr_data;
@@ -6010,6 +6072,7 @@ begin  -- architecture behavioral
       reg_data(327)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(51).RX_RESETS.reset_pll_and_datapath;
       reg_data(327)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(51).RX_RESETS.reset_datapath;
       reg_data(327)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(51).RX_RESETS.reset_bufbypass;
+      reg_data(329)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(52).DRP.wr_en;
       reg_data(330)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(52).DRP.wr_addr;
       reg_data(330)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(52).DRP.en;
       reg_data(331)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(52).DRP.wr_data;
@@ -6021,6 +6084,7 @@ begin  -- architecture behavioral
       reg_data(333)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(52).RX_RESETS.reset_pll_and_datapath;
       reg_data(333)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(52).RX_RESETS.reset_datapath;
       reg_data(333)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(52).RX_RESETS.reset_bufbypass;
+      reg_data(335)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(53).DRP.wr_en;
       reg_data(336)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(53).DRP.wr_addr;
       reg_data(336)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(53).DRP.en;
       reg_data(337)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(53).DRP.wr_data;
@@ -6032,6 +6096,7 @@ begin  -- architecture behavioral
       reg_data(339)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(53).RX_RESETS.reset_pll_and_datapath;
       reg_data(339)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(53).RX_RESETS.reset_datapath;
       reg_data(339)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(53).RX_RESETS.reset_bufbypass;
+      reg_data(341)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(54).DRP.wr_en;
       reg_data(342)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(54).DRP.wr_addr;
       reg_data(342)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(54).DRP.en;
       reg_data(343)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(54).DRP.wr_data;
@@ -6043,6 +6108,7 @@ begin  -- architecture behavioral
       reg_data(345)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(54).RX_RESETS.reset_pll_and_datapath;
       reg_data(345)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(54).RX_RESETS.reset_datapath;
       reg_data(345)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(54).RX_RESETS.reset_bufbypass;
+      reg_data(347)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(55).DRP.wr_en;
       reg_data(348)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(55).DRP.wr_addr;
       reg_data(348)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(55).DRP.en;
       reg_data(349)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(55).DRP.wr_data;
@@ -6054,6 +6120,7 @@ begin  -- architecture behavioral
       reg_data(351)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(55).RX_RESETS.reset_pll_and_datapath;
       reg_data(351)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(55).RX_RESETS.reset_datapath;
       reg_data(351)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(55).RX_RESETS.reset_bufbypass;
+      reg_data(353)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(56).DRP.wr_en;
       reg_data(354)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(56).DRP.wr_addr;
       reg_data(354)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(56).DRP.en;
       reg_data(355)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(56).DRP.wr_data;
@@ -6065,6 +6132,7 @@ begin  -- architecture behavioral
       reg_data(357)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(56).RX_RESETS.reset_pll_and_datapath;
       reg_data(357)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(56).RX_RESETS.reset_datapath;
       reg_data(357)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(56).RX_RESETS.reset_bufbypass;
+      reg_data(359)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(57).DRP.wr_en;
       reg_data(360)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(57).DRP.wr_addr;
       reg_data(360)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(57).DRP.en;
       reg_data(361)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(57).DRP.wr_data;
@@ -6076,6 +6144,7 @@ begin  -- architecture behavioral
       reg_data(363)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(57).RX_RESETS.reset_pll_and_datapath;
       reg_data(363)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(57).RX_RESETS.reset_datapath;
       reg_data(363)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(57).RX_RESETS.reset_bufbypass;
+      reg_data(365)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(58).DRP.wr_en;
       reg_data(366)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(58).DRP.wr_addr;
       reg_data(366)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(58).DRP.en;
       reg_data(367)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(58).DRP.wr_data;
@@ -6087,6 +6156,7 @@ begin  -- architecture behavioral
       reg_data(369)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(58).RX_RESETS.reset_pll_and_datapath;
       reg_data(369)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(58).RX_RESETS.reset_datapath;
       reg_data(369)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(58).RX_RESETS.reset_bufbypass;
+      reg_data(371)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(59).DRP.wr_en;
       reg_data(372)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(59).DRP.wr_addr;
       reg_data(372)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(59).DRP.en;
       reg_data(373)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(59).DRP.wr_data;
@@ -6098,6 +6168,7 @@ begin  -- architecture behavioral
       reg_data(375)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(59).RX_RESETS.reset_pll_and_datapath;
       reg_data(375)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(59).RX_RESETS.reset_datapath;
       reg_data(375)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(59).RX_RESETS.reset_bufbypass;
+      reg_data(377)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(60).DRP.wr_en;
       reg_data(378)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(60).DRP.wr_addr;
       reg_data(378)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(60).DRP.en;
       reg_data(379)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(60).DRP.wr_data;
@@ -6109,6 +6180,7 @@ begin  -- architecture behavioral
       reg_data(381)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(60).RX_RESETS.reset_pll_and_datapath;
       reg_data(381)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(60).RX_RESETS.reset_datapath;
       reg_data(381)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(60).RX_RESETS.reset_bufbypass;
+      reg_data(383)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(61).DRP.wr_en;
       reg_data(384)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(61).DRP.wr_addr;
       reg_data(384)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(61).DRP.en;
       reg_data(385)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(61).DRP.wr_data;
@@ -6120,6 +6192,7 @@ begin  -- architecture behavioral
       reg_data(387)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(61).RX_RESETS.reset_pll_and_datapath;
       reg_data(387)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(61).RX_RESETS.reset_datapath;
       reg_data(387)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(61).RX_RESETS.reset_bufbypass;
+      reg_data(389)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(62).DRP.wr_en;
       reg_data(390)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(62).DRP.wr_addr;
       reg_data(390)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(62).DRP.en;
       reg_data(391)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(62).DRP.wr_data;
@@ -6131,6 +6204,7 @@ begin  -- architecture behavioral
       reg_data(393)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(62).RX_RESETS.reset_pll_and_datapath;
       reg_data(393)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(62).RX_RESETS.reset_datapath;
       reg_data(393)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(62).RX_RESETS.reset_bufbypass;
+      reg_data(395)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(63).DRP.wr_en;
       reg_data(396)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(63).DRP.wr_addr;
       reg_data(396)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(63).DRP.en;
       reg_data(397)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(63).DRP.wr_data;
@@ -6142,6 +6216,7 @@ begin  -- architecture behavioral
       reg_data(399)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(63).RX_RESETS.reset_pll_and_datapath;
       reg_data(399)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(63).RX_RESETS.reset_datapath;
       reg_data(399)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(63).RX_RESETS.reset_bufbypass;
+      reg_data(401)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(64).DRP.wr_en;
       reg_data(402)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(64).DRP.wr_addr;
       reg_data(402)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(64).DRP.en;
       reg_data(403)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(64).DRP.wr_data;
@@ -6153,6 +6228,7 @@ begin  -- architecture behavioral
       reg_data(405)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(64).RX_RESETS.reset_pll_and_datapath;
       reg_data(405)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(64).RX_RESETS.reset_datapath;
       reg_data(405)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(64).RX_RESETS.reset_bufbypass;
+      reg_data(407)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(65).DRP.wr_en;
       reg_data(408)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(65).DRP.wr_addr;
       reg_data(408)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(65).DRP.en;
       reg_data(409)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(65).DRP.wr_data;
@@ -6164,6 +6240,7 @@ begin  -- architecture behavioral
       reg_data(411)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(65).RX_RESETS.reset_pll_and_datapath;
       reg_data(411)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(65).RX_RESETS.reset_datapath;
       reg_data(411)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(65).RX_RESETS.reset_bufbypass;
+      reg_data(413)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(66).DRP.wr_en;
       reg_data(414)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(66).DRP.wr_addr;
       reg_data(414)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(66).DRP.en;
       reg_data(415)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(66).DRP.wr_data;
@@ -6175,6 +6252,7 @@ begin  -- architecture behavioral
       reg_data(417)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(66).RX_RESETS.reset_pll_and_datapath;
       reg_data(417)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(66).RX_RESETS.reset_datapath;
       reg_data(417)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(66).RX_RESETS.reset_bufbypass;
+      reg_data(419)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(67).DRP.wr_en;
       reg_data(420)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(67).DRP.wr_addr;
       reg_data(420)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(67).DRP.en;
       reg_data(421)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(67).DRP.wr_data;
@@ -6186,6 +6264,7 @@ begin  -- architecture behavioral
       reg_data(423)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(67).RX_RESETS.reset_pll_and_datapath;
       reg_data(423)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(67).RX_RESETS.reset_datapath;
       reg_data(423)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(67).RX_RESETS.reset_bufbypass;
+      reg_data(425)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(68).DRP.wr_en;
       reg_data(426)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(68).DRP.wr_addr;
       reg_data(426)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(68).DRP.en;
       reg_data(427)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(68).DRP.wr_data;
@@ -6197,6 +6276,7 @@ begin  -- architecture behavioral
       reg_data(429)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(68).RX_RESETS.reset_pll_and_datapath;
       reg_data(429)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(68).RX_RESETS.reset_datapath;
       reg_data(429)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(68).RX_RESETS.reset_bufbypass;
+      reg_data(431)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(69).DRP.wr_en;
       reg_data(432)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(69).DRP.wr_addr;
       reg_data(432)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(69).DRP.en;
       reg_data(433)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(69).DRP.wr_data;
@@ -6208,6 +6288,7 @@ begin  -- architecture behavioral
       reg_data(435)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(69).RX_RESETS.reset_pll_and_datapath;
       reg_data(435)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(69).RX_RESETS.reset_datapath;
       reg_data(435)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(69).RX_RESETS.reset_bufbypass;
+      reg_data(437)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(70).DRP.wr_en;
       reg_data(438)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(70).DRP.wr_addr;
       reg_data(438)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(70).DRP.en;
       reg_data(439)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(70).DRP.wr_data;
@@ -6219,6 +6300,7 @@ begin  -- architecture behavioral
       reg_data(441)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(70).RX_RESETS.reset_pll_and_datapath;
       reg_data(441)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(70).RX_RESETS.reset_datapath;
       reg_data(441)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(70).RX_RESETS.reset_bufbypass;
+      reg_data(443)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(71).DRP.wr_en;
       reg_data(444)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(71).DRP.wr_addr;
       reg_data(444)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(71).DRP.en;
       reg_data(445)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(71).DRP.wr_data;
@@ -6230,6 +6312,7 @@ begin  -- architecture behavioral
       reg_data(447)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(71).RX_RESETS.reset_pll_and_datapath;
       reg_data(447)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(71).RX_RESETS.reset_datapath;
       reg_data(447)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(71).RX_RESETS.reset_bufbypass;
+      reg_data(449)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(72).DRP.wr_en;
       reg_data(450)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(72).DRP.wr_addr;
       reg_data(450)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(72).DRP.en;
       reg_data(451)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(72).DRP.wr_data;
@@ -6241,6 +6324,7 @@ begin  -- architecture behavioral
       reg_data(453)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(72).RX_RESETS.reset_pll_and_datapath;
       reg_data(453)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(72).RX_RESETS.reset_datapath;
       reg_data(453)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(72).RX_RESETS.reset_bufbypass;
+      reg_data(455)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(73).DRP.wr_en;
       reg_data(456)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(73).DRP.wr_addr;
       reg_data(456)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(73).DRP.en;
       reg_data(457)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(73).DRP.wr_data;
@@ -6252,6 +6336,7 @@ begin  -- architecture behavioral
       reg_data(459)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(73).RX_RESETS.reset_pll_and_datapath;
       reg_data(459)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(73).RX_RESETS.reset_datapath;
       reg_data(459)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(73).RX_RESETS.reset_bufbypass;
+      reg_data(461)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(74).DRP.wr_en;
       reg_data(462)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(74).DRP.wr_addr;
       reg_data(462)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(74).DRP.en;
       reg_data(463)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(74).DRP.wr_data;
@@ -6263,6 +6348,7 @@ begin  -- architecture behavioral
       reg_data(465)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(74).RX_RESETS.reset_pll_and_datapath;
       reg_data(465)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(74).RX_RESETS.reset_datapath;
       reg_data(465)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(74).RX_RESETS.reset_bufbypass;
+      reg_data(467)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(75).DRP.wr_en;
       reg_data(468)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(75).DRP.wr_addr;
       reg_data(468)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(75).DRP.en;
       reg_data(469)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(75).DRP.wr_data;
@@ -6274,6 +6360,7 @@ begin  -- architecture behavioral
       reg_data(471)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(75).RX_RESETS.reset_pll_and_datapath;
       reg_data(471)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(75).RX_RESETS.reset_datapath;
       reg_data(471)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(75).RX_RESETS.reset_bufbypass;
+      reg_data(473)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(76).DRP.wr_en;
       reg_data(474)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(76).DRP.wr_addr;
       reg_data(474)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(76).DRP.en;
       reg_data(475)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(76).DRP.wr_data;
@@ -6285,6 +6372,7 @@ begin  -- architecture behavioral
       reg_data(477)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(76).RX_RESETS.reset_pll_and_datapath;
       reg_data(477)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(76).RX_RESETS.reset_datapath;
       reg_data(477)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(76).RX_RESETS.reset_bufbypass;
+      reg_data(479)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(77).DRP.wr_en;
       reg_data(480)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(77).DRP.wr_addr;
       reg_data(480)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(77).DRP.en;
       reg_data(481)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(77).DRP.wr_data;
@@ -6296,6 +6384,7 @@ begin  -- architecture behavioral
       reg_data(483)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(77).RX_RESETS.reset_pll_and_datapath;
       reg_data(483)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(77).RX_RESETS.reset_datapath;
       reg_data(483)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(77).RX_RESETS.reset_bufbypass;
+      reg_data(485)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(78).DRP.wr_en;
       reg_data(486)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(78).DRP.wr_addr;
       reg_data(486)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(78).DRP.en;
       reg_data(487)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(78).DRP.wr_data;
@@ -6307,6 +6396,7 @@ begin  -- architecture behavioral
       reg_data(489)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(78).RX_RESETS.reset_pll_and_datapath;
       reg_data(489)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(78).RX_RESETS.reset_datapath;
       reg_data(489)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(78).RX_RESETS.reset_bufbypass;
+      reg_data(491)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(79).DRP.wr_en;
       reg_data(492)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(79).DRP.wr_addr;
       reg_data(492)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(79).DRP.en;
       reg_data(493)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(79).DRP.wr_data;
@@ -6318,6 +6408,7 @@ begin  -- architecture behavioral
       reg_data(495)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(79).RX_RESETS.reset_pll_and_datapath;
       reg_data(495)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(79).RX_RESETS.reset_datapath;
       reg_data(495)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(79).RX_RESETS.reset_bufbypass;
+      reg_data(497)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(80).DRP.wr_en;
       reg_data(498)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(80).DRP.wr_addr;
       reg_data(498)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(80).DRP.en;
       reg_data(499)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(80).DRP.wr_data;
@@ -6329,6 +6420,7 @@ begin  -- architecture behavioral
       reg_data(501)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(80).RX_RESETS.reset_pll_and_datapath;
       reg_data(501)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(80).RX_RESETS.reset_datapath;
       reg_data(501)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(80).RX_RESETS.reset_bufbypass;
+      reg_data(503)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(81).DRP.wr_en;
       reg_data(504)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(81).DRP.wr_addr;
       reg_data(504)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(81).DRP.en;
       reg_data(505)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(81).DRP.wr_data;
@@ -6340,6 +6432,7 @@ begin  -- architecture behavioral
       reg_data(507)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(81).RX_RESETS.reset_pll_and_datapath;
       reg_data(507)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(81).RX_RESETS.reset_datapath;
       reg_data(507)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(81).RX_RESETS.reset_bufbypass;
+      reg_data(509)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(82).DRP.wr_en;
       reg_data(510)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(82).DRP.wr_addr;
       reg_data(510)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(82).DRP.en;
       reg_data(511)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(82).DRP.wr_data;
@@ -6351,6 +6444,7 @@ begin  -- architecture behavioral
       reg_data(513)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(82).RX_RESETS.reset_pll_and_datapath;
       reg_data(513)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(82).RX_RESETS.reset_datapath;
       reg_data(513)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(82).RX_RESETS.reset_bufbypass;
+      reg_data(515)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(83).DRP.wr_en;
       reg_data(516)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(83).DRP.wr_addr;
       reg_data(516)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(83).DRP.en;
       reg_data(517)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(83).DRP.wr_data;
@@ -6362,6 +6456,7 @@ begin  -- architecture behavioral
       reg_data(519)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(83).RX_RESETS.reset_pll_and_datapath;
       reg_data(519)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(83).RX_RESETS.reset_datapath;
       reg_data(519)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(83).RX_RESETS.reset_bufbypass;
+      reg_data(521)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(84).DRP.wr_en;
       reg_data(522)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(84).DRP.wr_addr;
       reg_data(522)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(84).DRP.en;
       reg_data(523)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(84).DRP.wr_data;
@@ -6373,6 +6468,7 @@ begin  -- architecture behavioral
       reg_data(525)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(84).RX_RESETS.reset_pll_and_datapath;
       reg_data(525)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(84).RX_RESETS.reset_datapath;
       reg_data(525)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(84).RX_RESETS.reset_bufbypass;
+      reg_data(527)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(85).DRP.wr_en;
       reg_data(528)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(85).DRP.wr_addr;
       reg_data(528)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(85).DRP.en;
       reg_data(529)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(85).DRP.wr_data;
@@ -6384,6 +6480,7 @@ begin  -- architecture behavioral
       reg_data(531)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(85).RX_RESETS.reset_pll_and_datapath;
       reg_data(531)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(85).RX_RESETS.reset_datapath;
       reg_data(531)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(85).RX_RESETS.reset_bufbypass;
+      reg_data(533)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(86).DRP.wr_en;
       reg_data(534)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(86).DRP.wr_addr;
       reg_data(534)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(86).DRP.en;
       reg_data(535)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(86).DRP.wr_data;
@@ -6395,6 +6492,7 @@ begin  -- architecture behavioral
       reg_data(537)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(86).RX_RESETS.reset_pll_and_datapath;
       reg_data(537)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(86).RX_RESETS.reset_datapath;
       reg_data(537)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(86).RX_RESETS.reset_bufbypass;
+      reg_data(539)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(87).DRP.wr_en;
       reg_data(540)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(87).DRP.wr_addr;
       reg_data(540)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(87).DRP.en;
       reg_data(541)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(87).DRP.wr_data;
@@ -6406,6 +6504,7 @@ begin  -- architecture behavioral
       reg_data(543)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(87).RX_RESETS.reset_pll_and_datapath;
       reg_data(543)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(87).RX_RESETS.reset_datapath;
       reg_data(543)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(87).RX_RESETS.reset_bufbypass;
+      reg_data(545)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(88).DRP.wr_en;
       reg_data(546)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(88).DRP.wr_addr;
       reg_data(546)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(88).DRP.en;
       reg_data(547)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(88).DRP.wr_data;
@@ -6417,6 +6516,7 @@ begin  -- architecture behavioral
       reg_data(549)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(88).RX_RESETS.reset_pll_and_datapath;
       reg_data(549)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(88).RX_RESETS.reset_datapath;
       reg_data(549)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(88).RX_RESETS.reset_bufbypass;
+      reg_data(551)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(89).DRP.wr_en;
       reg_data(552)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(89).DRP.wr_addr;
       reg_data(552)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(89).DRP.en;
       reg_data(553)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(89).DRP.wr_data;
@@ -6428,6 +6528,7 @@ begin  -- architecture behavioral
       reg_data(555)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(89).RX_RESETS.reset_pll_and_datapath;
       reg_data(555)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(89).RX_RESETS.reset_datapath;
       reg_data(555)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(89).RX_RESETS.reset_bufbypass;
+      reg_data(557)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(90).DRP.wr_en;
       reg_data(558)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(90).DRP.wr_addr;
       reg_data(558)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(90).DRP.en;
       reg_data(559)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(90).DRP.wr_data;
@@ -6439,6 +6540,7 @@ begin  -- architecture behavioral
       reg_data(561)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(90).RX_RESETS.reset_pll_and_datapath;
       reg_data(561)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(90).RX_RESETS.reset_datapath;
       reg_data(561)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(90).RX_RESETS.reset_bufbypass;
+      reg_data(563)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(91).DRP.wr_en;
       reg_data(564)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(91).DRP.wr_addr;
       reg_data(564)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(91).DRP.en;
       reg_data(565)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(91).DRP.wr_data;
@@ -6450,6 +6552,7 @@ begin  -- architecture behavioral
       reg_data(567)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(91).RX_RESETS.reset_pll_and_datapath;
       reg_data(567)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(91).RX_RESETS.reset_datapath;
       reg_data(567)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(91).RX_RESETS.reset_bufbypass;
+      reg_data(569)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(92).DRP.wr_en;
       reg_data(570)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(92).DRP.wr_addr;
       reg_data(570)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(92).DRP.en;
       reg_data(571)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(92).DRP.wr_data;
@@ -6461,6 +6564,7 @@ begin  -- architecture behavioral
       reg_data(573)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(92).RX_RESETS.reset_pll_and_datapath;
       reg_data(573)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(92).RX_RESETS.reset_datapath;
       reg_data(573)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(92).RX_RESETS.reset_bufbypass;
+      reg_data(575)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(93).DRP.wr_en;
       reg_data(576)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(93).DRP.wr_addr;
       reg_data(576)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(93).DRP.en;
       reg_data(577)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(93).DRP.wr_data;
@@ -6472,6 +6576,7 @@ begin  -- architecture behavioral
       reg_data(579)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(93).RX_RESETS.reset_pll_and_datapath;
       reg_data(579)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(93).RX_RESETS.reset_datapath;
       reg_data(579)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(93).RX_RESETS.reset_bufbypass;
+      reg_data(581)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(94).DRP.wr_en;
       reg_data(582)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(94).DRP.wr_addr;
       reg_data(582)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(94).DRP.en;
       reg_data(583)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(94).DRP.wr_data;
@@ -6483,6 +6588,7 @@ begin  -- architecture behavioral
       reg_data(585)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(94).RX_RESETS.reset_pll_and_datapath;
       reg_data(585)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(94).RX_RESETS.reset_datapath;
       reg_data(585)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(94).RX_RESETS.reset_bufbypass;
+      reg_data(587)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(95).DRP.wr_en;
       reg_data(588)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(95).DRP.wr_addr;
       reg_data(588)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(95).DRP.en;
       reg_data(589)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(95).DRP.wr_data;
@@ -6494,6 +6600,7 @@ begin  -- architecture behavioral
       reg_data(591)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(95).RX_RESETS.reset_pll_and_datapath;
       reg_data(591)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(95).RX_RESETS.reset_datapath;
       reg_data(591)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(95).RX_RESETS.reset_bufbypass;
+      reg_data(593)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(96).DRP.wr_en;
       reg_data(594)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(96).DRP.wr_addr;
       reg_data(594)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(96).DRP.en;
       reg_data(595)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(96).DRP.wr_data;
@@ -6505,6 +6612,7 @@ begin  -- architecture behavioral
       reg_data(597)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(96).RX_RESETS.reset_pll_and_datapath;
       reg_data(597)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(96).RX_RESETS.reset_datapath;
       reg_data(597)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(96).RX_RESETS.reset_bufbypass;
+      reg_data(599)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(97).DRP.wr_en;
       reg_data(600)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(97).DRP.wr_addr;
       reg_data(600)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(97).DRP.en;
       reg_data(601)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(97).DRP.wr_data;
@@ -6516,6 +6624,7 @@ begin  -- architecture behavioral
       reg_data(603)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(97).RX_RESETS.reset_pll_and_datapath;
       reg_data(603)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(97).RX_RESETS.reset_datapath;
       reg_data(603)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(97).RX_RESETS.reset_bufbypass;
+      reg_data(605)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(98).DRP.wr_en;
       reg_data(606)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(98).DRP.wr_addr;
       reg_data(606)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(98).DRP.en;
       reg_data(607)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(98).DRP.wr_data;
@@ -6527,6 +6636,7 @@ begin  -- architecture behavioral
       reg_data(609)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(98).RX_RESETS.reset_pll_and_datapath;
       reg_data(609)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(98).RX_RESETS.reset_datapath;
       reg_data(609)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(98).RX_RESETS.reset_bufbypass;
+      reg_data(611)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(99).DRP.wr_en;
       reg_data(612)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(99).DRP.wr_addr;
       reg_data(612)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(99).DRP.en;
       reg_data(613)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(99).DRP.wr_data;
@@ -6538,6 +6648,7 @@ begin  -- architecture behavioral
       reg_data(615)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(99).RX_RESETS.reset_pll_and_datapath;
       reg_data(615)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(99).RX_RESETS.reset_datapath;
       reg_data(615)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(99).RX_RESETS.reset_bufbypass;
+      reg_data(617)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(100).DRP.wr_en;
       reg_data(618)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(100).DRP.wr_addr;
       reg_data(618)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(100).DRP.en;
       reg_data(619)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(100).DRP.wr_data;
@@ -6549,6 +6660,7 @@ begin  -- architecture behavioral
       reg_data(621)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(100).RX_RESETS.reset_pll_and_datapath;
       reg_data(621)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(100).RX_RESETS.reset_datapath;
       reg_data(621)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(100).RX_RESETS.reset_bufbypass;
+      reg_data(623)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(101).DRP.wr_en;
       reg_data(624)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(101).DRP.wr_addr;
       reg_data(624)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(101).DRP.en;
       reg_data(625)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(101).DRP.wr_data;
@@ -6560,6 +6672,7 @@ begin  -- architecture behavioral
       reg_data(627)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(101).RX_RESETS.reset_pll_and_datapath;
       reg_data(627)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(101).RX_RESETS.reset_datapath;
       reg_data(627)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(101).RX_RESETS.reset_bufbypass;
+      reg_data(629)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(102).DRP.wr_en;
       reg_data(630)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(102).DRP.wr_addr;
       reg_data(630)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(102).DRP.en;
       reg_data(631)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(102).DRP.wr_data;
@@ -6571,6 +6684,7 @@ begin  -- architecture behavioral
       reg_data(633)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(102).RX_RESETS.reset_pll_and_datapath;
       reg_data(633)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(102).RX_RESETS.reset_datapath;
       reg_data(633)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(102).RX_RESETS.reset_bufbypass;
+      reg_data(635)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(103).DRP.wr_en;
       reg_data(636)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(103).DRP.wr_addr;
       reg_data(636)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(103).DRP.en;
       reg_data(637)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(103).DRP.wr_data;
@@ -6582,6 +6696,7 @@ begin  -- architecture behavioral
       reg_data(639)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(103).RX_RESETS.reset_pll_and_datapath;
       reg_data(639)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(103).RX_RESETS.reset_datapath;
       reg_data(639)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(103).RX_RESETS.reset_bufbypass;
+      reg_data(641)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(104).DRP.wr_en;
       reg_data(642)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(104).DRP.wr_addr;
       reg_data(642)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(104).DRP.en;
       reg_data(643)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(104).DRP.wr_data;
@@ -6593,6 +6708,7 @@ begin  -- architecture behavioral
       reg_data(645)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(104).RX_RESETS.reset_pll_and_datapath;
       reg_data(645)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(104).RX_RESETS.reset_datapath;
       reg_data(645)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(104).RX_RESETS.reset_bufbypass;
+      reg_data(647)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(105).DRP.wr_en;
       reg_data(648)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(105).DRP.wr_addr;
       reg_data(648)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(105).DRP.en;
       reg_data(649)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(105).DRP.wr_data;
@@ -6604,6 +6720,7 @@ begin  -- architecture behavioral
       reg_data(651)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(105).RX_RESETS.reset_pll_and_datapath;
       reg_data(651)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(105).RX_RESETS.reset_datapath;
       reg_data(651)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(105).RX_RESETS.reset_bufbypass;
+      reg_data(653)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(106).DRP.wr_en;
       reg_data(654)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(106).DRP.wr_addr;
       reg_data(654)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(106).DRP.en;
       reg_data(655)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(106).DRP.wr_data;
@@ -6615,6 +6732,7 @@ begin  -- architecture behavioral
       reg_data(657)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(106).RX_RESETS.reset_pll_and_datapath;
       reg_data(657)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(106).RX_RESETS.reset_datapath;
       reg_data(657)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(106).RX_RESETS.reset_bufbypass;
+      reg_data(659)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(107).DRP.wr_en;
       reg_data(660)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(107).DRP.wr_addr;
       reg_data(660)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(107).DRP.en;
       reg_data(661)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(107).DRP.wr_data;
@@ -6626,6 +6744,7 @@ begin  -- architecture behavioral
       reg_data(663)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(107).RX_RESETS.reset_pll_and_datapath;
       reg_data(663)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(107).RX_RESETS.reset_datapath;
       reg_data(663)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(107).RX_RESETS.reset_bufbypass;
+      reg_data(665)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(108).DRP.wr_en;
       reg_data(666)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(108).DRP.wr_addr;
       reg_data(666)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(108).DRP.en;
       reg_data(667)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(108).DRP.wr_data;
@@ -6637,6 +6756,7 @@ begin  -- architecture behavioral
       reg_data(669)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(108).RX_RESETS.reset_pll_and_datapath;
       reg_data(669)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(108).RX_RESETS.reset_datapath;
       reg_data(669)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(108).RX_RESETS.reset_bufbypass;
+      reg_data(671)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(109).DRP.wr_en;
       reg_data(672)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(109).DRP.wr_addr;
       reg_data(672)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(109).DRP.en;
       reg_data(673)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(109).DRP.wr_data;
@@ -6648,6 +6768,7 @@ begin  -- architecture behavioral
       reg_data(675)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(109).RX_RESETS.reset_pll_and_datapath;
       reg_data(675)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(109).RX_RESETS.reset_datapath;
       reg_data(675)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(109).RX_RESETS.reset_bufbypass;
+      reg_data(677)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(110).DRP.wr_en;
       reg_data(678)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(110).DRP.wr_addr;
       reg_data(678)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(110).DRP.en;
       reg_data(679)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(110).DRP.wr_data;
@@ -6659,6 +6780,7 @@ begin  -- architecture behavioral
       reg_data(681)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(110).RX_RESETS.reset_pll_and_datapath;
       reg_data(681)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(110).RX_RESETS.reset_datapath;
       reg_data(681)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(110).RX_RESETS.reset_bufbypass;
+      reg_data(683)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(111).DRP.wr_en;
       reg_data(684)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(111).DRP.wr_addr;
       reg_data(684)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(111).DRP.en;
       reg_data(685)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(111).DRP.wr_data;
@@ -6670,6 +6792,7 @@ begin  -- architecture behavioral
       reg_data(687)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(111).RX_RESETS.reset_pll_and_datapath;
       reg_data(687)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(111).RX_RESETS.reset_datapath;
       reg_data(687)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(111).RX_RESETS.reset_bufbypass;
+      reg_data(689)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(112).DRP.wr_en;
       reg_data(690)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(112).DRP.wr_addr;
       reg_data(690)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(112).DRP.en;
       reg_data(691)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(112).DRP.wr_data;
@@ -6681,6 +6804,7 @@ begin  -- architecture behavioral
       reg_data(693)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(112).RX_RESETS.reset_pll_and_datapath;
       reg_data(693)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(112).RX_RESETS.reset_datapath;
       reg_data(693)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(112).RX_RESETS.reset_bufbypass;
+      reg_data(695)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(113).DRP.wr_en;
       reg_data(696)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(113).DRP.wr_addr;
       reg_data(696)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(113).DRP.en;
       reg_data(697)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(113).DRP.wr_data;
@@ -6692,6 +6816,7 @@ begin  -- architecture behavioral
       reg_data(699)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(113).RX_RESETS.reset_pll_and_datapath;
       reg_data(699)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(113).RX_RESETS.reset_datapath;
       reg_data(699)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(113).RX_RESETS.reset_bufbypass;
+      reg_data(701)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(114).DRP.wr_en;
       reg_data(702)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(114).DRP.wr_addr;
       reg_data(702)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(114).DRP.en;
       reg_data(703)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(114).DRP.wr_data;
@@ -6703,6 +6828,7 @@ begin  -- architecture behavioral
       reg_data(705)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(114).RX_RESETS.reset_pll_and_datapath;
       reg_data(705)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(114).RX_RESETS.reset_datapath;
       reg_data(705)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(114).RX_RESETS.reset_bufbypass;
+      reg_data(707)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(115).DRP.wr_en;
       reg_data(708)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(115).DRP.wr_addr;
       reg_data(708)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(115).DRP.en;
       reg_data(709)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(115).DRP.wr_data;
@@ -6714,6 +6840,7 @@ begin  -- architecture behavioral
       reg_data(711)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(115).RX_RESETS.reset_pll_and_datapath;
       reg_data(711)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(115).RX_RESETS.reset_datapath;
       reg_data(711)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(115).RX_RESETS.reset_bufbypass;
+      reg_data(713)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(116).DRP.wr_en;
       reg_data(714)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(116).DRP.wr_addr;
       reg_data(714)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(116).DRP.en;
       reg_data(715)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(116).DRP.wr_data;
@@ -6725,6 +6852,7 @@ begin  -- architecture behavioral
       reg_data(717)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(116).RX_RESETS.reset_pll_and_datapath;
       reg_data(717)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(116).RX_RESETS.reset_datapath;
       reg_data(717)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(116).RX_RESETS.reset_bufbypass;
+      reg_data(719)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(117).DRP.wr_en;
       reg_data(720)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(117).DRP.wr_addr;
       reg_data(720)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(117).DRP.en;
       reg_data(721)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(117).DRP.wr_data;
@@ -6736,6 +6864,7 @@ begin  -- architecture behavioral
       reg_data(723)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(117).RX_RESETS.reset_pll_and_datapath;
       reg_data(723)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(117).RX_RESETS.reset_datapath;
       reg_data(723)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(117).RX_RESETS.reset_bufbypass;
+      reg_data(725)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(118).DRP.wr_en;
       reg_data(726)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(118).DRP.wr_addr;
       reg_data(726)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(118).DRP.en;
       reg_data(727)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(118).DRP.wr_data;
@@ -6747,6 +6876,7 @@ begin  -- architecture behavioral
       reg_data(729)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(118).RX_RESETS.reset_pll_and_datapath;
       reg_data(729)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(118).RX_RESETS.reset_datapath;
       reg_data(729)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(118).RX_RESETS.reset_bufbypass;
+      reg_data(731)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(119).DRP.wr_en;
       reg_data(732)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(119).DRP.wr_addr;
       reg_data(732)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(119).DRP.en;
       reg_data(733)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(119).DRP.wr_data;
@@ -6758,6 +6888,7 @@ begin  -- architecture behavioral
       reg_data(735)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(119).RX_RESETS.reset_pll_and_datapath;
       reg_data(735)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(119).RX_RESETS.reset_datapath;
       reg_data(735)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(119).RX_RESETS.reset_bufbypass;
+      reg_data(737)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(120).DRP.wr_en;
       reg_data(738)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(120).DRP.wr_addr;
       reg_data(738)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(120).DRP.en;
       reg_data(739)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(120).DRP.wr_data;
@@ -6769,6 +6900,7 @@ begin  -- architecture behavioral
       reg_data(741)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(120).RX_RESETS.reset_pll_and_datapath;
       reg_data(741)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(120).RX_RESETS.reset_datapath;
       reg_data(741)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(120).RX_RESETS.reset_bufbypass;
+      reg_data(743)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(121).DRP.wr_en;
       reg_data(744)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(121).DRP.wr_addr;
       reg_data(744)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(121).DRP.en;
       reg_data(745)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(121).DRP.wr_data;
@@ -6780,6 +6912,7 @@ begin  -- architecture behavioral
       reg_data(747)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(121).RX_RESETS.reset_pll_and_datapath;
       reg_data(747)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(121).RX_RESETS.reset_datapath;
       reg_data(747)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(121).RX_RESETS.reset_bufbypass;
+      reg_data(749)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(122).DRP.wr_en;
       reg_data(750)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(122).DRP.wr_addr;
       reg_data(750)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(122).DRP.en;
       reg_data(751)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(122).DRP.wr_data;
@@ -6791,6 +6924,7 @@ begin  -- architecture behavioral
       reg_data(753)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(122).RX_RESETS.reset_pll_and_datapath;
       reg_data(753)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(122).RX_RESETS.reset_datapath;
       reg_data(753)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(122).RX_RESETS.reset_bufbypass;
+      reg_data(755)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(123).DRP.wr_en;
       reg_data(756)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(123).DRP.wr_addr;
       reg_data(756)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(123).DRP.en;
       reg_data(757)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(123).DRP.wr_data;
@@ -6802,6 +6936,7 @@ begin  -- architecture behavioral
       reg_data(759)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(123).RX_RESETS.reset_pll_and_datapath;
       reg_data(759)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(123).RX_RESETS.reset_datapath;
       reg_data(759)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(123).RX_RESETS.reset_bufbypass;
+      reg_data(761)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(124).DRP.wr_en;
       reg_data(762)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(124).DRP.wr_addr;
       reg_data(762)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(124).DRP.en;
       reg_data(763)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(124).DRP.wr_data;
@@ -6813,6 +6948,7 @@ begin  -- architecture behavioral
       reg_data(765)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(124).RX_RESETS.reset_pll_and_datapath;
       reg_data(765)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(124).RX_RESETS.reset_datapath;
       reg_data(765)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(124).RX_RESETS.reset_bufbypass;
+      reg_data(767)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(125).DRP.wr_en;
       reg_data(768)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(125).DRP.wr_addr;
       reg_data(768)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(125).DRP.en;
       reg_data(769)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(125).DRP.wr_data;
@@ -6824,6 +6960,7 @@ begin  -- architecture behavioral
       reg_data(771)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(125).RX_RESETS.reset_pll_and_datapath;
       reg_data(771)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(125).RX_RESETS.reset_datapath;
       reg_data(771)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(125).RX_RESETS.reset_bufbypass;
+      reg_data(773)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(126).DRP.wr_en;
       reg_data(774)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(126).DRP.wr_addr;
       reg_data(774)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(126).DRP.en;
       reg_data(775)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(126).DRP.wr_data;
@@ -6835,6 +6972,7 @@ begin  -- architecture behavioral
       reg_data(777)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(126).RX_RESETS.reset_pll_and_datapath;
       reg_data(777)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(126).RX_RESETS.reset_datapath;
       reg_data(777)( 3)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(126).RX_RESETS.reset_bufbypass;
+      reg_data(779)( 0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(127).DRP.wr_en;
       reg_data(780)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(127).DRP.wr_addr;
       reg_data(780)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(127).DRP.en;
       reg_data(781)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(127).DRP.wr_data;

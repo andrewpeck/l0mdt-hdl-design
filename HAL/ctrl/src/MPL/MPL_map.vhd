@@ -10,9 +10,12 @@ use work.types.all;
 
 use work.MPL_Ctrl.all;
 use work.MPL_Ctrl_DEF.all;
+
+
 entity MPL_map is
   generic (
-    READ_TIMEOUT     : integer := 2048
+    READ_TIMEOUT     : integer := 2048;
+    ALLOCATED_MEMORY_RANGE : integer 
     );
   port (
     clk_axi          : in  std_logic;
@@ -49,6 +52,13 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
+  assert ((4*332) <= ALLOCATED_MEMORY_RANGE)
+    report "MPL: Regmap addressing range " & integer'image(4*332) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity ERROR;
+  assert ((4*332) > ALLOCATED_MEMORY_RANGE)
+    report "MPL: Regmap addressing range " & integer'image(4*332) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity NOTE;
+
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
@@ -330,10 +340,18 @@ begin  -- architecture behavioral
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
+      reg_data(16)( 0)  <= DEFAULT_MPL_CTRL_t.SUPER.ACTIONS.RESET;
+      reg_data(16)( 1)  <= DEFAULT_MPL_CTRL_t.SUPER.ACTIONS.ENABLE;
+      reg_data(16)( 2)  <= DEFAULT_MPL_CTRL_t.SUPER.ACTIONS.DISABLE;
+      reg_data(16)( 3)  <= DEFAULT_MPL_CTRL_t.SUPER.ACTIONS.FREEZE;
       reg_data(17)( 3 downto  0)  <= DEFAULT_MPL_CTRL_t.SUPER.CONFIGS.THREADS;
       reg_data(17)( 4)  <= DEFAULT_MPL_CTRL_t.SUPER.CONFIGS.INPUT_EN;
       reg_data(17)( 5)  <= DEFAULT_MPL_CTRL_t.SUPER.CONFIGS.OUTPUT_EN;
       reg_data(17)( 6)  <= DEFAULT_MPL_CTRL_t.SUPER.CONFIGS.FLUSH_MEM_RESET;
+      reg_data(256)( 0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.wr_req;
+      reg_data(256)( 1)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.wr_ack;
+      reg_data(256)( 2)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.rd_req;
+      reg_data(256)( 3)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.rd_ack;
       reg_data(256)( 4)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.flush_req;
       reg_data(256)( 5)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.freeze_req;
       reg_data(256)( 8 downto  6)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.mem_sel;
@@ -344,6 +362,10 @@ begin  -- architecture behavioral
       reg_data(261)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).wr_data.wr_data_2;
       reg_data(262)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).wr_data.wr_data_3;
       reg_data(263)(19 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).wr_data.wr_data_4;
+      reg_data(272)( 0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.wr_req;
+      reg_data(272)( 1)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.wr_ack;
+      reg_data(272)( 2)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.rd_req;
+      reg_data(272)( 3)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.rd_ack;
       reg_data(272)( 4)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.flush_req;
       reg_data(272)( 5)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.freeze_req;
       reg_data(272)( 8 downto  6)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.mem_sel;
@@ -354,6 +376,10 @@ begin  -- architecture behavioral
       reg_data(277)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).wr_data.wr_data_2;
       reg_data(278)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).wr_data.wr_data_3;
       reg_data(279)(19 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).wr_data.wr_data_4;
+      reg_data(288)( 0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.wr_req;
+      reg_data(288)( 1)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.wr_ack;
+      reg_data(288)( 2)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.rd_req;
+      reg_data(288)( 3)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.rd_ack;
       reg_data(288)( 4)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.flush_req;
       reg_data(288)( 5)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.freeze_req;
       reg_data(288)( 8 downto  6)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.mem_sel;
@@ -364,6 +390,10 @@ begin  -- architecture behavioral
       reg_data(293)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).wr_data.wr_data_2;
       reg_data(294)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).wr_data.wr_data_3;
       reg_data(295)(19 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).wr_data.wr_data_4;
+      reg_data(304)( 0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.wr_req;
+      reg_data(304)( 1)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.wr_ack;
+      reg_data(304)( 2)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.rd_req;
+      reg_data(304)( 3)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.rd_ack;
       reg_data(304)( 4)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.flush_req;
       reg_data(304)( 5)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.freeze_req;
       reg_data(304)( 8 downto  6)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.mem_sel;
@@ -374,6 +404,10 @@ begin  -- architecture behavioral
       reg_data(309)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).wr_data.wr_data_2;
       reg_data(310)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).wr_data.wr_data_3;
       reg_data(311)(19 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).wr_data.wr_data_4;
+      reg_data(320)( 0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.wr_req;
+      reg_data(320)( 1)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.wr_ack;
+      reg_data(320)( 2)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.rd_req;
+      reg_data(320)( 3)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.rd_ack;
       reg_data(320)( 4)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.flush_req;
       reg_data(320)( 5)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.freeze_req;
       reg_data(320)( 8 downto  6)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.mem_sel;
