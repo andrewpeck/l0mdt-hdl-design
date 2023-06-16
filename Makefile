@@ -69,7 +69,7 @@ clean_regmap:
 
 # Updates the yml2hdl type system
 types:
-	python3 tools/gldl-scripts/yml2hdl.sh -p UserLogic
+	./tools/gldl-scripts/yml2hdl.sh -p UserLogic
 # make -C shared/types
 
 ################################################################################
