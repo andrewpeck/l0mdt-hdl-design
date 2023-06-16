@@ -1,11 +1,11 @@
-cocotb_test:test_compile:
+cocotb_test:compile:
     extends: .cocotb_test
     stage: user_pre
     allow_failure: false
     interruptible: true
     variables:
         extends: .vars
-        COCOTB_TEST: lsf_inn
+        COCOTB_TEST: dummy
         PROJECT_NAME: tools/cocotb/
 
 cocotb_test:test_lsf_inn:
