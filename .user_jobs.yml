@@ -59,6 +59,7 @@ check_auto_generated_code:
     <<: *chk_variables
   stage: user_pre
   script:
+    - python --version
     - export LD_LIBRARY_PATH=/opt/cactus/lib:$LD_LIBRARY_PATH
     - make all
     - echo "Checking Git differences..."
