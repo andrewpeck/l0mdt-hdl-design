@@ -51,9 +51,9 @@ entity sector_logic_link_wrapper is
     pipeline_clock : in std_logic;
     reset          : in std_logic;
 
-    -- 32 bits / bx from mgt
+    -- 32 bits / usrclk from mgt
     sl_rx_mgt_word_array_i : in  std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-    -- 32 bits / bx to mgt
+    -- 32 bits / usrclk to mgt
     sl_tx_mgt_word_array_o : out std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
     -- Data from SL
