@@ -65,7 +65,7 @@ check_auto_generated_code:
     - sed -i 's|python3|python3.11|' ./tools/gldl-scripts/yml2hdl.sh
     - make all
     - echo "Checking Git differences..."
-    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile' ':(exclude)tools/gldl-scripts/yml2hdl.sh'
+    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile' ':(exclude)tools/gldl-scripts'
   interruptible: true
 
 .user_sim: &user_sim
