@@ -61,9 +61,10 @@ check_auto_generated_code:
   script:
     - python3 --version
     - export LD_LIBRARY_PATH=/opt/cactus/lib:$LD_LIBRARY_PATH
+    - sed -i 's/python3 tools/yml2hdl/yml2hdl.py/python3.11 tools/yml2hdl/yml2hdl.py/' Makefile
     - make all
     - echo "Checking Git differences..."
-    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables'
+    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile'
   interruptible: true
 
 .user_sim: &user_sim
