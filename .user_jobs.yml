@@ -215,5 +215,11 @@ check_auto_generated_code:
     - cd tools/cocotb/
     - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
     - tb run test_config/config_${COCOTB_TEST}.json 2>&1 | tee cocotb_run.log
-    - echo ${CHECK_COMMAND}
-    - $CHECK_COMMAND
+    #
+    # Helper to set return code 
+    - function set_return() { return ${1:-0}; }
+    # Check if cocotb process started (i.e. compilation succeeded)
+    - grep -Eq "INFO +cocotb +Running" cocotb_run.log
+    # Check result of cocotb test
+    - if `((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )` ; then set_return 0 ; else set_return 99 ; fi
+
