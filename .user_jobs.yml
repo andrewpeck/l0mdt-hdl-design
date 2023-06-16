@@ -54,11 +54,12 @@
 check_auto_generated_code:
   <<: *only-default
   <<: *tag-sr
-  image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
+  image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:centos
   variables:
     <<: *chk_variables
   stage: user_pre
   script:
+    - export LD_LIBRARY_PATH=/opt/cactus/lib:$LD_LIBRARY_PATH
     - make all
     - echo "Checking Git differences..."
     - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables'
