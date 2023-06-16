@@ -237,7 +237,8 @@ begin
                  g_NBITS_STREAM_HDR_COUNTER_ARRAY    => (0 => 16),
                  g_NBITS_STREAM_HDR_USER_ARRAY       => (0 => i_station_usr_hdr'length),
                  g_OUTPUT_LINKS                      => g_OUTPUT_LINKS,
-                 g_NBITS_SNAPSHOT                    => 40)
+                 g_NBITS_SNAPSHOT                    => 40,
+                 g_FORMAT_VERSION                    => 1)
     ----------------------------------------------------------------------------
     port map (i_sys_clk_fast => clock_and_control.clk, -- : in std_logic;
               i_sys_rst      => clock_and_control.rst, -- : in std_logic;
