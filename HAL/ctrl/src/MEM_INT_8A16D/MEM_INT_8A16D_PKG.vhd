@@ -30,9 +30,9 @@ package MEM_INT_8A16D_CTRL is
       rd_ack : std_logic;
       flush_req : std_logic;
       freeze_req : std_logic;
-      mem_sel : std_logic_vector(3 - 1 downto 0);
+      mem_sel : std_logic;
    end record MEM_INT_8A16D_SIGNALS_CTRL_t;
-   attribute w of MEM_INT_8A16D_SIGNALS_CTRL_t : type is 9;
+   attribute w of MEM_INT_8A16D_SIGNALS_CTRL_t : type is 7;
    function width(x: MEM_INT_8A16D_SIGNALS_CTRL_t) return natural;
    function convert(x: MEM_INT_8A16D_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MEM_INT_8A16D_SIGNALS_CTRL_t) return MEM_INT_8A16D_SIGNALS_CTRL_t;
@@ -72,7 +72,7 @@ package MEM_INT_8A16D_CTRL is
       rd_addr : std_logic_vector(8 - 1 downto 0);
       wr_data : MEM_INT_8A16D_wr_data_CTRL_t;
    end record MEM_INT_8A16D_CTRL_t;
-   attribute w of MEM_INT_8A16D_CTRL_t : type is 41;
+   attribute w of MEM_INT_8A16D_CTRL_t : type is 39;
    function width(x: MEM_INT_8A16D_CTRL_t) return natural;
    function convert(x: MEM_INT_8A16D_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MEM_INT_8A16D_CTRL_t) return MEM_INT_8A16D_CTRL_t;

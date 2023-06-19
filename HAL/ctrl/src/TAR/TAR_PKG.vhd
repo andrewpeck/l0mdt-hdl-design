@@ -65,9 +65,9 @@ package TAR_CTRL is
       rd_ack : std_logic;
       flush_req : std_logic;
       freeze_req : std_logic;
-      mem_sel : std_logic_vector(3 - 1 downto 0);
+      mem_sel : std_logic;
    end record TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t;
-   attribute w of TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t : type is 9;
+   attribute w of TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t : type is 7;
    function width(x: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t) return natural;
    function convert(x: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_MEM_SIGNALS_CTRL_t;
@@ -118,14 +118,14 @@ package TAR_CTRL is
       rd_addr : std_logic_vector(12 - 1 downto 0);
       wr_data : TAR_PL_ST_PL_MEM_wr_data_CTRL_t;
    end record TAR_PL_ST_PL_MEM_CTRL_t;
-   attribute w of TAR_PL_ST_PL_MEM_CTRL_t : type is 75;
+   attribute w of TAR_PL_ST_PL_MEM_CTRL_t : type is 73;
    function width(x: TAR_PL_ST_PL_MEM_CTRL_t) return natural;
    function convert(x: TAR_PL_ST_PL_MEM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_CTRL_t) return TAR_PL_ST_PL_MEM_CTRL_t;
    function zero(tpl: TAR_PL_ST_PL_MEM_CTRL_t) return TAR_PL_ST_PL_MEM_CTRL_t;
 
    type TAR_PL_ST_PL_MEM_CTRL_t_ARRAY is array(6 -1 downto 0) of TAR_PL_ST_PL_MEM_CTRL_t;
-   attribute w of TAR_PL_ST_PL_MEM_CTRL_t_ARRAY : type is 450;
+   attribute w of TAR_PL_ST_PL_MEM_CTRL_t_ARRAY : type is 438;
    function width(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return integer;
    function convert(x: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_PL_MEM_CTRL_t_ARRAY) return TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
@@ -145,7 +145,7 @@ package TAR_CTRL is
    type TAR_PL_ST_CTRL_t is record
       PL_MEM : TAR_PL_ST_PL_MEM_CTRL_t_ARRAY;
    end record TAR_PL_ST_CTRL_t;
-   attribute w of TAR_PL_ST_CTRL_t : type is 450;
+   attribute w of TAR_PL_ST_CTRL_t : type is 438;
    function width(x: TAR_PL_ST_CTRL_t) return natural;
    function convert(x: TAR_PL_ST_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_PL_ST_CTRL_t) return TAR_PL_ST_CTRL_t;
@@ -166,7 +166,7 @@ package TAR_CTRL is
       CONFIGS : TAR_CONFIGS_CTRL_t;
       PL_ST : TAR_PL_ST_CTRL_t;
    end record TAR_CTRL_t;
-   attribute w of TAR_CTRL_t : type is 457;
+   attribute w of TAR_CTRL_t : type is 445;
    function width(x: TAR_CTRL_t) return natural;
    function convert(x: TAR_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: TAR_CTRL_t) return TAR_CTRL_t;

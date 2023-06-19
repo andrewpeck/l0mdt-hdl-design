@@ -21,7 +21,7 @@ types:
   - rd_ack : { type: logic }
   - flush_req : { type: logic }
   - freeze_req : { type: logic }
-  - mem_sel : { type: logic, range : [ 3 - 1 , 0 ] }
+  - mem_sel : { type: logic }
 
 
 - MEM_INT_4A17D_wr_data_CTRL_t:

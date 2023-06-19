@@ -30,9 +30,9 @@ package APB_MEM_SIG_CTRL is
       rd_ack : std_logic;
       flush_req : std_logic;
       freeze_req : std_logic;
-      mem_sel : std_logic_vector(3 - 1 downto 0);
+      mem_sel : std_logic;
    end record APB_MEM_SIG_CTRL_t;
-   attribute w of APB_MEM_SIG_CTRL_t : type is 9;
+   attribute w of APB_MEM_SIG_CTRL_t : type is 7;
    function width(x: APB_MEM_SIG_CTRL_t) return natural;
    function convert(x: APB_MEM_SIG_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: APB_MEM_SIG_CTRL_t) return APB_MEM_SIG_CTRL_t;

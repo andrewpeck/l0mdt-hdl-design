@@ -85,9 +85,9 @@ package MPL_CTRL is
       rd_ack : std_logic;
       flush_req : std_logic;
       freeze_req : std_logic;
-      mem_sel : std_logic_vector(3 - 1 downto 0);
+      mem_sel : std_logic;
    end record MPL_PL_MEM_PL_MEM_SIGNALS_CTRL_t;
-   attribute w of MPL_PL_MEM_PL_MEM_SIGNALS_CTRL_t : type is 9;
+   attribute w of MPL_PL_MEM_PL_MEM_SIGNALS_CTRL_t : type is 7;
    function width(x: MPL_PL_MEM_PL_MEM_SIGNALS_CTRL_t) return natural;
    function convert(x: MPL_PL_MEM_PL_MEM_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MPL_PL_MEM_PL_MEM_SIGNALS_CTRL_t) return MPL_PL_MEM_PL_MEM_SIGNALS_CTRL_t;
@@ -144,14 +144,14 @@ package MPL_CTRL is
       rd_addr : std_logic_vector(12 - 1 downto 0);
       wr_data : MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
    end record MPL_PL_MEM_PL_MEM_CTRL_t;
-   attribute w of MPL_PL_MEM_PL_MEM_CTRL_t : type is 181;
+   attribute w of MPL_PL_MEM_PL_MEM_CTRL_t : type is 179;
    function width(x: MPL_PL_MEM_PL_MEM_CTRL_t) return natural;
    function convert(x: MPL_PL_MEM_PL_MEM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MPL_PL_MEM_PL_MEM_CTRL_t) return MPL_PL_MEM_PL_MEM_CTRL_t;
    function zero(tpl: MPL_PL_MEM_PL_MEM_CTRL_t) return MPL_PL_MEM_PL_MEM_CTRL_t;
 
    type MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY is array(5 -1 downto 0) of MPL_PL_MEM_PL_MEM_CTRL_t;
-   attribute w of MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY : type is 905;
+   attribute w of MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY : type is 895;
    function width(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return integer;
    function convert(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
@@ -171,7 +171,7 @@ package MPL_CTRL is
    type MPL_PL_MEM_CTRL_t is record
       PL_MEM : MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
    end record MPL_PL_MEM_CTRL_t;
-   attribute w of MPL_PL_MEM_CTRL_t : type is 905;
+   attribute w of MPL_PL_MEM_CTRL_t : type is 895;
    function width(x: MPL_PL_MEM_CTRL_t) return natural;
    function convert(x: MPL_PL_MEM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MPL_PL_MEM_CTRL_t) return MPL_PL_MEM_CTRL_t;
@@ -191,7 +191,7 @@ package MPL_CTRL is
       SUPER : MPL_SUPER_CTRL_t;
       PL_MEM : MPL_PL_MEM_CTRL_t;
    end record MPL_CTRL_t;
-   attribute w of MPL_CTRL_t : type is 916;
+   attribute w of MPL_CTRL_t : type is 906;
    function width(x: MPL_CTRL_t) return natural;
    function convert(x: MPL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: MPL_CTRL_t) return MPL_CTRL_t;

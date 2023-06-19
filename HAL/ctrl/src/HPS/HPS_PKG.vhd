@@ -84,9 +84,9 @@ package HPS_CTRL is
       rd_ack : std_logic;
       flush_req : std_logic;
       freeze_req : std_logic;
-      mem_sel : std_logic_vector(3 - 1 downto 0);
+      mem_sel : std_logic;
    end record HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t;
-   attribute w of HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t : type is 9;
+   attribute w of HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t : type is 7;
    function width(x: HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t) return natural;
    function convert(x: HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t) return HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t;
@@ -137,14 +137,14 @@ package HPS_CTRL is
       rd_addr : std_logic_vector(10 - 1 downto 0);
       wr_data : HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
    end record HPS_MDT_TC_MDT_TC_CTRL_t;
-   attribute w of HPS_MDT_TC_MDT_TC_CTRL_t : type is 67;
+   attribute w of HPS_MDT_TC_MDT_TC_CTRL_t : type is 65;
    function width(x: HPS_MDT_TC_MDT_TC_CTRL_t) return natural;
    function convert(x: HPS_MDT_TC_MDT_TC_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_MDT_TC_MDT_TC_CTRL_t) return HPS_MDT_TC_MDT_TC_CTRL_t;
    function zero(tpl: HPS_MDT_TC_MDT_TC_CTRL_t) return HPS_MDT_TC_MDT_TC_CTRL_t;
 
    type HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY is array(6 -1 downto 0) of HPS_MDT_TC_MDT_TC_CTRL_t;
-   attribute w of HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY : type is 402;
+   attribute w of HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY : type is 390;
    function width(x: HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY) return integer;
    function convert(x: HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY) return HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
@@ -164,7 +164,7 @@ package HPS_CTRL is
    type HPS_MDT_TC_CTRL_t is record
       MDT_TC : HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
    end record HPS_MDT_TC_CTRL_t;
-   attribute w of HPS_MDT_TC_CTRL_t : type is 402;
+   attribute w of HPS_MDT_TC_CTRL_t : type is 390;
    function width(x: HPS_MDT_TC_CTRL_t) return natural;
    function convert(x: HPS_MDT_TC_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_MDT_TC_CTRL_t) return HPS_MDT_TC_CTRL_t;
@@ -187,9 +187,9 @@ package HPS_CTRL is
       rd_ack : std_logic;
       flush_req : std_logic;
       freeze_req : std_logic;
-      mem_sel : std_logic_vector(3 - 1 downto 0);
+      mem_sel : std_logic;
    end record HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t;
-   attribute w of HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t : type is 9;
+   attribute w of HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t : type is 7;
    function width(x: HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t) return natural;
    function convert(x: HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t) return HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t;
@@ -238,14 +238,14 @@ package HPS_CTRL is
       rd_addr : std_logic_vector(4 - 1 downto 0);
       wr_data : HPS_MDT_T0_MDT_T0_wr_data_CTRL_t;
    end record HPS_MDT_T0_MDT_T0_CTRL_t;
-   attribute w of HPS_MDT_T0_MDT_T0_CTRL_t : type is 34;
+   attribute w of HPS_MDT_T0_MDT_T0_CTRL_t : type is 32;
    function width(x: HPS_MDT_T0_MDT_T0_CTRL_t) return natural;
    function convert(x: HPS_MDT_T0_MDT_T0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_MDT_T0_MDT_T0_CTRL_t) return HPS_MDT_T0_MDT_T0_CTRL_t;
    function zero(tpl: HPS_MDT_T0_MDT_T0_CTRL_t) return HPS_MDT_T0_MDT_T0_CTRL_t;
 
    type HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY is array(6 -1 downto 0) of HPS_MDT_T0_MDT_T0_CTRL_t;
-   attribute w of HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY : type is 204;
+   attribute w of HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY : type is 192;
    function width(x: HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY) return integer;
    function convert(x: HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY) return HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
@@ -265,7 +265,7 @@ package HPS_CTRL is
    type HPS_MDT_T0_CTRL_t is record
       MDT_T0 : HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
    end record HPS_MDT_T0_CTRL_t;
-   attribute w of HPS_MDT_T0_CTRL_t : type is 204;
+   attribute w of HPS_MDT_T0_CTRL_t : type is 192;
    function width(x: HPS_MDT_T0_CTRL_t) return natural;
    function convert(x: HPS_MDT_T0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_MDT_T0_CTRL_t) return HPS_MDT_T0_CTRL_t;
@@ -354,9 +354,9 @@ package HPS_CTRL is
       rd_ack : std_logic;
       flush_req : std_logic;
       freeze_req : std_logic;
-      mem_sel : std_logic_vector(3 - 1 downto 0);
+      mem_sel : std_logic;
    end record HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t;
-   attribute w of HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t : type is 9;
+   attribute w of HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t : type is 7;
    function width(x: HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t) return natural;
    function convert(x: HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t) return HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t;
@@ -398,7 +398,7 @@ package HPS_CTRL is
       rd_addr : std_logic_vector(10 - 1 downto 0);
       wr_data : HPS_HEG_HEG_CTRL_ROI_TC_wr_data_CTRL_t;
    end record HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t;
-   attribute w of HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t : type is 67;
+   attribute w of HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t : type is 65;
    function width(x: HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t) return natural;
    function convert(x: HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t) return HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t;
@@ -416,7 +416,7 @@ package HPS_CTRL is
    type HPS_HEG_HEG_CTRL_CTRL_t is record
       ROI_TC : HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t;
    end record HPS_HEG_HEG_CTRL_CTRL_t;
-   attribute w of HPS_HEG_HEG_CTRL_CTRL_t : type is 67;
+   attribute w of HPS_HEG_HEG_CTRL_CTRL_t : type is 65;
    function width(x: HPS_HEG_HEG_CTRL_CTRL_t) return natural;
    function convert(x: HPS_HEG_HEG_CTRL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_CTRL_CTRL_t) return HPS_HEG_HEG_CTRL_CTRL_t;
@@ -462,9 +462,9 @@ package HPS_CTRL is
       rd_ack : std_logic;
       flush_req : std_logic;
       freeze_req : std_logic;
-      mem_sel : std_logic_vector(3 - 1 downto 0);
+      mem_sel : std_logic;
    end record HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t;
-   attribute w of HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t : type is 9;
+   attribute w of HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t : type is 7;
    function width(x: HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t) return natural;
    function convert(x: HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t) return HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t;
@@ -504,7 +504,7 @@ package HPS_CTRL is
       rd_addr : std_logic_vector(10 - 1 downto 0);
       wr_data : HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t;
    end record HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
-   attribute w of HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t : type is 38;
+   attribute w of HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t : type is 36;
    function width(x: HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t) return natural;
    function convert(x: HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t) return HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
@@ -533,14 +533,14 @@ package HPS_CTRL is
       CONFIGS : HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t;
       MDT_DT2R : HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
    end record HPS_HEG_HEG_HP_HP_CTRL_t;
-   attribute w of HPS_HEG_HEG_HP_HP_CTRL_t : type is 45;
+   attribute w of HPS_HEG_HEG_HP_HP_CTRL_t : type is 43;
    function width(x: HPS_HEG_HEG_HP_HP_CTRL_t) return natural;
    function convert(x: HPS_HEG_HEG_HP_HP_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_HP_HP_CTRL_t) return HPS_HEG_HEG_HP_HP_CTRL_t;
    function zero(tpl: HPS_HEG_HEG_HP_HP_CTRL_t) return HPS_HEG_HEG_HP_HP_CTRL_t;
 
    type HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY is array(6 -1 downto 0) of HPS_HEG_HEG_HP_HP_CTRL_t;
-   attribute w of HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY : type is 270;
+   attribute w of HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY : type is 258;
    function width(x: HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY) return integer;
    function convert(x: HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY) return HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY;
@@ -560,7 +560,7 @@ package HPS_CTRL is
    type HPS_HEG_HEG_HP_CTRL_t is record
       HP : HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY;
    end record HPS_HEG_HEG_HP_CTRL_t;
-   attribute w of HPS_HEG_HEG_HP_CTRL_t : type is 270;
+   attribute w of HPS_HEG_HEG_HP_CTRL_t : type is 258;
    function width(x: HPS_HEG_HEG_HP_CTRL_t) return natural;
    function convert(x: HPS_HEG_HEG_HP_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_HP_CTRL_t) return HPS_HEG_HEG_HP_CTRL_t;
@@ -591,14 +591,14 @@ package HPS_CTRL is
       CTRL : HPS_HEG_HEG_CTRL_CTRL_t;
       HP : HPS_HEG_HEG_HP_CTRL_t;
    end record HPS_HEG_HEG_CTRL_t;
-   attribute w of HPS_HEG_HEG_CTRL_t : type is 344;
+   attribute w of HPS_HEG_HEG_CTRL_t : type is 330;
    function width(x: HPS_HEG_HEG_CTRL_t) return natural;
    function convert(x: HPS_HEG_HEG_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_CTRL_t) return HPS_HEG_HEG_CTRL_t;
    function zero(tpl: HPS_HEG_HEG_CTRL_t) return HPS_HEG_HEG_CTRL_t;
 
    type HPS_HEG_HEG_CTRL_t_ARRAY is array(3 -1 downto 0) of HPS_HEG_HEG_CTRL_t;
-   attribute w of HPS_HEG_HEG_CTRL_t_ARRAY : type is 1032;
+   attribute w of HPS_HEG_HEG_CTRL_t_ARRAY : type is 990;
    function width(x: HPS_HEG_HEG_CTRL_t_ARRAY) return integer;
    function convert(x: HPS_HEG_HEG_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_CTRL_t_ARRAY) return HPS_HEG_HEG_CTRL_t_ARRAY;
@@ -618,7 +618,7 @@ package HPS_CTRL is
    type HPS_HEG_CTRL_t is record
       HEG : HPS_HEG_HEG_CTRL_t_ARRAY;
    end record HPS_HEG_CTRL_t;
-   attribute w of HPS_HEG_CTRL_t : type is 1032;
+   attribute w of HPS_HEG_CTRL_t : type is 990;
    function width(x: HPS_HEG_CTRL_t) return natural;
    function convert(x: HPS_HEG_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_HEG_CTRL_t) return HPS_HEG_CTRL_t;
@@ -783,7 +783,7 @@ package HPS_CTRL is
       LSF : HPS_LSF_CTRL_t;
       CSF : HPS_CSF_CTRL_t;
    end record HPS_CTRL_t;
-   attribute w of HPS_CTRL_t : type is 1724;
+   attribute w of HPS_CTRL_t : type is 1658;
    function width(x: HPS_CTRL_t) return natural;
    function convert(x: HPS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HPS_CTRL_t) return HPS_CTRL_t;

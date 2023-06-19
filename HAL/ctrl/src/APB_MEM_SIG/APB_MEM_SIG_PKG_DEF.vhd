@@ -14,7 +14,7 @@ package APB_MEM_SIG_CTRL_DEF is
                                                                rd_ack => '0',
                                                                flush_req => '0',
                                                                freeze_req => '0',
-                                                               mem_sel => "000"
+                                                               mem_sel => '0'
                                                               );
 
 end package APB_MEM_SIG_CTRL_DEF;
