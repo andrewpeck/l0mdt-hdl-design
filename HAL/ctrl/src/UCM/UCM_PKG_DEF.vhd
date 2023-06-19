@@ -30,7 +30,7 @@ package UCM_CTRL_DEF is
                                                                                                                                rd_ack => '0',
                                                                                                                                flush_req => '0',
                                                                                                                                freeze_req => '0',
-                                                                                                                               mem_sel => '0'
+                                                                                                                               mem_sel => "000"
                                                                                                                               );
   constant DEFAULT_UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t := (
                                                                                                                                wr_data_0 => (others => '0')
@@ -51,7 +51,7 @@ package UCM_CTRL_DEF is
                                                                                                                                rd_ack => '0',
                                                                                                                                flush_req => '0',
                                                                                                                                freeze_req => '0',
-                                                                                                                               mem_sel => '0'
+                                                                                                                               mem_sel => "000"
                                                                                                                               );
   constant DEFAULT_UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t := (
                                                                                                                                wr_data_0 => (others => '0')

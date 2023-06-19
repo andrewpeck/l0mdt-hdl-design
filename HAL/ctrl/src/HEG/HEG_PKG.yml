@@ -57,7 +57,7 @@ types:
   - rd_ack : { type: logic }
   - flush_req : { type: logic }
   - freeze_req : { type: logic }
-  - mem_sel : { type: logic }
+  - mem_sel : { type: logic, range : [ 3 - 1 , 0 ] }
 
 
 - HEG_CTRL_ROI_TC_wr_data_CTRL_t:
@@ -115,7 +115,7 @@ types:
   - rd_ack : { type: logic }
   - flush_req : { type: logic }
   - freeze_req : { type: logic }
-  - mem_sel : { type: logic }
+  - mem_sel : { type: logic, range : [ 3 - 1 , 0 ] }
 
 
 - HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t:

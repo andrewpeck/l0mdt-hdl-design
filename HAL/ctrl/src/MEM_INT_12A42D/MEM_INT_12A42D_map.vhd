@@ -114,7 +114,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data( 0)( 5);                --flush memory to Zync
           localRdData( 6)            <=  Mon.SIGNALS.freeze_ena;          --freeze memory
           localRdData( 7)            <=  reg_data( 0)( 7);                --freeze memory
-          localRdData( 8)            <=  reg_data( 0)( 8);                --sel memory
+          localRdData(10 downto  8)  <=  reg_data( 0)(10 downto  8);      --sel memory
         when 2 => --0x2
           localRdData(11 downto  0)  <=  reg_data( 2)(11 downto  0);      --wr_Address
           localRdData(27 downto 16)  <=  reg_data( 2)(27 downto 16);      --rd_Address
@@ -145,7 +145,7 @@ begin  -- architecture behavioral
   -- Register mapping to ctrl structures
   Ctrl.SIGNALS.flush_req   <=  reg_data( 0)( 5);               
   Ctrl.SIGNALS.freeze_req  <=  reg_data( 0)( 7);               
-  Ctrl.SIGNALS.mem_sel     <=  reg_data( 0)( 8);               
+  Ctrl.SIGNALS.mem_sel     <=  reg_data( 0)(10 downto  8);     
   Ctrl.wr_addr             <=  reg_data( 2)(11 downto  0);     
   Ctrl.rd_addr             <=  reg_data( 2)(27 downto 16);     
   Ctrl.wr_data.wr_data_0   <=  reg_data( 4)(31 downto  0);     
@@ -161,7 +161,7 @@ begin  -- architecture behavioral
       reg_data( 0)( 3)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.SIGNALS.rd_ack;
       reg_data( 0)( 5)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.SIGNALS.flush_req;
       reg_data( 0)( 7)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.SIGNALS.freeze_req;
-      reg_data( 0)( 8)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.SIGNALS.mem_sel;
+      reg_data( 0)(10 downto  8)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.SIGNALS.mem_sel;
       reg_data( 2)(11 downto  0)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.wr_addr;
       reg_data( 2)(27 downto 16)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.rd_addr;
       reg_data( 4)(31 downto  0)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.wr_data.wr_data_0;
@@ -184,7 +184,7 @@ begin  -- architecture behavioral
           Ctrl.SIGNALS.rd_ack         <=  localWrData( 3);               
           reg_data( 0)( 5)            <=  localWrData( 5);                --flush memory to Zync
           reg_data( 0)( 7)            <=  localWrData( 7);                --freeze memory
-          reg_data( 0)( 8)            <=  localWrData( 8);                --sel memory
+          reg_data( 0)(10 downto  8)  <=  localWrData(10 downto  8);      --sel memory
         when 2 => --0x2
           reg_data( 2)(11 downto  0)  <=  localWrData(11 downto  0);      --wr_Address
           reg_data( 2)(27 downto 16)  <=  localWrData(27 downto 16);      --rd_Address

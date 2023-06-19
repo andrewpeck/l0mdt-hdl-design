@@ -123,7 +123,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(4096)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_TC.MDT_TC(0).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(4096)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(4096)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(4096)(10 downto  8);                             --sel memory
         when 4098 => --0x1002
           localRdData( 9 downto  0)  <=  reg_data(4098)( 9 downto  0);                             --wr_Address
           localRdData(25 downto 16)  <=  reg_data(4098)(25 downto 16);                             --rd_Address
@@ -140,7 +140,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(4112)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_TC.MDT_TC(1).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(4112)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(4112)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(4112)(10 downto  8);                             --sel memory
         when 4114 => --0x1012
           localRdData( 9 downto  0)  <=  reg_data(4114)( 9 downto  0);                             --wr_Address
           localRdData(25 downto 16)  <=  reg_data(4114)(25 downto 16);                             --rd_Address
@@ -157,7 +157,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(4128)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_TC.MDT_TC(2).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(4128)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(4128)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(4128)(10 downto  8);                             --sel memory
         when 4130 => --0x1022
           localRdData( 9 downto  0)  <=  reg_data(4130)( 9 downto  0);                             --wr_Address
           localRdData(25 downto 16)  <=  reg_data(4130)(25 downto 16);                             --rd_Address
@@ -174,7 +174,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(4144)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_TC.MDT_TC(3).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(4144)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(4144)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(4144)(10 downto  8);                             --sel memory
         when 4146 => --0x1032
           localRdData( 9 downto  0)  <=  reg_data(4146)( 9 downto  0);                             --wr_Address
           localRdData(25 downto 16)  <=  reg_data(4146)(25 downto 16);                             --rd_Address
@@ -191,7 +191,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(4160)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_TC.MDT_TC(4).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(4160)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(4160)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(4160)(10 downto  8);                             --sel memory
         when 4162 => --0x1042
           localRdData( 9 downto  0)  <=  reg_data(4162)( 9 downto  0);                             --wr_Address
           localRdData(25 downto 16)  <=  reg_data(4162)(25 downto 16);                             --rd_Address
@@ -208,7 +208,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(4176)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_TC.MDT_TC(5).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(4176)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(4176)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(4176)(10 downto  8);                             --sel memory
         when 4178 => --0x1052
           localRdData( 9 downto  0)  <=  reg_data(4178)( 9 downto  0);                             --wr_Address
           localRdData(25 downto 16)  <=  reg_data(4178)(25 downto 16);                             --rd_Address
@@ -225,7 +225,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(8192)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_T0.MDT_T0(0).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(8192)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(8192)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(8192)(10 downto  8);                             --sel memory
         when 8194 => --0x2002
           localRdData( 3 downto  0)  <=  reg_data(8194)( 3 downto  0);                             --wr_Address
           localRdData(19 downto 16)  <=  reg_data(8194)(19 downto 16);                             --rd_Address
@@ -238,7 +238,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(8208)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_T0.MDT_T0(1).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(8208)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(8208)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(8208)(10 downto  8);                             --sel memory
         when 8210 => --0x2012
           localRdData( 3 downto  0)  <=  reg_data(8210)( 3 downto  0);                             --wr_Address
           localRdData(19 downto 16)  <=  reg_data(8210)(19 downto 16);                             --rd_Address
@@ -251,7 +251,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(8224)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_T0.MDT_T0(2).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(8224)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(8224)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(8224)(10 downto  8);                             --sel memory
         when 8226 => --0x2022
           localRdData( 3 downto  0)  <=  reg_data(8226)( 3 downto  0);                             --wr_Address
           localRdData(19 downto 16)  <=  reg_data(8226)(19 downto 16);                             --rd_Address
@@ -264,7 +264,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(8240)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_T0.MDT_T0(3).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(8240)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(8240)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(8240)(10 downto  8);                             --sel memory
         when 8242 => --0x2032
           localRdData( 3 downto  0)  <=  reg_data(8242)( 3 downto  0);                             --wr_Address
           localRdData(19 downto 16)  <=  reg_data(8242)(19 downto 16);                             --rd_Address
@@ -277,7 +277,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(8256)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_T0.MDT_T0(4).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(8256)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(8256)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(8256)(10 downto  8);                             --sel memory
         when 8258 => --0x2042
           localRdData( 3 downto  0)  <=  reg_data(8258)( 3 downto  0);                             --wr_Address
           localRdData(19 downto 16)  <=  reg_data(8258)(19 downto 16);                             --rd_Address
@@ -290,7 +290,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(8272)( 5);                                       --flush memory to Zync
           localRdData( 6)            <=  Mon.MDT_T0.MDT_T0(5).SIGNALS.freeze_ena;                  --freeze memory
           localRdData( 7)            <=  reg_data(8272)( 7);                                       --freeze memory
-          localRdData( 8)            <=  reg_data(8272)( 8);                                       --sel memory
+          localRdData(10 downto  8)  <=  reg_data(8272)(10 downto  8);                             --sel memory
         when 8274 => --0x2052
           localRdData( 3 downto  0)  <=  reg_data(8274)( 3 downto  0);                             --wr_Address
           localRdData(19 downto 16)  <=  reg_data(8274)(19 downto 16);                             --rd_Address
@@ -319,7 +319,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12336)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(0).CTRL.ROI_TC.SIGNALS.freeze_ena;            --freeze memory
           localRdData( 7)            <=  reg_data(12336)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12336)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12336)(10 downto  8);                            --sel memory
         when 12338 => --0x3032
           localRdData( 9 downto  0)  <=  reg_data(12338)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12338)(25 downto 16);                            --rd_Address
@@ -340,7 +340,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12355)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(0).HP.HP(0).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12355)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12355)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12355)(10 downto  8);                            --sel memory
         when 12357 => --0x3045
           localRdData( 9 downto  0)  <=  reg_data(12357)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12357)(25 downto 16);                            --rd_Address
@@ -357,7 +357,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12371)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(0).HP.HP(1).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12371)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12371)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12371)(10 downto  8);                            --sel memory
         when 12373 => --0x3055
           localRdData( 9 downto  0)  <=  reg_data(12373)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12373)(25 downto 16);                            --rd_Address
@@ -374,7 +374,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12387)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(0).HP.HP(2).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12387)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12387)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12387)(10 downto  8);                            --sel memory
         when 12389 => --0x3065
           localRdData( 9 downto  0)  <=  reg_data(12389)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12389)(25 downto 16);                            --rd_Address
@@ -391,7 +391,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12403)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(0).HP.HP(3).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12403)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12403)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12403)(10 downto  8);                            --sel memory
         when 12405 => --0x3075
           localRdData( 9 downto  0)  <=  reg_data(12405)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12405)(25 downto 16);                            --rd_Address
@@ -408,7 +408,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12419)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(0).HP.HP(4).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12419)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12419)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12419)(10 downto  8);                            --sel memory
         when 12421 => --0x3085
           localRdData( 9 downto  0)  <=  reg_data(12421)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12421)(25 downto 16);                            --rd_Address
@@ -425,7 +425,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12435)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(0).HP.HP(5).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12435)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12435)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12435)(10 downto  8);                            --sel memory
         when 12437 => --0x3095
           localRdData( 9 downto  0)  <=  reg_data(12437)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12437)(25 downto 16);                            --rd_Address
@@ -454,7 +454,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12592)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(1).CTRL.ROI_TC.SIGNALS.freeze_ena;            --freeze memory
           localRdData( 7)            <=  reg_data(12592)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12592)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12592)(10 downto  8);                            --sel memory
         when 12594 => --0x3132
           localRdData( 9 downto  0)  <=  reg_data(12594)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12594)(25 downto 16);                            --rd_Address
@@ -475,7 +475,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12611)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(1).HP.HP(0).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12611)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12611)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12611)(10 downto  8);                            --sel memory
         when 12613 => --0x3145
           localRdData( 9 downto  0)  <=  reg_data(12613)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12613)(25 downto 16);                            --rd_Address
@@ -492,7 +492,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12627)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(1).HP.HP(1).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12627)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12627)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12627)(10 downto  8);                            --sel memory
         when 12629 => --0x3155
           localRdData( 9 downto  0)  <=  reg_data(12629)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12629)(25 downto 16);                            --rd_Address
@@ -509,7 +509,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12643)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(1).HP.HP(2).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12643)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12643)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12643)(10 downto  8);                            --sel memory
         when 12645 => --0x3165
           localRdData( 9 downto  0)  <=  reg_data(12645)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12645)(25 downto 16);                            --rd_Address
@@ -526,7 +526,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12659)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(1).HP.HP(3).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12659)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12659)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12659)(10 downto  8);                            --sel memory
         when 12661 => --0x3175
           localRdData( 9 downto  0)  <=  reg_data(12661)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12661)(25 downto 16);                            --rd_Address
@@ -543,7 +543,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12675)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(1).HP.HP(4).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12675)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12675)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12675)(10 downto  8);                            --sel memory
         when 12677 => --0x3185
           localRdData( 9 downto  0)  <=  reg_data(12677)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12677)(25 downto 16);                            --rd_Address
@@ -560,7 +560,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12691)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(1).HP.HP(5).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12691)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12691)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12691)(10 downto  8);                            --sel memory
         when 12693 => --0x3195
           localRdData( 9 downto  0)  <=  reg_data(12693)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12693)(25 downto 16);                            --rd_Address
@@ -589,7 +589,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12848)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(2).CTRL.ROI_TC.SIGNALS.freeze_ena;            --freeze memory
           localRdData( 7)            <=  reg_data(12848)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12848)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12848)(10 downto  8);                            --sel memory
         when 12850 => --0x3232
           localRdData( 9 downto  0)  <=  reg_data(12850)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12850)(25 downto 16);                            --rd_Address
@@ -610,7 +610,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12867)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(2).HP.HP(0).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12867)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12867)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12867)(10 downto  8);                            --sel memory
         when 12869 => --0x3245
           localRdData( 9 downto  0)  <=  reg_data(12869)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12869)(25 downto 16);                            --rd_Address
@@ -627,7 +627,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12883)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(2).HP.HP(1).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12883)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12883)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12883)(10 downto  8);                            --sel memory
         when 12885 => --0x3255
           localRdData( 9 downto  0)  <=  reg_data(12885)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12885)(25 downto 16);                            --rd_Address
@@ -644,7 +644,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12899)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(2).HP.HP(2).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12899)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12899)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12899)(10 downto  8);                            --sel memory
         when 12901 => --0x3265
           localRdData( 9 downto  0)  <=  reg_data(12901)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12901)(25 downto 16);                            --rd_Address
@@ -661,7 +661,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12915)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(2).HP.HP(3).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12915)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12915)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12915)(10 downto  8);                            --sel memory
         when 12917 => --0x3275
           localRdData( 9 downto  0)  <=  reg_data(12917)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12917)(25 downto 16);                            --rd_Address
@@ -678,7 +678,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12931)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(2).HP.HP(4).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12931)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12931)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12931)(10 downto  8);                            --sel memory
         when 12933 => --0x3285
           localRdData( 9 downto  0)  <=  reg_data(12933)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12933)(25 downto 16);                            --rd_Address
@@ -695,7 +695,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(12947)( 5);                                      --flush memory to Zync
           localRdData( 6)            <=  Mon.HEG.HEG(2).HP.HP(5).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(12947)( 7);                                      --freeze memory
-          localRdData( 8)            <=  reg_data(12947)( 8);                                      --sel memory
+          localRdData(10 downto  8)  <=  reg_data(12947)(10 downto  8);                            --sel memory
         when 12949 => --0x3295
           localRdData( 9 downto  0)  <=  reg_data(12949)( 9 downto  0);                            --wr_Address
           localRdData(25 downto 16)  <=  reg_data(12949)(25 downto 16);                            --rd_Address
@@ -774,79 +774,79 @@ begin  -- architecture behavioral
   Ctrl.SUPER.CONFIGS.FLUSH_MEM_RESET                    <=  reg_data( 1)( 6);                  
   Ctrl.MDT_TC.MDT_TC(0).SIGNALS.flush_req               <=  reg_data(4096)( 5);                
   Ctrl.MDT_TC.MDT_TC(0).SIGNALS.freeze_req              <=  reg_data(4096)( 7);                
-  Ctrl.MDT_TC.MDT_TC(0).SIGNALS.mem_sel                 <=  reg_data(4096)( 8);                
+  Ctrl.MDT_TC.MDT_TC(0).SIGNALS.mem_sel                 <=  reg_data(4096)(10 downto  8);      
   Ctrl.MDT_TC.MDT_TC(0).wr_addr                         <=  reg_data(4098)( 9 downto  0);      
   Ctrl.MDT_TC.MDT_TC(0).rd_addr                         <=  reg_data(4098)(25 downto 16);      
   Ctrl.MDT_TC.MDT_TC(0).wr_data.wr_data_0               <=  reg_data(4099)(31 downto  0);      
   Ctrl.MDT_TC.MDT_TC(0).wr_data.wr_data_1               <=  reg_data(4100)( 5 downto  0);      
   Ctrl.MDT_TC.MDT_TC(1).SIGNALS.flush_req               <=  reg_data(4112)( 5);                
   Ctrl.MDT_TC.MDT_TC(1).SIGNALS.freeze_req              <=  reg_data(4112)( 7);                
-  Ctrl.MDT_TC.MDT_TC(1).SIGNALS.mem_sel                 <=  reg_data(4112)( 8);                
+  Ctrl.MDT_TC.MDT_TC(1).SIGNALS.mem_sel                 <=  reg_data(4112)(10 downto  8);      
   Ctrl.MDT_TC.MDT_TC(1).wr_addr                         <=  reg_data(4114)( 9 downto  0);      
   Ctrl.MDT_TC.MDT_TC(1).rd_addr                         <=  reg_data(4114)(25 downto 16);      
   Ctrl.MDT_TC.MDT_TC(1).wr_data.wr_data_0               <=  reg_data(4115)(31 downto  0);      
   Ctrl.MDT_TC.MDT_TC(1).wr_data.wr_data_1               <=  reg_data(4116)( 5 downto  0);      
   Ctrl.MDT_TC.MDT_TC(2).SIGNALS.flush_req               <=  reg_data(4128)( 5);                
   Ctrl.MDT_TC.MDT_TC(2).SIGNALS.freeze_req              <=  reg_data(4128)( 7);                
-  Ctrl.MDT_TC.MDT_TC(2).SIGNALS.mem_sel                 <=  reg_data(4128)( 8);                
+  Ctrl.MDT_TC.MDT_TC(2).SIGNALS.mem_sel                 <=  reg_data(4128)(10 downto  8);      
   Ctrl.MDT_TC.MDT_TC(2).wr_addr                         <=  reg_data(4130)( 9 downto  0);      
   Ctrl.MDT_TC.MDT_TC(2).rd_addr                         <=  reg_data(4130)(25 downto 16);      
   Ctrl.MDT_TC.MDT_TC(2).wr_data.wr_data_0               <=  reg_data(4131)(31 downto  0);      
   Ctrl.MDT_TC.MDT_TC(2).wr_data.wr_data_1               <=  reg_data(4132)( 5 downto  0);      
   Ctrl.MDT_TC.MDT_TC(3).SIGNALS.flush_req               <=  reg_data(4144)( 5);                
   Ctrl.MDT_TC.MDT_TC(3).SIGNALS.freeze_req              <=  reg_data(4144)( 7);                
-  Ctrl.MDT_TC.MDT_TC(3).SIGNALS.mem_sel                 <=  reg_data(4144)( 8);                
+  Ctrl.MDT_TC.MDT_TC(3).SIGNALS.mem_sel                 <=  reg_data(4144)(10 downto  8);      
   Ctrl.MDT_TC.MDT_TC(3).wr_addr                         <=  reg_data(4146)( 9 downto  0);      
   Ctrl.MDT_TC.MDT_TC(3).rd_addr                         <=  reg_data(4146)(25 downto 16);      
   Ctrl.MDT_TC.MDT_TC(3).wr_data.wr_data_0               <=  reg_data(4147)(31 downto  0);      
   Ctrl.MDT_TC.MDT_TC(3).wr_data.wr_data_1               <=  reg_data(4148)( 5 downto  0);      
   Ctrl.MDT_TC.MDT_TC(4).SIGNALS.flush_req               <=  reg_data(4160)( 5);                
   Ctrl.MDT_TC.MDT_TC(4).SIGNALS.freeze_req              <=  reg_data(4160)( 7);                
-  Ctrl.MDT_TC.MDT_TC(4).SIGNALS.mem_sel                 <=  reg_data(4160)( 8);                
+  Ctrl.MDT_TC.MDT_TC(4).SIGNALS.mem_sel                 <=  reg_data(4160)(10 downto  8);      
   Ctrl.MDT_TC.MDT_TC(4).wr_addr                         <=  reg_data(4162)( 9 downto  0);      
   Ctrl.MDT_TC.MDT_TC(4).rd_addr                         <=  reg_data(4162)(25 downto 16);      
   Ctrl.MDT_TC.MDT_TC(4).wr_data.wr_data_0               <=  reg_data(4163)(31 downto  0);      
   Ctrl.MDT_TC.MDT_TC(4).wr_data.wr_data_1               <=  reg_data(4164)( 5 downto  0);      
   Ctrl.MDT_TC.MDT_TC(5).SIGNALS.flush_req               <=  reg_data(4176)( 5);                
   Ctrl.MDT_TC.MDT_TC(5).SIGNALS.freeze_req              <=  reg_data(4176)( 7);                
-  Ctrl.MDT_TC.MDT_TC(5).SIGNALS.mem_sel                 <=  reg_data(4176)( 8);                
+  Ctrl.MDT_TC.MDT_TC(5).SIGNALS.mem_sel                 <=  reg_data(4176)(10 downto  8);      
   Ctrl.MDT_TC.MDT_TC(5).wr_addr                         <=  reg_data(4178)( 9 downto  0);      
   Ctrl.MDT_TC.MDT_TC(5).rd_addr                         <=  reg_data(4178)(25 downto 16);      
   Ctrl.MDT_TC.MDT_TC(5).wr_data.wr_data_0               <=  reg_data(4179)(31 downto  0);      
   Ctrl.MDT_TC.MDT_TC(5).wr_data.wr_data_1               <=  reg_data(4180)( 5 downto  0);      
   Ctrl.MDT_T0.MDT_T0(0).SIGNALS.flush_req               <=  reg_data(8192)( 5);                
   Ctrl.MDT_T0.MDT_T0(0).SIGNALS.freeze_req              <=  reg_data(8192)( 7);                
-  Ctrl.MDT_T0.MDT_T0(0).SIGNALS.mem_sel                 <=  reg_data(8192)( 8);                
+  Ctrl.MDT_T0.MDT_T0(0).SIGNALS.mem_sel                 <=  reg_data(8192)(10 downto  8);      
   Ctrl.MDT_T0.MDT_T0(0).wr_addr                         <=  reg_data(8194)( 3 downto  0);      
   Ctrl.MDT_T0.MDT_T0(0).rd_addr                         <=  reg_data(8194)(19 downto 16);      
   Ctrl.MDT_T0.MDT_T0(0).wr_data.wr_data_0               <=  reg_data(8195)(16 downto  0);      
   Ctrl.MDT_T0.MDT_T0(1).SIGNALS.flush_req               <=  reg_data(8208)( 5);                
   Ctrl.MDT_T0.MDT_T0(1).SIGNALS.freeze_req              <=  reg_data(8208)( 7);                
-  Ctrl.MDT_T0.MDT_T0(1).SIGNALS.mem_sel                 <=  reg_data(8208)( 8);                
+  Ctrl.MDT_T0.MDT_T0(1).SIGNALS.mem_sel                 <=  reg_data(8208)(10 downto  8);      
   Ctrl.MDT_T0.MDT_T0(1).wr_addr                         <=  reg_data(8210)( 3 downto  0);      
   Ctrl.MDT_T0.MDT_T0(1).rd_addr                         <=  reg_data(8210)(19 downto 16);      
   Ctrl.MDT_T0.MDT_T0(1).wr_data.wr_data_0               <=  reg_data(8211)(16 downto  0);      
   Ctrl.MDT_T0.MDT_T0(2).SIGNALS.flush_req               <=  reg_data(8224)( 5);                
   Ctrl.MDT_T0.MDT_T0(2).SIGNALS.freeze_req              <=  reg_data(8224)( 7);                
-  Ctrl.MDT_T0.MDT_T0(2).SIGNALS.mem_sel                 <=  reg_data(8224)( 8);                
+  Ctrl.MDT_T0.MDT_T0(2).SIGNALS.mem_sel                 <=  reg_data(8224)(10 downto  8);      
   Ctrl.MDT_T0.MDT_T0(2).wr_addr                         <=  reg_data(8226)( 3 downto  0);      
   Ctrl.MDT_T0.MDT_T0(2).rd_addr                         <=  reg_data(8226)(19 downto 16);      
   Ctrl.MDT_T0.MDT_T0(2).wr_data.wr_data_0               <=  reg_data(8227)(16 downto  0);      
   Ctrl.MDT_T0.MDT_T0(3).SIGNALS.flush_req               <=  reg_data(8240)( 5);                
   Ctrl.MDT_T0.MDT_T0(3).SIGNALS.freeze_req              <=  reg_data(8240)( 7);                
-  Ctrl.MDT_T0.MDT_T0(3).SIGNALS.mem_sel                 <=  reg_data(8240)( 8);                
+  Ctrl.MDT_T0.MDT_T0(3).SIGNALS.mem_sel                 <=  reg_data(8240)(10 downto  8);      
   Ctrl.MDT_T0.MDT_T0(3).wr_addr                         <=  reg_data(8242)( 3 downto  0);      
   Ctrl.MDT_T0.MDT_T0(3).rd_addr                         <=  reg_data(8242)(19 downto 16);      
   Ctrl.MDT_T0.MDT_T0(3).wr_data.wr_data_0               <=  reg_data(8243)(16 downto  0);      
   Ctrl.MDT_T0.MDT_T0(4).SIGNALS.flush_req               <=  reg_data(8256)( 5);                
   Ctrl.MDT_T0.MDT_T0(4).SIGNALS.freeze_req              <=  reg_data(8256)( 7);                
-  Ctrl.MDT_T0.MDT_T0(4).SIGNALS.mem_sel                 <=  reg_data(8256)( 8);                
+  Ctrl.MDT_T0.MDT_T0(4).SIGNALS.mem_sel                 <=  reg_data(8256)(10 downto  8);      
   Ctrl.MDT_T0.MDT_T0(4).wr_addr                         <=  reg_data(8258)( 3 downto  0);      
   Ctrl.MDT_T0.MDT_T0(4).rd_addr                         <=  reg_data(8258)(19 downto 16);      
   Ctrl.MDT_T0.MDT_T0(4).wr_data.wr_data_0               <=  reg_data(8259)(16 downto  0);      
   Ctrl.MDT_T0.MDT_T0(5).SIGNALS.flush_req               <=  reg_data(8272)( 5);                
   Ctrl.MDT_T0.MDT_T0(5).SIGNALS.freeze_req              <=  reg_data(8272)( 7);                
-  Ctrl.MDT_T0.MDT_T0(5).SIGNALS.mem_sel                 <=  reg_data(8272)( 8);                
+  Ctrl.MDT_T0.MDT_T0(5).SIGNALS.mem_sel                 <=  reg_data(8272)(10 downto  8);      
   Ctrl.MDT_T0.MDT_T0(5).wr_addr                         <=  reg_data(8274)( 3 downto  0);      
   Ctrl.MDT_T0.MDT_T0(5).rd_addr                         <=  reg_data(8274)(19 downto 16);      
   Ctrl.MDT_T0.MDT_T0(5).wr_data.wr_data_0               <=  reg_data(8275)(16 downto  0);      
@@ -855,7 +855,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(0).SUPER.CONFIGS.FLUSH_MEM_RESET         <=  reg_data(12289)( 2);               
   Ctrl.HEG.HEG(0).CTRL.ROI_TC.SIGNALS.flush_req         <=  reg_data(12336)( 5);               
   Ctrl.HEG.HEG(0).CTRL.ROI_TC.SIGNALS.freeze_req        <=  reg_data(12336)( 7);               
-  Ctrl.HEG.HEG(0).CTRL.ROI_TC.SIGNALS.mem_sel           <=  reg_data(12336)( 8);               
+  Ctrl.HEG.HEG(0).CTRL.ROI_TC.SIGNALS.mem_sel           <=  reg_data(12336)(10 downto  8);     
   Ctrl.HEG.HEG(0).CTRL.ROI_TC.wr_addr                   <=  reg_data(12338)( 9 downto  0);     
   Ctrl.HEG.HEG(0).CTRL.ROI_TC.rd_addr                   <=  reg_data(12338)(25 downto 16);     
   Ctrl.HEG.HEG(0).CTRL.ROI_TC.wr_data.wr_data_0         <=  reg_data(12339)(31 downto  0);     
@@ -865,7 +865,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(0).HP.HP(0).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12353)( 2);               
   Ctrl.HEG.HEG(0).HP.HP(0).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12355)( 5);               
   Ctrl.HEG.HEG(0).HP.HP(0).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12355)( 7);               
-  Ctrl.HEG.HEG(0).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12355)( 8);               
+  Ctrl.HEG.HEG(0).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12355)(10 downto  8);     
   Ctrl.HEG.HEG(0).HP.HP(0).MDT_DT2R.wr_addr             <=  reg_data(12357)( 9 downto  0);     
   Ctrl.HEG.HEG(0).HP.HP(0).MDT_DT2R.rd_addr             <=  reg_data(12357)(25 downto 16);     
   Ctrl.HEG.HEG(0).HP.HP(0).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12358)( 8 downto  0);     
@@ -874,7 +874,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(0).HP.HP(1).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12369)( 2);               
   Ctrl.HEG.HEG(0).HP.HP(1).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12371)( 5);               
   Ctrl.HEG.HEG(0).HP.HP(1).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12371)( 7);               
-  Ctrl.HEG.HEG(0).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12371)( 8);               
+  Ctrl.HEG.HEG(0).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12371)(10 downto  8);     
   Ctrl.HEG.HEG(0).HP.HP(1).MDT_DT2R.wr_addr             <=  reg_data(12373)( 9 downto  0);     
   Ctrl.HEG.HEG(0).HP.HP(1).MDT_DT2R.rd_addr             <=  reg_data(12373)(25 downto 16);     
   Ctrl.HEG.HEG(0).HP.HP(1).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12374)( 8 downto  0);     
@@ -883,7 +883,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(0).HP.HP(2).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12385)( 2);               
   Ctrl.HEG.HEG(0).HP.HP(2).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12387)( 5);               
   Ctrl.HEG.HEG(0).HP.HP(2).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12387)( 7);               
-  Ctrl.HEG.HEG(0).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12387)( 8);               
+  Ctrl.HEG.HEG(0).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12387)(10 downto  8);     
   Ctrl.HEG.HEG(0).HP.HP(2).MDT_DT2R.wr_addr             <=  reg_data(12389)( 9 downto  0);     
   Ctrl.HEG.HEG(0).HP.HP(2).MDT_DT2R.rd_addr             <=  reg_data(12389)(25 downto 16);     
   Ctrl.HEG.HEG(0).HP.HP(2).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12390)( 8 downto  0);     
@@ -892,7 +892,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(0).HP.HP(3).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12401)( 2);               
   Ctrl.HEG.HEG(0).HP.HP(3).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12403)( 5);               
   Ctrl.HEG.HEG(0).HP.HP(3).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12403)( 7);               
-  Ctrl.HEG.HEG(0).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12403)( 8);               
+  Ctrl.HEG.HEG(0).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12403)(10 downto  8);     
   Ctrl.HEG.HEG(0).HP.HP(3).MDT_DT2R.wr_addr             <=  reg_data(12405)( 9 downto  0);     
   Ctrl.HEG.HEG(0).HP.HP(3).MDT_DT2R.rd_addr             <=  reg_data(12405)(25 downto 16);     
   Ctrl.HEG.HEG(0).HP.HP(3).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12406)( 8 downto  0);     
@@ -901,7 +901,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(0).HP.HP(4).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12417)( 2);               
   Ctrl.HEG.HEG(0).HP.HP(4).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12419)( 5);               
   Ctrl.HEG.HEG(0).HP.HP(4).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12419)( 7);               
-  Ctrl.HEG.HEG(0).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12419)( 8);               
+  Ctrl.HEG.HEG(0).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12419)(10 downto  8);     
   Ctrl.HEG.HEG(0).HP.HP(4).MDT_DT2R.wr_addr             <=  reg_data(12421)( 9 downto  0);     
   Ctrl.HEG.HEG(0).HP.HP(4).MDT_DT2R.rd_addr             <=  reg_data(12421)(25 downto 16);     
   Ctrl.HEG.HEG(0).HP.HP(4).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12422)( 8 downto  0);     
@@ -910,7 +910,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(0).HP.HP(5).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12433)( 2);               
   Ctrl.HEG.HEG(0).HP.HP(5).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12435)( 5);               
   Ctrl.HEG.HEG(0).HP.HP(5).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12435)( 7);               
-  Ctrl.HEG.HEG(0).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12435)( 8);               
+  Ctrl.HEG.HEG(0).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12435)(10 downto  8);     
   Ctrl.HEG.HEG(0).HP.HP(5).MDT_DT2R.wr_addr             <=  reg_data(12437)( 9 downto  0);     
   Ctrl.HEG.HEG(0).HP.HP(5).MDT_DT2R.rd_addr             <=  reg_data(12437)(25 downto 16);     
   Ctrl.HEG.HEG(0).HP.HP(5).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12438)( 8 downto  0);     
@@ -919,7 +919,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(1).SUPER.CONFIGS.FLUSH_MEM_RESET         <=  reg_data(12545)( 2);               
   Ctrl.HEG.HEG(1).CTRL.ROI_TC.SIGNALS.flush_req         <=  reg_data(12592)( 5);               
   Ctrl.HEG.HEG(1).CTRL.ROI_TC.SIGNALS.freeze_req        <=  reg_data(12592)( 7);               
-  Ctrl.HEG.HEG(1).CTRL.ROI_TC.SIGNALS.mem_sel           <=  reg_data(12592)( 8);               
+  Ctrl.HEG.HEG(1).CTRL.ROI_TC.SIGNALS.mem_sel           <=  reg_data(12592)(10 downto  8);     
   Ctrl.HEG.HEG(1).CTRL.ROI_TC.wr_addr                   <=  reg_data(12594)( 9 downto  0);     
   Ctrl.HEG.HEG(1).CTRL.ROI_TC.rd_addr                   <=  reg_data(12594)(25 downto 16);     
   Ctrl.HEG.HEG(1).CTRL.ROI_TC.wr_data.wr_data_0         <=  reg_data(12595)(31 downto  0);     
@@ -929,7 +929,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(1).HP.HP(0).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12609)( 2);               
   Ctrl.HEG.HEG(1).HP.HP(0).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12611)( 5);               
   Ctrl.HEG.HEG(1).HP.HP(0).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12611)( 7);               
-  Ctrl.HEG.HEG(1).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12611)( 8);               
+  Ctrl.HEG.HEG(1).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12611)(10 downto  8);     
   Ctrl.HEG.HEG(1).HP.HP(0).MDT_DT2R.wr_addr             <=  reg_data(12613)( 9 downto  0);     
   Ctrl.HEG.HEG(1).HP.HP(0).MDT_DT2R.rd_addr             <=  reg_data(12613)(25 downto 16);     
   Ctrl.HEG.HEG(1).HP.HP(0).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12614)( 8 downto  0);     
@@ -938,7 +938,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(1).HP.HP(1).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12625)( 2);               
   Ctrl.HEG.HEG(1).HP.HP(1).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12627)( 5);               
   Ctrl.HEG.HEG(1).HP.HP(1).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12627)( 7);               
-  Ctrl.HEG.HEG(1).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12627)( 8);               
+  Ctrl.HEG.HEG(1).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12627)(10 downto  8);     
   Ctrl.HEG.HEG(1).HP.HP(1).MDT_DT2R.wr_addr             <=  reg_data(12629)( 9 downto  0);     
   Ctrl.HEG.HEG(1).HP.HP(1).MDT_DT2R.rd_addr             <=  reg_data(12629)(25 downto 16);     
   Ctrl.HEG.HEG(1).HP.HP(1).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12630)( 8 downto  0);     
@@ -947,7 +947,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(1).HP.HP(2).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12641)( 2);               
   Ctrl.HEG.HEG(1).HP.HP(2).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12643)( 5);               
   Ctrl.HEG.HEG(1).HP.HP(2).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12643)( 7);               
-  Ctrl.HEG.HEG(1).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12643)( 8);               
+  Ctrl.HEG.HEG(1).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12643)(10 downto  8);     
   Ctrl.HEG.HEG(1).HP.HP(2).MDT_DT2R.wr_addr             <=  reg_data(12645)( 9 downto  0);     
   Ctrl.HEG.HEG(1).HP.HP(2).MDT_DT2R.rd_addr             <=  reg_data(12645)(25 downto 16);     
   Ctrl.HEG.HEG(1).HP.HP(2).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12646)( 8 downto  0);     
@@ -956,7 +956,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(1).HP.HP(3).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12657)( 2);               
   Ctrl.HEG.HEG(1).HP.HP(3).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12659)( 5);               
   Ctrl.HEG.HEG(1).HP.HP(3).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12659)( 7);               
-  Ctrl.HEG.HEG(1).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12659)( 8);               
+  Ctrl.HEG.HEG(1).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12659)(10 downto  8);     
   Ctrl.HEG.HEG(1).HP.HP(3).MDT_DT2R.wr_addr             <=  reg_data(12661)( 9 downto  0);     
   Ctrl.HEG.HEG(1).HP.HP(3).MDT_DT2R.rd_addr             <=  reg_data(12661)(25 downto 16);     
   Ctrl.HEG.HEG(1).HP.HP(3).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12662)( 8 downto  0);     
@@ -965,7 +965,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(1).HP.HP(4).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12673)( 2);               
   Ctrl.HEG.HEG(1).HP.HP(4).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12675)( 5);               
   Ctrl.HEG.HEG(1).HP.HP(4).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12675)( 7);               
-  Ctrl.HEG.HEG(1).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12675)( 8);               
+  Ctrl.HEG.HEG(1).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12675)(10 downto  8);     
   Ctrl.HEG.HEG(1).HP.HP(4).MDT_DT2R.wr_addr             <=  reg_data(12677)( 9 downto  0);     
   Ctrl.HEG.HEG(1).HP.HP(4).MDT_DT2R.rd_addr             <=  reg_data(12677)(25 downto 16);     
   Ctrl.HEG.HEG(1).HP.HP(4).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12678)( 8 downto  0);     
@@ -974,7 +974,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(1).HP.HP(5).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12689)( 2);               
   Ctrl.HEG.HEG(1).HP.HP(5).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12691)( 5);               
   Ctrl.HEG.HEG(1).HP.HP(5).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12691)( 7);               
-  Ctrl.HEG.HEG(1).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12691)( 8);               
+  Ctrl.HEG.HEG(1).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12691)(10 downto  8);     
   Ctrl.HEG.HEG(1).HP.HP(5).MDT_DT2R.wr_addr             <=  reg_data(12693)( 9 downto  0);     
   Ctrl.HEG.HEG(1).HP.HP(5).MDT_DT2R.rd_addr             <=  reg_data(12693)(25 downto 16);     
   Ctrl.HEG.HEG(1).HP.HP(5).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12694)( 8 downto  0);     
@@ -983,7 +983,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(2).SUPER.CONFIGS.FLUSH_MEM_RESET         <=  reg_data(12801)( 2);               
   Ctrl.HEG.HEG(2).CTRL.ROI_TC.SIGNALS.flush_req         <=  reg_data(12848)( 5);               
   Ctrl.HEG.HEG(2).CTRL.ROI_TC.SIGNALS.freeze_req        <=  reg_data(12848)( 7);               
-  Ctrl.HEG.HEG(2).CTRL.ROI_TC.SIGNALS.mem_sel           <=  reg_data(12848)( 8);               
+  Ctrl.HEG.HEG(2).CTRL.ROI_TC.SIGNALS.mem_sel           <=  reg_data(12848)(10 downto  8);     
   Ctrl.HEG.HEG(2).CTRL.ROI_TC.wr_addr                   <=  reg_data(12850)( 9 downto  0);     
   Ctrl.HEG.HEG(2).CTRL.ROI_TC.rd_addr                   <=  reg_data(12850)(25 downto 16);     
   Ctrl.HEG.HEG(2).CTRL.ROI_TC.wr_data.wr_data_0         <=  reg_data(12851)(31 downto  0);     
@@ -993,7 +993,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(2).HP.HP(0).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12865)( 2);               
   Ctrl.HEG.HEG(2).HP.HP(0).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12867)( 5);               
   Ctrl.HEG.HEG(2).HP.HP(0).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12867)( 7);               
-  Ctrl.HEG.HEG(2).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12867)( 8);               
+  Ctrl.HEG.HEG(2).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12867)(10 downto  8);     
   Ctrl.HEG.HEG(2).HP.HP(0).MDT_DT2R.wr_addr             <=  reg_data(12869)( 9 downto  0);     
   Ctrl.HEG.HEG(2).HP.HP(0).MDT_DT2R.rd_addr             <=  reg_data(12869)(25 downto 16);     
   Ctrl.HEG.HEG(2).HP.HP(0).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12870)( 8 downto  0);     
@@ -1002,7 +1002,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(2).HP.HP(1).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12881)( 2);               
   Ctrl.HEG.HEG(2).HP.HP(1).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12883)( 5);               
   Ctrl.HEG.HEG(2).HP.HP(1).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12883)( 7);               
-  Ctrl.HEG.HEG(2).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12883)( 8);               
+  Ctrl.HEG.HEG(2).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12883)(10 downto  8);     
   Ctrl.HEG.HEG(2).HP.HP(1).MDT_DT2R.wr_addr             <=  reg_data(12885)( 9 downto  0);     
   Ctrl.HEG.HEG(2).HP.HP(1).MDT_DT2R.rd_addr             <=  reg_data(12885)(25 downto 16);     
   Ctrl.HEG.HEG(2).HP.HP(1).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12886)( 8 downto  0);     
@@ -1011,7 +1011,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(2).HP.HP(2).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12897)( 2);               
   Ctrl.HEG.HEG(2).HP.HP(2).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12899)( 5);               
   Ctrl.HEG.HEG(2).HP.HP(2).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12899)( 7);               
-  Ctrl.HEG.HEG(2).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12899)( 8);               
+  Ctrl.HEG.HEG(2).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12899)(10 downto  8);     
   Ctrl.HEG.HEG(2).HP.HP(2).MDT_DT2R.wr_addr             <=  reg_data(12901)( 9 downto  0);     
   Ctrl.HEG.HEG(2).HP.HP(2).MDT_DT2R.rd_addr             <=  reg_data(12901)(25 downto 16);     
   Ctrl.HEG.HEG(2).HP.HP(2).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12902)( 8 downto  0);     
@@ -1020,7 +1020,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(2).HP.HP(3).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12913)( 2);               
   Ctrl.HEG.HEG(2).HP.HP(3).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12915)( 5);               
   Ctrl.HEG.HEG(2).HP.HP(3).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12915)( 7);               
-  Ctrl.HEG.HEG(2).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12915)( 8);               
+  Ctrl.HEG.HEG(2).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12915)(10 downto  8);     
   Ctrl.HEG.HEG(2).HP.HP(3).MDT_DT2R.wr_addr             <=  reg_data(12917)( 9 downto  0);     
   Ctrl.HEG.HEG(2).HP.HP(3).MDT_DT2R.rd_addr             <=  reg_data(12917)(25 downto 16);     
   Ctrl.HEG.HEG(2).HP.HP(3).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12918)( 8 downto  0);     
@@ -1029,7 +1029,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(2).HP.HP(4).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12929)( 2);               
   Ctrl.HEG.HEG(2).HP.HP(4).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12931)( 5);               
   Ctrl.HEG.HEG(2).HP.HP(4).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12931)( 7);               
-  Ctrl.HEG.HEG(2).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12931)( 8);               
+  Ctrl.HEG.HEG(2).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12931)(10 downto  8);     
   Ctrl.HEG.HEG(2).HP.HP(4).MDT_DT2R.wr_addr             <=  reg_data(12933)( 9 downto  0);     
   Ctrl.HEG.HEG(2).HP.HP(4).MDT_DT2R.rd_addr             <=  reg_data(12933)(25 downto 16);     
   Ctrl.HEG.HEG(2).HP.HP(4).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12934)( 8 downto  0);     
@@ -1038,7 +1038,7 @@ begin  -- architecture behavioral
   Ctrl.HEG.HEG(2).HP.HP(5).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(12945)( 2);               
   Ctrl.HEG.HEG(2).HP.HP(5).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(12947)( 5);               
   Ctrl.HEG.HEG(2).HP.HP(5).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(12947)( 7);               
-  Ctrl.HEG.HEG(2).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12947)( 8);               
+  Ctrl.HEG.HEG(2).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(12947)(10 downto  8);     
   Ctrl.HEG.HEG(2).HP.HP(5).MDT_DT2R.wr_addr             <=  reg_data(12949)( 9 downto  0);     
   Ctrl.HEG.HEG(2).HP.HP(5).MDT_DT2R.rd_addr             <=  reg_data(12949)(25 downto 16);     
   Ctrl.HEG.HEG(2).HP.HP(5).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(12950)( 8 downto  0);     
@@ -1070,7 +1070,7 @@ begin  -- architecture behavioral
       reg_data(4096)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(0).SIGNALS.rd_ack;
       reg_data(4096)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(0).SIGNALS.flush_req;
       reg_data(4096)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(0).SIGNALS.freeze_req;
-      reg_data(4096)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(0).SIGNALS.mem_sel;
+      reg_data(4096)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(0).SIGNALS.mem_sel;
       reg_data(4098)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(0).wr_addr;
       reg_data(4098)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(0).rd_addr;
       reg_data(4099)(31 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(0).wr_data.wr_data_0;
@@ -1081,7 +1081,7 @@ begin  -- architecture behavioral
       reg_data(4112)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(1).SIGNALS.rd_ack;
       reg_data(4112)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(1).SIGNALS.flush_req;
       reg_data(4112)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(1).SIGNALS.freeze_req;
-      reg_data(4112)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(1).SIGNALS.mem_sel;
+      reg_data(4112)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(1).SIGNALS.mem_sel;
       reg_data(4114)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(1).wr_addr;
       reg_data(4114)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(1).rd_addr;
       reg_data(4115)(31 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(1).wr_data.wr_data_0;
@@ -1092,7 +1092,7 @@ begin  -- architecture behavioral
       reg_data(4128)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(2).SIGNALS.rd_ack;
       reg_data(4128)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(2).SIGNALS.flush_req;
       reg_data(4128)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(2).SIGNALS.freeze_req;
-      reg_data(4128)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(2).SIGNALS.mem_sel;
+      reg_data(4128)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(2).SIGNALS.mem_sel;
       reg_data(4130)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(2).wr_addr;
       reg_data(4130)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(2).rd_addr;
       reg_data(4131)(31 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(2).wr_data.wr_data_0;
@@ -1103,7 +1103,7 @@ begin  -- architecture behavioral
       reg_data(4144)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(3).SIGNALS.rd_ack;
       reg_data(4144)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(3).SIGNALS.flush_req;
       reg_data(4144)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(3).SIGNALS.freeze_req;
-      reg_data(4144)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(3).SIGNALS.mem_sel;
+      reg_data(4144)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(3).SIGNALS.mem_sel;
       reg_data(4146)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(3).wr_addr;
       reg_data(4146)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(3).rd_addr;
       reg_data(4147)(31 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(3).wr_data.wr_data_0;
@@ -1114,7 +1114,7 @@ begin  -- architecture behavioral
       reg_data(4160)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(4).SIGNALS.rd_ack;
       reg_data(4160)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(4).SIGNALS.flush_req;
       reg_data(4160)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(4).SIGNALS.freeze_req;
-      reg_data(4160)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(4).SIGNALS.mem_sel;
+      reg_data(4160)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(4).SIGNALS.mem_sel;
       reg_data(4162)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(4).wr_addr;
       reg_data(4162)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(4).rd_addr;
       reg_data(4163)(31 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(4).wr_data.wr_data_0;
@@ -1125,7 +1125,7 @@ begin  -- architecture behavioral
       reg_data(4176)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(5).SIGNALS.rd_ack;
       reg_data(4176)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(5).SIGNALS.flush_req;
       reg_data(4176)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(5).SIGNALS.freeze_req;
-      reg_data(4176)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(5).SIGNALS.mem_sel;
+      reg_data(4176)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(5).SIGNALS.mem_sel;
       reg_data(4178)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(5).wr_addr;
       reg_data(4178)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(5).rd_addr;
       reg_data(4179)(31 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_TC.MDT_TC(5).wr_data.wr_data_0;
@@ -1136,7 +1136,7 @@ begin  -- architecture behavioral
       reg_data(8192)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(0).SIGNALS.rd_ack;
       reg_data(8192)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(0).SIGNALS.flush_req;
       reg_data(8192)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(0).SIGNALS.freeze_req;
-      reg_data(8192)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(0).SIGNALS.mem_sel;
+      reg_data(8192)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(0).SIGNALS.mem_sel;
       reg_data(8194)( 3 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(0).wr_addr;
       reg_data(8194)(19 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(0).rd_addr;
       reg_data(8195)(16 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(0).wr_data.wr_data_0;
@@ -1146,7 +1146,7 @@ begin  -- architecture behavioral
       reg_data(8208)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(1).SIGNALS.rd_ack;
       reg_data(8208)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(1).SIGNALS.flush_req;
       reg_data(8208)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(1).SIGNALS.freeze_req;
-      reg_data(8208)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(1).SIGNALS.mem_sel;
+      reg_data(8208)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(1).SIGNALS.mem_sel;
       reg_data(8210)( 3 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(1).wr_addr;
       reg_data(8210)(19 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(1).rd_addr;
       reg_data(8211)(16 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(1).wr_data.wr_data_0;
@@ -1156,7 +1156,7 @@ begin  -- architecture behavioral
       reg_data(8224)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(2).SIGNALS.rd_ack;
       reg_data(8224)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(2).SIGNALS.flush_req;
       reg_data(8224)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(2).SIGNALS.freeze_req;
-      reg_data(8224)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(2).SIGNALS.mem_sel;
+      reg_data(8224)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(2).SIGNALS.mem_sel;
       reg_data(8226)( 3 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(2).wr_addr;
       reg_data(8226)(19 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(2).rd_addr;
       reg_data(8227)(16 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(2).wr_data.wr_data_0;
@@ -1166,7 +1166,7 @@ begin  -- architecture behavioral
       reg_data(8240)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(3).SIGNALS.rd_ack;
       reg_data(8240)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(3).SIGNALS.flush_req;
       reg_data(8240)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(3).SIGNALS.freeze_req;
-      reg_data(8240)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(3).SIGNALS.mem_sel;
+      reg_data(8240)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(3).SIGNALS.mem_sel;
       reg_data(8242)( 3 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(3).wr_addr;
       reg_data(8242)(19 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(3).rd_addr;
       reg_data(8243)(16 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(3).wr_data.wr_data_0;
@@ -1176,7 +1176,7 @@ begin  -- architecture behavioral
       reg_data(8256)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(4).SIGNALS.rd_ack;
       reg_data(8256)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(4).SIGNALS.flush_req;
       reg_data(8256)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(4).SIGNALS.freeze_req;
-      reg_data(8256)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(4).SIGNALS.mem_sel;
+      reg_data(8256)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(4).SIGNALS.mem_sel;
       reg_data(8258)( 3 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(4).wr_addr;
       reg_data(8258)(19 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(4).rd_addr;
       reg_data(8259)(16 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(4).wr_data.wr_data_0;
@@ -1186,7 +1186,7 @@ begin  -- architecture behavioral
       reg_data(8272)( 3)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(5).SIGNALS.rd_ack;
       reg_data(8272)( 5)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(5).SIGNALS.flush_req;
       reg_data(8272)( 7)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(5).SIGNALS.freeze_req;
-      reg_data(8272)( 8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(5).SIGNALS.mem_sel;
+      reg_data(8272)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(5).SIGNALS.mem_sel;
       reg_data(8274)( 3 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(5).wr_addr;
       reg_data(8274)(19 downto 16)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(5).rd_addr;
       reg_data(8275)(16 downto  0)  <= DEFAULT_HPS_CTRL_t.MDT_T0.MDT_T0(5).wr_data.wr_data_0;
@@ -1203,7 +1203,7 @@ begin  -- architecture behavioral
       reg_data(12336)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).CTRL.ROI_TC.SIGNALS.rd_ack;
       reg_data(12336)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).CTRL.ROI_TC.SIGNALS.flush_req;
       reg_data(12336)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).CTRL.ROI_TC.SIGNALS.freeze_req;
-      reg_data(12336)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).CTRL.ROI_TC.SIGNALS.mem_sel;
+      reg_data(12336)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).CTRL.ROI_TC.SIGNALS.mem_sel;
       reg_data(12338)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).CTRL.ROI_TC.wr_addr;
       reg_data(12338)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).CTRL.ROI_TC.rd_addr;
       reg_data(12339)(31 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).CTRL.ROI_TC.wr_data.wr_data_0;
@@ -1221,7 +1221,7 @@ begin  -- architecture behavioral
       reg_data(12355)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(0).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12355)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(0).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12355)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(0).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12355)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12355)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12357)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(0).MDT_DT2R.wr_addr;
       reg_data(12357)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(0).MDT_DT2R.rd_addr;
       reg_data(12358)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(0).MDT_DT2R.wr_data.wr_data_0;
@@ -1238,7 +1238,7 @@ begin  -- architecture behavioral
       reg_data(12371)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(1).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12371)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(1).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12371)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(1).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12371)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12371)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12373)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(1).MDT_DT2R.wr_addr;
       reg_data(12373)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(1).MDT_DT2R.rd_addr;
       reg_data(12374)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(1).MDT_DT2R.wr_data.wr_data_0;
@@ -1255,7 +1255,7 @@ begin  -- architecture behavioral
       reg_data(12387)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(2).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12387)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(2).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12387)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(2).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12387)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12387)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12389)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(2).MDT_DT2R.wr_addr;
       reg_data(12389)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(2).MDT_DT2R.rd_addr;
       reg_data(12390)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(2).MDT_DT2R.wr_data.wr_data_0;
@@ -1272,7 +1272,7 @@ begin  -- architecture behavioral
       reg_data(12403)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(3).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12403)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(3).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12403)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(3).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12403)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12403)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12405)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(3).MDT_DT2R.wr_addr;
       reg_data(12405)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(3).MDT_DT2R.rd_addr;
       reg_data(12406)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(3).MDT_DT2R.wr_data.wr_data_0;
@@ -1289,7 +1289,7 @@ begin  -- architecture behavioral
       reg_data(12419)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(4).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12419)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(4).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12419)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(4).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12419)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12419)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12421)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(4).MDT_DT2R.wr_addr;
       reg_data(12421)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(4).MDT_DT2R.rd_addr;
       reg_data(12422)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(4).MDT_DT2R.wr_data.wr_data_0;
@@ -1306,7 +1306,7 @@ begin  -- architecture behavioral
       reg_data(12435)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(5).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12435)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(5).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12435)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(5).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12435)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12435)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12437)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(5).MDT_DT2R.wr_addr;
       reg_data(12437)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(5).MDT_DT2R.rd_addr;
       reg_data(12438)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(0).HP.HP(5).MDT_DT2R.wr_data.wr_data_0;
@@ -1323,7 +1323,7 @@ begin  -- architecture behavioral
       reg_data(12592)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).CTRL.ROI_TC.SIGNALS.rd_ack;
       reg_data(12592)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).CTRL.ROI_TC.SIGNALS.flush_req;
       reg_data(12592)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).CTRL.ROI_TC.SIGNALS.freeze_req;
-      reg_data(12592)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).CTRL.ROI_TC.SIGNALS.mem_sel;
+      reg_data(12592)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).CTRL.ROI_TC.SIGNALS.mem_sel;
       reg_data(12594)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).CTRL.ROI_TC.wr_addr;
       reg_data(12594)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).CTRL.ROI_TC.rd_addr;
       reg_data(12595)(31 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).CTRL.ROI_TC.wr_data.wr_data_0;
@@ -1341,7 +1341,7 @@ begin  -- architecture behavioral
       reg_data(12611)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(0).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12611)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(0).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12611)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(0).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12611)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12611)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12613)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(0).MDT_DT2R.wr_addr;
       reg_data(12613)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(0).MDT_DT2R.rd_addr;
       reg_data(12614)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(0).MDT_DT2R.wr_data.wr_data_0;
@@ -1358,7 +1358,7 @@ begin  -- architecture behavioral
       reg_data(12627)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(1).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12627)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(1).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12627)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(1).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12627)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12627)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12629)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(1).MDT_DT2R.wr_addr;
       reg_data(12629)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(1).MDT_DT2R.rd_addr;
       reg_data(12630)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(1).MDT_DT2R.wr_data.wr_data_0;
@@ -1375,7 +1375,7 @@ begin  -- architecture behavioral
       reg_data(12643)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(2).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12643)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(2).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12643)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(2).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12643)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12643)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12645)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(2).MDT_DT2R.wr_addr;
       reg_data(12645)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(2).MDT_DT2R.rd_addr;
       reg_data(12646)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(2).MDT_DT2R.wr_data.wr_data_0;
@@ -1392,7 +1392,7 @@ begin  -- architecture behavioral
       reg_data(12659)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(3).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12659)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(3).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12659)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(3).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12659)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12659)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12661)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(3).MDT_DT2R.wr_addr;
       reg_data(12661)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(3).MDT_DT2R.rd_addr;
       reg_data(12662)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(3).MDT_DT2R.wr_data.wr_data_0;
@@ -1409,7 +1409,7 @@ begin  -- architecture behavioral
       reg_data(12675)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(4).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12675)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(4).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12675)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(4).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12675)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12675)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12677)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(4).MDT_DT2R.wr_addr;
       reg_data(12677)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(4).MDT_DT2R.rd_addr;
       reg_data(12678)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(4).MDT_DT2R.wr_data.wr_data_0;
@@ -1426,7 +1426,7 @@ begin  -- architecture behavioral
       reg_data(12691)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(5).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12691)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(5).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12691)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(5).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12691)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12691)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12693)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(5).MDT_DT2R.wr_addr;
       reg_data(12693)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(5).MDT_DT2R.rd_addr;
       reg_data(12694)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(1).HP.HP(5).MDT_DT2R.wr_data.wr_data_0;
@@ -1443,7 +1443,7 @@ begin  -- architecture behavioral
       reg_data(12848)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).CTRL.ROI_TC.SIGNALS.rd_ack;
       reg_data(12848)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).CTRL.ROI_TC.SIGNALS.flush_req;
       reg_data(12848)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).CTRL.ROI_TC.SIGNALS.freeze_req;
-      reg_data(12848)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).CTRL.ROI_TC.SIGNALS.mem_sel;
+      reg_data(12848)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).CTRL.ROI_TC.SIGNALS.mem_sel;
       reg_data(12850)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).CTRL.ROI_TC.wr_addr;
       reg_data(12850)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).CTRL.ROI_TC.rd_addr;
       reg_data(12851)(31 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).CTRL.ROI_TC.wr_data.wr_data_0;
@@ -1461,7 +1461,7 @@ begin  -- architecture behavioral
       reg_data(12867)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(0).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12867)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(0).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12867)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(0).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12867)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12867)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(0).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12869)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(0).MDT_DT2R.wr_addr;
       reg_data(12869)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(0).MDT_DT2R.rd_addr;
       reg_data(12870)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(0).MDT_DT2R.wr_data.wr_data_0;
@@ -1478,7 +1478,7 @@ begin  -- architecture behavioral
       reg_data(12883)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(1).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12883)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(1).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12883)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(1).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12883)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12883)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(1).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12885)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(1).MDT_DT2R.wr_addr;
       reg_data(12885)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(1).MDT_DT2R.rd_addr;
       reg_data(12886)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(1).MDT_DT2R.wr_data.wr_data_0;
@@ -1495,7 +1495,7 @@ begin  -- architecture behavioral
       reg_data(12899)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(2).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12899)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(2).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12899)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(2).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12899)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12899)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(2).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12901)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(2).MDT_DT2R.wr_addr;
       reg_data(12901)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(2).MDT_DT2R.rd_addr;
       reg_data(12902)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(2).MDT_DT2R.wr_data.wr_data_0;
@@ -1512,7 +1512,7 @@ begin  -- architecture behavioral
       reg_data(12915)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(3).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12915)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(3).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12915)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(3).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12915)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12915)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(3).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12917)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(3).MDT_DT2R.wr_addr;
       reg_data(12917)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(3).MDT_DT2R.rd_addr;
       reg_data(12918)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(3).MDT_DT2R.wr_data.wr_data_0;
@@ -1529,7 +1529,7 @@ begin  -- architecture behavioral
       reg_data(12931)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(4).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12931)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(4).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12931)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(4).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12931)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12931)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(4).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12933)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(4).MDT_DT2R.wr_addr;
       reg_data(12933)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(4).MDT_DT2R.rd_addr;
       reg_data(12934)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(4).MDT_DT2R.wr_data.wr_data_0;
@@ -1546,7 +1546,7 @@ begin  -- architecture behavioral
       reg_data(12947)( 3)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(5).MDT_DT2R.SIGNALS.rd_ack;
       reg_data(12947)( 5)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(5).MDT_DT2R.SIGNALS.flush_req;
       reg_data(12947)( 7)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(5).MDT_DT2R.SIGNALS.freeze_req;
-      reg_data(12947)( 8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(12947)(10 downto  8)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(5).MDT_DT2R.SIGNALS.mem_sel;
       reg_data(12949)( 9 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(5).MDT_DT2R.wr_addr;
       reg_data(12949)(25 downto 16)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(5).MDT_DT2R.rd_addr;
       reg_data(12950)( 8 downto  0)  <= DEFAULT_HPS_CTRL_t.HEG.HEG(2).HP.HP(5).MDT_DT2R.wr_data.wr_data_0;
@@ -1839,7 +1839,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_TC.MDT_TC(0).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(4096)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(4096)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(4096)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(4096)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 4098 => --0x1002
           reg_data(4098)( 9 downto  0)                      <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(4098)(25 downto 16)                      <=  localWrData(25 downto 16);      --rd_Address
@@ -1854,7 +1854,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_TC.MDT_TC(1).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(4112)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(4112)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(4112)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(4112)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 4114 => --0x1012
           reg_data(4114)( 9 downto  0)                      <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(4114)(25 downto 16)                      <=  localWrData(25 downto 16);      --rd_Address
@@ -1869,7 +1869,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_TC.MDT_TC(2).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(4128)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(4128)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(4128)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(4128)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 4130 => --0x1022
           reg_data(4130)( 9 downto  0)                      <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(4130)(25 downto 16)                      <=  localWrData(25 downto 16);      --rd_Address
@@ -1884,7 +1884,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_TC.MDT_TC(3).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(4144)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(4144)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(4144)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(4144)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 4146 => --0x1032
           reg_data(4146)( 9 downto  0)                      <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(4146)(25 downto 16)                      <=  localWrData(25 downto 16);      --rd_Address
@@ -1899,7 +1899,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_TC.MDT_TC(4).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(4160)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(4160)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(4160)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(4160)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 4162 => --0x1042
           reg_data(4162)( 9 downto  0)                      <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(4162)(25 downto 16)                      <=  localWrData(25 downto 16);      --rd_Address
@@ -1914,7 +1914,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_TC.MDT_TC(5).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(4176)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(4176)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(4176)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(4176)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 4178 => --0x1052
           reg_data(4178)( 9 downto  0)                      <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(4178)(25 downto 16)                      <=  localWrData(25 downto 16);      --rd_Address
@@ -1929,7 +1929,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_T0.MDT_T0(0).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(8192)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(8192)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(8192)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(8192)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 8194 => --0x2002
           reg_data(8194)( 3 downto  0)                      <=  localWrData( 3 downto  0);      --wr_Address
           reg_data(8194)(19 downto 16)                      <=  localWrData(19 downto 16);      --rd_Address
@@ -1942,7 +1942,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_T0.MDT_T0(1).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(8208)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(8208)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(8208)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(8208)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 8210 => --0x2012
           reg_data(8210)( 3 downto  0)                      <=  localWrData( 3 downto  0);      --wr_Address
           reg_data(8210)(19 downto 16)                      <=  localWrData(19 downto 16);      --rd_Address
@@ -1955,7 +1955,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_T0.MDT_T0(2).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(8224)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(8224)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(8224)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(8224)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 8226 => --0x2022
           reg_data(8226)( 3 downto  0)                      <=  localWrData( 3 downto  0);      --wr_Address
           reg_data(8226)(19 downto 16)                      <=  localWrData(19 downto 16);      --rd_Address
@@ -1968,7 +1968,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_T0.MDT_T0(3).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(8240)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(8240)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(8240)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(8240)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 8242 => --0x2032
           reg_data(8242)( 3 downto  0)                      <=  localWrData( 3 downto  0);      --wr_Address
           reg_data(8242)(19 downto 16)                      <=  localWrData(19 downto 16);      --rd_Address
@@ -1981,7 +1981,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_T0.MDT_T0(4).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(8256)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(8256)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(8256)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(8256)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 8258 => --0x2042
           reg_data(8258)( 3 downto  0)                      <=  localWrData( 3 downto  0);      --wr_Address
           reg_data(8258)(19 downto 16)                      <=  localWrData(19 downto 16);      --rd_Address
@@ -1994,7 +1994,7 @@ begin  -- architecture behavioral
           Ctrl.MDT_T0.MDT_T0(5).SIGNALS.rd_ack              <=  localWrData( 3);               
           reg_data(8272)( 5)                                <=  localWrData( 5);                --flush memory to Zync
           reg_data(8272)( 7)                                <=  localWrData( 7);                --freeze memory
-          reg_data(8272)( 8)                                <=  localWrData( 8);                --sel memory
+          reg_data(8272)(10 downto  8)                      <=  localWrData(10 downto  8);      --sel memory
         when 8274 => --0x2052
           reg_data(8274)( 3 downto  0)                      <=  localWrData( 3 downto  0);      --wr_Address
           reg_data(8274)(19 downto 16)                      <=  localWrData(19 downto 16);      --rd_Address
@@ -2016,7 +2016,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(0).CTRL.ROI_TC.SIGNALS.rd_ack        <=  localWrData( 3);               
           reg_data(12336)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12336)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12336)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12336)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12338 => --0x3032
           reg_data(12338)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12338)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2040,7 +2040,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(0).HP.HP(0).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12355)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12355)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12355)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12355)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12357 => --0x3045
           reg_data(12357)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12357)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2062,7 +2062,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(0).HP.HP(1).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12371)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12371)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12371)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12371)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12373 => --0x3055
           reg_data(12373)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12373)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2084,7 +2084,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(0).HP.HP(2).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12387)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12387)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12387)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12387)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12389 => --0x3065
           reg_data(12389)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12389)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2106,7 +2106,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(0).HP.HP(3).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12403)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12403)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12403)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12403)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12405 => --0x3075
           reg_data(12405)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12405)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2128,7 +2128,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(0).HP.HP(4).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12419)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12419)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12419)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12419)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12421 => --0x3085
           reg_data(12421)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12421)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2150,7 +2150,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(0).HP.HP(5).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12435)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12435)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12435)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12435)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12437 => --0x3095
           reg_data(12437)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12437)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2172,7 +2172,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(1).CTRL.ROI_TC.SIGNALS.rd_ack        <=  localWrData( 3);               
           reg_data(12592)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12592)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12592)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12592)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12594 => --0x3132
           reg_data(12594)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12594)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2196,7 +2196,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(1).HP.HP(0).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12611)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12611)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12611)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12611)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12613 => --0x3145
           reg_data(12613)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12613)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2218,7 +2218,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(1).HP.HP(1).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12627)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12627)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12627)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12627)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12629 => --0x3155
           reg_data(12629)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12629)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2240,7 +2240,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(1).HP.HP(2).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12643)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12643)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12643)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12643)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12645 => --0x3165
           reg_data(12645)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12645)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2262,7 +2262,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(1).HP.HP(3).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12659)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12659)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12659)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12659)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12661 => --0x3175
           reg_data(12661)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12661)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2284,7 +2284,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(1).HP.HP(4).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12675)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12675)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12675)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12675)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12677 => --0x3185
           reg_data(12677)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12677)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2306,7 +2306,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(1).HP.HP(5).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12691)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12691)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12691)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12691)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12693 => --0x3195
           reg_data(12693)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12693)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2328,7 +2328,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(2).CTRL.ROI_TC.SIGNALS.rd_ack        <=  localWrData( 3);               
           reg_data(12848)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12848)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12848)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12848)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12850 => --0x3232
           reg_data(12850)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12850)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2352,7 +2352,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(2).HP.HP(0).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12867)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12867)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12867)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12867)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12869 => --0x3245
           reg_data(12869)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12869)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2374,7 +2374,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(2).HP.HP(1).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12883)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12883)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12883)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12883)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12885 => --0x3255
           reg_data(12885)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12885)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2396,7 +2396,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(2).HP.HP(2).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12899)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12899)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12899)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12899)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12901 => --0x3265
           reg_data(12901)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12901)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2418,7 +2418,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(2).HP.HP(3).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12915)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12915)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12915)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12915)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12917 => --0x3275
           reg_data(12917)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12917)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2440,7 +2440,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(2).HP.HP(4).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12931)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12931)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12931)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12931)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12933 => --0x3285
           reg_data(12933)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12933)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address
@@ -2462,7 +2462,7 @@ begin  -- architecture behavioral
           Ctrl.HEG.HEG(2).HP.HP(5).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(12947)( 5)                               <=  localWrData( 5);                --flush memory to Zync
           reg_data(12947)( 7)                               <=  localWrData( 7);                --freeze memory
-          reg_data(12947)( 8)                               <=  localWrData( 8);                --sel memory
+          reg_data(12947)(10 downto  8)                     <=  localWrData(10 downto  8);      --sel memory
         when 12949 => --0x3295
           reg_data(12949)( 9 downto  0)                     <=  localWrData( 9 downto  0);      --wr_Address
           reg_data(12949)(25 downto 16)                     <=  localWrData(25 downto 16);      --rd_Address

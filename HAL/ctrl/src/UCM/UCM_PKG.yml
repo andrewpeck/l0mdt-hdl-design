@@ -50,7 +50,7 @@ types:
   - rd_ack : { type: logic }
   - flush_req : { type: logic }
   - freeze_req : { type: logic }
-  - mem_sel : { type: logic }
+  - mem_sel : { type: logic, range : [ 3 - 1 , 0 ] }
 
 
 - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t:
@@ -95,7 +95,7 @@ types:
   - rd_ack : { type: logic }
   - flush_req : { type: logic }
   - freeze_req : { type: logic }
-  - mem_sel : { type: logic }
+  - mem_sel : { type: logic, range : [ 3 - 1 , 0 ] }
 
 
 - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t:

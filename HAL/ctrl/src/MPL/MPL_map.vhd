@@ -124,7 +124,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(256)( 5);                            --flush memory to Zync
           localRdData( 6)            <=  Mon.PL_MEM.PL_MEM(0).SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(256)( 7);                            --freeze memory
-          localRdData( 8)            <=  reg_data(256)( 8);                            --sel memory
+          localRdData(10 downto  8)  <=  reg_data(256)(10 downto  8);                  --sel memory
         when 258 => --0x102
           localRdData(11 downto  0)  <=  reg_data(258)(11 downto  0);                  --wr_Address
           localRdData(27 downto 16)  <=  reg_data(258)(27 downto 16);                  --rd_Address
@@ -153,7 +153,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(272)( 5);                            --flush memory to Zync
           localRdData( 6)            <=  Mon.PL_MEM.PL_MEM(1).SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(272)( 7);                            --freeze memory
-          localRdData( 8)            <=  reg_data(272)( 8);                            --sel memory
+          localRdData(10 downto  8)  <=  reg_data(272)(10 downto  8);                  --sel memory
         when 274 => --0x112
           localRdData(11 downto  0)  <=  reg_data(274)(11 downto  0);                  --wr_Address
           localRdData(27 downto 16)  <=  reg_data(274)(27 downto 16);                  --rd_Address
@@ -182,7 +182,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(288)( 5);                            --flush memory to Zync
           localRdData( 6)            <=  Mon.PL_MEM.PL_MEM(2).SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(288)( 7);                            --freeze memory
-          localRdData( 8)            <=  reg_data(288)( 8);                            --sel memory
+          localRdData(10 downto  8)  <=  reg_data(288)(10 downto  8);                  --sel memory
         when 290 => --0x122
           localRdData(11 downto  0)  <=  reg_data(290)(11 downto  0);                  --wr_Address
           localRdData(27 downto 16)  <=  reg_data(290)(27 downto 16);                  --rd_Address
@@ -211,7 +211,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(304)( 5);                            --flush memory to Zync
           localRdData( 6)            <=  Mon.PL_MEM.PL_MEM(3).SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(304)( 7);                            --freeze memory
-          localRdData( 8)            <=  reg_data(304)( 8);                            --sel memory
+          localRdData(10 downto  8)  <=  reg_data(304)(10 downto  8);                  --sel memory
         when 306 => --0x132
           localRdData(11 downto  0)  <=  reg_data(306)(11 downto  0);                  --wr_Address
           localRdData(27 downto 16)  <=  reg_data(306)(27 downto 16);                  --rd_Address
@@ -240,7 +240,7 @@ begin  -- architecture behavioral
           localRdData( 5)            <=  reg_data(320)( 5);                            --flush memory to Zync
           localRdData( 6)            <=  Mon.PL_MEM.PL_MEM(4).SIGNALS.freeze_ena;      --freeze memory
           localRdData( 7)            <=  reg_data(320)( 7);                            --freeze memory
-          localRdData( 8)            <=  reg_data(320)( 8);                            --sel memory
+          localRdData(10 downto  8)  <=  reg_data(320)(10 downto  8);                  --sel memory
         when 322 => --0x142
           localRdData(11 downto  0)  <=  reg_data(322)(11 downto  0);                  --wr_Address
           localRdData(27 downto 16)  <=  reg_data(322)(27 downto 16);                  --rd_Address
@@ -287,7 +287,7 @@ begin  -- architecture behavioral
   Ctrl.SUPER.CONFIGS.FLUSH_MEM_RESET        <=  reg_data(17)( 6);                
   Ctrl.PL_MEM.PL_MEM(0).SIGNALS.flush_req   <=  reg_data(256)( 5);               
   Ctrl.PL_MEM.PL_MEM(0).SIGNALS.freeze_req  <=  reg_data(256)( 7);               
-  Ctrl.PL_MEM.PL_MEM(0).SIGNALS.mem_sel     <=  reg_data(256)( 8);               
+  Ctrl.PL_MEM.PL_MEM(0).SIGNALS.mem_sel     <=  reg_data(256)(10 downto  8);     
   Ctrl.PL_MEM.PL_MEM(0).wr_addr             <=  reg_data(258)(11 downto  0);     
   Ctrl.PL_MEM.PL_MEM(0).rd_addr             <=  reg_data(258)(27 downto 16);     
   Ctrl.PL_MEM.PL_MEM(0).wr_data.wr_data_0   <=  reg_data(259)(31 downto  0);     
@@ -297,7 +297,7 @@ begin  -- architecture behavioral
   Ctrl.PL_MEM.PL_MEM(0).wr_data.wr_data_4   <=  reg_data(263)(19 downto  0);     
   Ctrl.PL_MEM.PL_MEM(1).SIGNALS.flush_req   <=  reg_data(272)( 5);               
   Ctrl.PL_MEM.PL_MEM(1).SIGNALS.freeze_req  <=  reg_data(272)( 7);               
-  Ctrl.PL_MEM.PL_MEM(1).SIGNALS.mem_sel     <=  reg_data(272)( 8);               
+  Ctrl.PL_MEM.PL_MEM(1).SIGNALS.mem_sel     <=  reg_data(272)(10 downto  8);     
   Ctrl.PL_MEM.PL_MEM(1).wr_addr             <=  reg_data(274)(11 downto  0);     
   Ctrl.PL_MEM.PL_MEM(1).rd_addr             <=  reg_data(274)(27 downto 16);     
   Ctrl.PL_MEM.PL_MEM(1).wr_data.wr_data_0   <=  reg_data(275)(31 downto  0);     
@@ -307,7 +307,7 @@ begin  -- architecture behavioral
   Ctrl.PL_MEM.PL_MEM(1).wr_data.wr_data_4   <=  reg_data(279)(19 downto  0);     
   Ctrl.PL_MEM.PL_MEM(2).SIGNALS.flush_req   <=  reg_data(288)( 5);               
   Ctrl.PL_MEM.PL_MEM(2).SIGNALS.freeze_req  <=  reg_data(288)( 7);               
-  Ctrl.PL_MEM.PL_MEM(2).SIGNALS.mem_sel     <=  reg_data(288)( 8);               
+  Ctrl.PL_MEM.PL_MEM(2).SIGNALS.mem_sel     <=  reg_data(288)(10 downto  8);     
   Ctrl.PL_MEM.PL_MEM(2).wr_addr             <=  reg_data(290)(11 downto  0);     
   Ctrl.PL_MEM.PL_MEM(2).rd_addr             <=  reg_data(290)(27 downto 16);     
   Ctrl.PL_MEM.PL_MEM(2).wr_data.wr_data_0   <=  reg_data(291)(31 downto  0);     
@@ -317,7 +317,7 @@ begin  -- architecture behavioral
   Ctrl.PL_MEM.PL_MEM(2).wr_data.wr_data_4   <=  reg_data(295)(19 downto  0);     
   Ctrl.PL_MEM.PL_MEM(3).SIGNALS.flush_req   <=  reg_data(304)( 5);               
   Ctrl.PL_MEM.PL_MEM(3).SIGNALS.freeze_req  <=  reg_data(304)( 7);               
-  Ctrl.PL_MEM.PL_MEM(3).SIGNALS.mem_sel     <=  reg_data(304)( 8);               
+  Ctrl.PL_MEM.PL_MEM(3).SIGNALS.mem_sel     <=  reg_data(304)(10 downto  8);     
   Ctrl.PL_MEM.PL_MEM(3).wr_addr             <=  reg_data(306)(11 downto  0);     
   Ctrl.PL_MEM.PL_MEM(3).rd_addr             <=  reg_data(306)(27 downto 16);     
   Ctrl.PL_MEM.PL_MEM(3).wr_data.wr_data_0   <=  reg_data(307)(31 downto  0);     
@@ -327,7 +327,7 @@ begin  -- architecture behavioral
   Ctrl.PL_MEM.PL_MEM(3).wr_data.wr_data_4   <=  reg_data(311)(19 downto  0);     
   Ctrl.PL_MEM.PL_MEM(4).SIGNALS.flush_req   <=  reg_data(320)( 5);               
   Ctrl.PL_MEM.PL_MEM(4).SIGNALS.freeze_req  <=  reg_data(320)( 7);               
-  Ctrl.PL_MEM.PL_MEM(4).SIGNALS.mem_sel     <=  reg_data(320)( 8);               
+  Ctrl.PL_MEM.PL_MEM(4).SIGNALS.mem_sel     <=  reg_data(320)(10 downto  8);     
   Ctrl.PL_MEM.PL_MEM(4).wr_addr             <=  reg_data(322)(11 downto  0);     
   Ctrl.PL_MEM.PL_MEM(4).rd_addr             <=  reg_data(322)(27 downto 16);     
   Ctrl.PL_MEM.PL_MEM(4).wr_data.wr_data_0   <=  reg_data(323)(31 downto  0);     
@@ -354,7 +354,7 @@ begin  -- architecture behavioral
       reg_data(256)( 3)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.rd_ack;
       reg_data(256)( 5)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.flush_req;
       reg_data(256)( 7)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.freeze_req;
-      reg_data(256)( 8)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.mem_sel;
+      reg_data(256)(10 downto  8)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).SIGNALS.mem_sel;
       reg_data(258)(11 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).wr_addr;
       reg_data(258)(27 downto 16)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).rd_addr;
       reg_data(259)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(0).wr_data.wr_data_0;
@@ -368,7 +368,7 @@ begin  -- architecture behavioral
       reg_data(272)( 3)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.rd_ack;
       reg_data(272)( 5)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.flush_req;
       reg_data(272)( 7)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.freeze_req;
-      reg_data(272)( 8)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.mem_sel;
+      reg_data(272)(10 downto  8)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).SIGNALS.mem_sel;
       reg_data(274)(11 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).wr_addr;
       reg_data(274)(27 downto 16)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).rd_addr;
       reg_data(275)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(1).wr_data.wr_data_0;
@@ -382,7 +382,7 @@ begin  -- architecture behavioral
       reg_data(288)( 3)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.rd_ack;
       reg_data(288)( 5)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.flush_req;
       reg_data(288)( 7)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.freeze_req;
-      reg_data(288)( 8)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.mem_sel;
+      reg_data(288)(10 downto  8)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).SIGNALS.mem_sel;
       reg_data(290)(11 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).wr_addr;
       reg_data(290)(27 downto 16)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).rd_addr;
       reg_data(291)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(2).wr_data.wr_data_0;
@@ -396,7 +396,7 @@ begin  -- architecture behavioral
       reg_data(304)( 3)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.rd_ack;
       reg_data(304)( 5)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.flush_req;
       reg_data(304)( 7)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.freeze_req;
-      reg_data(304)( 8)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.mem_sel;
+      reg_data(304)(10 downto  8)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).SIGNALS.mem_sel;
       reg_data(306)(11 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).wr_addr;
       reg_data(306)(27 downto 16)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).rd_addr;
       reg_data(307)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(3).wr_data.wr_data_0;
@@ -410,7 +410,7 @@ begin  -- architecture behavioral
       reg_data(320)( 3)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.rd_ack;
       reg_data(320)( 5)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.flush_req;
       reg_data(320)( 7)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.freeze_req;
-      reg_data(320)( 8)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.mem_sel;
+      reg_data(320)(10 downto  8)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).SIGNALS.mem_sel;
       reg_data(322)(11 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).wr_addr;
       reg_data(322)(27 downto 16)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).rd_addr;
       reg_data(323)(31 downto  0)  <= DEFAULT_MPL_CTRL_t.PL_MEM.PL_MEM(4).wr_data.wr_data_0;
@@ -466,7 +466,7 @@ begin  -- architecture behavioral
           Ctrl.PL_MEM.PL_MEM(0).SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(256)( 5)                     <=  localWrData( 5);                --flush memory to Zync
           reg_data(256)( 7)                     <=  localWrData( 7);                --freeze memory
-          reg_data(256)( 8)                     <=  localWrData( 8);                --sel memory
+          reg_data(256)(10 downto  8)           <=  localWrData(10 downto  8);      --sel memory
         when 258 => --0x102
           reg_data(258)(11 downto  0)           <=  localWrData(11 downto  0);      --wr_Address
           reg_data(258)(27 downto 16)           <=  localWrData(27 downto 16);      --rd_Address
@@ -487,7 +487,7 @@ begin  -- architecture behavioral
           Ctrl.PL_MEM.PL_MEM(1).SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(272)( 5)                     <=  localWrData( 5);                --flush memory to Zync
           reg_data(272)( 7)                     <=  localWrData( 7);                --freeze memory
-          reg_data(272)( 8)                     <=  localWrData( 8);                --sel memory
+          reg_data(272)(10 downto  8)           <=  localWrData(10 downto  8);      --sel memory
         when 274 => --0x112
           reg_data(274)(11 downto  0)           <=  localWrData(11 downto  0);      --wr_Address
           reg_data(274)(27 downto 16)           <=  localWrData(27 downto 16);      --rd_Address
@@ -508,7 +508,7 @@ begin  -- architecture behavioral
           Ctrl.PL_MEM.PL_MEM(2).SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(288)( 5)                     <=  localWrData( 5);                --flush memory to Zync
           reg_data(288)( 7)                     <=  localWrData( 7);                --freeze memory
-          reg_data(288)( 8)                     <=  localWrData( 8);                --sel memory
+          reg_data(288)(10 downto  8)           <=  localWrData(10 downto  8);      --sel memory
         when 290 => --0x122
           reg_data(290)(11 downto  0)           <=  localWrData(11 downto  0);      --wr_Address
           reg_data(290)(27 downto 16)           <=  localWrData(27 downto 16);      --rd_Address
@@ -529,7 +529,7 @@ begin  -- architecture behavioral
           Ctrl.PL_MEM.PL_MEM(3).SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(304)( 5)                     <=  localWrData( 5);                --flush memory to Zync
           reg_data(304)( 7)                     <=  localWrData( 7);                --freeze memory
-          reg_data(304)( 8)                     <=  localWrData( 8);                --sel memory
+          reg_data(304)(10 downto  8)           <=  localWrData(10 downto  8);      --sel memory
         when 306 => --0x132
           reg_data(306)(11 downto  0)           <=  localWrData(11 downto  0);      --wr_Address
           reg_data(306)(27 downto 16)           <=  localWrData(27 downto 16);      --rd_Address
@@ -550,7 +550,7 @@ begin  -- architecture behavioral
           Ctrl.PL_MEM.PL_MEM(4).SIGNALS.rd_ack  <=  localWrData( 3);               
           reg_data(320)( 5)                     <=  localWrData( 5);                --flush memory to Zync
           reg_data(320)( 7)                     <=  localWrData( 7);                --freeze memory
-          reg_data(320)( 8)                     <=  localWrData( 8);                --sel memory
+          reg_data(320)(10 downto  8)           <=  localWrData(10 downto  8);      --sel memory
         when 322 => --0x142
           reg_data(322)(11 downto  0)           <=  localWrData(11 downto  0);      --wr_Address
           reg_data(322)(27 downto 16)           <=  localWrData(27 downto 16);      --rd_Address
