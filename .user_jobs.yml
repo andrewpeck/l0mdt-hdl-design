@@ -68,6 +68,7 @@ check_auto_generated_code:
     - if grep -q "WARNING - Address overlaps observed" "make.log"; then
         echo "WARNING - Address overlaps observed!";
         cat make.log
+        cat /tmp/uhal/*.txt
         exit 1;
       else
         echo "No address overlaps detected.";
@@ -80,7 +81,7 @@ check_auto_generated_code:
     when: always
     paths:
       - make.log
-      - /tmp/uhal/
+      - /tmp/uhal/*.txt
 
 .user_sim: &user_sim
   <<: *only-default
