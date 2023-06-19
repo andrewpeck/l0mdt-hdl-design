@@ -44,7 +44,7 @@
     </node>
   </node>
 
-  <node id="R_PHI_COMP" address="0x00000040">
+  <node id="R_PHI_COMP" address="0x00000080">
     <!-- RADIUS 2 CHAMBERS & RPC LAYERS -->
     <node id="RPC" address="0x00000000">
       <node id="ext_ctrl"      address="0x0" mask="0x00001000" parameters="default=0" permission="rw"   description="external access to mem"/>
