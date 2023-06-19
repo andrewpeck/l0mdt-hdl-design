@@ -76,7 +76,9 @@ check_auto_generated_code:
     - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile' ':(exclude)tools/gldl-scripts'
   interruptible: true
   artifacts:
-    - make.log
+    name: Makefile
+    paths:
+      - make.log
 
 .user_sim: &user_sim
   <<: *only-default
