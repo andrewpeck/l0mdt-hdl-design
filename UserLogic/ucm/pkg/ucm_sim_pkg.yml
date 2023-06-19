@@ -7,3 +7,5 @@ config:
       - ucm_lib: [ucm_pkg]
 
 types:
+  # - offset_
+  - ucm_prepro2ctrl_avt: {'array': 'open', 'type': 'logic'}

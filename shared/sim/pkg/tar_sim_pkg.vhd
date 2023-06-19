@@ -58,8 +58,13 @@ package body tar_sim_pkg is
    -- Custom types and functions --
 
    function width(x: tar2hps_tb) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: tar2hps_tb; tpl: std_logic_vector) return std_logic_vector is
@@ -126,8 +131,13 @@ package body tar_sim_pkg is
    end function convert;
 
    function width(x: pol2tar_tb) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: pol2tar_tb; tpl: std_logic_vector) return std_logic_vector is

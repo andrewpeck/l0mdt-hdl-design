@@ -82,11 +82,11 @@ regmap : $(MAP_OBJS)
 # Update the XML2VHDL register map
 %_map.vhd %_PKG.vhd : %.xml
 	@echo "================================== $(basename $(notdir $<)) =================================="
-	@echo regmap/build_vhdl_packages.py -y 3 -s True -x address_tables/modules/$(basename $(notdir $<)).xml -o  $(dir $<) --mapTemplate templates/axi_generic/template_map_withbram.vhd $(basename $(notdir $<))
+	@echo regmap/build_vhdl_packages.py -y 3 -f True -x address_tables/modules/$(basename $(notdir $<)).xml -o  $(dir $<) --mapTemplate templates/axi_generic/template_map_withbram.vhd $(basename $(notdir $<))
 
 	@python3 regmap/build_vhdl_packages.py \
 			-y 3 \
-			-s True \
+			-f True \
 			-x address_tables/modules/$(basename $(notdir $<)).xml \
 			-o  $(dir $<) \
 			--mapTemplate templates/axi_generic/template_map_withbram.vhd \

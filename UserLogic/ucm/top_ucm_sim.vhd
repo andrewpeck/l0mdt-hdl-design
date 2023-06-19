@@ -116,6 +116,9 @@ architecture beh of ucm_tb is
 
   signal files_str  : string(1 to LINE_LENGTH_MAX);
 
+  signal alias_offset_cvp : offset_art(c_NUM_THREADS -1 downto 0);
+  signal alias_slope_cvp : slope_art(c_NUM_THREADS -1 downto 0);
+
 begin
 
   UCM_DUT : entity ucm_lib.ucm
@@ -269,7 +272,16 @@ begin
   --   wait;
   -- end process f_t_p;
 
-  
+  TH_GEN: for th_i in 0 to c_NUM_THREADS-1 generate
+    alias temp_alias_offset_cvp is << signal.ucm_tb.UCM_DUT.SLC_VP_A(th_i).SLC_VP.offset : signed(31 downto 0) >>;
+    alias temp_alias_slope_cvp is << signal.ucm_tb.UCM_DUT.SLC_VP_A(th_i).SLC_VP.slope : signed(31 downto 0) >>;
+  begin
+    -- HP_GEN: for th_i in 0 to c_NUM_THREADS-1 generate
+      alias_offset_cvp(th_i) <= temp_alias_offset_cvp;
+      alias_slope_cvp(th_i) <= temp_alias_slope_cvp;
+    -- end generate HP_GEN;
+  end generate;
+
 
   CSV_UCM_OUT : entity shared_lib.csv_writer_ucm
   generic map (
@@ -294,6 +306,9 @@ begin
     in_files_str              => files_str,
     --
     slc_event_ai              => slc_event_ai,
+    --
+    in_offset_cvp             => alias_offset_cvp,
+    in_slope_cvp              => alias_slope_cvp,
     --
     inn_slc_to_h2s_av         => o_uCM2hps_inn_av,
     mid_slc_to_h2s_av         => o_uCM2hps_mid_av,

@@ -70,7 +70,8 @@ entity csv_writer_ucm is
     --
     slc_event_ai          : in event_xaut;
     --
-    in_offset_cvp         : in ucm2hps_avt(c_NUM_THREADS -1 downto 0) := (others => '0');
+    in_offset_cvp         : in offset_art(c_NUM_THREADS -1 downto 0) := (others => (others => '0'));
+    in_slope_cvp          : in slope_art(c_NUM_THREADS -1 downto 0) := (others => (others => '0'));
     --
     inn_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     mid_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
