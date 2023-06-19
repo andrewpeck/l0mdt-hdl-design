@@ -77,6 +77,7 @@ check_auto_generated_code:
   interruptible: true
   artifacts:
     name: Makefile
+    when: always
     paths:
       - make.log
 
