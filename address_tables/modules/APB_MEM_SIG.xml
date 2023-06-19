@@ -10,7 +10,7 @@
   <node id="flush_req"  address="0x00" mask="0x00000020" permission="rw" parameters="default=0" description="flush memory to Zync"/>
   <node id="freeze_ena" address="0x00" mask="0x00000040" permission="r"  description="freeze memory"/>
   <node id="freeze_req" address="0x00" mask="0x00000080" permission="rw" parameters="default=0"  description="freeze memory"/>
-  <node id="mem_sel"    address="0x00" mask="0x00000100" permission="rw" parameters="default=0"  description="sel memory"/>
+  <node id="mem_sel"    address="0x00" mask="0x00000700" permission="rw" parameters="default=0"  description="sel memory"/>
 
 </node>
 
