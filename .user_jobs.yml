@@ -64,6 +64,14 @@ check_auto_generated_code:
     - sed -i 's|python3 tools/yml2hdl/yml2hdl.py|python3.11 tools/yml2hdl/yml2hdl.py|' Makefile
     - sed -i 's|python3|python3.11|' ./tools/gldl-scripts/yml2hdl.sh
     - make all
+    - echo "Checking Address overlaps..."
+    - if grep -q "WARNING - Address overlaps observed" "make.log"; then
+        echo "WARNING - Address overlaps observed!";
+        cat make.log
+        exit 1;
+      else
+        echo "No address overlaps detected.";
+      fi
     - echo "Checking Git differences..."
     - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile' ':(exclude)tools/gldl-scripts'
   interruptible: true
