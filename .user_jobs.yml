@@ -80,6 +80,7 @@ check_auto_generated_code:
     when: always
     paths:
       - make.log
+      - /tmp/uhal/
 
 .user_sim: &user_sim
   <<: *only-default
