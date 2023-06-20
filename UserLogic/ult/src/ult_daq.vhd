@@ -188,11 +188,11 @@ begin
         ctrl_window_timeout <= unsigned(ctrl_r.wr1.window_timeout);
         ctrl_busy_threshold <= unsigned(ctrl_r.wr1.busy_threshold);
       end if; -- wr en
-      mon_r.rd.opening_offset <= std_logic_vector(ctrl_opening_offset);
-      mon_r.rd.request_offset <= std_logic_vector(ctrl_request_offset);
-      mon_r.rd.closing_offset <= std_logic_vector(ctrl_closing_offset);
-      mon_r.rd.window_timeout <= std_logic_vector(ctrl_window_timeout);
-      mon_r.rd.busy_threshold <= std_logic_vector(ctrl_busy_threshold);
+      mon_r.rd0.opening_offset <= std_logic_vector(ctrl_opening_offset);
+      mon_r.rd0.request_offset <= std_logic_vector(ctrl_request_offset);
+      mon_r.rd1.closing_offset <= std_logic_vector(ctrl_closing_offset);
+      mon_r.rd1.window_timeout <= std_logic_vector(ctrl_window_timeout);
+      mon_r.rd1.busy_threshold <= std_logic_vector(ctrl_busy_threshold);
       mon_r.status.busy       <= or(busy);
     end if; -- clk
 
