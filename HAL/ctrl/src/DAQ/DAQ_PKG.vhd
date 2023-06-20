@@ -23,31 +23,47 @@ package DAQ_CTRL is
    function convert(x: std_logic_vector; tpl: DAQ_action_CTRL_t) return DAQ_action_CTRL_t;
    function zero(tpl: DAQ_action_CTRL_t) return DAQ_action_CTRL_t;
 
-   type DAQ_wr_CTRL_t is record
+   type DAQ_wr0_CTRL_t is record
       opening_offset : std_logic_vector(12 - 1 downto 0);
       request_offset : std_logic_vector(12 - 1 downto 0);
-      closing_offset : std_logic_vector(12 - 1 downto 0);
-      window_timeout : std_logic_vector(12 - 1 downto 0);
-      busy_threshold : std_logic_vector(8 - 1 downto 0);
-   end record DAQ_wr_CTRL_t;
-   attribute w of DAQ_wr_CTRL_t : type is 56;
-   function width(x: DAQ_wr_CTRL_t) return natural;
-   function convert(x: DAQ_wr_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: DAQ_wr_CTRL_t) return DAQ_wr_CTRL_t;
-   function zero(tpl: DAQ_wr_CTRL_t) return DAQ_wr_CTRL_t;
+   end record DAQ_wr0_CTRL_t;
+   attribute w of DAQ_wr0_CTRL_t : type is 24;
+   function width(x: DAQ_wr0_CTRL_t) return natural;
+   function convert(x: DAQ_wr0_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: DAQ_wr0_CTRL_t) return DAQ_wr0_CTRL_t;
+   function zero(tpl: DAQ_wr0_CTRL_t) return DAQ_wr0_CTRL_t;
 
-   type DAQ_rd_MON_t is record
-      opening_offset : std_logic_vector(12 - 1 downto 0);
-      request_offset : std_logic_vector(12 - 1 downto 0);
+   type DAQ_wr1_CTRL_t is record
       closing_offset : std_logic_vector(12 - 1 downto 0);
       window_timeout : std_logic_vector(12 - 1 downto 0);
       busy_threshold : std_logic_vector(8 - 1 downto 0);
-   end record DAQ_rd_MON_t;
-   attribute w of DAQ_rd_MON_t : type is 56;
-   function width(x: DAQ_rd_MON_t) return natural;
-   function convert(x: DAQ_rd_MON_t; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: DAQ_rd_MON_t) return DAQ_rd_MON_t;
-   function zero(tpl: DAQ_rd_MON_t) return DAQ_rd_MON_t;
+   end record DAQ_wr1_CTRL_t;
+   attribute w of DAQ_wr1_CTRL_t : type is 32;
+   function width(x: DAQ_wr1_CTRL_t) return natural;
+   function convert(x: DAQ_wr1_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: DAQ_wr1_CTRL_t) return DAQ_wr1_CTRL_t;
+   function zero(tpl: DAQ_wr1_CTRL_t) return DAQ_wr1_CTRL_t;
+
+   type DAQ_rd0_MON_t is record
+      opening_offset : std_logic_vector(12 - 1 downto 0);
+      request_offset : std_logic_vector(12 - 1 downto 0);
+   end record DAQ_rd0_MON_t;
+   attribute w of DAQ_rd0_MON_t : type is 24;
+   function width(x: DAQ_rd0_MON_t) return natural;
+   function convert(x: DAQ_rd0_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: DAQ_rd0_MON_t) return DAQ_rd0_MON_t;
+   function zero(tpl: DAQ_rd0_MON_t) return DAQ_rd0_MON_t;
+
+   type DAQ_rd1_MON_t is record
+      closing_offset : std_logic_vector(12 - 1 downto 0);
+      window_timeout : std_logic_vector(12 - 1 downto 0);
+      busy_threshold : std_logic_vector(8 - 1 downto 0);
+   end record DAQ_rd1_MON_t;
+   attribute w of DAQ_rd1_MON_t : type is 32;
+   function width(x: DAQ_rd1_MON_t) return natural;
+   function convert(x: DAQ_rd1_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: DAQ_rd1_MON_t) return DAQ_rd1_MON_t;
+   function zero(tpl: DAQ_rd1_MON_t) return DAQ_rd1_MON_t;
 
    type DAQ_status_MON_t is record
       busy : std_logic;
@@ -59,7 +75,8 @@ package DAQ_CTRL is
    function zero(tpl: DAQ_status_MON_t) return DAQ_status_MON_t;
 
    type DAQ_MON_t is record
-      rd : DAQ_rd_MON_t;
+      rd0 : DAQ_rd0_MON_t;
+      rd1 : DAQ_rd1_MON_t;
       status : DAQ_status_MON_t;
    end record DAQ_MON_t;
    attribute w of DAQ_MON_t : type is 57;
@@ -70,7 +87,8 @@ package DAQ_CTRL is
 
    type DAQ_CTRL_t is record
       action : DAQ_action_CTRL_t;
-      wr : DAQ_wr_CTRL_t;
+      wr0 : DAQ_wr0_CTRL_t;
+      wr1 : DAQ_wr1_CTRL_t;
    end record DAQ_CTRL_t;
    attribute w of DAQ_CTRL_t : type is 58;
    function width(x: DAQ_CTRL_t) return natural;
@@ -146,17 +164,14 @@ package body DAQ_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
-   function width(x: DAQ_wr_CTRL_t) return natural is
+   function width(x: DAQ_wr0_CTRL_t) return natural is
       variable w : natural := 0;
    begin
       w := w + width(x.opening_offset);
       w := w + width(x.request_offset);
-      w := w + width(x.closing_offset);
-      w := w + width(x.window_timeout);
-      w := w + width(x.busy_threshold);
       return w;
    end function width;
-   function convert(x: DAQ_wr_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+   function convert(x: DAQ_wr0_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
       variable w : integer;
       variable u : integer := tpl'left;
@@ -167,35 +182,17 @@ package body DAQ_CTRL is
          u := u + w;
          w := width(x.request_offset);
          y(u to u+w-1) := convert(x.request_offset, y(u to u+w-1));
-         u := u + w;
-         w := width(x.closing_offset);
-         y(u to u+w-1) := convert(x.closing_offset, y(u to u+w-1));
-         u := u + w;
-         w := width(x.window_timeout);
-         y(u to u+w-1) := convert(x.window_timeout, y(u to u+w-1));
-         u := u + w;
-         w := width(x.busy_threshold);
-         y(u to u+w-1) := convert(x.busy_threshold, y(u to u+w-1));
       else
          w := width(x.opening_offset);
          y(u downto u-w+1) := convert(x.opening_offset, y(u downto u-w+1));
          u := u - w;
          w := width(x.request_offset);
          y(u downto u-w+1) := convert(x.request_offset, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.closing_offset);
-         y(u downto u-w+1) := convert(x.closing_offset, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.window_timeout);
-         y(u downto u-w+1) := convert(x.window_timeout, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.busy_threshold);
-         y(u downto u-w+1) := convert(x.busy_threshold, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
-   function convert(x: std_logic_vector; tpl: DAQ_wr_CTRL_t) return DAQ_wr_CTRL_t is
-      variable y : DAQ_wr_CTRL_t;
+   function convert(x: std_logic_vector; tpl: DAQ_wr0_CTRL_t) return DAQ_wr0_CTRL_t is
+      variable y : DAQ_wr0_CTRL_t;
       variable w : integer;
       variable u : integer := x'left;
    begin
@@ -205,60 +202,34 @@ package body DAQ_CTRL is
          u := u + w;
          w := width(tpl.request_offset);
          y.request_offset := convert(x(u to u+w-1), tpl.request_offset);
-         u := u + w;
-         w := width(tpl.closing_offset);
-         y.closing_offset := convert(x(u to u+w-1), tpl.closing_offset);
-         u := u + w;
-         w := width(tpl.window_timeout);
-         y.window_timeout := convert(x(u to u+w-1), tpl.window_timeout);
-         u := u + w;
-         w := width(tpl.busy_threshold);
-         y.busy_threshold := convert(x(u to u+w-1), tpl.busy_threshold);
       else
          w := width(tpl.opening_offset);
          y.opening_offset := convert(x(u downto u-w+1), tpl.opening_offset);
          u := u - w;
          w := width(tpl.request_offset);
          y.request_offset := convert(x(u downto u-w+1), tpl.request_offset);
-         u := u - w;
-         w := width(tpl.closing_offset);
-         y.closing_offset := convert(x(u downto u-w+1), tpl.closing_offset);
-         u := u - w;
-         w := width(tpl.window_timeout);
-         y.window_timeout := convert(x(u downto u-w+1), tpl.window_timeout);
-         u := u - w;
-         w := width(tpl.busy_threshold);
-         y.busy_threshold := convert(x(u downto u-w+1), tpl.busy_threshold);
       end if;
       return y;
    end function convert;
-   function zero(tpl: DAQ_wr_CTRL_t) return DAQ_wr_CTRL_t is
+   function zero(tpl: DAQ_wr0_CTRL_t) return DAQ_wr0_CTRL_t is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
-   function width(x: DAQ_rd_MON_t) return natural is
+   function width(x: DAQ_wr1_CTRL_t) return natural is
       variable w : natural := 0;
    begin
-      w := w + width(x.opening_offset);
-      w := w + width(x.request_offset);
       w := w + width(x.closing_offset);
       w := w + width(x.window_timeout);
       w := w + width(x.busy_threshold);
       return w;
    end function width;
-   function convert(x: DAQ_rd_MON_t; tpl: std_logic_vector) return std_logic_vector is
+   function convert(x: DAQ_wr1_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
       variable w : integer;
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
-         w := width(x.opening_offset);
-         y(u to u+w-1) := convert(x.opening_offset, y(u to u+w-1));
-         u := u + w;
-         w := width(x.request_offset);
-         y(u to u+w-1) := convert(x.request_offset, y(u to u+w-1));
-         u := u + w;
          w := width(x.closing_offset);
          y(u to u+w-1) := convert(x.closing_offset, y(u to u+w-1));
          u := u + w;
@@ -268,12 +239,6 @@ package body DAQ_CTRL is
          w := width(x.busy_threshold);
          y(u to u+w-1) := convert(x.busy_threshold, y(u to u+w-1));
       else
-         w := width(x.opening_offset);
-         y(u downto u-w+1) := convert(x.opening_offset, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.request_offset);
-         y(u downto u-w+1) := convert(x.request_offset, y(u downto u-w+1));
-         u := u - w;
          w := width(x.closing_offset);
          y(u downto u-w+1) := convert(x.closing_offset, y(u downto u-w+1));
          u := u - w;
@@ -285,18 +250,12 @@ package body DAQ_CTRL is
       end if;
       return y;
    end function convert;
-   function convert(x: std_logic_vector; tpl: DAQ_rd_MON_t) return DAQ_rd_MON_t is
-      variable y : DAQ_rd_MON_t;
+   function convert(x: std_logic_vector; tpl: DAQ_wr1_CTRL_t) return DAQ_wr1_CTRL_t is
+      variable y : DAQ_wr1_CTRL_t;
       variable w : integer;
       variable u : integer := x'left;
    begin
       if x'ascending then
-         w := width(tpl.opening_offset);
-         y.opening_offset := convert(x(u to u+w-1), tpl.opening_offset);
-         u := u + w;
-         w := width(tpl.request_offset);
-         y.request_offset := convert(x(u to u+w-1), tpl.request_offset);
-         u := u + w;
          w := width(tpl.closing_offset);
          y.closing_offset := convert(x(u to u+w-1), tpl.closing_offset);
          u := u + w;
@@ -306,12 +265,6 @@ package body DAQ_CTRL is
          w := width(tpl.busy_threshold);
          y.busy_threshold := convert(x(u to u+w-1), tpl.busy_threshold);
       else
-         w := width(tpl.opening_offset);
-         y.opening_offset := convert(x(u downto u-w+1), tpl.opening_offset);
-         u := u - w;
-         w := width(tpl.request_offset);
-         y.request_offset := convert(x(u downto u-w+1), tpl.request_offset);
-         u := u - w;
          w := width(tpl.closing_offset);
          y.closing_offset := convert(x(u downto u-w+1), tpl.closing_offset);
          u := u - w;
@@ -323,7 +276,124 @@ package body DAQ_CTRL is
       end if;
       return y;
    end function convert;
-   function zero(tpl: DAQ_rd_MON_t) return DAQ_rd_MON_t is
+   function zero(tpl: DAQ_wr1_CTRL_t) return DAQ_wr1_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: DAQ_rd0_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.opening_offset);
+      w := w + width(x.request_offset);
+      return w;
+   end function width;
+   function convert(x: DAQ_rd0_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.opening_offset);
+         y(u to u+w-1) := convert(x.opening_offset, y(u to u+w-1));
+         u := u + w;
+         w := width(x.request_offset);
+         y(u to u+w-1) := convert(x.request_offset, y(u to u+w-1));
+      else
+         w := width(x.opening_offset);
+         y(u downto u-w+1) := convert(x.opening_offset, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.request_offset);
+         y(u downto u-w+1) := convert(x.request_offset, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: DAQ_rd0_MON_t) return DAQ_rd0_MON_t is
+      variable y : DAQ_rd0_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.opening_offset);
+         y.opening_offset := convert(x(u to u+w-1), tpl.opening_offset);
+         u := u + w;
+         w := width(tpl.request_offset);
+         y.request_offset := convert(x(u to u+w-1), tpl.request_offset);
+      else
+         w := width(tpl.opening_offset);
+         y.opening_offset := convert(x(u downto u-w+1), tpl.opening_offset);
+         u := u - w;
+         w := width(tpl.request_offset);
+         y.request_offset := convert(x(u downto u-w+1), tpl.request_offset);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: DAQ_rd0_MON_t) return DAQ_rd0_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: DAQ_rd1_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.closing_offset);
+      w := w + width(x.window_timeout);
+      w := w + width(x.busy_threshold);
+      return w;
+   end function width;
+   function convert(x: DAQ_rd1_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.closing_offset);
+         y(u to u+w-1) := convert(x.closing_offset, y(u to u+w-1));
+         u := u + w;
+         w := width(x.window_timeout);
+         y(u to u+w-1) := convert(x.window_timeout, y(u to u+w-1));
+         u := u + w;
+         w := width(x.busy_threshold);
+         y(u to u+w-1) := convert(x.busy_threshold, y(u to u+w-1));
+      else
+         w := width(x.closing_offset);
+         y(u downto u-w+1) := convert(x.closing_offset, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.window_timeout);
+         y(u downto u-w+1) := convert(x.window_timeout, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.busy_threshold);
+         y(u downto u-w+1) := convert(x.busy_threshold, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: DAQ_rd1_MON_t) return DAQ_rd1_MON_t is
+      variable y : DAQ_rd1_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.closing_offset);
+         y.closing_offset := convert(x(u to u+w-1), tpl.closing_offset);
+         u := u + w;
+         w := width(tpl.window_timeout);
+         y.window_timeout := convert(x(u to u+w-1), tpl.window_timeout);
+         u := u + w;
+         w := width(tpl.busy_threshold);
+         y.busy_threshold := convert(x(u to u+w-1), tpl.busy_threshold);
+      else
+         w := width(tpl.closing_offset);
+         y.closing_offset := convert(x(u downto u-w+1), tpl.closing_offset);
+         u := u - w;
+         w := width(tpl.window_timeout);
+         y.window_timeout := convert(x(u downto u-w+1), tpl.window_timeout);
+         u := u - w;
+         w := width(tpl.busy_threshold);
+         y.busy_threshold := convert(x(u downto u-w+1), tpl.busy_threshold);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: DAQ_rd1_MON_t) return DAQ_rd1_MON_t is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
@@ -370,7 +440,8 @@ package body DAQ_CTRL is
    function width(x: DAQ_MON_t) return natural is
       variable w : natural := 0;
    begin
-      w := w + width(x.rd);
+      w := w + width(x.rd0);
+      w := w + width(x.rd1);
       w := w + width(x.status);
       return w;
    end function width;
@@ -380,14 +451,20 @@ package body DAQ_CTRL is
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
-         w := width(x.rd);
-         y(u to u+w-1) := convert(x.rd, y(u to u+w-1));
+         w := width(x.rd0);
+         y(u to u+w-1) := convert(x.rd0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd1);
+         y(u to u+w-1) := convert(x.rd1, y(u to u+w-1));
          u := u + w;
          w := width(x.status);
          y(u to u+w-1) := convert(x.status, y(u to u+w-1));
       else
-         w := width(x.rd);
-         y(u downto u-w+1) := convert(x.rd, y(u downto u-w+1));
+         w := width(x.rd0);
+         y(u downto u-w+1) := convert(x.rd0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd1);
+         y(u downto u-w+1) := convert(x.rd1, y(u downto u-w+1));
          u := u - w;
          w := width(x.status);
          y(u downto u-w+1) := convert(x.status, y(u downto u-w+1));
@@ -400,14 +477,20 @@ package body DAQ_CTRL is
       variable u : integer := x'left;
    begin
       if x'ascending then
-         w := width(tpl.rd);
-         y.rd := convert(x(u to u+w-1), tpl.rd);
+         w := width(tpl.rd0);
+         y.rd0 := convert(x(u to u+w-1), tpl.rd0);
+         u := u + w;
+         w := width(tpl.rd1);
+         y.rd1 := convert(x(u to u+w-1), tpl.rd1);
          u := u + w;
          w := width(tpl.status);
          y.status := convert(x(u to u+w-1), tpl.status);
       else
-         w := width(tpl.rd);
-         y.rd := convert(x(u downto u-w+1), tpl.rd);
+         w := width(tpl.rd0);
+         y.rd0 := convert(x(u downto u-w+1), tpl.rd0);
+         u := u - w;
+         w := width(tpl.rd1);
+         y.rd1 := convert(x(u downto u-w+1), tpl.rd1);
          u := u - w;
          w := width(tpl.status);
          y.status := convert(x(u downto u-w+1), tpl.status);
@@ -423,7 +506,8 @@ package body DAQ_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.action);
-      w := w + width(x.wr);
+      w := w + width(x.wr0);
+      w := w + width(x.wr1);
       return w;
    end function width;
    function convert(x: DAQ_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -435,14 +519,20 @@ package body DAQ_CTRL is
          w := width(x.action);
          y(u to u+w-1) := convert(x.action, y(u to u+w-1));
          u := u + w;
-         w := width(x.wr);
-         y(u to u+w-1) := convert(x.wr, y(u to u+w-1));
+         w := width(x.wr0);
+         y(u to u+w-1) := convert(x.wr0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr1);
+         y(u to u+w-1) := convert(x.wr1, y(u to u+w-1));
       else
          w := width(x.action);
          y(u downto u-w+1) := convert(x.action, y(u downto u-w+1));
          u := u - w;
-         w := width(x.wr);
-         y(u downto u-w+1) := convert(x.wr, y(u downto u-w+1));
+         w := width(x.wr0);
+         y(u downto u-w+1) := convert(x.wr0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr1);
+         y(u downto u-w+1) := convert(x.wr1, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -455,14 +545,20 @@ package body DAQ_CTRL is
          w := width(tpl.action);
          y.action := convert(x(u to u+w-1), tpl.action);
          u := u + w;
-         w := width(tpl.wr);
-         y.wr := convert(x(u to u+w-1), tpl.wr);
+         w := width(tpl.wr0);
+         y.wr0 := convert(x(u to u+w-1), tpl.wr0);
+         u := u + w;
+         w := width(tpl.wr1);
+         y.wr1 := convert(x(u to u+w-1), tpl.wr1);
       else
          w := width(tpl.action);
          y.action := convert(x(u downto u-w+1), tpl.action);
          u := u - w;
-         w := width(tpl.wr);
-         y.wr := convert(x(u downto u-w+1), tpl.wr);
+         w := width(tpl.wr0);
+         y.wr0 := convert(x(u downto u-w+1), tpl.wr0);
+         u := u - w;
+         w := width(tpl.wr1);
+         y.wr1 := convert(x(u downto u-w+1), tpl.wr1);
       end if;
       return y;
    end function convert;
