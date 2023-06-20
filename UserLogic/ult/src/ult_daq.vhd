@@ -182,11 +182,11 @@ begin
   begin
     if rising_edge(clock_and_control.clk) then
       if ctrl_r.action.wr_en = '1' then
-        ctrl_opening_offset <= unsigned(ctrl_r.wr.opening_offset);
-        ctrl_request_offset <= unsigned(ctrl_r.wr.request_offset);
-        ctrl_closing_offset <= unsigned(ctrl_r.wr.closing_offset);
-        ctrl_window_timeout <= unsigned(ctrl_r.wr.window_timeout);
-        ctrl_busy_threshold <= unsigned(ctrl_r.wr.busy_threshold);
+        ctrl_opening_offset <= unsigned(ctrl_r.wr0.opening_offset);
+        ctrl_request_offset <= unsigned(ctrl_r.wr0.request_offset);
+        ctrl_closing_offset <= unsigned(ctrl_r.wr1.closing_offset);
+        ctrl_window_timeout <= unsigned(ctrl_r.wr1.window_timeout);
+        ctrl_busy_threshold <= unsigned(ctrl_r.wr1.busy_threshold);
       end if; -- wr en
       mon_r.rd.opening_offset <= std_logic_vector(ctrl_opening_offset);
       mon_r.rd.request_offset <= std_logic_vector(ctrl_request_offset);
