@@ -179,7 +179,7 @@ begin  -- architecture behavioral
     generic map (clk_a_freq => 50_000_000)
     port map (
       reset => '0',
-      clk_a => clk100,
+      clk_a => clk50,
       clk_b => clk100,
       rate  => clk100_freq
       );
@@ -188,7 +188,7 @@ begin  -- architecture behavioral
     generic map (clk_a_freq => 50_000_000)
     port map (
       reset => '0',
-      clk_a => clk200,
+      clk_a => clk50,
       clk_b => clk200,
       rate  => clk200_freq
       );
