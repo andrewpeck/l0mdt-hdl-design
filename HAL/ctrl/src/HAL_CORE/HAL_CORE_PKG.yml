@@ -25,16 +25,12 @@ types:
 - HAL_CORE_MGT_MGT_STATUS_MON_t:
   - rxcdr_stable : { type: logic }
   - powergood : { type: logic }
-  - txready : { type: logic }
-  - rxready : { type: logic }
   - rx_pma_reset_done : { type: logic }
   - tx_pma_reset_done : { type: logic }
   - tx_reset_done : { type: logic }
   - rx_reset_done : { type: logic }
   - buffbypass_tx_done_out : { type: logic }
   - buffbypass_tx_error_out : { type: logic }
-  - buffbypass_rx_done_out : { type: logic }
-  - buffbypass_rx_error_out : { type: logic }
 
 
 - HAL_CORE_MGT_MGT_DRP_MON_t:
