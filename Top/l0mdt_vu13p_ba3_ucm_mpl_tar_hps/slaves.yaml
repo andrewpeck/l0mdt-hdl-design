@@ -41,7 +41,7 @@ AXI_CONTROL_SETS:
 
 AXI_SLAVES:
 
-  KINTEX_SYS_MGMT:
+  VIRTEX_SYS_MGMT:
     TCL_CALL:
       command: AXI_IP_SYS_MGMT
       enable_i2c_pins: 0
@@ -50,7 +50,7 @@ AXI_SLAVES:
         offset: "0x01001000"
         range: "4K"
       remote_slave: "1"
-    XML: "address_table/modules/KINTEX_SYS_MGMT.xml"
+    XML: "address_table/modules/VIRTEX_SYS_MGMT.xml"
     UHAL_BASE: 0x80000000
 
   FW_INFO:
@@ -67,21 +67,21 @@ AXI_SLAVES:
       out_name: "FW_INFO"
       map_template: "axi_generic/template_map.vhd"
 
-  FM:
-    TCL_CALL:
-      command: "AXI_PL_DEV_CONNECT"
-      axi_control: "${::AXI_MASTER_CTRL}"
-    #  type: "AXI4"
-    #  data_width: "32"
-      remote_slave: "1"
-      addr:
-        offset: "0x00000000"
-        range: "16M"
-    XML: "address_table/modules/FM.xml"
-    UHAL_BASE: 0x85000000
-    HDL:
-      out_name: "FM"
-      map_template: "axi_generic/template_map_withbram.vhd"
+  # FM:
+  #   TCL_CALL:
+  #     command: "AXI_PL_DEV_CONNECT"
+  #     axi_control: "${::AXI_MASTER_CTRL}"
+  #   #  type: "AXI4"
+  #   #  data_width: "32"
+  #     remote_slave: "1"
+  #     addr:
+  #       offset: "0x00000000"
+  #       range: "16M"
+  #   XML: "address_table/modules/FM.xml"
+  #   UHAL_BASE: 0x85000000
+  #   HDL:
+  #     out_name: "FM"
+  #     map_template: "axi_generic/template_map_withbram.vhd"
 
   C2C_INTFS:
     TCL_CALL:
