@@ -100,11 +100,11 @@ create_clock -period 25.000 -name clock_in_lhc [get_ports clock_i_p]
 set_property IOSTANDARD LVDS [get_ports clock_i*]
 
 # ASYNC Oscillator
-set_property PACKAGE_PIN AY16 [get_ports p_clk_100]
-set_property PACKAGE_PIN AY15 [get_ports n_clk_100]
+set_property PACKAGE_PIN AY16 [get_ports clock_async_i_p]
+set_property PACKAGE_PIN AY15 [get_ports clock_async_i_n]
 #create_clock -period 10.000 -name clock_100 [get_ports p_clk_100]
-set_property IOSTANDARD LVDS [get_ports *_clk_100]
-set_property DIFF_TERM_ADV TERM_100 [get_ports *_clk_100]
+set_property IOSTANDARD LVDS [get_ports clock_async_i_*]
+set_property DIFF_TERM_ADV TERM_100 [get_ports clock_async_i_*]
 
 # LHC REF Output
 
