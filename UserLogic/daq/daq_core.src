@@ -1,15 +1,15 @@
-UserLogic/daq/autogen/yml2hdl.vhd
-UserLogic/daq/autogen/daq_v3.vhd
+UserLogic/daq/daq-lxa-core/autogen/yml2hdl.vhd
+UserLogic/daq/daq-lxa-core/autogen/daq_v3.vhd
 
 UserLogic/daq/daq-lxa-core/pkg/daq_defs.vhd
 
+UserLogic/daq/daq-lxa-core/src/daq_fifo.vhd
 UserLogic/daq/daq-lxa-core/src/daq_node_fifo.vhd
 UserLogic/daq/daq-lxa-core/src/daq_data_node.vhd
 UserLogic/daq/daq-lxa-core/src/daq_head_node.vhd
 UserLogic/daq/daq-lxa-core/src/daq_win_matching.vhd
 UserLogic/daq/daq-lxa-core/src/daq_bus_conv.vhd
 UserLogic/daq/daq-lxa-core/src/daq_wme_mux.vhd
-# UserLogic/daq/daq-lxa-core/src/daq_wmes.vhd
 UserLogic/daq/daq-lxa-core/src/daq_ptr_handler.vhd
 UserLogic/daq/daq-lxa-core/src/daq_packet_builder.vhd
 UserLogic/daq/daq-lxa-core/src/daq_algo.vhd

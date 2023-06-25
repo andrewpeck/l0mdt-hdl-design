@@ -44,19 +44,19 @@ architecture behavioral of DAQ_map is
 
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 1);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 1) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 5);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 5) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*1) <= ALLOCATED_MEMORY_RANGE)
-    report "DAQ: Regmap addressing range " & integer'image(4*1) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*5) <= ALLOCATED_MEMORY_RANGE)
+    report "DAQ: Regmap addressing range " & integer'image(4*5) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity ERROR;
-  assert ((4*1) > ALLOCATED_MEMORY_RANGE)
-    report "DAQ: Regmap addressing range " & integer'image(4*1) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*5) > ALLOCATED_MEMORY_RANGE)
+    report "DAQ: Regmap addressing range " & integer'image(4*5) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity NOTE;
 
   AXIRegBridge : entity work.axiLiteRegBlocking
@@ -107,11 +107,24 @@ begin  -- architecture behavioral
       localRdData <= x"00000000";
       if localRdReq = '1' then
         regRdAck  <= '1';
-        case to_integer(unsigned(localAddress(0 downto 0))) is
+        case to_integer(unsigned(localAddress(2 downto 0))) is
           
         when 1 => --0x1
-          localRdData( 0)  <=  Mon.STATUS;      --
-          localRdData( 1)  <=  Mon.READY;       --
+          localRdData(11 downto  0)  <=  reg_data( 1)(11 downto  0);      --
+          localRdData(23 downto 12)  <=  reg_data( 1)(23 downto 12);      --
+        when 2 => --0x2
+          localRdData(11 downto  0)  <=  reg_data( 2)(11 downto  0);      --
+          localRdData(23 downto 12)  <=  reg_data( 2)(23 downto 12);      --
+          localRdData(31 downto 24)  <=  reg_data( 2)(31 downto 24);      --
+        when 3 => --0x3
+          localRdData(11 downto  0)  <=  Mon.rd0.opening_offset;          --
+          localRdData(23 downto 12)  <=  Mon.rd0.request_offset;          --
+        when 4 => --0x4
+          localRdData(11 downto  0)  <=  Mon.rd1.closing_offset;          --
+          localRdData(23 downto 12)  <=  Mon.rd1.window_timeout;          --
+          localRdData(31 downto 24)  <=  Mon.rd1.busy_threshold;          --
+        when 5 => --0x5
+          localRdData( 0)            <=  Mon.status.busy;                 --
 
 
           when others =>
@@ -129,22 +142,42 @@ begin  -- architecture behavioral
   -------------------------------------------------------------------------------
 
   -- Register mapping to ctrl structures
+  Ctrl.wr0.opening_offset  <=  reg_data( 1)(11 downto  0);     
+  Ctrl.wr0.request_offset  <=  reg_data( 1)(23 downto 12);     
+  Ctrl.wr1.closing_offset  <=  reg_data( 2)(11 downto  0);     
+  Ctrl.wr1.window_timeout  <=  reg_data( 2)(23 downto 12);     
+  Ctrl.wr1.busy_threshold  <=  reg_data( 2)(31 downto 24);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data( 0)( 0)  <= DEFAULT_DAQ_CTRL_t.RESET;
+      reg_data( 0)( 0)  <= DEFAULT_DAQ_CTRL_t.action.RESET;
+      reg_data( 0)( 1)  <= DEFAULT_DAQ_CTRL_t.action.WR_EN;
+      reg_data( 1)(11 downto  0)  <= DEFAULT_DAQ_CTRL_t.wr0.opening_offset;
+      reg_data( 1)(23 downto 12)  <= DEFAULT_DAQ_CTRL_t.wr0.request_offset;
+      reg_data( 2)(11 downto  0)  <= DEFAULT_DAQ_CTRL_t.wr1.closing_offset;
+      reg_data( 2)(23 downto 12)  <= DEFAULT_DAQ_CTRL_t.wr1.window_timeout;
+      reg_data( 2)(31 downto 24)  <= DEFAULT_DAQ_CTRL_t.wr1.busy_threshold;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      Ctrl.RESET <= '0';
+      Ctrl.action.RESET <= '0';
+      Ctrl.action.WR_EN <= '0';
       
 
       
       if localWrEn = '1' then
-        case to_integer(unsigned(localAddress(0 downto 0))) is
+        case to_integer(unsigned(localAddress(2 downto 0))) is
         when 0 => --0x0
-          Ctrl.RESET  <=  localWrData( 0);     
+          Ctrl.action.RESET           <=  localWrData( 0);               
+          Ctrl.action.WR_EN           <=  localWrData( 1);               
+        when 1 => --0x1
+          reg_data( 1)(11 downto  0)  <=  localWrData(11 downto  0);      --
+          reg_data( 1)(23 downto 12)  <=  localWrData(23 downto 12);      --
+        when 2 => --0x2
+          reg_data( 2)(11 downto  0)  <=  localWrData(11 downto  0);      --
+          reg_data( 2)(23 downto 12)  <=  localWrData(23 downto 12);      --
+          reg_data( 2)(31 downto 24)  <=  localWrData(31 downto 24);      --
 
           when others => null;
         end case;

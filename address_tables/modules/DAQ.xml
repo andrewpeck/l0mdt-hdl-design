@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<node id="DAQ" address="0x0">
-  <node id="RESET"          address="0x0" mask="0x1" permission="w"/>
-  <node id="STATUS"         address="0x1" mask="0x1" permission="r"/>
-  <node id="READY"          address="0x1" mask="0x2" permission="r"/>
+<node id="DAQ">
+  <node id="action" address="0x00000000">
+    <node id="RESET"  mask="0x000000001" permission="w"/>
+    <node id="WR_EN"  mask="0x000000002" permission="w"/>
+  </node>
+  <node id="wr0" address="0x00000001">
+    <!-- 12-bit registers --> 
+    <node id="opening_offset" mask="0x000FFF" permission="rw"/>
+    <node id="request_offset" mask="0xFFF000" permission="rw"/>
+  </node>
+  <node id="wr1" address="0x00000002">
+    <node id="closing_offset" mask="0x00000FFF" permission="rw"/>
+    <node id="window_timeout" mask="0x00FFF000" permission="rw"/>
+    <node id="busy_threshold" mask="0xFF000000" permission="rw"/>
+  </node>
+  <node id="rd0" address="0x00000003">
+    <!-- 12-bit registers --> 
+    <node id="opening_offset" mask="0x00000FFF" permission="r"/>
+    <node id="request_offset" mask="0x00FFF000" permission="r"/>
+  </node>
+  <node id="rd1" address="0x00000004">
+    <node id="closing_offset" mask="0x00000FFF" permission="r"/>
+    <node id="window_timeout" mask="0x00FFF000" permission="r"/>
+    <node id="busy_threshold" mask="0xFF000000" permission="r"/>
+  </node>
+  <node id="status" address="0x00000005">
+    <node id="busy" mask="0x1" permission="r"/>    
+  </node>
 </node>
 

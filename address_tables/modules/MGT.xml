@@ -4,16 +4,16 @@
   <node id="STATUS" address="0x0" permission="r">
     <node id ="rxcdr_stable"            address="0x0" mask="0x00000001" permission = "r" description="rxcdr_stable"/>
     <node id ="powergood"               address="0x0" mask="0x00000002" permission = "r" description="powergood"/>
-    <node id ="txready"                 address="0x0" mask="0x00000004" permission = "r" description="txready"/>
-    <node id ="rxready"                 address="0x0" mask="0x00000008" permission = "r" description="rxready"/>
+<!--<node id ="txready"                 address="0x0" mask="0x00000004" permission = "r" description="txready"/> -->
+<!--<node id ="rxready"                 address="0x0" mask="0x00000008" permission = "r" description="rxready"/> -->
     <node id ="rx_pma_reset_done"       address="0x0" mask="0x00000010" permission = "r" description="rx_pma_reset_done"/>
     <node id ="tx_pma_reset_done"       address="0x0" mask="0x00000020" permission = "r" description="tx_pma_reset_done"/>
     <node id ="tx_reset_done"           address="0x0" mask="0x00000040" permission = "r" description="tx_reset_done"/>
     <node id ="rx_reset_done"           address="0x0" mask="0x00000080" permission = "r" description="rx_reset_done"/>
     <node id ="buffbypass_tx_done_out"  address="0x0" mask="0x00000100" permission = "r" description="buffbypass_tx_done_out"/>
     <node id ="buffbypass_tx_error_out" address="0x0" mask="0x00000200" permission = "r" description="buffbypass_tx_error_out"/>
-    <node id ="buffbypass_rx_done_out"  address="0x0" mask="0x00000400" permission = "r" description="buffbypass_rx_done_out"/>
-    <node id ="buffbypass_rx_error_out" address="0x0" mask="0x00000800" permission = "r" description="buffbypass_rx_error_out"/>
+<!--<node id ="buffbypass_rx_done_out"  address="0x0" mask="0x00000400" permission = "r" description="buffbypass_rx_done_out"/> -->
+<!--<node id ="buffbypass_rx_error_out" address="0x0" mask="0x00000800" permission = "r" description="buffbypass_rx_error_out"/> -->
   </node>
 
   <node id="DRP" address="0x1" permission="rw"> 

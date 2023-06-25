@@ -39,18 +39,14 @@ package HAL_CORE_CTRL is
    type HAL_CORE_MGT_MGT_STATUS_MON_t is record
       rxcdr_stable : std_logic;
       powergood : std_logic;
-      txready : std_logic;
-      rxready : std_logic;
       rx_pma_reset_done : std_logic;
       tx_pma_reset_done : std_logic;
       tx_reset_done : std_logic;
       rx_reset_done : std_logic;
       buffbypass_tx_done_out : std_logic;
       buffbypass_tx_error_out : std_logic;
-      buffbypass_rx_done_out : std_logic;
-      buffbypass_rx_error_out : std_logic;
    end record HAL_CORE_MGT_MGT_STATUS_MON_t;
-   attribute w of HAL_CORE_MGT_MGT_STATUS_MON_t : type is 12;
+   attribute w of HAL_CORE_MGT_MGT_STATUS_MON_t : type is 8;
    function width(x: HAL_CORE_MGT_MGT_STATUS_MON_t) return natural;
    function convert(x: HAL_CORE_MGT_MGT_STATUS_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_MGT_STATUS_MON_t) return HAL_CORE_MGT_MGT_STATUS_MON_t;
@@ -121,14 +117,14 @@ package HAL_CORE_CTRL is
       DRP : HAL_CORE_MGT_MGT_DRP_MON_t;
       CONFIG : HAL_CORE_MGT_MGT_CONFIG_MON_t;
    end record HAL_CORE_MGT_MGT_MON_t;
-   attribute w of HAL_CORE_MGT_MGT_MON_t : type is 48;
+   attribute w of HAL_CORE_MGT_MGT_MON_t : type is 44;
    function width(x: HAL_CORE_MGT_MGT_MON_t) return natural;
    function convert(x: HAL_CORE_MGT_MGT_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_MGT_MON_t) return HAL_CORE_MGT_MGT_MON_t;
    function zero(tpl: HAL_CORE_MGT_MGT_MON_t) return HAL_CORE_MGT_MGT_MON_t;
 
    type HAL_CORE_MGT_MGT_MON_t_ARRAY is array(128 -1 downto 0) of HAL_CORE_MGT_MGT_MON_t;
-   attribute w of HAL_CORE_MGT_MGT_MON_t_ARRAY : type is 6144;
+   attribute w of HAL_CORE_MGT_MGT_MON_t_ARRAY : type is 5632;
    function width(x: HAL_CORE_MGT_MGT_MON_t_ARRAY) return integer;
    function convert(x: HAL_CORE_MGT_MGT_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_MGT_MON_t_ARRAY) return HAL_CORE_MGT_MGT_MON_t_ARRAY;
@@ -179,7 +175,7 @@ package HAL_CORE_CTRL is
       MGT : HAL_CORE_MGT_MGT_MON_t_ARRAY;
       REFCLK : HAL_CORE_MGT_REFCLK_MON_t_ARRAY;
    end record HAL_CORE_MGT_MON_t;
-   attribute w of HAL_CORE_MGT_MON_t : type is 7168;
+   attribute w of HAL_CORE_MGT_MON_t : type is 6656;
    function width(x: HAL_CORE_MGT_MON_t) return natural;
    function convert(x: HAL_CORE_MGT_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CORE_MGT_MON_t) return HAL_CORE_MGT_MON_t;
@@ -198,7 +194,7 @@ package HAL_CORE_CTRL is
       CLOCKING : HAL_CORE_CLOCKING_MON_t;
       MGT : HAL_CORE_MGT_MON_t;
    end record HAL_CORE_MON_t;
-   attribute w of HAL_CORE_MON_t : type is 7329;
+   attribute w of HAL_CORE_MON_t : type is 6817;
    function width(x: HAL_CORE_MON_t) return natural;
    function convert(x: HAL_CORE_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CORE_MON_t) return HAL_CORE_MON_t;
@@ -378,16 +374,12 @@ package body HAL_CORE_CTRL is
    begin
       w := w + width(x.rxcdr_stable);
       w := w + width(x.powergood);
-      w := w + width(x.txready);
-      w := w + width(x.rxready);
       w := w + width(x.rx_pma_reset_done);
       w := w + width(x.tx_pma_reset_done);
       w := w + width(x.tx_reset_done);
       w := w + width(x.rx_reset_done);
       w := w + width(x.buffbypass_tx_done_out);
       w := w + width(x.buffbypass_tx_error_out);
-      w := w + width(x.buffbypass_rx_done_out);
-      w := w + width(x.buffbypass_rx_error_out);
       return w;
    end function width;
    function convert(x: HAL_CORE_MGT_MGT_STATUS_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -401,12 +393,6 @@ package body HAL_CORE_CTRL is
          u := u + w;
          w := width(x.powergood);
          y(u to u+w-1) := convert(x.powergood, y(u to u+w-1));
-         u := u + w;
-         w := width(x.txready);
-         y(u to u+w-1) := convert(x.txready, y(u to u+w-1));
-         u := u + w;
-         w := width(x.rxready);
-         y(u to u+w-1) := convert(x.rxready, y(u to u+w-1));
          u := u + w;
          w := width(x.rx_pma_reset_done);
          y(u to u+w-1) := convert(x.rx_pma_reset_done, y(u to u+w-1));
@@ -425,24 +411,12 @@ package body HAL_CORE_CTRL is
          u := u + w;
          w := width(x.buffbypass_tx_error_out);
          y(u to u+w-1) := convert(x.buffbypass_tx_error_out, y(u to u+w-1));
-         u := u + w;
-         w := width(x.buffbypass_rx_done_out);
-         y(u to u+w-1) := convert(x.buffbypass_rx_done_out, y(u to u+w-1));
-         u := u + w;
-         w := width(x.buffbypass_rx_error_out);
-         y(u to u+w-1) := convert(x.buffbypass_rx_error_out, y(u to u+w-1));
       else
          w := width(x.rxcdr_stable);
          y(u downto u-w+1) := convert(x.rxcdr_stable, y(u downto u-w+1));
          u := u - w;
          w := width(x.powergood);
          y(u downto u-w+1) := convert(x.powergood, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.txready);
-         y(u downto u-w+1) := convert(x.txready, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.rxready);
-         y(u downto u-w+1) := convert(x.rxready, y(u downto u-w+1));
          u := u - w;
          w := width(x.rx_pma_reset_done);
          y(u downto u-w+1) := convert(x.rx_pma_reset_done, y(u downto u-w+1));
@@ -461,12 +435,6 @@ package body HAL_CORE_CTRL is
          u := u - w;
          w := width(x.buffbypass_tx_error_out);
          y(u downto u-w+1) := convert(x.buffbypass_tx_error_out, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.buffbypass_rx_done_out);
-         y(u downto u-w+1) := convert(x.buffbypass_rx_done_out, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.buffbypass_rx_error_out);
-         y(u downto u-w+1) := convert(x.buffbypass_rx_error_out, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -481,12 +449,6 @@ package body HAL_CORE_CTRL is
          u := u + w;
          w := width(tpl.powergood);
          y.powergood := convert(x(u to u+w-1), tpl.powergood);
-         u := u + w;
-         w := width(tpl.txready);
-         y.txready := convert(x(u to u+w-1), tpl.txready);
-         u := u + w;
-         w := width(tpl.rxready);
-         y.rxready := convert(x(u to u+w-1), tpl.rxready);
          u := u + w;
          w := width(tpl.rx_pma_reset_done);
          y.rx_pma_reset_done := convert(x(u to u+w-1), tpl.rx_pma_reset_done);
@@ -505,24 +467,12 @@ package body HAL_CORE_CTRL is
          u := u + w;
          w := width(tpl.buffbypass_tx_error_out);
          y.buffbypass_tx_error_out := convert(x(u to u+w-1), tpl.buffbypass_tx_error_out);
-         u := u + w;
-         w := width(tpl.buffbypass_rx_done_out);
-         y.buffbypass_rx_done_out := convert(x(u to u+w-1), tpl.buffbypass_rx_done_out);
-         u := u + w;
-         w := width(tpl.buffbypass_rx_error_out);
-         y.buffbypass_rx_error_out := convert(x(u to u+w-1), tpl.buffbypass_rx_error_out);
       else
          w := width(tpl.rxcdr_stable);
          y.rxcdr_stable := convert(x(u downto u-w+1), tpl.rxcdr_stable);
          u := u - w;
          w := width(tpl.powergood);
          y.powergood := convert(x(u downto u-w+1), tpl.powergood);
-         u := u - w;
-         w := width(tpl.txready);
-         y.txready := convert(x(u downto u-w+1), tpl.txready);
-         u := u - w;
-         w := width(tpl.rxready);
-         y.rxready := convert(x(u downto u-w+1), tpl.rxready);
          u := u - w;
          w := width(tpl.rx_pma_reset_done);
          y.rx_pma_reset_done := convert(x(u downto u-w+1), tpl.rx_pma_reset_done);
@@ -541,12 +491,6 @@ package body HAL_CORE_CTRL is
          u := u - w;
          w := width(tpl.buffbypass_tx_error_out);
          y.buffbypass_tx_error_out := convert(x(u downto u-w+1), tpl.buffbypass_tx_error_out);
-         u := u - w;
-         w := width(tpl.buffbypass_rx_done_out);
-         y.buffbypass_rx_done_out := convert(x(u downto u-w+1), tpl.buffbypass_rx_done_out);
-         u := u - w;
-         w := width(tpl.buffbypass_rx_error_out);
-         y.buffbypass_rx_error_out := convert(x(u downto u-w+1), tpl.buffbypass_rx_error_out);
       end if;
       return y;
    end function convert;

@@ -133,10 +133,10 @@ entity top_hal is
     Core_Mon  : out HAL_CORE_MON_t;
     Core_Ctrl : in  HAL_CORE_CTRL_t;
 
-    clk50_o : out std_logic;
-    clk320_o : out std_logic;
-    clk40_o  : out std_logic;
-    b2b_reset_n  : out std_logic; 
+    clk50_o     : out std_logic;
+    clk320_o    : out std_logic;
+    clk40_o     : out std_logic;
+    b2b_reset_n : out std_logic;
     --sump--------------------------------------------------------------------------
     sump : out std_logic
 

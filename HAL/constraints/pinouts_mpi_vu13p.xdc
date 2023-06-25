@@ -60,10 +60,11 @@ set_property -quiet PACKAGE_PIN AR16 [get_ports clock_in_n] ;
 set_property -quiet PACKAGE_PIN AT17 [get_ports clock_async_i_p] ; # IN: oscillator clock
 set_property -quiet PACKAGE_PIN AU16 [get_ports clock_async_i_n] ; # IN: oscillator clock
 create_clock -period 5.00 -name clock_async [get_ports clock_async_i_p]
+set_property DIFF_TERM_ADV TERM_100 [get_ports clock_async_i*]
 
 # LHC REF Output
-set_property -quiet PACKAGE_PIN BH26 [get_ports tc_clk_o_p] ; # OUT: recovered LHC Clock to synths
-set_property -quiet PACKAGE_PIN BH27 [get_ports tc_clk_o_n] ; # OUT: recovered LHC Clock to synths
+set_property -quiet PACKAGE_PIN BE26 [get_ports tc_clk_o_p] ; # OUT: recovered LHC Clock to synths
+set_property -quiet PACKAGE_PIN BE27 [get_ports tc_clk_o_n] ; # OUT: recovered LHC Clock to synths
 
 # IO standards
 set_property IOSTANDARD LVDS [get_ports  clock_i*]
