@@ -7,8 +7,15 @@
 # 1) start by getting the number of MGTs so that we can loop over them later. 
 # Priya Hardcoding imax, as attribute NUM_MGTS is not being set automatically
 # imax value got from board_pkg_mpi_ku15p.vhd
-set imax 76 
+# set imax 76 
 #[get_property NUM_MGTS [get_cells "top_hal/mgt_wrapper_inst"]]
+if {[string first ku15p [get_property PART [get_runs synth_1]]] == -1 } {
+    # VU13P has 128 MGTs
+    set imax 128
+} else {
+    # KU15P has 76 MGTs
+    set imax 76
+}
 
 
 # 2) remove existing location constraints (which come from the IP),
@@ -19,7 +26,7 @@ for {set i 0} {$i < $imax} {incr i} {
         [get_cells -quiet -hierarchical -filter \
              [format "NAME =~ top_hal/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
     #set gt_cell [get_cells -quiet [format "top_hal/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
-    puts " > Found GT Cell at $gt_cell"
+#    puts " > Found GT Cell at $gt_cell"
     
     set x_loc -1
     set y_loc -1
