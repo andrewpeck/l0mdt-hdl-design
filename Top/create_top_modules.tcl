@@ -2,6 +2,11 @@ package require yaml
 
 proc create_top_modules {project_path repo_path} {
     
+    set FPGA "KU15P"
+    if {[string first vu13p $project_path] != -1} {
+        set FPGA "VU13P"
+    }
+    
     set input_file_path "$project_path/slaves.yaml"
     # Check if slaves.yaml exists
     if {[file exists $input_file_path]} {
@@ -204,8 +209,13 @@ proc create_top_modules {project_path repo_path} {
 
     # Write top_l0mdt.vhd
     foreach line $top_data {
+        # Replace FPGA generics
+        if {[string first "KU15P_" $line] != -1} {
+            set line [string map [list "KU15P_" ${FPGA}_] $line]
+        }
+
         puts $output_top_file $line
-         if {[string match "*-- START: ULT_IO :: DO NOT EDIT*" $line]} {
+        if {[string match "*-- START: ULT_IO :: DO NOT EDIT*" $line]} {
             set text_to_insert ""
             foreach slave [dict keys $slaves] {
                 
