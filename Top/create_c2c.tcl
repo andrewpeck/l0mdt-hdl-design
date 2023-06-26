@@ -6,9 +6,9 @@ set apollo_root_path $PATH_REPO
 set build_name $globalSettings::DESIGN
 
 #for c2c
-set C2C K_C2C
+set C2C C2C
 set C2C_PHY ${C2C}_PHY
-set C2CB K_C2CB
+set C2CB C2CB
 set C2CB_PHY ${C2CB}_PHY
 
 source -notrace ${PATH_REPO}/Top/createC2CSlaveInterconnect.tcl

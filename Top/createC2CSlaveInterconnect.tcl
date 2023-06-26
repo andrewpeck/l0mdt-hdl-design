@@ -79,9 +79,9 @@ connect_bd_net [get_bd_ports $AXI_CLK40_RSTN] [get_bd_pins $SYS_RESETER_AXI_CLK4
 #================================================================================
 #  Configure chip 2 chip links
 #================================================================================
-source -quiet ${C2C_PATH}/create_kintex_c2c.tcl
+source -quiet ${C2C_PATH}/create_c2c.tcl
 #LOCing C2CB to GTHE4_COMMON_X0Y1
-#set_property -dict [list CONFIG.CHANNEL_ENABLE {X0Y1} CONFIG.C_START_LANE {X0Y1}] [get_bd_cells K_C2CB_PHY]
+#set_property -dict [list CONFIG.CHANNEL_ENABLE {X0Y1} CONFIG.C_START_LANE {X0Y1}] [get_bd_cells C2CB_PHY]
 
 #================================================================================
 #  Create JTAG AXI Master
