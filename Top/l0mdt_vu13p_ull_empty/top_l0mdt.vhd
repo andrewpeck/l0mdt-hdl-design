@@ -120,7 +120,11 @@ entity top_l0mdt is
     UPT_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
     UPT_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
     KU15P_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    KU15P_SHA      : std_logic_vector (31 downto 0) := x"00000000"
+    KU15P_SHA      : std_logic_vector (31 downto 0) := x"00000000";
+    OTHERS_VER      : std_logic_vector (31 downto 0) := x"00000000";
+    OTHERS_SHA      : std_logic_vector (31 downto 0) := x"00000000";
+    DP_REPO_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
+    DP_REPO_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000"
     );
   port (
 --------------------------------------------------------------------------------
