@@ -55,7 +55,7 @@ set_property PACKAGE_PIN AM39 [get_ports {refclk_i_p[10]}]
 create_clock -period 3.125 -name refclk10 [get_ports refclk_i_p[10]] ; # Bank 126
 # Bank 127
 set_property PACKAGE_PIN AJ42 [get_ports {refclk_i_n[11]}]
-set_property PACKAGE_PIN AJ41 [get_ports {refclk_i_p[11]}
+set_property PACKAGE_PIN AJ41 [get_ports {refclk_i_p[11]}]
 create_clock -period 3.125 -name refclk11 [get_ports refclk_i_p[11]] ; # Bank 127
 
 # SLR1 Right
