@@ -170,7 +170,7 @@ begin
                    c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
                    ) generate
 
-      assert false
+      assert true
         report "GENERATING REFCLK IBUF=" & integer'image(I) severity note;
 
       -- 2'b00: ODIV2 = O
@@ -483,7 +483,7 @@ begin
 
       mon.mgt(I).config.is_active <= '1';
 
-      assert false report
+      assert true report
         "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I)
         & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
         & " SL_LINK_CNT=" & integer'image(idx) severity note;
