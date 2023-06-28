@@ -242,5 +242,5 @@ check_auto_generated_code:
     # Check if cocotb process started (i.e. compilation succeeded)
     - grep -Eq "INFO +cocotb +Running" cocotb_run.log
     # Check result of cocotb test
-    #- if `((grep -Fq "TEST RESULTS SUMMARY" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )` ; then set_return 0 ; else set_return 99 ; fi
+    #- if `((grep -q -E  "TEST +STATUS +SIM +TIME +(ns)" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )` ; then set_return 0 ; else set_return 99 ; fi
 
