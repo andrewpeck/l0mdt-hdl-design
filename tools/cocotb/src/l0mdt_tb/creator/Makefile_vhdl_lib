@@ -129,6 +129,7 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/detector_parameters/dp_repo/mdt_dt2R/mdt_dt2r_large.vhd \
 	$(SHAREDDIR)/detector_parameters/dp_repo/mdt_dt2R/mdt_dt2r_small.vhd \
 	$(SHAREDDIR)/arithmetics/pkg/generic_pipelined_MATH_pkg.vhd \
+	$(SHAREDDIR)/arithmetics/src/divider.vhd \
 	$(SHAREDDIR)/arithmetics/src/generic_pipelined_MATH.vhd \
 	$(SHAREDDIR)/arithmetics/pkg/roi_atan_pkg.vhd \
 	$(SHAREDDIR)/arithmetics/src/roi_atan.vhd \
@@ -270,7 +271,12 @@ VHDL_SOURCES_hps_lib = \
 VHDL_SOURCES_csf_lib = \
     $(CSFDIR)/../pkg/csf_pkg.vhd \
     $(CSFDIR)/../pkg/csf_custom_pkg.vhd \
-    $(CSFDIR)/csf.vhd \
+    $(CSFDIR)/csf_supervisor.vhd \
+    $(CSFDIR)/csf_clustering.vhd \
+    $(CSFDIR)/seg_coord_transform.vhd \
+    $(CSFDIR)/ncsf_sums.vhd \
+    $(CSFDIR)/ncsf_fit.vhd \
+    $(CSFDIR)/ncsf.vhd \
     $(CSFDIR)/csf_chi2.vhd \
     $(CSFDIR)/csf_chi2_comparison.vhd \
     $(CSFDIR)/csf_fitter.vhd \
