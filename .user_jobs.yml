@@ -61,7 +61,7 @@ check_submodule_status:
   script:
     - cd HAL/c2c/bd_helper && git checkout master && git pull 
     - cd -
-    - cd HAL/ctrl/src/axi-vhdl-package && git checkout master && git pull 
+    - cd HAL/ctrl/src/axi-vhdl-package && git checkout develop && git pull 
     - cd -
     - cd HAL/hal/src/mgt/tx_phase_aligner && git checkout master && git pull 
     - cd -
@@ -71,8 +71,8 @@ check_submodule_status:
     - cd -
     - cd HAL/sl/src/my-sl-gty-interface && git checkout master && git pull 
     - cd -
-    - cd HAL/ttc/ttc-core && git checkout master && git pull
-    - cd -
+    # - cd HAL/ttc/ttc-core && git checkout master && git pull
+    # - cd -
     - cd dataformats && git checkout master && git pull
     - cd -
     - git diff --exit-code -- .
