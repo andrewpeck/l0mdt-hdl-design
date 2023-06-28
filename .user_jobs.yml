@@ -145,7 +145,7 @@ check_auto_generated_code:
           echo "Simulation succeeded!";
         fi;
       else
-        echo "Cannot find simulate.log! Something went probably wrong!"
+        echo "Cannot find simulate.log! Something went probably wrong!";
         exit 1;
       fi;
   artifacts:
