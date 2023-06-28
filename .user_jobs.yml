@@ -51,6 +51,33 @@
   allow_failure: true
   interruptible: true
 
+check_submodule_status:
+  <<: *only-default
+  <<: *tag-sr 
+  image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:centos
+  variables:
+    <<: *chk_variables
+  stage: user_pre
+  script:
+    - cd HAL/c2c/bd_helper && git checkout master && git pull 
+    - cd -
+    - cd HAL/ctrl/src/axi-vhdl-package && git checkout master && git pull 
+    - cd -
+    - cd HAL/hal/src/mgt/tx_phase_aligner && git checkout master && git pull 
+    - cd -
+    - cd HAL/lpgbt/src/gbt-sc && git checkout master && git pull 
+    - cd -
+    - cd HAL/lpgbt/src/lpgbt-fpga && git checkout master && git pull 
+    - cd -
+    - cd HAL/sl/src/my-sl-gty-interface && git checkout master && git pull 
+    - cd -
+    - cd HAL/ttc/ttc-core && git checkout master && git pull
+    - cd -
+    - cd dataformats && git checkout master && git pull
+    - cd -
+    - git diff --exit-code -- .
+  allow_failure: true
+
 check_auto_generated_code:
   <<: *only-default
   <<: *tag-sr
