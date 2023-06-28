@@ -209,6 +209,8 @@ check_auto_generated_code:
     - echo $TESTVECS_PATH
     - echo Print HOG_SIMULATION_LIB_PATH-----
     - echo $HOG_SIMULATION_LIB_PATH
+    - export XILINX_SIM_LIB=${HOG_SIMULATION_LIB_PATH}
+    - echo $XILINX_SIM_LIB
     - export VIVADO_EXEC=$(which vivado)
     - export XILINX_VIVADO="${VIVADO_EXEC/bin\/vivado/}"
     - echo XILINX_VIVADO = $XILINX_VIVADO
