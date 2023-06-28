@@ -105,6 +105,18 @@ def mtc_test(dut):
 
     testvector_config                = config["testvectors"]
 
+    testvector_config_inputs         = testvector_config["inputs"]
+    testvector_config_outputs        = testvector_config["outputs"]
+    inputs_station_id= [["" for x in range(MtcPorts.get_input_interface_ports(y))]for y in range(MtcPorts.n_input_interfaces)]
+    outputs_station_id= [["" for x in range(MtcPorts.get_output_interface_ports(y))]for y in range(MtcPorts.n_output_interfaces)]
+
+    for i in range(MtcPorts.n_input_interfaces):
+        if "station_ID" in testvector_config_inputs[i] :
+            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+    for i in range(MtcPorts.n_output_interfaces):
+        if "station_ID" in testvector_config_outputs[i] :
+            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+            
 
     mtc2sl_lsf_tol = {
         "mdt_pt": ["abs", 100],
@@ -322,10 +334,19 @@ def mtc_test(dut):
     
 
     for n_op_intf in range (MtcPorts.n_output_interfaces):
-        events_are_equal,pass_count , fail_count, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],MtcPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], tolerances=mtc2sl_lsf_tol,output_path=output_dir);
-    all_tests_passed = (all_tests_passed and events_are_equal)
-    field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
-    field_fail_cnt.append(field_fail_count_i)
+        events_are_equal,pass_count , fail_count, field_fail_count_i = events.compare_BitFields(
+            tv_bcid_list, 
+            output_tvformats[n_op_intf],
+            MtcPorts.get_output_interface_ports(n_op_intf) , 
+            num_events_to_process , 
+            recvd_events_intf[n_op_intf], 
+            tolerances=mtc2sl_lsf_tol,
+            output_path=output_dir,
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+        );
+        all_tests_passed = (all_tests_passed and events_are_equal)
+        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
+        field_fail_cnt.append(field_fail_count_i)
 
     events.results_summary(
         num_events_to_process,

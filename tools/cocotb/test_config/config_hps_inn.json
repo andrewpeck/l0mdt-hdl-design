@@ -16,12 +16,12 @@
         },
         "testvectors": {
             "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
-            "testvector_file": "B_A_3.xz",
+            "testvector_file": "B_C_3.xz",
             "inputs": [
                 {
                     "tv_format": "UCM2HPS",
                     "ports": 3,
-                    "ucm2hps_ii"   : 250,
+                    "ucm2hps_ii"   : 50,
 		    "ucm2hps_setup": 10,
 		    "station_ID": ["INN","INN","INN"],
 		    "tv_df_type":"SL",
@@ -32,10 +32,8 @@
                     "tv_format": "TAR2HPS",
                     "ports": 6,
 		    "station_ID": ["INN","INN","INN","INN","INN","INN"],
-                    "tv_type": "list",
-		    "tv_df_type":"MDT",
-		    "thread_n"   : [0,1,2,3,4,5],
-                    "tv_type": "list"
+                    "tv_type": "list_nested_tdc",
+		    "tv_df_type":"MDT"
                 }
             ],
             "outputs": [

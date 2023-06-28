@@ -2,7 +2,7 @@
     "testbench_config": {
         "test_name": "mtc",
         "input_args": {
-            "n_events": 4,
+            "n_events": 12,
             "event_detail": false,
             "clock_period": 5,
             "clock_time_unit": "ns",
@@ -16,7 +16,7 @@
         },
         "testvectors": {
             "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
-            "testvector_file": "B_A_3.xz",
+            "testvector_file": "B_C_3.xz",
             "inputs": [
                 {
                     "tv_format": "PL2MTC",
