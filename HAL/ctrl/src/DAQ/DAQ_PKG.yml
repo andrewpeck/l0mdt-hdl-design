@@ -9,12 +9,46 @@ config:
 
 types:
 
+- DAQ_action_CTRL_t:
+  - RESET : { type: logic }
+  - WR_EN : { type: logic }
+
+
+- DAQ_wr0_CTRL_t:
+  - opening_offset : { type: logic, range : [ 12 - 1 , 0 ] }
+  - request_offset : { type: logic, range : [ 12 - 1 , 0 ] }
+
+
+- DAQ_wr1_CTRL_t:
+  - closing_offset : { type: logic, range : [ 12 - 1 , 0 ] }
+  - window_timeout : { type: logic, range : [ 12 - 1 , 0 ] }
+  - busy_threshold : { type: logic, range : [ 8 - 1 , 0 ] }
+
+
+- DAQ_rd0_MON_t:
+  - opening_offset : { type: logic, range : [ 12 - 1 , 0 ] }
+  - request_offset : { type: logic, range : [ 12 - 1 , 0 ] }
+
+
+- DAQ_rd1_MON_t:
+  - closing_offset : { type: logic, range : [ 12 - 1 , 0 ] }
+  - window_timeout : { type: logic, range : [ 12 - 1 , 0 ] }
+  - busy_threshold : { type: logic, range : [ 8 - 1 , 0 ] }
+
+
+- DAQ_status_MON_t:
+  - busy : { type: logic }
+
+
 - DAQ_MON_t:
-  - STATUS : { type: logic }
-  - READY : { type: logic }
+  - rd0 : { type: DAQ_rd0_MON_t }
+  - rd1 : { type: DAQ_rd1_MON_t }
+  - status : { type: DAQ_status_MON_t }
 
 
 - DAQ_CTRL_t:
-  - RESET : { type: logic }
+  - action : { type: DAQ_action_CTRL_t }
+  - wr0 : { type: DAQ_wr0_CTRL_t }
+  - wr1 : { type: DAQ_wr1_CTRL_t }
 
 

@@ -12,37 +12,33 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
--- library ctrl_lib;
--- use ctrl_lib.DAQ_CTRL.all;
-
 library daq_lib;
 
 library daq_core;
 use daq_core.daq_defs.all;
--- use daq_core.yml2hdl.all;
 
 entity daq_station is
   generic (g_DELAY        : integer := 100; -- number of LHC clocks
            g_PIPELINES    : integer :=  32;
            g_OUTPUT_LINKS : integer := 3); 
   port (clock_and_control : in  l0mdt_control_rt;
-        ttc_commands      : in  l0mdt_ttc_rt;
-        -- ctrl_v            : in std_logic_vector; -- : in  DAQ_CTRL_t;
-        -- mon_v             : out std_logic_vector;-- : out DAQ_MON_t;
-
+        ------------------------------------------------------------------
+        o_busy          : out std_logic;
+        o_wme_available : out std_logic;
+        ------------------------------------------------------------------
         i_req_strb        : in std_logic;
-        i_req_stable      : in std_logic;
         i_win_opening_cnt : in unsigned(11 downto 0);
         i_win_request_cnt : in unsigned(11 downto 0);
         i_win_closing_cnt : in unsigned(11 downto 0);
-        i_win_timeout_cnt : in unsigned(11 downto 0);
         ------------------------------------------------------------------
         i_win_opening_offset : in unsigned(11 downto 0);
         i_win_request_offset : in unsigned(11 downto 0);
         i_win_closing_offset : in unsigned(11 downto 0);
-        i_win_timeout_window : in unsigned(11 downto 0);
+        i_win_window_timeout : in unsigned(11 downto 0);
+        i_win_busy_threshold : in unsigned( 7 downto 0);
         ------------------------------------------------------------------
-        i_bcid_cnt : in unsigned(11 downto 0);
+        i_bcid_cnt  : in unsigned(11 downto 0);
+        i_curr_bcid : in unsigned(11 downto 0);
         ------------------------------------------------------------------
         i_event_id : in unsigned(31 downto 0);
         ------------------------------------------------------------------
@@ -64,9 +60,6 @@ architecture behavioral of daq_station is
   signal station_tdc_hits_av        : std_logic_vector_array(i_station_tdc_hits_av'range)(i_station_tdc_hits_av(i_station_tdc_hits_av'low)'range);
   signal station_tdc_hits_ar        : tdcpolmux2tar_art(i_station_tdc_hits_av'range);
   signal station_tdc_hits_emurray_v : std_logic_vector(i_station_tdc_hits_av'length*i_station_tdc_hits_av(i_station_tdc_hits_av'low)'length-1 downto 0);
-  signal station_ctrl_bcid_a        : unsigned_vector(station_tdc_hits_ar'range)(11 downto 0);
-  signal station_data_bcid_a        : unsigned_vector(station_tdc_hits_ar'range)(11 downto 0);
-  signal station_data_valid_a       : std_logic_vector(i_station_tdc_hits_av'range);
 
   signal station_flx_streams_ar          : felix_data_art(0 to g_OUTPUT_LINKS-1);
   -- signal station_flx_streams_hfull_bus   : std_logic_vector(station_flx_streams_ar'range);
@@ -142,9 +135,6 @@ begin
   station_tdc_hits_av        <= convert(i_station_tdc_hits_av);
   station_tdc_hits_ar        <= convert(station_tdc_hits_av, station_tdc_hits_ar);
   station_tdc_hits_emurray_v <= convert(i_station_tdc_hits_av, station_tdc_hits_emurray_v);
-  station_ctrl_bcid_a        <= concat_ctrl_bcid(ttc_commands.bcid);
-  station_data_bcid_a        <= concat_data_bcid(station_tdc_hits_ar);
-  station_data_valid_a       <= concat_data_valid(station_tdc_hits_ar);
   
   gen_daq_chamber_fifos: for jj in 0 to station_tdc_hits_ar'high generate
     signal aux_nempty : std_logic := '0';
@@ -193,7 +183,7 @@ begin
     port map (i_sys_clk_fast => clock_and_control.clk, -- : in std_logic;
               i_sys_rst      => clock_and_control.rst, -- : in std_logic;
               ---------------------------------------------
-              i_src_payload  => std_logic_vector(ttc_commands.bcid) & chamber_fifo_payload, -- : in  std_logic_vector;
+              i_src_payload  => std_logic_vector(i_bcid_cnt) & chamber_fifo_payload, -- : in  std_logic_vector;
               i_src_wr_strb  => chamber_fifo_nempty, -- : in  std_logic;
               ---------------------------------------------
               i_dst_rd_strb  => station_fifo_rd_strb, -- : in  std_logic;
@@ -228,8 +218,8 @@ begin
 
       station_fifo_rd_strb <= '0';
       station_wr_strb <= '0';
-      if ((ttc_commands.bcid >= delivered and ttc_commands.bcid-delivered >= g_DELAY)
-          or (ttc_commands.bcid < delivered and delivered-ttc_commands.bcid >= g_DELAY)) then
+      if ((i_bcid_cnt >= delivered and i_bcid_cnt-delivered >= g_DELAY)
+          or (i_bcid_cnt < delivered and delivered-i_bcid_cnt >= g_DELAY)) then
         station_fifo_rd_strb <= '1';
         station_wr_strb <= '1';
       end if;
@@ -246,34 +236,38 @@ begin
                  g_NBITS_STREAM_HDR_WIDTH_ARRAY      => (0 => 16),
                  g_NBITS_STREAM_HDR_COUNTER_ARRAY    => (0 => 16),
                  g_NBITS_STREAM_HDR_USER_ARRAY       => (0 => i_station_usr_hdr'length),
-                 g_OUTPUT_LINKS                      => g_OUTPUT_LINKS)
+                 g_OUTPUT_LINKS                      => g_OUTPUT_LINKS,
+                 g_NBITS_SNAPSHOT                    => 40,
+                 g_FORMAT_VERSION                    => 1)
     ----------------------------------------------------------------------------
     port map (i_sys_clk_fast => clock_and_control.clk, -- : in std_logic;
-              i_sys_clk_slow => '0',
               i_sys_rst      => clock_and_control.rst, -- : in std_logic;
               i_sys_bx       => clock_and_control.bx    , -- : in std_logic;
+              ------------------------------------------------------------------
+              o_busy          => o_busy,
+              o_wme_available => o_wme_available,
               ------------------------------------------------------------------
               i_sys_hdr => i_sys_hdr,
               ------------------------------------------------------------------
               i_req_strb        => i_req_strb, -- : in std_logic;
-              i_req_stable      => i_req_stable, -- : in std_logic;
               i_win_opening_cnt => i_win_opening_cnt, -- : in unsigned(11 downto 0);
               i_win_request_cnt => i_win_request_cnt, -- : in unsigned(11 downto 0);
               i_win_closing_cnt => i_win_closing_cnt, -- : in unsigned(11 downto 0);
-              i_win_timeout_cnt => i_win_timeout_cnt, -- : in unsigned(11 downto 0);
               ------------------------------------------------------------------
               i_win_opening_offset => i_win_opening_offset, -- : in unsigned(11 downto 0);
               i_win_request_offset => i_win_request_offset, -- : in unsigned(11 downto 0);
               i_win_closing_offset => i_win_closing_offset, -- : in unsigned(11 downto 0);
-              i_win_timeout_window => i_win_timeout_window, -- : in unsigned(11 downto 0);
+              i_win_window_timeout => i_win_window_timeout, -- : in unsigned(11 downto 0);
+              i_win_busy_threshold => i_win_busy_threshold,
               ------------------------------------------------------------------
-              i_bcid_cnt => i_bcid_cnt, -- : in unsigned(11 downto 0);
+              i_bcid_cnt  => i_bcid_cnt, -- : in unsigned(11 downto 0);
+              i_curr_bcid => i_curr_bcid,
               ------------------------------------------------------------------
               i_event_id => i_event_id, -- : in unsigned(11 downto 0);
               i_usr_hdr_payload => "",
               ------------------------------------------------------------------
               i_stream_user_header_emurray => i_station_usr_hdr,
-              i_stream_ctrl_bcid_array     => (0 => ttc_commands.bcid),
+              i_stream_ctrl_bcid_array     => (0 => i_bcid_cnt),
               i_stream_data_bcid_array     => (0 => station_payload_r.tdc.coarsetime),
               i_stream_valid_array         => (0 => station_payload_r.data_valid),
               i_stream_enable_array        => (0 => '1'),

@@ -1,0 +1,52 @@
+{
+    "testbench_config": {
+        "test_name": "ult_ucm_pt_mpl_mtc",
+        "input_args": {
+            "n_events": 1,
+            "event_detail": false,
+            "clock_period": 5,
+            "clock_time_unit": "ns",
+            "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
+        },
+        "run_config": {
+            "output_directory_name": "ult_ucm_pt_mpl_mtc",
+            "test_location": "src/l0mdt_tb/testbench/ult_ucm_pt_mpl_mtc/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "${XILINX_LIB_DIR}",
+            "configure_rtl": true,
+            "pt_type": "upt",
+	    "mpl_latency" : 576,
+	    "ucm_latency" : 10
+        },
+        "testvectors": {
+            "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
+            "testvector_file": "B_C_3.xz",
+            "inputs": [
+                {
+                    "tv_format": "SLC_RX",
+                    "ports": 3,
+		    "thread_n" : [0,1,2]
+                },
+                {
+                    "tv_format": "SF2PTCALC_LSF",
+                    "ports": 9,
+		    "station_ID" : ["INN","INN","INN", "MID", "MID", "MID", "OUT", "OUT", "OUT"],
+		    "thread_n"   : [0,1,2,0,1,2,0,1,2]
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "MTC2SL_LSF",
+                    "ports": 3,
+		    "thread_n": [0,1,2]
+                },
+                {
+                    "tv_format": "UCM2HPS",
+                    "ports": 9,
+		    "station_ID" : ["INN","INN","INN", "MID", "MID", "MID", "OUT", "OUT", "OUT"],
+		    "thread_n"   : [2,1,0,2,1,0,2,1,0]
+                }
+            ]
+        }
+    }
+}

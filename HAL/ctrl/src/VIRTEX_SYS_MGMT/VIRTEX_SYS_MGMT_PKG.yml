@@ -1,0 +1,26 @@
+# yml2hdl v0.3
+# This file was auto-generated.
+# Modifications might be lost.
+config:
+  basic_functions : False
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg]
+
+types:
+
+- VIRTEX_SYS_MGMT_MON_t:
+  - TEMP : { type: logic, range : [ 10 - 1 , 0 ] }
+  - VCCINT : { type: logic, range : [ 10 - 1 , 0 ] }
+  - VCCAUX : { type: logic, range : [ 10 - 1 , 0 ] }
+  - VCCBRAM : { type: logic, range : [ 10 - 1 , 0 ] }
+  - TEMP_MAX : { type: logic, range : [ 10 - 1 , 0 ] }
+  - VCCINT_MAX : { type: logic, range : [ 10 - 1 , 0 ] }
+  - VCCAUX_MAX : { type: logic, range : [ 10 - 1 , 0 ] }
+  - VCCBRAM_MAX : { type: logic, range : [ 10 - 1 , 0 ] }
+  - TEMP_MIN : { type: logic, range : [ 10 - 1 , 0 ] }
+  - VCCINT_MIN : { type: logic, range : [ 10 - 1 , 0 ] }
+  - VCCAUX_MIN : { type: logic, range : [ 10 - 1 , 0 ] }
+  - VCCBRAM_MIN : { type: logic, range : [ 10 - 1 , 0 ] }
+
+

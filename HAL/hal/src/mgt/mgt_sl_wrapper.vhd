@@ -295,16 +295,16 @@ begin
         ch3_gtpowergood_out => status_o(3).powergood,
 
         -- rxbyteisaligned
-        ch0_rxbyteisaligned_out => status_o(0).rxbyteisaligned,
-        ch1_rxbyteisaligned_out => status_o(1).rxbyteisaligned,
-        ch2_rxbyteisaligned_out => status_o(2).rxbyteisaligned,
-        ch3_rxbyteisaligned_out => status_o(3).rxbyteisaligned,
+        ch0_rxbyteisaligned_out => open,
+        ch1_rxbyteisaligned_out => open,
+        ch2_rxbyteisaligned_out => open,
+        ch3_rxbyteisaligned_out => open,
 
         -- rxbyterealign
-        ch0_rxbyterealign_out => status_o(0).rxbyterealign,
-        ch1_rxbyterealign_out => status_o(1).rxbyterealign,
-        ch2_rxbyterealign_out => status_o(2).rxbyterealign,
-        ch3_rxbyterealign_out => status_o(3).rxbyterealign,
+        ch0_rxbyterealign_out => open,
+        ch1_rxbyterealign_out => open,
+        ch2_rxbyterealign_out => open,
+        ch3_rxbyterealign_out => open,
 
         -- rxctrl0
         ch0_rxctrl0_out => rxctrl_out(0).ctrl0,

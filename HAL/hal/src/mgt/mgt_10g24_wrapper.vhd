@@ -25,7 +25,13 @@ entity mgt_10g24_wrapper is
 
     free_clock : in std_logic;
 
-    reset : in std_logic;
+    reset                       : in std_logic;
+    reset_pll_and_datapath_i    : in std_logic;
+    reset_datapath_i            : in std_logic;
+    reset_rx_pll_and_datapath_i : in std_logic;
+    reset_rx_datapath_i         : in std_logic;
+    buffbypass_tx_reset_i       : in std_logic;
+    buffbypass_tx_start_user_i  : in std_logic;
 
     refclk0_i : in std_logic;
     refclk1_i : in std_logic;
@@ -35,13 +41,6 @@ entity mgt_10g24_wrapper is
     mgt_txusrclk_i        : in std_logic;
     mgt_txusrclk_active_i : in std_logic;
 
-    -- refclk
-    -- qpll0clk_in                : in  std_logic;
-    -- qpll0refclk_in             : in  std_logic;
-    -- qpll1clk_in                : in  std_logic;
-    -- qpll1refclk_in             : in  std_logic;
-    -- gtwiz_reset_qpll0lock_in   : in  std_logic;
-    -- gtwiz_reset_qpll0reset_out : out std_logic;
     qpll0outclk_out            : out std_logic;
     qpll0outrefclk_out         : out std_logic;
     qpll1outclk_out            : out std_logic;
@@ -50,10 +49,6 @@ entity mgt_10g24_wrapper is
     --
     txoutclk : out std_logic_vector(3 downto 0);
     rxoutclk : out std_logic_vector(3 downto 0);
-
-    -- resets      --
-    tx_resets_i : in mgt_reset_rt_array(3 downto 0);
-    rx_resets_i : in mgt_reset_rt_array(3 downto 0);
 
     -- control     --
     rx_slide_i : in std_logic_vector(3 downto 0);
@@ -78,37 +73,33 @@ end mgt_10g24_wrapper;
 
 architecture Behavioral of mgt_10g24_wrapper is
 
-
-
-  signal gtwiz_userclk_tx_active_in : std_logic := '1';
-  signal gtwiz_userclk_rx_active_in : std_logic := '1';
-
-  signal gtwiz_buffbypass_tx_reset_in      : std_logic := '0';
-  signal gtwiz_buffbypass_tx_start_user_in : std_logic := '1';
-  signal gtwiz_reset_clk_freerun_in        : std_logic := '0';
-  signal gtwiz_reset_all_in                : std_logic := '0';
-
-  signal gtwiz_buffbypass_tx_done_out  : std_logic;
-  signal gtwiz_buffbypass_tx_error_out : std_logic;
-
-  signal gtwiz_reset_tx_pll_and_datapath_in : std_logic := '0';
-  signal gtwiz_reset_tx_datapath_in         : std_logic := '0';
-  signal gtwiz_reset_rx_pll_and_datapath_in : std_logic := '0';
-  signal gtwiz_reset_rx_datapath_in         : std_logic := '0';
-
-  signal gtwiz_reset_rx_cdr_stable_out : std_logic;
-  signal gtwiz_reset_tx_done_out       : std_logic;
-  signal gtwiz_reset_rx_done_out       : std_logic;
-
-  signal xilinx_one  : std_logic_vector (0 downto 0) := (others => '1');
-  signal xilinx_zero : std_logic_vector (0 downto 0) := (others => '0');
-
-  -- https://forums.xilinx.com/t5/Vivado-TCL-Community/Creating-custom-properties-in-HDL-and-their-persistence/m-p/666151/highlight/true#M4170
-
 begin
+
+    -- cloning signals
+    status_o(1).buffbypass_tx_done_out <= status_o(0).buffbypass_tx_done_out;
+    status_o(2).buffbypass_tx_done_out <= status_o(0).buffbypass_tx_done_out;
+    status_o(3).buffbypass_tx_done_out <= status_o(0).buffbypass_tx_done_out;
+
+    status_o(1).buffbypass_tx_error_out <= status_o(0).buffbypass_tx_error_out;
+    status_o(2).buffbypass_tx_error_out <= status_o(0).buffbypass_tx_error_out;
+    status_o(3).buffbypass_tx_error_out <= status_o(0).buffbypass_tx_error_out;
+
+    status_o(1).rxcdr_stable <= status_o(0).rxcdr_stable;
+    status_o(2).rxcdr_stable <= status_o(0).rxcdr_stable;
+    status_o(3).rxcdr_stable <= status_o(0).rxcdr_stable;
+
+    status_o(1).tx_reset_done <= status_o(0).tx_reset_done;
+    status_o(2).tx_reset_done <= status_o(0).tx_reset_done;
+    status_o(3).tx_reset_done <= status_o(0).tx_reset_done;
+
+    status_o(1).rx_reset_done <= status_o(0).rx_reset_done;
+    status_o(2).rx_reset_done <= status_o(0).rx_reset_done;
+    status_o(3).rx_reset_done <= status_o(0).rx_reset_done;
+
 
   gty_gen : if (gt_type = GTY) generate
 
+    -- https://forums.xilinx.com/t5/Vivado-TCL-Community/Creating-custom-properties-in-HDL-and-their-persistence/m-p/666151/highlight/true#M4170
     attribute X_LOC            : integer;
     attribute Y_LOC            : integer;
     attribute X_LOC of MGT_GEN : label is c_MGT_MAP(index).x_loc;
@@ -172,21 +163,29 @@ begin
 
     MGT_GEN : mgt_10g24_gty
       port map (
-        gtwiz_userclk_tx_active_in(0)         => gtwiz_userclk_tx_active_in,
-        gtwiz_userclk_rx_active_in(0)         => gtwiz_userclk_rx_active_in,
-        gtwiz_buffbypass_tx_reset_in(0)       => gtwiz_buffbypass_tx_reset_in,
-        gtwiz_buffbypass_tx_start_user_in(0)  => gtwiz_buffbypass_tx_start_user_in,
-        gtwiz_buffbypass_tx_done_out(0)       => gtwiz_buffbypass_tx_done_out,
-        gtwiz_buffbypass_tx_error_out(0)      => gtwiz_buffbypass_tx_error_out,
+        -- userclock
+        gtwiz_userclk_tx_active_in(0) => mgt_txusrclk_active_i,
+        gtwiz_userclk_rx_active_in(0) => mgt_rxusrclk_active_i,
+
+       
+        -- buff bypass
+        gtwiz_buffbypass_tx_reset_in(0)       => buffbypass_tx_reset_i,
+        gtwiz_buffbypass_tx_start_user_in(0)  => buffbypass_tx_start_user_i,
+        gtwiz_buffbypass_tx_done_out(0)       => status_o(0).buffbypass_tx_done_out,
+        gtwiz_buffbypass_tx_error_out(0)      => status_o(0).buffbypass_tx_error_out,
+
+        -- resets
         gtwiz_reset_clk_freerun_in(0)         => free_clock,
-        gtwiz_reset_all_in(0)                 => gtwiz_reset_all_in,
-        gtwiz_reset_tx_pll_and_datapath_in(0) => gtwiz_reset_tx_pll_and_datapath_in,
-        gtwiz_reset_tx_datapath_in(0)         => gtwiz_reset_tx_datapath_in,
-        gtwiz_reset_rx_pll_and_datapath_in(0) => gtwiz_reset_rx_pll_and_datapath_in,
-        gtwiz_reset_rx_datapath_in(0)         => gtwiz_reset_rx_datapath_in,
-        gtwiz_reset_rx_cdr_stable_out(0)      => gtwiz_reset_rx_cdr_stable_out,
-        gtwiz_reset_tx_done_out(0)            => gtwiz_reset_tx_done_out,
-        gtwiz_reset_rx_done_out(0)            => gtwiz_reset_rx_done_out,
+        gtwiz_reset_all_in(0)                 => reset,
+        gtwiz_reset_tx_pll_and_datapath_in(0) => reset_pll_and_datapath_i,
+        gtwiz_reset_tx_datapath_in(0)         => reset_datapath_i,
+        gtwiz_reset_rx_pll_and_datapath_in(0) => reset_rx_pll_and_datapath_i,
+        gtwiz_reset_rx_datapath_in(0)         => reset_rx_datapath_i,
+
+        -- outputs
+        gtwiz_reset_rx_cdr_stable_out(0)      => status_o(0).rxcdr_stable,
+        gtwiz_reset_tx_done_out(0)            => status_o(0).tx_reset_done,
+        gtwiz_reset_rx_done_out(0)            => status_o(0).rx_reset_done,
 
         gtwiz_userdata_tx_in => mgt_word_i(3) & mgt_word_i(2) & mgt_word_i(1) & mgt_word_i(0),
 
@@ -204,10 +203,10 @@ begin
         qpll1outrefclk_out(0) => qpll1outrefclk_out,
 
         drpaddr_in => mgt_drp_i(3).drpaddr_in & mgt_drp_i(2).drpaddr_in & mgt_drp_i(1).drpaddr_in & mgt_drp_i(0).drpaddr_in,
-        drpclk_in  => mgt_drp_i(3).drpclk_in & mgt_drp_i(2).drpclk_in & mgt_drp_i(1).drpclk_in & mgt_drp_i(0).drpclk_in,
-        drpdi_in   => mgt_drp_i(3).drpdi_in & mgt_drp_i(2).drpdi_in & mgt_drp_i(1).drpdi_in & mgt_drp_i(0).drpdi_in,
-        drpen_in   => mgt_drp_i(3).drpen_in & mgt_drp_i(2).drpen_in & mgt_drp_i(1).drpen_in & mgt_drp_i(0).drpen_in,
-        drpwe_in   => mgt_drp_i(3).drpwe_in & mgt_drp_i(2).drpwe_in & mgt_drp_i(1).drpwe_in & mgt_drp_i(0).drpwe_in,
+        drpclk_in  => mgt_drp_i(3).drpclk_in  & mgt_drp_i(2).drpclk_in  & mgt_drp_i(1).drpclk_in  & mgt_drp_i(0).drpclk_in,
+        drpdi_in   => mgt_drp_i(3).drpdi_in   & mgt_drp_i(2).drpdi_in   & mgt_drp_i(1).drpdi_in   & mgt_drp_i(0).drpdi_in,
+        drpen_in   => mgt_drp_i(3).drpen_in   & mgt_drp_i(2).drpen_in   & mgt_drp_i(1).drpen_in   & mgt_drp_i(0).drpen_in,
+        drpwe_in   => mgt_drp_i(3).drpwe_in   & mgt_drp_i(2).drpwe_in   & mgt_drp_i(1).drpwe_in   & mgt_drp_i(0).drpwe_in,
 
         drpdo_out(15 downto 0)  => mgt_drp_o(0).drpdo_out,
         drpdo_out(31 downto 16) => mgt_drp_o(1).drpdo_out,
@@ -226,19 +225,35 @@ begin
 
         rxslide_in => rx_slide_i,
 
-        rxusrclk_in  => mgt_rxusrclk_i& mgt_rxusrclk_i& mgt_rxusrclk_i& mgt_rxusrclk_i,
-        rxusrclk2_in => mgt_rxusrclk_i& mgt_rxusrclk_i& mgt_rxusrclk_i& mgt_rxusrclk_i,
-        txusrclk_in  => mgt_txusrclk_i& mgt_txusrclk_i& mgt_txusrclk_i& mgt_txusrclk_i,
-        txusrclk2_in => mgt_txusrclk_i& mgt_txusrclk_i& mgt_txusrclk_i& mgt_txusrclk_i,
+        rxusrclk_in  => mgt_rxusrclk_i & mgt_rxusrclk_i & mgt_rxusrclk_i & mgt_rxusrclk_i,
+        rxusrclk2_in => mgt_rxusrclk_i & mgt_rxusrclk_i & mgt_rxusrclk_i & mgt_rxusrclk_i,
+        txusrclk_in  => mgt_txusrclk_i & mgt_txusrclk_i & mgt_txusrclk_i & mgt_txusrclk_i,
+        txusrclk2_in => mgt_txusrclk_i & mgt_txusrclk_i & mgt_txusrclk_i & mgt_txusrclk_i,
 
-        gtpowergood_out => open,
+        rxoutclk_out => rxoutclk,
+        txoutclk_out => txoutclk,
 
-        rxoutclk_out          => rxoutclk,
-        rxpmaresetdone_out    => open,
-        txbufstatus_out       => open,
-        txoutclk_out          => txoutclk,
-        txpmaresetdone_out    => open,
-        txprgdivresetdone_out => open
+        txbufstatus_out => open,
+
+        gtpowergood_out(0) => status_o(0).powergood,
+        gtpowergood_out(1) => status_o(1).powergood,
+        gtpowergood_out(2) => status_o(2).powergood,
+        gtpowergood_out(3) => status_o(3).powergood,
+
+        rxpmaresetdone_out(0) => status_o(0).rx_pma_reset_done,
+        rxpmaresetdone_out(1) => status_o(1).rx_pma_reset_done,
+        rxpmaresetdone_out(2) => status_o(2).rx_pma_reset_done,
+        rxpmaresetdone_out(3) => status_o(3).rx_pma_reset_done,
+
+        txpmaresetdone_out(0) => status_o(0).tx_pma_reset_done,
+        txpmaresetdone_out(1) => status_o(1).tx_pma_reset_done,
+        txpmaresetdone_out(2) => status_o(2).tx_pma_reset_done,
+        txpmaresetdone_out(3) => status_o(3).tx_pma_reset_done,
+
+        txprgdivresetdone_out(0) => status_o(0).tx_prg_div_reset_done,
+        txprgdivresetdone_out(1) => status_o(1).tx_prg_div_reset_done,
+        txprgdivresetdone_out(2) => status_o(2).tx_prg_div_reset_done,
+        txprgdivresetdone_out(3) => status_o(3).tx_prg_div_reset_done
         );
   end generate;
 
@@ -307,21 +322,28 @@ begin
 
     MGT_GEN : mgt_10g24_gth
       port map (
-        gtwiz_userclk_tx_active_in(0)         => gtwiz_userclk_tx_active_in,
-        gtwiz_userclk_rx_active_in(0)         => gtwiz_userclk_rx_active_in,
-        gtwiz_buffbypass_tx_reset_in(0)       => gtwiz_buffbypass_tx_reset_in,
-        gtwiz_buffbypass_tx_start_user_in(0)  => gtwiz_buffbypass_tx_start_user_in,
-        gtwiz_buffbypass_tx_done_out(0)       => gtwiz_buffbypass_tx_done_out,
-        gtwiz_buffbypass_tx_error_out(0)      => gtwiz_buffbypass_tx_error_out,
+        -- userclock
+        gtwiz_userclk_tx_active_in(0) => mgt_txusrclk_active_i,
+        gtwiz_userclk_rx_active_in(0) => mgt_rxusrclk_active_i,
+
+        -- buff bypass
+        gtwiz_buffbypass_tx_reset_in(0)       => buffbypass_tx_reset_i,
+        gtwiz_buffbypass_tx_start_user_in(0)  => buffbypass_tx_start_user_i,
+        gtwiz_buffbypass_tx_done_out(0)       => status_o(0).buffbypass_tx_done_out,
+        gtwiz_buffbypass_tx_error_out(0)      => status_o(0).buffbypass_tx_error_out,
+
+        -- resets
         gtwiz_reset_clk_freerun_in(0)         => free_clock,
-        gtwiz_reset_all_in(0)                 => gtwiz_reset_all_in,
-        gtwiz_reset_tx_pll_and_datapath_in(0) => gtwiz_reset_tx_pll_and_datapath_in,
-        gtwiz_reset_tx_datapath_in(0)         => gtwiz_reset_tx_datapath_in,
-        gtwiz_reset_rx_pll_and_datapath_in(0) => gtwiz_reset_rx_pll_and_datapath_in,
-        gtwiz_reset_rx_datapath_in(0)         => gtwiz_reset_rx_datapath_in,
-        gtwiz_reset_rx_cdr_stable_out(0)      => gtwiz_reset_rx_cdr_stable_out,
-        gtwiz_reset_tx_done_out(0)            => gtwiz_reset_tx_done_out,
-        gtwiz_reset_rx_done_out(0)            => gtwiz_reset_rx_done_out,
+        gtwiz_reset_all_in(0)                 => reset, 
+        gtwiz_reset_tx_pll_and_datapath_in(0) => reset_pll_and_datapath_i,
+        gtwiz_reset_tx_datapath_in(0)         => reset_datapath_i,
+        gtwiz_reset_rx_pll_and_datapath_in(0) => reset_rx_pll_and_datapath_i,
+        gtwiz_reset_rx_datapath_in(0)         => reset_rx_datapath_i,
+
+        -- outputs
+        gtwiz_reset_rx_cdr_stable_out(0) => status_o(0).rxcdr_stable,
+        gtwiz_reset_tx_done_out(0)       => status_o(0).tx_reset_done,
+        gtwiz_reset_rx_done_out(0)       => status_o(0).rx_reset_done,
 
         gtwiz_userdata_tx_in => mgt_word_i(3) & mgt_word_i(2) & mgt_word_i(1) & mgt_word_i(0),
 
@@ -361,19 +383,36 @@ begin
 
         rxslide_in => rx_slide_i,
 
-        rxusrclk_in  => mgt_rxusrclk_i& mgt_rxusrclk_i& mgt_rxusrclk_i& mgt_rxusrclk_i,
-        rxusrclk2_in => mgt_rxusrclk_i& mgt_rxusrclk_i& mgt_rxusrclk_i& mgt_rxusrclk_i,
-        txusrclk_in  => mgt_txusrclk_i& mgt_txusrclk_i& mgt_txusrclk_i& mgt_txusrclk_i,
-        txusrclk2_in => mgt_txusrclk_i& mgt_txusrclk_i& mgt_txusrclk_i& mgt_txusrclk_i,
+        rxusrclk_in  => mgt_rxusrclk_i & mgt_rxusrclk_i & mgt_rxusrclk_i & mgt_rxusrclk_i,
+        rxusrclk2_in => mgt_rxusrclk_i & mgt_rxusrclk_i & mgt_rxusrclk_i & mgt_rxusrclk_i,
+        txusrclk_in  => mgt_txusrclk_i & mgt_txusrclk_i & mgt_txusrclk_i & mgt_txusrclk_i,
+        txusrclk2_in => mgt_txusrclk_i & mgt_txusrclk_i & mgt_txusrclk_i & mgt_txusrclk_i,
 
-        gtpowergood_out => open,
+        rxoutclk_out => rxoutclk,
+        txoutclk_out => txoutclk,
 
-        rxoutclk_out          => rxoutclk,
-        rxpmaresetdone_out    => open,
-        txbufstatus_out       => open,
-        txoutclk_out          => txoutclk,
-        txpmaresetdone_out    => open,
-        txprgdivresetdone_out => open
+        txbufstatus_out => open,
+
+        gtpowergood_out(0) => status_o(0).powergood,
+        gtpowergood_out(1) => status_o(1).powergood,
+        gtpowergood_out(2) => status_o(2).powergood,
+        gtpowergood_out(3) => status_o(3).powergood,
+
+        rxpmaresetdone_out(0) => status_o(0).rx_pma_reset_done,
+        rxpmaresetdone_out(1) => status_o(1).rx_pma_reset_done,
+        rxpmaresetdone_out(2) => status_o(2).rx_pma_reset_done,
+        rxpmaresetdone_out(3) => status_o(3).rx_pma_reset_done,
+
+        txpmaresetdone_out(0) => status_o(0).tx_pma_reset_done,
+        txpmaresetdone_out(1) => status_o(1).tx_pma_reset_done,
+        txpmaresetdone_out(2) => status_o(2).tx_pma_reset_done,
+        txpmaresetdone_out(3) => status_o(3).tx_pma_reset_done,
+
+        txprgdivresetdone_out(0) => status_o(0).tx_prg_div_reset_done,
+        txprgdivresetdone_out(1) => status_o(1).tx_prg_div_reset_done,
+        txprgdivresetdone_out(2) => status_o(2).tx_prg_div_reset_done,
+        txprgdivresetdone_out(3) => status_o(3).tx_prg_div_reset_done
+
         );
   end generate;
 
