@@ -137,6 +137,17 @@ check_auto_generated_code:
         sed -i 's/Questa/Riviera/' ./Top/$PROJECT_NAME/hog.conf;
         ./Hog/LaunchSimulation.sh $PROJECT_NAME -recreate;
       fi
+    - if [ -f "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib_sim/behav/riviera/simulate.log"]; then
+        if [ grep "Executing onerror command" ./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib_sim/behav/riviera/simulate.log ]; then 
+          echo "Simulation Failed!";
+          exit 1;
+        else
+          echo "Simulation succeeded!";
+        fi;
+      else
+        echo "Cannot find simulate.log! Something went probably wrong!"
+        exit 1;
+      fi;
   artifacts:
     name: user_sim
     paths:
