@@ -216,7 +216,7 @@ check_auto_generated_code:
     - mkdir tools/cocotb/l0mdt_tv
     # Fetch testvectors from EOS
     - echo $EOS_PASSWORD | kinit $EOS_USER
-    - xrdcp root://eosuser.cern.ch//eos/project/a/atlas-tdaq-phase2-l0mdt-electronics/TestVectors/TV_MC_2022-02-18_DF_v4.1.8b_TV_v1.0.81/B_C_3.xz tools/cocotb/l0mdt_tv/.
+    - xrdcp root://eosuser.cern.ch//eos/project/a/atlas-tdaq-phase2-l0mdt-electronics/TestVectors/TV_MC_2022-01-20-test-for-cocotb/B_C_3.xz tools/cocotb/l0mdt_tv/.
     # PYTHON
     - export PATH="/home/l0mdtel/.pyenv/bin:$PATH"
     - eval "$(pyenv init -)"
@@ -236,9 +236,9 @@ check_auto_generated_code:
     - cd tools/cocotb/
     - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
     - tb run test_config/config_${COCOTB_TEST}.json 2>&1 | tee cocotb_run.log
-    #
+    ##
     - echo "Parsing log file to see if compilation succeeded"
     - grep -Eq "INFO +cocotb +Running" cocotb_run.log
     - echo "Parsing log file to check result of the cocotb test"
-    - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then if (! grep -q "cocotb.result.TestFailure" cocotb_run.log)  ; then echo "failure not detected" ; else echo "test failed - check TV comparison" ; python -c "exit(42)" ; fi ; fi
+    - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then if (grep -q "cocotb.result.TestSuccess" cocotb_run.log)  ; then echo "Test successful" ; elif (grep -q "cocotb.result.TestFailure" cocotb_run.log) ; then echo "Test completed but TV comparison failed" ; python -c "exit(98)" ; else echo "Other failure - check log" ; python -c "exit(99)" ; fi ; fi
 
