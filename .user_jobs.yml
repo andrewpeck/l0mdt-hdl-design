@@ -241,6 +241,13 @@ check_auto_generated_code:
     - function set_return() { return ${1:-0}; }
     # Check if cocotb process started (i.e. compilation succeeded)
     - grep -Eq "INFO +cocotb +Running" cocotb_run.log
+    
     # Check result of cocotb test
-    - if `((grep -q -E  "TEST +STATUS +SIM +TIME +(ns)" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )` ; then set_return 0 ; else set_return 99 ; fi
+    # - if $((grep -q -E  "TEST +STATUS +SIM +TIME +(ns)" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )` ; then set_return 0 ; else set_return 99 ; fi
+    - echo "testing grep"
+    - grep -E "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log
+    - grep -F "cocotb.result.TestFailure" cocotb_run.log
+    - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then echo "test completed "; if (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log)  ; then echo "failure not detected" ; else echo "test failed but still ended"; fi ; else echo "test completed string not found" ; fi
+    - echo "done testing"
+    - set_return 42
 
