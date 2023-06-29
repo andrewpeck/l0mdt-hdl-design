@@ -247,7 +247,6 @@ check_auto_generated_code:
     - echo "testing grep"
     - grep -E "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log
     - man grep | cat
-    - grep "cocotb.result.TestFailure" cocotb_run.log
     - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then echo "test completed "; if (! grep -q "cocotb.result.TestFailure" cocotb_run.log)  ; then echo "failure not detected" ; else echo "test failed but still ended"; fi ; else echo "test completed string not found" ; fi
     - echo "done testing"
     - set_return 42
