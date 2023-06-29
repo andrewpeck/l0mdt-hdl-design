@@ -240,5 +240,5 @@ check_auto_generated_code:
     - echo "Parsing log file to see if compilation succeeded"
     - grep -Eq "INFO +cocotb +Running" cocotb_run.log
     - echo "Parsing log file to check result of the cocotb test"
-    - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then if (grep -q "cocotb.result.TestSuccess" cocotb_run.log)  ; then echo "Test successful" ; elif (grep -q "cocotb.result.TestFailure" cocotb_run.log) ; then echo "Test completed but TV comparison failed" ; exit 98 ; else echo "Other failure - check log" ; exit 99 ; fi ; else echo "Other failure during cocotb test - check log" ; exit 99; fi
+    - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then if (grep -qE "cocotb.regression.*test passed" cocotb_run.log)  ; then echo "Test successful" ; elif (grep -q "cocotb.result.TestFailure" cocotb_run.log) ; then echo "Test completed but TV comparison failed" ; exit 98 ; else echo "Other failure - check log" ; exit 99 ; fi ; else echo "Other failure during cocotb test - check log" ; exit 99; fi
 
