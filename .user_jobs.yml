@@ -237,17 +237,8 @@ check_auto_generated_code:
     - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
     - tb run test_config/config_${COCOTB_TEST}.json 2>&1 | tee cocotb_run.log
     #
-    # Helper to set return code 
-    - function set_return() { return ${1:-0}; }
-    # Check if cocotb process started (i.e. compilation succeeded)
+    - echo "Parsing log file to see if compilation succeeded"
     - grep -Eq "INFO +cocotb +Running" cocotb_run.log
-    
-    # Check result of cocotb test
-    # - if $((grep -q -E  "TEST +STATUS +SIM +TIME +(ns)" cocotb_run.log) && (! grep -Fq "cocotb.result.TestFailure" cocotb_run.log) )` ; then set_return 0 ; else set_return 99 ; fi
-    - echo "testing grep"
-    - grep -E "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log
-    - man grep | cat
-    - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then echo "test completed "; if (! grep -q "cocotb.result.TestFailure" cocotb_run.log)  ; then echo "failure not detected" ; else echo "test failed but still ended"; fi ; else echo "test completed string not found" ; fi
-    - echo "done testing"
-    - set_return 42
+    - echo "Parsing log file to check result of the cocotb test"
+    - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then if (! grep -q "cocotb.result.TestFailure" cocotb_run.log)  ; then echo "failure not detected" ; else echo "test failed - check TV comparison" ; python -c "exit(42)" ; fi ; fi
 
