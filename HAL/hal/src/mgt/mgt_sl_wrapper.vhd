@@ -39,6 +39,12 @@ entity mgt_sl_wrapper is
     txctrl_in  : in  sl_tx_ctrl_rt_array(3 downto 0);
 
     rx_slide_i : in std_logic_vector(3 downto 0);
+    
+    -- Reset
+    re_channel_i : in std_logic_vector(3 downto 0);
+
+    -- Done 
+    rx_init_done_o : out std_logic;
 
     --=============--
     -- status      --
@@ -104,6 +110,8 @@ architecture Behavioral of mgt_sl_wrapper is
       ch3_txctrl2_in                    : in  std_logic_vector(7 downto 0);
       hb_gtwiz_reset_clk_freerun_in     : in  std_logic;
       hb_gtwiz_reset_all_in             : in  std_logic;
+      hb_gtwiz_reset_channel_in         : in  std_logic_vector(3 downto 0);
+      rx_init_done_out                  : out std_logic;
       ch0_gtytxn_out                    : out std_logic;
       ch0_gtytxp_out                    : out std_logic;
       ch1_gtytxn_out                    : out std_logic;
@@ -350,7 +358,10 @@ begin
 
         -- User-provided ports for reset helper block(s)
         hb_gtwiz_reset_clk_freerun_in => clock,
-        hb_gtwiz_reset_all_in         => reset_i
+        hb_gtwiz_reset_all_in         => reset_i,
+        hb_gtwiz_reset_channel_in     => re_channel_i,
+      
+        rx_init_done_out => rx_init_done_o
         );
 
   end generate;
