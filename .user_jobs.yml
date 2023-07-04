@@ -145,7 +145,7 @@ check_auto_generated_code:
     - riviera
   variables:
     <<: *riviera_vars
-    HOG_SIMULATION_LIB_PATH: /afs/cern.ch/work/l/l0mdtel/RivieraLibs
+    HOG_SIMULATION_LIB_PATH: /home/l0mdtel/RivieraLib
     HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
     HOG_CHECK_PROJVER: 0
   stage: generation_and_simulation
