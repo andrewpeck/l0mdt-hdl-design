@@ -1,0 +1,36 @@
+{
+    "testbench_config": {
+        "test_name": "dummy",
+        "input_args": {
+            "n_events": 1,
+            "event_detail": false,
+            "clock_period": 5,
+            "clock_time_unit": "ns",
+            "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
+        },
+        "run_config": {
+            "output_directory_name": "dummy",
+            "test_location": "src/l0mdt_tb/testbench/dummy/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "${XILINX_LIB_DIR}",
+            "configure_rtl": true,
+            "pt_type": "upt"
+        },
+        "testvectors": {
+            "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
+            "testvector_file": "B_A_3.xz",
+            "inputs": [
+                {
+                    "tv_format": "INTERFACE_FORMAT_0",
+                    "ports": 1
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "INTERFACE_FORMAT_0",
+                    "ports": 1
+                }
+            ]
+        }
+    }
+}
