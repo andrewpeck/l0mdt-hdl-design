@@ -3,8 +3,15 @@
 package require yaml
 
 set script_path "[file normalize [file dirname [info script]]]"
+set repo_path $script_path/..
+
+source $script_path/create_top_modules.tcl
+
 
 proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
+
+    puts "INFO: UPDATING TRIGGER LIBS"
+    puts "INFO: FPGA type: ${fpga_short}"
 
     exec sed -i  "s/ku15p/${fpga_short}/g" $lib
 
@@ -40,6 +47,14 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
         exec sed -i  "s/^UserLogic.*lsf_lib_${fpga_short}.src/#&/g" $lib
         # enable empty lsf
         exec sed -i  "s/^#\\(UserLogic.*lsf_lib_empty.src\\)/\\1/g" $lib
+    }
+
+    if {[string compare "ku15p" $fpga_short]==0} {
+      # disable vu13
+      exec sed -i  "s/^UserLogic.*ucm_lib_vu13.src/#&/g" $lib
+      # enable ku15
+      exec sed -i  "s/^#\\(UserLogic.*ucm_lib_ku15.src\\)/\\1/g" $lib
+      
     }
 
     # need to keep csf lib in the sources for now, since
@@ -154,7 +169,10 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # default values
     set hog_only_synth 0
+    set hog_no_bitstream 0 
+    set hog_check_syntax 0
     set hog_chk 0
+    set hog_tag "heavy-duty"
     set zynq_target usp
 
     # destructure the input properties into variables
@@ -171,17 +189,20 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     file mkdir $dest_path/list
 
     # copy the base files
-    set files_to_copy "get_fpga_name.tcl gitlab-ci.yml hog.conf
-    list/ctrl_lib.src list/hal.src list/l0mdt.src
-    list/xml.lst list/hal.src list/l0mdt.src
-    list/project_lib.src list/shared_lib.src list/xdc.con
+    set files_to_copy "gitlab-ci.yml hog.conf
+    list
     pre-synthesis.tcl
     user_pkg.vhd
     post-bitstream.tcl
-    post-creation.tcl prj_cfg.vhd"
+    post-creation.tcl prj_cfg.vhd address_tables slaves.yaml"
 
     foreach file $files_to_copy {
-        file copy -force ${source_path}/$file ${dest_path}/$file
+        # file copy -force ${source_path}/$file ${dest_path}
+        if {$file in "address_tables slaves.yaml" && [file exists ${dest_path}/$file]} {
+            puts "INFO: $dest_path/$file already exists, do not overwrite..."
+            continue
+        }
+        exec cp -r ${source_path}/$file ${dest_path}
     }
 
     # update the link mapping
@@ -203,6 +224,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
         exec sed -i "s|^set.*AXI_BASE_ADDRESS.*0x.*|set AXI_BASE_ADDRESS 0xB0000000 ; # USP|g" "$dest_path/post-creation.tcl"
     } elseif {$zynq_target == "7s"} {
         exec sed -i "s|^set.*AXI_BASE_ADDRESS.+0x.*|set AXI_BASE_ADDRESS 0x80000000 ; # 7-Series|g" "$dest_path/post-creation.tcl"
+        exec sed -i "s|set REMOTE_C2C_64 1||g" "$dest_path/post-creation.tcl"
     } else {
         error "Unrecognized zynq target \"$zynq_target\""
     }
@@ -232,6 +254,12 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     # update the hal.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/hal.src"
 
+    # update the ctrl_lib.src file
+    # exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/ctrl_lib.src"
+
+    # update the l0mdt.src file
+    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/l0mdt.src"
+
     # update the project_lib.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
 
@@ -240,15 +268,27 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # change the gitlab-ci hog_only_synth property
     exec sed -i "s|\\(.*HOG_ONLY_SYNTH:\\).*\\(#.*\\)|\\1 $hog_only_synth \\2|g" "$dest_path/gitlab-ci.yml"
+    puts "$hog_only_synth"
+    # change the gitlab-ci hog_check_syntax property
+    exec sed -i "s|\\(.*HOG_CHECK_SYNTAX:\\).*\\(#.*\\)|\\1 $hog_check_syntax \\2|g" "$dest_path/gitlab-ci.yml"
+
+    # change the gitlab-ci hog_no_bitstream property
+    exec sed -i "s|\\(.*HOG_NO_BITSTREAM:\\).*\\(.*\\)|\\1 $hog_no_bitstream \\2|g" "$dest_path/gitlab-ci.yml"
+
+    # update the tag
+    exec sed -i "s|- heavy-duty|- ${hog_tag}|g" "$dest_path/gitlab-ci.yml"
+
+
+    # change the gitlab-ci hog_no_bitstream property
+    exec sed -i "s|\\(.*HOG_NO_BITSTREAM:\\).*\\(#.*\\)|\\1 $hog_no_bitstream \\2|g" "$dest_path/gitlab-ci.yml"
 
     # remove hog_chk for projects
     if {0 == $hog_chk} {
         exec sed -i "/^CHK:/,/PROJECT_NAME.*/d" "$dest_path/gitlab-ci.yml"
     }
-
-    # update the ctrl_lib
-    exec sed -i "s|ku15p|${fpga_shortname}|g" "$dest_path/list/ctrl_lib.src"
 }
+
+
 
 proc clone_projects {huddle} {
 
@@ -285,6 +325,7 @@ proc clone_projects {huddle} {
             }
 
             global script_path
+            global repo_path
 
             # if the variant is "default" don't add a suffix,
             # otherwise add the variant name
@@ -294,6 +335,9 @@ proc clone_projects {huddle} {
             }
             clone_mdt_project "$script_path" "l0mdt_${key}${suffix}" \
                 $fpga $board_pkg $pt $sf $constraints $link_map $props
-            }}}
+            create_top_modules "$script_path/l0mdt_${key}${suffix}" "$repo_path"
+        }
+    }
+}
 
 clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]

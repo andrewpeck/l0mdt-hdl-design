@@ -138,6 +138,9 @@ package common_constants_pkg is
    constant BOL_SEC3_RHO : real := 9499.998;
    attribute w of BOL_SEC3_RHO : constant is 32;
 
+   constant c_CLK_AXI_MULT : integer := 8;
+   attribute w of c_CLK_AXI_MULT : constant is 32;
+
 end package common_constants_pkg;
 
 ------------------------------------------------------------

@@ -1,6 +1,6 @@
 [submodule "Hog"]
 	path = Hog
-	url = ../../hog/Hog.git
+	url = https://gitlab.com/hog-cern/Hog.git
 [submodule "tools/tv"]
 	path = tools/tv
 	url = ../tv.git
@@ -54,9 +54,6 @@
 [submodule "shared/vamc/vamc-core"]
 	path = shared/vamc/vamc-core
 	url = https://gitlab.com/taquionbcn/vamc.git
-[submodule "UserLogic/daq/daq-core"]
-	path = UserLogic/daq/daq-core
-	url = ../../tcpaiva/atlas-daq-core.git
 [submodule "HAL/ttc/ttc-core"]
 	path = HAL/ttc/ttc-core
 	url = ../../tcpaiva/atlas-ttc-core.git
@@ -66,3 +63,10 @@
 [submodule "shared/vhdl_utilities"]
 	path = shared/vhdl_utilities
 	url = https://gitlab.com/taquionbcn/vhdl-gldl-utilities.git
+[submodule "UserLogic/daq/daq-lxa-core"]
+	path = UserLogic/daq/daq-lxa-core
+	url = https://gitlab.com/tcpaiva/daq-lxa-core.git
+	branch = devel
+[submodule "shared/detector_parameters/dp_repo"]
+	path = shared/detector_parameters/dp_repo
+	url = ../detector-parameters.git

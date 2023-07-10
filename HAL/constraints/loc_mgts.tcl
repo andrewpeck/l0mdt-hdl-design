@@ -4,8 +4,12 @@
 # it looks for an X_LOC and Y_LOC attribute **added in the hdl itself** and uses
 # that to specify the location constraint here
 
-# 1) start by getting the number of MGTs so that we can loop over them later
-set imax [get_property NUM_MGTS [get_cells "top_hal/mgt_wrapper_inst"]]
+# 1) start by getting the number of MGTs so that we can loop over them later. 
+# Priya Hardcoding imax, as attribute NUM_MGTS is not being set automatically
+# imax value got from board_pkg_mpi_ku15p.vhd
+set imax 76 
+#[get_property NUM_MGTS [get_cells "top_hal/mgt_wrapper_inst"]]
+
 
 # 2) remove existing location constraints (which come from the IP),
 # otherwise vivado complains. we will re-apply new constraints later.
@@ -15,15 +19,27 @@ for {set i 0} {$i < $imax} {incr i} {
         [get_cells -quiet -hierarchical -filter \
              [format "NAME =~ top_hal/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
     #set gt_cell [get_cells -quiet [format "top_hal/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
-    #puts " > Found GT Cell at $gt_cell"
+    puts " > Found GT Cell at $gt_cell"
+    
+    set x_loc -1
+    set y_loc -1
+    if {[string is space $gt_cells] != 1} {
+        set x_loc [get_property X_LOC $gt_cells]
+        set y_loc [get_property Y_LOC $gt_cells]
+    }
 
+    #puts [format " DEBUG1 $gt_cell $x_loc $y_loc"]
     set j 0
-    if {[string is space $gt_cells]==0} {
-        foreach gt_cell $gt_cells {
-            puts [format " UNLOCing MGT #%d from core default placement" [expr $i + $j]]
-            set_property LOC {}  $gt_cell
-            incr j
-        }
+    
+    if {$x_loc>=0 && $y_loc > 1} {    
+	if {[string is space $gt_cells]==0} {
+	    foreach gt_cell $gt_cells {
+		puts [format " UNLOCing MGT #%d from core default placement" [expr $i + $j]]
+		set_property LOC {}  $gt_cell
+		incr j
+	    }
+	}
+
     }
 }
 
@@ -41,9 +57,9 @@ for {set i 0} {$i < $imax} {incr i} {
         set x_loc [get_property X_LOC $cell]
         set y_loc [get_property Y_LOC $cell]
     }
-
+    
     # b) apply the LOC to the CHANNEL_PRIM_INST
-
+    #puts [format " DEBUG2 $cell $x_loc $y_loc"]
     if {$x_loc >= 0 && $y_loc >= 0} {
         #set gt_cells [split [get_cells -hierarchical -filter [format "NAME =~ *top_hal*/mgt_wrapper_inst/mgt_gen\[%d]*GT*CHANNEL_PRIM_INST" $i]] { }]
         #set gt_cell [get_cells [format "top_hal/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]

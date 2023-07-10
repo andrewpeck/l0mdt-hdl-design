@@ -37,7 +37,9 @@ entity ucm_ctrl_top is
     i_prepro2ctrl_av    : in ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
     --
     o_csw_ctrl_av       : out ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
+    o_csw_ctrl_dv       : out std_logic;
     o_pam_ctrl          : out ucm_pam_control_art(c_NUM_THREADS -1 downto 0);
+    o_pam_ctrl_dv       : out std_logic;
     -- o_proc_info         : out ucm_proc_info_art(c_NUM_THREADS -1 downto 0);
     o_proc_info_av      : out ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
     --
@@ -49,45 +51,12 @@ end entity ucm_ctrl_top;
 
 architecture beh of ucm_ctrl_top is
 
-  -- component ucm_ctrl_main is
-  --   port (
-  --     clk                 : in std_logic;
-  --     rst                 : in std_logic;
-  --     ena             : in std_logic;
-  --     -- extrnals
-  --     i_data              : in ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
-  --     o_csw_ctrl          : out ucm_csw_control_art;
-  --     -- internals
-  --     o_num_cand          : out unsigned(3 downto 0);
-  --     o_pam_update        : out std_logic
-  
-  --   );
-  -- end component;
+  signal num_cand         : unsigned(3 downto 0);
+  signal pam_update       : std_logic;
 
-  -- component ucm_ctrl_pam is
-  --   port (
-  --     clk                 : in std_logic;
-  --     rst                 : in std_logic;
-  --     ena             : in std_logic;
-  --     --
-  --     i_num_cand          : in unsigned(3 downto 0);
-  --     i_pam_update        : in std_logic;
-  --     --
-  --     o_pam_ctrl          : out ucm_pam_control_art(c_NUM_THREADS -1 downto 0);
-  --     o_proc_info         : out ucm_proc_info_art(c_NUM_THREADS -1 downto 0);
-  --     --
-  --     o_cvp_rst           : out std_logic_vector(c_NUM_THREADS -1 downto 0);
-  --     o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
-  --     -- o_pam2heg           : out ucm2heg_pam_art(c_NUM_THREADS -1 downto 0);
-  --     -- internals
-  --   );
-  -- end component;
+  signal o_csw_ctrl_ar    : ucm_csw_control_art(c_MAX_NUM_SL -1 downto 0);
 
-  signal num_cand          : unsigned(3 downto 0);
-  signal pam_update        : std_logic;
-
-  signal o_csw_ctrl_ar       :ucm_csw_control_art(c_MAX_NUM_SL -1 downto 0);
-
+  -- signal pam_dv           : std_logic;
 
 begin
   o_csw_loop : for isl in 0 to c_MAX_NUM_SL-1 generate
@@ -102,9 +71,11 @@ begin
     -- extrnals
     i_data              => i_prepro2ctrl_av,
     o_csw_ctrl          => o_csw_ctrl_ar,
+    o_csw_ctrl_dv       => o_csw_ctrl_dv,
     -- internals
     o_num_cand          => num_cand,
     o_pam_update        => pam_update
+    -- o_pam_dv            => pam_dv
   );
 
   PAM_CTRL : entity ucm_lib.ucm_ctrl_pam
@@ -117,6 +88,7 @@ begin
     i_pam_update        => pam_update,
     --
     o_pam_ctrl          => o_pam_ctrl,
+    o_pam_ctrl_dv       => o_pam_ctrl_dv,
     o_proc_info_av      => o_proc_info_av,
     --
     o_cvp_rst           => o_cvp_rst,

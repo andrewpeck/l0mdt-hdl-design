@@ -1,15 +1,17 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
---------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: 
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
+-- UMass , Physics Department
+-- Project: ucm
+-- File: top_ucm_imp.vhd
+-- Module: <<moduleName>>
+-- File PATH: /top_ucm_imp.vhd
+-- -----
+-- File Created: Wednesday, 24th May 2023 8:11:53 am
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Wednesday, 24th May 2023 4:57:26 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -24,6 +26,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.cfg_display_pkg.all;
 
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -33,6 +36,9 @@ use ctrl_lib.UCM_CTRL.all;
 
 
 entity top_ucm is
+  generic (
+    g_MAINDIVTYPE : string := "IP"
+  );
   port (
     clk                     : in std_logic;
     rst                     : in std_logic;
@@ -77,7 +83,11 @@ architecture beh of top_ucm is
   signal o_uCM2hps_ext_av        :  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   signal o_uCM2pl_av             :  ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
+  
+
 begin
+
+  report_cfg(true);
 
   ctrl : entity shared_lib.vhdl_utils_deserializer 
   generic map (g_DATA_WIDTH => UCM_CTRL_t'w) 

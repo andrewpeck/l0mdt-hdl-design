@@ -1,16 +1,20 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: L0MDT
+-- File: heg_ctrl_sig.vhd
+-- Module: <<moduleName>>
+-- File PATH: /heg_ctrl_sig.vhd
+-- -----
+-- File Created: Thursday, 14th April 2022 8:57:28 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Thursday, 20th October 2022 10:59:34 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger
---  Module:
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---
---------------------------------------------------------------------------------
+
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -27,7 +31,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
-use shared_lib.gtube2chamber_pkg.all;
+use shared_lib.fct_gtube2chamber_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -61,7 +65,9 @@ entity heg_ctrl_sig is
     o_sf_control_r      : out heg_ctrl2sf_rt;
     --
     o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
-    o_uCM2sf_data_v     : out heg2sfslc_vt
+    o_uCM2hp_data_dv    : out std_logic;
+    o_uCM2sf_data_v     : out heg2sfslc_vt;
+    o_uCM2sf_data_dv     : out std_logic
   );
 end entity heg_ctrl_sig;
 
@@ -141,8 +147,12 @@ begin
 
         heg_count_en <= '0';
 
-        o_uCM2sf_data_r <= convert((width(o_uCM2sf_data_r) -1 downto 0 => '1'),o_uCM2sf_data_r);
-        o_uCM2hp_data_r <= convert((width(o_uCM2hp_data_r) -1 downto 0 => '1'),o_uCM2hp_data_r);
+
+        o_uCM2sf_data_r <= convert((width(o_uCM2sf_data_r) -1 downto 0 => '0'),o_uCM2sf_data_r);
+        o_uCM2hp_data_r <= convert((width(o_uCM2hp_data_r) -1 downto 0 => '0'),o_uCM2hp_data_r);
+        o_uCM2hp_data_dv <= '0';
+        o_uCM2sf_data_dv <= '0';
+
         -- hp control resets
         o_sf_control_r.enable <= '0';
         o_sf_control_r.rst <= '0';
@@ -166,12 +176,12 @@ begin
             -- if (i_uCM_data_r.mdtid.chamber_id = 2) 
             -- or (i_uCM_data_r.mdtid.chamber_id = 3) 
             -- or (i_uCM_data_r.mdtid.chamber_id = 5) then
-              -- b_data.z_0 <= resize(holesize + i_Roi_win_origin * to_unsigned(960,10),b_data.z_0'length);
-              -- b_data.roi_x <= i_roi_global_x;--resize(i_roi_global_x,b_data.roi_x'length);
-              -- b_data.roi_z <= i_roi_global_z;--resize(i_roi_global_z,b_data.roi_z'length);
-              -- o_uCM2hp_data_r.roi_x <= i_roi_global_x;
-              -- o_uCM2hp_data_r.roi_z <= i_roi_global_z;
-              o_uCM2sf_data_r.hewindow_pos  <= resize(unsigned(i_roi_global_z(i_roi_global_z'length -1 downto 5)),HEG2SFSLC_HEWINDOW_POS_LEN);
+            -- b_data.z_0 <= resize(holesize + i_Roi_win_origin * to_unsigned(960,10),b_data.z_0'length);
+            -- b_data.roi_x <= i_roi_global_x;--resize(i_roi_global_x,b_data.roi_x'length);
+            -- b_data.roi_z <= i_roi_global_z;--resize(i_roi_global_z,b_data.roi_z'length);
+            -- o_uCM2hp_data_r.roi_x <= i_roi_global_x;
+            -- o_uCM2hp_data_r.roi_z <= i_roi_global_z;
+            o_uCM2sf_data_r.hewindow_pos  <= resize(unsigned(i_roi_global_z(i_roi_global_z'length -1 downto 5)),HEG2SFSLC_HEWINDOW_POS_LEN);
             
           else
 
@@ -253,6 +263,9 @@ begin
               end if;
               o_uCM2sf_data_r.data_valid <= '1';
               o_uCM2hp_data_r.data_valid <= '1';
+              o_uCM2hp_data_dv <= '1';
+              o_uCM2sf_data_dv <= '1';
+
               heg_count_en <= '1';
               heg_ctrl_motor <= HEG_BUSY;
             end if;
@@ -264,11 +277,13 @@ begin
             -- end if;
 
           when HEG_BUSY =>
-          o_uCM2sf_data_r.data_valid <= '0';
-          o_uCM2hp_data_r.data_valid <= '0';
-          -- for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
-          --   o_hp_control_r(hp_i).rst <= '0';
-          -- end loop;
+            o_uCM2sf_data_r.data_valid <= '0';
+            o_uCM2hp_data_r.data_valid <= '0';
+            o_uCM2hp_data_dv <= '0';
+            o_uCM2sf_data_dv <= '0';
+            -- for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
+            --   o_hp_control_r(hp_i).rst <= '0';
+            -- end loop;
 
             if to_integer(unsigned(busy_count)) < c_HEG_TIME_LOAD then
               -- WAITING SF TO LOAD

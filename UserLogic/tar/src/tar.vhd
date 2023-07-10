@@ -65,12 +65,12 @@ architecture beh of tar is
   signal ctrl_r            : TAR_CTRL_t;
   signal mon_r             : TAR_MON_t;
 
-  constant PL_ST_CTRL_LEN : integer := width(ctrl_r.PL_ST);--426;
-  constant PL_ST_MON_LEN : integer := width(mon_r.PL_ST);--258;
+  -- constant PL_ST_CTRL_LEN : integer := width(ctrl_r.PL_ST);--426;
+  -- constant PL_ST_MON_LEN : integer := width(mon_r.PL_ST);--258;
 
-  signal ctrl_pl_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(0))-1  downto 0);
+  signal ctrl_pl_v : std_logic_vector(TAR_PL_ST_CTRL_t'w - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(0))-1  downto 0);
 
-  signal mon_pl_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(0))-1  downto 0);
+  signal mon_pl_v : std_logic_vector(TAR_PL_ST_MON_t'w - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(0))-1  downto 0);
 
   -- TDC polmux from Tar
   signal i_tdc_hits_ar : tdcpolmux2tar_art(g_HPS_MAX_HP -1 downto 0);
@@ -98,7 +98,7 @@ begin
     i_configs           => ctrl_r.configs,
     o_status            => mon_r.status ,
     --
-    o_freeze          => int_freeze,
+    o_freeze            => int_freeze,
     -- 
     o_local_en          => local_en,
     o_local_rst         => local_rst

@@ -117,10 +117,12 @@ entity top_hal is
     --
     -- FIXME: this is a pipeline of 18 things, which may be partially stuffed
     --
-    daq_streams : in felix_stream_avt (c_HPS_MAX_HP_INN
-                                           + c_HPS_MAX_HP_MID
-                                           + c_HPS_MAX_HP_OUT - 1 downto 0);
+    -- daq_streams : in felix_stream_avt (c_HPS_MAX_HP_INN
+    --                                        + c_HPS_MAX_HP_MID
+    --                                        + c_HPS_MAX_HP_OUT - 1 downto 0);
 
+    daq_streams : in felix_stream_avt(c_DAQ_LINKS-1 downto 0);
+    
     --------------------------------------------------------------------------------
     -- AXI
     --------------------------------------------------------------------------------
@@ -131,11 +133,10 @@ entity top_hal is
     Core_Mon  : out HAL_CORE_MON_t;
     Core_Ctrl : in  HAL_CORE_CTRL_t;
 
-    axi_clk_o : out std_logic;
-
-    clk320_o : out std_logic;
-    clk40_o  : out std_logic;
-
+    clk50_o     : out std_logic;
+    clk320_o    : out std_logic;
+    clk40_o     : out std_logic;
+    b2b_reset_n : out std_logic;
     --sump--------------------------------------------------------------------------
     sump : out std_logic
 
@@ -149,11 +150,11 @@ architecture behavioral of top_hal is
 
   signal clock_ibufds : std_logic;
   signal clocks       : system_clocks_rt;
-
-  signal global_reset       : std_logic;
+ 
   signal userlogic_reset    : std_logic;
   signal reset              : std_logic;
-
+  signal global_reset       : std_logic;
+  
   signal strobe_pipeline : std_logic;
   signal strobe_320      : std_logic;
 
@@ -250,16 +251,17 @@ begin  -- architecture behavioral
   -- Signal Aliasing
   --------------------------------------------------------------------------------
 
-  global_reset <= not (clocks.locked);
-  axi_clk_o    <= clocks.axiclock;
+  global_reset <= not(clocks.lhc_locked);
+  clk50_o      <= clocks.axiclock;
   clk320_o     <= clocks.clock320;
   clk40_o      <= clocks.clock40;
+  b2b_reset_n  <= clocks.b2b_locked;
 
   --------------------------------------------------------------------------------
   -- AXI Interface
   --------------------------------------------------------------------------------
 
-  core_mon.clocking.mmcm_locked <= clocks.locked;
+  core_mon.clocking.mmcm_locked <= clocks.lhc_locked;
 
   --------------------------------------------------------------------------------
   -- Common Clocking
@@ -270,7 +272,7 @@ begin  -- architecture behavioral
     port map (
       O  => lhc_refclk_o_p,             -- 1-bit output: Diff_p output (connect directly to top-level port)
       OB => lhc_refclk_o_n,             -- 1-bit output: Diff_n output (connect directly to top-level port)
-      I  => lhc_recclk                  -- 1-bit input: Buffer input
+      I  => clk40_o -- lhc_recclk                  -- 1-bit input: Buffer input
       );
 
   top_clocking_inst : entity hal.top_clocking
@@ -292,11 +294,16 @@ begin  -- architecture behavioral
       clock_i_p => clock_i_p,
       clock_i_n => clock_i_n,
 
-      -- system clocks
-      clocks_o => clocks,
+      clk50_freq  => core_mon.clocking.clk50_freq,
+      clk100_freq => core_mon.clocking.clk100_freq,
+      clk200_freq => core_mon.clocking.clk200_freq,
 
-      -- mmcm status
-      locked_o => clocks.locked
+      clk40_freq  => core_mon.clocking.clk40_freq,
+      clk320_freq => core_mon.clocking.clk320_freq,
+
+      -- system clocks
+      clocks_o => clocks
+
       );
 
   clock_strobe_1 : entity work.clock_strobe
@@ -344,7 +351,7 @@ begin  -- architecture behavioral
       clocks => clocks,
 
       -- reset
-      reset => '0',                     -- need a separate reset from the mmcm due to recovered links
+      reset => '0' , --PRIYA need to hook up to PLL lock signal for clk100  -- need a separate reset from the mmcm due to recovered links
 
       ctrl => core_ctrl.mgt,
       mon  => core_mon.mgt,
@@ -434,11 +441,12 @@ begin  -- architecture behavioral
     constant mgt_idx  : integer := c_MDT_CONFIG(CSM).mgt_id_m;
     constant mgt_id_m : integer := c_MDT_CONFIG(CSM).mgt_id_m;
     constant mgt_id_s : integer := c_MDT_CONFIG(CSM).mgt_id_s;
+     
   begin
 
     csm_ifgen : if (CSM < c_NUM_CSMS_ACTIVE and tdc_cnt > 0) generate
+      
     begin
-
       assert c_MGT_MAP(mgt_id_m).mgt_type=MGT_LPGBT
         report "CSM Master assigned to non-lpgbt link!" severity error;
       assert c_MGT_MAP(mgt_id_s).mgt_type=MGT_LPGBT
@@ -620,7 +628,7 @@ begin  -- architecture behavioral
 
   felix_tx_inst : entity work.felix_tx
     generic map (
-      g_NUM_UPLINKS => c_NUM_DAQ_STREAMS
+      g_NUM_UPLINKS => c_DAQ_LINKS -- c_NUM_DAQ_STREAMS
       )
     port map (
       clk320           => clocks.clock320,
@@ -639,8 +647,9 @@ begin  -- architecture behavioral
       -- this needs some kind of translation layer to map user logic daq links
       -- onto felix links
 
-      daq_streams      => daq_streams (c_NUM_DAQ_STREAMS-1 downto 0),
-      mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
+      daq_streams      => daq_streams, -- (c_NUM_DAQ_STREAMS-1 downto 0),
+      mgt_word_array_o => felix_uplink_mgt_word_array(c_DAQ_LINKS-1 downto 0),
+      -- mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
       ready_o          => open,
       was_not_ready_o  => open,
       strobe_320       => strobe_320

@@ -1,15 +1,35 @@
+shared/shared_lib_basic.src lib=shared_lib
 shared/shared_lib.src lib=shared_lib
+
+# Control
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
-Top/fm/prj_cfg.vhd lib=project_lib
+HAL/ctrl/src/top_control.vhd
+
+# HAL
+HAL/hal/list/hal.src lib=hal
+HAL/hal/list/hal_ku.src lib=hal
+
+Top/MainBlocks/fm/prj_cfg.vhd lib=project_lib
 UserLogic/ult/ult_lib.src lib=ult_lib
 UserLogic/hp/hp_lib.src lib=hp_lib
 UserLogic/heg/heg_lib.src lib=heg_lib
 UserLogic/hps/hps_lib.src lib=hps_lib
- UserLogic/mpl/mpl_lib.src lib=mpl_lib
-UserLogic/ucm/ucm_lib.src lib=ucm_lib
+UserLogic/mpl/mpl_lib.src lib=mpl_lib
+UserLogic/ucm/ucm_lib_vu13.src lib=ucm_lib
 UserLogic/tar/tar_lib.src lib=tar_lib
 UserLogic/mtc/mtc_lib.src lib=mtc_lib
-UserLogic/daq/daq.src
+
+# segment finder
+UserLogic/csf/ncsf_lib.src lib=csf_lib
+#UserLogic/lsf/lsf_lib_ku15p.src lib=lsf_lib
+UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
+
+# pt assignment
+#UserLogic/upt/upt_lib_ku15p.src lib=upt_lib
+UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
+UserLogic/upt/upt_lib_empty.src lib=upt_lib
+
+UserLogic/daq/daq.src     lib=daq_lib
 shared/spybuffers.src
 UserLogic/fm/fm_lib.src lib=fm_lib
-Top/fm/top_ult_fm.vhd top=top_ult_fm
+Top/MainBlocks/fm/top_ult_fm.vhd top=top_ult_fm

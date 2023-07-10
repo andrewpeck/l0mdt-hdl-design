@@ -282,11 +282,6 @@ def hps_test(dut):
         for io in range(HpsPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
     
-    # print("-"*80+'\n'+f"IACOPO - Printing events across interfaces/ports")
-    # for n_ip_intf in range(HpsPorts.n_input_interfaces):
-    #     print("-"*80+'\n'+f"IACOPO - this is interface {n_ip_intf}")
-    #     for iPort in range(HpsPorts.get_input_interface_ports(n_ip_intf)):
-    #         print(f" interface {n_ip_intf} | port {iPort} | len: {len(input_tv_list[n_ip_intf+iPort])} | values: ",input_tv_list[n_ip_intf+iPort])
 
     ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []

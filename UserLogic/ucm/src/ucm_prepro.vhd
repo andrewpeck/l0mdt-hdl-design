@@ -44,7 +44,8 @@ entity ucm_prepro is
     -- ctrl out
     o_prepro2ctrl_v       : out ucm_prepro2ctrl_vt;
     -- data out
-    o_prepro_data_v       : out slc_rx_vt
+    o_prepro_data_v       : out slc_rx_vt;
+    o_prepro_data_dv      : out std_logic
   );
 end entity ucm_prepro;
 
@@ -128,7 +129,9 @@ begin
       ena         => ena,
       --
       i_data      => prepro_data_v,
-      o_data      => o_prepro_data_v
+      i_dv        => i_slc_data_r.data_valid,
+      o_data      => o_prepro_data_v,
+      o_dv        => o_prepro_data_dv
     );
 
   -- UCM_PRE_PROC : process(rst,clk) begin

@@ -277,18 +277,33 @@ package HAL_CTRL is
    function convert(x: std_logic_vector; tpl: HAL_CSM_CSM_SC_CTRL_t) return HAL_CSM_CSM_SC_CTRL_t;
    function zero(tpl: HAL_CSM_CSM_SC_CTRL_t) return HAL_CSM_CSM_SC_CTRL_t;
 
+   type HAL_CSM_CSM_CONFIG_MON_t is record
+      master_link_id : std_logic_vector(6 - 1 downto 0);
+      servant_link_id : std_logic_vector(6 - 1 downto 0);
+      station : std_logic_vector(3 - 1 downto 0);
+      polmux : std_logic_vector(6 - 1 downto 0);
+      en : std_logic_vector(20 - 1 downto 0);
+      legacy : std_logic_vector(20 - 1 downto 0);
+   end record HAL_CSM_CSM_CONFIG_MON_t;
+   attribute w of HAL_CSM_CSM_CONFIG_MON_t : type is 61;
+   function width(x: HAL_CSM_CSM_CONFIG_MON_t) return natural;
+   function convert(x: HAL_CSM_CSM_CONFIG_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: HAL_CSM_CSM_CONFIG_MON_t) return HAL_CSM_CSM_CONFIG_MON_t;
+   function zero(tpl: HAL_CSM_CSM_CONFIG_MON_t) return HAL_CSM_CSM_CONFIG_MON_t;
+
    type HAL_CSM_CSM_MON_t is record
       LPGBT : HAL_CSM_CSM_LPGBT_MON_t;
       SC : HAL_CSM_CSM_SC_MON_t;
+      CONFIG : HAL_CSM_CSM_CONFIG_MON_t;
    end record HAL_CSM_CSM_MON_t;
-   attribute w of HAL_CSM_CSM_MON_t : type is 446;
+   attribute w of HAL_CSM_CSM_MON_t : type is 507;
    function width(x: HAL_CSM_CSM_MON_t) return natural;
    function convert(x: HAL_CSM_CSM_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CSM_CSM_MON_t) return HAL_CSM_CSM_MON_t;
    function zero(tpl: HAL_CSM_CSM_MON_t) return HAL_CSM_CSM_MON_t;
 
    type HAL_CSM_CSM_MON_t_ARRAY is array(36 -1 downto 0) of HAL_CSM_CSM_MON_t;
-   attribute w of HAL_CSM_CSM_MON_t_ARRAY : type is 16056;
+   attribute w of HAL_CSM_CSM_MON_t_ARRAY : type is 18252;
    function width(x: HAL_CSM_CSM_MON_t_ARRAY) return integer;
    function convert(x: HAL_CSM_CSM_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CSM_CSM_MON_t_ARRAY) return HAL_CSM_CSM_MON_t_ARRAY;
@@ -318,7 +333,7 @@ package HAL_CTRL is
    type HAL_CSM_MON_t is record
       CSM : HAL_CSM_CSM_MON_t_ARRAY;
    end record HAL_CSM_MON_t;
-   attribute w of HAL_CSM_MON_t : type is 16056;
+   attribute w of HAL_CSM_MON_t : type is 18252;
    function width(x: HAL_CSM_MON_t) return natural;
    function convert(x: HAL_CSM_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CSM_MON_t) return HAL_CSM_MON_t;
@@ -336,7 +351,7 @@ package HAL_CTRL is
    type HAL_MON_t is record
       CSM : HAL_CSM_MON_t;
    end record HAL_MON_t;
-   attribute w of HAL_MON_t : type is 16056;
+   attribute w of HAL_MON_t : type is 18252;
    function width(x: HAL_MON_t) return natural;
    function convert(x: HAL_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_MON_t) return HAL_MON_t;
@@ -423,8 +438,13 @@ package body HAL_CTRL is
    end function zero;
 
    function width(x: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -530,8 +550,13 @@ package body HAL_CTRL is
    end function zero;
 
    function width(x: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -1261,8 +1286,13 @@ package body HAL_CTRL is
    end function zero;
 
    function width(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -2095,11 +2125,116 @@ package body HAL_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
+   function width(x: HAL_CSM_CSM_CONFIG_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.master_link_id);
+      w := w + width(x.servant_link_id);
+      w := w + width(x.station);
+      w := w + width(x.polmux);
+      w := w + width(x.en);
+      w := w + width(x.legacy);
+      return w;
+   end function width;
+   function convert(x: HAL_CSM_CSM_CONFIG_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.master_link_id);
+         y(u to u+w-1) := convert(x.master_link_id, y(u to u+w-1));
+         u := u + w;
+         w := width(x.servant_link_id);
+         y(u to u+w-1) := convert(x.servant_link_id, y(u to u+w-1));
+         u := u + w;
+         w := width(x.station);
+         y(u to u+w-1) := convert(x.station, y(u to u+w-1));
+         u := u + w;
+         w := width(x.polmux);
+         y(u to u+w-1) := convert(x.polmux, y(u to u+w-1));
+         u := u + w;
+         w := width(x.en);
+         y(u to u+w-1) := convert(x.en, y(u to u+w-1));
+         u := u + w;
+         w := width(x.legacy);
+         y(u to u+w-1) := convert(x.legacy, y(u to u+w-1));
+      else
+         w := width(x.master_link_id);
+         y(u downto u-w+1) := convert(x.master_link_id, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.servant_link_id);
+         y(u downto u-w+1) := convert(x.servant_link_id, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.station);
+         y(u downto u-w+1) := convert(x.station, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.polmux);
+         y(u downto u-w+1) := convert(x.polmux, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.en);
+         y(u downto u-w+1) := convert(x.en, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.legacy);
+         y(u downto u-w+1) := convert(x.legacy, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: HAL_CSM_CSM_CONFIG_MON_t) return HAL_CSM_CSM_CONFIG_MON_t is
+      variable y : HAL_CSM_CSM_CONFIG_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.master_link_id);
+         y.master_link_id := convert(x(u to u+w-1), tpl.master_link_id);
+         u := u + w;
+         w := width(tpl.servant_link_id);
+         y.servant_link_id := convert(x(u to u+w-1), tpl.servant_link_id);
+         u := u + w;
+         w := width(tpl.station);
+         y.station := convert(x(u to u+w-1), tpl.station);
+         u := u + w;
+         w := width(tpl.polmux);
+         y.polmux := convert(x(u to u+w-1), tpl.polmux);
+         u := u + w;
+         w := width(tpl.en);
+         y.en := convert(x(u to u+w-1), tpl.en);
+         u := u + w;
+         w := width(tpl.legacy);
+         y.legacy := convert(x(u to u+w-1), tpl.legacy);
+      else
+         w := width(tpl.master_link_id);
+         y.master_link_id := convert(x(u downto u-w+1), tpl.master_link_id);
+         u := u - w;
+         w := width(tpl.servant_link_id);
+         y.servant_link_id := convert(x(u downto u-w+1), tpl.servant_link_id);
+         u := u - w;
+         w := width(tpl.station);
+         y.station := convert(x(u downto u-w+1), tpl.station);
+         u := u - w;
+         w := width(tpl.polmux);
+         y.polmux := convert(x(u downto u-w+1), tpl.polmux);
+         u := u - w;
+         w := width(tpl.en);
+         y.en := convert(x(u downto u-w+1), tpl.en);
+         u := u - w;
+         w := width(tpl.legacy);
+         y.legacy := convert(x(u downto u-w+1), tpl.legacy);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: HAL_CSM_CSM_CONFIG_MON_t) return HAL_CSM_CSM_CONFIG_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
    function width(x: HAL_CSM_CSM_MON_t) return natural is
       variable w : natural := 0;
    begin
       w := w + width(x.LPGBT);
       w := w + width(x.SC);
+      w := w + width(x.CONFIG);
       return w;
    end function width;
    function convert(x: HAL_CSM_CSM_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -2113,12 +2248,18 @@ package body HAL_CTRL is
          u := u + w;
          w := width(x.SC);
          y(u to u+w-1) := convert(x.SC, y(u to u+w-1));
+         u := u + w;
+         w := width(x.CONFIG);
+         y(u to u+w-1) := convert(x.CONFIG, y(u to u+w-1));
       else
          w := width(x.LPGBT);
          y(u downto u-w+1) := convert(x.LPGBT, y(u downto u-w+1));
          u := u - w;
          w := width(x.SC);
          y(u downto u-w+1) := convert(x.SC, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.CONFIG);
+         y(u downto u-w+1) := convert(x.CONFIG, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -2133,12 +2274,18 @@ package body HAL_CTRL is
          u := u + w;
          w := width(tpl.SC);
          y.SC := convert(x(u to u+w-1), tpl.SC);
+         u := u + w;
+         w := width(tpl.CONFIG);
+         y.CONFIG := convert(x(u to u+w-1), tpl.CONFIG);
       else
          w := width(tpl.LPGBT);
          y.LPGBT := convert(x(u downto u-w+1), tpl.LPGBT);
          u := u - w;
          w := width(tpl.SC);
          y.SC := convert(x(u downto u-w+1), tpl.SC);
+         u := u - w;
+         w := width(tpl.CONFIG);
+         y.CONFIG := convert(x(u downto u-w+1), tpl.CONFIG);
       end if;
       return y;
    end function convert;
@@ -2148,8 +2295,13 @@ package body HAL_CTRL is
    end function zero;
 
    function width(x: HAL_CSM_CSM_MON_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HAL_CSM_CSM_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
@@ -2268,8 +2420,13 @@ package body HAL_CTRL is
    end function zero;
 
    function width(x: HAL_CSM_CSM_CTRL_t_ARRAY) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: HAL_CSM_CSM_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is

@@ -33,13 +33,13 @@ types:
    - ucm_cde_avt: {'array': 'open', 'type': 'ucm_cde_vt'}
    - ucm_csw_control_rt:
       - data_present: {'type': 'logic'}
-      - addr_orig: {'type': 'logic', 'range': ['4-1', 0]}
+      - addr_dest: {'type': 'logic', 'range': ['4-1', 0]}
    - ucm_csw_control_vt: {'type': 'logic', 'range': ['ucm_csw_control_rt-1', 0]}
    - ucm_csw_control_art: {'array': 'open', 'type': 'ucm_csw_control_rt'}
    - ucm_csw_control_avt: {'array': 'open', 'type': 'ucm_csw_control_vt'}
    - ucm_pam_control_rt:
       - data_present: {'type': 'logic'}
-      - addr_orig: {'type': 'logic', 'range': ['4-1', 0]}
+      - addr_dest: {'type': 'logic', 'range': ['4-1', 0]}
    - ucm_pam_control_vt: {'type': 'logic', 'range': ['ucm_pam_control_rt-1', 0]}
    - ucm_pam_control_art: {'array': 'open', 'type': 'ucm_pam_control_rt'}
    - ucm_pam_control_avt: {'array': 'open', 'type': 'ucm_pam_control_vt'}

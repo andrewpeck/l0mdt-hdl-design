@@ -35,14 +35,16 @@ entity daq_sump is
     -- ctrl              : in  H2S_CTRL_t;
     -- mon               : out H2S_MON_t;
 
-    i_inn_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
-    o_daq_streams     : out felix_stream_avt (c_HPS_MAX_HP_INN     
-                                                  + c_HPS_MAX_HP_MID   
-                                                  + c_HPS_MAX_HP_OUT - 1 downto 0);
-    -- o_daq_streams     : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    i_inn_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_mid_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_out_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_ext_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    -- o_daq_streams     : out felix_data_avt (4-1 downto 0);
+    -- o_daq_streams     : out felix_stream_avt (c_HPS_NUM_MDT_CH_INN     
+    --                                               + c_HPS_NUM_MDT_CH_MID   
+    --                                               + c_HPS_NUM_MDT_CH_OUT - 1 downto 0);
+    -- o_daq_streams     : out felix_stream_avt(c_NUM_DAQ_STREAMS-1 downto 0);
+    o_daq_streams     : out felix_stream_avt(c_DAQ_LINKS-1 downto 0);
 
     o_sump : out std_logic
   );
@@ -51,26 +53,26 @@ end entity daq_sump;
 
 architecture beh of daq_sump is
 
-  signal inn_tdc_hits_av : std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);
-  signal mid_tdc_hits_av : std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);
-  signal out_tdc_hits_av : std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal ext_tdc_hits_av : std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal inn_tdc_hits_av : std_logic_vector(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal mid_tdc_hits_av : std_logic_vector(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal out_tdc_hits_av : std_logic_vector(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal ext_tdc_hits_av : std_logic_vector(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
 begin
 
   o_daq_streams <= (others => (others => '0'));
   -- o_minus_neighbor_segments <= (others => (others => '0'));
 
-  MDT_INN_SUMP: for I in 0 to c_HPS_MAX_HP_INN -1 generate
+  MDT_INN_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_INN -1 generate
     inn_tdc_hits_av(I) <= xor_reduce(i_inn_tdc_hits_av(I));
   end generate;
-  MDT_MID_SUMP: for I in 0 to c_HPS_MAX_HP_MID -1 generate
+  MDT_MID_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_MID -1 generate
     mid_tdc_hits_av(I) <= xor_reduce(i_mid_tdc_hits_av(I));
   end generate;
-  MDT_OUT_SUMP: for I in 0 to c_HPS_MAX_HP_OUT -1 generate
+  MDT_OUT_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_OUT -1 generate
     out_tdc_hits_av(I) <= xor_reduce(i_out_tdc_hits_av(I));
   end generate;
-  MDT_EXT_SUMP: for I in 0 to c_HPS_MAX_HP_EXT -1 generate
+  MDT_EXT_SUMP: for I in 0 to c_HPS_NUM_MDT_CH_EXT -1 generate
     ext_tdc_hits_av(I) <= xor_reduce(i_ext_tdc_hits_av(I));
   end generate;
   
@@ -83,10 +85,10 @@ end architecture beh;
 
   --   -- signal ptcalc_sump         : std_logic_vector (c_NUM_THREADS -1 downto 0);
   --   -- signal pl2mtc_sump         : std_logic_vector (c_MAX_NUM_SL -1 downto 0);
-  --   signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
-  --   signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
-  --   signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
-  --   signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
+  --   signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+  --   signal tdc_hit_middle_sump : std_logic_vector (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+  --   signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+  --   signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
   --   signal sump_v : std_logic_vector(c_NUM_DAQ_STREAMS - 1 downto 0);
   --   signal l0mdt_ttc_v  : l0mdt_ttc_vt;
   --   signal l0mdt_control_v  : l0mdt_control_vt;
@@ -98,16 +100,16 @@ end architecture beh;
   --   begin  -- process tdc_hit_sump_proc
   --     if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
 
-  --       inner_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_INN-1 loop
+  --       inner_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_INN-1 loop
   --         tdc_hit_inner_sump(I) <= xor_reduce(i_inn_tdc_hits(I));
   --       end loop;
-  --       middle_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_MID-1 loop
+  --       middle_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_MID-1 loop
   --         tdc_hit_middle_sump(I) <= xor_reduce(i_mid_tdc_hits(I));
   --       end loop;
-  --       outer_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_OUT-1 loop
+  --       outer_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_OUT-1 loop
   --         tdc_hit_outer_sump(I) <= xor_reduce(i_out_tdc_hits(I));
   --       end loop;
-  --       extra_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_EXT-1 loop
+  --       extra_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_EXT-1 loop
   --         tdc_hit_extra_sump(I) <= xor_reduce(i_ext_tdc_hits(I));
   --       end loop;
 

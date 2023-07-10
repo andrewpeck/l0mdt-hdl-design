@@ -49,26 +49,29 @@ package board_pkg is
     30     => (MGT_FELIX    ,  7     , GTY     , 0 , 30) , -- BANK 134 FELIX 10
     31     => (MGT_FELIX    ,  7     , GTY     , 0 , 31) , -- BANK 134 FELIX 11
 -- mgt#    => (mgt_type     , refclk , gt_type , x , y)
-    32     => (MGT_C2C      , 12     , GTH     , 0 , 0)  , -- BANK 224 SM/CM B2B0
-    33     => (MGT_C2C      , 12     , GTH     , 0 , 1)  , -- BANK 224 SM/CM B2B1
+--    32     => (MGT_C2C      , 12     , GTH     , 0 , 0)  , -- BANK 224 SM/CM B2B0
+--    33     => (MGT_C2C      , 12     , GTH     , 0 , 1)  , -- BANK 224 SM/CM B2B1
+    32     => (MGT_NIL      , 12     , GTH     , 0 , 0)  , -- LOC cons in C2C BD
+    33     => (MGT_NIL      , 12     , GTH     , 0 , 1)  , -- LOC cons in C2C BD
     34     => (MGT_NIL      , 12     , GTH     , 0 , 2)  , -- BANK 224 C2C ZUP/KUP4
     35     => (MGT_NIL      , 12     , GTH     , 0 , 3)  , -- BANK 224 C2C ZUP/KUP5
     36     => (MGT_NIL      , 13     , GTH     , 0 , 4)  , -- BANK 225 C2C ZUP/KUP6
     37     => (MGT_NIL      , 13     , GTH     , 0 , 5)  , -- BANK 225 LEGACY TTX RX/TX
     38     => (MGT_NIL      , 13     , GTH     , 0 , 6)  , -- BANK 225 TX/RX Spare 0 to SMA
     39     => (MGT_NIL      , 13     , GTH     , 0 , 7)  , -- BANK 225 TX/RX Spare 1 to SMA
-    40     => (MGT_LPGBT    , 14     , GTH     , 0 , 8)  , -- BANK 226 CSM
-    41     => (MGT_LPGBT    , 14     , GTH     , 0 , 9)  , -- BANK 226 CSM
-    42     => (MGT_LPGBT    , 14     , GTH     , 0 , 10) , -- BANK 226 CSM
-    43     => (MGT_LPGBT    , 14     , GTH     , 0 , 11) , -- BANK 226 CSM
-    44     => (MGT_LPGBT    , 14     , GTH     , 0 , 12) , -- BANK 227 CSM
-    45     => (MGT_LPGBT    , 14     , GTH     , 0 , 13) , -- BANK 227 CSM
-    46     => (MGT_LPGBT    , 14     , GTH     , 0 , 14) , -- BANK 227 CSM
-    47     => (MGT_LPGBT    , 14     , GTH     , 0 , 15) , -- BANK 227 CSM
+    40     => (MGT_LPGBT    , 12     , GTH     , 0 , 8)  , -- BANK 226 CSM
+    41     => (MGT_LPGBT    , 12     , GTH     , 0 , 9)  , -- BANK 226 CSM
+    42     => (MGT_LPGBT    , 12     , GTH     , 0 , 10) , -- BANK 226 CSM
+    43     => (MGT_LPGBT    , 12     , GTH     , 0 , 11) , -- BANK 226 CSM
+    44     => (MGT_LPGBT    , 13     , GTH     , 0 , 12) , -- BANK 227 CSM
+    45     => (MGT_LPGBT    , 13     , GTH     , 0 , 13) , -- BANK 227 CSM
+    46     => (MGT_LPGBT    , 13     , GTH     , 0 , 14) , -- BANK 227 CSM
+    47     => (MGT_LPGBT    , 13     , GTH     , 0 , 15) , -- BANK 227 CSM
     48     => (MGT_LPGBT    , 14     , GTH     , 0 , 16) , -- BANK 228 CSM
     49     => (MGT_LPGBT    , 14     , GTH     , 0 , 17) , -- BANK 228 CSM
     50     => (MGT_LPGBT    , 14     , GTH     , 0 , 18) , -- BANK 228 CSM
     51     => (MGT_LPGBT    , 14     , GTH     , 0 , 19) , -- BANK 228 CSM
+    
     52     => (MGT_LPGBT    , 16     , GTH     , 0 , 20) , -- BANK 229 CSM
     53     => (MGT_LPGBT    , 16     , GTH     , 0 , 21) , -- BANK 229 CSM
     54     => (MGT_LPGBT    , 16     , GTH     , 0 , 22) , -- BANK 229 CSM
@@ -113,6 +116,7 @@ package board_pkg is
     7  => (FREQ => REF_SYNC320 ) , -- FELIX_REF2
     8  => (FREQ => REF_NIL     ) , -- AD_CLK2_KUP , muxed as C2c or Spare
     9  => (FREQ => REF_AXI_C2C ) , -- B2B_REF0 to SM
+ --   9  => (FREQ => REF_NIL ) , 
     10 => (FREQ => REF_NIL     ) , -- AD_CLK3_KUP , muxed as sma or spare
     11 => (FREQ => REF_NIL     ) , -- B2B_REF2 to SM
     12 => (FREQ => REF_SYNC320 ) , -- FE_REF0

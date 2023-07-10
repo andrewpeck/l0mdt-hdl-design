@@ -1,16 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: ucm.vhd
+-- Module: Muon Candidate manager
+-- File PATH: /ucm.vhd
+-- -----
+-- File Created: Wednesday, 1st February 2023 10:32:58 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Monday, 6th February 2023 6:08:55 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: Muon Candidate Manager
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -24,7 +27,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-use shared_lib.barrel_chamb_z2origin_pkg.all;
+use shared_lib.fct_barrel_chamb_z2origin_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -113,8 +116,13 @@ architecture beh of ucm is
   -- signal ucm_prepro_av        : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_in_av       : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal csw_main_in_dv      : std_logic;
+  signal csw_ctrl_dv      : std_logic;
+  
+  
   -- signal csw_main_out_ar      : slc_rx_art(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_out_av      : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
+  signal csw_main_out_dv      : std_logic;
 
   signal slc_endcap_ar        : slc_endcap_art(c_MAX_NUM_SL -1 downto 0);
 
@@ -130,7 +138,7 @@ architecture beh of ucm is
   signal cpam_in_av           : ucm_cde_avt(c_NUM_THREADS -1 downto 0);
   signal cpam_out_av          : ucm_cde_avt(c_NUM_THREADS -1 downto 0);
 
-  signal uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
   signal csw_control_av       : ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
   signal pam_CSW_control      : ucm_pam_control_art(c_NUM_THREADS -1 downto 0);
@@ -156,6 +164,12 @@ architecture beh of ucm is
 
   -- type cvp_cz0_art is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
   -- signal cvp_cz0_a : cvp_cz0_art;
+
+  signal aux_uCM2hps_inn_r  : ucm2hps_rt;
+  signal o_uCM2hps_inn_ar  : ucm2hps_art(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_ar  : ucm2hps_art(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_ar  : ucm2hps_art(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_ar  : ucm2hps_art(c_NUM_THREADS -1 downto 0);
 
 begin
 
@@ -235,6 +249,7 @@ begin
     i_prepro2ctrl_av  => prepro2ctrl_av,
     --
     o_csw_ctrl_av     => csw_control_av,
+    o_csw_ctrl_dv     => csw_ctrl_dv,
     o_pam_ctrl        => pam_CSW_control,
     -- o_proc_info       => proc_info_av,
     o_proc_info_av    => proc_info_av,
@@ -279,6 +294,7 @@ begin
   -- end generate;
 
   -- main cross switch
+  -- csw_main_in_dv <= or_reduce(csw_control_av); 
   SLC_CSW : entity ucm_lib.ucm_csw
   port map(
     clk         => clk,
@@ -287,8 +303,10 @@ begin
     
     i_control_av   => csw_control_av,
     -- data
-    i_data      => csw_main_in_av,
-    o_data      => csw_main_out_av
+    i_data_av   => csw_main_in_av,
+    i_dv        => csw_ctrl_dv,
+    o_data_av   => csw_main_out_av,
+    o_dv        => csw_main_out_dv
   );
 
 
@@ -415,27 +433,40 @@ begin
   -- o_uCM2pl_av <= convert(o_uCM2pl_av);
 
   -- VP2HPS: for hps_i in c_MAX_NUM_HPS -1 downto 0 generate
-    VP2HEG: for heg_i in c_NUM_THREADS -1 downto 0 generate
+    VP2HEG: for th_i in c_NUM_THREADS -1 downto 0 generate
+      -- shared variable v_aux_uCM2hps_inn_r  : ucm2hps_rt;
+    begin
       VP2HPS_INN : if c_HPS_ENABLE_ST_INN generate
-        o_uCM2hps_inn_av(heg_i) <= uCM2hps_data(heg_i)(0);
+        o_uCM2hps_inn_av(th_i) <= uCM2hps_data(th_i)(0);
+        -- v_aux_uCM2hps_inn_r := convert(uCM2hps_data(th_i)(0));
+        -- o_uCM2hps_inn_ar(th_i) <= v_aux_uCM2hps_inn_r;
+        -- o_uCM2hps_inn_ar(th_i) <= convert(ucm2hps_vt(uCM2hps_data(th_i)(0)));
       end generate;
       VP2HPS_MID : if c_HPS_ENABLE_ST_MID generate
-        o_uCM2hps_mid_av(heg_i) <= uCM2hps_data(heg_i)(1);
+        o_uCM2hps_mid_av(th_i) <= uCM2hps_data(th_i)(1);
       end generate;
       VP2HPS_OUT : if c_HPS_ENABLE_ST_OUT generate
-        o_uCM2hps_out_av(heg_i) <= uCM2hps_data(heg_i)(2);
+        o_uCM2hps_out_av(th_i) <= uCM2hps_data(th_i)(2);
       end generate;
       VP2HPS_EXT_EN : if c_HPS_ENABLE_ST_EXT generate
-        o_uCM2hps_ext_av(heg_i) <= uCM2hps_data(heg_i)(3);
+        o_uCM2hps_ext_av(th_i) <= uCM2hps_data(th_i)(3);
       end generate;
       VP2HPS_EXT_DIS : if not c_HPS_ENABLE_ST_EXT generate
-        o_uCM2hps_ext_av(heg_i) <= (others => '0');
+        o_uCM2hps_ext_av(th_i) <= (others => '0');
       end generate;
-
+      
+      --convert(o_uCM2hps_inn_av(th_i));
+      -- o_uCM2hps_mid_ar(th_i) <= convert(o_uCM2hps_mid_av(th_i));
+      -- o_uCM2hps_out_ar(th_i) <= convert(o_uCM2hps_out_av(th_i));
+      -- o_uCM2hps_ext_ar(th_i) <= convert(o_uCM2hps_ext_av(th_i));
       -- o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
     end generate;
   -- end generate;
-
+  -- o_uCM2hps_inn_ar <= convert(o_uCM2hps_inn_av);
+  -- o_uCM2hps_mid_ar <= convert(o_uCM2hps_mid_av);
+  -- o_uCM2hps_out_ar <= convert(o_uCM2hps_out_av);
+  -- o_uCM2hps_ext_ar <= convert(o_uCM2hps_ext_av);
+  
 
   -- PAM_CSW: for heg_i in c_NUM_THREADS -1 downto 0 generate
   --   cde_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - heg_i) - 1);

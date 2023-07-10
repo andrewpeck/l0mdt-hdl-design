@@ -1,8 +1,0 @@
-
-config:
-   basic_functions: True
-   packages:
-      - ieee: [std_logic_1164, numeric_std]
-types:
-   - integer_at: {'array': 'open', 'type': 'integer'}
-   - bcid_t: {'type': 'unsigned', 'range': ['12-1', 0]}

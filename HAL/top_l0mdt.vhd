@@ -26,6 +26,8 @@ use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.FM_CTRL.all;
+use ctrl_lib.HOG_CTRL.all;
+
 
 library shared_lib;
 use shared_lib.spybuffer_pkg.all;
@@ -37,26 +39,27 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
 library ult_lib;
+library xil_defaultlib;
+use xil_defaultlib.all;
 
 entity top_l0mdt is
   generic (
     -- these generics get set by hog at synthesis
-    GLOBAL_FWDATE       : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_FWTIME       : std_logic_vector (31 downto 0) := x"00000000";
-    OFFICIAL            : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_FWHASH       : std_logic_vector (31 downto 0) := x"00000000";
-    TOP_FWHASH          : std_logic_vector (31 downto 0) := x"00000000";
-    XML_HASH            : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_FWVERSION    : std_logic_vector (31 downto 0) := x"00000000";
-    TOP_FWVERSION       : std_logic_vector (31 downto 0) := x"00000000";
-    XML_VERSION         : std_logic_vector (31 downto 0) := x"00000000";
-    HOG_FWHASH          : std_logic_vector (31 downto 0) := x"00000000";
-    FRAMEWORK_FWVERSION : std_logic_vector (31 downto 0) := x"00000000";
-    FRAMEWORK_FWHASH    : std_logic_vector (31 downto 0) := x"00000000"
+    GLOBAL_DATE       : std_logic_vector (31 downto 0) := x"00000000";
+    GLOBAL_TIME       : std_logic_vector (31 downto 0) := x"00000000";
+    OFFICIAL          : std_logic_vector (31 downto 0) := x"00000000";
+    GLOBAL_SHA        : std_logic_vector (31 downto 0) := x"00000000";
+    TOP_SHA           : std_logic_vector (31 downto 0) := x"00000000";
+    XML_HASH          : std_logic_vector (31 downto 0) := x"00000000";
+    GLOBAL_VER        : std_logic_vector (31 downto 0) := x"00000000";
+    TOP_VER           : std_logic_vector (31 downto 0) := x"00000000";
+    XML_VERSION       : std_logic_vector (31 downto 0) := x"00000000";
+    HOG_SHA           : std_logic_vector (31 downto 0) := x"00000000";
+    FRAMEWORK_VER     : std_logic_vector (31 downto 0) := x"00000000";
+    FRAMEWORK_SHA     : std_logic_vector (31 downto 0) := x"00000000"
     );
   port (
-
-    --------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
     -- MGT
     -- MGT links are set through LOC constraints and not routed to the top level
     --------------------------------------------------------------------------------
@@ -64,7 +67,7 @@ entity top_l0mdt is
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
-    --------------------------------------------------------------------------------
+     --------------------------------------------------------------------------------
     -- LHC clock
     --------------------------------------------------------------------------------
 
@@ -73,19 +76,26 @@ entity top_l0mdt is
 
     tc_clk_o_p : out std_logic;
     tc_clk_o_n : out std_logic;
-
+    
     --------------------------------------------------------------------------------
     -- AXI C2C
     --------------------------------------------------------------------------------
 
-    clock_async_i_p : in std_logic;
-    clock_async_i_n : in std_logic;
-
+    p_clk_100 : in std_logic;
+    n_clk_100 : in std_logic;           -- 100 MHz system clock
+    
     c2c_rxn : in  std_logic;
     c2c_rxp : in  std_logic;
     c2c_txn : out std_logic;
     c2c_txp : out std_logic;
 
+    c2cb_rxn    : in  std_logic;
+    c2cb_rxp    : in  std_logic;
+    c2cb_txn    : out std_logic;
+    c2cb_txp    : out std_logic;
+
+--    c2c_refclkp : in  std_logic;
+--    c2c_refclkn : in  std_logic;
     --------------------------------------------------------------------------------
     -- Other IO
     --------------------------------------------------------------------------------
@@ -108,7 +118,7 @@ entity top_l0mdt is
 end top_l0mdt;
 
 architecture structural of top_l0mdt is
-
+  
   --
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
@@ -136,9 +146,11 @@ architecture structural of top_l0mdt is
   signal plus_neighbor_segments_o  : sf2ptcalc_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
   signal minus_neighbor_segments_o : sf2ptcalc_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
 
-  signal daq_streams : felix_stream_avt (c_HPS_MAX_HP_INN
-                                             + c_HPS_MAX_HP_MID
-                                             + c_HPS_MAX_HP_OUT - 1 downto 0);
+  -- signal daq_streams : felix_stream_avt (c_HPS_MAX_HP_INN
+  --                                            + c_HPS_MAX_HP_MID
+  --                                            + c_HPS_MAX_HP_OUT - 1 downto 0);
+
+  signal daq_streams : felix_stream_avt(c_DAQ_LINKS-1 downto 0);
 
   -- NSP + MUCTPI
 
@@ -150,7 +162,10 @@ architecture structural of top_l0mdt is
   signal axi_clk : std_logic;
   signal clk320  : std_logic;
   signal clk40   : std_logic;
-
+  signal b2b_reset_n : std_logic;
+  signal clk_200         : std_logic;
+  signal clk_50          : std_logic;
+  signal locked_clk200   : std_logic;
   -- Control and Monitoring Records
 
   signal hps_inn_mon_r  : HPS_MON_t;
@@ -181,9 +196,12 @@ architecture structural of top_l0mdt is
   signal tf_mon_r   : TF_MON_t;
   signal mpl_mon_r  : MPL_MON_t;
   signal mpl_ctrl_r : MPL_CTRL_t;
+  signal hog_mon    : HOG_MON_t;
+  signal fw_info_mon : FW_INFO_MON_t;
 
   signal fm_mon_r  : FM_MON_t;
   signal fm_ctrl_r : FM_CTRL_t;
+
 
   signal hps_inn_ctrl_v : std_logic_vector(width(hps_inn_ctrl_r) -1 downto 0);
   signal hps_inn_mon_v  : std_logic_vector(width(hps_inn_mon_r) -1 downto 0);
@@ -224,13 +242,15 @@ architecture structural of top_l0mdt is
   signal hal_core_mon  : HAL_CORE_MON_t;
   signal hal_core_ctrl : HAL_CORE_CTRL_t;
 
-  signal fw_info_mon : FW_INFO_MON_t;
 
   -- sumps
 
   signal hal_sump  : std_logic;
   signal user_sump : std_logic;
 
+  constant ZERO : std_logic := '0';
+
+  signal axi_reset_n : std_logic;
 begin
 
   -- in sector 3 we only have 0 chambers in the EXTRA station and 6
@@ -251,8 +271,8 @@ begin
       clock_i_p       => clock_i_p,
       clock_i_n       => clock_i_n,
 
-      clock_async_i_p => clock_async_i_p,
-      clock_async_i_n => clock_async_i_n,
+      clock_async_i_p => p_clk_100,
+      clock_async_i_n => n_clk_100,
 
       lhc_refclk_o_p  => tc_clk_o_p,
       lhc_refclk_o_n  => tc_clk_o_n,
@@ -289,7 +309,9 @@ begin
       clk320_o => clk320,
       clk40_o  => clk40,
 
-      axi_clk_o => axi_clk,
+      clk50_o => clk_50, 
+
+      b2b_reset_n => b2b_reset_n,
 
       core_ctrl => hal_core_ctrl,
       core_mon  => hal_core_mon,
@@ -312,6 +334,7 @@ begin
     port map (
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
+      axi_reset_n       => axi_reset_n,
 
       i_inn_tdc_hits_av => inner_tdc_hits,
       i_mid_tdc_hits_av => middle_tdc_hits,
@@ -365,7 +388,7 @@ begin
       mpl_ctrl_v => mpl_ctrl_v,
       mpl_mon_v  => mpl_mon_v,
       fm_ctrl_v  => fm_ctrl_v,
-      fm_mon_v   => fm_mon_v,
+      fm_mon_v   => fm_mon_v,     
       --
 
       sump => user_sump
@@ -395,6 +418,7 @@ begin
 
   mpl_ctrl_v     <= convert(mpl_ctrl_r, mpl_ctrl_v);
   mpl_mon_r      <= convert(mpl_mon_v, mpl_mon_r);
+
   tf_ctrl_v      <= convert(tf_ctrl_r, tf_ctrl_v);
   tf_mon_r       <= convert(tf_mon_v, tf_mon_r);
   mtc_ctrl_v     <= convert(mtc_ctrl_r, mtc_ctrl_v);
@@ -404,6 +428,12 @@ begin
   fm_ctrl_v      <= convert(fm_ctrl_r, fm_ctrl_v);
   fm_mon_r       <= convert(fm_mon_v, fm_mon_r);
 
+
+
+
+
+
+  
   top_control_inst : entity work.top_control
     port map (
 
@@ -412,9 +442,14 @@ begin
       c2c_rxp     => c2c_rxp,
       c2c_txn     => c2c_txn,
       c2c_txp     => c2c_txp,
-      c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC),
-      c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC),
 
+      c2cb_rxn     => c2cb_rxn,
+      c2cb_rxp     => c2cb_rxp,
+      c2cb_txn     => c2cb_txn,
+      c2cb_txp     => c2cb_txp,
+      c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC), -- c2c_refclkp, 
+      c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC), --c2c_refclkn,
+      axi_reset_n => axi_reset_n,
       -- HAL Control
 
       hal_core_ctrl => hal_core_ctrl,
@@ -453,17 +488,19 @@ begin
       tf_mon      => tf_mon_r,
       mpl_ctrl    => mpl_ctrl_r,
       mpl_mon     => mpl_mon_r,
+      hog_mon     => hog_mon,
       fw_info_mon => fw_info_mon,
       fm_ctrl     => fm_ctrl_r,
       fm_mon      => fm_mon_r,
-
+     
       -- axi common
       clk320                  => clk320,
       clk40                   => clk40,
+      clk40_rstn              => not(clock_and_control.rst),
       clkpipe                 => clock_and_control.clk,
-      axi_clk                 => axi_clk,
-      clk50mhz                => axi_clk,
-      reset_n                 => '1',
+      axi_clk                 => clk_50, 
+      clk50mhz                => clk_50,
+      reset_n                 => b2b_reset_n,
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
       --sys_mgmt_scl            => sys_mgmt_scl,
@@ -472,32 +509,32 @@ begin
       sys_mgmt_vccint_alarm   => open
       );
 
-  fw_info_mon.FW_INFO.GIT_VALID                    <= '0';              -- FW_HASH_VALID;
-  fw_info_mon.FW_INFO.GIT_HASH_1                   <= (others => '0');  -- FW_HASH_1;
-  fw_info_mon.FW_INFO.GIT_HASH_2                   <= (others => '0');  -- FW_HASH_2;
-  fw_info_mon.FW_INFO.GIT_HASH_3                   <= (others => '0');  -- FW_HASH_3;
-  fw_info_mon.FW_INFO.GIT_HASH_4                   <= (others => '0');  -- FW_HASH_4;
-  fw_info_mon.FW_INFO.GIT_HASH_5                   <= (others => '0');  -- FW_HASH_5;
-  fw_info_mon.FW_INFO.BUILD_DATE.DAY               <= (others => '0');  -- TS_DAY;
-  fw_info_mon.FW_INFO.BUILD_DATE.MONTH             <= (others => '0');  -- TS_MONTH;
-  fw_info_mon.FW_INFO.BUILD_DATE.YEAR(7 downto 0)  <= (others => '0');  -- TS_YEAR;
-  fw_info_mon.FW_INFO.BUILD_DATE.YEAR(15 downto 8) <= (others => '0');  -- TS_CENT;
-  fw_info_mon.FW_INFO.BUILD_TIME.sec               <= (others => '0');  -- TS_SEC;
-  fw_info_mon.FW_INFO.BUILD_TIME.min               <= (others => '0');  -- TS_MIN;
-  fw_info_mon.FW_INFO.BUILD_TIME.HOUR              <= (others => '0');  -- TS_HOUR
+    hog_mon.HOG_INFO.GLOBAL_DATE <= GLOBAL_DATE;
+    hog_mon.HOG_INFO.GLOBAL_TIME <= GLOBAL_TIME;
+    hog_mon.HOG_INFO.GLOBAL_VER <= GLOBAL_VER;
+    hog_mon.HOG_INFO.GLOBAL_SHA <= GLOBAL_SHA;
+    hog_mon.HOG_INFO.TOP_SHA <= TOP_SHA;
+    hog_mon.HOG_INFO.TOP_VER <= TOP_VER;
+    hog_mon.HOG_INFO.HOG_SHA <= HOG_SHA;
+    hog_mon.HOG_INFO.HOG_VER <= HOG_VER;
+    hog_mon.HOG_INFO.CON_SHA <= CON_SHA;
+    hog_mon.HOG_INFO.CON_VER <= CON_VER;
+    hog_mon.HOG_INFO.PROJECT_LIB_SHA <= PROJECT_LIB_SHA;
+    hog_mon.HOG_INFO.PROJECT_LIB_VER <= PROJECT_LIB_VER;
 
-  fw_info_mon.HOG_INFO.GLOBAL_FWDATE       <= GLOBAL_FWDATE;
-  fw_info_mon.HOG_INFO.GLOBAL_FWTIME       <= GLOBAL_FWTIME;
+
+  fw_info_mon.HOG_INFO.GLOBAL_FWDATE       <= GLOBAL_DATE;
+  fw_info_mon.HOG_INFO.GLOBAL_FWTIME       <= GLOBAL_TIME;
   fw_info_mon.HOG_INFO.OFFICIAL            <= OFFICIAL;
-  fw_info_mon.HOG_INFO.GLOBAL_FWHASH       <= GLOBAL_FWHASH;
-  fw_info_mon.HOG_INFO.TOP_FWHASH          <= TOP_FWHASH;
+  fw_info_mon.HOG_INFO.GLOBAL_FWHASH       <= GLOBAL_SHA;
+  fw_info_mon.HOG_INFO.TOP_FWHASH          <= TOP_SHA;
   fw_info_mon.HOG_INFO.XML_HASH            <= XML_HASH;
-  fw_info_mon.HOG_INFO.GLOBAL_FWVERSION    <= GLOBAL_FWVERSION;
-  fw_info_mon.HOG_INFO.TOP_FWVERSION       <= TOP_FWVERSION;
+  fw_info_mon.HOG_INFO.GLOBAL_FWVERSION    <= GLOBAL_VER;
+  fw_info_mon.HOG_INFO.TOP_FWVERSION       <= TOP_VER;
   fw_info_mon.HOG_INFO.XML_VERSION         <= XML_VERSION;
-  fw_info_mon.HOG_INFO.HOG_FWHASH          <= HOG_FWHASH;
-  fw_info_mon.HOG_INFO.FRAMEWORK_FWVERSION <= FRAMEWORK_FWVERSION;
-  fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH    <= FRAMEWORK_FWHASH;
+  fw_info_mon.HOG_INFO.HOG_FWHASH          <= HOG_SHA;
+  fw_info_mon.HOG_INFO.FRAMEWORK_FWVERSION <= FRAMEWORK_VER;
+  fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH    <= FRAMEWORK_SHA;
 
   fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW <= MAIN_CFG_COMPILE_HW;
   fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL <= MAIN_CFG_COMPILE_UL;

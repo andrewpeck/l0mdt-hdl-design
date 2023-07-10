@@ -5,12 +5,12 @@
   <node id="wr_ack"     address="0x00" mask="0x00000002" permission="w"   description="Write acknowledge"/>
   <node id="rd_req"     address="0x00" mask="0x00000004" permission="w"   description="Read request"/>
   <node id="rd_ack"     address="0x00" mask="0x00000008" permission="w"   description="Read Ack"/>
-  <node id="rd_rdy"     address="0x00" mask="0x00000001" permission="r"   description="Read ready"/>
+  <node id="rd_rdy"     address="0x00" mask="0x00000010" permission="r"   description="Read ready"/>
 
-  <node id="flush_req"  address="0x00" mask="0x00000010" permission="rw" parameters="default=0" description="flush memory to Zync"/>
-  <node id="freeze_ena" address="0x00" mask="0x00000020" permission="r"  description="freeze memory"/>
-  <node id="freeze_req" address="0x00" mask="0x00000020" permission="rw" parameters="default=0"  description="freeze memory"/>
-  <node id="mem_sel"    address="0x00" mask="0x000001C0" permission="rw" parameters="default=0"  description="sel memory"/>
+  <node id="flush_req"  address="0x00" mask="0x00000020" permission="rw" parameters="default=0" description="flush memory to Zync"/>
+  <node id="freeze_ena" address="0x00" mask="0x00000040" permission="r"  description="freeze memory"/>
+  <node id="freeze_req" address="0x00" mask="0x00000080" permission="rw" parameters="default=0"  description="freeze memory"/>
+  <node id="mem_sel"    address="0x00" mask="0x00000700" permission="rw" parameters="default=0"  description="sel memory"/>
 
 </node>
 

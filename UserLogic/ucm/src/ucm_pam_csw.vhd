@@ -53,7 +53,7 @@ begin
       else
         for csw_i in c_NUM_THREADS -1 downto 0 loop
           if i_control(csw_i).data_present = '1' then
-            o_data(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_orig)));
+            o_data(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_dest)));
           else
             o_data(csw_i) <= (others => '0');
           end if;

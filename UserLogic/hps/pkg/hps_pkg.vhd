@@ -66,8 +66,13 @@ package body hps_pkg is
    -- Custom types and functions --
 
    function width(x: hps_ctrl2sf_art) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: hps_ctrl2sf_art; tpl: std_logic_vector) return std_logic_vector is
@@ -134,8 +139,13 @@ package body hps_pkg is
    end function convert;
 
    function width(x: hps_ctrl2sf_avt) return integer is
-      variable w : integer := x'length * width(x(x'low));
+      variable w : integer;
    begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
       return w;
    end function width;
    function convert(x: hps_ctrl2sf_avt; tpl: std_logic_vector) return std_logic_vector is

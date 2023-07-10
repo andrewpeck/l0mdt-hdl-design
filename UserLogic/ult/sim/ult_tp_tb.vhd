@@ -75,7 +75,7 @@ library fm_lib;
 use fm_lib.fm_ult_pkg.all;
 
 
-entity ult_tp is
+entity ult_tb is
   generic (
     PRJ_INFO            : string  := "BA3";
     IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
@@ -88,9 +88,9 @@ entity ult_tp is
     -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
     DUMMY               : boolean := false
     );
-end entity ult_tp;
+end entity ult_tb;
 
-architecture beh of ult_tp is
+architecture beh of ult_tb is
 
   signal enable_mdt : integer := 1;
   signal enable_slc : integer := 1;
@@ -166,25 +166,25 @@ architecture beh of ult_tp is
   signal fm_mon_v   : std_logic_vector(FM_MON_t'w-1 downto 0);
 
   -- TDC Hits from Polmux
-  signal i_mdt_tdc_inn_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_mid_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_inn_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_mid_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_out_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_ext_av :  tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
 
   -- TDC Hits from Tar
-  -- signal i_mdt_tar_inn_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  -- signal i_mdt_tar_mid_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  -- signal i_mdt_tar_out_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  -- signal i_mdt_tar_ext_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_inn_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_mid_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_out_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_ext_av :  tar2hps_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
 
   -- Sector Logic Candidates
   signal i_main_primary_slc       : slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
   signal i_main_secondary_slc     : slc_rx_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
   signal i_plus_neighbor_slc      : slc_rx_vt := (others => '0');
   signal i_minus_neighbor_slc     : slc_rx_vt := (others => '0');
-  signal slc_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
+  signal slc_event_ai             : event_xaut(c_MAX_NUM_SL -1 downto 0);
 
-  signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
+  signal hit_event_ai             : event_xaut(c_MAX_NUM_SL -1 downto 0);
 
   -- Segments in from neighbor
   signal i_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));

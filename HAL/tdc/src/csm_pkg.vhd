@@ -33,7 +33,7 @@ package csm_pkg is
 
   type int_array_t is array (integer range <>) of integer;
 
-  -- for each CSM channel (0-17) specify an elink pair (0-27)
+  -- for each CSM channel (0-19) specify an elink pair (0-27)
   -- to match LpGBT / CSM naming specify as G*4+P
   -- where G and P are the group and pair,
   -- e.g. 63 = group 6 pair 3 = channel 27
@@ -44,7 +44,7 @@ package csm_pkg is
     ch2   : integer;
   end record;
 
-  type elink_pair_map_t is array (integer range 0 to 17) of tdc_elink_pair;
+  type elink_pair_map_t is array (integer range 0 to 19) of tdc_elink_pair;
 
   constant elink_pair_map : elink_pair_map_t := (
     0  => (lpgbt => 0, ch1 => 6*4+3, ch2 => 6*4+2),  -- M
@@ -64,7 +64,9 @@ package csm_pkg is
     14 => (lpgbt => 1, ch1 => 4*4+3, ch2 => 4*4+2),  -- S
     15 => (lpgbt => 1, ch1 => 1*4+0, ch2 => 1*4+1),  -- S
     16 => (lpgbt => 1, ch1 => 0*4+0, ch2 => 0*4+1),  -- S
-    17 => (lpgbt => 1, ch1 => 1*4+2, ch2 => 1*4+3)   -- S
+    17 => (lpgbt => 1, ch1 => 1*4+2, ch2 => 1*4+3),  -- S
+    18 => (lpgbt => 1, ch1 => 0*4+2, ch2 => 0*4+3),  -- S
+    19 => (lpgbt => 1, ch1 => 2*4+0, ch2 => 2*4+1)   -- S
     );
 
 end package csm_pkg;

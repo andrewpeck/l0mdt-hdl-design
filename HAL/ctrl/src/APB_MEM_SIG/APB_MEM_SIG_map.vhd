@@ -10,9 +10,12 @@ use work.types.all;
 
 use work.APB_MEM_SIG_Ctrl.all;
 use work.APB_MEM_SIG_Ctrl_DEF.all;
+
+
 entity APB_MEM_SIG_map is
   generic (
-    READ_TIMEOUT     : integer := 2048
+    READ_TIMEOUT     : integer := 2048;
+    ALLOCATED_MEMORY_RANGE : integer 
     );
   port (
     clk_axi          : in  std_logic;
@@ -49,6 +52,13 @@ begin  -- architecture behavioral
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
+  assert ((4*0) <= ALLOCATED_MEMORY_RANGE)
+    report "APB_MEM_SIG: Regmap addressing range " & integer'image(4*0) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity ERROR;
+  assert ((4*0) > ALLOCATED_MEMORY_RANGE)
+    report "APB_MEM_SIG: Regmap addressing range " & integer'image(4*0) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  severity NOTE;
+
   AXIRegBridge : entity work.axiLiteRegBlocking
     generic map (
       READ_TIMEOUT => READ_TIMEOUT
@@ -100,11 +110,11 @@ begin  -- architecture behavioral
         case to_integer(unsigned(localAddress(0 downto 0))) is
           
         when 0 => --0x0
-          localRdData( 0)            <=  Mon.rd_rdy;                      --Read ready
-          localRdData( 4)            <=  reg_data( 0)( 4);                --flush memory to Zync
-          localRdData( 5)            <=  Mon.freeze_ena;                  --freeze memory
-          localRdData( 5)            <=  reg_data( 0)( 5);                --freeze memory
-          localRdData( 8 downto  6)  <=  reg_data( 0)( 8 downto  6);      --sel memory
+          localRdData( 4)            <=  Mon.rd_rdy;                      --Read ready
+          localRdData( 5)            <=  reg_data( 0)( 5);                --flush memory to Zync
+          localRdData( 6)            <=  Mon.freeze_ena;                  --freeze memory
+          localRdData( 7)            <=  reg_data( 0)( 7);                --freeze memory
+          localRdData(10 downto  8)  <=  reg_data( 0)(10 downto  8);      --sel memory
 
 
           when others =>
@@ -122,17 +132,21 @@ begin  -- architecture behavioral
   -------------------------------------------------------------------------------
 
   -- Register mapping to ctrl structures
-  Ctrl.flush_req   <=  reg_data( 0)( 4);               
-  Ctrl.freeze_req  <=  reg_data( 0)( 5);               
-  Ctrl.mem_sel     <=  reg_data( 0)( 8 downto  6);     
+  Ctrl.flush_req   <=  reg_data( 0)( 5);               
+  Ctrl.freeze_req  <=  reg_data( 0)( 7);               
+  Ctrl.mem_sel     <=  reg_data( 0)(10 downto  8);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data( 0)( 4)  <= DEFAULT_APB_MEM_SIG_CTRL_t.flush_req;
-      reg_data( 0)( 5)  <= DEFAULT_APB_MEM_SIG_CTRL_t.freeze_req;
-      reg_data( 0)( 8 downto  6)  <= DEFAULT_APB_MEM_SIG_CTRL_t.mem_sel;
+      reg_data( 0)( 0)  <= DEFAULT_APB_MEM_SIG_CTRL_t.wr_req;
+      reg_data( 0)( 1)  <= DEFAULT_APB_MEM_SIG_CTRL_t.wr_ack;
+      reg_data( 0)( 2)  <= DEFAULT_APB_MEM_SIG_CTRL_t.rd_req;
+      reg_data( 0)( 3)  <= DEFAULT_APB_MEM_SIG_CTRL_t.rd_ack;
+      reg_data( 0)( 5)  <= DEFAULT_APB_MEM_SIG_CTRL_t.flush_req;
+      reg_data( 0)( 7)  <= DEFAULT_APB_MEM_SIG_CTRL_t.freeze_req;
+      reg_data( 0)(10 downto  8)  <= DEFAULT_APB_MEM_SIG_CTRL_t.mem_sel;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       Ctrl.wr_req <= '0';
@@ -149,9 +163,9 @@ begin  -- architecture behavioral
           Ctrl.wr_ack                 <=  localWrData( 1);               
           Ctrl.rd_req                 <=  localWrData( 2);               
           Ctrl.rd_ack                 <=  localWrData( 3);               
-          reg_data( 0)( 4)            <=  localWrData( 4);                --flush memory to Zync
-          reg_data( 0)( 5)            <=  localWrData( 5);                --freeze memory
-          reg_data( 0)( 8 downto  6)  <=  localWrData( 8 downto  6);      --sel memory
+          reg_data( 0)( 5)            <=  localWrData( 5);                --flush memory to Zync
+          reg_data( 0)( 7)            <=  localWrData( 7);                --freeze memory
+          reg_data( 0)(10 downto  8)  <=  localWrData(10 downto  8);      --sel memory
 
           when others => null;
         end case;

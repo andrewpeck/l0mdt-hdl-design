@@ -28,6 +28,8 @@ from l0mdt_tb.utils import test_config
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
+# import logging
+# cocotb.log.setLevel(logging.DEBUG)
 
 def initialize_spybuffers(fifos=[]):
 
@@ -252,7 +254,7 @@ def ult_tar_test(dut):
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list         =  []
     single_interface_list = []
-    print("\n\n\n\n\nIACOPO - Get Input Test Vector List for Ports across all input interfaces")
+    cocotb.log.debug("\n\n\n\n\Get Input Test Vector List for Ports across all input interfaces")
     for n_ip_intf in range(UltTarPorts.n_input_interfaces): # Add concept of interface
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
@@ -265,17 +267,15 @@ def ult_tar_test(dut):
             tv_df_type = "MDT",
             zero_padding_size=pad_size
         ))
-        print("IACOPO - (input)single_interface_list ",single_interface_list)
+        cocotb.log.debug("(input)single_interface_list ",single_interface_list)
         for io in range(UltTarPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
-        print("AAAAAA2")
 
    ###Get Output Test Vector List for Ports across all output interfaces##
-    print("\n\n\n\n\n\nIACOPO - Get Output Test Vector List for Ports across all output interfaces")
+    cocotb.log.debug("\n\n\n\n\nGet Output Test Vector List for Ports across all output interfaces")
     output_tv_list        =  []
     single_interface_list = []
     for n_op_intf in range(UltTarPorts.n_output_interfaces): # Add concept of interface
-        print("\n\n ----> IACOPO - Adding output interface", n_op_intf)
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
             tvformat=output_tvformats[n_op_intf],
@@ -320,7 +320,7 @@ def ult_tar_test(dut):
     yield ClockCycles(dut.clock, 500+num_events_to_process*2*pad_size)
     
 
-    print("\n\n\n * * * perform testvector comparison test * * * \n\n\n")
+    cocotb.log.debug("\n\n\n Performing testvector comparison test * * * \n\n\n")
     ##
     ## perform testvector comparison test
     ##
@@ -344,7 +344,7 @@ def ult_tar_test(dut):
                 
                 f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
             )
-            print(f"IACOPO - recvd words for {n_op_intf} : port num {n_oport}", words)
+            cocotb.log.debug(f" Received words for {n_op_intf} : port num {n_oport}"+str(words))
         o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process*pad_size)
         recvd_events_intf.append(o_recvd_events)
 

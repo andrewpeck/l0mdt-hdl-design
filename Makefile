@@ -1,6 +1,7 @@
 SHELL:=/bin/bash
 
 MOD_NAME =
+LOG_FILE = make.log
 ################################################################################
 # Use CCZE and/or time if available
 ################################################################################
@@ -41,13 +42,13 @@ $(CREATE_LIST):
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
 	@echo Creating Project $(patsubst create_%,%,$@)                                       $(COLORIZE)
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
-	@time Hog/CreateProject.sh $(patsubst create_%,%,$@)                                   $(COLORIZE)
+	@time Hog/CreateProject.sh $(patsubst create_%,%,$@)   2>&1 | tee -a 	   $(LOG_FILE) $(COLORIZE)
 
 $(PROJECT_LIST):
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
 	@echo Launching Hog Workflow $@                                                        $(COLORIZE)
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
-	@time Hog/LaunchWorkflow.sh $@                                                         $(COLORIZE)
+	@time Hog/LaunchWorkflow.sh $@          			         2>&1 | tee -a $(LOG_FILE) $(COLORIZE)
 
 $(OPEN_LIST):
 	vivado Projects/$(patsubst open_%,%,$@)/$(patsubst open_%,%,$@).xpr &
@@ -56,7 +57,7 @@ $(OPEN_LIST):
 # Regmap + types
 ################################################################################
 
-XML_FILES=$(shell find HAL/ctrl/src -name *.xml -type l)
+XML_FILES=$(shell find HAL/ctrl/src -name '*.xml' -type l)
 MAP_OBJS = $(patsubst %.xml, %_map.vhd, $(XML_FILES))
 PKG_OBJS = $(patsubst %.xml, %_PKG.vhd, $(XML_FILES))
 YML_OBJS = $(patsubst %.xml, %_PKG.yml, $(XML_FILES))
@@ -82,22 +83,22 @@ regmap : $(MAP_OBJS)
 # Update the XML2VHDL register map
 %_map.vhd %_PKG.vhd : %.xml
 	@echo "================================== $(basename $(notdir $<)) =================================="
-	@echo regmap/build_vhdl_packages.py -y 3 -s True -x address_tables/modules/$(basename $(notdir $<)).xml -o  $(dir $<) --mapTemplate templates/axi_generic/template_map_withbram.vhd $(basename $(notdir $<))
+	@echo regmap/build_vhdl_packages.py -y 3 -f True -x address_tables/modules/$(basename $(notdir $<)).xml -o  $(dir $<) --mapTemplate templates/axi_generic/template_map_withbram.vhd $(basename $(notdir $<))
 
 	@python3 regmap/build_vhdl_packages.py \
 			-y 3 \
-			-s True \
+			-f True \
 			-x address_tables/modules/$(basename $(notdir $<)).xml \
 			-o  $(dir $<) \
 			--mapTemplate templates/axi_generic/template_map_withbram.vhd \
-			$(basename $(notdir $<))
+			$(basename $(notdir $<)) 2>&1 | tee -a $(LOG_FILE)
 
 	@if [ $(basename $(notdir $<)) == "FM" ]; then \
 		echo VHDL + SV; \
-		python3 tools/yml2hdl/yml2hdl.py -p $(basename $(notdir $<))_CTRL -f $(patsubst %.xml,%_PKG.yml,$<); \
+		python3 tools/yml2hdl/yml2hdl.py -p $(basename $(notdir $<))_CTRL -f $(patsubst %.xml,%_PKG.yml,$<) 2>&1 | tee -a $(LOG_FILE); \
 	else \
 		echo VHDL only; \
-		python3 tools/yml2hdl/yml2hdl.py -p $(basename $(notdir $<))_CTRL -f -V $(patsubst %.xml,%_PKG.yml,$<); \
+		python3 tools/yml2hdl/yml2hdl.py -p $(basename $(notdir $<))_CTRL -f -V $(patsubst %.xml,%_PKG.yml,$<) 2>&1 | tee -a $(LOG_FILE); \
 	fi;
 
 ################################################################################
