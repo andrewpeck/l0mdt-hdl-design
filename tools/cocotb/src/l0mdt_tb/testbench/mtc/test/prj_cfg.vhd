@@ -23,7 +23,7 @@ use shared_cfg_def_lib.cfg_global_default_pkg.all;
 
 package prj_cfg is
 
-  constant c_MAX_NUM_SL   : integer := 3;
+
   function set_project_cfg return cfg_rt;
 
 end package prj_cfg;

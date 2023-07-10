@@ -157,6 +157,8 @@ function update_makefile_questa() {
     sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\t\techo "vlib $(SIM_BUILD)/$$SOURCES_VAR " >> $@ ; \\' $(find ./env -name Makefile.questa)
     sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\tfor SOURCES_VAR in $(VHDL_LIB); do \\' $(find ./env -name Makefile.questa)  #Create all libraries in project, VHDL_LIB has all of them
 
+    sed -i '/@echo "vmap -c" >> $@/a \\t@echo "vmap unisim  $(XILINX_SIM_LIB)/unisim " >> $@ ' $(find ./env -name Makefile.questa)  #Create all libraries in project, VHDL_LIB has all of them
+
     ###################
 
     return 0

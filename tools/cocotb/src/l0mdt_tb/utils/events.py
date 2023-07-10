@@ -17,8 +17,6 @@ from l0mdt_tb.utils.tv import tvRTL
 import logging
 import logging.config
 
-
-
 def timing_file_from_data_filename(data_file):
 
     path = Path(data_file)
@@ -57,17 +55,23 @@ def timing_info_gen(filename):
 
 
 def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):
-
+    """
+    Check if this event has SL candidates in this sector
+    OBSOLETE - should be removed    
+    """
     station_num = station_name_to_id(station_ID)
     if(station_num == -99):
         sl_trailer = DF[icand].getBitFieldWord("SL_TRAILER", "")
-    else:
+    elif station_ID != "EXT": #EXT station not supported by TV generator
         sl_trailer = DF[station_num].getBitFieldWord("SL_TRAILER", "")
+    else:        
+        print ("TV does not exist for station ID = ", station_ID)
+        return 2; #DF not supported yet (example for EXT station), TODO - check behavior - will probably infer zeroes
+
     fiber_id = sl_trailer[0].get_field_bits("fiberid")
     evt_sector_id = fiber_id + 1
-
     if sectorID == evt_sector_id:
-        #print("events.py: sectorID = ",sectorID," fiber_id = ",fiber_id," evt_sector_id =",evt_sector_id)
+        
         return 1
     else:
         return 0
@@ -78,10 +82,7 @@ def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):
 # #rtl_tv is two dimensional array for each interface. It it data received from Monitors for all ports across single output interface
 # #Array size is defined by -> rtl_tv[number of ports in interfaces][number_of_events]
 # #For Example for ptcalc it would be expected_tv[1][events_run],as output event has only one port
-
 # **************/
-
-
 
 
 def get_bitfield(
@@ -90,32 +91,71 @@ def get_bitfield(
         candidate=0,
         station_id="",
         tv_type="value",
-        df_type="SL"
+        df_type="SL",
+        port=0,
+        keep_bitfieldword=False,
 ):
+    """
+    Function to retrieve bitfieldword or bitwordvalue from events extracted from PKL file
+    
+        event                    event candidate (read from TV PKL file)
+        bitfieldname             TV identifier 
+        candidate=0              SL candidate in case more than 1 are presetn
+        station_id=""            MDT station identifier (INN, MID, OUT, EXT)
+        tv_type="value"          type-id string (can be value, list, list_nested_tdc)
+        df_type="SL"             dataformat type, can be MDT or SL
+        port=0                   port index (on interface)
+        keep_bitfieldword=False  if True return BitfieldWord objects instead of their Bitwordvalue (i.e. the actual bit word passed to the logic)
+
+    """
+
+
+
     BF_list  = []
-    val_list = []
+    returnVal = [] 
 
-    if tv_type == "value":
-        DF_list = event.DF_SL
-    else:
-        DF_list = event.DF_MDT
 
+
+    
+    ### Extract BitFieldWord using methods of DataFormat() and save it as list (BF_list)
     if df_type == "SL":
         BF_list = (event.DF_SL[candidate].getBitFieldWord(bitfieldname, station_id))
     elif df_type == "MDT":
-        station_num = station_name_to_id(station_id)
-        BF_list = event.DF_MDT[station_num].getBitFieldWord(bitfieldname, station_id)
+        if tv_type=="list_nested_tdc":
+            ### Case of nested list containing per-mezz information 
+            ### e.g. [ [ [ [] for _ in range(self.maxn_mezz) ] for _ in range(self.maxn_csm) ] for _ in range (self.maxn_layer) ]
+            ### used by TDCPOLMUX2TAR, TAR2HPS        
+            csm_id = port % 6 ### Done up to 6 as the 7th should not be filled as the RTL has 6*4 channels
+            BF_list = event.DF_MDT[0].getBitFieldWord(bitfieldname, station_id, csm_id)
+        else:
+            ###
+            ### NB: This is temporary!!! 
+            raise NotImplementedError("Not sure if it's used for current tests")    
+            BF_list = event.DF_MDT[0].getBitFieldWord(bitfieldname,station_id)
 
-    for BF in BF_list:
-        val_list.append(BF.get_bitwordvalue())
 
-    if len(val_list) == 0:
-        val_list = [0]
+    ### Extract the content of BF_list to a list of bitwordvalues (or copy them if keep_bitfieldword=True)
+    if tv_type == "list" or tv_type=="list_nested_tdc":
+        ### Case of list of bitfieldwords
+        for BF in BF_list:
+            if not keep_bitfieldword:
+                returnVal.append(BF.get_bitwordvalue())
+            else:
+                returnVal.append(BF)
+        if len(returnVal)==0:
+            returnVal=[0]        
+    else:        
+        ### Case of tvtype is scalar-type
+        if len(BF_list)==0:
+            returnVal = 0
+        else:
+            if not keep_bitfieldword:
+                returnVal = BF_list[0].get_bitwordvalue()
+            else:
+                returnVal = BF_list[0]
 
-    if tv_type == "list":
-        return val_list
-    else:
-        return val_list[0]
+
+    return returnVal
 
 
 def print_BitFieldsInDataFormat(tvformat, tvformat_val, stationNum=-99):
@@ -159,24 +199,17 @@ def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,s
             #tvRTL_i.clear()
             port_idx = port_idx + 1
 
-    print ("events.py: TV RTL")
-    #for port_i in range(len(tvRTL_list)):
-    #   tvRTL_p = tvRTL_list[port_i]
-    #    tvRTL_p.print_tv()
 
     return tvRTL_list
 
-def   print_tv_bitfields(tvRTL_list,print_this_event=-1): #tvformats, tv_list, n_interfaces, n_ports, n_events_to_process):
+def   print_tv_bitfields(tvRTL_list, print_this_event=-1): 
     port_idx  = 0
     print ("events.py: print_tv_bitfields")
-    if print_this_event == -1:
-        print_single_event = 1
-    else:
-        print_single_event = 0
+    
 
     for port_i in range(len(tvRTL_list)):
         tvRTL_p = tvRTL_list[port_i]
-        if print_this_event == 0 :
+        if print_this_event == -1 :
             print ("events.py: print_tv_bitfields: Printing ", len(tvRTL_p.tv_val), "events")
             for n_events in range(len(tvRTL_p.tv_val)):
                 print_BitFieldsInDataFormat(tvRTL_p.df, tvRTL_p.tv_val[n_events], stationNum=station_name_to_id(tvRTL_p.station))
@@ -188,51 +221,137 @@ def   print_tv_bitfields(tvRTL_list,print_this_event=-1): #tvformats, tv_list, n
 
 def print_tv_list(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id="", event_number = -1):
     tvRTL_list = fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id)
-    print_tv_bitfields(tvRTL_list, print_this_event=event_number)
+    print_tv_bitfields(tvRTL_list) #, print_this_event = event_number)
     
+            
+def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tolerances,output_path="./",stationNum=[-99], tv_thread_mapping=[0,1,2], tv_type="value",tv_df_type="SL",pad_size=0):
 
-
-  
-    bitfieldWord = DFSL.getBitFieldWord(tvformat,stationID)
-    bitfieldWord[0].set_bitwordvalue(tvformat_val)
-    bitfieldWordList.append(bitfieldWord[0].get_bitwordvalue())
+    """
+    Extracts BitFieldWord objects from simulated TV (using get_bitfield) and compares them with output TV from RTL.
     
-    DFSL.fillBitFieldWord(tvformat, stationID, bitfieldWordList)  
-    BitFieldWord = DFSL.getBitFieldWord(tvformat,stationID)
-    print(bitfieldWord[0].print_bitFieldWord())
-   
-
-def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id):
-    port_idx  = 0
-    tvRTL_list = []
-    for n_ip_intf in range(n_interfaces): # Add concept of interface
-        for io in range(n_ports[n_ip_intf]):
-            tvRTL_i    = tvRTL()
-            for n_events in range(n_events_to_process):
-                tvRTL_i.set_tv(tv_list[port_idx][n_events], tvformats[n_ip_intf],station=station_id[n_ip_intf][io])
-            tvRTL_list.append(tvRTL_i)
-            #tvRTL_i.clear()
-            port_idx = port_idx + 1
-
-    #print ("TV RTL")
-    #for port_i in range(len(tvRTL_list)):
-    #   tvRTL_p = tvRTL_list[port_i]
-    #    tvRTL_p.print_tv()
-
-    return tvRTL_list
-
-def   print_tv_bitfields(tvRTL_list): #tvformats, tv_list, n_interfaces, n_ports, n_events_to_process):
-    port_idx  = 0
+    Event per event, candidate per candidate, it does the following:
+     - retrieves the DataFormat object from Simulated TV
+     - builds a DataFormat object that is filled each time with RTL information
+     - compares the bitfield from the two above
     
-    for port_i in range(len(tvRTL_list)):
-        tvRTL_p = tvRTL_list[port_i]
-        for n_events in range(len(tvRTL_p.tv_val)):
-            print_BitFieldsInDataFormat(tvRTL_p.df, tvRTL_p.tv_val[n_events], stationNum=station_name_to_id(tvRTL_p.station))
+    Arguments
+        tv_bcid_list      : sim tv in this bcid
+        tvformat          : test vector format (from json file)
+        n_ports           : usually the number of output ports in current output interface
+        n_events          : num of events to process
+        rtl_tv            : tv as output from rtl
+        tolerances        : dictionary for tolerances - used for comparison
+        output_path       : output dir where to store comparison data csv files
+        stationNum        : map from port to [0,1,2,3] (i.e. [inn, mid, out, ext])
+        tv_thread_mapping : only used by multi-threading rtl, otherwise [ 0 for _ in range(len(n_candidates)) ]
+        tv_type           : type of testvector, can be value, list, list_nested_tdc, etc
+        tv_df_type        : type of DataFormat that should be considered, either SL" or "MDT"
+        pad_size          : length of an event (used to get the right item from rtl_tv)
+    """
 
-    
-    
+    ### Useful map port number -> staion ID
+    stationID = [ station_id_to_name(stationNum[iPort]) if (stationNum[0]!= -99) else -99 for iPort in range(n_ports) ]
 
-def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99, tv_thread_mapping=[0,1,2]):
+    ### Counters
+    events_are_equal = True
+    pass_count           = 0
+    fail_count           = 0
+    station_failure_cnt  = {} ## initialized during loop
+    station_failure_list = {} ## initialized during loop
+
+
+    ### Loop over events, ports
+    for iEvent in range(n_events):
+        for iPort in range(n_ports):                
+            
+            ### Retrieve expected bitfieldword
+            l_EXP_BF = get_bitfield(tv_bcid_list[iEvent], 
+                                  tvformat, 
+                                  tv_thread_mapping[iPort], 
+                                  stationID[iPort], 
+                                  tv_type=tv_type, 
+                                  df_type=tv_df_type, 
+                                  port=iPort,
+                                  keep_bitfieldword=True)
+            
+            
+            ### Add one layer, to behave identically in case of lists or scalars
+            if not (tv_type == "list" or tv_type=="list_nested_tdc"):
+                l_EXP_BF = [EXP_BF]                
+
+            
+            ### Skip case in which both are placeholders (nothing to compare)
+            if (l_EXP_BF==[0] and rtl_tv[iPort][iEvent]==0):
+                continue
+
+            ### Event identifier
+            print(tv_bcid_list[iEvent].header.dump()) 
+
+            ### Loop over entry matching this event/port
+            ### if tvtype is not a list (or list_nested_tdc) the following will be done once
+            for ii in range(len(l_EXP_BF)):                
+
+                if len(l_EXP_BF) > 1:
+                    print(f" Word {1+ii} of {len(l_EXP_BF)} for this event:") 
+
+                ### This EXP BitFieldWord
+                EXP_BF = l_EXP_BF[ii]
+                
+                ### Create RTL BitFieldWord and fill it with output value
+                RTL_BF = EXP_BF.copy()
+                ii_rtl = ii + (iEvent * pad_size) # index along rtl_tv taking pad_size into account
+                RTL_BF.set_bitwordvalue(rtl_tv[iPort][ii_rtl])
+                
+                ### Comparison and table printouts
+                results = EXP_BF.compare_bitwordvalue( RTL_BF, tolerances )
+                print(tabulate(results[1], results[2], tablefmt="psql"))
+                ### Print table results
+                if results[0]:
+                    cprint("\tPass: RTL Matches expected  value", "green")
+                    pass_count = pass_count + 1
+                else:
+                    cprint("\tFail: Mismatch in RTL and expected value", "red")
+                    fail_count = fail_count + 1
+                    events_are_equal = False
+                print("\n\n")
+
+                ### Done comparison, storing error count and useful info
+                ### Initialize dictiornaries storing failures per station
+                if stationID[iPort] not in station_failure_cnt.keys():
+                    station_failure_cnt[stationID[iPort]] = { field.name : 0 for field in EXP_BF.fields }                    
+                if stationID[iPort] not in station_failure_list.keys():
+                    station_failure_list[stationID[iPort]] = []
+
+                ### Storing failure for this station
+                fail_index  = results[2].index("FAIL")
+                for row in results[1]:     
+                    station_failure_cnt[stationID[iPort]][row[0]] += row[fail_index]
+                    
+                ### Data going in csv files
+                station_failure_list[stationID[iPort]].append( tvtools.make_list(
+                    results[1],
+                    results[2],
+                    tv_bcid_list[iEvent].header.get_header(),
+                    EXP_BF.fields,
+                    iPort,
+                    True)
+                )
+
+    ### Save csv with per-station comparison data
+    Path(output_path).mkdir(parents=True, exist_ok=True)    
+    ##header = tvtools.get_pd_headers(EXP_BF, tv_df_type=="SL")
+    header = tvtools.get_pd_headers(EXP_BF, True)
+    for station in station_failure_list.keys():
+        df_file_name =  os.path.join( output_path, "DF_" + tvformat + ( "_"+station if station!="NONE" else "") + ".csv" )
+        df_data = pd.DataFrame(station_failure_list[station], columns = header)        
+        df_data.to_csv(df_file_name)
+        print(f"Saving comparison data to {df_file_name}")
+                                
+
+    return events_are_equal, pass_count, fail_count, station_failure_cnt
+            
+
+def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=[-99], tv_thread_mapping=[0,1,2]):
     evt                = 0
     ret_val            = 1
     pass_count         = 0
@@ -242,45 +361,43 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     tv_format_val      = []
     tv_format_bf       = []
     comparison_data    = []
-    pp_comparison_list = []
+    pp_comparison_list = {}
     tv_format_failure_cnt = {}
-
+    station_failure_cnt   = {}
+    
     RTL_DFSL.build_data_format()
-    # EXP_DF.build_data_format()
 
 
-    # if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
-    #     stationNum_internal = 0
-    # else:
-    #     stationNum_internal = stationNum
-
-    if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
-        stationNum_internal = 0
+    stationNum_internal = []
+    stationID           = []
+    if stationNum[0] == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
+        for this_candidate in range(n_candidates):
+            stationNum_internal.append(-99)
     else:
         stationNum_internal = stationNum
 
-    stationID    =  station_id_to_name(stationNum_internal)
-    tv_format_bf = RTL_DFSL.getBitFieldWord(tvformat,  stationID)
-
-    for object in tv_format_bf:
-        for field in object.fields:
-            tv_format_failure_cnt[field.name] = 0
-
+    for this_candidate in range(n_candidates):
+        stationID.append(station_id_to_name(stationNum_internal[this_candidate]))
+        tv_format_bf.append(RTL_DFSL.getBitFieldWord(tvformat,  stationID[this_candidate]))
+        pp_comparison_list[stationID[this_candidate]] = []
+        for object in tv_format_bf[this_candidate]:
+            for field in object.fields:
+                tv_format_failure_cnt[field.name] = 0
+        station_failure_cnt[stationID[this_candidate]] = tv_format_failure_cnt
 
     for ievent in range(len(tv_bcid_list)):
         if evt == e_idx:
             break
         else:
-            print("\nEvent: ", ievent)
             for this_candidate in range(n_candidates):
-                if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate]):
+                if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=tv_thread_mapping[this_candidate] == 1, station_ID = stationID[this_candidate]): #TODO - Need to handle EXT station 
                     EXP_DF.clear()
                     RTL_DFSL.clear()
                     tv_format_val.clear()
                     comparison_data.clear()
 
                     EXP_DF = tv_bcid_list[ievent].DF_SL.copy()               #For comparing hits, will have to look at DF_MDT
-                    EXP_BF = EXP_DF[tv_thread_mapping[this_candidate]].getBitFieldWord(tvformat, stationID)
+                    EXP_BF = EXP_DF[tv_thread_mapping[this_candidate]].getBitFieldWord(tvformat, stationID[this_candidate])
 
 
                     if evt + 1 <= len(rtl_tv[this_candidate]):
@@ -292,26 +409,24 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     else:
                         rtl_tv_i = 0
 
-                    tv_format_bf[0].set_bitwordvalue(rtl_tv_i)
-                    tv_format_val.append(tv_format_bf[0].get_bitwordvalue())
-                    RTL_DFSL.fillBitFieldWord(tvformat, stationID, tv_format_val)
+                    tv_format_bf[this_candidate][0].set_bitwordvalue(rtl_tv_i)
+                    tv_format_val.append(tv_format_bf[this_candidate][0].get_bitwordvalue())
+                    if (stationID[this_candidate] != "NONE"):
+                        RTL_DFSL.fillBitFieldWord(tvformat, stationID[this_candidate], tv_format_val)
+                        RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID[this_candidate])
+                    else:
+                        RTL_DFSL.fillBitFieldWord(tvformat, data=tv_format_val,stationID="INN") ## using INN as dummy, will not do anything
+                        RTL_BF = RTL_DFSL.getBitFieldWord(tvformat)
 
-                    RTL_BF = RTL_DFSL.getBitFieldWord(tvformat, stationID)
                     RTL_BF[0].set_bitwordvalue(tv_format_val[0])
-                    # print("events.py: EXP_BF=",EXP_BF[0])
-                    #print("events.py: RTL_BF=",RTL_BF[0].print_bitFieldWord())
-                    #print("events.py ==== Calling DF Print:")
-                    #RTL_DFSL.print_summary()
-
-
 
                     results = EXP_BF[0].compare_bitwordvalue(
                         RTL_BF[0], tolerances
                     )  # compare_bitfieldwordvalue returns list
-                    if stationNum != -99:
-                        print("\n\tSL candidate ", this_candidate, ":\t",tvformat,", Station:",stationID, "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
+                    if stationNum[this_candidate] != -99:
+                        print("\n\tSL candidate at port ", this_candidate, ":\t",tvformat,", Station:",stationID[this_candidate], "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
                     else:
-                        print("\n\tSL candidate ", this_candidate, ":\t",tvformat, "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
+                        print("\n\tSL candidate at port", this_candidate, ":\t",tvformat, "HexVal: 0x",f'{int(str(rtl_tv_i),2):X}')
 
                     if results[0]:
                         cprint("\tPass: RTL Matches expected  value", "green")
@@ -326,13 +441,14 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         ret_val = 0
 
 
-                    fail_index = results[2].index("FAIL")
-                    for row in results[1]:
+                    fail_index                     = results[2].index("FAIL")
+                    tv_format_failure_cnt          = station_failure_cnt[stationID[this_candidate]]
+                    for row in results[1]:                        
                         tv_format_failure_cnt[row[0]] += row[fail_index]
-
+                    station_failure_cnt[stationID[this_candidate]] = tv_format_failure_cnt  
 
                     #tmp_DF    = tv_bcid_list[ievent].DF_SL[0].getBitFieldWord(tvformat, stationID)
-                    tv_header_bf      = EXP_DF[0].getBitFieldWord(tvformat, stationID)
+                    tv_header_bf      = EXP_DF[0].getBitFieldWord(tvformat, stationID[this_candidate])
                     pd_columns_header = tvtools.get_pd_headers(tv_header_bf[0], True)
                     this_data         = tvtools.make_list(
                         results[1],
@@ -344,7 +460,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     comparison_data.append(this_data)
 
                     for i in range(0, len(comparison_data)):
-                        pp_comparison_list.append(comparison_data[i])
+                        pp_comparison_list[stationID[this_candidate]].append(comparison_data[i])
 
                     if this_candidate == n_candidates - 1:
                         evt = evt + 1
@@ -352,19 +468,19 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     RTL_BF.clear()
 
 
-    df_data = pd.DataFrame(pp_comparison_list, columns = pd_columns_header)
-    Path(output_path).mkdir(parents=True, exist_ok=True)
-    if stationNum != -99:
-        df_file_name = output_path + "/DF_"+tvformat+"_"+stationID+".csv"
-    else:
-        df_file_name = output_path + "/DF_"+tvformat+".csv"
-    df_data.to_csv(df_file_name)
-    print("Saving Comparison data to %s " % df_file_name)
+    Path(output_path).mkdir(parents=True, exist_ok=True)    
+    for key in pp_comparison_list.keys():
+        df_data = pd.DataFrame(pp_comparison_list[key], columns = pd_columns_header)
+        if key != "NONE":
+            df_file_name = output_path + "/DF_"+tvformat+"_"+key+".csv"
+        else:
+            df_file_name = output_path + "/DF_"+tvformat+".csv"
+        df_data.to_csv(df_file_name)
+        print("Saving Comparison data to %s " % df_file_name)
 
-    return ret_val, pass_count, fail_count, tv_format_failure_cnt
+    return ret_val, pass_count, fail_count, station_failure_cnt
 
-
-
+            
 
 def read_tv(filename, n_to_load, region=0, side=3, sector=3):
     path = Path(filename)
@@ -385,52 +501,107 @@ def parse_tvlist(
         station_ID=[""],
         tv_type="",
         tv_df_type="SL",
-        cnd_thrd_id =[0xabcd]
+        cnd_thrd_id =[0xabcd],
+        zero_padding_size = 0,
+        prepend_zeros = 0,
+        keep_bitfieldword = False,
 ):
+    """
+    Read tv list, parse input for SpyBuffers
+    will call get bitfield for each port
+    
+    Arguments          :
+     tv_bcid_list      : what was read by read_tv()
+     tvformat          : testvector format
+     n_ports           : n of ports for this interface
+     endian            : endianness (little is default)
+     load_timing_info  : not implemented
+     station_ID        : list mapping port to station id
+     tv_type           : testvector type (e.g. value)
+     tv_df_type        : "SL" or "MDT", relates to TVformat
+     cnd_thrd_id       : used for multithreading, [0xabcd] is a default dummy
+                         which is replaced with [0 for _ in range(n_ports)] if not used
+     zero_padding_size : Append zeros at the end of each event to reach this number of words
+                         This is relevant when multiple words should be processed in an event.
+     prepend_zeros     : Number of zeros to prepend before the actual words of the event are sent
+                         useful if a delay between two TV interfaces is needed (e.g. HPS)
+    """
+        
     events_list = tv_bcid_list
 
-    #print("events.py VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
-
+    
 
     tv = [["" for x in range(n_to_load)] for y in range(n_ports)]
     my_cnd_thrd_id = [0 for x in range(n_ports)] 
     valid_events = 0
 
+    ## Support multi-threaded RTL
+    ## Otherwise fill as [ 0 for _ in range(n_ports) ]
     if cnd_thrd_id[0] == 0xabcd :
         for my_port in range(n_ports):                
             my_cnd_thrd_id[my_port] = my_port
     else:
         my_cnd_thrd_id = cnd_thrd_id
     
-    #print("Events.py : my_cnd_thread_id = ",my_cnd_thrd_id)
-
-    #    tv_reader_pkl.dump_event(events_list[0])
+    cocotb.log.debug(f"Before reading events, total events: {len(events_list)}, to load {n_to_load}")
+    
     for ievent in range(len(events_list)):  # range(n_to_load):
+
         if valid_events < n_to_load:
-            event_found_for_port_interface = 0
+            cocotb.log.debug(f"\n\n\n{40*'-'}\n Event {ievent} started\n{40*'-'}")
+            cocotb.log.debug(f"ievent {events_list[ievent]}")
+            cocotb.log.debug(f"ievent.DF_SL {events_list[ievent].DF_SL}")
+            cocotb.log.debug("ievent.DF_MDT {events_list[ievent].DF_MDT}")
+
+            event_found_for_port_interface = 0            
             for my_port in range(n_ports):                
                 if station_ID == [""]:
                         this_station_ID = ""
                 else:
                     this_station_ID = station_ID[my_port]
 
-                #print("Events.py: tvformat = ",tvformat, " my_port = ", my_port, "station_ID=", this_station_ID)
+                cocotb.log.debug(f"Events.py: tvformat = {tvformat}  my_port = {my_port}, station_ID {this_station_ID}")
 
+                ### Check if events has SLc in this sector, 
+                ### This check is useless and can probably be removed with new TV output files (saved per sector).
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_cnd_thrd_id[my_port], station_ID=this_station_ID):
-                    #print ("parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
-                    #tvtools.dump_event(events_list,ievent)
-                    #print(events_list[ievent].DF_SL[my_port].print_blocks())
-                    #print("Transaction %d, Candidate %d n_to_load %d tvformat=%s tv_type=%s" %(ievent,my_port,n_to_load,tvformat,tv_type))
+                    if this_station_ID=="EXT":
+                        # EXT does not exist in TV, set everything to 0 for the moment
+                        tv[my_port][valid_events]=0
+                    else:
+                        tv[my_port][valid_events] = get_bitfield(events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type, port=my_port, keep_bitfieldword=keep_bitfieldword)
+                        event_found_for_port_interface = 1
+                    
+                        # Increase dimensionality if scalar type and need to do padding
+                        if tv_type == 'value' and (zero_padding_size > 0 or prepend_zeros > 0):
+                            tv[my_port][valid_events] = [tv[my_port][valid_events]]
 
-                    event_found_for_port_interface = 1
-                    tv[my_port][valid_events] = get_bitfield(
-                        events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type
-                    )
+                            
+            ### Prepend zeros
+            if prepend_zeros > 0:
+                for my_port in range(n_ports):
+                    tv[my_port][valid_events] =  (prepend_zeros * [0]) + tv[my_port][valid_events]
 
-                    # print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",valid_events,"]=",tv[my_port][valid_events])
-            if event_found_for_port_interface:
+            
+
+
+            ### Append zeros
+            if zero_padding_size > 0:
+                for my_port in range(n_ports):
+                    if station_ID[my_port] != "EXT":
+                        n_to_append = zero_padding_size - len(tv[my_port][valid_events])
+                        if n_to_append < 0:
+                            raise ValueError(f"Zero-padding size ({zero_padding_size}) smaller than actual event: {len(tv[my_port][valid_events])}")
+                        tv[my_port][valid_events] +=  n_to_append * [0]
+                    else:
+                        tv[my_port][valid_events] = zero_padding_size * [0]
+
+                    cocotb.log.debug(f"SECTOR OK - TVFORMAT = {tvformat} tv[{my_port}][{valid_events}]={tv[my_port][valid_events]}")
+
+            if event_found_for_port_interface > 0:
                 valid_events = valid_events + 1
         else:
+            cocotb.log.debug("\n\n\n\n\n\n Loaded requested events")
             break
 
     if valid_events < n_to_load :        
@@ -439,23 +610,37 @@ def parse_tvlist(
         print ("ERROR:CANNOT run ", n_to_load, " events. Total events available in TV file is = ",valid_events)
         print (" ****************************************")
         print (" ****************************************")
-        sys.exit("Exiting due to Errors")
+        raise Exception("Exiting due to Errors")
+
+    if tv_type == "list_nested_tdc" or (zero_padding_size > 0) or (prepend_zeros > 0) :
+        for my_port in range(n_ports):
+            tv[my_port] = flatten_list( tv[my_port] )[0]
+
+    # print("_ print tv _ BEGIN")
+    # print("\n".join([str(x) for x in tv]))
+    # print("_ print tv _ END")
     return tv
 
 
 def modify_tv(tv, ii):
+    ### Assuming tv is list of list
+    ### Append zeros to each sub-list
+    ### to get the size equal to ii
     tv_out = []
+    #print("in modify_tv - BEFORE:",tv)
     for io in range(len(tv)):
         tv_port = []
         tv_index = 0
-        print("events.py :modify_tv (tv,ii) =", tv , ii)
+        #print("events.py :modify_tv (tv,ii) =", tv , ii)
         for i in range(len(tv[io])):
-            # print("modify_tv (io,i) = (",io,i,")")
+            #print("modify_tv (io,i) = (",io,i,")")
             tv_port.append(tv[io][i])
             for j in range(ii - 1):
                 tv_index = tv_index + 1
                 tv_port.append(0)
         tv_out.append(tv_port)
+    #print("in modify_tv - AFTER:",tv_out)
+
     return tv_out
 
 
@@ -489,8 +674,8 @@ def append_zeroes(tv, num=1):
     for i in range(num):
         tv_out.append(0)
 
-    print("modify_tv input (tv) =", tv )
-    print("modify_tv output (tv_out) =", tv_out )
+    # print("modify_tv input (tv) =", tv )
+    # print("modify_tv output (tv_out) =", tv_out )
     return tv_out
 
 
@@ -511,8 +696,8 @@ def modify_tv_padzeroes(tv, location="end", num=[]):
                 for i in range(num[io]):
                     tv_port.append(0)
         tv_out.append(tv_port)
-    print("modify_tv_padzeroes (tv) =", tv )
-    print("modify_tv_padzeroes (tv_out) =", tv_out )
+    # print("modify_tv_padzeroes (tv) =", tv )
+    # print("modify_tv_padzeroes (tv_out) =", tv_out )
     return tv_out
 
 
@@ -546,9 +731,14 @@ def station_name_to_id(station_id=""):
     switcher = {"INN": 0, "MID": 1, "OUT": 2, "EXT": 3, "NONE" : -99, "":-99}
     return switcher.get(station_id, "Invalid station")
 
+def station_list_name_to_id(station_id=[""]):
+    station_list = []
+    for i in range(len(station_id)):
+        station_list.append(station_name_to_id(station_id[i]))
+    return station_list
 
 def station_id_to_name(station_id=0):
-    switcher = {0: "INN", 1: "MID", 2: "OUT", 3: "EXT"}
+    switcher = {0: "INN", 1: "MID", 2: "OUT", 3: "EXT", -99:"NONE"}
     return switcher.get(station_id, -99)
 
 
@@ -556,8 +746,12 @@ def results_summary( total_events, total_pass, total_fail, total_dataformats, fi
     print ("\n=========================================================\n")
     print ("\t\t\t TEST RESULTS SUMMARY\n")
     print("Total Pass/Fail of Fields in DataFormats being tested -")
+    header_idx = 0
     for df_i in range (total_dataformats):
-        print(tabulate(field_fail_cnt[df_i].items(), field_fail_header[df_i], tablefmt="psql"))
+        for key in field_fail_cnt[df_i].keys():
+            df_bitfield_errors = field_fail_cnt[df_i][key]
+            print(tabulate(df_bitfield_errors.items(), field_fail_header[header_idx], tablefmt="psql"))
+            header_idx = header_idx + 1
 
     print ("\t\t\t TEST RESULTS SUMMARY: Total Events=", total_events, "Total Ports = ",total_ports," Pass=",total_pass, "Fail=",total_fail,"\n")
     print ("\n=========================================================\n")
