@@ -74,7 +74,86 @@ module TopLevel_polmux #(
     //
     // Here place the DUT block(s)
     //
+   logic [TDCPOLMUX2TAR_LEN-1:0] i_inn_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] i_mid_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] i_out_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] i_ext_tdc_hits[6];
 
+   logic [TDCPOLMUX2TAR_LEN-1:0] o_inn_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] o_mid_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] o_out_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] o_ext_tdc_hits[6];
+
+   // for(genvar i=0; i<c_HPS_MAX_HP;i=i+1)
+   //   begin
+   // 	assign i_inn_tdc_hits[i]                    = BLOCK_input_data[i];
+   // 	assign i_mid_tdc_hits[i]     = BLOCK_input_data[i + c_HPS_MAX_HP];       
+   // 	assign i_out_tdc_hits[i]   = BLOCK_input_data[i + 2*c_HPS_MAX_HP];
+   // 	assign i_ext_tdc_hits[i]   = BLOCK_input_data[i + 3*c_HPS_MAX_HP];
+   //   end
+    
+   
+
+   tb_polmux polmux_inst(
+			.clock(clock), // : in  l0mdt_control_rt;
+			.reset(~reset_n),
+			//    -- TDC Hits from Polmux
+			.i_inn_tdc_hits_av(i_inn_tdc_hits), // : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
+			.i_mid_tdc_hits_av(i_mid_tdc_hits), // : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
+			.i_out_tdc_hits_av(i_out_tdc_hits), // : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+			.i_ext_tdc_hits_av(i_ext_tdc_hits), // : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+		
+			//-- to DAQ
+			.o_inn_tdc_hits_av(o_inn_tdc_hits), //  : out tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
+			.o_mid_tdc_hits_av(o_mid_tdc_hits), //  : out tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
+			.o_out_tdc_hits_av(o_out_tdc_hits), //  : out tdcpolmux2tar_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+			.o_ext_tdc_hits_av(o_ext_tdc_hits) //  : out tdcpolmux2tar_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+
+			);
+
+     // for(genvar i=0; i<c_HPS_MAX_HP;i=i+1)
+     //   begin
+     // 	  assign BLOCK_output_data[i][TDCPOLMUX2TAR_LEN-1:0]                      = o_inn_tdc_hits[i];
+     // 	  assign BLOCK_output_data[i][255:TDCPOLMUX2TAR_LEN]                      = 0;
+     // 	  assign BLOCK_output_write_enable[i]                                     = o_inn_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+
+     // 	  assign BLOCK_output_data[i + c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]       = o_mid_tdc_hits[i];
+     // 	  assign BLOCK_output_data[i + c_HPS_MAX_HP][255:TDCPOLMUX2TAR_LEN]       = 0;
+     // 	  assign BLOCK_output_write_enable[i + c_HPS_MAX_HP]                      = o_mid_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+
+     // 	  assign BLOCK_output_data[i + 2*c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]     = o_out_tdc_hits[i];
+     // 	  assign BLOCK_output_data[i + 2*c_HPS_MAX_HP][255:TDCPOLMUX2TAR_LEN]     = 0;
+     // 	  assign BLOCK_output_write_enable[i + 2*c_HPS_MAX_HP]                    = o_out_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+
+     // 	  assign BLOCK_output_data[i + 3*c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]     = o_ext_tdc_hits[i];
+     // 	  assign BLOCK_output_data[i + 3*c_HPS_MAX_HP][255:TDCPOLMUX2TAR_LEN]     = 0;
+     // 	  assign BLOCK_output_write_enable[i + 3*c_HPS_MAX_HP]                    = o_ext_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+
+	  
+     // 	  assign BLOCK_output_data[i + 4*c_HPS_MAX_HP][TAR2HPS_LEN-1:0]           = o_inn_tar_hits[i];	  
+     // 	  assign BLOCK_output_data[i + 4*c_HPS_MAX_HP][255:TAR2HPS_LEN]           = 0;
+     // 	  assign BLOCK_output_write_enable[i + 4*c_HPS_MAX_HP]                    = o_inn_tar_hits[i][TAR2HPS_DATA_VALID_MSB];
+
+
+     // 	  assign BLOCK_output_data[i + 5*c_HPS_MAX_HP][TAR2HPS_LEN-1:0]           = o_mid_tar_hits[i];	  
+     // 	  assign BLOCK_output_data[i + 5*c_HPS_MAX_HP][255:TAR2HPS_LEN]           = 0;
+     // 	  assign BLOCK_output_write_enable[i + 5*c_HPS_MAX_HP]                    = o_mid_tar_hits[i][TAR2HPS_DATA_VALID_MSB];
+
+     // 	  assign BLOCK_output_data[i + 6*c_HPS_MAX_HP][TAR2HPS_LEN-1:0]           = o_out_tar_hits[i];	  
+     // 	  assign BLOCK_output_data[i + 6*c_HPS_MAX_HP][255:TAR2HPS_LEN]           = 0;
+     // 	  assign BLOCK_output_write_enable[i + 6*c_HPS_MAX_HP]                    = o_out_tar_hits[i][TAR2HPS_DATA_VALID_MSB];
+
+     // 	  assign BLOCK_output_data[i + 7*c_HPS_MAX_HP][TAR2HPS_LEN-1:0]           = o_ext_tar_hits[i];	  
+     // 	  assign BLOCK_output_data[i + 7*c_HPS_MAX_HP][255:TAR2HPS_LEN]           = 0;
+     // 	  assign BLOCK_output_write_enable[i + 7*c_HPS_MAX_HP]                    = o_ext_tar_hits[i][TAR2HPS_DATA_VALID_MSB];
+
+
+
+	  
+	  
+     //   end
+
+   
     //
     // Output buffers
     //

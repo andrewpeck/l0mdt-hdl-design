@@ -202,6 +202,9 @@ VHDL_SOURCES_hal = \
 		 $(HAL)/hal/src/constants_pkg.vhd \
 		 $(HAL)/lpgbt/src/lpgbt_pkg.vhd
 
+VHDL_SOURCES_hal_polmux = \
+		 $(HAL)/hal/src/polmux_wrapper.vhd
+
 VHDL_SOURCES_tdc = \
 		  $(HAL)/tdc/src/csm_pkg.vhd \
 		  $(HAL)/tdc/src/polling_mux.vhd \
@@ -423,6 +426,7 @@ VHDL_LIB_ORDER = xpm \
 	lpgbt_fpga \
 	hal \
 	tdc \
+	hal_polmux \
 	ctrl_lib \
 	apbus_lib \
 	vamc_lib \
