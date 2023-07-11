@@ -47,14 +47,14 @@ module TopLevel_ucm #(
    parameter TB_c_NUM_MTC     = 3;
 
 
-   wire [SLC_RX_LEN-1 : 0] slc_rx[TB_c_MAX_NUM_SL];
-   wire [SLC_RX_LEN-1 : 0] slc_null[TB_c_MAX_NUM_SL];
+   wire [SLC_RX_LEN-1 : 0] slc_rx[TB_c_MAX_NUM_SL-1:0];
+   wire [SLC_RX_LEN-1 : 0] slc_null[TB_c_MAX_NUM_SL-1:0];
    wire [SLC_RX_LEN-1 : 0] slc_neighbor_null;
-   wire [UCM2HPS_LEN-1 : 0] ucm2hps_inn[TB_c_MAX_NUM_SL];
-   wire [UCM2HPS_LEN-1 : 0] ucm2hps_mid[TB_c_MAX_NUM_SL];
-   wire [UCM2HPS_LEN-1 : 0] ucm2hps_out[TB_c_MAX_NUM_SL];
-   wire [UCM2HPS_LEN-1 : 0] ucm2hps_ext[TB_c_MAX_NUM_SL];
-   wire [UCM2PL_LEN-1 : 0]  ucm2pl[TB_c_MAX_NUM_SL];
+   wire [UCM2HPS_LEN-1 : 0] ucm2hps_inn[TB_c_MAX_NUM_SL-1:0];
+   wire [UCM2HPS_LEN-1 : 0] ucm2hps_mid[TB_c_MAX_NUM_SL-1:0];
+   wire [UCM2HPS_LEN-1 : 0] ucm2hps_out[TB_c_MAX_NUM_SL-1:0];
+   wire [UCM2HPS_LEN-1 : 0] ucm2hps_ext[TB_c_MAX_NUM_SL-1:0];
+   wire [UCM2PL_LEN-1 : 0]  ucm2pl[TB_c_MAX_NUM_SL-1:0];
     //
     // Input buffers
     //
@@ -103,8 +103,8 @@ module TopLevel_ucm #(
 
 			      .o_uCM2hps_inn_av(ucm2hps_inn),
 			      .o_uCM2hps_mid_av(ucm2hps_mid),
-			      .o_uCM2hps_out_av(ucm2hps_ext),
-			      .o_uCM2hps_ext_av(ucm2hps_out),
+			      .o_uCM2hps_out_av(ucm2hps_out),
+			      .o_uCM2hps_ext_av(ucm2hps_ext),
 
 			      .o_uCM2pl_av(ucm2pl)
 

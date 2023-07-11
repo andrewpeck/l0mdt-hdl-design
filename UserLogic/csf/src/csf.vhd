@@ -47,8 +47,8 @@ entity csf is
     rst     : in std_logic;
     glob_en : in std_logic;
     -- control
-    i_csf_ctrl_v : in std_logic_vector; --  HPS_CSF_CSF_CTRL_t;
-    o_csf_mon_v  : out std_logic_vector;
+    i_ctrl_v : in std_logic_vector; --  HPS_CSF_CSF_CTRL_t;
+    o_mon_v  : out std_logic_vector;
     -- Data
     i_seed    : in heg2sfslc_vt;
     i_mdt_hit : in heg2sfhit_vt;
