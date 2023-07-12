@@ -129,6 +129,8 @@ begin
     mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
     begin
 
+      -- TODO: Check if mtc mapping is the same as Sector Logic, to avoid hard-coded ranges
+      --       
       sl : if (I < c_NUM_MTC) generate
 
         mtc <= convert(mtc_i(I),mtc);

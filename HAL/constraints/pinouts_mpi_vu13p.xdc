@@ -219,8 +219,8 @@ create_clock -period 20.000 -name clk50 -waveform {0.000 10.000} [get_pins top_h
 
 # LHC Clock Inputs
 create_clock -period 25 -name clock_in_lhc [get_ports clock_i_p]
-set_property -quiet PACKAGE_PIN AR17 [get_ports clock_in_p] ;
-set_property -quiet PACKAGE_PIN AR16 [get_ports clock_in_n] ;
+set_property -quiet PACKAGE_PIN AR17 [get_ports clock_i_p] ;
+set_property -quiet PACKAGE_PIN AR16 [get_ports clock_i_n] ;
 
 # 200M Oscillator
 set_property -quiet PACKAGE_PIN AT17 [get_ports clock_async_i_p] ; # IN: oscillator clock
@@ -245,6 +245,11 @@ set_property PACKAGE_PIN BG19 [get_ports c2c_rxn]
 set_property PACKAGE_PIN BH13 [get_ports c2c_txp]
 set_property PACKAGE_PIN BH12 [get_ports c2c_txn]
 
+set_property PACKAGE_PIN BF18 [get_ports c2cb_rxp]
+set_property PACKAGE_PIN BF17 [get_ports c2cb_rxn]
+set_property PACKAGE_PIN BF13 [get_ports c2cb_txp]
+set_property PACKAGE_PIN BF12 [get_ports c2cb_txn]
+
 # set_property IOSTANDARD LVCMOS18 [get_ports led_o*]
 # set_property PACKAGE_PIN BA19 [get_ports led_o[0]]
 # set_property PACKAGE_PIN BA18 [get_ports led_o[1]]
@@ -255,3 +260,4 @@ set_property PACKAGE_PIN BH12 [get_ports c2c_txn]
 # set_property PACKAGE_PIN AY15 [get_ports led_o[6]]
 # set_property PACKAGE_PIN BA15 [get_ports led_o[7]]
 # set_property PACKAGE_PIN AU17 [get_ports led_o[8]]
+set_property CLOCK_DEDICATED_ROUTE BACKBONE [get_nets top_hal/top_clocking_inst/pll_clk50_inst/inst/clk_in1_onboardclk]

@@ -111,6 +111,7 @@ end mgt_wrapper;
 
 architecture Behavioral of mgt_wrapper is
 
+  -- fanout input reset for better timing
   signal reset_tree : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
   signal sl_rx_init_done_s : std_logic_vector(c_NUM_MGTS-1 downto 0);
 
@@ -123,8 +124,10 @@ architecture Behavioral of mgt_wrapper is
   signal recclk         : std_logic;
 
   -- TODO: initialize these so that uninstantiated MGTs will show DEADBEEF or something
+  -- Dynamic Reconfiguration port signals
   signal drp_i     : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
   signal drp_o     : mgt_drp_out_rt_array (c_NUM_MGTS-1 downto 0);
+  -- Status signals
   signal status    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
   signal status_d  : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
   signal status_2d : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
@@ -280,7 +283,7 @@ begin
     --------------------------------------------------------------------------------
     -- LPGBT+Emulator+Felix Type Transceiver Generation
     --------------------------------------------------------------------------------
-
+    -- Get lpgbt signals in group of four and excldue the not-active 
     lpgbt_gen : if ((I mod 4 = 0) and c2c_idx_array(I) = -1 and sl_idx_array(I) = -1 and
                     c_MGT_MAP(I).mgt_type /= MGT_NIL and
                     (ttc_idx_array(I) /= -1 or ttc_idx_array(I+1) /= -1 or
@@ -450,7 +453,7 @@ begin
         end generate;
 
         --------------------------------------------------------------------------------
-        -- FELIX LPGBT
+        -- FELIX LPGBT (to be moved to full-mode connection)
         --------------------------------------------------------------------------------
 
         felix_gen : if (ttc_idx_array(I) /= -1) generate
@@ -545,6 +548,7 @@ begin
     -- frequency is, it should probably be stored somewhere in the board_pkg I
     -- think this number also gets duplicated in top_clocking.. it should really
     -- be centralized
+    -- Move to a package
     constant axi_refclk_freq : integer := 50_000_000;
 
   begin

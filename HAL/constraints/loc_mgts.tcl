@@ -5,20 +5,9 @@
 # that to specify the location constraint here
 
 # 1) start by getting the number of MGTs so that we can loop over them later. 
-# Priya Hardcoding imax, as attribute NUM_MGTS is not being set automatically
 # imax value got from board_pkg_mpi_ku15p.vhd
-# set imax 76 
 set imax [get_property NUM_MGTS [get_cells "top_hal/mgt_wrapper_inst"]]
 puts "Number of MGT is $imax"
-#if {[string first ku15p [get_property PART [get_runs synth_1]]] == -1 } {
-#    # VU13P has 128 MGTs
-#    puts "Setting imax to 128..."
-#    set imax 128
-#} else {
-#    # KU15P has 76 MGTs
-#    puts "Setting imax to 76..."
-#    set imax 76
-#}
 #set imax 128
 
 # 2) remove existing location constraints (which come from the IP),

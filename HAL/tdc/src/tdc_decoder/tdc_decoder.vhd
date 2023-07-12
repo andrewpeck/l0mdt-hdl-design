@@ -36,6 +36,7 @@ end tdc_decoder;
 
 architecture behavioral of tdc_decoder is
 
+  -- go to a package?
   function reverse_vector (a : in std_logic_vector)
     return std_logic_vector is
     variable result : std_logic_vector(a'range);
@@ -47,6 +48,7 @@ architecture behavioral of tdc_decoder is
     return result;
   end;  -- function reverse_vector
 
+  -- merge two bytes into a 16b word, alternating bits
   function interleave (even : std_logic_vector (7 downto 0); odd : std_logic_vector (7 downto 0))
     return std_logic_vector is
     variable int : std_logic_vector (15 downto 0);
