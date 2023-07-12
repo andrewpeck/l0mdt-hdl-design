@@ -98,7 +98,13 @@ entity mgt_wrapper is
     -- control
     sl_tx_ctrl_i  : in  sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_ctrl_o  : out sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-    sl_rx_slide_i : in  std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
+    sl_rx_slide_i : in  std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+
+    -- reset
+    sl_re_channel : in std_logic_vector(c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    
+    -- done
+    sl_rx_init_done : out std_logic
 
     );
 end mgt_wrapper;
@@ -511,6 +517,8 @@ begin
           txctrl_in      => sl_tx_ctrl_i(idx+3 downto idx),
           rxctrl_out     => sl_rx_ctrl_o(idx+3 downto idx),
           rx_slide_i     => sl_rx_slide_i(idx+3 downto idx),
+          re_channel_i   => sl_re_channel(idx+3 downto idx),
+          rx_init_done_o => sl_rx_init_done,
           mgt_word_i     => sl_tx_mgt_word_array_i(idx+3 downto idx),
           mgt_word_o     => sl_rx_mgt_word_array_o(idx+3 downto idx),
           rxp_i          => rx_p,

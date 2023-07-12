@@ -224,7 +224,8 @@ architecture behavioral of top_hal is
   signal sl_tx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_data_sump      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-
+  signal sl_re_channel        : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_rx_init_done      : std_logic;
   --------------------------------------------------------------------------------
   -- Signal sumps for development
   --------------------------------------------------------------------------------
@@ -374,6 +375,8 @@ begin  -- architecture behavioral
       sl_rx_slide_i          => sl_rx_slide, -- Align with the LHC clock from Yasu's code
       sl_tx_clk              => sl_tx_clks,
       sl_rx_clk              => sl_rx_clks,
+      sl_re_channel          => sl_re_channel,
+      sl_rx_init_done        => sl_rx_init_done,
 
       -- lpgbt
       lpgbt_rxslide_i                 => lpgbt_uplink_bitslip,
@@ -587,9 +590,11 @@ begin  -- architecture behavioral
       mtc_i     => mtc_i,
 
       sl_rx_ctrl_i => sl_rx_ctrl,
+      sl_rx_init_done_i => sl_rx_init_done,
       sl_tx_ctrl_o => sl_tx_ctrl,
 
-      sl_rx_slide_o => sl_rx_slide
+      sl_rx_slide_o => sl_rx_slide,
+      sl_re_channel_o => sl_re_channel
       );
 
   -- FIXME: these mappings are totally made up for testing purposes...
