@@ -112,6 +112,7 @@ end mgt_wrapper;
 architecture Behavioral of mgt_wrapper is
 
   signal reset_tree : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
+  signal sl_rx_init_done_s : std_logic_vector(c_NUM_MGTS-1 downto 0);
 
   attribute DONT_TOUCH               : string;
   attribute DONT_TOUCH of reset_tree : signal is "true";
@@ -129,6 +130,8 @@ architecture Behavioral of mgt_wrapper is
   signal status_2d : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
 
 begin
+
+  sl_rx_init_done <= AND(sl_rx_init_done_s);
 
   assert false report
     "GENERATING " & integer'image(c_NUM_MGTS) & "MGT LINKS:" severity note;
@@ -515,7 +518,7 @@ begin
           rxctrl_out     => sl_rx_ctrl_o(idx+3 downto idx),
           rx_slide_i     => sl_rx_slide_i(idx+3 downto idx),
           re_channel_i   => sl_re_channel(idx+3 downto idx),
-          rx_init_done_o => sl_rx_init_done,
+          rx_init_done_o => sl_rx_init_done_s(I),
           mgt_word_i     => sl_tx_mgt_word_array_i(idx+3 downto idx),
           mgt_word_o     => sl_rx_mgt_word_array_o(idx+3 downto idx),
           rxp_i          => rx_p,
