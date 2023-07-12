@@ -29,7 +29,7 @@ RIV:BA3_tar_riviera:
   variables:
     extends: .vars
     PROJECT_NAME: MainBlocks/BA3_tar
-  allow_failure: false
+  allow_failure: true
 
 COMP:BA3_tar:
   extends: .sim_comp

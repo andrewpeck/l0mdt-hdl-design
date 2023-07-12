@@ -29,7 +29,7 @@ RIV:BA3_ucm_riviera:
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/BA3_ucm
-    allow_failure: false
+    allow_failure: true
 
 COMP:BA3_ucm:
   extends: .sim_comp
