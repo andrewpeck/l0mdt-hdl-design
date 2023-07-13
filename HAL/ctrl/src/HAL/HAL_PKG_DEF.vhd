@@ -60,6 +60,7 @@ package HAL_CTRL_DEF is
                                                                                 );
   constant DEFAULT_HAL_CSM_CSM_SC_CTRL_t : HAL_CSM_CSM_SC_CTRL_t := (
                                                                      MASTER => DEFAULT_HAL_CSM_CSM_SC_MASTER_CTRL_t,
+                                                                     FRAME_FORMAT => '0',
                                                                      SLAVE => DEFAULT_HAL_CSM_CSM_SC_SLAVE_CTRL_t
                                                                     );
   constant DEFAULT_HAL_CSM_CSM_CTRL_t : HAL_CSM_CSM_CTRL_t := (

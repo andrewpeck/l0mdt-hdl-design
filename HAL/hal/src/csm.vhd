@@ -152,7 +152,6 @@ begin
 
       reset_i => reset_i,
       clk40   => clk40,
-      clk320  => uplink_clk,
       ctrl    => ctrl.sc,
       mon     => mon.sc,
 

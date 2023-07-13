@@ -146,6 +146,7 @@ types:
 
 - HAL_CSM_CSM_SC_CTRL_t:
   - MASTER : { type: HAL_CSM_CSM_SC_MASTER_CTRL_t }
+  - FRAME_FORMAT : { type: logic }
   - SLAVE : { type: HAL_CSM_CSM_SC_SLAVE_CTRL_t }
 
 
