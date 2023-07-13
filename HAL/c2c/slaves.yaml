@@ -124,7 +124,7 @@ AXI_SLAVES:
       out_name: "HOG"
       map_template: "axi_generic/template_map.vhd"
 
-  HAL_CORE:
+  CORE_HAL:
     TCL_CALL:
       command: "AXI_PL_DEV_CONNECT"
       axi_control: "${::AXI_MASTER_CTRL}"
@@ -132,10 +132,10 @@ AXI_SLAVES:
       addr:
         offset: "0x01004000"
         range: "4K"
-    XML: "address_table/modules/HAL_CORE.xml"
+    XML: "address_table/modules/CORE_HAL.xml"
     UHAL_BASE: 0x81000000
     HDL:
-      out_name: "HAL_CORE"
+      out_name: "CORE_HAL"
       map_template: "axi_generic/template_map.vhd"
 
 
