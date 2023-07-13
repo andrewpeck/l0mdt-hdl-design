@@ -30,7 +30,7 @@ library ctrl_lib;
 -- START: LIBRARIES -- DO NOT TOUCH
 use ctrl_lib.fw_info_ctrl.all;
 use ctrl_lib.fm_ctrl.all;
-use ctrl_lib.CORE_ctrl.all;
+use ctrl_lib.core_ctrl.all;
 use ctrl_lib.hal_ctrl.all;
 use ctrl_lib.hog_ctrl.all;
 -- END: LIBRARIES -- DO NOT TOUCH
@@ -80,8 +80,8 @@ entity top_control is
     fw_info_mon : in FW_INFO_MON_t;
     fm_mon : in FM_MON_t;
     fm_ctrl : out FM_CTRL_t;
-    CORE_mon : in CORE_MON_t;
-    CORE_ctrl : out CORE_CTRL_t;
+    core_mon : in CORE_MON_t;
+    core_ctrl : out CORE_CTRL_t;
     hal_mon : in HAL_MON_t;
     hal_ctrl : out HAL_CTRL_t;
     hog_mon : in HOG_MON_t;
@@ -117,12 +117,12 @@ architecture control_arch of top_control is
   signal fm_writemiso : axiwritemiso;
   signal fm_mon_r     : FM_MON_t;
   signal fm_ctrl_r    : FM_CTRL_t;
-  signal CORE_readmosi  : axireadmosi;
-  signal CORE_readmiso  : axireadmiso;
-  signal CORE_writemosi : axiwritemosi;
-  signal CORE_writemiso : axiwritemiso;
-  signal CORE_mon_r     : CORE_MON_t;
-  signal CORE_ctrl_r    : CORE_CTRL_t;
+  signal core_readmosi  : axireadmosi;
+  signal core_readmiso  : axireadmiso;
+  signal core_writemosi : axiwritemosi;
+  signal core_writemiso : axiwritemiso;
+  signal core_mon_r     : CORE_MON_t;
+  signal core_ctrl_r    : CORE_CTRL_t;
   signal hal_readmosi  : axireadmosi;
   signal hal_readmiso  : axireadmiso;
   signal hal_writemosi : axiwritemosi;
@@ -529,7 +529,7 @@ begin
    CORE_ctrl  <=  CORE_ctrl_r;
  end if;
 end process;
-  CORE_map_inst : entity ctrl_lib.CORE_map
+  CORE_map_inst : entity ctrl_lib.core_map
     generic map(
      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_CORE)
     )

@@ -190,6 +190,8 @@ architecture structural of top_l0mdt is
   --
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
+  -- TO-DO: Trigger Throttling System (to signal FELIX about full DAQ buffers) 
+
   -- signal tts_commands          : TTS_CMD_rt;
 
   -- hal <--> ult
@@ -521,8 +523,8 @@ begin
       
       -- START: ULT_IO :: DO NOT EDIT
       fw_info_mon            => fw_info_mon_r,
-      CORE_mon            => CORE_mon_r,
-      CORE_ctrl           => CORE_ctrl_r,
+      core_mon            => core_mon_r,
+      core_ctrl           => core_ctrl_r,
       hal_mon            => hal_mon_r,
       hal_ctrl           => hal_ctrl_r,
       hog_mon            => hog_mon_r,
