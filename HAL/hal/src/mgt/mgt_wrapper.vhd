@@ -19,7 +19,7 @@ use work.sector_logic_pkg.all;
 use work.display_board_cfg_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.CORE_HAL_CTRL.all;
+use ctrl_lib.CORE_CTRL.all;
 
 entity mgt_wrapper is
   port(
@@ -31,8 +31,8 @@ entity mgt_wrapper is
     reset : in std_logic;
 
     -- AXI Control
-    ctrl : in  CORE_HAL_MGT_CTRL_t;
-    mon  : out CORE_HAL_MGT_MON_t;
+    ctrl : in  CORE_MGT_CTRL_t;
+    mon  : out CORE_MGT_MON_t;
 
     -- Refclk Inputs
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);

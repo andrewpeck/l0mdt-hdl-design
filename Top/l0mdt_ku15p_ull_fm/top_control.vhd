@@ -30,7 +30,7 @@ library ctrl_lib;
 -- START: LIBRARIES -- DO NOT TOUCH
 use ctrl_lib.fw_info_ctrl.all;
 use ctrl_lib.fm_ctrl.all;
-use ctrl_lib.CORE_HAL_ctrl.all;
+use ctrl_lib.CORE_ctrl.all;
 use ctrl_lib.hal_ctrl.all;
 use ctrl_lib.hog_ctrl.all;
 -- END: LIBRARIES -- DO NOT TOUCH
@@ -80,8 +80,8 @@ entity top_control is
     fw_info_mon : in FW_INFO_MON_t;
     fm_mon : in FM_MON_t;
     fm_ctrl : out FM_CTRL_t;
-    CORE_HAL_mon : in CORE_HAL_MON_t;
-    CORE_HAL_ctrl : out CORE_HAL_CTRL_t;
+    CORE_mon : in CORE_MON_t;
+    CORE_ctrl : out CORE_CTRL_t;
     hal_mon : in HAL_MON_t;
     hal_ctrl : out HAL_CTRL_t;
     hog_mon : in HOG_MON_t;
@@ -117,12 +117,12 @@ architecture control_arch of top_control is
   signal fm_writemiso : axiwritemiso;
   signal fm_mon_r     : FM_MON_t;
   signal fm_ctrl_r    : FM_CTRL_t;
-  signal CORE_HAL_readmosi  : axireadmosi;
-  signal CORE_HAL_readmiso  : axireadmiso;
-  signal CORE_HAL_writemosi : axiwritemosi;
-  signal CORE_HAL_writemiso : axiwritemiso;
-  signal CORE_HAL_mon_r     : CORE_HAL_MON_t;
-  signal CORE_HAL_ctrl_r    : CORE_HAL_CTRL_t;
+  signal CORE_readmosi  : axireadmosi;
+  signal CORE_readmiso  : axireadmiso;
+  signal CORE_writemosi : axiwritemosi;
+  signal CORE_writemiso : axiwritemiso;
+  signal CORE_mon_r     : CORE_MON_t;
+  signal CORE_ctrl_r    : CORE_CTRL_t;
   signal hal_readmosi  : axireadmosi;
   signal hal_readmiso  : axireadmiso;
   signal hal_writemosi : axiwritemosi;
@@ -381,25 +381,25 @@ begin
       FM_wready(0)      => FM_writemiso.ready_for_data,
       FM_wstrb          => FM_writemosi.data_write_strobe,
       FM_wvalid(0)      => FM_writemosi.data_valid,
-      CORE_HAL_araddr         => CORE_HAL_readmosi.address,
-      CORE_HAL_arprot         => CORE_HAL_readmosi.protection_type,
-      CORE_HAL_arready(0)     => CORE_HAL_readmiso.ready_for_address,
-      CORE_HAL_arvalid(0)     => CORE_HAL_readmosi.address_valid,
-      CORE_HAL_awaddr         => CORE_HAL_writemosi.address,
-      CORE_HAL_awprot         => CORE_HAL_writemosi.protection_type,
-      CORE_HAL_awready(0)     => CORE_HAL_writemiso.ready_for_address,
-      CORE_HAL_awvalid(0)     => CORE_HAL_writemosi.address_valid,
-      CORE_HAL_bready(0)      => CORE_HAL_writemosi.ready_for_response,
-      CORE_HAL_bvalid(0)      => CORE_HAL_writemiso.response_valid,
-      CORE_HAL_bresp          => CORE_HAL_writemiso.response,
-      CORE_HAL_rdata          => CORE_HAL_readmiso.data,
-      CORE_HAL_rready(0)      => CORE_HAL_readmosi.ready_for_data,
-      CORE_HAL_rresp          => CORE_HAL_readmiso.response,
-      CORE_HAL_rvalid(0)      => CORE_HAL_readmiso.data_valid,
-      CORE_HAL_wdata          => CORE_HAL_writemosi.data,
-      CORE_HAL_wready(0)      => CORE_HAL_writemiso.ready_for_data,
-      CORE_HAL_wstrb          => CORE_HAL_writemosi.data_write_strobe,
-      CORE_HAL_wvalid(0)      => CORE_HAL_writemosi.data_valid,
+      CORE_araddr         => CORE_readmosi.address,
+      CORE_arprot         => CORE_readmosi.protection_type,
+      CORE_arready(0)     => CORE_readmiso.ready_for_address,
+      CORE_arvalid(0)     => CORE_readmosi.address_valid,
+      CORE_awaddr         => CORE_writemosi.address,
+      CORE_awprot         => CORE_writemosi.protection_type,
+      CORE_awready(0)     => CORE_writemiso.ready_for_address,
+      CORE_awvalid(0)     => CORE_writemosi.address_valid,
+      CORE_bready(0)      => CORE_writemosi.ready_for_response,
+      CORE_bvalid(0)      => CORE_writemiso.response_valid,
+      CORE_bresp          => CORE_writemiso.response,
+      CORE_rdata          => CORE_readmiso.data,
+      CORE_rready(0)      => CORE_readmosi.ready_for_data,
+      CORE_rresp          => CORE_readmiso.response,
+      CORE_rvalid(0)      => CORE_readmiso.data_valid,
+      CORE_wdata          => CORE_writemosi.data,
+      CORE_wready(0)      => CORE_writemiso.ready_for_data,
+      CORE_wstrb          => CORE_writemosi.data_write_strobe,
+      CORE_wvalid(0)      => CORE_writemosi.data_valid,
       HAL_araddr         => HAL_readmosi.address,
       HAL_arprot         => HAL_readmosi.protection_type,
       HAL_arready     => HAL_readmiso.ready_for_address,
@@ -525,23 +525,23 @@ end process;
 process (axi_clk) is
 begin
  if(rising_edge(axi_clk)) then
-   CORE_HAL_mon_r <=  CORE_HAL_mon; 
-   CORE_HAL_ctrl  <=  CORE_HAL_ctrl_r;
+   CORE_mon_r <=  CORE_mon; 
+   CORE_ctrl  <=  CORE_ctrl_r;
  end if;
 end process;
-  CORE_HAL_map_inst : entity ctrl_lib.CORE_HAL_map
+  CORE_map_inst : entity ctrl_lib.CORE_map
     generic map(
-     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_CORE_HAL)
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_CORE)
     )
     port map(
       clk_axi         => axi_clk,
       reset_axi_n     => axi_reset_n,
-      slave_readmosi   => CORE_HAL_readmosi,
-      slave_readmiso   => CORE_HAL_readmiso,
-      slave_writemosi   => CORE_HAL_writemosi,
-      slave_writemiso   => CORE_HAL_writemiso,
-      ctrl   => CORE_HAL_ctrl_r,
-      mon   => CORE_HAL_mon_r
+      slave_readmosi   => CORE_readmosi,
+      slave_readmiso   => CORE_readmiso,
+      slave_writemosi   => CORE_writemosi,
+      slave_writemiso   => CORE_writemiso,
+      ctrl   => CORE_ctrl_r,
+      mon   => CORE_mon_r
     );
 process (clk40) is
 begin

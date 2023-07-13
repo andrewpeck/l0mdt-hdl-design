@@ -9,7 +9,7 @@ config:
 
 types:
 
-- CORE_HAL_CLOCKING_MON_t:
+- CORE_CLOCKING_MON_t:
   - MMCM_LOCKED : { type: logic }
   - CLK40_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
   - CLK320_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
@@ -18,11 +18,11 @@ types:
   - CLK200_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
 
 
-- CORE_HAL_CLOCKING_CTRL_t:
+- CORE_CLOCKING_CTRL_t:
   - RESET_MMCM : { type: logic }
 
 
-- CORE_HAL_MGT_MGT_STATUS_MON_t:
+- CORE_MGT_MGT_STATUS_MON_t:
   - rxcdr_stable : { type: logic }
   - powergood : { type: logic }
   - rx_pma_reset_done : { type: logic }
@@ -33,33 +33,33 @@ types:
   - buffbypass_tx_error_out : { type: logic }
 
 
-- CORE_HAL_MGT_MGT_DRP_MON_t:
+- CORE_MGT_MGT_DRP_MON_t:
   - rd_rdy : { type: logic }
   - rd_data : { type: logic, range : [ 16 - 1 , 0 ] }
 
 
-- CORE_HAL_MGT_MGT_DRP_CTRL_t:
+- CORE_MGT_MGT_DRP_CTRL_t:
   - wr_en : { type: logic }
   - wr_addr : { type: logic, range : [ 10 - 1 , 0 ] }
   - en : { type: logic }
   - wr_data : { type: logic, range : [ 16 - 1 , 0 ] }
 
 
-- CORE_HAL_MGT_MGT_TX_RESETS_CTRL_t:
+- CORE_MGT_MGT_TX_RESETS_CTRL_t:
   - reset : { type: logic }
   - reset_pll_and_datapath : { type: logic }
   - reset_datapath : { type: logic }
   - reset_bufbypass : { type: logic }
 
 
-- CORE_HAL_MGT_MGT_RX_RESETS_CTRL_t:
+- CORE_MGT_MGT_RX_RESETS_CTRL_t:
   - reset : { type: logic }
   - reset_pll_and_datapath : { type: logic }
   - reset_datapath : { type: logic }
   - reset_bufbypass : { type: logic }
 
 
-- CORE_HAL_MGT_MGT_CONFIG_MON_t:
+- CORE_MGT_MGT_CONFIG_MON_t:
   - mgt_type : { type: logic, range : [ 3 - 1 , 0 ] }
   - refclk : { type: logic, range : [ 5 - 1 , 0 ] }
   - gt_type : { type: logic, range : [ 2 - 1 , 0 ] }
@@ -68,42 +68,42 @@ types:
   - is_active : { type: logic }
 
 
-- CORE_HAL_MGT_MGT_MON_t:
-  - STATUS : { type: CORE_HAL_MGT_MGT_STATUS_MON_t }
-  - DRP : { type: CORE_HAL_MGT_MGT_DRP_MON_t }
-  - CONFIG : { type: CORE_HAL_MGT_MGT_CONFIG_MON_t }
+- CORE_MGT_MGT_MON_t:
+  - STATUS : { type: CORE_MGT_MGT_STATUS_MON_t }
+  - DRP : { type: CORE_MGT_MGT_DRP_MON_t }
+  - CONFIG : { type: CORE_MGT_MGT_CONFIG_MON_t }
 
-- CORE_HAL_MGT_MGT_MON_t_ARRAY: {array : [ 128 -1 , 0 ], type : CORE_HAL_MGT_MGT_MON_t}
+- CORE_MGT_MGT_MON_t_ARRAY: {array : [ 128 -1 , 0 ], type : CORE_MGT_MGT_MON_t}
 
-- CORE_HAL_MGT_MGT_CTRL_t:
-  - DRP : { type: CORE_HAL_MGT_MGT_DRP_CTRL_t }
-  - TX_RESETS : { type: CORE_HAL_MGT_MGT_TX_RESETS_CTRL_t }
-  - RX_RESETS : { type: CORE_HAL_MGT_MGT_RX_RESETS_CTRL_t }
+- CORE_MGT_MGT_CTRL_t:
+  - DRP : { type: CORE_MGT_MGT_DRP_CTRL_t }
+  - TX_RESETS : { type: CORE_MGT_MGT_TX_RESETS_CTRL_t }
+  - RX_RESETS : { type: CORE_MGT_MGT_RX_RESETS_CTRL_t }
 
-- CORE_HAL_MGT_MGT_CTRL_t_ARRAY: {array : [ 128 -1 , 0 ], type : CORE_HAL_MGT_MGT_CTRL_t}
+- CORE_MGT_MGT_CTRL_t_ARRAY: {array : [ 128 -1 , 0 ], type : CORE_MGT_MGT_CTRL_t}
 
-- CORE_HAL_MGT_REFCLK_MON_t:
+- CORE_MGT_REFCLK_MON_t:
   - FREQ : { type: logic, range : [ 29 - 1 , 0 ] }
   - REFCLK_TYPE : { type: logic, range : [ 3 - 1 , 0 ] }
 
-- CORE_HAL_MGT_REFCLK_MON_t_ARRAY: {array : [ 32 -1 , 0 ], type : CORE_HAL_MGT_REFCLK_MON_t}
+- CORE_MGT_REFCLK_MON_t_ARRAY: {array : [ 32 -1 , 0 ], type : CORE_MGT_REFCLK_MON_t}
 
-- CORE_HAL_MGT_MON_t:
-  - MGT : { type: CORE_HAL_MGT_MGT_MON_t_ARRAY }
-  - REFCLK : { type: CORE_HAL_MGT_REFCLK_MON_t_ARRAY }
-
-
-- CORE_HAL_MGT_CTRL_t:
-  - MGT : { type: CORE_HAL_MGT_MGT_CTRL_t_ARRAY }
+- CORE_MGT_MON_t:
+  - MGT : { type: CORE_MGT_MGT_MON_t_ARRAY }
+  - REFCLK : { type: CORE_MGT_REFCLK_MON_t_ARRAY }
 
 
-- CORE_HAL_MON_t:
-  - CLOCKING : { type: CORE_HAL_CLOCKING_MON_t }
-  - MGT : { type: CORE_HAL_MGT_MON_t }
+- CORE_MGT_CTRL_t:
+  - MGT : { type: CORE_MGT_MGT_CTRL_t_ARRAY }
 
 
-- CORE_HAL_CTRL_t:
-  - CLOCKING : { type: CORE_HAL_CLOCKING_CTRL_t }
-  - MGT : { type: CORE_HAL_MGT_CTRL_t }
+- CORE_MON_t:
+  - CLOCKING : { type: CORE_CLOCKING_MON_t }
+  - MGT : { type: CORE_MGT_MON_t }
+
+
+- CORE_CTRL_t:
+  - CLOCKING : { type: CORE_CLOCKING_CTRL_t }
+  - MGT : { type: CORE_MGT_CTRL_t }
 
 

@@ -30,7 +30,7 @@ use shared_lib.config_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HAL_CTRL.all;
-use ctrl_lib.CORE_HAL_CTRL.all;
+use ctrl_lib.CORE_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
 
 library xpm;
@@ -133,9 +133,9 @@ entity top_hal is
     Mon  : out HAL_MON_t;
     Ctrl : in  HAL_CTRL_t;
     
-    -- CORE_HAL takes care of basic infrastructure, running with the axi clk, e.g. transceivers
-    Core_Mon  : out CORE_HAL_MON_t;
-    Core_Ctrl : in  CORE_HAL_CTRL_t;
+    -- CORE takes care of basic infrastructure, running with the axi clk, e.g. transceivers
+    Core_Mon  : out CORE_MON_t;
+    Core_Ctrl : in  CORE_CTRL_t;
 
     clk50_o     : out std_logic; -- Axi
     clk320_o    : out std_logic; -- 

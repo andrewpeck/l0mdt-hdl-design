@@ -14,7 +14,7 @@ use hal.system_types_pkg.all;
 
 library ctrl_lib;
 
-use ctrl_lib.CORE_HAL_CTRL.all;
+use ctrl_lib.CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
@@ -311,8 +311,8 @@ architecture structural of top_l0mdt is
   signal hal_mon_r  : HAL_MON_t;
   signal hal_ctrl_r : HAL_CTRL_t;
 
-  signal CORE_HAL_mon_r  : CORE_HAL_MON_t;
-  signal CORE_HAL_ctrl_r : CORE_HAL_CTRL_t;
+  signal CORE_mon_r  : CORE_MON_t;
+  signal CORE_ctrl_r : CORE_CTRL_t;
 
 
   -- sumps
@@ -383,8 +383,8 @@ begin
       clk50_o => clk_50, 
 
       b2b_reset_n => b2b_reset_n,
-      core_ctrl => CORE_HAL_ctrl_r,
-      core_mon  => CORE_HAL_mon_r,
+      core_ctrl => CORE_ctrl_r,
+      core_mon  => CORE_mon_r,
 
       ctrl => hal_ctrl_r,
       mon  => hal_mon_r,

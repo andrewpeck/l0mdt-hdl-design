@@ -4,7 +4,7 @@ it runs on an asynchronous clock sources from an oscillator that
 is guaranteed to always be running -->
 <!-- To minimize clock domain crossings, whereever possible
 control logic should run NOT on this asynchronous domain -->
-<node id="CORE_HAL" permission="rw" >
+<node id="CORE" permission="rw" >
 
   <node id="CLOCKING" address="0x0" permission="r" >
     <node id="MMCM_LOCKED" mask="0x1"        address="0x0" permission="r"  description="LHC MMCM: 1 means it is locked"/>
