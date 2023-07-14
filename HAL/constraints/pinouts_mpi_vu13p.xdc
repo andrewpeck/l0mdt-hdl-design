@@ -1,4 +1,4 @@
-# asynchronous clock for felix recovery
+\# asynchronous clock for felix recovery
 # TO CHECK!
 # create_clock -period 3.125 -name refclk_felix_rx [get_ports tc_clk_i_p]; # Bank 120 -- felix rx
 # set_property PACKAGE_PIN BD39 [get_ports tc_clk_i_p]
@@ -240,16 +240,17 @@ set_property IOSTANDARD LVDS [get_ports  tc_clk_o*]
 set_property -quiet PACKAGE_PIN BJ28   [get_ports sump]
 set_property IOSTANDARD LVCMOS18       [get_ports sump]
 
-set_property PACKAGE_PIN BG20 [get_ports c2c_rxp]
-set_property PACKAGE_PIN BG19 [get_ports c2c_rxn]
-set_property PACKAGE_PIN BH13 [get_ports c2c_txp]
-set_property PACKAGE_PIN BH12 [get_ports c2c_txn]
-
 set_property PACKAGE_PIN BF18 [get_ports c2cb_rxp]
 set_property PACKAGE_PIN BF17 [get_ports c2cb_rxn]
 set_property PACKAGE_PIN BF13 [get_ports c2cb_txp]
 set_property PACKAGE_PIN BF12 [get_ports c2cb_txn]
 
+set_property PACKAGE_PIN BG20 [get_ports c2c_rxp]
+set_property PACKAGE_PIN BG19 [get_ports c2c_rxn]
+set_property PACKAGE_PIN BH13 [get_ports c2c_txp]
+set_property PACKAGE_PIN BH12 [get_ports c2c_txn]
+
+set_property is_loc_fixed true [get_ports c2c*]
 # set_property IOSTANDARD LVCMOS18 [get_ports led_o*]
 # set_property PACKAGE_PIN BA19 [get_ports led_o[0]]
 # set_property PACKAGE_PIN BA18 [get_ports led_o[1]]
