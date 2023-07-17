@@ -166,11 +166,23 @@ begin
   -- recclk
   --------------------------------------------------------------------------------
 
-   recclk_BUFG_inst : BUFG
-   port map (
-     O => ttc_recclk_o,                 -- 1-bit output: Clock output
-     I => recclk                        -- 1-bit input: Clock input
-   );
+  --  recclk_BUFG_inst : BUFG
+  --  port map (
+  --    O => ttc_recclk_o,                 -- 1-bit output: Clock output
+  --    I => recclk                        -- 1-bit input: Clock input
+  --  );
+
+  -- https://support.xilinx.com/s/question/0D52E00006hpdNNSAY/rxoutclk-routing-error?language=en_US
+  recclk_BUFG_GT_inst : BUFG_GT
+  port map (
+    O => ttc_recclk_o,   -- 1-bit output: Buffer
+    CE => '1',           -- 1-bit input: Buffer enable
+    CEMASK => '1',      -- 1-bit input: CE Mask
+    CLR => '0',         -- 1-bit input: Asynchronous clear
+    CLRMASK => '0',     -- 1-bit input: CLR Mask
+    DIV => "000",       -- 3-bit input: Dynamic divide Value
+    I => recclk         -- 1-bit input: Buffer
+  );
 
   --------------------------------------------------------------------------------
   -- Refclk
