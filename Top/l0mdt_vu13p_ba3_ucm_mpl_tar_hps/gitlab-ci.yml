@@ -9,3 +9,13 @@ GEN:l0mdt_vu13p_ba3_ucm_mpl_tar_hps:
       HOG_NO_BITSTREAM: 1 
     tags:
       - argos
+    artifacts:
+      when: always
+        name: implementation_and_bitfiles
+        paths:
+          - bin 
+      when: on_failure
+        paths:
+          - Projects
+
+

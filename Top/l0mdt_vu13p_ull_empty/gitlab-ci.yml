@@ -9,3 +9,13 @@ GEN:l0mdt_vu13p_ull_empty:
       HOG_NO_BITSTREAM: 0 
     tags:
       - argos
+    artifacts:
+      when: always
+        name: implementation_and_bitfiles
+        paths:
+          - bin 
+      when: on_failure
+        paths:
+          - Projects
+
+

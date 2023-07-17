@@ -9,6 +9,16 @@ GEN:l0mdt_vu13p_lsf_upt:
       HOG_NO_BITSTREAM: 0 
     tags:
       - argos
+    artifacts:
+      when: always
+        name: implementation_and_bitfiles
+        paths:
+          - bin 
+      when: on_failure
+        paths:
+          - Projects
+
+
 CHK:l0mdt_vu13p_lsf_upt:
     extends: .check_list_and_conf
     variables:
