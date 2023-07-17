@@ -10,9 +10,9 @@
 
   <node id="CONFIGS" address="0x00000001">
     <!-- <node id="THREADS"          mask="0x00000000F" parameters="default=3" permission="rw"/> -->
-    <node id="INPUT_EN"         mask="0x000000010" parameters="default=1" permission="rw"/>
-    <node id="OUTPUT_EN"        mask="0x000000020" parameters="default=1" permission="rw"/>
-    <node id="FLUSH_MEM_RESET"  mask="0x000000040" parameters="default=1" permission="rw"/>
+    <node id="INPUT_EN"         mask="0x000000001" parameters="default=1" permission="rw"/>
+    <node id="OUTPUT_EN"        mask="0x000000002" parameters="default=1" permission="rw"/>
+    <node id="FLUSH_MEM_RESET"  mask="0x000000004" parameters="default=1" permission="rw"/>
   </node>
 
   <!-- <node id="STATUS" address="0x00000002">

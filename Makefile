@@ -1,6 +1,7 @@
 SHELL:=/bin/bash
 
 MOD_NAME =
+LOG_FILE = make.log
 ################################################################################
 # Use CCZE and/or time if available
 ################################################################################
@@ -41,13 +42,13 @@ $(CREATE_LIST):
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
 	@echo Creating Project $(patsubst create_%,%,$@)                                       $(COLORIZE)
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
-	@time Hog/CreateProject.sh $(patsubst create_%,%,$@)                                   $(COLORIZE)
+	@time Hog/CreateProject.sh $(patsubst create_%,%,$@)   2>&1 | tee -a 	   $(LOG_FILE) $(COLORIZE)
 
 $(PROJECT_LIST):
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
 	@echo Launching Hog Workflow $@                                                        $(COLORIZE)
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
-	@time Hog/LaunchWorkflow.sh $@                                                         $(COLORIZE)
+	@time Hog/LaunchWorkflow.sh $@          			         2>&1 | tee -a $(LOG_FILE) $(COLORIZE)
 
 $(OPEN_LIST):
 	vivado Projects/$(patsubst open_%,%,$@)/$(patsubst open_%,%,$@).xpr &
@@ -90,14 +91,14 @@ regmap : $(MAP_OBJS)
 			-x address_tables/modules/$(basename $(notdir $<)).xml \
 			-o  $(dir $<) \
 			--mapTemplate templates/axi_generic/template_map_withbram.vhd \
-			$(basename $(notdir $<))
+			$(basename $(notdir $<)) 2>&1 | tee -a $(LOG_FILE)
 
 	@if [ $(basename $(notdir $<)) == "FM" ]; then \
 		echo VHDL + SV; \
-		python3 tools/yml2hdl/yml2hdl.py -p $(basename $(notdir $<))_CTRL -f $(patsubst %.xml,%_PKG.yml,$<); \
+		python3 tools/yml2hdl/yml2hdl.py -p $(basename $(notdir $<))_CTRL -f $(patsubst %.xml,%_PKG.yml,$<) 2>&1 | tee -a $(LOG_FILE); \
 	else \
 		echo VHDL only; \
-		python3 tools/yml2hdl/yml2hdl.py -p $(basename $(notdir $<))_CTRL -f -V $(patsubst %.xml,%_PKG.yml,$<); \
+		python3 tools/yml2hdl/yml2hdl.py -p $(basename $(notdir $<))_CTRL -f -V $(patsubst %.xml,%_PKG.yml,$<) 2>&1 | tee -a $(LOG_FILE); \
 	fi;
 
 ################################################################################

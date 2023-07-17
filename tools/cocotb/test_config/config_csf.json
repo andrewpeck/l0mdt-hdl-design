@@ -18,7 +18,7 @@
         },
         "testvectors": {
             "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
-            "testvector_file": "B_A_3.xz",
+            "testvector_file": "B_C_3.xz",
             "inputs": [
                 {
                     "tv_format": "HEG2SFSLC",

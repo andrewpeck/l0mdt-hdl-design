@@ -51,9 +51,9 @@ entity sector_logic_link_wrapper is
     pipeline_clock : in std_logic;
     reset          : in std_logic;
 
-    -- 32 bits / bx from mgt
+    -- 32 bits / usrclk from mgt
     sl_rx_mgt_word_array_i : in  std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-    -- 32 bits / bx to mgt
+    -- 32 bits / usrclk to mgt
     sl_tx_mgt_word_array_o : out std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
     -- Data from SL
@@ -65,10 +65,14 @@ entity sector_logic_link_wrapper is
     -- from mgt
     sl_rx_ctrl_i : in sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
+    sl_rx_init_done_i : in std_logic;
+
     -- to mgt
     sl_tx_ctrl_o : out sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
-    sl_rx_slide_o : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
+    sl_rx_slide_o : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+
+    sl_re_channel_o : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
 
     );
 end sector_logic_link_wrapper;
@@ -332,7 +336,9 @@ begin
             decoded_iscomma_out => dec_rxctrl2,                  -- 4 bit to packet former
             comma_pulse_out     => open,                         -- not used in my-sl-gty
             lock_out            => open,                         -- not used in my-sl-gty
-            rxslide_out         => sl_rx_slide_o(idx)            -- 1 bit to mgt
+            rxslide_out         => sl_rx_slide_o(idx),           -- 1 bit to mgt
+            rereset_out         => sl_re_channel_o(idx),         -- 1 bit to mgt
+            rx_init_done_in     => sl_rx_init_done_i             -- 1 bit from mgt
             );
 
         -- form 192 bit packets

@@ -41,7 +41,7 @@ AXI_CONTROL_SETS:
 
 AXI_SLAVES:
 
-  KINTEX_SYS_MGMT:
+  VIRTEX_SYS_MGMT:
     TCL_CALL:
       command: AXI_IP_SYS_MGMT
       enable_i2c_pins: 0
@@ -50,7 +50,7 @@ AXI_SLAVES:
         offset: "0x01001000"
         range: "4K"
       remote_slave: "1"
-    XML: "address_table/modules/KINTEX_SYS_MGMT.xml"
+    XML: "address_table/modules/VIRTEX_SYS_MGMT.xml"
     UHAL_BASE: 0x80000000
 
   FW_INFO:

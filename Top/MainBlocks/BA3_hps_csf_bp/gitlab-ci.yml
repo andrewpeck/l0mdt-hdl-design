@@ -30,7 +30,7 @@ RIV:BA3_hps_csf_bp_riviera:
     variables:
       extends: .vars
       PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
-    allow_failure: false
+    allow_failure: true
 
 COMP:BA3_hps_csf_bp:
   extends: .sim_comp

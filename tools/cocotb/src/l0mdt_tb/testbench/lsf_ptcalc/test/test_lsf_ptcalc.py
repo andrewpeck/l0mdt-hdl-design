@@ -421,16 +421,17 @@ def lsf_ptcalc_test(dut):
             recvd_events_intf[n_op_intf],
             tolerance[n_op_intf],
             output_dir,
-            stationNum=events.station_name_to_id(outputs_station_id[n_op_intf][0])
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
         );
-    all_tests_passed = (all_tests_passed and events_are_equal)
-    pass_count       = pass_count + pass_count_i
-    fail_count       = fail_count + fail_count_i
-    if outputs_station_id[n_op_intf] != '':
-        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ outputs_station_id[n_op_intf][0], "FAIL COUNT"])
-    else:
-        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS ", "FAIL COUNT"])
-    field_fail_cnt.append(field_fail_count_i)
+        all_tests_passed = (all_tests_passed and events_are_equal)
+        pass_count       = pass_count + pass_count_i
+        fail_count       = fail_count + fail_count_i
+        field_fail_cnt.append(field_fail_count_i)
+
+        for key in field_fail_count_i.keys():
+            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ key, "FAIL COUNT"])
+        
+            
 
     events.results_summary(
         num_events_to_process,

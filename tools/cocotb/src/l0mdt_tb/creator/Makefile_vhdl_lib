@@ -26,6 +26,7 @@ UCMDIR    = $(USERLOGIC)/ucm/src
 UCMHPSDIR = $(USERLOGIC)/ucm_hps/src
 ULTDIR    = $(USERLOGIC)/ult/src
 UPTDIR    = $(USERLOGIC)/upt/src
+DAQDIR    = $(USERLOGIC)/daq
 SHAREDDIR = $(SRCDIR)/shared
 HAL       = $(SRCDIR)/HAL
 IP_REPO   = $(HLS)/IPs/vu13p
@@ -76,6 +77,22 @@ VHDL_SOURCES_project_lib = \
     $(PWD)/prj_cfg.vhd
 
 
+VHDL_SOURCES_dp_repo_lib = \
+			 $(SHAREDDIR)/detector_parameters/dp_repo/chambers/mechanics/barrel_chamb_z2origin_pkg.vhd \
+			 $(SHAREDDIR)/detector_parameters/dp_repo/chambers/mechanics/barrel_R_mdt_pkg.vhd \
+			 $(SHAREDDIR)/detector_parameters/dp_repo/chambers/mechanics/barrel_R_rpc_pkg.vhd \
+			 $(SHAREDDIR)/detector_parameters/dp_repo/chambers/mechanics/barrel_chamb_r2center_pkg.vhd \
+			 $(SHAREDDIR)/detector_parameters/dp_repo/chambers/mechanics/chamber_type_pkg.vhd \
+			 $(SHAREDDIR)/detector_parameters/dp_repo/chambers/mechanics/barrel_zholes_chamber_pkg.vhd \
+			 $(SHAREDDIR)/detector_parameters/dp_repo/sector_phi_center_pkg.vhd \
+			 $(SHAREDDIR)/detector_parameters/dp_repo/mdt_dt2R/mdt_dt2r_large.vhd \
+			 $(SHAREDDIR)/detector_parameters/dp_repo/mdt_dt2R/mdt_dt2r_small.vhd \
+			 $(SHAREDDIR)/detector_parameters/dp_repo/mdt_tdc_mezz_map/tdc_mezz_mapping_pkg.vhd \
+			 $(SHAREDDIR)/detector_parameters/dp_repo/chambers/gtube2chamber_pkg.vhd
+
+
+
+
 VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
@@ -84,27 +101,35 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/types/common_constants_pkg.vhd \
 	$(SHAREDDIR)/types/common_types_pkg.vhd \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/detector_time_param_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/detector_param_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/dp_repo/detector_param_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/functions/fct_barrel_R_rpc_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/functions/fct_barrel_R_mdt_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/functions/fct_barrel_chamb_z2origin_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/fw_parameters/detector_time_param_pkg.vhd \
 	$(SHAREDDIR)/memories/src/ring_buffer_v2.vhd \
 	$(SHAREDDIR)/memories/src/vhdl_ram_memory.vhd \
 	$(SHAREDDIR)/memories/src/bram.vhd \
 	$(SHAREDDIR)/memories/src/pipeline.vhd \
 	$(SHAREDDIR)/config/config_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/l0mdt_RAMs/pkg/barrel_chamb_z2origin_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/l0mdt_RAMs/pkg/barrel_R_rpc_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/l0mdt_RAMs/pkg/barrel_R_mdt_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/gtube2chamber_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/L0MDT_ROMs/barrel_zholes_chamber_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/L0MDT_ROMs/barrel_zholes_tube_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/L0MDT_ROMs/barrel_zholes.vhd \
-	$(SHAREDDIR)/detector_parameters/mdt_tdc_mezz_map/tdc_mezz_mapping_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/mdt_tc/pkg/TC_B3A_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/mdt_t0/pkg/T0_B_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_large.vhd \
-	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_small.vhd \
-	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/functions/fct_chamber_type_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/functions/fct_mdt_dt2r_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/functions/fct_sector_phi_center_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/functions/fct_gtube2chamber_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/functions/fct_tdc_mezz_mapping_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/functions/fct_barrel_zholes_chamber_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/functions/fct_barrel_chamb_r2center_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/dp_repo/chambers/mechanics/barrel_chamb_z2origin_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/dp_repo/chambers/mechanics/barrel_R_rpc_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/dp_repo/chambers/mechanics/barrel_R_mdt_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/dp_repo/chambers/gtube2chamber_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/dp_repo/chambers/mechanics/barrel_zholes_chamber_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/dp_repo/mdt_tdc_mezz_map/tdc_mezz_mapping_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/dp_repo/TubeCoordinates/TC_B3A_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/dp_repo/chambers/time0/T0_B_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/dp_repo/mdt_dt2R/mdt_dt2r_large.vhd \
+	$(SHAREDDIR)/detector_parameters/dp_repo/mdt_dt2R/mdt_dt2r_small.vhd \
 	$(SHAREDDIR)/arithmetics/pkg/generic_pipelined_MATH_pkg.vhd \
+	$(SHAREDDIR)/arithmetics/src/divider.vhd \
 	$(SHAREDDIR)/arithmetics/src/generic_pipelined_MATH.vhd \
 	$(SHAREDDIR)/arithmetics/pkg/roi_atan_pkg.vhd \
 	$(SHAREDDIR)/arithmetics/src/roi_atan.vhd \
@@ -112,8 +137,11 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/arithmetics/src/roi_tan.vhd \
 	$(SHAREDDIR)/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd \
 	$(SHAREDDIR)/vhdl_utilities/src/vhdl_utils_deserializer.vhd \
+	$(SHAREDDIR)/vhdl_utilities/pkg/VU_generic_pipelined_MATH_pkg.vhd \
+	$(SHAREDDIR)/vhdl_utilities/src/VU_generic_pipelined_MATH.vhd \
 	$(SHAREDDIR)/vhdl_utilities/src/vhdl_utils_NinCounter.vhd 
 
+#	$(SHAREDDIR)/detector_parameters/dp_repo/mdt_dt2R/mdt_dt2r_pkg.vhd \
 
 
 VHDL_SOURCES_shared_cfg_def_lib = \
@@ -196,14 +224,14 @@ VHDL_SOURCES_xpm = \
 
 
 VHDL_SOURCES_heg_roi_lib = \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_types_pkg.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BILA3.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BMLA3.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BOLA3.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BILA3_angle.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BMLA3_angle.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_BOLA3_angle.vhd \
-   $(SHAREDDIR)/detector_parameters/ROIs/roi_lut_functions.vhd
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/roi_types_pkg.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BILA3.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BMLA3.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BOLA3.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BILA3_angle.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BMLA3_angle.vhd \
+   $(SHAREDDIR)/detector_parameters/dp_repo/ROIs/Sector3/roi_lut_BOLA3_angle.vhd \
+   $(SHAREDDIR)/detector_parameters/functions/roi_lut_functions.vhd
 
 
 VHDL_SOURCES_heg_lib = \
@@ -243,7 +271,12 @@ VHDL_SOURCES_hps_lib = \
 VHDL_SOURCES_csf_lib = \
     $(CSFDIR)/../pkg/csf_pkg.vhd \
     $(CSFDIR)/../pkg/csf_custom_pkg.vhd \
-    $(CSFDIR)/csf.vhd \
+    $(CSFDIR)/csf_supervisor.vhd \
+    $(CSFDIR)/csf_clustering.vhd \
+    $(CSFDIR)/seg_coord_transform.vhd \
+    $(CSFDIR)/ncsf_sums.vhd \
+    $(CSFDIR)/ncsf_fit.vhd \
+    $(CSFDIR)/ncsf.vhd \
     $(CSFDIR)/csf_chi2.vhd \
     $(CSFDIR)/csf_chi2_comparison.vhd \
     $(CSFDIR)/csf_fitter.vhd \
@@ -306,6 +339,7 @@ VHDL_SOURCES_ucm_lib = \
     $(UCMDIR)/ucm_rpc_R_comp_top.vhd \
     $(UCMDIR)/ucm_mdt_R_comp.vhd \
     $(UCMDIR)/ucm_mdt_R_comp_top.vhd \
+    $(UCMDIR)/ucm_phimod.vhd \
     $(UCMDIR)/ucm_cde.vhd \
     $(UCMDIR)/ucm_cvp_b_slope.vhd \
     $(UCMDIR)/ucm_cvp_z_calc.vhd \
@@ -313,6 +347,7 @@ VHDL_SOURCES_ucm_lib = \
     $(UCMDIR)/ucm_cvp.vhd \
     $(UCMDIR)/ucm_prepro.vhd \
     $(UCMDIR)/ucm.vhd
+
 
 
 VERILOG_SOURCES_fm_lib = \
@@ -329,7 +364,9 @@ VHDL_SOURCES_ptc_lib = \
     $(MPTDIR)/sagitta_calculator.vhd \
     $(MPTDIR)/eta_calculator.vhd \
     $(MPTDIR)/pt.vhd \
-    $(MPTDIR)/segment_selector.vhd
+    $(MPTDIR)/segment_selector.vhd \
+    $(MPTDIR)/pt_supervisor.vhd \
+    $(MPTDIR)/../top_ptc_mpi.vhd
 
 VHDL_SOURCES_mpl_lib = \
     $(PWD)/prj_cfg.vhd \
@@ -340,6 +377,29 @@ VHDL_SOURCES_mpl_lib = \
     $(MPLDIR)/mpl_pl.vhd \
     $(MPLDIR)/mpl.vhd
 
+VHDL_SOURCES_daq_core = \
+$(DAQDIR)/daq-lxa-core/autogen/yml2hdl.vhd \
+$(DAQDIR)/daq-lxa-core/autogen/daq_v3.vhd \
+$(DAQDIR)/daq-lxa-core/pkg/daq_defs.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_fifo.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_node_fifo.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_data_node.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_head_node.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_win_matching.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_bus_conv.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_wme_mux.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_ptr_handler.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_packet_builder.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_algo.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_req.vhd
+
+
+VHDL_SOURCES_daq_lib = \
+		     $(DAQDIR)/daq_fifo.vhd \
+		     $(DAQDIR)/daq_fifo_pipeline.vhd \
+		     $(DAQDIR)/daq-station.vhd
+		     
+
 VHDL_SOURCES_ult_lib =\
     $(ULTDIR)/ult_pt.vhd \
     $(ULTDIR)/ult_h2s.vhd \
@@ -347,8 +407,8 @@ VHDL_SOURCES_ult_lib =\
     $(ULTDIR)/ult_mpl.vhd \
     $(ULTDIR)/ult_ucm.vhd \
     $(ULTDIR)/ult_mtc.vhd \
-    $(ULTDIR)/ult_daq.vhd \
     $(ULTDIR)/ult_fm.vhd \
+    $(ULTDIR)/ult_daq.vhd \
     $(ULTDIR)/sumps/tar_sump.vhd \
     $(ULTDIR)/sumps/daq_sump.vhd \
     $(ULTDIR)/sumps/h2s_sump.vhd \
@@ -357,6 +417,7 @@ VHDL_SOURCES_ult_lib =\
     $(ULTDIR)/sumps/ptc_sump.vhd \
     $(ULTDIR)/sumps/ucm_sump.vhd \
     $(ULTDIR)/ult.vhd
+
 
 VHDL_SOURCES_fm_lib = \
     $(FMDIR)/fm_ult_pkg.vhd
@@ -403,6 +464,7 @@ VHDL_SOURCES +=\
 VHDL_LIB_ORDER = xpm \
 	shared_cfg_def_lib \
 	project_lib \
+        dp_repo_lib \
 	shared_lib \
 	ctrl_lib \
 	apbus_lib \
@@ -420,5 +482,10 @@ VHDL_LIB_ORDER = xpm \
 	hps_lib \
 	tar_lib \
 	mtc_lib \
+	daq_core \
+	daq_lib \
 	ult_lib 
 
+
+COMPILED_LIB_PATH = $(XILINX_SIM_LIB)/unisim_ver
+COMPILED_LIB = unisim

@@ -69,7 +69,6 @@ If you modify the `slaves.yaml` in a project, you can automatically update the `
 
 - hotfix-\<name\>: for fixes directly on master and devel branches.
 
-
 Please see: [A successful git branching model](https://nvie.com/posts/a-successful-git-branching-model/)
 
 ## Hog documentation hub

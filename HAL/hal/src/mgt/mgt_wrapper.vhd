@@ -98,7 +98,14 @@ entity mgt_wrapper is
     -- control
     sl_tx_ctrl_i  : in  sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_ctrl_o  : out sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-    sl_rx_slide_i : in  std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
+    sl_rx_slide_i : in  std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+
+    -- reset
+    sl_re_channel : in std_logic_vector(c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    
+    -- done
+    sl_rx_init_done : out std_logic
+
     );
 end mgt_wrapper;
 
@@ -115,13 +122,11 @@ architecture Behavioral of mgt_wrapper is
   signal recclk         : std_logic;
 
   -- TODO: initialize these so that uninstantiated MGTs will show DEADBEEF or something
-  signal tx_resets : mgt_reset_rt_array (c_NUM_MGTS-1 downto 0);
-  signal rx_resets : mgt_reset_rt_array (c_NUM_MGTS-1 downto 0);
   signal drp_i     : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
   signal drp_o     : mgt_drp_out_rt_array (c_NUM_MGTS-1 downto 0);
   signal status    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
-  signal status_d    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
-  signal status_2d    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
+  signal status_d  : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
+  signal status_2d : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
 
 begin
 
@@ -197,33 +202,49 @@ begin
   end generate;
 
   --------------------------------------------------------------------------------
+  -- Buffering
+  --------------------------------------------------------------------------------
+
+  process (clocks.axiclock) is
+  begin
+    if (rising_edge(clocks.axiclock)) then
+      status_d                                  <= status;
+      status_2d                                 <= status_d;
+    end if;
+  end process;
+
+  --------------------------------------------------------------------------------
   -- AXI Register Decoding
   --------------------------------------------------------------------------------
 
   axi_map_gen : for I in 0 to c_NUM_MGTS-1 generate
   begin
 
+    mon.mgt(I).config.mgt_type <= std_logic_vector(to_unsigned(mgt_types_t'POS(c_MGT_MAP(I).mgt_type), 3));
+    mon.mgt(I).config.refclk   <= std_logic_vector(to_unsigned(c_MGT_MAP(I).refclk, 5));
+    mon.mgt(I).config.gt_type  <= std_logic_vector(to_unsigned(gt_types_t'POS(c_MGT_MAP(I).gt_type), 2));
+    mon.mgt(I).config.x_loc    <= std_logic_vector(to_unsigned(c_MGT_MAP(I).x_loc, 2));
+    mon.mgt(I).config.y_loc    <= std_logic_vector(to_unsigned(c_MGT_MAP(I).y_loc, 6));
+
     drp_i(I).drpclk_in(0) <= clocks.axiclock;  -- 50MHz from MMCM
 
     -- some of these are crossing clock domains so add one ff to help metastability
-    --PRIYA -TODO -> double buffer and add false path constraint
     process (clocks.axiclock) is
     begin
       if (rising_edge(clocks.axiclock)) then
-        status_d                                                 <= status;
-        status_2d                                               <= status_d;
+
         mon.mgt(I).status.rxcdr_stable            <= status_2d(I).rxcdr_stable;
         mon.mgt(I).status.powergood               <= status_2d(I).powergood;
-        mon.mgt(I).status.txready                 <= status_2d(I).txready;
-        mon.mgt(I).status.rxready                 <= status_2d(I).rxready;
+     -- mon.mgt(I).status.txready                 <= status_2d(I).txready;
+     -- mon.mgt(I).status.rxready                 <= status_2d(I).rxready;
         mon.mgt(I).status.rx_pma_reset_done       <= status_2d(I).rx_pma_reset_done;
         mon.mgt(I).status.tx_pma_reset_done       <= status_2d(I).tx_pma_reset_done;
         mon.mgt(I).status.tx_reset_done           <= status_2d(I).tx_reset_done;
         mon.mgt(I).status.rx_reset_done           <= status_2d(I).rx_reset_done;
         mon.mgt(I).status.buffbypass_tx_done_out  <= status_2d(I).buffbypass_tx_done_out;
         mon.mgt(I).status.buffbypass_tx_error_out <= status_2d(I).buffbypass_tx_error_out;
-        mon.mgt(I).status.buffbypass_rx_done_out  <= status_2d(I).buffbypass_rx_done_out;
-        mon.mgt(I).status.buffbypass_rx_error_out <= status_2d(I).buffbypass_rx_error_out;
+     -- mon.mgt(I).status.buffbypass_rx_done_out  <= status_2d(I).buffbypass_rx_done_out;
+     -- mon.mgt(I).status.buffbypass_rx_error_out <= status_2d(I).buffbypass_rx_error_out;
 
         mon.mgt(I).drp.rd_data <= drp_o(I).drpdo_out;
         mon.mgt(I).drp.rd_rdy  <= drp_o(I).drprdy_out;
@@ -233,26 +254,8 @@ begin
         drp_i(I).drpen_in(0) <= ctrl.mgt(I).drp.en;
         drp_i(I).drpwe_in(0) <= ctrl.mgt(I).drp.wr_en;
 
-        tx_resets(I).reset                  <= ctrl.mgt(I).tx_resets.reset;
-        tx_resets(I).reset_pll_and_datapath <= ctrl.mgt(I).tx_resets.reset_pll_and_datapath;
-        tx_resets(I).reset_datapath         <= ctrl.mgt(I).tx_resets.reset_datapath;
-        tx_resets(I).reset_bufbypass        <= ctrl.mgt(I).tx_resets.reset_bufbypass;
-
-        rx_resets(I).reset                  <= ctrl.mgt(I).rx_resets.reset;
-        rx_resets(I).reset_pll_and_datapath <= ctrl.mgt(I).rx_resets.reset_pll_and_datapath;
-        rx_resets(I).reset_datapath         <= ctrl.mgt(I).rx_resets.reset_datapath;
-
       end if;
     end process;
-
-    notfelix_gen : if (felix_idx_array(I) = -1) generate
-      process (clocks.axiclock) is
-      begin
-        if (rising_edge(clocks.axiclock)) then
-          rx_resets(I).reset_bufbypass <= ctrl.mgt(I).rx_resets.reset_bufbypass;
-        end if;
-      end process;
-    end generate;
 
   end generate;
 
@@ -275,10 +278,12 @@ begin
     -- LPGBT+Emulator+Felix Type Transceiver Generation
     --------------------------------------------------------------------------------
 
-    lpgbt_gen : if ((I mod 4 = 0) and c2c_idx_array(I) = -1 and sl_idx_array(I) = -1 and c_MGT_MAP(I).mgt_type /= MGT_NIL and
+    lpgbt_gen : if ((I mod 4 = 0) and c2c_idx_array(I) = -1 and sl_idx_array(I) = -1 and
+                    c_MGT_MAP(I).mgt_type /= MGT_NIL and
                     (ttc_idx_array(I) /= -1 or ttc_idx_array(I+1) /= -1 or
                      ttc_idx_array(I+2) /= -1 or ttc_idx_array(I+3) /= -1 or
-                     lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or felix_idx_array(I) /= -1 ) )
+                     lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or
+                     felix_idx_array(I) /= -1 ))
     generate
 
       attribute X_LOC             : integer;
@@ -298,6 +303,8 @@ begin
       signal rx_data : std32_array_t (3 downto 0);
 
     begin
+
+      mon.mgt(I).config.is_active <= '1';
 
       --------------------------------------------------------------------------------
       -- MGT
@@ -327,12 +334,26 @@ begin
           -- resets
           --------------------------------------------------------------------------------
 
-          -- global reset
           reset => reset_tree(I),
 
-          -- tx/rx resets
-          tx_resets_i => tx_resets(I+3 downto I),
-          rx_resets_i => rx_resets(I+3 downto I),
+          reset_pll_and_datapath_i => ctrl.mgt(I).tx_resets.reset_pll_and_datapath or
+                                      ctrl.mgt(I+1).tx_resets.reset_pll_and_datapath or
+                                      ctrl.mgt(I+2).tx_resets.reset_pll_and_datapath or
+                                      ctrl.mgt(I+3).tx_resets.reset_pll_and_datapath,
+
+          reset_datapath_i => ctrl.mgt(I).tx_resets.reset_datapath or
+                              ctrl.mgt(I+1).tx_resets.reset_datapath or
+                              ctrl.mgt(I+2).tx_resets.reset_datapath or
+                              ctrl.mgt(I+3).tx_resets.reset_datapath,
+
+          reset_rx_pll_and_datapath_i => ctrl.mgt(I).rx_resets.reset_pll_and_datapath or
+                                         ctrl.mgt(I+1).rx_resets.reset_pll_and_datapath or
+                                         ctrl.mgt(I+2).rx_resets.reset_pll_and_datapath or
+                                         ctrl.mgt(I+3).rx_resets.reset_pll_and_datapath,
+
+          reset_rx_datapath_i        => '0',
+          buffbypass_tx_reset_i      => '0',
+          buffbypass_tx_start_user_i => '0',
 
           --------------------------------------------------------------------------------
           -- clocks
@@ -347,8 +368,8 @@ begin
 
           -- user clocks
           mgt_rxusrclk_i        => clocks.clock320,
-          mgt_rxusrclk_active_i => clocks.lhc_locked,  -- FIXME: this should come from something else for the felix link
           mgt_txusrclk_i        => clocks.clock320,
+          mgt_rxusrclk_active_i => clocks.lhc_locked,  -- FIXME: this should come from something else for the felix link
           mgt_txusrclk_active_i => clocks.lhc_locked,
 
           -- outputs
@@ -357,9 +378,7 @@ begin
           qpll1outclk_out    => open,
           qpll1outrefclk_out => open,
 
-
           rxoutclk => rxoutclk(3 downto 0),
-
 
           --------------------------------------------------------------------------------
           -- DRP & Status
@@ -468,6 +487,8 @@ begin
 
     begin
 
+      mon.mgt(I).config.is_active <= '1';
+
       assert false report
         "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I)
         & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
@@ -493,6 +514,8 @@ begin
           txctrl_in      => sl_tx_ctrl_i(idx+3 downto idx),
           rxctrl_out     => sl_rx_ctrl_o(idx+3 downto idx),
           rx_slide_i     => sl_rx_slide_i(idx+3 downto idx),
+          re_channel_i   => sl_re_channel(idx+3 downto idx),
+          rx_init_done_o => sl_rx_init_done,
           mgt_word_i     => sl_tx_mgt_word_array_i(idx+3 downto idx),
           mgt_word_o     => sl_rx_mgt_word_array_o(idx+3 downto idx),
           rxp_i          => rx_p,
@@ -515,8 +538,10 @@ begin
     signal clk_freq : std_logic_vector (31 downto 0) := (others => '0');
     signal ce, clr  : std_logic;
 
-    -- NOTE: this needs to be kept up to date with whatever the axi clock
-    -- frequency is, it should probably be stored somewhere in the board_pkg
+    -- TODO: this needs to be kept up to date with whatever the axi clock
+    -- frequency is, it should probably be stored somewhere in the board_pkg I
+    -- think this number also gets duplicated in top_clocking.. it should really
+    -- be centralized
     constant axi_refclk_freq : integer := 50_000_000;
 
   begin
@@ -525,12 +550,14 @@ begin
     -- measure the freq of other clocks. It doesn't make sense anyway as we use the
     -- AXI clock to monitor itself?
     axi : if (c_REFCLK_MAP(I).freq = REF_AXI_C2C) generate
-      mon.refclk(I).freq <= std_logic_vector(to_unsigned(axi_refclk_freq, 32));
+      mon.refclk(I).freq <= std_logic_vector(to_unsigned(axi_refclk_freq, mon.refclk(I).freq'length));
     end generate;
 
     no_axi : if (c_REFCLK_MAP(I).freq /= REF_AXI_C2C) generate
 
-      mon.refclk(I).freq <= clk_freq;
+      mon.refclk(I).freq        <= clk_freq(mon.refclk(I).freq'range);
+      mon.refclk(I).refclk_type <=
+        std_logic_vector(to_unsigned(refclk_freqs_t'POS(c_REFCLK_MAP(I).freq), 3));
 
       -- Despite the documentation stating that "The BUFG_GT_SYNC primitive is
       -- automatically inserted by the Vivado tools, if not present in the

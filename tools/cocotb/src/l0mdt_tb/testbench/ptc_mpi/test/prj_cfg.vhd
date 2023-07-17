@@ -24,7 +24,7 @@ use shared_cfg_def_lib.cfg_global_default_pkg.all;
 package prj_cfg is
 
   --constant c_MAX_NUM_SL   : integer := 3;
-  constant c_NUM_THREADS  : integer := 3;
+
   function set_project_cfg return cfg_rt;
 
 end package prj_cfg;
@@ -44,7 +44,7 @@ package body prj_cfg is
   --   --------------------------------------------------------------------------------
   --   -- IN COMPILATION CONFIGURATIONS
   --   --------------------------------------------------------------------------------
-    proj_cfg.NUM_THREADS             := c_NUM_THREADS; --3;
+    proj_cfg.NUM_THREADS             := 3;
 --    proj_cfg.NUM_MTC                 := 3;
 
   --   proj_cfg.MAX_NUM_HPS             := 3,

@@ -133,10 +133,10 @@ entity top_hal is
     Core_Mon  : out HAL_CORE_MON_t;
     Core_Ctrl : in  HAL_CORE_CTRL_t;
 
-    clk50_o : out std_logic;
-    clk320_o : out std_logic;
-    clk40_o  : out std_logic;
-    b2b_reset_n  : out std_logic; 
+    clk50_o     : out std_logic;
+    clk320_o    : out std_logic;
+    clk40_o     : out std_logic;
+    b2b_reset_n : out std_logic;
     --sump--------------------------------------------------------------------------
     sump : out std_logic
 
@@ -220,7 +220,8 @@ architecture behavioral of top_hal is
   signal sl_tx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_data_sump      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-
+  signal sl_re_channel        : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_rx_init_done      : std_logic;
   --------------------------------------------------------------------------------
   -- Signal sumps for development
   --------------------------------------------------------------------------------
@@ -251,12 +252,12 @@ begin  -- architecture behavioral
   -- Signal Aliasing
   --------------------------------------------------------------------------------
 
-
-  global_reset   <= not(clocks.lhc_locked);
-  clk50_o    <= clocks.axiclock;
+  global_reset <= not(clocks.lhc_locked);
+  clk50_o      <= clocks.axiclock;
   clk320_o     <= clocks.clock320;
   clk40_o      <= clocks.clock40;
-  b2b_reset_n <= clocks.b2b_locked;
+  b2b_reset_n  <= clocks.b2b_locked;
+
   --------------------------------------------------------------------------------
   -- AXI Interface
   --------------------------------------------------------------------------------
@@ -294,12 +295,15 @@ begin  -- architecture behavioral
       clock_i_p => clock_i_p,
       clock_i_n => clock_i_n,
 
+      clk50_freq  => core_mon.clocking.clk50_freq,
+      clk100_freq => core_mon.clocking.clk100_freq,
+      clk200_freq => core_mon.clocking.clk200_freq,
+
+      clk40_freq  => core_mon.clocking.clk40_freq,
+      clk320_freq => core_mon.clocking.clk320_freq,
+
       -- system clocks
       clocks_o => clocks
-
-      -- mmcm status
-     -- locked_o     => clocks.locked,
-     --  locked_clk50 => global_reset_n
 
       );
 
@@ -365,6 +369,8 @@ begin  -- architecture behavioral
       sl_rx_slide_i          => sl_rx_slide,
       sl_tx_clk              => sl_tx_clks,
       sl_rx_clk              => sl_rx_clks,
+      sl_re_channel          => sl_re_channel,
+      sl_rx_init_done        => sl_rx_init_done,
 
       -- lpgbt
       lpgbt_rxslide_i                 => lpgbt_uplink_bitslip,
@@ -578,9 +584,11 @@ begin  -- architecture behavioral
       mtc_i     => mtc_i,
 
       sl_rx_ctrl_i => sl_rx_ctrl,
+      sl_rx_init_done_i => sl_rx_init_done,
       sl_tx_ctrl_o => sl_tx_ctrl,
 
-      sl_rx_slide_o => sl_rx_slide
+      sl_rx_slide_o => sl_rx_slide,
+      sl_re_channel_o => sl_re_channel
       );
 
   -- FIXME: these mappings are totally made up for testing purposes...

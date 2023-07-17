@@ -51,7 +51,7 @@ def run(config):
     # I can't seem to get cocotb to run with absolute paths provided to the Makefile,
     # so I just move to the test_location here
     os.chdir(test_location)
-
+    
     #Update RTL configuration
     if "configure_rtl" in run_config:
         if run_config["configure_rtl"] is True:

@@ -47,23 +47,22 @@ def get_tvformats_from_config(test_config):
     return inputs_tvformats, outputs_tvformats
 
 
-def get_tvtype_from_config(test_config):
+def get_tvtype_from_config(test_config,io="inputs"):
 
     testvector_config = test_config["testvectors"]
 
-    inputs_tvtype = []
-    inputs = []
+    interface_tvtype = []
+    io_config = []
 
-    inputs       = testvector_config["inputs"]
+    io_config       = testvector_config[io]
 
-    for i, input_interface in enumerate(inputs):
-        if "tv_type" in input_interface:
-            inputs_tvtype.append(input_interface["tv_type"])
+    for i, io_interface in enumerate(io_config):
+        if "tv_type" in io_interface:
+            interface_tvtype.append(io_interface["tv_type"])
         else :
-            inputs_tvtype.append("value")
-#    print(inputs_tvformats)
+            interface_tvtype.append("value")
 
-    return inputs_tvtype
+    return interface_tvtype
 
 
 def get_testvector_files_from_config(test_config):

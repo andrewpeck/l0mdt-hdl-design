@@ -5,7 +5,7 @@
   <node id="LPGBT" address="0x0" >
     <node id="UPLINK" address="0x00" >
       <node id="UPLINK_0"    address="0x00" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
-      <node id="UPLINK_1"    address="0x05" fwinfo="type=array"  module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_1"    address="0x02" fwinfo="type=array"  module="file://LPGBT_UPLINK.xml"/>
     </node>
     <node id="DOWNLINK"   address="0x0B" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
   </node>
@@ -34,5 +34,14 @@
 
   <!-- LPGBT-FPGA  -->
   <node id="SC"   address="0x10" module="file://GBT-SC.xml"/>
+
+  <node id="CONFIG" address="0x40">
+    <node id ="master_link_id"  address="0x0" mask="0x00003f" permission = "r" description="CSM master_link_id"/>
+    <node id ="servant_link_id" address="0x0" mask="0x001f80" permission = "r" description="CSM servant_link_id"/>
+    <node id ="station"         address="0x0" mask="0x00e000" permission = "r" description="CSM station"/>
+    <node id ="polmux"          address="0x0" mask="0x3f0000" permission = "r" description="CSM polmux number"/>
+    <node id ="en"              address="0x1" mask="0x0fffff" permission = "r" description="CSM is en"/>
+    <node id ="legacy"          address="0x2" mask="0x0fffff" permission = "r" description="CSM is legacy"/>
+  </node>
 
 </node>

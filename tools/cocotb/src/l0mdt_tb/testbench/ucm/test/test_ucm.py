@@ -112,16 +112,22 @@ def ucm_test(dut):
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
     inputs_station_id= [["" for x in range(UcmPorts.get_input_interface_ports(y))]for y in range(UcmPorts.n_input_interfaces)]
+    inputs_thread_n= [[0 for x in range(UcmPorts.get_input_interface_ports(y))]for y in range(UcmPorts.n_input_interfaces)]
     outputs_station_id= [["" for x in range(UcmPorts.get_output_interface_ports(y))]for y in range(UcmPorts.n_output_interfaces)]
     tolerance= [["" for x in range(UcmPorts.get_output_interface_ports(y))]for y in range(UcmPorts.n_output_interfaces)]
+    outputs_thread_n= [[0 for x in range(UcmPorts.get_output_interface_ports(y))]for y in range(UcmPorts.n_output_interfaces)]
     for i in range(UcmPorts.n_input_interfaces):
         if "station_ID" in testvector_config_inputs[i] :
             inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+        if "thread_n" in testvector_config_inputs[i]:
+            inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
     for i in range(UcmPorts.n_output_interfaces):
         if "station_ID" in testvector_config_outputs[i] :
             outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-        else :
-            outputs_station_id[i] = ['NONE']
+        
+
+        if "thread_n" in testvector_config_outputs[i]:
+            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]
 
         if "tolerance" in testvector_config_outputs[i] :
             tolerance[i] = testvector_config_outputs[i]["tolerance"]
@@ -247,15 +253,16 @@ def ucm_test(dut):
             tvformat=input_tvformats[n_ip_intf],
             n_ports = UcmPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
-            tv_type="value"
+            tv_type="value",
+            cnd_thrd_id = inputs_thread_n[n_ip_intf]
             ))
-
-
+        
+        
+        single_interface_list_ii_delay  = events.modify_tv(single_interface_list, slc_rx_ii)
+        single_interface_list_iii_delay = events.modify_tv_padzeroes(single_interface_list_ii_delay,'end',[1,1,1,1]);
         for io in range(UcmPorts.get_input_interface_ports(n_ip_intf)):
-            single_interface_list_ii_delay  = events.modify_tv(single_interface_list, slc_rx_ii)
-            single_interface_list_iii_delay = events.modify_tv_padzeroes(single_interface_list_ii_delay,'end',[1,1,1,1]);
-            input_tv_list.append(single_interface_list_iii_delay[0])
-
+            input_tv_list.append(single_interface_list_iii_delay[io])
+   
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
@@ -313,6 +320,7 @@ def ucm_test(dut):
     recvd_events_intf = []
     for n_op_intf in range(UcmPorts.n_output_interfaces):
         recvd_events     = [["" for x in range(num_events_to_process)]for y in range(UcmPorts.get_output_interface_ports(n_op_intf))]
+        recvd_time       = [["" for x in range(num_events_to_process)]for y in range(UcmPorts.get_output_interface_ports(n_op_intf))]
         for n_oport, oport in enumerate(ucm_wrapper.output_ports(n_op_intf)):
 
             ##
@@ -320,13 +328,14 @@ def ucm_test(dut):
             ##
             monitor, io, is_active = oport
             words = monitor.observed_words
-
+            time  = monitor.observed_time
             recvd_events[n_oport] = words
+            recvd_time[n_oport]   = time
             cocotb.log.info(
                 f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
             )
-
-        recvd_events_intf.append(recvd_events)
+        o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process)
+        recvd_events_intf.append(o_recvd_events)
 
     ##
     ## extract the expected data for this output
@@ -359,16 +368,18 @@ def ucm_test(dut):
             recvd_events_intf[n_op_intf],
             tolerance[n_op_intf],
             output_path=output_dir,
-            stationNum=events.station_name_to_id(outputs_station_id[n_op_intf][0])
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]), 
+            tv_thread_mapping=outputs_thread_n[n_op_intf]
         );
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i
-        if outputs_station_id[n_op_intf] != '':
-            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ outputs_station_id[n_op_intf][0], "FAIL COUNT"])
-        else:
-            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS ", "FAIL COUNT"])
         field_fail_cnt.append(field_fail_count_i)
+
+        for key in field_fail_count_i.keys():
+            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ key, "FAIL COUNT"])
+
+       
 
     events.results_summary(
         num_events_to_process,

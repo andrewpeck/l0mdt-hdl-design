@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="UCM" >
-  <node id="SUPER" address="0x00000010">
+  <node id="SUPER" address="0x00000000">
     <node id="ACTIONS" address="0x00000000">
       <node id="RESET"          mask="0x000000001" permission="w"/>
       <node id="ENABLE"         mask="0x000000002" permission="w"/>
@@ -18,7 +18,6 @@
       <node id="ERROR"   mask="0x00000FF0" permission="r"/>
     </node>
 
-  <!-- <node id="SUPER" address="0x00000010"> -->
     <!-- CHAMBERS CENTER PHI -->
     <node id="SECTOR_PHI"  address="0x00000010">
       <node id="wr_req"   address="0x0" mask="0x00000001" permission="w"   description="Write Enable"/>
@@ -30,22 +29,22 @@
     <!-- CHAMBER IETA MEMORY CONTROLS -->
     <node id="CDE_CHAMB_Z0" address="0x00000020">
       <node id="CDE_CHAMB_Z0_0" fwinfo="type=array" address="0x00000000" module="file://MEM_INT_8A16D.xml"/>
-      <node id="CDE_CHAMB_Z0_1" fwinfo="type=array" address="0x00000003" module="file://MEM_INT_8A16D.xml"/>
-      <node id="CDE_CHAMB_Z0_2" fwinfo="type=array" address="0x00000006" module="file://MEM_INT_8A16D.xml"/>
-      <node id="CDE_CHAMB_Z0_3" fwinfo="type=array" address="0x00000009" module="file://MEM_INT_8A16D.xml"/>
+      <node id="CDE_CHAMB_Z0_1" fwinfo="type=array" address="0x00000010" module="file://MEM_INT_8A16D.xml"/>
+      <node id="CDE_CHAMB_Z0_2" fwinfo="type=array" address="0x00000100" module="file://MEM_INT_8A16D.xml"/>
+      <node id="CDE_CHAMB_Z0_3" fwinfo="type=array" address="0x00001000" module="file://MEM_INT_8A16D.xml"/>
     </node>
 
 
     <!-- CHAMBER IETA MEMORY CONTROLS -->
-    <node id="CVP_CHAMB_Z0" address="0x00000030">
+    <node id="CVP_CHAMB_Z0" address="0x00000040">
       <node id="CVP_CHAMB_Z0_0" fwinfo="type=array" address="0x00000000" module="file://MEM_INT_8A16D.xml"/>
-      <node id="CVP_CHAMB_Z0_1" fwinfo="type=array" address="0x00000003" module="file://MEM_INT_8A16D.xml"/>
-      <node id="CVP_CHAMB_Z0_2" fwinfo="type=array" address="0x00000006" module="file://MEM_INT_8A16D.xml"/>
-      <node id="CVP_CHAMB_Z0_3" fwinfo="type=array" address="0x00000009" module="file://MEM_INT_8A16D.xml"/>
+      <node id="CVP_CHAMB_Z0_1" fwinfo="type=array" address="0x00000010" module="file://MEM_INT_8A16D.xml"/>
+      <node id="CVP_CHAMB_Z0_2" fwinfo="type=array" address="0x00000100" module="file://MEM_INT_8A16D.xml"/>
+      <node id="CVP_CHAMB_Z0_3" fwinfo="type=array" address="0x00001000" module="file://MEM_INT_8A16D.xml"/>
     </node>
   </node>
 
-  <node id="R_PHI_COMP" address="0x00000050">
+  <node id="R_PHI_COMP" address="0x00000080">
     <!-- RADIUS 2 CHAMBERS & RPC LAYERS -->
     <node id="RPC" address="0x00000000">
       <node id="ext_ctrl"      address="0x0" mask="0x00001000" parameters="default=0" permission="rw"   description="external access to mem"/>

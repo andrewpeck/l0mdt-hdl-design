@@ -20,7 +20,7 @@
         },
         "testvectors": {
             "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
-            "testvector_file": "B_A_3.xz",
+            "testvector_file": "B_C_3.xz",
             "inputs": [
                 {
                     "tv_format": "SF2PTCALC_LSF",
@@ -41,7 +41,7 @@
                     "thread_n"   : [0,1,2]
                 },
                 {
-		    "_COMMENT": "Thread are reverse mapped in firmware, process_ch bitfield should be mapped accordingly",
+		    "_COMMENT": "Thread are reverse mapped in firmware, process_ch bitfield should be mapped accordingly. Top level verilog testbench is taking care of fixing the mapping",
                     "tv_format": "UCM2PL",
                     "ports": 3,
                     "thread_n"   : [0,1,2],
@@ -50,7 +50,7 @@
             ],
             "outputs": [
                 {
-		    "_COMMENT": "Thread are reverse mapped in firmware, so when reading out they should be reverse of input map",
+		    "_COMMENT": "Thread are reverse mapped in firmware,Top level verilog testbench is taking care of fixing the mapping ",
                     "tv_format": "MTC2SL_LSF",
                     "ports": 3,
 		    "thread_n"   : [0,1,2]

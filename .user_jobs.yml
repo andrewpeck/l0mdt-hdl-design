@@ -51,18 +51,65 @@
   allow_failure: true
   interruptible: true
 
-check_auto_generated_code:
+check_submodule_status:
   <<: *only-default
-  <<: *tag-sr
-  image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
+  <<: *tag-sr 
+  image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:centos
   variables:
     <<: *chk_variables
   stage: user_pre
   script:
-    - make all
-    - echo "Checking Git differences..."
-    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables'
+    - cd HAL/c2c/bd_helper && git checkout master && git pull 
+    - cd -
+    - cd HAL/ctrl/src/axi-vhdl-package && git checkout develop && git pull 
+    - cd -
+    - cd HAL/hal/src/mgt/tx_phase_aligner && git checkout master && git pull 
+    - cd -
+    - cd HAL/lpgbt/src/gbt-sc && git checkout master && git pull 
+    - cd -
+    - cd HAL/lpgbt/src/lpgbt-fpga && git checkout master && git pull 
+    - cd -
+    - cd HAL/sl/src/my-sl-gty-interface && git checkout master && git pull 
+    - cd -
+    # - cd HAL/ttc/ttc-core && git checkout master && git pull
+    # - cd -
+    - cd dataformats && git checkout master && git pull
+    - cd -
+    - git diff --exit-code -- .
+  allow_failure: true
   interruptible: true
+  
+check_auto_generated_code:
+  <<: *only-default
+  <<: *tag-sr
+  image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:centos
+  variables:
+    <<: *chk_variables
+  stage: user_pre
+  script:
+    - python3 --version
+    - export LD_LIBRARY_PATH=/opt/cactus/lib:$LD_LIBRARY_PATH
+    - sed -i 's|python3 tools/yml2hdl/yml2hdl.py|python3.11 tools/yml2hdl/yml2hdl.py|' Makefile
+    - sed -i 's|python3|python3.11|' ./tools/gldl-scripts/yml2hdl.sh
+    - make all
+    - echo "Checking Address overlaps..."
+    - if grep -q "WARNING - Address overlaps observed" "make.log"; then
+        echo "WARNING - Address overlaps observed!";
+        cat make.log
+        cat /tmp/uhal/*.txt
+        exit 1;
+      else
+        echo "No address overlaps detected.";
+      fi
+    - echo "Checking Git differences..."
+    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile' ':(exclude)tools/gldl-scripts'
+  interruptible: true
+  artifacts:
+    name: Makefile
+    when: always
+    paths:
+      - make.log
+      - /tmp/uhal/*.txt
 
 .user_sim: &user_sim
   <<: *only-default
@@ -98,7 +145,7 @@ check_auto_generated_code:
     - riviera
   variables:
     <<: *riviera_vars
-    HOG_SIMULATION_LIB_PATH: /afs/cern.ch/work/l/l0mdtel/RivieraLibs
+    HOG_SIMULATION_LIB_PATH: /home/l0mdtel/RivieraLib
     HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
     HOG_CHECK_PROJVER: 0
   stage: generation_and_simulation
@@ -118,6 +165,18 @@ check_auto_generated_code:
         sed -i 's/Questa/Riviera/' ./Top/$PROJECT_NAME/hog.conf;
         ./Hog/LaunchSimulation.sh $PROJECT_NAME -recreate;
       fi
+    - if [ -f "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib_sim/behav/riviera/simulate.log" ]; then
+        if grep "Executing onerror command" "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib_sim/behav/riviera/simulate.log"; then
+          echo "Simulation Failed!";
+          exit 1;
+        else
+          echo "Simulation succeeded!";
+        fi;
+      else
+        echo "Cannot find simulate.log! Something probably went wrong!";
+        exit 1;
+      fi;
+
   artifacts:
     name: user_sim
     paths:
@@ -184,42 +243,42 @@ check_auto_generated_code:
   interruptible: true
 
 
-.cocotb:
+.cocotb_test: &cocotb_job
   <<: *only-default
   tags:
     - cocotb
   variables:
     <<: *chk_variables
-  stage: generation_and_simulation
+  stage: user_pre
   allow_failure: true
   interruptible: true
   script:
-    # Create Directory for TV
     - mkdir tools/cocotb/l0mdt_tv
-    - echo $EOS_PASSWORD | kinit $EOS_USER
     # Fetch testvectors from EOS
-    - xrdcp root://eosuser.cern.ch//eos/project/a/atlas-tdaq-phase2-l0mdt-electronics/TestVectors/TV_MC_2022-02-18_DF_v4.1.8b_TV_v1.0.81/B_C_3.xz tools/cocotb/l0mdt_tv/.
+    - echo $EOS_PASSWORD | kinit $EOS_USER
+    - xrdcp root://eosuser.cern.ch//eos/project/a/atlas-tdaq-phase2-l0mdt-electronics/TestVectors/TV_MC_2022-01-20-test-for-cocotb/B_C_3.xz tools/cocotb/l0mdt_tv/.
     # PYTHON
     - export PATH="/home/l0mdtel/.pyenv/bin:$PATH"
     - eval "$(pyenv init -)"
     - eval "$(pyenv init --path)"
     - eval "$(pyenv virtualenv-init -)"
-    # - echo y | pyenv uninstall 3.8.2
-    # - env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.8.2
     - pyenv global 3.8.2
-    # - unzip testvecs_6_25_2020.zip
     - export TESTVECS_PATH="`pwd`/tools/cocotb/l0mdt_tv"
     - echo Print TESTVECS_PATH-----
     - echo $TESTVECS_PATH
     - echo Print HOG_SIMULATION_LIB_PATH-----
     - echo $HOG_SIMULATION_LIB_PATH
+    - export XILINX_SIM_LIB=${HOG_SIMULATION_LIB_PATH}
+    - echo $XILINX_SIM_LIB
     - export VIVADO_EXEC=$(which vivado)
     - export XILINX_VIVADO="${VIVADO_EXEC/bin\/vivado/}"
     - echo XILINX_VIVADO = $XILINX_VIVADO
     - cd tools/cocotb/
-    # Setup testbench environment
     - source setup_env.sh -l ${HOG_SIMULATION_LIB_PATH} -t ${TESTVECS_PATH} -x ${XILINX_VIVADO}
-    - tb run test_config/config_mpl_mtc.json 2>&1 | tee cocotb_run.log
-    - tb run test_config/config_lsf_inn.json 2>&1 | tee -a cocotb_run.log
-    # Make test fail if cocotb raised a failure
-    - sh -c "! grep cocotb.result.TestFailure cocotb_run.log"
+    - tb run test_config/config_${COCOTB_TEST}.json 2>&1 | tee cocotb_run.log
+    ##
+    - echo "Parsing log file to see if compilation succeeded"
+    - grep -Eq "INFO +cocotb +Running" cocotb_run.log
+    - echo "Parsing log file to check result of the cocotb test"
+    - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then if (grep -qE "cocotb.regression.*test passed" cocotb_run.log)  ; then echo "Test successful" ; elif (grep -q "cocotb.result.TestFailure" cocotb_run.log) ; then echo "Test completed but TV comparison failed" ; exit 98 ; else echo "Other failure - check log" ; exit 99 ; fi ; else echo "Other failure during cocotb test - check log" ; exit 99; fi
+

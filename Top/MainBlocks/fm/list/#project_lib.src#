@@ -1,3 +1,0 @@
-Top/lsf/prj_cfg.vhd
-HAL/ctrl/ctrl_lib.src lib=ctrl_lib
-UserLogic/lsf/lsf_lib_vu13p.src lib=lsf_lib

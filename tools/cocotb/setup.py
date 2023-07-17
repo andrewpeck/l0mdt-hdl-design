@@ -51,6 +51,7 @@ setup(
         "pandas",
         "tabulate",
         "termcolor",
+        "multipledispatch",
     ],
     entry_points={"console_scripts": ["tb=l0mdt_tb.cli:cli"]},
 )

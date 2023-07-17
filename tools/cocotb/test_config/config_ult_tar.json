@@ -1,0 +1,50 @@
+{
+    "testbench_config": {
+        "test_name": "ult_tar",
+        "input_args": {
+            "n_events": 1,
+            "event_detail": false,
+            "clock_period": 5,
+            "clock_time_unit": "ns",
+            "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
+        },
+        "run_config": {
+            "output_directory_name": "ult_tar",
+            "test_location": "src/l0mdt_tb/testbench/ult_tar/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "${XILINX_LIB_DIR}",
+            "configure_rtl": true,
+            "pt_type": "upt"
+        },
+        "testvectors": {
+            "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
+            "testvector_file": "B_C_3.xz",
+            "inputs": [
+                {
+                    "tv_format": "TDCPOLMUX2TAR",
+                    "ports": 24,
+		    "station_ID" : ["INN","INN","INN", "INN","INN","INN", "MID", "MID", "MID", "MID", "MID", "MID", "OUT", "OUT", "OUT","OUT", "OUT", "OUT", "EXT", "EXT", "EXT", "EXT", "EXT", "EXT" ],
+		    "tv_type" : "list_nested_tdc",
+		    "padding_size" : 100
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "TDCPOLMUX2TAR",
+                    "ports": 24,
+		    "station_ID" : ["INN","INN","INN", "INN","INN","INN", "MID", "MID", "MID", "MID", "MID", "MID", "OUT", "OUT", "OUT","OUT", "OUT", "OUT", "EXT", "EXT", "EXT", "EXT", "EXT", "EXT" ],
+                    "tv_type" : "list_nested_tdc"
+                },
+                {
+                    "tv_format": "TAR2HPS",
+                    "ports": 24,
+		    "station_ID" : ["INN","INN","INN", "INN","INN","INN", "MID", "MID", "MID", "MID", "MID", "MID", "OUT", "OUT", "OUT","OUT", "OUT", "OUT", "EXT", "EXT", "EXT", "EXT", "EXT", "EXT" ],
+		    "tv_type" : "list_nested_tdc"
+                }
+            ]
+        }
+    }
+}
+
+
+

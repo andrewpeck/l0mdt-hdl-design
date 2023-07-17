@@ -333,9 +333,9 @@ def ptcalc_test(dut):
             ptcalc2mtc_lsf_tol[n_op_intf],
             output_path=output_dir
         );
-    all_tests_passed = (all_tests_passed and events_are_equal)
-    field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
-    field_fail_cnt.append(field_fail_count_i)
+        all_tests_passed = (all_tests_passed and events_are_equal)
+        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
+        field_fail_cnt.append(field_fail_count_i)
 
     events.results_summary(
         num_events_to_process,

@@ -146,12 +146,23 @@ types:
 
 - HAL_CSM_CSM_SC_CTRL_t:
   - MASTER : { type: HAL_CSM_CSM_SC_MASTER_CTRL_t }
+  - FRAME_FORMAT : { type: logic }
   - SLAVE : { type: HAL_CSM_CSM_SC_SLAVE_CTRL_t }
+
+
+- HAL_CSM_CSM_CONFIG_MON_t:
+  - master_link_id : { type: logic, range : [ 6 - 1 , 0 ] }
+  - servant_link_id : { type: logic, range : [ 6 - 1 , 0 ] }
+  - station : { type: logic, range : [ 3 - 1 , 0 ] }
+  - polmux : { type: logic, range : [ 6 - 1 , 0 ] }
+  - en : { type: logic, range : [ 20 - 1 , 0 ] }
+  - legacy : { type: logic, range : [ 20 - 1 , 0 ] }
 
 
 - HAL_CSM_CSM_MON_t:
   - LPGBT : { type: HAL_CSM_CSM_LPGBT_MON_t }
   - SC : { type: HAL_CSM_CSM_SC_MON_t }
+  - CONFIG : { type: HAL_CSM_CSM_CONFIG_MON_t }
 
 - HAL_CSM_CSM_MON_t_ARRAY: {array : [ 36 -1 , 0 ], type : HAL_CSM_CSM_MON_t}
 

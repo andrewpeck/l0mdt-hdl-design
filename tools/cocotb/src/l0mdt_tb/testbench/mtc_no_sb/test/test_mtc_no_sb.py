@@ -113,7 +113,7 @@ def mtc_test(dut):
     output_dir_name                  = run_config["output_directory_name"]
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
     output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
-
+    outputs_station_id= [["" for x in range(MtcPorts.get_output_interface_ports(y))]for y in range(MtcPorts.n_output_interfaces)]
 #    print("TV FORMATS = ", inputs_tvformats, outputs_tvformats)
 #    print("MASTER TV FILE = ",master_tv_file)
 
@@ -310,7 +310,16 @@ def mtc_test(dut):
     field_fail_count          = []
     field_fail_count_header.clear()
     field_fail_count.clear()
-    events_are_equal,pass_count , fail_count, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformat ,MtcPorts.get_output_interface_ports(0) , num_events_to_process , recvd_lineup, tolerances = mtc2sl_lsf_tol,output_path=output_dir);
+    events_are_equal,pass_count , fail_count, field_fail_count_i = events.compare_BitFields(
+        tv_bcid_list, 
+        output_tvformat ,
+        MtcPorts.get_output_interface_ports(0) , 
+        num_events_to_process , 
+        recvd_lineup, 
+        tolerances = mtc2sl_lsf_tol,
+        output_path=output_dir,
+        stationNum=events.station_list_name_to_id(outputs_station_id[0])
+    );
     all_tests_passed = (all_tests_passed and events_are_equal)
 
     field_fail_count_header.append([output_tvformat +" "+ "FIELDS", "FAIL COUNT"])

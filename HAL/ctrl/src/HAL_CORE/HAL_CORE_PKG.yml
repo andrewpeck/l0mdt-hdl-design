@@ -11,6 +11,11 @@ types:
 
 - HAL_CORE_CLOCKING_MON_t:
   - MMCM_LOCKED : { type: logic }
+  - CLK40_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
+  - CLK320_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
+  - CLK50_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
+  - CLK100_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
+  - CLK200_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
 
 
 - HAL_CORE_CLOCKING_CTRL_t:
@@ -20,16 +25,12 @@ types:
 - HAL_CORE_MGT_MGT_STATUS_MON_t:
   - rxcdr_stable : { type: logic }
   - powergood : { type: logic }
-  - txready : { type: logic }
-  - rxready : { type: logic }
   - rx_pma_reset_done : { type: logic }
   - tx_pma_reset_done : { type: logic }
   - tx_reset_done : { type: logic }
   - rx_reset_done : { type: logic }
   - buffbypass_tx_done_out : { type: logic }
   - buffbypass_tx_error_out : { type: logic }
-  - buffbypass_rx_done_out : { type: logic }
-  - buffbypass_rx_error_out : { type: logic }
 
 
 - HAL_CORE_MGT_MGT_DRP_MON_t:
@@ -58,9 +59,19 @@ types:
   - reset_bufbypass : { type: logic }
 
 
+- HAL_CORE_MGT_MGT_CONFIG_MON_t:
+  - mgt_type : { type: logic, range : [ 3 - 1 , 0 ] }
+  - refclk : { type: logic, range : [ 5 - 1 , 0 ] }
+  - gt_type : { type: logic, range : [ 2 - 1 , 0 ] }
+  - x_loc : { type: logic, range : [ 2 - 1 , 0 ] }
+  - y_loc : { type: logic, range : [ 6 - 1 , 0 ] }
+  - is_active : { type: logic }
+
+
 - HAL_CORE_MGT_MGT_MON_t:
   - STATUS : { type: HAL_CORE_MGT_MGT_STATUS_MON_t }
   - DRP : { type: HAL_CORE_MGT_MGT_DRP_MON_t }
+  - CONFIG : { type: HAL_CORE_MGT_MGT_CONFIG_MON_t }
 
 - HAL_CORE_MGT_MGT_MON_t_ARRAY: {array : [ 128 -1 , 0 ], type : HAL_CORE_MGT_MGT_MON_t}
 
@@ -72,7 +83,8 @@ types:
 - HAL_CORE_MGT_MGT_CTRL_t_ARRAY: {array : [ 128 -1 , 0 ], type : HAL_CORE_MGT_MGT_CTRL_t}
 
 - HAL_CORE_MGT_REFCLK_MON_t:
-  - FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
+  - FREQ : { type: logic, range : [ 29 - 1 , 0 ] }
+  - REFCLK_TYPE : { type: logic, range : [ 3 - 1 , 0 ] }
 
 - HAL_CORE_MGT_REFCLK_MON_t_ARRAY: {array : [ 32 -1 , 0 ], type : HAL_CORE_MGT_REFCLK_MON_t}
 

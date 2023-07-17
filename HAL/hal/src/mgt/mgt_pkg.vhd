@@ -18,29 +18,16 @@ package mgt_pkg is
   end record;
   type mgt_drp_out_rt_array is array (integer range <>) of mgt_drp_out_rt;
 
-  type mgt_reset_rt is record
-    reset                  : std_logic;
-    reset_pll_and_datapath : std_logic;
-    reset_datapath         : std_logic;
-    reset_bufbypass        : std_logic;
-  end record;
-  type mgt_reset_rt_array is array (integer range <>) of mgt_reset_rt;
-
   type mgt_status_rt is record
     rxcdr_stable            : std_logic;
     powergood               : std_logic;
-    txready                 : std_logic;
-    rxready                 : std_logic;
+    buffbypass_tx_done_out  : std_logic;
+    buffbypass_tx_error_out : std_logic;
     rx_pma_reset_done       : std_logic;
     tx_pma_reset_done       : std_logic;
     tx_reset_done           : std_logic;
     rx_reset_done           : std_logic;
-    buffbypass_tx_done_out  : std_logic;
-    buffbypass_tx_error_out : std_logic;
-    buffbypass_rx_done_out  : std_logic;
-    buffbypass_rx_error_out : std_logic;
-    rxbyteisaligned         : std_logic;
-    rxbyterealign           : std_logic;
+    tx_prg_div_reset_done   : std_logic;
   end record;
   type mgt_status_rt_array is array (integer range <>) of mgt_status_rt;
 

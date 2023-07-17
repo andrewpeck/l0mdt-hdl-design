@@ -16,39 +16,45 @@
         },
         "testvectors": {
             "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
-            "testvector_file": "B_A_3.xz",
+            "testvector_file": "B_C_3.xz",
 	    "slc_rx_ii"      : 0,
 	    "ucm_latency"    : 100,
             "inputs": [
                 {
                     "tv_format": "SLC_RX",
-                    "ports": 3
+                    "ports": 3,
+                    "thread_n"   : [0,1,2]
                 }
             ],
             "outputs": [
                 {
                     "tv_format": "UCM2HPS",
                     "ports": 3,
-		    "station_ID": ["INN","INN","INN"]
+		    "station_ID": ["INN","INN","INN"],
+                    "thread_n"   : [2,1,0]
                 },
                 {
                     "tv_format": "UCM2HPS",
                     "ports": 3,
-		    "station_ID": ["MID","MID","MID"]
+		    "station_ID": ["MID","MID","MID"],
+                    "thread_n"   : [2,1,0]
                 },
                 {
                     "tv_format": "UCM2HPS",
                     "ports": 3,
-		    "station_ID": ["OUT","OUT","OUT"]
+		    "station_ID": ["OUT","OUT","OUT"],
+                    "thread_n"   : [2,1,0]
                 },
 		{
                     "tv_format": "UCM2HPS",
                     "ports": 3,
-		    "station_ID": ["EXT","EXT","EXT"]
+		    "station_ID": ["EXT","EXT","EXT"],
+                    "thread_n"   : [2,1,0]
                 },
                 {
                     "tv_format": "UCM2PL",
-                    "ports": 3
+                    "ports": 3,
+                    "thread_n"   : [2,1,0]
                 }
             ]
         }

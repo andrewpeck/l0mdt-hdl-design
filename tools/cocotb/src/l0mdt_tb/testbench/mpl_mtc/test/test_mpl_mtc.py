@@ -109,6 +109,8 @@ def mpl_mtc_test(dut):
     inputs                           = testvectors["inputs"]
     pl_latency                       = inputs[1]["pl_latency"]
     cocotb_outputs                   = 0
+
+    outputs_station_id= [["" for x in range(MplMtcPorts.get_output_interface_ports(y))]for y in range(MplMtcPorts.n_output_interfaces)]
     for i in range(MplMtcPorts.n_output_interfaces):
         cocotb_outputs = MplMtcPorts.get_output_interface_ports(i) + cocotb_outputs
 
@@ -310,7 +312,16 @@ def mpl_mtc_test(dut):
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
     for n_op_intf in range (MplMtcPorts.n_output_interfaces):
-        events_are_equal,pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],MplMtcPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerances=pl_mtc_tol,output_path=output_dir);
+        events_are_equal,pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(
+            tv_bcid_list, 
+            output_tvformats[n_op_intf],
+            MplMtcPorts.get_output_interface_ports(n_op_intf) , 
+            num_events_to_process , 
+            recvd_events_intf[n_op_intf],
+            tolerances=pl_mtc_tol,
+            output_path=output_dir,
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+        );
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i

@@ -17,6 +17,7 @@ use hal.system_types_pkg.all;
 use hal.lpgbt_pkg.all;
 use hal.constants_pkg.all;
 use hal.board_pkg.all;
+use hal.board_pkg_common.all;
 use hal.link_map.all;
 
 library tdc;
@@ -82,8 +83,8 @@ architecture behavioral of csm is
 
   constant enc_elink : integer := CSM_ENC_DOWNLINK;
 
-  -- TODO: right now it is using aux channels for all e-links, but 2/3 SCAs have both primary and
-  -- aux connected. Add some way to switch?
+  -- TODO: right now it is using aux channels for all e-links, but 2/3 SCAs have
+  -- both primary and aux connected. Add some way to switch?
   constant up0 : integer := CSM_SCA0_UP_AUX;
   constant up1 : integer := CSM_SCA0_UP_AUX;
   constant up2 : integer := CSM_SCA0_UP_AUX;
@@ -111,6 +112,7 @@ architecture behavioral of csm is
 
   type fec_err_cnt_type is array (g_NUM_UPLINKS-1 downto 0) of std_logic_vector(15 downto 0);
   signal fec_err_cnt : fec_err_cnt_type;
+
 begin
 
   dl_valid : for I in 0 to g_NUM_DOWNLINKS-1 generate
@@ -146,7 +148,6 @@ begin
 
       reset_i => reset_i,
       clk40   => clk40,
-      clk320  => uplink_clk,
       ctrl    => ctrl.sc,
       mon     => mon.sc,
 
@@ -230,11 +231,19 @@ begin
   ----------------------------------------------------------------------------------
   ---- AXI Control and Monitoring
   ----------------------------------------------------------------------------------
+
+  mon.config.master_link_id  <= std_logic_vector(to_unsigned(c_MDT_CONFIG(g_CSM_ID).mgt_id_m, 6));
+  mon.config.servant_link_id <= std_logic_vector(to_unsigned(c_MDT_CONFIG(g_CSM_ID).mgt_id_s, 6));
+  mon.config.station         <= std_logic_vector(to_unsigned(station_id_t'POS(c_MDT_CONFIG(g_CSM_ID).station_id), 3));
+  mon.config.polmux          <= std_logic_vector(to_unsigned(c_MDT_CONFIG(g_CSM_ID).polmux_id, 6));
+  mon.config.en              <= c_MDT_CONFIG(g_CSM_ID).en;
+  mon.config.legacy          <= c_MDT_CONFIG(g_CSM_ID).legacy;
+
   axi_ctrl_mon_reg : for I in 0 to g_NUM_UPLINKS-1 generate
-           uplink_reset(I)                  <= ctrl.lpgbt.uplink.uplink(I).reset;
-           mon.lpgbt.uplink.uplink(I).ready <= uplink_ready(I);
-           --FIX this flagging error, need to flag error count
-           mon.lpgbt.uplink.uplink(I).fec_err_cnt <= fec_err_cnt(I);
+
+    uplink_reset(I)                        <= ctrl.lpgbt.uplink.uplink(I).reset;
+    mon.lpgbt.uplink.uplink(I).ready       <= uplink_ready(I);
+    mon.lpgbt.uplink.uplink(I).fec_err_cnt <= fec_err_cnt(I);
 
     cnt_fecerr : entity work.counter
     generic map (width => 16)
@@ -248,12 +257,9 @@ begin
       );
 
   end generate;
-  --uplink_reset(I)                  <= ctrl.reset_uplinks or ctrl.uplink.uplink(I).reset;
-  --mon.uplink.uplink(I).ready       <= uplink_ready(I);
-  --mon.uplink.uplink(I).fec_err_cnt <= fec_err_cnt(I);
+
   tdc_decoder_wrapper_inst : entity work.tdc_decoder_wrapper
     generic map (
-      -- FIXME: some way of overriding enable at the sub-csm level?
       g_ENABLE_MASK => g_ENABLE_MASK,
       g_LEGACY_FLAG => g_LEGACY_FLAG,
       g_CSM         => g_CSM_ID,

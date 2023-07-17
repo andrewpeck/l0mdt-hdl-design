@@ -258,6 +258,15 @@ def hps_test(dut):
     single_interface_list_ii_delay_tmp =  []
     single_interface_list_ii_delay_flat=  []
     for n_ip_intf in range(HpsPorts.n_input_interfaces): # Add concept of interface
+        if(n_ip_intf == 0):
+            #UCM2HPS simply append zeros
+            to_append = ucm2hps_ii
+            to_prepend = 0
+        elif (n_ip_intf == 1):
+            #TAR2HPS append zeros and prepend (delay)
+            to_prepend = ucm2hps_setup
+            to_append = ucm2hps_ii
+        
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
             tvformat=input_tvformats[n_ip_intf],
@@ -266,33 +275,15 @@ def hps_test(dut):
             station_ID=inputs_station_id[n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
             tv_df_type = inputs_tv_df_type[n_ip_intf],
-            cnd_thrd_id = inputs_thread_n[n_ip_intf]
+            cnd_thrd_id = inputs_thread_n[n_ip_intf],
+            zero_padding_size = to_append,
+            prepend_zeros = to_prepend
             ))
-        if(n_ip_intf == 0):
-            print("UCM2HPS single_interface_list = ",single_interface_list)
-            single_interface_list_ii_delay = events.modify_tv(single_interface_list, ucm2hps_ii)
-            for io in range(HpsPorts.get_input_interface_ports(n_ip_intf)): 
-                input_tv_list.append(single_interface_list_ii_delay[io])
-        elif(n_ip_intf == 1):
-            print("TAR2HPS single_interface_list = ",single_interface_list)
-            hits_in_event      = []
-            hits_zero_padding  = []
-            hits_ii            = 2 #PRIYA :configure this
-            for io in range (len(single_interface_list)):
-                for e_i in range(len(single_interface_list[io])):
-                    hits_in_event.append(len(single_interface_list[io][e_i]))
-                    hits_zero_padding.append(ucm2hps_ii - hits_in_event[e_i]*hits_ii - ucm2hps_setup)
-                single_interface_list_ii_delay_tmp = events.modify_tv(single_interface_list[io], hits_ii) 
-                #add zeros
-                single_interface_list_ii_delay_tmp2 = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp,'begin',ucm2hps_setup)
-                single_interface_list_ii_delay      = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp2,'end',hits_zero_padding)
-                single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)
-                print("TAR2HPS io = ",io," single_interface_list_ii_delay = ",single_interface_list_ii_delay)
-                input_tv_list.append(single_interface_list_ii_delay_flat[0])
+        for io in range(HpsPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
+            input_tv_list.append(single_interface_list[io])
+    
 
-
-    print("Input TV List = ", input_tv_list)
-   ###Get Output Test Vector List for Ports across all output interfaces##
+    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
     for n_op_intf in range(HpsPorts.n_output_interfaces): # Add concept of interface
@@ -315,7 +306,7 @@ def hps_test(dut):
     dut._log.info("Sending input events")
     send_finished_signal = hps_wrapper.send_input_events(
         input_tv_list,
-        n_to_send=num_events_to_process
+        n_to_send=num_events_to_process*ucm2hps_ii
     )
 
     if not send_finished_signal:
@@ -323,12 +314,15 @@ def hps_test(dut):
             f"ERROR Event sending timed out! Number of expected inputs with events = {len(send_finished_signal)}"
         )
     try:
-        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*2, "us")
+        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*ucm2hps_ii*10, "us")
     except Exception as ex:
         raise cocotb.result.TestFailure(
             f"ERROR Timed out waiting for events to send: {ex}"
         )
     dut._log.info("Sending finished!")
+    
+    yield ClockCycles(dut.clock, 500+num_events_to_process*10*ucm2hps_ii)
+    
 
 
     ##
@@ -377,14 +371,24 @@ def hps_test(dut):
 
 
     for n_op_intf in range (HpsPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],HpsPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf],output_dir,stationNum=events.station_name_to_id(outputs_station_id[n_op_intf][0]));
-    all_tests_passed = (all_tests_passed and events_are_equal)
-    pass_count       = pass_count + pass_count_i
-    fail_count       = fail_count + fail_count_i
-    if outputs_station_id[n_op_intf] != '':
-        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ outputs_station_id[n_op_intf][0], "FAIL COUNT"])
-    else:
-        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS ", "FAIL COUNT"])
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(
+            tv_bcid_list, 
+            output_tvformats[n_op_intf],
+            HpsPorts.get_output_interface_ports(n_op_intf) , 
+            num_events_to_process , 
+            recvd_events_intf[n_op_intf],
+            tolerance[n_op_intf],
+            output_dir,
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+        );
+        all_tests_passed = (all_tests_passed and events_are_equal)
+        pass_count       = pass_count + pass_count_i
+        fail_count       = fail_count + fail_count_i
+        field_fail_cnt.append(field_fail_count_i)
+
+        for key in field_fail_count_i.keys():
+            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ key, "FAIL COUNT"])
+
 
     events.results_summary(
         num_events_to_process,

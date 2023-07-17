@@ -366,15 +366,23 @@ def ult_pt_test(dut):
 
 
     for n_op_intf in range (UltPtPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],UltPtPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf],output_dir,stationNum=events.station_name_to_id(outputs_station_id[n_op_intf][0]));
-    all_tests_passed = (all_tests_passed and events_are_equal)
-    pass_count       = pass_count + pass_count_i
-    fail_count       = fail_count + fail_count_i
-    if outputs_station_id[n_op_intf] != '':
-        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ outputs_station_id[n_op_intf][0], "FAIL COUNT"])
-    else:
-        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS ", "FAIL COUNT"])
-    field_fail_cnt.append(field_fail_count_i)
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(
+            tv_bcid_list, 
+            output_tvformats[n_op_intf],
+            UltPtPorts.get_output_interface_ports(n_op_intf) , 
+            num_events_to_process , 
+            recvd_events_intf[n_op_intf],
+            tolerance[n_op_intf],
+            output_dir,
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
+        );
+        all_tests_passed = (all_tests_passed and events_are_equal)
+        pass_count       = pass_count + pass_count_i
+        fail_count       = fail_count + fail_count_i
+        for key in field_fail_count_i.keys():
+            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ key, "FAIL COUNT"])
+
+        field_fail_cnt.append(field_fail_count_i)
 
     events.results_summary(
         num_events_to_process,
