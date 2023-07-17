@@ -1,6 +1,8 @@
-source -quiet "$BD_PATH/dtsi_helpers.tcl"
+source -quiet "$BD_PATH/axi_helpers/device_tree_helpers.tcl"
 source -quiet "$BD_PATH/axi_helpers.tcl"
-source -quiet "$BD_PATH/Xilinx_AXI_slaves.tcl"
+source -quiet "$BD_PATH/AXI_Cores/Xilinx_AXI_Endpoints.tcl"
+source -quiet $BD_PATH/HAL/HAL.tcl
+source -quiet $BD_PATH/utils/add_slaves_from_yaml.tcl
 
 remove_files -quiet [get_files "c2cSlave.bd"]
 remove_files -quiet [get_files "c2cSlave_wrapper.vhd"]
@@ -11,15 +13,19 @@ set bd_design_name "c2cSlave"
 remove_files -quiet [file normalize "${BD_OUTPUT_PATH}/${BD_SUFFIX}/${bd_design_name}/${bd_design_name}.bd"]
 create_bd_design -dir [file normalize ${BD_OUTPUT_PATH}/${BD_SUFFIX}] ${bd_design_name}
 
+global AXI_MASTER_CLK
+global AXI_MASTER_RSTN
+global AXI_MASTER_CLK_FREQ
+global AXI_INTERCONNECT_NAME
+
 set EXT_CLK clk50Mhz
 set EXT_RESET reset_n
 set EXT_CLK_FREQ 50000000
 
-
-
 set AXI_MASTER_CLK AXI_CLK
 set AXI_MASTER_RSTN AXI_RST_N
 set AXI_MASTER_CLK_FREQ 50000000
+set AXI_INTERCONNECT_NAME slave_interconnect
 
 
 set EXT_CLK40 clk40
@@ -27,22 +33,29 @@ set EXT_CLK40_RSTN CLK40_RSTN
 set AXI_CLK40_RSTN AXI_CLK40_RST_N
 set EXT_CLK40_FREQ 40000000
 
-set AXI_INTERCONNECT_NAME slave_interconnect
+set C2C C2C
+set C2C_PHY ${C2C}_PHY
+
+set C2CB C2CB
+set C2CB_PHY ${C2CB}_PHY
+
 
 #================================================================================
 #  Setup external clock and reset
 #================================================================================
-create_bd_port -dir I -type clk $EXT_CLK -freq_hz ${EXT_CLK_FREQ}
+create_bd_port -dir I -type clk $EXT_CLK
+set_property CONFIG.FREQ_HZ ${EXT_CLK_FREQ} [get_bd_ports ${EXT_CLK}]
 create_bd_port -dir I -type rst $EXT_RESET
 
 #================================================================================
-#  Create the system resetter
+#  Create an AXI interconnect
 #================================================================================
 
 puts "Building AXI C2C slave interconnect"
 
 #create AXI clock & reset ports
-create_bd_port -dir I -type clk $AXI_MASTER_CLK -freq_hz ${AXI_MASTER_CLK_FREQ} 
+create_bd_port -dir I -type clk $AXI_MASTER_CLK
+set_property CONFIG.FREQ_HZ ${AXI_MASTER_CLK_FREQ} [get_bd_ports ${AXI_MASTER_CLK}]
 create_bd_port -dir O -type rst $AXI_MASTER_RSTN
 
 #create the reset logic
@@ -56,6 +69,30 @@ connect_bd_net [get_bd_ports $AXI_MASTER_CLK] [get_bd_pins $SYS_RESETER/slowest_
 set SYS_RESETER_AXI_RSTN $SYS_RESETER/interconnect_aresetn
 #create the reset to sys reseter and slave interconnect
 connect_bd_net [get_bd_ports $AXI_MASTER_RSTN] [get_bd_pins $SYS_RESETER_AXI_RSTN]
+
+AXI_IP_C2C [dict create device_name ${C2C} \
+		axi_control [dict create axi_clk $AXI_MASTER_CLK \
+				 axi_rstn $AXI_MASTER_RSTN \
+				 axi_freq $AXI_MASTER_CLK_FREQ] \
+		primary_serdes 1 \
+		init_clk $EXT_CLK \
+		refclk_freq 200 \
+		c2c_master false \
+		speed 5 \
+	       ]
+if { [info exists C2CB] } {
+    AXI_IP_C2C [dict create device_name ${C2CB} \
+		    axi_control [dict create axi_clk $AXI_MASTER_CLK \
+				     axi_rstn $AXI_MASTER_RSTN \
+				     axi_freq $AXI_MASTER_CLK_FREQ] \
+		    primary_serdes ${C2C}_PHY \
+		    init_clk $EXT_CLK \
+		    refclk_freq 200 \
+		    c2c_master false \
+		    speed 5 \
+		   ]
+}
+
 
 
 #================================================================================
@@ -79,7 +116,6 @@ connect_bd_net [get_bd_ports $AXI_CLK40_RSTN] [get_bd_pins $SYS_RESETER_AXI_CLK4
 #================================================================================
 #  Configure chip 2 chip links
 #================================================================================
-source -quiet ${C2C_PATH}/create_c2c.tcl
 #LOCing C2CB to GTHE4_COMMON_X0Y1
 #set_property -dict [list CONFIG.CHANNEL_ENABLE {X0Y1} CONFIG.C_START_LANE {X0Y1}] [get_bd_cells C2CB_PHY]
 
@@ -98,7 +134,7 @@ BUILD_JTAG_AXI_MASTER [dict create device_name ${JTAG_AXI_MASTER} axi_clk ${AXI_
 set mAXI [list ${C2C}/m_axi ${C2CB}/m_axi_lite ${JTAG_AXI_MASTER}/M_AXI]
 set mCLK [list ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK} ]
 set mRST [list ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN}] 
-[BUILD_AXI_INTERCONNECT $AXI_INTERCONNECT_NAME ${AXI_MASTER_CLK} $AXI_MASTER_RSTN $mAXI $mCLK $mRST]
+BUILD_AXI_INTERCONNECT ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} $mAXI $mCLK $mRST
 
 
 #================================================================================
@@ -135,7 +171,7 @@ if {$regenerate_svg && [info exists ::env(DISPLAY) ]} {
 
 validate_bd_design
 
-regenerate_bd_layout
+# regenerate_bd_layout
 
 make_wrapper -files [get_files ${bd_design_name}.bd] -top -import -force
 save_bd_design
