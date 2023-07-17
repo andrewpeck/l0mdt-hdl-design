@@ -11,11 +11,9 @@ GEN:l0mdt_vu13p_csf_mpt:
       - argos
     artifacts:
       when: always
-        name: implementation_and_bitfiles
-        paths:
-          - bin 
-      when: on_failure
-        paths:
-          - Projects
+      name: implementation_and_bitfiles
+      paths:
+        - bin 
+        - Projects
 
 

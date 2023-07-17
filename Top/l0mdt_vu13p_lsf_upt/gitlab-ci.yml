@@ -11,12 +11,10 @@ GEN:l0mdt_vu13p_lsf_upt:
       - argos
     artifacts:
       when: always
-        name: implementation_and_bitfiles
-        paths:
-          - bin 
-      when: on_failure
-        paths:
-          - Projects
+      name: implementation_and_bitfiles
+      paths:
+        - bin 
+        - Projects
 
 
 CHK:l0mdt_vu13p_lsf_upt:
