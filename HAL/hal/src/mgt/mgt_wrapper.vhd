@@ -276,7 +276,7 @@ begin
       display_board_cfg(true);
     end generate;
 
-    assert false report
+    assert true report
       "GENERATING MGT=" & integer'image(I) &
       " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) severity note;
 
