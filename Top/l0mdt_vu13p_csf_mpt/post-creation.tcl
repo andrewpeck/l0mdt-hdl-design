@@ -84,4 +84,7 @@ set_property PROCESSING_ORDER LATE [get_files timing.tcl]
 set_property PROCESSING_ORDER LATE [get_files loc_mgts.tcl]
 
 # Suppress [Common 17-576] 'use_project_ipc' is deprecated message from Vivado 2020.2
-set_msg_config -suppress -id {Common 17-576} 
+set_msg_config -suppress -id {Common 17-576}
+# Suppress Missing generic message to avoid pollution from Hog try to set generics for each IP in the .bd
+set_msg_config -suppress -id {Synth 8-3819} 
+
