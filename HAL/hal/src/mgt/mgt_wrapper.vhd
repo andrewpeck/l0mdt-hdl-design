@@ -118,6 +118,8 @@ architecture Behavioral of mgt_wrapper is
   attribute DONT_TOUCH               : string;
   attribute DONT_TOUCH of reset_tree : signal is "true";
 
+  signal recclk_sync_clr: std_logic;
+  signal recclk_sync_ce : std_logic;
   signal refclk         : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
   signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
   signal refclk_bufg    : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
@@ -173,12 +175,22 @@ begin
   --  );
 
   -- https://support.xilinx.com/s/question/0D52E00006hpdNNSAY/rxoutclk-routing-error?language=en_US
+
+  recclk_BUFG_GT_SYNC_inst : BUFG_GT_SYNC
+  port map (
+    CESYNC  => recclk_sync_ce,                -- 1-bit output: Synchronized CE
+    CLRSYNC => recclk_sync_clr,               -- 1-bit output: Synchronized CLR
+    CE      => '1',               -- 1-bit input: Asynchronous enable
+    CLK     => recclk, -- 1-bit input: Clock
+    CLR     => '0'                -- 1-bit input: Asynchronous clear
+    );
+
   recclk_BUFG_GT_inst : BUFG_GT
   port map (
     O => ttc_recclk_o,   -- 1-bit output: Buffer
-    CE => '1',           -- 1-bit input: Buffer enable
-    CEMASK => '1',      -- 1-bit input: CE Mask
-    CLR => '0',         -- 1-bit input: Asynchronous clear
+    CE => recclk_sync_ce,           -- 1-bit input: Buffer enable
+    CEMASK => '0',      -- 1-bit input: CE Mask
+    CLR => recclk_sync_clr,         -- 1-bit input: Asynchronous clear
     CLRMASK => '0',     -- 1-bit input: CLR Mask
     DIV => "000",       -- 3-bit input: Dynamic divide Value
     I => recclk         -- 1-bit input: Buffer
