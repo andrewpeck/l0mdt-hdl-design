@@ -1,8 +1,6 @@
-source -quiet "$BD_PATH/axi_helpers/device_tree_helpers.tcl"
+source -quiet "$BD_PATH/dtsi_helpers.tcl"
 source -quiet "$BD_PATH/axi_helpers.tcl"
-source -quiet "$BD_PATH/AXI_Cores/Xilinx_AXI_Endpoints.tcl"
-source -quiet $BD_PATH/HAL/HAL.tcl
-source -quiet $BD_PATH/utils/add_slaves_from_yaml.tcl
+source -quiet "$BD_PATH/Xilinx_AXI_slaves.tcl"
 
 remove_files -quiet [get_files "c2cSlave.bd"]
 remove_files -quiet [get_files "c2cSlave_wrapper.vhd"]
@@ -70,29 +68,28 @@ set SYS_RESETER_AXI_RSTN $SYS_RESETER/interconnect_aresetn
 #create the reset to sys reseter and slave interconnect
 connect_bd_net [get_bd_ports $AXI_MASTER_RSTN] [get_bd_pins $SYS_RESETER_AXI_RSTN]
 
-AXI_IP_C2C [dict create device_name ${C2C} \
-		axi_control [dict create axi_clk $AXI_MASTER_CLK \
-				 axi_rstn $AXI_MASTER_RSTN \
-				 axi_freq $AXI_MASTER_CLK_FREQ] \
-		primary_serdes 1 \
-		init_clk $EXT_CLK \
-		refclk_freq 200 \
-		c2c_master false \
-		speed 5 \
-	       ]
-if { [info exists C2CB] } {
-    AXI_IP_C2C [dict create device_name ${C2CB} \
+AXI_C2C_MASTER [dict create device_name ${C2C} \
 		    axi_control [dict create axi_clk $AXI_MASTER_CLK \
 				     axi_rstn $AXI_MASTER_RSTN \
 				     axi_freq $AXI_MASTER_CLK_FREQ] \
-		    primary_serdes ${C2C}_PHY \
+		    primary_serdes 1 \
 		    init_clk $EXT_CLK \
 		    refclk_freq 200 \
 		    c2c_master false \
 		    speed 5 \
 		   ]
+if { [info exists C2CB] } {
+    AXI_C2C_MASTER [dict create device_name ${C2CB} \
+			axi_control [dict create axi_clk $AXI_MASTER_CLK \
+					 axi_rstn $AXI_MASTER_RSTN \
+					 axi_freq $AXI_MASTER_CLK_FREQ] \
+			primary_serdes ${C2C}_PHY \
+			init_clk $EXT_CLK \
+			refclk_freq 200 \
+			c2c_master false \
+			speed 5 \
+		       ]
 }
-
 
 
 #================================================================================
