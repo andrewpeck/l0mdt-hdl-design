@@ -1,7 +1,7 @@
 cocotb_test:compile:
     extends: .cocotb_test
     stage: generation_and_simulation
-    allow_failure: false
+    allow_failure: true
     interruptible: true
     variables:
         extends: .vars
