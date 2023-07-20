@@ -75,24 +75,22 @@ package CORE_CTRL is
    function zero(tpl: CORE_MGT_MGT_DRP_CTRL_t) return CORE_MGT_MGT_DRP_CTRL_t;
 
    type CORE_MGT_MGT_TX_RESETS_CTRL_t is record
-      reset : std_logic;
       reset_pll_and_datapath : std_logic;
       reset_datapath : std_logic;
       reset_bufbypass : std_logic;
    end record CORE_MGT_MGT_TX_RESETS_CTRL_t;
-   attribute w of CORE_MGT_MGT_TX_RESETS_CTRL_t : type is 4;
+   attribute w of CORE_MGT_MGT_TX_RESETS_CTRL_t : type is 3;
    function width(x: CORE_MGT_MGT_TX_RESETS_CTRL_t) return natural;
    function convert(x: CORE_MGT_MGT_TX_RESETS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_TX_RESETS_CTRL_t) return CORE_MGT_MGT_TX_RESETS_CTRL_t;
    function zero(tpl: CORE_MGT_MGT_TX_RESETS_CTRL_t) return CORE_MGT_MGT_TX_RESETS_CTRL_t;
 
    type CORE_MGT_MGT_RX_RESETS_CTRL_t is record
-      reset : std_logic;
       reset_pll_and_datapath : std_logic;
       reset_datapath : std_logic;
       reset_bufbypass : std_logic;
    end record CORE_MGT_MGT_RX_RESETS_CTRL_t;
-   attribute w of CORE_MGT_MGT_RX_RESETS_CTRL_t : type is 4;
+   attribute w of CORE_MGT_MGT_RX_RESETS_CTRL_t : type is 3;
    function width(x: CORE_MGT_MGT_RX_RESETS_CTRL_t) return natural;
    function convert(x: CORE_MGT_MGT_RX_RESETS_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_RX_RESETS_CTRL_t) return CORE_MGT_MGT_RX_RESETS_CTRL_t;
@@ -133,18 +131,19 @@ package CORE_CTRL is
    function convert(x: std_logic_vector_array; tpl: CORE_MGT_MGT_MON_t_ARRAY) return CORE_MGT_MGT_MON_t_ARRAY;
 
    type CORE_MGT_MGT_CTRL_t is record
+      RESET_ALL : std_logic;
       DRP : CORE_MGT_MGT_DRP_CTRL_t;
       TX_RESETS : CORE_MGT_MGT_TX_RESETS_CTRL_t;
       RX_RESETS : CORE_MGT_MGT_RX_RESETS_CTRL_t;
    end record CORE_MGT_MGT_CTRL_t;
-   attribute w of CORE_MGT_MGT_CTRL_t : type is 36;
+   attribute w of CORE_MGT_MGT_CTRL_t : type is 35;
    function width(x: CORE_MGT_MGT_CTRL_t) return natural;
    function convert(x: CORE_MGT_MGT_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_CTRL_t) return CORE_MGT_MGT_CTRL_t;
    function zero(tpl: CORE_MGT_MGT_CTRL_t) return CORE_MGT_MGT_CTRL_t;
 
    type CORE_MGT_MGT_CTRL_t_ARRAY is array(128 -1 downto 0) of CORE_MGT_MGT_CTRL_t;
-   attribute w of CORE_MGT_MGT_CTRL_t_ARRAY : type is 4608;
+   attribute w of CORE_MGT_MGT_CTRL_t_ARRAY : type is 4480;
    function width(x: CORE_MGT_MGT_CTRL_t_ARRAY) return integer;
    function convert(x: CORE_MGT_MGT_CTRL_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MGT_CTRL_t_ARRAY) return CORE_MGT_MGT_CTRL_t_ARRAY;
@@ -184,7 +183,7 @@ package CORE_CTRL is
    type CORE_MGT_CTRL_t is record
       MGT : CORE_MGT_MGT_CTRL_t_ARRAY;
    end record CORE_MGT_CTRL_t;
-   attribute w of CORE_MGT_CTRL_t : type is 4608;
+   attribute w of CORE_MGT_CTRL_t : type is 4480;
    function width(x: CORE_MGT_CTRL_t) return natural;
    function convert(x: CORE_MGT_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_CTRL_t) return CORE_MGT_CTRL_t;
@@ -204,7 +203,7 @@ package CORE_CTRL is
       CLOCKING : CORE_CLOCKING_CTRL_t;
       MGT : CORE_MGT_CTRL_t;
    end record CORE_CTRL_t;
-   attribute w of CORE_CTRL_t : type is 4609;
+   attribute w of CORE_CTRL_t : type is 4481;
    function width(x: CORE_CTRL_t) return natural;
    function convert(x: CORE_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_CTRL_t) return CORE_CTRL_t;
@@ -632,7 +631,6 @@ package body CORE_CTRL is
    function width(x: CORE_MGT_MGT_TX_RESETS_CTRL_t) return natural is
       variable w : natural := 0;
    begin
-      w := w + width(x.reset);
       w := w + width(x.reset_pll_and_datapath);
       w := w + width(x.reset_datapath);
       w := w + width(x.reset_bufbypass);
@@ -644,9 +642,6 @@ package body CORE_CTRL is
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.reset_pll_and_datapath);
          y(u to u+w-1) := convert(x.reset_pll_and_datapath, y(u to u+w-1));
          u := u + w;
@@ -656,9 +651,6 @@ package body CORE_CTRL is
          w := width(x.reset_bufbypass);
          y(u to u+w-1) := convert(x.reset_bufbypass, y(u to u+w-1));
       else
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
-         u := u - w;
          w := width(x.reset_pll_and_datapath);
          y(u downto u-w+1) := convert(x.reset_pll_and_datapath, y(u downto u-w+1));
          u := u - w;
@@ -676,9 +668,6 @@ package body CORE_CTRL is
       variable u : integer := x'left;
    begin
       if x'ascending then
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.reset_pll_and_datapath);
          y.reset_pll_and_datapath := convert(x(u to u+w-1), tpl.reset_pll_and_datapath);
          u := u + w;
@@ -688,9 +677,6 @@ package body CORE_CTRL is
          w := width(tpl.reset_bufbypass);
          y.reset_bufbypass := convert(x(u to u+w-1), tpl.reset_bufbypass);
       else
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
-         u := u - w;
          w := width(tpl.reset_pll_and_datapath);
          y.reset_pll_and_datapath := convert(x(u downto u-w+1), tpl.reset_pll_and_datapath);
          u := u - w;
@@ -710,7 +696,6 @@ package body CORE_CTRL is
    function width(x: CORE_MGT_MGT_RX_RESETS_CTRL_t) return natural is
       variable w : natural := 0;
    begin
-      w := w + width(x.reset);
       w := w + width(x.reset_pll_and_datapath);
       w := w + width(x.reset_datapath);
       w := w + width(x.reset_bufbypass);
@@ -722,9 +707,6 @@ package body CORE_CTRL is
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
-         w := width(x.reset);
-         y(u to u+w-1) := convert(x.reset, y(u to u+w-1));
-         u := u + w;
          w := width(x.reset_pll_and_datapath);
          y(u to u+w-1) := convert(x.reset_pll_and_datapath, y(u to u+w-1));
          u := u + w;
@@ -734,9 +716,6 @@ package body CORE_CTRL is
          w := width(x.reset_bufbypass);
          y(u to u+w-1) := convert(x.reset_bufbypass, y(u to u+w-1));
       else
-         w := width(x.reset);
-         y(u downto u-w+1) := convert(x.reset, y(u downto u-w+1));
-         u := u - w;
          w := width(x.reset_pll_and_datapath);
          y(u downto u-w+1) := convert(x.reset_pll_and_datapath, y(u downto u-w+1));
          u := u - w;
@@ -754,9 +733,6 @@ package body CORE_CTRL is
       variable u : integer := x'left;
    begin
       if x'ascending then
-         w := width(tpl.reset);
-         y.reset := convert(x(u to u+w-1), tpl.reset);
-         u := u + w;
          w := width(tpl.reset_pll_and_datapath);
          y.reset_pll_and_datapath := convert(x(u to u+w-1), tpl.reset_pll_and_datapath);
          u := u + w;
@@ -766,9 +742,6 @@ package body CORE_CTRL is
          w := width(tpl.reset_bufbypass);
          y.reset_bufbypass := convert(x(u to u+w-1), tpl.reset_bufbypass);
       else
-         w := width(tpl.reset);
-         y.reset := convert(x(u downto u-w+1), tpl.reset);
-         u := u - w;
          w := width(tpl.reset_pll_and_datapath);
          y.reset_pll_and_datapath := convert(x(u downto u-w+1), tpl.reset_pll_and_datapath);
          u := u - w;
@@ -1030,6 +1003,7 @@ package body CORE_CTRL is
    function width(x: CORE_MGT_MGT_CTRL_t) return natural is
       variable w : natural := 0;
    begin
+      w := w + width(x.RESET_ALL);
       w := w + width(x.DRP);
       w := w + width(x.TX_RESETS);
       w := w + width(x.RX_RESETS);
@@ -1041,6 +1015,9 @@ package body CORE_CTRL is
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
+         w := width(x.RESET_ALL);
+         y(u to u+w-1) := convert(x.RESET_ALL, y(u to u+w-1));
+         u := u + w;
          w := width(x.DRP);
          y(u to u+w-1) := convert(x.DRP, y(u to u+w-1));
          u := u + w;
@@ -1050,6 +1027,9 @@ package body CORE_CTRL is
          w := width(x.RX_RESETS);
          y(u to u+w-1) := convert(x.RX_RESETS, y(u to u+w-1));
       else
+         w := width(x.RESET_ALL);
+         y(u downto u-w+1) := convert(x.RESET_ALL, y(u downto u-w+1));
+         u := u - w;
          w := width(x.DRP);
          y(u downto u-w+1) := convert(x.DRP, y(u downto u-w+1));
          u := u - w;
@@ -1067,6 +1047,9 @@ package body CORE_CTRL is
       variable u : integer := x'left;
    begin
       if x'ascending then
+         w := width(tpl.RESET_ALL);
+         y.RESET_ALL := convert(x(u to u+w-1), tpl.RESET_ALL);
+         u := u + w;
          w := width(tpl.DRP);
          y.DRP := convert(x(u to u+w-1), tpl.DRP);
          u := u + w;
@@ -1076,6 +1059,9 @@ package body CORE_CTRL is
          w := width(tpl.RX_RESETS);
          y.RX_RESETS := convert(x(u to u+w-1), tpl.RX_RESETS);
       else
+         w := width(tpl.RESET_ALL);
+         y.RESET_ALL := convert(x(u downto u-w+1), tpl.RESET_ALL);
+         u := u - w;
          w := width(tpl.DRP);
          y.DRP := convert(x(u downto u-w+1), tpl.DRP);
          u := u - w;

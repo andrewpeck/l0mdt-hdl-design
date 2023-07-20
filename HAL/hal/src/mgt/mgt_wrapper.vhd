@@ -364,7 +364,11 @@ begin
           -- resets
           --------------------------------------------------------------------------------
 
-          reset => reset_tree(I),
+          reset => reset_tree(I) or
+                   ctrl.mgt(I).reset_all or
+                   ctrl.mgt(I+1).reset_all or
+                   ctrl.mgt(I+2).reset_all or
+                   ctrl.mgt(I+3).reset_all,
 
           reset_pll_and_datapath_i => ctrl.mgt(I).tx_resets.reset_pll_and_datapath or
                                       ctrl.mgt(I+1).tx_resets.reset_pll_and_datapath or
@@ -381,8 +385,16 @@ begin
                                          ctrl.mgt(I+2).rx_resets.reset_pll_and_datapath or
                                          ctrl.mgt(I+3).rx_resets.reset_pll_and_datapath,
 
-          reset_rx_datapath_i        => '0',
-          buffbypass_tx_reset_i      => '0',
+          reset_rx_datapath_i => ctrl.mgt(I).rx_resets.reset_datapath or
+                                 ctrl.mgt(I+1).rx_resets.reset_datapath or
+                                 ctrl.mgt(I+2).rx_resets.reset_datapath or
+                                 ctrl.mgt(I+3).rx_resets.reset_datapath,
+
+          buffbypass_tx_reset_i => ctrl.mgt(I).tx_resets.reset_bufbypass or
+                                   ctrl.mgt(I+1).tx_resets.reset_bufbypass or
+                                   ctrl.mgt(I+2).tx_resets.reset_bufbypass or
+                                   ctrl.mgt(I+3).tx_resets.reset_bufbypass,
+
           buffbypass_tx_start_user_i => '0',
 
           --------------------------------------------------------------------------------
