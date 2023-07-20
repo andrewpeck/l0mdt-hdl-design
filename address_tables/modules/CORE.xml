@@ -12,8 +12,6 @@ control logic should run NOT on this asynchronous domain -->
     <node id="CLK40_FREQ"  mask="0xffffffff" address="0x2" permission="r"  description="LHC 40MHz clock freq"/>
     <node id="CLK320_FREQ" mask="0xffffffff" address="0x3" permission="r"  description="LHC 320MHz clock freq "/>
     <node id="CLK50_FREQ"  mask="0xffffffff" address="0x4" permission="r"  description="System 50 MHz clock freq"/>
-    <node id="CLK100_FREQ" mask="0xffffffff" address="0x5" permission="r"  description="System 100 MHz clock freq"/>
-    <node id="CLK200_FREQ" mask="0xffffffff" address="0x6" permission="r"  description="System 200 MHz clock freq"/>
   </node>
 
   <node id="MGT" address="0x0010" permission="rw" >

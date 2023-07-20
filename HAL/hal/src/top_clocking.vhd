@@ -40,22 +40,30 @@ entity top_clocking is
     );
   port (
 
-    reset_i : in std_logic;
+    reset_lhc_mmcm_i : in std_logic;
 
-    -- ASYNC clock to BUFG
+    -- ASYNC clock in for AXI
+
     clock_async_i_p : in std_logic;
     clock_async_i_n : in std_logic;
 
     -- 40MHz programmable LHC clock
+
     clock_i_p : in std_logic;
     clock_i_n : in std_logic;
 
-    --
-    clocks_o : out system_clocks_rt;
+    -- Clock Outputs
+
+    lhc_locked_o      : out std_logic;
+    b2b_locked_o      : out std_logic;
+    axiclock_o        : out std_logic;
+    clock40_o         : out std_logic;
+    clock320_o        : out std_logic;
+    clock_userlogic_o : out std_logic;
+
+    -- Frequency Monitors
 
     clk50_freq  : out std_logic_vector (31 downto 0);
-    clk100_freq : out std_logic_vector (31 downto 0);
-    clk200_freq : out std_logic_vector (31 downto 0);
 
     clk40_freq  : out std_logic_vector (31 downto 0);
     clk320_freq : out std_logic_vector (31 downto 0)
@@ -66,11 +74,9 @@ end entity top_clocking;
 
 architecture behavioral of top_clocking is
 
-  signal clk50, clk100, clk200, clk40, clk320, clkpipe : std_logic;
-  signal locked_clk50                                  : std_logic;
-  signal clock_async_ibufds                            : std_logic;
-  signal clock_async_i                                 : std_logic;
-  signal clock_async                                   : std_logic;
+  signal clk50, clk40, clk320 : std_logic;
+  signal clock_async_i        : std_logic;
+  signal clock_async          : std_logic;
 
   component onboardclk
     port (
@@ -103,12 +109,10 @@ begin  -- architecture behavioral
   -- Port Aliasing
   --------------------------------------------------------------------------------
 
-  clocks_o.axiclock       <= clk50;
-  clocks_o.clock40        <= clk40;
-  clocks_o.clock320       <= clk320;
-  clocks_o.freeclock      <= clk50;
-  clocks_o.clock_pipeline <= clkpipe;
-  clocks_o.b2b_locked     <= locked_clk50;
+  axiclock_o        <= clk50;
+  clock40_o         <= clk40;
+  clock320_o        <= clk320;
+  clock_userlogic_o <= clk320;
 
   --------------------------------------------------------------------------------
   -- ASYNC + 50MHz free-running clocks
@@ -129,11 +133,11 @@ begin  -- architecture behavioral
 
   pll_clk50_inst : onboardclk
     port map (
-      clk_200MHz => clk200,
-      clk_100Mhz => clk100,
+      clk_200MHz => open,
+      clk_100Mhz => open,
       clk_50Mhz  => clk50,
       reset      => '0',
-      locked     => locked_clk50,
+      locked     => b2b_locked_o,
       clk_in1    => clock_async
     );
 
@@ -145,13 +149,11 @@ begin  -- architecture behavioral
     port map (
       clk_in1_p => clock_i_p,
       clk_in1_n => clock_i_n,
-      reset     => reset_i,
+      reset     => reset_lhc_mmcm_i,
       clk320_o  => clk320,
       clk40_o   => clk40,
-      locked_o  => clocks_o.lhc_locked
+      locked_o  => lhc_locked_o
       );
-
-  clkpipe <= clk320;
 
   -- Counters to measure the clk frequency of clk_b from a known clk_a
   clk320_frequency : entity work.clk_frequency
@@ -179,24 +181,6 @@ begin  -- architecture behavioral
       clk_a => clk50,
       clk_b => clk50,
       rate  => clk50_freq
-      );
-
-  clk100_frequency : entity work.clk_frequency
-    generic map (clk_a_freq => 50_000_000)
-    port map (
-      reset => '0',
-      clk_a => clk50,
-      clk_b => clk100,
-      rate  => clk100_freq
-      );
-
-  clk200_frequency : entity work.clk_frequency
-    generic map (clk_a_freq => 50_000_000)
-    port map (
-      reset => '0',
-      clk_a => clk50,
-      clk_b => clk200,
-      rate  => clk200_freq
       );
 
 end architecture behavioral;

@@ -119,10 +119,6 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK320_FREQ;                             --LHC 320MHz clock freq 
         when 4 => --0x4
           localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK50_FREQ;                              --System 50 MHz clock freq
-        when 5 => --0x5
-          localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK100_FREQ;                             --System 100 MHz clock freq
-        when 6 => --0x6
-          localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK200_FREQ;                             --System 200 MHz clock freq
         when 16 => --0x10
           localRdData( 0)            <=  Mon.MGT.MGT(0).STATUS.rxcdr_stable;                   --rxcdr_stable
           localRdData( 1)            <=  Mon.MGT.MGT(0).STATUS.powergood;                      --powergood

@@ -18,10 +18,8 @@ package CORE_CTRL is
       CLK40_FREQ : std_logic_vector(32 - 1 downto 0);
       CLK320_FREQ : std_logic_vector(32 - 1 downto 0);
       CLK50_FREQ : std_logic_vector(32 - 1 downto 0);
-      CLK100_FREQ : std_logic_vector(32 - 1 downto 0);
-      CLK200_FREQ : std_logic_vector(32 - 1 downto 0);
    end record CORE_CLOCKING_MON_t;
-   attribute w of CORE_CLOCKING_MON_t : type is 161;
+   attribute w of CORE_CLOCKING_MON_t : type is 97;
    function width(x: CORE_CLOCKING_MON_t) return natural;
    function convert(x: CORE_CLOCKING_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_CLOCKING_MON_t) return CORE_CLOCKING_MON_t;
@@ -193,7 +191,7 @@ package CORE_CTRL is
       CLOCKING : CORE_CLOCKING_MON_t;
       MGT : CORE_MGT_MON_t;
    end record CORE_MON_t;
-   attribute w of CORE_MON_t : type is 6817;
+   attribute w of CORE_MON_t : type is 6753;
    function width(x: CORE_MON_t) return natural;
    function convert(x: CORE_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MON_t) return CORE_MON_t;
@@ -232,8 +230,6 @@ package body CORE_CTRL is
       w := w + width(x.CLK40_FREQ);
       w := w + width(x.CLK320_FREQ);
       w := w + width(x.CLK50_FREQ);
-      w := w + width(x.CLK100_FREQ);
-      w := w + width(x.CLK200_FREQ);
       return w;
    end function width;
    function convert(x: CORE_CLOCKING_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -253,12 +249,6 @@ package body CORE_CTRL is
          u := u + w;
          w := width(x.CLK50_FREQ);
          y(u to u+w-1) := convert(x.CLK50_FREQ, y(u to u+w-1));
-         u := u + w;
-         w := width(x.CLK100_FREQ);
-         y(u to u+w-1) := convert(x.CLK100_FREQ, y(u to u+w-1));
-         u := u + w;
-         w := width(x.CLK200_FREQ);
-         y(u to u+w-1) := convert(x.CLK200_FREQ, y(u to u+w-1));
       else
          w := width(x.MMCM_LOCKED);
          y(u downto u-w+1) := convert(x.MMCM_LOCKED, y(u downto u-w+1));
@@ -271,12 +261,6 @@ package body CORE_CTRL is
          u := u - w;
          w := width(x.CLK50_FREQ);
          y(u downto u-w+1) := convert(x.CLK50_FREQ, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.CLK100_FREQ);
-         y(u downto u-w+1) := convert(x.CLK100_FREQ, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.CLK200_FREQ);
-         y(u downto u-w+1) := convert(x.CLK200_FREQ, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -297,12 +281,6 @@ package body CORE_CTRL is
          u := u + w;
          w := width(tpl.CLK50_FREQ);
          y.CLK50_FREQ := convert(x(u to u+w-1), tpl.CLK50_FREQ);
-         u := u + w;
-         w := width(tpl.CLK100_FREQ);
-         y.CLK100_FREQ := convert(x(u to u+w-1), tpl.CLK100_FREQ);
-         u := u + w;
-         w := width(tpl.CLK200_FREQ);
-         y.CLK200_FREQ := convert(x(u to u+w-1), tpl.CLK200_FREQ);
       else
          w := width(tpl.MMCM_LOCKED);
          y.MMCM_LOCKED := convert(x(u downto u-w+1), tpl.MMCM_LOCKED);
@@ -315,12 +293,6 @@ package body CORE_CTRL is
          u := u - w;
          w := width(tpl.CLK50_FREQ);
          y.CLK50_FREQ := convert(x(u downto u-w+1), tpl.CLK50_FREQ);
-         u := u - w;
-         w := width(tpl.CLK100_FREQ);
-         y.CLK100_FREQ := convert(x(u downto u-w+1), tpl.CLK100_FREQ);
-         u := u - w;
-         w := width(tpl.CLK200_FREQ);
-         y.CLK200_FREQ := convert(x(u downto u-w+1), tpl.CLK200_FREQ);
       end if;
       return y;
    end function convert;

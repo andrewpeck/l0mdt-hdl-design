@@ -25,7 +25,9 @@ entity mgt_wrapper is
   port(
 
     -- Clock
-    clocks : in system_clocks_rt;
+    axiclock   : in std_logic;
+    clock320   : in std_logic;
+    lhc_locked : in std_logic;
 
     -- Reset
     reset : in std_logic;
@@ -157,9 +159,9 @@ begin
   -- Reset Tree
   --------------------------------------------------------------------------------
 
-  reset_fanout : process (clocks.freeclock) is
+  reset_fanout : process (axiclock) is
   begin  -- process reset_fanout
-    if rising_edge(clocks.freeclock) then  -- rising clock edge
+    if rising_edge(axiclock) then  -- rising clock edge
       reset_tree <= (others => reset);
     end if;
   end process reset_fanout;
@@ -235,9 +237,9 @@ begin
   -- Buffering
   --------------------------------------------------------------------------------
 
-  process (clocks.axiclock) is
+  process (axiclock) is
   begin
-    if (rising_edge(clocks.axiclock)) then
+    if (rising_edge(axiclock)) then
       status_d                                  <= status;
       status_2d                                 <= status_d;
     end if;
@@ -256,12 +258,12 @@ begin
     mon.mgt(I).config.x_loc    <= std_logic_vector(to_unsigned(c_MGT_MAP(I).x_loc, 2));
     mon.mgt(I).config.y_loc    <= std_logic_vector(to_unsigned(c_MGT_MAP(I).y_loc, 6));
 
-    drp_i(I).drpclk_in(0) <= clocks.axiclock;  -- 50MHz from MMCM
+    drp_i(I).drpclk_in(0) <= axiclock;  -- 50MHz from MMCM
 
     -- some of these are crossing clock domains so add one ff to help metastability
-    process (clocks.axiclock) is
+    process (axiclock) is
     begin
-      if (rising_edge(clocks.axiclock)) then
+      if (rising_edge(axiclock)) then
 
         mon.mgt(I).status.rxcdr_stable            <= status_2d(I).rxcdr_stable;
         mon.mgt(I).status.powergood               <= status_2d(I).powergood;
@@ -402,17 +404,17 @@ begin
           --------------------------------------------------------------------------------
 
           -- drp clock
-          free_clock => clocks.freeclock,
+          free_clock => axiclock,
 
           -- refclks
           refclk0_i => refclk(c_MGT_MAP(I).refclk),
           refclk1_i => refclk(c_MGT_MAP(I).refclk),
 
           -- user clocks
-          mgt_rxusrclk_i        => clocks.clock320,
-          mgt_txusrclk_i        => clocks.clock320,
-          mgt_rxusrclk_active_i => clocks.lhc_locked,  -- FIXME: this should come from something else for the felix link
-          mgt_txusrclk_active_i => clocks.lhc_locked,
+          mgt_rxusrclk_i        => clock320,
+          mgt_txusrclk_i        => clock320,
+          mgt_rxusrclk_active_i => lhc_locked,  -- FIXME: this should come from something else for the felix link
+          mgt_txusrclk_active_i => lhc_locked,
 
           -- outputs
           qpll0outclk_out    => open,
@@ -546,7 +548,7 @@ begin
       MGT_INST : entity work.mgt_sl_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
-          clock          => clocks.freeclock,  -- FIXME: check this clock frequency against IP core
+          clock          => axiclock,  -- FIXME: check this clock frequency against IP core
           reset_i        => reset_tree(I),
           mgt_refclk_i_p => refclk_i_p(c_MGT_MAP(I).refclk),
           mgt_refclk_i_n => refclk_i_n(c_MGT_MAP(I).refclk),
@@ -634,7 +636,7 @@ begin
           )
         port map (
           reset => reset,
-          clk_a => clocks.axiclock,
+          clk_a => axiclock,
           clk_b => refclk_bufg(I),
           rate  => clk_freq
           );

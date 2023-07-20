@@ -18,17 +18,6 @@ package system_types_pkg is
     clock_pipeline : std_logic;
   end record;
 
-  type system_clocks_rt is record
-    sl_locked      : std_logic;
-    lhc_locked    : std_logic;
-    b2b_locked    : std_logic;      
-    freeclock      : std_logic;
-    axiclock       : std_logic;
-    clock40        : std_logic;
-    clock320       : std_logic;
-    clock_pipeline : std_logic;
-  end record;
-
   type TTS_CMD_rt is record
     backpressure : std_logic;
   end record;
