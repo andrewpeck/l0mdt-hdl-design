@@ -137,10 +137,12 @@ entity top_hal is
     Core_Mon  : out CORE_MON_t;
     Core_Ctrl : in  CORE_CTRL_t;
 
-    clk50_o     : out std_logic; -- Axi
-    clk320_o    : out std_logic; -- 
-    clk40_o     : out std_logic;
-    b2b_reset_n : out std_logic;
+    clk50_o      : out std_logic;       -- Axi
+    clk320_o     : out std_logic;       --
+    clk40_o      : out std_logic;
+    lhc_locked_o : out std_logic;
+    b2b_locked_o : out std_logic;
+
     --sump--------------------------------------------------------------------------
     sump : out std_logic
 
@@ -257,10 +259,11 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
   global_reset <= not(clocks.lhc_locked);
-  clk50_o      <= clocks.axiclock; -- AXI
-  clk320_o     <= clocks.clock320; -- Not used, remove it?
-  clk40_o      <= clocks.clock40; -- LHC
-  b2b_reset_n  <= clocks.b2b_locked; -- B2B = C2C = SM-CM
+  clk50_o      <= clocks.axiclock;      -- AXI
+  clk320_o     <= clocks.clock320;      -- Not used, remove it?
+  clk40_o      <= clocks.clock40;       -- LHC
+  b2b_locked_o <= clocks.b2b_locked;    -- B2B = C2C = SM-CM
+  lhc_locked_o <= clocks.lhc_locked;
 
   --------------------------------------------------------------------------------
   -- AXI Interface

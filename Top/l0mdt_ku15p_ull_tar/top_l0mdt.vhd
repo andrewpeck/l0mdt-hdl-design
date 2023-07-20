@@ -45,93 +45,99 @@ use xil_defaultlib.all;
 entity top_l0mdt is
   generic (
     -- these generics get set by hog at synthesis
-    GLOBAL_DATE       : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_TIME       : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_VER        : std_logic_vector (31 downto 0) := x"00000000";
-    OFFICIAL          : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_SHA        : std_logic_vector (31 downto 0) := x"00000000";
-    TOP_SHA           : std_logic_vector (31 downto 0) := x"00000000";
-    XML_SHA           : std_logic_vector (31 downto 0) := x"00000000";
-    XML_VER           : std_logic_vector (31 downto 0) := x"00000000";
-    TOP_VER           : std_logic_vector (31 downto 0) := x"00000000";
-    HOG_SHA           : std_logic_vector (31 downto 0) := x"00000000";
-    FRAMEWORK_VER     : std_logic_vector (31 downto 0) := x"00000000";
-    FRAMEWORK_SHA     : std_logic_vector (31 downto 0) := x"00000000";
-    HOG_VER           : std_logic_vector (31 downto 0) := x"00000000";
-    CON_VER           : std_logic_vector (31 downto 0) := x"00000000";
-    CON_SHA           : std_logic_vector (31 downto 0) := x"00000000";
+    GLOBAL_DATE            : std_logic_vector (31 downto 0) := x"00000000";
+    GLOBAL_TIME            : std_logic_vector (31 downto 0) := x"00000000";
+    GLOBAL_VER             : std_logic_vector (31 downto 0) := x"00000000";
+    OFFICIAL               : std_logic_vector (31 downto 0) := x"00000000";
+    GLOBAL_SHA             : std_logic_vector (31 downto 0) := x"00000000";
+    TOP_SHA                : std_logic_vector (31 downto 0) := x"00000000";
+    XML_SHA                : std_logic_vector (31 downto 0) := x"00000000";
+    XML_VER                : std_logic_vector (31 downto 0) := x"00000000";
+    TOP_VER                : std_logic_vector (31 downto 0) := x"00000000";
+    HOG_SHA                : std_logic_vector (31 downto 0) := x"00000000";
+    FRAMEWORK_VER          : std_logic_vector (31 downto 0) := x"00000000";
+    FRAMEWORK_SHA          : std_logic_vector (31 downto 0) := x"00000000";
+    HOG_VER                : std_logic_vector (31 downto 0) := x"00000000";
+    CON_VER                : std_logic_vector (31 downto 0) := x"00000000";
+    CON_SHA                : std_logic_vector (31 downto 0) := x"00000000";
     -- Library versions and SHAs
-    PROJECT_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    PROJECT_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    CTRL_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    CTRL_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    SHARED_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    SHARED_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    SHARED_CFG_DEF_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    SHARED_CFG_DEF_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    HEG_ROI_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    HEG_ROI_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    APBUS_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    APBUS_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    VAMC_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    VAMC_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    L0MDT_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    L0MDT_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    TDC_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    TDC_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    HAL_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    HAL_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    GBT_SC_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    GBT_SC_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    LPGBT_EMUL_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    LPGBT_EMUL_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    LPGBT_FPGA_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    LPGBT_FPGA_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    SL_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    SL_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    HP_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    HP_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    MPL_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    MPL_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    ULT_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    ULT_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    UCM_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    UCM_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    HEG_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    HEG_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    HPS_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    HPS_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    TAR_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    TAR_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    MTC_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    MTC_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    FM_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    FM_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    DAQ_CORE_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    DAQ_CORE_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    DAQ_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    DAQ_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    CSF_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    CSF_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    LSF_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    LSF_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    PTC_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    PTC_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    UPT_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    UPT_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    KU15P_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    KU15P_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    OTHERS_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    OTHERS_SHA      : std_logic_vector (31 downto 0) := x"00000000";
-    DP_REPO_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    DP_REPO_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000"
+    PROJECT_LIB_VER        : std_logic_vector (31 downto 0) := x"00000000";
+    PROJECT_LIB_SHA        : std_logic_vector (31 downto 0) := x"00000000";
+    CTRL_LIB_VER           : std_logic_vector (31 downto 0) := x"00000000";
+    CTRL_LIB_SHA           : std_logic_vector (31 downto 0) := x"00000000";
+    SHARED_LIB_VER         : std_logic_vector (31 downto 0) := x"00000000";
+    SHARED_LIB_SHA         : std_logic_vector (31 downto 0) := x"00000000";
+    SHARED_CFG_DEF_LIB_VER : std_logic_vector (31 downto 0) := x"00000000";
+    SHARED_CFG_DEF_LIB_SHA : std_logic_vector (31 downto 0) := x"00000000";
+    HEG_ROI_LIB_VER        : std_logic_vector (31 downto 0) := x"00000000";
+    HEG_ROI_LIB_SHA        : std_logic_vector (31 downto 0) := x"00000000";
+    APBUS_LIB_VER          : std_logic_vector (31 downto 0) := x"00000000";
+    APBUS_LIB_SHA          : std_logic_vector (31 downto 0) := x"00000000";
+    VAMC_LIB_VER           : std_logic_vector (31 downto 0) := x"00000000";
+    VAMC_LIB_SHA           : std_logic_vector (31 downto 0) := x"00000000";
+    L0MDT_VER              : std_logic_vector (31 downto 0) := x"00000000";
+    L0MDT_SHA              : std_logic_vector (31 downto 0) := x"00000000";
+    TDC_VER                : std_logic_vector (31 downto 0) := x"00000000";
+    TDC_SHA                : std_logic_vector (31 downto 0) := x"00000000";
+    HAL_VER                : std_logic_vector (31 downto 0) := x"00000000";
+    HAL_SHA                : std_logic_vector (31 downto 0) := x"00000000";
+    GBT_SC_VER             : std_logic_vector (31 downto 0) := x"00000000";
+    GBT_SC_SHA             : std_logic_vector (31 downto 0) := x"00000000";
+    LPGBT_EMUL_VER         : std_logic_vector (31 downto 0) := x"00000000";
+    LPGBT_EMUL_SHA         : std_logic_vector (31 downto 0) := x"00000000";
+    LPGBT_FPGA_VER         : std_logic_vector (31 downto 0) := x"00000000";
+    LPGBT_FPGA_SHA         : std_logic_vector (31 downto 0) := x"00000000";
+    SL_VER                 : std_logic_vector (31 downto 0) := x"00000000";
+    SL_SHA                 : std_logic_vector (31 downto 0) := x"00000000";
+    HP_LIB_VER             : std_logic_vector (31 downto 0) := x"00000000";
+    HP_LIB_SHA             : std_logic_vector (31 downto 0) := x"00000000";
+    MPL_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    MPL_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    ULT_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    ULT_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    UCM_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    UCM_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    HEG_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    HEG_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    HPS_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    HPS_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    TAR_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    TAR_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    MTC_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    MTC_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    FM_LIB_VER             : std_logic_vector (31 downto 0) := x"00000000";
+    FM_LIB_SHA             : std_logic_vector (31 downto 0) := x"00000000";
+    DAQ_CORE_VER           : std_logic_vector (31 downto 0) := x"00000000";
+    DAQ_CORE_SHA           : std_logic_vector (31 downto 0) := x"00000000";
+    DAQ_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    DAQ_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    CSF_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    CSF_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    LSF_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    LSF_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    PTC_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    PTC_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    UPT_LIB_VER            : std_logic_vector (31 downto 0) := x"00000000";
+    UPT_LIB_SHA            : std_logic_vector (31 downto 0) := x"00000000";
+    KU15P_VER              : std_logic_vector (31 downto 0) := x"00000000";
+    KU15P_SHA              : std_logic_vector (31 downto 0) := x"00000000";
+    OTHERS_VER             : std_logic_vector (31 downto 0) := x"00000000";
+    OTHERS_SHA             : std_logic_vector (31 downto 0) := x"00000000";
+    DP_REPO_LIB_VER        : std_logic_vector (31 downto 0) := x"00000000";
+    DP_REPO_LIB_SHA        : std_logic_vector (31 downto 0) := x"00000000"
     );
   port (
---------------------------------------------------------------------------------
+
+    --------------------------------------------------------------------------------
     -- MGT
+    --------------------------------------------------------------------------------
+
     -- MGT links are set through LOC constraints and not routed to the top level
+
     --------------------------------------------------------------------------------
     -- ref clocks
+    --------------------------------------------------------------------------------
+
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
@@ -144,42 +150,26 @@ entity top_l0mdt is
 
     tc_clk_o_p : out std_logic;
     tc_clk_o_n : out std_logic;
-    
+
     --------------------------------------------------------------------------------
     -- AXI C2C
     --------------------------------------------------------------------------------
 
+    -- Async system clock (100 MHz demo, 200MHz prototype)
     clock_async_i_p : in std_logic;
-    clock_async_i_n : in std_logic;           -- Async system clock (100 MHz demo, 200MHz prototype)
-    
+    clock_async_i_n : in std_logic;
+
     c2c_rxn : in  std_logic;
     c2c_rxp : in  std_logic;
     c2c_txn : out std_logic;
     c2c_txp : out std_logic;
 
-    c2cb_rxn    : in  std_logic;
-    c2cb_rxp    : in  std_logic;
-    c2cb_txn    : out std_logic;
-    c2cb_txp    : out std_logic;
-
---    c2c_refclkp : in  std_logic;
---    c2c_refclkn : in  std_logic;
-    --------------------------------------------------------------------------------
-    -- Other IO
-    --------------------------------------------------------------------------------
-
-    --sys_mgmt_scl : inout std_logic;
-    --sys_mgmt_sda : inout std_logic;
-
-    -- cornell only
-    --cornell_cm_led_o : out std_logic_vector (c_NUM_CORNELL_LEDS-1 downto 0);
-
-    -- mpi only
-    --ddr_blahblah_in  : in std_logic_vector(c_NUM_DDR_INPUTS-1 downto 0);
-    --ddr_blahblah_out : out std_logic_vector(c_NUM_DDR_OUTPUTS-1 downto 0);
+    c2cb_rxn : in  std_logic;
+    c2cb_rxp : in  std_logic;
+    c2cb_txn : out std_logic;
+    c2cb_txp : out std_logic;
 
     -- etc
-
     sump : out std_logic
 
     );
@@ -187,14 +177,18 @@ end top_l0mdt;
 
 architecture structural of top_l0mdt is
   
-  --
+  --------------------------------------------------------------------------------
+  -- Clock + TTC
+  --------------------------------------------------------------------------------
+
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
   -- TO-DO: Trigger Throttling System (to signal FELIX about full DAQ buffers) 
-
   -- signal tts_commands          : TTS_CMD_rt;
 
-  -- hal <--> ult
+  --------------------------------------------------------------------------------
+  -- HAL <--> ULT
+  --------------------------------------------------------------------------------
 
   signal inner_tdc_hits  : tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
   signal middle_tdc_hits : tdcpolmux2tar_avt(c_HPS_MAX_HP_MID -1 downto 0);
@@ -227,18 +221,19 @@ architecture structural of top_l0mdt is
   signal mtc : mtc_out_avt(c_NUM_MTC-1 downto 0);
   signal nsp : mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
-  -- AXI
+  --------------------------------------------------------------------------------
+  -- AXI Clocks + Reset
+  --------------------------------------------------------------------------------
 
-  signal axi_clk : std_logic;
-  signal clk320  : std_logic;
-  signal clk40   : std_logic;
-  signal b2b_reset_n : std_logic;
-  signal clk_200         : std_logic;
-  signal clk_50          : std_logic;
-  signal locked_clk200   : std_logic;
-  signal axi_reset_n : std_logic;
+  signal clk40       : std_logic;       -- 40 MHZ LHC clock for AXI slaves
+  signal clk_50      : std_logic;       -- 50 MHz AXI clock for AXI slaves
+  signal lhc_locked  : std_logic;       -- LHC clock is locked; used to reset the AXI logic
+  signal b2b_locked  : std_logic;       -- Active low reset to C2C link, provided by the MMCM that receives the 100 or 200 MHz axi clock
+  signal axi_reset_n : std_logic;       -- Asynchronous, active low reset output from the c2c link
 
+  --------------------------------------------------------------------------------
   -- Control and Monitoring Records
+  --------------------------------------------------------------------------------
 
   signal hps_inn_mon_r  : HPS_MON_t;
   signal hps_inn_ctrl_r : HPS_CTRL_t;
@@ -258,22 +253,21 @@ architecture structural of top_l0mdt is
   signal tar_ext_mon_r  : TAR_MON_t;
   signal tar_ext_ctrl_r : TAR_CTRL_t;
 
-  signal mtc_ctrl_r : MTC_CTRL_t;
-  signal mtc_mon_r  : MTC_MON_t;
-  signal ucm_ctrl_r : UCM_CTRL_t;
-  signal ucm_mon_r  : UCM_MON_t;
-  signal daq_ctrl_r : DAQ_CTRL_t;
-  signal daq_mon_r  : DAQ_MON_t;
-  signal tf_ctrl_r  : TF_CTRL_t;
-  signal tf_mon_r   : TF_MON_t;
-  signal mpl_mon_r  : MPL_MON_t;
-  signal mpl_ctrl_r : MPL_CTRL_t;
-  signal hog_mon_r    : HOG_MON_t;
+  signal mtc_ctrl_r    : MTC_CTRL_t;
+  signal mtc_mon_r     : MTC_MON_t;
+  signal ucm_ctrl_r    : UCM_CTRL_t;
+  signal ucm_mon_r     : UCM_MON_t;
+  signal daq_ctrl_r    : DAQ_CTRL_t;
+  signal daq_mon_r     : DAQ_MON_t;
+  signal tf_ctrl_r     : TF_CTRL_t;
+  signal tf_mon_r      : TF_MON_t;
+  signal mpl_mon_r     : MPL_MON_t;
+  signal mpl_ctrl_r    : MPL_CTRL_t;
+  signal hog_mon_r     : HOG_MON_t;
   signal fw_info_mon_r : FW_INFO_MON_t;
 
   signal fm_mon_r  : FM_MON_t;
   signal fm_ctrl_r : FM_CTRL_t;
-
 
   signal hps_inn_ctrl_v : std_logic_vector(width(hps_inn_ctrl_r) -1 downto 0);
   signal hps_inn_mon_v  : std_logic_vector(width(hps_inn_mon_r) -1 downto 0);
@@ -306,7 +300,6 @@ architecture structural of top_l0mdt is
 
   signal fm_mon_v  : std_logic_vector(width(fm_mon_r) -1 downto 0);
   signal fm_ctrl_v : std_logic_vector(width(fm_ctrl_r) -1 downto 0);
-  --
 
   signal hal_mon_r  : HAL_MON_t;
   signal hal_ctrl_r : HAL_CTRL_t;
@@ -314,13 +307,12 @@ architecture structural of top_l0mdt is
   signal CORE_mon_r  : CORE_MON_t;
   signal CORE_ctrl_r : CORE_CTRL_t;
 
-
-  -- sumps
+  --------------------------------------------------------------------------------
+  -- Sumps
+  --------------------------------------------------------------------------------
 
   signal hal_sump  : std_logic;
   signal user_sump : std_logic;
-
-  constant ZERO : std_logic := '0';
 
 begin
 
@@ -351,6 +343,9 @@ begin
       refclk_i_p      => refclk_i_p,
       refclk_i_n      => refclk_i_n,
 
+      lhc_locked_o    => lhc_locked,
+      b2b_locked_o    => b2b_locked,
+
       -- clocks to user logic
       clock_and_control_o => clock_and_control,
       ttc_commands_o      => ttc_commands,
@@ -377,12 +372,10 @@ begin
 
       -- AXI
 
-      clk320_o => clk320,
       clk40_o  => clk40,
 
       clk50_o => clk_50, 
 
-      b2b_reset_n => b2b_reset_n,
       core_ctrl => CORE_ctrl_r,
       core_mon  => CORE_mon_r,
 
@@ -398,9 +391,7 @@ begin
       );
 
   ult_inst : entity ult_lib.ult
-    generic map (
-      DUMMY => false
-      )
+    generic map (DUMMY => false)
     port map (
       clock_and_control => clock_and_control,
       axi_reset_n       => axi_reset_n,
@@ -498,12 +489,6 @@ begin
   fm_ctrl_v      <= convert(fm_ctrl_r, fm_ctrl_v);
   fm_mon_r       <= convert(fm_mon_v, fm_mon_r);
 
-
-
-
-
-
-  
   top_control_inst : entity work.top_control
     port map (
 
@@ -513,12 +498,12 @@ begin
       c2c_txn     => c2c_txn,
       c2c_txp     => c2c_txp,
 
-      c2cb_rxn     => c2cb_rxn,
-      c2cb_rxp     => c2cb_rxp,
-      c2cb_txn     => c2cb_txn,
-      c2cb_txp     => c2cb_txp,
-      c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC), -- c2c_refclkp, 
-      c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC), --c2c_refclkn,
+      c2cb_rxn    => c2cb_rxn,
+      c2cb_rxp    => c2cb_rxp,
+      c2cb_txn    => c2cb_txn,
+      c2cb_txp    => c2cb_txp,
+      c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC),  -- c2c_refclkp,
+      c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC),  --c2c_refclkn,
       axi_reset_n => axi_reset_n,
       
       -- START: ULT_IO :: DO NOT EDIT
@@ -537,8 +522,8 @@ begin
       clkpipe                 => clock_and_control.clk,
       axi_clk                 => clk_50, 
       clk50mhz                => clk_50,
-      clk40_rstn              => not(clock_and_control.rst),
-      reset_n                 => b2b_reset_n,
+      clk40_rstn              => lhc_locked and b2b_locked,
+      reset_n                 => b2b_locked,
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
       --sys_mgmt_scl            => sys_mgmt_scl,
@@ -547,16 +532,16 @@ begin
       sys_mgmt_vccint_alarm   => open
       );
 
-    hog_mon_r.HOG_INFO.GLOBAL_DATE <= GLOBAL_DATE;
-    hog_mon_r.HOG_INFO.GLOBAL_TIME <= GLOBAL_TIME;
-    hog_mon_r.HOG_INFO.GLOBAL_VER <= GLOBAL_VER;
-    hog_mon_r.HOG_INFO.GLOBAL_SHA <= GLOBAL_SHA;
-    hog_mon_r.HOG_INFO.TOP_SHA <= TOP_SHA;
-    hog_mon_r.HOG_INFO.TOP_VER <= TOP_VER;
-    hog_mon_r.HOG_INFO.HOG_SHA <= HOG_SHA;
-    hog_mon_r.HOG_INFO.HOG_VER <= HOG_VER;
-    hog_mon_r.HOG_INFO.CON_SHA <= CON_SHA;
-    hog_mon_r.HOG_INFO.CON_VER <= CON_VER;
+    hog_mon_r.HOG_INFO.GLOBAL_DATE     <= GLOBAL_DATE;
+    hog_mon_r.HOG_INFO.GLOBAL_TIME     <= GLOBAL_TIME;
+    hog_mon_r.HOG_INFO.GLOBAL_VER      <= GLOBAL_VER;
+    hog_mon_r.HOG_INFO.GLOBAL_SHA      <= GLOBAL_SHA;
+    hog_mon_r.HOG_INFO.TOP_SHA         <= TOP_SHA;
+    hog_mon_r.HOG_INFO.TOP_VER         <= TOP_VER;
+    hog_mon_r.HOG_INFO.HOG_SHA         <= HOG_SHA;
+    hog_mon_r.HOG_INFO.HOG_VER         <= HOG_VER;
+    hog_mon_r.HOG_INFO.CON_SHA         <= CON_SHA;
+    hog_mon_r.HOG_INFO.CON_VER         <= CON_VER;
     hog_mon_r.HOG_INFO.PROJECT_LIB_SHA <= PROJECT_LIB_SHA;
     hog_mon_r.HOG_INFO.PROJECT_LIB_VER <= PROJECT_LIB_VER;
 
@@ -596,7 +581,6 @@ begin
       sump <= hal_sump xor user_sump;
     end if;
   end process;
-
 
 end structural;
 
