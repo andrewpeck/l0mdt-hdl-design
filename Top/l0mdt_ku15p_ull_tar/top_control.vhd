@@ -47,31 +47,34 @@ use xil_defaultlib.all;
 
 entity top_control is
   port (
-    -- axi
-    axi_clk : in std_logic;
-    clk320  : in std_logic;
-    clk40   : in std_logic;
-    clkpipe : in std_logic;
 
-    -- system clock
+    -- clocks
+    axi_clk  : in std_logic;
+    clk40    : in std_logic;
+    clkpipe  : in std_logic;
     clk50mhz : in std_logic;
-    clk40_rstn  : in std_logic;
-    reset_n  : in std_logic;
 
+    -- resets
+    clk40_rstn : in std_logic;
+    reset_n    : in std_logic;
+
+    -- c2c links
     c2c_rxn     : in  std_logic;
     c2c_rxp     : in  std_logic;
     c2c_txn     : out std_logic;
     c2c_txp     : out std_logic;
 
+    -- aux c2c links
     c2cb_rxn    : in  std_logic;
     c2cb_rxp    : in  std_logic;
     c2cb_txn    : out std_logic;
     c2cb_txp    : out std_logic;
-    
+
+    -- reference clock
     c2c_refclkp : in  std_logic;
     c2c_refclkn : in  std_logic;
 
-    -- axi reset from c2c--
+    -- axi reset from c2c to slaves
     axi_reset_n : out std_logic;
 
     -- control
@@ -100,10 +103,6 @@ entity top_control is
 end top_control;
 
 architecture control_arch of top_control is
-
-  constant std_logic1 : std_logic := '1';
-  constant std_logic0 : std_logic := '0';
-
 
   -- START: ULT_AXI_SIGNALS :: DO NOT EDIT
   signal fw_info_readmosi  : axireadmosi;
@@ -136,24 +135,24 @@ architecture control_arch of top_control is
   signal hog_mon_r     : HOG_MON_t;
   -- END: ULT_AXI_SIGNALS :: DO NOT EDIT
 
-  signal c2c_mon  : C2C_INTF_MON_t;
-  signal c2c_ctrl : C2C_INTF_CTRL_t;
+  signal c2c_mon            : C2C_INTF_MON_t;
+  signal c2c_ctrl           : C2C_INTF_CTRL_t;
   signal c2c_intf_readmosi  : axireadmosi;
   signal c2c_intf_readmiso  : axireadmiso;
   signal c2c_intf_writemosi : axiwritemosi;
   signal c2c_intf_writemiso : axiwritemiso;
 
-
   signal clk_C2C_PHY_user  : STD_logic_vector(2 downto 1);
   
-  signal strobe : std_logic;
-  attribute MAX_FANOUT : string;
-  attribute MAX_FANOUT of strobe : signal is "16";
+  -- signal strobe : std_logic;
+  -- attribute MAX_FANOUT : string;
+  -- attribute MAX_FANOUT of strobe : signal is "16";
 
   signal pB_UART_tx : std_logic;
   signal pB_UART_rx : std_logic;
 
-  signal axi_clk40_reset_n :std_logic;
+  signal axi_clk40_reset_n : std_logic;
+
 begin
 
   --clock_strobe_ult : entity hal.clock_strobe

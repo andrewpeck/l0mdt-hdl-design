@@ -531,7 +531,6 @@ begin
       -- END: ULT_IO :: DO NOT EDIT
        
       -- axi common
-      clk320                  => clk320,
       clk40                   => clk40,
       clkpipe                 => clock_and_control.clk,
       axi_clk                 => clk_50, 
