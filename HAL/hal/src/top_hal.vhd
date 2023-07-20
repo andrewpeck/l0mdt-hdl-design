@@ -164,6 +164,7 @@ architecture behavioral of top_hal is
   signal reset_pipeline : std_logic;
   signal reset_clk320   : std_logic;
   signal reset_clk40    : std_logic;
+  signal reset_axi      : std_logic;
   
   signal strobe_pipeline : std_logic;
   signal strobe_320      : std_logic;
@@ -269,6 +270,15 @@ begin  -- architecture behavioral
       reset_clk40 <= '1';
     elsif (rising_edge(clk40)) then
       reset_clk40 <= '0';
+    end if;
+  end process;
+
+  process (axiclock, b2b_locked) is
+  begin
+    if (lhc_locked = '0') then
+      reset_axi <= '1';
+    elsif (rising_edge(axiclock)) then
+      reset_axi <= '0';
     end if;
   end process;
 
@@ -380,7 +390,7 @@ begin  -- architecture behavioral
       lhc_locked => lhc_locked,
 
       -- reset
-      reset => '0' , --PRIYA need to hook up to PLL lock signal for axi clock  -- need a separate reset from the mmcm due to recovered links
+      reset => reset_axi,
 
       -- ctrl & monitoring
       ctrl => core_ctrl.mgt,
