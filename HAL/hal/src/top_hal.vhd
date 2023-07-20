@@ -157,9 +157,9 @@ architecture behavioral of top_hal is
   signal clock_ibufds : std_logic;
   signal clocks       : system_clocks_rt;
  
-  signal userlogic_reset    : std_logic;
-  signal reset              : std_logic;
-  signal global_reset       : std_logic;
+  signal userlogic_reset : std_logic;
+  signal reset_clk320    : std_logic;
+  signal reset_clk40     : std_logic;
   
   signal strobe_pipeline : std_logic;
   signal strobe_320      : std_logic;
@@ -258,7 +258,15 @@ begin  -- architecture behavioral
   -- Signal Aliasing
   --------------------------------------------------------------------------------
 
-  global_reset <= not(clocks.lhc_locked);
+  process (clocks.clk40, clocks.lhc_locked) is
+  begin
+    if (clocks.lhc_locked = '0') then
+      reset_clk40 <= '1';
+    elsif (rising_edge(clocks.clk40)) then
+      reset_clk40 <= '0';
+    end if;
+  end process;
+
   clk50_o      <= clocks.axiclock;      -- AXI
   clk320_o     <= clocks.clock320;      -- Not used, remove it?
   clk40_o      <= clocks.clock40;       -- LHC
@@ -335,16 +343,16 @@ begin  -- architecture behavioral
   rst_bit_synchronizer : xpm_cdc_sync_rst
     generic map (DEST_SYNC_FF => 4, INIT => 1, INIT_SYNC_FF => 1)
     port map (
-      dest_rst => reset,
+      dest_rst => reset_clk320,
       dest_clk => clocks.clock320,
-      src_rst  => global_reset);
+      src_rst  => reset_clk40);
 
   pipeline_rst_bit_synchronizer : xpm_cdc_sync_rst
     generic map (DEST_SYNC_FF => 5, INIT => 1, INIT_SYNC_FF => 1)
     port map (
       dest_rst => userlogic_reset,
       dest_clk => clocks.clock_pipeline,
-      src_rst  => global_reset);
+      src_rst  => reset_clk40);
 
   clock_and_control_o.rst <= userlogic_reset;
   clock_and_control_o.clk <= clocks.clock_pipeline;
@@ -410,7 +418,7 @@ begin  -- architecture behavioral
   -- 
   lpgbtemul_wrapper_inst : entity hal.lpgbtemul_wrapper
     port map (
-      reset                           => global_reset,
+      reset                           => reset_clk40,
       lpgbt_uplink_clk_i              => clocks.clock320,
       lpgbt_uplink_mgt_word_array_o   => lpgbt_emul_uplink_mgt_word_array,
       lpgbt_uplink_data_i             => lpgbt_emul_uplink_data,
@@ -486,14 +494,14 @@ begin  -- architecture behavioral
             -- clock and reset
             clk40      => clocks.clock40,
             strobe_320 => strobe_320,
-            reset_i    => global_reset,
+            reset_i    => reset_clk40,
 
             -- TTC signals
             -- TODO: axi generation of TTC signals
             trg_i => ttc_commands.l0a,
             bcr_i => ttc_commands.bcr,
             ecr_i => ttc_commands.ecr,
-            gsr_i => global_reset,
+            gsr_i => reset_clk40,
 
             -- downlink
             downlink_clk                 => clocks.clock320,
@@ -549,7 +557,7 @@ begin  -- architecture behavioral
         port map (
           clock          => clocks.clock320, 
           pipeline_clock => clocks.clock_pipeline,
-          reset          => reset,
+          reset          => reset_clk320,
           tdc_hits_i     => tdc_hits_to_polmux (hi downto lo),
           read_done_o    => read_done_from_polmux (hi downto lo),
           tdc_hits_o     => tdc_hits_o
@@ -584,7 +592,7 @@ begin  -- architecture behavioral
       rx_clk         => sl_rx_clks,
       pipeline_clock => clocks.clock_pipeline,
       clk40          => clocks.clock40,
-      reset          => global_reset,
+      reset          => reset_clk40,
 
       sl_rx_mgt_word_array_i => sl_rx_mgt_word_array, -- SLC 
       sl_tx_mgt_word_array_o => sl_tx_mgt_word_array, -- MTC
@@ -618,7 +626,7 @@ begin  -- architecture behavioral
       clock320 => clocks.clock320, -- felix downlink clock
       clock40  => clocks.clock40, -- 40mhz system clock
 
-      reset => global_reset,
+      reset => reset_clk40,
 
       ttc_mgt_data_i    => ttc_mgt_word,
       ttc_mgt_bitslip_o => ttc_bitslip,
@@ -647,7 +655,7 @@ begin  -- architecture behavioral
     port map (
       clk320           => clocks.clock320,
       clk40            => clocks.clock40,
-      reset_i          => global_reset,
+      reset_i          => reset_clk40,
 
       -- FIXME:
       --
