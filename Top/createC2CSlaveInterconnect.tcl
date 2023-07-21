@@ -96,7 +96,8 @@ if { [info exists C2CB] } {
 #  Create the system resetter for clk40
 #================================================================================
 
-create_bd_port -dir I -type clk $EXT_CLK40  -freq_hz $EXT_CLK_FREQ
+create_bd_port -dir I -type clk $EXT_CLK40
+set_property CONFIG.FREQ_HZ ${EXT_CLK40_FREQ} [get_bd_ports ${EXT_CLK40}]
 create_bd_port -dir I -type rst $EXT_CLK40_RSTN
 create_bd_port -dir O -type rst $AXI_CLK40_RSTN
 set SYS_RESETER_CLK40 sys_reseter_clk40
