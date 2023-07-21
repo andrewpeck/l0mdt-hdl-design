@@ -511,9 +511,8 @@ begin
        
       -- axi common
       clk40                   => clk40,
-      clkpipe                 => clock_and_control.clk,
+      clk_user                => clock_and_control.clk,
       axi_clk                 => clk_50, 
-      clk50mhz                => clk_50,
       clk40_rstn              => lhc_locked and b2b_locked,
       reset_n                 => b2b_locked,
       sys_mgmt_alarm          => open,
