@@ -42,13 +42,13 @@ entity top_control is
   port (
 
     -- clocks
-    axi_clk  : in std_logic; -- AXI user clock
-    clk40    : in std_logic; -- 40MHz LHC clock
-    clk_user  : in std_logic; -- Userlogic pipeline clock
+    axi_clk  : in std_logic;            -- AXI user clock
+    clk40    : in std_logic;            -- 40MHz LHC clock
+    clk_user : in std_logic;            -- Userlogic pipeline clock
 
     -- resets
-    clk40_rstn : in std_logic;
-    reset_n    : in std_logic;
+    clk40_rstn : in std_logic; -- LHC MMCM is ready?
+    reset_n    : in std_logic; -- AXI user clock MMCM is ready?
 
     -- c2c links
     c2c_rxn     : in  std_logic;
@@ -63,8 +63,8 @@ entity top_control is
     c2cb_txp    : out std_logic;
 
     -- reference clock
-    c2c_refclkp : in  std_logic;
-    c2c_refclkn : in  std_logic;
+    c2c_refclkp : in  std_logic; -- connect to FPGA IO directly
+    c2c_refclkn : in  std_logic; -- connect to FPGA IO directly
 
     -- axi reset from c2c to slaves
     axi_reset_n : out std_logic;
@@ -76,8 +76,8 @@ entity top_control is
   
 
     -- system management
-    --sys_mgmt_scl            : inout std_logic;
-    --sys_mgmt_sda            : inout std_logic;
+  --sys_mgmt_scl            : inout std_logic;
+  --sys_mgmt_sda            : inout std_logic;
     sys_mgmt_alarm          : out std_logic;
     sys_mgmt_overtemp_alarm : out std_logic;
     sys_mgmt_vccaux_alarm   : out std_logic;
@@ -387,8 +387,3 @@ begin
       Ctrl             => C2C_Ctrl);
 
 end control_arch;
-
--- Local Variables:
--- eval: (make-variable-buffer-local 'after-save-hook)
--- eval: (add-hook 'after-save-hook (lambda () (progn (start-process "update-slaves" nil "python" "update_control.py") (revert-buffer))) nil 'local)
--- End:
