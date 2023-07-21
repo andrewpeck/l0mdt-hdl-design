@@ -137,11 +137,10 @@ entity top_hal is
     Core_Mon  : out CORE_MON_t;
     Core_Ctrl : in  CORE_CTRL_t;
 
-    clk50_o      : out std_logic;       -- Axi
-    clk320_o     : out std_logic;       --
-    clk40_o      : out std_logic;
-    lhc_locked_o : out std_logic;
-    b2b_locked_o : out std_logic;
+    clk50_o      : out std_logic; -- AXI user clock
+    clk40_o      : out std_logic; -- 40 MHz LHC clock to AXI slaves
+    lhc_locked_o : out std_logic; -- LHC MMCM Locked?
+    b2b_locked_o : out std_logic; -- AXI MMCM Locked?
 
     --sump--------------------------------------------------------------------------
     sump : out std_logic
@@ -283,7 +282,6 @@ begin  -- architecture behavioral
   end process;
 
   clk50_o      <= axiclock;      -- AXI
-  clk320_o     <= clk320;      -- Not used, remove it?
   clk40_o      <= clk40;       -- LHC
   b2b_locked_o <= b2b_locked;    -- B2B = C2C = SM-CM
   lhc_locked_o <= lhc_locked;
