@@ -164,7 +164,7 @@ create_clock -period 20.000 -name clk50 -waveform {0.000 10.000} [get_pins top_h
 # LHC Clock Inputs
 set_property PACKAGE_PIN AR17 [get_ports clock_i_p]
 set_property PACKAGE_PIN AR16 [get_ports clock_i_n]
-create_clock -period 25.000 -name clock_in_lhc [get_ports clock_i_p]
+#create_clock -period 25.000 -name clock_in_lhc [get_ports clock_i_p]
 set_property IOSTANDARD LVDS [get_ports clock_i*]
 
 # 200M Oscillator
