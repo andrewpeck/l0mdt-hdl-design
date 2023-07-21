@@ -121,7 +121,7 @@ set_false_path \
 # this might be useful to keep.. it is a high fanout net (~2500) and has issues
 # so keep the fanout low to force replication
 set_property -quiet MAX_FANOUT 256 [get_cells -hier "*int_rst_reg"]
-set_property MAX_FANOUT 256 [get_cells "top_hal/pipeline_rst_bit_synchronizer/syncstages_ff_reg*"]
+set_property MAX_FANOUT 256 [get_cells "top_hal/userclk_rst_bit_synchronizer/syncstages_ff_reg*"]
 set_property -quiet MAX_FANOUT 256 [get_cells "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_*.HPS/PC/pc_gen*.pc_en.PC/VC/apb_mem_interface/MEM_TYPE.o_wr_addr_reg*"]
 
 ################################################################################
