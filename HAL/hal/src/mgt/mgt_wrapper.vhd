@@ -113,32 +113,40 @@ end mgt_wrapper;
 
 architecture Behavioral of mgt_wrapper is
 
-  -- fanout input reset for better timing
-  signal reset_tree : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
-  signal sl_rx_init_done_s : std_logic_vector(c_NUM_MGTS-1 downto 0);
-
+  -- Fanout input reset for better timing
+  signal reset_tree                  : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
   attribute DONT_TOUCH               : string;
   attribute DONT_TOUCH of reset_tree : signal is "true";
 
+  -- Recovered clock
   signal recclk_sync_clr: std_logic;
   signal recclk_sync_ce : std_logic;
+  signal recclk         : std_logic;
+
+  -- Reference clock
   signal refclk         : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
   signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
   signal refclk_bufg    : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
-  signal recclk         : std_logic;
 
-  -- TODO: initialize these so that uninstantiated MGTs will show DEADBEEF or something
   -- Dynamic Reconfiguration port signals
   signal drp_i     : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
   signal drp_o     : mgt_drp_out_rt_array (c_NUM_MGTS-1 downto 0);
+
   -- Status signals
   signal status    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
   signal status_d  : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
   signal status_2d : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
 
+  -- Sector Logic
+  signal sl_rx_init_done_s : std_logic_vector(c_NUM_MGTS-1 downto 0);
+
 begin
 
   sl_rx_init_done <= AND(sl_rx_init_done_s);
+
+  --------------------------------------------------------------------------------
+  -- Configuration Asserts
+  --------------------------------------------------------------------------------
 
   assert false report
     "GENERATING " & integer'image(c_NUM_MGTS) & "MGT LINKS:" severity note;
@@ -170,36 +178,37 @@ begin
   -- recclk
   --------------------------------------------------------------------------------
 
-  --  recclk_BUFG_inst : BUFG
-  --  port map (
-  --    O => ttc_recclk_o,                 -- 1-bit output: Clock output
-  --    I => recclk                        -- 1-bit input: Clock input
-  --  );
-
   -- https://support.xilinx.com/s/question/0D52E00006hpdNNSAY/rxoutclk-routing-error?language=en_US
 
   recclk_BUFG_GT_SYNC_inst : BUFG_GT_SYNC
   port map (
-    CESYNC  => recclk_sync_ce,                -- 1-bit output: Synchronized CE
-    CLRSYNC => recclk_sync_clr,               -- 1-bit output: Synchronized CLR
-    CE      => '1',               -- 1-bit input: Asynchronous enable
-    CLK     => recclk, -- 1-bit input: Clock
-    CLR     => '0'                -- 1-bit input: Asynchronous clear
+    CESYNC  => recclk_sync_ce,          -- 1-bit output: Synchronized CE
+    CLRSYNC => recclk_sync_clr,         -- 1-bit output: Synchronized CLR
+    CE      => '1',                     -- 1-bit input: Asynchronous enable
+    CLK     => recclk,                  -- 1-bit input: Clock
+    CLR     => '0'                      -- 1-bit input: Asynchronous clear
     );
 
   recclk_BUFG_GT_inst : BUFG_GT
   port map (
-    O => ttc_recclk_o,   -- 1-bit output: Buffer
-    CE => recclk_sync_ce,           -- 1-bit input: Buffer enable
-    CEMASK => '0',      -- 1-bit input: CE Mask
-    CLR => recclk_sync_clr,         -- 1-bit input: Asynchronous clear
-    CLRMASK => '0',     -- 1-bit input: CLR Mask
-    DIV => "000",       -- 3-bit input: Dynamic divide Value
-    I => recclk         -- 1-bit input: Buffer
+    O       => ttc_recclk_o,            -- 1-bit output: Buffer
+    CE      => recclk_sync_ce,          -- 1-bit input: Buffer enable
+    CEMASK  => '0',                     -- 1-bit input: CE Mask
+    CLR     => recclk_sync_clr,         -- 1-bit input: Asynchronous clear
+    CLRMASK => '0',                     -- 1-bit input: CLR Mask
+    DIV     => "000",                   -- 3-bit input: Dynamic divide Value
+    I       => recclk                   -- 1-bit input: Buffer
   );
 
   --------------------------------------------------------------------------------
-  -- Refclk
+  -- REFCLK
+  --------------------------------------------------------------------------------
+  --
+  -- For each reference clock input, buffer it in a ibufds which generates both:
+  --  - O output which connects to the transceiver quad itself
+  --  - ODIV2 output, which can be connected to the frequency monitors
+  --    (despite the naming it is not divided by 2, it just has the option for that)
+  --
   --------------------------------------------------------------------------------
 
   refclk_gen : for I in 0 to c_NUM_REFCLKS-2 generate
@@ -240,8 +249,8 @@ begin
   process (axiclock) is
   begin
     if (rising_edge(axiclock)) then
-      status_d                                  <= status;
-      status_2d                                 <= status_d;
+      status_d  <= status;
+      status_2d <= status_d;
     end if;
   end process;
 
@@ -336,10 +345,17 @@ begin
 
     begin
 
+      -- just set a flag to 1 to indicate that this transceiver was enabled, which we can read from software
       mon.mgt(I).config.is_active <= '1';
 
       --------------------------------------------------------------------------------
       -- MGT
+      --------------------------------------------------------------------------------
+      --
+      -- TODO: it would be a lot cleaner to just pass the ctrl + monitoring
+      -- records into here instead of having separate mgt status / ctrl data
+      -- types and ports and having to map between them
+      --
       --------------------------------------------------------------------------------
 
       MGT_INST : entity work.mgt_10g24_wrapper
@@ -531,6 +547,7 @@ begin
 
     begin
 
+      -- just set a flag to 1 to indicate that this transceiver was enabled, which we can read from software
       mon.mgt(I).config.is_active <= '1';
 
       assert true report
