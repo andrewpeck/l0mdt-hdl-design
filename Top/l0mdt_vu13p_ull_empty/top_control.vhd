@@ -121,18 +121,16 @@ architecture control_arch of top_control is
   signal hal_readmiso  : axireadmiso;
   signal hal_writemosi : axiwritemosi;
   signal hal_writemiso : axiwritemiso;
-  signal hal_mon_axi         : HAL_MON_t;
-  signal hal_ctrl_axi        : HAL_CTRL_t;
-  signal hal_mon_axi_r       : HAL_MON_t;
-  signal hal_ctrl_axi_r      : HAL_CTRL_t;
-  signal hal_mon_lhc         : HAL_MON_t;
-  signal hal_ctrl_lhc        : HAL_CTRL_t;
-  signal hal_mon_axi_v       : std_logic_vector(HAL_MON_t'w-1 downto 0);
-  signal hal_ctrl_axi_v      : std_logic_vector(HAL_CTRL_t'w-1 downto 0);
-  signal hal_mon_lhc_v       : std_logic_vector(HAL_MON_t'w-1 downto 0);
-  signal hal_ctrl_lhc_v      : std_logic_vector(HAL_CTRL_t'w-1 downto 0);
-  signal hal_mon_r     : HAL_MON_t;
-  signal hal_ctrl_r    : HAL_CTRL_t;
+  signal hal_mon_axi     : HAL_MON_t;
+  signal hal_ctrl_axi    : HAL_CTRL_t;
+  signal hal_mon_axi_r     : HAL_MON_t;
+  signal hal_ctrl_axi_r    : HAL_CTRL_t;
+  signal hal_mon_lhc     : HAL_MON_t;
+  signal hal_ctrl_lhc    : HAL_CTRL_t;
+  signal hal_mon_axi_v     : std_logic_vector(HAL_MON_t'w -1 downto 0);
+  signal hal_ctrl_axi_v    : std_logic_vector(HAL_CTRL_t'w -1 downto 0);
+  signal hal_mon_lhc_v     : std_logic_vector(HAL_MON_t'w -1 downto 0);
+  signal hal_ctrl_lhc_v    : std_logic_vector(HAL_CTRL_t'w -1 downto 0);
   signal hog_readmosi  : axireadmosi;
   signal hog_readmiso  : axireadmiso;
   signal hog_writemosi : axiwritemosi;
@@ -233,6 +231,7 @@ begin
       AXI_CLK                             => AXI_CLK,
       AXI_RST_N(0)                        => AXI_RESET_N,
       clk50Mhz                            => clk50mhz,   
+--      AXI_CLK40_RST_N(0)                  => AXI_CLK40_RESET_N,
       C2C_phy_Rx_rxn(0)                 => c2c_rxn, --n_mgt_z2k(1 downto 1),
       C2C_phy_Rx_rxp(0)                 => c2c_rxp, --p_mgt_z2k(1 downto 1),
       C2C_phy_Tx_txn(0)                 => c2c_txn, --n_mgt_k2z(1 downto 1),
@@ -505,70 +504,8 @@ end process;
       ctrl   => CORE_ctrl_r,
       mon   => CORE_mon_r
     );
-process (axi_clk) is
-begin
- if(rising_edge(axi_clk)) then
-   HAL_mon_axi_r <=  HAL_mon_axi; 
-   HAL_ctrl_axi  <=  HAL_ctrl_axi_r;
- end if;
-end process;
-  HAL_map_inst : entity ctrl_lib.hal_map
-    generic map(
-     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL)
-    )
-    port map(
-      clk_axi         => axi_clk,
-      reset_axi_n     => axi_reset_n,
-      slave_readmosi   => HAL_readmosi,
-      slave_readmiso   => HAL_readmiso,
-      slave_writemosi   => HAL_writemosi,
-      slave_writemiso   => HAL_writemiso,
-      ctrl   => HAL_ctrl_axi_r,
-      mon    => HAL_mon_axi_r
-    );
-process (axi_clk) is
-begin
- if(rising_edge(axi_clk)) then
-   HOG_mon_r <=  HOG_mon; 
- end if;
-end process;
-  HOG_map_inst : entity ctrl_lib.hog_map
-    generic map(
-     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HOG)
-    )
-    port map(
-      clk_axi         => axi_clk,
-      reset_axi_n     => axi_reset_n,
-      slave_readmosi   => HOG_readmosi,
-      slave_readmiso   => HOG_readmiso,
-      slave_writemosi   => HOG_writemosi,
-      slave_writemiso   => HOG_writemiso,
-      mon   => HOG_mon_r
-    );
-  -- END: ULT_SLAVES :: DO NOT EDIT
 
-  -- n.b. fast monitoring bram control interfaces can't be registered directly,
-  -- since they contain a clock if you ff the record then you create a weird
-  -- gated clock that is the ff'd version of itself which would run at 1/2 speed
-  -- for each ff stage
-
-  --fm_map_inst : entity ctrl_lib.FM_map
-  --  port map (
-  --    clk_axi         => clk40,
-  --    reset_axi_n     => clk40_rst_n,
-  --    slave_readmosi  => fm_readmosi,
-  --    slave_readmiso  => fm_readmiso,
-  --    slave_writemosi => fm_writemosi,
-  --    slave_writemiso => fm_writemiso,
-
-  --    -- monitor signals in
-  --    mon  => fm_mon_r,
-  --    -- control signals out
-  --    Ctrl => fm_ctrl_r
-  --    );
-
-
-  -- Signals from HAL arrive with a 40 MHz clock, let's convert them into axi_clk (50 MHz)
+-- Signals from HAL arrive with a 40 MHz clock, let's convert them into axi_clk (50 MHz)
 --https://docs.xilinx.com/r/2020.2-English/ug974-vivado-ultrascale-libraries/XPM_FIFO_ASYNC
 hal_mon_lhc_v <= convert(HAL_mon, hal_mon_lhc_v);
 hal_mon_axi <= convert(hal_mon_axi_v, hal_mon_axi);
@@ -617,6 +554,74 @@ port map (
   sleep => '0',
   wr_en => '1'
 );
+
+
+
+process (axi_clk) is
+begin
+  if(rising_edge(axi_clk)) then
+    HAL_mon_axi_r <= HAL_mon_axi;
+    HAL_ctrl_axi <= HAL_ctrl_axi_r;
+ end if;
+end process;
+  HAL_map_inst : entity ctrl_lib.hal_map
+    generic map(
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL)
+    )
+    port map(
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n, 
+      slave_readmosi   => HAL_readmosi,
+      slave_readmiso   => HAL_readmiso,
+      slave_writemosi   => HAL_writemosi,
+      slave_writemiso   => HAL_writemiso,
+      ctrl   => hal_ctrl_axi_r,
+      mon   => hal_mon_axi_r
+    );
+
+
+
+process (axi_clk) is
+begin
+ if(rising_edge(axi_clk)) then
+   HOG_mon_r <=  HOG_mon; 
+ end if;
+end process;
+  HOG_map_inst : entity ctrl_lib.hog_map
+    generic map(
+     ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HOG)
+    )
+    port map(
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
+      slave_readmosi   => HOG_readmosi,
+      slave_readmiso   => HOG_readmiso,
+      slave_writemosi   => HOG_writemosi,
+      slave_writemiso   => HOG_writemiso,
+      mon   => HOG_mon_r
+    );
+  -- END: ULT_SLAVES :: DO NOT EDIT
+
+  -- n.b. fast monitoring bram control interfaces can't be registered directly,
+  -- since they contain a clock if you ff the record then you create a weird
+  -- gated clock that is the ff'd version of itself which would run at 1/2 speed
+  -- for each ff stage
+
+  --fm_map_inst : entity ctrl_lib.FM_map
+  --  port map (
+  --    clk_axi         => clk40,
+  --    reset_axi_n     => clk40_rst_n,
+  --    slave_readmosi  => fm_readmosi,
+  --    slave_readmiso  => fm_readmiso,
+  --    slave_writemosi => fm_writemosi,
+  --    slave_writemiso => fm_writemiso,
+
+  --    -- monitor signals in
+  --    mon  => fm_mon_r,
+  --    -- control signals out
+  --    Ctrl => fm_ctrl_r
+  --    );
+
 
   SM_CM_INTF: entity ctrl_lib.C2C_INTF
     generic map (

@@ -114,11 +114,24 @@ proc create_top_modules {project_path repo_path} {
                 puts $output_control_file "  signal [string tolower $slave]_readmiso  : axireadmiso;"
                 puts $output_control_file "  signal [string tolower $slave]_writemosi : axiwritemosi;"
                 puts $output_control_file "  signal [string tolower $slave]_writemiso : axiwritemiso;"
+                if {$slave == "HAL"} {
+                    puts $output_control_file "  signal hal_mon_axi         : HAL_MON_t;"
+                    puts $output_control_file "  signal hal_ctrl_axi        : HAL_CTRL_t;"
+                    puts $output_control_file "  signal hal_mon_axi_r       : HAL_MON_t;"
+                    puts $output_control_file "  signal hal_ctrl_axi_r      : HAL_CTRL_t;"
+                    puts $output_control_file "  signal hal_mon_lhc         : HAL_MON_t;"
+                    puts $output_control_file "  signal hal_ctrl_lhc        : HAL_CTRL_t;"
+                    puts $output_control_file "  signal hal_mon_axi_v       : std_logic_vector(HAL_MON_t'w-1 downto 0);"
+                    puts $output_control_file "  signal hal_ctrl_axi_v      : std_logic_vector(HAL_CTRL_t'w-1 downto 0);"
+                    puts $output_control_file "  signal hal_mon_lhc_v       : std_logic_vector(HAL_MON_t'w-1 downto 0);"
+                    puts $output_control_file "  signal hal_ctrl_lhc_v      : std_logic_vector(HAL_CTRL_t'w-1 downto 0);"
+                } 
                 puts $output_control_file "  signal [string tolower $slave]_mon_r     : [string toupper $xml_name]_MON_t;"
+                
 
-               if {$slave != "HOG" && $slave != "FW_INFO"} { 
-		puts $output_control_file "  signal [string tolower $slave]_ctrl_r    : [string toupper $xml_name]_CTRL_t;"
-	       }
+                if {$slave != "HOG" && $slave != "FW_INFO"} { 
+		            puts $output_control_file "  signal [string tolower $slave]_ctrl_r    : [string toupper $xml_name]_CTRL_t;"
+	            }
             }
         }
 
@@ -157,23 +170,27 @@ proc create_top_modules {project_path repo_path} {
                 set xml_name [lindex [dict get $slaves $slave] 0]
                 set axi_control [lindex [dict get $slaves $slave] 1]
 		
-		if {[string first "AXI_MASTER_CTRL" $axi_control] != -1 } {
-		    puts $output_control_file "process (axi_clk) is"
-		    puts $output_control_file "begin"
-		    puts $output_control_file " if(rising_edge(axi_clk)) then"
-		}  elseif {[string first "AXI_LHC_CTRL" $axi_control] != -1} {
-		    puts $output_control_file "process (clk40) is"
-		    puts $output_control_file "begin"
-		    puts $output_control_file " if(rising_edge(clk40)) then"
-		}
-		    puts $output_control_file "   ${slave}_mon_r <=  ${slave}_mon; "
+                if {[string first "AXI_MASTER_CTRL" $axi_control] != -1 } {
+                    puts $output_control_file "process (axi_clk) is"
+                    puts $output_control_file "begin"
+                    puts $output_control_file " if(rising_edge(axi_clk)) then"
+                }  elseif {[string first "AXI_LHC_CTRL" $axi_control] != -1} {
+                    puts $output_control_file "process (clk40) is"
+                    puts $output_control_file "begin"
+                    puts $output_control_file " if(rising_edge(clk40)) then"
+                }
+                if {$slave != "HAL"} {
+                    puts $output_control_file "   ${slave}_mon_r <=  ${slave}_mon; "                
+                    if {$slave != "HOG" && $slave != "FW_INFO" && $slave != "FM"} {
+                        puts $output_control_file "   ${slave}_ctrl  <=  ${slave}_ctrl_r;"
+                    }
+                } else {
+                    puts $output_control_file "   ${slave}_mon_axi_r <=  ${slave}_mon_axi; "                    
+                    puts $output_control_file "   ${slave}_ctrl_axi  <=  ${slave}_ctrl_axi_r;"
 
-		
-		if {$slave != "HOG" && $slave != "FW_INFO" && $slave != "FM"} {
-		    puts $output_control_file "   ${slave}_ctrl  <=  ${slave}_ctrl_r;"
-		}
-		    puts $output_control_file " end if;"
-		    puts $output_control_file "end process;"
+                }
+                puts $output_control_file " end if;"
+                puts $output_control_file "end process;"
 
                 puts $output_control_file "  ${slave}_map_inst : entity ctrl_lib.[string tolower $xml_name]_map"
                 puts $output_control_file "    generic map("
@@ -192,12 +209,19 @@ proc create_top_modules {project_path repo_path} {
                 puts $output_control_file "      slave_readmiso   => ${slave}_readmiso," 
                 puts $output_control_file "      slave_writemosi   => ${slave}_writemosi," 
                 puts $output_control_file "      slave_writemiso   => ${slave}_writemiso," 
-                if {$slave != "HOG" && $slave != "FW_INFO" && $slave != "FM"} {
-                    puts $output_control_file "      ctrl   => ${slave}_ctrl_r," 
+                if {$slave != "HOG" && $slave != "FW_INFO" && $slave != "FM" && $slave != "HAL"} {
+                    puts $output_control_file "      ctrl   => ${slave}_ctrl_r,"
+                    puts $output_control_file "      mon   => ${slave}_mon_r"
                 } elseif {$slave == "FM"} {
-		    puts $output_control_file "      ctrl   => ${slave}_ctrl," 
-		}
-                puts $output_control_file "      mon   => ${slave}_mon_r"
+                    puts $output_control_file "      ctrl   => ${slave}_ctrl,"
+                    puts $output_control_file "      mon   => ${slave}_mon_r"
+                } elseif {$slave == "HAL"} {
+                    puts $output_control_file "      ctrl   => ${slave}_ctrl_axi_r,"
+                    puts $output_control_file "      mon    => ${slave}_mon_axi_r"
+                } else {
+                    puts $output_control_file "      mon   => ${slave}_mon_r"
+                }
+
                 puts $output_control_file "    );" 
 
             }

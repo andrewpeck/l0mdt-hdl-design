@@ -45,6 +45,9 @@ use ctrl_lib.c2c_intf_ctrl.all;
 use ctrl_lib.AXISlaveAddrPkg.all;
 use xil_defaultlib.all;
 
+library xpm;
+use xpm.vcomponents.all;
+
 entity top_control is
   port (
     -- axi
@@ -127,6 +130,16 @@ architecture control_arch of top_control is
   signal hal_readmiso  : axireadmiso;
   signal hal_writemosi : axiwritemosi;
   signal hal_writemiso : axiwritemiso;
+  signal hal_mon_axi         : HAL_MON_t;
+  signal hal_ctrl_axi        : HAL_CTRL_t;
+  signal hal_mon_axi_r       : HAL_MON_t;
+  signal hal_ctrl_axi_r      : HAL_CTRL_t;
+  signal hal_mon_lhc         : HAL_MON_t;
+  signal hal_ctrl_lhc        : HAL_CTRL_t;
+  signal hal_mon_axi_v       : std_logic_vector(HAL_MON_t'w-1 downto 0);
+  signal hal_ctrl_axi_v      : std_logic_vector(HAL_CTRL_t'w-1 downto 0);
+  signal hal_mon_lhc_v       : std_logic_vector(HAL_MON_t'w-1 downto 0);
+  signal hal_ctrl_lhc_v      : std_logic_vector(HAL_CTRL_t'w-1 downto 0);
   signal hal_mon_r     : HAL_MON_t;
   signal hal_ctrl_r    : HAL_CTRL_t;
   signal hog_readmosi  : axireadmosi;
@@ -229,9 +242,6 @@ begin
       AXI_CLK                             => AXI_CLK,
       AXI_RST_N(0)                        => AXI_RESET_N,
       clk50Mhz                            => clk50mhz,   
-      clk40                               => clk40,
-      clk40_rstn                          => clk40_rstn,
-      AXI_CLK40_RST_N(0)                  => AXI_CLK40_RESET_N,
       C2C_phy_Rx_rxn(0)                 => c2c_rxn, --n_mgt_z2k(1 downto 1),
       C2C_phy_Rx_rxp(0)                 => c2c_rxp, --p_mgt_z2k(1 downto 1),
       C2C_phy_Tx_txn(0)                 => c2c_txn, --n_mgt_k2z(1 downto 1),
@@ -402,23 +412,23 @@ begin
       CORE_wvalid(0)      => CORE_writemosi.data_valid,
       HAL_araddr         => HAL_readmosi.address,
       HAL_arprot         => HAL_readmosi.protection_type,
-      HAL_arready     => HAL_readmiso.ready_for_address,
-      HAL_arvalid     => HAL_readmosi.address_valid,
+      HAL_arready(0)     => HAL_readmiso.ready_for_address,
+      HAL_arvalid(0)     => HAL_readmosi.address_valid,
       HAL_awaddr         => HAL_writemosi.address,
       HAL_awprot         => HAL_writemosi.protection_type,
-      HAL_awready     => HAL_writemiso.ready_for_address,
-      HAL_awvalid     => HAL_writemosi.address_valid,
-      HAL_bready      => HAL_writemosi.ready_for_response,
-      HAL_bvalid      => HAL_writemiso.response_valid,
+      HAL_awready(0)     => HAL_writemiso.ready_for_address,
+      HAL_awvalid(0)     => HAL_writemosi.address_valid,
+      HAL_bready(0)      => HAL_writemosi.ready_for_response,
+      HAL_bvalid(0)      => HAL_writemiso.response_valid,
       HAL_bresp          => HAL_writemiso.response,
       HAL_rdata          => HAL_readmiso.data,
-      HAL_rready      => HAL_readmosi.ready_for_data,
+      HAL_rready(0)      => HAL_readmosi.ready_for_data,
       HAL_rresp          => HAL_readmiso.response,
-      HAL_rvalid      => HAL_readmiso.data_valid,
+      HAL_rvalid(0)      => HAL_readmiso.data_valid,
       HAL_wdata          => HAL_writemosi.data,
-      HAL_wready      => HAL_writemiso.ready_for_data,
+      HAL_wready(0)      => HAL_writemiso.ready_for_data,
       HAL_wstrb          => HAL_writemosi.data_write_strobe,
-      HAL_wvalid      => HAL_writemosi.data_valid,
+      HAL_wvalid(0)      => HAL_writemosi.data_valid,
       HOG_araddr         => HOG_readmosi.address,
       HOG_arprot         => HOG_readmosi.protection_type,
       HOG_arready(0)     => HOG_readmiso.ready_for_address,
@@ -543,11 +553,11 @@ end process;
       ctrl   => CORE_ctrl_r,
       mon   => CORE_mon_r
     );
-process (clk40) is
+process (axi_clk) is
 begin
- if(rising_edge(clk40)) then
-   HAL_mon_r <=  HAL_mon; 
-   HAL_ctrl  <=  HAL_ctrl_r;
+ if(rising_edge(axi_clk)) then
+   HAL_mon_axi_r <=  HAL_mon_axi; 
+   HAL_ctrl_axi  <=  HAL_ctrl_axi_r;
  end if;
 end process;
   HAL_map_inst : entity ctrl_lib.hal_map
@@ -555,14 +565,14 @@ end process;
      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL)
     )
     port map(
-      clk_axi         => clk40,
-      reset_axi_n     => axi_clk40_reset_n, 
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
       slave_readmosi   => HAL_readmosi,
       slave_readmiso   => HAL_readmiso,
       slave_writemosi   => HAL_writemosi,
       slave_writemiso   => HAL_writemiso,
-      ctrl   => HAL_ctrl_r,
-      mon   => HAL_mon_r
+      ctrl   => HAL_ctrl_axi_r,
+      mon    => HAL_mon_axi_r
     );
 process (axi_clk) is
 begin
@@ -605,6 +615,56 @@ end process;
   --    Ctrl => fm_ctrl_r
   --    );
 
+
+  -- Signals from HAL arrive with a 40 MHz clock, let's convert them into axi_clk (50 MHz)
+--https://docs.xilinx.com/r/2020.2-English/ug974-vivado-ultrascale-libraries/XPM_FIFO_ASYNC
+hal_mon_lhc_v <= convert(HAL_mon, hal_mon_lhc_v);
+hal_mon_axi <= convert(hal_mon_axi_v, hal_mon_axi);
+
+HAL_mon_cdc_inst : xpm_fifo_async
+generic map (
+  READ_DATA_WIDTH => HAL_mon_t'w,
+  WRITE_DATA_WIDTH => HAL_mon_t'w,
+  FIFO_WRITE_DEPTH => 64,   -- DECIMAL
+  CDC_SYNC_STAGES => 5
+)
+port map (
+  dout    => hal_mon_axi_v,
+  rd_clk  => axi_clk,
+  wr_clk  => clk40,
+  din     => hal_mon_lhc_v,
+  injectdbiterr => '0',
+  injectsbiterr => '0', -- 1-bit input: Single Bit Error Injection: Injects a single bit error if
+                        -- the ECC feature is used on block RAMs or UltraRAM macros.
+  rd_en => '1',
+  rst   =>  axi_clk40_reset_n,
+  sleep => '0',
+  wr_en => '1'
+);
+
+HAL_ctrl <= convert(hal_ctrl_lhc_v, HAL_ctrl);
+hal_ctrl_axi_v <= convert(hal_ctrl_axi, hal_ctrl_axi_v);
+
+HAL_ctrl_cdc_inst : xpm_fifo_async
+generic map (
+  READ_DATA_WIDTH => HAL_ctrl_t'w,
+  WRITE_DATA_WIDTH => HAL_ctrl_t'w,
+  FIFO_WRITE_DEPTH => 64,   -- DECIMAL
+  CDC_SYNC_STAGES => 5
+)
+port map (
+  dout    => hal_ctrl_lhc_v,
+  rd_clk  => clk40,
+  wr_clk  => axi_clk,
+  din     => hal_ctrl_axi_v,
+  injectdbiterr => '0',
+  injectsbiterr => '0', -- 1-bit input: Single Bit Error Injection: Injects a single bit error if
+                        -- the ECC feature is used on block RAMs or UltraRAM macros.
+  rd_en => '1',
+  rst   =>  axi_reset_n,
+  sleep => '0',
+  wr_en => '1'
+);
 
   SM_CM_INTF: entity ctrl_lib.C2C_INTF
     generic map (
