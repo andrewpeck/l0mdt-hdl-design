@@ -127,8 +127,8 @@ AXI_SLAVES:
   HAL:
     TCL_CALL:
       command: "AXI_PL_DEV_CONNECT"
-#      axi_control: "${::AXI_MASTER_CTRL}"
-      axi_control: "${::AXI_LHC_CTRL}"
+      axi_control: "${::AXI_MASTER_CTRL}"
+#      axi_control: "${::AXI_LHC_CTRL}"
       remote_slave: "1"
       addr:
         offset: "0x01010000"
