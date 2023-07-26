@@ -12,7 +12,7 @@ foreach clock [concat \
     puts $clock
     set_clock_groups -group [get_clocks $clock] -asynchronous
 }
-set_clock_groups -name axi_clk -asynchronous -group [get_clocks clk50]
+#set_clock_groups -name axi_clk -asynchronous -group [get_clocks clk40]
 
 
 # asynchronous clock relationship for tx/rx clocks to/from axi
@@ -33,15 +33,15 @@ foreach clock_b \
 # Freeclock is asynchronous to the transceiver clocks
 ################################################################################
 
-set_clock_groups \
-    -group [get_clocks clk100] \
-    -group [get_clocks *XOUTCLK*] \
-    -asynchronous
+#set_clock_groups \
+#    -group [get_clocks clk100] \
+#    -group [get_clocks *XOUTCLK*] \
+#    -asynchronous
 
-set_clock_groups \
-    -group [get_clocks clk50] \
-    -group [get_clocks *XOUTCLK*] \
-    -asynchronous
+#set_clock_groups \
+#    -group [get_clocks clk50] \
+#    -group [get_clocks *XOUTCLK*] \
+#    -asynchronous
 
 ################################################################################
 # SL
