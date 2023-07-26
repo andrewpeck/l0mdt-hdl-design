@@ -116,28 +116,28 @@ begin  -- architecture behavioral
   -- ASYNC + 50MHz free-running clocks
   --------------------------------------------------------------------------------
 
-  IBUFDS_inst : IBUFDS
-  port map (
-    O => clock_async_i,
-    I => clock_async_i_p,
-    IB => clock_async_i_n
-  );
+  -- IBUFDS_inst : IBUFDS
+  -- port map (
+  --   O => clock_async_i,
+  --   I => clock_async_i_p,
+  --   IB => clock_async_i_n
+  -- );
 
-  BUFG_inst : BUFG
-  port map (
-    O => clock_async,                 -- 1-bit output: Clock output
-    I => clock_async_i                        -- 1-bit input: Clock input
-  );
+  -- BUFG_inst : BUFG
+  -- port map (
+  --   O => clock_async,                 -- 1-bit output: Clock output
+  --   I => clock_async_i                        -- 1-bit input: Clock input
+  -- );
 
-  pll_clk50_inst : onboardclk
-    port map (
-      clk_200MHz => clk200,
-      clk_100Mhz => clk100,
-      clk_50Mhz  => clk50,
-      reset      => '0',
-      locked     => locked_clk50,
-      clk_in1    => clock_async
-    );
+  -- pll_clk50_inst : onboardclk
+  --   port map (
+  --     clk_200MHz => clk200,
+  --     clk_100Mhz => clk100,
+  --     clk_50Mhz  => clk50,
+  --     reset      => '0',
+  --     locked     => locked_clk50,
+  --     clk_in1    => clock_async
+  --   );
 
   -------------------------------------------------------------------------------
   -- MMCM clocking
@@ -174,31 +174,31 @@ begin  -- architecture behavioral
       rate  => clk40_freq
       );
 
-  clk50_frequency : entity work.clk_frequency
-    generic map (clk_a_freq => 50_000_000)
-    port map (
-      reset => '0',
-      clk_a => clk50,
-      clk_b => clk50,
-      rate  => clk50_freq
-      );
+  -- clk50_frequency : entity work.clk_frequency
+  --   generic map (clk_a_freq => 50_000_000)
+  --   port map (
+  --     reset => '0',
+  --     clk_a => clk50,
+  --     clk_b => clk50,
+  --     rate  => clk50_freq
+  --     );
 
-  clk100_frequency : entity work.clk_frequency
-    generic map (clk_a_freq => 50_000_000)
-    port map (
-      reset => '0',
-      clk_a => clk50,
-      clk_b => clk100,
-      rate  => clk100_freq
-      );
+  -- clk100_frequency : entity work.clk_frequency
+  --   generic map (clk_a_freq => 50_000_000)
+  --   port map (
+  --     reset => '0',
+  --     clk_a => clk50,
+  --     clk_b => clk100,
+  --     rate  => clk100_freq
+  --     );
 
-  clk200_frequency : entity work.clk_frequency
-    generic map (clk_a_freq => 50_000_000)
-    port map (
-      reset => '0',
-      clk_a => clk50,
-      clk_b => clk200,
-      rate  => clk200_freq
-      );
+  -- clk200_frequency : entity work.clk_frequency
+  --   generic map (clk_a_freq => 50_000_000)
+  --   port map (
+  --     reset => '0',
+  --     clk_a => clk50,
+  --     clk_b => clk200,
+  --     rate  => clk200_freq
+  --     );
 
 end architecture behavioral;
