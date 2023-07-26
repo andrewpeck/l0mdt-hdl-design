@@ -67,7 +67,7 @@ end entity top_clocking;
 architecture behavioral of top_clocking is
 
   signal clk50, clk100, clk200, clk40, clk320, clkpipe : std_logic;
-  signal locked_clk50                                  : std_logic;
+  signal locked_clk40                                  : std_logic;
   signal clock_async_ibufds                            : std_logic;
   signal clock_async_i                                 : std_logic;
   signal clock_async                                   : std_logic;
@@ -103,12 +103,13 @@ begin  -- architecture behavioral
   -- Port Aliasing
   --------------------------------------------------------------------------------
 
-  clocks_o.axiclock       <= clk50;
+  clocks_o.axiclock       <= clk40;
   clocks_o.clock40        <= clk40;
   clocks_o.clock320       <= clk320;
-  clocks_o.freeclock      <= clk50;
+  clocks_o.freeclock      <= clk40;
   clocks_o.clock_pipeline <= clkpipe;
-  clocks_o.b2b_locked     <= locked_clk50;
+  clocks_o.b2b_locked     <= locked_clk40;
+  clocks_o.lhc_locked     <= locked_clk40;
 
   --------------------------------------------------------------------------------
   -- ASYNC + 50MHz free-running clocks
@@ -148,7 +149,7 @@ begin  -- architecture behavioral
       reset     => reset_i,
       clk320_o  => clk320,
       clk40_o   => clk40,
-      locked_o  => clocks_o.lhc_locked
+      locked_o  => locked_clk40
       );
 
   clkpipe <= clk320;
