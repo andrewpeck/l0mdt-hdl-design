@@ -555,9 +555,9 @@ end process;
 
 
 
-process (clk40) is
+process (axi_clk) is
 begin
-  if(rising_edge(clk40)) then
+  if(rising_edge(axi_clk)) then
 --    HAL_mon_axi_r <= HAL_mon_axi;
 --    HAL_ctrl_axi <= HAL_ctrl_axi_r;
     HAL_mon_axi_r <= HAL_mon;
@@ -569,8 +569,8 @@ end process;
      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL)
     )
     port map(
-      clk_axi         => clk40,
-      reset_axi_n     => clk40_rstn, 
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n, 
       slave_readmosi   => HAL_readmosi,
       slave_readmiso   => HAL_readmiso,
       slave_writemosi   => HAL_writemosi,
