@@ -159,7 +159,7 @@ set_property PACKAGE_PIN J11 [get_ports {refclk_i_p[31]}]
 create_clock -period 3.125 -name refclk31 [get_ports {refclk_i_p[31]}]
 
 create_clock -period 10.000 -name clk100 -waveform {0.000 5.000} -add [get_pins top_hal/top_clocking_inst/pll_clk50_inst/clk_100MHz]
-create_clock -period 20.000 -name clk50 -waveform {0.000 10.000} [get_pins top_hal/top_clocking_inst/pll_clk50_inst/clk_50MHz]
+#create_clock -period 20.000 -name clk50 -waveform {0.000 10.000} [get_pins top_hal/top_clocking_inst/pll_clk50_inst/clk_50MHz]
 
 # LHC Clock Inputs
 set_property PACKAGE_PIN AR17 [get_ports clock_i_p]
