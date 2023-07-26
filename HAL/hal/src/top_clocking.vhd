@@ -68,6 +68,7 @@ architecture behavioral of top_clocking is
 
   signal clk50, clk100, clk200, clk40, clk320, clkpipe : std_logic;
   signal locked_clk40                                  : std_logic;
+  signal locked_clk50                                  : std_logic;
   signal clock_async_ibufds                            : std_logic;
   signal clock_async_i                                 : std_logic;
   signal clock_async                                   : std_logic;
