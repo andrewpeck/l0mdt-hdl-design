@@ -21,6 +21,8 @@ set AXI_MASTER_RSTN AXI_RST_N
 set AXI_MASTER_CLK_FREQ 40000000
 set AXI_INTERCONNECT_NAME slave_interconnect
 set AXI_EXT_RESET reset_n
+set EXT_CLK clk40Mhz
+set EXT_CLK_FREQ 40000000
 
 set C2C C2C
 set C2C_PHY ${C2C}_PHY
@@ -34,6 +36,7 @@ set C2CB_PHY ${C2CB}_PHY
 #================================================================================
 #create AXI clock & reset ports
 create_bd_port -dir I -type clk $AXI_MASTER_CLK -freq_hz ${AXI_MASTER_CLK_FREQ}
+create_bd_port -dir I -type clk $EXT_CLK -freq_hz ${EXT_CLK_FREQ}
 create_bd_port -dir O -type rst $AXI_MASTER_RSTN
 create_bd_port -dir I -type rst $AXI_EXT_RESET
 
@@ -58,7 +61,7 @@ AXI_C2C_MASTER [dict create device_name ${C2C} \
 				     axi_rstn $AXI_MASTER_RSTN \
 				     axi_freq $AXI_MASTER_CLK_FREQ] \
 		    primary_serdes 1 \
-		    init_clk $AXI_MASTER_CLK \
+		    init_clk $EXT_CLK \
 		    refclk_freq 200 \
 		    c2c_master false \
 		    speed 5 \
@@ -69,7 +72,7 @@ if { [info exists C2CB] } {
 					 axi_rstn $AXI_MASTER_RSTN \
 					 axi_freq $AXI_MASTER_CLK_FREQ] \
 			primary_serdes ${C2C}_PHY \
-			init_clk $AXI_MASTER_CLK \
+			init_clk $EXT_CLK \
 			refclk_freq 200 \
 			c2c_master false \
 			speed 5 \
