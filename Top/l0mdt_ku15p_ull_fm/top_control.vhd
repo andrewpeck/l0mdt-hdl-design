@@ -402,23 +402,23 @@ begin
       CORE_wvalid(0)      => CORE_writemosi.data_valid,
       HAL_araddr         => HAL_readmosi.address,
       HAL_arprot         => HAL_readmosi.protection_type,
-      HAL_arready     => HAL_readmiso.ready_for_address,
-      HAL_arvalid     => HAL_readmosi.address_valid,
+      HAL_arready(0)     => HAL_readmiso.ready_for_address,
+      HAL_arvalid(0)     => HAL_readmosi.address_valid,
       HAL_awaddr         => HAL_writemosi.address,
       HAL_awprot         => HAL_writemosi.protection_type,
-      HAL_awready     => HAL_writemiso.ready_for_address,
-      HAL_awvalid     => HAL_writemosi.address_valid,
-      HAL_bready      => HAL_writemosi.ready_for_response,
-      HAL_bvalid      => HAL_writemiso.response_valid,
+      HAL_awready(0)     => HAL_writemiso.ready_for_address,
+      HAL_awvalid(0)     => HAL_writemosi.address_valid,
+      HAL_bready(0)      => HAL_writemosi.ready_for_response,
+      HAL_bvalid(0)      => HAL_writemiso.response_valid,
       HAL_bresp          => HAL_writemiso.response,
       HAL_rdata          => HAL_readmiso.data,
-      HAL_rready      => HAL_readmosi.ready_for_data,
+      HAL_rready(0)      => HAL_readmosi.ready_for_data,
       HAL_rresp          => HAL_readmiso.response,
-      HAL_rvalid      => HAL_readmiso.data_valid,
+      HAL_rvalid(0)      => HAL_readmiso.data_valid,
       HAL_wdata          => HAL_writemosi.data,
-      HAL_wready      => HAL_writemiso.ready_for_data,
+      HAL_wready(0)      => HAL_writemiso.ready_for_data,
       HAL_wstrb          => HAL_writemosi.data_write_strobe,
-      HAL_wvalid      => HAL_writemosi.data_valid,
+      HAL_wvalid(0)      => HAL_writemosi.data_valid,
       HOG_araddr         => HOG_readmosi.address,
       HOG_arprot         => HOG_readmosi.protection_type,
       HOG_arready(0)     => HOG_readmiso.ready_for_address,
@@ -543,9 +543,9 @@ end process;
       ctrl   => CORE_ctrl_r,
       mon   => CORE_mon_r
     );
-process (clk40) is
+process (axi_clk) is
 begin
- if(rising_edge(clk40)) then
+ if(rising_edge(axi_clk)) then
    HAL_mon_r <=  HAL_mon; 
    HAL_ctrl  <=  HAL_ctrl_r;
  end if;
@@ -555,8 +555,8 @@ end process;
      ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_HAL)
     )
     port map(
-      clk_axi         => clk40,
-      reset_axi_n     => axi_clk40_reset_n, 
+      clk_axi         => axi_clk,
+      reset_axi_n     => axi_reset_n,
       slave_readmosi   => HAL_readmosi,
       slave_readmiso   => HAL_readmiso,
       slave_writemosi   => HAL_writemosi,
