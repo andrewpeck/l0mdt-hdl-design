@@ -40,9 +40,6 @@ use ctrl_lib.c2c_intf_ctrl.all;
 use ctrl_lib.AXISlaveAddrPkg.all;
 use xil_defaultlib.all;
 
-library xpm;
-use xpm.vcomponents.all;
-
 entity top_control is
   port (
     -- axi
@@ -191,6 +188,9 @@ begin
       AXI_CLK                             => AXI_CLK,
       AXI_RST_N(0)                        => AXI_RESET_N,
       clk50Mhz                            => clk50mhz,   
+      clk40                               => clk40,
+      clk40_rstn                          => clk40_rstn,
+      AXI_CLK40_RST_N(0)                  => AXI_CLK40_RESET_N,
       C2C_phy_Rx_rxn(0)                 => c2c_rxn, --n_mgt_z2k(1 downto 1),
       C2C_phy_Rx_rxp(0)                 => c2c_rxp, --p_mgt_z2k(1 downto 1),
       C2C_phy_Tx_txn(0)                 => c2c_txn, --n_mgt_k2z(1 downto 1),
@@ -369,56 +369,6 @@ begin
   --    Ctrl => fm_ctrl_r
   --    );
 
-
-  -- Signals from HAL arrive with a 40 MHz clock, let's convert them into axi_clk (50 MHz)
---https://docs.xilinx.com/r/2020.2-English/ug974-vivado-ultrascale-libraries/XPM_FIFO_ASYNC
-hal_mon_lhc_v <= convert(HAL_mon, hal_mon_lhc_v);
-hal_mon_axi <= convert(hal_mon_axi_v, hal_mon_axi);
-
-HAL_mon_cdc_inst : xpm_fifo_async
-generic map (
-  READ_DATA_WIDTH => HAL_mon_t'w,
-  WRITE_DATA_WIDTH => HAL_mon_t'w,
-  FIFO_WRITE_DEPTH => 64,   -- DECIMAL
-  CDC_SYNC_STAGES => 5
-)
-port map (
-  dout    => hal_mon_axi_v,
-  rd_clk  => axi_clk,
-  wr_clk  => clk40,
-  din     => hal_mon_lhc_v,
-  injectdbiterr => '0',
-  injectsbiterr => '0', -- 1-bit input: Single Bit Error Injection: Injects a single bit error if
-                        -- the ECC feature is used on block RAMs or UltraRAM macros.
-  rd_en => '1',
-  rst   =>  axi_clk40_reset_n,
-  sleep => '0',
-  wr_en => '1'
-);
-
-HAL_ctrl <= convert(hal_ctrl_lhc_v, HAL_ctrl);
-hal_ctrl_axi_v <= convert(hal_ctrl_axi, hal_ctrl_axi_v);
-
-HAL_ctrl_cdc_inst : xpm_fifo_async
-generic map (
-  READ_DATA_WIDTH => HAL_ctrl_t'w,
-  WRITE_DATA_WIDTH => HAL_ctrl_t'w,
-  FIFO_WRITE_DEPTH => 64,   -- DECIMAL
-  CDC_SYNC_STAGES => 5
-)
-port map (
-  dout    => hal_ctrl_lhc_v,
-  rd_clk  => clk40,
-  wr_clk  => axi_clk,
-  din     => hal_ctrl_axi_v,
-  injectdbiterr => '0',
-  injectsbiterr => '0', -- 1-bit input: Single Bit Error Injection: Injects a single bit error if
-                        -- the ECC feature is used on block RAMs or UltraRAM macros.
-  rd_en => '1',
-  rst   =>  axi_reset_n,
-  sleep => '0',
-  wr_en => '1'
-);
 
   SM_CM_INTF: entity ctrl_lib.C2C_INTF
     generic map (
