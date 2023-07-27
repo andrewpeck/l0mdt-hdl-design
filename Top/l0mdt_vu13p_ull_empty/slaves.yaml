@@ -5,7 +5,12 @@ AXI_CONTROL_SETS:
     axi_rstn: "${::AXI_MASTER_RSTN}"
     axi_freq: "${::AXI_MASTER_CLK_FREQ}"
     axi_base: "${::AXI_BASE_ADDRESS}"
-
+  AXI_LHC_CTRL:
+    axi_interconnect: "${::AXI_INTERCONNECT_NAME}"
+    axi_clk: clk40
+    axi_rstn: clk40_rstn
+    axi_freq: 40000000
+    axi_base: "${::AXI_BASE_ADDRESS}"
   # AXI_INN_CTRL:
   #   axi_interconnect: "INTERCONNECT_INN"
   #   axi_clk: clk40
@@ -119,6 +124,21 @@ AXI_SLAVES:
       out_name: "CORE"
       map_template: "axi_generic/template_map.vhd"
 
+  HAL:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+#      axi_control: "${::AXI_MASTER_CTRL}"
+      axi_control: "${::AXI_LHC_CTRL}"
+      remote_slave: "1"
+      addr:
+        offset: "0x01010000"
+        range: "32K"
+    XML: "address_table/modules/HAL.xml"
+    UHAL_BASE: 0x83000000
+    HDL:
+      out_name: "HAL"
+      map_template: "axi_generic/template_map.vhd"
+
   HOG:
     TCL_CALL:
       command: AXI_PL_DEV_CONNECT
@@ -132,27 +152,6 @@ AXI_SLAVES:
     HDL:
       out_name: "HOG"
       map_template: "axi_generic/template_map.vhd"
-    HAL:
-      TCL_CALL:
-        command: "AXI_PL_DEV_CONNECT"
-        axi_control: "${::AXI_MASTER_CTRL}"
-        # axi_control: "${::AXI_LHC_CTRL}"
-        remote_slave: "1"
-        addr:
-          offset: "0x01010000"
-          range: "32K"
-      XML: "address_table/modules/HAL.xml"
-      UHAL_BASE: 0x83000000
-      HDL:
-        out_name: "HAL"
-        map_template: "axi_generic/template_map.vhd"
-      # AXI_FIREWALL:
-      #   TCL_CALL:
-      #   command: "AXI_IP_AXI_FW"
-      #   axi_fw_bus: "C2C/M_AXI"
-      #   axi_control: "${::AXI_MASTER_CTRL}"
-      #   XML: "address_table/modules/AXI_FIREWALL.xml"
-      #   UHAL_BASE: 0x90000000
 
 ############################
 #  MTC:

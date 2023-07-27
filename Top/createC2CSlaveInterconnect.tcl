@@ -16,13 +16,20 @@ global AXI_MASTER_RSTN
 global AXI_MASTER_CLK_FREQ
 global AXI_INTERCONNECT_NAME
 
+set EXT_CLK clk50Mhz
+set EXT_RESET reset_n
+set EXT_CLK_FREQ 50000000
+
 set AXI_MASTER_CLK AXI_CLK
 set AXI_MASTER_RSTN AXI_RST_N
-set AXI_MASTER_CLK_FREQ 40000000
+set AXI_MASTER_CLK_FREQ 50000000
 set AXI_INTERCONNECT_NAME slave_interconnect
-set AXI_EXT_RESET reset_n
-set EXT_CLK clk40Mhz
-set EXT_CLK_FREQ 40000000
+
+
+set EXT_CLK40 clk40
+set EXT_CLK40_RSTN CLK40_RSTN
+set AXI_CLK40_RSTN AXI_CLK40_RST_N
+set EXT_CLK40_FREQ 40000000
 
 set C2C C2C
 set C2C_PHY ${C2C}_PHY
@@ -34,17 +41,26 @@ set C2CB_PHY ${C2CB}_PHY
 #================================================================================
 #  Setup external clock and reset
 #================================================================================
+create_bd_port -dir I -type clk $EXT_CLK
+set_property CONFIG.FREQ_HZ ${EXT_CLK_FREQ} [get_bd_ports ${EXT_CLK}]
+create_bd_port -dir I -type rst $EXT_RESET
+
+#================================================================================
+#  Create an AXI interconnect
+#================================================================================
+
+puts "Building AXI C2C slave interconnect"
+
 #create AXI clock & reset ports
-create_bd_port -dir I -type clk $AXI_MASTER_CLK -freq_hz ${AXI_MASTER_CLK_FREQ}
-create_bd_port -dir I -type clk $EXT_CLK -freq_hz ${EXT_CLK_FREQ}
+create_bd_port -dir I -type clk $AXI_MASTER_CLK
+set_property CONFIG.FREQ_HZ ${AXI_MASTER_CLK_FREQ} [get_bd_ports ${AXI_MASTER_CLK}]
 create_bd_port -dir O -type rst $AXI_MASTER_RSTN
-create_bd_port -dir I -type rst $AXI_EXT_RESET
 
 #create the reset logic
 set SYS_RESETER sys_reseter
 create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == proc_sys_reset}] $SYS_RESETER
 #connect external reset
-connect_bd_net [get_bd_ports $AXI_EXT_RESET] [get_bd_pins $SYS_RESETER/ext_reset_in]
+connect_bd_net [get_bd_ports $EXT_RESET] [get_bd_pins $SYS_RESETER/ext_reset_in]
 #connect clock
 connect_bd_net [get_bd_ports $AXI_MASTER_CLK] [get_bd_pins $SYS_RESETER/slowest_sync_clk]
 
@@ -52,10 +68,6 @@ set SYS_RESETER_AXI_RSTN $SYS_RESETER/interconnect_aresetn
 #create the reset to sys reseter and slave interconnect
 connect_bd_net [get_bd_ports $AXI_MASTER_RSTN] [get_bd_pins $SYS_RESETER_AXI_RSTN]
 
-
-#================================================================================
-#  Create the AXI C2C bridges
-#================================================================================
 AXI_C2C_MASTER [dict create device_name ${C2C} \
 		    axi_control [dict create axi_clk $AXI_MASTER_CLK \
 				     axi_rstn $AXI_MASTER_RSTN \
@@ -79,6 +91,32 @@ if { [info exists C2CB] } {
 		       ]
 }
 
+
+#================================================================================
+#  Create the system resetter for clk40
+#================================================================================
+
+create_bd_port -dir I -type clk $EXT_CLK40
+set_property CONFIG.FREQ_HZ ${EXT_CLK40_FREQ} [get_bd_ports ${EXT_CLK40}]
+create_bd_port -dir I -type rst $EXT_CLK40_RSTN
+create_bd_port -dir O -type rst $AXI_CLK40_RSTN
+set SYS_RESETER_CLK40 sys_reseter_clk40
+create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == proc_sys_reset}] $SYS_RESETER_CLK40
+# #connect external reset
+connect_bd_net [get_bd_ports $EXT_CLK40_RSTN] [get_bd_pins $SYS_RESETER_CLK40/ext_reset_in]
+# #connect clock
+connect_bd_net [get_bd_ports $EXT_CLK40] [get_bd_pins $SYS_RESETER_CLK40/slowest_sync_clk]
+
+set SYS_RESETER_AXI_CLK40_RSTN $SYS_RESETER_CLK40/interconnect_aresetn
+# #create the reset to sys reseter and slave interconnect
+connect_bd_net [get_bd_ports $AXI_CLK40_RSTN] [get_bd_pins $SYS_RESETER_AXI_CLK40_RSTN]
+
+#================================================================================
+#  Configure chip 2 chip links
+#================================================================================
+#LOCing C2CB to GTHE4_COMMON_X0Y1
+#set_property -dict [list CONFIG.CHANNEL_ENABLE {X0Y1} CONFIG.C_START_LANE {X0Y1}] [get_bd_cells C2CB_PHY]
+
 #================================================================================
 #  Create JTAG AXI Master
 #================================================================================
@@ -86,10 +124,11 @@ set JTAG_AXI_MASTER JTAG_AXI_Master
 BUILD_JTAG_AXI_MASTER [dict create device_name ${JTAG_AXI_MASTER} axi_clk ${AXI_MASTER_CLK} axi_rstn ${AXI_MASTER_RSTN}]
 
 
+
+
 #================================================================================
-#  Create the AXI Interconnect and connect C2C master port to interconnect slave port
+#  Connect C2C master port to interconnect slave port
 #================================================================================
-puts "Building AXI C2C slave interconnect"
 set mAXI [list ${C2C}/m_axi ${C2CB}/m_axi_lite ${JTAG_AXI_MASTER}/M_AXI]
 set mCLK [list ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK} ]
 set mRST [list ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN}] 
@@ -136,21 +175,3 @@ make_wrapper -files [get_files ${bd_design_name}.bd] -top -import -force
 save_bd_design
 
 close_bd_design ${bd_design_name}
-
-
-
-#================================================================================
-#  Configure chip 2 chip links
-#================================================================================
-#LOCing C2CB to GTHE4_COMMON_X0Y1
-#set_property -dict [list CONFIG.CHANNEL_ENABLE {X0Y1} CONFIG.C_START_LANE {X0Y1}] [get_bd_cells C2CB_PHY]
-
-
-
-
-
-#================================================================================
-#  
-#================================================================================
-
-

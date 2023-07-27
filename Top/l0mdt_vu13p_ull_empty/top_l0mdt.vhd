@@ -534,7 +534,7 @@ begin
       clk320                  => clk320,
       clk40                   => clk40,
       clkpipe                 => clock_and_control.clk,
-      axi_clk                 => clk40, 
+      axi_clk                 => clk_50, 
       clk50mhz                => clk_50,
       clk40_rstn              => not(clock_and_control.rst),
       reset_n                 => b2b_reset_n,

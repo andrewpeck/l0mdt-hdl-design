@@ -67,7 +67,6 @@ end entity top_clocking;
 architecture behavioral of top_clocking is
 
   signal clk50, clk100, clk200, clk40, clk320, clkpipe : std_logic;
-  signal locked_clk40                                  : std_logic;
   signal locked_clk50                                  : std_logic;
   signal clock_async_ibufds                            : std_logic;
   signal clock_async_i                                 : std_logic;
@@ -104,40 +103,39 @@ begin  -- architecture behavioral
   -- Port Aliasing
   --------------------------------------------------------------------------------
 
-  clocks_o.axiclock       <= clk40;
+  clocks_o.axiclock       <= clk50;
   clocks_o.clock40        <= clk40;
   clocks_o.clock320       <= clk320;
-  clocks_o.freeclock      <= clk40;
+  clocks_o.freeclock      <= clk50;
   clocks_o.clock_pipeline <= clkpipe;
-  clocks_o.b2b_locked     <= locked_clk40;
-  clocks_o.lhc_locked     <= locked_clk40;
+  clocks_o.b2b_locked     <= locked_clk50;
 
   --------------------------------------------------------------------------------
   -- ASYNC + 50MHz free-running clocks
   --------------------------------------------------------------------------------
 
-  -- IBUFDS_inst : IBUFDS
-  -- port map (
-  --   O => clock_async_i,
-  --   I => clock_async_i_p,
-  --   IB => clock_async_i_n
-  -- );
+  IBUFDS_inst : IBUFDS
+  port map (
+    O => clock_async_i,
+    I => clock_async_i_p,
+    IB => clock_async_i_n
+  );
 
-  -- BUFG_inst : BUFG
-  -- port map (
-  --   O => clock_async,                 -- 1-bit output: Clock output
-  --   I => clock_async_i                        -- 1-bit input: Clock input
-  -- );
+  BUFG_inst : BUFG
+  port map (
+    O => clock_async,                 -- 1-bit output: Clock output
+    I => clock_async_i                        -- 1-bit input: Clock input
+  );
 
-  -- pll_clk50_inst : onboardclk
-  --   port map (
-  --     clk_200MHz => clk200,
-  --     clk_100Mhz => clk100,
-  --     clk_50Mhz  => clk50,
-  --     reset      => '0',
-  --     locked     => locked_clk50,
-  --     clk_in1    => clock_async
-  --   );
+  pll_clk50_inst : onboardclk
+    port map (
+      clk_200MHz => clk200,
+      clk_100Mhz => clk100,
+      clk_50Mhz  => clk50,
+      reset      => '0',
+      locked     => locked_clk50,
+      clk_in1    => clock_async
+    );
 
   -------------------------------------------------------------------------------
   -- MMCM clocking
@@ -150,7 +148,7 @@ begin  -- architecture behavioral
       reset     => reset_i,
       clk320_o  => clk320,
       clk40_o   => clk40,
-      locked_o  => locked_clk40
+      locked_o  => clocks_o.lhc_locked
       );
 
   clkpipe <= clk320;
@@ -174,31 +172,31 @@ begin  -- architecture behavioral
       rate  => clk40_freq
       );
 
-  -- clk50_frequency : entity work.clk_frequency
-  --   generic map (clk_a_freq => 50_000_000)
-  --   port map (
-  --     reset => '0',
-  --     clk_a => clk50,
-  --     clk_b => clk50,
-  --     rate  => clk50_freq
-  --     );
+  clk50_frequency : entity work.clk_frequency
+    generic map (clk_a_freq => 50_000_000)
+    port map (
+      reset => '0',
+      clk_a => clk50,
+      clk_b => clk50,
+      rate  => clk50_freq
+      );
 
-  -- clk100_frequency : entity work.clk_frequency
-  --   generic map (clk_a_freq => 50_000_000)
-  --   port map (
-  --     reset => '0',
-  --     clk_a => clk50,
-  --     clk_b => clk100,
-  --     rate  => clk100_freq
-  --     );
+  clk100_frequency : entity work.clk_frequency
+    generic map (clk_a_freq => 50_000_000)
+    port map (
+      reset => '0',
+      clk_a => clk50,
+      clk_b => clk100,
+      rate  => clk100_freq
+      );
 
-  -- clk200_frequency : entity work.clk_frequency
-  --   generic map (clk_a_freq => 50_000_000)
-  --   port map (
-  --     reset => '0',
-  --     clk_a => clk50,
-  --     clk_b => clk200,
-  --     rate  => clk200_freq
-  --     );
+  clk200_frequency : entity work.clk_frequency
+    generic map (clk_a_freq => 50_000_000)
+    port map (
+      reset => '0',
+      clk_a => clk50,
+      clk_b => clk200,
+      rate  => clk200_freq
+      );
 
 end architecture behavioral;
