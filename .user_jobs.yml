@@ -79,16 +79,28 @@ check_submodule_status:
   allow_failure: true
   interruptible: true
 
-OnBoardTest:
+.on_board_test: &on_board_test
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
   tags:
     - prototype_v1
-  stage: user_pre
+  stage: user_post
+  variables:
+    IS_PROTO: 0
   script:
     - export PATH=${PATH}:/opt/BUTool/bin:/opt/BUTool/bin/BUTool:/opt/mcu_tools/bin/:/opt/uio-daemon:/opt/l0mdt-sm-sw-core/bin:/opt/test_stand
-    - config_proto.py -c 2
+    # Retrieve loaded firmware uids, if any
+    - fw_uid=$(uio_send.py list-uids)
+    - if [ $fw_uid != "No client IDs found that loaded firmware."]; then
+        uio_send.py -u $fw_uid unload-tar
+      fi;
+    - uio_send.py -f bin/*/*/tarball/*.gz load-tar
+    - if [[ $IS_PROTO == '1' ]]; then
+        config_proto.py -c 1 -p;
+      else
+        config_proto.py -c 1 -p;
+      fi;
   interruptible: true
   allow_failure: true
 
