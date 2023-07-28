@@ -149,3 +149,11 @@ set_max_delay -datapath_only \
 set_max_delay -datapath_only \
     -from [get_clocks] \
     -to [get_pins -hierarchical -filter { NAME =~ "*i_clk_frequency*/measure_sr_reg[0]/D"}] 8
+
+#--------------------------------------------------------------------------------
+# Max Delay Paths for Async Reset from MMCM
+#--------------------------------------------------------------------------------
+
+set_max_delay -datapath_only 25 \
+    -from [get_pins top_hal/reset_clk40_reg/C] \
+    -to [get_pins {top_hal/sector_logic_link_wrapper_inst/*/*/*/CLR}]
