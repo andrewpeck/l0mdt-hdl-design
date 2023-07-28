@@ -516,6 +516,7 @@ begin  -- architecture behavioral
 
   -- 0 to e.g. 17 CSM Boards
   csm_gen : for CSM in c_MDT_CONFIG'range generate
+  -- csm_gen : for CSM in 0 downto 0 generate
     constant hi       : integer := csm_hi_lo (CSM).hi;
     constant lo       : integer := csm_hi_lo (CSM).lo;
     constant tdc_cnt  : integer := count_ones(c_MDT_CONFIG(CSM).en);

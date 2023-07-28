@@ -216,7 +216,7 @@ vu13p_ull_empty:
   variants:
     default:
       link_map: "link_map_vu13p"
-      zynq_target: 7s  # 7s or usp
+      zynq_target: usp  # 7s or usp
       sector_id: 3
       sector_side: 0
       endcap: 0
@@ -252,7 +252,7 @@ vu13p_ba3_ucm_mpl_tar_hps:
   variants:
     default:
       link_map: "link_map_vu13p"
-      zynq_target: 7s  # 7s or usp
+      zynq_target: usp  # 7s or usp
       sector_id: 3
       sector_side: 0
       endcap: 0

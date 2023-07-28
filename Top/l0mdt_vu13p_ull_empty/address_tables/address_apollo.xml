@@ -5,6 +5,5 @@
  <node id="FW_INFO"    address="0x82000000"  module="file://FW_INFO.xml"/>
  <node id="HAL"             address="0x83000000"  module="file://HAL.xml"/>
  <node id="C2C_INTFS"      address="0x86000000"  module="file://C2C_INTFS.xml"/>
- <node id="FM"              address="0x85000000"  module="file://FM.xml"/>
  <node id="HOG"              address="0x89000000"  module="file://HOG.xml"/>
 </node>

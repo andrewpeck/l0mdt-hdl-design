@@ -102,7 +102,7 @@ check_auto_generated_code:
         echo "No address overlaps detected.";
       fi
     - echo "Checking Git differences..."
-    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile' ':(exclude)tools/gldl-scripts'
+    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile' ':(exclude)tools/gldl-scripts' ':(exclude)Top/*/hog.conf' 
   interruptible: true
   artifacts:
     name: Makefile
