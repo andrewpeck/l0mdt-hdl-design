@@ -87,7 +87,8 @@ OnBoardTest:
     - prototype_v1
   stage: user_pre
   script:
-    - echo "Hi, I am a simple script running on the MPP prototype :)"
+    - export PATH=${PATH}:/opt/BUTool/bin:/opt/BUTool/bin/BUTool:/opt/mcu_tools/bin/:/opt/uio-daemon:/opt/l0mdt-sm-sw-core/bin:/opt/test_stand
+    - config_proto.py -c 2
   interruptible: true
   allow_failure: true
 
