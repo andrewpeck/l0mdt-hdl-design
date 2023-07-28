@@ -85,8 +85,6 @@ OnBoardTest:
       when: manual
   tags:
     - prototype_v1
-  variables:
-    <<: *chk_variables
   stage: user_pre
   script:
     - echo "Hi, I am a simple script running on the MPP prototype :)"
