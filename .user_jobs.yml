@@ -78,7 +78,22 @@ check_submodule_status:
     - git diff --exit-code -- .
   allow_failure: true
   interruptible: true
-  
+
+OnBoardTest:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+  tags:
+    - prototype_v1
+  variables:
+    <<: *chk_variables
+  stage: user_pre
+  script:
+    - echo "Hi, I am a simple script running on the MPP prototype :)"
+  interruptible: true
+  allow_failure: true
+
+
 check_auto_generated_code:
   <<: *only-default
   <<: *tag-sr
