@@ -14,7 +14,7 @@ use hal.system_types_pkg.all;
 
 library ctrl_lib;
 
-use ctrl_lib.HAL_CORE_CTRL.all;
+use ctrl_lib.CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
@@ -120,7 +120,11 @@ entity top_l0mdt is
     UPT_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
     UPT_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000";
     KU15P_VER      : std_logic_vector (31 downto 0) := x"00000000";
-    KU15P_SHA      : std_logic_vector (31 downto 0) := x"00000000"
+    KU15P_SHA      : std_logic_vector (31 downto 0) := x"00000000";
+    OTHERS_VER      : std_logic_vector (31 downto 0) := x"00000000";
+    OTHERS_SHA      : std_logic_vector (31 downto 0) := x"00000000";
+    DP_REPO_LIB_VER      : std_logic_vector (31 downto 0) := x"00000000";
+    DP_REPO_LIB_SHA      : std_logic_vector (31 downto 0) := x"00000000"
     );
   port (
 --------------------------------------------------------------------------------
@@ -186,6 +190,8 @@ architecture structural of top_l0mdt is
   --
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
+  -- TO-DO: Trigger Throttling System (to signal FELIX about full DAQ buffers) 
+
   -- signal tts_commands          : TTS_CMD_rt;
 
   -- hal <--> ult
@@ -305,8 +311,8 @@ architecture structural of top_l0mdt is
   signal hal_mon_r  : HAL_MON_t;
   signal hal_ctrl_r : HAL_CTRL_t;
 
-  signal hal_core_mon_r  : HAL_CORE_MON_t;
-  signal hal_core_ctrl_r : HAL_CORE_CTRL_t;
+  signal CORE_mon_r  : CORE_MON_t;
+  signal CORE_ctrl_r : CORE_CTRL_t;
 
 
   -- sumps
@@ -377,8 +383,8 @@ begin
       clk50_o => clk_50, 
 
       b2b_reset_n => b2b_reset_n,
-      core_ctrl => hal_core_ctrl_r,
-      core_mon  => hal_core_mon_r,
+      core_ctrl => CORE_ctrl_r,
+      core_mon  => CORE_mon_r,
 
       ctrl => hal_ctrl_r,
       mon  => hal_mon_r,

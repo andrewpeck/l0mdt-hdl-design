@@ -181,6 +181,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(0).SC.MASTER.SCA_RX.RX(2).RX_DATA;           --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 53 => --0x35
           localRdData( 2 downto  0)  <=  reg_data(53)( 2 downto  0);                              --Enable flag to select SCAs
+        when 57 => --0x39
+          localRdData( 0)            <=  reg_data(57)( 0);                                        --0 = lpgbt v0; 1 = lpgbt v1
         when 66 => --0x42
           localRdData( 0)            <=  reg_data(66)( 0);                                        --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(66)( 1);                                        --Request a read config to the GBTx (IC)
@@ -284,6 +286,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(1).SC.MASTER.SCA_RX.RX(2).RX_DATA;           --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 133 => --0x85
           localRdData( 2 downto  0)  <=  reg_data(133)( 2 downto  0);                             --Enable flag to select SCAs
+        when 137 => --0x89
+          localRdData( 0)            <=  reg_data(137)( 0);                                       --0 = lpgbt v0; 1 = lpgbt v1
         when 146 => --0x92
           localRdData( 0)            <=  reg_data(146)( 0);                                       --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(146)( 1);                                       --Request a read config to the GBTx (IC)
@@ -387,6 +391,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(2).SC.MASTER.SCA_RX.RX(2).RX_DATA;           --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 213 => --0xd5
           localRdData( 2 downto  0)  <=  reg_data(213)( 2 downto  0);                             --Enable flag to select SCAs
+        when 217 => --0xd9
+          localRdData( 0)            <=  reg_data(217)( 0);                                       --0 = lpgbt v0; 1 = lpgbt v1
         when 226 => --0xe2
           localRdData( 0)            <=  reg_data(226)( 0);                                       --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(226)( 1);                                       --Request a read config to the GBTx (IC)
@@ -490,6 +496,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(3).SC.MASTER.SCA_RX.RX(2).RX_DATA;           --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 293 => --0x125
           localRdData( 2 downto  0)  <=  reg_data(293)( 2 downto  0);                             --Enable flag to select SCAs
+        when 297 => --0x129
+          localRdData( 0)            <=  reg_data(297)( 0);                                       --0 = lpgbt v0; 1 = lpgbt v1
         when 306 => --0x132
           localRdData( 0)            <=  reg_data(306)( 0);                                       --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(306)( 1);                                       --Request a read config to the GBTx (IC)
@@ -593,6 +601,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(4).SC.MASTER.SCA_RX.RX(2).RX_DATA;           --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 373 => --0x175
           localRdData( 2 downto  0)  <=  reg_data(373)( 2 downto  0);                             --Enable flag to select SCAs
+        when 377 => --0x179
+          localRdData( 0)            <=  reg_data(377)( 0);                                       --0 = lpgbt v0; 1 = lpgbt v1
         when 386 => --0x182
           localRdData( 0)            <=  reg_data(386)( 0);                                       --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(386)( 1);                                       --Request a read config to the GBTx (IC)
@@ -696,6 +706,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(5).SC.MASTER.SCA_RX.RX(2).RX_DATA;           --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 453 => --0x1c5
           localRdData( 2 downto  0)  <=  reg_data(453)( 2 downto  0);                             --Enable flag to select SCAs
+        when 457 => --0x1c9
+          localRdData( 0)            <=  reg_data(457)( 0);                                       --0 = lpgbt v0; 1 = lpgbt v1
         when 466 => --0x1d2
           localRdData( 0)            <=  reg_data(466)( 0);                                       --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(466)( 1);                                       --Request a read config to the GBTx (IC)
@@ -799,6 +811,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(6).SC.MASTER.SCA_RX.RX(2).RX_DATA;           --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 533 => --0x215
           localRdData( 2 downto  0)  <=  reg_data(533)( 2 downto  0);                             --Enable flag to select SCAs
+        when 537 => --0x219
+          localRdData( 0)            <=  reg_data(537)( 0);                                       --0 = lpgbt v0; 1 = lpgbt v1
         when 546 => --0x222
           localRdData( 0)            <=  reg_data(546)( 0);                                       --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(546)( 1);                                       --Request a read config to the GBTx (IC)
@@ -902,6 +916,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(7).SC.MASTER.SCA_RX.RX(2).RX_DATA;           --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 613 => --0x265
           localRdData( 2 downto  0)  <=  reg_data(613)( 2 downto  0);                             --Enable flag to select SCAs
+        when 617 => --0x269
+          localRdData( 0)            <=  reg_data(617)( 0);                                       --0 = lpgbt v0; 1 = lpgbt v1
         when 626 => --0x272
           localRdData( 0)            <=  reg_data(626)( 0);                                       --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(626)( 1);                                       --Request a read config to the GBTx (IC)
@@ -1005,6 +1021,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(8).SC.MASTER.SCA_RX.RX(2).RX_DATA;           --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 693 => --0x2b5
           localRdData( 2 downto  0)  <=  reg_data(693)( 2 downto  0);                             --Enable flag to select SCAs
+        when 697 => --0x2b9
+          localRdData( 0)            <=  reg_data(697)( 0);                                       --0 = lpgbt v0; 1 = lpgbt v1
         when 706 => --0x2c2
           localRdData( 0)            <=  reg_data(706)( 0);                                       --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(706)( 1);                                       --Request a read config to the GBTx (IC)
@@ -1108,6 +1126,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(9).SC.MASTER.SCA_RX.RX(2).RX_DATA;           --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 773 => --0x305
           localRdData( 2 downto  0)  <=  reg_data(773)( 2 downto  0);                             --Enable flag to select SCAs
+        when 777 => --0x309
+          localRdData( 0)            <=  reg_data(777)( 0);                                       --0 = lpgbt v0; 1 = lpgbt v1
         when 786 => --0x312
           localRdData( 0)            <=  reg_data(786)( 0);                                       --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(786)( 1);                                       --Request a read config to the GBTx (IC)
@@ -1211,6 +1231,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(10).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 853 => --0x355
           localRdData( 2 downto  0)  <=  reg_data(853)( 2 downto  0);                             --Enable flag to select SCAs
+        when 857 => --0x359
+          localRdData( 0)            <=  reg_data(857)( 0);                                       --0 = lpgbt v0; 1 = lpgbt v1
         when 866 => --0x362
           localRdData( 0)            <=  reg_data(866)( 0);                                       --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(866)( 1);                                       --Request a read config to the GBTx (IC)
@@ -1314,6 +1336,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(11).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 933 => --0x3a5
           localRdData( 2 downto  0)  <=  reg_data(933)( 2 downto  0);                             --Enable flag to select SCAs
+        when 937 => --0x3a9
+          localRdData( 0)            <=  reg_data(937)( 0);                                       --0 = lpgbt v0; 1 = lpgbt v1
         when 946 => --0x3b2
           localRdData( 0)            <=  reg_data(946)( 0);                                       --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(946)( 1);                                       --Request a read config to the GBTx (IC)
@@ -1417,6 +1441,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(12).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1013 => --0x3f5
           localRdData( 2 downto  0)  <=  reg_data(1013)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1017 => --0x3f9
+          localRdData( 0)            <=  reg_data(1017)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1026 => --0x402
           localRdData( 0)            <=  reg_data(1026)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1026)( 1);                                      --Request a read config to the GBTx (IC)
@@ -1520,6 +1546,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(13).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1093 => --0x445
           localRdData( 2 downto  0)  <=  reg_data(1093)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1097 => --0x449
+          localRdData( 0)            <=  reg_data(1097)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1106 => --0x452
           localRdData( 0)            <=  reg_data(1106)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1106)( 1);                                      --Request a read config to the GBTx (IC)
@@ -1623,6 +1651,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(14).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1173 => --0x495
           localRdData( 2 downto  0)  <=  reg_data(1173)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1177 => --0x499
+          localRdData( 0)            <=  reg_data(1177)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1186 => --0x4a2
           localRdData( 0)            <=  reg_data(1186)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1186)( 1);                                      --Request a read config to the GBTx (IC)
@@ -1726,6 +1756,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(15).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1253 => --0x4e5
           localRdData( 2 downto  0)  <=  reg_data(1253)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1257 => --0x4e9
+          localRdData( 0)            <=  reg_data(1257)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1266 => --0x4f2
           localRdData( 0)            <=  reg_data(1266)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1266)( 1);                                      --Request a read config to the GBTx (IC)
@@ -1829,6 +1861,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(16).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1333 => --0x535
           localRdData( 2 downto  0)  <=  reg_data(1333)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1337 => --0x539
+          localRdData( 0)            <=  reg_data(1337)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1346 => --0x542
           localRdData( 0)            <=  reg_data(1346)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1346)( 1);                                      --Request a read config to the GBTx (IC)
@@ -1932,6 +1966,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(17).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1413 => --0x585
           localRdData( 2 downto  0)  <=  reg_data(1413)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1417 => --0x589
+          localRdData( 0)            <=  reg_data(1417)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1426 => --0x592
           localRdData( 0)            <=  reg_data(1426)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1426)( 1);                                      --Request a read config to the GBTx (IC)
@@ -2035,6 +2071,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(18).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1493 => --0x5d5
           localRdData( 2 downto  0)  <=  reg_data(1493)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1497 => --0x5d9
+          localRdData( 0)            <=  reg_data(1497)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1506 => --0x5e2
           localRdData( 0)            <=  reg_data(1506)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1506)( 1);                                      --Request a read config to the GBTx (IC)
@@ -2138,6 +2176,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(19).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1573 => --0x625
           localRdData( 2 downto  0)  <=  reg_data(1573)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1577 => --0x629
+          localRdData( 0)            <=  reg_data(1577)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1586 => --0x632
           localRdData( 0)            <=  reg_data(1586)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1586)( 1);                                      --Request a read config to the GBTx (IC)
@@ -2241,6 +2281,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(20).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1653 => --0x675
           localRdData( 2 downto  0)  <=  reg_data(1653)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1657 => --0x679
+          localRdData( 0)            <=  reg_data(1657)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1666 => --0x682
           localRdData( 0)            <=  reg_data(1666)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1666)( 1);                                      --Request a read config to the GBTx (IC)
@@ -2344,6 +2386,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(21).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1733 => --0x6c5
           localRdData( 2 downto  0)  <=  reg_data(1733)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1737 => --0x6c9
+          localRdData( 0)            <=  reg_data(1737)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1746 => --0x6d2
           localRdData( 0)            <=  reg_data(1746)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1746)( 1);                                      --Request a read config to the GBTx (IC)
@@ -2447,6 +2491,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(22).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1813 => --0x715
           localRdData( 2 downto  0)  <=  reg_data(1813)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1817 => --0x719
+          localRdData( 0)            <=  reg_data(1817)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1826 => --0x722
           localRdData( 0)            <=  reg_data(1826)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1826)( 1);                                      --Request a read config to the GBTx (IC)
@@ -2550,6 +2596,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(23).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1893 => --0x765
           localRdData( 2 downto  0)  <=  reg_data(1893)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1897 => --0x769
+          localRdData( 0)            <=  reg_data(1897)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1906 => --0x772
           localRdData( 0)            <=  reg_data(1906)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1906)( 1);                                      --Request a read config to the GBTx (IC)
@@ -2653,6 +2701,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(24).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 1973 => --0x7b5
           localRdData( 2 downto  0)  <=  reg_data(1973)( 2 downto  0);                            --Enable flag to select SCAs
+        when 1977 => --0x7b9
+          localRdData( 0)            <=  reg_data(1977)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 1986 => --0x7c2
           localRdData( 0)            <=  reg_data(1986)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(1986)( 1);                                      --Request a read config to the GBTx (IC)
@@ -2756,6 +2806,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(25).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 2053 => --0x805
           localRdData( 2 downto  0)  <=  reg_data(2053)( 2 downto  0);                            --Enable flag to select SCAs
+        when 2057 => --0x809
+          localRdData( 0)            <=  reg_data(2057)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 2066 => --0x812
           localRdData( 0)            <=  reg_data(2066)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(2066)( 1);                                      --Request a read config to the GBTx (IC)
@@ -2859,6 +2911,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(26).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 2133 => --0x855
           localRdData( 2 downto  0)  <=  reg_data(2133)( 2 downto  0);                            --Enable flag to select SCAs
+        when 2137 => --0x859
+          localRdData( 0)            <=  reg_data(2137)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 2146 => --0x862
           localRdData( 0)            <=  reg_data(2146)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(2146)( 1);                                      --Request a read config to the GBTx (IC)
@@ -2962,6 +3016,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(27).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 2213 => --0x8a5
           localRdData( 2 downto  0)  <=  reg_data(2213)( 2 downto  0);                            --Enable flag to select SCAs
+        when 2217 => --0x8a9
+          localRdData( 0)            <=  reg_data(2217)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 2226 => --0x8b2
           localRdData( 0)            <=  reg_data(2226)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(2226)( 1);                                      --Request a read config to the GBTx (IC)
@@ -3065,6 +3121,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(28).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 2293 => --0x8f5
           localRdData( 2 downto  0)  <=  reg_data(2293)( 2 downto  0);                            --Enable flag to select SCAs
+        when 2297 => --0x8f9
+          localRdData( 0)            <=  reg_data(2297)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 2306 => --0x902
           localRdData( 0)            <=  reg_data(2306)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(2306)( 1);                                      --Request a read config to the GBTx (IC)
@@ -3168,6 +3226,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(29).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 2373 => --0x945
           localRdData( 2 downto  0)  <=  reg_data(2373)( 2 downto  0);                            --Enable flag to select SCAs
+        when 2377 => --0x949
+          localRdData( 0)            <=  reg_data(2377)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 2386 => --0x952
           localRdData( 0)            <=  reg_data(2386)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(2386)( 1);                                      --Request a read config to the GBTx (IC)
@@ -3271,6 +3331,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(30).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 2453 => --0x995
           localRdData( 2 downto  0)  <=  reg_data(2453)( 2 downto  0);                            --Enable flag to select SCAs
+        when 2457 => --0x999
+          localRdData( 0)            <=  reg_data(2457)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 2466 => --0x9a2
           localRdData( 0)            <=  reg_data(2466)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(2466)( 1);                                      --Request a read config to the GBTx (IC)
@@ -3374,6 +3436,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(31).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 2533 => --0x9e5
           localRdData( 2 downto  0)  <=  reg_data(2533)( 2 downto  0);                            --Enable flag to select SCAs
+        when 2537 => --0x9e9
+          localRdData( 0)            <=  reg_data(2537)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 2546 => --0x9f2
           localRdData( 0)            <=  reg_data(2546)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(2546)( 1);                                      --Request a read config to the GBTx (IC)
@@ -3477,6 +3541,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(32).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 2613 => --0xa35
           localRdData( 2 downto  0)  <=  reg_data(2613)( 2 downto  0);                            --Enable flag to select SCAs
+        when 2617 => --0xa39
+          localRdData( 0)            <=  reg_data(2617)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 2626 => --0xa42
           localRdData( 0)            <=  reg_data(2626)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(2626)( 1);                                      --Request a read config to the GBTx (IC)
@@ -3580,6 +3646,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(33).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 2693 => --0xa85
           localRdData( 2 downto  0)  <=  reg_data(2693)( 2 downto  0);                            --Enable flag to select SCAs
+        when 2697 => --0xa89
+          localRdData( 0)            <=  reg_data(2697)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 2706 => --0xa92
           localRdData( 0)            <=  reg_data(2706)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(2706)( 1);                                      --Request a read config to the GBTx (IC)
@@ -3683,6 +3751,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(34).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 2773 => --0xad5
           localRdData( 2 downto  0)  <=  reg_data(2773)( 2 downto  0);                            --Enable flag to select SCAs
+        when 2777 => --0xad9
+          localRdData( 0)            <=  reg_data(2777)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 2786 => --0xae2
           localRdData( 0)            <=  reg_data(2786)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(2786)( 1);                                      --Request a read config to the GBTx (IC)
@@ -3786,6 +3856,8 @@ begin  -- architecture behavioral
           localRdData(31 downto  0)  <=  Mon.CSM.CSM(35).SC.MASTER.SCA_RX.RX(2).RX_DATA;          --Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register.
         when 2853 => --0xb25
           localRdData( 2 downto  0)  <=  reg_data(2853)( 2 downto  0);                            --Enable flag to select SCAs
+        when 2857 => --0xb29
+          localRdData( 0)            <=  reg_data(2857)( 0);                                      --0 = lpgbt v0; 1 = lpgbt v1
         when 2866 => --0xb32
           localRdData( 0)            <=  reg_data(2866)( 0);                                      --Request a write config to the GBTx (IC)
           localRdData( 1)            <=  reg_data(2866)( 1);                                      --Request a read config to the GBTx (IC)
@@ -3846,6 +3918,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(0).SC.MASTER.TX_CHANNEL                <=  reg_data(41)(31 downto 24);       
   Ctrl.CSM.CSM(0).SC.MASTER.TX_DATA                   <=  reg_data(42)(31 downto  0);       
   Ctrl.CSM.CSM(0).SC.MASTER.SCA_ENABLE                <=  reg_data(53)( 2 downto  0);       
+  Ctrl.CSM.CSM(0).SC.FRAME_FORMAT                     <=  reg_data(57)( 0);                 
   Ctrl.CSM.CSM(0).SC.SLAVE.IC.TX_START_WRITE          <=  reg_data(66)( 0);                 
   Ctrl.CSM.CSM(0).SC.SLAVE.IC.TX_START_READ           <=  reg_data(66)( 1);                 
   Ctrl.CSM.CSM(0).SC.SLAVE.IC.TX_GBTX_ADDR            <=  reg_data(66)(15 downto  8);       
@@ -3864,6 +3937,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(1).SC.MASTER.TX_CHANNEL                <=  reg_data(121)(31 downto 24);      
   Ctrl.CSM.CSM(1).SC.MASTER.TX_DATA                   <=  reg_data(122)(31 downto  0);      
   Ctrl.CSM.CSM(1).SC.MASTER.SCA_ENABLE                <=  reg_data(133)( 2 downto  0);      
+  Ctrl.CSM.CSM(1).SC.FRAME_FORMAT                     <=  reg_data(137)( 0);                
   Ctrl.CSM.CSM(1).SC.SLAVE.IC.TX_START_WRITE          <=  reg_data(146)( 0);                
   Ctrl.CSM.CSM(1).SC.SLAVE.IC.TX_START_READ           <=  reg_data(146)( 1);                
   Ctrl.CSM.CSM(1).SC.SLAVE.IC.TX_GBTX_ADDR            <=  reg_data(146)(15 downto  8);      
@@ -3882,6 +3956,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(2).SC.MASTER.TX_CHANNEL                <=  reg_data(201)(31 downto 24);      
   Ctrl.CSM.CSM(2).SC.MASTER.TX_DATA                   <=  reg_data(202)(31 downto  0);      
   Ctrl.CSM.CSM(2).SC.MASTER.SCA_ENABLE                <=  reg_data(213)( 2 downto  0);      
+  Ctrl.CSM.CSM(2).SC.FRAME_FORMAT                     <=  reg_data(217)( 0);                
   Ctrl.CSM.CSM(2).SC.SLAVE.IC.TX_START_WRITE          <=  reg_data(226)( 0);                
   Ctrl.CSM.CSM(2).SC.SLAVE.IC.TX_START_READ           <=  reg_data(226)( 1);                
   Ctrl.CSM.CSM(2).SC.SLAVE.IC.TX_GBTX_ADDR            <=  reg_data(226)(15 downto  8);      
@@ -3900,6 +3975,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(3).SC.MASTER.TX_CHANNEL                <=  reg_data(281)(31 downto 24);      
   Ctrl.CSM.CSM(3).SC.MASTER.TX_DATA                   <=  reg_data(282)(31 downto  0);      
   Ctrl.CSM.CSM(3).SC.MASTER.SCA_ENABLE                <=  reg_data(293)( 2 downto  0);      
+  Ctrl.CSM.CSM(3).SC.FRAME_FORMAT                     <=  reg_data(297)( 0);                
   Ctrl.CSM.CSM(3).SC.SLAVE.IC.TX_START_WRITE          <=  reg_data(306)( 0);                
   Ctrl.CSM.CSM(3).SC.SLAVE.IC.TX_START_READ           <=  reg_data(306)( 1);                
   Ctrl.CSM.CSM(3).SC.SLAVE.IC.TX_GBTX_ADDR            <=  reg_data(306)(15 downto  8);      
@@ -3918,6 +3994,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(4).SC.MASTER.TX_CHANNEL                <=  reg_data(361)(31 downto 24);      
   Ctrl.CSM.CSM(4).SC.MASTER.TX_DATA                   <=  reg_data(362)(31 downto  0);      
   Ctrl.CSM.CSM(4).SC.MASTER.SCA_ENABLE                <=  reg_data(373)( 2 downto  0);      
+  Ctrl.CSM.CSM(4).SC.FRAME_FORMAT                     <=  reg_data(377)( 0);                
   Ctrl.CSM.CSM(4).SC.SLAVE.IC.TX_START_WRITE          <=  reg_data(386)( 0);                
   Ctrl.CSM.CSM(4).SC.SLAVE.IC.TX_START_READ           <=  reg_data(386)( 1);                
   Ctrl.CSM.CSM(4).SC.SLAVE.IC.TX_GBTX_ADDR            <=  reg_data(386)(15 downto  8);      
@@ -3936,6 +4013,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(5).SC.MASTER.TX_CHANNEL                <=  reg_data(441)(31 downto 24);      
   Ctrl.CSM.CSM(5).SC.MASTER.TX_DATA                   <=  reg_data(442)(31 downto  0);      
   Ctrl.CSM.CSM(5).SC.MASTER.SCA_ENABLE                <=  reg_data(453)( 2 downto  0);      
+  Ctrl.CSM.CSM(5).SC.FRAME_FORMAT                     <=  reg_data(457)( 0);                
   Ctrl.CSM.CSM(5).SC.SLAVE.IC.TX_START_WRITE          <=  reg_data(466)( 0);                
   Ctrl.CSM.CSM(5).SC.SLAVE.IC.TX_START_READ           <=  reg_data(466)( 1);                
   Ctrl.CSM.CSM(5).SC.SLAVE.IC.TX_GBTX_ADDR            <=  reg_data(466)(15 downto  8);      
@@ -3954,6 +4032,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(6).SC.MASTER.TX_CHANNEL                <=  reg_data(521)(31 downto 24);      
   Ctrl.CSM.CSM(6).SC.MASTER.TX_DATA                   <=  reg_data(522)(31 downto  0);      
   Ctrl.CSM.CSM(6).SC.MASTER.SCA_ENABLE                <=  reg_data(533)( 2 downto  0);      
+  Ctrl.CSM.CSM(6).SC.FRAME_FORMAT                     <=  reg_data(537)( 0);                
   Ctrl.CSM.CSM(6).SC.SLAVE.IC.TX_START_WRITE          <=  reg_data(546)( 0);                
   Ctrl.CSM.CSM(6).SC.SLAVE.IC.TX_START_READ           <=  reg_data(546)( 1);                
   Ctrl.CSM.CSM(6).SC.SLAVE.IC.TX_GBTX_ADDR            <=  reg_data(546)(15 downto  8);      
@@ -3972,6 +4051,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(7).SC.MASTER.TX_CHANNEL                <=  reg_data(601)(31 downto 24);      
   Ctrl.CSM.CSM(7).SC.MASTER.TX_DATA                   <=  reg_data(602)(31 downto  0);      
   Ctrl.CSM.CSM(7).SC.MASTER.SCA_ENABLE                <=  reg_data(613)( 2 downto  0);      
+  Ctrl.CSM.CSM(7).SC.FRAME_FORMAT                     <=  reg_data(617)( 0);                
   Ctrl.CSM.CSM(7).SC.SLAVE.IC.TX_START_WRITE          <=  reg_data(626)( 0);                
   Ctrl.CSM.CSM(7).SC.SLAVE.IC.TX_START_READ           <=  reg_data(626)( 1);                
   Ctrl.CSM.CSM(7).SC.SLAVE.IC.TX_GBTX_ADDR            <=  reg_data(626)(15 downto  8);      
@@ -3990,6 +4070,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(8).SC.MASTER.TX_CHANNEL                <=  reg_data(681)(31 downto 24);      
   Ctrl.CSM.CSM(8).SC.MASTER.TX_DATA                   <=  reg_data(682)(31 downto  0);      
   Ctrl.CSM.CSM(8).SC.MASTER.SCA_ENABLE                <=  reg_data(693)( 2 downto  0);      
+  Ctrl.CSM.CSM(8).SC.FRAME_FORMAT                     <=  reg_data(697)( 0);                
   Ctrl.CSM.CSM(8).SC.SLAVE.IC.TX_START_WRITE          <=  reg_data(706)( 0);                
   Ctrl.CSM.CSM(8).SC.SLAVE.IC.TX_START_READ           <=  reg_data(706)( 1);                
   Ctrl.CSM.CSM(8).SC.SLAVE.IC.TX_GBTX_ADDR            <=  reg_data(706)(15 downto  8);      
@@ -4008,6 +4089,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(9).SC.MASTER.TX_CHANNEL                <=  reg_data(761)(31 downto 24);      
   Ctrl.CSM.CSM(9).SC.MASTER.TX_DATA                   <=  reg_data(762)(31 downto  0);      
   Ctrl.CSM.CSM(9).SC.MASTER.SCA_ENABLE                <=  reg_data(773)( 2 downto  0);      
+  Ctrl.CSM.CSM(9).SC.FRAME_FORMAT                     <=  reg_data(777)( 0);                
   Ctrl.CSM.CSM(9).SC.SLAVE.IC.TX_START_WRITE          <=  reg_data(786)( 0);                
   Ctrl.CSM.CSM(9).SC.SLAVE.IC.TX_START_READ           <=  reg_data(786)( 1);                
   Ctrl.CSM.CSM(9).SC.SLAVE.IC.TX_GBTX_ADDR            <=  reg_data(786)(15 downto  8);      
@@ -4026,6 +4108,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(10).SC.MASTER.TX_CHANNEL               <=  reg_data(841)(31 downto 24);      
   Ctrl.CSM.CSM(10).SC.MASTER.TX_DATA                  <=  reg_data(842)(31 downto  0);      
   Ctrl.CSM.CSM(10).SC.MASTER.SCA_ENABLE               <=  reg_data(853)( 2 downto  0);      
+  Ctrl.CSM.CSM(10).SC.FRAME_FORMAT                    <=  reg_data(857)( 0);                
   Ctrl.CSM.CSM(10).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(866)( 0);                
   Ctrl.CSM.CSM(10).SC.SLAVE.IC.TX_START_READ          <=  reg_data(866)( 1);                
   Ctrl.CSM.CSM(10).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(866)(15 downto  8);      
@@ -4044,6 +4127,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(11).SC.MASTER.TX_CHANNEL               <=  reg_data(921)(31 downto 24);      
   Ctrl.CSM.CSM(11).SC.MASTER.TX_DATA                  <=  reg_data(922)(31 downto  0);      
   Ctrl.CSM.CSM(11).SC.MASTER.SCA_ENABLE               <=  reg_data(933)( 2 downto  0);      
+  Ctrl.CSM.CSM(11).SC.FRAME_FORMAT                    <=  reg_data(937)( 0);                
   Ctrl.CSM.CSM(11).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(946)( 0);                
   Ctrl.CSM.CSM(11).SC.SLAVE.IC.TX_START_READ          <=  reg_data(946)( 1);                
   Ctrl.CSM.CSM(11).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(946)(15 downto  8);      
@@ -4062,6 +4146,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(12).SC.MASTER.TX_CHANNEL               <=  reg_data(1001)(31 downto 24);     
   Ctrl.CSM.CSM(12).SC.MASTER.TX_DATA                  <=  reg_data(1002)(31 downto  0);     
   Ctrl.CSM.CSM(12).SC.MASTER.SCA_ENABLE               <=  reg_data(1013)( 2 downto  0);     
+  Ctrl.CSM.CSM(12).SC.FRAME_FORMAT                    <=  reg_data(1017)( 0);               
   Ctrl.CSM.CSM(12).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1026)( 0);               
   Ctrl.CSM.CSM(12).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1026)( 1);               
   Ctrl.CSM.CSM(12).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1026)(15 downto  8);     
@@ -4080,6 +4165,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(13).SC.MASTER.TX_CHANNEL               <=  reg_data(1081)(31 downto 24);     
   Ctrl.CSM.CSM(13).SC.MASTER.TX_DATA                  <=  reg_data(1082)(31 downto  0);     
   Ctrl.CSM.CSM(13).SC.MASTER.SCA_ENABLE               <=  reg_data(1093)( 2 downto  0);     
+  Ctrl.CSM.CSM(13).SC.FRAME_FORMAT                    <=  reg_data(1097)( 0);               
   Ctrl.CSM.CSM(13).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1106)( 0);               
   Ctrl.CSM.CSM(13).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1106)( 1);               
   Ctrl.CSM.CSM(13).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1106)(15 downto  8);     
@@ -4098,6 +4184,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(14).SC.MASTER.TX_CHANNEL               <=  reg_data(1161)(31 downto 24);     
   Ctrl.CSM.CSM(14).SC.MASTER.TX_DATA                  <=  reg_data(1162)(31 downto  0);     
   Ctrl.CSM.CSM(14).SC.MASTER.SCA_ENABLE               <=  reg_data(1173)( 2 downto  0);     
+  Ctrl.CSM.CSM(14).SC.FRAME_FORMAT                    <=  reg_data(1177)( 0);               
   Ctrl.CSM.CSM(14).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1186)( 0);               
   Ctrl.CSM.CSM(14).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1186)( 1);               
   Ctrl.CSM.CSM(14).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1186)(15 downto  8);     
@@ -4116,6 +4203,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(15).SC.MASTER.TX_CHANNEL               <=  reg_data(1241)(31 downto 24);     
   Ctrl.CSM.CSM(15).SC.MASTER.TX_DATA                  <=  reg_data(1242)(31 downto  0);     
   Ctrl.CSM.CSM(15).SC.MASTER.SCA_ENABLE               <=  reg_data(1253)( 2 downto  0);     
+  Ctrl.CSM.CSM(15).SC.FRAME_FORMAT                    <=  reg_data(1257)( 0);               
   Ctrl.CSM.CSM(15).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1266)( 0);               
   Ctrl.CSM.CSM(15).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1266)( 1);               
   Ctrl.CSM.CSM(15).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1266)(15 downto  8);     
@@ -4134,6 +4222,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(16).SC.MASTER.TX_CHANNEL               <=  reg_data(1321)(31 downto 24);     
   Ctrl.CSM.CSM(16).SC.MASTER.TX_DATA                  <=  reg_data(1322)(31 downto  0);     
   Ctrl.CSM.CSM(16).SC.MASTER.SCA_ENABLE               <=  reg_data(1333)( 2 downto  0);     
+  Ctrl.CSM.CSM(16).SC.FRAME_FORMAT                    <=  reg_data(1337)( 0);               
   Ctrl.CSM.CSM(16).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1346)( 0);               
   Ctrl.CSM.CSM(16).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1346)( 1);               
   Ctrl.CSM.CSM(16).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1346)(15 downto  8);     
@@ -4152,6 +4241,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(17).SC.MASTER.TX_CHANNEL               <=  reg_data(1401)(31 downto 24);     
   Ctrl.CSM.CSM(17).SC.MASTER.TX_DATA                  <=  reg_data(1402)(31 downto  0);     
   Ctrl.CSM.CSM(17).SC.MASTER.SCA_ENABLE               <=  reg_data(1413)( 2 downto  0);     
+  Ctrl.CSM.CSM(17).SC.FRAME_FORMAT                    <=  reg_data(1417)( 0);               
   Ctrl.CSM.CSM(17).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1426)( 0);               
   Ctrl.CSM.CSM(17).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1426)( 1);               
   Ctrl.CSM.CSM(17).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1426)(15 downto  8);     
@@ -4170,6 +4260,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(18).SC.MASTER.TX_CHANNEL               <=  reg_data(1481)(31 downto 24);     
   Ctrl.CSM.CSM(18).SC.MASTER.TX_DATA                  <=  reg_data(1482)(31 downto  0);     
   Ctrl.CSM.CSM(18).SC.MASTER.SCA_ENABLE               <=  reg_data(1493)( 2 downto  0);     
+  Ctrl.CSM.CSM(18).SC.FRAME_FORMAT                    <=  reg_data(1497)( 0);               
   Ctrl.CSM.CSM(18).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1506)( 0);               
   Ctrl.CSM.CSM(18).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1506)( 1);               
   Ctrl.CSM.CSM(18).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1506)(15 downto  8);     
@@ -4188,6 +4279,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(19).SC.MASTER.TX_CHANNEL               <=  reg_data(1561)(31 downto 24);     
   Ctrl.CSM.CSM(19).SC.MASTER.TX_DATA                  <=  reg_data(1562)(31 downto  0);     
   Ctrl.CSM.CSM(19).SC.MASTER.SCA_ENABLE               <=  reg_data(1573)( 2 downto  0);     
+  Ctrl.CSM.CSM(19).SC.FRAME_FORMAT                    <=  reg_data(1577)( 0);               
   Ctrl.CSM.CSM(19).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1586)( 0);               
   Ctrl.CSM.CSM(19).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1586)( 1);               
   Ctrl.CSM.CSM(19).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1586)(15 downto  8);     
@@ -4206,6 +4298,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(20).SC.MASTER.TX_CHANNEL               <=  reg_data(1641)(31 downto 24);     
   Ctrl.CSM.CSM(20).SC.MASTER.TX_DATA                  <=  reg_data(1642)(31 downto  0);     
   Ctrl.CSM.CSM(20).SC.MASTER.SCA_ENABLE               <=  reg_data(1653)( 2 downto  0);     
+  Ctrl.CSM.CSM(20).SC.FRAME_FORMAT                    <=  reg_data(1657)( 0);               
   Ctrl.CSM.CSM(20).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1666)( 0);               
   Ctrl.CSM.CSM(20).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1666)( 1);               
   Ctrl.CSM.CSM(20).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1666)(15 downto  8);     
@@ -4224,6 +4317,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(21).SC.MASTER.TX_CHANNEL               <=  reg_data(1721)(31 downto 24);     
   Ctrl.CSM.CSM(21).SC.MASTER.TX_DATA                  <=  reg_data(1722)(31 downto  0);     
   Ctrl.CSM.CSM(21).SC.MASTER.SCA_ENABLE               <=  reg_data(1733)( 2 downto  0);     
+  Ctrl.CSM.CSM(21).SC.FRAME_FORMAT                    <=  reg_data(1737)( 0);               
   Ctrl.CSM.CSM(21).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1746)( 0);               
   Ctrl.CSM.CSM(21).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1746)( 1);               
   Ctrl.CSM.CSM(21).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1746)(15 downto  8);     
@@ -4242,6 +4336,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(22).SC.MASTER.TX_CHANNEL               <=  reg_data(1801)(31 downto 24);     
   Ctrl.CSM.CSM(22).SC.MASTER.TX_DATA                  <=  reg_data(1802)(31 downto  0);     
   Ctrl.CSM.CSM(22).SC.MASTER.SCA_ENABLE               <=  reg_data(1813)( 2 downto  0);     
+  Ctrl.CSM.CSM(22).SC.FRAME_FORMAT                    <=  reg_data(1817)( 0);               
   Ctrl.CSM.CSM(22).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1826)( 0);               
   Ctrl.CSM.CSM(22).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1826)( 1);               
   Ctrl.CSM.CSM(22).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1826)(15 downto  8);     
@@ -4260,6 +4355,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(23).SC.MASTER.TX_CHANNEL               <=  reg_data(1881)(31 downto 24);     
   Ctrl.CSM.CSM(23).SC.MASTER.TX_DATA                  <=  reg_data(1882)(31 downto  0);     
   Ctrl.CSM.CSM(23).SC.MASTER.SCA_ENABLE               <=  reg_data(1893)( 2 downto  0);     
+  Ctrl.CSM.CSM(23).SC.FRAME_FORMAT                    <=  reg_data(1897)( 0);               
   Ctrl.CSM.CSM(23).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1906)( 0);               
   Ctrl.CSM.CSM(23).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1906)( 1);               
   Ctrl.CSM.CSM(23).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1906)(15 downto  8);     
@@ -4278,6 +4374,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(24).SC.MASTER.TX_CHANNEL               <=  reg_data(1961)(31 downto 24);     
   Ctrl.CSM.CSM(24).SC.MASTER.TX_DATA                  <=  reg_data(1962)(31 downto  0);     
   Ctrl.CSM.CSM(24).SC.MASTER.SCA_ENABLE               <=  reg_data(1973)( 2 downto  0);     
+  Ctrl.CSM.CSM(24).SC.FRAME_FORMAT                    <=  reg_data(1977)( 0);               
   Ctrl.CSM.CSM(24).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(1986)( 0);               
   Ctrl.CSM.CSM(24).SC.SLAVE.IC.TX_START_READ          <=  reg_data(1986)( 1);               
   Ctrl.CSM.CSM(24).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(1986)(15 downto  8);     
@@ -4296,6 +4393,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(25).SC.MASTER.TX_CHANNEL               <=  reg_data(2041)(31 downto 24);     
   Ctrl.CSM.CSM(25).SC.MASTER.TX_DATA                  <=  reg_data(2042)(31 downto  0);     
   Ctrl.CSM.CSM(25).SC.MASTER.SCA_ENABLE               <=  reg_data(2053)( 2 downto  0);     
+  Ctrl.CSM.CSM(25).SC.FRAME_FORMAT                    <=  reg_data(2057)( 0);               
   Ctrl.CSM.CSM(25).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(2066)( 0);               
   Ctrl.CSM.CSM(25).SC.SLAVE.IC.TX_START_READ          <=  reg_data(2066)( 1);               
   Ctrl.CSM.CSM(25).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2066)(15 downto  8);     
@@ -4314,6 +4412,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(26).SC.MASTER.TX_CHANNEL               <=  reg_data(2121)(31 downto 24);     
   Ctrl.CSM.CSM(26).SC.MASTER.TX_DATA                  <=  reg_data(2122)(31 downto  0);     
   Ctrl.CSM.CSM(26).SC.MASTER.SCA_ENABLE               <=  reg_data(2133)( 2 downto  0);     
+  Ctrl.CSM.CSM(26).SC.FRAME_FORMAT                    <=  reg_data(2137)( 0);               
   Ctrl.CSM.CSM(26).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(2146)( 0);               
   Ctrl.CSM.CSM(26).SC.SLAVE.IC.TX_START_READ          <=  reg_data(2146)( 1);               
   Ctrl.CSM.CSM(26).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2146)(15 downto  8);     
@@ -4332,6 +4431,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(27).SC.MASTER.TX_CHANNEL               <=  reg_data(2201)(31 downto 24);     
   Ctrl.CSM.CSM(27).SC.MASTER.TX_DATA                  <=  reg_data(2202)(31 downto  0);     
   Ctrl.CSM.CSM(27).SC.MASTER.SCA_ENABLE               <=  reg_data(2213)( 2 downto  0);     
+  Ctrl.CSM.CSM(27).SC.FRAME_FORMAT                    <=  reg_data(2217)( 0);               
   Ctrl.CSM.CSM(27).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(2226)( 0);               
   Ctrl.CSM.CSM(27).SC.SLAVE.IC.TX_START_READ          <=  reg_data(2226)( 1);               
   Ctrl.CSM.CSM(27).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2226)(15 downto  8);     
@@ -4350,6 +4450,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(28).SC.MASTER.TX_CHANNEL               <=  reg_data(2281)(31 downto 24);     
   Ctrl.CSM.CSM(28).SC.MASTER.TX_DATA                  <=  reg_data(2282)(31 downto  0);     
   Ctrl.CSM.CSM(28).SC.MASTER.SCA_ENABLE               <=  reg_data(2293)( 2 downto  0);     
+  Ctrl.CSM.CSM(28).SC.FRAME_FORMAT                    <=  reg_data(2297)( 0);               
   Ctrl.CSM.CSM(28).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(2306)( 0);               
   Ctrl.CSM.CSM(28).SC.SLAVE.IC.TX_START_READ          <=  reg_data(2306)( 1);               
   Ctrl.CSM.CSM(28).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2306)(15 downto  8);     
@@ -4368,6 +4469,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(29).SC.MASTER.TX_CHANNEL               <=  reg_data(2361)(31 downto 24);     
   Ctrl.CSM.CSM(29).SC.MASTER.TX_DATA                  <=  reg_data(2362)(31 downto  0);     
   Ctrl.CSM.CSM(29).SC.MASTER.SCA_ENABLE               <=  reg_data(2373)( 2 downto  0);     
+  Ctrl.CSM.CSM(29).SC.FRAME_FORMAT                    <=  reg_data(2377)( 0);               
   Ctrl.CSM.CSM(29).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(2386)( 0);               
   Ctrl.CSM.CSM(29).SC.SLAVE.IC.TX_START_READ          <=  reg_data(2386)( 1);               
   Ctrl.CSM.CSM(29).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2386)(15 downto  8);     
@@ -4386,6 +4488,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(30).SC.MASTER.TX_CHANNEL               <=  reg_data(2441)(31 downto 24);     
   Ctrl.CSM.CSM(30).SC.MASTER.TX_DATA                  <=  reg_data(2442)(31 downto  0);     
   Ctrl.CSM.CSM(30).SC.MASTER.SCA_ENABLE               <=  reg_data(2453)( 2 downto  0);     
+  Ctrl.CSM.CSM(30).SC.FRAME_FORMAT                    <=  reg_data(2457)( 0);               
   Ctrl.CSM.CSM(30).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(2466)( 0);               
   Ctrl.CSM.CSM(30).SC.SLAVE.IC.TX_START_READ          <=  reg_data(2466)( 1);               
   Ctrl.CSM.CSM(30).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2466)(15 downto  8);     
@@ -4404,6 +4507,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(31).SC.MASTER.TX_CHANNEL               <=  reg_data(2521)(31 downto 24);     
   Ctrl.CSM.CSM(31).SC.MASTER.TX_DATA                  <=  reg_data(2522)(31 downto  0);     
   Ctrl.CSM.CSM(31).SC.MASTER.SCA_ENABLE               <=  reg_data(2533)( 2 downto  0);     
+  Ctrl.CSM.CSM(31).SC.FRAME_FORMAT                    <=  reg_data(2537)( 0);               
   Ctrl.CSM.CSM(31).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(2546)( 0);               
   Ctrl.CSM.CSM(31).SC.SLAVE.IC.TX_START_READ          <=  reg_data(2546)( 1);               
   Ctrl.CSM.CSM(31).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2546)(15 downto  8);     
@@ -4422,6 +4526,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(32).SC.MASTER.TX_CHANNEL               <=  reg_data(2601)(31 downto 24);     
   Ctrl.CSM.CSM(32).SC.MASTER.TX_DATA                  <=  reg_data(2602)(31 downto  0);     
   Ctrl.CSM.CSM(32).SC.MASTER.SCA_ENABLE               <=  reg_data(2613)( 2 downto  0);     
+  Ctrl.CSM.CSM(32).SC.FRAME_FORMAT                    <=  reg_data(2617)( 0);               
   Ctrl.CSM.CSM(32).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(2626)( 0);               
   Ctrl.CSM.CSM(32).SC.SLAVE.IC.TX_START_READ          <=  reg_data(2626)( 1);               
   Ctrl.CSM.CSM(32).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2626)(15 downto  8);     
@@ -4440,6 +4545,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(33).SC.MASTER.TX_CHANNEL               <=  reg_data(2681)(31 downto 24);     
   Ctrl.CSM.CSM(33).SC.MASTER.TX_DATA                  <=  reg_data(2682)(31 downto  0);     
   Ctrl.CSM.CSM(33).SC.MASTER.SCA_ENABLE               <=  reg_data(2693)( 2 downto  0);     
+  Ctrl.CSM.CSM(33).SC.FRAME_FORMAT                    <=  reg_data(2697)( 0);               
   Ctrl.CSM.CSM(33).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(2706)( 0);               
   Ctrl.CSM.CSM(33).SC.SLAVE.IC.TX_START_READ          <=  reg_data(2706)( 1);               
   Ctrl.CSM.CSM(33).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2706)(15 downto  8);     
@@ -4458,6 +4564,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(34).SC.MASTER.TX_CHANNEL               <=  reg_data(2761)(31 downto 24);     
   Ctrl.CSM.CSM(34).SC.MASTER.TX_DATA                  <=  reg_data(2762)(31 downto  0);     
   Ctrl.CSM.CSM(34).SC.MASTER.SCA_ENABLE               <=  reg_data(2773)( 2 downto  0);     
+  Ctrl.CSM.CSM(34).SC.FRAME_FORMAT                    <=  reg_data(2777)( 0);               
   Ctrl.CSM.CSM(34).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(2786)( 0);               
   Ctrl.CSM.CSM(34).SC.SLAVE.IC.TX_START_READ          <=  reg_data(2786)( 1);               
   Ctrl.CSM.CSM(34).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2786)(15 downto  8);     
@@ -4476,6 +4583,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(35).SC.MASTER.TX_CHANNEL               <=  reg_data(2841)(31 downto 24);     
   Ctrl.CSM.CSM(35).SC.MASTER.TX_DATA                  <=  reg_data(2842)(31 downto  0);     
   Ctrl.CSM.CSM(35).SC.MASTER.SCA_ENABLE               <=  reg_data(2853)( 2 downto  0);     
+  Ctrl.CSM.CSM(35).SC.FRAME_FORMAT                    <=  reg_data(2857)( 0);               
   Ctrl.CSM.CSM(35).SC.SLAVE.IC.TX_START_WRITE         <=  reg_data(2866)( 0);               
   Ctrl.CSM.CSM(35).SC.SLAVE.IC.TX_START_READ          <=  reg_data(2866)( 1);               
   Ctrl.CSM.CSM(35).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2866)(15 downto  8);     
@@ -4509,9 +4617,10 @@ begin  -- architecture behavioral
       reg_data(42)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.MASTER.TX_DATA;
       reg_data(53)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.MASTER.SCA_ENABLE;
       reg_data(54)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.MASTER.START_RESET;
-      reg_data(55)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.MASTER.START_CONNECT;
-      reg_data(56)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.MASTER.START_COMMAND;
-      reg_data(57)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.MASTER.INJ_CRC_ERR;
+      reg_data(54)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.MASTER.START_CONNECT;
+      reg_data(54)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.MASTER.START_COMMAND;
+      reg_data(54)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.MASTER.INJ_CRC_ERR;
+      reg_data(57)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.FRAME_FORMAT;
       reg_data(64)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.SLAVE.TX_RESET;
       reg_data(65)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.SLAVE.RX_RESET;
       reg_data(66)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(0).SC.SLAVE.IC.TX_START_WRITE;
@@ -4540,9 +4649,10 @@ begin  -- architecture behavioral
       reg_data(122)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.MASTER.TX_DATA;
       reg_data(133)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.MASTER.SCA_ENABLE;
       reg_data(134)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.MASTER.START_RESET;
-      reg_data(135)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.MASTER.START_CONNECT;
-      reg_data(136)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.MASTER.START_COMMAND;
-      reg_data(137)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.MASTER.INJ_CRC_ERR;
+      reg_data(134)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.MASTER.START_CONNECT;
+      reg_data(134)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.MASTER.START_COMMAND;
+      reg_data(134)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.MASTER.INJ_CRC_ERR;
+      reg_data(137)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.FRAME_FORMAT;
       reg_data(144)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.SLAVE.TX_RESET;
       reg_data(145)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.SLAVE.RX_RESET;
       reg_data(146)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(1).SC.SLAVE.IC.TX_START_WRITE;
@@ -4571,9 +4681,10 @@ begin  -- architecture behavioral
       reg_data(202)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.MASTER.TX_DATA;
       reg_data(213)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.MASTER.SCA_ENABLE;
       reg_data(214)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.MASTER.START_RESET;
-      reg_data(215)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.MASTER.START_CONNECT;
-      reg_data(216)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.MASTER.START_COMMAND;
-      reg_data(217)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.MASTER.INJ_CRC_ERR;
+      reg_data(214)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.MASTER.START_CONNECT;
+      reg_data(214)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.MASTER.START_COMMAND;
+      reg_data(214)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.MASTER.INJ_CRC_ERR;
+      reg_data(217)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.FRAME_FORMAT;
       reg_data(224)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.SLAVE.TX_RESET;
       reg_data(225)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.SLAVE.RX_RESET;
       reg_data(226)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(2).SC.SLAVE.IC.TX_START_WRITE;
@@ -4602,9 +4713,10 @@ begin  -- architecture behavioral
       reg_data(282)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.MASTER.TX_DATA;
       reg_data(293)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.MASTER.SCA_ENABLE;
       reg_data(294)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.MASTER.START_RESET;
-      reg_data(295)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.MASTER.START_CONNECT;
-      reg_data(296)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.MASTER.START_COMMAND;
-      reg_data(297)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.MASTER.INJ_CRC_ERR;
+      reg_data(294)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.MASTER.START_CONNECT;
+      reg_data(294)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.MASTER.START_COMMAND;
+      reg_data(294)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.MASTER.INJ_CRC_ERR;
+      reg_data(297)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.FRAME_FORMAT;
       reg_data(304)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.SLAVE.TX_RESET;
       reg_data(305)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.SLAVE.RX_RESET;
       reg_data(306)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(3).SC.SLAVE.IC.TX_START_WRITE;
@@ -4633,9 +4745,10 @@ begin  -- architecture behavioral
       reg_data(362)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.MASTER.TX_DATA;
       reg_data(373)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.MASTER.SCA_ENABLE;
       reg_data(374)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.MASTER.START_RESET;
-      reg_data(375)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.MASTER.START_CONNECT;
-      reg_data(376)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.MASTER.START_COMMAND;
-      reg_data(377)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.MASTER.INJ_CRC_ERR;
+      reg_data(374)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.MASTER.START_CONNECT;
+      reg_data(374)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.MASTER.START_COMMAND;
+      reg_data(374)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.MASTER.INJ_CRC_ERR;
+      reg_data(377)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.FRAME_FORMAT;
       reg_data(384)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.SLAVE.TX_RESET;
       reg_data(385)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.SLAVE.RX_RESET;
       reg_data(386)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(4).SC.SLAVE.IC.TX_START_WRITE;
@@ -4664,9 +4777,10 @@ begin  -- architecture behavioral
       reg_data(442)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.MASTER.TX_DATA;
       reg_data(453)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.MASTER.SCA_ENABLE;
       reg_data(454)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.MASTER.START_RESET;
-      reg_data(455)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.MASTER.START_CONNECT;
-      reg_data(456)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.MASTER.START_COMMAND;
-      reg_data(457)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.MASTER.INJ_CRC_ERR;
+      reg_data(454)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.MASTER.START_CONNECT;
+      reg_data(454)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.MASTER.START_COMMAND;
+      reg_data(454)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.MASTER.INJ_CRC_ERR;
+      reg_data(457)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.FRAME_FORMAT;
       reg_data(464)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.SLAVE.TX_RESET;
       reg_data(465)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.SLAVE.RX_RESET;
       reg_data(466)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(5).SC.SLAVE.IC.TX_START_WRITE;
@@ -4695,9 +4809,10 @@ begin  -- architecture behavioral
       reg_data(522)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.MASTER.TX_DATA;
       reg_data(533)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.MASTER.SCA_ENABLE;
       reg_data(534)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.MASTER.START_RESET;
-      reg_data(535)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.MASTER.START_CONNECT;
-      reg_data(536)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.MASTER.START_COMMAND;
-      reg_data(537)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.MASTER.INJ_CRC_ERR;
+      reg_data(534)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.MASTER.START_CONNECT;
+      reg_data(534)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.MASTER.START_COMMAND;
+      reg_data(534)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.MASTER.INJ_CRC_ERR;
+      reg_data(537)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.FRAME_FORMAT;
       reg_data(544)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.SLAVE.TX_RESET;
       reg_data(545)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.SLAVE.RX_RESET;
       reg_data(546)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(6).SC.SLAVE.IC.TX_START_WRITE;
@@ -4726,9 +4841,10 @@ begin  -- architecture behavioral
       reg_data(602)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.MASTER.TX_DATA;
       reg_data(613)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.MASTER.SCA_ENABLE;
       reg_data(614)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.MASTER.START_RESET;
-      reg_data(615)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.MASTER.START_CONNECT;
-      reg_data(616)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.MASTER.START_COMMAND;
-      reg_data(617)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.MASTER.INJ_CRC_ERR;
+      reg_data(614)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.MASTER.START_CONNECT;
+      reg_data(614)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.MASTER.START_COMMAND;
+      reg_data(614)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.MASTER.INJ_CRC_ERR;
+      reg_data(617)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.FRAME_FORMAT;
       reg_data(624)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.SLAVE.TX_RESET;
       reg_data(625)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.SLAVE.RX_RESET;
       reg_data(626)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(7).SC.SLAVE.IC.TX_START_WRITE;
@@ -4757,9 +4873,10 @@ begin  -- architecture behavioral
       reg_data(682)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.MASTER.TX_DATA;
       reg_data(693)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.MASTER.SCA_ENABLE;
       reg_data(694)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.MASTER.START_RESET;
-      reg_data(695)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.MASTER.START_CONNECT;
-      reg_data(696)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.MASTER.START_COMMAND;
-      reg_data(697)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.MASTER.INJ_CRC_ERR;
+      reg_data(694)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.MASTER.START_CONNECT;
+      reg_data(694)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.MASTER.START_COMMAND;
+      reg_data(694)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.MASTER.INJ_CRC_ERR;
+      reg_data(697)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.FRAME_FORMAT;
       reg_data(704)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.SLAVE.TX_RESET;
       reg_data(705)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.SLAVE.RX_RESET;
       reg_data(706)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(8).SC.SLAVE.IC.TX_START_WRITE;
@@ -4788,9 +4905,10 @@ begin  -- architecture behavioral
       reg_data(762)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.MASTER.TX_DATA;
       reg_data(773)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.MASTER.SCA_ENABLE;
       reg_data(774)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.MASTER.START_RESET;
-      reg_data(775)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.MASTER.START_CONNECT;
-      reg_data(776)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.MASTER.START_COMMAND;
-      reg_data(777)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.MASTER.INJ_CRC_ERR;
+      reg_data(774)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.MASTER.START_CONNECT;
+      reg_data(774)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.MASTER.START_COMMAND;
+      reg_data(774)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.MASTER.INJ_CRC_ERR;
+      reg_data(777)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.FRAME_FORMAT;
       reg_data(784)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.SLAVE.TX_RESET;
       reg_data(785)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.SLAVE.RX_RESET;
       reg_data(786)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(9).SC.SLAVE.IC.TX_START_WRITE;
@@ -4819,9 +4937,10 @@ begin  -- architecture behavioral
       reg_data(842)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.MASTER.TX_DATA;
       reg_data(853)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.MASTER.SCA_ENABLE;
       reg_data(854)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.MASTER.START_RESET;
-      reg_data(855)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.MASTER.START_CONNECT;
-      reg_data(856)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.MASTER.START_COMMAND;
-      reg_data(857)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.MASTER.INJ_CRC_ERR;
+      reg_data(854)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.MASTER.START_CONNECT;
+      reg_data(854)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.MASTER.START_COMMAND;
+      reg_data(854)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.MASTER.INJ_CRC_ERR;
+      reg_data(857)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.FRAME_FORMAT;
       reg_data(864)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.SLAVE.TX_RESET;
       reg_data(865)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.SLAVE.RX_RESET;
       reg_data(866)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(10).SC.SLAVE.IC.TX_START_WRITE;
@@ -4850,9 +4969,10 @@ begin  -- architecture behavioral
       reg_data(922)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.MASTER.TX_DATA;
       reg_data(933)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.MASTER.SCA_ENABLE;
       reg_data(934)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.MASTER.START_RESET;
-      reg_data(935)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.MASTER.START_CONNECT;
-      reg_data(936)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.MASTER.START_COMMAND;
-      reg_data(937)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.MASTER.INJ_CRC_ERR;
+      reg_data(934)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.MASTER.START_CONNECT;
+      reg_data(934)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.MASTER.START_COMMAND;
+      reg_data(934)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.MASTER.INJ_CRC_ERR;
+      reg_data(937)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.FRAME_FORMAT;
       reg_data(944)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.SLAVE.TX_RESET;
       reg_data(945)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.SLAVE.RX_RESET;
       reg_data(946)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(11).SC.SLAVE.IC.TX_START_WRITE;
@@ -4881,9 +5001,10 @@ begin  -- architecture behavioral
       reg_data(1002)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.MASTER.TX_DATA;
       reg_data(1013)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.MASTER.SCA_ENABLE;
       reg_data(1014)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.MASTER.START_RESET;
-      reg_data(1015)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.MASTER.START_CONNECT;
-      reg_data(1016)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.MASTER.START_COMMAND;
-      reg_data(1017)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1014)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.MASTER.START_CONNECT;
+      reg_data(1014)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.MASTER.START_COMMAND;
+      reg_data(1014)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1017)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.FRAME_FORMAT;
       reg_data(1024)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.SLAVE.TX_RESET;
       reg_data(1025)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.SLAVE.RX_RESET;
       reg_data(1026)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(12).SC.SLAVE.IC.TX_START_WRITE;
@@ -4912,9 +5033,10 @@ begin  -- architecture behavioral
       reg_data(1082)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.MASTER.TX_DATA;
       reg_data(1093)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.MASTER.SCA_ENABLE;
       reg_data(1094)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.MASTER.START_RESET;
-      reg_data(1095)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.MASTER.START_CONNECT;
-      reg_data(1096)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.MASTER.START_COMMAND;
-      reg_data(1097)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1094)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.MASTER.START_CONNECT;
+      reg_data(1094)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.MASTER.START_COMMAND;
+      reg_data(1094)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1097)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.FRAME_FORMAT;
       reg_data(1104)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.SLAVE.TX_RESET;
       reg_data(1105)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.SLAVE.RX_RESET;
       reg_data(1106)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(13).SC.SLAVE.IC.TX_START_WRITE;
@@ -4943,9 +5065,10 @@ begin  -- architecture behavioral
       reg_data(1162)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.MASTER.TX_DATA;
       reg_data(1173)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.MASTER.SCA_ENABLE;
       reg_data(1174)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.MASTER.START_RESET;
-      reg_data(1175)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.MASTER.START_CONNECT;
-      reg_data(1176)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.MASTER.START_COMMAND;
-      reg_data(1177)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1174)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.MASTER.START_CONNECT;
+      reg_data(1174)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.MASTER.START_COMMAND;
+      reg_data(1174)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1177)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.FRAME_FORMAT;
       reg_data(1184)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.SLAVE.TX_RESET;
       reg_data(1185)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.SLAVE.RX_RESET;
       reg_data(1186)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(14).SC.SLAVE.IC.TX_START_WRITE;
@@ -4974,9 +5097,10 @@ begin  -- architecture behavioral
       reg_data(1242)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.MASTER.TX_DATA;
       reg_data(1253)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.MASTER.SCA_ENABLE;
       reg_data(1254)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.MASTER.START_RESET;
-      reg_data(1255)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.MASTER.START_CONNECT;
-      reg_data(1256)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.MASTER.START_COMMAND;
-      reg_data(1257)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1254)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.MASTER.START_CONNECT;
+      reg_data(1254)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.MASTER.START_COMMAND;
+      reg_data(1254)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1257)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.FRAME_FORMAT;
       reg_data(1264)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.SLAVE.TX_RESET;
       reg_data(1265)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.SLAVE.RX_RESET;
       reg_data(1266)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(15).SC.SLAVE.IC.TX_START_WRITE;
@@ -5005,9 +5129,10 @@ begin  -- architecture behavioral
       reg_data(1322)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.MASTER.TX_DATA;
       reg_data(1333)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.MASTER.SCA_ENABLE;
       reg_data(1334)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.MASTER.START_RESET;
-      reg_data(1335)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.MASTER.START_CONNECT;
-      reg_data(1336)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.MASTER.START_COMMAND;
-      reg_data(1337)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1334)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.MASTER.START_CONNECT;
+      reg_data(1334)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.MASTER.START_COMMAND;
+      reg_data(1334)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1337)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.FRAME_FORMAT;
       reg_data(1344)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.SLAVE.TX_RESET;
       reg_data(1345)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.SLAVE.RX_RESET;
       reg_data(1346)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(16).SC.SLAVE.IC.TX_START_WRITE;
@@ -5036,9 +5161,10 @@ begin  -- architecture behavioral
       reg_data(1402)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.MASTER.TX_DATA;
       reg_data(1413)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.MASTER.SCA_ENABLE;
       reg_data(1414)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.MASTER.START_RESET;
-      reg_data(1415)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.MASTER.START_CONNECT;
-      reg_data(1416)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.MASTER.START_COMMAND;
-      reg_data(1417)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1414)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.MASTER.START_CONNECT;
+      reg_data(1414)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.MASTER.START_COMMAND;
+      reg_data(1414)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1417)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.FRAME_FORMAT;
       reg_data(1424)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.SLAVE.TX_RESET;
       reg_data(1425)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.SLAVE.RX_RESET;
       reg_data(1426)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(17).SC.SLAVE.IC.TX_START_WRITE;
@@ -5067,9 +5193,10 @@ begin  -- architecture behavioral
       reg_data(1482)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.MASTER.TX_DATA;
       reg_data(1493)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.MASTER.SCA_ENABLE;
       reg_data(1494)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.MASTER.START_RESET;
-      reg_data(1495)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.MASTER.START_CONNECT;
-      reg_data(1496)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.MASTER.START_COMMAND;
-      reg_data(1497)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1494)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.MASTER.START_CONNECT;
+      reg_data(1494)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.MASTER.START_COMMAND;
+      reg_data(1494)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1497)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.FRAME_FORMAT;
       reg_data(1504)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.SLAVE.TX_RESET;
       reg_data(1505)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.SLAVE.RX_RESET;
       reg_data(1506)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(18).SC.SLAVE.IC.TX_START_WRITE;
@@ -5098,9 +5225,10 @@ begin  -- architecture behavioral
       reg_data(1562)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.MASTER.TX_DATA;
       reg_data(1573)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.MASTER.SCA_ENABLE;
       reg_data(1574)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.MASTER.START_RESET;
-      reg_data(1575)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.MASTER.START_CONNECT;
-      reg_data(1576)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.MASTER.START_COMMAND;
-      reg_data(1577)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1574)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.MASTER.START_CONNECT;
+      reg_data(1574)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.MASTER.START_COMMAND;
+      reg_data(1574)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1577)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.FRAME_FORMAT;
       reg_data(1584)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.SLAVE.TX_RESET;
       reg_data(1585)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.SLAVE.RX_RESET;
       reg_data(1586)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(19).SC.SLAVE.IC.TX_START_WRITE;
@@ -5129,9 +5257,10 @@ begin  -- architecture behavioral
       reg_data(1642)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.MASTER.TX_DATA;
       reg_data(1653)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.MASTER.SCA_ENABLE;
       reg_data(1654)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.MASTER.START_RESET;
-      reg_data(1655)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.MASTER.START_CONNECT;
-      reg_data(1656)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.MASTER.START_COMMAND;
-      reg_data(1657)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1654)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.MASTER.START_CONNECT;
+      reg_data(1654)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.MASTER.START_COMMAND;
+      reg_data(1654)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1657)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.FRAME_FORMAT;
       reg_data(1664)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.SLAVE.TX_RESET;
       reg_data(1665)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.SLAVE.RX_RESET;
       reg_data(1666)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(20).SC.SLAVE.IC.TX_START_WRITE;
@@ -5160,9 +5289,10 @@ begin  -- architecture behavioral
       reg_data(1722)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.MASTER.TX_DATA;
       reg_data(1733)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.MASTER.SCA_ENABLE;
       reg_data(1734)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.MASTER.START_RESET;
-      reg_data(1735)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.MASTER.START_CONNECT;
-      reg_data(1736)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.MASTER.START_COMMAND;
-      reg_data(1737)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1734)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.MASTER.START_CONNECT;
+      reg_data(1734)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.MASTER.START_COMMAND;
+      reg_data(1734)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1737)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.FRAME_FORMAT;
       reg_data(1744)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.SLAVE.TX_RESET;
       reg_data(1745)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.SLAVE.RX_RESET;
       reg_data(1746)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(21).SC.SLAVE.IC.TX_START_WRITE;
@@ -5191,9 +5321,10 @@ begin  -- architecture behavioral
       reg_data(1802)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.MASTER.TX_DATA;
       reg_data(1813)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.MASTER.SCA_ENABLE;
       reg_data(1814)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.MASTER.START_RESET;
-      reg_data(1815)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.MASTER.START_CONNECT;
-      reg_data(1816)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.MASTER.START_COMMAND;
-      reg_data(1817)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1814)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.MASTER.START_CONNECT;
+      reg_data(1814)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.MASTER.START_COMMAND;
+      reg_data(1814)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1817)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.FRAME_FORMAT;
       reg_data(1824)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.SLAVE.TX_RESET;
       reg_data(1825)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.SLAVE.RX_RESET;
       reg_data(1826)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(22).SC.SLAVE.IC.TX_START_WRITE;
@@ -5222,9 +5353,10 @@ begin  -- architecture behavioral
       reg_data(1882)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.MASTER.TX_DATA;
       reg_data(1893)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.MASTER.SCA_ENABLE;
       reg_data(1894)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.MASTER.START_RESET;
-      reg_data(1895)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.MASTER.START_CONNECT;
-      reg_data(1896)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.MASTER.START_COMMAND;
-      reg_data(1897)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1894)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.MASTER.START_CONNECT;
+      reg_data(1894)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.MASTER.START_COMMAND;
+      reg_data(1894)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1897)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.FRAME_FORMAT;
       reg_data(1904)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.SLAVE.TX_RESET;
       reg_data(1905)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.SLAVE.RX_RESET;
       reg_data(1906)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(23).SC.SLAVE.IC.TX_START_WRITE;
@@ -5253,9 +5385,10 @@ begin  -- architecture behavioral
       reg_data(1962)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.MASTER.TX_DATA;
       reg_data(1973)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.MASTER.SCA_ENABLE;
       reg_data(1974)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.MASTER.START_RESET;
-      reg_data(1975)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.MASTER.START_CONNECT;
-      reg_data(1976)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.MASTER.START_COMMAND;
-      reg_data(1977)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1974)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.MASTER.START_CONNECT;
+      reg_data(1974)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.MASTER.START_COMMAND;
+      reg_data(1974)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.MASTER.INJ_CRC_ERR;
+      reg_data(1977)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.FRAME_FORMAT;
       reg_data(1984)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.SLAVE.TX_RESET;
       reg_data(1985)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.SLAVE.RX_RESET;
       reg_data(1986)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(24).SC.SLAVE.IC.TX_START_WRITE;
@@ -5284,9 +5417,10 @@ begin  -- architecture behavioral
       reg_data(2042)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.MASTER.TX_DATA;
       reg_data(2053)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.MASTER.SCA_ENABLE;
       reg_data(2054)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.MASTER.START_RESET;
-      reg_data(2055)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.MASTER.START_CONNECT;
-      reg_data(2056)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.MASTER.START_COMMAND;
-      reg_data(2057)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2054)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.MASTER.START_CONNECT;
+      reg_data(2054)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.MASTER.START_COMMAND;
+      reg_data(2054)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2057)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.FRAME_FORMAT;
       reg_data(2064)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.SLAVE.TX_RESET;
       reg_data(2065)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.SLAVE.RX_RESET;
       reg_data(2066)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(25).SC.SLAVE.IC.TX_START_WRITE;
@@ -5315,9 +5449,10 @@ begin  -- architecture behavioral
       reg_data(2122)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.MASTER.TX_DATA;
       reg_data(2133)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.MASTER.SCA_ENABLE;
       reg_data(2134)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.MASTER.START_RESET;
-      reg_data(2135)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.MASTER.START_CONNECT;
-      reg_data(2136)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.MASTER.START_COMMAND;
-      reg_data(2137)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2134)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.MASTER.START_CONNECT;
+      reg_data(2134)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.MASTER.START_COMMAND;
+      reg_data(2134)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2137)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.FRAME_FORMAT;
       reg_data(2144)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.SLAVE.TX_RESET;
       reg_data(2145)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.SLAVE.RX_RESET;
       reg_data(2146)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(26).SC.SLAVE.IC.TX_START_WRITE;
@@ -5346,9 +5481,10 @@ begin  -- architecture behavioral
       reg_data(2202)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.MASTER.TX_DATA;
       reg_data(2213)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.MASTER.SCA_ENABLE;
       reg_data(2214)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.MASTER.START_RESET;
-      reg_data(2215)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.MASTER.START_CONNECT;
-      reg_data(2216)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.MASTER.START_COMMAND;
-      reg_data(2217)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2214)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.MASTER.START_CONNECT;
+      reg_data(2214)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.MASTER.START_COMMAND;
+      reg_data(2214)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2217)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.FRAME_FORMAT;
       reg_data(2224)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.SLAVE.TX_RESET;
       reg_data(2225)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.SLAVE.RX_RESET;
       reg_data(2226)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(27).SC.SLAVE.IC.TX_START_WRITE;
@@ -5377,9 +5513,10 @@ begin  -- architecture behavioral
       reg_data(2282)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.MASTER.TX_DATA;
       reg_data(2293)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.MASTER.SCA_ENABLE;
       reg_data(2294)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.MASTER.START_RESET;
-      reg_data(2295)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.MASTER.START_CONNECT;
-      reg_data(2296)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.MASTER.START_COMMAND;
-      reg_data(2297)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2294)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.MASTER.START_CONNECT;
+      reg_data(2294)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.MASTER.START_COMMAND;
+      reg_data(2294)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2297)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.FRAME_FORMAT;
       reg_data(2304)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.SLAVE.TX_RESET;
       reg_data(2305)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.SLAVE.RX_RESET;
       reg_data(2306)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(28).SC.SLAVE.IC.TX_START_WRITE;
@@ -5408,9 +5545,10 @@ begin  -- architecture behavioral
       reg_data(2362)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.MASTER.TX_DATA;
       reg_data(2373)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.MASTER.SCA_ENABLE;
       reg_data(2374)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.MASTER.START_RESET;
-      reg_data(2375)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.MASTER.START_CONNECT;
-      reg_data(2376)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.MASTER.START_COMMAND;
-      reg_data(2377)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2374)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.MASTER.START_CONNECT;
+      reg_data(2374)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.MASTER.START_COMMAND;
+      reg_data(2374)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2377)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.FRAME_FORMAT;
       reg_data(2384)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.SLAVE.TX_RESET;
       reg_data(2385)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.SLAVE.RX_RESET;
       reg_data(2386)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(29).SC.SLAVE.IC.TX_START_WRITE;
@@ -5439,9 +5577,10 @@ begin  -- architecture behavioral
       reg_data(2442)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.MASTER.TX_DATA;
       reg_data(2453)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.MASTER.SCA_ENABLE;
       reg_data(2454)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.MASTER.START_RESET;
-      reg_data(2455)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.MASTER.START_CONNECT;
-      reg_data(2456)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.MASTER.START_COMMAND;
-      reg_data(2457)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2454)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.MASTER.START_CONNECT;
+      reg_data(2454)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.MASTER.START_COMMAND;
+      reg_data(2454)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2457)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.FRAME_FORMAT;
       reg_data(2464)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.SLAVE.TX_RESET;
       reg_data(2465)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.SLAVE.RX_RESET;
       reg_data(2466)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(30).SC.SLAVE.IC.TX_START_WRITE;
@@ -5470,9 +5609,10 @@ begin  -- architecture behavioral
       reg_data(2522)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.MASTER.TX_DATA;
       reg_data(2533)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.MASTER.SCA_ENABLE;
       reg_data(2534)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.MASTER.START_RESET;
-      reg_data(2535)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.MASTER.START_CONNECT;
-      reg_data(2536)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.MASTER.START_COMMAND;
-      reg_data(2537)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2534)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.MASTER.START_CONNECT;
+      reg_data(2534)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.MASTER.START_COMMAND;
+      reg_data(2534)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2537)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.FRAME_FORMAT;
       reg_data(2544)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.SLAVE.TX_RESET;
       reg_data(2545)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.SLAVE.RX_RESET;
       reg_data(2546)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(31).SC.SLAVE.IC.TX_START_WRITE;
@@ -5501,9 +5641,10 @@ begin  -- architecture behavioral
       reg_data(2602)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.MASTER.TX_DATA;
       reg_data(2613)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.MASTER.SCA_ENABLE;
       reg_data(2614)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.MASTER.START_RESET;
-      reg_data(2615)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.MASTER.START_CONNECT;
-      reg_data(2616)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.MASTER.START_COMMAND;
-      reg_data(2617)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2614)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.MASTER.START_CONNECT;
+      reg_data(2614)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.MASTER.START_COMMAND;
+      reg_data(2614)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2617)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.FRAME_FORMAT;
       reg_data(2624)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.SLAVE.TX_RESET;
       reg_data(2625)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.SLAVE.RX_RESET;
       reg_data(2626)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(32).SC.SLAVE.IC.TX_START_WRITE;
@@ -5532,9 +5673,10 @@ begin  -- architecture behavioral
       reg_data(2682)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.MASTER.TX_DATA;
       reg_data(2693)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.MASTER.SCA_ENABLE;
       reg_data(2694)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.MASTER.START_RESET;
-      reg_data(2695)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.MASTER.START_CONNECT;
-      reg_data(2696)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.MASTER.START_COMMAND;
-      reg_data(2697)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2694)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.MASTER.START_CONNECT;
+      reg_data(2694)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.MASTER.START_COMMAND;
+      reg_data(2694)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2697)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.FRAME_FORMAT;
       reg_data(2704)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.SLAVE.TX_RESET;
       reg_data(2705)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.SLAVE.RX_RESET;
       reg_data(2706)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(33).SC.SLAVE.IC.TX_START_WRITE;
@@ -5563,9 +5705,10 @@ begin  -- architecture behavioral
       reg_data(2762)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.MASTER.TX_DATA;
       reg_data(2773)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.MASTER.SCA_ENABLE;
       reg_data(2774)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.MASTER.START_RESET;
-      reg_data(2775)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.MASTER.START_CONNECT;
-      reg_data(2776)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.MASTER.START_COMMAND;
-      reg_data(2777)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2774)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.MASTER.START_CONNECT;
+      reg_data(2774)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.MASTER.START_COMMAND;
+      reg_data(2774)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2777)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.FRAME_FORMAT;
       reg_data(2784)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.SLAVE.TX_RESET;
       reg_data(2785)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.SLAVE.RX_RESET;
       reg_data(2786)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(34).SC.SLAVE.IC.TX_START_WRITE;
@@ -5594,9 +5737,10 @@ begin  -- architecture behavioral
       reg_data(2842)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.MASTER.TX_DATA;
       reg_data(2853)( 2 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.MASTER.SCA_ENABLE;
       reg_data(2854)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.MASTER.START_RESET;
-      reg_data(2855)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.MASTER.START_CONNECT;
-      reg_data(2856)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.MASTER.START_COMMAND;
-      reg_data(2857)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2854)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.MASTER.START_CONNECT;
+      reg_data(2854)( 2)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.MASTER.START_COMMAND;
+      reg_data(2854)( 3)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.MASTER.INJ_CRC_ERR;
+      reg_data(2857)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.FRAME_FORMAT;
       reg_data(2864)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.SLAVE.TX_RESET;
       reg_data(2865)( 1)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.SLAVE.RX_RESET;
       reg_data(2866)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.SLAVE.IC.TX_START_WRITE;
@@ -6122,12 +6266,11 @@ begin  -- architecture behavioral
           reg_data(53)( 2 downto  0)                     <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 54 => --0x36
           Ctrl.CSM.CSM(0).SC.MASTER.START_RESET          <=  localWrData( 0);               
-        when 55 => --0x37
-          Ctrl.CSM.CSM(0).SC.MASTER.START_CONNECT        <=  localWrData( 0);               
-        when 56 => --0x38
-          Ctrl.CSM.CSM(0).SC.MASTER.START_COMMAND        <=  localWrData( 0);               
+          Ctrl.CSM.CSM(0).SC.MASTER.START_CONNECT        <=  localWrData( 1);               
+          Ctrl.CSM.CSM(0).SC.MASTER.START_COMMAND        <=  localWrData( 2);               
+          Ctrl.CSM.CSM(0).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 3);               
         when 57 => --0x39
-          Ctrl.CSM.CSM(0).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 0);               
+          reg_data(57)( 0)                               <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 64 => --0x40
           Ctrl.CSM.CSM(0).SC.SLAVE.TX_RESET              <=  localWrData( 0);               
         when 65 => --0x41
@@ -6175,12 +6318,11 @@ begin  -- architecture behavioral
           reg_data(133)( 2 downto  0)                    <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 134 => --0x86
           Ctrl.CSM.CSM(1).SC.MASTER.START_RESET          <=  localWrData( 0);               
-        when 135 => --0x87
-          Ctrl.CSM.CSM(1).SC.MASTER.START_CONNECT        <=  localWrData( 0);               
-        when 136 => --0x88
-          Ctrl.CSM.CSM(1).SC.MASTER.START_COMMAND        <=  localWrData( 0);               
+          Ctrl.CSM.CSM(1).SC.MASTER.START_CONNECT        <=  localWrData( 1);               
+          Ctrl.CSM.CSM(1).SC.MASTER.START_COMMAND        <=  localWrData( 2);               
+          Ctrl.CSM.CSM(1).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 3);               
         when 137 => --0x89
-          Ctrl.CSM.CSM(1).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 0);               
+          reg_data(137)( 0)                              <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 144 => --0x90
           Ctrl.CSM.CSM(1).SC.SLAVE.TX_RESET              <=  localWrData( 0);               
         when 145 => --0x91
@@ -6228,12 +6370,11 @@ begin  -- architecture behavioral
           reg_data(213)( 2 downto  0)                    <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 214 => --0xd6
           Ctrl.CSM.CSM(2).SC.MASTER.START_RESET          <=  localWrData( 0);               
-        when 215 => --0xd7
-          Ctrl.CSM.CSM(2).SC.MASTER.START_CONNECT        <=  localWrData( 0);               
-        when 216 => --0xd8
-          Ctrl.CSM.CSM(2).SC.MASTER.START_COMMAND        <=  localWrData( 0);               
+          Ctrl.CSM.CSM(2).SC.MASTER.START_CONNECT        <=  localWrData( 1);               
+          Ctrl.CSM.CSM(2).SC.MASTER.START_COMMAND        <=  localWrData( 2);               
+          Ctrl.CSM.CSM(2).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 3);               
         when 217 => --0xd9
-          Ctrl.CSM.CSM(2).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 0);               
+          reg_data(217)( 0)                              <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 224 => --0xe0
           Ctrl.CSM.CSM(2).SC.SLAVE.TX_RESET              <=  localWrData( 0);               
         when 225 => --0xe1
@@ -6281,12 +6422,11 @@ begin  -- architecture behavioral
           reg_data(293)( 2 downto  0)                    <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 294 => --0x126
           Ctrl.CSM.CSM(3).SC.MASTER.START_RESET          <=  localWrData( 0);               
-        when 295 => --0x127
-          Ctrl.CSM.CSM(3).SC.MASTER.START_CONNECT        <=  localWrData( 0);               
-        when 296 => --0x128
-          Ctrl.CSM.CSM(3).SC.MASTER.START_COMMAND        <=  localWrData( 0);               
+          Ctrl.CSM.CSM(3).SC.MASTER.START_CONNECT        <=  localWrData( 1);               
+          Ctrl.CSM.CSM(3).SC.MASTER.START_COMMAND        <=  localWrData( 2);               
+          Ctrl.CSM.CSM(3).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 3);               
         when 297 => --0x129
-          Ctrl.CSM.CSM(3).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 0);               
+          reg_data(297)( 0)                              <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 304 => --0x130
           Ctrl.CSM.CSM(3).SC.SLAVE.TX_RESET              <=  localWrData( 0);               
         when 305 => --0x131
@@ -6334,12 +6474,11 @@ begin  -- architecture behavioral
           reg_data(373)( 2 downto  0)                    <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 374 => --0x176
           Ctrl.CSM.CSM(4).SC.MASTER.START_RESET          <=  localWrData( 0);               
-        when 375 => --0x177
-          Ctrl.CSM.CSM(4).SC.MASTER.START_CONNECT        <=  localWrData( 0);               
-        when 376 => --0x178
-          Ctrl.CSM.CSM(4).SC.MASTER.START_COMMAND        <=  localWrData( 0);               
+          Ctrl.CSM.CSM(4).SC.MASTER.START_CONNECT        <=  localWrData( 1);               
+          Ctrl.CSM.CSM(4).SC.MASTER.START_COMMAND        <=  localWrData( 2);               
+          Ctrl.CSM.CSM(4).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 3);               
         when 377 => --0x179
-          Ctrl.CSM.CSM(4).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 0);               
+          reg_data(377)( 0)                              <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 384 => --0x180
           Ctrl.CSM.CSM(4).SC.SLAVE.TX_RESET              <=  localWrData( 0);               
         when 385 => --0x181
@@ -6387,12 +6526,11 @@ begin  -- architecture behavioral
           reg_data(453)( 2 downto  0)                    <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 454 => --0x1c6
           Ctrl.CSM.CSM(5).SC.MASTER.START_RESET          <=  localWrData( 0);               
-        when 455 => --0x1c7
-          Ctrl.CSM.CSM(5).SC.MASTER.START_CONNECT        <=  localWrData( 0);               
-        when 456 => --0x1c8
-          Ctrl.CSM.CSM(5).SC.MASTER.START_COMMAND        <=  localWrData( 0);               
+          Ctrl.CSM.CSM(5).SC.MASTER.START_CONNECT        <=  localWrData( 1);               
+          Ctrl.CSM.CSM(5).SC.MASTER.START_COMMAND        <=  localWrData( 2);               
+          Ctrl.CSM.CSM(5).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 3);               
         when 457 => --0x1c9
-          Ctrl.CSM.CSM(5).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 0);               
+          reg_data(457)( 0)                              <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 464 => --0x1d0
           Ctrl.CSM.CSM(5).SC.SLAVE.TX_RESET              <=  localWrData( 0);               
         when 465 => --0x1d1
@@ -6440,12 +6578,11 @@ begin  -- architecture behavioral
           reg_data(533)( 2 downto  0)                    <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 534 => --0x216
           Ctrl.CSM.CSM(6).SC.MASTER.START_RESET          <=  localWrData( 0);               
-        when 535 => --0x217
-          Ctrl.CSM.CSM(6).SC.MASTER.START_CONNECT        <=  localWrData( 0);               
-        when 536 => --0x218
-          Ctrl.CSM.CSM(6).SC.MASTER.START_COMMAND        <=  localWrData( 0);               
+          Ctrl.CSM.CSM(6).SC.MASTER.START_CONNECT        <=  localWrData( 1);               
+          Ctrl.CSM.CSM(6).SC.MASTER.START_COMMAND        <=  localWrData( 2);               
+          Ctrl.CSM.CSM(6).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 3);               
         when 537 => --0x219
-          Ctrl.CSM.CSM(6).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 0);               
+          reg_data(537)( 0)                              <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 544 => --0x220
           Ctrl.CSM.CSM(6).SC.SLAVE.TX_RESET              <=  localWrData( 0);               
         when 545 => --0x221
@@ -6493,12 +6630,11 @@ begin  -- architecture behavioral
           reg_data(613)( 2 downto  0)                    <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 614 => --0x266
           Ctrl.CSM.CSM(7).SC.MASTER.START_RESET          <=  localWrData( 0);               
-        when 615 => --0x267
-          Ctrl.CSM.CSM(7).SC.MASTER.START_CONNECT        <=  localWrData( 0);               
-        when 616 => --0x268
-          Ctrl.CSM.CSM(7).SC.MASTER.START_COMMAND        <=  localWrData( 0);               
+          Ctrl.CSM.CSM(7).SC.MASTER.START_CONNECT        <=  localWrData( 1);               
+          Ctrl.CSM.CSM(7).SC.MASTER.START_COMMAND        <=  localWrData( 2);               
+          Ctrl.CSM.CSM(7).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 3);               
         when 617 => --0x269
-          Ctrl.CSM.CSM(7).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 0);               
+          reg_data(617)( 0)                              <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 624 => --0x270
           Ctrl.CSM.CSM(7).SC.SLAVE.TX_RESET              <=  localWrData( 0);               
         when 625 => --0x271
@@ -6546,12 +6682,11 @@ begin  -- architecture behavioral
           reg_data(693)( 2 downto  0)                    <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 694 => --0x2b6
           Ctrl.CSM.CSM(8).SC.MASTER.START_RESET          <=  localWrData( 0);               
-        when 695 => --0x2b7
-          Ctrl.CSM.CSM(8).SC.MASTER.START_CONNECT        <=  localWrData( 0);               
-        when 696 => --0x2b8
-          Ctrl.CSM.CSM(8).SC.MASTER.START_COMMAND        <=  localWrData( 0);               
+          Ctrl.CSM.CSM(8).SC.MASTER.START_CONNECT        <=  localWrData( 1);               
+          Ctrl.CSM.CSM(8).SC.MASTER.START_COMMAND        <=  localWrData( 2);               
+          Ctrl.CSM.CSM(8).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 3);               
         when 697 => --0x2b9
-          Ctrl.CSM.CSM(8).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 0);               
+          reg_data(697)( 0)                              <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 704 => --0x2c0
           Ctrl.CSM.CSM(8).SC.SLAVE.TX_RESET              <=  localWrData( 0);               
         when 705 => --0x2c1
@@ -6599,12 +6734,11 @@ begin  -- architecture behavioral
           reg_data(773)( 2 downto  0)                    <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 774 => --0x306
           Ctrl.CSM.CSM(9).SC.MASTER.START_RESET          <=  localWrData( 0);               
-        when 775 => --0x307
-          Ctrl.CSM.CSM(9).SC.MASTER.START_CONNECT        <=  localWrData( 0);               
-        when 776 => --0x308
-          Ctrl.CSM.CSM(9).SC.MASTER.START_COMMAND        <=  localWrData( 0);               
+          Ctrl.CSM.CSM(9).SC.MASTER.START_CONNECT        <=  localWrData( 1);               
+          Ctrl.CSM.CSM(9).SC.MASTER.START_COMMAND        <=  localWrData( 2);               
+          Ctrl.CSM.CSM(9).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 3);               
         when 777 => --0x309
-          Ctrl.CSM.CSM(9).SC.MASTER.INJ_CRC_ERR          <=  localWrData( 0);               
+          reg_data(777)( 0)                              <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 784 => --0x310
           Ctrl.CSM.CSM(9).SC.SLAVE.TX_RESET              <=  localWrData( 0);               
         when 785 => --0x311
@@ -6652,12 +6786,11 @@ begin  -- architecture behavioral
           reg_data(853)( 2 downto  0)                    <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 854 => --0x356
           Ctrl.CSM.CSM(10).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 855 => --0x357
-          Ctrl.CSM.CSM(10).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 856 => --0x358
-          Ctrl.CSM.CSM(10).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(10).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(10).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(10).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 857 => --0x359
-          Ctrl.CSM.CSM(10).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(857)( 0)                              <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 864 => --0x360
           Ctrl.CSM.CSM(10).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 865 => --0x361
@@ -6705,12 +6838,11 @@ begin  -- architecture behavioral
           reg_data(933)( 2 downto  0)                    <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 934 => --0x3a6
           Ctrl.CSM.CSM(11).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 935 => --0x3a7
-          Ctrl.CSM.CSM(11).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 936 => --0x3a8
-          Ctrl.CSM.CSM(11).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(11).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(11).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(11).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 937 => --0x3a9
-          Ctrl.CSM.CSM(11).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(937)( 0)                              <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 944 => --0x3b0
           Ctrl.CSM.CSM(11).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 945 => --0x3b1
@@ -6758,12 +6890,11 @@ begin  -- architecture behavioral
           reg_data(1013)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1014 => --0x3f6
           Ctrl.CSM.CSM(12).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1015 => --0x3f7
-          Ctrl.CSM.CSM(12).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1016 => --0x3f8
-          Ctrl.CSM.CSM(12).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(12).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(12).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(12).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1017 => --0x3f9
-          Ctrl.CSM.CSM(12).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1017)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1024 => --0x400
           Ctrl.CSM.CSM(12).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1025 => --0x401
@@ -6811,12 +6942,11 @@ begin  -- architecture behavioral
           reg_data(1093)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1094 => --0x446
           Ctrl.CSM.CSM(13).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1095 => --0x447
-          Ctrl.CSM.CSM(13).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1096 => --0x448
-          Ctrl.CSM.CSM(13).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(13).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(13).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(13).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1097 => --0x449
-          Ctrl.CSM.CSM(13).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1097)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1104 => --0x450
           Ctrl.CSM.CSM(13).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1105 => --0x451
@@ -6864,12 +6994,11 @@ begin  -- architecture behavioral
           reg_data(1173)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1174 => --0x496
           Ctrl.CSM.CSM(14).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1175 => --0x497
-          Ctrl.CSM.CSM(14).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1176 => --0x498
-          Ctrl.CSM.CSM(14).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(14).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(14).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(14).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1177 => --0x499
-          Ctrl.CSM.CSM(14).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1177)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1184 => --0x4a0
           Ctrl.CSM.CSM(14).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1185 => --0x4a1
@@ -6917,12 +7046,11 @@ begin  -- architecture behavioral
           reg_data(1253)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1254 => --0x4e6
           Ctrl.CSM.CSM(15).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1255 => --0x4e7
-          Ctrl.CSM.CSM(15).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1256 => --0x4e8
-          Ctrl.CSM.CSM(15).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(15).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(15).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(15).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1257 => --0x4e9
-          Ctrl.CSM.CSM(15).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1257)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1264 => --0x4f0
           Ctrl.CSM.CSM(15).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1265 => --0x4f1
@@ -6970,12 +7098,11 @@ begin  -- architecture behavioral
           reg_data(1333)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1334 => --0x536
           Ctrl.CSM.CSM(16).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1335 => --0x537
-          Ctrl.CSM.CSM(16).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1336 => --0x538
-          Ctrl.CSM.CSM(16).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(16).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(16).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(16).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1337 => --0x539
-          Ctrl.CSM.CSM(16).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1337)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1344 => --0x540
           Ctrl.CSM.CSM(16).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1345 => --0x541
@@ -7023,12 +7150,11 @@ begin  -- architecture behavioral
           reg_data(1413)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1414 => --0x586
           Ctrl.CSM.CSM(17).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1415 => --0x587
-          Ctrl.CSM.CSM(17).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1416 => --0x588
-          Ctrl.CSM.CSM(17).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(17).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(17).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(17).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1417 => --0x589
-          Ctrl.CSM.CSM(17).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1417)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1424 => --0x590
           Ctrl.CSM.CSM(17).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1425 => --0x591
@@ -7076,12 +7202,11 @@ begin  -- architecture behavioral
           reg_data(1493)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1494 => --0x5d6
           Ctrl.CSM.CSM(18).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1495 => --0x5d7
-          Ctrl.CSM.CSM(18).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1496 => --0x5d8
-          Ctrl.CSM.CSM(18).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(18).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(18).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(18).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1497 => --0x5d9
-          Ctrl.CSM.CSM(18).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1497)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1504 => --0x5e0
           Ctrl.CSM.CSM(18).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1505 => --0x5e1
@@ -7129,12 +7254,11 @@ begin  -- architecture behavioral
           reg_data(1573)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1574 => --0x626
           Ctrl.CSM.CSM(19).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1575 => --0x627
-          Ctrl.CSM.CSM(19).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1576 => --0x628
-          Ctrl.CSM.CSM(19).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(19).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(19).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(19).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1577 => --0x629
-          Ctrl.CSM.CSM(19).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1577)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1584 => --0x630
           Ctrl.CSM.CSM(19).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1585 => --0x631
@@ -7182,12 +7306,11 @@ begin  -- architecture behavioral
           reg_data(1653)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1654 => --0x676
           Ctrl.CSM.CSM(20).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1655 => --0x677
-          Ctrl.CSM.CSM(20).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1656 => --0x678
-          Ctrl.CSM.CSM(20).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(20).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(20).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(20).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1657 => --0x679
-          Ctrl.CSM.CSM(20).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1657)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1664 => --0x680
           Ctrl.CSM.CSM(20).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1665 => --0x681
@@ -7235,12 +7358,11 @@ begin  -- architecture behavioral
           reg_data(1733)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1734 => --0x6c6
           Ctrl.CSM.CSM(21).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1735 => --0x6c7
-          Ctrl.CSM.CSM(21).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1736 => --0x6c8
-          Ctrl.CSM.CSM(21).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(21).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(21).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(21).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1737 => --0x6c9
-          Ctrl.CSM.CSM(21).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1737)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1744 => --0x6d0
           Ctrl.CSM.CSM(21).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1745 => --0x6d1
@@ -7288,12 +7410,11 @@ begin  -- architecture behavioral
           reg_data(1813)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1814 => --0x716
           Ctrl.CSM.CSM(22).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1815 => --0x717
-          Ctrl.CSM.CSM(22).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1816 => --0x718
-          Ctrl.CSM.CSM(22).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(22).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(22).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(22).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1817 => --0x719
-          Ctrl.CSM.CSM(22).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1817)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1824 => --0x720
           Ctrl.CSM.CSM(22).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1825 => --0x721
@@ -7341,12 +7462,11 @@ begin  -- architecture behavioral
           reg_data(1893)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1894 => --0x766
           Ctrl.CSM.CSM(23).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1895 => --0x767
-          Ctrl.CSM.CSM(23).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1896 => --0x768
-          Ctrl.CSM.CSM(23).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(23).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(23).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(23).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1897 => --0x769
-          Ctrl.CSM.CSM(23).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1897)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1904 => --0x770
           Ctrl.CSM.CSM(23).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1905 => --0x771
@@ -7394,12 +7514,11 @@ begin  -- architecture behavioral
           reg_data(1973)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 1974 => --0x7b6
           Ctrl.CSM.CSM(24).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 1975 => --0x7b7
-          Ctrl.CSM.CSM(24).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 1976 => --0x7b8
-          Ctrl.CSM.CSM(24).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(24).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(24).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(24).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 1977 => --0x7b9
-          Ctrl.CSM.CSM(24).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(1977)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 1984 => --0x7c0
           Ctrl.CSM.CSM(24).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 1985 => --0x7c1
@@ -7447,12 +7566,11 @@ begin  -- architecture behavioral
           reg_data(2053)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 2054 => --0x806
           Ctrl.CSM.CSM(25).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 2055 => --0x807
-          Ctrl.CSM.CSM(25).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 2056 => --0x808
-          Ctrl.CSM.CSM(25).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(25).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(25).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(25).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 2057 => --0x809
-          Ctrl.CSM.CSM(25).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(2057)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 2064 => --0x810
           Ctrl.CSM.CSM(25).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 2065 => --0x811
@@ -7500,12 +7618,11 @@ begin  -- architecture behavioral
           reg_data(2133)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 2134 => --0x856
           Ctrl.CSM.CSM(26).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 2135 => --0x857
-          Ctrl.CSM.CSM(26).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 2136 => --0x858
-          Ctrl.CSM.CSM(26).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(26).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(26).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(26).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 2137 => --0x859
-          Ctrl.CSM.CSM(26).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(2137)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 2144 => --0x860
           Ctrl.CSM.CSM(26).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 2145 => --0x861
@@ -7553,12 +7670,11 @@ begin  -- architecture behavioral
           reg_data(2213)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 2214 => --0x8a6
           Ctrl.CSM.CSM(27).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 2215 => --0x8a7
-          Ctrl.CSM.CSM(27).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 2216 => --0x8a8
-          Ctrl.CSM.CSM(27).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(27).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(27).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(27).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 2217 => --0x8a9
-          Ctrl.CSM.CSM(27).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(2217)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 2224 => --0x8b0
           Ctrl.CSM.CSM(27).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 2225 => --0x8b1
@@ -7606,12 +7722,11 @@ begin  -- architecture behavioral
           reg_data(2293)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 2294 => --0x8f6
           Ctrl.CSM.CSM(28).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 2295 => --0x8f7
-          Ctrl.CSM.CSM(28).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 2296 => --0x8f8
-          Ctrl.CSM.CSM(28).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(28).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(28).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(28).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 2297 => --0x8f9
-          Ctrl.CSM.CSM(28).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(2297)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 2304 => --0x900
           Ctrl.CSM.CSM(28).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 2305 => --0x901
@@ -7659,12 +7774,11 @@ begin  -- architecture behavioral
           reg_data(2373)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 2374 => --0x946
           Ctrl.CSM.CSM(29).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 2375 => --0x947
-          Ctrl.CSM.CSM(29).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 2376 => --0x948
-          Ctrl.CSM.CSM(29).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(29).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(29).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(29).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 2377 => --0x949
-          Ctrl.CSM.CSM(29).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(2377)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 2384 => --0x950
           Ctrl.CSM.CSM(29).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 2385 => --0x951
@@ -7712,12 +7826,11 @@ begin  -- architecture behavioral
           reg_data(2453)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 2454 => --0x996
           Ctrl.CSM.CSM(30).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 2455 => --0x997
-          Ctrl.CSM.CSM(30).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 2456 => --0x998
-          Ctrl.CSM.CSM(30).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(30).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(30).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(30).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 2457 => --0x999
-          Ctrl.CSM.CSM(30).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(2457)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 2464 => --0x9a0
           Ctrl.CSM.CSM(30).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 2465 => --0x9a1
@@ -7765,12 +7878,11 @@ begin  -- architecture behavioral
           reg_data(2533)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 2534 => --0x9e6
           Ctrl.CSM.CSM(31).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 2535 => --0x9e7
-          Ctrl.CSM.CSM(31).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 2536 => --0x9e8
-          Ctrl.CSM.CSM(31).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(31).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(31).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(31).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 2537 => --0x9e9
-          Ctrl.CSM.CSM(31).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(2537)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 2544 => --0x9f0
           Ctrl.CSM.CSM(31).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 2545 => --0x9f1
@@ -7818,12 +7930,11 @@ begin  -- architecture behavioral
           reg_data(2613)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 2614 => --0xa36
           Ctrl.CSM.CSM(32).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 2615 => --0xa37
-          Ctrl.CSM.CSM(32).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 2616 => --0xa38
-          Ctrl.CSM.CSM(32).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(32).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(32).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(32).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 2617 => --0xa39
-          Ctrl.CSM.CSM(32).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(2617)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 2624 => --0xa40
           Ctrl.CSM.CSM(32).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 2625 => --0xa41
@@ -7871,12 +7982,11 @@ begin  -- architecture behavioral
           reg_data(2693)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 2694 => --0xa86
           Ctrl.CSM.CSM(33).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 2695 => --0xa87
-          Ctrl.CSM.CSM(33).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 2696 => --0xa88
-          Ctrl.CSM.CSM(33).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(33).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(33).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(33).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 2697 => --0xa89
-          Ctrl.CSM.CSM(33).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(2697)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 2704 => --0xa90
           Ctrl.CSM.CSM(33).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 2705 => --0xa91
@@ -7924,12 +8034,11 @@ begin  -- architecture behavioral
           reg_data(2773)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 2774 => --0xad6
           Ctrl.CSM.CSM(34).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 2775 => --0xad7
-          Ctrl.CSM.CSM(34).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 2776 => --0xad8
-          Ctrl.CSM.CSM(34).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(34).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(34).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(34).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 2777 => --0xad9
-          Ctrl.CSM.CSM(34).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(2777)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 2784 => --0xae0
           Ctrl.CSM.CSM(34).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 2785 => --0xae1
@@ -7977,12 +8086,11 @@ begin  -- architecture behavioral
           reg_data(2853)( 2 downto  0)                   <=  localWrData( 2 downto  0);      --Enable flag to select SCAs
         when 2854 => --0xb26
           Ctrl.CSM.CSM(35).SC.MASTER.START_RESET         <=  localWrData( 0);               
-        when 2855 => --0xb27
-          Ctrl.CSM.CSM(35).SC.MASTER.START_CONNECT       <=  localWrData( 0);               
-        when 2856 => --0xb28
-          Ctrl.CSM.CSM(35).SC.MASTER.START_COMMAND       <=  localWrData( 0);               
+          Ctrl.CSM.CSM(35).SC.MASTER.START_CONNECT       <=  localWrData( 1);               
+          Ctrl.CSM.CSM(35).SC.MASTER.START_COMMAND       <=  localWrData( 2);               
+          Ctrl.CSM.CSM(35).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 3);               
         when 2857 => --0xb29
-          Ctrl.CSM.CSM(35).SC.MASTER.INJ_CRC_ERR         <=  localWrData( 0);               
+          reg_data(2857)( 0)                             <=  localWrData( 0);                --0 = lpgbt v0; 1 = lpgbt v1
         when 2864 => --0xb30
           Ctrl.CSM.CSM(35).SC.SLAVE.TX_RESET             <=  localWrData( 0);               
         when 2865 => --0xb31

@@ -6,26 +6,48 @@
 --
 -- Description:
 --
---   This module has a simple state machine that decodes the LpGBT data coming
+--   This module has a simple state machine that decodes the (lp)GBT IC data coming
 --   from the CERN gbt-sc firmware:
 --          https://gitlab.cern.ch/gbtsc-fpga-support/gbt-sc/
 --
 --   It expects to receive data in the same format that the gbt-sc core delivers
 --
---   i.e.
+--   The GBT-SC core strips off the header and trailer, so what we see from the
 --
---   The GBT-SC core strips off the header and trailer, so
---   what we see from the lpgbt is:
+--   GBTx
 --
---   i=0, data=0xX0 or X1    -- chip adr + rw
---   i=1, data=0x00          -- rsvrd (RSVRD state only in v0)
---   i=2, data=0x01          -- cmd
---   i=3, data=0x01          -- nwords [7:0]
---   i=4, data=0x00          -- nwords [15:8] (8:8 in lPGBT v1)
---   i=5, data=0xc5          -- reg adr[7:0]
---   i=6, data=0x01          -- reg adr[15:8]
---   i=7, data=0xa5          -- data
---   i=8, data=0x61          -- parity
+--     i=0 -- reserved
+--     i=1 -- chip adr + rw
+--     i=2 -- cmd (0000000 + uplink parity)
+--     i=3 -- nwords [7:0]
+--     i=4 -- nwords [15:8]
+--     i=5 -- reg adr[7:0]
+--     i=6 -- reg adr[15:8]
+--     i=7 -- data
+--     i=8 -- parity
+--
+--   lpGBT v0
+--
+--     i=0 -- chip adr + rw
+--     i=1 -- reserved
+--     i=2 -- cmd (0000000 + uplink parity)
+--     i=3 -- nwords [7:0]
+--     i=4 -- nwords [15:8]
+--     i=5 -- reg adr[7:0]
+--     i=6 -- reg adr[15:8]
+--     i=7 -- data
+--     i=8 -- parity
+--
+--   lpGBT v1
+--
+--     i=0 -- chip adr + rw
+--     i=1 -- cmd (0000000 + uplink parity)
+--     i=2 -- nwords [7:0]
+--     i=3 -- nwords [8:8]
+--     i=4 -- reg adr[7:0]
+--     i=5 -- reg adr[15:8]
+--     i=6 -- data
+--     i=7 -- parity
 --
 --  Note that the IC core inherently supports reading many registers at once
 --
@@ -38,7 +60,6 @@
 -- Notes:
 --
 --   TODO: Add a (optional) FIFO to allow reading packets longer than 4 bytes
---   TODO: Look at differences between LPGBT v0 and LPGBT v1
 --
 ----------------------------------------------------------------------------------
 library ieee;
@@ -52,26 +73,25 @@ entity gbt_ic_rx is
     reset_i : in std_logic;             -- state machine reset
 
     frame_i : in std_logic_vector (7 downto 0);  -- 8 bit frame from gbt-sc
-    valid_i : in std_logic;                      -- set high for valid data frames
+    valid_i : in std_logic;             -- set high for valid data frames
 
-    lpgbt_version : in std_logic := '0';
+    gbt_frame_format_i : in std_logic_vector(1 downto 0);
 
     -- Control
-    chip_adr_o           : out std_logic_vector (6 downto 0) := (others => '0');  -- lpgbt chip address
-    data_o               : out std_logic_vector(31 downto 0) := (others => '0');  -- data output, up to 4 bytes
-    length_o             : out std_logic_vector(15 downto 0) := (others => '0');  -- # of bytes received.. if it is more than 4 you are in trouble
-    reg_adr_o            : out std_logic_vector(15 downto 0) := (others => '0');  -- lpgbt register data received from
-    uplink_parity_ok_o   : out std_logic                     := '0';              -- this module says its (uplink) parity check was ok
-    downlink_parity_ok_o : out std_logic                     := '0';              -- lpgbt says its (downlink) parity check was ok
-    err_o                : out std_logic                     := '0';              -- something went wrong
-    valid_o              : out std_logic                     := '0'               -- output data is valid
+    chip_adr_o           : out std_logic_vector (6 downto 0) := (others => '0'); -- lpgbt chip address
+    data_o               : out std_logic_vector(31 downto 0) := (others => '0'); -- data output, up to 4 bytes
+    length_o             : out std_logic_vector(15 downto 0) := (others => '0'); -- # of bytes received.. if it is more than 4 you are in trouble
+    reg_adr_o            : out std_logic_vector(15 downto 0) := (others => '0'); -- lpgbt register data received from
+    uplink_parity_ok_o   : out std_logic                     := '0';             -- this module says its (uplink) parity check was ok
+    downlink_parity_ok_o : out std_logic                     := '0';             -- lpgbt says its (downlink) parity check was ok
+    err_o                : out std_logic                     := '0';             -- something went wrong
+    valid_o              : out std_logic                     := '0'              -- output data is valid
     );
 end gbt_ic_rx;
 
 architecture Behavioral of gbt_ic_rx is
 
-  type rx_state_t is (IDLE, RSVRD, CMD, LENGTH0, LENGTH1, REG_ADR0, REG_ADR1,
-                      DATA, PARITY, OUTPUT, ERR);
+  type rx_state_t is (IDLE, I2C_ADR, RSVD, CMD, LENGTH0, LENGTH1, REG_ADR0, REG_ADR1, DATA, PARITY, OUTPUT, ERR);
 
   signal rx_state : rx_state_t := IDLE;
 
@@ -125,21 +145,45 @@ begin
   begin
     if (rising_edge(clock_i)) then
 
+      valid_o <= '0';
+
       case rx_state is
 
         when IDLE =>
 
           if (valid_i = '1') then
-            if (lpgbt_version = '0') then
-              rx_state <= RSVRD;
-            elsif (lpgbt_version = '1') then
+            if (gbt_frame_format_i = "00") then  -- GBTx
+              -- first frame is RSVD, then go to I2C_ADR
+              rx_state <= I2C_ADR;
+
+            elsif (gbt_frame_format_i = "01") then  -- lpGBT v0
+              -- first frame is I2C_ADR, then go to RSVD
+              rx_state <= RSVD;
+
+              chip_adr_int <= frame_i(7 downto 1);
+              rw_bit_int   <= frame_i(0);
+            -- not included in parity check
+            else                        -- lpGBT v1 and others
+              -- first frame is I2C_ADR, then go to CMD
               rx_state <= CMD;
+
+              chip_adr_int <= frame_i(7 downto 1);
+              rw_bit_int   <= frame_i(0);
+              parity_int   <= frame_i;
             end if;
-            chip_adr_int <= frame_i(7 downto 1);
-            rw_bit_int   <= frame_i(0);
           end if;
 
-        when RSVRD =>
+        when I2C_ADR =>                 -- GBTx only state
+
+          if (valid_i = '1') then
+            rx_state <= CMD;
+
+            chip_adr_int <= frame_i(7 downto 1);
+            rw_bit_int   <= frame_i(0);
+          -- not included in parity check
+          end if;
+
+        when RSVD =>                    -- lpGBT v0 only state
 
           if (valid_i = '1') then
             rx_state <= CMD;
@@ -150,7 +194,13 @@ begin
           if (valid_i = '1') then
             rx_state               <= LENGTH0;
             downlink_parity_ok_int <= frame_i(0);
-            parity_int             <= frame_i;
+
+            if (gbt_frame_format_i = "00") or (gbt_frame_format_i = "01") then  -- GBTx and lpGBT v0
+              parity_int <= frame_i;    -- start parity check
+            else                        -- lpGBT v1 and others
+              parity_int <= parity_int xor frame_i;  -- continue parity check
+            end if;
+
           end if;
 
         when LENGTH0 =>
@@ -255,6 +305,7 @@ begin
           length_o             <= (others => '0');
           reg_adr_o            <= (others => '0');
           data_o               <= (others => '0');
+          data_int             <= (others => '0');
           downlink_parity_ok_o <= '0';
           valid_o              <= '0';
 

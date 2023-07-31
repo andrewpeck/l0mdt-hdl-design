@@ -51,6 +51,34 @@
   allow_failure: true
   interruptible: true
 
+check_submodule_status:
+  <<: *only-default
+  <<: *tag-sr 
+  image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:centos
+  variables:
+    <<: *chk_variables
+  stage: user_pre
+  script:
+    - cd HAL/c2c/bd_helper && git checkout master && git pull 
+    - cd -
+    - cd HAL/ctrl/src/axi-vhdl-package && git checkout develop && git pull 
+    - cd -
+    - cd HAL/hal/src/mgt/tx_phase_aligner && git checkout master && git pull 
+    - cd -
+    - cd HAL/lpgbt/src/gbt-sc && git checkout master && git pull 
+    - cd -
+    - cd HAL/lpgbt/src/lpgbt-fpga && git checkout master && git pull 
+    - cd -
+    - cd HAL/sl/src/my-sl-gty-interface && git checkout master && git pull 
+    - cd -
+    # - cd HAL/ttc/ttc-core && git checkout master && git pull
+    # - cd -
+    - cd dataformats && git checkout master && git pull
+    - cd -
+    - git diff --exit-code -- .
+  allow_failure: true
+  interruptible: true
+  
 check_auto_generated_code:
   <<: *only-default
   <<: *tag-sr
@@ -74,7 +102,7 @@ check_auto_generated_code:
         echo "No address overlaps detected.";
       fi
     - echo "Checking Git differences..."
-    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile' ':(exclude)tools/gldl-scripts'
+    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile' ':(exclude)tools/gldl-scripts' ':(exclude)Top/*/hog.conf' 
   interruptible: true
   artifacts:
     name: Makefile
@@ -117,7 +145,7 @@ check_auto_generated_code:
     - riviera
   variables:
     <<: *riviera_vars
-    HOG_SIMULATION_LIB_PATH: /afs/cern.ch/work/l/l0mdtel/RivieraLibs
+    HOG_SIMULATION_LIB_PATH: /home/l0mdtel/RivieraLib
     HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
     HOG_CHECK_PROJVER: 0
   stage: generation_and_simulation
@@ -137,6 +165,18 @@ check_auto_generated_code:
         sed -i 's/Questa/Riviera/' ./Top/$PROJECT_NAME/hog.conf;
         ./Hog/LaunchSimulation.sh $PROJECT_NAME -recreate;
       fi
+    - if [ -f "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib_sim/behav/riviera/simulate.log" ]; then
+        if grep "Executing onerror command" "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib_sim/behav/riviera/simulate.log"; then
+          echo "Simulation Failed!";
+          exit 1;
+        else
+          echo "Simulation succeeded!";
+        fi;
+      else
+        echo "Cannot find simulate.log! Something probably went wrong!";
+        exit 1;
+      fi;
+
   artifacts:
     name: user_sim
     paths:
@@ -241,4 +281,4 @@ check_auto_generated_code:
     - grep -Eq "INFO +cocotb +Running" cocotb_run.log
     - echo "Parsing log file to check result of the cocotb test"
     - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then if (grep -qE "cocotb.regression.*test passed" cocotb_run.log)  ; then echo "Test successful" ; elif (grep -q "cocotb.result.TestFailure" cocotb_run.log) ; then echo "Test completed but TV comparison failed" ; exit 98 ; else echo "Other failure - check log" ; exit 99 ; fi ; else echo "Other failure during cocotb test - check log" ; exit 99; fi
-
+  dependencies: []

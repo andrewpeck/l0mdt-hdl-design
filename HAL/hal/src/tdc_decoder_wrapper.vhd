@@ -98,7 +98,8 @@ begin
           return n_ones;
         end if;
       end function;
-
+        
+      -- the idx of the TDC is actually retrieved by suppressing the zeroes in the mask
       constant idx : integer := get_ith_bit_index (g_ENABLE_MASK, I, c_MDT_CONFIG'length);
 
     begin
@@ -148,7 +149,7 @@ begin
             synced_o    => synced_o(idx),  -- TODO: connect this to AXI
             data_even   => even_data,
             data_odd    => odd_data,
-            valid_i     => valid,
+            valid_i     => valid,          -- lpgbt valid flag
             tdc_word_o  => tdc_word,
             valid_o     => tdc_valid,
             read_done_i => read_done_i(idx),

@@ -15,19 +15,10 @@
 -- The board, however, will not always be operating with a connection to FELIX,
 -- so some provision must be made to clock the firmware from a local oscillator
 --
--- Currently this is done by using the 0th and 1st inputs to the system MMCM
 --
--- The MMCM has an input multiplexer that allows switching between two input
--- sources... we can use this to switch between the always running 320MHz clock
--- and the 320MHz clock recovered from FELIX
 --
---  1. The board should boot with sel_felix_clk set to 0 (to select the oscillator)
---
---  2. Once the FELIX clock is active, we should assert RST=1. We can then
---     set sel_felix_clk to 1. After this switch, the MMCM reset should be released
 --
 --------------------------------------------------------------------------------
--- TODO: Enforce Input clock can only be switched when RST=1 ?
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -78,6 +69,8 @@ architecture behavioral of top_clocking is
   signal clk50, clk100, clk200, clk40, clk320, clkpipe : std_logic;
   signal locked_clk50                                  : std_logic;
   signal clock_async_ibufds                            : std_logic;
+  signal clock_async_i                                 : std_logic;
+  signal clock_async                                   : std_logic;
 
   component onboardclk
     port (
@@ -86,8 +79,7 @@ architecture behavioral of top_clocking is
       clk_50Mhz  : out std_logic;
       reset      : in  std_logic;
       locked     : out std_logic;
-      clk_in1_p  : in  std_logic;
-      clk_in1_n  : in  std_logic
+      clk_in1  : in  std_logic
       );
   end component;
 
@@ -122,6 +114,19 @@ begin  -- architecture behavioral
   -- ASYNC + 50MHz free-running clocks
   --------------------------------------------------------------------------------
 
+  IBUFDS_inst : IBUFDS
+  port map (
+    O => clock_async_i,
+    I => clock_async_i_p,
+    IB => clock_async_i_n
+  );
+
+  BUFG_inst : BUFG
+  port map (
+    O => clock_async,                 -- 1-bit output: Clock output
+    I => clock_async_i                        -- 1-bit input: Clock input
+  );
+
   pll_clk50_inst : onboardclk
     port map (
       clk_200MHz => clk200,
@@ -129,13 +134,13 @@ begin  -- architecture behavioral
       clk_50Mhz  => clk50,
       reset      => '0',
       locked     => locked_clk50,
-      clk_in1_p  => clock_async_i_p,
-      clk_in1_n  => clock_async_i_n);
+      clk_in1    => clock_async
+    );
 
   -------------------------------------------------------------------------------
-  -- MMCM
+  -- MMCM clocking
   --------------------------------------------------------------------------------
-
+    
   framework_mmcm_inst : framework_mmcm
     port map (
       clk_in1_p => clock_i_p,
@@ -148,6 +153,7 @@ begin  -- architecture behavioral
 
   clkpipe <= clk320;
 
+  -- Counters to measure the clk frequency of clk_b from a known clk_a
   clk320_frequency : entity work.clk_frequency
     generic map (clk_a_freq => 50_000_000)
     port map (

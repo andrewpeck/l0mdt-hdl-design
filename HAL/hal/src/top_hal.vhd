@@ -30,7 +30,7 @@ use shared_lib.config_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HAL_CTRL.all;
-use ctrl_lib.HAL_CORE_CTRL.all;
+use ctrl_lib.CORE_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
 
 library xpm;
@@ -48,11 +48,13 @@ entity top_hal is
     clock_async_i_p : in std_logic;
     clock_async_i_n : in std_logic;
 
-    -- 320MHz ASYNC clock to MMCM
+    -- 40MHz ASYNC clock to MMCM (LHC Clock)
     clock_i_p : in std_logic;
     clock_i_n : in std_logic;
 
-    -- 320MHz clock out
+    -- 320MHz clock out (recovered clock)
+    -- TODO: This should eventually become a 40 MHz clock, aligned with the data stream 
+    -- See example in TCLink core
     lhc_refclk_o_p : out std_logic;
     lhc_refclk_o_n : out std_logic;
 
@@ -61,10 +63,10 @@ entity top_hal is
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
     --------------------------------------------------------------------------------
-    -- Pipeline clock and control
+    -- ULL clock and control
     --------------------------------------------------------------------------------
 
-    -- pipeline clock
+    -- ULL clock
     clock_and_control_o : out l0mdt_control_rt;
 
     -- ttc
@@ -126,15 +128,17 @@ entity top_hal is
     --------------------------------------------------------------------------------
     -- AXI
     --------------------------------------------------------------------------------
-
+    
+    -- HAL control runs with the LHC clock, and monitors/controls anything sync to it, e.g. CSM, FELIX, SL
     Mon  : out HAL_MON_t;
     Ctrl : in  HAL_CTRL_t;
+    
+    -- CORE takes care of basic infrastructure, running with the axi clk, e.g. transceivers
+    Core_Mon  : out CORE_MON_t;
+    Core_Ctrl : in  CORE_CTRL_t;
 
-    Core_Mon  : out HAL_CORE_MON_t;
-    Core_Ctrl : in  HAL_CORE_CTRL_t;
-
-    clk50_o     : out std_logic;
-    clk320_o    : out std_logic;
+    clk50_o     : out std_logic; -- Axi
+    clk320_o    : out std_logic; -- 
     clk40_o     : out std_logic;
     b2b_reset_n : out std_logic;
     --sump--------------------------------------------------------------------------
@@ -220,7 +224,8 @@ architecture behavioral of top_hal is
   signal sl_tx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_data_sump      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-
+  signal sl_re_channel        : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_rx_init_done      : std_logic;
   --------------------------------------------------------------------------------
   -- Signal sumps for development
   --------------------------------------------------------------------------------
@@ -252,10 +257,10 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
   global_reset <= not(clocks.lhc_locked);
-  clk50_o      <= clocks.axiclock;
-  clk320_o     <= clocks.clock320;
-  clk40_o      <= clocks.clock40;
-  b2b_reset_n  <= clocks.b2b_locked;
+  clk50_o      <= clocks.axiclock; -- AXI
+  clk320_o     <= clocks.clock320; -- Not used, remove it?
+  clk40_o      <= clocks.clock40; -- LHC
+  b2b_reset_n  <= clocks.b2b_locked; -- B2B = C2C = SM-CM
 
   --------------------------------------------------------------------------------
   -- AXI Interface
@@ -267,12 +272,12 @@ begin  -- architecture behavioral
   -- Common Clocking
   --------------------------------------------------------------------------------
 
-  -- FIXME: this should come from an ODDR
+  -- FIXME: this should come from an ODDR (output double data rate buffer). Check Vivado documentation
   lhc_refclk_OBUFDS_inst : OBUFDS
     port map (
       O  => lhc_refclk_o_p,             -- 1-bit output: Diff_p output (connect directly to top-level port)
       OB => lhc_refclk_o_n,             -- 1-bit output: Diff_n output (connect directly to top-level port)
-      I  => clk40_o -- lhc_recclk                  -- 1-bit input: Buffer input
+      I  => lhc_recclk                  -- 1-bit input: Buffer input
       );
 
   top_clocking_inst : entity hal.top_clocking
@@ -306,6 +311,9 @@ begin  -- architecture behavioral
 
       );
 
+  -- Strobes used to sync the slower clocks to faster clocks
+  -- Check always the ratio between the two clocks 
+  -- TODO: Think about having clock frequency in a single place and derive ratios accordingly
   clock_strobe_1 : entity work.clock_strobe
     generic map (RATIO => 8)
     port map (
@@ -313,7 +321,6 @@ begin  -- architecture behavioral
       slow_clk_i => clocks.clock40,
       strobe_o   => strobe_320
       );
-
   clock_strobe_2 : entity work.clock_strobe
     generic map (RATIO => 8)
     port map (
@@ -365,16 +372,18 @@ begin  -- architecture behavioral
       sl_tx_mgt_word_array_i => sl_tx_mgt_word_array,
       sl_tx_ctrl_i           => sl_tx_ctrl,
       sl_rx_ctrl_o           => sl_rx_ctrl,
-      sl_rx_slide_i          => sl_rx_slide,
+      sl_rx_slide_i          => sl_rx_slide, -- Align with the LHC clock from Yasu's code
       sl_tx_clk              => sl_tx_clks,
       sl_rx_clk              => sl_rx_clks,
+      sl_re_channel          => sl_re_channel,
+      sl_rx_init_done        => sl_rx_init_done,
 
       -- lpgbt
       lpgbt_rxslide_i                 => lpgbt_uplink_bitslip,
       lpgbt_downlink_mgt_word_array_i => lpgbt_downlink_mgt_word_array,
       lpgbt_uplink_mgt_word_array_o   => lpgbt_uplink_mgt_word_array,
 
-      -- lpgbt emulator
+      -- TODO: lpgbt emulator for loopback testing
       lpgbt_emul_rxslide_i                 => lpgbt_emul_downlink_bitslip,
       lpgbt_emul_downlink_mgt_word_array_o => lpgbt_emul_downlink_mgt_word_array,
       lpgbt_emul_uplink_mgt_word_array_i   => lpgbt_emul_uplink_mgt_word_array,
@@ -435,6 +444,7 @@ begin  -- architecture behavioral
 
   -- 0 to e.g. 17 CSM Boards
   csm_gen : for CSM in c_MDT_CONFIG'range generate
+  -- csm_gen : for CSM in 0 downto 0 generate
     constant hi       : integer := csm_hi_lo (CSM).hi;
     constant lo       : integer := csm_hi_lo (CSM).lo;
     constant tdc_cnt  : integer := count_ones(c_MDT_CONFIG(CSM).en);
@@ -496,7 +506,7 @@ begin  -- architecture behavioral
             uplink_bitslip_o(1)        => lpgbt_uplink_bitslip(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_s)),
 
             -- outputs to polmux
-            tdc_hits_to_polmux_o    => tdc_hits_to_polmux (hi downto lo),
+            tdc_hits_to_polmux_o    => tdc_hits_to_polmux (hi downto lo), -- Big vector of all TDC data, hi-lo give the range of the vector corresponding to a particular CSM
             read_done_from_polmux_i => read_done_from_polmux (hi downto lo),
             ctrl                    => ctrl.csm.csm(CSM),
             mon                     => mon.csm.csm(CSM)
@@ -535,7 +545,7 @@ begin  -- architecture behavioral
           g_STATION_STR => stations_str(STATION)
           )
         port map (
-          clock          => clocks.clock320,  -- ZDM?
+          clock          => clocks.clock320, 
           pipeline_clock => clocks.clock_pipeline,
           reset          => reset,
           tdc_hits_i     => tdc_hits_to_polmux (hi downto lo),
@@ -574,16 +584,18 @@ begin  -- architecture behavioral
       clk40          => clocks.clock40,
       reset          => global_reset,
 
-      sl_rx_mgt_word_array_i => sl_rx_mgt_word_array,
-      sl_tx_mgt_word_array_o => sl_tx_mgt_word_array,
+      sl_rx_mgt_word_array_i => sl_rx_mgt_word_array, -- SLC 
+      sl_tx_mgt_word_array_o => sl_tx_mgt_word_array, -- MTC
 
       sl_data_o => sl_rx_data,
       mtc_i     => mtc_i,
 
       sl_rx_ctrl_i => sl_rx_ctrl,
+      sl_rx_init_done_i => sl_rx_init_done,
       sl_tx_ctrl_o => sl_tx_ctrl,
 
-      sl_rx_slide_o => sl_rx_slide
+      sl_rx_slide_o => sl_rx_slide,
+      sl_re_channel_o => sl_re_channel
       );
 
   -- FIXME: these mappings are totally made up for testing purposes...
@@ -679,7 +691,9 @@ begin  -- architecture behavioral
   --   end process data_loop;
   -- end generate;
 
-  sump_gen : if (true) generate
+  -- This was there to don't make Vivado optimise away the ULL. Now that it is actually connected
+  -- we can disable it. Keep it there, just in case
+  sump_gen : if (false) generate
     signal daq_sump                     : std_logic_vector (daq_streams'length-1 downto 0);
     signal mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
     signal nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);

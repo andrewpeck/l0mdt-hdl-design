@@ -88,6 +88,10 @@ set_max_delay -quiet -datapath_only 3.1 \
 # -quiet flag
 set_false_path -quiet -from [get_pins "top_control_inst/*/sys_reseter/*/*/C"]
 
+# Setting a false path for the FELIX lpgbt, since they are not actually lpgbts...
+set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/frame_pipelined_s_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/lpgbtfpga_descrambler_inst/fec5_gen.descrambler58bitOrder58_l0_inst/descrambledData_reg*/D}]
+set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/frame_pipelined_s_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/lpgbtfpga_descrambler_inst/fec5_gen.descrambler58bitOrder58_l0_inst/memory_register_reg*/D}]
+set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/l0mdt_ttc_ff_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/l0mdt_ttc_40m_reg*/D}]
 ################################################################################
 # Transitions to/from the AXI clocks are asynchronous
 ################################################################################
@@ -127,8 +131,8 @@ set_property -quiet MAX_FANOUT 256 [get_cells "ult_inst/logic_gen.H2S_GEN.ULT_H2
 #set_max_delay 12.5 \
 #    -from [get_cells -hierarchical -filter "NAME =~ top_control_inst/*_mon_r_reg*"]
 
-set_max_delay 12.5 \
-    -to   [get_cells "top_control_inst/*_ctrl_reg*"]
+#set_max_delay 12.5 \
+#    -to   [get_cells "top_control_inst/*_ctrl_reg*"]
 
 ################################################################################
 # Clock frequency counters

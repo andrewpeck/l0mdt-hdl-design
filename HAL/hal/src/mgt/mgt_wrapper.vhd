@@ -19,7 +19,7 @@ use work.sector_logic_pkg.all;
 use work.display_board_cfg_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.HAL_CORE_CTRL.all;
+use ctrl_lib.CORE_CTRL.all;
 
 entity mgt_wrapper is
   port(
@@ -31,8 +31,8 @@ entity mgt_wrapper is
     reset : in std_logic;
 
     -- AXI Control
-    ctrl : in  HAL_CORE_MGT_CTRL_t;
-    mon  : out HAL_CORE_MGT_MON_t;
+    ctrl : in  CORE_MGT_CTRL_t;
+    mon  : out CORE_MGT_MON_t;
 
     -- Refclk Inputs
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
@@ -98,31 +98,45 @@ entity mgt_wrapper is
     -- control
     sl_tx_ctrl_i  : in  sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_ctrl_o  : out sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-    sl_rx_slide_i : in  std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
+    sl_rx_slide_i : in  std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+
+    -- reset
+    sl_re_channel : in std_logic_vector(c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    
+    -- done
+    sl_rx_init_done : out std_logic
 
     );
 end mgt_wrapper;
 
 architecture Behavioral of mgt_wrapper is
 
+  -- fanout input reset for better timing
   signal reset_tree : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
+  signal sl_rx_init_done_s : std_logic_vector(c_NUM_MGTS-1 downto 0);
 
   attribute DONT_TOUCH               : string;
   attribute DONT_TOUCH of reset_tree : signal is "true";
 
+  signal recclk_sync_clr: std_logic;
+  signal recclk_sync_ce : std_logic;
   signal refclk         : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
   signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
   signal refclk_bufg    : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
   signal recclk         : std_logic;
 
   -- TODO: initialize these so that uninstantiated MGTs will show DEADBEEF or something
+  -- Dynamic Reconfiguration port signals
   signal drp_i     : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
   signal drp_o     : mgt_drp_out_rt_array (c_NUM_MGTS-1 downto 0);
+  -- Status signals
   signal status    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
   signal status_d  : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
   signal status_2d : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
 
 begin
+
+  sl_rx_init_done <= AND(sl_rx_init_done_s);
 
   assert false report
     "GENERATING " & integer'image(c_NUM_MGTS) & "MGT LINKS:" severity note;
@@ -154,11 +168,33 @@ begin
   -- recclk
   --------------------------------------------------------------------------------
 
-   recclk_BUFG_inst : BUFG
-   port map (
-     O => ttc_recclk_o,                 -- 1-bit output: Clock output
-     I => recclk                        -- 1-bit input: Clock input
-   );
+  --  recclk_BUFG_inst : BUFG
+  --  port map (
+  --    O => ttc_recclk_o,                 -- 1-bit output: Clock output
+  --    I => recclk                        -- 1-bit input: Clock input
+  --  );
+
+  -- https://support.xilinx.com/s/question/0D52E00006hpdNNSAY/rxoutclk-routing-error?language=en_US
+
+  recclk_BUFG_GT_SYNC_inst : BUFG_GT_SYNC
+  port map (
+    CESYNC  => recclk_sync_ce,                -- 1-bit output: Synchronized CE
+    CLRSYNC => recclk_sync_clr,               -- 1-bit output: Synchronized CLR
+    CE      => '1',               -- 1-bit input: Asynchronous enable
+    CLK     => recclk, -- 1-bit input: Clock
+    CLR     => '0'                -- 1-bit input: Asynchronous clear
+    );
+
+  recclk_BUFG_GT_inst : BUFG_GT
+  port map (
+    O => ttc_recclk_o,   -- 1-bit output: Buffer
+    CE => recclk_sync_ce,           -- 1-bit input: Buffer enable
+    CEMASK => '0',      -- 1-bit input: CE Mask
+    CLR => recclk_sync_clr,         -- 1-bit input: Asynchronous clear
+    CLRMASK => '0',     -- 1-bit input: CLR Mask
+    DIV => "000",       -- 3-bit input: Dynamic divide Value
+    I => recclk         -- 1-bit input: Buffer
+  );
 
   --------------------------------------------------------------------------------
   -- Refclk
@@ -170,7 +206,7 @@ begin
                    c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
                    ) generate
 
-      assert false
+      assert true
         report "GENERATING REFCLK IBUF=" & integer'image(I) severity note;
 
       -- 2'b00: ODIV2 = O
@@ -264,14 +300,14 @@ begin
       display_board_cfg(true);
     end generate;
 
-    assert false report
+    assert true report
       "GENERATING MGT=" & integer'image(I) &
       " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) severity note;
 
     --------------------------------------------------------------------------------
     -- LPGBT+Emulator+Felix Type Transceiver Generation
     --------------------------------------------------------------------------------
-
+    -- Get lpgbt signals in group of four and excldue the not-active 
     lpgbt_gen : if ((I mod 4 = 0) and c2c_idx_array(I) = -1 and sl_idx_array(I) = -1 and
                     c_MGT_MAP(I).mgt_type /= MGT_NIL and
                     (ttc_idx_array(I) /= -1 or ttc_idx_array(I+1) /= -1 or
@@ -441,7 +477,7 @@ begin
         end generate;
 
         --------------------------------------------------------------------------------
-        -- FELIX LPGBT
+        -- FELIX LPGBT (to be moved to full-mode connection)
         --------------------------------------------------------------------------------
 
         felix_gen : if (ttc_idx_array(I) /= -1) generate
@@ -483,7 +519,7 @@ begin
 
       mon.mgt(I).config.is_active <= '1';
 
-      assert false report
+      assert true report
         "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I)
         & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
         & " SL_LINK_CNT=" & integer'image(idx) severity note;
@@ -508,6 +544,8 @@ begin
           txctrl_in      => sl_tx_ctrl_i(idx+3 downto idx),
           rxctrl_out     => sl_rx_ctrl_o(idx+3 downto idx),
           rx_slide_i     => sl_rx_slide_i(idx+3 downto idx),
+          re_channel_i   => sl_re_channel(idx+3 downto idx),
+          rx_init_done_o => sl_rx_init_done_s(I),
           mgt_word_i     => sl_tx_mgt_word_array_i(idx+3 downto idx),
           mgt_word_o     => sl_rx_mgt_word_array_o(idx+3 downto idx),
           rxp_i          => rx_p,
@@ -534,6 +572,7 @@ begin
     -- frequency is, it should probably be stored somewhere in the board_pkg I
     -- think this number also gets duplicated in top_clocking.. it should really
     -- be centralized
+    -- Move to a package
     constant axi_refclk_freq : integer := 50_000_000;
 
   begin

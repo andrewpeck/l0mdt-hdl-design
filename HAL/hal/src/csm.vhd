@@ -39,10 +39,10 @@ entity csm is
     clk40      : in std_logic;
 
     -- TTC
-    trg_i : in std_logic;
-    bcr_i : in std_logic;
-    ecr_i : in std_logic;
-    gsr_i : in std_logic;
+    trg_i : in std_logic; --trigger 
+    bcr_i : in std_logic; --bunch crossing reset
+    ecr_i : in std_logic; --event count reset
+    gsr_i : in std_logic; --global syncronous? reset
 
     --------------------------------------------------------------------------------
     -- Downlink
@@ -80,11 +80,12 @@ entity csm is
 end csm;
 
 architecture behavioral of csm is
-
+  
+  -- ENC: Encoded Control
   constant enc_elink : integer := CSM_ENC_DOWNLINK;
 
   -- TODO: right now it is using aux channels for all e-links, but 2/3 SCAs have
-  -- both primary and aux connected. Add some way to switch?
+  -- both primary and aux connected. Add some way to switch? For redundancy on the control links
   constant up0 : integer := CSM_SCA0_UP_AUX;
   constant up1 : integer := CSM_SCA0_UP_AUX;
   constant up2 : integer := CSM_SCA0_UP_AUX;
@@ -105,11 +106,13 @@ architecture behavioral of csm is
   signal downlink_ready : std_logic_vector (g_NUM_DOWNLINKS-1 downto 0);
 
   signal enc_o : std_logic := '0';
-
+  
+  -- SCA: Slow Control Asic
   signal sca0_up_8bit, sca1_up_8bit, sca2_up_8bit : std_logic_vector (7 downto 0);
   signal sca0_up, sca1_up, sca2_up                : std_logic_vector (1 downto 0);
   signal sca0_down, sca1_down, sca2_down          : std_logic_vector (1 downto 0);
 
+  -- FEC: Forward Error Corrections (counters)
   type fec_err_cnt_type is array (g_NUM_UPLINKS-1 downto 0) of std_logic_vector(15 downto 0);
   signal fec_err_cnt : fec_err_cnt_type;
 
@@ -142,19 +145,19 @@ begin
   downlink_data(0).data(2*(CSM_SCA1_DOWN+1)-1 downto 2*(CSM_SCA1_DOWN)) <= sca1_down;
   downlink_data(0).data(2*(CSM_SCA2_DOWN+1)-1 downto 2*(CSM_SCA2_DOWN)) <= sca2_down;
 
+  -- Translates ctrl/mon record to serialised signal needed for csm
   gbt_controller_wrapper_inst : entity work.gbt_controller_wrapper
     generic map (g_SCAS_PER_LPGBT => 3)
     port map (
 
       reset_i => reset_i,
       clk40   => clk40,
-      clk320  => uplink_clk,
       ctrl    => ctrl.sc,
       mon     => mon.sc,
 
       -- to lpgbt uplink
-      ic_data_i => uplink_data(0).ic,
-      ec_data_i => uplink_data(0).ec,
+      ic_data_i => uplink_data(0).ic, --internal control (master)
+      ec_data_i => uplink_data(0).ec, --external control (slave)
 
       -- to lpgbt downlink
       ic_data_o => downlink_data(0).ic,

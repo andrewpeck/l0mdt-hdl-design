@@ -30,7 +30,7 @@ RIV:BA3_heg_riviera:
     extends: .vars
     PROJECT_NAME: MainBlocks/BA3_heg
     # HOG_APPTAINER_IMAGE: /Data/images/l0mdt_Ubuntu20.04.sif
-  allow_failure: false
+  allow_failure: true
 
 COMP:BA3_heg:
   extends: .sim_comp

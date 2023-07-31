@@ -22,7 +22,6 @@ entity gbt_controller_wrapper is
     ctrl : in  HAL_CSM_CSM_SC_CTRL_t;
 
     clk40   : in std_logic;
-    clk320  : in std_logic;
 
     -- master
     ic_data_i : in  std_logic_vector (1 downto 0);
@@ -56,43 +55,20 @@ architecture structural of gbt_controller_wrapper is
   -- inputs, internal 40MHz copy
   signal ic_data_i_int, ec_data_i_int,
     sca0_data_i_int, sca1_data_i_int, sca2_data_i_int
-    : std_logic_vector ( 1 downto 0);
-
-  -- inputs, 320 MHz fanout flip-flop
-  signal ic_data_i_ff, ec_data_i_ff,
-    sca0_data_i_ff, sca1_data_i_ff, sca2_data_i_ff
-    : std_logic_vector ( 1 downto 0);
+    : std_logic_vector (1 downto 0);
 
   -- outputs, internal copy
   signal ic_data_o_int, ec_data_o_int,
     sca0_data_o_int, sca1_data_o_int, sca2_data_o_int
     : std_logic_vector (1 downto 0);
 
-  attribute ASYNC_REG                    : string;
-  attribute ASYNC_REG of ic_data_i_int   : signal is "TRUE";
-  attribute ASYNC_REG of ec_data_i_int   : signal is "TRUE";
-  attribute ASYNC_REG of sca0_data_i_int : signal is "TRUE";
-  attribute ASYNC_REG of sca1_data_i_int : signal is "TRUE";
-  attribute ASYNC_REG of sca2_data_i_int : signal is "TRUE";
+  signal lpgbt_version : std_logic_vector (1 downto 0);
 
 begin
 
   --------------------------------------------------------------------------------
   -- register inputs/outputs for timing
   --------------------------------------------------------------------------------
-
-  process (clk320) is
-  begin
-    if (rising_edge(clk320)) then
-
-      ic_data_i_ff   <= ic_data_i;
-      ec_data_i_ff   <= ec_data_i;
-      sca0_data_i_ff <= sca0_data_i;
-      sca1_data_i_ff <= sca1_data_i;
-      sca2_data_i_ff <= sca2_data_i;
-
-    end if;
-  end process;
 
   process (clk40) is
   begin
@@ -104,11 +80,11 @@ begin
       sca1_data_o <= sca1_data_o_int;
       sca2_data_o <= sca2_data_o_int;
 
-      ic_data_i_int   <= ic_data_i_ff;
-      ec_data_i_int   <= ec_data_i_ff;
-      sca0_data_i_int <= sca0_data_i_ff;
-      sca1_data_i_int <= sca1_data_i_ff;
-      sca2_data_i_int <= sca2_data_i_ff;
+      ic_data_i_int   <= ic_data_i;
+      ec_data_i_int   <= ec_data_i;
+      sca0_data_i_int <= sca0_data_i;
+      sca1_data_i_int <= sca1_data_i;
+      sca2_data_i_int <= sca2_data_i;
 
     end if;
   end process;
@@ -125,6 +101,9 @@ begin
       g_SCA_COUNT     => 0
       )
     port map (
+
+      -- lpGBT Version
+      lpgbt_vers_i => ctrl.frame_format,
 
       -- tx to lpgbt etc
       tx_clk_i  => clk40,
@@ -202,6 +181,9 @@ begin
       g_SCA_COUNT     => g_SCAS_PER_LPGBT
       )
     port map (
+
+      -- lpGBT Version
+      lpgbt_vers_i => ctrl.frame_format,
 
       -- tx to lpgbt etc
       tx_clk_i  => clk40,
@@ -288,10 +270,13 @@ begin
       rx_transID_o(2)  => mon.master.sca_rx.rx(2).rx_transID
       );
 
+  lpgbt_version <= "01" when (ctrl.frame_format='0') else "10";
+
   gbt_ic_rx_m : entity work.gbt_ic_rx
     port map (
       clock_i              => clk40,
       reset_i              => reset_i,
+      gbt_frame_format_i   => lpgbt_version,
       frame_i              => master_rx_frame,
       valid_i              => not master_rx_empty,
       data_o               => mon.master.ic.rx_data,
@@ -308,6 +293,7 @@ begin
     port map (
       clock_i              => clk40,
       reset_i              => reset_i,
+      gbt_frame_format_i   => lpgbt_version,
       frame_i              => slave_rx_frame,
       valid_i              => not slave_rx_empty,
       data_o               => mon.slave.ic.rx_data,

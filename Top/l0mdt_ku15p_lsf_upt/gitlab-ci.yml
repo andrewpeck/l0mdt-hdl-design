@@ -9,3 +9,11 @@ GEN:l0mdt_ku15p_lsf_upt:
       HOG_NO_BITSTREAM: 1 
     tags:
       - heavy-duty
+    artifacts:
+      when: always
+      name: implementation_and_bitfiles
+      paths:
+        - bin 
+        - Projects
+
+
