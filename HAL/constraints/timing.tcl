@@ -156,5 +156,5 @@ set_max_delay -datapath_only \
 #--------------------------------------------------------------------------------
 
 set_max_delay -datapath_only 25 \
-    -from [get_pins top_hal/reset_clk40_reg/C] \
+    -from [get_pins top_hal/reset_clk40_reg*/C] \
     -to [get_pins {top_hal/sector_logic_link_wrapper_inst/*/*/*/CLR}]
