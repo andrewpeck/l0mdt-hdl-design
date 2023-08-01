@@ -92,6 +92,10 @@ set_false_path -quiet -from [get_pins "top_control_inst/*/sys_reseter/*/*/C"]
 set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/frame_pipelined_s_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/lpgbtfpga_descrambler_inst/fec5_gen.descrambler58bitOrder58_l0_inst/descrambledData_reg*/D}]
 set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/frame_pipelined_s_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/lpgbtfpga_descrambler_inst/fec5_gen.descrambler58bitOrder58_l0_inst/memory_register_reg*/D}]
 set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/l0mdt_ttc_ff_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/l0mdt_ttc_40m_reg*/D}]
+set_false_path -quiet -from [get_pins {top_hal/reset_clk40_reg/C}] -to [get_pins {top_hal/felix_decoder_inst/*/*/*/CLR}]
+set_false_path -quiet -from [get_pins top_hal/reset_clk40_reg/C] -to [get_pins {top_hal/felix_decoder_inst/*/*/*/CE}]
+set_false_path -quiet -from [get_pins top_hal/reset_clk40_reg/C] -to [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/*/*/R}]
+
 ################################################################################
 # Transitions to/from the AXI clocks are asynchronous
 ################################################################################
@@ -158,3 +162,4 @@ set_max_delay -datapath_only \
 set_max_delay -datapath_only 25 \
     -from [get_pins top_hal/reset_clk40_reg/C] \
     -to [get_pins {top_hal/sector_logic_link_wrapper_inst/*/*/*/CLR}]
+    
