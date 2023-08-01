@@ -688,7 +688,7 @@ begin  -- architecture behavioral
       clock320 => clk320, -- felix downlink clock
       clock40  => clk40, -- 40mhz system clock
 
-      reset => reset_clk40,
+      reset => reset_clk320,
 
       ttc_mgt_data_i    => ttc_mgt_word,
       ttc_mgt_bitslip_o => ttc_bitslip,
