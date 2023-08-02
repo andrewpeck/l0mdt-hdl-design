@@ -92,6 +92,7 @@ set_false_path -quiet -from [get_pins "top_control_inst/*/sys_reseter/*/*/C"]
 set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/frame_pipelined_s_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/lpgbtfpga_descrambler_inst/fec5_gen.descrambler58bitOrder58_l0_inst/descrambledData_reg*/D}]
 set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/frame_pipelined_s_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/lpgbtfpga_descrambler_inst/fec5_gen.descrambler58bitOrder58_l0_inst/memory_register_reg*/D}]
 set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/l0mdt_ttc_ff_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/l0mdt_ttc_40m_reg*/D}]
+
 ################################################################################
 # Transitions to/from the AXI clocks are asynchronous
 ################################################################################
@@ -158,6 +159,12 @@ set_max_delay -datapath_only \
 set_max_delay -datapath_only 25 \
     -from [get_pins top_hal/reset_clk40_reg*/C] \
     -to [get_pins {top_hal/sector_logic_link_wrapper_inst/*/*/*/CLR}]
+
+# The CLOCK_DELAY_GROUP property identifies related clocks that have the same
+# MMCM, PLL, GT source, or common driver that should be balanced during placement
+# and routing to reduce clock skew on timing paths between the clocks.
+
+set_property CLOCK_DELAY_GROUP RQSGroupOptimized0 [get_nets { top_hal/top_clocking_inst/framework_mmcm_inst/inst/clk320_o top_hal/top_clocking_inst/framework_mmcm_inst/inst/clk40_o  }]
 
 # this is a reset synchronizer in the SL core.. it goes through several FFs
 # after this. The exact timing does not matter so we could relax it a bit
