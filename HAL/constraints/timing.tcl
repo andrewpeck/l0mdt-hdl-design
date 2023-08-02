@@ -158,3 +158,9 @@ set_max_delay -datapath_only \
 set_max_delay -datapath_only 25 \
     -from [get_pins top_hal/reset_clk40_reg*/C] \
     -to [get_pins {top_hal/sector_logic_link_wrapper_inst/*/*/*/CLR}]
+
+# this is a reset synchronizer in the SL core.. it goes through several FFs
+# after this. The exact timing does not matter so we could relax it a bit
+set_max_delay -datapath_only 3 \
+    -from [get_pins {top_hal/mgt_wrapper_inst/mgt_gen*.sl_gen.MGT_INST/gty_gen.MGT_GEN/example_wrapper_inst/gty_fixed_latency_inst/inst/gen_gtwizard_gtye4_top.gty_fixed_latency_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst*.delay_powergood_inst/gen_powergood_delay.pwr_on_fsm_reg/C}] \
+    -to [get_pins {top_hal/mgt_wrapper_inst/mgt_gen*.sl_gen.MGT_INST/gty_gen.MGT_GEN/example_wrapper_inst/gty_fixed_latency_inst/inst/gen_gtwizard_gtye4_top.gty_fixed_latency_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst*.delay_powergood_inst/gen_powergood_delay.intclk_rrst*/CE}]
