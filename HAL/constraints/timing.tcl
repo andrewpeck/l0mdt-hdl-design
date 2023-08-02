@@ -162,4 +162,9 @@ set_max_delay -datapath_only \
 set_max_delay -datapath_only 25 \
     -from [get_pins top_hal/reset_clk40_reg/C] \
     -to [get_pins {top_hal/sector_logic_link_wrapper_inst/*/*/*/CLR}]
-    
+
+set_max_delay -datapath_only -from [get_pins {top_hal/mgt_wrapper_inst/mgt_gen[12].sl_gen.MGT_INST/gty_gen.MGT_GEN/example_wrapper_inst/gty_fixed_latency_inst/inst/gen_gtwizard_gtye4_top.gty_fixed_latency_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst[*].delay_powergood_inst/gen_powergood_delay.pwr_on_fsm_reg/C}] -to [get_pins {top_hal/mgt_wrapper_inst/mgt_gen[12].sl_gen.MGT_INST/gty_gen.MGT_GEN/example_wrapper_inst/gty_fixed_latency_inst/inst/gen_gtwizard_gtye4_top.gty_fixed_latency_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst[*].delay_powergood_inst/*/CE}] 3.2
+#set_max_delay -datapath_only -from [get_pins {top_hal/mgt_wrapper_inst/mgt_gen[12].sl_gen.MGT_INST/gty_gen.MGT_GEN/example_wrapper_inst/gty_fixed_latency_inst/inst/gen_gtwizard_gtye4_top.gty_fixed_latency_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst[0].delay_powergood_inst/gen_powergood_delay.pwr_on_fsm_reg/C}] -to [get_pins {top_hal/mgt_wrapper_inst/mgt_gen[12].sl_gen.MGT_INST/gty_gen.MGT_GEN/example_wrapper_inst/gty_fixed_latency_inst/inst/gen_gtwizard_gtye4_top.gty_fixed_latency_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst[0].delay_powergood_inst/gen_powergood_delay.intclk_rrst_n_r_reg[0]/CE}]
+set_false_path -from [get_pins top_hal/reset_clk40_reg/C] -to [get_pins top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/*/*/PRE]
+
+set_property CLOCK_DELAY_GROUP RQSGroupOptimized0 [get_nets { top_hal/top_clocking_inst/framework_mmcm_inst/inst/clk320_o top_hal/top_clocking_inst/framework_mmcm_inst/inst/clk40_o  }]
