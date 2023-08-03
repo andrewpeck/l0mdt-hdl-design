@@ -99,7 +99,7 @@ check_submodule_status:
     - if [[ $IS_PROTO == '1' ]]; then
         config_proto.py -c 1 -p;
       else
-        config_proto.py -c 1 -p;
+        config_proto.py -c 1;
       fi;
   interruptible: true
   allow_failure: true
