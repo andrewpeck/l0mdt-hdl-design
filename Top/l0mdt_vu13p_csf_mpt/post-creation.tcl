@@ -64,7 +64,7 @@ if {$regenerate_svg} {
 puts "=================================================================="
 
 # 0xB0000000 for US+; 0x80000000 for 7 Series
-set AXI_BASE_ADDRESS  0x80000000 ; # 7 Series
+set ::AXI_BASE_ADDRESS  0x80000000 ; # 7 Series
 set REMOTE_C2C 1
 
 
