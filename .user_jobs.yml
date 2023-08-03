@@ -191,8 +191,8 @@ check_auto_generated_code:
         sed -i 's/Questa/Riviera/' ./Top/$PROJECT_NAME/hog.conf;
         ./Hog/LaunchSimulation.sh $PROJECT_NAME -recreate;
       fi
-    - if [ -f "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib_sim/behav/riviera/simulate.log" ]; then
-        if grep "Executing onerror command" "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib_sim/behav/riviera/simulate.log"; then
+    - if [ -f "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib/behav/riviera/simulate.log" ]; then
+        if grep "Executing onerror command" "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib/behav/riviera/simulate.log"; then
           echo "Simulation Failed!";
           exit 1;
         else
@@ -256,11 +256,11 @@ check_auto_generated_code:
     - echo $AUX_PRJ_FOLDER
     - export AUX_PRJ_NAME=${PROJECT_NAME##**/}
     - echo $AUX_PRJ_NAME
-    - python tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/$SIMULATOR
+    - python tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib/behav/$SIMULATOR
     # - sleep 1h
     # DAvide
     # - PRJ_NAME=$(basename $PROJECT_NAME)
-    # - python tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PRJ_NAME.sim/project_lib_sim/behav/questa
+    # - python tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PRJ_NAME.sim/project_lib/behav/questa
     - mkdir -p bin/$PROJECT_NAME
     - if [[ -d Plots ]]; then
         mv Plots bin/$PROJECT_NAME/SimPlots;
