@@ -264,6 +264,11 @@ architecture behavioral of top_hal is
 
   attribute MAX_FANOUT of strobe_320 : signal is "20";
 
+  attribute MAX_FANOUT of reset_userclk : signal is "32";
+  attribute MAX_FANOUT of reset_clk320  : signal is "32";
+  attribute MAX_FANOUT of reset_clk40   : signal is "32";
+  attribute MAX_FANOUT of reset_axi     : signal is "32";
+
   -- Save this here so we can extract it from the hierarchy later
   -- this is used in log_mgts.tcl so please do not remove it
   attribute NUM_MGTS                       : integer;
@@ -688,7 +693,7 @@ begin  -- architecture behavioral
       clock320 => clk320, -- felix downlink clock
       clock40  => clk40, -- 40mhz system clock
 
-      reset => reset_clk40,
+      reset => reset_clk320,
 
       ttc_mgt_data_i    => ttc_mgt_word,
       ttc_mgt_bitslip_o => ttc_bitslip,

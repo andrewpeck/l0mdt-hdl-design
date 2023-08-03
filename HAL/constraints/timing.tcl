@@ -92,6 +92,7 @@ set_false_path -quiet -from [get_pins "top_control_inst/*/sys_reseter/*/*/C"]
 set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/frame_pipelined_s_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/lpgbtfpga_descrambler_inst/fec5_gen.descrambler58bitOrder58_l0_inst/descrambledData_reg*/D}]
 set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/frame_pipelined_s_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/felix_10_gbps_rx_inst/lpgbtfpga_descrambler_inst/fec5_gen.descrambler58bitOrder58_l0_inst/memory_register_reg*/D}]
 set_false_path -quiet -from [get_pins {top_hal/felix_decoder_inst/l0mdt_ttc_ff_reg*/C}] -to [get_pins {top_hal/felix_decoder_inst/l0mdt_ttc_40m_reg*/D}]
+
 ################################################################################
 # Transitions to/from the AXI clocks are asynchronous
 ################################################################################
@@ -123,6 +124,7 @@ set_false_path \
 set_property -quiet MAX_FANOUT 256 [get_cells -hier "*int_rst_reg"]
 set_property MAX_FANOUT 256 [get_cells "top_hal/userclk_rst_bit_synchronizer/syncstages_ff_reg*"]
 set_property -quiet MAX_FANOUT 256 [get_cells "ult_inst/logic_gen.H2S_GEN.ULT_H2S/HPS_*.HPS/PC/pc_gen*.pc_en.PC/VC/apb_mem_interface/MEM_TYPE.o_wr_addr_reg*"]
+set_max_delay -datapath_only  -from [get_pins top_hal/reset_clk40_reg/C] -to [get_pins {top_hal/csm_gen[0].csm_ifgen.mgt_tag[32].csm_inst/lpgbt_links_inst/downlink_gen[0].downlink_reset_reg/D}] 2.300
 
 ################################################################################
 # Ctrl & Mon
@@ -149,3 +151,23 @@ set_max_delay -datapath_only \
 set_max_delay -datapath_only \
     -from [get_clocks] \
     -to [get_pins -hierarchical -filter { NAME =~ "*i_clk_frequency*/measure_sr_reg[0]/D"}] 8
+
+#--------------------------------------------------------------------------------
+# Max Delay Paths for Async Reset from MMCM
+#--------------------------------------------------------------------------------
+
+set_max_delay -datapath_only 25 \
+    -from [get_pins top_hal/reset_clk40_reg*/C] \
+    -to [get_pins {top_hal/sector_logic_link_wrapper_inst/*/*/*/CLR}]
+
+# The CLOCK_DELAY_GROUP property identifies related clocks that have the same
+# MMCM, PLL, GT source, or common driver that should be balanced during placement
+# and routing to reduce clock skew on timing paths between the clocks.
+
+set_property CLOCK_DELAY_GROUP RQSGroupOptimized0 [get_nets { top_hal/top_clocking_inst/framework_mmcm_inst/inst/clk320_o top_hal/top_clocking_inst/framework_mmcm_inst/inst/clk40_o  }]
+
+# this is a reset synchronizer in the SL core.. it goes through several FFs
+# after this. The exact timing does not matter so we could relax it a bit
+set_max_delay -datapath_only 3 \
+    -from [get_pins {top_hal/mgt_wrapper_inst/mgt_gen*.sl_gen.MGT_INST/gty_gen.MGT_GEN/example_wrapper_inst/gty_fixed_latency_inst/inst/gen_gtwizard_gtye4_top.gty_fixed_latency_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst*.delay_powergood_inst/gen_powergood_delay.pwr_on_fsm_reg/C}] \
+    -to [get_pins {top_hal/mgt_wrapper_inst/mgt_gen*.sl_gen.MGT_INST/gty_gen.MGT_GEN/example_wrapper_inst/gty_fixed_latency_inst/inst/gen_gtwizard_gtye4_top.gty_fixed_latency_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst*.delay_powergood_inst/gen_powergood_delay.intclk_rrst*/CE}]
