@@ -14,8 +14,6 @@ GEN:base_l0mdt:
       name: implementation_and_bitfiles
       paths:
         - bin 
-        - Projects
-
 
 CHK:base_l0mdt:
     extends: .check_list_and_conf

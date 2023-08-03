@@ -15,11 +15,3 @@ GEN:l0mdt_ku15p_ull_empty_usp:
       paths:
         - bin 
 
-DemoTest:
-    extends: .on_board_test
-    variables:
-      IS_PROTO: 0
-    tags: 
-      - demonstrator
-    dependencies:
-      - GEN:l0mdt_ku15p_ull_empty_usp

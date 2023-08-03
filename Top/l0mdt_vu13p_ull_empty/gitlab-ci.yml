@@ -14,13 +14,4 @@ GEN:l0mdt_vu13p_ull_empty:
       name: implementation_and_bitfiles
       paths:
         - bin 
-        - Projects
 
-ProtoTest:
-    extends: .on_board_test
-    variables:
-      IS_PROTO: 1
-    tags: 
-      - prototype_v1
-    dependencies:
-      - GEN:l0mdt_vu13p_ull_empty
