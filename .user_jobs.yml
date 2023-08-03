@@ -308,3 +308,22 @@ check_auto_generated_code:
     - echo "Parsing log file to check result of the cocotb test"
     - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then if (grep -qE "cocotb.regression.*test passed" cocotb_run.log)  ; then echo "Test successful" ; elif (grep -q "cocotb.result.TestFailure" cocotb_run.log) ; then echo "Test completed but TV comparison failed" ; exit 98 ; else echo "Other failure - check log" ; exit 99 ; fi ; else echo "Other failure during cocotb test - check log" ; exit 99; fi
   dependencies: []
+
+
+DemoTest:
+  extends: .on_board_test
+  variables:
+    IS_PROTO: 0
+  tags: 
+    - demonstrator
+  dependencies:
+    - GEN:l0mdt_ku15p_ull_empty_usp
+
+ProtoTest:
+  extends: .on_board_test
+  variables:
+    IS_PROTO: 1
+  tags: 
+    - prototype_v1
+  dependencies:
+    - GEN:l0mdt_vu13p_ull_empty
