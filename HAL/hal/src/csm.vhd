@@ -101,8 +101,7 @@ architecture behavioral of csm is
   signal uplink_ready : std_logic_vector (g_NUM_UPLINKS-1 downto 0);
   signal uplink_fec_err : std_logic_vector (g_NUM_UPLINKS-1 downto 0);  
 
-  signal downlink_data  : lpgbt_downlink_data_rt_array (g_NUM_DOWNLINKS-1 downto 0) := (others => lpgbt_downlink_data_rt_zero);
---priya initializing downlink_data
+  signal downlink_data  : lpgbt_downlink_data_rt_array (g_NUM_DOWNLINKS-1 downto 0) := (others => lpgbt_downlink_data_rt_zero); --initializing downlink_data
   signal downlink_reset : std_logic_vector (g_NUM_DOWNLINKS-1 downto 0);
   signal downlink_ready : std_logic_vector (g_NUM_DOWNLINKS-1 downto 0);
 
@@ -192,7 +191,8 @@ begin
       );
 
   downlink_data(0).data((enc_elink+1)*2-1 downto 2*enc_elink) <= enc_o & enc_o;  -- 40 mb to 80 mb replication
-
+  downlink_reset(0) <= ctrl.lpgbt.downlink.reset;
+  
   lpgbt_links_inst : entity work.lpgbt_link_wrapper
     generic map (
       g_DOWNLINK_WORD_WIDTH               => c_DOWNLINK_WORD_WIDTH,

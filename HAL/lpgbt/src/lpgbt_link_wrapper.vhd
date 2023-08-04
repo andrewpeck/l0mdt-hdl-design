@@ -127,7 +127,7 @@ begin
     downlink_reset_fanout : process (downlink_clk) is
     begin  -- process reset_fanout
       if rising_edge(downlink_clk) then  -- rising clock edge
-        downlink_reset <= not (reset); --priya  or downlink_reset_i(I));
+        downlink_reset <= not ((reset)  or downlink_reset_i(I));
       end if;
     end process;
 

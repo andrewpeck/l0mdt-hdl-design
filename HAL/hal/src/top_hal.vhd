@@ -346,7 +346,7 @@ begin  -- architecture behavioral
   ctrl_r        <= convert(ctrl_v,ctrl_r);
  
   csm_mon_v     <= convert(csm_mon_r, csm_mon_v);
-  csm_ctrl_r    <= convert(csm_ctrl_v, csm_ctrl_r);
+ 
   
   
   
