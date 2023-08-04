@@ -96,20 +96,20 @@ if { [info exists C2CB] } {
 #  Create the system resetter for clk40
 #================================================================================
 
-# create_bd_port -dir I -type clk $EXT_CLK40
-# set_property CONFIG.FREQ_HZ ${EXT_CLK40_FREQ} [get_bd_ports ${EXT_CLK40}]
-# create_bd_port -dir I -type rst $EXT_CLK40_RSTN
-# create_bd_port -dir O -type rst $AXI_CLK40_RSTN
-# set SYS_RESETER_CLK40 sys_reseter_clk40
-# create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == proc_sys_reset}] $SYS_RESETER_CLK40
-# # #connect external reset
-# connect_bd_net [get_bd_ports $EXT_CLK40_RSTN] [get_bd_pins $SYS_RESETER_CLK40/ext_reset_in]
-# # #connect clock
-# connect_bd_net [get_bd_ports $EXT_CLK40] [get_bd_pins $SYS_RESETER_CLK40/slowest_sync_clk]
+create_bd_port -dir I -type clk $EXT_CLK40
+set_property CONFIG.FREQ_HZ ${EXT_CLK40_FREQ} [get_bd_ports ${EXT_CLK40}]
+create_bd_port -dir I -type rst $EXT_CLK40_RSTN
+create_bd_port -dir O -type rst $AXI_CLK40_RSTN
+set SYS_RESETER_CLK40 sys_reseter_clk40
+create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == proc_sys_reset}] $SYS_RESETER_CLK40
+# #connect external reset
+connect_bd_net [get_bd_ports $EXT_CLK40_RSTN] [get_bd_pins $SYS_RESETER_CLK40/ext_reset_in]
+# #connect clock
+connect_bd_net [get_bd_ports $EXT_CLK40] [get_bd_pins $SYS_RESETER_CLK40/slowest_sync_clk]
 
-# set SYS_RESETER_AXI_CLK40_RSTN $SYS_RESETER_CLK40/interconnect_aresetn
-# # #create the reset to sys reseter and slave interconnect
-# connect_bd_net [get_bd_ports $AXI_CLK40_RSTN] [get_bd_pins $SYS_RESETER_AXI_CLK40_RSTN]
+set SYS_RESETER_AXI_CLK40_RSTN $SYS_RESETER_CLK40/interconnect_aresetn
+# #create the reset to sys reseter and slave interconnect
+connect_bd_net [get_bd_ports $AXI_CLK40_RSTN] [get_bd_pins $SYS_RESETER_AXI_CLK40_RSTN]
 
 #================================================================================
 #  Configure chip 2 chip links

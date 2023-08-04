@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="MGT" permission="rw">
 
-  <node id="STATUS" address="0x0" permission="r">
+  <node id="RESET_ALL" address="0x0" mask="0x00000001" permission="rw" description="Reset transceiver"/>
+
+  <node id="STATUS" address="0x1" permission="r">
     <node id ="rxcdr_stable"            address="0x0" mask="0x00000001" permission = "r" description="rxcdr_stable"/>
     <node id ="powergood"               address="0x0" mask="0x00000002" permission = "r" description="powergood"/>
-<!--<node id ="txready"                 address="0x0" mask="0x00000004" permission = "r" description="txready"/> -->
-<!--<node id ="rxready"                 address="0x0" mask="0x00000008" permission = "r" description="rxready"/> -->
     <node id ="rx_pma_reset_done"       address="0x0" mask="0x00000010" permission = "r" description="rx_pma_reset_done"/>
     <node id ="tx_pma_reset_done"       address="0x0" mask="0x00000020" permission = "r" description="tx_pma_reset_done"/>
     <node id ="tx_reset_done"           address="0x0" mask="0x00000040" permission = "r" description="tx_reset_done"/>
     <node id ="rx_reset_done"           address="0x0" mask="0x00000080" permission = "r" description="rx_reset_done"/>
     <node id ="buffbypass_tx_done_out"  address="0x0" mask="0x00000100" permission = "r" description="buffbypass_tx_done_out"/>
     <node id ="buffbypass_tx_error_out" address="0x0" mask="0x00000200" permission = "r" description="buffbypass_tx_error_out"/>
-<!--<node id ="buffbypass_rx_done_out"  address="0x0" mask="0x00000400" permission = "r" description="buffbypass_rx_done_out"/> -->
-<!--<node id ="buffbypass_rx_error_out" address="0x0" mask="0x00000800" permission = "r" description="buffbypass_rx_error_out"/> -->
   </node>
 
-  <node id="DRP" address="0x1" permission="rw"> 
+  <!-- TODO: this should be made into a magic ram thing using Dan's decorations -->
+  <node id="DRP" address="0x2" permission="rw">
     <node id="wr_en"   address="0x0" mask="0x00000001" permission="w"  description="DRP Write Enable"/>
     <node id="wr_addr" address="0x1" mask="0x000003FF" permission="rw" description="DRP Address"/>
     <node id="en"      address="0x1" mask="0x00001000" permission="rw" description="DRP Enable"/>
@@ -25,21 +24,19 @@
     <node id="rd_data" address="0x2" mask="0x0000ffff" permission="r"  description="DRP Read Data"/>
   </node>
 
-  <node id="TX_RESETS" address="0x4" permission="rw">
-    <node id ="reset"                  address="0x0" mask="0x00000001" permission = "rw" description="tx reset"/>
+  <node id="TX_RESETS" address="0x5" permission="rw">
     <node id ="reset_pll_and_datapath" address="0x0" mask="0x00000002" permission = "rw" description="tx reset_pll_and_datapath"/>
     <node id ="reset_datapath"         address="0x0" mask="0x00000004" permission = "rw" description="tx reset_datapath"/>
     <node id ="reset_bufbypass"        address="0x0" mask="0x00000008" permission = "rw" description="tx reset_bufbypass"/>
   </node>
 
-  <node id="RX_RESETS" address="0x5" permission="rw">
-    <node id ="reset"                  address="0x0" mask="0x00000001" permission = "rw" description="rx reset"/>
+  <node id="RX_RESETS" address="0x6" permission="rw">
     <node id ="reset_pll_and_datapath" address="0x0" mask="0x00000002" permission = "rw" description="rx reset_pll_and_datapath"/>
     <node id ="reset_datapath"         address="0x0" mask="0x00000004" permission = "rw" description="rx reset_datapath"/>
     <node id ="reset_bufbypass"        address="0x0" mask="0x00000008" permission = "rw" description="rx reset_bufbypass"/>
   </node>
 
-  <node id="CONFIG" address="0x6" permission="rw">
+  <node id="CONFIG" address="0x7" permission="rw">
     <node id ="mgt_type"  address="0x0" mask="0x00007" permission = "r" description="MGT Type (MGT_NIL, MGT_LPGBT_SIMPLEX, MGT_LPGBT, MGT_LPGBT_EMUL, MGT_C2C, MGT_SL, MGT_TTC, MGT_FELIX)"/>
     <node id ="refclk"    address="0x0" mask="0x000f8" permission = "r" description="Refclk number (consult the board_pkg)"/>
     <node id ="gt_type"   address="0x0" mask="0x00300" permission = "r" description="(GT_NIL, GTH, GTY)"/>

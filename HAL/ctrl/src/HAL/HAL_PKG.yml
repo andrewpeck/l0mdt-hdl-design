@@ -62,10 +62,10 @@ types:
 - HAL_CSM_CSM_SC_MASTER_IC_CTRL_t:
   - TX_START_WRITE : { type: logic }
   - TX_START_READ : { type: logic }
-  - TX_GBTX_ADDR : { type: logic, range : [ 8 - 1 , 0 ] }
   - TX_REGISTER_ADDR : { type: logic, range : [ 16 - 1 , 0 ] }
   - TX_NUM_BYTES_TO_READ : { type: logic, range : [ 16 - 1 , 0 ] }
   - TX_DATA_TO_GBTX : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_GBTX_ADDR : { type: logic, range : [ 8 - 1 , 0 ] }
   - TX_WR : { type: logic }
 
 
@@ -122,10 +122,10 @@ types:
 - HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t:
   - TX_START_WRITE : { type: logic }
   - TX_START_READ : { type: logic }
-  - TX_GBTX_ADDR : { type: logic, range : [ 8 - 1 , 0 ] }
   - TX_REGISTER_ADDR : { type: logic, range : [ 16 - 1 , 0 ] }
   - TX_NUM_BYTES_TO_READ : { type: logic, range : [ 16 - 1 , 0 ] }
   - TX_DATA_TO_GBTX : { type: logic, range : [ 8 - 1 , 0 ] }
+  - TX_GBTX_ADDR : { type: logic, range : [ 8 - 1 , 0 ] }
   - TX_WR : { type: logic }
 
 

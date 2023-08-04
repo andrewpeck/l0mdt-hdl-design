@@ -5,12 +5,12 @@ AXI_CONTROL_SETS:
     axi_rstn: "${::AXI_MASTER_RSTN}"
     axi_freq: "${::AXI_MASTER_CLK_FREQ}"
     axi_base: "${::AXI_BASE_ADDRESS}"
-  # AXI_LHC_CTRL:
-  #   axi_interconnect: "${::AXI_INTERCONNECT_NAME}"
-  #   axi_clk: clk40
-  #   axi_rstn: clk40_rstn
-  #   axi_freq: 40000000
-  #   axi_base: "${::AXI_BASE_ADDRESS}"
+  AXI_LHC_CTRL:
+    axi_interconnect: "${::AXI_INTERCONNECT_NAME}"
+    axi_clk: clk40
+    axi_rstn: clk40_rstn
+    axi_freq: 40000000
+    axi_base: "${::AXI_BASE_ADDRESS}"
   # AXI_INN_CTRL:
   #   axi_interconnect: "INTERCONNECT_INN"
   #   axi_clk: clk40
