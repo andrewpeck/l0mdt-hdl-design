@@ -92,8 +92,8 @@ check_submodule_status:
     - export PATH=${PATH}:/opt/BUTool/bin:/opt/BUTool/bin/BUTool:/opt/mcu_tools/bin/:/opt/uio-daemon:/opt/l0mdt-sm-sw-core/bin:/opt/test_stand
     # Retrieve loaded firmware uids, if any
     - fw_uid=$(uio_send.py list-uids)
-    - if [ $fw_uid != "No client IDs found that loaded firmware."]; then
-        uio_send.py -u $fw_uid unload-tar
+    - if [ "$fw_uid" != "No client IDs found that loaded firmware." ]; then
+        uio_send.py -u "$fw_uid" unload-tar;
       fi;
     - uio_send.py -f bin/*/*/tarball/*.gz load-tar
     - if [[ $IS_PROTO == '1' ]]; then
