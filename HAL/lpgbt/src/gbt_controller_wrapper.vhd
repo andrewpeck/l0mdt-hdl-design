@@ -66,6 +66,9 @@ architecture structural of gbt_controller_wrapper is
 
 begin
 
+  mon.master.ic.rx_data_from_gbtx   <= master_rx_frame;
+  mon.slave.ic.rx_data_from_gbtx <= slave_rx_frame;
+  
   --------------------------------------------------------------------------------
   -- register inputs/outputs for timing
   --------------------------------------------------------------------------------
@@ -163,7 +166,7 @@ begin
       rx_address_o  => open,
       rx_channel_o  => open,
       rx_control_o  => open,
-      rx_data_o     => open,
+      rx_data_o     => open, --mon.slave.ic.rx_data,
       rx_error_o    => open,
       rx_len_o      => open,
       rx_received_o => open,

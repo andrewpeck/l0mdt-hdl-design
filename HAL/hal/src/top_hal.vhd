@@ -130,8 +130,8 @@ entity top_hal is
     --------------------------------------------------------------------------------
     
     -- HAL control runs with the LHC clock, and monitors/controls anything sync to it, e.g. CSM, FELIX, SL
-    Mon  : out HAL_MON_t;
-    Ctrl : in  HAL_CTRL_t;
+    Mon_v  : out std_logic_vector; --out HAL_MON_t;
+    Ctrl_v : in std_logic_vector; -- in  HAL_CTRL_t;
     
     -- CORE takes care of basic infrastructure, running with the axi clk, e.g. transceivers
     Core_Mon  : out CORE_MON_t;
@@ -235,6 +235,19 @@ architecture behavioral of top_hal is
   signal tdc_sump              : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
   --signal sector_logic_rx_sump  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
+
+
+  signal Mon_r    : HAL_MON_t;
+  signal Ctrl_r   : HAL_CTRL_t;
+
+  signal csm_ctrl_r : HAL_CSM_CSM_CTRL_t_ARRAY;
+  signal csm_mon_r  : HAL_CSM_CSM_MON_t_ARRAY;
+  
+
+  signal csm_ctrl_v : std_logic_vector(width(csm_ctrl_r) - 1 downto 0);
+  signal csm_mon_v  : std_logic_vector(width(csm_mon_r ) - 1 downto 0);
+
+ 
   --------------------------------------------------------------------------------
   -- Attributes for synthesis
   --------------------------------------------------------------------------------
@@ -267,7 +280,14 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
   core_mon.clocking.mmcm_locked <= clocks.lhc_locked;
-
+  mon_v         <= convert(mon_r,mon_v);
+  ctrl_r        <= convert(ctrl_v,ctrl_r);
+ 
+  csm_mon_v     <= convert(csm_mon_r, csm_mon_v);
+  csm_ctrl_r    <= convert(csm_ctrl_v, csm_ctrl_r);
+  
+  
+  
   --------------------------------------------------------------------------------
   -- Common Clocking
   --------------------------------------------------------------------------------
@@ -464,6 +484,9 @@ begin  -- architecture behavioral
       assert mgt_id_m = mgt_id_s-1
         report "CSM Master and Servant are not adjacent, this is not supported right now... :(" severity error;
 
+      csm_ctrl_r(CSM)    <= ctrl_r.csm.csm(CSM);
+      mon_r.csm.csm(CSM) <= csm_mon_r(CSM);
+      
       mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
       begin
 
@@ -508,8 +531,8 @@ begin  -- architecture behavioral
             -- outputs to polmux
             tdc_hits_to_polmux_o    => tdc_hits_to_polmux (hi downto lo), -- Big vector of all TDC data, hi-lo give the range of the vector corresponding to a particular CSM
             read_done_from_polmux_i => read_done_from_polmux (hi downto lo),
-            ctrl                    => ctrl.csm.csm(CSM),
-            mon                     => mon.csm.csm(CSM)
+            ctrl                    => csm_ctrl_r(CSM),
+            mon                     => csm_mon_r(CSM)
             );
 
       end generate;

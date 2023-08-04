@@ -310,7 +310,8 @@ architecture structural of top_l0mdt is
 
   signal hal_mon_r  : HAL_MON_t;
   signal hal_ctrl_r : HAL_CTRL_t;
-
+  signal hal_mon_v :  std_logic_vector(width(hal_mon_r) -1 downto 0);        
+  signal hal_ctrl_v :  std_logic_vector(width(hal_ctrl_r) -1 downto 0);
   signal CORE_mon_r  : CORE_MON_t;
   signal CORE_ctrl_r : CORE_CTRL_t;
 
@@ -386,8 +387,8 @@ begin
       core_ctrl => CORE_ctrl_r,
       core_mon  => CORE_mon_r,
 
-      ctrl => hal_ctrl_r,
-      mon  => hal_mon_r,
+      ctrl_v => hal_ctrl_v,
+      mon_v  => hal_mon_v,
 
       mtc_i => mtc,
       nsp_i => nsp,
@@ -499,7 +500,8 @@ begin
   fm_mon_r       <= convert(fm_mon_v, fm_mon_r);
 
 
-
+  hal_mon_r      <= convert(hal_mon_v, hal_mon_r);
+  hal_ctrl_v     <= convert(hal_ctrl_r, hal_ctrl_v);
 
 
 
