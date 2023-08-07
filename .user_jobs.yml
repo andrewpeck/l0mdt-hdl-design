@@ -97,9 +97,9 @@ check_submodule_status:
       fi;
     - uio_send.py -f bin/*/*/tarball/*.gz load-tar
     - if [[ $IS_PROTO == '1' ]]; then
-        config_proto.py -c 1 -p;
+        config_blade.py -c 1 -p;
       else
-        config_proto.py -c 1;
+        config_blade.py -c 1;
       fi;
   interruptible: true
   allow_failure: true
