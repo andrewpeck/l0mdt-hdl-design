@@ -276,7 +276,8 @@ begin
       g_ENABLE_MASK => g_ENABLE_MASK,
       g_LEGACY_FLAG => g_LEGACY_FLAG,
       g_CSM         => g_CSM_ID,
-      g_NUM_TDCS    => g_TDC_CNT
+      g_NUM_TDCS    => g_TDC_CNT,
+      g_NUM_UPLINKS => g_NUM_UPLINKS
       )
     port map (
       clock               => uplink_clk,

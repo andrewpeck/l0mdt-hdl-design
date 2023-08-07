@@ -130,6 +130,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(0).STATUS.rx_reset_done;                  --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(0).STATUS.buffbypass_tx_done_out;         --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(0).STATUS.buffbypass_tx_error_out;        --buffbypass_tx_error_out
+        when 18 => --0x12
+          localRdData( 0)            <=  reg_data(18)( 0);                                     --DRP Write Enable
         when 19 => --0x13
           localRdData( 9 downto  0)  <=  reg_data(19)( 9 downto  0);                           --DRP Address
           localRdData(12)            <=  reg_data(19)(12);                                     --DRP Enable
@@ -163,6 +165,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(1).STATUS.rx_reset_done;                  --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(1).STATUS.buffbypass_tx_done_out;         --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(1).STATUS.buffbypass_tx_error_out;        --buffbypass_tx_error_out
+        when 26 => --0x1a
+          localRdData( 0)            <=  reg_data(26)( 0);                                     --DRP Write Enable
         when 27 => --0x1b
           localRdData( 9 downto  0)  <=  reg_data(27)( 9 downto  0);                           --DRP Address
           localRdData(12)            <=  reg_data(27)(12);                                     --DRP Enable
@@ -196,6 +200,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(2).STATUS.rx_reset_done;                  --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(2).STATUS.buffbypass_tx_done_out;         --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(2).STATUS.buffbypass_tx_error_out;        --buffbypass_tx_error_out
+        when 34 => --0x22
+          localRdData( 0)            <=  reg_data(34)( 0);                                     --DRP Write Enable
         when 35 => --0x23
           localRdData( 9 downto  0)  <=  reg_data(35)( 9 downto  0);                           --DRP Address
           localRdData(12)            <=  reg_data(35)(12);                                     --DRP Enable
@@ -229,6 +235,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(3).STATUS.rx_reset_done;                  --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(3).STATUS.buffbypass_tx_done_out;         --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(3).STATUS.buffbypass_tx_error_out;        --buffbypass_tx_error_out
+        when 42 => --0x2a
+          localRdData( 0)            <=  reg_data(42)( 0);                                     --DRP Write Enable
         when 43 => --0x2b
           localRdData( 9 downto  0)  <=  reg_data(43)( 9 downto  0);                           --DRP Address
           localRdData(12)            <=  reg_data(43)(12);                                     --DRP Enable
@@ -262,6 +270,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(4).STATUS.rx_reset_done;                  --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(4).STATUS.buffbypass_tx_done_out;         --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(4).STATUS.buffbypass_tx_error_out;        --buffbypass_tx_error_out
+        when 50 => --0x32
+          localRdData( 0)            <=  reg_data(50)( 0);                                     --DRP Write Enable
         when 51 => --0x33
           localRdData( 9 downto  0)  <=  reg_data(51)( 9 downto  0);                           --DRP Address
           localRdData(12)            <=  reg_data(51)(12);                                     --DRP Enable
@@ -295,6 +305,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(5).STATUS.rx_reset_done;                  --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(5).STATUS.buffbypass_tx_done_out;         --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(5).STATUS.buffbypass_tx_error_out;        --buffbypass_tx_error_out
+        when 58 => --0x3a
+          localRdData( 0)            <=  reg_data(58)( 0);                                     --DRP Write Enable
         when 59 => --0x3b
           localRdData( 9 downto  0)  <=  reg_data(59)( 9 downto  0);                           --DRP Address
           localRdData(12)            <=  reg_data(59)(12);                                     --DRP Enable
@@ -328,6 +340,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(6).STATUS.rx_reset_done;                  --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(6).STATUS.buffbypass_tx_done_out;         --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(6).STATUS.buffbypass_tx_error_out;        --buffbypass_tx_error_out
+        when 66 => --0x42
+          localRdData( 0)            <=  reg_data(66)( 0);                                     --DRP Write Enable
         when 67 => --0x43
           localRdData( 9 downto  0)  <=  reg_data(67)( 9 downto  0);                           --DRP Address
           localRdData(12)            <=  reg_data(67)(12);                                     --DRP Enable
@@ -361,6 +375,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(7).STATUS.rx_reset_done;                  --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(7).STATUS.buffbypass_tx_done_out;         --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(7).STATUS.buffbypass_tx_error_out;        --buffbypass_tx_error_out
+        when 74 => --0x4a
+          localRdData( 0)            <=  reg_data(74)( 0);                                     --DRP Write Enable
         when 75 => --0x4b
           localRdData( 9 downto  0)  <=  reg_data(75)( 9 downto  0);                           --DRP Address
           localRdData(12)            <=  reg_data(75)(12);                                     --DRP Enable
@@ -394,6 +410,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(8).STATUS.rx_reset_done;                  --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(8).STATUS.buffbypass_tx_done_out;         --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(8).STATUS.buffbypass_tx_error_out;        --buffbypass_tx_error_out
+        when 82 => --0x52
+          localRdData( 0)            <=  reg_data(82)( 0);                                     --DRP Write Enable
         when 83 => --0x53
           localRdData( 9 downto  0)  <=  reg_data(83)( 9 downto  0);                           --DRP Address
           localRdData(12)            <=  reg_data(83)(12);                                     --DRP Enable
@@ -427,6 +445,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(9).STATUS.rx_reset_done;                  --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(9).STATUS.buffbypass_tx_done_out;         --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(9).STATUS.buffbypass_tx_error_out;        --buffbypass_tx_error_out
+        when 90 => --0x5a
+          localRdData( 0)            <=  reg_data(90)( 0);                                     --DRP Write Enable
         when 91 => --0x5b
           localRdData( 9 downto  0)  <=  reg_data(91)( 9 downto  0);                           --DRP Address
           localRdData(12)            <=  reg_data(91)(12);                                     --DRP Enable
@@ -460,6 +480,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(10).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(10).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(10).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 98 => --0x62
+          localRdData( 0)            <=  reg_data(98)( 0);                                     --DRP Write Enable
         when 99 => --0x63
           localRdData( 9 downto  0)  <=  reg_data(99)( 9 downto  0);                           --DRP Address
           localRdData(12)            <=  reg_data(99)(12);                                     --DRP Enable
@@ -493,6 +515,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(11).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(11).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(11).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 106 => --0x6a
+          localRdData( 0)            <=  reg_data(106)( 0);                                    --DRP Write Enable
         when 107 => --0x6b
           localRdData( 9 downto  0)  <=  reg_data(107)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(107)(12);                                    --DRP Enable
@@ -526,6 +550,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(12).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(12).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(12).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 114 => --0x72
+          localRdData( 0)            <=  reg_data(114)( 0);                                    --DRP Write Enable
         when 115 => --0x73
           localRdData( 9 downto  0)  <=  reg_data(115)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(115)(12);                                    --DRP Enable
@@ -559,6 +585,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(13).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(13).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(13).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 122 => --0x7a
+          localRdData( 0)            <=  reg_data(122)( 0);                                    --DRP Write Enable
         when 123 => --0x7b
           localRdData( 9 downto  0)  <=  reg_data(123)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(123)(12);                                    --DRP Enable
@@ -592,6 +620,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(14).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(14).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(14).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 130 => --0x82
+          localRdData( 0)            <=  reg_data(130)( 0);                                    --DRP Write Enable
         when 131 => --0x83
           localRdData( 9 downto  0)  <=  reg_data(131)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(131)(12);                                    --DRP Enable
@@ -625,6 +655,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(15).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(15).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(15).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 138 => --0x8a
+          localRdData( 0)            <=  reg_data(138)( 0);                                    --DRP Write Enable
         when 139 => --0x8b
           localRdData( 9 downto  0)  <=  reg_data(139)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(139)(12);                                    --DRP Enable
@@ -658,6 +690,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(16).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(16).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(16).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 146 => --0x92
+          localRdData( 0)            <=  reg_data(146)( 0);                                    --DRP Write Enable
         when 147 => --0x93
           localRdData( 9 downto  0)  <=  reg_data(147)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(147)(12);                                    --DRP Enable
@@ -691,6 +725,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(17).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(17).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(17).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 154 => --0x9a
+          localRdData( 0)            <=  reg_data(154)( 0);                                    --DRP Write Enable
         when 155 => --0x9b
           localRdData( 9 downto  0)  <=  reg_data(155)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(155)(12);                                    --DRP Enable
@@ -724,6 +760,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(18).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(18).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(18).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 162 => --0xa2
+          localRdData( 0)            <=  reg_data(162)( 0);                                    --DRP Write Enable
         when 163 => --0xa3
           localRdData( 9 downto  0)  <=  reg_data(163)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(163)(12);                                    --DRP Enable
@@ -757,6 +795,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(19).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(19).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(19).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 170 => --0xaa
+          localRdData( 0)            <=  reg_data(170)( 0);                                    --DRP Write Enable
         when 171 => --0xab
           localRdData( 9 downto  0)  <=  reg_data(171)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(171)(12);                                    --DRP Enable
@@ -790,6 +830,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(20).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(20).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(20).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 178 => --0xb2
+          localRdData( 0)            <=  reg_data(178)( 0);                                    --DRP Write Enable
         when 179 => --0xb3
           localRdData( 9 downto  0)  <=  reg_data(179)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(179)(12);                                    --DRP Enable
@@ -823,6 +865,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(21).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(21).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(21).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 186 => --0xba
+          localRdData( 0)            <=  reg_data(186)( 0);                                    --DRP Write Enable
         when 187 => --0xbb
           localRdData( 9 downto  0)  <=  reg_data(187)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(187)(12);                                    --DRP Enable
@@ -856,6 +900,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(22).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(22).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(22).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 194 => --0xc2
+          localRdData( 0)            <=  reg_data(194)( 0);                                    --DRP Write Enable
         when 195 => --0xc3
           localRdData( 9 downto  0)  <=  reg_data(195)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(195)(12);                                    --DRP Enable
@@ -889,6 +935,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(23).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(23).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(23).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 202 => --0xca
+          localRdData( 0)            <=  reg_data(202)( 0);                                    --DRP Write Enable
         when 203 => --0xcb
           localRdData( 9 downto  0)  <=  reg_data(203)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(203)(12);                                    --DRP Enable
@@ -922,6 +970,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(24).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(24).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(24).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 210 => --0xd2
+          localRdData( 0)            <=  reg_data(210)( 0);                                    --DRP Write Enable
         when 211 => --0xd3
           localRdData( 9 downto  0)  <=  reg_data(211)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(211)(12);                                    --DRP Enable
@@ -955,6 +1005,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(25).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(25).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(25).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 218 => --0xda
+          localRdData( 0)            <=  reg_data(218)( 0);                                    --DRP Write Enable
         when 219 => --0xdb
           localRdData( 9 downto  0)  <=  reg_data(219)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(219)(12);                                    --DRP Enable
@@ -988,6 +1040,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(26).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(26).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(26).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 226 => --0xe2
+          localRdData( 0)            <=  reg_data(226)( 0);                                    --DRP Write Enable
         when 227 => --0xe3
           localRdData( 9 downto  0)  <=  reg_data(227)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(227)(12);                                    --DRP Enable
@@ -1021,6 +1075,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(27).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(27).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(27).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 234 => --0xea
+          localRdData( 0)            <=  reg_data(234)( 0);                                    --DRP Write Enable
         when 235 => --0xeb
           localRdData( 9 downto  0)  <=  reg_data(235)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(235)(12);                                    --DRP Enable
@@ -1054,6 +1110,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(28).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(28).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(28).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 242 => --0xf2
+          localRdData( 0)            <=  reg_data(242)( 0);                                    --DRP Write Enable
         when 243 => --0xf3
           localRdData( 9 downto  0)  <=  reg_data(243)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(243)(12);                                    --DRP Enable
@@ -1087,6 +1145,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(29).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(29).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(29).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 250 => --0xfa
+          localRdData( 0)            <=  reg_data(250)( 0);                                    --DRP Write Enable
         when 251 => --0xfb
           localRdData( 9 downto  0)  <=  reg_data(251)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(251)(12);                                    --DRP Enable
@@ -1120,6 +1180,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(30).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(30).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(30).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 258 => --0x102
+          localRdData( 0)            <=  reg_data(258)( 0);                                    --DRP Write Enable
         when 259 => --0x103
           localRdData( 9 downto  0)  <=  reg_data(259)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(259)(12);                                    --DRP Enable
@@ -1153,6 +1215,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(31).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(31).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(31).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 266 => --0x10a
+          localRdData( 0)            <=  reg_data(266)( 0);                                    --DRP Write Enable
         when 267 => --0x10b
           localRdData( 9 downto  0)  <=  reg_data(267)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(267)(12);                                    --DRP Enable
@@ -1186,6 +1250,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(32).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(32).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(32).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 274 => --0x112
+          localRdData( 0)            <=  reg_data(274)( 0);                                    --DRP Write Enable
         when 275 => --0x113
           localRdData( 9 downto  0)  <=  reg_data(275)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(275)(12);                                    --DRP Enable
@@ -1219,6 +1285,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(33).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(33).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(33).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 282 => --0x11a
+          localRdData( 0)            <=  reg_data(282)( 0);                                    --DRP Write Enable
         when 283 => --0x11b
           localRdData( 9 downto  0)  <=  reg_data(283)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(283)(12);                                    --DRP Enable
@@ -1252,6 +1320,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(34).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(34).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(34).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 290 => --0x122
+          localRdData( 0)            <=  reg_data(290)( 0);                                    --DRP Write Enable
         when 291 => --0x123
           localRdData( 9 downto  0)  <=  reg_data(291)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(291)(12);                                    --DRP Enable
@@ -1285,6 +1355,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(35).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(35).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(35).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 298 => --0x12a
+          localRdData( 0)            <=  reg_data(298)( 0);                                    --DRP Write Enable
         when 299 => --0x12b
           localRdData( 9 downto  0)  <=  reg_data(299)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(299)(12);                                    --DRP Enable
@@ -1318,6 +1390,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(36).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(36).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(36).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 306 => --0x132
+          localRdData( 0)            <=  reg_data(306)( 0);                                    --DRP Write Enable
         when 307 => --0x133
           localRdData( 9 downto  0)  <=  reg_data(307)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(307)(12);                                    --DRP Enable
@@ -1351,6 +1425,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(37).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(37).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(37).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 314 => --0x13a
+          localRdData( 0)            <=  reg_data(314)( 0);                                    --DRP Write Enable
         when 315 => --0x13b
           localRdData( 9 downto  0)  <=  reg_data(315)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(315)(12);                                    --DRP Enable
@@ -1384,6 +1460,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(38).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(38).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(38).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 322 => --0x142
+          localRdData( 0)            <=  reg_data(322)( 0);                                    --DRP Write Enable
         when 323 => --0x143
           localRdData( 9 downto  0)  <=  reg_data(323)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(323)(12);                                    --DRP Enable
@@ -1417,6 +1495,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(39).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(39).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(39).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 330 => --0x14a
+          localRdData( 0)            <=  reg_data(330)( 0);                                    --DRP Write Enable
         when 331 => --0x14b
           localRdData( 9 downto  0)  <=  reg_data(331)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(331)(12);                                    --DRP Enable
@@ -1450,6 +1530,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(40).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(40).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(40).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 338 => --0x152
+          localRdData( 0)            <=  reg_data(338)( 0);                                    --DRP Write Enable
         when 339 => --0x153
           localRdData( 9 downto  0)  <=  reg_data(339)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(339)(12);                                    --DRP Enable
@@ -1483,6 +1565,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(41).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(41).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(41).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 346 => --0x15a
+          localRdData( 0)            <=  reg_data(346)( 0);                                    --DRP Write Enable
         when 347 => --0x15b
           localRdData( 9 downto  0)  <=  reg_data(347)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(347)(12);                                    --DRP Enable
@@ -1516,6 +1600,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(42).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(42).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(42).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 354 => --0x162
+          localRdData( 0)            <=  reg_data(354)( 0);                                    --DRP Write Enable
         when 355 => --0x163
           localRdData( 9 downto  0)  <=  reg_data(355)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(355)(12);                                    --DRP Enable
@@ -1549,6 +1635,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(43).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(43).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(43).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 362 => --0x16a
+          localRdData( 0)            <=  reg_data(362)( 0);                                    --DRP Write Enable
         when 363 => --0x16b
           localRdData( 9 downto  0)  <=  reg_data(363)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(363)(12);                                    --DRP Enable
@@ -1582,6 +1670,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(44).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(44).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(44).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 370 => --0x172
+          localRdData( 0)            <=  reg_data(370)( 0);                                    --DRP Write Enable
         when 371 => --0x173
           localRdData( 9 downto  0)  <=  reg_data(371)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(371)(12);                                    --DRP Enable
@@ -1615,6 +1705,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(45).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(45).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(45).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 378 => --0x17a
+          localRdData( 0)            <=  reg_data(378)( 0);                                    --DRP Write Enable
         when 379 => --0x17b
           localRdData( 9 downto  0)  <=  reg_data(379)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(379)(12);                                    --DRP Enable
@@ -1648,6 +1740,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(46).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(46).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(46).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 386 => --0x182
+          localRdData( 0)            <=  reg_data(386)( 0);                                    --DRP Write Enable
         when 387 => --0x183
           localRdData( 9 downto  0)  <=  reg_data(387)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(387)(12);                                    --DRP Enable
@@ -1681,6 +1775,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(47).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(47).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(47).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 394 => --0x18a
+          localRdData( 0)            <=  reg_data(394)( 0);                                    --DRP Write Enable
         when 395 => --0x18b
           localRdData( 9 downto  0)  <=  reg_data(395)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(395)(12);                                    --DRP Enable
@@ -1714,6 +1810,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(48).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(48).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(48).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 402 => --0x192
+          localRdData( 0)            <=  reg_data(402)( 0);                                    --DRP Write Enable
         when 403 => --0x193
           localRdData( 9 downto  0)  <=  reg_data(403)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(403)(12);                                    --DRP Enable
@@ -1747,6 +1845,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(49).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(49).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(49).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 410 => --0x19a
+          localRdData( 0)            <=  reg_data(410)( 0);                                    --DRP Write Enable
         when 411 => --0x19b
           localRdData( 9 downto  0)  <=  reg_data(411)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(411)(12);                                    --DRP Enable
@@ -1780,6 +1880,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(50).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(50).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(50).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 418 => --0x1a2
+          localRdData( 0)            <=  reg_data(418)( 0);                                    --DRP Write Enable
         when 419 => --0x1a3
           localRdData( 9 downto  0)  <=  reg_data(419)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(419)(12);                                    --DRP Enable
@@ -1813,6 +1915,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(51).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(51).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(51).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 426 => --0x1aa
+          localRdData( 0)            <=  reg_data(426)( 0);                                    --DRP Write Enable
         when 427 => --0x1ab
           localRdData( 9 downto  0)  <=  reg_data(427)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(427)(12);                                    --DRP Enable
@@ -1846,6 +1950,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(52).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(52).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(52).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 434 => --0x1b2
+          localRdData( 0)            <=  reg_data(434)( 0);                                    --DRP Write Enable
         when 435 => --0x1b3
           localRdData( 9 downto  0)  <=  reg_data(435)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(435)(12);                                    --DRP Enable
@@ -1879,6 +1985,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(53).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(53).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(53).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 442 => --0x1ba
+          localRdData( 0)            <=  reg_data(442)( 0);                                    --DRP Write Enable
         when 443 => --0x1bb
           localRdData( 9 downto  0)  <=  reg_data(443)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(443)(12);                                    --DRP Enable
@@ -1912,6 +2020,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(54).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(54).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(54).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 450 => --0x1c2
+          localRdData( 0)            <=  reg_data(450)( 0);                                    --DRP Write Enable
         when 451 => --0x1c3
           localRdData( 9 downto  0)  <=  reg_data(451)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(451)(12);                                    --DRP Enable
@@ -1945,6 +2055,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(55).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(55).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(55).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 458 => --0x1ca
+          localRdData( 0)            <=  reg_data(458)( 0);                                    --DRP Write Enable
         when 459 => --0x1cb
           localRdData( 9 downto  0)  <=  reg_data(459)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(459)(12);                                    --DRP Enable
@@ -1978,6 +2090,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(56).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(56).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(56).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 466 => --0x1d2
+          localRdData( 0)            <=  reg_data(466)( 0);                                    --DRP Write Enable
         when 467 => --0x1d3
           localRdData( 9 downto  0)  <=  reg_data(467)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(467)(12);                                    --DRP Enable
@@ -2011,6 +2125,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(57).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(57).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(57).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 474 => --0x1da
+          localRdData( 0)            <=  reg_data(474)( 0);                                    --DRP Write Enable
         when 475 => --0x1db
           localRdData( 9 downto  0)  <=  reg_data(475)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(475)(12);                                    --DRP Enable
@@ -2044,6 +2160,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(58).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(58).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(58).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 482 => --0x1e2
+          localRdData( 0)            <=  reg_data(482)( 0);                                    --DRP Write Enable
         when 483 => --0x1e3
           localRdData( 9 downto  0)  <=  reg_data(483)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(483)(12);                                    --DRP Enable
@@ -2077,6 +2195,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(59).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(59).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(59).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 490 => --0x1ea
+          localRdData( 0)            <=  reg_data(490)( 0);                                    --DRP Write Enable
         when 491 => --0x1eb
           localRdData( 9 downto  0)  <=  reg_data(491)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(491)(12);                                    --DRP Enable
@@ -2110,6 +2230,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(60).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(60).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(60).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 498 => --0x1f2
+          localRdData( 0)            <=  reg_data(498)( 0);                                    --DRP Write Enable
         when 499 => --0x1f3
           localRdData( 9 downto  0)  <=  reg_data(499)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(499)(12);                                    --DRP Enable
@@ -2143,6 +2265,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(61).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(61).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(61).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 506 => --0x1fa
+          localRdData( 0)            <=  reg_data(506)( 0);                                    --DRP Write Enable
         when 507 => --0x1fb
           localRdData( 9 downto  0)  <=  reg_data(507)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(507)(12);                                    --DRP Enable
@@ -2176,6 +2300,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(62).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(62).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(62).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 514 => --0x202
+          localRdData( 0)            <=  reg_data(514)( 0);                                    --DRP Write Enable
         when 515 => --0x203
           localRdData( 9 downto  0)  <=  reg_data(515)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(515)(12);                                    --DRP Enable
@@ -2209,6 +2335,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(63).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(63).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(63).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 522 => --0x20a
+          localRdData( 0)            <=  reg_data(522)( 0);                                    --DRP Write Enable
         when 523 => --0x20b
           localRdData( 9 downto  0)  <=  reg_data(523)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(523)(12);                                    --DRP Enable
@@ -2242,6 +2370,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(64).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(64).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(64).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 530 => --0x212
+          localRdData( 0)            <=  reg_data(530)( 0);                                    --DRP Write Enable
         when 531 => --0x213
           localRdData( 9 downto  0)  <=  reg_data(531)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(531)(12);                                    --DRP Enable
@@ -2275,6 +2405,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(65).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(65).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(65).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 538 => --0x21a
+          localRdData( 0)            <=  reg_data(538)( 0);                                    --DRP Write Enable
         when 539 => --0x21b
           localRdData( 9 downto  0)  <=  reg_data(539)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(539)(12);                                    --DRP Enable
@@ -2308,6 +2440,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(66).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(66).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(66).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 546 => --0x222
+          localRdData( 0)            <=  reg_data(546)( 0);                                    --DRP Write Enable
         when 547 => --0x223
           localRdData( 9 downto  0)  <=  reg_data(547)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(547)(12);                                    --DRP Enable
@@ -2341,6 +2475,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(67).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(67).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(67).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 554 => --0x22a
+          localRdData( 0)            <=  reg_data(554)( 0);                                    --DRP Write Enable
         when 555 => --0x22b
           localRdData( 9 downto  0)  <=  reg_data(555)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(555)(12);                                    --DRP Enable
@@ -2374,6 +2510,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(68).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(68).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(68).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 562 => --0x232
+          localRdData( 0)            <=  reg_data(562)( 0);                                    --DRP Write Enable
         when 563 => --0x233
           localRdData( 9 downto  0)  <=  reg_data(563)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(563)(12);                                    --DRP Enable
@@ -2407,6 +2545,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(69).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(69).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(69).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 570 => --0x23a
+          localRdData( 0)            <=  reg_data(570)( 0);                                    --DRP Write Enable
         when 571 => --0x23b
           localRdData( 9 downto  0)  <=  reg_data(571)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(571)(12);                                    --DRP Enable
@@ -2440,6 +2580,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(70).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(70).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(70).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 578 => --0x242
+          localRdData( 0)            <=  reg_data(578)( 0);                                    --DRP Write Enable
         when 579 => --0x243
           localRdData( 9 downto  0)  <=  reg_data(579)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(579)(12);                                    --DRP Enable
@@ -2473,6 +2615,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(71).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(71).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(71).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 586 => --0x24a
+          localRdData( 0)            <=  reg_data(586)( 0);                                    --DRP Write Enable
         when 587 => --0x24b
           localRdData( 9 downto  0)  <=  reg_data(587)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(587)(12);                                    --DRP Enable
@@ -2506,6 +2650,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(72).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(72).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(72).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 594 => --0x252
+          localRdData( 0)            <=  reg_data(594)( 0);                                    --DRP Write Enable
         when 595 => --0x253
           localRdData( 9 downto  0)  <=  reg_data(595)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(595)(12);                                    --DRP Enable
@@ -2539,6 +2685,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(73).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(73).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(73).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 602 => --0x25a
+          localRdData( 0)            <=  reg_data(602)( 0);                                    --DRP Write Enable
         when 603 => --0x25b
           localRdData( 9 downto  0)  <=  reg_data(603)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(603)(12);                                    --DRP Enable
@@ -2572,6 +2720,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(74).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(74).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(74).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 610 => --0x262
+          localRdData( 0)            <=  reg_data(610)( 0);                                    --DRP Write Enable
         when 611 => --0x263
           localRdData( 9 downto  0)  <=  reg_data(611)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(611)(12);                                    --DRP Enable
@@ -2605,6 +2755,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(75).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(75).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(75).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 618 => --0x26a
+          localRdData( 0)            <=  reg_data(618)( 0);                                    --DRP Write Enable
         when 619 => --0x26b
           localRdData( 9 downto  0)  <=  reg_data(619)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(619)(12);                                    --DRP Enable
@@ -2638,6 +2790,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(76).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(76).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(76).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 626 => --0x272
+          localRdData( 0)            <=  reg_data(626)( 0);                                    --DRP Write Enable
         when 627 => --0x273
           localRdData( 9 downto  0)  <=  reg_data(627)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(627)(12);                                    --DRP Enable
@@ -2671,6 +2825,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(77).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(77).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(77).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 634 => --0x27a
+          localRdData( 0)            <=  reg_data(634)( 0);                                    --DRP Write Enable
         when 635 => --0x27b
           localRdData( 9 downto  0)  <=  reg_data(635)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(635)(12);                                    --DRP Enable
@@ -2704,6 +2860,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(78).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(78).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(78).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 642 => --0x282
+          localRdData( 0)            <=  reg_data(642)( 0);                                    --DRP Write Enable
         when 643 => --0x283
           localRdData( 9 downto  0)  <=  reg_data(643)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(643)(12);                                    --DRP Enable
@@ -2737,6 +2895,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(79).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(79).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(79).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 650 => --0x28a
+          localRdData( 0)            <=  reg_data(650)( 0);                                    --DRP Write Enable
         when 651 => --0x28b
           localRdData( 9 downto  0)  <=  reg_data(651)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(651)(12);                                    --DRP Enable
@@ -2770,6 +2930,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(80).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(80).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(80).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 658 => --0x292
+          localRdData( 0)            <=  reg_data(658)( 0);                                    --DRP Write Enable
         when 659 => --0x293
           localRdData( 9 downto  0)  <=  reg_data(659)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(659)(12);                                    --DRP Enable
@@ -2803,6 +2965,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(81).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(81).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(81).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 666 => --0x29a
+          localRdData( 0)            <=  reg_data(666)( 0);                                    --DRP Write Enable
         when 667 => --0x29b
           localRdData( 9 downto  0)  <=  reg_data(667)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(667)(12);                                    --DRP Enable
@@ -2836,6 +3000,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(82).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(82).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(82).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 674 => --0x2a2
+          localRdData( 0)            <=  reg_data(674)( 0);                                    --DRP Write Enable
         when 675 => --0x2a3
           localRdData( 9 downto  0)  <=  reg_data(675)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(675)(12);                                    --DRP Enable
@@ -2869,6 +3035,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(83).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(83).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(83).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 682 => --0x2aa
+          localRdData( 0)            <=  reg_data(682)( 0);                                    --DRP Write Enable
         when 683 => --0x2ab
           localRdData( 9 downto  0)  <=  reg_data(683)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(683)(12);                                    --DRP Enable
@@ -2902,6 +3070,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(84).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(84).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(84).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 690 => --0x2b2
+          localRdData( 0)            <=  reg_data(690)( 0);                                    --DRP Write Enable
         when 691 => --0x2b3
           localRdData( 9 downto  0)  <=  reg_data(691)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(691)(12);                                    --DRP Enable
@@ -2935,6 +3105,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(85).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(85).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(85).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 698 => --0x2ba
+          localRdData( 0)            <=  reg_data(698)( 0);                                    --DRP Write Enable
         when 699 => --0x2bb
           localRdData( 9 downto  0)  <=  reg_data(699)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(699)(12);                                    --DRP Enable
@@ -2968,6 +3140,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(86).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(86).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(86).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 706 => --0x2c2
+          localRdData( 0)            <=  reg_data(706)( 0);                                    --DRP Write Enable
         when 707 => --0x2c3
           localRdData( 9 downto  0)  <=  reg_data(707)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(707)(12);                                    --DRP Enable
@@ -3001,6 +3175,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(87).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(87).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(87).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 714 => --0x2ca
+          localRdData( 0)            <=  reg_data(714)( 0);                                    --DRP Write Enable
         when 715 => --0x2cb
           localRdData( 9 downto  0)  <=  reg_data(715)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(715)(12);                                    --DRP Enable
@@ -3034,6 +3210,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(88).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(88).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(88).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 722 => --0x2d2
+          localRdData( 0)            <=  reg_data(722)( 0);                                    --DRP Write Enable
         when 723 => --0x2d3
           localRdData( 9 downto  0)  <=  reg_data(723)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(723)(12);                                    --DRP Enable
@@ -3067,6 +3245,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(89).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(89).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(89).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 730 => --0x2da
+          localRdData( 0)            <=  reg_data(730)( 0);                                    --DRP Write Enable
         when 731 => --0x2db
           localRdData( 9 downto  0)  <=  reg_data(731)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(731)(12);                                    --DRP Enable
@@ -3100,6 +3280,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(90).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(90).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(90).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 738 => --0x2e2
+          localRdData( 0)            <=  reg_data(738)( 0);                                    --DRP Write Enable
         when 739 => --0x2e3
           localRdData( 9 downto  0)  <=  reg_data(739)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(739)(12);                                    --DRP Enable
@@ -3133,6 +3315,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(91).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(91).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(91).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 746 => --0x2ea
+          localRdData( 0)            <=  reg_data(746)( 0);                                    --DRP Write Enable
         when 747 => --0x2eb
           localRdData( 9 downto  0)  <=  reg_data(747)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(747)(12);                                    --DRP Enable
@@ -3166,6 +3350,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(92).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(92).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(92).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 754 => --0x2f2
+          localRdData( 0)            <=  reg_data(754)( 0);                                    --DRP Write Enable
         when 755 => --0x2f3
           localRdData( 9 downto  0)  <=  reg_data(755)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(755)(12);                                    --DRP Enable
@@ -3199,6 +3385,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(93).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(93).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(93).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 762 => --0x2fa
+          localRdData( 0)            <=  reg_data(762)( 0);                                    --DRP Write Enable
         when 763 => --0x2fb
           localRdData( 9 downto  0)  <=  reg_data(763)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(763)(12);                                    --DRP Enable
@@ -3232,6 +3420,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(94).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(94).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(94).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 770 => --0x302
+          localRdData( 0)            <=  reg_data(770)( 0);                                    --DRP Write Enable
         when 771 => --0x303
           localRdData( 9 downto  0)  <=  reg_data(771)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(771)(12);                                    --DRP Enable
@@ -3265,6 +3455,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(95).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(95).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(95).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 778 => --0x30a
+          localRdData( 0)            <=  reg_data(778)( 0);                                    --DRP Write Enable
         when 779 => --0x30b
           localRdData( 9 downto  0)  <=  reg_data(779)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(779)(12);                                    --DRP Enable
@@ -3298,6 +3490,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(96).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(96).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(96).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 786 => --0x312
+          localRdData( 0)            <=  reg_data(786)( 0);                                    --DRP Write Enable
         when 787 => --0x313
           localRdData( 9 downto  0)  <=  reg_data(787)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(787)(12);                                    --DRP Enable
@@ -3331,6 +3525,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(97).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(97).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(97).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 794 => --0x31a
+          localRdData( 0)            <=  reg_data(794)( 0);                                    --DRP Write Enable
         when 795 => --0x31b
           localRdData( 9 downto  0)  <=  reg_data(795)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(795)(12);                                    --DRP Enable
@@ -3364,6 +3560,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(98).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(98).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(98).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 802 => --0x322
+          localRdData( 0)            <=  reg_data(802)( 0);                                    --DRP Write Enable
         when 803 => --0x323
           localRdData( 9 downto  0)  <=  reg_data(803)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(803)(12);                                    --DRP Enable
@@ -3397,6 +3595,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(99).STATUS.rx_reset_done;                 --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(99).STATUS.buffbypass_tx_done_out;        --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(99).STATUS.buffbypass_tx_error_out;       --buffbypass_tx_error_out
+        when 810 => --0x32a
+          localRdData( 0)            <=  reg_data(810)( 0);                                    --DRP Write Enable
         when 811 => --0x32b
           localRdData( 9 downto  0)  <=  reg_data(811)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(811)(12);                                    --DRP Enable
@@ -3430,6 +3630,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(100).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(100).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(100).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 818 => --0x332
+          localRdData( 0)            <=  reg_data(818)( 0);                                    --DRP Write Enable
         when 819 => --0x333
           localRdData( 9 downto  0)  <=  reg_data(819)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(819)(12);                                    --DRP Enable
@@ -3463,6 +3665,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(101).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(101).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(101).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 826 => --0x33a
+          localRdData( 0)            <=  reg_data(826)( 0);                                    --DRP Write Enable
         when 827 => --0x33b
           localRdData( 9 downto  0)  <=  reg_data(827)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(827)(12);                                    --DRP Enable
@@ -3496,6 +3700,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(102).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(102).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(102).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 834 => --0x342
+          localRdData( 0)            <=  reg_data(834)( 0);                                    --DRP Write Enable
         when 835 => --0x343
           localRdData( 9 downto  0)  <=  reg_data(835)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(835)(12);                                    --DRP Enable
@@ -3529,6 +3735,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(103).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(103).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(103).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 842 => --0x34a
+          localRdData( 0)            <=  reg_data(842)( 0);                                    --DRP Write Enable
         when 843 => --0x34b
           localRdData( 9 downto  0)  <=  reg_data(843)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(843)(12);                                    --DRP Enable
@@ -3562,6 +3770,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(104).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(104).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(104).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 850 => --0x352
+          localRdData( 0)            <=  reg_data(850)( 0);                                    --DRP Write Enable
         when 851 => --0x353
           localRdData( 9 downto  0)  <=  reg_data(851)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(851)(12);                                    --DRP Enable
@@ -3595,6 +3805,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(105).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(105).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(105).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 858 => --0x35a
+          localRdData( 0)            <=  reg_data(858)( 0);                                    --DRP Write Enable
         when 859 => --0x35b
           localRdData( 9 downto  0)  <=  reg_data(859)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(859)(12);                                    --DRP Enable
@@ -3628,6 +3840,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(106).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(106).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(106).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 866 => --0x362
+          localRdData( 0)            <=  reg_data(866)( 0);                                    --DRP Write Enable
         when 867 => --0x363
           localRdData( 9 downto  0)  <=  reg_data(867)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(867)(12);                                    --DRP Enable
@@ -3661,6 +3875,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(107).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(107).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(107).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 874 => --0x36a
+          localRdData( 0)            <=  reg_data(874)( 0);                                    --DRP Write Enable
         when 875 => --0x36b
           localRdData( 9 downto  0)  <=  reg_data(875)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(875)(12);                                    --DRP Enable
@@ -3694,6 +3910,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(108).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(108).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(108).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 882 => --0x372
+          localRdData( 0)            <=  reg_data(882)( 0);                                    --DRP Write Enable
         when 883 => --0x373
           localRdData( 9 downto  0)  <=  reg_data(883)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(883)(12);                                    --DRP Enable
@@ -3727,6 +3945,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(109).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(109).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(109).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 890 => --0x37a
+          localRdData( 0)            <=  reg_data(890)( 0);                                    --DRP Write Enable
         when 891 => --0x37b
           localRdData( 9 downto  0)  <=  reg_data(891)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(891)(12);                                    --DRP Enable
@@ -3760,6 +3980,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(110).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(110).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(110).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 898 => --0x382
+          localRdData( 0)            <=  reg_data(898)( 0);                                    --DRP Write Enable
         when 899 => --0x383
           localRdData( 9 downto  0)  <=  reg_data(899)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(899)(12);                                    --DRP Enable
@@ -3793,6 +4015,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(111).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(111).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(111).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 906 => --0x38a
+          localRdData( 0)            <=  reg_data(906)( 0);                                    --DRP Write Enable
         when 907 => --0x38b
           localRdData( 9 downto  0)  <=  reg_data(907)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(907)(12);                                    --DRP Enable
@@ -3826,6 +4050,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(112).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(112).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(112).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 914 => --0x392
+          localRdData( 0)            <=  reg_data(914)( 0);                                    --DRP Write Enable
         when 915 => --0x393
           localRdData( 9 downto  0)  <=  reg_data(915)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(915)(12);                                    --DRP Enable
@@ -3859,6 +4085,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(113).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(113).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(113).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 922 => --0x39a
+          localRdData( 0)            <=  reg_data(922)( 0);                                    --DRP Write Enable
         when 923 => --0x39b
           localRdData( 9 downto  0)  <=  reg_data(923)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(923)(12);                                    --DRP Enable
@@ -3892,6 +4120,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(114).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(114).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(114).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 930 => --0x3a2
+          localRdData( 0)            <=  reg_data(930)( 0);                                    --DRP Write Enable
         when 931 => --0x3a3
           localRdData( 9 downto  0)  <=  reg_data(931)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(931)(12);                                    --DRP Enable
@@ -3925,6 +4155,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(115).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(115).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(115).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 938 => --0x3aa
+          localRdData( 0)            <=  reg_data(938)( 0);                                    --DRP Write Enable
         when 939 => --0x3ab
           localRdData( 9 downto  0)  <=  reg_data(939)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(939)(12);                                    --DRP Enable
@@ -3958,6 +4190,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(116).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(116).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(116).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 946 => --0x3b2
+          localRdData( 0)            <=  reg_data(946)( 0);                                    --DRP Write Enable
         when 947 => --0x3b3
           localRdData( 9 downto  0)  <=  reg_data(947)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(947)(12);                                    --DRP Enable
@@ -3991,6 +4225,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(117).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(117).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(117).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 954 => --0x3ba
+          localRdData( 0)            <=  reg_data(954)( 0);                                    --DRP Write Enable
         when 955 => --0x3bb
           localRdData( 9 downto  0)  <=  reg_data(955)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(955)(12);                                    --DRP Enable
@@ -4024,6 +4260,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(118).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(118).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(118).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 962 => --0x3c2
+          localRdData( 0)            <=  reg_data(962)( 0);                                    --DRP Write Enable
         when 963 => --0x3c3
           localRdData( 9 downto  0)  <=  reg_data(963)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(963)(12);                                    --DRP Enable
@@ -4057,6 +4295,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(119).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(119).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(119).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 970 => --0x3ca
+          localRdData( 0)            <=  reg_data(970)( 0);                                    --DRP Write Enable
         when 971 => --0x3cb
           localRdData( 9 downto  0)  <=  reg_data(971)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(971)(12);                                    --DRP Enable
@@ -4090,6 +4330,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(120).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(120).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(120).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 978 => --0x3d2
+          localRdData( 0)            <=  reg_data(978)( 0);                                    --DRP Write Enable
         when 979 => --0x3d3
           localRdData( 9 downto  0)  <=  reg_data(979)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(979)(12);                                    --DRP Enable
@@ -4123,6 +4365,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(121).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(121).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(121).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 986 => --0x3da
+          localRdData( 0)            <=  reg_data(986)( 0);                                    --DRP Write Enable
         when 987 => --0x3db
           localRdData( 9 downto  0)  <=  reg_data(987)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(987)(12);                                    --DRP Enable
@@ -4156,6 +4400,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(122).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(122).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(122).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 994 => --0x3e2
+          localRdData( 0)            <=  reg_data(994)( 0);                                    --DRP Write Enable
         when 995 => --0x3e3
           localRdData( 9 downto  0)  <=  reg_data(995)( 9 downto  0);                          --DRP Address
           localRdData(12)            <=  reg_data(995)(12);                                    --DRP Enable
@@ -4189,6 +4435,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(123).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(123).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(123).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 1002 => --0x3ea
+          localRdData( 0)            <=  reg_data(1002)( 0);                                   --DRP Write Enable
         when 1003 => --0x3eb
           localRdData( 9 downto  0)  <=  reg_data(1003)( 9 downto  0);                         --DRP Address
           localRdData(12)            <=  reg_data(1003)(12);                                   --DRP Enable
@@ -4222,6 +4470,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(124).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(124).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(124).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 1010 => --0x3f2
+          localRdData( 0)            <=  reg_data(1010)( 0);                                   --DRP Write Enable
         when 1011 => --0x3f3
           localRdData( 9 downto  0)  <=  reg_data(1011)( 9 downto  0);                         --DRP Address
           localRdData(12)            <=  reg_data(1011)(12);                                   --DRP Enable
@@ -4255,6 +4505,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(125).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(125).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(125).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 1018 => --0x3fa
+          localRdData( 0)            <=  reg_data(1018)( 0);                                   --DRP Write Enable
         when 1019 => --0x3fb
           localRdData( 9 downto  0)  <=  reg_data(1019)( 9 downto  0);                         --DRP Address
           localRdData(12)            <=  reg_data(1019)(12);                                   --DRP Enable
@@ -4288,6 +4540,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(126).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(126).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(126).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 1026 => --0x402
+          localRdData( 0)            <=  reg_data(1026)( 0);                                   --DRP Write Enable
         when 1027 => --0x403
           localRdData( 9 downto  0)  <=  reg_data(1027)( 9 downto  0);                         --DRP Address
           localRdData(12)            <=  reg_data(1027)(12);                                   --DRP Enable
@@ -4321,6 +4575,8 @@ begin  -- architecture behavioral
           localRdData( 7)            <=  Mon.MGT.MGT(127).STATUS.rx_reset_done;                --rx_reset_done
           localRdData( 8)            <=  Mon.MGT.MGT(127).STATUS.buffbypass_tx_done_out;       --buffbypass_tx_done_out
           localRdData( 9)            <=  Mon.MGT.MGT(127).STATUS.buffbypass_tx_error_out;      --buffbypass_tx_error_out
+        when 1034 => --0x40a
+          localRdData( 0)            <=  reg_data(1034)( 0);                                   --DRP Write Enable
         when 1035 => --0x40b
           localRdData( 9 downto  0)  <=  reg_data(1035)( 9 downto  0);                         --DRP Address
           localRdData(12)            <=  reg_data(1035)(12);                                   --DRP Enable
@@ -4458,6 +4714,7 @@ begin  -- architecture behavioral
   -- Register mapping to ctrl structures
   Ctrl.CLOCKING.RESET_MMCM                            <=  reg_data( 1)( 1);                 
   Ctrl.MGT.MGT(0).RESET_ALL                           <=  reg_data(16)( 0);                 
+  Ctrl.MGT.MGT(0).DRP.wr_en                           <=  reg_data(18)( 0);                 
   Ctrl.MGT.MGT(0).DRP.wr_addr                         <=  reg_data(19)( 9 downto  0);       
   Ctrl.MGT.MGT(0).DRP.en                              <=  reg_data(19)(12);                 
   Ctrl.MGT.MGT(0).DRP.wr_data                         <=  reg_data(20)(31 downto 16);       
@@ -4468,6 +4725,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(0).RX_RESETS.reset_datapath            <=  reg_data(22)( 2);                 
   Ctrl.MGT.MGT(0).RX_RESETS.reset_bufbypass           <=  reg_data(22)( 3);                 
   Ctrl.MGT.MGT(1).RESET_ALL                           <=  reg_data(24)( 0);                 
+  Ctrl.MGT.MGT(1).DRP.wr_en                           <=  reg_data(26)( 0);                 
   Ctrl.MGT.MGT(1).DRP.wr_addr                         <=  reg_data(27)( 9 downto  0);       
   Ctrl.MGT.MGT(1).DRP.en                              <=  reg_data(27)(12);                 
   Ctrl.MGT.MGT(1).DRP.wr_data                         <=  reg_data(28)(31 downto 16);       
@@ -4478,6 +4736,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(1).RX_RESETS.reset_datapath            <=  reg_data(30)( 2);                 
   Ctrl.MGT.MGT(1).RX_RESETS.reset_bufbypass           <=  reg_data(30)( 3);                 
   Ctrl.MGT.MGT(2).RESET_ALL                           <=  reg_data(32)( 0);                 
+  Ctrl.MGT.MGT(2).DRP.wr_en                           <=  reg_data(34)( 0);                 
   Ctrl.MGT.MGT(2).DRP.wr_addr                         <=  reg_data(35)( 9 downto  0);       
   Ctrl.MGT.MGT(2).DRP.en                              <=  reg_data(35)(12);                 
   Ctrl.MGT.MGT(2).DRP.wr_data                         <=  reg_data(36)(31 downto 16);       
@@ -4488,6 +4747,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(2).RX_RESETS.reset_datapath            <=  reg_data(38)( 2);                 
   Ctrl.MGT.MGT(2).RX_RESETS.reset_bufbypass           <=  reg_data(38)( 3);                 
   Ctrl.MGT.MGT(3).RESET_ALL                           <=  reg_data(40)( 0);                 
+  Ctrl.MGT.MGT(3).DRP.wr_en                           <=  reg_data(42)( 0);                 
   Ctrl.MGT.MGT(3).DRP.wr_addr                         <=  reg_data(43)( 9 downto  0);       
   Ctrl.MGT.MGT(3).DRP.en                              <=  reg_data(43)(12);                 
   Ctrl.MGT.MGT(3).DRP.wr_data                         <=  reg_data(44)(31 downto 16);       
@@ -4498,6 +4758,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(3).RX_RESETS.reset_datapath            <=  reg_data(46)( 2);                 
   Ctrl.MGT.MGT(3).RX_RESETS.reset_bufbypass           <=  reg_data(46)( 3);                 
   Ctrl.MGT.MGT(4).RESET_ALL                           <=  reg_data(48)( 0);                 
+  Ctrl.MGT.MGT(4).DRP.wr_en                           <=  reg_data(50)( 0);                 
   Ctrl.MGT.MGT(4).DRP.wr_addr                         <=  reg_data(51)( 9 downto  0);       
   Ctrl.MGT.MGT(4).DRP.en                              <=  reg_data(51)(12);                 
   Ctrl.MGT.MGT(4).DRP.wr_data                         <=  reg_data(52)(31 downto 16);       
@@ -4508,6 +4769,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(4).RX_RESETS.reset_datapath            <=  reg_data(54)( 2);                 
   Ctrl.MGT.MGT(4).RX_RESETS.reset_bufbypass           <=  reg_data(54)( 3);                 
   Ctrl.MGT.MGT(5).RESET_ALL                           <=  reg_data(56)( 0);                 
+  Ctrl.MGT.MGT(5).DRP.wr_en                           <=  reg_data(58)( 0);                 
   Ctrl.MGT.MGT(5).DRP.wr_addr                         <=  reg_data(59)( 9 downto  0);       
   Ctrl.MGT.MGT(5).DRP.en                              <=  reg_data(59)(12);                 
   Ctrl.MGT.MGT(5).DRP.wr_data                         <=  reg_data(60)(31 downto 16);       
@@ -4518,6 +4780,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(5).RX_RESETS.reset_datapath            <=  reg_data(62)( 2);                 
   Ctrl.MGT.MGT(5).RX_RESETS.reset_bufbypass           <=  reg_data(62)( 3);                 
   Ctrl.MGT.MGT(6).RESET_ALL                           <=  reg_data(64)( 0);                 
+  Ctrl.MGT.MGT(6).DRP.wr_en                           <=  reg_data(66)( 0);                 
   Ctrl.MGT.MGT(6).DRP.wr_addr                         <=  reg_data(67)( 9 downto  0);       
   Ctrl.MGT.MGT(6).DRP.en                              <=  reg_data(67)(12);                 
   Ctrl.MGT.MGT(6).DRP.wr_data                         <=  reg_data(68)(31 downto 16);       
@@ -4528,6 +4791,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(6).RX_RESETS.reset_datapath            <=  reg_data(70)( 2);                 
   Ctrl.MGT.MGT(6).RX_RESETS.reset_bufbypass           <=  reg_data(70)( 3);                 
   Ctrl.MGT.MGT(7).RESET_ALL                           <=  reg_data(72)( 0);                 
+  Ctrl.MGT.MGT(7).DRP.wr_en                           <=  reg_data(74)( 0);                 
   Ctrl.MGT.MGT(7).DRP.wr_addr                         <=  reg_data(75)( 9 downto  0);       
   Ctrl.MGT.MGT(7).DRP.en                              <=  reg_data(75)(12);                 
   Ctrl.MGT.MGT(7).DRP.wr_data                         <=  reg_data(76)(31 downto 16);       
@@ -4538,6 +4802,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(7).RX_RESETS.reset_datapath            <=  reg_data(78)( 2);                 
   Ctrl.MGT.MGT(7).RX_RESETS.reset_bufbypass           <=  reg_data(78)( 3);                 
   Ctrl.MGT.MGT(8).RESET_ALL                           <=  reg_data(80)( 0);                 
+  Ctrl.MGT.MGT(8).DRP.wr_en                           <=  reg_data(82)( 0);                 
   Ctrl.MGT.MGT(8).DRP.wr_addr                         <=  reg_data(83)( 9 downto  0);       
   Ctrl.MGT.MGT(8).DRP.en                              <=  reg_data(83)(12);                 
   Ctrl.MGT.MGT(8).DRP.wr_data                         <=  reg_data(84)(31 downto 16);       
@@ -4548,6 +4813,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(8).RX_RESETS.reset_datapath            <=  reg_data(86)( 2);                 
   Ctrl.MGT.MGT(8).RX_RESETS.reset_bufbypass           <=  reg_data(86)( 3);                 
   Ctrl.MGT.MGT(9).RESET_ALL                           <=  reg_data(88)( 0);                 
+  Ctrl.MGT.MGT(9).DRP.wr_en                           <=  reg_data(90)( 0);                 
   Ctrl.MGT.MGT(9).DRP.wr_addr                         <=  reg_data(91)( 9 downto  0);       
   Ctrl.MGT.MGT(9).DRP.en                              <=  reg_data(91)(12);                 
   Ctrl.MGT.MGT(9).DRP.wr_data                         <=  reg_data(92)(31 downto 16);       
@@ -4558,6 +4824,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(9).RX_RESETS.reset_datapath            <=  reg_data(94)( 2);                 
   Ctrl.MGT.MGT(9).RX_RESETS.reset_bufbypass           <=  reg_data(94)( 3);                 
   Ctrl.MGT.MGT(10).RESET_ALL                          <=  reg_data(96)( 0);                 
+  Ctrl.MGT.MGT(10).DRP.wr_en                          <=  reg_data(98)( 0);                 
   Ctrl.MGT.MGT(10).DRP.wr_addr                        <=  reg_data(99)( 9 downto  0);       
   Ctrl.MGT.MGT(10).DRP.en                             <=  reg_data(99)(12);                 
   Ctrl.MGT.MGT(10).DRP.wr_data                        <=  reg_data(100)(31 downto 16);      
@@ -4568,6 +4835,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(10).RX_RESETS.reset_datapath           <=  reg_data(102)( 2);                
   Ctrl.MGT.MGT(10).RX_RESETS.reset_bufbypass          <=  reg_data(102)( 3);                
   Ctrl.MGT.MGT(11).RESET_ALL                          <=  reg_data(104)( 0);                
+  Ctrl.MGT.MGT(11).DRP.wr_en                          <=  reg_data(106)( 0);                
   Ctrl.MGT.MGT(11).DRP.wr_addr                        <=  reg_data(107)( 9 downto  0);      
   Ctrl.MGT.MGT(11).DRP.en                             <=  reg_data(107)(12);                
   Ctrl.MGT.MGT(11).DRP.wr_data                        <=  reg_data(108)(31 downto 16);      
@@ -4578,6 +4846,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(11).RX_RESETS.reset_datapath           <=  reg_data(110)( 2);                
   Ctrl.MGT.MGT(11).RX_RESETS.reset_bufbypass          <=  reg_data(110)( 3);                
   Ctrl.MGT.MGT(12).RESET_ALL                          <=  reg_data(112)( 0);                
+  Ctrl.MGT.MGT(12).DRP.wr_en                          <=  reg_data(114)( 0);                
   Ctrl.MGT.MGT(12).DRP.wr_addr                        <=  reg_data(115)( 9 downto  0);      
   Ctrl.MGT.MGT(12).DRP.en                             <=  reg_data(115)(12);                
   Ctrl.MGT.MGT(12).DRP.wr_data                        <=  reg_data(116)(31 downto 16);      
@@ -4588,6 +4857,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(12).RX_RESETS.reset_datapath           <=  reg_data(118)( 2);                
   Ctrl.MGT.MGT(12).RX_RESETS.reset_bufbypass          <=  reg_data(118)( 3);                
   Ctrl.MGT.MGT(13).RESET_ALL                          <=  reg_data(120)( 0);                
+  Ctrl.MGT.MGT(13).DRP.wr_en                          <=  reg_data(122)( 0);                
   Ctrl.MGT.MGT(13).DRP.wr_addr                        <=  reg_data(123)( 9 downto  0);      
   Ctrl.MGT.MGT(13).DRP.en                             <=  reg_data(123)(12);                
   Ctrl.MGT.MGT(13).DRP.wr_data                        <=  reg_data(124)(31 downto 16);      
@@ -4598,6 +4868,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(13).RX_RESETS.reset_datapath           <=  reg_data(126)( 2);                
   Ctrl.MGT.MGT(13).RX_RESETS.reset_bufbypass          <=  reg_data(126)( 3);                
   Ctrl.MGT.MGT(14).RESET_ALL                          <=  reg_data(128)( 0);                
+  Ctrl.MGT.MGT(14).DRP.wr_en                          <=  reg_data(130)( 0);                
   Ctrl.MGT.MGT(14).DRP.wr_addr                        <=  reg_data(131)( 9 downto  0);      
   Ctrl.MGT.MGT(14).DRP.en                             <=  reg_data(131)(12);                
   Ctrl.MGT.MGT(14).DRP.wr_data                        <=  reg_data(132)(31 downto 16);      
@@ -4608,6 +4879,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(14).RX_RESETS.reset_datapath           <=  reg_data(134)( 2);                
   Ctrl.MGT.MGT(14).RX_RESETS.reset_bufbypass          <=  reg_data(134)( 3);                
   Ctrl.MGT.MGT(15).RESET_ALL                          <=  reg_data(136)( 0);                
+  Ctrl.MGT.MGT(15).DRP.wr_en                          <=  reg_data(138)( 0);                
   Ctrl.MGT.MGT(15).DRP.wr_addr                        <=  reg_data(139)( 9 downto  0);      
   Ctrl.MGT.MGT(15).DRP.en                             <=  reg_data(139)(12);                
   Ctrl.MGT.MGT(15).DRP.wr_data                        <=  reg_data(140)(31 downto 16);      
@@ -4618,6 +4890,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(15).RX_RESETS.reset_datapath           <=  reg_data(142)( 2);                
   Ctrl.MGT.MGT(15).RX_RESETS.reset_bufbypass          <=  reg_data(142)( 3);                
   Ctrl.MGT.MGT(16).RESET_ALL                          <=  reg_data(144)( 0);                
+  Ctrl.MGT.MGT(16).DRP.wr_en                          <=  reg_data(146)( 0);                
   Ctrl.MGT.MGT(16).DRP.wr_addr                        <=  reg_data(147)( 9 downto  0);      
   Ctrl.MGT.MGT(16).DRP.en                             <=  reg_data(147)(12);                
   Ctrl.MGT.MGT(16).DRP.wr_data                        <=  reg_data(148)(31 downto 16);      
@@ -4628,6 +4901,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(16).RX_RESETS.reset_datapath           <=  reg_data(150)( 2);                
   Ctrl.MGT.MGT(16).RX_RESETS.reset_bufbypass          <=  reg_data(150)( 3);                
   Ctrl.MGT.MGT(17).RESET_ALL                          <=  reg_data(152)( 0);                
+  Ctrl.MGT.MGT(17).DRP.wr_en                          <=  reg_data(154)( 0);                
   Ctrl.MGT.MGT(17).DRP.wr_addr                        <=  reg_data(155)( 9 downto  0);      
   Ctrl.MGT.MGT(17).DRP.en                             <=  reg_data(155)(12);                
   Ctrl.MGT.MGT(17).DRP.wr_data                        <=  reg_data(156)(31 downto 16);      
@@ -4638,6 +4912,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(17).RX_RESETS.reset_datapath           <=  reg_data(158)( 2);                
   Ctrl.MGT.MGT(17).RX_RESETS.reset_bufbypass          <=  reg_data(158)( 3);                
   Ctrl.MGT.MGT(18).RESET_ALL                          <=  reg_data(160)( 0);                
+  Ctrl.MGT.MGT(18).DRP.wr_en                          <=  reg_data(162)( 0);                
   Ctrl.MGT.MGT(18).DRP.wr_addr                        <=  reg_data(163)( 9 downto  0);      
   Ctrl.MGT.MGT(18).DRP.en                             <=  reg_data(163)(12);                
   Ctrl.MGT.MGT(18).DRP.wr_data                        <=  reg_data(164)(31 downto 16);      
@@ -4648,6 +4923,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(18).RX_RESETS.reset_datapath           <=  reg_data(166)( 2);                
   Ctrl.MGT.MGT(18).RX_RESETS.reset_bufbypass          <=  reg_data(166)( 3);                
   Ctrl.MGT.MGT(19).RESET_ALL                          <=  reg_data(168)( 0);                
+  Ctrl.MGT.MGT(19).DRP.wr_en                          <=  reg_data(170)( 0);                
   Ctrl.MGT.MGT(19).DRP.wr_addr                        <=  reg_data(171)( 9 downto  0);      
   Ctrl.MGT.MGT(19).DRP.en                             <=  reg_data(171)(12);                
   Ctrl.MGT.MGT(19).DRP.wr_data                        <=  reg_data(172)(31 downto 16);      
@@ -4658,6 +4934,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(19).RX_RESETS.reset_datapath           <=  reg_data(174)( 2);                
   Ctrl.MGT.MGT(19).RX_RESETS.reset_bufbypass          <=  reg_data(174)( 3);                
   Ctrl.MGT.MGT(20).RESET_ALL                          <=  reg_data(176)( 0);                
+  Ctrl.MGT.MGT(20).DRP.wr_en                          <=  reg_data(178)( 0);                
   Ctrl.MGT.MGT(20).DRP.wr_addr                        <=  reg_data(179)( 9 downto  0);      
   Ctrl.MGT.MGT(20).DRP.en                             <=  reg_data(179)(12);                
   Ctrl.MGT.MGT(20).DRP.wr_data                        <=  reg_data(180)(31 downto 16);      
@@ -4668,6 +4945,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(20).RX_RESETS.reset_datapath           <=  reg_data(182)( 2);                
   Ctrl.MGT.MGT(20).RX_RESETS.reset_bufbypass          <=  reg_data(182)( 3);                
   Ctrl.MGT.MGT(21).RESET_ALL                          <=  reg_data(184)( 0);                
+  Ctrl.MGT.MGT(21).DRP.wr_en                          <=  reg_data(186)( 0);                
   Ctrl.MGT.MGT(21).DRP.wr_addr                        <=  reg_data(187)( 9 downto  0);      
   Ctrl.MGT.MGT(21).DRP.en                             <=  reg_data(187)(12);                
   Ctrl.MGT.MGT(21).DRP.wr_data                        <=  reg_data(188)(31 downto 16);      
@@ -4678,6 +4956,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(21).RX_RESETS.reset_datapath           <=  reg_data(190)( 2);                
   Ctrl.MGT.MGT(21).RX_RESETS.reset_bufbypass          <=  reg_data(190)( 3);                
   Ctrl.MGT.MGT(22).RESET_ALL                          <=  reg_data(192)( 0);                
+  Ctrl.MGT.MGT(22).DRP.wr_en                          <=  reg_data(194)( 0);                
   Ctrl.MGT.MGT(22).DRP.wr_addr                        <=  reg_data(195)( 9 downto  0);      
   Ctrl.MGT.MGT(22).DRP.en                             <=  reg_data(195)(12);                
   Ctrl.MGT.MGT(22).DRP.wr_data                        <=  reg_data(196)(31 downto 16);      
@@ -4688,6 +4967,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(22).RX_RESETS.reset_datapath           <=  reg_data(198)( 2);                
   Ctrl.MGT.MGT(22).RX_RESETS.reset_bufbypass          <=  reg_data(198)( 3);                
   Ctrl.MGT.MGT(23).RESET_ALL                          <=  reg_data(200)( 0);                
+  Ctrl.MGT.MGT(23).DRP.wr_en                          <=  reg_data(202)( 0);                
   Ctrl.MGT.MGT(23).DRP.wr_addr                        <=  reg_data(203)( 9 downto  0);      
   Ctrl.MGT.MGT(23).DRP.en                             <=  reg_data(203)(12);                
   Ctrl.MGT.MGT(23).DRP.wr_data                        <=  reg_data(204)(31 downto 16);      
@@ -4698,6 +4978,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(23).RX_RESETS.reset_datapath           <=  reg_data(206)( 2);                
   Ctrl.MGT.MGT(23).RX_RESETS.reset_bufbypass          <=  reg_data(206)( 3);                
   Ctrl.MGT.MGT(24).RESET_ALL                          <=  reg_data(208)( 0);                
+  Ctrl.MGT.MGT(24).DRP.wr_en                          <=  reg_data(210)( 0);                
   Ctrl.MGT.MGT(24).DRP.wr_addr                        <=  reg_data(211)( 9 downto  0);      
   Ctrl.MGT.MGT(24).DRP.en                             <=  reg_data(211)(12);                
   Ctrl.MGT.MGT(24).DRP.wr_data                        <=  reg_data(212)(31 downto 16);      
@@ -4708,6 +4989,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(24).RX_RESETS.reset_datapath           <=  reg_data(214)( 2);                
   Ctrl.MGT.MGT(24).RX_RESETS.reset_bufbypass          <=  reg_data(214)( 3);                
   Ctrl.MGT.MGT(25).RESET_ALL                          <=  reg_data(216)( 0);                
+  Ctrl.MGT.MGT(25).DRP.wr_en                          <=  reg_data(218)( 0);                
   Ctrl.MGT.MGT(25).DRP.wr_addr                        <=  reg_data(219)( 9 downto  0);      
   Ctrl.MGT.MGT(25).DRP.en                             <=  reg_data(219)(12);                
   Ctrl.MGT.MGT(25).DRP.wr_data                        <=  reg_data(220)(31 downto 16);      
@@ -4718,6 +5000,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(25).RX_RESETS.reset_datapath           <=  reg_data(222)( 2);                
   Ctrl.MGT.MGT(25).RX_RESETS.reset_bufbypass          <=  reg_data(222)( 3);                
   Ctrl.MGT.MGT(26).RESET_ALL                          <=  reg_data(224)( 0);                
+  Ctrl.MGT.MGT(26).DRP.wr_en                          <=  reg_data(226)( 0);                
   Ctrl.MGT.MGT(26).DRP.wr_addr                        <=  reg_data(227)( 9 downto  0);      
   Ctrl.MGT.MGT(26).DRP.en                             <=  reg_data(227)(12);                
   Ctrl.MGT.MGT(26).DRP.wr_data                        <=  reg_data(228)(31 downto 16);      
@@ -4728,6 +5011,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(26).RX_RESETS.reset_datapath           <=  reg_data(230)( 2);                
   Ctrl.MGT.MGT(26).RX_RESETS.reset_bufbypass          <=  reg_data(230)( 3);                
   Ctrl.MGT.MGT(27).RESET_ALL                          <=  reg_data(232)( 0);                
+  Ctrl.MGT.MGT(27).DRP.wr_en                          <=  reg_data(234)( 0);                
   Ctrl.MGT.MGT(27).DRP.wr_addr                        <=  reg_data(235)( 9 downto  0);      
   Ctrl.MGT.MGT(27).DRP.en                             <=  reg_data(235)(12);                
   Ctrl.MGT.MGT(27).DRP.wr_data                        <=  reg_data(236)(31 downto 16);      
@@ -4738,6 +5022,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(27).RX_RESETS.reset_datapath           <=  reg_data(238)( 2);                
   Ctrl.MGT.MGT(27).RX_RESETS.reset_bufbypass          <=  reg_data(238)( 3);                
   Ctrl.MGT.MGT(28).RESET_ALL                          <=  reg_data(240)( 0);                
+  Ctrl.MGT.MGT(28).DRP.wr_en                          <=  reg_data(242)( 0);                
   Ctrl.MGT.MGT(28).DRP.wr_addr                        <=  reg_data(243)( 9 downto  0);      
   Ctrl.MGT.MGT(28).DRP.en                             <=  reg_data(243)(12);                
   Ctrl.MGT.MGT(28).DRP.wr_data                        <=  reg_data(244)(31 downto 16);      
@@ -4748,6 +5033,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(28).RX_RESETS.reset_datapath           <=  reg_data(246)( 2);                
   Ctrl.MGT.MGT(28).RX_RESETS.reset_bufbypass          <=  reg_data(246)( 3);                
   Ctrl.MGT.MGT(29).RESET_ALL                          <=  reg_data(248)( 0);                
+  Ctrl.MGT.MGT(29).DRP.wr_en                          <=  reg_data(250)( 0);                
   Ctrl.MGT.MGT(29).DRP.wr_addr                        <=  reg_data(251)( 9 downto  0);      
   Ctrl.MGT.MGT(29).DRP.en                             <=  reg_data(251)(12);                
   Ctrl.MGT.MGT(29).DRP.wr_data                        <=  reg_data(252)(31 downto 16);      
@@ -4758,6 +5044,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(29).RX_RESETS.reset_datapath           <=  reg_data(254)( 2);                
   Ctrl.MGT.MGT(29).RX_RESETS.reset_bufbypass          <=  reg_data(254)( 3);                
   Ctrl.MGT.MGT(30).RESET_ALL                          <=  reg_data(256)( 0);                
+  Ctrl.MGT.MGT(30).DRP.wr_en                          <=  reg_data(258)( 0);                
   Ctrl.MGT.MGT(30).DRP.wr_addr                        <=  reg_data(259)( 9 downto  0);      
   Ctrl.MGT.MGT(30).DRP.en                             <=  reg_data(259)(12);                
   Ctrl.MGT.MGT(30).DRP.wr_data                        <=  reg_data(260)(31 downto 16);      
@@ -4768,6 +5055,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(30).RX_RESETS.reset_datapath           <=  reg_data(262)( 2);                
   Ctrl.MGT.MGT(30).RX_RESETS.reset_bufbypass          <=  reg_data(262)( 3);                
   Ctrl.MGT.MGT(31).RESET_ALL                          <=  reg_data(264)( 0);                
+  Ctrl.MGT.MGT(31).DRP.wr_en                          <=  reg_data(266)( 0);                
   Ctrl.MGT.MGT(31).DRP.wr_addr                        <=  reg_data(267)( 9 downto  0);      
   Ctrl.MGT.MGT(31).DRP.en                             <=  reg_data(267)(12);                
   Ctrl.MGT.MGT(31).DRP.wr_data                        <=  reg_data(268)(31 downto 16);      
@@ -4778,6 +5066,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(31).RX_RESETS.reset_datapath           <=  reg_data(270)( 2);                
   Ctrl.MGT.MGT(31).RX_RESETS.reset_bufbypass          <=  reg_data(270)( 3);                
   Ctrl.MGT.MGT(32).RESET_ALL                          <=  reg_data(272)( 0);                
+  Ctrl.MGT.MGT(32).DRP.wr_en                          <=  reg_data(274)( 0);                
   Ctrl.MGT.MGT(32).DRP.wr_addr                        <=  reg_data(275)( 9 downto  0);      
   Ctrl.MGT.MGT(32).DRP.en                             <=  reg_data(275)(12);                
   Ctrl.MGT.MGT(32).DRP.wr_data                        <=  reg_data(276)(31 downto 16);      
@@ -4788,6 +5077,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(32).RX_RESETS.reset_datapath           <=  reg_data(278)( 2);                
   Ctrl.MGT.MGT(32).RX_RESETS.reset_bufbypass          <=  reg_data(278)( 3);                
   Ctrl.MGT.MGT(33).RESET_ALL                          <=  reg_data(280)( 0);                
+  Ctrl.MGT.MGT(33).DRP.wr_en                          <=  reg_data(282)( 0);                
   Ctrl.MGT.MGT(33).DRP.wr_addr                        <=  reg_data(283)( 9 downto  0);      
   Ctrl.MGT.MGT(33).DRP.en                             <=  reg_data(283)(12);                
   Ctrl.MGT.MGT(33).DRP.wr_data                        <=  reg_data(284)(31 downto 16);      
@@ -4798,6 +5088,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(33).RX_RESETS.reset_datapath           <=  reg_data(286)( 2);                
   Ctrl.MGT.MGT(33).RX_RESETS.reset_bufbypass          <=  reg_data(286)( 3);                
   Ctrl.MGT.MGT(34).RESET_ALL                          <=  reg_data(288)( 0);                
+  Ctrl.MGT.MGT(34).DRP.wr_en                          <=  reg_data(290)( 0);                
   Ctrl.MGT.MGT(34).DRP.wr_addr                        <=  reg_data(291)( 9 downto  0);      
   Ctrl.MGT.MGT(34).DRP.en                             <=  reg_data(291)(12);                
   Ctrl.MGT.MGT(34).DRP.wr_data                        <=  reg_data(292)(31 downto 16);      
@@ -4808,6 +5099,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(34).RX_RESETS.reset_datapath           <=  reg_data(294)( 2);                
   Ctrl.MGT.MGT(34).RX_RESETS.reset_bufbypass          <=  reg_data(294)( 3);                
   Ctrl.MGT.MGT(35).RESET_ALL                          <=  reg_data(296)( 0);                
+  Ctrl.MGT.MGT(35).DRP.wr_en                          <=  reg_data(298)( 0);                
   Ctrl.MGT.MGT(35).DRP.wr_addr                        <=  reg_data(299)( 9 downto  0);      
   Ctrl.MGT.MGT(35).DRP.en                             <=  reg_data(299)(12);                
   Ctrl.MGT.MGT(35).DRP.wr_data                        <=  reg_data(300)(31 downto 16);      
@@ -4818,6 +5110,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(35).RX_RESETS.reset_datapath           <=  reg_data(302)( 2);                
   Ctrl.MGT.MGT(35).RX_RESETS.reset_bufbypass          <=  reg_data(302)( 3);                
   Ctrl.MGT.MGT(36).RESET_ALL                          <=  reg_data(304)( 0);                
+  Ctrl.MGT.MGT(36).DRP.wr_en                          <=  reg_data(306)( 0);                
   Ctrl.MGT.MGT(36).DRP.wr_addr                        <=  reg_data(307)( 9 downto  0);      
   Ctrl.MGT.MGT(36).DRP.en                             <=  reg_data(307)(12);                
   Ctrl.MGT.MGT(36).DRP.wr_data                        <=  reg_data(308)(31 downto 16);      
@@ -4828,6 +5121,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(36).RX_RESETS.reset_datapath           <=  reg_data(310)( 2);                
   Ctrl.MGT.MGT(36).RX_RESETS.reset_bufbypass          <=  reg_data(310)( 3);                
   Ctrl.MGT.MGT(37).RESET_ALL                          <=  reg_data(312)( 0);                
+  Ctrl.MGT.MGT(37).DRP.wr_en                          <=  reg_data(314)( 0);                
   Ctrl.MGT.MGT(37).DRP.wr_addr                        <=  reg_data(315)( 9 downto  0);      
   Ctrl.MGT.MGT(37).DRP.en                             <=  reg_data(315)(12);                
   Ctrl.MGT.MGT(37).DRP.wr_data                        <=  reg_data(316)(31 downto 16);      
@@ -4838,6 +5132,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(37).RX_RESETS.reset_datapath           <=  reg_data(318)( 2);                
   Ctrl.MGT.MGT(37).RX_RESETS.reset_bufbypass          <=  reg_data(318)( 3);                
   Ctrl.MGT.MGT(38).RESET_ALL                          <=  reg_data(320)( 0);                
+  Ctrl.MGT.MGT(38).DRP.wr_en                          <=  reg_data(322)( 0);                
   Ctrl.MGT.MGT(38).DRP.wr_addr                        <=  reg_data(323)( 9 downto  0);      
   Ctrl.MGT.MGT(38).DRP.en                             <=  reg_data(323)(12);                
   Ctrl.MGT.MGT(38).DRP.wr_data                        <=  reg_data(324)(31 downto 16);      
@@ -4848,6 +5143,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(38).RX_RESETS.reset_datapath           <=  reg_data(326)( 2);                
   Ctrl.MGT.MGT(38).RX_RESETS.reset_bufbypass          <=  reg_data(326)( 3);                
   Ctrl.MGT.MGT(39).RESET_ALL                          <=  reg_data(328)( 0);                
+  Ctrl.MGT.MGT(39).DRP.wr_en                          <=  reg_data(330)( 0);                
   Ctrl.MGT.MGT(39).DRP.wr_addr                        <=  reg_data(331)( 9 downto  0);      
   Ctrl.MGT.MGT(39).DRP.en                             <=  reg_data(331)(12);                
   Ctrl.MGT.MGT(39).DRP.wr_data                        <=  reg_data(332)(31 downto 16);      
@@ -4858,6 +5154,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(39).RX_RESETS.reset_datapath           <=  reg_data(334)( 2);                
   Ctrl.MGT.MGT(39).RX_RESETS.reset_bufbypass          <=  reg_data(334)( 3);                
   Ctrl.MGT.MGT(40).RESET_ALL                          <=  reg_data(336)( 0);                
+  Ctrl.MGT.MGT(40).DRP.wr_en                          <=  reg_data(338)( 0);                
   Ctrl.MGT.MGT(40).DRP.wr_addr                        <=  reg_data(339)( 9 downto  0);      
   Ctrl.MGT.MGT(40).DRP.en                             <=  reg_data(339)(12);                
   Ctrl.MGT.MGT(40).DRP.wr_data                        <=  reg_data(340)(31 downto 16);      
@@ -4868,6 +5165,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(40).RX_RESETS.reset_datapath           <=  reg_data(342)( 2);                
   Ctrl.MGT.MGT(40).RX_RESETS.reset_bufbypass          <=  reg_data(342)( 3);                
   Ctrl.MGT.MGT(41).RESET_ALL                          <=  reg_data(344)( 0);                
+  Ctrl.MGT.MGT(41).DRP.wr_en                          <=  reg_data(346)( 0);                
   Ctrl.MGT.MGT(41).DRP.wr_addr                        <=  reg_data(347)( 9 downto  0);      
   Ctrl.MGT.MGT(41).DRP.en                             <=  reg_data(347)(12);                
   Ctrl.MGT.MGT(41).DRP.wr_data                        <=  reg_data(348)(31 downto 16);      
@@ -4878,6 +5176,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(41).RX_RESETS.reset_datapath           <=  reg_data(350)( 2);                
   Ctrl.MGT.MGT(41).RX_RESETS.reset_bufbypass          <=  reg_data(350)( 3);                
   Ctrl.MGT.MGT(42).RESET_ALL                          <=  reg_data(352)( 0);                
+  Ctrl.MGT.MGT(42).DRP.wr_en                          <=  reg_data(354)( 0);                
   Ctrl.MGT.MGT(42).DRP.wr_addr                        <=  reg_data(355)( 9 downto  0);      
   Ctrl.MGT.MGT(42).DRP.en                             <=  reg_data(355)(12);                
   Ctrl.MGT.MGT(42).DRP.wr_data                        <=  reg_data(356)(31 downto 16);      
@@ -4888,6 +5187,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(42).RX_RESETS.reset_datapath           <=  reg_data(358)( 2);                
   Ctrl.MGT.MGT(42).RX_RESETS.reset_bufbypass          <=  reg_data(358)( 3);                
   Ctrl.MGT.MGT(43).RESET_ALL                          <=  reg_data(360)( 0);                
+  Ctrl.MGT.MGT(43).DRP.wr_en                          <=  reg_data(362)( 0);                
   Ctrl.MGT.MGT(43).DRP.wr_addr                        <=  reg_data(363)( 9 downto  0);      
   Ctrl.MGT.MGT(43).DRP.en                             <=  reg_data(363)(12);                
   Ctrl.MGT.MGT(43).DRP.wr_data                        <=  reg_data(364)(31 downto 16);      
@@ -4898,6 +5198,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(43).RX_RESETS.reset_datapath           <=  reg_data(366)( 2);                
   Ctrl.MGT.MGT(43).RX_RESETS.reset_bufbypass          <=  reg_data(366)( 3);                
   Ctrl.MGT.MGT(44).RESET_ALL                          <=  reg_data(368)( 0);                
+  Ctrl.MGT.MGT(44).DRP.wr_en                          <=  reg_data(370)( 0);                
   Ctrl.MGT.MGT(44).DRP.wr_addr                        <=  reg_data(371)( 9 downto  0);      
   Ctrl.MGT.MGT(44).DRP.en                             <=  reg_data(371)(12);                
   Ctrl.MGT.MGT(44).DRP.wr_data                        <=  reg_data(372)(31 downto 16);      
@@ -4908,6 +5209,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(44).RX_RESETS.reset_datapath           <=  reg_data(374)( 2);                
   Ctrl.MGT.MGT(44).RX_RESETS.reset_bufbypass          <=  reg_data(374)( 3);                
   Ctrl.MGT.MGT(45).RESET_ALL                          <=  reg_data(376)( 0);                
+  Ctrl.MGT.MGT(45).DRP.wr_en                          <=  reg_data(378)( 0);                
   Ctrl.MGT.MGT(45).DRP.wr_addr                        <=  reg_data(379)( 9 downto  0);      
   Ctrl.MGT.MGT(45).DRP.en                             <=  reg_data(379)(12);                
   Ctrl.MGT.MGT(45).DRP.wr_data                        <=  reg_data(380)(31 downto 16);      
@@ -4918,6 +5220,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(45).RX_RESETS.reset_datapath           <=  reg_data(382)( 2);                
   Ctrl.MGT.MGT(45).RX_RESETS.reset_bufbypass          <=  reg_data(382)( 3);                
   Ctrl.MGT.MGT(46).RESET_ALL                          <=  reg_data(384)( 0);                
+  Ctrl.MGT.MGT(46).DRP.wr_en                          <=  reg_data(386)( 0);                
   Ctrl.MGT.MGT(46).DRP.wr_addr                        <=  reg_data(387)( 9 downto  0);      
   Ctrl.MGT.MGT(46).DRP.en                             <=  reg_data(387)(12);                
   Ctrl.MGT.MGT(46).DRP.wr_data                        <=  reg_data(388)(31 downto 16);      
@@ -4928,6 +5231,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(46).RX_RESETS.reset_datapath           <=  reg_data(390)( 2);                
   Ctrl.MGT.MGT(46).RX_RESETS.reset_bufbypass          <=  reg_data(390)( 3);                
   Ctrl.MGT.MGT(47).RESET_ALL                          <=  reg_data(392)( 0);                
+  Ctrl.MGT.MGT(47).DRP.wr_en                          <=  reg_data(394)( 0);                
   Ctrl.MGT.MGT(47).DRP.wr_addr                        <=  reg_data(395)( 9 downto  0);      
   Ctrl.MGT.MGT(47).DRP.en                             <=  reg_data(395)(12);                
   Ctrl.MGT.MGT(47).DRP.wr_data                        <=  reg_data(396)(31 downto 16);      
@@ -4938,6 +5242,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(47).RX_RESETS.reset_datapath           <=  reg_data(398)( 2);                
   Ctrl.MGT.MGT(47).RX_RESETS.reset_bufbypass          <=  reg_data(398)( 3);                
   Ctrl.MGT.MGT(48).RESET_ALL                          <=  reg_data(400)( 0);                
+  Ctrl.MGT.MGT(48).DRP.wr_en                          <=  reg_data(402)( 0);                
   Ctrl.MGT.MGT(48).DRP.wr_addr                        <=  reg_data(403)( 9 downto  0);      
   Ctrl.MGT.MGT(48).DRP.en                             <=  reg_data(403)(12);                
   Ctrl.MGT.MGT(48).DRP.wr_data                        <=  reg_data(404)(31 downto 16);      
@@ -4948,6 +5253,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(48).RX_RESETS.reset_datapath           <=  reg_data(406)( 2);                
   Ctrl.MGT.MGT(48).RX_RESETS.reset_bufbypass          <=  reg_data(406)( 3);                
   Ctrl.MGT.MGT(49).RESET_ALL                          <=  reg_data(408)( 0);                
+  Ctrl.MGT.MGT(49).DRP.wr_en                          <=  reg_data(410)( 0);                
   Ctrl.MGT.MGT(49).DRP.wr_addr                        <=  reg_data(411)( 9 downto  0);      
   Ctrl.MGT.MGT(49).DRP.en                             <=  reg_data(411)(12);                
   Ctrl.MGT.MGT(49).DRP.wr_data                        <=  reg_data(412)(31 downto 16);      
@@ -4958,6 +5264,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(49).RX_RESETS.reset_datapath           <=  reg_data(414)( 2);                
   Ctrl.MGT.MGT(49).RX_RESETS.reset_bufbypass          <=  reg_data(414)( 3);                
   Ctrl.MGT.MGT(50).RESET_ALL                          <=  reg_data(416)( 0);                
+  Ctrl.MGT.MGT(50).DRP.wr_en                          <=  reg_data(418)( 0);                
   Ctrl.MGT.MGT(50).DRP.wr_addr                        <=  reg_data(419)( 9 downto  0);      
   Ctrl.MGT.MGT(50).DRP.en                             <=  reg_data(419)(12);                
   Ctrl.MGT.MGT(50).DRP.wr_data                        <=  reg_data(420)(31 downto 16);      
@@ -4968,6 +5275,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(50).RX_RESETS.reset_datapath           <=  reg_data(422)( 2);                
   Ctrl.MGT.MGT(50).RX_RESETS.reset_bufbypass          <=  reg_data(422)( 3);                
   Ctrl.MGT.MGT(51).RESET_ALL                          <=  reg_data(424)( 0);                
+  Ctrl.MGT.MGT(51).DRP.wr_en                          <=  reg_data(426)( 0);                
   Ctrl.MGT.MGT(51).DRP.wr_addr                        <=  reg_data(427)( 9 downto  0);      
   Ctrl.MGT.MGT(51).DRP.en                             <=  reg_data(427)(12);                
   Ctrl.MGT.MGT(51).DRP.wr_data                        <=  reg_data(428)(31 downto 16);      
@@ -4978,6 +5286,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(51).RX_RESETS.reset_datapath           <=  reg_data(430)( 2);                
   Ctrl.MGT.MGT(51).RX_RESETS.reset_bufbypass          <=  reg_data(430)( 3);                
   Ctrl.MGT.MGT(52).RESET_ALL                          <=  reg_data(432)( 0);                
+  Ctrl.MGT.MGT(52).DRP.wr_en                          <=  reg_data(434)( 0);                
   Ctrl.MGT.MGT(52).DRP.wr_addr                        <=  reg_data(435)( 9 downto  0);      
   Ctrl.MGT.MGT(52).DRP.en                             <=  reg_data(435)(12);                
   Ctrl.MGT.MGT(52).DRP.wr_data                        <=  reg_data(436)(31 downto 16);      
@@ -4988,6 +5297,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(52).RX_RESETS.reset_datapath           <=  reg_data(438)( 2);                
   Ctrl.MGT.MGT(52).RX_RESETS.reset_bufbypass          <=  reg_data(438)( 3);                
   Ctrl.MGT.MGT(53).RESET_ALL                          <=  reg_data(440)( 0);                
+  Ctrl.MGT.MGT(53).DRP.wr_en                          <=  reg_data(442)( 0);                
   Ctrl.MGT.MGT(53).DRP.wr_addr                        <=  reg_data(443)( 9 downto  0);      
   Ctrl.MGT.MGT(53).DRP.en                             <=  reg_data(443)(12);                
   Ctrl.MGT.MGT(53).DRP.wr_data                        <=  reg_data(444)(31 downto 16);      
@@ -4998,6 +5308,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(53).RX_RESETS.reset_datapath           <=  reg_data(446)( 2);                
   Ctrl.MGT.MGT(53).RX_RESETS.reset_bufbypass          <=  reg_data(446)( 3);                
   Ctrl.MGT.MGT(54).RESET_ALL                          <=  reg_data(448)( 0);                
+  Ctrl.MGT.MGT(54).DRP.wr_en                          <=  reg_data(450)( 0);                
   Ctrl.MGT.MGT(54).DRP.wr_addr                        <=  reg_data(451)( 9 downto  0);      
   Ctrl.MGT.MGT(54).DRP.en                             <=  reg_data(451)(12);                
   Ctrl.MGT.MGT(54).DRP.wr_data                        <=  reg_data(452)(31 downto 16);      
@@ -5008,6 +5319,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(54).RX_RESETS.reset_datapath           <=  reg_data(454)( 2);                
   Ctrl.MGT.MGT(54).RX_RESETS.reset_bufbypass          <=  reg_data(454)( 3);                
   Ctrl.MGT.MGT(55).RESET_ALL                          <=  reg_data(456)( 0);                
+  Ctrl.MGT.MGT(55).DRP.wr_en                          <=  reg_data(458)( 0);                
   Ctrl.MGT.MGT(55).DRP.wr_addr                        <=  reg_data(459)( 9 downto  0);      
   Ctrl.MGT.MGT(55).DRP.en                             <=  reg_data(459)(12);                
   Ctrl.MGT.MGT(55).DRP.wr_data                        <=  reg_data(460)(31 downto 16);      
@@ -5018,6 +5330,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(55).RX_RESETS.reset_datapath           <=  reg_data(462)( 2);                
   Ctrl.MGT.MGT(55).RX_RESETS.reset_bufbypass          <=  reg_data(462)( 3);                
   Ctrl.MGT.MGT(56).RESET_ALL                          <=  reg_data(464)( 0);                
+  Ctrl.MGT.MGT(56).DRP.wr_en                          <=  reg_data(466)( 0);                
   Ctrl.MGT.MGT(56).DRP.wr_addr                        <=  reg_data(467)( 9 downto  0);      
   Ctrl.MGT.MGT(56).DRP.en                             <=  reg_data(467)(12);                
   Ctrl.MGT.MGT(56).DRP.wr_data                        <=  reg_data(468)(31 downto 16);      
@@ -5028,6 +5341,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(56).RX_RESETS.reset_datapath           <=  reg_data(470)( 2);                
   Ctrl.MGT.MGT(56).RX_RESETS.reset_bufbypass          <=  reg_data(470)( 3);                
   Ctrl.MGT.MGT(57).RESET_ALL                          <=  reg_data(472)( 0);                
+  Ctrl.MGT.MGT(57).DRP.wr_en                          <=  reg_data(474)( 0);                
   Ctrl.MGT.MGT(57).DRP.wr_addr                        <=  reg_data(475)( 9 downto  0);      
   Ctrl.MGT.MGT(57).DRP.en                             <=  reg_data(475)(12);                
   Ctrl.MGT.MGT(57).DRP.wr_data                        <=  reg_data(476)(31 downto 16);      
@@ -5038,6 +5352,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(57).RX_RESETS.reset_datapath           <=  reg_data(478)( 2);                
   Ctrl.MGT.MGT(57).RX_RESETS.reset_bufbypass          <=  reg_data(478)( 3);                
   Ctrl.MGT.MGT(58).RESET_ALL                          <=  reg_data(480)( 0);                
+  Ctrl.MGT.MGT(58).DRP.wr_en                          <=  reg_data(482)( 0);                
   Ctrl.MGT.MGT(58).DRP.wr_addr                        <=  reg_data(483)( 9 downto  0);      
   Ctrl.MGT.MGT(58).DRP.en                             <=  reg_data(483)(12);                
   Ctrl.MGT.MGT(58).DRP.wr_data                        <=  reg_data(484)(31 downto 16);      
@@ -5048,6 +5363,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(58).RX_RESETS.reset_datapath           <=  reg_data(486)( 2);                
   Ctrl.MGT.MGT(58).RX_RESETS.reset_bufbypass          <=  reg_data(486)( 3);                
   Ctrl.MGT.MGT(59).RESET_ALL                          <=  reg_data(488)( 0);                
+  Ctrl.MGT.MGT(59).DRP.wr_en                          <=  reg_data(490)( 0);                
   Ctrl.MGT.MGT(59).DRP.wr_addr                        <=  reg_data(491)( 9 downto  0);      
   Ctrl.MGT.MGT(59).DRP.en                             <=  reg_data(491)(12);                
   Ctrl.MGT.MGT(59).DRP.wr_data                        <=  reg_data(492)(31 downto 16);      
@@ -5058,6 +5374,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(59).RX_RESETS.reset_datapath           <=  reg_data(494)( 2);                
   Ctrl.MGT.MGT(59).RX_RESETS.reset_bufbypass          <=  reg_data(494)( 3);                
   Ctrl.MGT.MGT(60).RESET_ALL                          <=  reg_data(496)( 0);                
+  Ctrl.MGT.MGT(60).DRP.wr_en                          <=  reg_data(498)( 0);                
   Ctrl.MGT.MGT(60).DRP.wr_addr                        <=  reg_data(499)( 9 downto  0);      
   Ctrl.MGT.MGT(60).DRP.en                             <=  reg_data(499)(12);                
   Ctrl.MGT.MGT(60).DRP.wr_data                        <=  reg_data(500)(31 downto 16);      
@@ -5068,6 +5385,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(60).RX_RESETS.reset_datapath           <=  reg_data(502)( 2);                
   Ctrl.MGT.MGT(60).RX_RESETS.reset_bufbypass          <=  reg_data(502)( 3);                
   Ctrl.MGT.MGT(61).RESET_ALL                          <=  reg_data(504)( 0);                
+  Ctrl.MGT.MGT(61).DRP.wr_en                          <=  reg_data(506)( 0);                
   Ctrl.MGT.MGT(61).DRP.wr_addr                        <=  reg_data(507)( 9 downto  0);      
   Ctrl.MGT.MGT(61).DRP.en                             <=  reg_data(507)(12);                
   Ctrl.MGT.MGT(61).DRP.wr_data                        <=  reg_data(508)(31 downto 16);      
@@ -5078,6 +5396,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(61).RX_RESETS.reset_datapath           <=  reg_data(510)( 2);                
   Ctrl.MGT.MGT(61).RX_RESETS.reset_bufbypass          <=  reg_data(510)( 3);                
   Ctrl.MGT.MGT(62).RESET_ALL                          <=  reg_data(512)( 0);                
+  Ctrl.MGT.MGT(62).DRP.wr_en                          <=  reg_data(514)( 0);                
   Ctrl.MGT.MGT(62).DRP.wr_addr                        <=  reg_data(515)( 9 downto  0);      
   Ctrl.MGT.MGT(62).DRP.en                             <=  reg_data(515)(12);                
   Ctrl.MGT.MGT(62).DRP.wr_data                        <=  reg_data(516)(31 downto 16);      
@@ -5088,6 +5407,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(62).RX_RESETS.reset_datapath           <=  reg_data(518)( 2);                
   Ctrl.MGT.MGT(62).RX_RESETS.reset_bufbypass          <=  reg_data(518)( 3);                
   Ctrl.MGT.MGT(63).RESET_ALL                          <=  reg_data(520)( 0);                
+  Ctrl.MGT.MGT(63).DRP.wr_en                          <=  reg_data(522)( 0);                
   Ctrl.MGT.MGT(63).DRP.wr_addr                        <=  reg_data(523)( 9 downto  0);      
   Ctrl.MGT.MGT(63).DRP.en                             <=  reg_data(523)(12);                
   Ctrl.MGT.MGT(63).DRP.wr_data                        <=  reg_data(524)(31 downto 16);      
@@ -5098,6 +5418,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(63).RX_RESETS.reset_datapath           <=  reg_data(526)( 2);                
   Ctrl.MGT.MGT(63).RX_RESETS.reset_bufbypass          <=  reg_data(526)( 3);                
   Ctrl.MGT.MGT(64).RESET_ALL                          <=  reg_data(528)( 0);                
+  Ctrl.MGT.MGT(64).DRP.wr_en                          <=  reg_data(530)( 0);                
   Ctrl.MGT.MGT(64).DRP.wr_addr                        <=  reg_data(531)( 9 downto  0);      
   Ctrl.MGT.MGT(64).DRP.en                             <=  reg_data(531)(12);                
   Ctrl.MGT.MGT(64).DRP.wr_data                        <=  reg_data(532)(31 downto 16);      
@@ -5108,6 +5429,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(64).RX_RESETS.reset_datapath           <=  reg_data(534)( 2);                
   Ctrl.MGT.MGT(64).RX_RESETS.reset_bufbypass          <=  reg_data(534)( 3);                
   Ctrl.MGT.MGT(65).RESET_ALL                          <=  reg_data(536)( 0);                
+  Ctrl.MGT.MGT(65).DRP.wr_en                          <=  reg_data(538)( 0);                
   Ctrl.MGT.MGT(65).DRP.wr_addr                        <=  reg_data(539)( 9 downto  0);      
   Ctrl.MGT.MGT(65).DRP.en                             <=  reg_data(539)(12);                
   Ctrl.MGT.MGT(65).DRP.wr_data                        <=  reg_data(540)(31 downto 16);      
@@ -5118,6 +5440,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(65).RX_RESETS.reset_datapath           <=  reg_data(542)( 2);                
   Ctrl.MGT.MGT(65).RX_RESETS.reset_bufbypass          <=  reg_data(542)( 3);                
   Ctrl.MGT.MGT(66).RESET_ALL                          <=  reg_data(544)( 0);                
+  Ctrl.MGT.MGT(66).DRP.wr_en                          <=  reg_data(546)( 0);                
   Ctrl.MGT.MGT(66).DRP.wr_addr                        <=  reg_data(547)( 9 downto  0);      
   Ctrl.MGT.MGT(66).DRP.en                             <=  reg_data(547)(12);                
   Ctrl.MGT.MGT(66).DRP.wr_data                        <=  reg_data(548)(31 downto 16);      
@@ -5128,6 +5451,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(66).RX_RESETS.reset_datapath           <=  reg_data(550)( 2);                
   Ctrl.MGT.MGT(66).RX_RESETS.reset_bufbypass          <=  reg_data(550)( 3);                
   Ctrl.MGT.MGT(67).RESET_ALL                          <=  reg_data(552)( 0);                
+  Ctrl.MGT.MGT(67).DRP.wr_en                          <=  reg_data(554)( 0);                
   Ctrl.MGT.MGT(67).DRP.wr_addr                        <=  reg_data(555)( 9 downto  0);      
   Ctrl.MGT.MGT(67).DRP.en                             <=  reg_data(555)(12);                
   Ctrl.MGT.MGT(67).DRP.wr_data                        <=  reg_data(556)(31 downto 16);      
@@ -5138,6 +5462,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(67).RX_RESETS.reset_datapath           <=  reg_data(558)( 2);                
   Ctrl.MGT.MGT(67).RX_RESETS.reset_bufbypass          <=  reg_data(558)( 3);                
   Ctrl.MGT.MGT(68).RESET_ALL                          <=  reg_data(560)( 0);                
+  Ctrl.MGT.MGT(68).DRP.wr_en                          <=  reg_data(562)( 0);                
   Ctrl.MGT.MGT(68).DRP.wr_addr                        <=  reg_data(563)( 9 downto  0);      
   Ctrl.MGT.MGT(68).DRP.en                             <=  reg_data(563)(12);                
   Ctrl.MGT.MGT(68).DRP.wr_data                        <=  reg_data(564)(31 downto 16);      
@@ -5148,6 +5473,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(68).RX_RESETS.reset_datapath           <=  reg_data(566)( 2);                
   Ctrl.MGT.MGT(68).RX_RESETS.reset_bufbypass          <=  reg_data(566)( 3);                
   Ctrl.MGT.MGT(69).RESET_ALL                          <=  reg_data(568)( 0);                
+  Ctrl.MGT.MGT(69).DRP.wr_en                          <=  reg_data(570)( 0);                
   Ctrl.MGT.MGT(69).DRP.wr_addr                        <=  reg_data(571)( 9 downto  0);      
   Ctrl.MGT.MGT(69).DRP.en                             <=  reg_data(571)(12);                
   Ctrl.MGT.MGT(69).DRP.wr_data                        <=  reg_data(572)(31 downto 16);      
@@ -5158,6 +5484,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(69).RX_RESETS.reset_datapath           <=  reg_data(574)( 2);                
   Ctrl.MGT.MGT(69).RX_RESETS.reset_bufbypass          <=  reg_data(574)( 3);                
   Ctrl.MGT.MGT(70).RESET_ALL                          <=  reg_data(576)( 0);                
+  Ctrl.MGT.MGT(70).DRP.wr_en                          <=  reg_data(578)( 0);                
   Ctrl.MGT.MGT(70).DRP.wr_addr                        <=  reg_data(579)( 9 downto  0);      
   Ctrl.MGT.MGT(70).DRP.en                             <=  reg_data(579)(12);                
   Ctrl.MGT.MGT(70).DRP.wr_data                        <=  reg_data(580)(31 downto 16);      
@@ -5168,6 +5495,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(70).RX_RESETS.reset_datapath           <=  reg_data(582)( 2);                
   Ctrl.MGT.MGT(70).RX_RESETS.reset_bufbypass          <=  reg_data(582)( 3);                
   Ctrl.MGT.MGT(71).RESET_ALL                          <=  reg_data(584)( 0);                
+  Ctrl.MGT.MGT(71).DRP.wr_en                          <=  reg_data(586)( 0);                
   Ctrl.MGT.MGT(71).DRP.wr_addr                        <=  reg_data(587)( 9 downto  0);      
   Ctrl.MGT.MGT(71).DRP.en                             <=  reg_data(587)(12);                
   Ctrl.MGT.MGT(71).DRP.wr_data                        <=  reg_data(588)(31 downto 16);      
@@ -5178,6 +5506,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(71).RX_RESETS.reset_datapath           <=  reg_data(590)( 2);                
   Ctrl.MGT.MGT(71).RX_RESETS.reset_bufbypass          <=  reg_data(590)( 3);                
   Ctrl.MGT.MGT(72).RESET_ALL                          <=  reg_data(592)( 0);                
+  Ctrl.MGT.MGT(72).DRP.wr_en                          <=  reg_data(594)( 0);                
   Ctrl.MGT.MGT(72).DRP.wr_addr                        <=  reg_data(595)( 9 downto  0);      
   Ctrl.MGT.MGT(72).DRP.en                             <=  reg_data(595)(12);                
   Ctrl.MGT.MGT(72).DRP.wr_data                        <=  reg_data(596)(31 downto 16);      
@@ -5188,6 +5517,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(72).RX_RESETS.reset_datapath           <=  reg_data(598)( 2);                
   Ctrl.MGT.MGT(72).RX_RESETS.reset_bufbypass          <=  reg_data(598)( 3);                
   Ctrl.MGT.MGT(73).RESET_ALL                          <=  reg_data(600)( 0);                
+  Ctrl.MGT.MGT(73).DRP.wr_en                          <=  reg_data(602)( 0);                
   Ctrl.MGT.MGT(73).DRP.wr_addr                        <=  reg_data(603)( 9 downto  0);      
   Ctrl.MGT.MGT(73).DRP.en                             <=  reg_data(603)(12);                
   Ctrl.MGT.MGT(73).DRP.wr_data                        <=  reg_data(604)(31 downto 16);      
@@ -5198,6 +5528,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(73).RX_RESETS.reset_datapath           <=  reg_data(606)( 2);                
   Ctrl.MGT.MGT(73).RX_RESETS.reset_bufbypass          <=  reg_data(606)( 3);                
   Ctrl.MGT.MGT(74).RESET_ALL                          <=  reg_data(608)( 0);                
+  Ctrl.MGT.MGT(74).DRP.wr_en                          <=  reg_data(610)( 0);                
   Ctrl.MGT.MGT(74).DRP.wr_addr                        <=  reg_data(611)( 9 downto  0);      
   Ctrl.MGT.MGT(74).DRP.en                             <=  reg_data(611)(12);                
   Ctrl.MGT.MGT(74).DRP.wr_data                        <=  reg_data(612)(31 downto 16);      
@@ -5208,6 +5539,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(74).RX_RESETS.reset_datapath           <=  reg_data(614)( 2);                
   Ctrl.MGT.MGT(74).RX_RESETS.reset_bufbypass          <=  reg_data(614)( 3);                
   Ctrl.MGT.MGT(75).RESET_ALL                          <=  reg_data(616)( 0);                
+  Ctrl.MGT.MGT(75).DRP.wr_en                          <=  reg_data(618)( 0);                
   Ctrl.MGT.MGT(75).DRP.wr_addr                        <=  reg_data(619)( 9 downto  0);      
   Ctrl.MGT.MGT(75).DRP.en                             <=  reg_data(619)(12);                
   Ctrl.MGT.MGT(75).DRP.wr_data                        <=  reg_data(620)(31 downto 16);      
@@ -5218,6 +5550,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(75).RX_RESETS.reset_datapath           <=  reg_data(622)( 2);                
   Ctrl.MGT.MGT(75).RX_RESETS.reset_bufbypass          <=  reg_data(622)( 3);                
   Ctrl.MGT.MGT(76).RESET_ALL                          <=  reg_data(624)( 0);                
+  Ctrl.MGT.MGT(76).DRP.wr_en                          <=  reg_data(626)( 0);                
   Ctrl.MGT.MGT(76).DRP.wr_addr                        <=  reg_data(627)( 9 downto  0);      
   Ctrl.MGT.MGT(76).DRP.en                             <=  reg_data(627)(12);                
   Ctrl.MGT.MGT(76).DRP.wr_data                        <=  reg_data(628)(31 downto 16);      
@@ -5228,6 +5561,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(76).RX_RESETS.reset_datapath           <=  reg_data(630)( 2);                
   Ctrl.MGT.MGT(76).RX_RESETS.reset_bufbypass          <=  reg_data(630)( 3);                
   Ctrl.MGT.MGT(77).RESET_ALL                          <=  reg_data(632)( 0);                
+  Ctrl.MGT.MGT(77).DRP.wr_en                          <=  reg_data(634)( 0);                
   Ctrl.MGT.MGT(77).DRP.wr_addr                        <=  reg_data(635)( 9 downto  0);      
   Ctrl.MGT.MGT(77).DRP.en                             <=  reg_data(635)(12);                
   Ctrl.MGT.MGT(77).DRP.wr_data                        <=  reg_data(636)(31 downto 16);      
@@ -5238,6 +5572,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(77).RX_RESETS.reset_datapath           <=  reg_data(638)( 2);                
   Ctrl.MGT.MGT(77).RX_RESETS.reset_bufbypass          <=  reg_data(638)( 3);                
   Ctrl.MGT.MGT(78).RESET_ALL                          <=  reg_data(640)( 0);                
+  Ctrl.MGT.MGT(78).DRP.wr_en                          <=  reg_data(642)( 0);                
   Ctrl.MGT.MGT(78).DRP.wr_addr                        <=  reg_data(643)( 9 downto  0);      
   Ctrl.MGT.MGT(78).DRP.en                             <=  reg_data(643)(12);                
   Ctrl.MGT.MGT(78).DRP.wr_data                        <=  reg_data(644)(31 downto 16);      
@@ -5248,6 +5583,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(78).RX_RESETS.reset_datapath           <=  reg_data(646)( 2);                
   Ctrl.MGT.MGT(78).RX_RESETS.reset_bufbypass          <=  reg_data(646)( 3);                
   Ctrl.MGT.MGT(79).RESET_ALL                          <=  reg_data(648)( 0);                
+  Ctrl.MGT.MGT(79).DRP.wr_en                          <=  reg_data(650)( 0);                
   Ctrl.MGT.MGT(79).DRP.wr_addr                        <=  reg_data(651)( 9 downto  0);      
   Ctrl.MGT.MGT(79).DRP.en                             <=  reg_data(651)(12);                
   Ctrl.MGT.MGT(79).DRP.wr_data                        <=  reg_data(652)(31 downto 16);      
@@ -5258,6 +5594,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(79).RX_RESETS.reset_datapath           <=  reg_data(654)( 2);                
   Ctrl.MGT.MGT(79).RX_RESETS.reset_bufbypass          <=  reg_data(654)( 3);                
   Ctrl.MGT.MGT(80).RESET_ALL                          <=  reg_data(656)( 0);                
+  Ctrl.MGT.MGT(80).DRP.wr_en                          <=  reg_data(658)( 0);                
   Ctrl.MGT.MGT(80).DRP.wr_addr                        <=  reg_data(659)( 9 downto  0);      
   Ctrl.MGT.MGT(80).DRP.en                             <=  reg_data(659)(12);                
   Ctrl.MGT.MGT(80).DRP.wr_data                        <=  reg_data(660)(31 downto 16);      
@@ -5268,6 +5605,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(80).RX_RESETS.reset_datapath           <=  reg_data(662)( 2);                
   Ctrl.MGT.MGT(80).RX_RESETS.reset_bufbypass          <=  reg_data(662)( 3);                
   Ctrl.MGT.MGT(81).RESET_ALL                          <=  reg_data(664)( 0);                
+  Ctrl.MGT.MGT(81).DRP.wr_en                          <=  reg_data(666)( 0);                
   Ctrl.MGT.MGT(81).DRP.wr_addr                        <=  reg_data(667)( 9 downto  0);      
   Ctrl.MGT.MGT(81).DRP.en                             <=  reg_data(667)(12);                
   Ctrl.MGT.MGT(81).DRP.wr_data                        <=  reg_data(668)(31 downto 16);      
@@ -5278,6 +5616,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(81).RX_RESETS.reset_datapath           <=  reg_data(670)( 2);                
   Ctrl.MGT.MGT(81).RX_RESETS.reset_bufbypass          <=  reg_data(670)( 3);                
   Ctrl.MGT.MGT(82).RESET_ALL                          <=  reg_data(672)( 0);                
+  Ctrl.MGT.MGT(82).DRP.wr_en                          <=  reg_data(674)( 0);                
   Ctrl.MGT.MGT(82).DRP.wr_addr                        <=  reg_data(675)( 9 downto  0);      
   Ctrl.MGT.MGT(82).DRP.en                             <=  reg_data(675)(12);                
   Ctrl.MGT.MGT(82).DRP.wr_data                        <=  reg_data(676)(31 downto 16);      
@@ -5288,6 +5627,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(82).RX_RESETS.reset_datapath           <=  reg_data(678)( 2);                
   Ctrl.MGT.MGT(82).RX_RESETS.reset_bufbypass          <=  reg_data(678)( 3);                
   Ctrl.MGT.MGT(83).RESET_ALL                          <=  reg_data(680)( 0);                
+  Ctrl.MGT.MGT(83).DRP.wr_en                          <=  reg_data(682)( 0);                
   Ctrl.MGT.MGT(83).DRP.wr_addr                        <=  reg_data(683)( 9 downto  0);      
   Ctrl.MGT.MGT(83).DRP.en                             <=  reg_data(683)(12);                
   Ctrl.MGT.MGT(83).DRP.wr_data                        <=  reg_data(684)(31 downto 16);      
@@ -5298,6 +5638,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(83).RX_RESETS.reset_datapath           <=  reg_data(686)( 2);                
   Ctrl.MGT.MGT(83).RX_RESETS.reset_bufbypass          <=  reg_data(686)( 3);                
   Ctrl.MGT.MGT(84).RESET_ALL                          <=  reg_data(688)( 0);                
+  Ctrl.MGT.MGT(84).DRP.wr_en                          <=  reg_data(690)( 0);                
   Ctrl.MGT.MGT(84).DRP.wr_addr                        <=  reg_data(691)( 9 downto  0);      
   Ctrl.MGT.MGT(84).DRP.en                             <=  reg_data(691)(12);                
   Ctrl.MGT.MGT(84).DRP.wr_data                        <=  reg_data(692)(31 downto 16);      
@@ -5308,6 +5649,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(84).RX_RESETS.reset_datapath           <=  reg_data(694)( 2);                
   Ctrl.MGT.MGT(84).RX_RESETS.reset_bufbypass          <=  reg_data(694)( 3);                
   Ctrl.MGT.MGT(85).RESET_ALL                          <=  reg_data(696)( 0);                
+  Ctrl.MGT.MGT(85).DRP.wr_en                          <=  reg_data(698)( 0);                
   Ctrl.MGT.MGT(85).DRP.wr_addr                        <=  reg_data(699)( 9 downto  0);      
   Ctrl.MGT.MGT(85).DRP.en                             <=  reg_data(699)(12);                
   Ctrl.MGT.MGT(85).DRP.wr_data                        <=  reg_data(700)(31 downto 16);      
@@ -5318,6 +5660,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(85).RX_RESETS.reset_datapath           <=  reg_data(702)( 2);                
   Ctrl.MGT.MGT(85).RX_RESETS.reset_bufbypass          <=  reg_data(702)( 3);                
   Ctrl.MGT.MGT(86).RESET_ALL                          <=  reg_data(704)( 0);                
+  Ctrl.MGT.MGT(86).DRP.wr_en                          <=  reg_data(706)( 0);                
   Ctrl.MGT.MGT(86).DRP.wr_addr                        <=  reg_data(707)( 9 downto  0);      
   Ctrl.MGT.MGT(86).DRP.en                             <=  reg_data(707)(12);                
   Ctrl.MGT.MGT(86).DRP.wr_data                        <=  reg_data(708)(31 downto 16);      
@@ -5328,6 +5671,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(86).RX_RESETS.reset_datapath           <=  reg_data(710)( 2);                
   Ctrl.MGT.MGT(86).RX_RESETS.reset_bufbypass          <=  reg_data(710)( 3);                
   Ctrl.MGT.MGT(87).RESET_ALL                          <=  reg_data(712)( 0);                
+  Ctrl.MGT.MGT(87).DRP.wr_en                          <=  reg_data(714)( 0);                
   Ctrl.MGT.MGT(87).DRP.wr_addr                        <=  reg_data(715)( 9 downto  0);      
   Ctrl.MGT.MGT(87).DRP.en                             <=  reg_data(715)(12);                
   Ctrl.MGT.MGT(87).DRP.wr_data                        <=  reg_data(716)(31 downto 16);      
@@ -5338,6 +5682,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(87).RX_RESETS.reset_datapath           <=  reg_data(718)( 2);                
   Ctrl.MGT.MGT(87).RX_RESETS.reset_bufbypass          <=  reg_data(718)( 3);                
   Ctrl.MGT.MGT(88).RESET_ALL                          <=  reg_data(720)( 0);                
+  Ctrl.MGT.MGT(88).DRP.wr_en                          <=  reg_data(722)( 0);                
   Ctrl.MGT.MGT(88).DRP.wr_addr                        <=  reg_data(723)( 9 downto  0);      
   Ctrl.MGT.MGT(88).DRP.en                             <=  reg_data(723)(12);                
   Ctrl.MGT.MGT(88).DRP.wr_data                        <=  reg_data(724)(31 downto 16);      
@@ -5348,6 +5693,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(88).RX_RESETS.reset_datapath           <=  reg_data(726)( 2);                
   Ctrl.MGT.MGT(88).RX_RESETS.reset_bufbypass          <=  reg_data(726)( 3);                
   Ctrl.MGT.MGT(89).RESET_ALL                          <=  reg_data(728)( 0);                
+  Ctrl.MGT.MGT(89).DRP.wr_en                          <=  reg_data(730)( 0);                
   Ctrl.MGT.MGT(89).DRP.wr_addr                        <=  reg_data(731)( 9 downto  0);      
   Ctrl.MGT.MGT(89).DRP.en                             <=  reg_data(731)(12);                
   Ctrl.MGT.MGT(89).DRP.wr_data                        <=  reg_data(732)(31 downto 16);      
@@ -5358,6 +5704,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(89).RX_RESETS.reset_datapath           <=  reg_data(734)( 2);                
   Ctrl.MGT.MGT(89).RX_RESETS.reset_bufbypass          <=  reg_data(734)( 3);                
   Ctrl.MGT.MGT(90).RESET_ALL                          <=  reg_data(736)( 0);                
+  Ctrl.MGT.MGT(90).DRP.wr_en                          <=  reg_data(738)( 0);                
   Ctrl.MGT.MGT(90).DRP.wr_addr                        <=  reg_data(739)( 9 downto  0);      
   Ctrl.MGT.MGT(90).DRP.en                             <=  reg_data(739)(12);                
   Ctrl.MGT.MGT(90).DRP.wr_data                        <=  reg_data(740)(31 downto 16);      
@@ -5368,6 +5715,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(90).RX_RESETS.reset_datapath           <=  reg_data(742)( 2);                
   Ctrl.MGT.MGT(90).RX_RESETS.reset_bufbypass          <=  reg_data(742)( 3);                
   Ctrl.MGT.MGT(91).RESET_ALL                          <=  reg_data(744)( 0);                
+  Ctrl.MGT.MGT(91).DRP.wr_en                          <=  reg_data(746)( 0);                
   Ctrl.MGT.MGT(91).DRP.wr_addr                        <=  reg_data(747)( 9 downto  0);      
   Ctrl.MGT.MGT(91).DRP.en                             <=  reg_data(747)(12);                
   Ctrl.MGT.MGT(91).DRP.wr_data                        <=  reg_data(748)(31 downto 16);      
@@ -5378,6 +5726,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(91).RX_RESETS.reset_datapath           <=  reg_data(750)( 2);                
   Ctrl.MGT.MGT(91).RX_RESETS.reset_bufbypass          <=  reg_data(750)( 3);                
   Ctrl.MGT.MGT(92).RESET_ALL                          <=  reg_data(752)( 0);                
+  Ctrl.MGT.MGT(92).DRP.wr_en                          <=  reg_data(754)( 0);                
   Ctrl.MGT.MGT(92).DRP.wr_addr                        <=  reg_data(755)( 9 downto  0);      
   Ctrl.MGT.MGT(92).DRP.en                             <=  reg_data(755)(12);                
   Ctrl.MGT.MGT(92).DRP.wr_data                        <=  reg_data(756)(31 downto 16);      
@@ -5388,6 +5737,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(92).RX_RESETS.reset_datapath           <=  reg_data(758)( 2);                
   Ctrl.MGT.MGT(92).RX_RESETS.reset_bufbypass          <=  reg_data(758)( 3);                
   Ctrl.MGT.MGT(93).RESET_ALL                          <=  reg_data(760)( 0);                
+  Ctrl.MGT.MGT(93).DRP.wr_en                          <=  reg_data(762)( 0);                
   Ctrl.MGT.MGT(93).DRP.wr_addr                        <=  reg_data(763)( 9 downto  0);      
   Ctrl.MGT.MGT(93).DRP.en                             <=  reg_data(763)(12);                
   Ctrl.MGT.MGT(93).DRP.wr_data                        <=  reg_data(764)(31 downto 16);      
@@ -5398,6 +5748,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(93).RX_RESETS.reset_datapath           <=  reg_data(766)( 2);                
   Ctrl.MGT.MGT(93).RX_RESETS.reset_bufbypass          <=  reg_data(766)( 3);                
   Ctrl.MGT.MGT(94).RESET_ALL                          <=  reg_data(768)( 0);                
+  Ctrl.MGT.MGT(94).DRP.wr_en                          <=  reg_data(770)( 0);                
   Ctrl.MGT.MGT(94).DRP.wr_addr                        <=  reg_data(771)( 9 downto  0);      
   Ctrl.MGT.MGT(94).DRP.en                             <=  reg_data(771)(12);                
   Ctrl.MGT.MGT(94).DRP.wr_data                        <=  reg_data(772)(31 downto 16);      
@@ -5408,6 +5759,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(94).RX_RESETS.reset_datapath           <=  reg_data(774)( 2);                
   Ctrl.MGT.MGT(94).RX_RESETS.reset_bufbypass          <=  reg_data(774)( 3);                
   Ctrl.MGT.MGT(95).RESET_ALL                          <=  reg_data(776)( 0);                
+  Ctrl.MGT.MGT(95).DRP.wr_en                          <=  reg_data(778)( 0);                
   Ctrl.MGT.MGT(95).DRP.wr_addr                        <=  reg_data(779)( 9 downto  0);      
   Ctrl.MGT.MGT(95).DRP.en                             <=  reg_data(779)(12);                
   Ctrl.MGT.MGT(95).DRP.wr_data                        <=  reg_data(780)(31 downto 16);      
@@ -5418,6 +5770,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(95).RX_RESETS.reset_datapath           <=  reg_data(782)( 2);                
   Ctrl.MGT.MGT(95).RX_RESETS.reset_bufbypass          <=  reg_data(782)( 3);                
   Ctrl.MGT.MGT(96).RESET_ALL                          <=  reg_data(784)( 0);                
+  Ctrl.MGT.MGT(96).DRP.wr_en                          <=  reg_data(786)( 0);                
   Ctrl.MGT.MGT(96).DRP.wr_addr                        <=  reg_data(787)( 9 downto  0);      
   Ctrl.MGT.MGT(96).DRP.en                             <=  reg_data(787)(12);                
   Ctrl.MGT.MGT(96).DRP.wr_data                        <=  reg_data(788)(31 downto 16);      
@@ -5428,6 +5781,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(96).RX_RESETS.reset_datapath           <=  reg_data(790)( 2);                
   Ctrl.MGT.MGT(96).RX_RESETS.reset_bufbypass          <=  reg_data(790)( 3);                
   Ctrl.MGT.MGT(97).RESET_ALL                          <=  reg_data(792)( 0);                
+  Ctrl.MGT.MGT(97).DRP.wr_en                          <=  reg_data(794)( 0);                
   Ctrl.MGT.MGT(97).DRP.wr_addr                        <=  reg_data(795)( 9 downto  0);      
   Ctrl.MGT.MGT(97).DRP.en                             <=  reg_data(795)(12);                
   Ctrl.MGT.MGT(97).DRP.wr_data                        <=  reg_data(796)(31 downto 16);      
@@ -5438,6 +5792,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(97).RX_RESETS.reset_datapath           <=  reg_data(798)( 2);                
   Ctrl.MGT.MGT(97).RX_RESETS.reset_bufbypass          <=  reg_data(798)( 3);                
   Ctrl.MGT.MGT(98).RESET_ALL                          <=  reg_data(800)( 0);                
+  Ctrl.MGT.MGT(98).DRP.wr_en                          <=  reg_data(802)( 0);                
   Ctrl.MGT.MGT(98).DRP.wr_addr                        <=  reg_data(803)( 9 downto  0);      
   Ctrl.MGT.MGT(98).DRP.en                             <=  reg_data(803)(12);                
   Ctrl.MGT.MGT(98).DRP.wr_data                        <=  reg_data(804)(31 downto 16);      
@@ -5448,6 +5803,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(98).RX_RESETS.reset_datapath           <=  reg_data(806)( 2);                
   Ctrl.MGT.MGT(98).RX_RESETS.reset_bufbypass          <=  reg_data(806)( 3);                
   Ctrl.MGT.MGT(99).RESET_ALL                          <=  reg_data(808)( 0);                
+  Ctrl.MGT.MGT(99).DRP.wr_en                          <=  reg_data(810)( 0);                
   Ctrl.MGT.MGT(99).DRP.wr_addr                        <=  reg_data(811)( 9 downto  0);      
   Ctrl.MGT.MGT(99).DRP.en                             <=  reg_data(811)(12);                
   Ctrl.MGT.MGT(99).DRP.wr_data                        <=  reg_data(812)(31 downto 16);      
@@ -5458,6 +5814,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(99).RX_RESETS.reset_datapath           <=  reg_data(814)( 2);                
   Ctrl.MGT.MGT(99).RX_RESETS.reset_bufbypass          <=  reg_data(814)( 3);                
   Ctrl.MGT.MGT(100).RESET_ALL                         <=  reg_data(816)( 0);                
+  Ctrl.MGT.MGT(100).DRP.wr_en                         <=  reg_data(818)( 0);                
   Ctrl.MGT.MGT(100).DRP.wr_addr                       <=  reg_data(819)( 9 downto  0);      
   Ctrl.MGT.MGT(100).DRP.en                            <=  reg_data(819)(12);                
   Ctrl.MGT.MGT(100).DRP.wr_data                       <=  reg_data(820)(31 downto 16);      
@@ -5468,6 +5825,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(100).RX_RESETS.reset_datapath          <=  reg_data(822)( 2);                
   Ctrl.MGT.MGT(100).RX_RESETS.reset_bufbypass         <=  reg_data(822)( 3);                
   Ctrl.MGT.MGT(101).RESET_ALL                         <=  reg_data(824)( 0);                
+  Ctrl.MGT.MGT(101).DRP.wr_en                         <=  reg_data(826)( 0);                
   Ctrl.MGT.MGT(101).DRP.wr_addr                       <=  reg_data(827)( 9 downto  0);      
   Ctrl.MGT.MGT(101).DRP.en                            <=  reg_data(827)(12);                
   Ctrl.MGT.MGT(101).DRP.wr_data                       <=  reg_data(828)(31 downto 16);      
@@ -5478,6 +5836,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(101).RX_RESETS.reset_datapath          <=  reg_data(830)( 2);                
   Ctrl.MGT.MGT(101).RX_RESETS.reset_bufbypass         <=  reg_data(830)( 3);                
   Ctrl.MGT.MGT(102).RESET_ALL                         <=  reg_data(832)( 0);                
+  Ctrl.MGT.MGT(102).DRP.wr_en                         <=  reg_data(834)( 0);                
   Ctrl.MGT.MGT(102).DRP.wr_addr                       <=  reg_data(835)( 9 downto  0);      
   Ctrl.MGT.MGT(102).DRP.en                            <=  reg_data(835)(12);                
   Ctrl.MGT.MGT(102).DRP.wr_data                       <=  reg_data(836)(31 downto 16);      
@@ -5488,6 +5847,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(102).RX_RESETS.reset_datapath          <=  reg_data(838)( 2);                
   Ctrl.MGT.MGT(102).RX_RESETS.reset_bufbypass         <=  reg_data(838)( 3);                
   Ctrl.MGT.MGT(103).RESET_ALL                         <=  reg_data(840)( 0);                
+  Ctrl.MGT.MGT(103).DRP.wr_en                         <=  reg_data(842)( 0);                
   Ctrl.MGT.MGT(103).DRP.wr_addr                       <=  reg_data(843)( 9 downto  0);      
   Ctrl.MGT.MGT(103).DRP.en                            <=  reg_data(843)(12);                
   Ctrl.MGT.MGT(103).DRP.wr_data                       <=  reg_data(844)(31 downto 16);      
@@ -5498,6 +5858,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(103).RX_RESETS.reset_datapath          <=  reg_data(846)( 2);                
   Ctrl.MGT.MGT(103).RX_RESETS.reset_bufbypass         <=  reg_data(846)( 3);                
   Ctrl.MGT.MGT(104).RESET_ALL                         <=  reg_data(848)( 0);                
+  Ctrl.MGT.MGT(104).DRP.wr_en                         <=  reg_data(850)( 0);                
   Ctrl.MGT.MGT(104).DRP.wr_addr                       <=  reg_data(851)( 9 downto  0);      
   Ctrl.MGT.MGT(104).DRP.en                            <=  reg_data(851)(12);                
   Ctrl.MGT.MGT(104).DRP.wr_data                       <=  reg_data(852)(31 downto 16);      
@@ -5508,6 +5869,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(104).RX_RESETS.reset_datapath          <=  reg_data(854)( 2);                
   Ctrl.MGT.MGT(104).RX_RESETS.reset_bufbypass         <=  reg_data(854)( 3);                
   Ctrl.MGT.MGT(105).RESET_ALL                         <=  reg_data(856)( 0);                
+  Ctrl.MGT.MGT(105).DRP.wr_en                         <=  reg_data(858)( 0);                
   Ctrl.MGT.MGT(105).DRP.wr_addr                       <=  reg_data(859)( 9 downto  0);      
   Ctrl.MGT.MGT(105).DRP.en                            <=  reg_data(859)(12);                
   Ctrl.MGT.MGT(105).DRP.wr_data                       <=  reg_data(860)(31 downto 16);      
@@ -5518,6 +5880,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(105).RX_RESETS.reset_datapath          <=  reg_data(862)( 2);                
   Ctrl.MGT.MGT(105).RX_RESETS.reset_bufbypass         <=  reg_data(862)( 3);                
   Ctrl.MGT.MGT(106).RESET_ALL                         <=  reg_data(864)( 0);                
+  Ctrl.MGT.MGT(106).DRP.wr_en                         <=  reg_data(866)( 0);                
   Ctrl.MGT.MGT(106).DRP.wr_addr                       <=  reg_data(867)( 9 downto  0);      
   Ctrl.MGT.MGT(106).DRP.en                            <=  reg_data(867)(12);                
   Ctrl.MGT.MGT(106).DRP.wr_data                       <=  reg_data(868)(31 downto 16);      
@@ -5528,6 +5891,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(106).RX_RESETS.reset_datapath          <=  reg_data(870)( 2);                
   Ctrl.MGT.MGT(106).RX_RESETS.reset_bufbypass         <=  reg_data(870)( 3);                
   Ctrl.MGT.MGT(107).RESET_ALL                         <=  reg_data(872)( 0);                
+  Ctrl.MGT.MGT(107).DRP.wr_en                         <=  reg_data(874)( 0);                
   Ctrl.MGT.MGT(107).DRP.wr_addr                       <=  reg_data(875)( 9 downto  0);      
   Ctrl.MGT.MGT(107).DRP.en                            <=  reg_data(875)(12);                
   Ctrl.MGT.MGT(107).DRP.wr_data                       <=  reg_data(876)(31 downto 16);      
@@ -5538,6 +5902,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(107).RX_RESETS.reset_datapath          <=  reg_data(878)( 2);                
   Ctrl.MGT.MGT(107).RX_RESETS.reset_bufbypass         <=  reg_data(878)( 3);                
   Ctrl.MGT.MGT(108).RESET_ALL                         <=  reg_data(880)( 0);                
+  Ctrl.MGT.MGT(108).DRP.wr_en                         <=  reg_data(882)( 0);                
   Ctrl.MGT.MGT(108).DRP.wr_addr                       <=  reg_data(883)( 9 downto  0);      
   Ctrl.MGT.MGT(108).DRP.en                            <=  reg_data(883)(12);                
   Ctrl.MGT.MGT(108).DRP.wr_data                       <=  reg_data(884)(31 downto 16);      
@@ -5548,6 +5913,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(108).RX_RESETS.reset_datapath          <=  reg_data(886)( 2);                
   Ctrl.MGT.MGT(108).RX_RESETS.reset_bufbypass         <=  reg_data(886)( 3);                
   Ctrl.MGT.MGT(109).RESET_ALL                         <=  reg_data(888)( 0);                
+  Ctrl.MGT.MGT(109).DRP.wr_en                         <=  reg_data(890)( 0);                
   Ctrl.MGT.MGT(109).DRP.wr_addr                       <=  reg_data(891)( 9 downto  0);      
   Ctrl.MGT.MGT(109).DRP.en                            <=  reg_data(891)(12);                
   Ctrl.MGT.MGT(109).DRP.wr_data                       <=  reg_data(892)(31 downto 16);      
@@ -5558,6 +5924,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(109).RX_RESETS.reset_datapath          <=  reg_data(894)( 2);                
   Ctrl.MGT.MGT(109).RX_RESETS.reset_bufbypass         <=  reg_data(894)( 3);                
   Ctrl.MGT.MGT(110).RESET_ALL                         <=  reg_data(896)( 0);                
+  Ctrl.MGT.MGT(110).DRP.wr_en                         <=  reg_data(898)( 0);                
   Ctrl.MGT.MGT(110).DRP.wr_addr                       <=  reg_data(899)( 9 downto  0);      
   Ctrl.MGT.MGT(110).DRP.en                            <=  reg_data(899)(12);                
   Ctrl.MGT.MGT(110).DRP.wr_data                       <=  reg_data(900)(31 downto 16);      
@@ -5568,6 +5935,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(110).RX_RESETS.reset_datapath          <=  reg_data(902)( 2);                
   Ctrl.MGT.MGT(110).RX_RESETS.reset_bufbypass         <=  reg_data(902)( 3);                
   Ctrl.MGT.MGT(111).RESET_ALL                         <=  reg_data(904)( 0);                
+  Ctrl.MGT.MGT(111).DRP.wr_en                         <=  reg_data(906)( 0);                
   Ctrl.MGT.MGT(111).DRP.wr_addr                       <=  reg_data(907)( 9 downto  0);      
   Ctrl.MGT.MGT(111).DRP.en                            <=  reg_data(907)(12);                
   Ctrl.MGT.MGT(111).DRP.wr_data                       <=  reg_data(908)(31 downto 16);      
@@ -5578,6 +5946,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(111).RX_RESETS.reset_datapath          <=  reg_data(910)( 2);                
   Ctrl.MGT.MGT(111).RX_RESETS.reset_bufbypass         <=  reg_data(910)( 3);                
   Ctrl.MGT.MGT(112).RESET_ALL                         <=  reg_data(912)( 0);                
+  Ctrl.MGT.MGT(112).DRP.wr_en                         <=  reg_data(914)( 0);                
   Ctrl.MGT.MGT(112).DRP.wr_addr                       <=  reg_data(915)( 9 downto  0);      
   Ctrl.MGT.MGT(112).DRP.en                            <=  reg_data(915)(12);                
   Ctrl.MGT.MGT(112).DRP.wr_data                       <=  reg_data(916)(31 downto 16);      
@@ -5588,6 +5957,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(112).RX_RESETS.reset_datapath          <=  reg_data(918)( 2);                
   Ctrl.MGT.MGT(112).RX_RESETS.reset_bufbypass         <=  reg_data(918)( 3);                
   Ctrl.MGT.MGT(113).RESET_ALL                         <=  reg_data(920)( 0);                
+  Ctrl.MGT.MGT(113).DRP.wr_en                         <=  reg_data(922)( 0);                
   Ctrl.MGT.MGT(113).DRP.wr_addr                       <=  reg_data(923)( 9 downto  0);      
   Ctrl.MGT.MGT(113).DRP.en                            <=  reg_data(923)(12);                
   Ctrl.MGT.MGT(113).DRP.wr_data                       <=  reg_data(924)(31 downto 16);      
@@ -5598,6 +5968,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(113).RX_RESETS.reset_datapath          <=  reg_data(926)( 2);                
   Ctrl.MGT.MGT(113).RX_RESETS.reset_bufbypass         <=  reg_data(926)( 3);                
   Ctrl.MGT.MGT(114).RESET_ALL                         <=  reg_data(928)( 0);                
+  Ctrl.MGT.MGT(114).DRP.wr_en                         <=  reg_data(930)( 0);                
   Ctrl.MGT.MGT(114).DRP.wr_addr                       <=  reg_data(931)( 9 downto  0);      
   Ctrl.MGT.MGT(114).DRP.en                            <=  reg_data(931)(12);                
   Ctrl.MGT.MGT(114).DRP.wr_data                       <=  reg_data(932)(31 downto 16);      
@@ -5608,6 +5979,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(114).RX_RESETS.reset_datapath          <=  reg_data(934)( 2);                
   Ctrl.MGT.MGT(114).RX_RESETS.reset_bufbypass         <=  reg_data(934)( 3);                
   Ctrl.MGT.MGT(115).RESET_ALL                         <=  reg_data(936)( 0);                
+  Ctrl.MGT.MGT(115).DRP.wr_en                         <=  reg_data(938)( 0);                
   Ctrl.MGT.MGT(115).DRP.wr_addr                       <=  reg_data(939)( 9 downto  0);      
   Ctrl.MGT.MGT(115).DRP.en                            <=  reg_data(939)(12);                
   Ctrl.MGT.MGT(115).DRP.wr_data                       <=  reg_data(940)(31 downto 16);      
@@ -5618,6 +5990,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(115).RX_RESETS.reset_datapath          <=  reg_data(942)( 2);                
   Ctrl.MGT.MGT(115).RX_RESETS.reset_bufbypass         <=  reg_data(942)( 3);                
   Ctrl.MGT.MGT(116).RESET_ALL                         <=  reg_data(944)( 0);                
+  Ctrl.MGT.MGT(116).DRP.wr_en                         <=  reg_data(946)( 0);                
   Ctrl.MGT.MGT(116).DRP.wr_addr                       <=  reg_data(947)( 9 downto  0);      
   Ctrl.MGT.MGT(116).DRP.en                            <=  reg_data(947)(12);                
   Ctrl.MGT.MGT(116).DRP.wr_data                       <=  reg_data(948)(31 downto 16);      
@@ -5628,6 +6001,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(116).RX_RESETS.reset_datapath          <=  reg_data(950)( 2);                
   Ctrl.MGT.MGT(116).RX_RESETS.reset_bufbypass         <=  reg_data(950)( 3);                
   Ctrl.MGT.MGT(117).RESET_ALL                         <=  reg_data(952)( 0);                
+  Ctrl.MGT.MGT(117).DRP.wr_en                         <=  reg_data(954)( 0);                
   Ctrl.MGT.MGT(117).DRP.wr_addr                       <=  reg_data(955)( 9 downto  0);      
   Ctrl.MGT.MGT(117).DRP.en                            <=  reg_data(955)(12);                
   Ctrl.MGT.MGT(117).DRP.wr_data                       <=  reg_data(956)(31 downto 16);      
@@ -5638,6 +6012,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(117).RX_RESETS.reset_datapath          <=  reg_data(958)( 2);                
   Ctrl.MGT.MGT(117).RX_RESETS.reset_bufbypass         <=  reg_data(958)( 3);                
   Ctrl.MGT.MGT(118).RESET_ALL                         <=  reg_data(960)( 0);                
+  Ctrl.MGT.MGT(118).DRP.wr_en                         <=  reg_data(962)( 0);                
   Ctrl.MGT.MGT(118).DRP.wr_addr                       <=  reg_data(963)( 9 downto  0);      
   Ctrl.MGT.MGT(118).DRP.en                            <=  reg_data(963)(12);                
   Ctrl.MGT.MGT(118).DRP.wr_data                       <=  reg_data(964)(31 downto 16);      
@@ -5648,6 +6023,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(118).RX_RESETS.reset_datapath          <=  reg_data(966)( 2);                
   Ctrl.MGT.MGT(118).RX_RESETS.reset_bufbypass         <=  reg_data(966)( 3);                
   Ctrl.MGT.MGT(119).RESET_ALL                         <=  reg_data(968)( 0);                
+  Ctrl.MGT.MGT(119).DRP.wr_en                         <=  reg_data(970)( 0);                
   Ctrl.MGT.MGT(119).DRP.wr_addr                       <=  reg_data(971)( 9 downto  0);      
   Ctrl.MGT.MGT(119).DRP.en                            <=  reg_data(971)(12);                
   Ctrl.MGT.MGT(119).DRP.wr_data                       <=  reg_data(972)(31 downto 16);      
@@ -5658,6 +6034,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(119).RX_RESETS.reset_datapath          <=  reg_data(974)( 2);                
   Ctrl.MGT.MGT(119).RX_RESETS.reset_bufbypass         <=  reg_data(974)( 3);                
   Ctrl.MGT.MGT(120).RESET_ALL                         <=  reg_data(976)( 0);                
+  Ctrl.MGT.MGT(120).DRP.wr_en                         <=  reg_data(978)( 0);                
   Ctrl.MGT.MGT(120).DRP.wr_addr                       <=  reg_data(979)( 9 downto  0);      
   Ctrl.MGT.MGT(120).DRP.en                            <=  reg_data(979)(12);                
   Ctrl.MGT.MGT(120).DRP.wr_data                       <=  reg_data(980)(31 downto 16);      
@@ -5668,6 +6045,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(120).RX_RESETS.reset_datapath          <=  reg_data(982)( 2);                
   Ctrl.MGT.MGT(120).RX_RESETS.reset_bufbypass         <=  reg_data(982)( 3);                
   Ctrl.MGT.MGT(121).RESET_ALL                         <=  reg_data(984)( 0);                
+  Ctrl.MGT.MGT(121).DRP.wr_en                         <=  reg_data(986)( 0);                
   Ctrl.MGT.MGT(121).DRP.wr_addr                       <=  reg_data(987)( 9 downto  0);      
   Ctrl.MGT.MGT(121).DRP.en                            <=  reg_data(987)(12);                
   Ctrl.MGT.MGT(121).DRP.wr_data                       <=  reg_data(988)(31 downto 16);      
@@ -5678,6 +6056,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(121).RX_RESETS.reset_datapath          <=  reg_data(990)( 2);                
   Ctrl.MGT.MGT(121).RX_RESETS.reset_bufbypass         <=  reg_data(990)( 3);                
   Ctrl.MGT.MGT(122).RESET_ALL                         <=  reg_data(992)( 0);                
+  Ctrl.MGT.MGT(122).DRP.wr_en                         <=  reg_data(994)( 0);                
   Ctrl.MGT.MGT(122).DRP.wr_addr                       <=  reg_data(995)( 9 downto  0);      
   Ctrl.MGT.MGT(122).DRP.en                            <=  reg_data(995)(12);                
   Ctrl.MGT.MGT(122).DRP.wr_data                       <=  reg_data(996)(31 downto 16);      
@@ -5688,6 +6067,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(122).RX_RESETS.reset_datapath          <=  reg_data(998)( 2);                
   Ctrl.MGT.MGT(122).RX_RESETS.reset_bufbypass         <=  reg_data(998)( 3);                
   Ctrl.MGT.MGT(123).RESET_ALL                         <=  reg_data(1000)( 0);               
+  Ctrl.MGT.MGT(123).DRP.wr_en                         <=  reg_data(1002)( 0);               
   Ctrl.MGT.MGT(123).DRP.wr_addr                       <=  reg_data(1003)( 9 downto  0);     
   Ctrl.MGT.MGT(123).DRP.en                            <=  reg_data(1003)(12);               
   Ctrl.MGT.MGT(123).DRP.wr_data                       <=  reg_data(1004)(31 downto 16);     
@@ -5698,6 +6078,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(123).RX_RESETS.reset_datapath          <=  reg_data(1006)( 2);               
   Ctrl.MGT.MGT(123).RX_RESETS.reset_bufbypass         <=  reg_data(1006)( 3);               
   Ctrl.MGT.MGT(124).RESET_ALL                         <=  reg_data(1008)( 0);               
+  Ctrl.MGT.MGT(124).DRP.wr_en                         <=  reg_data(1010)( 0);               
   Ctrl.MGT.MGT(124).DRP.wr_addr                       <=  reg_data(1011)( 9 downto  0);     
   Ctrl.MGT.MGT(124).DRP.en                            <=  reg_data(1011)(12);               
   Ctrl.MGT.MGT(124).DRP.wr_data                       <=  reg_data(1012)(31 downto 16);     
@@ -5708,6 +6089,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(124).RX_RESETS.reset_datapath          <=  reg_data(1014)( 2);               
   Ctrl.MGT.MGT(124).RX_RESETS.reset_bufbypass         <=  reg_data(1014)( 3);               
   Ctrl.MGT.MGT(125).RESET_ALL                         <=  reg_data(1016)( 0);               
+  Ctrl.MGT.MGT(125).DRP.wr_en                         <=  reg_data(1018)( 0);               
   Ctrl.MGT.MGT(125).DRP.wr_addr                       <=  reg_data(1019)( 9 downto  0);     
   Ctrl.MGT.MGT(125).DRP.en                            <=  reg_data(1019)(12);               
   Ctrl.MGT.MGT(125).DRP.wr_data                       <=  reg_data(1020)(31 downto 16);     
@@ -5718,6 +6100,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(125).RX_RESETS.reset_datapath          <=  reg_data(1022)( 2);               
   Ctrl.MGT.MGT(125).RX_RESETS.reset_bufbypass         <=  reg_data(1022)( 3);               
   Ctrl.MGT.MGT(126).RESET_ALL                         <=  reg_data(1024)( 0);               
+  Ctrl.MGT.MGT(126).DRP.wr_en                         <=  reg_data(1026)( 0);               
   Ctrl.MGT.MGT(126).DRP.wr_addr                       <=  reg_data(1027)( 9 downto  0);     
   Ctrl.MGT.MGT(126).DRP.en                            <=  reg_data(1027)(12);               
   Ctrl.MGT.MGT(126).DRP.wr_data                       <=  reg_data(1028)(31 downto 16);     
@@ -5728,6 +6111,7 @@ begin  -- architecture behavioral
   Ctrl.MGT.MGT(126).RX_RESETS.reset_datapath          <=  reg_data(1030)( 2);               
   Ctrl.MGT.MGT(126).RX_RESETS.reset_bufbypass         <=  reg_data(1030)( 3);               
   Ctrl.MGT.MGT(127).RESET_ALL                         <=  reg_data(1032)( 0);               
+  Ctrl.MGT.MGT(127).DRP.wr_en                         <=  reg_data(1034)( 0);               
   Ctrl.MGT.MGT(127).DRP.wr_addr                       <=  reg_data(1035)( 9 downto  0);     
   Ctrl.MGT.MGT(127).DRP.en                            <=  reg_data(1035)(12);               
   Ctrl.MGT.MGT(127).DRP.wr_data                       <=  reg_data(1036)(31 downto 16);     
@@ -7153,134 +7537,6 @@ begin  -- architecture behavioral
       reg_data(1038)( 3)  <= DEFAULT_CORE_CTRL_t.MGT.MGT(127).RX_RESETS.reset_bufbypass;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      Ctrl.MGT.MGT(0).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(1).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(2).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(3).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(4).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(5).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(6).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(7).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(8).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(9).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(10).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(11).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(12).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(13).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(14).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(15).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(16).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(17).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(18).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(19).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(20).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(21).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(22).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(23).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(24).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(25).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(26).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(27).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(28).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(29).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(30).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(31).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(32).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(33).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(34).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(35).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(36).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(37).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(38).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(39).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(40).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(41).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(42).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(43).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(44).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(45).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(46).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(47).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(48).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(49).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(50).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(51).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(52).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(53).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(54).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(55).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(56).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(57).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(58).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(59).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(60).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(61).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(62).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(63).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(64).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(65).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(66).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(67).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(68).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(69).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(70).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(71).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(72).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(73).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(74).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(75).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(76).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(77).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(78).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(79).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(80).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(81).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(82).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(83).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(84).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(85).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(86).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(87).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(88).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(89).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(90).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(91).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(92).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(93).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(94).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(95).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(96).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(97).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(98).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(99).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(100).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(101).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(102).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(103).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(104).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(105).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(106).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(107).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(108).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(109).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(110).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(111).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(112).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(113).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(114).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(115).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(116).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(117).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(118).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(119).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(120).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(121).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(122).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(123).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(124).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(125).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(126).DRP.wr_en <= '0';
-      Ctrl.MGT.MGT(127).DRP.wr_en <= '0';
       
 
       
@@ -7291,7 +7547,7 @@ begin  -- architecture behavioral
         when 16 => --0x10
           reg_data(16)( 0)              <=  localWrData( 0);                --Reset transceiver
         when 18 => --0x12
-          Ctrl.MGT.MGT(0).DRP.wr_en     <=  localWrData( 0);               
+          reg_data(18)( 0)              <=  localWrData( 0);                --DRP Write Enable
         when 19 => --0x13
           reg_data(19)( 9 downto  0)    <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(19)(12)              <=  localWrData(12);                --DRP Enable
@@ -7308,7 +7564,7 @@ begin  -- architecture behavioral
         when 24 => --0x18
           reg_data(24)( 0)              <=  localWrData( 0);                --Reset transceiver
         when 26 => --0x1a
-          Ctrl.MGT.MGT(1).DRP.wr_en     <=  localWrData( 0);               
+          reg_data(26)( 0)              <=  localWrData( 0);                --DRP Write Enable
         when 27 => --0x1b
           reg_data(27)( 9 downto  0)    <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(27)(12)              <=  localWrData(12);                --DRP Enable
@@ -7325,7 +7581,7 @@ begin  -- architecture behavioral
         when 32 => --0x20
           reg_data(32)( 0)              <=  localWrData( 0);                --Reset transceiver
         when 34 => --0x22
-          Ctrl.MGT.MGT(2).DRP.wr_en     <=  localWrData( 0);               
+          reg_data(34)( 0)              <=  localWrData( 0);                --DRP Write Enable
         when 35 => --0x23
           reg_data(35)( 9 downto  0)    <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(35)(12)              <=  localWrData(12);                --DRP Enable
@@ -7342,7 +7598,7 @@ begin  -- architecture behavioral
         when 40 => --0x28
           reg_data(40)( 0)              <=  localWrData( 0);                --Reset transceiver
         when 42 => --0x2a
-          Ctrl.MGT.MGT(3).DRP.wr_en     <=  localWrData( 0);               
+          reg_data(42)( 0)              <=  localWrData( 0);                --DRP Write Enable
         when 43 => --0x2b
           reg_data(43)( 9 downto  0)    <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(43)(12)              <=  localWrData(12);                --DRP Enable
@@ -7359,7 +7615,7 @@ begin  -- architecture behavioral
         when 48 => --0x30
           reg_data(48)( 0)              <=  localWrData( 0);                --Reset transceiver
         when 50 => --0x32
-          Ctrl.MGT.MGT(4).DRP.wr_en     <=  localWrData( 0);               
+          reg_data(50)( 0)              <=  localWrData( 0);                --DRP Write Enable
         when 51 => --0x33
           reg_data(51)( 9 downto  0)    <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(51)(12)              <=  localWrData(12);                --DRP Enable
@@ -7376,7 +7632,7 @@ begin  -- architecture behavioral
         when 56 => --0x38
           reg_data(56)( 0)              <=  localWrData( 0);                --Reset transceiver
         when 58 => --0x3a
-          Ctrl.MGT.MGT(5).DRP.wr_en     <=  localWrData( 0);               
+          reg_data(58)( 0)              <=  localWrData( 0);                --DRP Write Enable
         when 59 => --0x3b
           reg_data(59)( 9 downto  0)    <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(59)(12)              <=  localWrData(12);                --DRP Enable
@@ -7393,7 +7649,7 @@ begin  -- architecture behavioral
         when 64 => --0x40
           reg_data(64)( 0)              <=  localWrData( 0);                --Reset transceiver
         when 66 => --0x42
-          Ctrl.MGT.MGT(6).DRP.wr_en     <=  localWrData( 0);               
+          reg_data(66)( 0)              <=  localWrData( 0);                --DRP Write Enable
         when 67 => --0x43
           reg_data(67)( 9 downto  0)    <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(67)(12)              <=  localWrData(12);                --DRP Enable
@@ -7410,7 +7666,7 @@ begin  -- architecture behavioral
         when 72 => --0x48
           reg_data(72)( 0)              <=  localWrData( 0);                --Reset transceiver
         when 74 => --0x4a
-          Ctrl.MGT.MGT(7).DRP.wr_en     <=  localWrData( 0);               
+          reg_data(74)( 0)              <=  localWrData( 0);                --DRP Write Enable
         when 75 => --0x4b
           reg_data(75)( 9 downto  0)    <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(75)(12)              <=  localWrData(12);                --DRP Enable
@@ -7427,7 +7683,7 @@ begin  -- architecture behavioral
         when 80 => --0x50
           reg_data(80)( 0)              <=  localWrData( 0);                --Reset transceiver
         when 82 => --0x52
-          Ctrl.MGT.MGT(8).DRP.wr_en     <=  localWrData( 0);               
+          reg_data(82)( 0)              <=  localWrData( 0);                --DRP Write Enable
         when 83 => --0x53
           reg_data(83)( 9 downto  0)    <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(83)(12)              <=  localWrData(12);                --DRP Enable
@@ -7444,7 +7700,7 @@ begin  -- architecture behavioral
         when 88 => --0x58
           reg_data(88)( 0)              <=  localWrData( 0);                --Reset transceiver
         when 90 => --0x5a
-          Ctrl.MGT.MGT(9).DRP.wr_en     <=  localWrData( 0);               
+          reg_data(90)( 0)              <=  localWrData( 0);                --DRP Write Enable
         when 91 => --0x5b
           reg_data(91)( 9 downto  0)    <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(91)(12)              <=  localWrData(12);                --DRP Enable
@@ -7461,7 +7717,7 @@ begin  -- architecture behavioral
         when 96 => --0x60
           reg_data(96)( 0)              <=  localWrData( 0);                --Reset transceiver
         when 98 => --0x62
-          Ctrl.MGT.MGT(10).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(98)( 0)              <=  localWrData( 0);                --DRP Write Enable
         when 99 => --0x63
           reg_data(99)( 9 downto  0)    <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(99)(12)              <=  localWrData(12);                --DRP Enable
@@ -7478,7 +7734,7 @@ begin  -- architecture behavioral
         when 104 => --0x68
           reg_data(104)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 106 => --0x6a
-          Ctrl.MGT.MGT(11).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(106)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 107 => --0x6b
           reg_data(107)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(107)(12)             <=  localWrData(12);                --DRP Enable
@@ -7495,7 +7751,7 @@ begin  -- architecture behavioral
         when 112 => --0x70
           reg_data(112)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 114 => --0x72
-          Ctrl.MGT.MGT(12).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(114)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 115 => --0x73
           reg_data(115)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(115)(12)             <=  localWrData(12);                --DRP Enable
@@ -7512,7 +7768,7 @@ begin  -- architecture behavioral
         when 120 => --0x78
           reg_data(120)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 122 => --0x7a
-          Ctrl.MGT.MGT(13).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(122)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 123 => --0x7b
           reg_data(123)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(123)(12)             <=  localWrData(12);                --DRP Enable
@@ -7529,7 +7785,7 @@ begin  -- architecture behavioral
         when 128 => --0x80
           reg_data(128)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 130 => --0x82
-          Ctrl.MGT.MGT(14).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(130)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 131 => --0x83
           reg_data(131)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(131)(12)             <=  localWrData(12);                --DRP Enable
@@ -7546,7 +7802,7 @@ begin  -- architecture behavioral
         when 136 => --0x88
           reg_data(136)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 138 => --0x8a
-          Ctrl.MGT.MGT(15).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(138)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 139 => --0x8b
           reg_data(139)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(139)(12)             <=  localWrData(12);                --DRP Enable
@@ -7563,7 +7819,7 @@ begin  -- architecture behavioral
         when 144 => --0x90
           reg_data(144)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 146 => --0x92
-          Ctrl.MGT.MGT(16).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(146)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 147 => --0x93
           reg_data(147)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(147)(12)             <=  localWrData(12);                --DRP Enable
@@ -7580,7 +7836,7 @@ begin  -- architecture behavioral
         when 152 => --0x98
           reg_data(152)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 154 => --0x9a
-          Ctrl.MGT.MGT(17).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(154)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 155 => --0x9b
           reg_data(155)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(155)(12)             <=  localWrData(12);                --DRP Enable
@@ -7597,7 +7853,7 @@ begin  -- architecture behavioral
         when 160 => --0xa0
           reg_data(160)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 162 => --0xa2
-          Ctrl.MGT.MGT(18).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(162)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 163 => --0xa3
           reg_data(163)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(163)(12)             <=  localWrData(12);                --DRP Enable
@@ -7614,7 +7870,7 @@ begin  -- architecture behavioral
         when 168 => --0xa8
           reg_data(168)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 170 => --0xaa
-          Ctrl.MGT.MGT(19).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(170)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 171 => --0xab
           reg_data(171)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(171)(12)             <=  localWrData(12);                --DRP Enable
@@ -7631,7 +7887,7 @@ begin  -- architecture behavioral
         when 176 => --0xb0
           reg_data(176)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 178 => --0xb2
-          Ctrl.MGT.MGT(20).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(178)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 179 => --0xb3
           reg_data(179)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(179)(12)             <=  localWrData(12);                --DRP Enable
@@ -7648,7 +7904,7 @@ begin  -- architecture behavioral
         when 184 => --0xb8
           reg_data(184)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 186 => --0xba
-          Ctrl.MGT.MGT(21).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(186)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 187 => --0xbb
           reg_data(187)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(187)(12)             <=  localWrData(12);                --DRP Enable
@@ -7665,7 +7921,7 @@ begin  -- architecture behavioral
         when 192 => --0xc0
           reg_data(192)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 194 => --0xc2
-          Ctrl.MGT.MGT(22).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(194)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 195 => --0xc3
           reg_data(195)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(195)(12)             <=  localWrData(12);                --DRP Enable
@@ -7682,7 +7938,7 @@ begin  -- architecture behavioral
         when 200 => --0xc8
           reg_data(200)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 202 => --0xca
-          Ctrl.MGT.MGT(23).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(202)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 203 => --0xcb
           reg_data(203)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(203)(12)             <=  localWrData(12);                --DRP Enable
@@ -7699,7 +7955,7 @@ begin  -- architecture behavioral
         when 208 => --0xd0
           reg_data(208)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 210 => --0xd2
-          Ctrl.MGT.MGT(24).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(210)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 211 => --0xd3
           reg_data(211)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(211)(12)             <=  localWrData(12);                --DRP Enable
@@ -7716,7 +7972,7 @@ begin  -- architecture behavioral
         when 216 => --0xd8
           reg_data(216)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 218 => --0xda
-          Ctrl.MGT.MGT(25).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(218)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 219 => --0xdb
           reg_data(219)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(219)(12)             <=  localWrData(12);                --DRP Enable
@@ -7733,7 +7989,7 @@ begin  -- architecture behavioral
         when 224 => --0xe0
           reg_data(224)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 226 => --0xe2
-          Ctrl.MGT.MGT(26).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(226)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 227 => --0xe3
           reg_data(227)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(227)(12)             <=  localWrData(12);                --DRP Enable
@@ -7750,7 +8006,7 @@ begin  -- architecture behavioral
         when 232 => --0xe8
           reg_data(232)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 234 => --0xea
-          Ctrl.MGT.MGT(27).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(234)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 235 => --0xeb
           reg_data(235)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(235)(12)             <=  localWrData(12);                --DRP Enable
@@ -7767,7 +8023,7 @@ begin  -- architecture behavioral
         when 240 => --0xf0
           reg_data(240)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 242 => --0xf2
-          Ctrl.MGT.MGT(28).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(242)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 243 => --0xf3
           reg_data(243)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(243)(12)             <=  localWrData(12);                --DRP Enable
@@ -7784,7 +8040,7 @@ begin  -- architecture behavioral
         when 248 => --0xf8
           reg_data(248)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 250 => --0xfa
-          Ctrl.MGT.MGT(29).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(250)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 251 => --0xfb
           reg_data(251)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(251)(12)             <=  localWrData(12);                --DRP Enable
@@ -7801,7 +8057,7 @@ begin  -- architecture behavioral
         when 256 => --0x100
           reg_data(256)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 258 => --0x102
-          Ctrl.MGT.MGT(30).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(258)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 259 => --0x103
           reg_data(259)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(259)(12)             <=  localWrData(12);                --DRP Enable
@@ -7818,7 +8074,7 @@ begin  -- architecture behavioral
         when 264 => --0x108
           reg_data(264)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 266 => --0x10a
-          Ctrl.MGT.MGT(31).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(266)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 267 => --0x10b
           reg_data(267)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(267)(12)             <=  localWrData(12);                --DRP Enable
@@ -7835,7 +8091,7 @@ begin  -- architecture behavioral
         when 272 => --0x110
           reg_data(272)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 274 => --0x112
-          Ctrl.MGT.MGT(32).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(274)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 275 => --0x113
           reg_data(275)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(275)(12)             <=  localWrData(12);                --DRP Enable
@@ -7852,7 +8108,7 @@ begin  -- architecture behavioral
         when 280 => --0x118
           reg_data(280)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 282 => --0x11a
-          Ctrl.MGT.MGT(33).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(282)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 283 => --0x11b
           reg_data(283)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(283)(12)             <=  localWrData(12);                --DRP Enable
@@ -7869,7 +8125,7 @@ begin  -- architecture behavioral
         when 288 => --0x120
           reg_data(288)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 290 => --0x122
-          Ctrl.MGT.MGT(34).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(290)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 291 => --0x123
           reg_data(291)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(291)(12)             <=  localWrData(12);                --DRP Enable
@@ -7886,7 +8142,7 @@ begin  -- architecture behavioral
         when 296 => --0x128
           reg_data(296)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 298 => --0x12a
-          Ctrl.MGT.MGT(35).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(298)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 299 => --0x12b
           reg_data(299)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(299)(12)             <=  localWrData(12);                --DRP Enable
@@ -7903,7 +8159,7 @@ begin  -- architecture behavioral
         when 304 => --0x130
           reg_data(304)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 306 => --0x132
-          Ctrl.MGT.MGT(36).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(306)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 307 => --0x133
           reg_data(307)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(307)(12)             <=  localWrData(12);                --DRP Enable
@@ -7920,7 +8176,7 @@ begin  -- architecture behavioral
         when 312 => --0x138
           reg_data(312)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 314 => --0x13a
-          Ctrl.MGT.MGT(37).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(314)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 315 => --0x13b
           reg_data(315)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(315)(12)             <=  localWrData(12);                --DRP Enable
@@ -7937,7 +8193,7 @@ begin  -- architecture behavioral
         when 320 => --0x140
           reg_data(320)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 322 => --0x142
-          Ctrl.MGT.MGT(38).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(322)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 323 => --0x143
           reg_data(323)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(323)(12)             <=  localWrData(12);                --DRP Enable
@@ -7954,7 +8210,7 @@ begin  -- architecture behavioral
         when 328 => --0x148
           reg_data(328)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 330 => --0x14a
-          Ctrl.MGT.MGT(39).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(330)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 331 => --0x14b
           reg_data(331)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(331)(12)             <=  localWrData(12);                --DRP Enable
@@ -7971,7 +8227,7 @@ begin  -- architecture behavioral
         when 336 => --0x150
           reg_data(336)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 338 => --0x152
-          Ctrl.MGT.MGT(40).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(338)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 339 => --0x153
           reg_data(339)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(339)(12)             <=  localWrData(12);                --DRP Enable
@@ -7988,7 +8244,7 @@ begin  -- architecture behavioral
         when 344 => --0x158
           reg_data(344)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 346 => --0x15a
-          Ctrl.MGT.MGT(41).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(346)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 347 => --0x15b
           reg_data(347)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(347)(12)             <=  localWrData(12);                --DRP Enable
@@ -8005,7 +8261,7 @@ begin  -- architecture behavioral
         when 352 => --0x160
           reg_data(352)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 354 => --0x162
-          Ctrl.MGT.MGT(42).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(354)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 355 => --0x163
           reg_data(355)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(355)(12)             <=  localWrData(12);                --DRP Enable
@@ -8022,7 +8278,7 @@ begin  -- architecture behavioral
         when 360 => --0x168
           reg_data(360)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 362 => --0x16a
-          Ctrl.MGT.MGT(43).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(362)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 363 => --0x16b
           reg_data(363)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(363)(12)             <=  localWrData(12);                --DRP Enable
@@ -8039,7 +8295,7 @@ begin  -- architecture behavioral
         when 368 => --0x170
           reg_data(368)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 370 => --0x172
-          Ctrl.MGT.MGT(44).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(370)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 371 => --0x173
           reg_data(371)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(371)(12)             <=  localWrData(12);                --DRP Enable
@@ -8056,7 +8312,7 @@ begin  -- architecture behavioral
         when 376 => --0x178
           reg_data(376)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 378 => --0x17a
-          Ctrl.MGT.MGT(45).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(378)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 379 => --0x17b
           reg_data(379)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(379)(12)             <=  localWrData(12);                --DRP Enable
@@ -8073,7 +8329,7 @@ begin  -- architecture behavioral
         when 384 => --0x180
           reg_data(384)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 386 => --0x182
-          Ctrl.MGT.MGT(46).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(386)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 387 => --0x183
           reg_data(387)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(387)(12)             <=  localWrData(12);                --DRP Enable
@@ -8090,7 +8346,7 @@ begin  -- architecture behavioral
         when 392 => --0x188
           reg_data(392)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 394 => --0x18a
-          Ctrl.MGT.MGT(47).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(394)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 395 => --0x18b
           reg_data(395)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(395)(12)             <=  localWrData(12);                --DRP Enable
@@ -8107,7 +8363,7 @@ begin  -- architecture behavioral
         when 400 => --0x190
           reg_data(400)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 402 => --0x192
-          Ctrl.MGT.MGT(48).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(402)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 403 => --0x193
           reg_data(403)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(403)(12)             <=  localWrData(12);                --DRP Enable
@@ -8124,7 +8380,7 @@ begin  -- architecture behavioral
         when 408 => --0x198
           reg_data(408)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 410 => --0x19a
-          Ctrl.MGT.MGT(49).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(410)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 411 => --0x19b
           reg_data(411)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(411)(12)             <=  localWrData(12);                --DRP Enable
@@ -8141,7 +8397,7 @@ begin  -- architecture behavioral
         when 416 => --0x1a0
           reg_data(416)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 418 => --0x1a2
-          Ctrl.MGT.MGT(50).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(418)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 419 => --0x1a3
           reg_data(419)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(419)(12)             <=  localWrData(12);                --DRP Enable
@@ -8158,7 +8414,7 @@ begin  -- architecture behavioral
         when 424 => --0x1a8
           reg_data(424)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 426 => --0x1aa
-          Ctrl.MGT.MGT(51).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(426)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 427 => --0x1ab
           reg_data(427)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(427)(12)             <=  localWrData(12);                --DRP Enable
@@ -8175,7 +8431,7 @@ begin  -- architecture behavioral
         when 432 => --0x1b0
           reg_data(432)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 434 => --0x1b2
-          Ctrl.MGT.MGT(52).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(434)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 435 => --0x1b3
           reg_data(435)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(435)(12)             <=  localWrData(12);                --DRP Enable
@@ -8192,7 +8448,7 @@ begin  -- architecture behavioral
         when 440 => --0x1b8
           reg_data(440)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 442 => --0x1ba
-          Ctrl.MGT.MGT(53).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(442)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 443 => --0x1bb
           reg_data(443)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(443)(12)             <=  localWrData(12);                --DRP Enable
@@ -8209,7 +8465,7 @@ begin  -- architecture behavioral
         when 448 => --0x1c0
           reg_data(448)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 450 => --0x1c2
-          Ctrl.MGT.MGT(54).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(450)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 451 => --0x1c3
           reg_data(451)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(451)(12)             <=  localWrData(12);                --DRP Enable
@@ -8226,7 +8482,7 @@ begin  -- architecture behavioral
         when 456 => --0x1c8
           reg_data(456)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 458 => --0x1ca
-          Ctrl.MGT.MGT(55).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(458)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 459 => --0x1cb
           reg_data(459)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(459)(12)             <=  localWrData(12);                --DRP Enable
@@ -8243,7 +8499,7 @@ begin  -- architecture behavioral
         when 464 => --0x1d0
           reg_data(464)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 466 => --0x1d2
-          Ctrl.MGT.MGT(56).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(466)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 467 => --0x1d3
           reg_data(467)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(467)(12)             <=  localWrData(12);                --DRP Enable
@@ -8260,7 +8516,7 @@ begin  -- architecture behavioral
         when 472 => --0x1d8
           reg_data(472)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 474 => --0x1da
-          Ctrl.MGT.MGT(57).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(474)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 475 => --0x1db
           reg_data(475)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(475)(12)             <=  localWrData(12);                --DRP Enable
@@ -8277,7 +8533,7 @@ begin  -- architecture behavioral
         when 480 => --0x1e0
           reg_data(480)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 482 => --0x1e2
-          Ctrl.MGT.MGT(58).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(482)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 483 => --0x1e3
           reg_data(483)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(483)(12)             <=  localWrData(12);                --DRP Enable
@@ -8294,7 +8550,7 @@ begin  -- architecture behavioral
         when 488 => --0x1e8
           reg_data(488)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 490 => --0x1ea
-          Ctrl.MGT.MGT(59).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(490)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 491 => --0x1eb
           reg_data(491)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(491)(12)             <=  localWrData(12);                --DRP Enable
@@ -8311,7 +8567,7 @@ begin  -- architecture behavioral
         when 496 => --0x1f0
           reg_data(496)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 498 => --0x1f2
-          Ctrl.MGT.MGT(60).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(498)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 499 => --0x1f3
           reg_data(499)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(499)(12)             <=  localWrData(12);                --DRP Enable
@@ -8328,7 +8584,7 @@ begin  -- architecture behavioral
         when 504 => --0x1f8
           reg_data(504)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 506 => --0x1fa
-          Ctrl.MGT.MGT(61).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(506)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 507 => --0x1fb
           reg_data(507)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(507)(12)             <=  localWrData(12);                --DRP Enable
@@ -8345,7 +8601,7 @@ begin  -- architecture behavioral
         when 512 => --0x200
           reg_data(512)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 514 => --0x202
-          Ctrl.MGT.MGT(62).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(514)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 515 => --0x203
           reg_data(515)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(515)(12)             <=  localWrData(12);                --DRP Enable
@@ -8362,7 +8618,7 @@ begin  -- architecture behavioral
         when 520 => --0x208
           reg_data(520)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 522 => --0x20a
-          Ctrl.MGT.MGT(63).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(522)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 523 => --0x20b
           reg_data(523)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(523)(12)             <=  localWrData(12);                --DRP Enable
@@ -8379,7 +8635,7 @@ begin  -- architecture behavioral
         when 528 => --0x210
           reg_data(528)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 530 => --0x212
-          Ctrl.MGT.MGT(64).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(530)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 531 => --0x213
           reg_data(531)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(531)(12)             <=  localWrData(12);                --DRP Enable
@@ -8396,7 +8652,7 @@ begin  -- architecture behavioral
         when 536 => --0x218
           reg_data(536)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 538 => --0x21a
-          Ctrl.MGT.MGT(65).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(538)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 539 => --0x21b
           reg_data(539)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(539)(12)             <=  localWrData(12);                --DRP Enable
@@ -8413,7 +8669,7 @@ begin  -- architecture behavioral
         when 544 => --0x220
           reg_data(544)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 546 => --0x222
-          Ctrl.MGT.MGT(66).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(546)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 547 => --0x223
           reg_data(547)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(547)(12)             <=  localWrData(12);                --DRP Enable
@@ -8430,7 +8686,7 @@ begin  -- architecture behavioral
         when 552 => --0x228
           reg_data(552)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 554 => --0x22a
-          Ctrl.MGT.MGT(67).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(554)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 555 => --0x22b
           reg_data(555)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(555)(12)             <=  localWrData(12);                --DRP Enable
@@ -8447,7 +8703,7 @@ begin  -- architecture behavioral
         when 560 => --0x230
           reg_data(560)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 562 => --0x232
-          Ctrl.MGT.MGT(68).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(562)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 563 => --0x233
           reg_data(563)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(563)(12)             <=  localWrData(12);                --DRP Enable
@@ -8464,7 +8720,7 @@ begin  -- architecture behavioral
         when 568 => --0x238
           reg_data(568)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 570 => --0x23a
-          Ctrl.MGT.MGT(69).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(570)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 571 => --0x23b
           reg_data(571)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(571)(12)             <=  localWrData(12);                --DRP Enable
@@ -8481,7 +8737,7 @@ begin  -- architecture behavioral
         when 576 => --0x240
           reg_data(576)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 578 => --0x242
-          Ctrl.MGT.MGT(70).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(578)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 579 => --0x243
           reg_data(579)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(579)(12)             <=  localWrData(12);                --DRP Enable
@@ -8498,7 +8754,7 @@ begin  -- architecture behavioral
         when 584 => --0x248
           reg_data(584)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 586 => --0x24a
-          Ctrl.MGT.MGT(71).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(586)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 587 => --0x24b
           reg_data(587)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(587)(12)             <=  localWrData(12);                --DRP Enable
@@ -8515,7 +8771,7 @@ begin  -- architecture behavioral
         when 592 => --0x250
           reg_data(592)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 594 => --0x252
-          Ctrl.MGT.MGT(72).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(594)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 595 => --0x253
           reg_data(595)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(595)(12)             <=  localWrData(12);                --DRP Enable
@@ -8532,7 +8788,7 @@ begin  -- architecture behavioral
         when 600 => --0x258
           reg_data(600)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 602 => --0x25a
-          Ctrl.MGT.MGT(73).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(602)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 603 => --0x25b
           reg_data(603)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(603)(12)             <=  localWrData(12);                --DRP Enable
@@ -8549,7 +8805,7 @@ begin  -- architecture behavioral
         when 608 => --0x260
           reg_data(608)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 610 => --0x262
-          Ctrl.MGT.MGT(74).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(610)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 611 => --0x263
           reg_data(611)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(611)(12)             <=  localWrData(12);                --DRP Enable
@@ -8566,7 +8822,7 @@ begin  -- architecture behavioral
         when 616 => --0x268
           reg_data(616)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 618 => --0x26a
-          Ctrl.MGT.MGT(75).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(618)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 619 => --0x26b
           reg_data(619)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(619)(12)             <=  localWrData(12);                --DRP Enable
@@ -8583,7 +8839,7 @@ begin  -- architecture behavioral
         when 624 => --0x270
           reg_data(624)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 626 => --0x272
-          Ctrl.MGT.MGT(76).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(626)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 627 => --0x273
           reg_data(627)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(627)(12)             <=  localWrData(12);                --DRP Enable
@@ -8600,7 +8856,7 @@ begin  -- architecture behavioral
         when 632 => --0x278
           reg_data(632)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 634 => --0x27a
-          Ctrl.MGT.MGT(77).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(634)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 635 => --0x27b
           reg_data(635)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(635)(12)             <=  localWrData(12);                --DRP Enable
@@ -8617,7 +8873,7 @@ begin  -- architecture behavioral
         when 640 => --0x280
           reg_data(640)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 642 => --0x282
-          Ctrl.MGT.MGT(78).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(642)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 643 => --0x283
           reg_data(643)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(643)(12)             <=  localWrData(12);                --DRP Enable
@@ -8634,7 +8890,7 @@ begin  -- architecture behavioral
         when 648 => --0x288
           reg_data(648)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 650 => --0x28a
-          Ctrl.MGT.MGT(79).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(650)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 651 => --0x28b
           reg_data(651)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(651)(12)             <=  localWrData(12);                --DRP Enable
@@ -8651,7 +8907,7 @@ begin  -- architecture behavioral
         when 656 => --0x290
           reg_data(656)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 658 => --0x292
-          Ctrl.MGT.MGT(80).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(658)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 659 => --0x293
           reg_data(659)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(659)(12)             <=  localWrData(12);                --DRP Enable
@@ -8668,7 +8924,7 @@ begin  -- architecture behavioral
         when 664 => --0x298
           reg_data(664)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 666 => --0x29a
-          Ctrl.MGT.MGT(81).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(666)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 667 => --0x29b
           reg_data(667)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(667)(12)             <=  localWrData(12);                --DRP Enable
@@ -8685,7 +8941,7 @@ begin  -- architecture behavioral
         when 672 => --0x2a0
           reg_data(672)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 674 => --0x2a2
-          Ctrl.MGT.MGT(82).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(674)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 675 => --0x2a3
           reg_data(675)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(675)(12)             <=  localWrData(12);                --DRP Enable
@@ -8702,7 +8958,7 @@ begin  -- architecture behavioral
         when 680 => --0x2a8
           reg_data(680)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 682 => --0x2aa
-          Ctrl.MGT.MGT(83).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(682)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 683 => --0x2ab
           reg_data(683)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(683)(12)             <=  localWrData(12);                --DRP Enable
@@ -8719,7 +8975,7 @@ begin  -- architecture behavioral
         when 688 => --0x2b0
           reg_data(688)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 690 => --0x2b2
-          Ctrl.MGT.MGT(84).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(690)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 691 => --0x2b3
           reg_data(691)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(691)(12)             <=  localWrData(12);                --DRP Enable
@@ -8736,7 +8992,7 @@ begin  -- architecture behavioral
         when 696 => --0x2b8
           reg_data(696)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 698 => --0x2ba
-          Ctrl.MGT.MGT(85).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(698)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 699 => --0x2bb
           reg_data(699)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(699)(12)             <=  localWrData(12);                --DRP Enable
@@ -8753,7 +9009,7 @@ begin  -- architecture behavioral
         when 704 => --0x2c0
           reg_data(704)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 706 => --0x2c2
-          Ctrl.MGT.MGT(86).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(706)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 707 => --0x2c3
           reg_data(707)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(707)(12)             <=  localWrData(12);                --DRP Enable
@@ -8770,7 +9026,7 @@ begin  -- architecture behavioral
         when 712 => --0x2c8
           reg_data(712)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 714 => --0x2ca
-          Ctrl.MGT.MGT(87).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(714)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 715 => --0x2cb
           reg_data(715)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(715)(12)             <=  localWrData(12);                --DRP Enable
@@ -8787,7 +9043,7 @@ begin  -- architecture behavioral
         when 720 => --0x2d0
           reg_data(720)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 722 => --0x2d2
-          Ctrl.MGT.MGT(88).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(722)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 723 => --0x2d3
           reg_data(723)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(723)(12)             <=  localWrData(12);                --DRP Enable
@@ -8804,7 +9060,7 @@ begin  -- architecture behavioral
         when 728 => --0x2d8
           reg_data(728)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 730 => --0x2da
-          Ctrl.MGT.MGT(89).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(730)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 731 => --0x2db
           reg_data(731)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(731)(12)             <=  localWrData(12);                --DRP Enable
@@ -8821,7 +9077,7 @@ begin  -- architecture behavioral
         when 736 => --0x2e0
           reg_data(736)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 738 => --0x2e2
-          Ctrl.MGT.MGT(90).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(738)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 739 => --0x2e3
           reg_data(739)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(739)(12)             <=  localWrData(12);                --DRP Enable
@@ -8838,7 +9094,7 @@ begin  -- architecture behavioral
         when 744 => --0x2e8
           reg_data(744)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 746 => --0x2ea
-          Ctrl.MGT.MGT(91).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(746)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 747 => --0x2eb
           reg_data(747)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(747)(12)             <=  localWrData(12);                --DRP Enable
@@ -8855,7 +9111,7 @@ begin  -- architecture behavioral
         when 752 => --0x2f0
           reg_data(752)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 754 => --0x2f2
-          Ctrl.MGT.MGT(92).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(754)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 755 => --0x2f3
           reg_data(755)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(755)(12)             <=  localWrData(12);                --DRP Enable
@@ -8872,7 +9128,7 @@ begin  -- architecture behavioral
         when 760 => --0x2f8
           reg_data(760)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 762 => --0x2fa
-          Ctrl.MGT.MGT(93).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(762)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 763 => --0x2fb
           reg_data(763)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(763)(12)             <=  localWrData(12);                --DRP Enable
@@ -8889,7 +9145,7 @@ begin  -- architecture behavioral
         when 768 => --0x300
           reg_data(768)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 770 => --0x302
-          Ctrl.MGT.MGT(94).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(770)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 771 => --0x303
           reg_data(771)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(771)(12)             <=  localWrData(12);                --DRP Enable
@@ -8906,7 +9162,7 @@ begin  -- architecture behavioral
         when 776 => --0x308
           reg_data(776)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 778 => --0x30a
-          Ctrl.MGT.MGT(95).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(778)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 779 => --0x30b
           reg_data(779)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(779)(12)             <=  localWrData(12);                --DRP Enable
@@ -8923,7 +9179,7 @@ begin  -- architecture behavioral
         when 784 => --0x310
           reg_data(784)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 786 => --0x312
-          Ctrl.MGT.MGT(96).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(786)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 787 => --0x313
           reg_data(787)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(787)(12)             <=  localWrData(12);                --DRP Enable
@@ -8940,7 +9196,7 @@ begin  -- architecture behavioral
         when 792 => --0x318
           reg_data(792)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 794 => --0x31a
-          Ctrl.MGT.MGT(97).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(794)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 795 => --0x31b
           reg_data(795)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(795)(12)             <=  localWrData(12);                --DRP Enable
@@ -8957,7 +9213,7 @@ begin  -- architecture behavioral
         when 800 => --0x320
           reg_data(800)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 802 => --0x322
-          Ctrl.MGT.MGT(98).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(802)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 803 => --0x323
           reg_data(803)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(803)(12)             <=  localWrData(12);                --DRP Enable
@@ -8974,7 +9230,7 @@ begin  -- architecture behavioral
         when 808 => --0x328
           reg_data(808)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 810 => --0x32a
-          Ctrl.MGT.MGT(99).DRP.wr_en    <=  localWrData( 0);               
+          reg_data(810)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 811 => --0x32b
           reg_data(811)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(811)(12)             <=  localWrData(12);                --DRP Enable
@@ -8991,7 +9247,7 @@ begin  -- architecture behavioral
         when 816 => --0x330
           reg_data(816)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 818 => --0x332
-          Ctrl.MGT.MGT(100).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(818)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 819 => --0x333
           reg_data(819)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(819)(12)             <=  localWrData(12);                --DRP Enable
@@ -9008,7 +9264,7 @@ begin  -- architecture behavioral
         when 824 => --0x338
           reg_data(824)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 826 => --0x33a
-          Ctrl.MGT.MGT(101).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(826)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 827 => --0x33b
           reg_data(827)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(827)(12)             <=  localWrData(12);                --DRP Enable
@@ -9025,7 +9281,7 @@ begin  -- architecture behavioral
         when 832 => --0x340
           reg_data(832)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 834 => --0x342
-          Ctrl.MGT.MGT(102).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(834)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 835 => --0x343
           reg_data(835)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(835)(12)             <=  localWrData(12);                --DRP Enable
@@ -9042,7 +9298,7 @@ begin  -- architecture behavioral
         when 840 => --0x348
           reg_data(840)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 842 => --0x34a
-          Ctrl.MGT.MGT(103).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(842)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 843 => --0x34b
           reg_data(843)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(843)(12)             <=  localWrData(12);                --DRP Enable
@@ -9059,7 +9315,7 @@ begin  -- architecture behavioral
         when 848 => --0x350
           reg_data(848)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 850 => --0x352
-          Ctrl.MGT.MGT(104).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(850)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 851 => --0x353
           reg_data(851)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(851)(12)             <=  localWrData(12);                --DRP Enable
@@ -9076,7 +9332,7 @@ begin  -- architecture behavioral
         when 856 => --0x358
           reg_data(856)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 858 => --0x35a
-          Ctrl.MGT.MGT(105).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(858)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 859 => --0x35b
           reg_data(859)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(859)(12)             <=  localWrData(12);                --DRP Enable
@@ -9093,7 +9349,7 @@ begin  -- architecture behavioral
         when 864 => --0x360
           reg_data(864)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 866 => --0x362
-          Ctrl.MGT.MGT(106).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(866)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 867 => --0x363
           reg_data(867)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(867)(12)             <=  localWrData(12);                --DRP Enable
@@ -9110,7 +9366,7 @@ begin  -- architecture behavioral
         when 872 => --0x368
           reg_data(872)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 874 => --0x36a
-          Ctrl.MGT.MGT(107).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(874)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 875 => --0x36b
           reg_data(875)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(875)(12)             <=  localWrData(12);                --DRP Enable
@@ -9127,7 +9383,7 @@ begin  -- architecture behavioral
         when 880 => --0x370
           reg_data(880)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 882 => --0x372
-          Ctrl.MGT.MGT(108).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(882)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 883 => --0x373
           reg_data(883)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(883)(12)             <=  localWrData(12);                --DRP Enable
@@ -9144,7 +9400,7 @@ begin  -- architecture behavioral
         when 888 => --0x378
           reg_data(888)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 890 => --0x37a
-          Ctrl.MGT.MGT(109).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(890)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 891 => --0x37b
           reg_data(891)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(891)(12)             <=  localWrData(12);                --DRP Enable
@@ -9161,7 +9417,7 @@ begin  -- architecture behavioral
         when 896 => --0x380
           reg_data(896)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 898 => --0x382
-          Ctrl.MGT.MGT(110).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(898)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 899 => --0x383
           reg_data(899)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(899)(12)             <=  localWrData(12);                --DRP Enable
@@ -9178,7 +9434,7 @@ begin  -- architecture behavioral
         when 904 => --0x388
           reg_data(904)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 906 => --0x38a
-          Ctrl.MGT.MGT(111).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(906)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 907 => --0x38b
           reg_data(907)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(907)(12)             <=  localWrData(12);                --DRP Enable
@@ -9195,7 +9451,7 @@ begin  -- architecture behavioral
         when 912 => --0x390
           reg_data(912)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 914 => --0x392
-          Ctrl.MGT.MGT(112).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(914)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 915 => --0x393
           reg_data(915)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(915)(12)             <=  localWrData(12);                --DRP Enable
@@ -9212,7 +9468,7 @@ begin  -- architecture behavioral
         when 920 => --0x398
           reg_data(920)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 922 => --0x39a
-          Ctrl.MGT.MGT(113).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(922)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 923 => --0x39b
           reg_data(923)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(923)(12)             <=  localWrData(12);                --DRP Enable
@@ -9229,7 +9485,7 @@ begin  -- architecture behavioral
         when 928 => --0x3a0
           reg_data(928)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 930 => --0x3a2
-          Ctrl.MGT.MGT(114).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(930)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 931 => --0x3a3
           reg_data(931)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(931)(12)             <=  localWrData(12);                --DRP Enable
@@ -9246,7 +9502,7 @@ begin  -- architecture behavioral
         when 936 => --0x3a8
           reg_data(936)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 938 => --0x3aa
-          Ctrl.MGT.MGT(115).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(938)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 939 => --0x3ab
           reg_data(939)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(939)(12)             <=  localWrData(12);                --DRP Enable
@@ -9263,7 +9519,7 @@ begin  -- architecture behavioral
         when 944 => --0x3b0
           reg_data(944)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 946 => --0x3b2
-          Ctrl.MGT.MGT(116).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(946)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 947 => --0x3b3
           reg_data(947)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(947)(12)             <=  localWrData(12);                --DRP Enable
@@ -9280,7 +9536,7 @@ begin  -- architecture behavioral
         when 952 => --0x3b8
           reg_data(952)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 954 => --0x3ba
-          Ctrl.MGT.MGT(117).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(954)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 955 => --0x3bb
           reg_data(955)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(955)(12)             <=  localWrData(12);                --DRP Enable
@@ -9297,7 +9553,7 @@ begin  -- architecture behavioral
         when 960 => --0x3c0
           reg_data(960)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 962 => --0x3c2
-          Ctrl.MGT.MGT(118).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(962)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 963 => --0x3c3
           reg_data(963)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(963)(12)             <=  localWrData(12);                --DRP Enable
@@ -9314,7 +9570,7 @@ begin  -- architecture behavioral
         when 968 => --0x3c8
           reg_data(968)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 970 => --0x3ca
-          Ctrl.MGT.MGT(119).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(970)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 971 => --0x3cb
           reg_data(971)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(971)(12)             <=  localWrData(12);                --DRP Enable
@@ -9331,7 +9587,7 @@ begin  -- architecture behavioral
         when 976 => --0x3d0
           reg_data(976)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 978 => --0x3d2
-          Ctrl.MGT.MGT(120).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(978)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 979 => --0x3d3
           reg_data(979)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(979)(12)             <=  localWrData(12);                --DRP Enable
@@ -9348,7 +9604,7 @@ begin  -- architecture behavioral
         when 984 => --0x3d8
           reg_data(984)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 986 => --0x3da
-          Ctrl.MGT.MGT(121).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(986)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 987 => --0x3db
           reg_data(987)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(987)(12)             <=  localWrData(12);                --DRP Enable
@@ -9365,7 +9621,7 @@ begin  -- architecture behavioral
         when 992 => --0x3e0
           reg_data(992)( 0)             <=  localWrData( 0);                --Reset transceiver
         when 994 => --0x3e2
-          Ctrl.MGT.MGT(122).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(994)( 0)             <=  localWrData( 0);                --DRP Write Enable
         when 995 => --0x3e3
           reg_data(995)( 9 downto  0)   <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(995)(12)             <=  localWrData(12);                --DRP Enable
@@ -9382,7 +9638,7 @@ begin  -- architecture behavioral
         when 1000 => --0x3e8
           reg_data(1000)( 0)            <=  localWrData( 0);                --Reset transceiver
         when 1002 => --0x3ea
-          Ctrl.MGT.MGT(123).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(1002)( 0)            <=  localWrData( 0);                --DRP Write Enable
         when 1003 => --0x3eb
           reg_data(1003)( 9 downto  0)  <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(1003)(12)            <=  localWrData(12);                --DRP Enable
@@ -9399,7 +9655,7 @@ begin  -- architecture behavioral
         when 1008 => --0x3f0
           reg_data(1008)( 0)            <=  localWrData( 0);                --Reset transceiver
         when 1010 => --0x3f2
-          Ctrl.MGT.MGT(124).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(1010)( 0)            <=  localWrData( 0);                --DRP Write Enable
         when 1011 => --0x3f3
           reg_data(1011)( 9 downto  0)  <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(1011)(12)            <=  localWrData(12);                --DRP Enable
@@ -9416,7 +9672,7 @@ begin  -- architecture behavioral
         when 1016 => --0x3f8
           reg_data(1016)( 0)            <=  localWrData( 0);                --Reset transceiver
         when 1018 => --0x3fa
-          Ctrl.MGT.MGT(125).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(1018)( 0)            <=  localWrData( 0);                --DRP Write Enable
         when 1019 => --0x3fb
           reg_data(1019)( 9 downto  0)  <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(1019)(12)            <=  localWrData(12);                --DRP Enable
@@ -9433,7 +9689,7 @@ begin  -- architecture behavioral
         when 1024 => --0x400
           reg_data(1024)( 0)            <=  localWrData( 0);                --Reset transceiver
         when 1026 => --0x402
-          Ctrl.MGT.MGT(126).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(1026)( 0)            <=  localWrData( 0);                --DRP Write Enable
         when 1027 => --0x403
           reg_data(1027)( 9 downto  0)  <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(1027)(12)            <=  localWrData(12);                --DRP Enable
@@ -9450,7 +9706,7 @@ begin  -- architecture behavioral
         when 1032 => --0x408
           reg_data(1032)( 0)            <=  localWrData( 0);                --Reset transceiver
         when 1034 => --0x40a
-          Ctrl.MGT.MGT(127).DRP.wr_en   <=  localWrData( 0);               
+          reg_data(1034)( 0)            <=  localWrData( 0);                --DRP Write Enable
         when 1035 => --0x40b
           reg_data(1035)( 9 downto  0)  <=  localWrData( 9 downto  0);      --DRP Address
           reg_data(1035)(12)            <=  localWrData(12);                --DRP Enable

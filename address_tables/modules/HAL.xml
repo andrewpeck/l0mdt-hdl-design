@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="HAL" permission="rw">
 
-  <node id="RESET_DOWNLINKS" address="0x0" mask="0x1" permission="w" description="Resets all LPGBT Downlinks"/>
-  <node id="RESET_UPLINKS"   address="0x1" mask="0x1" permission="w" description="Resets all LPGBT Uplinks"/>
-  <node id="RESET_COUNTERS"  address="0x2" mask="0x1" permission="w" description="Resets counters"/>
+  <node id="RESET_DOWNLINKS" address="0x0" mask="0x1" permission="rw" parameters="default=0" description="Resets all LPGBT Downlinks"/>
+  <node id="RESET_UPLINKS"   address="0x1" mask="0x1" permission="rw" parameters="default=0" description="Resets all LPGBT Uplinks"/>
+  <node id="RESET_COUNTERS"  address="0x2" mask="0x1" permission="rw" parameters="default=0" description="Resets counters"/>
 
   <node id="CSM" address="0x0010" permission="rw">
     <node id="CSM_0"    address="0x000" fwinfo="type=array" module="file://CSM.xml"/>
