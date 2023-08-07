@@ -523,6 +523,8 @@ begin
       hal_mon            => hal_mon_r,
       hal_ctrl           => hal_ctrl_r,
       hog_mon            => hog_mon_r,
+      fm_mon             => fm_mon_r,
+      fm_ctrl            => fm_ctrl_r,
       -- END: ULT_IO :: DO NOT EDIT
        
       -- axi common
