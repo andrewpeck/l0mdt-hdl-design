@@ -119,7 +119,7 @@ begin
 
     signal downlink_data  : lpgbt_downlink_data_rt;
     signal mgt_data       : std_logic_vector(31 downto 0);
-    signal downlink_reset : std_logic := '1';
+    signal downlink_reset : std_logic := '0'; --active low
 
   begin
 
@@ -127,7 +127,7 @@ begin
     downlink_reset_fanout : process (downlink_clk) is
     begin  -- process reset_fanout
       if rising_edge(downlink_clk) then  -- rising clock edge
-        downlink_reset <= not ((reset)  or downlink_reset_i(I));
+        downlink_reset <= not (reset or downlink_reset_i(I));
       end if;
     end process;
 
@@ -201,7 +201,7 @@ begin
     signal iccorrected   : std_logic_vector (1 downto 0);
     signal eccorrected   : std_logic_vector (1 downto 0);
 
-    signal uplink_reset : std_logic := '1';
+    signal uplink_reset : std_logic := '0';
 
   begin
 
