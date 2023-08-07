@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="UPLINK" permission="rw" address="0x0">
-  <node id="RESET"       address="0x0" mask="0x00000001" permission="rw" parameters="default=0" description="Reset this Uplink"/>
+  <node id="RESET"       address="0x0" mask="0x00000001" permission="rw" parameters="default=1" description="Reset this Uplink"/>
   <node id="READY"       address="0x1" mask="0x00000001" permission="r" description="LPGBT Uplink Ready"/>
   <node id="FEC_ERR_CNT" address="0x1" mask="0xFFFF0000" permission="r" description="Data Corrected Count"/>
 </node>

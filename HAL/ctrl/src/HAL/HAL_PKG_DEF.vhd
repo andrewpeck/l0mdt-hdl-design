@@ -8,13 +8,13 @@ use ctrl_lib.HAL_CTRL.all;
 
 package HAL_CTRL_DEF is
   constant DEFAULT_HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t : HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t := (
-                                                                                                       RESET => '0'
+                                                                                                       RESET => '1'
                                                                                                       );
   constant DEFAULT_HAL_CSM_CSM_LPGBT_UPLINK_CTRL_t : HAL_CSM_CSM_LPGBT_UPLINK_CTRL_t := (
                                                                                          UPLINK => (others => DEFAULT_HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t )
                                                                                         );
   constant DEFAULT_HAL_CSM_CSM_LPGBT_DOWNLINK_CTRL_t : HAL_CSM_CSM_LPGBT_DOWNLINK_CTRL_t := (
-                                                                                             RESET => '0'
+                                                                                             RESET => '1'
                                                                                             );
   constant DEFAULT_HAL_CSM_CSM_LPGBT_CTRL_t : HAL_CSM_CSM_LPGBT_CTRL_t := (
                                                                            UPLINK => DEFAULT_HAL_CSM_CSM_LPGBT_UPLINK_CTRL_t,
