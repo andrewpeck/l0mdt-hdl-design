@@ -28,6 +28,9 @@ from l0mdt_tb.utils import test_config
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
+import logging
+cocotb.log.setLevel(logging.DEBUG)
+cocotb.log.getChild('driver.FifoDriver').setLevel(logging.WARNING)
 
 def initialize_spybuffers(fifos=[]):
 
@@ -134,6 +137,9 @@ def polmux_test(dut):
         else:
             tolerance[i] = {"": ["",""]}
 
+
+    pad_size = config['testvectors']['inputs'][0]['padding_size']
+
     # CREATORSOFTWAREBLOCK##
     # CREATORSOFTWAREBLOCK## start the software block instance
     # CREATORSOFTWAREBLOCK##
@@ -164,7 +170,11 @@ def polmux_test(dut):
     sim_clock = Clock(
         dut.clock, int(input_args["clock_period"]), input_args["clock_time_unit"]
     )
+    pipeline_clock = Clock(
+        dut.clock_sb_in, int(input_args["clock_input_data_period"]), input_args["clock_time_unit"]
+    )
     cocotb.fork(sim_clock.start())
+    cocotb.fork(pipeline_clock.start())
 
     ##
     ## initialize the DUT to known state
@@ -176,8 +186,6 @@ def polmux_test(dut):
     ##
     dut._log.info("Resetting DUT")
     yield reset(dut)
-
-
 
 
     ##
@@ -199,14 +207,18 @@ def polmux_test(dut):
 
     (
         input_tvtype
-    ) = test_config.get_tvtype_from_config(config)
+    ) = test_config.get_tvtype_from_config(config,"inputs")
+
+    (
+        output_tvtype
+    ) = test_config.get_tvtype_from_config(config,"outputs")
 
     sb_iport_index = 0
     for n_ip_intf in range(PolmuxPorts.n_input_interfaces): # Add concept of interface
         for io in range(PolmuxPorts.get_input_interface_ports(n_ip_intf)):
             driver = FifoDriver(
                 dut.input_spybuffers[sb_iport_index].spybuffer,
-                dut.clock,
+                dut.clock_sb_in,
                 "Polmux",
                 input_tvformats[n_ip_intf],
                 str(io),
@@ -240,10 +252,14 @@ def polmux_test(dut):
         n_to_load=num_events_to_process
         )
 
+    cocotb.log.debug(f"input_tvtype[n_ip_intf] {input_tvtype[n_ip_intf]}")
+    
+
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list         =  []
     single_interface_list = []
     for n_ip_intf in range(PolmuxPorts.n_input_interfaces): # Add concept of interface
+        cocotb.log.debug(f"Input interface {n_ip_intf} calling parse_tvlist")
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
             tvformat=input_tvformats[n_ip_intf],
@@ -251,15 +267,18 @@ def polmux_test(dut):
             n_to_load=num_events_to_process,
             station_ID=inputs_station_id[n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
-            cnd_thrd_id = inputs_thread_n[n_ip_intf]
+            tv_df_type= "MDT",
+            cnd_thrd_id = inputs_thread_n[n_ip_intf],
+            zero_padding_size=pad_size
             ))
         for io in range(PolmuxPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
 
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
-    single_interface_list = []
+    """ single_interface_list = []
     for n_op_intf in range(PolmuxPorts.n_output_interfaces): # Add concept of interface
+        cocotb.log.debug(f"Output interface {n_op_intf} calling parse_tvlist")
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
             tvformat=output_tvformats[n_op_intf],
@@ -267,10 +286,13 @@ def polmux_test(dut):
             n_to_load=num_events_to_process,
             station_ID=outputs_station_id[n_op_intf],
             tv_type="value",
-            cnd_thrd_id = outputs_thread_n[n_op_intf]
+            cnd_thrd_id = outputs_thread_n[n_op_intf],
+            zero_padding_size=pad_size
             ))
         output_tv_list.append(single_interface_list)
 
+    """
+    
 
 
     ##
@@ -287,7 +309,7 @@ def polmux_test(dut):
             f"ERROR Event sending timed out! Number of expected inputs with events = {len(send_finished_signal)}"
         )
     try:
-        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*2, "us")
+        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*2*1000, "us")
     except Exception as ex:
         raise cocotb.result.TestFailure(
             f"ERROR Timed out waiting for events to send: {ex}"
@@ -296,9 +318,10 @@ def polmux_test(dut):
 
 
     #Block Latency
-    yield ClockCycles(dut.clock, 100)
-    ##
-
+    n_cycles_to_wait = 500+num_events_to_process*2*pad_size
+    cocotb.log.info(f"Waiting {n_cycles_to_wait} clock cycles")
+    yield ClockCycles(dut.clock_sb_in, n_cycles_to_wait)
+    
     ##
     ## perform testvector comparison test
     ##
@@ -321,8 +344,13 @@ def polmux_test(dut):
             cocotb.log.info(
                 f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
             )
+            cocotb.log.debug(f" Received words for {n_op_intf} : port num {n_oport}"+str([int(x) for x in words]))
+
         o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process)
         recvd_events_intf.append(o_recvd_events)
+
+    
+
 
     ##
     ## extract the expected data for this output
@@ -348,7 +376,7 @@ def polmux_test(dut):
 
 
     for n_op_intf in range (PolmuxPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields_new(
             tv_bcid_list, 
             output_tvformats[n_op_intf],
             PolmuxPorts.get_output_interface_ports(n_op_intf) , 
@@ -356,8 +384,11 @@ def polmux_test(dut):
             recvd_events_intf[n_op_intf],
             tolerance[n_op_intf],
             output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
-        );
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]),
+            tv_thread_mapping=[0 for _ in range(24)],
+            tv_df_type='MDT',
+            tv_type=output_tvtype[n_op_intf],
+            pad_size=pad_size)
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i
