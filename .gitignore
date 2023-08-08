@@ -71,3 +71,5 @@ Top/*/*/c2cslave_pkg.vhd
 test*
 configs/
 make.log
+
+Doc/
