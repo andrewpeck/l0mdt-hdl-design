@@ -95,7 +95,8 @@ check_submodule_status:
     - if [ "$fw_uid" != "No client IDs found that loaded firmware." ]; then
         uio_send.py -u "$fw_uid" unload-tar;
       fi;
-    - uio_send.py -f bin/*/*/tarball/*.gz load-tar
+    - tarball=$(find bin/ -name "*.gz");
+    - uio_send.py -f $tarball load-tar
     - if [[ $IS_PROTO == '1' ]]; then
         config_blade.py -c 1 -p;
       else
