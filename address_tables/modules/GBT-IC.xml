@@ -2,19 +2,19 @@
 
 <node id="GBT-IC" permission="rw">
   <!-- IC Control-->
-  <node id="TX_START_WRITE"    address="0x0" mask="0x00000001" permission="w" description="Request a write config to the GBTx (IC)"/>
-  <node id="TX_START_READ"     address="0x0" mask="0x00000002" permission="w" description="Request a read config to the GBTx (IC)"/>
+  <node id="TX_START_WRITE"    address="0x0" mask="0x00000001" permission="rw" parameters="default=0" description="Request a write config to the GBTx (IC)"/>
+  <node id="TX_START_READ"     address="0x0" mask="0x00000002" permission="rw" parameters="default=0" description="Request a read config to the GBTx (IC)"/>
 
   <!-- IC Config-->
-  <node id="TX_GBTX_ADDR"         address="0x2" mask="0xff000000" permission="rw" description="I2C address of the GBTx"/>
-  <node id="TX_REGISTER_ADDR"     address="0x1" mask="0x0000ffff" permission="rw" description="Address of the first register to be accessed"/>
-  <node id="TX_NUM_BYTES_TO_READ" address="0x1" mask="0xffff0000" permission="rw" description="Number of words/bytes to be read (only for read transactions)"/>
+  <node id="TX_GBTX_ADDR"         address="0x2" mask="0xff000000" permission="rw" parameters="default=0" description="I2C address of the GBTx"/>
+  <node id="TX_REGISTER_ADDR"     address="0x1" mask="0x0000ffff" permission="rw" parameters="default=0" description="Address of the first register to be accessed"/>
+  <node id="TX_NUM_BYTES_TO_READ" address="0x1" mask="0xffff0000" permission="rw" parameters="default=0" description="Number of words/bytes to be read (only for read transactions)"/>
 
   <!-- IC FIFO -->
-  <node id="TX_DATA_TO_GBTX"   address="0x2"  mask="0x000000ff" permission="rw" description="Data to be written into the internal FIFO"/>
+  <node id="TX_DATA_TO_GBTX"   address="0x2"  mask="0x000000ff" permission="rw" parameters="default=0" description="Data to be written into the internal FIFO"/>
   <node id="RX_DATA_FROM_GBTX" address="0x2"  mask="0x0000ff00" permission="r"  description="Data from the FIFO"/>
   <node id="TX_READY"          address="0x2"  mask="0x00010000" permission="r"  description="IC core ready for a transaction"/>
-  <node id="TX_WR"             address="0x3"  mask="0x1"        permission="w"  description="Request a write operation into the internal FIFO (Data to GBTx)"/><!--ACTION-->
+  <node id="TX_WR"             address="0x3"  mask="0x1"        permission="rw"  parameters="default=0" description="Request a write operation into the internal FIFO (Data to GBTx)"/><!--ACTION-->
 
   <!-- IC Decoder -->
   <node id="RX_DATA"           address="0x4"  mask="0xffffffff" permission="r"  description="Up to 4 bytes of GBT-IC read data"/>

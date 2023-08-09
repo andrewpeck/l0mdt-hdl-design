@@ -8,7 +8,7 @@ control logic should run NOT on this asynchronous domain -->
 
   <node id="CLOCKING" address="0x0" permission="r" >
     <node id="MMCM_LOCKED" mask="0x1"        address="0x0" permission="r"  description="LHC MMCM: 1 means it is locked"/>
-    <node id="RESET_MMCM"  mask="0x2"        address="0x1" permission="rw" description="LHC MMCM: Set 1 to reset the MMCM"/>
+    <node id="RESET_MMCM"  mask="0x2"        address="0x1" permission="rw" parameters="default=0" description="LHC MMCM: Set 1 to reset the MMCM"/>
     <node id="CLK40_FREQ"  mask="0xffffffff" address="0x2" permission="r"  description="LHC 40MHz clock freq"/>
     <node id="CLK320_FREQ" mask="0xffffffff" address="0x3" permission="r"  description="LHC 320MHz clock freq "/>
     <node id="CLK50_FREQ"  mask="0xffffffff" address="0x4" permission="r"  description="System 50 MHz clock freq"/>

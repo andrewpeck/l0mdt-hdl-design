@@ -8,13 +8,13 @@ use ctrl_lib.HAL_CTRL.all;
 
 package HAL_CTRL_DEF is
   constant DEFAULT_HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t : HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t := (
-                                                                                                       RESET => '0'
+                                                                                                       RESET => '1'
                                                                                                       );
   constant DEFAULT_HAL_CSM_CSM_LPGBT_UPLINK_CTRL_t : HAL_CSM_CSM_LPGBT_UPLINK_CTRL_t := (
                                                                                          UPLINK => (others => DEFAULT_HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t )
                                                                                         );
   constant DEFAULT_HAL_CSM_CSM_LPGBT_DOWNLINK_CTRL_t : HAL_CSM_CSM_LPGBT_DOWNLINK_CTRL_t := (
-                                                                                             RESET => '0'
+                                                                                             RESET => '1'
                                                                                             );
   constant DEFAULT_HAL_CSM_CSM_LPGBT_CTRL_t : HAL_CSM_CSM_LPGBT_CTRL_t := (
                                                                            UPLINK => DEFAULT_HAL_CSM_CSM_LPGBT_UPLINK_CTRL_t,
@@ -23,21 +23,21 @@ package HAL_CTRL_DEF is
   constant DEFAULT_HAL_CSM_CSM_SC_MASTER_IC_CTRL_t : HAL_CSM_CSM_SC_MASTER_IC_CTRL_t := (
                                                                                          TX_START_WRITE => '0',
                                                                                          TX_START_READ => '0',
-                                                                                         TX_REGISTER_ADDR => (others => '0'),
-                                                                                         TX_NUM_BYTES_TO_READ => (others => '0'),
-                                                                                         TX_DATA_TO_GBTX => (others => '0'),
-                                                                                         TX_GBTX_ADDR => (others => '0'),
+                                                                                         TX_REGISTER_ADDR => x"0000",
+                                                                                         TX_NUM_BYTES_TO_READ => x"0000",
+                                                                                         TX_DATA_TO_GBTX => x"00",
+                                                                                         TX_GBTX_ADDR => x"00",
                                                                                          TX_WR => '0'
                                                                                         );
   constant DEFAULT_HAL_CSM_CSM_SC_MASTER_CTRL_t : HAL_CSM_CSM_SC_MASTER_CTRL_t := (
                                                                                    TX_RESET => '0',
                                                                                    RX_RESET => '0',
                                                                                    IC => DEFAULT_HAL_CSM_CSM_SC_MASTER_IC_CTRL_t,
-                                                                                   TX_CMD => (others => '0'),
-                                                                                   TX_ADDRESS => (others => '0'),
-                                                                                   TX_TRANSID => (others => '0'),
-                                                                                   TX_CHANNEL => (others => '0'),
-                                                                                   TX_DATA => (others => '0'),
+                                                                                   TX_CMD => x"00",
+                                                                                   TX_ADDRESS => x"00",
+                                                                                   TX_TRANSID => x"00",
+                                                                                   TX_CHANNEL => x"00",
+                                                                                   TX_DATA => x"00000000",
                                                                                    SCA_ENABLE => "111",
                                                                                    START_RESET => '0',
                                                                                    START_CONNECT => '0',
@@ -47,10 +47,10 @@ package HAL_CTRL_DEF is
   constant DEFAULT_HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t : HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t := (
                                                                                        TX_START_WRITE => '0',
                                                                                        TX_START_READ => '0',
-                                                                                       TX_REGISTER_ADDR => (others => '0'),
-                                                                                       TX_NUM_BYTES_TO_READ => (others => '0'),
-                                                                                       TX_DATA_TO_GBTX => (others => '0'),
-                                                                                       TX_GBTX_ADDR => (others => '0'),
+                                                                                       TX_REGISTER_ADDR => x"0000",
+                                                                                       TX_NUM_BYTES_TO_READ => x"0000",
+                                                                                       TX_DATA_TO_GBTX => x"00",
+                                                                                       TX_GBTX_ADDR => x"00",
                                                                                        TX_WR => '0'
                                                                                       );
   constant DEFAULT_HAL_CSM_CSM_SC_SLAVE_CTRL_t : HAL_CSM_CSM_SC_SLAVE_CTRL_t := (

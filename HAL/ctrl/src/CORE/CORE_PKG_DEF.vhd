@@ -12,9 +12,9 @@ package CORE_CTRL_DEF is
                                                                   );
   constant DEFAULT_CORE_MGT_MGT_DRP_CTRL_t : CORE_MGT_MGT_DRP_CTRL_t := (
                                                                          wr_en => '0',
-                                                                         wr_addr => (others => '0'),
+                                                                         wr_addr => "0000000000",
                                                                          en => '0',
-                                                                         wr_data => (others => '0')
+                                                                         wr_data => x"0000"
                                                                         );
   constant DEFAULT_CORE_MGT_MGT_TX_RESETS_CTRL_t : CORE_MGT_MGT_TX_RESETS_CTRL_t := (
                                                                                      reset_pll_and_datapath => '0',

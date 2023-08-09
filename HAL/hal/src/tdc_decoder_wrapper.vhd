@@ -22,7 +22,8 @@ entity tdc_decoder_wrapper is
     g_ENABLE_MASK : std_logic_vector;
     g_LEGACY_FLAG : std_logic_vector;
     g_CSM         : integer;
-    g_NUM_TDCS    : integer
+    g_NUM_TDCS    : integer;
+    g_NUM_UPLINKS : integer
     );
 
   port(
@@ -31,7 +32,7 @@ entity tdc_decoder_wrapper is
     reset : in std_logic;
 
     -- data from LPGBTs
-    lpgbt_uplink_data_i : in lpgbt_uplink_data_rt_array (1 downto 0);
+    lpgbt_uplink_data_i : in lpgbt_uplink_data_rt_array (g_NUM_UPLINKS-1 downto 0);
 
 
     -- TDC hits from CSM
