@@ -5,8 +5,8 @@ HAL/ctrl/src/FW_INFO/FW_INFO_PKG.vhd
 HAL/ctrl/src/FW_INFO/FW_INFO_map.vhd
 HAL/ctrl/src/HAL/HAL_PKG.vhd
 HAL/ctrl/src/HAL/HAL_map.vhd
-HAL/ctrl/src/HAL_CORE/HAL_CORE_PKG.vhd
-HAL/ctrl/src/HAL_CORE/HAL_CORE_map.vhd
+HAL/ctrl/src/CORE/CORE_PKG.vhd
+HAL/ctrl/src/CORE/CORE_map.vhd
 HAL/ctrl/src/KINTEX_SYS_MGMT/KINTEX_SYS_MGMT_PKG.vhd
 HAL/ctrl/src/KINTEX_SYS_MGMT/KINTEX_SYS_MGMT_map.vhd
 HAL/ctrl/src/HPS/HPS_PKG.vhd

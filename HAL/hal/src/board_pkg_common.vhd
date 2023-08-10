@@ -96,6 +96,13 @@ package board_pkg_common is
 
   type mdt_config_t is array (integer range <>) of csm_config_t;
 
+  type hi_lo_t is record
+    hi : integer;
+    lo : integer;
+  end record;
+
+  type hi_lo_array_t is array (integer range <>) of hi_lo_t;
+  
   --------------------------------------------------------------------------------
   -- Utility Functions
   --------------------------------------------------------------------------------
@@ -129,6 +136,13 @@ package board_pkg_common is
   function func_count_csms_active (mdt_config : mdt_config_t; num_tdcs : integer)
     return integer;
 
+  function set_user_const (user : integer; max : integer)
+    return integer;
+
+  function get_csm_hi_lo (mdt_config : mdt_config_t)
+    return hi_lo_array_t;
+  function get_polmux_hi_lo (mdt_config : mdt_config_t ; c_NUM_POLMUX : integer)
+    return hi_lo_array_t;
 end package board_pkg_common;
 
 --------------------------------------------------------------------------------
@@ -292,5 +306,88 @@ package body board_pkg_common is
     end loop;
     return -1;
   end func_count_csms_active;
+
+  function set_user_const (user : integer; max : integer)
+    return integer is
+  begin
+    if user = -1 then
+      return max;
+    else
+      return user;
+    end if;
+  end function;
+
+
+
+  function get_csm_hi_lo (mdt_config : mdt_config_t)
+    return hi_lo_array_t is
+    variable hi_lo : hi_lo_array_t (mdt_config'range);
+    variable cnt   : integer := 0;
+  begin
+    --
+
+    -- initialize output
+    for I in 0 to hi_lo'length -1 loop
+      hi_lo(I).hi := -1;
+      hi_lo(I).lo := -1;
+    end loop;
+
+    for csm in 0 to mdt_config'length-1 loop
+      for ch in 0 to mdt_config(csm).en'length-1 loop
+        if (mdt_config(csm).en(ch) = '1') then
+          if (hi_lo(csm).lo = -1) then
+            hi_lo(csm).lo := cnt;
+          else
+            hi_lo(csm).hi := cnt;
+          end if;
+          cnt := cnt + 1;
+        end if;
+      end loop;
+    end loop;
+    return hi_lo;
+  end function;
+
+  -- We have some number of polling multiplexers say, up to 17 if each CSM has its own, but
+  -- ideally it is less, e.g. 12 since many CSM inputs are not populated with tdcs
+  -- From all these CSMs, then, there is a smaller number of TDC inputs, (e.g. just say 100)
+  -- if we concatenate the tdc inputs into a 100 wide array, then we need some function that can
+  -- figure out that, e.g.
+  -- polmux0 connects to inputs 0 to 9
+  -- polmux1 connects to inputs 10 to 22
+  -- polmux3 connects to inputs ....
+  -- etc
+
+  function get_polmux_hi_lo (mdt_config : mdt_config_t; c_NUM_POLMUX : integer)
+    return hi_lo_array_t is
+    variable hi_lo : hi_lo_array_t (c_NUM_POLMUX-1 downto 0);
+    variable cnt   : integer := 0;
+  begin
+
+    -- initialize output
+    for I in 0 to hi_lo'length-1 loop
+      hi_lo(I).hi := -1;
+      hi_lo(I).lo := -1;
+    end loop;
+
+    for polmux in 0 to hi_lo'length-1 loop
+      cnt := 0;
+      for I in 0 to mdt_config'length-1 loop
+        for J in 0 to mdt_config(I).en'length-1 loop
+          if (mdt_config(I).en(J) = '1') then
+            if (mdt_config(I).en(J) = '1' and mdt_config(I).polmux_id = polmux) then
+              if (hi_lo(polmux).lo = -1) then
+                hi_lo(polmux).lo := cnt;
+              else
+                hi_lo(polmux).hi := cnt;
+              end if;
+            end if;
+            cnt := cnt + 1;
+          end if;
+        end loop;
+      end loop;
+    end loop;
+
+    return hi_lo;
+  end function;
 
 end package body;

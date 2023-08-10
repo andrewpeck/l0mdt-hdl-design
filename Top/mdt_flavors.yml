@@ -216,14 +216,14 @@ vu13p_ull_empty:
   variants:
     default:
       link_map: "link_map_vu13p"
-      zynq_target: 7s  # 7s or usp
+      zynq_target: usp  # 7s or usp
       sector_id: 3
       sector_side: 0
       endcap: 0
       large: 0
       en_neighbors: 0
-      hog_only_synth: 1
-      hog_no_bitstream: 1
+      hog_only_synth: 0
+      hog_no_bitstream: 0
       en_fm: 0
       en_tar: 0
       en_h2s: 0
@@ -252,7 +252,7 @@ vu13p_ba3_ucm_mpl_tar_hps:
   variants:
     default:
       link_map: "link_map_vu13p"
-      zynq_target: 7s  # 7s or usp
+      zynq_target: usp  # 7s or usp
       sector_id: 3
       sector_side: 0
       endcap: 0

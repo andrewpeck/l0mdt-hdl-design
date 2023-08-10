@@ -9,6 +9,12 @@ GEN:base_l0mdt:
       HOG_NO_BITSTREAM: 0
     tags:
       - heavy-duty
+    artifacts:
+      when: always
+      name: implementation_and_bitfiles
+      paths:
+        - bin 
+
 CHK:base_l0mdt:
     extends: .check_list_and_conf
     variables:

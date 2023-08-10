@@ -130,7 +130,7 @@ if {$num_slrs > 0} {
     # set_hier_slr_assignment $SLR_EXT "top_control_inst/c2cslave_wrapper_inst/INTERCONNECT_EXT*"
 
     # puts "Applying area constraints to C2C"
-    # set_hier_slr_assignment $SLR_EXT "top_control_inst/c2cslave_wrapper_inst*/K_C2C*"
+    # set_hier_slr_assignment $SLR_EXT "top_control_inst/c2cslave_wrapper_inst*/C2C*"
 
     # puts "Applying area constraints to maps"
 

@@ -1,7 +1,7 @@
-set C2C K_C2C
+set C2C C2C
 set C2C_PHY ${C2C}_PHY
 
-set C2CB K_C2CB
+set C2CB C2CB
 set C2CB_PHY ${C2CB}_PHY
 
 

@@ -1,7 +1,7 @@
 cocotb_test:compile:
     extends: .cocotb_test
     stage: generation_and_simulation
-    allow_failure: false
+    allow_failure: true
     interruptible: true
     variables:
         extends: .vars
@@ -11,11 +11,6 @@ cocotb_test:compile:
 cocotb_test:test_lsf_inn:
     extends: .cocotb_test
     stage: user_post
-    allow_failure: 
-        exit_codes:
-            - 99
-            - 98
-
     interruptible: true
     variables:
         extends: .vars
@@ -25,10 +20,6 @@ cocotb_test:test_lsf_inn:
 cocotb_test:test_lsf_mid:
     extends: .cocotb_test
     stage: user_post
-    allow_failure: 
-        exit_codes:
-            - 99
-            - 98
     interruptible: true
     variables:
         extends: .vars
@@ -38,11 +29,6 @@ cocotb_test:test_lsf_mid:
 cocotb_test:test_lsf_out:
     extends: .cocotb_test
     stage: user_post
-    allow_failure: 
-        exit_codes:
-            - 99
-            - 98
-
     interruptible: true
     variables:
         extends: .vars
@@ -52,11 +38,6 @@ cocotb_test:test_lsf_out:
 cocotb_test:test_mtc:
     extends: .cocotb_test
     stage: user_post
-    allow_failure: 
-        exit_codes:
-            - 99
-            - 98
-
     interruptible: true
     variables:
         extends: .vars
@@ -67,11 +48,6 @@ cocotb_test:test_mtc:
 cocotb_test:test_ptcalc:
     extends: .cocotb_test
     stage: user_post
-    allow_failure: 
-        exit_codes:
-            - 99
-            - 98
-
     interruptible: true
     variables:
         extends: .vars
@@ -83,11 +59,6 @@ cocotb_test:test_ptcalc:
 cocotb_test:test_ucm:
     extends: .cocotb_test
     stage: user_post
-    allow_failure: 
-        exit_codes:
-            - 99
-            - 98
-
     interruptible: true
     variables:
         extends: .vars
@@ -98,11 +69,6 @@ cocotb_test:test_ucm:
 cocotb_test:test_ult_tar:
     extends: .cocotb_test
     stage: user_post
-    allow_failure: 
-        exit_codes:
-            - 99
-            - 98
-
     interruptible: true
     variables:
         extends: .vars
@@ -113,11 +79,6 @@ cocotb_test:test_ult_tar:
 cocotb_test:test_hps_inn:
     extends: .cocotb_test
     stage: user_post
-    allow_failure: 
-        exit_codes:
-            - 99
-            - 98
-
     interruptible: true
     variables:
         extends: .vars

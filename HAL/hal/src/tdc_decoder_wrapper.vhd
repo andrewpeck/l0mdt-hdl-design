@@ -22,7 +22,8 @@ entity tdc_decoder_wrapper is
     g_ENABLE_MASK : std_logic_vector;
     g_LEGACY_FLAG : std_logic_vector;
     g_CSM         : integer;
-    g_NUM_TDCS    : integer
+    g_NUM_TDCS    : integer;
+    g_NUM_UPLINKS : integer
     );
 
   port(
@@ -31,7 +32,7 @@ entity tdc_decoder_wrapper is
     reset : in std_logic;
 
     -- data from LPGBTs
-    lpgbt_uplink_data_i : in lpgbt_uplink_data_rt_array (1 downto 0);
+    lpgbt_uplink_data_i : in lpgbt_uplink_data_rt_array (g_NUM_UPLINKS-1 downto 0);
 
 
     -- TDC hits from CSM
@@ -98,7 +99,8 @@ begin
           return n_ones;
         end if;
       end function;
-
+        
+      -- the idx of the TDC is actually retrieved by suppressing the zeroes in the mask
       constant idx : integer := get_ith_bit_index (g_ENABLE_MASK, I, c_MDT_CONFIG'length);
 
     begin
@@ -148,7 +150,7 @@ begin
             synced_o    => synced_o(idx),  -- TODO: connect this to AXI
             data_even   => even_data,
             data_odd    => odd_data,
-            valid_i     => valid,
+            valid_i     => valid,          -- lpgbt valid flag
             tdc_word_o  => tdc_word,
             valid_o     => tdc_valid,
             read_done_i => read_done_i(idx),

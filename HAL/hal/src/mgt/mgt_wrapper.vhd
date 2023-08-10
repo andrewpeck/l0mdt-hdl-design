@@ -19,20 +19,22 @@ use work.sector_logic_pkg.all;
 use work.display_board_cfg_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.HAL_CORE_CTRL.all;
+use ctrl_lib.CORE_CTRL.all;
 
 entity mgt_wrapper is
   port(
 
     -- Clock
-    clocks : in system_clocks_rt;
+    axiclock   : in std_logic;
+    clock320   : in std_logic;
+    lhc_locked : in std_logic;
 
     -- Reset
     reset : in std_logic;
 
     -- AXI Control
-    ctrl : in  HAL_CORE_MGT_CTRL_t;
-    mon  : out HAL_CORE_MGT_MON_t;
+    ctrl : in  CORE_MGT_CTRL_t;
+    mon  : out CORE_MGT_MON_t;
 
     -- Refclk Inputs
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
@@ -111,24 +113,40 @@ end mgt_wrapper;
 
 architecture Behavioral of mgt_wrapper is
 
-  signal reset_tree : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
-
+  -- Fanout input reset for better timing
+  signal reset_tree                  : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
   attribute DONT_TOUCH               : string;
   attribute DONT_TOUCH of reset_tree : signal is "true";
 
+  -- Recovered clock
+  signal recclk_sync_clr: std_logic;
+  signal recclk_sync_ce : std_logic;
+  signal recclk         : std_logic;
+
+  -- Reference clock
   signal refclk         : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
   signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
   signal refclk_bufg    : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
-  signal recclk         : std_logic;
 
-  -- TODO: initialize these so that uninstantiated MGTs will show DEADBEEF or something
+  -- Dynamic Reconfiguration port signals
   signal drp_i     : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
   signal drp_o     : mgt_drp_out_rt_array (c_NUM_MGTS-1 downto 0);
+
+  -- Status signals
   signal status    : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
   signal status_d  : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
   signal status_2d : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
 
+  -- Sector Logic
+  signal sl_rx_init_done_s : std_logic_vector(c_NUM_MGTS-1 downto 0);
+
 begin
+
+  sl_rx_init_done <= AND(sl_rx_init_done_s);
+
+  --------------------------------------------------------------------------------
+  -- Configuration Asserts
+  --------------------------------------------------------------------------------
 
   assert false report
     "GENERATING " & integer'image(c_NUM_MGTS) & "MGT LINKS:" severity note;
@@ -149,9 +167,9 @@ begin
   -- Reset Tree
   --------------------------------------------------------------------------------
 
-  reset_fanout : process (clocks.freeclock) is
+  reset_fanout : process (axiclock) is
   begin  -- process reset_fanout
-    if rising_edge(clocks.freeclock) then  -- rising clock edge
+    if rising_edge(axiclock) then  -- rising clock edge
       reset_tree <= (others => reset);
     end if;
   end process reset_fanout;
@@ -160,14 +178,37 @@ begin
   -- recclk
   --------------------------------------------------------------------------------
 
-   recclk_BUFG_inst : BUFG
-   port map (
-     O => ttc_recclk_o,                 -- 1-bit output: Clock output
-     I => recclk                        -- 1-bit input: Clock input
-   );
+  -- https://support.xilinx.com/s/question/0D52E00006hpdNNSAY/rxoutclk-routing-error?language=en_US
+
+  recclk_BUFG_GT_SYNC_inst : BUFG_GT_SYNC
+  port map (
+    CESYNC  => recclk_sync_ce,          -- 1-bit output: Synchronized CE
+    CLRSYNC => recclk_sync_clr,         -- 1-bit output: Synchronized CLR
+    CE      => '1',                     -- 1-bit input: Asynchronous enable
+    CLK     => recclk,                  -- 1-bit input: Clock
+    CLR     => '0'                      -- 1-bit input: Asynchronous clear
+    );
+
+  recclk_BUFG_GT_inst : BUFG_GT
+  port map (
+    O       => ttc_recclk_o,            -- 1-bit output: Buffer
+    CE      => recclk_sync_ce,          -- 1-bit input: Buffer enable
+    CEMASK  => '0',                     -- 1-bit input: CE Mask
+    CLR     => recclk_sync_clr,         -- 1-bit input: Asynchronous clear
+    CLRMASK => '0',                     -- 1-bit input: CLR Mask
+    DIV     => "000",                   -- 3-bit input: Dynamic divide Value
+    I       => recclk                   -- 1-bit input: Buffer
+  );
 
   --------------------------------------------------------------------------------
-  -- Refclk
+  -- REFCLK
+  --------------------------------------------------------------------------------
+  --
+  -- For each reference clock input, buffer it in a ibufds which generates both:
+  --  - O output which connects to the transceiver quad itself
+  --  - ODIV2 output, which can be connected to the frequency monitors
+  --    (despite the naming it is not divided by 2, it just has the option for that)
+  --
   --------------------------------------------------------------------------------
 
   refclk_gen : for I in 0 to c_NUM_REFCLKS-2 generate
@@ -176,7 +217,7 @@ begin
                    c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
                    ) generate
 
-      assert false
+      assert true
         report "GENERATING REFCLK IBUF=" & integer'image(I) severity note;
 
       -- 2'b00: ODIV2 = O
@@ -205,11 +246,11 @@ begin
   -- Buffering
   --------------------------------------------------------------------------------
 
-  process (clocks.axiclock) is
+  process (axiclock) is
   begin
-    if (rising_edge(clocks.axiclock)) then
-      status_d                                  <= status;
-      status_2d                                 <= status_d;
+    if (rising_edge(axiclock)) then
+      status_d  <= status;
+      status_2d <= status_d;
     end if;
   end process;
 
@@ -226,12 +267,12 @@ begin
     mon.mgt(I).config.x_loc    <= std_logic_vector(to_unsigned(c_MGT_MAP(I).x_loc, 2));
     mon.mgt(I).config.y_loc    <= std_logic_vector(to_unsigned(c_MGT_MAP(I).y_loc, 6));
 
-    drp_i(I).drpclk_in(0) <= clocks.axiclock;  -- 50MHz from MMCM
+    drp_i(I).drpclk_in(0) <= axiclock;  -- 50MHz from MMCM
 
     -- some of these are crossing clock domains so add one ff to help metastability
-    process (clocks.axiclock) is
+    process (axiclock) is
     begin
-      if (rising_edge(clocks.axiclock)) then
+      if (rising_edge(axiclock)) then
 
         mon.mgt(I).status.rxcdr_stable            <= status_2d(I).rxcdr_stable;
         mon.mgt(I).status.powergood               <= status_2d(I).powergood;
@@ -270,14 +311,14 @@ begin
       display_board_cfg(true);
     end generate;
 
-    assert false report
+    assert true report
       "GENERATING MGT=" & integer'image(I) &
       " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) severity note;
 
     --------------------------------------------------------------------------------
     -- LPGBT+Emulator+Felix Type Transceiver Generation
     --------------------------------------------------------------------------------
-
+    -- Get lpgbt signals in group of four and excldue the not-active 
     lpgbt_gen : if ((I mod 4 = 0) and c2c_idx_array(I) = -1 and sl_idx_array(I) = -1 and
                     c_MGT_MAP(I).mgt_type /= MGT_NIL and
                     (ttc_idx_array(I) /= -1 or ttc_idx_array(I+1) /= -1 or
@@ -304,10 +345,17 @@ begin
 
     begin
 
+      -- just set a flag to 1 to indicate that this transceiver was enabled, which we can read from software
       mon.mgt(I).config.is_active <= '1';
 
       --------------------------------------------------------------------------------
       -- MGT
+      --------------------------------------------------------------------------------
+      --
+      -- TODO: it would be a lot cleaner to just pass the ctrl + monitoring
+      -- records into here instead of having separate mgt status / ctrl data
+      -- types and ports and having to map between them
+      --
       --------------------------------------------------------------------------------
 
       MGT_INST : entity work.mgt_10g24_wrapper
@@ -334,7 +382,11 @@ begin
           -- resets
           --------------------------------------------------------------------------------
 
-          reset => reset_tree(I),
+          reset => reset_tree(I) or
+                   ctrl.mgt(I).reset_all or
+                   ctrl.mgt(I+1).reset_all or
+                   ctrl.mgt(I+2).reset_all or
+                   ctrl.mgt(I+3).reset_all,
 
           reset_pll_and_datapath_i => ctrl.mgt(I).tx_resets.reset_pll_and_datapath or
                                       ctrl.mgt(I+1).tx_resets.reset_pll_and_datapath or
@@ -351,8 +403,16 @@ begin
                                          ctrl.mgt(I+2).rx_resets.reset_pll_and_datapath or
                                          ctrl.mgt(I+3).rx_resets.reset_pll_and_datapath,
 
-          reset_rx_datapath_i        => '0',
-          buffbypass_tx_reset_i      => '0',
+          reset_rx_datapath_i => ctrl.mgt(I).rx_resets.reset_datapath or
+                                 ctrl.mgt(I+1).rx_resets.reset_datapath or
+                                 ctrl.mgt(I+2).rx_resets.reset_datapath or
+                                 ctrl.mgt(I+3).rx_resets.reset_datapath,
+
+          buffbypass_tx_reset_i => ctrl.mgt(I).tx_resets.reset_bufbypass or
+                                   ctrl.mgt(I+1).tx_resets.reset_bufbypass or
+                                   ctrl.mgt(I+2).tx_resets.reset_bufbypass or
+                                   ctrl.mgt(I+3).tx_resets.reset_bufbypass,
+
           buffbypass_tx_start_user_i => '0',
 
           --------------------------------------------------------------------------------
@@ -360,17 +420,17 @@ begin
           --------------------------------------------------------------------------------
 
           -- drp clock
-          free_clock => clocks.freeclock,
+          free_clock => axiclock,
 
           -- refclks
           refclk0_i => refclk(c_MGT_MAP(I).refclk),
           refclk1_i => refclk(c_MGT_MAP(I).refclk),
 
           -- user clocks
-          mgt_rxusrclk_i        => clocks.clock320,
-          mgt_txusrclk_i        => clocks.clock320,
-          mgt_rxusrclk_active_i => clocks.lhc_locked,  -- FIXME: this should come from something else for the felix link
-          mgt_txusrclk_active_i => clocks.lhc_locked,
+          mgt_rxusrclk_i        => clock320,
+          mgt_txusrclk_i        => clock320,
+          mgt_rxusrclk_active_i => lhc_locked,  -- FIXME: this should come from something else for the felix link
+          mgt_txusrclk_active_i => lhc_locked,
 
           -- outputs
           qpll0outclk_out    => open,
@@ -447,7 +507,7 @@ begin
         end generate;
 
         --------------------------------------------------------------------------------
-        -- FELIX LPGBT
+        -- FELIX LPGBT (to be moved to full-mode connection)
         --------------------------------------------------------------------------------
 
         felix_gen : if (ttc_idx_array(I) /= -1) generate
@@ -487,9 +547,10 @@ begin
 
     begin
 
+      -- just set a flag to 1 to indicate that this transceiver was enabled, which we can read from software
       mon.mgt(I).config.is_active <= '1';
 
-      assert false report
+      assert true report
         "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I)
         & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
         & " SL_LINK_CNT=" & integer'image(idx) severity note;
@@ -504,7 +565,7 @@ begin
       MGT_INST : entity work.mgt_sl_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
-          clock          => clocks.freeclock,  -- FIXME: check this clock frequency against IP core
+          clock          => axiclock,  -- FIXME: check this clock frequency against IP core
           reset_i        => reset_tree(I),
           mgt_refclk_i_p => refclk_i_p(c_MGT_MAP(I).refclk),
           mgt_refclk_i_n => refclk_i_n(c_MGT_MAP(I).refclk),
@@ -515,7 +576,7 @@ begin
           rxctrl_out     => sl_rx_ctrl_o(idx+3 downto idx),
           rx_slide_i     => sl_rx_slide_i(idx+3 downto idx),
           re_channel_i   => sl_re_channel(idx+3 downto idx),
-          rx_init_done_o => sl_rx_init_done,
+          rx_init_done_o => sl_rx_init_done_s(I),
           mgt_word_i     => sl_tx_mgt_word_array_i(idx+3 downto idx),
           mgt_word_o     => sl_rx_mgt_word_array_o(idx+3 downto idx),
           rxp_i          => rx_p,
@@ -542,6 +603,7 @@ begin
     -- frequency is, it should probably be stored somewhere in the board_pkg I
     -- think this number also gets duplicated in top_clocking.. it should really
     -- be centralized
+    -- Move to a package
     constant axi_refclk_freq : integer := 50_000_000;
 
   begin
@@ -591,7 +653,7 @@ begin
           )
         port map (
           reset => reset,
-          clk_a => clocks.axiclock,
+          clk_a => axiclock,
           clk_b => refclk_bufg(I),
           rate  => clk_freq
           );

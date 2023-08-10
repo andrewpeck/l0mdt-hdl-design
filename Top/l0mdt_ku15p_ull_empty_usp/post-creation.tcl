@@ -13,7 +13,7 @@ set bd_design_name "c2cSlave"
 # Regenerate the BD if needed
 
 set sources "${SCRIPT_PATH}/../createC2CSlaveInterconnect.tcl
-             ${C2C_PATH}/create_kintex_c2c.tcl
+             ${C2C_PATH}/create_c2c.tcl
              ${SCRIPT_PATH}/slaves.yaml"
 
 set svg_product ${SCRIPT_PATH}/c2cSlave.svg
@@ -64,9 +64,9 @@ if {$regenerate_svg} {
 puts "=================================================================="
 
 # 0xB0000000 for US+; 0x80000000 for 7 Series
-set AXI_BASE_ADDRESS 0xB0000000 ; # USP
-set REMOTE_C2C 1
-set REMOTE_C2C_64 1
+set ::AXI_BASE_ADDRESS 0xB0000000 ; # USP
+set ::REMOTE_C2C 1
+set ::REMOTE_C2C_64 1
 
 source ${SCRIPT_PATH}/../create_c2c.tcl
 
@@ -84,4 +84,7 @@ set_property PROCESSING_ORDER LATE [get_files timing.tcl]
 set_property PROCESSING_ORDER LATE [get_files loc_mgts.tcl]
 
 # Suppress [Common 17-576] 'use_project_ipc' is deprecated message from Vivado 2020.2
-set_msg_config -suppress -id {Common 17-576} 
+set_msg_config -suppress -id {Common 17-576}
+# Suppress Missing generic message to avoid pollution from Hog try to set generics for each IP in the .bd
+set_msg_config -suppress -id {Synth 8-3819} 
+

@@ -72,6 +72,6 @@ foreach dtsi_file $DTSI_FILES {
 }
 
 puts "Creating the tarball"
-cd $dst_dir
-exec tar cvf ${proj_name}\-$describe.tar tarball
-exec gzip ${proj_name}\-$describe.tar
+cd $dst_dir/tarball
+exec tar cvf ${proj_name}\-$describe.tar bit address_table dtbo 
+exec gzip -f ${proj_name}\-$describe.tar

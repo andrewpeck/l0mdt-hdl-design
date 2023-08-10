@@ -10,8 +10,7 @@ variables:
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
-    ref: 'v6.55.0'
-  # - local: '/.before_script.yml'
+    ref: 'v7.4.0'
   - local: "/.user_jobs.yml"
   - local: '/.devel_to_master.yml'
   #---------------------------------------------
@@ -111,7 +110,6 @@ include:
   #---------------------------------------------
   - local: '/Top/l0mdt_ku15p_ull_tar/gitlab-ci.yml'
   - local: '/Top/l0mdt_ku15p_ull_ucm/gitlab-ci.yml'
-  
   #---------------------------------------------
   #         CocoTB
   #---------------------------------------------

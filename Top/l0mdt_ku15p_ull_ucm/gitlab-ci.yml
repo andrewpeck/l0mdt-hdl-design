@@ -9,3 +9,9 @@ GEN:l0mdt_ku15p_ull_ucm:
       HOG_NO_BITSTREAM: 0 
     tags:
       - mdt-1
+    artifacts:
+      when: always
+      name: implementation_and_bitfiles
+      paths:
+        - bin 
+

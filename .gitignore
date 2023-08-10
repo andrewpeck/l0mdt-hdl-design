@@ -20,8 +20,12 @@ xvlog*
 .vscode/
 BD/*
 !BD/*.bd
-HAL/IP/**/*
-!HAL/IP/**/*.xci
+
+# Ignore everything but xci files in the HAL IP
+!HAL/IP/*/*/*
+HAL/IP/*/*/*
+!HAL/IP/*/*/*.xci
+
 !**/IP/**/*.xci
 UserLogic/*/IP/**/*
 UserLogic/*/IP/*/*/*
@@ -30,8 +34,6 @@ UserLogic/ucm/IPs/*/*/*
 !UserLogic/ucm/IPs/*/*/*.xci
 !IP/**/*.xci
 !IP/**.xci
-HAL/IP/*/*/*
-!HAL/IP/*/*/*.xci
 *.dbg
 *.zip
 *.tar
@@ -69,3 +71,5 @@ Top/*/*/c2cslave_pkg.vhd
 test*
 configs/
 make.log
+
+Doc/
