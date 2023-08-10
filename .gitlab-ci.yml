@@ -7,10 +7,6 @@ variables:
   HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/Xilinx/Vivado/2020.2/bin:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/"
   HOG_APPTAINER_IMAGE: "/Data/images/l0mdt_Ubuntu20.04.sif"
 
-
-  - local: '/tools/cocotb/ci-scripts/gitlab-ci.yml'
-
-
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
