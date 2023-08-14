@@ -177,8 +177,8 @@ package constants_pkg is
   function get_polmux_global_id (mdt_config : mdt_config_t; index : integer; station : station_id_t)
     return integer;
 
-  constant csm_hi_lo    : hi_lo_array_t (c_MDT_CONFIG'range)      := get_csm_hi_lo (c_MDT_CONFIG);
-  constant polmux_hi_lo : hi_lo_array_t (c_NUM_POLMUX-1 downto 0) := get_polmux_hi_lo (c_MDT_CONFIG);
+  --constant csm_hi_lo    : hi_lo_array_t (c_MDT_CONFIG'range)      := get_csm_hi_lo (c_MDT_CONFIG);
+  --constant polmux_hi_lo : hi_lo_array_t (c_NUM_POLMUX-1 downto 0) := get_polmux_hi_lo (c_MDT_CONFIG);
 
 end package constants_pkg;
 
