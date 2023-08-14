@@ -57,9 +57,9 @@ class PolmuxWrapper(block_wrapper.BlockWrapper):
             driver, io, active = self.input_ports[input_interface][interface_port]
 
 
-            cocotb.log.info(
-                f"Sending {len(input_events)} events to input (port_num) = ({io})"
-            )
+            #cocotb.log.info(
+            #    f"Sending {len(input_events)} events to input (port_num) = ({io})"
+            #)
 
             hook = None
             for iword, word in enumerate(input_events):

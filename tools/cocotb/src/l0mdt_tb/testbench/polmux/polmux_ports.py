@@ -22,11 +22,11 @@ class PolmuxPorts(port_descriptor.PortDescriptor):
 	n_output_interfaces = 1
 
 	def get_input_interface_ports(interface):
-		input_ports = [24]
+		input_ports = [480]
 		return input_ports[interface]
 
 	def get_all_input_interface_ports():
-		input_ports = [24]
+		input_ports = [480]
 		return input_ports
 
 	def get_output_interface_ports(interface):

@@ -28,8 +28,8 @@ from l0mdt_tb.utils import test_config
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
-# import logging
-# cocotb.log.setLevel(logging.DEBUG)
+import logging
+cocotb.log.setLevel(logging.INFO)
 
 def initialize_spybuffers(fifos=[]):
 
@@ -317,7 +317,9 @@ def ult_tar_test(dut):
 
 
     #Block Latency
-    yield ClockCycles(dut.clock, 500+num_events_to_process*2*pad_size)
+    n_cycles_to_wait = 500+num_events_to_process*2*pad_size
+    cocotb.log.info(f"Waiting {n_cycles_to_wait} clock cycles")
+    yield ClockCycles(dut.clock, n_cycles_to_wait)
     
 
     cocotb.log.debug("\n\n\n Performing testvector comparison test * * * \n\n\n")

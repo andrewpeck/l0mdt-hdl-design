@@ -2,9 +2,10 @@
     "testbench_config": {
         "test_name": "polmux",
         "input_args": {
-            "n_events": 1,
+            "n_events": 3,
             "event_detail": false,
-            "clock_period": 5,
+            "clock_period": 3.125,
+            "clock_input_data_period": 62.5,
             "clock_time_unit": "ns",
             "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
         },
@@ -18,17 +19,23 @@
         },
         "testvectors": {
             "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
-            "testvector_file": "B_A_3.xz",
+            "testvector_file": "B_C_3.xz",
             "inputs": [
                 {
-                    "tv_format": "INTERFACE_FORMAT_0",
-                    "ports": 24
+                    "tv_format": "TDCPOLMUX2TAR",
+                    "ports": 480,
+                    "station_ID" : "mezz_idx_to_station",
+                    "tv_type" : "list_nested_tdc_per_mezz",
+                    "padding_size" : 50
                 }
             ],
             "outputs": [
                 {
-                    "tv_format": "INTERFACE_FORMAT_0",
-                    "ports": 24
+                    "tv_format": "TDCPOLMUX2TAR",
+                    "ports": 24,
+                    "station_ID" : ["INN","INN","INN", "INN","INN","INN", "MID", "MID", "MID", "MID", "MID", "MID", "OUT", "OUT", "OUT","OUT", "OUT", "OUT", "EXT", "EXT", "EXT", "EXT", "EXT", "EXT" ],
+                    "tv_type" : "list_nested_tdc"
+        
                 }
             ]
         }

@@ -15,13 +15,12 @@ module TopLevel_polmux #(
 			 parameter DATA_WIDTH = 256, //65,
 			 parameter FIFO_DEPTH = 6,
 			 parameter N_OUTPUTS = 24,
-			 parameter N_INPUTS = 24
-
+			 parameter N_INPUTS = 480
 			 ) (
 			    input wire 			 clock, // Clock used by the polmux (320 MHz)
 				input wire           clock_sb_in, //Only used by the input SpyBuffer, not used by the POLMUX (16 MHz)
 			    input wire 			 reset_n,
-			    input wire [DATA_WIDTH-1:0]  input_data [24],
+			    input wire [DATA_WIDTH-1:0]  input_data [480],
 			    output wire [DATA_WIDTH-1:0] output_data [24]
 			    );
 
@@ -32,11 +31,11 @@ module TopLevel_polmux #(
    // creator should remove unnecessary signals.
    //
 
-   wire 						 BLOCK_input_write_enable [24];
-   wire [DATA_WIDTH-1:0] 				 BLOCK_input_data [24];
-   wire 						 BLOCK_input_read_enable [24];
-   wire 						 BLOCK_input_almost_full [24];
-   wire 						 BLOCK_input_empty [24];
+   wire 						 BLOCK_input_write_enable [480];
+   wire [DATA_WIDTH-1:0] 				 BLOCK_input_data [480];
+   wire 						 BLOCK_input_read_enable [480];
+   wire 						 BLOCK_input_almost_full [480];
+   wire 						 BLOCK_input_empty [480];
 
    wire 						 BLOCK_output_write_enable [24];
    wire [DATA_WIDTH-1:0] 				 BLOCK_output_data [24];
@@ -48,7 +47,7 @@ module TopLevel_polmux #(
    // Input buffers
    //
    generate
-      for(genvar i = 0; i < 24; i++)
+      for(genvar i = 0; i < 480; i++)
 	begin:input_spybuffers
            SpyBuffer #(
 		       .DATA_WIDTH_A(DATA_WIDTH),
@@ -75,41 +74,51 @@ module TopLevel_polmux #(
 
    // Here place the DUT block(s)
 
-   logic [TDCPOLMUX2TAR_LEN-1:0] i_inn_tdc_hits[6];
-   logic [TDCPOLMUX2TAR_LEN-1:0] i_mid_tdc_hits[6];
-   logic [TDCPOLMUX2TAR_LEN-1:0] i_out_tdc_hits[6];
-   logic [TDCPOLMUX2TAR_LEN-1:0] i_ext_tdc_hits[6];
+	logic [TDCPOLMUX2TAR_LEN-1:0] i_tdc_hits_to_polmux_avt[360];
+//    logic [TDCPOLMUX2TAR_LEN-1:0] i_inn_tdc_hits[120];
+//    logic [TDCPOLMUX2TAR_LEN-1:0] i_mid_tdc_hits[120];
+//    logic [TDCPOLMUX2TAR_LEN-1:0] i_out_tdc_hits[120];
+//    logic [TDCPOLMUX2TAR_LEN-1:0] i_ext_tdc_hits[120];
 
    logic [TDCPOLMUX2TAR_LEN-1:0] o_inn_tdc_hits[6];
    logic [TDCPOLMUX2TAR_LEN-1:0] o_mid_tdc_hits[6];
    logic [TDCPOLMUX2TAR_LEN-1:0] o_out_tdc_hits[6];
    logic [TDCPOLMUX2TAR_LEN-1:0] o_ext_tdc_hits[6];
 
+
+	
+	for(genvar i=0; i<360;i=i+1)
+	begin
+		assign i_tdc_hits_to_polmux_avt[360-1-i][TDCPOLMUX2TAR_LEN-1:0] = BLOCK_input_data[i][TDCPOLMUX2TAR_LEN-1:0];
+	end	
+// 
+//    parameter c_N_MAX_CSM = 6;
+//    parameter c_N_MAX_MEZZ_PER_CSM = 20;
+//    parameter c_N_MAX_MEZZ_PER_STATION = 120; 
    parameter c_HPS_MAX_HP = 6;
 
    for(genvar i=0; i<c_HPS_MAX_HP;i=i+1)
    begin
-   assign i_inn_tdc_hits[i]   = BLOCK_input_data[i];
-   assign i_mid_tdc_hits[i]   = BLOCK_input_data[i + c_HPS_MAX_HP];
-   assign i_out_tdc_hits[i]   = BLOCK_input_data[i + 2*c_HPS_MAX_HP];
-   assign i_ext_tdc_hits[i]   = BLOCK_input_data[i + 3*c_HPS_MAX_HP];
+//    assign i_inn_tdc_hits[i]   = BLOCK_input_data[i];
+//    assign i_mid_tdc_hits[i]   = BLOCK_input_data[i + c_HPS_MAX_HP];
+//    assign i_out_tdc_hits[i]   = BLOCK_input_data[i + 2*c_HPS_MAX_HP];
+//    assign i_ext_tdc_hits[i]   = BLOCK_input_data[i + 3*c_HPS_MAX_HP];
 
-
-   assign BLOCK_output_data[i][TDCPOLMUX2TAR_LEN-1:0]                      = o_inn_tdc_hits[i];
+   assign BLOCK_output_data[i][TDCPOLMUX2TAR_LEN-1:0]                      = o_inn_tdc_hits[6-1-i];
    assign BLOCK_output_data[i][255:TDCPOLMUX2TAR_LEN]                      = 0;
-   assign BLOCK_output_write_enable[i]                                     = o_inn_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[i]                                     = o_inn_tdc_hits[6-1-i][TDCPOLMUX2TAR_DATA_VALID_MSB];
 
-   assign BLOCK_output_data[i + c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]       = o_mid_tdc_hits[i];
+   assign BLOCK_output_data[i + c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]       = o_mid_tdc_hits[6-1-i];
    assign BLOCK_output_data[i + c_HPS_MAX_HP][255:TDCPOLMUX2TAR_LEN]       = 0;
-   assign BLOCK_output_write_enable[i + c_HPS_MAX_HP]                      = o_mid_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[i + c_HPS_MAX_HP]                      = o_mid_tdc_hits[6-1-i][TDCPOLMUX2TAR_DATA_VALID_MSB];
 
-   assign BLOCK_output_data[i + 2*c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]     = o_out_tdc_hits[i];
+   assign BLOCK_output_data[i + 2*c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]     = o_out_tdc_hits[6-1-i];
    assign BLOCK_output_data[i + 2*c_HPS_MAX_HP][255:TDCPOLMUX2TAR_LEN]     = 0;
-   assign BLOCK_output_write_enable[i + 2*c_HPS_MAX_HP]                    = o_out_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[i + 2*c_HPS_MAX_HP]                    = o_out_tdc_hits[6-1-i][TDCPOLMUX2TAR_DATA_VALID_MSB];
 
-   assign BLOCK_output_data[i + 3*c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]     = o_ext_tdc_hits[i];
+   assign BLOCK_output_data[i + 3*c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]     = o_ext_tdc_hits[6-1-i];
    assign BLOCK_output_data[i + 3*c_HPS_MAX_HP][255:TDCPOLMUX2TAR_LEN]     = 0;
-   assign BLOCK_output_write_enable[i + 3*c_HPS_MAX_HP]                    = o_ext_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[i + 3*c_HPS_MAX_HP]                    = o_ext_tdc_hits[6-1-i][TDCPOLMUX2TAR_DATA_VALID_MSB];
 
    end
 
@@ -119,10 +128,7 @@ module TopLevel_polmux #(
 			 .clock_pipeline(clock_sb_in),
  			 .reset(~reset_n),
 			 // 			//    -- TDC Hits from Polmux
- 			 .i_inn_tdc_hits_av(i_inn_tdc_hits), // : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
-			 .i_mid_tdc_hits_av(i_mid_tdc_hits), // : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_MID -1 downto 0);
-			 .i_out_tdc_hits_av(i_out_tdc_hits), // : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-			 .i_ext_tdc_hits_av(i_ext_tdc_hits), // : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+ 			 .i_tdc_hits_to_polmux_avt(i_tdc_hits_to_polmux_avt), // : in  tdcpolmux2tar_avt (c_HPS_MAX_HP_INN -1 downto 0);
       
 			 // 			// //-- to DAQ
 			 .o_inn_tdc_hits_av(o_inn_tdc_hits), //  : out tdcpolmux2tar_avt(c_HPS_MAX_HP_INN -1 downto 0);
