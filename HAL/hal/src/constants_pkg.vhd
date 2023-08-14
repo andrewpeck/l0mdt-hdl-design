@@ -11,8 +11,7 @@ use work.link_map.all;
 
 package constants_pkg is
 
-  function set_user_const (user : integer; max : integer)
-    return integer;
+
 
   --------------------------------------------------------------------------------
   -- CSM
@@ -161,24 +160,18 @@ package constants_pkg is
   constant c2c_idx_array :  int_array_t (0 to c_NUM_MGTS-1) :=
     func_fill_subtype_idx (c_NUM_C2C_LINKS, c_MGT_MAP, MGT_C2C);
 
-  type hi_lo_t is record
-    hi : integer;
-    lo : integer;
-  end record;
-
-  type hi_lo_array_t is array (integer range <>) of hi_lo_t;
+ 
 
   function get_sl_mgt_num (sl_id : integer; mgt_map : mgt_inst_array_t)
     return integer;
-  function get_csm_hi_lo (mdt_config : mdt_config_t)
-    return hi_lo_array_t;
-  function get_polmux_hi_lo (mdt_config : mdt_config_t)
-    return hi_lo_array_t;
+ 
+ 
   function get_polmux_global_id (mdt_config : mdt_config_t; index : integer; station : station_id_t)
     return integer;
+ 
 
-  --constant csm_hi_lo    : hi_lo_array_t (c_MDT_CONFIG'range)      := get_csm_hi_lo (c_MDT_CONFIG);
-  --constant polmux_hi_lo : hi_lo_array_t (c_NUM_POLMUX-1 downto 0) := get_polmux_hi_lo (c_MDT_CONFIG);
+  constant csm_hi_lo    : hi_lo_array_t (c_MDT_CONFIG'range)      := get_csm_hi_lo (c_MDT_CONFIG);
+  constant polmux_hi_lo : hi_lo_array_t (c_NUM_POLMUX-1 downto 0) := get_polmux_hi_lo (c_MDT_CONFIG, c_NUM_POLMUX);
 
 end package constants_pkg;
 
@@ -188,59 +181,10 @@ end package constants_pkg;
 
 package body constants_pkg is
 
-  function set_user_const (user : integer; max : integer)
-    return integer is
-  begin
-    if user = -1 then
-      return max;
-    else
-      return user;
-    end if;
-  end function;
+  
+ 
 
-  -- We have some number of polling multiplexers say, up to 17 if each CSM has its own, but
-  -- ideally it is less, e.g. 12 since many CSM inputs are not populated with tdcs
-  -- From all these CSMs, then, there is a smaller number of TDC inputs, (e.g. just say 100)
-  -- if we concatenate the tdc inputs into a 100 wide array, then we need some function that can
-  -- figure out that, e.g.
-  -- polmux0 connects to inputs 0 to 9
-  -- polmux1 connects to inputs 10 to 22
-  -- polmux3 connects to inputs ....
-  -- etc
-
-  function get_polmux_hi_lo (mdt_config : mdt_config_t)
-    return hi_lo_array_t is
-    variable hi_lo : hi_lo_array_t (c_NUM_POLMUX-1 downto 0);
-    variable cnt   : integer := 0;
-  begin
-
-    -- initialize output
-    for I in 0 to hi_lo'length-1 loop
-      hi_lo(I).hi := -1;
-      hi_lo(I).lo := -1;
-    end loop;
-
-    for polmux in 0 to hi_lo'length-1 loop
-      cnt := 0;
-      for I in 0 to mdt_config'length-1 loop
-        for J in 0 to mdt_config(I).en'length-1 loop
-          if (mdt_config(I).en(J) = '1') then
-            if (mdt_config(I).en(J) = '1' and mdt_config(I).polmux_id = polmux) then
-              if (hi_lo(polmux).lo = -1) then
-                hi_lo(polmux).lo := cnt;
-              else
-                hi_lo(polmux).hi := cnt;
-              end if;
-            end if;
-            cnt := cnt + 1;
-          end if;
-        end loop;
-      end loop;
-    end loop;
-
-    return hi_lo;
-  end function;
-
+  
   function get_sl_mgt_num (sl_id : integer; mgt_map : mgt_inst_array_t)
     return integer is
     variable cnt   : integer := 0;
@@ -259,33 +203,7 @@ package body constants_pkg is
     return -1;
   end function;
 
-  function get_csm_hi_lo (mdt_config : mdt_config_t)
-    return hi_lo_array_t is
-    variable hi_lo : hi_lo_array_t (mdt_config'range);
-    variable cnt   : integer := 0;
-  begin
-    --
 
-    -- initialize output
-    for I in 0 to hi_lo'length -1 loop
-      hi_lo(I).hi := -1;
-      hi_lo(I).lo := -1;
-    end loop;
-
-    for csm in 0 to mdt_config'length-1 loop
-      for ch in 0 to mdt_config(csm).en'length-1 loop
-        if (mdt_config(csm).en(ch) = '1') then
-          if (hi_lo(csm).lo = -1) then
-            hi_lo(csm).lo := cnt;
-          else
-            hi_lo(csm).hi := cnt;
-          end if;
-          cnt := cnt + 1;
-        end if;
-      end loop;
-    end loop;
-    return hi_lo;
-  end function;
 
   function get_polmux_global_id (mdt_config : mdt_config_t;
                                  index      : integer;

@@ -127,10 +127,10 @@ package HAL_CTRL is
    type HAL_CSM_CSM_SC_MASTER_IC_CTRL_t is record
       TX_START_WRITE : std_logic;
       TX_START_READ : std_logic;
-      TX_GBTX_ADDR : std_logic_vector(8 - 1 downto 0);
       TX_REGISTER_ADDR : std_logic_vector(16 - 1 downto 0);
       TX_NUM_BYTES_TO_READ : std_logic_vector(16 - 1 downto 0);
       TX_DATA_TO_GBTX : std_logic_vector(8 - 1 downto 0);
+      TX_GBTX_ADDR : std_logic_vector(8 - 1 downto 0);
       TX_WR : std_logic;
    end record HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
    attribute w of HAL_CSM_CSM_SC_MASTER_IC_CTRL_t : type is 51;
@@ -225,10 +225,10 @@ package HAL_CTRL is
    type HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t is record
       TX_START_WRITE : std_logic;
       TX_START_READ : std_logic;
-      TX_GBTX_ADDR : std_logic_vector(8 - 1 downto 0);
       TX_REGISTER_ADDR : std_logic_vector(16 - 1 downto 0);
       TX_NUM_BYTES_TO_READ : std_logic_vector(16 - 1 downto 0);
       TX_DATA_TO_GBTX : std_logic_vector(8 - 1 downto 0);
+      TX_GBTX_ADDR : std_logic_vector(8 - 1 downto 0);
       TX_WR : std_logic;
    end record HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
    attribute w of HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t : type is 51;
@@ -1044,10 +1044,10 @@ package body HAL_CTRL is
    begin
       w := w + width(x.TX_START_WRITE);
       w := w + width(x.TX_START_READ);
-      w := w + width(x.TX_GBTX_ADDR);
       w := w + width(x.TX_REGISTER_ADDR);
       w := w + width(x.TX_NUM_BYTES_TO_READ);
       w := w + width(x.TX_DATA_TO_GBTX);
+      w := w + width(x.TX_GBTX_ADDR);
       w := w + width(x.TX_WR);
       return w;
    end function width;
@@ -1063,9 +1063,6 @@ package body HAL_CTRL is
          w := width(x.TX_START_READ);
          y(u to u+w-1) := convert(x.TX_START_READ, y(u to u+w-1));
          u := u + w;
-         w := width(x.TX_GBTX_ADDR);
-         y(u to u+w-1) := convert(x.TX_GBTX_ADDR, y(u to u+w-1));
-         u := u + w;
          w := width(x.TX_REGISTER_ADDR);
          y(u to u+w-1) := convert(x.TX_REGISTER_ADDR, y(u to u+w-1));
          u := u + w;
@@ -1074,6 +1071,9 @@ package body HAL_CTRL is
          u := u + w;
          w := width(x.TX_DATA_TO_GBTX);
          y(u to u+w-1) := convert(x.TX_DATA_TO_GBTX, y(u to u+w-1));
+         u := u + w;
+         w := width(x.TX_GBTX_ADDR);
+         y(u to u+w-1) := convert(x.TX_GBTX_ADDR, y(u to u+w-1));
          u := u + w;
          w := width(x.TX_WR);
          y(u to u+w-1) := convert(x.TX_WR, y(u to u+w-1));
@@ -1084,9 +1084,6 @@ package body HAL_CTRL is
          w := width(x.TX_START_READ);
          y(u downto u-w+1) := convert(x.TX_START_READ, y(u downto u-w+1));
          u := u - w;
-         w := width(x.TX_GBTX_ADDR);
-         y(u downto u-w+1) := convert(x.TX_GBTX_ADDR, y(u downto u-w+1));
-         u := u - w;
          w := width(x.TX_REGISTER_ADDR);
          y(u downto u-w+1) := convert(x.TX_REGISTER_ADDR, y(u downto u-w+1));
          u := u - w;
@@ -1095,6 +1092,9 @@ package body HAL_CTRL is
          u := u - w;
          w := width(x.TX_DATA_TO_GBTX);
          y(u downto u-w+1) := convert(x.TX_DATA_TO_GBTX, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.TX_GBTX_ADDR);
+         y(u downto u-w+1) := convert(x.TX_GBTX_ADDR, y(u downto u-w+1));
          u := u - w;
          w := width(x.TX_WR);
          y(u downto u-w+1) := convert(x.TX_WR, y(u downto u-w+1));
@@ -1113,9 +1113,6 @@ package body HAL_CTRL is
          w := width(tpl.TX_START_READ);
          y.TX_START_READ := convert(x(u to u+w-1), tpl.TX_START_READ);
          u := u + w;
-         w := width(tpl.TX_GBTX_ADDR);
-         y.TX_GBTX_ADDR := convert(x(u to u+w-1), tpl.TX_GBTX_ADDR);
-         u := u + w;
          w := width(tpl.TX_REGISTER_ADDR);
          y.TX_REGISTER_ADDR := convert(x(u to u+w-1), tpl.TX_REGISTER_ADDR);
          u := u + w;
@@ -1124,6 +1121,9 @@ package body HAL_CTRL is
          u := u + w;
          w := width(tpl.TX_DATA_TO_GBTX);
          y.TX_DATA_TO_GBTX := convert(x(u to u+w-1), tpl.TX_DATA_TO_GBTX);
+         u := u + w;
+         w := width(tpl.TX_GBTX_ADDR);
+         y.TX_GBTX_ADDR := convert(x(u to u+w-1), tpl.TX_GBTX_ADDR);
          u := u + w;
          w := width(tpl.TX_WR);
          y.TX_WR := convert(x(u to u+w-1), tpl.TX_WR);
@@ -1134,9 +1134,6 @@ package body HAL_CTRL is
          w := width(tpl.TX_START_READ);
          y.TX_START_READ := convert(x(u downto u-w+1), tpl.TX_START_READ);
          u := u - w;
-         w := width(tpl.TX_GBTX_ADDR);
-         y.TX_GBTX_ADDR := convert(x(u downto u-w+1), tpl.TX_GBTX_ADDR);
-         u := u - w;
          w := width(tpl.TX_REGISTER_ADDR);
          y.TX_REGISTER_ADDR := convert(x(u downto u-w+1), tpl.TX_REGISTER_ADDR);
          u := u - w;
@@ -1145,6 +1142,9 @@ package body HAL_CTRL is
          u := u - w;
          w := width(tpl.TX_DATA_TO_GBTX);
          y.TX_DATA_TO_GBTX := convert(x(u downto u-w+1), tpl.TX_DATA_TO_GBTX);
+         u := u - w;
+         w := width(tpl.TX_GBTX_ADDR);
+         y.TX_GBTX_ADDR := convert(x(u downto u-w+1), tpl.TX_GBTX_ADDR);
          u := u - w;
          w := width(tpl.TX_WR);
          y.TX_WR := convert(x(u downto u-w+1), tpl.TX_WR);
@@ -1806,10 +1806,10 @@ package body HAL_CTRL is
    begin
       w := w + width(x.TX_START_WRITE);
       w := w + width(x.TX_START_READ);
-      w := w + width(x.TX_GBTX_ADDR);
       w := w + width(x.TX_REGISTER_ADDR);
       w := w + width(x.TX_NUM_BYTES_TO_READ);
       w := w + width(x.TX_DATA_TO_GBTX);
+      w := w + width(x.TX_GBTX_ADDR);
       w := w + width(x.TX_WR);
       return w;
    end function width;
@@ -1825,9 +1825,6 @@ package body HAL_CTRL is
          w := width(x.TX_START_READ);
          y(u to u+w-1) := convert(x.TX_START_READ, y(u to u+w-1));
          u := u + w;
-         w := width(x.TX_GBTX_ADDR);
-         y(u to u+w-1) := convert(x.TX_GBTX_ADDR, y(u to u+w-1));
-         u := u + w;
          w := width(x.TX_REGISTER_ADDR);
          y(u to u+w-1) := convert(x.TX_REGISTER_ADDR, y(u to u+w-1));
          u := u + w;
@@ -1836,6 +1833,9 @@ package body HAL_CTRL is
          u := u + w;
          w := width(x.TX_DATA_TO_GBTX);
          y(u to u+w-1) := convert(x.TX_DATA_TO_GBTX, y(u to u+w-1));
+         u := u + w;
+         w := width(x.TX_GBTX_ADDR);
+         y(u to u+w-1) := convert(x.TX_GBTX_ADDR, y(u to u+w-1));
          u := u + w;
          w := width(x.TX_WR);
          y(u to u+w-1) := convert(x.TX_WR, y(u to u+w-1));
@@ -1846,9 +1846,6 @@ package body HAL_CTRL is
          w := width(x.TX_START_READ);
          y(u downto u-w+1) := convert(x.TX_START_READ, y(u downto u-w+1));
          u := u - w;
-         w := width(x.TX_GBTX_ADDR);
-         y(u downto u-w+1) := convert(x.TX_GBTX_ADDR, y(u downto u-w+1));
-         u := u - w;
          w := width(x.TX_REGISTER_ADDR);
          y(u downto u-w+1) := convert(x.TX_REGISTER_ADDR, y(u downto u-w+1));
          u := u - w;
@@ -1857,6 +1854,9 @@ package body HAL_CTRL is
          u := u - w;
          w := width(x.TX_DATA_TO_GBTX);
          y(u downto u-w+1) := convert(x.TX_DATA_TO_GBTX, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.TX_GBTX_ADDR);
+         y(u downto u-w+1) := convert(x.TX_GBTX_ADDR, y(u downto u-w+1));
          u := u - w;
          w := width(x.TX_WR);
          y(u downto u-w+1) := convert(x.TX_WR, y(u downto u-w+1));
@@ -1875,9 +1875,6 @@ package body HAL_CTRL is
          w := width(tpl.TX_START_READ);
          y.TX_START_READ := convert(x(u to u+w-1), tpl.TX_START_READ);
          u := u + w;
-         w := width(tpl.TX_GBTX_ADDR);
-         y.TX_GBTX_ADDR := convert(x(u to u+w-1), tpl.TX_GBTX_ADDR);
-         u := u + w;
          w := width(tpl.TX_REGISTER_ADDR);
          y.TX_REGISTER_ADDR := convert(x(u to u+w-1), tpl.TX_REGISTER_ADDR);
          u := u + w;
@@ -1886,6 +1883,9 @@ package body HAL_CTRL is
          u := u + w;
          w := width(tpl.TX_DATA_TO_GBTX);
          y.TX_DATA_TO_GBTX := convert(x(u to u+w-1), tpl.TX_DATA_TO_GBTX);
+         u := u + w;
+         w := width(tpl.TX_GBTX_ADDR);
+         y.TX_GBTX_ADDR := convert(x(u to u+w-1), tpl.TX_GBTX_ADDR);
          u := u + w;
          w := width(tpl.TX_WR);
          y.TX_WR := convert(x(u to u+w-1), tpl.TX_WR);
@@ -1896,9 +1896,6 @@ package body HAL_CTRL is
          w := width(tpl.TX_START_READ);
          y.TX_START_READ := convert(x(u downto u-w+1), tpl.TX_START_READ);
          u := u - w;
-         w := width(tpl.TX_GBTX_ADDR);
-         y.TX_GBTX_ADDR := convert(x(u downto u-w+1), tpl.TX_GBTX_ADDR);
-         u := u - w;
          w := width(tpl.TX_REGISTER_ADDR);
          y.TX_REGISTER_ADDR := convert(x(u downto u-w+1), tpl.TX_REGISTER_ADDR);
          u := u - w;
@@ -1907,6 +1904,9 @@ package body HAL_CTRL is
          u := u - w;
          w := width(tpl.TX_DATA_TO_GBTX);
          y.TX_DATA_TO_GBTX := convert(x(u downto u-w+1), tpl.TX_DATA_TO_GBTX);
+         u := u - w;
+         w := width(tpl.TX_GBTX_ADDR);
+         y.TX_GBTX_ADDR := convert(x(u downto u-w+1), tpl.TX_GBTX_ADDR);
          u := u - w;
          w := width(tpl.TX_WR);
          y.TX_WR := convert(x(u downto u-w+1), tpl.TX_WR);

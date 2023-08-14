@@ -12,23 +12,22 @@ package CORE_CTRL_DEF is
                                                                   );
   constant DEFAULT_CORE_MGT_MGT_DRP_CTRL_t : CORE_MGT_MGT_DRP_CTRL_t := (
                                                                          wr_en => '0',
-                                                                         wr_addr => (others => '0'),
+                                                                         wr_addr => "0000000000",
                                                                          en => '0',
-                                                                         wr_data => (others => '0')
+                                                                         wr_data => x"0000"
                                                                         );
   constant DEFAULT_CORE_MGT_MGT_TX_RESETS_CTRL_t : CORE_MGT_MGT_TX_RESETS_CTRL_t := (
-                                                                                     reset => '0',
                                                                                      reset_pll_and_datapath => '0',
                                                                                      reset_datapath => '0',
                                                                                      reset_bufbypass => '0'
                                                                                     );
   constant DEFAULT_CORE_MGT_MGT_RX_RESETS_CTRL_t : CORE_MGT_MGT_RX_RESETS_CTRL_t := (
-                                                                                     reset => '0',
                                                                                      reset_pll_and_datapath => '0',
                                                                                      reset_datapath => '0',
                                                                                      reset_bufbypass => '0'
                                                                                     );
   constant DEFAULT_CORE_MGT_MGT_CTRL_t : CORE_MGT_MGT_CTRL_t := (
+                                                                 RESET_ALL => '0',
                                                                  DRP => DEFAULT_CORE_MGT_MGT_DRP_CTRL_t,
                                                                  TX_RESETS => DEFAULT_CORE_MGT_MGT_TX_RESETS_CTRL_t,
                                                                  RX_RESETS => DEFAULT_CORE_MGT_MGT_RX_RESETS_CTRL_t

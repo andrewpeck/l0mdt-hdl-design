@@ -72,7 +72,7 @@ assert false report "Constants set"
 
 
   station_gen : for STATION in 0 to 3 generate
-    constant polmux_hi_lo : hi_lo_array_t (c_NUM_POLMUX-1 downto 0) := get_polmux_hi_lo(c_MDT_CONFIG);
+    constant polmux_hi_lo : hi_lo_array_t (c_NUM_POLMUX-1 downto 0) := get_polmux_hi_lo(c_MDT_CONFIG, c_NUM_POLMUX);
 
     constant num_polmuxes : int_array_t (0 to 3) := (c_NUM_POLMUX_INNER, c_NUM_POLMUX_MIDDLE,
                                c_NUM_POLMUX_OUTER, c_NUM_POLMUX_EXTRA);

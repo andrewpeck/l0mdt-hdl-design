@@ -14,8 +14,6 @@ GEN:l0mdt_vu13p_lsf_upt:
       name: implementation_and_bitfiles
       paths:
         - bin 
-        - Projects
-
 
 CHK:l0mdt_vu13p_lsf_upt:
     extends: .check_list_and_conf

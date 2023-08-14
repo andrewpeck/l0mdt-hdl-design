@@ -139,10 +139,10 @@ BUILD_AXI_INTERCONNECT ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_R
 #  Configure and add AXI slaves
 #================================================================================
  
-if {![info exists AXI_BASE_ADDRESS]} { #If not set in Hog Project (post-creation.tcl)
+if {![info exists ::AXI_BASE_ADDRESS]} { #If not set in Hog Project (post-creation.tcl)
     # default to US+
     #set AXI_BASE_ADDRESS 0xB0000000 ; # US+
-    set AXI_BASE_ADDRESS 0x80000000 ; # 7 Series
+    set ::AXI_BASE_ADDRESS 0x80000000 ; # 7 Series
 }
 
 source -quiet "$BD_PATH/add_slaves_from_yaml.tcl"

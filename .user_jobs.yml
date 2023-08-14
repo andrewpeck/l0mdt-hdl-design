@@ -78,7 +78,35 @@ check_submodule_status:
     - git diff --exit-code -- .
   allow_failure: true
   interruptible: true
-  
+
+.on_board_test: &on_board_test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+  tags:
+    - prototype_v1
+  stage: user_post
+  variables:
+    IS_PROTO: 0
+  script:
+    - export PATH=${PATH}:/opt/BUTool/bin:/opt/BUTool/bin/BUTool:/opt/mcu_tools/bin/:/opt/uio-daemon:/opt/l0mdt-sm-sw-core/bin:/opt/test_stand
+    # Retrieve loaded firmware uids, if any
+    - fw_uid=$(uio_send.py list-uids)
+    - if [ "$fw_uid" != "No client IDs found that loaded firmware." ]; then
+        uio_send.py -u "$fw_uid" unload-tar;
+      fi;
+    - tarball=$(find bin/ -name "*.gz");
+    - uio_send.py -f $tarball load-tar
+    - if [[ $IS_PROTO == '1' ]]; then
+        config_blade.py -c 1 -p;
+      else
+        config_blade.py -c 1;
+      fi;
+    - test_stand -c 3
+  interruptible: true
+  allow_failure: true
+
+
 check_auto_generated_code:
   <<: *only-default
   <<: *tag-sr
@@ -102,7 +130,7 @@ check_auto_generated_code:
         echo "No address overlaps detected.";
       fi
     - echo "Checking Git differences..."
-    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile' ':(exclude)tools/gldl-scripts' ':(exclude)Top/*/hog.conf' 
+    - git diff --exit-code -- . ':(exclude)Top/*/top_*.vhd' ':(exclude)Top/*/slaves.yaml' ':(exclude)Top/*/address_tables' ':(exclude)Makefile' ':(exclude)tools/gldl-scripts' ':(exclude)Top/*/hog.conf' ':(exclude)Top/*/gitlab-ci.yml'
   interruptible: true
   artifacts:
     name: Makefile
@@ -165,8 +193,8 @@ check_auto_generated_code:
         sed -i 's/Questa/Riviera/' ./Top/$PROJECT_NAME/hog.conf;
         ./Hog/LaunchSimulation.sh $PROJECT_NAME -recreate;
       fi
-    - if [ -f "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib_sim/behav/riviera/simulate.log" ]; then
-        if grep "Executing onerror command" "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib_sim/behav/riviera/simulate.log"; then
+    - if [ -f "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib/behav/riviera/simulate.log" ]; then
+        if grep "Executing onerror command" "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib/behav/riviera/simulate.log"; then
           echo "Simulation Failed!";
           exit 1;
         else
@@ -230,11 +258,11 @@ check_auto_generated_code:
     - echo $AUX_PRJ_FOLDER
     - export AUX_PRJ_NAME=${PROJECT_NAME##**/}
     - echo $AUX_PRJ_NAME
-    - python tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/$SIMULATOR
+    - python tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib/behav/$SIMULATOR
     # - sleep 1h
     # DAvide
     # - PRJ_NAME=$(basename $PROJECT_NAME)
-    # - python tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PRJ_NAME.sim/project_lib_sim/behav/questa
+    # - python tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PRJ_NAME.sim/project_lib/behav/questa
     - mkdir -p bin/$PROJECT_NAME
     - if [[ -d Plots ]]; then
         mv Plots bin/$PROJECT_NAME/SimPlots;
@@ -282,3 +310,22 @@ check_auto_generated_code:
     - echo "Parsing log file to check result of the cocotb test"
     - if (grep -qE  "TEST.*STATUS.*SIM.*TIME.*(ns)" cocotb_run.log) ; then if (grep -qE "cocotb.regression.*test passed" cocotb_run.log)  ; then echo "Test successful" ; elif (grep -q "cocotb.result.TestFailure" cocotb_run.log) ; then echo "Test completed but TV comparison failed" ; exit 98 ; else echo "Other failure - check log" ; exit 99 ; fi ; else echo "Other failure during cocotb test - check log" ; exit 99; fi
   dependencies: []
+
+
+DemoTest:
+  extends: .on_board_test
+  variables:
+    IS_PROTO: 0
+  tags: 
+    - demonstrator
+  dependencies:
+    - GEN:l0mdt_ku15p_ull_empty_usp
+
+ProtoTest:
+  extends: .on_board_test
+  variables:
+    IS_PROTO: 1
+  tags: 
+    - prototype_v1
+  dependencies:
+    - GEN:l0mdt_vu13p_ull_empty

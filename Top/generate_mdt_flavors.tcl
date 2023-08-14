@@ -221,9 +221,9 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # update zynq target
     if {$zynq_target == "usp"} {
-        exec sed -i "s|^set.*AXI_BASE_ADDRESS.*0x.*|set AXI_BASE_ADDRESS 0xB0000000 ; # USP|g" "$dest_path/post-creation.tcl"
+        exec sed -i "s|^set.*::AXI_BASE_ADDRESS.*0x.*|set ::AXI_BASE_ADDRESS 0xB0000000 ; # USP|g" "$dest_path/post-creation.tcl"
     } elseif {$zynq_target == "7s"} {
-        exec sed -i "s|^set.*AXI_BASE_ADDRESS.+0x.*|set AXI_BASE_ADDRESS 0x80000000 ; # 7-Series|g" "$dest_path/post-creation.tcl"
+        exec sed -i "s|^set.*::AXI_BASE_ADDRESS.+0x.*|set ::AXI_BASE_ADDRESS 0x80000000 ; # 7-Series|g" "$dest_path/post-creation.tcl"
         exec sed -i "s|set REMOTE_C2C_64 1||g" "$dest_path/post-creation.tcl"
     } else {
         error "Unrecognized zynq target \"$zynq_target\""

@@ -105,22 +105,25 @@ architecture Behavioral of lpgbt_link_wrapper is
 
   -- up/downlink ready flag
   signal downlink_ready : std_logic_vector (g_NUM_DOWNLINKS-1 downto 0);  --
-  signal uplink_ready   : std_logic_vector (g_NUM_UPLINKS downto 0);
+  signal uplink_ready   : std_logic_vector (g_NUM_UPLINKS-1 downto 0);
 
 begin
 
   --------------------------------------------------------------------------------
   -- Downlink
   --------------------------------------------------------------------------------
-
+  uplink_ready_o    <= uplink_ready;
+  downlink_ready_o  <= downlink_ready;
+  
   downlink_gen : for I in 0 to g_NUM_DOWNLINKS-1 generate
 
     signal downlink_data  : lpgbt_downlink_data_rt;
     signal mgt_data       : std_logic_vector(31 downto 0);
-    signal downlink_reset : std_logic := '1';
+    signal downlink_reset : std_logic := '0'; --active low
 
   begin
 
+    
     downlink_reset_fanout : process (downlink_clk) is
     begin  -- process reset_fanout
       if rising_edge(downlink_clk) then  -- rising clock edge
@@ -198,7 +201,7 @@ begin
     signal iccorrected   : std_logic_vector (1 downto 0);
     signal eccorrected   : std_logic_vector (1 downto 0);
 
-    signal uplink_reset : std_logic := '1';
+    signal uplink_reset : std_logic := '0';
 
   begin
 

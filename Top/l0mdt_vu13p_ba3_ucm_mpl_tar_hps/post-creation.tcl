@@ -64,9 +64,9 @@ if {$regenerate_svg} {
 puts "=================================================================="
 
 # 0xB0000000 for US+; 0x80000000 for 7 Series
-set AXI_BASE_ADDRESS 0xB0000000 ; # USP
-set REMOTE_C2C 1
-set REMOTE_C2C_64 1
+set ::AXI_BASE_ADDRESS 0xB0000000 ; # USP
+set ::REMOTE_C2C 1
+set ::REMOTE_C2C_64 1
 
 source ${SCRIPT_PATH}/../create_c2c.tcl
 

@@ -130,44 +130,53 @@ entity top_hal is
     --------------------------------------------------------------------------------
     
     -- HAL control runs with the LHC clock, and monitors/controls anything sync to it, e.g. CSM, FELIX, SL
-    Mon  : out HAL_MON_t;
-    Ctrl : in  HAL_CTRL_t;
+    Mon_v  : out std_logic_vector; --out HAL_MON_t;
+    Ctrl_v : in std_logic_vector; -- in  HAL_CTRL_t;
     
     -- CORE takes care of basic infrastructure, running with the axi clk, e.g. transceivers
     Core_Mon  : out CORE_MON_t;
     Core_Ctrl : in  CORE_CTRL_t;
 
-    clk50_o     : out std_logic; -- Axi
-    clk320_o    : out std_logic; -- 
-    clk40_o     : out std_logic;
-    b2b_reset_n : out std_logic;
+    clk50_o      : out std_logic; -- AXI user clock
+    clk40_o      : out std_logic; -- 40 MHz LHC clock to AXI slaves
+    lhc_locked_o : out std_logic; -- LHC MMCM Locked?
+    b2b_locked_o : out std_logic; -- AXI MMCM Locked?
+
     --sump--------------------------------------------------------------------------
     sump : out std_logic
 
     );
 
 end entity top_hal;
+
 architecture behavioral of top_hal is
 
-  attribute MAX_FANOUT : string;
-  attribute DONT_TOUCH : string;
+  --------------------------------------------------------------------------------
+  -- Clocks and Resets
+  --------------------------------------------------------------------------------
 
-  signal clock_ibufds : std_logic;
-  signal clocks       : system_clocks_rt;
- 
-  signal userlogic_reset    : std_logic;
-  signal reset              : std_logic;
-  signal global_reset       : std_logic;
+  signal axiclock        : std_logic; -- 50MHz AXI user clock
+  signal clk40           : std_logic; -- 40 MHz LHC clock
+  signal clk320          : std_logic; -- 320 MHz multiplied LHC clock
+  signal clock_userlogic : std_logic; -- User logic clock (nominally 320 MHz)
+
+  -- Synchronized resets
+  signal lhc_locked    : std_logic;
+  signal b2b_locked    : std_logic;
+  signal reset_userclk : std_logic;
+  signal reset_clk320  : std_logic;
+  signal reset_clk40   : std_logic;
+  signal reset_axi     : std_logic;
   
-  signal strobe_pipeline : std_logic;
-  signal strobe_320      : std_logic;
+  signal strobe_userclk : std_logic;
+  signal strobe_320     : std_logic;
 
   signal felix_valid : std_logic;
 
   signal ttc_commands : l0mdt_ttc_rt;
 
   --------------------------------------------------------------------------------
-  -- LPGBT Glue
+  -- LPGBT Glue CSM <-> MGT
   --------------------------------------------------------------------------------
 
   signal lpgbt_downlink_mgt_word_array : std32_array_t (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
@@ -175,7 +184,14 @@ architecture behavioral of top_hal is
 
   signal lpgbt_uplink_bitslip : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
-  -- lpgbt emulator cores
+  --------------------------------------------------------------------------------
+  -- lpGBT emulator cores
+  --
+  -- NOTE: this is not fully implemented but could be used to create a link that is
+  -- 10.24 Gbps tx, 2.56 Gbps rx which could connect in loopback to a standard
+  -- lpgbt link for emulation, board validation, etc
+  --------------------------------------------------------------------------------
+
   signal lpgbt_emul_uplink_clk            : std_logic;
   signal lpgbt_emul_uplink_mgt_word_array : std32_array_t (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
   signal lpgbt_emul_uplink_data           : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
@@ -193,26 +209,26 @@ architecture behavioral of top_hal is
   -- TDC Glue
   --------------------------------------------------------------------------------
 
+  -- TDC hits from CSM -> Polmux
   signal tdc_hits_to_polmux    : tdcpolmux2tar_avt (c_NUM_TDC_INPUTS-1 downto 0);
+
+  -- Read done signal from Polmux -> CSM
+  -- this is an acknowledge that drains the word from its buffer in the CSM module
   signal read_done_from_polmux : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
 
   --------------------------------------------------------------------------------
-  -- TTC Glue
+  -- FELIX Glue MGT <-> Felix Core
   --------------------------------------------------------------------------------
 
-  signal ttc_mgt_word : std_logic_vector (31 downto 0);
-  signal ttc_bitslip  : std_logic;
-  signal lhc_recclk   : std_logic;
-
-  --------------------------------------------------------------------------------
-  -- FELIX Glue
-  --------------------------------------------------------------------------------
+  signal ttc_mgt_word : std_logic_vector (31 downto 0);  -- felix mgt userclock words
+  signal ttc_bitslip  : std_logic;                       -- bitslip from felix rx core to felix transceiver
+  signal lhc_recclk   : std_logic;                       -- recovered clock from felix
 
   signal felix_uplink_mgt_word_array : std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
   signal felix_mgt_txusrclk          : std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
 
   --------------------------------------------------------------------------------
-  -- Sector Logic Glue
+  -- Sector Logic Glue MGT <-> SL Core
   --------------------------------------------------------------------------------
 
   signal sl_rx_mgt_word_array : std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
@@ -226,6 +242,7 @@ architecture behavioral of top_hal is
   signal sl_rx_data_sump      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_re_channel        : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_init_done      : std_logic;
+
   --------------------------------------------------------------------------------
   -- Signal sumps for development
   --------------------------------------------------------------------------------
@@ -235,14 +252,35 @@ architecture behavioral of top_hal is
   signal tdc_sump              : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
   --signal sector_logic_rx_sump  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
+
+
+  signal Mon_r    : HAL_MON_t;
+  signal Ctrl_r   : HAL_CTRL_t;
+
+  signal csm_ctrl_r : HAL_CSM_CSM_CTRL_t_ARRAY;
+  signal csm_mon_r  : HAL_CSM_CSM_MON_t_ARRAY;
+  
+
+  signal csm_ctrl_v : std_logic_vector(width(csm_ctrl_r) - 1 downto 0);
+  signal csm_mon_v  : std_logic_vector(width(csm_mon_r ) - 1 downto 0);
+
+ 
   --------------------------------------------------------------------------------
   -- Attributes for synthesis
   --------------------------------------------------------------------------------
 
-  attribute MAX_FANOUT of strobe_pipeline : signal is "20";
-  attribute DONT_TOUCH of strobe_pipeline : signal is "true";
+  attribute MAX_FANOUT : string;
+  attribute DONT_TOUCH : string;
+
+  attribute MAX_FANOUT of strobe_userclk : signal is "20";
+  attribute DONT_TOUCH of strobe_userclk : signal is "true";
 
   attribute MAX_FANOUT of strobe_320 : signal is "20";
+
+  attribute MAX_FANOUT of reset_userclk : signal is "32";
+  attribute MAX_FANOUT of reset_clk320  : signal is "32";
+  attribute MAX_FANOUT of reset_clk40   : signal is "32";
+  attribute MAX_FANOUT of reset_axi     : signal is "32";
 
   -- Save this here so we can extract it from the hierarchy later
   -- this is used in log_mgts.tcl so please do not remove it
@@ -253,40 +291,84 @@ architecture behavioral of top_hal is
 begin  -- architecture behavioral
 
   --------------------------------------------------------------------------------
+  -- Resets
+  --------------------------------------------------------------------------------
+  --
+  -- For the main resets from the MMCM, use asynchronous assertion, synchronous
+  -- deassertion This means that when the MMCM is not locked, the resets will
+  -- remain asserted even if the output clock is not running
+  --
+  -- Resets on the userlogic and 320MHz clock domains are passed through
+  -- synchronous reset cdc blocks which helps with timing closure by providing
+  -- several pipeline steps which can be replicated by the tools
+  --
+  --------------------------------------------------------------------------------
+
+  process (clk40, lhc_locked) is
+  begin
+    if (lhc_locked = '0') then
+      reset_clk40 <= '1';
+    elsif (rising_edge(clk40)) then
+      reset_clk40 <= '0';
+    end if;
+  end process;
+
+  process (axiclock, b2b_locked) is
+  begin
+    if (lhc_locked = '0') then
+      reset_axi <= '1';
+    elsif (rising_edge(axiclock)) then
+      reset_axi <= '0';
+    end if;
+  end process;
+
+  rst_bit_synchronizer : xpm_cdc_sync_rst
+    generic map (DEST_SYNC_FF => 4, INIT => 1, INIT_SYNC_FF => 1)
+    port map (
+      dest_rst => reset_clk320,
+      dest_clk => clk320,
+      src_rst  => reset_clk40);
+
+  userclk_rst_bit_synchronizer : xpm_cdc_sync_rst
+    generic map (DEST_SYNC_FF => 5, INIT => 1, INIT_SYNC_FF => 1)
+    port map (
+      dest_rst => reset_userclk,
+      dest_clk => clock_userlogic,
+      src_rst  => reset_clk40);
+
+  --------------------------------------------------------------------------------
   -- Signal Aliasing
   --------------------------------------------------------------------------------
 
-  global_reset <= not(clocks.lhc_locked);
-  clk50_o      <= clocks.axiclock; -- AXI
-  clk320_o     <= clocks.clock320; -- Not used, remove it?
-  clk40_o      <= clocks.clock40; -- LHC
-  b2b_reset_n  <= clocks.b2b_locked; -- B2B = C2C = SM-CM
 
-  --------------------------------------------------------------------------------
-  -- AXI Interface
-  --------------------------------------------------------------------------------
+  
+  mon_v         <= convert(mon_r,mon_v);
+  ctrl_r        <= convert(ctrl_v,ctrl_r);
+ 
+  csm_mon_v     <= convert(csm_mon_r, csm_mon_v);
+ 
+  
+  
+  
 
-  core_mon.clocking.mmcm_locked <= clocks.lhc_locked;
+  clk50_o      <= axiclock;             -- AXI user clock
+  clk40_o      <= clk40;                -- LHC 40 MHz clock
+  b2b_locked_o <= b2b_locked;           -- AXI user clock locked? B2B = C2C = SM-CM
+  lhc_locked_o <= lhc_locked;           -- LHC clock locked?
+
+  core_mon.clocking.mmcm_locked <= lhc_locked;
+
 
   --------------------------------------------------------------------------------
   -- Common Clocking
   --------------------------------------------------------------------------------
 
-  -- FIXME: this should come from an ODDR (output double data rate buffer). Check Vivado documentation
-  lhc_refclk_OBUFDS_inst : OBUFDS
-    port map (
-      O  => lhc_refclk_o_p,             -- 1-bit output: Diff_p output (connect directly to top-level port)
-      OB => lhc_refclk_o_n,             -- 1-bit output: Diff_n output (connect directly to top-level port)
-      I  => lhc_recclk                  -- 1-bit input: Buffer input
-      );
-
   top_clocking_inst : entity hal.top_clocking
-    generic map (
-      CLK_FREQ => c_CLK_FREQ
-      )
+    generic map (CLK_FREQ => c_CLK_FREQ)
     port map (
+
       --
-      reset_i => core_ctrl.clocking.reset_mmcm,
+      reset_lhc_mmcm_i => core_ctrl.clocking.reset_mmcm,
 
       -- clock inputs
 
@@ -300,52 +382,61 @@ begin  -- architecture behavioral
       clock_i_n => clock_i_n,
 
       clk50_freq  => core_mon.clocking.clk50_freq,
-      clk100_freq => core_mon.clocking.clk100_freq,
-      clk200_freq => core_mon.clocking.clk200_freq,
-
       clk40_freq  => core_mon.clocking.clk40_freq,
       clk320_freq => core_mon.clocking.clk320_freq,
 
       -- system clocks
-      clocks_o => clocks
+      lhc_locked_o      => lhc_locked,
+      b2b_locked_o      => b2b_locked,
+      axiclock_o        => axiclock,
+      clock40_o         => clk40,
+      clock320_o        => clk320,
+      clock_userlogic_o => clock_userlogic
 
       );
 
-  -- Strobes used to sync the slower clocks to faster clocks
-  -- Check always the ratio between the two clocks 
-  -- TODO: Think about having clock frequency in a single place and derive ratios accordingly
-  clock_strobe_1 : entity work.clock_strobe
+  --------------------------------------------------------------------------------
+  -- Clock Strobes
+  --------------------------------------------------------------------------------
+  --
+  -- Create a 1 of n high signal synced to the slow clock, e.g.
+  --
+  --            ┌───────┐       ┌───────┐       ┌───────┐       ┌───
+  -- clk40     ─┘       └───────┘       └───────┘       └───────┘
+  --            ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐
+  -- clk200    ─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─
+  --            ┌───┐           ┌───┐           ┌───┐           ┌───┐
+  -- strobe    ─┘   └───────────┘   └───────────┘   └───────────┘   └──
+  --
+  -- These are necessary for e.g. the lpgbt cores, which use a strobe signal to
+  -- indicate alignment relative to the 40MHz clock.
+  --
+  -- For the lpgbt this module takes in the 40MHz clock and the 320MHz clock and
+  -- generates automatically a strobe signal which is high every 8th clock cycle
+  -- and is aligned to the 40MHz clock
+  --
+  -- **The ratio of the two clock frequencies must be supplied as a generic.**
+  --
+
+  clock_strobe_320m : entity work.clock_strobe
     generic map (RATIO => 8)
     port map (
-      fast_clk_i => clocks.clock320,
-      slow_clk_i => clocks.clock40,
-      strobe_o   => strobe_320
-      );
-  clock_strobe_2 : entity work.clock_strobe
+      fast_clk_i => clk320,
+      slow_clk_i => clk40,
+      strobe_o   => strobe_320);
+
+  -- TODO: Think about having clock frequency in a single place and derive
+  -- ratios accordingly
+  clock_strobe_userlogic : entity work.clock_strobe
     generic map (RATIO => 8)
     port map (
-      fast_clk_i => clocks.clock_pipeline,
-      slow_clk_i => clocks.clock40,
-      strobe_o   => strobe_pipeline
-      );
+      fast_clk_i => clock_userlogic,
+      slow_clk_i => clk40,
+      strobe_o   => strobe_userclk);
 
-  rst_bit_synchronizer : xpm_cdc_sync_rst
-    generic map (DEST_SYNC_FF => 4, INIT => 1, INIT_SYNC_FF => 1)
-    port map (
-      dest_rst => reset,
-      dest_clk => clocks.clock320,
-      src_rst  => global_reset);
-
-  pipeline_rst_bit_synchronizer : xpm_cdc_sync_rst
-    generic map (DEST_SYNC_FF => 5, INIT => 1, INIT_SYNC_FF => 1)
-    port map (
-      dest_rst => userlogic_reset,
-      dest_clk => clocks.clock_pipeline,
-      src_rst  => global_reset);
-
-  clock_and_control_o.rst <= userlogic_reset;
-  clock_and_control_o.clk <= clocks.clock_pipeline;
-  clock_and_control_o.bx  <= strobe_pipeline;
+  clock_and_control_o.rst <= reset_userclk;
+  clock_and_control_o.clk <= clock_userlogic;
+  clock_and_control_o.bx  <= strobe_userclk;
 
   --------------------------------------------------------------------------------
   -- Common Multi-gigabit transceivers
@@ -355,11 +446,14 @@ begin  -- architecture behavioral
     port map (
 
       -- clocks
-      clocks => clocks,
+      axiclock   => axiclock,
+      clock320   => clk320,
+      lhc_locked => lhc_locked,
 
       -- reset
-      reset => '0' , --PRIYA need to hook up to PLL lock signal for clk100  -- need a separate reset from the mmcm due to recovered links
+      reset => reset_axi,
 
+      -- ctrl & monitoring
       ctrl => core_ctrl.mgt,
       mon  => core_mon.mgt,
 
@@ -399,6 +493,14 @@ begin  -- architecture behavioral
       felix_mgt_txusrclk_o          => felix_mgt_txusrclk
       );
 
+  -- FIXME: this should come from an ODDR (output double data rate buffer).
+  -- Check Vivado documentation
+  lhc_refclk_OBUFDS_inst : OBUFDS
+    port map (
+      O  => lhc_refclk_o_p,             -- 1-bit output: Diff_p output (connect directly to top-level port)
+      OB => lhc_refclk_o_n,             -- 1-bit output: Diff_n output (connect directly to top-level port)
+      I  => lhc_recclk);                -- 1-bit input: Buffer input
+
   --------------------------------------------------------------------------------
   -- LPGBT Emulator
   --------------------------------------------------------------------------------
@@ -407,13 +509,13 @@ begin  -- architecture behavioral
   -- 
   lpgbtemul_wrapper_inst : entity hal.lpgbtemul_wrapper
     port map (
-      reset                           => global_reset,
-      lpgbt_uplink_clk_i              => clocks.clock320,
+      reset                           => reset_clk40,
+      lpgbt_uplink_clk_i              => clk320,
       lpgbt_uplink_mgt_word_array_o   => lpgbt_emul_uplink_mgt_word_array,
       lpgbt_uplink_data_i             => lpgbt_emul_uplink_data,
       lpgbt_uplink_ready_o            => lpgbt_emul_uplink_ready,
       lpgbt_rst_uplink_i              => lpgbt_emul_rst_uplink,
-      lpgbt_downlink_clk_i            => clocks.clock320,
+      lpgbt_downlink_clk_i            => clk320,
       lpgbt_downlink_mgt_word_array_i => lpgbt_emul_downlink_mgt_word_array,
       lpgbt_downlink_data_o           => lpgbt_emul_downlink_data,
       lpgbt_downlink_ready_o          => lpgbt_emul_downlink_ready,
@@ -423,9 +525,9 @@ begin  -- architecture behavioral
 
   -- TODO: replace with with some kind of smarter driver? prbs31?
   emul_loop : for I in 0 to c_NUM_LPGBT_EMUL_UPLINKS-1 generate
-    emul_loop_clock : process (clocks.clock320) is
+    emul_loop_clock : process (clk320) is
     begin  -- process data_loop
-      if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
+      if clk320'event and clk320 = '1' then  -- rising clock edge
         lpgbt_emul_uplink_data(I).data <= lpgbt_emul_downlink_data(I).data
                                           & lpgbt_emul_downlink_data(I).data
                                           & lpgbt_emul_downlink_data(I).data
@@ -464,6 +566,9 @@ begin  -- architecture behavioral
       assert mgt_id_m = mgt_id_s-1
         report "CSM Master and Servant are not adjacent, this is not supported right now... :(" severity error;
 
+      csm_ctrl_r(CSM)    <= ctrl_r.csm.csm(CSM);
+      mon_r.csm.csm(CSM) <= csm_mon_r(CSM);
+      
       mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
       begin
 
@@ -482,24 +587,24 @@ begin  -- architecture behavioral
             )
           port map (
             -- clock and reset
-            clk40      => clocks.clock40,
+            clk40      => clk40,
             strobe_320 => strobe_320,
-            reset_i    => global_reset,
+            reset_i    => reset_clk40,
 
             -- TTC signals
             -- TODO: axi generation of TTC signals
             trg_i => ttc_commands.l0a,
             bcr_i => ttc_commands.bcr,
             ecr_i => ttc_commands.ecr,
-            gsr_i => global_reset,
+            gsr_i => reset_clk40,
 
             -- downlink
-            downlink_clk                 => clocks.clock320,
+            downlink_clk                 => clk320,
             downlink_mgt_word_array_o(0) => lpgbt_downlink_mgt_word_array (lpgbt_downlink_idx_array(c_MDT_CONFIG(CSM).mgt_id_m)),
 
             -- uplink clk &
             -- master(0) + slave(1) uplink data/bitslips
-            uplink_clk                 => clocks.clock320,
+            uplink_clk                 => clk320,
             uplink_mgt_word_array_i(0) => lpgbt_uplink_mgt_word_array(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_m)),
             uplink_mgt_word_array_i(1) => lpgbt_uplink_mgt_word_array(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_s)),
             uplink_bitslip_o(0)        => lpgbt_uplink_bitslip(lpgbt_uplink_idx_array(c_MDT_CONFIG(CSM).mgt_id_m)),
@@ -508,8 +613,8 @@ begin  -- architecture behavioral
             -- outputs to polmux
             tdc_hits_to_polmux_o    => tdc_hits_to_polmux (hi downto lo), -- Big vector of all TDC data, hi-lo give the range of the vector corresponding to a particular CSM
             read_done_from_polmux_i => read_done_from_polmux (hi downto lo),
-            ctrl                    => ctrl.csm.csm(CSM),
-            mon                     => mon.csm.csm(CSM)
+            ctrl                    => csm_ctrl_r(CSM),
+            mon                     => csm_mon_r(CSM)
             );
 
       end generate;
@@ -545,9 +650,9 @@ begin  -- architecture behavioral
           g_STATION_STR => stations_str(STATION)
           )
         port map (
-          clock          => clocks.clock320, 
-          pipeline_clock => clocks.clock_pipeline,
-          reset          => reset,
+          clock          => clk320,
+          pipeline_clock => clock_userlogic,
+          reset          => reset_clk320,
           tdc_hits_i     => tdc_hits_to_polmux (hi downto lo),
           read_done_o    => read_done_from_polmux (hi downto lo),
           tdc_hits_o     => tdc_hits_o
@@ -580,9 +685,9 @@ begin  -- architecture behavioral
 
       tx_clk         => sl_tx_clks,
       rx_clk         => sl_rx_clks,
-      pipeline_clock => clocks.clock_pipeline,
-      clk40          => clocks.clock40,
-      reset          => global_reset,
+      pipeline_clock => clock_userlogic,
+      clk40          => clk40,
+      reset          => reset_clk40,
 
       sl_rx_mgt_word_array_i => sl_rx_mgt_word_array, -- SLC 
       sl_tx_mgt_word_array_o => sl_tx_mgt_word_array, -- MTC
@@ -613,15 +718,15 @@ begin  -- architecture behavioral
 
   felix_decoder_inst : entity work.felix_decoder
     port map (
-      clock320 => clocks.clock320, -- felix downlink clock
-      clock40  => clocks.clock40, -- 40mhz system clock
+      clock320 => clk320, -- felix downlink clock
+      clock40  => clk40, -- 40mhz system clock
 
-      reset => global_reset,
+      reset => reset_clk320,
 
       ttc_mgt_data_i    => ttc_mgt_word,
       ttc_mgt_bitslip_o => ttc_bitslip,
 
-      strobe_pipeline => strobe_pipeline,
+      strobe_pipeline => strobe_userclk,
       strobe_320      => strobe_320,
 
       l0mdt_ttc_40m => ttc_commands, -- copies of outputs stable for 25ns
@@ -643,9 +748,9 @@ begin  -- architecture behavioral
       g_NUM_UPLINKS => c_DAQ_LINKS -- c_NUM_DAQ_STREAMS
       )
     port map (
-      clk320           => clocks.clock320,
-      clk40            => clocks.clock40,
-      reset_i          => global_reset,
+      clk320           => clk320,
+      clk40            => clk40,
+      reset_i          => reset_clk40,
 
       -- FIXME:
       --
@@ -672,9 +777,9 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
   --sl_rx_sump : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
-  --  data_loop : process (clocks.clock240) is
+  --  data_loop : process (clock240) is
   --  begin  -- process data_loop
-  --    if clocks.clock240'event and clocks.clock240 = '1' then  -- rising clock edge
+  --    if clock240'event and clock240 = '1' then  -- rising clock edge
   --      sector_logic_rx_sump(I) <= xor_reduce (sl_rx_data(I).data);
   --    end if;
   --  end process data_loop;
@@ -682,9 +787,9 @@ begin  -- architecture behavioral
 
   -- let this sump as tdc data in the user_top
   -- lpgbt_sump_loop : for I in 0 to c_FELIX_LPGBT_INDEX generate
-  --   data_loop : process (clocks.clock320) is
+  --   data_loop : process (clk320) is
   --   begin  -- process data_loop
-  --     if (rising_edge(clocks.clock320)) then  -- rising clock edge
+  --     if (rising_edge(clk320)) then  -- rising clock edge
   --       lpgbt_uplink_sump(I) <= xor_reduce (lpgbt_uplink_data(I).data);
   --       lpgbt_uplink_mgt_sump(I) <= xor_reduce (lpgbt_uplink_mgt_word_array(I));
   --     end if;
@@ -701,10 +806,10 @@ begin  -- architecture behavioral
     signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
   begin
 
-    process (clocks.clock_pipeline) is
+    process (clock_userlogic) is
     begin
 
-      if (rising_edge(clocks.clock_pipeline)) then
+      if (rising_edge(clock_userlogic)) then
 
         daqsump_loop :
         for I in 0 to daq_streams'length-1 loop
