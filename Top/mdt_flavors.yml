@@ -59,7 +59,7 @@ ku15p_lsf_upt:
       en_daq: 1
       hog_only_synth: 1
       hog_no_bitstream: 1
-      zynq_target: 7s  # 7s or usp
+      zynq_target: usp  # 7s or usp
 
 ku15p_csf_mpt:
   fpga: xcku15p-ffva1760-2-e
@@ -75,7 +75,7 @@ ku15p_csf_mpt:
       endcap: 0
       hog_only_synth: 1
       hog_no_bitstream: 1
-      zynq_target: 7s
+      zynq_target: usp
 
 ku15p_ull_fm:
   fpga: xcku15p-ffva1760-2-e
@@ -87,7 +87,7 @@ ku15p_ull_fm:
   variants:
     default:
       link_map: "link_map_ku15p"
-      zynq_target: 7s  # 7s or usp
+      zynq_target: usp  # 7s or usp
       sector_id: 3
       sector_side: 0
       endcap: 0
@@ -134,7 +134,7 @@ vu13p_csf_mpt:
   variants:
     default:
       link_map: "link_map_vu13p"
-      zynq_target: 7s
+      zynq_target: usp
       hog_only_synth: 1
       hog_tag: "argos"
 
@@ -152,7 +152,7 @@ ku15p_ull_empty:
   variants:
     default:
       link_map: "link_map_ku15p"
-      zynq_target: 7s  # 7s or usp
+      zynq_target: usp  # 7s or usp
       sector_id: 3
       sector_side: 0
       endcap: 0
@@ -285,7 +285,7 @@ ku15p_ull_tar:
   variants:
     default:
       link_map: "link_map_ku15p"
-      zynq_target: 7s  # 7s or usp
+      zynq_target: usp  # 7s or usp
       sector_id: 3
       sector_side: 0
       endcap: 0
@@ -316,7 +316,7 @@ ku15p_ull_ucm:
   variants:
     default:
       link_map: "link_map_ku15p"
-      zynq_target: 7s  # 7s or usp
+      zynq_target: usp  # 7s or usp
       sector_id: 3
       sector_side: 0
       endcap: 0
