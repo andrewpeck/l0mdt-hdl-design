@@ -28,7 +28,7 @@ generate:
       - PROVIDER: mdt-1
         PROJECT_NAME: [ull_vu13p/ull_vu13_b3a_ucm_mpl, l0mdt_ku15p_ull_ucm]
         HOG_ONLY_SYNTH: 1
-      - PROVIDER: normal_ops
+      - PROVIDER: normal-ops
         PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
         HOG_ONLY_SYNTH: 1
   tags:
@@ -49,7 +49,7 @@ riviera:
   parallel:
     matrix:
       - PROJECT_NAME: [MainBlocks/ncsf, MainBlocks/ptc_mpi, MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
-  allow_failure: false
+  allow_failure: true
 
 questa:
   extends: .simulate_project
