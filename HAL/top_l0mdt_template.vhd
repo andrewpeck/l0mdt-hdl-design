@@ -381,8 +381,8 @@ begin
       core_ctrl => CORE_ctrl_r,
       core_mon  => CORE_mon_r,
 
-      ctrl => hal_ctrl_v,
-      mon  => hal_mon_v,
+      ctrl_v => hal_ctrl_v,
+      mon_v  => hal_mon_v,
 
       mtc_i => mtc,
       nsp_i => nsp,
