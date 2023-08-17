@@ -22,6 +22,8 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
         exec sed -i  "s/^#\\(UserLogic.*upt_lib_${fpga_short}.src\\)/\\1/g" $lib
         # disable upt empty
         exec sed -i  "s/^UserLogic.*upt_lib_empty.src/#&/g" $lib
+        # enable ptc_lib empty
+        exec sed -i  "s/^#\\(UserLogic.*ptc_lib_empty.src\\)/\\1/g" $lib
     } else {
         # disable upt
         exec sed -i  "s/^UserLogic.*upt_lib_${fpga_short}.src/#&/g" $lib
