@@ -9,7 +9,7 @@ variables:
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
-    ref: 'v7.4.0'
+    ref: 'v7.7.0'
   - local: "/.user_jobs.yml"
   - local: '/.devel_to_master.yml'
 
@@ -117,5 +117,4 @@ cocotb:
   stage: generation_and_simulation
   parallel:
     matrix:
-      - PROJECT_NAME: tools/cocotb/
-        COCOTB_TEST: [dummy, lsf_inn, lsf_mid, lsf_out, mtc, ptcalc, ucm, ult_tar, hps_inn]
+      - COCOTB_TEST: [dummy, lsf_inn, lsf_mid, lsf_out, mtc, ptcalc, ucm, ult_tar, hps_inn]
