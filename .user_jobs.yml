@@ -312,20 +312,20 @@ check_auto_generated_code:
   dependencies: []
 
 
-DemoTest:
+DeployOnDemo:
   extends: .on_board_test
   variables:
     IS_PROTO: 0
   tags: 
     - demonstrator
   dependencies:
-    - GEN:l0mdt_ku15p_ull_empty_usp
+    - "generate: [argos, l0mdt/ku15p/l0mdt_ku15p_ull_empty]"
 
-ProtoTest:
+DeployOnProto:
   extends: .on_board_test
   variables:
     IS_PROTO: 1
   tags: 
     - prototype_v1
   dependencies:
-    - GEN:l0mdt_vu13p_ull_empty
+    - "generate: [argos, l0mdt/vu13p/l0mdt_vu13p_ull_empty]"
