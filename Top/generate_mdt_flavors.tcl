@@ -185,13 +185,13 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     regexp {xc([0-9A-z]*)} $fpga match fpga_shortname
 
     set source_path ${top_path}/base_l0mdt
-    set dest_path ${top_path}/$name
+    set dest_path ${top_path}/l0mdt/$fpga_shortname/$name
 
     file mkdir $dest_path
     file mkdir $dest_path/list
 
     # copy the base files
-    set files_to_copy "gitlab-ci.yml hog.conf
+    set files_to_copy "hog.conf
     list
     pre-synthesis.tcl
     user_pkg.vhd
@@ -215,11 +215,14 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # replace fpga shortname
     exec sed -i "s/ku15p/${fpga_shortname}/g" "$dest_path/hog.conf"
-    exec sed -i "s/vu13p/${fpga_shortname}/g" "$dest_path/hog.conf"
 
     # update fpga part number
     exec sed -i "s|PART=.*$|PART=$fpga|g" "$dest_path/hog.conf"
-    exec sed -i "s|PART=.*$|PART=$fpga|g" "$dest_path/hog.conf"
+
+    if {$fpga_shortname == "vu13p"} {
+        exec sed -i "s|KINTEX|VIRTEX|g" "$dest_path/address_tables/address_apollo.xml"       
+        exec sed -i "s|KINTEX|VIRTEX|g" "$dest_path/slaves.yaml"
+    }
 
     # update zynq target
     if {$zynq_target == "usp"} {
@@ -264,30 +267,6 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # update the project_lib.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
-
-    # update the gitlab ci file
-    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/gitlab-ci.yml"
-
-    # change the gitlab-ci hog_only_synth property
-    exec sed -i "s|\\(.*HOG_ONLY_SYNTH:\\).*\\(#.*\\)|\\1 $hog_only_synth \\2|g" "$dest_path/gitlab-ci.yml"
-    puts "$hog_only_synth"
-    # change the gitlab-ci hog_check_syntax property
-    exec sed -i "s|\\(.*HOG_CHECK_SYNTAX:\\).*\\(#.*\\)|\\1 $hog_check_syntax \\2|g" "$dest_path/gitlab-ci.yml"
-
-    # change the gitlab-ci hog_no_bitstream property
-    exec sed -i "s|\\(.*HOG_NO_BITSTREAM:\\).*\\(.*\\)|\\1 $hog_no_bitstream \\2|g" "$dest_path/gitlab-ci.yml"
-
-    # update the tag
-    exec sed -i "s|- heavy-duty|- ${hog_tag}|g" "$dest_path/gitlab-ci.yml"
-
-
-    # change the gitlab-ci hog_no_bitstream property
-    exec sed -i "s|\\(.*HOG_NO_BITSTREAM:\\).*\\(#.*\\)|\\1 $hog_no_bitstream \\2|g" "$dest_path/gitlab-ci.yml"
-
-    # remove hog_chk for projects
-    if {0 == $hog_chk} {
-        exec sed -i "/^CHK:/,/PROJECT_NAME.*/d" "$dest_path/gitlab-ci.yml"
-    }
 }
 
 
@@ -337,7 +316,8 @@ proc clone_projects {huddle} {
             }
             clone_mdt_project "$script_path" "l0mdt_${key}${suffix}" \
                 $fpga $board_pkg $pt $sf $constraints $link_map $props
-            create_top_modules "$script_path/l0mdt_${key}${suffix}" "$repo_path"
+            regexp {xc([0-9A-z]*)} $fpga match fpga_shortname
+            create_top_modules "$script_path/l0mdt/$fpga_shortname/l0mdt_${key}${suffix}" "$repo_path"
         }
     }
 }

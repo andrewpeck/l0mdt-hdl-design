@@ -20,12 +20,12 @@ generate:
   parallel:
     matrix:
       - PROVIDER: argos
-        PROJECT_NAME: [l0mdt_vu13p_csf_mpt, l0mdt_vu13p_lsf_upt, ull_vu13p/ull_vu13_b3a_tar, l0mdt_ku15p_ull_tar, l0mdt_vu13p_ba3_ucm_mpl_tar_hps]
+        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_lsf_upt, ull/vu13p/ull_vu13_b3a_tar, l0mdt/ku15p/l0mdt_ku15p_ull_tar, l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps]
         HOG_ONLY_SYNTH: 1
       - PROVIDER: argos
-        PROJECT_NAME: [l0mdt_ku15p_ull_empty_usp, l0mdt_vu13p_ull_empty]
+        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_ull_empty]
       - PROVIDER: mdt-1
-        PROJECT_NAME: [ull_vu13p/ull_vu13_b3a_ucm_mpl, l0mdt_ku15p_ull_ucm]
+        PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_ucm_mpl, l0mdt/ku15p/l0mdt_ku15p_ull_ucm]
         HOG_ONLY_SYNTH: 1
       - PROVIDER: normal-ops
         PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
@@ -39,7 +39,7 @@ conf_check:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [l0mdt_vu13p_lsf_upt]
+      - PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_lsf_upt]
 
 riviera:
   extends: .riviera_sim
@@ -56,7 +56,7 @@ questa:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg, ull_vu13p/ull_vu13_b3a_ucm_mpl, ull_vu13p/ull_vu13_b3a_tar]
+      - PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg, ull/vu13p/ull_vu13_b3a_ucm_mpl, ull/vu13p/ull_vu13_b3a_tar]
         PROVIDER: questa
   allow_failure: false
   tags:
