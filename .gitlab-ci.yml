@@ -23,7 +23,7 @@ generate:
         PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_lsf_upt, ull/vu13p/ull_vu13_b3a_tar, l0mdt/ku15p/l0mdt_ku15p_ull_tar, l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps]
         HOG_ONLY_SYNTH: 1
       - PROVIDER: argos
-        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_ull_empty]
+        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty]
       - PROVIDER: mdt-1
         PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_ucm_mpl, l0mdt/ku15p/l0mdt_ku15p_ull_ucm]
         HOG_ONLY_SYNTH: 1
