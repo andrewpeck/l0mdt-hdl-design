@@ -68,7 +68,7 @@ set ::AXI_BASE_ADDRESS  0x80000000 ; # 7 Series
 set ::REMOTE_C2C 1
 set ::REMOTE_C2C_64 1
 
-source ${SCRIPT_PATH}/../create_c2c.tcl
+source ${PATH_REPO}/Top/create_c2c.tcl
 
 #Adding files to the project
 set fs "${PATH_REPO}/configs/${build_name}/autogen/AXI_slave_pkg.vhd ${SCRIPT_PATH}/c2cslave_pkg.vhd"
