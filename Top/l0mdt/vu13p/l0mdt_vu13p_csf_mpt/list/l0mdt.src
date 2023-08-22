@@ -1,0 +1,33 @@
+Top/l0mdt_vu13p_csf_mpt/top_l0mdt.vhd top=top_l0mdt
+
+# Control
+Top/l0mdt_vu13p_csf_mpt/top_control.vhd
+HAL/ctrl/ctrl_lib.src lib=ctrl_lib
+
+# HAL
+HAL/hal/list/hal.src lib=hal
+HAL/hal/list/hal_vu.src lib=hal
+
+# User Logic Libraries
+UserLogic/hp/hp_lib.src   lib=hp_lib
+UserLogic/mpl/mpl_lib.src lib=mpl_lib
+UserLogic/ult/ult_lib.src lib=ult_lib
+#UserLogic/ucm/ucm_lib_ku15.src lib=ucm_lib
+UserLogic/ucm/ucm_lib_vu13.src lib=ucm_lib
+UserLogic/heg/heg_lib.src lib=heg_lib
+UserLogic/hps/hps_lib.src lib=hps_lib
+UserLogic/tar/tar_lib.src lib=tar_lib
+UserLogic/mtc/mtc_lib.src lib=mtc_lib
+UserLogic/fm/fm_lib.src   lib=fm_lib
+UserLogic/daq/daq.src     lib=daq_lib
+
+# segment finder
+UserLogic/csf/ncsf_lib.src lib=csf_lib
+#UserLogic/lsf/lsf_lib_vu13p.src lib=lsf_lib
+UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
+
+# pt assignment
+#UserLogic/upt/upt_lib_vu13p.src lib=upt_lib
+UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
+#UserLogic/ptc_mpi/ptc_lib_empty.src lib=ptc_lib
+UserLogic/upt/upt_lib_empty.src lib=upt_lib

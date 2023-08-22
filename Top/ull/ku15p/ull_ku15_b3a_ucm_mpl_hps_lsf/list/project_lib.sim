@@ -1,0 +1,10 @@
+#Simulator questa
+#shared/sim/pkg/gldl_ult_tp_sim_pkg.vhd
+#shared/sim/pkg/gldl_textio_pkg.vhd
+
+shared/shared_lib.sim lib=shared_lib
+UserLogic/ult/ult_lib.sim
+UserLogic/ult/top_ult_sim.vhd topsim=ult_tb runtime=150us
+
+# Waveform 
+UserLogic/ult/sim/ult_tp_sim1.wcfg

@@ -1,0 +1,60 @@
+#################### ull_vu13_b3a_ucm_mpl_hps Project ###########################
+GEN:ull_vu13_b3a_ucm_mpl_hps:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13_b3a_ucm_mpl_hps
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      
+    tags:
+      - normal-ops
+      - hog
+
+SIM:ull_vu13_b3a_ucm_mpl_hps:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13_b3a_ucm_mpl_hps
+    allow_failure: false
+
+    tags:
+      - questa
+      - hog
+      - "2020.2"
+    artifacts:
+      name: user_sim
+      paths:
+        - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/$PROJECT_NAME.sim
+        - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
+      expire_in: 30 day
+
+# sim_comp:ull_ku15_b3a_ucm_mpl_hps_csf_questa:
+#     extends: .simulate_project_comp
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_questa
+
+# sim_check:ull_vu13_b3a_ucm_mpl_hps:
+#     extends: .sim_check
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ull_vu13_b3a_ucm_mpl_hps
+
+
+# RIV:ull_vu13_b3a_ucm_mpl_hps:
+#     extends: .riviera_sim
+#     variables:
+#       extends: .riviera_vars
+#       PROJECT_NAME: ull_vu13_b3a_ucm_mpl_hps
+#       HOG_CHECK_PROJVER: 0
+#       # HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/mnt/vd/Xilinx/Vivado/2019.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
+#       HOG_SIMULATION_LIB_PATH: "/home/l0mdtel/RivieraLib"
+#     before_script:
+#       - export PATH="/opt/Xilinx/Vivado/2019.2/bin:/opt/Aldec/Riviera-PRO-2021.04-x64/bin:$PATH"
+      
+# CHK:ull_vu13_b3a_ucm_mpl_hps:
+#   extends: .sim_check
+#   variables:
+#     extends: .vars
+#     PROJECT_NAME: ull_vu13_b3a_ucm_mpl_hps
+#   needs: ["SIM:ull_vu13_b3a_ucm_mpl_hps","RIV:ull_vu13_b3a_ucm_mpl_hps"]

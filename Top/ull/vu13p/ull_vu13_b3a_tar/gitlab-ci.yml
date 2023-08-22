@@ -1,0 +1,27 @@
+#################### ull_vu13_b3a_tar Project ###########################
+GEN:ull_vu13_b3a_tar:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tar
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      
+    tags:
+      - argos
+
+SIM:ull_vu13_b3a_tar:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tar
+      HOG_CHECK_PROJVER: 0
+    tags:
+      - questa
+    allow_failure: false
+      
+      
+# user_sim:ull_vu13_b3a_tar:
+#     extends: .user_sim
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ull_vu13_b3a_tar

@@ -1,0 +1,26 @@
+#################### ull_vu13_b3a_ucm_mpl_hps_lsf Project ###########################
+GEN:ull_vu13_b3a_ucm_mpl_hps_lsf:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_lsf
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis      
+    tags:
+      - heavy-duty
+      - hog
+      
+#SIM:ull_vu13_b3a_ucm_mpl_hps_lsf:
+#   extends: .simulate_project
+#   variables:
+#     extends: .vars
+#     PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_lsf
+#   allow_failure: false
+#   tags:
+#     - questa
+#     - hog
+      
+# sim_comp:ull_vu13_b3a_ucm_mpl_hps_lsf:
+#     extends: .simulate_project_comp
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_lsf
