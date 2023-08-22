@@ -1,8 +1,8 @@
 set SCRIPT_PATH "[file normalize [file dirname [info script]]]"
-set PATH_REPO   "[file normalize ${SCRIPT_PATH}/../../]"
+set PATH_REPO   "[file normalize ${SCRIPT_PATH}/../../../../]"
 
 # get the FPGA part number from hog.conf
-source ${SCRIPT_PATH}/../get_fpga_name.tcl
+source ${PATH_REPO}/Top/get_fpga_name.tcl
 
 set C2C_PATH $PATH_REPO/HAL/c2c
 set BD_PATH $PATH_REPO/HAL/c2c/bd_helper
@@ -12,7 +12,7 @@ set bd_design_name "c2cSlave"
 
 # Regenerate the BD if needed
 
-set sources "${SCRIPT_PATH}/../createC2CSlaveInterconnect.tcl
+set sources "${PATH_REPO}/Top/createC2CSlaveInterconnect.tcl
              ${C2C_PATH}/create_c2c.tcl
              ${SCRIPT_PATH}/slaves.yaml"
 

@@ -8,7 +8,7 @@ shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 shared/shared_lib.src lib=shared_lib
 
 #_project local configuration files
-Top/ull_vu13p/ull_vu13_ba3_ucm_mpl_hps_csf_bp/prj_cfg.vhd
+Top/ull/vu13p/ull_vu13_ba3_ucm_mpl_hps_csf_bp/prj_cfg.vhd
 
 #### top  ####
 UserLogic/ult/top_ult_imp.vhd top=top_ult

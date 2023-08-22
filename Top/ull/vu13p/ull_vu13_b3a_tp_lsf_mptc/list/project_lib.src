@@ -7,7 +7,7 @@ shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 #### shared ####
 shared/shared_lib.src lib=shared_lib
 #### project local configuration files ####
-Top/ull_vu13p/ull_vu13_b3a_tp_lsf_mptc/prj_cfg.vhd
+Top/ull/vu13p/ull_vu13_b3a_tp_lsf_mptc/prj_cfg.vhd
 #### top  ####
 UserLogic/ult/top_ult_imp.vhd top=top_ult
 #### AXI SC ####

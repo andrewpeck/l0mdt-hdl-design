@@ -1,8 +1,8 @@
 set SCRIPT_PATH "[file normalize [file dirname [info script]]]"
-set PATH_REPO   "[file normalize ${SCRIPT_PATH}/../../]"
+set PATH_REPO   "[file normalize ${SCRIPT_PATH}/../../../../]"
 
 puts "Creating SVF"
-source [file normalize ${SCRIPT_PATH}/../create_svf.tcl]
+source [file normalize ${PATH_REPO}/Top/create_svf.tcl]
 
 set new_dir_addr_table $dst_dir/tarball/address_table
 set new_dir_bit $dst_dir/tarball/bit

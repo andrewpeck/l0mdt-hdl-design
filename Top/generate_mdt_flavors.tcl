@@ -257,16 +257,16 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     update_hal_config "$dest_path/user_pkg.vhd" $props
 
     # update the hal.src file
-    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/hal.src"
+    exec sed -i "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/hal.src"
 
     # update the ctrl_lib.src file
-    # exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/ctrl_lib.src"
+    # exec sed -i "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/ctrl_lib.src"
 
     # update the l0mdt.src file
-    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/l0mdt.src"
+    exec sed -i "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/l0mdt.src"
 
     # update the project_lib.src file
-    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
+    exec sed -i "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/project_lib.src"
 }
 
 

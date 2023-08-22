@@ -5,5 +5,5 @@ shared/constraints/gldl_dev_con.xdc
 HAL/constraints/region_constraints_toolbox.tcl nosynth
 # HAL/constraints/area_constraints.tcl nosynth
 # HAL/constraints/lpgbt_multicycle.tcl
-Top/ull_vu13p/ull_vu13_ba3_ucm_mpl_hps_csf_bp/cons/area_constraints.tcl nosynth
+Top/ull/vu13p/ull_vu13_ba3_ucm_mpl_hps_csf_bp/cons/area_constraints.tcl nosynth
 

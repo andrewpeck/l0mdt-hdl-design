@@ -1,7 +1,7 @@
-Top/l0mdt_ku15p_ull_ucm/top_l0mdt.vhd top=top_l0mdt
+Top/l0mdt/ku15p/l0mdt_ku15p_ull_ucm/top_l0mdt.vhd top=top_l0mdt
 
 # Control
-Top/l0mdt_ku15p_ull_ucm/top_control.vhd
+Top/l0mdt/ku15p/l0mdt_ku15p_ull_ucm/top_control.vhd
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 # HAL

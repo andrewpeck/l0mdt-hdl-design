@@ -1,4 +1,4 @@
 HAL/hal/list/hal.src
-Top/l0mdt_vu13p_lsf_upt/user_pkg.vhd
+Top/l0mdt/vu13p/l0mdt_vu13p_lsf_upt/user_pkg.vhd
 HAL/boards/board_pkg_mpi_vu13p.vhd
 HAL/link_maps/link_map_vu13p.vhd
