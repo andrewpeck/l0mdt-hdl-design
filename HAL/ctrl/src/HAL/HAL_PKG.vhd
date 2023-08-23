@@ -349,10 +349,42 @@ package HAL_CTRL is
    function convert(x: std_logic_vector; tpl: HAL_CSM_CTRL_t) return HAL_CSM_CTRL_t;
    function zero(tpl: HAL_CSM_CTRL_t) return HAL_CSM_CTRL_t;
 
+   type HAL_SL_RESET_CTRL_t is record
+      rx_comma : std_logic;
+      rx_packet_former : std_logic;
+      rx_counter : std_logic;
+   end record HAL_SL_RESET_CTRL_t;
+   attribute w of HAL_SL_RESET_CTRL_t : type is 3;
+   function width(x: HAL_SL_RESET_CTRL_t) return natural;
+   function convert(x: HAL_SL_RESET_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: HAL_SL_RESET_CTRL_t) return HAL_SL_RESET_CTRL_t;
+   function zero(tpl: HAL_SL_RESET_CTRL_t) return HAL_SL_RESET_CTRL_t;
+
+   type HAL_SL_MON_t is record
+      RX_COMMA_LOCK : std_logic_vector(32 - 1 downto 0);
+      RX_PACKET_LOCKED : std_logic_vector(32 - 1 downto 0);
+      RX_TEST_PATTERN : std_logic_vector(32 - 1 downto 0);
+   end record HAL_SL_MON_t;
+   attribute w of HAL_SL_MON_t : type is 96;
+   function width(x: HAL_SL_MON_t) return natural;
+   function convert(x: HAL_SL_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: HAL_SL_MON_t) return HAL_SL_MON_t;
+   function zero(tpl: HAL_SL_MON_t) return HAL_SL_MON_t;
+
+   type HAL_SL_CTRL_t is record
+      RESET : HAL_SL_RESET_CTRL_t;
+   end record HAL_SL_CTRL_t;
+   attribute w of HAL_SL_CTRL_t : type is 3;
+   function width(x: HAL_SL_CTRL_t) return natural;
+   function convert(x: HAL_SL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: HAL_SL_CTRL_t) return HAL_SL_CTRL_t;
+   function zero(tpl: HAL_SL_CTRL_t) return HAL_SL_CTRL_t;
+
    type HAL_MON_t is record
       CSM : HAL_CSM_MON_t;
+      SL : HAL_SL_MON_t;
    end record HAL_MON_t;
-   attribute w of HAL_MON_t : type is 18252;
+   attribute w of HAL_MON_t : type is 18348;
    function width(x: HAL_MON_t) return natural;
    function convert(x: HAL_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_MON_t) return HAL_MON_t;
@@ -363,8 +395,9 @@ package HAL_CTRL is
       RESET_UPLINKS : std_logic;
       RESET_COUNTERS : std_logic;
       CSM : HAL_CSM_CTRL_t;
+      SL : HAL_SL_CTRL_t;
    end record HAL_CTRL_t;
-   attribute w of HAL_CTRL_t : type is 6519;
+   attribute w of HAL_CTRL_t : type is 6522;
    function width(x: HAL_CTRL_t) return natural;
    function convert(x: HAL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CTRL_t) return HAL_CTRL_t;
@@ -2584,10 +2617,180 @@ package body HAL_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
+   function width(x: HAL_SL_RESET_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rx_comma);
+      w := w + width(x.rx_packet_former);
+      w := w + width(x.rx_counter);
+      return w;
+   end function width;
+   function convert(x: HAL_SL_RESET_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rx_comma);
+         y(u to u+w-1) := convert(x.rx_comma, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rx_packet_former);
+         y(u to u+w-1) := convert(x.rx_packet_former, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rx_counter);
+         y(u to u+w-1) := convert(x.rx_counter, y(u to u+w-1));
+      else
+         w := width(x.rx_comma);
+         y(u downto u-w+1) := convert(x.rx_comma, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rx_packet_former);
+         y(u downto u-w+1) := convert(x.rx_packet_former, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rx_counter);
+         y(u downto u-w+1) := convert(x.rx_counter, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: HAL_SL_RESET_CTRL_t) return HAL_SL_RESET_CTRL_t is
+      variable y : HAL_SL_RESET_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rx_comma);
+         y.rx_comma := convert(x(u to u+w-1), tpl.rx_comma);
+         u := u + w;
+         w := width(tpl.rx_packet_former);
+         y.rx_packet_former := convert(x(u to u+w-1), tpl.rx_packet_former);
+         u := u + w;
+         w := width(tpl.rx_counter);
+         y.rx_counter := convert(x(u to u+w-1), tpl.rx_counter);
+      else
+         w := width(tpl.rx_comma);
+         y.rx_comma := convert(x(u downto u-w+1), tpl.rx_comma);
+         u := u - w;
+         w := width(tpl.rx_packet_former);
+         y.rx_packet_former := convert(x(u downto u-w+1), tpl.rx_packet_former);
+         u := u - w;
+         w := width(tpl.rx_counter);
+         y.rx_counter := convert(x(u downto u-w+1), tpl.rx_counter);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: HAL_SL_RESET_CTRL_t) return HAL_SL_RESET_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: HAL_SL_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.RX_COMMA_LOCK);
+      w := w + width(x.RX_PACKET_LOCKED);
+      w := w + width(x.RX_TEST_PATTERN);
+      return w;
+   end function width;
+   function convert(x: HAL_SL_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.RX_COMMA_LOCK);
+         y(u to u+w-1) := convert(x.RX_COMMA_LOCK, y(u to u+w-1));
+         u := u + w;
+         w := width(x.RX_PACKET_LOCKED);
+         y(u to u+w-1) := convert(x.RX_PACKET_LOCKED, y(u to u+w-1));
+         u := u + w;
+         w := width(x.RX_TEST_PATTERN);
+         y(u to u+w-1) := convert(x.RX_TEST_PATTERN, y(u to u+w-1));
+      else
+         w := width(x.RX_COMMA_LOCK);
+         y(u downto u-w+1) := convert(x.RX_COMMA_LOCK, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.RX_PACKET_LOCKED);
+         y(u downto u-w+1) := convert(x.RX_PACKET_LOCKED, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.RX_TEST_PATTERN);
+         y(u downto u-w+1) := convert(x.RX_TEST_PATTERN, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: HAL_SL_MON_t) return HAL_SL_MON_t is
+      variable y : HAL_SL_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.RX_COMMA_LOCK);
+         y.RX_COMMA_LOCK := convert(x(u to u+w-1), tpl.RX_COMMA_LOCK);
+         u := u + w;
+         w := width(tpl.RX_PACKET_LOCKED);
+         y.RX_PACKET_LOCKED := convert(x(u to u+w-1), tpl.RX_PACKET_LOCKED);
+         u := u + w;
+         w := width(tpl.RX_TEST_PATTERN);
+         y.RX_TEST_PATTERN := convert(x(u to u+w-1), tpl.RX_TEST_PATTERN);
+      else
+         w := width(tpl.RX_COMMA_LOCK);
+         y.RX_COMMA_LOCK := convert(x(u downto u-w+1), tpl.RX_COMMA_LOCK);
+         u := u - w;
+         w := width(tpl.RX_PACKET_LOCKED);
+         y.RX_PACKET_LOCKED := convert(x(u downto u-w+1), tpl.RX_PACKET_LOCKED);
+         u := u - w;
+         w := width(tpl.RX_TEST_PATTERN);
+         y.RX_TEST_PATTERN := convert(x(u downto u-w+1), tpl.RX_TEST_PATTERN);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: HAL_SL_MON_t) return HAL_SL_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: HAL_SL_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.RESET);
+      return w;
+   end function width;
+   function convert(x: HAL_SL_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.RESET);
+         y(u to u+w-1) := convert(x.RESET, y(u to u+w-1));
+      else
+         w := width(x.RESET);
+         y(u downto u-w+1) := convert(x.RESET, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: HAL_SL_CTRL_t) return HAL_SL_CTRL_t is
+      variable y : HAL_SL_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.RESET);
+         y.RESET := convert(x(u to u+w-1), tpl.RESET);
+      else
+         w := width(tpl.RESET);
+         y.RESET := convert(x(u downto u-w+1), tpl.RESET);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: HAL_SL_CTRL_t) return HAL_SL_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
    function width(x: HAL_MON_t) return natural is
       variable w : natural := 0;
    begin
       w := w + width(x.CSM);
+      w := w + width(x.SL);
       return w;
    end function width;
    function convert(x: HAL_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -2598,9 +2801,15 @@ package body HAL_CTRL is
       if tpl'ascending then
          w := width(x.CSM);
          y(u to u+w-1) := convert(x.CSM, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SL);
+         y(u to u+w-1) := convert(x.SL, y(u to u+w-1));
       else
          w := width(x.CSM);
          y(u downto u-w+1) := convert(x.CSM, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SL);
+         y(u downto u-w+1) := convert(x.SL, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -2612,9 +2821,15 @@ package body HAL_CTRL is
       if x'ascending then
          w := width(tpl.CSM);
          y.CSM := convert(x(u to u+w-1), tpl.CSM);
+         u := u + w;
+         w := width(tpl.SL);
+         y.SL := convert(x(u to u+w-1), tpl.SL);
       else
          w := width(tpl.CSM);
          y.CSM := convert(x(u downto u-w+1), tpl.CSM);
+         u := u - w;
+         w := width(tpl.SL);
+         y.SL := convert(x(u downto u-w+1), tpl.SL);
       end if;
       return y;
    end function convert;
@@ -2630,6 +2845,7 @@ package body HAL_CTRL is
       w := w + width(x.RESET_UPLINKS);
       w := w + width(x.RESET_COUNTERS);
       w := w + width(x.CSM);
+      w := w + width(x.SL);
       return w;
    end function width;
    function convert(x: HAL_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -2649,6 +2865,9 @@ package body HAL_CTRL is
          u := u + w;
          w := width(x.CSM);
          y(u to u+w-1) := convert(x.CSM, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SL);
+         y(u to u+w-1) := convert(x.SL, y(u to u+w-1));
       else
          w := width(x.RESET_DOWNLINKS);
          y(u downto u-w+1) := convert(x.RESET_DOWNLINKS, y(u downto u-w+1));
@@ -2661,6 +2880,9 @@ package body HAL_CTRL is
          u := u - w;
          w := width(x.CSM);
          y(u downto u-w+1) := convert(x.CSM, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SL);
+         y(u downto u-w+1) := convert(x.SL, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -2681,6 +2903,9 @@ package body HAL_CTRL is
          u := u + w;
          w := width(tpl.CSM);
          y.CSM := convert(x(u to u+w-1), tpl.CSM);
+         u := u + w;
+         w := width(tpl.SL);
+         y.SL := convert(x(u to u+w-1), tpl.SL);
       else
          w := width(tpl.RESET_DOWNLINKS);
          y.RESET_DOWNLINKS := convert(x(u downto u-w+1), tpl.RESET_DOWNLINKS);
@@ -2693,6 +2918,9 @@ package body HAL_CTRL is
          u := u - w;
          w := width(tpl.CSM);
          y.CSM := convert(x(u downto u-w+1), tpl.CSM);
+         u := u - w;
+         w := width(tpl.SL);
+         y.SL := convert(x(u downto u-w+1), tpl.SL);
       end if;
       return y;
    end function convert;

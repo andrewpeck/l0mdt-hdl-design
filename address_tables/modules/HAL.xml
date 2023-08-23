@@ -43,4 +43,15 @@
     <node id="CSM_34"   address="0xaa0" fwinfo="type=array" module="file://CSM.xml"/>
     <node id="CSM_35"   address="0xaf0" fwinfo="type=array" module="file://CSM.xml"/>
   </node> <!-- CSM -->
+
+  <node id="SL" address="0x0c00" permission="rw">
+    <node id="RX_COMMA_LOCK"  address="0x0"  permission="r" description="rx comma detection lock status"/>
+    <node id="RX_PACKET_LOCKED"  address="0x10"  permission="r" description="rx packet former lock status"/>
+    <node id="RX_TEST_PATTERN"  address="0x20"  permission="r" description="rx test patter is recognized"/>
+    <node id="RESET"  address="0x30"  permission="rw" description="resets signals">
+      <node id="rx_comma"           mask="0x01" permission="rw" parameters="default=1" description="Resets all comma detection"/>
+      <node id="rx_packet_former"   mask="0x02" permission="rw" parameters="default=1" description="Resets all packet former"/>
+      <node id="rx_counter"         mask="0x04" permission="rw" parameters="default=1" description="Resets all rx_test_pattern counter"/>
+    </node> <!-- RESET -->
+  </node> <!-- SL -->
 </node> <!-- HAL -->

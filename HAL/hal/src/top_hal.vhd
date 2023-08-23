@@ -700,7 +700,9 @@ begin  -- architecture behavioral
       sl_tx_ctrl_o => sl_tx_ctrl,
 
       sl_rx_slide_o => sl_rx_slide,
-      sl_re_channel_o => sl_re_channel
+      sl_re_channel_o => sl_re_channel,
+      ctrl                    => Ctrl_r.sl,
+      mon                     => Mon_r.sl
       );
 
   -- FIXME: these mappings are totally made up for testing purposes...

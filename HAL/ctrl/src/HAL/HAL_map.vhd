@@ -44,19 +44,19 @@ architecture behavioral of HAL_map is
 
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 2882);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 2882) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 3120);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 3120) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*2882) <= ALLOCATED_MEMORY_RANGE)
-    report "HAL: Regmap addressing range " & integer'image(4*2882) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*3120) <= ALLOCATED_MEMORY_RANGE)
+    report "HAL: Regmap addressing range " & integer'image(4*3120) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity ERROR;
-  assert ((4*2882) > ALLOCATED_MEMORY_RANGE)
-    report "HAL: Regmap addressing range " & integer'image(4*2882) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*3120) > ALLOCATED_MEMORY_RANGE)
+    report "HAL: Regmap addressing range " & integer'image(4*3120) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity NOTE;
 
   AXIRegBridge : entity work.axiLiteRegBlocking
@@ -4723,6 +4723,16 @@ begin  -- architecture behavioral
           localRdData(19 downto  0)  <=  Mon.CSM.CSM(35).CONFIG.en;                               --CSM is en
         when 2882 => --0xb42
           localRdData(19 downto  0)  <=  Mon.CSM.CSM(35).CONFIG.legacy;                           --CSM is legacy
+        when 3072 => --0xc00
+          localRdData(31 downto  0)  <=  Mon.SL.RX_COMMA_LOCK;                                    --rx comma detection lock status
+        when 3088 => --0xc10
+          localRdData(31 downto  0)  <=  Mon.SL.RX_PACKET_LOCKED;                                 --rx packet former lock status
+        when 3104 => --0xc20
+          localRdData(31 downto  0)  <=  Mon.SL.RX_TEST_PATTERN;                                  --rx test patter is recognized
+        when 3120 => --0xc30
+          localRdData( 0)            <=  reg_data(3120)( 0);                                      --Resets all comma detection
+          localRdData( 1)            <=  reg_data(3120)( 1);                                      --Resets all packet former
+          localRdData( 2)            <=  reg_data(3120)( 2);                                      --Resets all rx_test_pattern counter
 
 
           when others =>
@@ -5895,6 +5905,9 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(35).SC.SLAVE.IC.TX_DATA_TO_GBTX        <=  reg_data(2868)( 7 downto  0);     
   Ctrl.CSM.CSM(35).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2868)(31 downto 24);     
   Ctrl.CSM.CSM(35).SC.SLAVE.IC.TX_WR                  <=  reg_data(2869)( 0);               
+  Ctrl.SL.RESET.rx_comma                              <=  reg_data(3120)( 0);               
+  Ctrl.SL.RESET.rx_packet_former                      <=  reg_data(3120)( 1);               
+  Ctrl.SL.RESET.rx_counter                            <=  reg_data(3120)( 2);               
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
@@ -7055,6 +7068,9 @@ begin  -- architecture behavioral
       reg_data(2868)( 7 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.SLAVE.IC.TX_DATA_TO_GBTX;
       reg_data(2868)(31 downto 24)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.SLAVE.IC.TX_GBTX_ADDR;
       reg_data(2869)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.SLAVE.IC.TX_WR;
+      reg_data(3120)( 0)  <= DEFAULT_HAL_CTRL_t.SL.RESET.rx_comma;
+      reg_data(3120)( 1)  <= DEFAULT_HAL_CTRL_t.SL.RESET.rx_packet_former;
+      reg_data(3120)( 2)  <= DEFAULT_HAL_CTRL_t.SL.RESET.rx_counter;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       
@@ -8940,6 +8956,10 @@ begin  -- architecture behavioral
           reg_data(2868)(31 downto 24)  <=  localWrData(31 downto 24);      --I2C address of the GBTx
         when 2869 => --0xb35
           reg_data(2869)( 0)            <=  localWrData( 0);                --Request a write operation into the internal FIFO (Data to GBTx)
+        when 3120 => --0xc30
+          reg_data(3120)( 0)            <=  localWrData( 0);                --Resets all comma detection
+          reg_data(3120)( 1)            <=  localWrData( 1);                --Resets all packet former
+          reg_data(3120)( 2)            <=  localWrData( 2);                --Resets all rx_test_pattern counter
 
           when others => null;
         end case;

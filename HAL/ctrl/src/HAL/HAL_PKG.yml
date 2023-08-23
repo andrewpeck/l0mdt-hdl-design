@@ -180,8 +180,25 @@ types:
   - CSM : { type: HAL_CSM_CSM_CTRL_t_ARRAY }
 
 
+- HAL_SL_RESET_CTRL_t:
+  - rx_comma : { type: logic }
+  - rx_packet_former : { type: logic }
+  - rx_counter : { type: logic }
+
+
+- HAL_SL_MON_t:
+  - RX_COMMA_LOCK : { type: logic, range : [ 32 - 1 , 0 ] }
+  - RX_PACKET_LOCKED : { type: logic, range : [ 32 - 1 , 0 ] }
+  - RX_TEST_PATTERN : { type: logic, range : [ 32 - 1 , 0 ] }
+
+
+- HAL_SL_CTRL_t:
+  - RESET : { type: HAL_SL_RESET_CTRL_t }
+
+
 - HAL_MON_t:
   - CSM : { type: HAL_CSM_MON_t }
+  - SL : { type: HAL_SL_MON_t }
 
 
 - HAL_CTRL_t:
@@ -189,5 +206,6 @@ types:
   - RESET_UPLINKS : { type: logic }
   - RESET_COUNTERS : { type: logic }
   - CSM : { type: HAL_CSM_CTRL_t }
+  - SL : { type: HAL_SL_CTRL_t }
 
 

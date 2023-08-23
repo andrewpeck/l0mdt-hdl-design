@@ -37,6 +37,9 @@ use work.board_pkg_common.all;
 
 library sl;
 
+library ctrl_lib;
+use ctrl_lib.hal_ctrl.all;
+
 entity sector_logic_link_wrapper is
   generic (
     NUMBER_OF_WORDS_IN_A_PACKET : integer := 6;
@@ -72,7 +75,10 @@ entity sector_logic_link_wrapper is
 
     sl_rx_slide_o : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
-    sl_re_channel_o : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
+    sl_re_channel_o : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+
+    ctrl : in HAL_SL_CTRL_t;
+    mon  : out HAL_SL_MON_t
 
     );
 end sector_logic_link_wrapper;
@@ -260,11 +266,30 @@ begin
         signal txctrl0 : std_logic_vector (3 downto 0);
         signal txctrl1 : std_logic_vector (3 downto 0);
         signal txctrl2 : std_logic_vector (3 downto 0);
+        -- TX pattern generator
+        signal tx_packet_valid_i : std_logic;
+        signal packet_userdata_tx_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD*8-1 downto 0);
+        signal packet_txctrl0_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_txctrl1_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_txctrl2_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+    
       begin
 
         assert false report "generating SL TX #" & integer'image(idx) & " on MGT#"
           & integer'image(I) severity note;
-
+          patgen_inst : entity work.tx_test_pattern_generator2
+          generic map (
+            NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
+            NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)
+          port map (
+            reset           => reset,
+            tx_usrclk2      => tx_clk(idx),
+            packet_valid    => tx_packet_valid_i,
+            packet_userdata => packet_userdata_tx_i,
+            packet_txctrl0  => packet_txctrl0_i,
+            packet_txctrl1  => packet_txctrl1_i,
+            packet_txctrl2  => packet_txctrl2_i);
+    
         sector_logic_tx_packet_former_inst : entity sl.sector_logic_tx_packet_former
           generic map (
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
@@ -314,6 +339,10 @@ begin
         signal rxctrl1         : std_logic_vector (3 downto 0);
         signal sl_pre_cdc_vec  : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
         signal sl_post_cdc_vec : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
+        signal packet_rxctrl0_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_rxctrl1_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_rxctrl2_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_rxctrl3_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
       begin
 
         assert false report "generating SL RX #" & integer'image(idx) & " on MGT#"
@@ -328,7 +357,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
           port map (
-            reset               => reset,
+            reset               => reset OR ctrl.reset.rx_comma,
             clk_in              => rx_clk(idx),
             rx_data_in          => sl_rx_mgt_word_array_i(idx),  -- 32 bit from mgt
             rx_ctrl0_in         => rxctrl0,                      -- 4 bit from mgt
@@ -337,10 +366,11 @@ begin
             decoded_charisk_out => dec_rxctrl0,                  -- 4 bit to packet former
             decoded_iscomma_out => dec_rxctrl2,                  -- 4 bit to packet former
             comma_pulse_out     => open,                         -- not used in my-sl-gty
-            lock_out            => open,                         -- not used in my-sl-gty
+            lock_out            => Mon.RX_COMMA_LOCK(idx),                         -- not used in my-sl-gty
             rxslide_out         => sl_rx_slide_o(idx),           -- 1 bit to mgt
             rereset_out         => sl_re_channel_o(idx),         -- 1 bit to mgt
-            rx_init_done_in     => sl_rx_init_done_i             -- 1 bit from mgt
+            rx_init_done_in     => sl_rx_init_done_i,            -- 1 bit from mgt
+            even_slides_in      => '0'                           -- 1 bit setting
             );
 
         -- form 192 bit packets
@@ -350,7 +380,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
           port map (
-            reset => reset,
+            reset => reset OR ctrl.reset.rx_packet_former,
 
             rx_usrclk2 => rx_clk(idx),
 
@@ -363,10 +393,10 @@ begin
             rxctrl3 => (others => '0'),
 
             -- 23 downto 0
-            packet_rxctrl0 => open,     -- my-sl-gty just connects to led sump
-            packet_rxctrl1 => open,     -- my-sl-gty just connects to led sump
-            packet_rxctrl2 => open,     -- my-sl-gty just connects to led sump
-            packet_rxctrl3 => open,     -- my-sl-gty just connects to led sump
+            packet_rxctrl0 => packet_rxctrl0_i,     -- my-sl-gty just connects to led sump
+            packet_rxctrl1 => packet_rxctrl1_i,     -- my-sl-gty just connects to led sump
+            packet_rxctrl2 => packet_rxctrl2_i,     -- my-sl-gty just connects to led sump
+            packet_rxctrl3 => packet_rxctrl3_i,     -- my-sl-gty just connects to led sump
 
             packet_userdata       => sl_rx_data_pre_cdc(idx).data,
             packet_locked         => sl_rx_data_pre_cdc(idx).locked,
@@ -375,6 +405,28 @@ begin
 
             );
 
+          Mon.RX_COMMA_LOCK(idx) <= sl_rx_data_pre_cdc(idx).locked;
+
+          rx_test_pattern_checker_inst : entity work.rx_test_pattern_checker
+          generic map(
+            NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
+            NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)        
+          port map(
+            reset         => reset,
+            rx_usrclk2    => rx_clk(idx),
+
+            packet_rxctrl0 => packet_rxctrl0_i,
+            packet_rxctrl1 => packet_rxctrl1_i,
+            packet_rxctrl2 => packet_rxctrl2_i,
+            packet_rxctrl3 => packet_rxctrl3_i,
+
+            packet_userdata   => sl_rx_data_pre_cdc(idx).data,
+            packet_locked     => sl_rx_data_pre_cdc(idx).locked,
+            packet_valid      => sl_rx_data_pre_cdc(idx).valid,
+
+            error_counter_out => open,                -- to be connected to a register
+            word_counter_out  => open);               -- to be connected to a register
+    
         --------------------------------------------------------------------------------
         -- RX Clock Domain Crossing
         --------------------------------------------------------------------------------
