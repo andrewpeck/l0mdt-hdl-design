@@ -277,7 +277,7 @@ begin
 
         assert false report "generating SL TX #" & integer'image(idx) & " on MGT#"
           & integer'image(I) severity note;
-          patgen_inst : entity work.tx_test_pattern_generator2
+          patgen_inst : entity sl.tx_test_pattern_generator2
           generic map (
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)
@@ -407,7 +407,7 @@ begin
 
           Mon.RX_COMMA_LOCK(idx) <= sl_rx_data_pre_cdc(idx).locked;
 
-          rx_test_pattern_checker_inst : entity work.rx_test_pattern_checker
+          rx_test_pattern_checker_inst : entity sl.rx_test_pattern_checker
           generic map(
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)        

@@ -26,3 +26,4 @@ HAL/sl/src/my-sl-gty-interface/src/gty_fixed_latency/gtwizard_ultrascale_v1_7_gt
 HAL/sl/src/my-sl-gty-interface/src/gty_fixed_latency/gtwizard_ultrascale_v1_7_gtye4_channel.v
 HAL/sl/src/my-sl-gty-interface/src/gty_fixed_latency/gtwizard_ultrascale_v1_7_gtye4_delay_powergood.v
 HAL/sl/src/my-sl-gty-interface/src/top/rx_test_pattern_checker.vhd
+HAL/sl/src/my-sl-gty-interface/src/top/tx_test_pattern_generator2.vhd
