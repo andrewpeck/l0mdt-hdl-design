@@ -47,11 +47,24 @@
   <node id="SL" address="0x0c00" permission="rw">
     <node id="RX_COMMA_LOCK"  address="0x0"  permission="r" description="rx comma detection lock status"/>
     <node id="RX_PACKET_LOCKED"  address="0x10"  permission="r" description="rx packet former lock status"/>
-    <node id="RX_TEST_PATTERN"  address="0x20"  permission="r" description="rx test patter is recognized"/>
+    <node id="TX_ENA_TEST_PATTERN"  address="0x20"  permission="r" description="tx test pattern enable"/>
     <node id="RESET"  address="0x30"  permission="rw" description="resets signals">
       <node id="rx_comma"           mask="0x01" permission="rw" parameters="default=1" description="Resets all comma detection"/>
       <node id="rx_packet_former"   mask="0x02" permission="rw" parameters="default=1" description="Resets all packet former"/>
       <node id="rx_counter"         mask="0x04" permission="rw" parameters="default=1" description="Resets all rx_test_pattern counter"/>
     </node> <!-- RESET -->
+    <node id="SL_TEST_0"    address="0x40" fwinfo="type=array" module="file://SL_TEST.xml"/>
+    <node id="SL_TEST_1"    address="0x50" fwinfo="type=array" module="file://SL_TEST.xml"/>
+    <node id="SL_TEST_2"    address="0x60" fwinfo="type=array" module="file://SL_TEST.xml"/>
+    <node id="SL_TEST_3"    address="0x70" fwinfo="type=array" module="file://SL_TEST.xml"/>
+    <node id="SL_TEST_4"    address="0x80" fwinfo="type=array" module="file://SL_TEST.xml"/>
+    <node id="SL_TEST_5"    address="0x90" fwinfo="type=array" module="file://SL_TEST.xml"/>
+    <node id="SL_TEST_6"    address="0xA0" fwinfo="type=array" module="file://SL_TEST.xml"/>
+    <node id="SL_TEST_7"    address="0xB0" fwinfo="type=array" module="file://SL_TEST.xml"/>
+    <node id="SL_TEST_8"    address="0xC0" fwinfo="type=array" module="file://SL_TEST.xml"/>
+    <node id="SL_TEST_9"    address="0xD0" fwinfo="type=array" module="file://SL_TEST.xml"/>
+    <node id="SL_TEST_10"    address="0xE0" fwinfo="type=array" module="file://SL_TEST.xml"/>
+    <node id="SL_TEST_11"    address="0xF0" fwinfo="type=array" module="file://SL_TEST.xml"/>
+
   </node> <!-- SL -->
 </node> <!-- HAL -->

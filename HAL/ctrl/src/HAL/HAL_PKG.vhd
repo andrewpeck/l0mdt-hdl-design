@@ -360,12 +360,33 @@ package HAL_CTRL is
    function convert(x: std_logic_vector; tpl: HAL_SL_RESET_CTRL_t) return HAL_SL_RESET_CTRL_t;
    function zero(tpl: HAL_SL_RESET_CTRL_t) return HAL_SL_RESET_CTRL_t;
 
+   type HAL_SL_SL_TEST_MON_t is record
+      ERROR_COUNTER : std_logic_vector(32 - 1 downto 0);
+      WORD_COUNTER_0 : std_logic_vector(32 - 1 downto 0);
+      WORD_COUNTER_1 : std_logic_vector(32 - 1 downto 0);
+   end record HAL_SL_SL_TEST_MON_t;
+   attribute w of HAL_SL_SL_TEST_MON_t : type is 96;
+   function width(x: HAL_SL_SL_TEST_MON_t) return natural;
+   function convert(x: HAL_SL_SL_TEST_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: HAL_SL_SL_TEST_MON_t) return HAL_SL_SL_TEST_MON_t;
+   function zero(tpl: HAL_SL_SL_TEST_MON_t) return HAL_SL_SL_TEST_MON_t;
+
+   type HAL_SL_SL_TEST_MON_t_ARRAY is array(12 -1 downto 0) of HAL_SL_SL_TEST_MON_t;
+   attribute w of HAL_SL_SL_TEST_MON_t_ARRAY : type is 1152;
+   function width(x: HAL_SL_SL_TEST_MON_t_ARRAY) return integer;
+   function convert(x: HAL_SL_SL_TEST_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: HAL_SL_SL_TEST_MON_t_ARRAY) return HAL_SL_SL_TEST_MON_t_ARRAY;
+   function zero(tpl: HAL_SL_SL_TEST_MON_t_ARRAY) return HAL_SL_SL_TEST_MON_t_ARRAY;
+   function convert(x: HAL_SL_SL_TEST_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: HAL_SL_SL_TEST_MON_t_ARRAY) return HAL_SL_SL_TEST_MON_t_ARRAY;
+
    type HAL_SL_MON_t is record
       RX_COMMA_LOCK : std_logic_vector(32 - 1 downto 0);
       RX_PACKET_LOCKED : std_logic_vector(32 - 1 downto 0);
       RX_TEST_PATTERN : std_logic_vector(32 - 1 downto 0);
+      SL_TEST : HAL_SL_SL_TEST_MON_t_ARRAY;
    end record HAL_SL_MON_t;
-   attribute w of HAL_SL_MON_t : type is 96;
+   attribute w of HAL_SL_MON_t : type is 1248;
    function width(x: HAL_SL_MON_t) return natural;
    function convert(x: HAL_SL_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_SL_MON_t) return HAL_SL_MON_t;
@@ -384,7 +405,7 @@ package HAL_CTRL is
       CSM : HAL_CSM_MON_t;
       SL : HAL_SL_MON_t;
    end record HAL_MON_t;
-   attribute w of HAL_MON_t : type is 18348;
+   attribute w of HAL_MON_t : type is 19500;
    function width(x: HAL_MON_t) return natural;
    function convert(x: HAL_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_MON_t) return HAL_MON_t;
@@ -2682,12 +2703,151 @@ package body HAL_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
+   function width(x: HAL_SL_SL_TEST_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.ERROR_COUNTER);
+      w := w + width(x.WORD_COUNTER_0);
+      w := w + width(x.WORD_COUNTER_1);
+      return w;
+   end function width;
+   function convert(x: HAL_SL_SL_TEST_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.ERROR_COUNTER);
+         y(u to u+w-1) := convert(x.ERROR_COUNTER, y(u to u+w-1));
+         u := u + w;
+         w := width(x.WORD_COUNTER_0);
+         y(u to u+w-1) := convert(x.WORD_COUNTER_0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.WORD_COUNTER_1);
+         y(u to u+w-1) := convert(x.WORD_COUNTER_1, y(u to u+w-1));
+      else
+         w := width(x.ERROR_COUNTER);
+         y(u downto u-w+1) := convert(x.ERROR_COUNTER, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.WORD_COUNTER_0);
+         y(u downto u-w+1) := convert(x.WORD_COUNTER_0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.WORD_COUNTER_1);
+         y(u downto u-w+1) := convert(x.WORD_COUNTER_1, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: HAL_SL_SL_TEST_MON_t) return HAL_SL_SL_TEST_MON_t is
+      variable y : HAL_SL_SL_TEST_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.ERROR_COUNTER);
+         y.ERROR_COUNTER := convert(x(u to u+w-1), tpl.ERROR_COUNTER);
+         u := u + w;
+         w := width(tpl.WORD_COUNTER_0);
+         y.WORD_COUNTER_0 := convert(x(u to u+w-1), tpl.WORD_COUNTER_0);
+         u := u + w;
+         w := width(tpl.WORD_COUNTER_1);
+         y.WORD_COUNTER_1 := convert(x(u to u+w-1), tpl.WORD_COUNTER_1);
+      else
+         w := width(tpl.ERROR_COUNTER);
+         y.ERROR_COUNTER := convert(x(u downto u-w+1), tpl.ERROR_COUNTER);
+         u := u - w;
+         w := width(tpl.WORD_COUNTER_0);
+         y.WORD_COUNTER_0 := convert(x(u downto u-w+1), tpl.WORD_COUNTER_0);
+         u := u - w;
+         w := width(tpl.WORD_COUNTER_1);
+         y.WORD_COUNTER_1 := convert(x(u downto u-w+1), tpl.WORD_COUNTER_1);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: HAL_SL_SL_TEST_MON_t) return HAL_SL_SL_TEST_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: HAL_SL_SL_TEST_MON_t_ARRAY) return integer is
+      variable w : integer;
+   begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
+      return w;
+   end function width;
+   function convert(x: HAL_SL_SL_TEST_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: HAL_SL_SL_TEST_MON_t_ARRAY) return HAL_SL_SL_TEST_MON_t_ARRAY is
+      variable y : HAL_SL_SL_TEST_MON_t_ARRAY;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: HAL_SL_SL_TEST_MON_t_ARRAY) return HAL_SL_SL_TEST_MON_t_ARRAY is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: HAL_SL_SL_TEST_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: HAL_SL_SL_TEST_MON_t_ARRAY) return HAL_SL_SL_TEST_MON_t_ARRAY is
+      variable y : HAL_SL_SL_TEST_MON_t_ARRAY;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
    function width(x: HAL_SL_MON_t) return natural is
       variable w : natural := 0;
    begin
       w := w + width(x.RX_COMMA_LOCK);
       w := w + width(x.RX_PACKET_LOCKED);
       w := w + width(x.RX_TEST_PATTERN);
+      w := w + width(x.SL_TEST);
       return w;
    end function width;
    function convert(x: HAL_SL_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -2704,6 +2864,9 @@ package body HAL_CTRL is
          u := u + w;
          w := width(x.RX_TEST_PATTERN);
          y(u to u+w-1) := convert(x.RX_TEST_PATTERN, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SL_TEST);
+         y(u to u+w-1) := convert(x.SL_TEST, y(u to u+w-1));
       else
          w := width(x.RX_COMMA_LOCK);
          y(u downto u-w+1) := convert(x.RX_COMMA_LOCK, y(u downto u-w+1));
@@ -2713,6 +2876,9 @@ package body HAL_CTRL is
          u := u - w;
          w := width(x.RX_TEST_PATTERN);
          y(u downto u-w+1) := convert(x.RX_TEST_PATTERN, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SL_TEST);
+         y(u downto u-w+1) := convert(x.SL_TEST, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -2730,6 +2896,9 @@ package body HAL_CTRL is
          u := u + w;
          w := width(tpl.RX_TEST_PATTERN);
          y.RX_TEST_PATTERN := convert(x(u to u+w-1), tpl.RX_TEST_PATTERN);
+         u := u + w;
+         w := width(tpl.SL_TEST);
+         y.SL_TEST := convert(x(u to u+w-1), tpl.SL_TEST);
       else
          w := width(tpl.RX_COMMA_LOCK);
          y.RX_COMMA_LOCK := convert(x(u downto u-w+1), tpl.RX_COMMA_LOCK);
@@ -2739,6 +2908,9 @@ package body HAL_CTRL is
          u := u - w;
          w := width(tpl.RX_TEST_PATTERN);
          y.RX_TEST_PATTERN := convert(x(u downto u-w+1), tpl.RX_TEST_PATTERN);
+         u := u - w;
+         w := width(tpl.SL_TEST);
+         y.SL_TEST := convert(x(u downto u-w+1), tpl.SL_TEST);
       end if;
       return y;
    end function convert;

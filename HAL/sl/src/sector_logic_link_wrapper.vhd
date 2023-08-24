@@ -267,12 +267,19 @@ begin
         signal txctrl1 : std_logic_vector (3 downto 0);
         signal txctrl2 : std_logic_vector (3 downto 0);
         -- TX pattern generator
-        signal tx_packet_valid_i : std_logic;
-        signal packet_userdata_tx_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD*8-1 downto 0);
-        signal packet_txctrl0_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
-        signal packet_txctrl1_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
-        signal packet_txctrl2_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal test_tx_packet_valid_i : std_logic;
+        signal test_packet_userdata_tx_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD*8-1 downto 0);
+        signal test_packet_txctrl0_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal test_packet_txctrl1_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal test_packet_txctrl2_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
     
+        signal tx_packet_valid_mux : std_logic;
+        signal packet_userdata_tx_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD*8-1 downto 0);
+        signal packet_txctrl0_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_txctrl1_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_txctrl2_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+
+        signal mux_ctrl : std_logic := '1';
       begin
 
         assert false report "generating SL TX #" & integer'image(idx) & " on MGT#"
@@ -284,12 +291,19 @@ begin
           port map (
             reset           => reset,
             tx_usrclk2      => tx_clk(idx),
-            packet_valid    => tx_packet_valid_i,
-            packet_userdata => packet_userdata_tx_i,
-            packet_txctrl0  => packet_txctrl0_i,
-            packet_txctrl1  => packet_txctrl1_i,
-            packet_txctrl2  => packet_txctrl2_i);
+            packet_valid    => test_tx_packet_valid_i,
+            packet_userdata => test_packet_userdata_tx_i,
+            packet_txctrl0  => test_packet_txctrl0_i,
+            packet_txctrl1  => test_packet_txctrl1_i,
+            packet_txctrl2  => test_packet_txctrl2_i);
     
+        -- select if we want to output a test parttern or not with TX_ENA_TEST_PATTERN
+        tx_packet_valid_mux     <= sl_tx_data_post_cdc(idx).valid   when mux_ctrl else test_tx_packet_valid_i;
+        packet_userdata_tx_mux  <= sl_tx_data_post_cdc(idx).data    when mux_ctrl else test_packet_userdata_tx_i;
+        packet_txctrl0_mux      <= std_logic_vector'(x"000000")     when mux_ctrl else test_packet_txctrl0_i;
+        packet_txctrl1_mux      <= std_logic_vector'(x"000000")     when mux_ctrl else test_packet_txctrl1_i;
+        packet_txctrl2_mux      <= std_logic_vector'(x"100000")     when mux_ctrl else test_packet_txctrl2_i;
+
         sector_logic_tx_packet_former_inst : entity sl.sector_logic_tx_packet_former
           generic map (
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
@@ -300,11 +314,11 @@ begin
             txctrl0         => txctrl0,                       -- 4 bit to mgt
             txctrl1         => txctrl1,                       -- 4 bit to mgt
             txctrl2         => txctrl2,                       -- 4 bit to mgt
-            packet_userdata => sl_tx_data_post_cdc(idx).data,
-            packet_valid    => sl_tx_data_post_cdc(idx).valid,
-            packet_txctrl0  => std_logic_vector'(x"000000"),  --
-            packet_txctrl1  => std_logic_vector'(x"000000"),  --
-            packet_txctrl2  => std_logic_vector'(x"100000")   --
+            packet_userdata => packet_userdata_tx_mux,
+            packet_valid    => tx_packet_valid_mux,
+            packet_txctrl0  => packet_txctrl0_mux,  --
+            packet_txctrl1  => packet_txctrl1_mux,  --
+            packet_txctrl2  => packet_txctrl2_mux   --
             );
 
         sl_tx_ctrl_o(idx).ctrl0 <= x"000" & txctrl0;
@@ -412,7 +426,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)        
           port map(
-            reset         => reset,
+            reset         => reset OR ctrl.reset.rx_test_pattern,
             rx_usrclk2    => rx_clk(idx),
 
             packet_rxctrl0 => packet_rxctrl0_i,
@@ -424,8 +438,9 @@ begin
             packet_locked     => sl_rx_data_pre_cdc(idx).locked,
             packet_valid      => sl_rx_data_pre_cdc(idx).valid,
 
-            error_counter_out => open,                -- to be connected to a register
-            word_counter_out  => open);               -- to be connected to a register
+            error_counter_out => mon.sl_test.sl_test(idx).error_counter,                -- to be connected to a register
+            word_counter_out (63 downto 32) => mon.sl_test.sl_test(idx).WORD_COUNTER_1,
+            word_counter_out (31 downto  0) => mon.sl_test.sl_test(idx).WORD_COUNTER_0);               -- to be connected to a register
     
         --------------------------------------------------------------------------------
         -- RX Clock Domain Crossing

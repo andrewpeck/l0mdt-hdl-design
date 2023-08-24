@@ -44,19 +44,19 @@ architecture behavioral of HAL_map is
 
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 3120);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 3120) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 3320);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 3320) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*3120) <= ALLOCATED_MEMORY_RANGE)
-    report "HAL: Regmap addressing range " & integer'image(4*3120) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*3320) <= ALLOCATED_MEMORY_RANGE)
+    report "HAL: Regmap addressing range " & integer'image(4*3320) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity ERROR;
-  assert ((4*3120) > ALLOCATED_MEMORY_RANGE)
-    report "HAL: Regmap addressing range " & integer'image(4*3120) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*3320) > ALLOCATED_MEMORY_RANGE)
+    report "HAL: Regmap addressing range " & integer'image(4*3320) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity NOTE;
 
   AXIRegBridge : entity work.axiLiteRegBlocking
@@ -4733,6 +4733,78 @@ begin  -- architecture behavioral
           localRdData( 0)            <=  reg_data(3120)( 0);                                      --Resets all comma detection
           localRdData( 1)            <=  reg_data(3120)( 1);                                      --Resets all packet former
           localRdData( 2)            <=  reg_data(3120)( 2);                                      --Resets all rx_test_pattern counter
+        when 3136 => --0xc40
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(0).ERROR_COUNTER;                         --error_counter_out from rx_test_pattern_checker
+        when 3140 => --0xc44
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(0).WORD_COUNTER_0;                        --word_counter_out from rx_test_pattern_checker
+        when 3144 => --0xc48
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(0).WORD_COUNTER_1;                        --word_counter_out from rx_test_pattern_checker
+        when 3152 => --0xc50
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(1).ERROR_COUNTER;                         --error_counter_out from rx_test_pattern_checker
+        when 3156 => --0xc54
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(1).WORD_COUNTER_0;                        --word_counter_out from rx_test_pattern_checker
+        when 3160 => --0xc58
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(1).WORD_COUNTER_1;                        --word_counter_out from rx_test_pattern_checker
+        when 3168 => --0xc60
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(2).ERROR_COUNTER;                         --error_counter_out from rx_test_pattern_checker
+        when 3172 => --0xc64
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(2).WORD_COUNTER_0;                        --word_counter_out from rx_test_pattern_checker
+        when 3176 => --0xc68
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(2).WORD_COUNTER_1;                        --word_counter_out from rx_test_pattern_checker
+        when 3184 => --0xc70
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(3).ERROR_COUNTER;                         --error_counter_out from rx_test_pattern_checker
+        when 3188 => --0xc74
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(3).WORD_COUNTER_0;                        --word_counter_out from rx_test_pattern_checker
+        when 3192 => --0xc78
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(3).WORD_COUNTER_1;                        --word_counter_out from rx_test_pattern_checker
+        when 3200 => --0xc80
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(4).ERROR_COUNTER;                         --error_counter_out from rx_test_pattern_checker
+        when 3204 => --0xc84
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(4).WORD_COUNTER_0;                        --word_counter_out from rx_test_pattern_checker
+        when 3208 => --0xc88
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(4).WORD_COUNTER_1;                        --word_counter_out from rx_test_pattern_checker
+        when 3216 => --0xc90
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(5).ERROR_COUNTER;                         --error_counter_out from rx_test_pattern_checker
+        when 3220 => --0xc94
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(5).WORD_COUNTER_0;                        --word_counter_out from rx_test_pattern_checker
+        when 3224 => --0xc98
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(5).WORD_COUNTER_1;                        --word_counter_out from rx_test_pattern_checker
+        when 3232 => --0xca0
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(6).ERROR_COUNTER;                         --error_counter_out from rx_test_pattern_checker
+        when 3236 => --0xca4
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(6).WORD_COUNTER_0;                        --word_counter_out from rx_test_pattern_checker
+        when 3240 => --0xca8
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(6).WORD_COUNTER_1;                        --word_counter_out from rx_test_pattern_checker
+        when 3248 => --0xcb0
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(7).ERROR_COUNTER;                         --error_counter_out from rx_test_pattern_checker
+        when 3252 => --0xcb4
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(7).WORD_COUNTER_0;                        --word_counter_out from rx_test_pattern_checker
+        when 3256 => --0xcb8
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(7).WORD_COUNTER_1;                        --word_counter_out from rx_test_pattern_checker
+        when 3264 => --0xcc0
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(8).ERROR_COUNTER;                         --error_counter_out from rx_test_pattern_checker
+        when 3268 => --0xcc4
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(8).WORD_COUNTER_0;                        --word_counter_out from rx_test_pattern_checker
+        when 3272 => --0xcc8
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(8).WORD_COUNTER_1;                        --word_counter_out from rx_test_pattern_checker
+        when 3280 => --0xcd0
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(9).ERROR_COUNTER;                         --error_counter_out from rx_test_pattern_checker
+        when 3284 => --0xcd4
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(9).WORD_COUNTER_0;                        --word_counter_out from rx_test_pattern_checker
+        when 3288 => --0xcd8
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(9).WORD_COUNTER_1;                        --word_counter_out from rx_test_pattern_checker
+        when 3296 => --0xce0
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(10).ERROR_COUNTER;                        --error_counter_out from rx_test_pattern_checker
+        when 3300 => --0xce4
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(10).WORD_COUNTER_0;                       --word_counter_out from rx_test_pattern_checker
+        when 3304 => --0xce8
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(10).WORD_COUNTER_1;                       --word_counter_out from rx_test_pattern_checker
+        when 3312 => --0xcf0
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(11).ERROR_COUNTER;                        --error_counter_out from rx_test_pattern_checker
+        when 3316 => --0xcf4
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(11).WORD_COUNTER_0;                       --word_counter_out from rx_test_pattern_checker
+        when 3320 => --0xcf8
+          localRdData(31 downto  0)  <=  Mon.SL.SL_TEST(11).WORD_COUNTER_1;                       --word_counter_out from rx_test_pattern_checker
 
 
           when others =>

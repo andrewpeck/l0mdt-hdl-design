@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node id="SL_TEST" permission="rw">
+  <node id="ERROR_COUNTER"  address="0x0"  permission="r" description="error_counter_out from rx_test_pattern_checker"/>
+  <node id="WORD_COUNTER_0"  address="0x4"  permission="r" description="word_counter_out from rx_test_pattern_checker"/>
+  <node id="WORD_COUNTER_1"  address="0x8"  permission="r" description="word_counter_out from rx_test_pattern_checker"/>
+</node>   <!-- SL_TEST -->
