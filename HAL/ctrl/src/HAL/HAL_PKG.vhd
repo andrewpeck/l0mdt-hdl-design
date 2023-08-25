@@ -383,19 +383,19 @@ package HAL_CTRL is
    type HAL_SL_MON_t is record
       RX_COMMA_LOCK : std_logic_vector(32 - 1 downto 0);
       RX_PACKET_LOCKED : std_logic_vector(32 - 1 downto 0);
-      RX_TEST_PATTERN : std_logic_vector(32 - 1 downto 0);
       SL_TEST : HAL_SL_SL_TEST_MON_t_ARRAY;
    end record HAL_SL_MON_t;
-   attribute w of HAL_SL_MON_t : type is 1248;
+   attribute w of HAL_SL_MON_t : type is 1216;
    function width(x: HAL_SL_MON_t) return natural;
    function convert(x: HAL_SL_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_SL_MON_t) return HAL_SL_MON_t;
    function zero(tpl: HAL_SL_MON_t) return HAL_SL_MON_t;
 
    type HAL_SL_CTRL_t is record
+      TX_ENA_TEST_PATTERN : std_logic_vector(32 - 1 downto 0);
       RESET : HAL_SL_RESET_CTRL_t;
    end record HAL_SL_CTRL_t;
-   attribute w of HAL_SL_CTRL_t : type is 3;
+   attribute w of HAL_SL_CTRL_t : type is 35;
    function width(x: HAL_SL_CTRL_t) return natural;
    function convert(x: HAL_SL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_SL_CTRL_t) return HAL_SL_CTRL_t;
@@ -405,7 +405,7 @@ package HAL_CTRL is
       CSM : HAL_CSM_MON_t;
       SL : HAL_SL_MON_t;
    end record HAL_MON_t;
-   attribute w of HAL_MON_t : type is 19500;
+   attribute w of HAL_MON_t : type is 19468;
    function width(x: HAL_MON_t) return natural;
    function convert(x: HAL_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_MON_t) return HAL_MON_t;
@@ -418,7 +418,7 @@ package HAL_CTRL is
       CSM : HAL_CSM_CTRL_t;
       SL : HAL_SL_CTRL_t;
    end record HAL_CTRL_t;
-   attribute w of HAL_CTRL_t : type is 6522;
+   attribute w of HAL_CTRL_t : type is 6554;
    function width(x: HAL_CTRL_t) return natural;
    function convert(x: HAL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CTRL_t) return HAL_CTRL_t;
@@ -2846,7 +2846,6 @@ package body HAL_CTRL is
    begin
       w := w + width(x.RX_COMMA_LOCK);
       w := w + width(x.RX_PACKET_LOCKED);
-      w := w + width(x.RX_TEST_PATTERN);
       w := w + width(x.SL_TEST);
       return w;
    end function width;
@@ -2862,9 +2861,6 @@ package body HAL_CTRL is
          w := width(x.RX_PACKET_LOCKED);
          y(u to u+w-1) := convert(x.RX_PACKET_LOCKED, y(u to u+w-1));
          u := u + w;
-         w := width(x.RX_TEST_PATTERN);
-         y(u to u+w-1) := convert(x.RX_TEST_PATTERN, y(u to u+w-1));
-         u := u + w;
          w := width(x.SL_TEST);
          y(u to u+w-1) := convert(x.SL_TEST, y(u to u+w-1));
       else
@@ -2873,9 +2869,6 @@ package body HAL_CTRL is
          u := u - w;
          w := width(x.RX_PACKET_LOCKED);
          y(u downto u-w+1) := convert(x.RX_PACKET_LOCKED, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.RX_TEST_PATTERN);
-         y(u downto u-w+1) := convert(x.RX_TEST_PATTERN, y(u downto u-w+1));
          u := u - w;
          w := width(x.SL_TEST);
          y(u downto u-w+1) := convert(x.SL_TEST, y(u downto u-w+1));
@@ -2894,9 +2887,6 @@ package body HAL_CTRL is
          w := width(tpl.RX_PACKET_LOCKED);
          y.RX_PACKET_LOCKED := convert(x(u to u+w-1), tpl.RX_PACKET_LOCKED);
          u := u + w;
-         w := width(tpl.RX_TEST_PATTERN);
-         y.RX_TEST_PATTERN := convert(x(u to u+w-1), tpl.RX_TEST_PATTERN);
-         u := u + w;
          w := width(tpl.SL_TEST);
          y.SL_TEST := convert(x(u to u+w-1), tpl.SL_TEST);
       else
@@ -2905,9 +2895,6 @@ package body HAL_CTRL is
          u := u - w;
          w := width(tpl.RX_PACKET_LOCKED);
          y.RX_PACKET_LOCKED := convert(x(u downto u-w+1), tpl.RX_PACKET_LOCKED);
-         u := u - w;
-         w := width(tpl.RX_TEST_PATTERN);
-         y.RX_TEST_PATTERN := convert(x(u downto u-w+1), tpl.RX_TEST_PATTERN);
          u := u - w;
          w := width(tpl.SL_TEST);
          y.SL_TEST := convert(x(u downto u-w+1), tpl.SL_TEST);
@@ -2922,6 +2909,7 @@ package body HAL_CTRL is
    function width(x: HAL_SL_CTRL_t) return natural is
       variable w : natural := 0;
    begin
+      w := w + width(x.TX_ENA_TEST_PATTERN);
       w := w + width(x.RESET);
       return w;
    end function width;
@@ -2931,9 +2919,15 @@ package body HAL_CTRL is
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
+         w := width(x.TX_ENA_TEST_PATTERN);
+         y(u to u+w-1) := convert(x.TX_ENA_TEST_PATTERN, y(u to u+w-1));
+         u := u + w;
          w := width(x.RESET);
          y(u to u+w-1) := convert(x.RESET, y(u to u+w-1));
       else
+         w := width(x.TX_ENA_TEST_PATTERN);
+         y(u downto u-w+1) := convert(x.TX_ENA_TEST_PATTERN, y(u downto u-w+1));
+         u := u - w;
          w := width(x.RESET);
          y(u downto u-w+1) := convert(x.RESET, y(u downto u-w+1));
       end if;
@@ -2945,9 +2939,15 @@ package body HAL_CTRL is
       variable u : integer := x'left;
    begin
       if x'ascending then
+         w := width(tpl.TX_ENA_TEST_PATTERN);
+         y.TX_ENA_TEST_PATTERN := convert(x(u to u+w-1), tpl.TX_ENA_TEST_PATTERN);
+         u := u + w;
          w := width(tpl.RESET);
          y.RESET := convert(x(u to u+w-1), tpl.RESET);
       else
+         w := width(tpl.TX_ENA_TEST_PATTERN);
+         y.TX_ENA_TEST_PATTERN := convert(x(u downto u-w+1), tpl.TX_ENA_TEST_PATTERN);
+         u := u - w;
          w := width(tpl.RESET);
          y.RESET := convert(x(u downto u-w+1), tpl.RESET);
       end if;

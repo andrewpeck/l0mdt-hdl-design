@@ -4728,7 +4728,7 @@ begin  -- architecture behavioral
         when 3088 => --0xc10
           localRdData(31 downto  0)  <=  Mon.SL.RX_PACKET_LOCKED;                                 --rx packet former lock status
         when 3104 => --0xc20
-          localRdData(31 downto  0)  <=  Mon.SL.RX_TEST_PATTERN;                                  --rx test patter is recognized
+          localRdData(31 downto  0)  <=  reg_data(3104)(31 downto  0);                            --tx test pattern enable
         when 3120 => --0xc30
           localRdData( 0)            <=  reg_data(3120)( 0);                                      --Resets all comma detection
           localRdData( 1)            <=  reg_data(3120)( 1);                                      --Resets all packet former
@@ -5977,6 +5977,7 @@ begin  -- architecture behavioral
   Ctrl.CSM.CSM(35).SC.SLAVE.IC.TX_DATA_TO_GBTX        <=  reg_data(2868)( 7 downto  0);     
   Ctrl.CSM.CSM(35).SC.SLAVE.IC.TX_GBTX_ADDR           <=  reg_data(2868)(31 downto 24);     
   Ctrl.CSM.CSM(35).SC.SLAVE.IC.TX_WR                  <=  reg_data(2869)( 0);               
+  Ctrl.SL.TX_ENA_TEST_PATTERN                         <=  reg_data(3104)(31 downto  0);     
   Ctrl.SL.RESET.rx_comma                              <=  reg_data(3120)( 0);               
   Ctrl.SL.RESET.rx_packet_former                      <=  reg_data(3120)( 1);               
   Ctrl.SL.RESET.rx_counter                            <=  reg_data(3120)( 2);               
@@ -7140,6 +7141,7 @@ begin  -- architecture behavioral
       reg_data(2868)( 7 downto  0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.SLAVE.IC.TX_DATA_TO_GBTX;
       reg_data(2868)(31 downto 24)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.SLAVE.IC.TX_GBTX_ADDR;
       reg_data(2869)( 0)  <= DEFAULT_HAL_CTRL_t.CSM.CSM(35).SC.SLAVE.IC.TX_WR;
+      reg_data(3104)(31 downto  0)  <= DEFAULT_HAL_CTRL_t.SL.TX_ENA_TEST_PATTERN;
       reg_data(3120)( 0)  <= DEFAULT_HAL_CTRL_t.SL.RESET.rx_comma;
       reg_data(3120)( 1)  <= DEFAULT_HAL_CTRL_t.SL.RESET.rx_packet_former;
       reg_data(3120)( 2)  <= DEFAULT_HAL_CTRL_t.SL.RESET.rx_counter;
@@ -9028,6 +9030,8 @@ begin  -- architecture behavioral
           reg_data(2868)(31 downto 24)  <=  localWrData(31 downto 24);      --I2C address of the GBTx
         when 2869 => --0xb35
           reg_data(2869)( 0)            <=  localWrData( 0);                --Request a write operation into the internal FIFO (Data to GBTx)
+        when 3104 => --0xc20
+          reg_data(3104)(31 downto  0)  <=  localWrData(31 downto  0);      --tx test pattern enable
         when 3120 => --0xc30
           reg_data(3120)( 0)            <=  localWrData( 0);                --Resets all comma detection
           reg_data(3120)( 1)            <=  localWrData( 1);                --Resets all packet former

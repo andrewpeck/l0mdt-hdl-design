@@ -279,7 +279,7 @@ begin
         signal packet_txctrl1_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
         signal packet_txctrl2_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
 
-        signal mux_ctrl : std_logic := '1';
+        signal mux_ctrl : std_logic := '0'; -- to be connected to a register
       begin
 
         assert false report "generating SL TX #" & integer'image(idx) & " on MGT#"
@@ -419,14 +419,14 @@ begin
 
             );
 
-          Mon.RX_COMMA_LOCK(idx) <= sl_rx_data_pre_cdc(idx).locked;
+          Mon.RX_PACKET_LOCKED(idx) <= sl_rx_data_pre_cdc(idx).locked;
 
           rx_test_pattern_checker_inst : entity sl.rx_test_pattern_checker
           generic map(
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)        
           port map(
-            reset         => reset OR ctrl.reset.rx_test_pattern,
+            reset         => reset OR ctrl.reset.rx_counter,
             rx_usrclk2    => rx_clk(idx),
 
             packet_rxctrl0 => packet_rxctrl0_i,
@@ -438,9 +438,9 @@ begin
             packet_locked     => sl_rx_data_pre_cdc(idx).locked,
             packet_valid      => sl_rx_data_pre_cdc(idx).valid,
 
-            error_counter_out => mon.sl_test.sl_test(idx).error_counter,                -- to be connected to a register
-            word_counter_out (63 downto 32) => mon.sl_test.sl_test(idx).WORD_COUNTER_1,
-            word_counter_out (31 downto  0) => mon.sl_test.sl_test(idx).WORD_COUNTER_0);               -- to be connected to a register
+            error_counter_out => mon.sl_test(idx).error_counter,                -- to be connected to a register
+            word_counter_out (63 downto 32) => mon.sl_test(idx).WORD_COUNTER_1,
+            word_counter_out (31 downto  0) => mon.sl_test(idx).WORD_COUNTER_0);               -- to be connected to a register
     
         --------------------------------------------------------------------------------
         -- RX Clock Domain Crossing
