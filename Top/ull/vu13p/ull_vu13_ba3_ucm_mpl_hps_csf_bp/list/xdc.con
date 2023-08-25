@@ -1,0 +1,9 @@
+# shared/constraints/l0mdt_dev_con.xdc
+shared/constraints/gldl_dev_con.xdc
+#HAL/constraints/false_false_paths.tcl nosynth
+# HAL/constraints/loc_mgts.tcl nosynth
+HAL/constraints/region_constraints_toolbox.tcl nosynth
+# HAL/constraints/area_constraints.tcl nosynth
+# HAL/constraints/lpgbt_multicycle.tcl
+Top/ull/vu13p/ull_vu13_ba3_ucm_mpl_hps_csf_bp/cons/area_constraints.tcl nosynth
+

@@ -319,7 +319,7 @@ DeployOnDemo:
   tags: 
     - demonstrator
   dependencies:
-    - "generate: [argos, l0mdt_ku15p_ull_empty_usp]"
+    - "generate: [argos, l0mdt/ku15p/l0mdt_ku15p_ull_empty]"
 
 DeployOnProto:
   extends: .on_board_test
@@ -328,4 +328,4 @@ DeployOnProto:
   tags: 
     - prototype_v1
   dependencies:
-    - "generate: [argos, l0mdt_vu13p_ull_empty]"
+    - "generate: [argos, l0mdt/vu13p/l0mdt_vu13p_ull_empty]"
