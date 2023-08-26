@@ -51,21 +51,23 @@ entity ucm_cvp_pc_setdata is
     ena           : in std_logic;
     --
     i_cointype    : in std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
-    i_data_v      : in std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
-    i_data_valid  : in std_logic;
+    i_rpc_Z_a     : in rpc_pos_array_t(g_NUM_RPC_LAYERS -1 downto 0);
+    i_cand_dv    : in std_logic;
+    -- i_data_v      : in std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
+    -- i_data_valid  : in std_logic;
     --
     i_rpc_R_a     : in ucm_rpc_r_alt(g_NUM_RPC_LAYERS -1 downto 0);
     i_rpc_R_dv    : in std_logic;
-    i_mdt_R_a     : in std_logic_vector(UCM_Z_ROI_LEN-1 downto 0);
-    i_mdt_R_dv    : in std_logic;
+    -- i_mdt_R_a     : in std_logic_vector(UCM_Z_ROI_LEN-1 downto 0);
+    -- i_mdt_R_dv    : in std_logic;
     -- i_chamb_ieta  : in unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
     -- i_offset      : in signed(31 downto 0);--signed(126 -1 downto 0);
     -- i_slope       : in signed(31 downto 0);--signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
     -- i_data_valid  : in std_logic;
     --
     o_num_h_i       : out integer;
-    o_rpc_a         : out rpc_art;
-    o_rad_a         : out rad_art;
+    o_rpc_a         : out rpc_pos_art;
+    o_rad_a         : out rpc_rad_art;
     o_set_data_dv   : out std_logic
     
   );
@@ -73,11 +75,12 @@ end entity ucm_cvp_pc_setdata;
 
 architecture beh of ucm_cvp_pc_setdata is
 
-  signal barrel_r   : slc_barrel_rt;
   signal coin : integer;
 
-  signal rpc_a : rpc_art;
-  signal rad_a : rad_art;
+  signal num_h_i : integer := 0;
+
+  signal rpc_a : rpc_pos_art;
+  signal rad_a : rpc_rad_art;
   signal set_data_dv : std_logic;
   
 begin
@@ -87,7 +90,7 @@ begin
   o_rad_a       <= rad_a;
   o_set_data_dv <= set_data_dv;
 
-  barrel_r <= convert(i_data_v,barrel_r);
+  -- barrel_r <= convert(i_data_v,barrel_r);
 
   coin <= to_integer(unsigned(i_cointype));
   
@@ -100,35 +103,35 @@ begin
       else
         if ena =  '1' then
 
-          if i_data_valid = '1' then
-            if or_reduce(std_logic_vector(barrel_r.rpc0_posz)) = '0' then
+          if i_cand_dv = '1' then
+            if or_reduce(std_logic_vector(i_rpc_Z_a(0))) = '0' then
               rad_a(0) <= (others => '0');
             else
-              rad_a(0) <= signed(i_rpc_rad_a(0));
+              rad_a(0) <= signed(i_rpc_R_a(0));
             end if;
-            if or_reduce(std_logic_vector(barrel_r.rpc1_posz)) = '0' then
+            if or_reduce(std_logic_vector(i_rpc_Z_a(1))) = '0' then
               rad_a(1) <= (others => '0');
             else
-              rad_a(1) <= signed(i_rpc_rad_a(1));
+              rad_a(1) <= signed(i_rpc_R_a(1));
             end if;
-            if or_reduce(std_logic_vector(barrel_r.rpc2_posz)) = '0' then
+            if or_reduce(std_logic_vector(i_rpc_Z_a(2))) = '0' then
               rad_a(2) <= (others => '0');
             else
-              rad_a(2) <= signed(i_rpc_rad_a(2));
+              rad_a(2) <= signed(i_rpc_R_a(2));
             end if;
-            if or_reduce(std_logic_vector(barrel_r.rpc3_posz)) = '0' then
+            if or_reduce(std_logic_vector(i_rpc_Z_a(3))) = '0' then
               rad_a(3) <= (others => '0');
             else
-              rad_a(3) <= signed(i_rpc_rad_a(3));
+              rad_a(3) <= signed(i_rpc_R_a(3));
             end if;
-            -- rad_a(1) <= signed(i_rpc_rad_a(1));
-            -- rad_a(2) <= signed(i_rpc_rad_a(2));
-            -- rad_a(3) <= signed(i_rpc_rad_a(3));
+            -- rad_a(1) <= signed(i_rpc_R_a(1));
+            -- rad_a(2) <= signed(i_rpc_R_a(2));
+            -- rad_a(3) <= signed(i_rpc_R_a(3));
 
-            rpc_a(0) <= barrel_r.rpc0_posz;
-            rpc_a(1) <= barrel_r.rpc1_posz;
-            rpc_a(2) <= barrel_r.rpc2_posz;
-            rpc_a(3) <= barrel_r.rpc3_posz;
+            rpc_a(0) <= i_rpc_Z_a(0);
+            rpc_a(1) <= i_rpc_Z_a(1);
+            rpc_a(2) <= i_rpc_Z_a(2);
+            rpc_a(3) <= i_rpc_Z_a(3);
 
             -- coin type
             case coin is

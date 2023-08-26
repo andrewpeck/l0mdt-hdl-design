@@ -36,6 +36,7 @@ use UNISIM.VCOMPONENTS.ALL;
 
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
+use ucm_lib.ucm_vhdl_pkg.all;
 
 library  vamc_lib;
 
@@ -82,10 +83,10 @@ architecture beh of ucm_cvp_b_slope is
   signal num_h_i : integer := 0;--num_art;
   -- signal num_h_std : std_logic_vector(2 downto 0);
 
-  type rpc_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
-  signal rpc_a : rpc_art;
-  type rad_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
-  signal rad_a : rad_art;
+  -- type rpc_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
+  signal rpc_a : rpc_pos_art;
+  -- type rad_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
+  signal rad_a : rpc_rad_art;
   -- signal rad_comp_a : rad_art;
   -- signal rad_comp_dv : std_logic;
 

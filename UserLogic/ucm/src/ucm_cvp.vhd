@@ -34,6 +34,7 @@ use shared_lib.fct_chamber_type_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
+use ucm_lib.ucm_vhdl_pkg.all;
 use ucm_lib.ucm_function_pkg.all;
 
 library  vamc_lib;
@@ -45,7 +46,9 @@ entity ucm_cvp is
   generic(
   --   g_DELAY_CYCLES          : integer; 
   --   num_bits            : integer
-    g_MAX_POSSIBLE_HPS : integer := c_MAX_POSSIBLE_HPS
+    g_MAX_POSSIBLE_HPS : integer := c_MAX_POSSIBLE_HPS;
+    g_NUM_MDT_LAYERS : integer := 3; -- c_NUM_MDT_LAYERS
+    g_NUM_RPC_LAYERS : integer := 4
   );
   port (
     clk                 : in std_logic;
@@ -69,10 +72,10 @@ entity ucm_cvp is
 end entity ucm_cvp;
 
 architecture beh of ucm_cvp is
+  
+  signal local_rst : std_logic;
 
-  signal i_data_r            : ucm_cde_rt;
-
-  -- rpc R
+  -- C&M
   signal ctrl_r : UCM_R_PHI_COMP_CTRL_t;
   signal mon_r  : UCM_R_PHI_COMP_MON_t;
 
@@ -94,13 +97,21 @@ architecture beh of ucm_cvp is
   signal mdt_radius_av  : ucm_mdt_r_alt(3 - 1 downto 0);
   signal mdt_radius_dv  : std_logic;
 
-  -- 
+  -- candidate
+  
 
-  signal local_rst : std_logic;
-
+  signal i_data_r     : ucm_cde_rt;
   signal int_data_r     : ucm_cde_rt;
   signal int_data_v     : ucm_cde_vt;
   signal barrel_r       : slc_barrel_rt;
+  signal rpc_Z_a        : rpc_pos_array_t(g_NUM_RPC_LAYERS -1 downto 0);
+
+  signal vec_pos_a      : vec_pos_array_t(g_NUM_MDT_LAYERS-1 downto 0);
+  signal vec_pos_a_dv   : std_logic;
+
+  ----------------------------------
+  -- OLD SIGNALS
+  ---------------------------------
   
   -- signal data_v       : ucm_cde_vt;
   -- signal data_r       : ucm_cde_rt;
@@ -129,17 +140,21 @@ architecture beh of ucm_cvp is
   -- signal atan_mbar    : unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
   signal atan_dv      : std_logic;
 
-  type vec_pos_array_t  is array (0 to g_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
-  signal vec_pos_array  : vec_pos_array_t;
+  -- type vec_pos_array_t  is array (0 to g_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
+  signal vec_pos_array  : vec_pos_array_t(g_NUM_MDT_LAYERS-1 downto 0);
   signal vec_z_pos_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
+
+  
 
   signal vec_ang_pl : unsigned(UCM2HPS_VEC_ANG_LEN-1 downto 0);
   
 begin
 
+  local_rst <= rst or i_local_rst;
   i_data_r <= convert(i_data_v,i_data_r);
-  
+  int_data_r <= convert(i_data_v,int_data_r);
 
+  
   ctrl_r  <= convert(ctrl_v,ctrl_r);
   mon_v   <= convert(mon_r,mon_v);
 
@@ -151,25 +166,24 @@ begin
   mdt_R_mon_r <= convert(mdt_R_mon_v,mdt_R_mon_r);
   mon_r.MDT <= mdt_R_mon_r;
 
-  local_rst <= rst or i_local_rst;
+  
   -- data_r <= convert(i_data_v,data_r);
-  barrel_r <= convert(int_data_r.specific,barrel_r);
 
-  IN_REG: process(clk)
-  begin
-    if rising_edge(clk) then
-      if local_rst = '1' then
-        int_data_v <= (others => '0');
-      else
-        if i_in_en = '1' then
-          if i_data_r.data_valid = '1' then
-            int_data_v <= i_data_v;
-          end if;
-        end if;
-      end if;
-    end if;
-  end process IN_REG;
-  int_data_r <= convert(int_data_v,int_data_r);
+  -- IN_REG: process(clk)
+  -- begin
+  --   if rising_edge(clk) then
+  --     if local_rst = '1' then
+  --       int_data_v <= (others => '0');
+  --     else
+  --       if i_in_en = '1' then
+  --         if i_data_r.data_valid = '1' then
+  --           int_data_v <= i_data_v;
+  --         end if;
+  --       end if;
+  --     end if;
+  --   end if;
+  -- end process IN_REG;
+  -- int_data_r <= convert(int_data_v,int_data_r);
 
   -- PL_in : entity vamc_lib.vamc_sr
   -- generic map(
@@ -188,6 +202,20 @@ begin
   -- chamber_ieta_r <= convert(data_v).chamb_ieta;
 
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
+    barrel_r <= convert(int_data_r.specific,barrel_r);
+    RPC_0 : if g_NUM_RPC_LAYERS > 0 generate
+      rpc_Z_a(0) <= barrel_r.rpc0_posz;
+      end generate;
+    RPC_1 : if g_NUM_RPC_LAYERS > 1 generate
+      rpc_Z_a(1) <= barrel_r.rpc1_posz;
+      end generate;
+    RPC_2 : if g_NUM_RPC_LAYERS > 2 generate
+      rpc_Z_a(2) <= barrel_r.rpc2_posz;
+      end generate;
+    RPC_3 : if g_NUM_RPC_LAYERS > 3 generate
+      rpc_Z_a(3) <= barrel_r.rpc3_posz;
+      end generate;
+    
 
     RPC_R : entity ucm_lib.ucm_rpc_R_comp_top
       generic map(
@@ -230,6 +258,29 @@ begin
       o_dv        => mdt_radius_dv
   );
 
+  PARAM_CALC : entity ucm_lib.ucm_cvp_pc_core
+  port map(
+    clk           => clk,
+    rst           => local_rst,
+    ena           => ena,
+    --
+    i_cointype    => int_data_r.cointype,
+    i_rpc_Z_a     => rpc_Z_a,
+    i_data_Valid  => int_data_r.data_valid,
+    --
+    i_rpc_R_a     => rpc_radius_av,
+    i_rpc_R_dv    => rpc_radius_dv,
+    i_mdt_R_a     => mdt_radius_av,
+    i_mdt_R_dv    => mdt_radius_dv,
+    --
+    o_offset      => offset,
+    o_slope       => slope,
+    o_vector_dv   => slope_dv,
+    --
+    o_vec_z_pos     => vec_pos_a,
+    o_vec_z_pos_dv  => vec_pos_a_dv
+  );
+
     SLOPE_CALC : entity ucm_lib.ucm_cvp_b_slope
     port map(
       clk           => clk,
@@ -239,6 +290,7 @@ begin
       i_rpc_rad_a   => rpc_radius_av,
       i_cointype    => int_data_r.cointype,
       i_data_v      => int_data_r.specific,
+      --
       i_data_Valid  => rpc_radius_dv,--int_data_r.data_valid,
       o_offset      => offset,
       o_slope       => slope,

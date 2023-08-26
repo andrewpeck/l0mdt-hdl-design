@@ -34,8 +34,11 @@ library ucm_lib;
 
 package ucm_vhdl_pkg is
 
-  type rpc_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
-  type rad_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
+  type rpc_pos_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
+  type rpc_rad_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
+  type vec_pos_array_t  is array (integer range <>) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
+
+  type rpc_pos_array_t  is array (integer range <>) of signed(SLC_BARREL_RPC0_POSZ_LEN-1 downto 0);
   
 end package;
 
