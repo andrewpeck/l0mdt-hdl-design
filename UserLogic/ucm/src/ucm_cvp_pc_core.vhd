@@ -489,5 +489,85 @@ begin
       o_dv        => param_a_dv
     );
 
+  --------------------------------
+
+  --------------------------------
+
+  Y_EVAL : for i_mdt in g_NUM_MDT_LAYERS -1 downto 0 generate
+    signal mult_rc     : std_logic_vector(i_mdt_R_a(i_mdt)'length + param_c'length -1 downto 0);
+    signal mult_rc_dv  : std_logic;
+    signal sub_rc_b     : std_logic_vector(max(param_b'length,mult_rc'length) -1 downto 0);
+    signal sub_rc_b_dv  : std_logic;
+    signal div_out : std_logic_vector(79 downto 0);
+    signal div_quo : std_logic_vector(46 downto 0);
+    signal div_fra : std_logic_vector(32 downto 0);
+    signal div_out_dv  : std_logic;
+
+  begin
+    
+    MULT_R_C_ENT : entity shared_lib.VU_generic_pipelined_MATH
+      generic map(
+        g_OPERATION => "*",
+        g_IN_PIPE_STAGES  => 1,
+        g_OUT_PIPE_STAGES => 1,
+        g_in_A_WIDTH => i_mdt_R_a(i_mdt)'length,
+        g_in_B_WIDTH => param_c'length
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        --
+        i_in_A      => std_logic_vector(i_mdt_R_a(i_mdt)),
+        i_in_B      => param_c,
+        -- i_in_C      => "0",
+        -- i_in_D      => "0",
+        i_dv        => i_rpc_R_dv,
+        --
+        o_result    => mult_rc,
+        o_dv        => mult_rc_dv
+      );
+
+    SUB_RC_B_ENT : entity shared_lib.VU_generic_pipelined_MATH
+      generic map(
+        g_OPERATION => "-",
+        g_IN_PIPE_STAGES  => 0,
+        g_OUT_PIPE_STAGES => 0,
+        g_in_A_WIDTH => mult_rc'length,
+        g_in_B_WIDTH => param_b'length
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        --
+        i_in_A      => mult_rc,
+        i_in_B      => param_b,
+        -- i_in_C      => "0",
+        -- i_in_D      => "0",
+        i_dv        => mult_rc_dv,
+        --
+        o_result    => sub_rc_b,
+        o_dv        => sub_rc_b_dv
+      );
+
+    your_instance_name : cvp_pc_y_hr_div
+      PORT MAP (
+        aclk => aclk,
+        s_axis_divisor_tvalid => param_a_dv,
+        -- s_axis_divisor_tready => s_axis_divisor_tready,
+        s_axis_divisor_tdata => param_a,
+        s_axis_dividend_tvalid => sub_rc_b_dv,
+        -- s_axis_dividend_tready => s_axis_dividend_tready,
+        s_axis_dividend_tdata => sub_rc_b,
+        m_axis_dout_tvalid => div_out_dv,
+        -- m_axis_dout_tuser => m_axis_dout_tuser,
+        m_axis_dout_tdata => div_out
+      );
+
+      div_quo <= div_out(77 downto 32);
+      div_fra <= div_out(31 downto 0);
+
+
+  end generate;
+
 end architecture beh;
 
