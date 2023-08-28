@@ -1,0 +1,4 @@
+HAL/hal/list/hal.src
+Top/l0mdt/ku15p/l0mdt_ku15p_ull_ucm/user_pkg.vhd
+HAL/boards/board_pkg_mpi_ku15p.vhd
+HAL/link_maps/link_map_ku15p.vhd

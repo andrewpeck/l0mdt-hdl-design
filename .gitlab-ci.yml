@@ -2,7 +2,6 @@
 variables:
   HOG_CHECK_PROJVER: 1
   HOG_CHECK_SYNTAX: 1
-  HOG_NO_BITSTREAM: 1
   HOG_SIMULATION_LIB_PATH: "/afs/cern.ch/work/l/l0mdtel/SimulationLib/"
   HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/Xilinx/Vivado/2020.2/bin:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/"
   HOG_APPTAINER_IMAGE: "/Data/images/l0mdt_Ubuntu20.04.sif"
@@ -10,107 +9,112 @@ variables:
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
-    ref: 'v7.4.0'
+    ref: 'v7.13.0'
   - local: "/.user_jobs.yml"
   - local: '/.devel_to_master.yml'
-  #---------------------------------------------
-  #         HW
-  #---------------------------------------------
-  # - local: '/Top/base_l0mdt/gitlab-ci.yml'
-  - local: '/Top/l0mdt_vu13p_csf_mpt/gitlab-ci.yml'
-  - local: '/Top/l0mdt_vu13p_lsf_upt/gitlab-ci.yml'
-  - local: '/Top/l0mdt_ku15p_ull_empty/gitlab-ci.yml'
-  - local: '/Top/l0mdt_ku15p_ull_empty_usp/gitlab-ci.yml'
-  - local: '/Top/l0mdt_vu13p_ull_empty/gitlab-ci.yml'
-  - local: '/Top/l0mdt_ku15p_ull_fm/gitlab-ci.yml'
-  # - local: '/Top/l0mdt_ku15p_csf_mpt/gitlab-ci.yml'
-  #---------------------------------------------
-  #         Modules
-  #---------------------------------------------
-  # - local: '/Top/MainBlocks/csf.0/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/lsf/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/upt/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/ucm/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hp/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/heg/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_csf/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_lsf/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/daq/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/mpl/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/tdc/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/mtc_vu13p/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/upt_vu13p/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/ucm/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/mpl/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/tar/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/tar.0/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/tar.1/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/tar.2/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hp/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/heg.0/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/heg.1/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/heg.2/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_csf_bp.0/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_csf_bp.1/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_csf_bp.2/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_csf.0/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_csf.1/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_csf.2/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_lsf_bp.0/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_lsf_bp.1/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_lsf_bp.2/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_lsf.0/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_lsf.1/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/hps_lsf.2/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/csf.0/gitlab-ci.yml'
-  - local: '/Top/MainBlocks/ncsf/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
-  - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/ucm_r/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/ucm_q/gitlab-ci.yml'
-  # - local: '/Top/MainBlocks/ucm/gitlab-ci.yml'
-  #---------------------------------------------
-  #         BA3 Modules
-  #---------------------------------------------
-  - local: '/Top/MainBlocks/BA3_tar/gitlab-ci.yml'
-  - local: '/Top/MainBlocks/BA3_ucm/gitlab-ci.yml'
-  - local: '/Top/MainBlocks/BA3_ucm_divIP/gitlab-ci.yml'
-  - local: '/Top/MainBlocks/BA3_hps_csf_bp/gitlab-ci.yml'
-  - local: '/Top/MainBlocks/BA3_heg/gitlab-ci.yml'
-  #---------------------------------------------
-  #         ULT KU15 Projects
-  #---------------------------------------------
-  # - local: '/Top/ull_ku15p/ull_ku15_b3a_ucm_mpl/gitlab-ci.yml'
-  # - local: '/Top/ull_ku15p/ull_ku15_b3a_ucm_mpl_hps/gitlab-ci.yml'
-  # - local: '/Top/ull_ku15p/ull_ku15_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
-  # - local: '/Top/ull_ku15p/ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi/gitlab-ci.yml'
-  # - local: '/Top/ull_ku15p/ull_ku15_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
-  #---------------------------------------------
-  #         ULT VU13 Projects
-  #---------------------------------------------
-  - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
-  - local: '/Top/ull_vu13p/ull_vu13_b3a_tar/gitlab-ci.yml'
-  # - local: '/Top/ull_vu13p/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
-  # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_csf_mptc/gitlab-ci.yml'
-  # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_csf_uptc/gitlab-ci.yml'
-  # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_lsf_mptc/gitlab-ci.yml'
-  # - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_lsf_uptc/gitlab-ci.yml'
-  # - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_csf_ptc_mpi/gitlab-ci.yml'
-  # - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_lsf_ptc_mpi/gitlab-ci.yml'
-  # - local: '/Top/ull_vu13p/ull_vu13_ba3_ucm_mpl_hps_csf_bp/gitlab-ci.yml'
-  #---------------------------------------------
-  #         VU13 Projects
-  #---------------------------------------------
-  - local: '/Top/l0mdt_vu13p_ba3_ucm_mpl_tar_hps/gitlab-ci.yml'
-  #---------------------------------------------
-  #         KU15 Projects
-  #---------------------------------------------
-  - local: '/Top/l0mdt_ku15p_ull_tar/gitlab-ci.yml'
-  - local: '/Top/l0mdt_ku15p_ull_ucm/gitlab-ci.yml'
-  #---------------------------------------------
-  #         CocoTB
-  #---------------------------------------------
-  - local: '/tools/cocotb/ci-scripts/gitlab-ci.yml'
+
+generate:
+  extends: .generate_project
+  variables:
+    extends: .vars
+  parallel:
+    matrix:
+      - PROVIDER: argos
+        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_lsf_upt, ull/vu13p/ull_vu13_b3a_tar, l0mdt/ku15p/l0mdt_ku15p_ull_tar, l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps]
+        HOG_ONLY_SYNTH: 1
+      - PROVIDER: argos
+        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty]
+      - PROVIDER: mdt-1
+        PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_ucm_mpl, l0mdt/ku15p/l0mdt_ku15p_ull_ucm]
+        HOG_ONLY_SYNTH: 1
+      - PROVIDER: normal-ops
+        PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
+        HOG_ONLY_SYNTH: 1
+  tags:
+    - ${PROVIDER}
+
+conf_check:
+  extends: .check_list_and_conf
+  variables:
+    extends: .vars
+  parallel:
+    matrix:
+      - PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_lsf_upt]
+
+riviera:
+  extends: .riviera_sim
+  variables:
+    extends: .vars
+  parallel:
+    matrix:
+      - PROJECT_NAME: [MainBlocks/ncsf, MainBlocks/ptc_mpi, MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
+  allow_failure: true
+
+questa:
+  extends: .simulate_project
+  variables:
+    extends: .vars
+  parallel:
+    matrix:
+      - PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg, ull/vu13p/ull_vu13_b3a_ucm_mpl, ull/vu13p/ull_vu13_b3a_tar]
+        PROVIDER: questa
+  allow_failure: false
+  tags:
+    - ${PROVIDER}
+
+sim_comp:
+  extends: .sim_comp
+  variables:
+    extends: .vars
+  parallel:
+    matrix:
+      - PROJECT_NAME: MainBlocks/BA3_tar
+        PROJECT_Q_NAME: MainBlocks/BA3_tar_questa
+        PROJECT_R_NAME: MainBlocks/BA3_tar_riviera
+      - PROJECT_NAME: MainBlocks/BA3_ucm
+        PROJECT_Q_NAME: MainBlocks/BA3_ucm_questa
+        PROJECT_R_NAME: MainBlocks/BA3_ucm_riviera
+      - PROJECT_NAME: MainBlocks/BA3_hps_csf_bp
+        PROJECT_Q_NAME: MainBlocks/BA3_hps_csf_bp_questa
+        PROJECT_R_NAME: MainBlocks/BA3_hps_csf_bp_riviera
+      - PROJECT_NAME: MainBlocks/BA3_heg
+        PROJECT_Q_NAME: MainBlocks/BA3_heg_questa
+        PROJECT_R_NAME: MainBlocks/BA3_heg_riviera
+  needs: ["questa", "riviera"]
+
+
+sim_check:
+  extends: .sim_check
+  needs: ["riviera", "questa"]
+  parallel:
+    matrix:
+      - PROJECT_NAME: [MainBlocks/ncsf]
+        SIMULATOR: riviera
+        BLOCK: CSF
+      - PROJECT_NAME: [MainBlocks/ptc_mpi]
+        SIMULATOR: riviera
+        BLOCK: PTC
+      - PROJECT_NAME: [MainBlocks/BA3_tar]
+        SIMULATOR: questa
+        BLOCK: BA3_tar
+      - PROJECT_NAME: [MainBlocks/BA3_ucm]
+        SIMULATOR: questa
+        BLOCK: BA3_ucm
+      - PROJECT_NAME: [MainBlocks/BA3_hps_csf_bp]
+        SIMULATOR: questa
+        BLOCK: BA3_hps_csf_bp
+      - PROJECT_NAME: MainBlocks/BA3_heg
+        BLOCK: BA3_heg
+        SIMULATOR: questa
+  artifacts:
+    name: sim_check
+    paths:
+      - bin
+    expire_in: "30 days"
+
+cocotb:
+  extends: .cocotb_test
+  stage: generation_and_simulation
+  parallel:
+    matrix:
+      - COCOTB_TEST: [dummy, lsf_inn, lsf_mid, lsf_out, mtc, ptcalc, ucm, ult_tar, hps_inn]

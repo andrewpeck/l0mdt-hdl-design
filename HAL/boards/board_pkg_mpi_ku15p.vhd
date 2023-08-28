@@ -1,3 +1,32 @@
+-------------------------------------------------------
+--! @file
+--! @author Andrew Peck
+--! @date (March 5th, 2020 3:53 PM) 
+--! @brief HAL - Board Package for MDTTP Demonstrator KU15P FPGA
+--! @details     These "board packages" describe board specific information needed by the
+--!              hardware abstraction layer.
+--!              Specifically, it specifies:
+--!              1. The number of MGTs connected
+--!              2. The source of the recovered clock
+--!              3. A mapping of the MGT links, including their:
+--!                 1. Designation (Felix, Sector logic, CSM, etc)
+--!                 2. REFCLK source
+--!                 3. GT type (GTH vs. GTY)
+--!                 4. X/Y location in the chip
+--!              4. Information about the reference clocks
+--!                 1. Which REFCLK is used for the C2C link
+--!                 2. The "type" of each reference clock (LHC 320/240MHz MHz, AXI C2C, etc)
+--!              
+--!              ** Customization of constants
+--!              *** c_NUM_MGTS
+--!              *** c_FELIX_RECCLK_SRC
+--!              *** c_MGT_MAP
+--!              *** c_NUM_REFCLKS
+--!              *** C2C_REFCLK_SRC
+--!              *** c_REFCLK_MAP
+
+-------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -6,14 +35,17 @@ use work.board_pkg_common.all;
 
 package board_pkg is
 
-  constant c_NUM_MGTS                 : integer := 44 + 32;
+  --! @brief Package containing constants for the MGT mapping of the MDTTP demonstrator 
 
-  constant c_CLK_FREQ                 : integer := 100;
 
-  -- choose the nth felix RX link which should be used as the clock recovery source and connected to the LPGBT
-  constant c_FELIX_RECCLK_SRC : integer := 0;
+  constant c_NUM_MGTS                 : integer := 44 + 32; --! # number of MGTs
 
-  constant c_MGT_MAP : mgt_inst_array_t (c_NUM_MGTS-1 downto 0) := (
+  constant c_CLK_FREQ                 : integer := 100; --! Clk frequency of the onboard oscillator
+
+  constant c_FELIX_RECCLK_SRC : integer := 0;   --! choose the nth felix RX link which should be used as the clock recovery source and connected to the LPGBT
+
+
+  constant c_MGT_MAP : mgt_inst_array_t (c_NUM_MGTS-1 downto 0) := ( --! Mapping of MGT to type, refclk and location
 
 -- mgt#    => (mgt_type     , refclk , gt_type , x , y)
     0      => (MGT_NIL      ,  0     , GTY     , 0 , 0)  , -- BANK 127 C2C ZUP/KUP0
@@ -99,10 +131,12 @@ package board_pkg is
     others => MGT_NIL_MAP
     );
 
-  constant c_NUM_REFCLKS : integer := 22;
-  constant C2C_REFCLK_SRC : integer := 9; -- TODO: get this from a function
+  constant c_NUM_REFCLKS : integer := 22; --! # No. of Refclks
+  -- TODO: get this from a function
+  constant C2C_REFCLK_SRC : integer := 9; --! # Id of C2C refclk
 
-  constant c_REFCLK_MAP : refclk_types_array_t (c_NUM_REFCLKS-1 downto 0) := (
+  constant c_REFCLK_MAP : refclk_types_array_t (c_NUM_REFCLKS-1 downto 0) := ( 
+    --! Mapping of MGT refclk to clk frequency
     -- B2B = AXI c2c
     -- C2C = sf c2c
     -- CM2CM = goes to firely
