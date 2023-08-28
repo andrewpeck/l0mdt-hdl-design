@@ -8,19 +8,19 @@
 ### Before running:
 ### Simply change the logdir and update the list of cocotb_tests below
 
-LOGDIR=/home/ilongari/work/l0mdt_test_dev/test_results/test_check_20230814_polmux/
+LOGDIR=/home/ilongari/work/l0mdt_test_dev/test_results/$(date -u  +%Y%m%d_%H.%M.%S)/
 mkdir -p $LOGDIR
-
+echo "Logfiles will be saved in $LOGDIR"
 ### List of tests
 declare -a cocotb_tests=(
-    # ptcalc
-    # ptcalc_3threads
-    # lsf_inn
-    # lsf_mid
-    # lsf_out
-    # hps_inn
-    # mtc
-    # ucm
+    ptcalc
+    ptcalc_3threads
+    lsf_inn
+    lsf_mid
+    lsf_out
+    hps_inn
+    mtc
+    ucm
     ult_tar
     polmux)
 
