@@ -195,6 +195,7 @@ begin
   
   lpgbt_links_inst : entity work.lpgbt_link_wrapper
     generic map (
+      g_debug                             => g_CSM_ID = 0 or g_CSM_ID = 1 or g_CSM_ID = 2 or g_CSM_ID = 3 or g_CSM_ID = 4 or g_CSM_ID = 5,    
       g_DOWNLINK_WORD_WIDTH               => c_DOWNLINK_WORD_WIDTH,
       g_DOWNLINK_MULTICYCLE_DELAY         => c_DOWNLINK_MULTICYCLE_DELAY,
       g_DOWNLINK_CLOCK_RATIO              => c_DOWNLINK_CLOCK_RATIO,
