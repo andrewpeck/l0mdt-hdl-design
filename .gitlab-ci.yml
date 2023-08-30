@@ -9,7 +9,7 @@ variables:
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
-    ref: 'fix_simulation_lib_path'
+    ref: 'Hog2023.2'
   - local: "/.user_jobs.yml"
   - local: '/.devel_to_master.yml'
 
