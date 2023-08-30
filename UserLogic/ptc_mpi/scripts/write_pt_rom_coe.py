@@ -55,7 +55,7 @@ def main():
     dbeta_len = 14
     rec_sagitta_len = 10
 
-    m_sagitta_len = 11
+    m_sagitta_len = 14
     m_sagitta_multi = 2.0**10
 
     BIL_SEC3_RHO = 4755.8234
