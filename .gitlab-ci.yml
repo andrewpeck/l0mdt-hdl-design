@@ -117,4 +117,4 @@ cocotb:
   stage: generation_and_simulation
   parallel:
     matrix:
-      - COCOTB_TEST: [dummy, lsf_inn, lsf_mid, lsf_out, mtc, ptcalc, ucm, ult_tar, hps_inn]
+      - COCOTB_TEST: [lsf_inn, lsf_mid, lsf_out, mtc, ptcalc, ucm, ult_tar, hps_inn, polmux]

@@ -6,7 +6,7 @@ use ieee.numeric_std.all;
 library tdc;
 use tdc.csm_pkg.all;
 
-library xil_defaultlib;
+--library xil_defaultlib;
 
 library hal;
 
@@ -45,7 +45,6 @@ entity polmux_wrapper is
 
     );
 end polmux_wrapper;
-
 architecture behavioral of polmux_wrapper is
   signal polmux_o  : tdcpolmux2tar_rt;
   signal polmux_o_v  : tdcpolmux2tar_vt;

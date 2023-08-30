@@ -2,6 +2,7 @@ vivado*
 *.jou
 *.o
 *~
+#*#
 *.pyc
 .cxl.ip/
 cxl_error.log
