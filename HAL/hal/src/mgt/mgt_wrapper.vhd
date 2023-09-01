@@ -180,26 +180,30 @@ begin
 
   -- https://support.xilinx.com/s/question/0D52E00006hpdNNSAY/rxoutclk-routing-error?language=en_US
 
-  recclk_BUFG_GT_SYNC_inst : BUFG_GT_SYNC
-  port map (
-    CESYNC  => recclk_sync_ce,          -- 1-bit output: Synchronized CE
-    CLRSYNC => recclk_sync_clr,         -- 1-bit output: Synchronized CLR
-    CE      => '1',                     -- 1-bit input: Asynchronous enable
-    CLK     => recclk,                  -- 1-bit input: Clock
-    CLR     => '0'                      -- 1-bit input: Asynchronous clear
-    );
-
-  recclk_BUFG_GT_inst : BUFG_GT
-  port map (
-    O       => ttc_recclk_o,            -- 1-bit output: Buffer
-    CE      => recclk_sync_ce,          -- 1-bit input: Buffer enable
-    CEMASK  => '0',                     -- 1-bit input: CE Mask
-    CLR     => recclk_sync_clr,         -- 1-bit input: Asynchronous clear
-    CLRMASK => '0',                     -- 1-bit input: CLR Mask
-    DIV     => "000",                   -- 3-bit input: Dynamic divide Value
-    I       => recclk                   -- 1-bit input: Buffer
-  );
-
+  recclk_bufg_override_gen: if (c_OVERRIDE_REC_CLK = true) generate
+        assert false report "overriding extra BUFG_GT"  severity warning;
+        ttc_recclk_o <= recclk;
+    else generate
+      recclk_BUFG_GT_SYNC_inst : BUFG_GT_SYNC
+      port map (
+        CESYNC  => recclk_sync_ce,          -- 1-bit output: Synchronized CE
+        CLRSYNC => recclk_sync_clr,         -- 1-bit output: Synchronized CLR
+        CE      => '1',                     -- 1-bit input: Asynchronous enable
+        CLK     => recclk,                  -- 1-bit input: Clock
+        CLR     => '0'                      -- 1-bit input: Asynchronous clear
+        );
+    
+      recclk_BUFG_GT_inst : BUFG_GT
+      port map (
+        O       => ttc_recclk_o,            -- 1-bit output: Buffer
+        CE      => recclk_sync_ce,          -- 1-bit input: Buffer enable
+        CEMASK  => '0',                     -- 1-bit input: CE Mask
+        CLR     => recclk_sync_clr,         -- 1-bit input: Asynchronous clear
+        CLRMASK => '0',                     -- 1-bit input: CLR Mask
+        DIV     => "000",                   -- 3-bit input: Dynamic divide Value
+        I       => recclk                   -- 1-bit input: Buffer
+      );
+    end generate recclk_bufg_override_gen;
   --------------------------------------------------------------------------------
   -- REFCLK
   --------------------------------------------------------------------------------
@@ -239,6 +243,7 @@ begin
           IB    => refclk_i_n(I)
           );
     end generate;
+    
 
   end generate;
 
@@ -518,16 +523,21 @@ begin
           tx_data(LINK_0_TO_3)  <= ttc_mgt_word_i;
           recclk_out_gen : if (downlink_idx + LINK_0_TO_3 = c_FELIX_RECCLK_SRC) generate
             rxslide (LINK_0_TO_3) <= ttc_bitslip_i;
-            recclk                <= rxoutclk(LINK_0_TO_3);
+            recclk_out_gen_2: if (c_OVERRIDE_REC_CLK = false) generate
+            assert false report "generating recovered clock from MGT# " & integer'image(LINK_0_TO_3)  severity warning;
+                recclk                <= rxoutclk(LINK_0_TO_3);
+            end generate;
             ttc_mgt_word_o        <= rx_data(LINK_0_TO_3);
-          end generate;
+          end generate recclk_out_gen;
 
-        end generate;
+        end generate felix_gen;
 
 
       end generate;
     end generate;
 
+
+    
     --------------------------------------------------------------------------------
     -- Sector Logic Type
     --------------------------------------------------------------------------------
@@ -587,6 +597,14 @@ begin
           mgt_drp_o      => drp_o(I+3 downto I)
           );
 
+    ---------------------------------------------------
+    -- OVERRIDE recovered clock
+    ---------------------------------------------------
+    recclk_out_override_gen: if (c_OVERRIDE_REC_CLK = true) and (I = 8) generate
+    assert false report "overriding recovered clock to fixed MGT quad122, link " & integer'image(I)  severity warning;
+        recclk                <= sl_rx_clk(idx);
+    end generate;
+    
     end generate sl_gen;
 
   end generate mgt_gen;
@@ -605,7 +623,7 @@ begin
     -- be centralized
     -- Move to a package
     constant axi_refclk_freq : integer := 50_000_000;
-
+    constant sl_quad_idx : integer := sl_idx_array(I*4)/4;
   begin
 
     -- NOTE: the AXI C2C conflicts with this and generates an error, so only
@@ -615,7 +633,9 @@ begin
       mon.refclk(I).freq <= std_logic_vector(to_unsigned(axi_refclk_freq, mon.refclk(I).freq'length));
     end generate;
 
-    no_axi : if (c_REFCLK_MAP(I).freq /= REF_AXI_C2C) generate
+    no_axi : if (c_REFCLK_MAP(I).freq /= REF_AXI_C2C and
+                   c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
+                   ) generate
 
       mon.refclk(I).freq        <= clk_freq(mon.refclk(I).freq'range);
       mon.refclk(I).refclk_type <=
@@ -657,8 +677,24 @@ begin
           clk_b => refclk_bufg(I),
           rate  => clk_freq
           );
-    end generate;
-
-  end generate;
+    end generate no_axi;
+    
+    REF_SYNC240_monitor: if ( c_REFCLK_MAP(I).FREQ = REF_SYNC240  -- SL has its own buffer
+                   ) generate
+      mon.refclk(I).freq        <= clk_freq(mon.refclk(I).freq'range);
+      mon.refclk(I).refclk_type <=
+        std_logic_vector(to_unsigned(refclk_freqs_t'POS(c_REFCLK_MAP(I).freq), 3));
+      i_clk_frequency : entity work.clk_frequency
+        generic map (
+          clk_a_freq => 50_000_000
+          )
+        port map (
+          reset => reset,
+          clk_a => axiclock,
+          clk_b => sl_tx_clk(sl_quad_idx*4),
+          rate  => clk_freq
+          );
+    end generate REF_SYNC240_monitor;
+  end generate refclk_mirror;
 
 end Behavioral;

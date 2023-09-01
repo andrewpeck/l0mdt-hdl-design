@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="SL_TEST" permission="rw">
-  <node id="ERROR_COUNTER"  address="0x0"  permission="r" description="error_counter_out from rx_test_pattern_checker"/>
-  <node id="WORD_COUNTER_0"  address="0x4"  permission="r" description="word_counter_out from rx_test_pattern_checker"/>
-  <node id="WORD_COUNTER_1"  address="0x8"  permission="r" description="word_counter_out from rx_test_pattern_checker"/>
+  <node id="ERROR_COUNTER"  address="0x0"  permission="r" description="error_counter_out from rx_test_pattern_checker" parameters="Table=SL_TEST;Row=_3;Column=ERR;Status=1;Show=nz;Format=u"/>
+  <node id="WORD_COUNTER_0"  address="0x4"  permission="r" description="word_counter_out from rx_test_pattern_checker" parameters="Table=SL_TEST;Row=_3;Column=WORD_0;Status=1;Show=nz;Format=u"/>
+  <node id="WORD_COUNTER_1"  address="0x8"  permission="r" description="word_counter_out from rx_test_pattern_checker" parameters="Table=SL_TEST;Row=_3;Column=WORD_1;Status=2;Show=nz;Format=u"/>
 </node>   <!-- SL_TEST -->

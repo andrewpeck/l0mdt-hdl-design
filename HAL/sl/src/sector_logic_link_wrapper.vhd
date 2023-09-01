@@ -40,6 +40,8 @@ library sl;
 library ctrl_lib;
 use ctrl_lib.hal_ctrl.all;
 
+library xil_defaultlib;
+
 entity sector_logic_link_wrapper is
   generic (
     NUMBER_OF_WORDS_IN_A_PACKET : integer := 6;
@@ -116,6 +118,14 @@ architecture Behavioral of sector_logic_link_wrapper is
     result := signed(twos_complement);
     return result;
   end;
+  -- VIO signals
+  signal vio_rx_comma_lock : std_logic_vector (11 downto 0);
+  signal vio_rx_pakcet_lock : std_logic_vector (11 downto 0);
+  signal vio_tx_ena_test : std_logic_vector (11 downto 0);
+  signal vio_reset_rx_comma : std_logic_vector (11 downto 0);
+  signal vio_reset_rx_packet : std_logic_vector (11 downto 0);
+  signal vio_reset_rx_counter : std_logic_vector (11 downto 0);
+  signal vio_sl_test_array : HAL_SL_SL_TEST_MON_t_ARRAY;
 begin
 
   --------------------------------------------------------------------------------
@@ -166,17 +176,17 @@ begin
         sl_tx_data(I).data(159 downto 32)  <= data;
         sl_tx_data(I).data(191 downto 160) <= trailer;
 
-      end generate;
+      end generate; --sl
 
       -- drive disconnected SL links with all zero
       nosl : if (I >= c_NUM_MTC) generate
         sl_tx_data(I).data  <= (others => '0');
         sl_tx_data(I).valid <= '0';
-      end generate;
+      end generate; -- nosl
 
-    end generate;
+    end generate; -- mgt_tag
 
-  end generate;
+  end generate; -- tx_assignment
 
   --------------------------------------------------------------------------------
   -- RX Dataformat Mapping
@@ -247,11 +257,11 @@ begin
 
       sl_data.data_valid <= sl_rx_data(I).valid;
 
-    end generate;
-  end generate;
+    end generate; -- mgt_tag
+  end generate; -- rx_assignment
 
   sl_gen : for I in 0 to c_NUM_MGTS-1 generate
-    constant mgt_idx : integer := get_sl_mgt_num(I, c_MGT_MAP);
+    constant mgt_idx : integer := get_sl_mgt_num(sl_idx_array(I), c_MGT_MAP);
   begin
 
     mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
@@ -279,7 +289,7 @@ begin
         signal packet_txctrl1_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
         signal packet_txctrl2_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
 
-        signal mux_ctrl : std_logic := '0'; -- to be connected to a register
+        signal mux_ctrl : std_logic := vio_tx_ena_test(0); -- to be connected to a register
       begin
 
         assert false report "generating SL TX #" & integer'image(idx) & " on MGT#"
@@ -338,7 +348,24 @@ begin
             data_o  => sl_tx_data_post_cdc(idx).data
             );
 
-      end generate;
+          ---------------------
+          -- ILA
+          --------------------
+          tx_ila_gen: if (I = 8) generate
+            assert false report "TX ILA generated for link " & integer'image(I) 
+                        & " sl_link# " & integer'image(idx)
+                        severity note;
+            ila_sl_tx_inst : entity xil_defaultlib.ila_sl_tx
+            PORT MAP (
+                clk => tx_clk(idx),
+                probe0(0) => tx_packet_valid_mux, 
+                probe1 => packet_userdata_tx_mux, 
+                probe2 => packet_txctrl0_mux, 
+                probe3 => packet_txctrl1_mux,
+                probe4 => packet_txctrl2_mux
+            );
+        end generate; -- tx_ila_gen
+      end generate; -- tx_gen
 
       --------------------------------------------------------------------------------
       -- RX Decoder Instantiation
@@ -357,6 +384,7 @@ begin
         signal packet_rxctrl1_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
         signal packet_rxctrl2_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
         signal packet_rxctrl3_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal comma_pulse_i   : std_logic;
       begin
 
         assert false report "generating SL RX #" & integer'image(idx) & " on MGT#"
@@ -371,7 +399,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
           port map (
-            reset               => reset OR ctrl.reset.rx_comma,
+            reset               => reset OR ctrl.reset.rx_comma OR vio_reset_rx_comma(idx),
             clk_in              => rx_clk(idx),
             rx_data_in          => sl_rx_mgt_word_array_i(idx),  -- 32 bit from mgt
             rx_ctrl0_in         => rxctrl0,                      -- 4 bit from mgt
@@ -379,7 +407,7 @@ begin
             decoded_data_out    => dec_userdata,                 -- 32 bit to packet former
             decoded_charisk_out => dec_rxctrl0,                  -- 4 bit to packet former
             decoded_iscomma_out => dec_rxctrl2,                  -- 4 bit to packet former
-            comma_pulse_out     => open,                         -- not used in my-sl-gty
+            comma_pulse_out     => comma_pulse_i,                         -- not used in my-sl-gty
             lock_out            => Mon.RX_COMMA_LOCK(idx),                         -- not used in my-sl-gty
             rxslide_out         => sl_rx_slide_o(idx),           -- 1 bit to mgt
             rereset_out         => sl_re_channel_o(idx),         -- 1 bit to mgt
@@ -394,7 +422,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
           port map (
-            reset => reset OR ctrl.reset.rx_packet_former,
+            reset => reset OR ctrl.reset.rx_packet_former OR vio_reset_rx_packet(idx),
 
             rx_usrclk2 => rx_clk(idx),
 
@@ -426,7 +454,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)        
           port map(
-            reset         => reset OR ctrl.reset.rx_counter,
+            reset         => reset OR ctrl.reset.rx_counter OR vio_reset_rx_counter(idx),
             rx_usrclk2    => rx_clk(idx),
 
             packet_rxctrl0 => packet_rxctrl0_i,
@@ -466,9 +494,40 @@ begin
         sl_rx_data(idx).err    <= sl_post_cdc_vec(1);
         sl_rx_data(idx).locked <= sl_post_cdc_vec(0);
 
-      end generate;
-    end generate;
-  end generate;
+      ---------------------
+      -- ILA
+      --------------------
+        rx_ila_gen: if (I = 8) generate
+        assert false report " RX ILA generated for link " & integer'image(I) 
+                    & " sl_link# " & integer'image(idx)
+                    severity note;
+        ila_sl_rx_inst : entity xil_defaultlib.ila_sl_rx
+            PORT MAP (
+                clk => rx_clk(idx),
+                probe0 => sl_rx_mgt_word_array_i(idx), 
+                probe1 => rxctrl0, 
+                probe2 => rxctrl1, 
+                probe3 => dec_userdata, 
+                probe4 => dec_rxctrl0, 
+                probe5 => dec_rxctrl2, 
+                probe6(0) => comma_pulse_i, 
+                probe7(0) => Mon.RX_COMMA_LOCK(idx), 
+                probe8(0) => sl_rx_slide_o(idx), 
+                probe9(0) => sl_re_channel_o(idx), 
+                probe10(0) => sl_rx_init_done_i, 
+                probe11 => packet_rxctrl0_i, 
+                probe12 => packet_rxctrl1_i, 
+                probe13 => packet_rxctrl2_i, 
+                probe14 => packet_rxctrl3_i, 
+                probe15 => sl_rx_data_pre_cdc(idx).data, 
+                probe16(0) => sl_rx_data_pre_cdc(idx).locked, 
+                probe17(0) => sl_rx_data_pre_cdc(idx).valid,
+                probe18(0) => sl_rx_data_pre_cdc(idx).err
+            );
+        end generate; -- rx_ila_gen
+      end generate; --rx_gen
+    end generate; -- mgt_tag
+  end generate; -- sl_gen
 
   --------------------------------------------------------------------------------
   -- Asserts
@@ -499,5 +558,64 @@ begin
   assert 3 = to_integer(signed_mag_to_signed("111"))
     report "failure in signed magnutude conversion of  3 get="
     & integer'image (to_integer(signed_mag_to_signed("111"))) severity error;
+
+    ------------------------------------------------
+    -- VIO
+    -------------------------------------------------
+    vio_rx_comma_lock <= Mon.RX_COMMA_LOCK(11 downto 0);
+    vio_rx_pakcet_lock <= Mon.RX_PACKET_LOCKED(11 downto 0);
+    vio_sl_test_array <= mon.sl_test;
+    
+    vio_sl_test : entity xil_defaultlib.SL_monctrl
+  PORT MAP (
+    clk => clk40,
+    probe_in0 => vio_rx_comma_lock,
+    probe_in1 => vio_rx_pakcet_lock,
+    probe_in2 => vio_sl_test_array(0).ERROR_COUNTER,
+    probe_in3 => vio_sl_test_array(1).ERROR_COUNTER,
+    probe_in4 => vio_sl_test_array(2).ERROR_COUNTER,
+    probe_in5 => vio_sl_test_array(3).ERROR_COUNTER,
+    probe_in6 => vio_sl_test_array(4).ERROR_COUNTER,
+    probe_in7 => vio_sl_test_array(5).ERROR_COUNTER,
+    probe_in8 => vio_sl_test_array(6).ERROR_COUNTER,
+    probe_in9 => vio_sl_test_array(7).ERROR_COUNTER,
+    probe_in10 => vio_sl_test_array(8).ERROR_COUNTER,
+    probe_in11 => vio_sl_test_array(9).ERROR_COUNTER,
+    probe_in12 => vio_sl_test_array(10).ERROR_COUNTER,
+    probe_in13 => vio_sl_test_array(11).ERROR_COUNTER,
+    probe_in14 => vio_sl_test_array(0).WORD_COUNTER_0,
+    probe_in15 => vio_sl_test_array(1).WORD_COUNTER_0,
+    probe_in16 => vio_sl_test_array(2).WORD_COUNTER_0,
+    probe_in17 => vio_sl_test_array(3).WORD_COUNTER_0,
+    probe_in18 => vio_sl_test_array(4).WORD_COUNTER_0,
+    probe_in19 => vio_sl_test_array(5).WORD_COUNTER_0,
+    probe_in20 => vio_sl_test_array(6).WORD_COUNTER_0,
+    probe_in21 => vio_sl_test_array(7).WORD_COUNTER_0,
+    probe_in22 => vio_sl_test_array(8).WORD_COUNTER_0,
+    probe_in23 => vio_sl_test_array(9).WORD_COUNTER_0,
+    probe_in24 => vio_sl_test_array(10).WORD_COUNTER_0,
+    probe_in25 => vio_sl_test_array(11).WORD_COUNTER_0,
+    probe_in26 => vio_sl_test_array(0).WORD_COUNTER_1,
+    probe_in27 => vio_sl_test_array(1).WORD_COUNTER_1,
+    probe_in28 => vio_sl_test_array(2).WORD_COUNTER_1,
+    probe_in29 => vio_sl_test_array(3).WORD_COUNTER_1,
+    probe_in30 => vio_sl_test_array(4).WORD_COUNTER_1,
+    probe_in31 => vio_sl_test_array(5).WORD_COUNTER_1,
+    probe_in32 => vio_sl_test_array(6).WORD_COUNTER_1,
+    probe_in33 => vio_sl_test_array(7).WORD_COUNTER_1,
+    probe_in34 => vio_sl_test_array(8).WORD_COUNTER_1,
+    probe_in35 => vio_sl_test_array(9).WORD_COUNTER_1,
+    probe_in36 => vio_sl_test_array(10).WORD_COUNTER_1,
+    probe_in37 => vio_sl_test_array(11).WORD_COUNTER_1,
+    probe_out0 => vio_tx_ena_test,
+    probe_out1 => vio_reset_rx_comma,
+    probe_out2 => vio_reset_rx_packet,
+    probe_out3 => vio_reset_rx_counter
+  );
+
+
+
+
+
 
 end Behavioral;

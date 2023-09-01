@@ -40,8 +40,12 @@ package board_pkg is
   constant c_CLK_FREQ : integer := 200; --! Clk frequency of the onboard oscillator
 
   -- choose the nth felix RX link which should be used as the clock recovery source and connected to the LPGBT
+  -- becuase of the parsing function, it has to be a MGT_TTC mgt_type
   constant c_FELIX_RECCLK_SRC : integer := 0; -- choose the nth felix RX link which should be used as the clock recovery source and connected to the LPGBT TODO: find this from the mgt map with a function
 
+  -- override recovered clock
+  constant c_OVERRIDE_REC_CLK : boolean := true;
+  
   constant c_MGT_MAP : mgt_inst_array_t (c_NUM_MGTS-1 downto 0) := (
     --! Mapping of MGT to type, refclk and location
     --! mgt#    => (mgt_type         , refclk , gt_type, x , y)
