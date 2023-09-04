@@ -140,6 +140,8 @@ architecture Behavioral of mgt_wrapper is
   -- Sector Logic
   signal sl_rx_init_done_s : std_logic_vector(c_NUM_MGTS-1 downto 0);
 
+  signal  sl_tx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal  sl_rx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 begin
 
   sl_rx_init_done <= AND(sl_rx_init_done_s);
@@ -554,12 +556,55 @@ begin
       constant idx : integer := sl_idx_array(I);
 
       signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0) := (others => '0');
-
+    signal ce_tx, clr_tx, ce_rx, clr_rx   : std_logic;
     begin
 
       -- just set a flag to 1 to indicate that this transceiver was enabled, which we can read from software
       mon.mgt(I).config.is_active <= '1';
 
+
+--      BUFG_GT_tx_SYNC_inst : BUFG_GT_SYNC
+--        port map (
+--          CESYNC  => ce_tx,                -- 1-bit output: Synchronized CE
+--          CLRSYNC => clr_tx,               -- 1-bit output: Synchronized CLR
+--          CE      => '1',               -- 1-bit input: Asynchronous enable
+--          CLK     => sl_tx_clk_int(idx), -- 1-bit input: Clock
+--          CLR     => '0'                -- 1-bit input: Asynchronous clear
+--          );
+--      BUFG_GT_tx_inst  : BUFG_GT
+--        port map(
+--          I       => sl_tx_clk_int(idx),
+--          O       => sl_tx_clk(idx),
+--          CE      => ce_tx,
+--          DIV     => (others => '0'),
+--          CLR     => clr_tx,
+--          CLRMASK => '0',
+--          CEMASK  => '0'
+--          );
+
+      sl_tx_clk(idx + 3 downto idx) <= sl_tx_clk_int(idx + 3 downto idx);
+      
+--      BUFG_GT_rx_SYNC_inst : BUFG_GT_SYNC
+--        port map (
+--          CESYNC  => ce_rx,                -- 1-bit output: Synchronized CE
+--          CLRSYNC => clr_rx,               -- 1-bit output: Synchronized CLR
+--          CE      => '1',               -- 1-bit input: Asynchronous enable
+--          CLK     => sl_rx_clk_int(idx), -- 1-bit input: Clock
+--          CLR     => '0'                -- 1-bit input: Asynchronous clear
+--          );
+--      BUFG_GT_rx_inst  : BUFG_GT
+--        port map(
+--          I       => sl_rx_clk_int(idx),
+--          O       => sl_rx_clk(idx),
+--          CE      => ce_rx,
+--          DIV     => (others => '0'),
+--          CLR     => clr_rx,
+--          CLRMASK => '0',
+--          CEMASK  => '0'
+--          );
+
+      sl_rx_clk(idx + 3 downto idx) <= sl_rx_clk_int(idx + 3 downto idx);
+      
       assert true report
         "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I)
         & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
@@ -579,8 +624,8 @@ begin
           reset_i        => reset_tree(I),
           mgt_refclk_i_p => refclk_i_p(c_MGT_MAP(I).refclk),
           mgt_refclk_i_n => refclk_i_n(c_MGT_MAP(I).refclk),
-          rxoutclk       => sl_rx_clk(idx + 3 downto idx),
-          txoutclk       => sl_tx_clk(idx + 3 downto idx),
+          rxoutclk       => sl_rx_clk_int(idx + 3 downto idx),
+          txoutclk       => sl_tx_clk_int(idx + 3 downto idx),
           status_o       => status(I+3 downto I),
           txctrl_in      => sl_tx_ctrl_i(idx+3 downto idx),
           rxctrl_out     => sl_rx_ctrl_o(idx+3 downto idx),
@@ -681,6 +726,7 @@ begin
     
     REF_SYNC240_monitor: if ( c_REFCLK_MAP(I).FREQ = REF_SYNC240  -- SL has its own buffer
                    ) generate
+      assert false report "REF_SYNC240_monitor: for link " & integer'image(I) & "sl_quad_idx " & integer'image(sl_quad_idx) severity note;
       mon.refclk(I).freq        <= clk_freq(mon.refclk(I).freq'range);
       mon.refclk(I).refclk_type <=
         std_logic_vector(to_unsigned(refclk_freqs_t'POS(c_REFCLK_MAP(I).freq), 3));

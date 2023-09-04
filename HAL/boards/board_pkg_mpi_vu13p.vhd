@@ -54,18 +54,18 @@ package board_pkg is
     1      => (MGT_NIL         ,  0     , GTY    , 0 ,  1) , -- BANK 120 ; debug
     2      => (MGT_NIL         ,  0     , GTY    , 0 ,  2) , -- BANK 120 ; debug
     3      => (MGT_NIL         ,  0     , GTY    , 0 ,  3) , -- BANK 120 ; debug
-    4      => (MGT_SL          ,  1     , GTY    , 0 ,  4) , -- BANK 121
-    5      => (MGT_SL          ,  1     , GTY    , 0 ,  5) , -- BANK 121
-    6      => (MGT_SL          ,  1     , GTY    , 0 ,  6) , -- BANK 121
-    7      => (MGT_SL          ,  1     , GTY    , 0 ,  7) , -- BANK 121
+    4      => (MGT_NIL          ,  1     , GTY    , 0 ,  4) , -- BANK 121
+    5      => (MGT_NIL          ,  1     , GTY    , 0 ,  5) , -- BANK 121
+    6      => (MGT_NIL          ,  1     , GTY    , 0 ,  6) , -- BANK 121
+    7      => (MGT_NIL          ,  1     , GTY    , 0 ,  7) , -- BANK 121
     8      => (MGT_SL          ,  2     , GTY    , 0 ,  8) , -- BANK 122
     9      => (MGT_SL          ,  2     , GTY    , 0 ,  9) , -- BANK 122
     10     => (MGT_SL          ,  2     , GTY    , 0 , 10) , -- BANK 122
     11     => (MGT_SL          ,  2     , GTY    , 0 , 11) , -- BANK 122
-    12     => (MGT_SL          ,  3     , GTY    , 0 , 12) , -- BANK 123
-    13     => (MGT_SL          ,  3     , GTY    , 0 , 13) , -- BANK 123
-    14     => (MGT_SL          ,  3     , GTY    , 0 , 14) , -- BANK 123
-    15     => (MGT_SL          ,  3     , GTY    , 0 , 15) , -- BANK 123
+    12     => (MGT_NIL          ,  3     , GTY    , 0 , 12) , -- BANK 123
+    13     => (MGT_NIL          ,  3     , GTY    , 0 , 13) , -- BANK 123
+    14     => (MGT_NIL          ,  3     , GTY    , 0 , 14) , -- BANK 123
+    15     => (MGT_NIL          ,  3     , GTY    , 0 , 15) , -- BANK 123
 
     -- SLR0 Right
     16     => (MGT_C2C         ,  4     , GTY    , 1 , 0)  , -- BANK 220
@@ -188,10 +188,10 @@ package board_pkg is
     121    => (MGT_FELIX       ,  30    , GTY    , 1 , 57) , -- BANK 234
     122    => (MGT_FELIX       ,  30    , GTY    , 1 , 58) , -- BANK 234
     123    => (MGT_FELIX       ,  30    , GTY    , 1 , 59) , -- BANK 234
-    124    => (MGT_FELIX       ,  31    , GTY    , 1 , 60) , -- BANK 235
-    125    => (MGT_FELIX       ,  31    , GTY    , 1 , 61) , -- BANK 235
-    126    => (MGT_FELIX       ,  31    , GTY    , 1 , 62) , -- BANK 235
-    127    => (MGT_FELIX       ,  31    , GTY    , 1 , 63) , -- BANK 235
+    124    => (MGT_NIL       ,  31    , GTY    , 1 , 60) , -- BANK 235
+    125    => (MGT_NIL       ,  31    , GTY    , 1 , 61) , -- BANK 235
+    126    => (MGT_NIL       ,  31    , GTY    , 1 , 62) , -- BANK 235
+    127    => (MGT_NIL       ,  31    , GTY    , 1 , 63) , -- BANK 235
     others => MGT_NIL_MAP
     );
 

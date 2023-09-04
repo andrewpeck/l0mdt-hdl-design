@@ -76,6 +76,9 @@ set_max_delay -quiet -datapath_only 3.1 \
     -to [get_clocks "*TXOUTCLK*"] \
     -from [get_clocks "*clk*mmcm*"]
 
+# trying to make reset_clk40 to be synchronus everywhere is no sense at least for SL logic
+set_false_path -from [get_pins top_hal/reset_clk40_reg_rep/C] -to [get_pins {top_hal/sector_logic_link_wrapper_inst/*/*/R}]
+
 ################################################################################
 # sys_resetter has an asynchronous output (on the axi clock domain) that
 # connects to synchronous reset inputs (on other clock domains) and creates a
