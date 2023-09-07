@@ -34,7 +34,7 @@ entity mgt_sl_wrapper is
 
     mgt_refclk_i_p : in std_logic;
     mgt_refclk_i_n : in std_logic;
-
+    refclk_mirror  : out std_logic;
     rxctrl_out : out sl_rx_ctrl_rt_array(3 downto 0);
     txctrl_in  : in  sl_tx_ctrl_rt_array(3 downto 0);
 
@@ -189,7 +189,7 @@ architecture Behavioral of mgt_sl_wrapper is
     -- Differential reference clock inputs
     mgtrefclk0_x0y2_p: in std_logic;
     mgtrefclk0_x0y2_n: in std_logic;
-    
+    refclk_mirror    : out std_logic;    
     -- Serial data ports for transceiver channel 0
     ch0_gtyrxn_in: in std_logic;
     ch0_gtyrxp_in: in std_logic;
@@ -301,7 +301,8 @@ architecture Behavioral of mgt_sl_wrapper is
     
     txuserrdy_out           : out std_logic;
     rxpolarity_in           : in std_logic_vector(3 downto 0);
-    txpolarity_in           : in std_logic_vector(3 downto 0)
+    txpolarity_in           : in std_logic_vector(3 downto 0);
+    rx_init_done_out                  : out std_logic
   );
 end component gty_bank122_example_top;
 
@@ -506,7 +507,7 @@ begin
 
         mgtrefclk0_x0y2_p => mgt_refclk_i_p,
         mgtrefclk0_x0y2_n => mgt_refclk_i_n,
-
+        refclk_mirror     => refclk_mirror,
         -- ch0
         ch0_gtyrxn_in  => rxn_i(0),
         ch0_gtyrxp_in  => rxp_i(0),
@@ -657,9 +658,9 @@ begin
         txuserrdy_out => open,
         -- more inputs
         rxpolarity_in  => std_logic_vector(to_unsigned(0,4)),
-        txpolarity_in  => std_logic_vector(to_unsigned(0,4))
+        txpolarity_in  => std_logic_vector(to_unsigned(0,4)),
       
---        rx_init_done_out => rx_init_done_o
+        rx_init_done_out => rx_init_done_o
         );
   end generate gty_gen_gty122;
   

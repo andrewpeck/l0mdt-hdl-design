@@ -55,6 +55,7 @@ entity sector_logic_link_wrapper is
     clk40          : in std_logic;
     pipeline_clock : in std_logic;
     reset          : in std_logic;
+    refclk_mirrors_in    : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
     -- 32 bits / usrclk from mgt
     sl_rx_mgt_word_array_i : in  std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
@@ -121,11 +122,102 @@ architecture Behavioral of sector_logic_link_wrapper is
   -- VIO signals
   signal vio_rx_comma_lock : std_logic_vector (11 downto 0);
   signal vio_rx_pakcet_lock : std_logic_vector (11 downto 0);
-  signal vio_tx_ena_test : std_logic_vector (11 downto 0);
+  signal vio_tx_ena_test : std_logic_vector (0 downto 0);
   signal vio_reset_rx_comma : std_logic_vector (11 downto 0);
   signal vio_reset_rx_packet : std_logic_vector (11 downto 0);
   signal vio_reset_rx_counter : std_logic_vector (11 downto 0);
   signal vio_sl_test_array : HAL_SL_SL_TEST_MON_t_ARRAY;
+  
+  signal rate_rx_clk0 : std_logic_vector(31 downto 0);
+  signal rate_tx_clk0 : std_logic_vector(31 downto 0);
+  COMPONENT ila_sl_tx
+PORT (
+	clk : IN STD_LOGIC;
+
+
+
+	probe0 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe1 : IN STD_LOGIC_VECTOR(191 DOWNTO 0); 
+	probe2 : IN STD_LOGIC_VECTOR(23 DOWNTO 0); 
+	probe3 : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+	probe4 : IN STD_LOGIC_VECTOR(23 DOWNTO 0)
+);
+END COMPONENT  ;
+COMPONENT ila_sl_rx
+
+PORT (
+	clk : IN STD_LOGIC;
+
+
+
+	probe0 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe1 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+	probe2 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+	probe3 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe4 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+	probe5 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+	probe6 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe7 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe8 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe9 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe10 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe11 : IN STD_LOGIC_VECTOR(23 DOWNTO 0); 
+	probe12 : IN STD_LOGIC_VECTOR(23 DOWNTO 0); 
+	probe13 : IN STD_LOGIC_VECTOR(23 DOWNTO 0); 
+	probe14 : IN STD_LOGIC_VECTOR(23 DOWNTO 0); 
+	probe15 : IN STD_LOGIC_VECTOR(191 DOWNTO 0); 
+	probe16 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe17 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+	probe18 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
+);
+END COMPONENT  ;
+COMPONENT SL_monctrl
+  PORT (
+    clk : IN STD_LOGIC;
+    probe_in0 : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+    probe_in1 : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+    probe_in2 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in3 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in4 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in5 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in6 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in7 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in8 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in9 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in10 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in11 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in12 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in13 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in14 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in15 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in16 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in17 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in18 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in19 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in20 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in21 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in22 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in23 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in24 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in25 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in26 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in27 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in28 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in29 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in30 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in31 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in32 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in33 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in34 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in35 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in36 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_in37 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    probe_out0 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    probe_out1 : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
+    probe_out2 : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
+    probe_out3 : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
+  );
+END COMPONENT;
 begin
 
   --------------------------------------------------------------------------------
@@ -355,9 +447,9 @@ begin
             assert false report "TX ILA generated for link " & integer'image(I) 
                         & " sl_link# " & integer'image(idx)
                         severity note;
-            ila_sl_tx_inst : entity xil_defaultlib.ila_sl_tx
+            ila_sl_tx_inst : ila_sl_tx
             PORT MAP (
-                clk => tx_clk(idx),
+                clk => refclk_mirrors_in(I/4),
                 probe0(0) => tx_packet_valid_mux, 
                 probe1 => packet_userdata_tx_mux, 
                 probe2 => packet_txctrl0_mux, 
@@ -501,7 +593,7 @@ begin
         assert false report " RX ILA generated for link " & integer'image(I) 
                     & " sl_link# " & integer'image(idx)
                     severity note;
-        ila_sl_rx_inst : entity xil_defaultlib.ila_sl_rx
+        ila_sl_rx_inst : ila_sl_rx
             PORT MAP (
                 clk => rx_clk(idx),
                 probe0 => sl_rx_mgt_word_array_i(idx), 
@@ -566,55 +658,76 @@ begin
     vio_rx_pakcet_lock <= Mon.RX_PACKET_LOCKED(11 downto 0);
     vio_sl_test_array <= mon.sl_test;
     
-    vio_sl_test : entity xil_defaultlib.SL_monctrl
-  PORT MAP (
-    clk => clk40,
-    probe_in0 => vio_rx_comma_lock,
-    probe_in1 => vio_rx_pakcet_lock,
-    probe_in2 => vio_sl_test_array(0).ERROR_COUNTER,
-    probe_in3 => vio_sl_test_array(1).ERROR_COUNTER,
-    probe_in4 => vio_sl_test_array(2).ERROR_COUNTER,
-    probe_in5 => vio_sl_test_array(3).ERROR_COUNTER,
-    probe_in6 => vio_sl_test_array(4).ERROR_COUNTER,
-    probe_in7 => vio_sl_test_array(5).ERROR_COUNTER,
-    probe_in8 => vio_sl_test_array(6).ERROR_COUNTER,
-    probe_in9 => vio_sl_test_array(7).ERROR_COUNTER,
-    probe_in10 => vio_sl_test_array(8).ERROR_COUNTER,
-    probe_in11 => vio_sl_test_array(9).ERROR_COUNTER,
-    probe_in12 => vio_sl_test_array(10).ERROR_COUNTER,
-    probe_in13 => vio_sl_test_array(11).ERROR_COUNTER,
-    probe_in14 => vio_sl_test_array(0).WORD_COUNTER_0,
-    probe_in15 => vio_sl_test_array(1).WORD_COUNTER_0,
-    probe_in16 => vio_sl_test_array(2).WORD_COUNTER_0,
-    probe_in17 => vio_sl_test_array(3).WORD_COUNTER_0,
-    probe_in18 => vio_sl_test_array(4).WORD_COUNTER_0,
-    probe_in19 => vio_sl_test_array(5).WORD_COUNTER_0,
-    probe_in20 => vio_sl_test_array(6).WORD_COUNTER_0,
-    probe_in21 => vio_sl_test_array(7).WORD_COUNTER_0,
-    probe_in22 => vio_sl_test_array(8).WORD_COUNTER_0,
-    probe_in23 => vio_sl_test_array(9).WORD_COUNTER_0,
-    probe_in24 => vio_sl_test_array(10).WORD_COUNTER_0,
-    probe_in25 => vio_sl_test_array(11).WORD_COUNTER_0,
-    probe_in26 => vio_sl_test_array(0).WORD_COUNTER_1,
-    probe_in27 => vio_sl_test_array(1).WORD_COUNTER_1,
-    probe_in28 => vio_sl_test_array(2).WORD_COUNTER_1,
-    probe_in29 => vio_sl_test_array(3).WORD_COUNTER_1,
-    probe_in30 => vio_sl_test_array(4).WORD_COUNTER_1,
-    probe_in31 => vio_sl_test_array(5).WORD_COUNTER_1,
-    probe_in32 => vio_sl_test_array(6).WORD_COUNTER_1,
-    probe_in33 => vio_sl_test_array(7).WORD_COUNTER_1,
-    probe_in34 => vio_sl_test_array(8).WORD_COUNTER_1,
-    probe_in35 => vio_sl_test_array(9).WORD_COUNTER_1,
-    probe_in36 => vio_sl_test_array(10).WORD_COUNTER_1,
-    probe_in37 => vio_sl_test_array(11).WORD_COUNTER_1,
-    probe_out0 => vio_tx_ena_test,
-    probe_out1 => vio_reset_rx_comma,
-    probe_out2 => vio_reset_rx_packet,
-    probe_out3 => vio_reset_rx_counter
-  );
-
-
-
+--    vio_sl_test : SL_monctrl
+--  PORT MAP (
+--    clk => clk40,
+--    probe_in0 => vio_rx_comma_lock,
+--    probe_in1 => vio_rx_pakcet_lock,
+--    probe_in2 => vio_sl_test_array(0).ERROR_COUNTER,
+--    probe_in3 => vio_sl_test_array(1).ERROR_COUNTER,
+--    probe_in4 => vio_sl_test_array(2).ERROR_COUNTER,
+--    probe_in5 => vio_sl_test_array(3).ERROR_COUNTER,
+--    probe_in6 => vio_sl_test_array(4).ERROR_COUNTER,
+--    probe_in7 => vio_sl_test_array(5).ERROR_COUNTER,
+--    probe_in8 => vio_sl_test_array(6).ERROR_COUNTER,
+--    probe_in9 => vio_sl_test_array(7).ERROR_COUNTER,
+--    probe_in10 => vio_sl_test_array(8).ERROR_COUNTER,
+--    probe_in11 => vio_sl_test_array(9).ERROR_COUNTER,
+--    probe_in12 => vio_sl_test_array(10).ERROR_COUNTER,
+--    probe_in13 => vio_sl_test_array(11).ERROR_COUNTER,
+--    probe_in14 => vio_sl_test_array(0).WORD_COUNTER_0,
+--    probe_in15 => vio_sl_test_array(1).WORD_COUNTER_0,
+--    probe_in16 => vio_sl_test_array(2).WORD_COUNTER_0,
+--    probe_in17 => vio_sl_test_array(3).WORD_COUNTER_0,
+--    probe_in18 => vio_sl_test_array(4).WORD_COUNTER_0,
+--    probe_in19 => vio_sl_test_array(5).WORD_COUNTER_0,
+--    probe_in20 => vio_sl_test_array(6).WORD_COUNTER_0,
+--    probe_in21 => vio_sl_test_array(7).WORD_COUNTER_0,
+--    probe_in22 => vio_sl_test_array(8).WORD_COUNTER_0,
+--    probe_in23 => vio_sl_test_array(9).WORD_COUNTER_0,
+--    probe_in24 => vio_sl_test_array(10).WORD_COUNTER_0,
+--    probe_in25 => vio_sl_test_array(11).WORD_COUNTER_0,
+--    probe_in26 => vio_sl_test_array(0).WORD_COUNTER_1,
+--    probe_in27 => vio_sl_test_array(1).WORD_COUNTER_1,
+--    probe_in28 => vio_sl_test_array(2).WORD_COUNTER_1,
+--    probe_in29 => vio_sl_test_array(3).WORD_COUNTER_1,
+--    probe_in30 => vio_sl_test_array(4).WORD_COUNTER_1,
+--    probe_in31 => vio_sl_test_array(5).WORD_COUNTER_1,
+--    probe_in32 => vio_sl_test_array(6).WORD_COUNTER_1,
+--    probe_in33 => vio_sl_test_array(7).WORD_COUNTER_1,
+--    probe_in34 => vio_sl_test_array(8).WORD_COUNTER_1,
+--    probe_in35 => vio_sl_test_array(9).WORD_COUNTER_1,
+--    probe_in36 => rate_rx_clk0,
+--    probe_in37 => rate_tx_clk0,
+--    probe_out0 => vio_tx_ena_test,
+--    probe_out1 => vio_reset_rx_comma,
+--    probe_out2 => vio_reset_rx_packet,
+--    probe_out3 => vio_reset_rx_counter
+--  );
+vio_tx_ena_test <= "0";
+vio_reset_rx_comma <= X"000";
+vio_reset_rx_packet <= X"000";
+vio_reset_rx_counter <= X"000";
+      rx_clk_frequency : entity work.clk_frequency
+        generic map (
+          clk_a_freq => 40_000_000
+          )
+        port map (
+          reset => reset,
+          clk_a => clk40,
+          clk_b => rx_clk(0),
+          rate  => rate_rx_clk0
+          );
+      tx_clk_frequency : entity work.clk_frequency
+        generic map (
+          clk_a_freq => 40_000_000
+          )
+        port map (
+          reset => reset,
+          clk_a => clk40,
+          clk_b => tx_clk(0),
+          rate  => rate_tx_clk0
+          );
 
 
 

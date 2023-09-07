@@ -28,7 +28,7 @@ entity mgt_wrapper is
     axiclock   : in std_logic;
     clock320   : in std_logic;
     lhc_locked : in std_logic;
-
+    refclk_mirrors_out    : out std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     -- Reset
     reset : in std_logic;
 
@@ -621,9 +621,14 @@ begin
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
           clock          => axiclock,  -- FIXME: check this clock frequency against IP core
-          reset_i        => reset_tree(I),
+          reset_i        => reset_tree(I) or
+                   ctrl.mgt(I).reset_all or
+                   ctrl.mgt(I+1).reset_all or
+                   ctrl.mgt(I+2).reset_all or
+                   ctrl.mgt(I+3).reset_all,
           mgt_refclk_i_p => refclk_i_p(c_MGT_MAP(I).refclk),
           mgt_refclk_i_n => refclk_i_n(c_MGT_MAP(I).refclk),
+          refclk_mirror  => refclk_mirrors(c_MGT_MAP(I).refclk),
           rxoutclk       => sl_rx_clk_int(idx + 3 downto idx),
           txoutclk       => sl_tx_clk_int(idx + 3 downto idx),
           status_o       => status(I+3 downto I),
@@ -678,8 +683,8 @@ begin
       mon.refclk(I).freq <= std_logic_vector(to_unsigned(axi_refclk_freq, mon.refclk(I).freq'length));
     end generate;
 
-    no_axi : if (c_REFCLK_MAP(I).freq /= REF_AXI_C2C and
-                   c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
+    no_axi : if (c_REFCLK_MAP(I).freq /= REF_AXI_C2C  -- and
+                 --  c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
                    ) generate
 
       mon.refclk(I).freq        <= clk_freq(mon.refclk(I).freq'range);
@@ -691,6 +696,8 @@ begin
       -- design.", this does not appear to be true, and required manual
       -- instantiation. Previously it would generate an error at DRC complaining
       -- that the CE/CLR pins are not driven by a BUFG_GT_SYNC.
+
+      refclk_mirrors_out <= refclk_bufg;
 
       BUFG_GT_SYNC_inst : BUFG_GT_SYNC
         port map (
@@ -717,30 +724,30 @@ begin
           clk_a_freq => 50_000_000
           )
         port map (
-          reset => reset,
+          reset => reset_tree(I) ,
           clk_a => axiclock,
           clk_b => refclk_bufg(I),
           rate  => clk_freq
           );
     end generate no_axi;
     
-    REF_SYNC240_monitor: if ( c_REFCLK_MAP(I).FREQ = REF_SYNC240  -- SL has its own buffer
-                   ) generate
-      assert false report "REF_SYNC240_monitor: for link " & integer'image(I) & "sl_quad_idx " & integer'image(sl_quad_idx) severity note;
-      mon.refclk(I).freq        <= clk_freq(mon.refclk(I).freq'range);
-      mon.refclk(I).refclk_type <=
-        std_logic_vector(to_unsigned(refclk_freqs_t'POS(c_REFCLK_MAP(I).freq), 3));
-      i_clk_frequency : entity work.clk_frequency
-        generic map (
-          clk_a_freq => 50_000_000
-          )
-        port map (
-          reset => reset,
-          clk_a => axiclock,
-          clk_b => sl_tx_clk(sl_quad_idx*4),
-          rate  => clk_freq
-          );
-    end generate REF_SYNC240_monitor;
+--    REF_SYNC240_monitor: if ( c_REFCLK_MAP(I).FREQ = REF_SYNC240  -- SL has its own buffer
+--                   ) generate
+--      assert false report "REF_SYNC240_monitor: for link " & integer'image(I) & "sl_quad_idx " & integer'image(sl_quad_idx) severity note;
+--      mon.refclk(I).freq        <= clk_freq(mon.refclk(I).freq'range);
+--      mon.refclk(I).refclk_type <=
+--        std_logic_vector(to_unsigned(refclk_freqs_t'POS(c_REFCLK_MAP(I).freq), 3));
+--      i_clk_frequency : entity work.clk_frequency
+--        generic map (
+--          clk_a_freq => 50_000_000
+--          )
+--        port map (
+--          reset => reset_tree(I) ,
+--          clk_a => axiclock,
+--          clk_b => sl_tx_clk(sl_quad_idx*4),
+--          rate  => clk_freq
+--          );
+--    end generate REF_SYNC240_monitor;
   end generate refclk_mirror;
 
 end Behavioral;
