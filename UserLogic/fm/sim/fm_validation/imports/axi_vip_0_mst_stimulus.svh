@@ -151,7 +151,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	       
 	    end
 
-	  
+	  #15000	  
 	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
           mtestWADDR = (32'h2000 << 2);  //priya 0;
           mtestWBurstLength = 0; //0;

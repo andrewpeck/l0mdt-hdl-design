@@ -19,6 +19,9 @@ use shared_lib.common_types_pkg.all;
 library fm_lib;
 use fm_lib.fm_ult_pkg.all;
 
+library xil_defaultlib;
+use xil_defaultlib.AXISlaveAddrPkg.all;
+
 entity FM_map_vhdl_wrapper is
   generic (
     READ_TIMEOUT     : integer := 2048
@@ -174,7 +177,9 @@ begin  -- architecture behavioral
     slave_writeMISO_response_user      <= slave_writeMISO.response_user           ;
     
     fm_map_inst : entity ctrl_lib.FM_map
-      
+       generic map(
+        ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_FM)
+        )
       port map (
         clk_axi         => clk_axi,
         reset_axi_n     => reset_axi_n,

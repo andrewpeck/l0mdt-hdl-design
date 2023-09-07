@@ -1,20 +1,17 @@
-//-------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------
 // Description: 
-// This file contains example test which shows how Master VIP generate transaction and how
-// Passthrough VIP in run time slave mode(with memory model) responds 
+// This file contains example test which shows how Master VIP generate transaction and how Slave 
+// VIP (without memory model) responds.
 // The example design consists of one AXI VIP in master mode, one AXI VIP in passthrough mode 
 // and one AXI VIP in slave mode.
 // It includes master agent stimulus, slave memory agent stimulus and generic testbench file. 
 // Please refer axi_vip_0_mst_stimulus.sv for usage of Master VIP generating stimulus
-// Please refer axi_vip_0_passthrough_mem_stimulus.sv for usage of Passthrough VIP in
-// run time slave mode(with memory model) responding
+// Please refer axi_vip_0_mem_stimulus.sv for usage of Slave VIP agent(with memory model respond
 // Please refer axi_vip_0_exdes_generic.sv for simple scoreboarding,how to get monitor 
-// transaction from Master VIP monitor and Passthrough VIP monitor 
-//-------------------------------------------------------------------------------------------------------------
-
+// transaction from Master VIP monitor and Slave VIP monitor 
+//---------------------------------------------------------------------------------------------------------
 `timescale 1ns / 1ps
 import axi_vip_pkg::*;
-
 
 module axi_vip_0__exdes_adv_mst_active_pt_mem__slv_passive(
   );
@@ -69,11 +66,8 @@ module axi_vip_0__exdes_adv_mst_active_pt_mem__slv_passive(
   
     .aclk(clock)
   );
-
 `include "axi_vip_0_mst_stimulus.svh"
 `include "axi_vip_0_passthrough_mem_stimulus.svh"
-
-
 
   initial begin
     reset <= 1'b1;
@@ -202,7 +196,6 @@ module axi_vip_0__exdes_adv_mst_active_pt_mem__slv_passive(
     data_block = updated.get_data_block();
   //  $display(" Read data from Monitor: Block Data %h ", data_block);
   endtask
-
+  
 
 endmodule
-
