@@ -116,7 +116,7 @@ begin  -- architecture behavioral
         when 2 => --0x2
           localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK40_FREQ;                              --LHC 40MHz clock freq
         when 3 => --0x3
-          localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK320_FREQ;                             --LHC 320MHz clock freq 
+          localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK320_FREQ;                             --LHC 320MHz clock freq
         when 4 => --0x4
           localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK50_FREQ;                              --System 50 MHz clock freq
         when 16 => --0x10

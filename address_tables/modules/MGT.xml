@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="MGT" permission="rw">
 
-  <node id="RESET_ALL" address="0x0" mask="0x00000001" permission="rw" parameters="default=0" description="Reset transceiver"  parameters="Table=RESETS;Column=MGT;Row=_1._2._3._4;Status=1;Show=nz;Format=t_0_RUNNING_1_RESETED"/>
+  <node id="RESET_ALL" address="0x0" mask="0x00000001" permission="rw" description="Reset transceiver"  parameters="default=0;Table=RESETS;Column=MGT;Row=_1._2._3._4;Status=1;Show=nz;Format=t_0_RUNNING_1_RESETED"/>
 
   <node id="STATUS" address="0x1" permission="r">
     <node id ="rxcdr_stable"            address="0x0" mask="0x00000001" permission = "r" description="rxcdr_stable"/>

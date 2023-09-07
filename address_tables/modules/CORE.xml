@@ -8,7 +8,7 @@ control logic should run NOT on this asynchronous domain -->
 
   <node id="CLOCKING" address="0x0" permission="r" >
     <node id="MMCM_LOCKED" mask="0x1"        address="0x0" permission="r"  description="LHC MMCM: 1 means it is locked" parameters="Table=CLOCKING;Column=LOCKED;Row=_1_3;Status=2;Show=nz;Format=t_0_NOTlocked_1_LOCKED"/>
-    <node id="RESET_MMCM"  mask="0x2"        address="0x1" permission="rw" parameters="default=0" description="LHC MMCM: Set 1 to reset the MMCM" parameters="Table=RESETS;Column=1_Global;Row=_1._2._3;Status=1;Show=nz;Format=t_0_RUNNING_1_RESETED"/>
+    <node id="RESET_MMCM"  mask="0x2"        address="0x1" permission="rw" description="LHC MMCM: Set 1 to reset the MMCM" parameters="default=0;Table=RESETS;Column=1_Global;Row=_1._2._3;Status=1;Show=nz;Format=t_0_RUNNING_1_RESETED"/>
     <node id="CLK40_FREQ"  mask="0xffffffff" address="0x2" permission="r"  description="LHC 40MHz clock freq" parameters="Table=CLOCKING;Row=_1_3;Column=FREQ;Status=2;Show=nz;Format=m_1_1_1000000_1_0_1"/>
     <node id="CLK320_FREQ" mask="0xffffffff" address="0x3" permission="r"  description="LHC 320MHz clock freq" parameters="Table=CLOCKING;Row=_1_3;Column=FREQ;Status=2;Show=nz;Format=m_1_1_1000000_1_0_1"/>
     <node id="CLK50_FREQ"  mask="0xffffffff" address="0x4" permission="r"  description="System 50 MHz clock freq" parameters="Table=CLOCKING;Row=_1_3;Column=FREQ;Status=2;Show=nz;Format=m_1_1_1000000_1_0_1"/>
