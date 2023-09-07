@@ -144,6 +144,7 @@ architecture Behavioral of mgt_wrapper is
   signal  sl_rx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 begin
 
+
   sl_rx_init_done <= AND(sl_rx_init_done_s);
 
   --------------------------------------------------------------------------------
@@ -543,7 +544,9 @@ begin
     --------------------------------------------------------------------------------
     -- Sector Logic Type
     --------------------------------------------------------------------------------
-
+    not_sl_gen : if (sl_idx_array(I) = -1 ) generate  -- all but sl
+        sl_rx_init_done_s(I) <= '1';
+    end generate;
     sl_gen : if (sl_idx_array(I) /= -1 and (I mod 4 = 0)) generate  -- only generate for the quad
 
       attribute X_LOC             : integer;
@@ -604,7 +607,8 @@ begin
 --          );
 
       sl_rx_clk(idx + 3 downto idx) <= sl_rx_clk_int(idx + 3 downto idx);
-      
+      sl_rx_init_done_s(I+3  downto I+1) <= (others => '1');
+       
       assert true report
         "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I)
         & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
