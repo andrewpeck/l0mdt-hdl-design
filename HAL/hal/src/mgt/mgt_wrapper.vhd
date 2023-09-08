@@ -106,7 +106,7 @@ entity mgt_wrapper is
     sl_re_channel : in std_logic_vector(c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     
     -- done
-    sl_rx_init_done : out std_logic
+    sl_rx_init_done : out std_logic_vector(c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
 
     );
 end mgt_wrapper;
@@ -138,14 +138,11 @@ architecture Behavioral of mgt_wrapper is
   signal status_2d : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
 
   -- Sector Logic
-  signal sl_rx_init_done_s : std_logic_vector(c_NUM_MGTS-1 downto 0);
-
   signal  sl_tx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal  sl_rx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 begin
 
 
-  sl_rx_init_done <= AND(sl_rx_init_done_s);
 
   --------------------------------------------------------------------------------
   -- Configuration Asserts
@@ -544,9 +541,6 @@ begin
     --------------------------------------------------------------------------------
     -- Sector Logic Type
     --------------------------------------------------------------------------------
-    not_sl_gen : if (sl_idx_array(I) = -1 ) generate  -- all but sl
-        sl_rx_init_done_s(I) <= '1';
-    end generate;
     sl_gen : if (sl_idx_array(I) /= -1 and (I mod 4 = 0)) generate  -- only generate for the quad
 
       attribute X_LOC             : integer;
@@ -607,7 +601,6 @@ begin
 --          );
 
       sl_rx_clk(idx + 3 downto idx) <= sl_rx_clk_int(idx + 3 downto idx);
-      sl_rx_init_done_s(I+3  downto I+1) <= (others => '1');
        
       assert true report
         "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I)
@@ -640,7 +633,7 @@ begin
           rxctrl_out     => sl_rx_ctrl_o(idx+3 downto idx),
           rx_slide_i     => sl_rx_slide_i(idx+3 downto idx),
           re_channel_i   => sl_re_channel(idx+3 downto idx),
-          rx_init_done_o => sl_rx_init_done_s(I),
+          rx_init_done_o => sl_rx_init_done(idx+3 downto idx),
           mgt_word_i     => sl_tx_mgt_word_array_i(idx+3 downto idx),
           mgt_word_o     => sl_rx_mgt_word_array_o(idx+3 downto idx),
           rxp_i          => rx_p,

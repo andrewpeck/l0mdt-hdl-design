@@ -242,7 +242,7 @@ architecture behavioral of top_hal is
   signal sl_rx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_data_sump      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_re_channel        : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-  signal sl_rx_init_done      : std_logic;
+  signal sl_rx_init_done      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
   --------------------------------------------------------------------------------
   -- Signal sumps for development

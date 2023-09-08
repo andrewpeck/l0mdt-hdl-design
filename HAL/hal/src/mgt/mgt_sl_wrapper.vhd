@@ -44,7 +44,7 @@ entity mgt_sl_wrapper is
     re_channel_i : in std_logic_vector(3 downto 0);
 
     -- Done 
-    rx_init_done_o : out std_logic;
+    rx_init_done_o : out std_logic_vector(3 downto 0);
 
     --=============--
     -- status      --
@@ -309,7 +309,7 @@ end component gty_bank122_example_top;
   
   signal xilinx_one  : std_logic_vector (0 downto 0) := (others => '1');
   signal xilinx_zero : std_logic_vector (0 downto 0) := (others => '0');
-
+  signal rx_init_done_int : std_logic_vector (3 downto 0);
 begin
 
   nil_gen : if (gt_type = GT_NIL) generate
@@ -486,9 +486,11 @@ begin
         hb_gtwiz_reset_all_in         => reset_i,
         hb_gtwiz_reset_channel_in     => re_channel_i,
       
-        rx_init_done_out => rx_init_done_o
+        rx_init_done_out => rx_init_done_int(0)
         );
-        
+        rx_init_done_int(1) <= rx_init_done_int(0);
+        rx_init_done_int(2) <= rx_init_done_int(0);
+        rx_init_done_int(3) <= rx_init_done_int(0);
   end generate gty_gen_all;
   
   gty_gen_gty122 : if (gt_type = GTY 
@@ -632,10 +634,10 @@ begin
         ch3_rxctrl3_out => rxctrl_out(3).ctrl3,
 
         -- rxpmaresetdone
-        ch0_rx_init_done_out => status_o(0).rx_pma_reset_done,
-        ch1_rx_init_done_out => status_o(1).rx_pma_reset_done,
-        ch2_rx_init_done_out => status_o(2).rx_pma_reset_done,
-        ch3_rx_init_done_out => status_o(3).rx_pma_reset_done,
+        ch0_rx_init_done_out => rx_init_done_int(0),
+        ch1_rx_init_done_out => rx_init_done_int(1),
+        ch2_rx_init_done_out => rx_init_done_int(2),
+        ch3_rx_init_done_out => rx_init_done_int(3),
 
         -- txpmaresetdone
         ch0_tx_init_done_out => status_o(0).tx_pma_reset_done,
@@ -658,12 +660,16 @@ begin
         txuserrdy_out => open,
         -- more inputs
         rxpolarity_in  => std_logic_vector(to_unsigned(0,4)),
-        txpolarity_in  => std_logic_vector(to_unsigned(0,4)),
-      
-        rx_init_done_out => rx_init_done_o
+        txpolarity_in  => std_logic_vector(to_unsigned(0,4))
+
         );
+        status_o(0).rx_reset_done <= rx_init_done_int(0);
+        status_o(1).rx_reset_done <= rx_init_done_int(1);
+        status_o(2).rx_reset_done <= rx_init_done_int(2);
+        status_o(3).rx_reset_done <= rx_init_done_int(3);
+
   end generate gty_gen_gty122;
-  
+  rx_init_done_o <= rx_init_done_int;
 
 
 end Behavioral;

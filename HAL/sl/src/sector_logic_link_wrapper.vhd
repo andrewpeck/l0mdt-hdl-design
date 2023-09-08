@@ -71,7 +71,7 @@ entity sector_logic_link_wrapper is
     -- from mgt
     sl_rx_ctrl_i : in sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
-    sl_rx_init_done_i : in std_logic;
+    sl_rx_init_done_i : in std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
     -- to mgt
     sl_tx_ctrl_o : out sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
@@ -100,6 +100,8 @@ architecture Behavioral of sector_logic_link_wrapper is
   -- the l0mdt firmware uses two's complement internally, so this function was written to
   -- convert between the two representations
 
+  signal reset_int : std_logic;
+  
   function signed_mag_to_signed (data : std_logic_vector) return signed is
     alias sv                 : std_logic_vector (data'length-1 downto 0) is data;
     variable twos_complement : std_logic_vector(data'length-1 downto 0);
@@ -220,6 +222,15 @@ COMPONENT SL_monctrl
 END COMPONENT;
 begin
 
+  process (clk40) begin
+     if (clk40'event and clk40 = '1') then
+      if reset = '0' then
+         reset_int <= '0';
+      else
+         reset_int <= '1';
+      end if;
+   end if;
+  end process;
   --------------------------------------------------------------------------------
   -- TX Dataformat Mapping
   --------------------------------------------------------------------------------
@@ -391,7 +402,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)
           port map (
-            reset           => reset,
+            reset           => reset_int,
             tx_usrclk2      => tx_clk(idx),
             packet_valid    => test_tx_packet_valid_i,
             packet_userdata => test_packet_userdata_tx_i,
@@ -486,12 +497,12 @@ begin
         rxctrl1 <= sl_rx_ctrl_i(idx).ctrl1(3 downto 0);
 
         -- decode 8b10b words
-        rx_comma_detector_inst : entity sl.rx_comma_detection
+        rx_comma_detector_inst : entity sl.rx_comma_detection_okumura
           generic map (
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
           port map (
-            reset               => reset OR ctrl.reset.rx_comma OR vio_reset_rx_comma(idx),
+            reset               => reset_int OR ctrl.reset.rx_comma OR vio_reset_rx_comma(idx),
             clk_in              => rx_clk(idx),
             rx_data_in          => sl_rx_mgt_word_array_i(idx),  -- 32 bit from mgt
             rx_ctrl0_in         => rxctrl0,                      -- 4 bit from mgt
@@ -503,7 +514,7 @@ begin
             lock_out            => Mon.RX_COMMA_LOCK(idx),                         -- not used in my-sl-gty
             rxslide_out         => sl_rx_slide_o(idx),           -- 1 bit to mgt
             rereset_out         => sl_re_channel_o(idx),         -- 1 bit to mgt
-            rx_init_done_in     => sl_rx_init_done_i,            -- 1 bit from mgt
+            rx_init_done_in     => sl_rx_init_done_i(idx),            -- 1 bit from mgt
             even_slides_in      => '0'                           -- 1 bit setting
             );
 
@@ -514,7 +525,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
           port map (
-            reset => reset OR ctrl.reset.rx_packet_former OR vio_reset_rx_packet(idx),
+            reset => reset_int OR ctrl.reset.rx_packet_former OR vio_reset_rx_packet(idx),
 
             rx_usrclk2 => rx_clk(idx),
 
@@ -546,7 +557,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)        
           port map(
-            reset         => reset OR ctrl.reset.rx_counter OR vio_reset_rx_counter(idx),
+            reset         => reset_int OR ctrl.reset.rx_counter OR vio_reset_rx_counter(idx),
             rx_usrclk2    => rx_clk(idx),
 
             packet_rxctrl0 => packet_rxctrl0_i,
@@ -606,7 +617,7 @@ begin
                 probe7(0) => Mon.RX_COMMA_LOCK(idx), 
                 probe8(0) => sl_rx_slide_o(idx), 
                 probe9(0) => sl_re_channel_o(idx), 
-                probe10(0) => sl_rx_init_done_i, 
+                probe10(0) => sl_rx_init_done_i(idx), 
                 probe11 => packet_rxctrl0_i, 
                 probe12 => packet_rxctrl1_i, 
                 probe13 => packet_rxctrl2_i, 
@@ -713,7 +724,7 @@ vio_reset_rx_counter <= X"000";
           clk_a_freq => 40_000_000
           )
         port map (
-          reset => reset,
+          reset => reset_int,
           clk_a => clk40,
           clk_b => rx_clk(0),
           rate  => rate_rx_clk0
@@ -723,7 +734,7 @@ vio_reset_rx_counter <= X"000";
           clk_a_freq => 40_000_000
           )
         port map (
-          reset => reset,
+          reset => reset_int,
           clk_a => clk40,
           clk_b => tx_clk(0),
           rate  => rate_tx_clk0
