@@ -499,9 +499,25 @@ begin
     signal sub_rc_b     : std_logic_vector(max(param_b'length,mult_rc'length) -1 downto 0);
     signal sub_rc_b_dv  : std_logic;
     signal div_out : std_logic_vector(79 downto 0);
-    signal div_quo : std_logic_vector(46 downto 0);
-    signal div_fra : std_logic_vector(32 downto 0);
+    signal div_quo : std_logic_vector(45 downto 0);
+    signal div_fra : std_logic_vector(31 downto 0);
     signal div_out_dv  : std_logic;
+
+    signal sub_rc_b_scale : std_logic_vector(1 + sub_rc_b'length downto 0);
+
+    COMPONENT cvp_pc_y_hr_div
+  PORT (
+    aclk : IN STD_LOGIC;
+    s_axis_divisor_tvalid : IN STD_LOGIC;
+    s_axis_divisor_tready : OUT STD_LOGIC;
+    s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    s_axis_dividend_tvalid : IN STD_LOGIC;
+    s_axis_dividend_tready : OUT STD_LOGIC;
+    s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
+    m_axis_dout_tvalid : OUT STD_LOGIC;
+    m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
+  );
+END COMPONENT;
 
   begin
     
@@ -549,15 +565,16 @@ begin
         o_dv        => sub_rc_b_dv
       );
 
-    your_instance_name : cvp_pc_y_hr_div
+      sub_rc_b_scale <= std_logic_vector(resize(signed(sub_rc_b),sub_rc_b_scale'length));
+    DIV_Z_CALC : cvp_pc_y_hr_div
       PORT MAP (
-        aclk => aclk,
+        aclk => clk,
         s_axis_divisor_tvalid => param_a_dv,
         -- s_axis_divisor_tready => s_axis_divisor_tready,
         s_axis_divisor_tdata => param_a,
         s_axis_dividend_tvalid => sub_rc_b_dv,
         -- s_axis_dividend_tready => s_axis_dividend_tready,
-        s_axis_dividend_tdata => sub_rc_b,
+        s_axis_dividend_tdata => sub_rc_b_scale,
         m_axis_dout_tvalid => div_out_dv,
         -- m_axis_dout_tuser => m_axis_dout_tuser,
         m_axis_dout_tdata => div_out

@@ -73,3 +73,5 @@ configs/
 make.log
 
 Doc/
+.questa.gcc*
+modelsim.ini.bak
