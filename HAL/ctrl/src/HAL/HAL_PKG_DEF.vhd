@@ -76,7 +76,8 @@ package HAL_CTRL_DEF is
                                                                  rx_counter => '0'
                                                                 );
   constant DEFAULT_HAL_SL_CTRL_t : HAL_SL_CTRL_t := (
-                                                     TX_ENA_TEST_PATTERN => x"00000000",
+                                                     TX_ENA_TEST_PATTERN => x"000",
+                                                     COMMA_EVEN_SLIDES => x"000",
                                                      RESET => DEFAULT_HAL_SL_RESET_CTRL_t
                                                     );
   constant DEFAULT_HAL_CTRL_t : HAL_CTRL_t := (

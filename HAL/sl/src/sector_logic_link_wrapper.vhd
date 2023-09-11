@@ -121,17 +121,11 @@ architecture Behavioral of sector_logic_link_wrapper is
     result := signed(twos_complement);
     return result;
   end;
-  -- VIO signals
-  signal vio_rx_comma_lock : std_logic_vector (11 downto 0);
-  signal vio_rx_pakcet_lock : std_logic_vector (11 downto 0);
-  signal vio_tx_ena_test : std_logic_vector (0 downto 0);
-  signal vio_reset_rx_comma : std_logic_vector (11 downto 0);
-  signal vio_reset_rx_packet : std_logic_vector (11 downto 0);
-  signal vio_reset_rx_counter : std_logic_vector (11 downto 0);
-  signal vio_sl_test_array : HAL_SL_SL_TEST_MON_t_ARRAY;
+
   
-  signal rate_rx_clk0 : std_logic_vector(31 downto 0);
-  signal rate_tx_clk0 : std_logic_vector(31 downto 0);
+--  signal rate_rx_clk0 : std_logic_vector(31 downto 0);
+--  signal rate_tx_clk0 : std_logic_vector(31 downto 0);
+
   COMPONENT ila_sl_tx
 PORT (
 	clk : IN STD_LOGIC;
@@ -173,53 +167,7 @@ PORT (
 	probe18 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
 );
 END COMPONENT  ;
-COMPONENT SL_monctrl
-  PORT (
-    clk : IN STD_LOGIC;
-    probe_in0 : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
-    probe_in1 : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
-    probe_in2 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in3 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in4 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in5 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in6 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in7 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in8 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in9 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in10 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in11 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in12 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in13 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in14 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in15 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in16 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in17 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in18 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in19 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in20 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in21 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in22 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in23 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in24 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in25 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in26 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in27 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in28 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in29 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in30 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in31 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in32 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in33 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in34 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in35 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in36 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_in37 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    probe_out0 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    probe_out1 : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
-    probe_out2 : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
-    probe_out3 : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
-  );
-END COMPONENT;
+
 begin
 
   process (clk40) begin
@@ -392,7 +340,7 @@ begin
         signal packet_txctrl1_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
         signal packet_txctrl2_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
 
-        signal mux_ctrl : std_logic := vio_tx_ena_test(0); -- to be connected to a register
+        signal mux_ctrl_test_enabled : std_logic := ctrl.TX_ENA_TEST_PATTERN(idx); -- to be connected to a register
       begin
 
         assert false report "generating SL TX #" & integer'image(idx) & " on MGT#"
@@ -411,11 +359,11 @@ begin
             packet_txctrl2  => test_packet_txctrl2_i);
     
         -- select if we want to output a test parttern or not with TX_ENA_TEST_PATTERN
-        tx_packet_valid_mux     <= sl_tx_data_post_cdc(idx).valid   when mux_ctrl else test_tx_packet_valid_i;
-        packet_userdata_tx_mux  <= sl_tx_data_post_cdc(idx).data    when mux_ctrl else test_packet_userdata_tx_i;
-        packet_txctrl0_mux      <= std_logic_vector'(x"000000")     when mux_ctrl else test_packet_txctrl0_i;
-        packet_txctrl1_mux      <= std_logic_vector'(x"000000")     when mux_ctrl else test_packet_txctrl1_i;
-        packet_txctrl2_mux      <= std_logic_vector'(x"100000")     when mux_ctrl else test_packet_txctrl2_i;
+        tx_packet_valid_mux     <= test_tx_packet_valid_i       when mux_ctrl_test_enabled else sl_tx_data_post_cdc(idx).valid;
+        packet_userdata_tx_mux  <= test_packet_userdata_tx_i    when mux_ctrl_test_enabled else sl_tx_data_post_cdc(idx).data;
+        packet_txctrl0_mux      <= test_packet_txctrl0_i        when mux_ctrl_test_enabled else std_logic_vector'(x"000000");
+        packet_txctrl1_mux      <= test_packet_txctrl1_i        when mux_ctrl_test_enabled else std_logic_vector'(x"000000");
+        packet_txctrl2_mux      <= test_packet_txctrl2_i        when mux_ctrl_test_enabled else std_logic_vector'(x"100000");
 
         sector_logic_tx_packet_former_inst : entity sl.sector_logic_tx_packet_former
           generic map (
@@ -502,7 +450,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
           port map (
-            reset               => reset_int OR ctrl.reset.rx_comma OR vio_reset_rx_comma(idx),
+            reset               => reset_int OR ctrl.reset.rx_comma,
             clk_in              => rx_clk(idx),
             rx_data_in          => sl_rx_mgt_word_array_i(idx),  -- 32 bit from mgt
             rx_ctrl0_in         => rxctrl0,                      -- 4 bit from mgt
@@ -515,7 +463,7 @@ begin
             rxslide_out         => sl_rx_slide_o(idx),           -- 1 bit to mgt
             rereset_out         => sl_re_channel_o(idx),         -- 1 bit to mgt
             rx_init_done_in     => sl_rx_init_done_i(idx),            -- 1 bit from mgt
-            even_slides_in      => '0'                           -- 1 bit setting
+            even_slides_in      => ctrl.COMMA_EVEN_SLIDES(idx)                           -- 1 bit setting
             );
 
         -- form 192 bit packets
@@ -525,7 +473,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
           port map (
-            reset => reset_int OR ctrl.reset.rx_packet_former OR vio_reset_rx_packet(idx),
+            reset => reset_int OR ctrl.reset.rx_packet_former,
 
             rx_usrclk2 => rx_clk(idx),
 
@@ -538,10 +486,10 @@ begin
             rxctrl3 => (others => '0'),
 
             -- 23 downto 0
-            packet_rxctrl0 => packet_rxctrl0_i,     -- my-sl-gty just connects to led sump
-            packet_rxctrl1 => packet_rxctrl1_i,     -- my-sl-gty just connects to led sump
-            packet_rxctrl2 => packet_rxctrl2_i,     -- my-sl-gty just connects to led sump
-            packet_rxctrl3 => packet_rxctrl3_i,     -- my-sl-gty just connects to led sump
+            packet_rxctrl0 => packet_rxctrl0_i,     
+            packet_rxctrl1 => packet_rxctrl1_i,     
+            packet_rxctrl2 => packet_rxctrl2_i,     
+            packet_rxctrl3 => packet_rxctrl3_i,     
 
             packet_userdata       => sl_rx_data_pre_cdc(idx).data,
             packet_locked         => sl_rx_data_pre_cdc(idx).locked,
@@ -552,12 +500,16 @@ begin
 
           Mon.RX_PACKET_LOCKED(idx) <= sl_rx_data_pre_cdc(idx).locked;
 
+        --------------------------------------------------------------------------------
+        -- RX test pattern checker
+        -- - There is no need to disable this module, it does not affect the firmware behavior
+        --------------------------------------------------------------------------------        
           rx_test_pattern_checker_inst : entity sl.rx_test_pattern_checker
           generic map(
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)        
           port map(
-            reset         => reset_int OR ctrl.reset.rx_counter OR vio_reset_rx_counter(idx),
+            reset         => reset_int OR ctrl.reset.rx_counter,
             rx_usrclk2    => rx_clk(idx),
 
             packet_rxctrl0 => packet_rxctrl0_i,
@@ -662,83 +614,28 @@ begin
     report "failure in signed magnutude conversion of  3 get="
     & integer'image (to_integer(signed_mag_to_signed("111"))) severity error;
 
-    ------------------------------------------------
-    -- VIO
-    -------------------------------------------------
-    vio_rx_comma_lock <= Mon.RX_COMMA_LOCK(11 downto 0);
-    vio_rx_pakcet_lock <= Mon.RX_PACKET_LOCKED(11 downto 0);
-    vio_sl_test_array <= mon.sl_test;
-    
---    vio_sl_test : SL_monctrl
---  PORT MAP (
---    clk => clk40,
---    probe_in0 => vio_rx_comma_lock,
---    probe_in1 => vio_rx_pakcet_lock,
---    probe_in2 => vio_sl_test_array(0).ERROR_COUNTER,
---    probe_in3 => vio_sl_test_array(1).ERROR_COUNTER,
---    probe_in4 => vio_sl_test_array(2).ERROR_COUNTER,
---    probe_in5 => vio_sl_test_array(3).ERROR_COUNTER,
---    probe_in6 => vio_sl_test_array(4).ERROR_COUNTER,
---    probe_in7 => vio_sl_test_array(5).ERROR_COUNTER,
---    probe_in8 => vio_sl_test_array(6).ERROR_COUNTER,
---    probe_in9 => vio_sl_test_array(7).ERROR_COUNTER,
---    probe_in10 => vio_sl_test_array(8).ERROR_COUNTER,
---    probe_in11 => vio_sl_test_array(9).ERROR_COUNTER,
---    probe_in12 => vio_sl_test_array(10).ERROR_COUNTER,
---    probe_in13 => vio_sl_test_array(11).ERROR_COUNTER,
---    probe_in14 => vio_sl_test_array(0).WORD_COUNTER_0,
---    probe_in15 => vio_sl_test_array(1).WORD_COUNTER_0,
---    probe_in16 => vio_sl_test_array(2).WORD_COUNTER_0,
---    probe_in17 => vio_sl_test_array(3).WORD_COUNTER_0,
---    probe_in18 => vio_sl_test_array(4).WORD_COUNTER_0,
---    probe_in19 => vio_sl_test_array(5).WORD_COUNTER_0,
---    probe_in20 => vio_sl_test_array(6).WORD_COUNTER_0,
---    probe_in21 => vio_sl_test_array(7).WORD_COUNTER_0,
---    probe_in22 => vio_sl_test_array(8).WORD_COUNTER_0,
---    probe_in23 => vio_sl_test_array(9).WORD_COUNTER_0,
---    probe_in24 => vio_sl_test_array(10).WORD_COUNTER_0,
---    probe_in25 => vio_sl_test_array(11).WORD_COUNTER_0,
---    probe_in26 => vio_sl_test_array(0).WORD_COUNTER_1,
---    probe_in27 => vio_sl_test_array(1).WORD_COUNTER_1,
---    probe_in28 => vio_sl_test_array(2).WORD_COUNTER_1,
---    probe_in29 => vio_sl_test_array(3).WORD_COUNTER_1,
---    probe_in30 => vio_sl_test_array(4).WORD_COUNTER_1,
---    probe_in31 => vio_sl_test_array(5).WORD_COUNTER_1,
---    probe_in32 => vio_sl_test_array(6).WORD_COUNTER_1,
---    probe_in33 => vio_sl_test_array(7).WORD_COUNTER_1,
---    probe_in34 => vio_sl_test_array(8).WORD_COUNTER_1,
---    probe_in35 => vio_sl_test_array(9).WORD_COUNTER_1,
---    probe_in36 => rate_rx_clk0,
---    probe_in37 => rate_tx_clk0,
---    probe_out0 => vio_tx_ena_test,
---    probe_out1 => vio_reset_rx_comma,
---    probe_out2 => vio_reset_rx_packet,
---    probe_out3 => vio_reset_rx_counter
---  );
-vio_tx_ena_test <= "0";
-vio_reset_rx_comma <= X"000";
-vio_reset_rx_packet <= X"000";
-vio_reset_rx_counter <= X"000";
-      rx_clk_frequency : entity work.clk_frequency
-        generic map (
-          clk_a_freq => 40_000_000
-          )
-        port map (
-          reset => reset_int,
-          clk_a => clk40,
-          clk_b => rx_clk(0),
-          rate  => rate_rx_clk0
-          );
-      tx_clk_frequency : entity work.clk_frequency
-        generic map (
-          clk_a_freq => 40_000_000
-          )
-        port map (
-          reset => reset_int,
-          clk_a => clk40,
-          clk_b => tx_clk(0),
-          rate  => rate_tx_clk0
-          );
+
+
+--      rx_clk_frequency : entity work.clk_frequency
+--        generic map (
+--          clk_a_freq => 40_000_000
+--          )
+--        port map (
+--          reset => reset_int,
+--          clk_a => clk40,
+--          clk_b => rx_clk(0),
+--          rate  => rate_rx_clk0
+--          );
+--      tx_clk_frequency : entity work.clk_frequency
+--        generic map (
+--          clk_a_freq => 40_000_000
+--          )
+--        port map (
+--          reset => reset_int,
+--          clk_a => clk40,
+--          clk_b => tx_clk(0),
+--          rate  => rate_tx_clk0
+--          );
 
 
 

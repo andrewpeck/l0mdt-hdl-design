@@ -381,21 +381,22 @@ package HAL_CTRL is
    function convert(x: std_logic_vector_array; tpl: HAL_SL_SL_TEST_MON_t_ARRAY) return HAL_SL_SL_TEST_MON_t_ARRAY;
 
    type HAL_SL_MON_t is record
-      RX_COMMA_LOCK : std_logic_vector(32 - 1 downto 0);
-      RX_PACKET_LOCKED : std_logic_vector(32 - 1 downto 0);
+      RX_COMMA_LOCK : std_logic_vector(12 - 1 downto 0);
+      RX_PACKET_LOCKED : std_logic_vector(12 - 1 downto 0);
       SL_TEST : HAL_SL_SL_TEST_MON_t_ARRAY;
    end record HAL_SL_MON_t;
-   attribute w of HAL_SL_MON_t : type is 1216;
+   attribute w of HAL_SL_MON_t : type is 1176;
    function width(x: HAL_SL_MON_t) return natural;
    function convert(x: HAL_SL_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_SL_MON_t) return HAL_SL_MON_t;
    function zero(tpl: HAL_SL_MON_t) return HAL_SL_MON_t;
 
    type HAL_SL_CTRL_t is record
-      TX_ENA_TEST_PATTERN : std_logic_vector(32 - 1 downto 0);
+      TX_ENA_TEST_PATTERN : std_logic_vector(12 - 1 downto 0);
+      COMMA_EVEN_SLIDES : std_logic_vector(12 - 1 downto 0);
       RESET : HAL_SL_RESET_CTRL_t;
    end record HAL_SL_CTRL_t;
-   attribute w of HAL_SL_CTRL_t : type is 35;
+   attribute w of HAL_SL_CTRL_t : type is 27;
    function width(x: HAL_SL_CTRL_t) return natural;
    function convert(x: HAL_SL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_SL_CTRL_t) return HAL_SL_CTRL_t;
@@ -405,7 +406,7 @@ package HAL_CTRL is
       CSM : HAL_CSM_MON_t;
       SL : HAL_SL_MON_t;
    end record HAL_MON_t;
-   attribute w of HAL_MON_t : type is 19468;
+   attribute w of HAL_MON_t : type is 19428;
    function width(x: HAL_MON_t) return natural;
    function convert(x: HAL_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_MON_t) return HAL_MON_t;
@@ -418,7 +419,7 @@ package HAL_CTRL is
       CSM : HAL_CSM_CTRL_t;
       SL : HAL_SL_CTRL_t;
    end record HAL_CTRL_t;
-   attribute w of HAL_CTRL_t : type is 6554;
+   attribute w of HAL_CTRL_t : type is 6546;
    function width(x: HAL_CTRL_t) return natural;
    function convert(x: HAL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: HAL_CTRL_t) return HAL_CTRL_t;
@@ -2910,6 +2911,7 @@ package body HAL_CTRL is
       variable w : natural := 0;
    begin
       w := w + width(x.TX_ENA_TEST_PATTERN);
+      w := w + width(x.COMMA_EVEN_SLIDES);
       w := w + width(x.RESET);
       return w;
    end function width;
@@ -2922,11 +2924,17 @@ package body HAL_CTRL is
          w := width(x.TX_ENA_TEST_PATTERN);
          y(u to u+w-1) := convert(x.TX_ENA_TEST_PATTERN, y(u to u+w-1));
          u := u + w;
+         w := width(x.COMMA_EVEN_SLIDES);
+         y(u to u+w-1) := convert(x.COMMA_EVEN_SLIDES, y(u to u+w-1));
+         u := u + w;
          w := width(x.RESET);
          y(u to u+w-1) := convert(x.RESET, y(u to u+w-1));
       else
          w := width(x.TX_ENA_TEST_PATTERN);
          y(u downto u-w+1) := convert(x.TX_ENA_TEST_PATTERN, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.COMMA_EVEN_SLIDES);
+         y(u downto u-w+1) := convert(x.COMMA_EVEN_SLIDES, y(u downto u-w+1));
          u := u - w;
          w := width(x.RESET);
          y(u downto u-w+1) := convert(x.RESET, y(u downto u-w+1));
@@ -2942,11 +2950,17 @@ package body HAL_CTRL is
          w := width(tpl.TX_ENA_TEST_PATTERN);
          y.TX_ENA_TEST_PATTERN := convert(x(u to u+w-1), tpl.TX_ENA_TEST_PATTERN);
          u := u + w;
+         w := width(tpl.COMMA_EVEN_SLIDES);
+         y.COMMA_EVEN_SLIDES := convert(x(u to u+w-1), tpl.COMMA_EVEN_SLIDES);
+         u := u + w;
          w := width(tpl.RESET);
          y.RESET := convert(x(u to u+w-1), tpl.RESET);
       else
          w := width(tpl.TX_ENA_TEST_PATTERN);
          y.TX_ENA_TEST_PATTERN := convert(x(u downto u-w+1), tpl.TX_ENA_TEST_PATTERN);
+         u := u - w;
+         w := width(tpl.COMMA_EVEN_SLIDES);
+         y.COMMA_EVEN_SLIDES := convert(x(u downto u-w+1), tpl.COMMA_EVEN_SLIDES);
          u := u - w;
          w := width(tpl.RESET);
          y.RESET := convert(x(u downto u-w+1), tpl.RESET);
