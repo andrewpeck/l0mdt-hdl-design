@@ -62,10 +62,10 @@ package board_pkg is
     9      => (MGT_SL          ,  2     , GTY    , 0 ,  9) , -- BANK 122
     10     => (MGT_SL          ,  2     , GTY    , 0 , 10) , -- BANK 122
     11     => (MGT_SL          ,  2     , GTY    , 0 , 11) , -- BANK 122
-    12     => (MGT_NIL          ,  3     , GTY    , 0 , 12) , -- BANK 123
-    13     => (MGT_NIL          ,  3     , GTY    , 0 , 13) , -- BANK 123
-    14     => (MGT_NIL          ,  3     , GTY    , 0 , 14) , -- BANK 123
-    15     => (MGT_NIL          ,  3     , GTY    , 0 , 15) , -- BANK 123
+    12     => (MGT_SL          ,  3     , GTY    , 0 , 12) , -- BANK 123
+    13     => (MGT_SL          ,  3     , GTY    , 0 , 13) , -- BANK 123
+    14     => (MGT_SL          ,  3     , GTY    , 0 , 14) , -- BANK 123
+    15     => (MGT_SL          ,  3     , GTY    , 0 , 15) , -- BANK 123
 
     -- SLR0 Right
     16     => (MGT_C2C         ,  4     , GTY    , 1 , 0)  , -- BANK 220

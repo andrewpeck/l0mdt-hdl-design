@@ -180,10 +180,6 @@ begin
 
   -- https://support.xilinx.com/s/question/0D52E00006hpdNNSAY/rxoutclk-routing-error?language=en_US
 
-  recclk_bufg_override_gen: if (c_OVERRIDE_REC_CLK = true) generate
-        assert false report "overriding extra BUFG_GT"  severity warning;
-        ttc_recclk_o <= recclk;
-    else generate
       recclk_BUFG_GT_SYNC_inst : BUFG_GT_SYNC
       port map (
         CESYNC  => recclk_sync_ce,          -- 1-bit output: Synchronized CE
@@ -203,7 +199,7 @@ begin
         DIV     => "000",                   -- 3-bit input: Dynamic divide Value
         I       => recclk                   -- 1-bit input: Buffer
       );
-    end generate recclk_bufg_override_gen;
+
   --------------------------------------------------------------------------------
   -- REFCLK
   --------------------------------------------------------------------------------
@@ -559,47 +555,8 @@ begin
       -- just set a flag to 1 to indicate that this transceiver was enabled, which we can read from software
       mon.mgt(I).config.is_active <= '1';
 
-
---      BUFG_GT_tx_SYNC_inst : BUFG_GT_SYNC
---        port map (
---          CESYNC  => ce_tx,                -- 1-bit output: Synchronized CE
---          CLRSYNC => clr_tx,               -- 1-bit output: Synchronized CLR
---          CE      => '1',               -- 1-bit input: Asynchronous enable
---          CLK     => sl_tx_clk_int(idx), -- 1-bit input: Clock
---          CLR     => '0'                -- 1-bit input: Asynchronous clear
---          );
---      BUFG_GT_tx_inst  : BUFG_GT
---        port map(
---          I       => sl_tx_clk_int(idx),
---          O       => sl_tx_clk(idx),
---          CE      => ce_tx,
---          DIV     => (others => '0'),
---          CLR     => clr_tx,
---          CLRMASK => '0',
---          CEMASK  => '0'
---          );
-
+      -- for the new generation of the GTY, the clock include already a BUFG
       sl_tx_clk(idx + 3 downto idx) <= sl_tx_clk_int(idx + 3 downto idx);
-      
---      BUFG_GT_rx_SYNC_inst : BUFG_GT_SYNC
---        port map (
---          CESYNC  => ce_rx,                -- 1-bit output: Synchronized CE
---          CLRSYNC => clr_rx,               -- 1-bit output: Synchronized CLR
---          CE      => '1',               -- 1-bit input: Asynchronous enable
---          CLK     => sl_rx_clk_int(idx), -- 1-bit input: Clock
---          CLR     => '0'                -- 1-bit input: Asynchronous clear
---          );
---      BUFG_GT_rx_inst  : BUFG_GT
---        port map(
---          I       => sl_rx_clk_int(idx),
---          O       => sl_rx_clk(idx),
---          CE      => ce_rx,
---          DIV     => (others => '0'),
---          CLR     => clr_rx,
---          CLRMASK => '0',
---          CEMASK  => '0'
---          );
-
       sl_rx_clk(idx + 3 downto idx) <= sl_rx_clk_int(idx + 3 downto idx);
        
       assert true report
@@ -648,9 +605,26 @@ begin
     -- OVERRIDE recovered clock
     ---------------------------------------------------
     recclk_out_override_gen: if (c_OVERRIDE_REC_CLK = true) and (I = 8) generate
-    assert false report "overriding recovered clock to fixed MGT quad122, link " & integer'image(I)  severity warning;
-        recclk                <= sl_rx_clk(idx);
-    end generate;
+        signal toggle_data : std_logic;
+        begin 
+            assert false report "overriding recovered clock to fixed MGT quad122, link " & integer'image(I)  severity warning;
+            recclk <= toggle_data;
+            ttc_recclk_inst : FDCE
+           generic map (
+              INIT => '0',            -- Initial value of register, '0', '1'
+              -- Programmable Inversion Attributes: Specifies the use of the built-in programmable inversion
+              IS_CLR_INVERTED => '0', -- Optional inversion for CLR
+              IS_C_INVERTED => '0',   -- Optional inversion for C
+              IS_D_INVERTED => '0'    -- Optional inversion for D
+           )
+           port map (
+              Q => toggle_data,     -- 1-bit output: Data
+              C => sl_rx_clk(idx),     -- 1-bit input: Clock
+              CE => '1',   -- 1-bit input: Clock enable
+              CLR => reset, -- 1-bit input: Asynchronous clear
+              D => toggle_data      -- 1-bit input: Data
+           );
+        end generate;
     
     end generate sl_gen;
 
@@ -727,24 +701,7 @@ begin
           rate  => clk_freq
           );
     end generate no_axi;
-    
---    REF_SYNC240_monitor: if ( c_REFCLK_MAP(I).FREQ = REF_SYNC240  -- SL has its own buffer
---                   ) generate
---      assert false report "REF_SYNC240_monitor: for link " & integer'image(I) & "sl_quad_idx " & integer'image(sl_quad_idx) severity note;
---      mon.refclk(I).freq        <= clk_freq(mon.refclk(I).freq'range);
---      mon.refclk(I).refclk_type <=
---        std_logic_vector(to_unsigned(refclk_freqs_t'POS(c_REFCLK_MAP(I).freq), 3));
---      i_clk_frequency : entity work.clk_frequency
---        generic map (
---          clk_a_freq => 50_000_000
---          )
---        port map (
---          reset => reset_tree(I) ,
---          clk_a => axiclock,
---          clk_b => sl_tx_clk(sl_quad_idx*4),
---          rate  => clk_freq
---          );
---    end generate REF_SYNC240_monitor;
+
   end generate refclk_mirror;
 
 end Behavioral;

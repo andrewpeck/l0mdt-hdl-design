@@ -321,7 +321,7 @@ begin
   end generate gth_gen;
 
   gty_gen_all : if (gt_type = GTY 
-        and index /= 8) generate
+        and index /= 8 and index /= 12) generate
 
     signal txoutclk_int : std_logic;
 
@@ -494,7 +494,7 @@ begin
   end generate gty_gen_all;
   
   gty_gen_gty122 : if (gt_type = GTY 
-        and index = 8) generate
+        and (index = 8 or index = 12)) generate
             attribute X_LOC            : integer;
     attribute Y_LOC            : integer;
     attribute X_LOC of MGT_GEN : label is c_MGT_MAP(index).x_loc;
