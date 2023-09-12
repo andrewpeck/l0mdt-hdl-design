@@ -45,7 +45,8 @@ entity ucm_cvp_pc_core is
     g_DIV_IP_R2_EN        : std_logic := '1';
     g_DIV_VU_EN           : std_logic := '1';
     g_DIV_SEL             : string := "IPR2";
-    g_DATA_SET_VERSION    : string := "v1"
+    g_DATA_SET_VERSION    : string := "v1";
+    g_SLOPE_DIV_IPR2_ENABLE : std_logic := '1'
   );
   port (
     clk           : in std_logic;
@@ -117,6 +118,24 @@ architecture beh of ucm_cvp_pc_core is
   signal param_a        : std_logic_vector(max(mult_sz_sy'length,mult_n_szy'length) -1 downto 0);
   signal param_a_dv     : std_logic;
 
+  signal slope_bnom_sc    : std_logic_vector(32 -1 downto 0);
+  signal slope_div_dout_tvalid : STD_LOGIC;
+  signal slope_div_dout_tdata : STD_LOGIC_VECTOR(55 DOWNTO 0);
+  signal slope_div_dout_tdata_q : std_logic_vector(31 downto 0);-- := (others => '0');
+  signal slope_div_dout_tdata_r : std_logic_vector(20 downto 0);-- := (others => '0');
+  signal slope_bdiv_ipr2    : std_logic_vector(32-1 downto 0);--(max(bden'length,bnom_sc'length) -1 downto 0);
+  signal slope_bdiv_ipr2_dv : std_logic;
+  -- signal slope_bdiv_vu      : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
+  -- signal slope_bdiv_vu_dv   : std_logic;
+  -- signal slope_bdiv_lut      : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
+  -- signal slope_bdiv_lut_dv   : std_logic;
+  signal slope_bdiv         : std_logic_vector(max(param_c'length,slope_bnom_sc'length) -1 downto 0);
+  signal slope_bdiv_dv      : std_logic;
+
+
+
+  signal vec_z_pos_dv_a : std_logic_vector(g_NUM_MDT_LAYERS -1 downto 0);
+
 begin
 
   data_set : if g_DATA_SET_VERSION = "v1" generate
@@ -145,7 +164,7 @@ begin
         o_set_data_dv   => set_data_dv 
       );
   
- end generate;
+    end generate;
 
   SQR_LOOP: for hit_i in 3 downto 0 generate
     MULT_ZY_ENT : entity shared_lib.VU_generic_pipelined_MATH
@@ -191,7 +210,7 @@ begin
         o_result    => mult_zz(hit_i),
         o_dv        => mult_zz_dv(hit_i)
       );
-  end generate SQR_LOOP;
+    end generate SQR_LOOP;
     SUM_Z_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "+++",
@@ -215,6 +234,9 @@ begin
       o_result    => sum_z,
       o_dv        => sum_z_dv
     );
+  --------------------------------
+  -- prep
+  --------------------------------
   SUM_Y_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "+++",
@@ -286,7 +308,9 @@ begin
       o_dv        => sum_zz_dv
     );
 
-  --------------------------------------------------
+  --------------------------------
+  -- C
+  --------------------------------
   MULT_N_SUM_ZZ_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "*4",
@@ -354,7 +378,8 @@ begin
     );
 
   --------------------------------
-
+  -- B
+  --------------------------------
   MULT_SZZ_SY_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "*",
@@ -422,7 +447,8 @@ begin
     );
 
   --------------------------------
-
+  -- A
+  --------------------------------
   MULT_N_SUM_ZY : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "*4",
@@ -490,7 +516,58 @@ begin
     );
 
   --------------------------------
+  -- S
+  --------------------------------
+  slope_bnom_sc <= param_a & "00000000000"; --11:2048
+  MAIN_DIV_IPR2: if g_SLOPE_DIV_IPR2_ENABLE generate
+    COMPONENT div_gen_r2s_v1
+      PORT (
+        aclk : IN STD_LOGIC;
+        aclken : IN STD_LOGIC;
+        aresetn : IN STD_LOGIC;
+        s_axis_divisor_tvalid : IN STD_LOGIC;
+        s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+        s_axis_dividend_tvalid : IN STD_LOGIC;
+        s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+        m_axis_dout_tvalid : OUT STD_LOGIC;
+        m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(55 DOWNTO 0)
+      );
+    END COMPONENT;
+  begin
+    DIV_b_IP : div_gen_r2s_v1
+      PORT MAP (
+        aclk => clk,
+        aclken => ena,
+        aresetn => not rst,
+        s_axis_divisor_tvalid => param_c_dv,
+        s_axis_divisor_tdata => param_c,
+        s_axis_dividend_tvalid => param_a_dv,
+        s_axis_dividend_tdata => slope_bnom_sc,
+        m_axis_dout_tvalid => slope_div_dout_tvalid,
+        -- m_axis_dout_tuser => m_axis_dout_tuser,
+        m_axis_dout_tdata => slope_div_dout_tdata
+      );
+    -- signal slope_div_dout_tdata_q : std_logic_vector(43 downto 0);-- := (others => '0');
+    -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
+    slope_div_dout_tdata_q <= slope_div_dout_tdata(55 downto 24);
+    slope_div_dout_tdata_r <= slope_div_dout_tdata(20 downto 0);
+    slope_bdiv_ipr2 <= slope_div_dout_tdata_q  when slope_div_dout_tvalid = '1' else (others => '0') ;
+    slope_bdiv_ipr2_dv <= slope_div_dout_tvalid;
+  end generate MAIN_DIV_IPR2;
+  
+  -- MAIN_DIV_SEL: if g_MAIN_DIV_SEL = "IPR2" generate
+    slope_bdiv <= slope_bdiv_ipr2;
+    slope_bdiv_dv <= slope_bdiv_ipr2_dv;
+  -- elsif g_MAIN_DIV_SEL = "LUT" generate
+  --   -- slope_bdiv <= bdiv_lut;
+  --   -- slope_bdiv_dv <= bdiv_lut_dv;
+  -- end generate MAIN_DIV_SEL;
+  --------------------------------
+  -- O
+  --------------------------------
 
+  --------------------------------
+  -- Zs 
   --------------------------------
 
   Y_EVAL : for i_mdt in g_NUM_MDT_LAYERS -1 downto 0 generate
@@ -506,20 +583,20 @@ begin
     signal sub_rc_b_scale : std_logic_vector(1 + sub_rc_b'length downto 0);
 
     COMPONENT cvp_pc_y_hr_div
-  PORT (
-    aclk : IN STD_LOGIC;
-    s_axis_divisor_tvalid : IN STD_LOGIC;
-    s_axis_divisor_tready : OUT STD_LOGIC;
-    s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-    s_axis_dividend_tvalid : IN STD_LOGIC;
-    s_axis_dividend_tready : OUT STD_LOGIC;
-    s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
-    m_axis_dout_tvalid : OUT STD_LOGIC;
-    m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
-  );
-END COMPONENT;
+      PORT (
+        aclk : IN STD_LOGIC;
+        s_axis_divisor_tvalid : IN STD_LOGIC;
+        s_axis_divisor_tready : OUT STD_LOGIC;
+        s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+        s_axis_dividend_tvalid : IN STD_LOGIC;
+        s_axis_dividend_tready : OUT STD_LOGIC;
+        s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
+        m_axis_dout_tvalid : OUT STD_LOGIC;
+        m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
+      );
+      END COMPONENT;
 
-  begin
+    begin
     
     MULT_R_C_ENT : entity shared_lib.VU_generic_pipelined_MATH
       generic map(
@@ -583,8 +660,18 @@ END COMPONENT;
       div_quo <= div_out(77 downto 32);
       div_fra <= div_out(31 downto 0);
 
+      o_vec_z_pos(i_mdt) <= unsigned(div_quo(UCM2HPS_VEC_POS_LEN -1 downto 0));
+      vec_z_pos_dv_a(i_mdt) <= div_out_dv;
 
-  end generate;
+    end generate;
+
+  --------------------------------
+
+  --------------------------------  
+  o_vec_z_pos_dv <= or_reduce(vec_z_pos_dv_a);
+  -- o_offset <= offset
+  o_slope <= signed(slope_bdiv);
+
 
 end architecture beh;
 
