@@ -620,10 +620,11 @@ begin
     -- OVERRIDE recovered clock
     ---------------------------------------------------
     recclk_out_override_gen: if (c_OVERRIDE_REC_CLK = true) and (I = 8) generate
-        signal toggle_data : std_logic;
+        signal d, nd : std_logic;
         begin 
             assert false report "overriding recovered clock to fixed MGT quad122, link " & integer'image(I)  severity warning;
-            recclk <= toggle_data;
+            recclk <= d;
+            nd <= not d;
             ttc_recclk_inst : FDCE
            generic map (
               INIT => '0',            -- Initial value of register, '0', '1'
@@ -633,11 +634,11 @@ begin
               IS_D_INVERTED => '0'    -- Optional inversion for D
            )
            port map (
-              Q => not toggle_data,     -- 1-bit output: Data
+              Q => nd,     -- 1-bit output: Data
               C => sl_rx_clk(idx),     -- 1-bit input: Clock
               CE => '1',   -- 1-bit input: Clock enable
               CLR => reset, -- 1-bit input: Asynchronous clear
-              D => toggle_data      -- 1-bit input: Data
+              D => d      -- 1-bit input: Data
            );
         end generate;
     
