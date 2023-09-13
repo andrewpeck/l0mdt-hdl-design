@@ -122,7 +122,8 @@ architecture Behavioral of mgt_wrapper is
   signal recclk_sync_clr: std_logic;
   signal recclk_sync_ce : std_logic;
   signal recclk         : std_logic;
-
+  signal recclk_freq    : std_logic_vector(31 downto 0);
+ 
   -- Reference clock
   signal refclk         : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
   signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
@@ -200,6 +201,20 @@ begin
         I       => recclk                   -- 1-bit input: Buffer
       );
 
+      rec_clk_frequency : entity work.clk_frequency
+        generic map (
+          clk_a_freq => 50_000_000
+          )
+        port map (
+          reset => reset ,
+          clk_a => axiclock,
+          clk_b => ttc_recclk_o,
+          rate  => recclk_freq
+          );
+          
+      mon.recclk_out.freq        <= recclk_freq(mon.recclk_out.freq'range);
+      mon.recclk_out.refclk_type <=
+        std_logic_vector(to_unsigned(refclk_freqs_t'POS(REF_NIL), 3));
   --------------------------------------------------------------------------------
   -- REFCLK
   --------------------------------------------------------------------------------
@@ -618,7 +633,7 @@ begin
               IS_D_INVERTED => '0'    -- Optional inversion for D
            )
            port map (
-              Q => toggle_data,     -- 1-bit output: Data
+              Q => not toggle_data,     -- 1-bit output: Data
               C => sl_rx_clk(idx),     -- 1-bit input: Clock
               CE => '1',   -- 1-bit input: Clock enable
               CLR => reset, -- 1-bit input: Asynchronous clear
@@ -634,7 +649,7 @@ begin
   -- Refclk Monitors
   --------------------------------------------------------------------------------
 
-  refclk_mirror : for I in 0 to c_NUM_REFCLKS-2 generate
+  refclk_mirror : for I in 0 to c_NUM_REFCLKS-1 generate
     signal clk_freq : std_logic_vector (31 downto 0) := (others => '0');
     signal ce, clr  : std_logic;
 

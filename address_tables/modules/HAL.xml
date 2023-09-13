@@ -47,8 +47,8 @@
 
   <node id="SL" address="0x0c00" permission="rw">
   <!-- Consider: mask is implemented considering maximum of 12 links-->
-    <node id="RX_COMMA_LOCK"  address="0x0"  mask="0xFFF" permission="r" description="rx comma detection lock status, 1-bit per link" parameters="Table=SL_TEST;Row=_3;Column=RXcomma;Status=1;Show=nz;Format=t_0_LoL_1_LOCKED"/>
-    <node id="RX_PACKET_LOCKED"  address="0x4" mask="0xFFF" permission="r" description="rx packet former lock status, 1-bit per link" parameters="Table=SL_TEST;Row=_3;Column=RXpacket;Status=1;Show=nz;Format=t_0_LoL_1_LOCKED"/>
+    <node id="RX_COMMA_LOCK"  address="0x0"  mask="0xFFF" permission="r" description="rx comma detection lock status, 1-bit per link" parameters="Table=SL_TEST;Row=_3;Column=RXcomma;Status=1;Show=nz"/>
+    <node id="RX_PACKET_LOCKED"  address="0x4" mask="0xFFF" permission="r" description="rx packet former lock status, 1-bit per link" parameters="Table=SL_TEST;Row=_3;Column=RXpacket;Status=1;Show=nz"/>
     <node id="TX_ENA_TEST_PATTERN"  address="0x8" mask="0xFFF" permission="rw" parameters="default=0x000" description="tx test pattern enable, 1-bit per link"/>
     <node id="COMMA_EVEN_SLIDES"  address="0xC" mask="0xFFF" permission="rw" parameters="default=0x000" description="even_slides_in option for the comma detection, 1-bit per link"/>
     <node id="RESET"  address="0x10"  permission="rw" description="resets signals">
