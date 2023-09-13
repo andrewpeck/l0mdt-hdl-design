@@ -634,11 +634,11 @@ begin
               IS_D_INVERTED => '0'    -- Optional inversion for D
            )
            port map (
-              Q => nd,     -- 1-bit output: Data
+              Q => d,     -- 1-bit output: Data
               C => sl_rx_clk(idx),     -- 1-bit input: Clock
               CE => '1',   -- 1-bit input: Clock enable
               CLR => reset, -- 1-bit input: Asynchronous clear
-              D => d      -- 1-bit input: Data
+              D => nd      -- 1-bit input: Data
            );
         end generate;
     
