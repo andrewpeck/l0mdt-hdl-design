@@ -2,3 +2,7 @@ HAL/IP/ku15p/framework_mmcm/framework_mmcm.xci
 HAL/IP/ku15p/onboardclk/onboardclk.xci
 HAL/IP/ku15p/mgt_10g24_gth/mgt_10g24_gth.xci
 HAL/IP/ku15p/mgt_10g24_gty/mgt_10g24_gty.xci
+# MGT
+HAL/hal/src/mgt/mgt_sl_wrapper_ku.vhd
+# Sector Logic
+HAL/sl/list/sl_ku.src lib=sl

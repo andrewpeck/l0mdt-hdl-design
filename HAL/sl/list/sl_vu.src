@@ -1,0 +1,26 @@
+# -*- mode: TCL;-*-
+HAL/sl/src/gty122-for-sl/RTL/gty_example_wrapper_functions.v verilog_header
+HAL/sl/src/gty122-for-sl/RTL/gtwizard_ultrascale_v1_7_gtye4_channel.v
+HAL/sl/src/gty122-for-sl/RTL/gtwizard_ultrascale_v1_7_gtye4_common.v
+HAL/sl/src/gty122-for-sl/RTL/gtwizard_ultrascale_v1_7_gtye4_delay_powergood.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122.v
+HAL/sl/src/gty122-for-sl/RTL/dec_8b10b.vhd
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_bit_sync.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_gtwiz_buffbypass_rx.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_gtwiz_buffbypass_tx.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_gtwiz_reset.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_gtwiz_userclk_rx.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_gtwiz_userclk_tx.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_gtwiz_userdata_rx.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_gtwiz_userdata_tx.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_init.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_reset_inv_sync.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_reset_sync.v
+HAL/sl/src/gty122-for-sl/RTL/gty_fixed_latency_example_top.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_example_wrapper.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_gtwizard_gtye4.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_gtwizard_top.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_gtye4_channel_wrapper.v
+HAL/sl/src/gty122-for-sl/RTL/gty_bank122_gtye4_common_wrapper.v
+HAL/sl/src/gty122-for-sl/cons/gty_bank122_false_path.xdc XDC
+HAL/sl/src/gty122-for-sl/RTL/rx_comma_detection_okumura.vhd

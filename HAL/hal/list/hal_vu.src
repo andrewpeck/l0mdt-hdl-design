@@ -1,3 +1,7 @@
 HAL/IP/vu13p/framework_mmcm/framework_mmcm.xci
 HAL/IP/vu13p/onboardclk/onboardclk.xci
 HAL/IP/vu13p/mgt_10g24_gty/mgt_10g24_gty.xci
+# MGT
+HAL/hal/src/mgt/mgt_sl_wrapper_vu.vhd
+# Sector Logic
+HAL/sl/list/sl_vu.src lib=sl
