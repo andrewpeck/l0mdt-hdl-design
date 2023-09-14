@@ -72,4 +72,4 @@
 	url = ../detector-parameters.git
 [submodule "HAL/sl/src/gty122-for-sl"]
 	path = HAL/sl/src/gty122-for-sl
-	url = ssh://git@gitlab.cern.ch:7999/atlas-tdaq-phase2-l0mdt-electronics/misc-tools/gty122-for-sl.git
+	url = ../misc-tools/gty122-for-sl.git
