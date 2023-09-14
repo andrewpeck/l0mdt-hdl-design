@@ -29,6 +29,9 @@ entity FM_map_vhdl_wrapper is
   port (
     clk_axi          : in  std_logic;
     reset_axi_n      : in  std_logic;
+    clk_hs          : in  std_logic;
+    reset_hs      : in  std_logic;
+
     --slave_readMOSI   : in  AXIReadMOSI;
    slave_readMOSI_address : in std_logic_vector(AXI_ADDR_WIDTH-1 downto 0); -- ARADDR
    slave_readMOSI_address_ID : in std_logic_vector(AXI_ID_BIT_COUNT-1 downto 0); --ARID
@@ -115,8 +118,8 @@ begin  -- architecture behavioral
 
   --fm_mon.SB1.SB_MEM.rd_data       <= x"00000000";
   --fm_mon.SB1.SB_MEM.rd_data_valid <= fm_ctrl.SB1.SB_MEM.enable;
-  clock_and_control.clk           <= clk_axi;
-  clock_and_control.rst           <= NOT(reset_axi_n);
+  clock_and_control.clk           <= clk_hs;
+  clock_and_control.rst           <= reset_hs;
   fm_mon                          <= convert(fm_mon_v, fm_mon);
   fm_ctrl_v                       <= convert(fm_ctrl, fm_ctrl_v);
   

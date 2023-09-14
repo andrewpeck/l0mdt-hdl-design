@@ -160,7 +160,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 
 	  for (int i = 0 ; i < 1; i++)
 	    begin
-	  mtestWData = 6; //$urandom();
+	       mtestWData = 0; //6; //$urandom(); 6-> playback write, 0-> no playback
 	      mtestWUSER      =   $urandom_range(0,15);
 	      mtestAWUSER     =   $urandom_range(0,15); 
 
@@ -195,7 +195,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	  #12800 
 	 for (int i = 0; i < 32; i++)
 	   begin
-	      mtestWData = $urandom() | 32'h8000; //data_valid
+	      mtestWData = $urandom() | 51'h400000000; //data_valid
         //single write transaction filled in user inputs through API 
         single_write_transaction_api("single write with api",
                                      .id(mtestWID),
@@ -221,7 +221,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 
 	  for (int i = 0 ; i < 1; i++)
 	    begin
-	  mtestWData = 5; //$urandom();
+	       mtestWData = 0; //5-> playback loop; //$urandom();
 	      mtestWUSER      =   $urandom_range(0,15);
 	      mtestAWUSER     =   $urandom_range(0,15); 
 
@@ -240,7 +240,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	      //if(i == 10)mtestWADDR = 2048;
 	    end // for (int i = 0 ; i < 1; i++)
 
-	  
+	  #12800 
 	  mtestRADDR = 32'h1460 << 2 ; //start bram reads
 	  for (int i = 0; i < 32; i++)
 	    begin

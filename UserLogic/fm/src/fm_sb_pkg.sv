@@ -33,6 +33,8 @@ package fm_sb_pkg;
    
    parameter sb_master_dummy_index    = total_l0mdt_sb ;
    parameter sb_slave_dummy_index       = sb_master_dummy_index + 1 ;
+
+   parameter SB_DUMMY_DW = 51;
    
 
    FM_CTRL_t FM_CTRL;
@@ -181,8 +183,41 @@ package fm_sb_pkg;
 				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //OUT - THREAD 2
 				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
 				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
-					    32, //sb_dummy0
-					    32 //sb_dummy1
+				       find_ceil(SB_DUMMY_DW,axi_dw) * axi_dw, //sb_dummy0
+				       find_ceil(SB_DUMMY_DW,axi_dw) * axi_dw //sb_dummy1
+				       };
+
+
+    parameter integer  sb_tp_dw[sb_mapped_n] = {
+				       HEG2SFSLC_LEN, //INN - THREAD 0
+				       HEG2SFHIT_LEN,
+				       SF2PTCALC_LEN,
+				       HEG2SFSLC_LEN, //INN - THREAD 1
+				       HEG2SFHIT_LEN,
+				       SF2PTCALC_LEN,
+				       HEG2SFSLC_LEN, //INN - THREAD 2
+				       HEG2SFHIT_LEN,
+				       SF2PTCALC_LEN,
+				       HEG2SFSLC_LEN, //MID - THREAD 0
+				       HEG2SFHIT_LEN,
+				       SF2PTCALC_LEN,
+				       HEG2SFSLC_LEN, //MID - THREAD 1
+				       HEG2SFHIT_LEN,
+				       SF2PTCALC_LEN,
+				       HEG2SFSLC_LEN, //MID - THREAD 2
+				       HEG2SFHIT_LEN,
+				       SF2PTCALC_LEN,
+				       HEG2SFSLC_LEN, //OUT - THREAD 0
+				       HEG2SFHIT_LEN,
+				       SF2PTCALC_LEN,
+				       HEG2SFSLC_LEN, //OUT - THREAD 1
+				       HEG2SFHIT_LEN,
+				       SF2PTCALC_LEN,
+				       HEG2SFSLC_LEN, //OUT - THREAD 2
+				       HEG2SFHIT_LEN,
+				       SF2PTCALC_LEN,
+				       SB_DUMMY_DW, //sb_dummy0
+				       SB_DUMMY_DW //sb_dummy1
 				       };
 
 

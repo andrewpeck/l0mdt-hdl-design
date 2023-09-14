@@ -58,7 +58,7 @@ module fm_data #(
      generate
       for (sb_i = 0; sb_i < sb_mapped_n; sb_i = sb_i+1)
 	begin
-	   assign  fm_passthrough_data[sb_i].fm_vld = fm_passthrough_data[sb_i].fm_data[sb_dw[sb_i]-1] & ~sb_empty[sb_i];
+	   assign  fm_passthrough_data[sb_i].fm_vld = fm_passthrough_data[sb_i].fm_data[sb_tp_dw[sb_i]-1] & ~sb_empty[sb_i];
 	   
 	end
      endgenerate
@@ -438,11 +438,18 @@ module fm_data #(
 		       )
 	   fm_spybuffer_inst
 		(
+		 /*
+		  //TEST SpyBuffer IN SINGLE CLOCK DOMAIN
 		 .rclock((sb_i == sb_master_dummy_index || sb_i == sb_slave_dummy_index)? spy_clock:clk_hs),
 		 .wclock((sb_i == sb_master_dummy_index || sb_i == sb_slave_dummy_index)? spy_clock:clk_hs),
 		 .rresetbar((sb_i == sb_master_dummy_index || sb_i == sb_slave_dummy_index)? axi_reset_n:~rst_hs),
 		 .wresetbar((sb_i == sb_master_dummy_index || sb_i == sb_slave_dummy_index)? axi_reset_n:~rst_hs),
-		 .write_data(fm_mon_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]), //CHECK IF ALWAYS VALID
+		  */
+		 .rclock(clk_hs),
+		 .wclock(clk_hs),
+		 .rresetbar(~rst_hs),
+		 .wresetbar(~rst_hs),
+		 .write_data({'b0,fm_mon_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]}), //CHECK IF ALWAYS VALID
 		 .write_enable(fm_mon_data[sb_i].fm_vld),
 		 .read_enable(1'b1),
 		 .read_data(fm_passthrough_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]),
@@ -544,21 +551,23 @@ module fm_data #(
 
    //Debug
    fm_dummy_block #(
-		    .dummy_master(1)
+		    .dummy_master(1),
+		    .data_width(SB_DUMMY_DW)
 		    )fm_dummy_block_master(
-					   .clk(spy_clock),
-					   .rst(~axi_reset_n),
+					   .clk(clk_hs), //spy_clock),
+					   .rst(rst_hs),  //~axi_reset_n),
 					   .dummy_input(0),
 					   .dummy_input_vld(0),
 					   .dummy_mon_data(dummy_mon_data[0]),
 					   .dummy_mon_vld(dummy_mon_vld[0])
 					   );
    fm_dummy_block #(
-		    .dummy_master(0)
+		    .dummy_master(0),
+		    .data_width(SB_DUMMY_DW)
 		    )fm_dummy_block_slave(
-					  .clk(spy_clock),
-					  .rst(~axi_reset_n),
-					  .dummy_input(fm_passthrough_data[sb_master_dummy_index].fm_data[31:0]),
+					  .clk(clk_hs), //spy_clock),
+					  .rst(rst_hs), //~axi_reset_n),
+					  .dummy_input(fm_passthrough_data[sb_master_dummy_index].fm_data[SB_DUMMY_DW-1:0]),
 					  .dummy_input_vld(fm_passthrough_data[sb_master_dummy_index].fm_vld),
 					  .dummy_mon_data(dummy_mon_data[1]),
 					  .dummy_mon_vld(dummy_mon_vld[1])

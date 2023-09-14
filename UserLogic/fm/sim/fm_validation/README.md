@@ -10,7 +10,7 @@ set xilinx_compiled_lib_dir "/home/psundara/xilinx/compiled_libraries/v2020.2"
 ```
 2. Create Vivado project with Xilinx AXI VIP and AXI interface to Fast Monitoring block
 ```
-vivado -source fm_validation_vivado.tcl &
+vivado -source fm_validation.tcl &
 ```
 3.Run Simulation from Vivado GUI.  Testbench works with the Questa simulator
 
