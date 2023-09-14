@@ -284,7 +284,8 @@ check_auto_generated_code:
     - mkdir tools/cocotb/l0mdt_tv
     # Fetch testvectors from EOS
     - echo $EOS_PASSWORD | kinit $EOS_USER
-    - xrdcp root://eosuser.cern.ch//eos/project/a/atlas-tdaq-phase2-l0mdt-electronics/TestVectors/TV_MC_2022-01-20-test-for-cocotb/B_C_3.xz tools/cocotb/l0mdt_tv/.
+    - echo "Test vector file location on EOS is ${L0MDT_TESTVECTOR_EOS_DIR}"
+    - xrdcp root://eosuser.cern.ch/${L0MDT_TESTVECTOR_EOS_DIR} tools/cocotb/l0mdt_tv/.
     # PYTHON
     - export PATH="/home/l0mdtel/.pyenv/bin:$PATH"
     - eval "$(pyenv init -)"

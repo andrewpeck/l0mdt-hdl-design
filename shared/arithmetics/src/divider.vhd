@@ -13,6 +13,7 @@ USE ieee.numeric_std.ALL;
 USE ieee.math_real.ALL;
 
 LIBRARY shared_lib;
+LIBRARY shared_cfg_def_lib;
 
 ENTITY divider IS
   GENERIC(
@@ -20,6 +21,7 @@ ENTITY divider IS
     g_DENOMINATOR_LEN   : INTEGER   := 20;
     g_DIVIDER_LEN       : INTEGER   := 22;
     g_QUOTIENT_LEN      : INTEGER   := 20;
+    g_MULTIPLIER_LEN    : INTEGER   := 0;
     g_IS_SIGNED         : STD_LOGIC := '0';
     g_ROM_STYLE         : STRING    := "distributed";
     g_ROM_FILE          : STRING    := "fitter_reciprocal.mem"
@@ -100,7 +102,7 @@ begin
       if i_enable = '1' then
         if g_IS_SIGNED = '1' then
           reciprocal_addr <= STD_LOGIC_VECTOR(abs(SIGNED(i_denominator)));
-          den_sign <= i_denominator(0);
+          den_sign <= i_denominator(g_DENOMINATOR_LEN-1);
         else
           reciprocal_addr <= STD_LOGIC_VECTOR(i_denominator);
         end if;
@@ -146,9 +148,9 @@ begin
       -- Clock 6
       o_valid <= dv5;
       if g_IS_SIGNED = '1' then
-        o_quotient <= STD_LOGIC_VECTOR(resize(shift_right(quot_full_signed_s0, g_DIVIDER_LEN), g_QUOTIENT_LEN));
+        o_quotient <= STD_LOGIC_VECTOR(resize(shift_right(quot_full_signed_s0, g_DIVIDER_LEN - g_MULTIPLIER_LEN), g_QUOTIENT_LEN));
       else
-        o_quotient <= STD_LOGIC_VECTOR(resize(shift_right(quot_full_unsigned_s0, g_DIVIDER_LEN), g_QUOTIENT_LEN));
+        o_quotient <= STD_LOGIC_VECTOR(resize(shift_right(quot_full_unsigned_s0, g_DIVIDER_LEN - g_MULTIPLIER_LEN), g_QUOTIENT_LEN));
       end if;
     end if;
   end process DIV_PROC;

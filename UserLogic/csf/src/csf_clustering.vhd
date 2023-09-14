@@ -299,8 +299,10 @@ BEGIN
             o_cluster_hits(i * 2 + 1) <= convert(hit_minus(i), o_cluster_hits(i * 2 + 1));
             counters(i * 2)           <= counters(i * 2) + 1;
             counters(i * 2 + 1)       <= counters(i * 2 + 1) + 1;
-            max_counter               <= counters(i * 2) + 1;
-            out_cluster               <= to_unsigned(i, MAX_CLUSTERS_LEN);
+            IF counters(i * 2) > max_counter THEN
+              max_counter               <= counters(i * 2) + 1;
+              out_cluster               <= to_unsigned(i, MAX_CLUSTERS_LEN);
+            end if;
           ELSE
             -- Check Cluster i*2
             IF i = 0 OR on_cluster(i - 1) = '0' THEN
@@ -353,11 +355,13 @@ BEGIN
         o_fitter_en(to_integer(out_cluster)) <= '1';
         reference_b                          <= (OTHERS => (OTHERS => '0'));
         counters                             <= (OTHERS => (OTHERS => '0'));
+        max_counter <= (others => '0');
       END IF;
 
       IF i_rst = '1' THEN
         reference_b                          <= (OTHERS => (OTHERS => '0'));
         counters                             <= (OTHERS => (OTHERS => '0'));
+        max_counter <= (others => '0');
       END IF;
 
 

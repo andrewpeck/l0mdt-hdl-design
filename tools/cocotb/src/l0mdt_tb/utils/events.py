@@ -1,4 +1,5 @@
 import os
+import math
 import struct
 from pathlib import Path
 
@@ -60,12 +61,17 @@ def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):
     OBSOLETE - should be removed    
     """
     station_num = station_name_to_id(station_ID)
+    # print("IACOPO - _event_belongs_to_sectorID ",
+    #       "sectorID" , sectorID,
+    #       "icand",icand,
+    #       "station_ID = ", station_ID, 
+    #       "station_num =", station_num)
     if(station_num == -99):
         sl_trailer = DF[icand].getBitFieldWord("SL_TRAILER", "")
     elif station_ID != "EXT": #EXT station not supported by TV generator
         sl_trailer = DF[station_num].getBitFieldWord("SL_TRAILER", "")
     else:        
-        print ("TV does not exist for station ID = ", station_ID)
+        cocotb.log.debug(f"TV does not exist for station ID = {station_ID}")
         return 2; #DF not supported yet (example for EXT station), TODO - check behavior - will probably infer zeroes
 
     fiber_id = sl_trailer[0].get_field_bits("fiberid")
@@ -122,20 +128,23 @@ def get_bitfield(
         BF_list = (event.DF_SL[candidate].getBitFieldWord(bitfieldname, station_id))
     elif df_type == "MDT":
         if tv_type=="list_nested_tdc":
-            ### Case of nested list containing per-mezz information 
-            ### e.g. [ [ [ [] for _ in range(self.maxn_mezz) ] for _ in range(self.maxn_csm) ] for _ in range (self.maxn_layer) ]
+            ### Extract list of hits per csm
             ### used by TDCPOLMUX2TAR, TAR2HPS        
             csm_id = port % 6 ### Done up to 6 as the 7th should not be filled as the RTL has 6*4 channels
             BF_list = event.DF_MDT[0].getBitFieldWord(bitfieldname, station_id, csm_id)
+        elif tv_type=="list_nested_tdc_per_mezz":
+            ### Extract lists of hits per Mezzanine 
+            ### Used when reading TDCPOLMUX2TAR TV for the polmux test
+            csm_id = math.floor(port/event.DF_MDT[0].maxn_mezz)% event.DF_MDT[0].maxn_csm
+            mezz_id = port % event.DF_MDT[0].maxn_mezz
+            BF_list = event.DF_MDT[0].getBitFieldWord(bitfieldname, station_id, csm_id, mezz_id)
+            cocotb.log.debug(f" > returned {BF_list}")
         else:
-            ###
-            ### NB: This is temporary!!! 
-            raise NotImplementedError("Not sure if it's used for current tests")    
-            BF_list = event.DF_MDT[0].getBitFieldWord(bitfieldname,station_id)
+            raise NotImplementedError(f"Function get_bitfield() was called with df_type=MDT and tv_type={tv_type}, which is not supported.")  
 
 
     ### Extract the content of BF_list to a list of bitwordvalues (or copy them if keep_bitfieldword=True)
-    if tv_type == "list" or tv_type=="list_nested_tdc":
+    if tv_type == "list" or tv_type=="list_nested_tdc" or tv_type=="list_nested_tdc_per_mezz":
         ### Case of list of bitfieldwords
         for BF in BF_list:
             if not keep_bitfieldword:
@@ -143,6 +152,7 @@ def get_bitfield(
             else:
                 returnVal.append(BF)
         if len(returnVal)==0:
+            ### At least one bitword is expected
             returnVal=[0]        
     else:        
         ### Case of tvtype is scalar-type
@@ -202,7 +212,7 @@ def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,s
 
     return tvRTL_list
 
-def   print_tv_bitfields(tvRTL_list, print_this_event=-1): 
+def print_tv_bitfields(tvRTL_list, print_this_event=-1): 
     port_idx  = 0
     print ("events.py: print_tv_bitfields")
     
@@ -233,6 +243,13 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
      - retrieves the DataFormat object from Simulated TV
      - builds a DataFormat object that is filled each time with RTL information
      - compares the bitfield from the two above
+
+    Since the RTL output is not separated in events, the case of events with multiple hits 
+    is handled in a special way:
+     - n. of expected hits in an event is obtained by the EXP_DF
+     - this number is stored in a dict (rtl_iEvent_offset) to keep track of the index of the rtl bitword
+     - Zeros between two events, added by the function time_ordering() are ignored
+
     
     Arguments
         tv_bcid_list      : sim tv in this bcid
@@ -246,7 +263,6 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
         tv_thread_mapping : only used by multi-threading rtl, otherwise [ 0 for _ in range(len(n_candidates)) ]
         tv_type           : type of testvector, can be value, list, list_nested_tdc, etc
         tv_df_type        : type of DataFormat that should be considered, either SL" or "MDT"
-        pad_size          : length of an event (used to get the right item from rtl_tv)
     """
 
     ### Useful map port number -> staion ID
@@ -258,7 +274,7 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
     fail_count           = 0
     station_failure_cnt  = {} ## initialized during loop
     station_failure_list = {} ## initialized during loop
-
+    rtl_iEvent_offset = {iPort:0 for iPort in range(n_ports)} 
 
     ### Loop over events, ports
     for iEvent in range(n_events):
@@ -274,46 +290,53 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
                                   port=iPort,
                                   keep_bitfieldword=True)
             
-            
-            ### Add one layer, to behave identically in case of lists or scalars
-            if not (tv_type == "list" or tv_type=="list_nested_tdc"):
-                l_EXP_BF = [EXP_BF]                
+            cocotb.log.debug(f"event {iEvent} port {iPort} expected {len(l_EXP_BF)} events")
+            if not l_EXP_BF==[0]:
+                cocotb.log.debug(f"Printing expected events | {[x.get_bitwordvalue() for x in l_EXP_BF]}")
+            cocotb.log.debug(f"RTL output rtl_tv[{iPort}]| {[int(x) for x in rtl_tv[iPort]]}")
 
+            ### Add one layer, to behave identically in case of lists or scalars
+            if not (tv_type == "list" or tv_type=="list_nested_tdc" or tv_type=="list_nested_tdc_per_mezz"):
+                l_EXP_BF = [EXP_BF]                
             
-            ### Skip case in which both are placeholders (nothing to compare)
-            if (l_EXP_BF==[0] and rtl_tv[iPort][iEvent]==0):
+            ### Skip empty events
+            if l_EXP_BF==[0]: 
                 continue
 
-            ### Event identifier
-            print(tv_bcid_list[iEvent].header.dump()) 
+            ### Print event identifier
+            cocotb.log.info(tv_bcid_list[iEvent].header.dump()) 
+
+            ### Remove zeros introduced by the time-ordering
+            rtl_tv = [ [x for x in rtl_tv[iPort] if x!=0] for iPort in range(n_ports) ]
 
             ### Loop over entry matching this event/port
             ### if tvtype is not a list (or list_nested_tdc) the following will be done once
-            for ii in range(len(l_EXP_BF)):                
-
-                if len(l_EXP_BF) > 1:
-                    print(f" Word {1+ii} of {len(l_EXP_BF)} for this event:") 
-
+            for ii in range(len(l_EXP_BF)):       
+                #if len(l_EXP_BF) > 1:
+                #    print(f" Word {1+ii} of {len(l_EXP_BF)} for this event:") 
                 ### This EXP BitFieldWord
                 EXP_BF = l_EXP_BF[ii]
                 
                 ### Create RTL BitFieldWord and fill it with output value
-                RTL_BF = EXP_BF.copy()
-                ii_rtl = ii + (iEvent * pad_size) # index along rtl_tv taking pad_size into account
-                RTL_BF.set_bitwordvalue(rtl_tv[iPort][ii_rtl])
+                RTL_BF = EXP_BF.copy()  
+                ii_rtl = ii + rtl_iEvent_offset[iPort]
+                rtl_bits = rtl_tv[iPort][ii_rtl]
+                #print(f'Event {iEvent} port {iPort} rtl offset is {rtl_iEvent_offset[iPort]} this bit is checking word {ii} so {ii_rtl}')
+
+                RTL_BF.set_bitwordvalue(rtl_bits)
                 
                 ### Comparison and table printouts
                 results = EXP_BF.compare_bitwordvalue( RTL_BF, tolerances )
-                print(tabulate(results[1], results[2], tablefmt="psql"))
+                cocotb.log.info(tabulate(results[1], results[2], tablefmt="psql"))
                 ### Print table results
                 if results[0]:
-                    cprint("\tPass: RTL Matches expected  value", "green")
+                    cocotb.log.info("\tPass: RTL Matches expected  value")
                     pass_count = pass_count + 1
                 else:
-                    cprint("\tFail: Mismatch in RTL and expected value", "red")
+                    cocotb.log.info("\tFail: Mismatch in RTL and expected value")
                     fail_count = fail_count + 1
                     events_are_equal = False
-                print("\n\n")
+                cocotb.log.info("\n\n")
 
                 ### Done comparison, storing error count and useful info
                 ### Initialize dictiornaries storing failures per station
@@ -337,6 +360,9 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
                     True)
                 )
 
+            # Increase offset with the size of this event
+            rtl_iEvent_offset[iPort]+=len(l_EXP_BF)
+        #print('---------------------------------'+'\n'+f"event {iEvent} checked \n",rtl_iEvent_offset)
     ### Save csv with per-station comparison data
     Path(output_path).mkdir(parents=True, exist_ok=True)    
     ##header = tvtools.get_pd_headers(EXP_BF, tv_df_type=="SL")
@@ -345,7 +371,7 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
         df_file_name =  os.path.join( output_path, "DF_" + tvformat + ( "_"+station if station!="NONE" else "") + ".csv" )
         df_data = pd.DataFrame(station_failure_list[station], columns = header)        
         df_data.to_csv(df_file_name)
-        print(f"Saving comparison data to {df_file_name}")
+        cocotb.log.info(f"Saving comparison data to {df_file_name}")
                                 
 
     return events_are_equal, pass_count, fail_count, station_failure_cnt
@@ -548,10 +574,10 @@ def parse_tvlist(
     for ievent in range(len(events_list)):  # range(n_to_load):
 
         if valid_events < n_to_load:
-            cocotb.log.debug(f"\n\n\n{40*'-'}\n Event {ievent} started\n{40*'-'}")
-            cocotb.log.debug(f"ievent {events_list[ievent]}")
-            cocotb.log.debug(f"ievent.DF_SL {events_list[ievent].DF_SL}")
-            cocotb.log.debug("ievent.DF_MDT {events_list[ievent].DF_MDT}")
+            cocotb.log.info(f"\n\n\n{40*'-'}\n Event {ievent} started\n{40*'-'}")
+            cocotb.log.info(f"Printing BXData of {ievent} {events_list[ievent]}")
+            #cocotb.log.debug(f"ievent.DF_SL {events_list[ievent].DF_SL}")
+            #cocotb.log.debug("ievent.DF_MDT {events_list[ievent].DF_MDT}")
 
             event_found_for_port_interface = 0            
             for my_port in range(n_ports):                
@@ -576,13 +602,13 @@ def parse_tvlist(
                         if tv_type == 'value' and (zero_padding_size > 0 or prepend_zeros > 0):
                             tv[my_port][valid_events] = [tv[my_port][valid_events]]
 
+                    cocotb.log.debug(f"SECTOR OK - TVFORMAT = {tvformat} tv[{my_port}][{valid_events}]={tv[my_port][valid_events]}")
+
                             
             ### Prepend zeros
             if prepend_zeros > 0:
                 for my_port in range(n_ports):
                     tv[my_port][valid_events] =  (prepend_zeros * [0]) + tv[my_port][valid_events]
-
-            
 
 
             ### Append zeros
@@ -596,8 +622,7 @@ def parse_tvlist(
                     else:
                         tv[my_port][valid_events] = zero_padding_size * [0]
 
-                    cocotb.log.debug(f"SECTOR OK - TVFORMAT = {tvformat} tv[{my_port}][{valid_events}]={tv[my_port][valid_events]}")
-
+            
             if event_found_for_port_interface > 0:
                 valid_events = valid_events + 1
         else:
