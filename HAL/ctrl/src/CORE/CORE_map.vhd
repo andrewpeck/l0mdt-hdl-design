@@ -4695,19 +4695,8 @@ begin  -- architecture behavioral
         when 1071 => --0x42f
           localRdData(28 downto  0)  <=  Mon.MGT.REFCLK(31).FREQ;                              --Reference clock frequency in Hz
           localRdData(31 downto 29)  <=  Mon.MGT.REFCLK(31).REFCLK_TYPE;                       --Reference clock type (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_NIL)
-        when 1072 => --0x430
-          localRdData(28 downto  0)  <=  Mon.MGT.RECCLK(0).FREQ;                               --Reference clock frequency in Hz
-          localRdData(31 downto 29)  <=  Mon.MGT.RECCLK(0).REFCLK_TYPE;                        --Reference clock type (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_NIL)
-        when 1073 => --0x431
-          localRdData(28 downto  0)  <=  Mon.MGT.RECCLK(1).FREQ;                               --Reference clock frequency in Hz
-          localRdData(31 downto 29)  <=  Mon.MGT.RECCLK(1).REFCLK_TYPE;                        --Reference clock type (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_NIL)
-        when 1074 => --0x432
-          localRdData(28 downto  0)  <=  Mon.MGT.RECCLK(2).FREQ;                               --Reference clock frequency in Hz
-          localRdData(31 downto 29)  <=  Mon.MGT.RECCLK(2).REFCLK_TYPE;                        --Reference clock type (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_NIL)
         when 1075 => --0x433
-          localRdData(28 downto  0)  <=  Mon.MGT.RECCLK(3).FREQ;                               --Reference clock frequency in Hz
           localRdData(28 downto  0)  <=  Mon.MGT.RECCLK_out.FREQ;                              --Reference clock frequency in Hz
-          localRdData(31 downto 29)  <=  Mon.MGT.RECCLK(3).REFCLK_TYPE;                        --Reference clock type (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_NIL)
           localRdData(31 downto 29)  <=  Mon.MGT.RECCLK_out.REFCLK_TYPE;                       --Reference clock type (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_NIL)
 
 

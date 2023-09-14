@@ -168,25 +168,6 @@ package CORE_CTRL is
    function convert(x: CORE_MGT_REFCLK_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: CORE_MGT_REFCLK_MON_t_ARRAY) return CORE_MGT_REFCLK_MON_t_ARRAY;
 
-   type CORE_MGT_RECCLK_MON_t is record
-      FREQ : std_logic_vector(29 - 1 downto 0);
-      REFCLK_TYPE : std_logic_vector(3 - 1 downto 0);
-   end record CORE_MGT_RECCLK_MON_t;
-   attribute w of CORE_MGT_RECCLK_MON_t : type is 32;
-   function width(x: CORE_MGT_RECCLK_MON_t) return natural;
-   function convert(x: CORE_MGT_RECCLK_MON_t; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: CORE_MGT_RECCLK_MON_t) return CORE_MGT_RECCLK_MON_t;
-   function zero(tpl: CORE_MGT_RECCLK_MON_t) return CORE_MGT_RECCLK_MON_t;
-
-   type CORE_MGT_RECCLK_MON_t_ARRAY is array(4 -1 downto 0) of CORE_MGT_RECCLK_MON_t;
-   attribute w of CORE_MGT_RECCLK_MON_t_ARRAY : type is 128;
-   function width(x: CORE_MGT_RECCLK_MON_t_ARRAY) return integer;
-   function convert(x: CORE_MGT_RECCLK_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: CORE_MGT_RECCLK_MON_t_ARRAY) return CORE_MGT_RECCLK_MON_t_ARRAY;
-   function zero(tpl: CORE_MGT_RECCLK_MON_t_ARRAY) return CORE_MGT_RECCLK_MON_t_ARRAY;
-   function convert(x: CORE_MGT_RECCLK_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: CORE_MGT_RECCLK_MON_t_ARRAY) return CORE_MGT_RECCLK_MON_t_ARRAY;
-
    type CORE_MGT_RECCLK_out_MON_t is record
       FREQ : std_logic_vector(29 - 1 downto 0);
       REFCLK_TYPE : std_logic_vector(3 - 1 downto 0);
@@ -200,10 +181,9 @@ package CORE_CTRL is
    type CORE_MGT_MON_t is record
       MGT : CORE_MGT_MGT_MON_t_ARRAY;
       REFCLK : CORE_MGT_REFCLK_MON_t_ARRAY;
-      RECCLK : CORE_MGT_RECCLK_MON_t_ARRAY;
       RECCLK_out : CORE_MGT_RECCLK_out_MON_t;
    end record CORE_MGT_MON_t;
-   attribute w of CORE_MGT_MON_t : type is 6816;
+   attribute w of CORE_MGT_MON_t : type is 6688;
    function width(x: CORE_MGT_MON_t) return natural;
    function convert(x: CORE_MGT_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MGT_MON_t) return CORE_MGT_MON_t;
@@ -222,7 +202,7 @@ package CORE_CTRL is
       CLOCKING : CORE_CLOCKING_MON_t;
       MGT : CORE_MGT_MON_t;
    end record CORE_MON_t;
-   attribute w of CORE_MON_t : type is 6913;
+   attribute w of CORE_MON_t : type is 6785;
    function width(x: CORE_MON_t) return natural;
    function convert(x: CORE_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: CORE_MON_t) return CORE_MON_t;
@@ -1279,131 +1259,6 @@ package body CORE_CTRL is
       return y;
    end function convert;
 
-   function width(x: CORE_MGT_RECCLK_MON_t) return natural is
-      variable w : natural := 0;
-   begin
-      w := w + width(x.FREQ);
-      w := w + width(x.REFCLK_TYPE);
-      return w;
-   end function width;
-   function convert(x: CORE_MGT_RECCLK_MON_t; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      variable w : integer;
-      variable u : integer := tpl'left;
-   begin
-      if tpl'ascending then
-         w := width(x.FREQ);
-         y(u to u+w-1) := convert(x.FREQ, y(u to u+w-1));
-         u := u + w;
-         w := width(x.REFCLK_TYPE);
-         y(u to u+w-1) := convert(x.REFCLK_TYPE, y(u to u+w-1));
-      else
-         w := width(x.FREQ);
-         y(u downto u-w+1) := convert(x.FREQ, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.REFCLK_TYPE);
-         y(u downto u-w+1) := convert(x.REFCLK_TYPE, y(u downto u-w+1));
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: CORE_MGT_RECCLK_MON_t) return CORE_MGT_RECCLK_MON_t is
-      variable y : CORE_MGT_RECCLK_MON_t;
-      variable w : integer;
-      variable u : integer := x'left;
-   begin
-      if x'ascending then
-         w := width(tpl.FREQ);
-         y.FREQ := convert(x(u to u+w-1), tpl.FREQ);
-         u := u + w;
-         w := width(tpl.REFCLK_TYPE);
-         y.REFCLK_TYPE := convert(x(u to u+w-1), tpl.REFCLK_TYPE);
-      else
-         w := width(tpl.FREQ);
-         y.FREQ := convert(x(u downto u-w+1), tpl.FREQ);
-         u := u - w;
-         w := width(tpl.REFCLK_TYPE);
-         y.REFCLK_TYPE := convert(x(u downto u-w+1), tpl.REFCLK_TYPE);
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: CORE_MGT_RECCLK_MON_t) return CORE_MGT_RECCLK_MON_t is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-
-   function width(x: CORE_MGT_RECCLK_MON_t_ARRAY) return integer is
-      variable w : integer;
-   begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
-   end function width;
-   function convert(x: CORE_MGT_RECCLK_MON_t_ARRAY; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
-      else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: CORE_MGT_RECCLK_MON_t_ARRAY) return CORE_MGT_RECCLK_MON_t_ARRAY is
-      variable y : CORE_MGT_RECCLK_MON_t_ARRAY;
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
-      else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: CORE_MGT_RECCLK_MON_t_ARRAY) return CORE_MGT_RECCLK_MON_t_ARRAY is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-   function convert(x: CORE_MGT_RECCLK_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: CORE_MGT_RECCLK_MON_t_ARRAY) return CORE_MGT_RECCLK_MON_t_ARRAY is
-      variable y : CORE_MGT_RECCLK_MON_t_ARRAY;
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
-
    function width(x: CORE_MGT_RECCLK_out_MON_t) return natural is
       variable w : natural := 0;
    begin
@@ -1461,7 +1316,6 @@ package body CORE_CTRL is
    begin
       w := w + width(x.MGT);
       w := w + width(x.REFCLK);
-      w := w + width(x.RECCLK);
       w := w + width(x.RECCLK_out);
       return w;
    end function width;
@@ -1477,9 +1331,6 @@ package body CORE_CTRL is
          w := width(x.REFCLK);
          y(u to u+w-1) := convert(x.REFCLK, y(u to u+w-1));
          u := u + w;
-         w := width(x.RECCLK);
-         y(u to u+w-1) := convert(x.RECCLK, y(u to u+w-1));
-         u := u + w;
          w := width(x.RECCLK_out);
          y(u to u+w-1) := convert(x.RECCLK_out, y(u to u+w-1));
       else
@@ -1488,9 +1339,6 @@ package body CORE_CTRL is
          u := u - w;
          w := width(x.REFCLK);
          y(u downto u-w+1) := convert(x.REFCLK, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.RECCLK);
-         y(u downto u-w+1) := convert(x.RECCLK, y(u downto u-w+1));
          u := u - w;
          w := width(x.RECCLK_out);
          y(u downto u-w+1) := convert(x.RECCLK_out, y(u downto u-w+1));
@@ -1509,9 +1357,6 @@ package body CORE_CTRL is
          w := width(tpl.REFCLK);
          y.REFCLK := convert(x(u to u+w-1), tpl.REFCLK);
          u := u + w;
-         w := width(tpl.RECCLK);
-         y.RECCLK := convert(x(u to u+w-1), tpl.RECCLK);
-         u := u + w;
          w := width(tpl.RECCLK_out);
          y.RECCLK_out := convert(x(u to u+w-1), tpl.RECCLK_out);
       else
@@ -1520,9 +1365,6 @@ package body CORE_CTRL is
          u := u - w;
          w := width(tpl.REFCLK);
          y.REFCLK := convert(x(u downto u-w+1), tpl.REFCLK);
-         u := u - w;
-         w := width(tpl.RECCLK);
-         y.RECCLK := convert(x(u downto u-w+1), tpl.RECCLK);
          u := u - w;
          w := width(tpl.RECCLK_out);
          y.RECCLK_out := convert(x(u downto u-w+1), tpl.RECCLK_out);
