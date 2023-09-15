@@ -402,20 +402,20 @@ begin
           ---------------------
           -- ILA
           --------------------
-          tx_ila_gen: if (I = 8) generate
-            assert false report "TX ILA generated for link " & integer'image(I) 
-                        & " sl_link# " & integer'image(idx)
-                        severity note;
-            ila_sl_tx_inst : ila_sl_tx
-            PORT MAP (
-                clk => refclk_mirrors_in(I/4),
-                probe0(0) => tx_packet_valid_mux, 
-                probe1 => packet_userdata_tx_mux, 
-                probe2 => packet_txctrl0_mux, 
-                probe3 => packet_txctrl1_mux,
-                probe4 => packet_txctrl2_mux
-            );
-        end generate; -- tx_ila_gen
+--          tx_ila_gen: if (I = 8) generate
+--            assert false report "TX ILA generated for link " & integer'image(I) 
+--                        & " sl_link# " & integer'image(idx)
+--                        severity note;
+--            ila_sl_tx_inst : ila_sl_tx
+--            PORT MAP (
+--                clk => refclk_mirrors_in(I/4),
+--                probe0(0) => tx_packet_valid_mux, 
+--                probe1 => packet_userdata_tx_mux, 
+--                probe2 => packet_txctrl0_mux, 
+--                probe3 => packet_txctrl1_mux,
+--                probe4 => packet_txctrl2_mux
+--            );
+--        end generate; -- tx_ila_gen
       end generate; -- tx_gen
 
       --------------------------------------------------------------------------------
@@ -552,34 +552,34 @@ begin
       ---------------------
       -- ILA
       --------------------
-        rx_ila_gen: if (I = 8) generate
-        assert false report " RX ILA generated for link " & integer'image(I) 
-                    & " sl_link# " & integer'image(idx)
-                    severity note;
-        ila_sl_rx_inst : ila_sl_rx
-            PORT MAP (
-                clk => rx_clk(idx),
-                probe0 => sl_rx_mgt_word_array_i(idx), 
-                probe1 => rxctrl0, 
-                probe2 => rxctrl1, 
-                probe3 => dec_userdata, 
-                probe4 => dec_rxctrl0, 
-                probe5 => dec_rxctrl2, 
-                probe6(0) => comma_pulse_i, 
-                probe7(0) => Mon.RX_COMMA_LOCK(idx), 
-                probe8(0) => sl_rx_slide_o(idx), 
-                probe9(0) => sl_re_channel_o(idx), 
-                probe10(0) => sl_rx_init_done_i(idx), 
-                probe11 => packet_rxctrl0_i, 
-                probe12 => packet_rxctrl1_i, 
-                probe13 => packet_rxctrl2_i, 
-                probe14 => packet_rxctrl3_i, 
-                probe15 => sl_rx_data_pre_cdc(idx).data, 
-                probe16(0) => sl_rx_data_pre_cdc(idx).locked, 
-                probe17(0) => sl_rx_data_pre_cdc(idx).valid,
-                probe18(0) => sl_rx_data_pre_cdc(idx).err
-            );
-        end generate; -- rx_ila_gen
+--        rx_ila_gen: if (I = 8) generate
+--        assert false report " RX ILA generated for link " & integer'image(I) 
+--                    & " sl_link# " & integer'image(idx)
+--                    severity note;
+--        ila_sl_rx_inst : ila_sl_rx
+--            PORT MAP (
+--                clk => rx_clk(idx),
+--                probe0 => sl_rx_mgt_word_array_i(idx), 
+--                probe1 => rxctrl0, 
+--                probe2 => rxctrl1, 
+--                probe3 => dec_userdata, 
+--                probe4 => dec_rxctrl0, 
+--                probe5 => dec_rxctrl2, 
+--                probe6(0) => comma_pulse_i, 
+--                probe7(0) => Mon.RX_COMMA_LOCK(idx), 
+--                probe8(0) => sl_rx_slide_o(idx), 
+--                probe9(0) => sl_re_channel_o(idx), 
+--                probe10(0) => sl_rx_init_done_i(idx), 
+--                probe11 => packet_rxctrl0_i, 
+--                probe12 => packet_rxctrl1_i, 
+--                probe13 => packet_rxctrl2_i, 
+--                probe14 => packet_rxctrl3_i, 
+--                probe15 => sl_rx_data_pre_cdc(idx).data, 
+--                probe16(0) => sl_rx_data_pre_cdc(idx).locked, 
+--                probe17(0) => sl_rx_data_pre_cdc(idx).valid,
+--                probe18(0) => sl_rx_data_pre_cdc(idx).err
+--            );
+--        end generate; -- rx_ila_gen
       end generate; --rx_gen
     end generate; -- mgt_tag
   end generate; -- sl_gen

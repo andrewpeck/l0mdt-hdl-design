@@ -534,17 +534,14 @@ begin
           tx_data(LINK_0_TO_3)  <= ttc_mgt_word_i;
           recclk_out_gen : if (downlink_idx + LINK_0_TO_3 = c_FELIX_RECCLK_SRC) generate
             rxslide (LINK_0_TO_3) <= ttc_bitslip_i;
-            recclk_out_gen_2: if (c_OVERRIDE_REC_CLK = false) generate
-            assert false report "generating recovered clock from MGT# " & integer'image(LINK_0_TO_3)  severity warning;
-                recclk                <= rxoutclk(LINK_0_TO_3);
-            end generate;
+            recclk                <= rxoutclk(LINK_0_TO_3);
             ttc_mgt_word_o        <= rx_data(LINK_0_TO_3);
           end generate recclk_out_gen;
 
         end generate felix_gen;
 
 
-      end generate;
+      end generate channel_loop;
     end generate;
 
 
@@ -619,7 +616,7 @@ begin
     ---------------------------------------------------
     -- OVERRIDE recovered clock
     ---------------------------------------------------
-    recclk_out_override_gen: if (c_OVERRIDE_REC_CLK = true) and (I = 8) generate
+    recclk_out_override_gen: if (c_OVERRIDE_REC_CLK = true) and (I = c_FELIX_RECCLK_SRC) generate
         signal d, nd : std_logic;
         begin 
             assert false report "overriding recovered clock to fixed MGT quad122, link " & integer'image(I)  severity warning;
@@ -719,5 +716,6 @@ begin
     end generate no_axi;
 
   end generate refclk_mirror;
+
 
 end Behavioral;

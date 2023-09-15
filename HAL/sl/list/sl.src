@@ -3,3 +3,4 @@ HAL/sl/src/my-sl-gty-interface/src/sector_logic_rx_packet_former.vhd
 HAL/sl/src/my-sl-gty-interface/src/sector_logic_tx_packet_former.vhd
 HAL/sl/src/my-sl-gty-interface/src/top/rx_test_pattern_checker.vhd
 HAL/sl/src/my-sl-gty-interface/src/top/tx_test_pattern_generator2.vhd
+HAL/sl/src/gty122-for-sl/RTL/rx_comma_detection_okumura.vhd
