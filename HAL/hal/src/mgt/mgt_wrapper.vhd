@@ -657,7 +657,6 @@ begin
     -- be centralized
     -- Move to a package
     constant axi_refclk_freq : integer := 50_000_000;
-    constant sl_quad_idx : integer := sl_idx_array(I*4)/4;
   begin
 
     -- NOTE: the AXI C2C conflicts with this and generates an error, so only

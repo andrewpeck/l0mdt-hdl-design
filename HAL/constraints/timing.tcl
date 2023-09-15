@@ -172,5 +172,14 @@ set_property CLOCK_DELAY_GROUP RQSGroupOptimized0 [get_nets { top_hal/top_clocki
 # this is a reset synchronizer in the SL core.. it goes through several FFs
 # after this. The exact timing does not matter so we could relax it a bit
 set_max_delay -datapath_only 3 \
-    -from [get_pins {top_hal/mgt_wrapper_inst/mgt_gen*.sl_gen.MGT_INST/gty_gen.MGT_GEN/example_wrapper_inst/gty_fixed_latency_inst/inst/gen_gtwizard_gtye4_top.gty_fixed_latency_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst*.delay_powergood_inst/gen_powergood_delay.pwr_on_fsm_reg/C}] \
-    -to [get_pins {top_hal/mgt_wrapper_inst/mgt_gen*.sl_gen.MGT_INST/gty_gen.MGT_GEN/example_wrapper_inst/gty_fixed_latency_inst/inst/gen_gtwizard_gtye4_top.gty_fixed_latency_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst*.delay_powergood_inst/gen_powergood_delay.intclk_rrst*/CE}]
+    -from [get_pins {top_hal/mgt_wrapper_inst/mgt_gen*.sl_gen.MGT_INST/gty_gen_all.MGT_GEN/example_wrapper_inst/gty_*_inst/inst/gen_gtwizard_gtye4_top.gty_*_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst*.delay_powergood_inst/gen_powergood_delay.pwr_on_fsm_reg/C}] \
+    -to [get_pins {top_hal/mgt_wrapper_inst/mgt_gen*.sl_gen.MGT_INST/gty_gen_all.MGT_GEN/example_wrapper_inst/gty_*_inst/inst/gen_gtwizard_gtye4_top.gty_*_gtwizard_gtye4_inst/gen_gtwizard_gtye4.gen_pwrgood_delay_inst*.delay_powergood_inst/gen_powergood_delay.intclk_rrst*/CE}]
+
+#--------------------------------------------------------------------------------
+# SL GTY: false_path
+#--------------------------------------------------------------------------------
+
+set_false_path -to [get_cells -hierarchical -filter {NAME =~ top_hal/mgt_wrapper_inst/mgt_gen*.sl_gen.MGT_INST/gty_gen_all.MGT_GEN/*bit_synchronizer*inst/i_in_meta_reg}]
+set_false_path -to [get_pins -filter {REF_PIN_NAME=~*D} -of_objects [get_cells -hierarchical -filter {NAME =~ *reset_synchronizer*inst/rst_in_meta*}]]
+set_false_path -to [get_pins -filter {REF_PIN_NAME=~*PRE} -of_objects [get_cells -hierarchical -filter {NAME =~ *reset_synchronizer*inst/rst_in_*}]]
+set_false_path -to [get_pins -filter {REF_PIN_NAME=~*CLR} -of_objects [get_cells -hierarchical -filter {NAME =~ *reset_synchronizer*inst/rst_in_*}]]
