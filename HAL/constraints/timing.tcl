@@ -183,3 +183,7 @@ set_false_path -to [get_cells -hierarchical -filter {NAME =~ top_hal/mgt_wrapper
 set_false_path -to [get_pins -filter {REF_PIN_NAME=~*D} -of_objects [get_cells -hierarchical -filter {NAME =~ *reset_synchronizer*inst/rst_in_meta*}]]
 set_false_path -to [get_pins -filter {REF_PIN_NAME=~*PRE} -of_objects [get_cells -hierarchical -filter {NAME =~ *reset_synchronizer*inst/rst_in_*}]]
 set_false_path -to [get_pins -filter {REF_PIN_NAME=~*CLR} -of_objects [get_cells -hierarchical -filter {NAME =~ *reset_synchronizer*inst/rst_in_*}]]
+#set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] -to [get_pins {top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_comma_detector_inst/rereset_i0*}]
+#set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] -to [get_pins {top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_test_pattern_checker_inst/reset0}]
+set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] -to [get_pins -filter {REF_PIN_NAME=~*R} -of_objects [get_cells -hierarchical -filter {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_comma_detector_inst/*}]]
+set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] -to [get_pins -filter {REF_PIN_NAME=~*R} -of_objects [get_cells -hierarchical -filter {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_test_pattern_checker_inst/*}]]
