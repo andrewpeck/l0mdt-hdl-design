@@ -4,9 +4,6 @@
 [submodule "tools/tv"]
 	path = tools/tv
 	url = ../tv.git
-[submodule "tools/tv/pyUtils"]
-	path = tools/tv/pyUtils
-	url = ../../ataffard/pyutils.git
 [submodule "dataformats"]
 	path = dataformats
 	url = ../dataformats.git
