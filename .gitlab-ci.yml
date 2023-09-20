@@ -4,7 +4,7 @@ variables:
   HOG_CHECK_SYNTAX: 1
   HOG_SIMULATION_LIB_PATH: "/afs/cern.ch/work/l/l0mdtel/SimulationLib/"
   HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/Xilinx/Vivado/2020.2/bin:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/:/opt/Xilinx/Vivado/2022.2/bin"
-  HOG_APPTAINER_IMAGE: "/sData/images/l0mdt_Ubuntu20.04.viv2022.2.sif"
+  HOG_APPTAINER_IMAGE: "/Data/images/l0mdt_Ubuntu20.04.viv2022.2.sif"
 
 include:
   - project: 'hog/Hog'
