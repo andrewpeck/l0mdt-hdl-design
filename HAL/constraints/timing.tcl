@@ -43,6 +43,7 @@ set_clock_groups \
     -group [get_clocks *XOUTCLK*] \
     -asynchronous
 
+
 ################################################################################
 # SL
 ################################################################################
@@ -71,14 +72,32 @@ set_max_delay -quiet -datapath_only 5.0 \
 # but we can control the phase of it with the clock synth.. just keep the
 # datapath well under 4.166 ns so then we can adjust the phase using the clock
 # synthesizer
+# 
+# NOTE from RR: we really don't have the possibility to adjust the phase using 
+#   the clock synthesizer, we would need to adjust it using the MMCM
 
 set_max_delay -quiet -datapath_only 3.1 \
     -to [get_clocks "*TXOUTCLK*"] \
     -from [get_clocks "*clk*mmcm*"]
 
-# trying to make reset_clk40 to be synchronus everywhere is no sense at least for SL logic
-set_false_path -from [get_pins top_hal/reset_clk40_reg_rep/C] -to [get_pins {top_hal/sector_logic_link_wrapper_inst/*/*/R}]
+set_max_delay -quiet -datapath_only 3.1 \
+    -to [get_clocks "*RXOUTCLK*"] \
+    -from [get_clocks "*clk*mmcm*"]
 
+# trying to make reset_clk40 to be synchronus everywhere is no sense at least for SL logic
+#set_false_path -from [get_pins top_hal/reset_clk40_reg_rep/C] -to [get_pins {top_hal/sector_logic_link_wrapper_inst/*/*/R}]
+
+set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] \
+    -to [get_pins -filter {REF_PIN_NAME=~*R} -of_objects [get_cells -hierarchical -filter \
+    {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_comma_detector_inst/*}]]
+    
+set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] \
+    -to [get_pins -filter {REF_PIN_NAME=~*D} -of_objects [get_cells -hierarchical -filter \
+    {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_comma_detector_inst/*}]]
+    
+set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] \
+    -to [get_pins -filter {REF_PIN_NAME=~*R} -of_objects [get_cells -hierarchical -filter \
+    {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_test_pattern_checker_inst/*}]]
 ################################################################################
 # sys_resetter has an asynchronous output (on the axi clock domain) that
 # connects to synchronous reset inputs (on other clock domains) and creates a
@@ -185,5 +204,3 @@ set_false_path -to [get_pins -filter {REF_PIN_NAME=~*PRE} -of_objects [get_cells
 set_false_path -to [get_pins -filter {REF_PIN_NAME=~*CLR} -of_objects [get_cells -hierarchical -filter {NAME =~ *reset_synchronizer*inst/rst_in_*}]]
 #set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] -to [get_pins {top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_comma_detector_inst/rereset_i0*}]
 #set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] -to [get_pins {top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_test_pattern_checker_inst/reset0}]
-set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] -to [get_pins -filter {REF_PIN_NAME=~*R} -of_objects [get_cells -hierarchical -filter {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_comma_detector_inst/*}]]
-set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] -to [get_pins -filter {REF_PIN_NAME=~*R} -of_objects [get_cells -hierarchical -filter {NAME =~ top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_test_pattern_checker_inst/*}]]
