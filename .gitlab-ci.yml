@@ -9,7 +9,7 @@ variables:
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
-    ref: 'Hog2023.2'
+    ref: 'hotfix/release_table'
   - local: "/.user_jobs.yml"
   - local: '/.devel_to_master.yml'
 
