@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="MGT" permission="rw">
 
-  <node id="RESET_ALL" address="0x0" mask="0x00000001" permission="rw" parameters="default=0" description="Reset transceiver"/>
+  <node id="RESET_ALL" address="0x0" mask="0x00000001" permission="rw" description="Reset transceiver"  parameters="default=0;Table=RESETS;Column=MGT;Row=_1._2._3._4;Status=1;Show=nz;Format=t_0_RUNNING_1_RESETED"/>
 
   <node id="STATUS" address="0x1" permission="r">
     <node id ="rxcdr_stable"            address="0x0" mask="0x00000001" permission = "r" description="rxcdr_stable"/>
@@ -24,13 +24,13 @@
     <node id="rd_data" address="0x2" mask="0x0000ffff" permission="r"  description="DRP Read Data"/>
   </node>
 
-  <node id="TX_RESETS" address="0x5" permission="rw">
+  <node id="TX_RESETS" address="0x5" permission="rw" parameters="Table=RESETS;Column=MGT_TX;Row=_1._2._3._4;Status=2;Show=nz;Format=t_0_RUNNING_1_RESETED">
     <node id ="reset_pll_and_datapath" address="0x0" mask="0x00000002" permission = "rw" parameters="default=0" description="tx reset_pll_and_datapath"/>
     <node id ="reset_datapath"         address="0x0" mask="0x00000004" permission = "rw" parameters="default=0" description="tx reset_datapath"/>
     <node id ="reset_bufbypass"        address="0x0" mask="0x00000008" permission = "rw" parameters="default=0" description="tx reset_bufbypass"/>
   </node>
 
-  <node id="RX_RESETS" address="0x6" permission="rw">
+  <node id="RX_RESETS" address="0x6" permission="rw"  parameters="Table=RESETS;Column=MGT_RX;Row=_1._2._3._4;Status=2;Show=nz;Format=t_0_RUNNING_1_RESETED">
     <node id ="reset_pll_and_datapath" address="0x0" mask="0x00000002" permission = "rw" parameters="default=0" description="rx reset_pll_and_datapath"/>
     <node id ="reset_datapath"         address="0x0" mask="0x00000004" permission = "rw" parameters="default=0" description="rx reset_datapath"/>
     <node id ="reset_bufbypass"        address="0x0" mask="0x00000008" permission = "rw" parameters="default=0" description="rx reset_bufbypass"/>

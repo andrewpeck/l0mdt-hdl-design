@@ -67,3 +67,6 @@
 [submodule "shared/detector_parameters/dp_repo"]
 	path = shared/detector_parameters/dp_repo
 	url = ../detector-parameters.git
+[submodule "HAL/sl/src/gty122-for-sl"]
+	path = HAL/sl/src/gty122-for-sl
+	url = ../misc-tools/gty122-for-sl.git
