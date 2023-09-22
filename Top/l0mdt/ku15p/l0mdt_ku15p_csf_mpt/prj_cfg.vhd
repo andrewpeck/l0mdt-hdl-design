@@ -27,7 +27,7 @@ package body prj_cfg is
     proj_cfg.SECTOR_ID           := 3;
     proj_cfg.SECTOR_SIDE         := 0;
     proj_cfg.ST_nBARREL_ENDCAP   := '0';  -- 0: barrel    1: Endcap
-    proj_cfg.ENABLE_NEIGHBORS    := '0';  -- 0: disabled  1: enabled
+    proj_cfg.ENABLE_NEIGHBORS    := '1';  -- 0: disabled  1: enabled
     proj_cfg.ENDCAP_nSMALL_LARGE := '0';  -- 0: small     1: large
 
     -- sf types

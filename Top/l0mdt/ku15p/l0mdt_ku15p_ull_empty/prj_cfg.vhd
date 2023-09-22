@@ -27,7 +27,7 @@ package body prj_cfg is
     proj_cfg.SECTOR_ID           := 3;
     proj_cfg.SECTOR_SIDE         := 0;
     proj_cfg.ST_nBARREL_ENDCAP   := '0';  -- 0: barrel    1: Endcap
-    proj_cfg.ENABLE_NEIGHBORS    := '0';  -- 0: disabled  1: enabled
+    proj_cfg.ENABLE_NEIGHBORS    := '1';  -- 0: disabled  1: enabled
     proj_cfg.ENDCAP_nSMALL_LARGE := '0';  -- 0: small     1: large
 
     -- sf types
@@ -35,15 +35,15 @@ package body prj_cfg is
     proj_cfg.PT_TYPE             := '0';  -- 0: MPT       1: UPT
 
     -- enables
-    proj_cfg.ENABLE_DAQ          := '0';
-    proj_cfg.ENABLE_SF           := '0';
-    proj_cfg.ENABLE_FM           := '0';
-    proj_cfg.ENABLE_PT           := '0';
-    proj_cfg.ENABLE_UCM          := '0';
-    proj_cfg.ENABLE_H2S          := '0';
-    proj_cfg.ENABLE_MPL          := '0';
-    proj_cfg.ENABLE_MTC          := '0';
-    proj_cfg.ENABLE_TAR          := '0';
+    proj_cfg.ENABLE_DAQ          := '1';
+    proj_cfg.ENABLE_SF           := '1';
+    proj_cfg.ENABLE_FM           := '1';
+    proj_cfg.ENABLE_PT           := '1';
+    proj_cfg.ENABLE_UCM          := '1';
+    proj_cfg.ENABLE_H2S          := '1';
+    proj_cfg.ENABLE_MPL          := '1';
+    proj_cfg.ENABLE_MTC          := '1';
+    proj_cfg.ENABLE_TAR          := '1';
 
     -- END of auto-set variables
     proj_cfg.NUM_MTC             := 3;    -- default 3, connecting to primary SL
