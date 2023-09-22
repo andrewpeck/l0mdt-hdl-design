@@ -48,17 +48,18 @@ module fm #(
    fm_data  #(
 	      .total_l0mdt_sb(total_l0mdt_sb)
 	      )fm_data_inst(
-			.clk_hs(clk_hs),
-			.rst_hs(rst_hs),
-			.axi_reset_n(axi_reset_n),
-			.spy_clock(axi_clock),
-			.freeze(freeze),
-			.playback_mode(playback_mode),
+			    .clk_hs(clk_hs),
+			    .rst_hs(rst_hs),
+			    .axi_reset_n(axi_reset_n),
+			    .spy_clock(axi_clock),
+			    .freeze(freeze),
+			    .playback_mode(playback_mode),
 			    .init_spy_mem(init_spy_mem),
-			.fm_ctrl_in(fm_ctrl_in),
-			.ult_mon_data(ult_fm_data),
-			.fm_mon_out(fm_mon_out)
-			);
+			    .fm_ctrl_in(fm_ctrl_in),
+			    .ult_mon_data(ult_fm_data),
+			    .fm_mon_out(fm_mon_out),
+			    .fm_playback_data()
+			    );
 
    
 

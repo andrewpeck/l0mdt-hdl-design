@@ -132,7 +132,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	  #15000
 	
 	  mtestRID = $urandom_range(0,(1<<(0)-1));
-          mtestRADDR = 32'h1440 << 2; // PRIYA $urandom_range(0,(1<<(32)-1));
+          mtestRADDR = 32'h1600 << 2; // PRIYA $urandom_range(0,(1<<(32)-1));
           mtestRBurstLength = 0; //0; //5185; //0;
           mtestRDataSize =  xil_axi_size_t'(1); //PRIYA xil_axi_size_t'(xil_clog2((32)/8)); 
           mtestRBurstType = XIL_AXI_BURST_TYPE_FIXED; //INCR;
@@ -186,7 +186,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
         //PRIYA multiple_read_transaction_full_rand ("single read",1);
 	  #15000
        	  mtestWID = $urandom_range(0,(1<<(0)-1)); 
-          mtestWADDR = (32'h1440 << 2 ); //(32'h000);  //priya 0;
+          mtestWADDR = (32'h5400 << 2 ); //(32'h000);  //priya 0;
           mtestWBurstLength = 0;
           mtestWDataSize = xil_axi_size_t'(1); //xil_clog2((32)/8));
           mtestWBurstType =  XIL_AXI_BURST_TYPE_FIXED; //INCR;
@@ -241,7 +241,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	    end // for (int i = 0 ; i < 1; i++)
 
 	  #12800 
-	  mtestRADDR = 32'h1460 << 2 ; //start bram reads
+	  mtestRADDR = 32'h5400 << 2 ; //start bram reads
 	  for (int i = 0; i < 32; i++)
 	    begin
                single_read_transaction_api("single read with api",
@@ -259,7 +259,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
 	    end // for (int i = 0; i < 32; i++)
 
 
-	    mtestRADDR = 32'h1440 << 2 ; //start bram reads
+	    mtestRADDR = 32'h5400 << 2 ; //start bram reads
 	  for (int i = 0; i < 32; i++)
 	    begin
                single_read_transaction_api("single read with api",
@@ -316,7 +316,7 @@ import ex_sim_axi_vip_mst_0_pkg::*;
                                     );  
 */
     mst_agent.wait_drivers_idle();           // Wait driver is idle then stop the simulation
-   
+   	  #12800000
     if(error_cnt ==0) begin
       $display("EXAMPLE TEST DONE : Test Completed Successfully");
     end else begin  

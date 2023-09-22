@@ -38,7 +38,7 @@ library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
 
 library fm_lib;
-use fm_lib.fm_ult_pkg.all;
+use fm_lib.fm_common_types.all;
 
 entity hits_to_segments is
   port (
@@ -57,7 +57,7 @@ entity hits_to_segments is
     ext_mon_v  : out std_logic_vector;  --H2S_MON_t;
 
     -- Fast Monitoring
-    h2s_fm_data : out fm_rt_array(0 to h2s_sb_all_station_n - 1);
+    h2s_fm_data_v : out std_logic_vector; --h2s_mon_data;
 
     -- TDC Hits from Polmux
     i_inn_tar_hits_av : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
@@ -94,7 +94,7 @@ architecture beh of hits_to_segments is
   signal mid_reset : std_logic := '0';
   signal out_reset : std_logic := '0';
   signal ext_reset : std_logic := '0';
-
+  signal h2s_fm_data : h2s_mon_data( 0 to stations_n-1); 
   attribute MAX_FANOUT              : string;
   attribute MAX_FANOUT of inn_reset : signal is "256";
   attribute MAX_FANOUT of mid_reset : signal is "256";
@@ -102,7 +102,7 @@ architecture beh of hits_to_segments is
   attribute MAX_FANOUT of ext_reset : signal is "256";
 
 begin
-
+  h2s_fm_data <= convert(h2s_fm_data_v, h2s_fm_data);
   process (clock_and_control.clk) is
   begin
     if (rising_edge(clock_and_control.clk)) then
@@ -133,7 +133,7 @@ begin
 
         ctrl_v      => inn_ctrl_v,
         mon_v       => inn_mon_v,
-        h2s_fm_data => h2s_fm_data(0 to h2s_sb_single_station_n-1),
+        h2s_mon_per_station => h2s_fm_data(FM_INN), 
 
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
@@ -167,7 +167,7 @@ begin
 
         ctrl_v      => mid_ctrl_v,
         mon_v       => mid_mon_v,
-        h2s_fm_data => h2s_fm_data(h2s_sb_single_station_n to h2s_sb_single_station_n*2-1),
+        h2s_mon_per_station => h2s_fm_data(FM_MID),
 
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
@@ -202,7 +202,7 @@ begin
 
         ctrl_v      => out_ctrl_v,
         mon_v       => out_mon_v,
-        h2s_fm_data => h2s_fm_data(h2s_sb_single_station_n*2 to h2s_sb_single_station_n*3-1),
+        h2s_mon_per_station => h2s_fm_data(FM_OUT), 
 
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
@@ -237,7 +237,7 @@ begin
 
         ctrl_v      => ext_ctrl_v,
         mon_v       => ext_mon_v,
-        h2s_fm_data => h2s_fm_data(h2s_sb_single_station_n*4 to h2s_sb_single_station_n*5-1),
+        h2s_mon_per_station => open, -- Need to inser SB for EXT h2s_fm_data(FM_EXT), 
 
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,

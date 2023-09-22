@@ -1,0 +1,14 @@
+<node id="FM">
+  <node id="SPY_CTRL"  address="0x2000">
+    <node id="GLOBAL_FREEZE" address = "0x0" permission="rw" mask="0x1" parameters="default=1" />
+    <node id="GLOBAL_PLAYBACK_MODE" address="0x0" permission="rw" mask="0x6" parameters="default=0" />
+    <node id="INITIALIZE_SPY_MEMORY" address="0x0" permission="rw" mask="0x8" parameters="default=1"/>
+  </node>
+  <node id="FREEZE_MASK_0" address="0x2001" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0" />
+  <node id="FREEZE_MASK_1" address="0x2002" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="PLAYBACK_MASK_0" address="0x2003" permission="rw" mask="0xFFFFFFFF" parameters="default=0xF7FFFFFF"/> !--SB_DUMMY0 playback mask = 0xF7FFFFFF"/>
+  <node id="PLAYBACK_MASK_1" address="0x2004" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
+  
+<!-- INSERT HERE-->
+ 
+</node>

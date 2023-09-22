@@ -44,7 +44,7 @@ library ctrl_lib;
 library vamc_lib;
 
 library fm_lib;
-  use fm_lib.fm_ult_pkg.all;
+  use fm_lib.fm_common_types.all;
 
 entity ult is
   generic (
@@ -267,10 +267,13 @@ architecture behavioral of ult is
   signal daq_sump : std_logic := '1';
   signal mpl_sump : std_logic := '1';
 
-  -- FAST MONITORING
-  --  signal ult_fm_data : fm_rt_array(0  to total_sb-1);
-  signal h2s_fm_data : fm_rt_array(0  to h2s_sb_all_station_n - 1);
-
+  -- FAST MONITORING  
+  signal ucm_fm_mon     : fm_ucm_fm_mon_data;
+  signal ucm2hps_fm_mon : fm_ucm2hps_station_mon( 0 to stations_n-1);
+  signal h2s_fm_mon      : h2s_mon_data( 0 to stations_n-1);
+  signal h2s_fm_mon_v  : std_logic_vector(width(h2s_fm_mon)-1 downto 0);           
+  signal ucm_fm_mon_v : std_logic_vector(width(ucm_fm_mon)-1 downto 0);
+  signal ucm2hps_fm_mon_v: std_logic_vector(width(ucm2hps_fm_mon)-1 downto 0);
 begin
 
   -- -- ctrl/mon
@@ -405,7 +408,9 @@ begin
     end generate hps_ext;
 
     ucm_gen : if c_UCM_ENABLED = '1' generate
-
+      ucm_fm_mon <= convert(ucm_fm_mon_v, ucm_fm_mon);
+      ucm2hps_fm_mon <= convert(ucm2hps_fm_mon_v, ucm2hps_fm_mon);
+      
       -- block
       ult_ucm : entity ult_lib.candidate_manager
         port map (
@@ -424,12 +429,12 @@ begin
           o_ucm2hps_mid_av => mid_slc_to_h2s_plin_av,
           o_ucm2hps_out_av => out_slc_to_h2s_plin_av,
           o_ucm2hps_ext_av => ext_slc_to_h2s_plin_av,
-          -- o_uCM2hps_inn_av        => inn_slc_to_h2s_plin_av,
-          -- o_uCM2hps_mid_av        => mid_slc_to_h2s_plin_av,
-          -- o_uCM2hps_out_av        => out_slc_to_h2s_plin_av,
-          -- o_uCM2hps_ext_av        => ext_slc_to_h2s_plin_av,
+         
           -- pipeline
-          o_ucm2pl_av => ucm2pl_av
+          o_ucm2pl_av => ucm2pl_av,
+          --Fast Monitoring
+         o_ucm_fm_mon_v => ucm_fm_mon_v,
+         o_ucm2hps_fm_mon_v => ucm2hps_fm_mon_v
         );
 
     else generate
@@ -589,7 +594,7 @@ begin
     -- end process;
 
     h2s_gen : if c_H2S_ENABLED = '1' generate
-
+      h2s_fm_mon <= convert(h2s_fm_mon_v, h2s_fm_mon);
       ult_h2s : entity ult_lib.hits_to_segments
         port map (
           -- clock, control, and monitoring
@@ -605,7 +610,7 @@ begin
           ext_ctrl_v => hps_ext_ctrl_v,
           ext_mon_v  => hps_ext_mon_v,
           --
-          h2s_fm_data => h2s_fm_data,
+          h2s_fm_data_v => h2s_fm_mon_v,
           -- inputs from hal
           i_inn_tar_hits_av => ult_inn_tar_hits_in_av,
           i_mid_tar_hits_av => ult_mid_tar_hits_in_av,
@@ -1004,19 +1009,20 @@ begin
 
     -- Fast Monitoring
 
-    fm_gen : if c_FM_ENABLED = '1' generate
-
+    fm_gen : if c_FM_ENABLED = '1' generate     
+      
       ult_fm : entity ult_lib.ult_fm
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
           ttc_commands      => ttc_commands,
-          axi_reset_n       => axi_reset_n,
-          ctrl_v            => fm_ctrl_v,
-          mon_v             => fm_mon_v,
+          axi_reset_n            => axi_reset_n,
+          ctrl_v                      => fm_ctrl_v,
+          mon_v                    => fm_mon_v,
           --  inputs
-          h2s_fm_data => h2s_fm_data
-        --        ult_fm_data      => ult_fm_data
+          ucm_fm_mon         => ucm_fm_mon,
+          ucm2hps_fm_mon => ucm2hps_fm_mon,
+          h2s_fm_mon          => h2s_fm_mon
         );
 
     else generate

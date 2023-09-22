@@ -109,7 +109,7 @@ architecture behavioral of FM_map_vhdl_wrapper is
   signal fm_ctrl_v : std_logic_vector(width(fm_ctrl) -1 downto 0);
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
-  signal h2s_fm_data       : fm_rt_array(0  to h2s_sb_all_station_n -1);
+  signal h2s_fm_data       : fm_mon_data; --fm_rt_array(0  to total_l0mdt_sb -1);
   
 begin  -- architecture behavioral
 
@@ -207,7 +207,7 @@ begin  -- architecture behavioral
         mon_v             => fm_mon_v,
         axi_reset_n       => reset_axi_n,
         --  inputs
-        h2s_fm_data   => h2s_fm_data
+        ult_fm_mon_data   => h2s_fm_data
 --        ult_fm_data      => ult_fm_data
       );
 
