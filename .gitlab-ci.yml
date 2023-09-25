@@ -29,7 +29,7 @@ generate:
       - PROVIDER: "2022.2"
         PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_ucm_mpl, l0mdt/vu13p/l0mdt_vu13p_lsf_upt]
         HOG_ONLY_SYNTH: 1
-      - PROVIDER: normal-ops
+      - PROVIDER: "2022.2"
         PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
         HOG_ONLY_SYNTH: 1
   tags:
