@@ -38,7 +38,7 @@ library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
 
 library fm_lib;
-use fm_lib.fm_common_types.all;
+use fm_lib.fm_types.all;
 
 entity hits_to_segments is
   port (
@@ -57,7 +57,7 @@ entity hits_to_segments is
     ext_mon_v  : out std_logic_vector;  --H2S_MON_t;
 
     -- Fast Monitoring
-    h2s_fm_data_v : out std_logic_vector; --h2s_mon_data;
+    fm_hps_mon_v : out std_logic_vector; --h2s_mon_data;
 
     -- TDC Hits from Polmux
     i_inn_tar_hits_av : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
@@ -94,7 +94,12 @@ architecture beh of hits_to_segments is
   signal mid_reset : std_logic := '0';
   signal out_reset : std_logic := '0';
   signal ext_reset : std_logic := '0';
-  signal h2s_fm_data : h2s_mon_data( 0 to stations_n-1); 
+
+  signal fm_hps_mon_r : fm_hps_mon;
+  signal fm_hps_sf_mon_inn_v : std_logic_vector(fm_hps_sf_mon'w-1 downto 0);
+  signal fm_hps_sf_mon_mid_v : std_logic_vector(fm_hps_sf_mon'w-1 downto 0);
+  signal fm_hps_sf_mon_out_v : std_logic_vector(fm_hps_sf_mon'w-1 downto 0);     
+  
   attribute MAX_FANOUT              : string;
   attribute MAX_FANOUT of inn_reset : signal is "256";
   attribute MAX_FANOUT of mid_reset : signal is "256";
@@ -102,7 +107,13 @@ architecture beh of hits_to_segments is
   attribute MAX_FANOUT of ext_reset : signal is "256";
 
 begin
-  h2s_fm_data <= convert(h2s_fm_data_v, h2s_fm_data);
+
+
+  fm_hps_mon_r.fm_hps_mon_inn   <= convert(fm_hps_sf_mon_inn_v, fm_hps_mon_r.fm_hps_mon_inn );
+  fm_hps_mon_r.fm_hps_mon_mid  <= convert(fm_hps_sf_mon_mid_v, fm_hps_mon_r.fm_hps_mon_mid);
+  fm_hps_mon_r.fm_hps_mon_out  <= convert( fm_hps_sf_mon_out_v,   fm_hps_mon_r.fm_hps_mon_out );
+  fm_hps_mon_v <= convert(fm_hps_mon_r, fm_hps_mon_v);
+
   process (clock_and_control.clk) is
   begin
     if (rising_edge(clock_and_control.clk)) then
@@ -133,7 +144,7 @@ begin
 
         ctrl_v      => inn_ctrl_v,
         mon_v       => inn_mon_v,
-        h2s_mon_per_station => h2s_fm_data(FM_INN), 
+        fm_hps_mon_v => fm_hps_sf_mon_inn_v,
 
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
@@ -167,7 +178,7 @@ begin
 
         ctrl_v      => mid_ctrl_v,
         mon_v       => mid_mon_v,
-        h2s_mon_per_station => h2s_fm_data(FM_MID),
+        fm_hps_mon_v => fm_hps_sf_mon_mid_v,
 
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
@@ -202,7 +213,7 @@ begin
 
         ctrl_v      => out_ctrl_v,
         mon_v       => out_mon_v,
-        h2s_mon_per_station => h2s_fm_data(FM_OUT), 
+        fm_hps_mon_v => fm_hps_sf_mon_out_v,
 
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
@@ -237,7 +248,7 @@ begin
 
         ctrl_v      => ext_ctrl_v,
         mon_v       => ext_mon_v,
-        h2s_mon_per_station => open, -- Need to inser SB for EXT h2s_fm_data(FM_EXT), 
+        fm_hps_mon_v => open, -- Need to inser SB for EXT 
 
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,

@@ -21,7 +21,7 @@ library ctrl_lib;
 use ctrl_lib.FM_CTRL.all;
 
 library fm_lib;
-use fm_lib.fm_common_types.all;
+use fm_lib.fm_types.all;
 
 
 entity ult_fm is
@@ -32,27 +32,32 @@ entity ult_fm is
    ctrl_v                      : in std_logic_vector; --FM_CTRL_t;
    mon_v                    : out std_logic_vector; --FM_MON_t;
    --ult_fm_mon_data_v  : in std_logic_vector --fm_mon_data
-   ucm_fm_mon        : in fm_ucm_fm_mon_data;
-   ucm2hps_fm_mon: in fm_ucm2hps_station_mon( 0 to stations_n-1);
-   h2s_fm_mon         : in h2s_mon_data( 0 to stations_n-1)
+   ucm_fm_mon        : in fm_ucm_mon_data;   
+   h2s_fm_mon         : in fm_hps_mon
   
     );
   end entity ult_fm;
 
   architecture beh of ult_fm is
+    type fm_avt is array(0 to total_l0mdt_sb-1) of std_logic_vector(fm_rt'w-1 downto 0);
+    type hps_sf_mon_ar is array(0 to stations_n-1) of fm_hps_sf_mon;
     --signal ult_fm_mon_data: fm_mon_data;
     --signal h2s_fm_mon        : h2s_mon_data;
     --signal ucm_fm_mon       : fm_ucm_fm_mon_data;
-    signal ult_fm_data_avt : fm_avt(0 to total_l0mdt_sb-1);
+    signal ult_fm_data_avt : fm_avt;
     signal ult_fm_data        : fm_art(0  to total_l0mdt_sb-1);
     
-    signal sf_fm_data                 : fm_art(0  to h2s_sb_all_station_n-1);
+   
+    signal sf_fm_inn                 : fm_art(0  to sf_sb_single_station_n-1);
+    signal sf_fm_mid                 : fm_art(0  to sf_sb_single_station_n-1);
+    signal sf_fm_out                 : fm_art(0  to sf_sb_single_station_n-1);
     signal slc_rx_fm_data          : fm_art(0  to primary_sl_n  -1);
     signal ucm2hps_fm_data    : fm_art(0  to stations_n * threads_n -1);
     signal ucm2pl_fm_data       : fm_art(0  to c_MAX_NUM_SL -1);
    
-    signal sf_mon_data :  fm_art (0 to sf_sb_n-1); --array (0 to sf_sb_n-1) of fm_rt;       
+  
 
+    signal hps_sf_mon_stations : hps_sf_mon_ar;
     
     component fm is
       generic(
@@ -64,37 +69,56 @@ entity ult_fm is
       axi_reset_n : in std_logic;
       fm_ctrl_v     :in std_logic_vector; --FM_CTRL_t;
       fm_mon_v      : out std_logic_vector; --FM_MON_t;
-      ult_fm_data_v : in fm_avt(0 to total_l0mdt_sb-1) -- fm_rt_array ( 0 to total_l0mdt_sb-1)
+      ult_fm_data_v : in fm_avt -- fm_rt_array ( 0 to total_l0mdt_sb-1)
         );
       end component;
     begin
 
-      FM_H2S_STATION : for I in 0 to stations_n-1 generate
-          FM_H2S_THREAD: for j in 0 to threads_n-1 generate        
-            FM_SF_BLOCK   : for k in 0 to sf_sb_n -1 generate  
-              sf_fm_data(threads_n * sf_sb_n * I + sf_sb_n *j + k) <=  h2s_fm_mon(I)(j)(k);           
+     
+                                                         
+            FM_H2S_INN_THREAD: for j in 0 to threads_n-1 generate
+            FM_SF_INN_BLOCK   : for k in 0 to sf_sb_n -1 generate  
+              sf_fm_inn(sf_sb_n *j + k) <=  h2s_fm_mon.fm_hps_mon_inn(j*sf_sb_n + k);           
             end generate;
           end generate;
-        end generate;
-    
-        FM_UCM_SLC_RX:for I in 0 to primary_sl_n -1 generate
-               slc_rx_fm_data(I)  <= ucm_fm_mon.fm_ucm_slc_rx_mon(I);            
-       end generate;
 
-      FM_UCM2HPS_STATION:for I in 0 to  stations_n-1 generate
-        FM_UCM2HPS_THREAD:for J in 0 to  threads_n-1 generate         
-            ucm2hps_fm_data(threads_n*I + J) <= ucm2hps_fm_mon(I)(J);
-        end generate;
-      end generate;
+            FM_H2S_MID_THREAD: for j in 0 to threads_n-1 generate
+            FM_SF_MID_BLOCK   : for k in 0 to sf_sb_n -1 generate  
+              sf_fm_mid(sf_sb_n *j + k) <=  h2s_fm_mon.fm_hps_mon_mid(j*sf_sb_n + k);           
+            end generate;
+          end generate;
+
+            FM_H2S_OUT_THREAD: for j in 0 to threads_n-1 generate
+            FM_SF_OUT_BLOCK   : for k in 0 to sf_sb_n -1 generate  
+              sf_fm_out(sf_sb_n *j + k) <=  h2s_fm_mon.fm_hps_mon_out(j*sf_sb_n + k);           
+            end generate;
+          end generate;
+   
+            FM_UCM_SLC_RX:for I in 0 to primary_sl_n -1 generate
+              slc_rx_fm_data(I)  <= ucm_fm_mon.fm_ucm_slc_rx_mon(I);            
+            end generate;
+
+            FM_UCM2HPS_STATION:for I in 0 to  stations_n-1 generate        
+              ucm2hps_fm_data(threads_n*I + 0) <= ucm_fm_mon.fm_ucm2hps.fm_ucm2hps_inn(0);
+              ucm2hps_fm_data(threads_n*I + 1) <= ucm_fm_mon.fm_ucm2hps.fm_ucm2hps_mid(1);
+              ucm2hps_fm_data(threads_n*I + 2) <= ucm_fm_mon.fm_ucm2hps.fm_ucm2hps_out(2);    
+            end generate;
    
 
-        FM_UCM2PL: for I in 0 to c_MAX_NUM_SL-1 generate
-          ucm2pl_fm_data(I)  <= ucm_fm_mon.fm_ucm2pl_mon(I);
-        end generate;
-
-    ult_fm_data <= sf_fm_data & slc_rx_fm_data & ucm2hps_fm_data & ucm2pl_fm_data;
-
-                  
+            FM_UCM2PL: for I in 0 to c_MAX_NUM_SL-1 generate
+              ucm2pl_fm_data(I)  <= ucm_fm_mon.fm_ucm2pl_mon(I);
+            end generate;
+            
+            FM_PROC : process (clock_and_control.clk, clock_and_control.rst) is
+            begin
+              if(clock_and_control.rst) then
+                ult_fm_data <= zero(ult_fm_data);
+              elsif (rising_edge(clock_and_control.clk)) then  -- rising clock edge
+                ult_fm_data <= sf_fm_inn & sf_fm_mid & sf_fm_out & slc_rx_fm_data & ucm2hps_fm_data & ucm2pl_fm_data;
+              end if;
+            end process;
+          
+  
   --  FM_PROC : process (clock_and_control.clk) is
   --      begin
          
@@ -122,7 +146,7 @@ entity ult_fm is
   --end process;
 
     -- ult_fm_mon_data <= convert(ult_fm_mon_data_v, ult_fm_mon_data);
-    
+    --ult_fm_data_avt <= convert(ult_fm_data, ult_fm_data_avt);
      ult_fm_data_flatten: for sb_i in 0 to total_l0mdt_sb-1 generate
       --  ult_fm_data_avt(sb_i) <= vectorify(ult_fm_data(sb_i));
         ult_fm_data_avt(sb_i) <= convert (ult_fm_data(sb_i), ult_fm_data_avt(sb_i));           

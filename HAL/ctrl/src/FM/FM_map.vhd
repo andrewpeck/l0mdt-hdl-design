@@ -138,19 +138,19 @@ architecture behavioral of FM_map is
   signal BRAM_MISO          : BRAMPortMISO_array_t(0 to BRAM_COUNT-1);
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 22528);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 22528) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 24580);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 24580) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*22528) <= ALLOCATED_MEMORY_RANGE)
-    report "FM: Regmap addressing range " & integer'image(4*22528) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*24580) <= ALLOCATED_MEMORY_RANGE)
+    report "FM: Regmap addressing range " & integer'image(4*24580) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity ERROR;
-  assert ((4*22528) > ALLOCATED_MEMORY_RANGE)
-    report "FM: Regmap addressing range " & integer'image(4*22528) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*24580) > ALLOCATED_MEMORY_RANGE)
+    report "FM: Regmap addressing range " & integer'image(4*24580) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity NOTE;
 
   AXIRegBridge : entity work.axiLiteRegBlocking
@@ -335,18 +335,18 @@ elsif BRAM_MISO(43).rd_data_valid = '1' then
         regRdAck  <= '1';
         case to_integer(unsigned(localAddress(14 downto 0))) is
           
-        when 8192 => --0x2000
-          localRdData( 0)            <=  reg_data(8192)( 0);                --
-          localRdData( 2 downto  1)  <=  reg_data(8192)( 2 downto  1);      --
-          localRdData( 3)            <=  reg_data(8192)( 3);                --
-        when 8193 => --0x2001
-          localRdData(31 downto  0)  <=  reg_data(8193)(31 downto  0);      --
-        when 8194 => --0x2002
-          localRdData(31 downto  0)  <=  reg_data(8194)(31 downto  0);      --
-        when 8195 => --0x2003
-          localRdData(31 downto  0)  <=  reg_data(8195)(31 downto  0);      --
-        when 8196 => --0x2004
-          localRdData(31 downto  0)  <=  reg_data(8196)(31 downto  0);      --
+        when 24576 => --0x6000
+          localRdData( 0)            <=  reg_data(24576)( 0);                --
+          localRdData( 2 downto  1)  <=  reg_data(24576)( 2 downto  1);      --
+          localRdData( 3)            <=  reg_data(24576)( 3);                --
+        when 24577 => --0x6001
+          localRdData(31 downto  0)  <=  reg_data(24577)(31 downto  0);      --
+        when 24578 => --0x6002
+          localRdData(31 downto  0)  <=  reg_data(24578)(31 downto  0);      --
+        when 24579 => --0x6003
+          localRdData(31 downto  0)  <=  reg_data(24579)(31 downto  0);      --
+        when 24580 => --0x6004
+          localRdData(31 downto  0)  <=  reg_data(24580)(31 downto  0);      --
 
 
           when others =>
@@ -364,25 +364,25 @@ elsif BRAM_MISO(43).rd_data_valid = '1' then
   -------------------------------------------------------------------------------
 
   -- Register mapping to ctrl structures
-  Ctrl.SPY_CTRL.GLOBAL_FREEZE          <=  reg_data(8192)( 0);               
-  Ctrl.SPY_CTRL.GLOBAL_PLAYBACK_MODE   <=  reg_data(8192)( 2 downto  1);     
-  Ctrl.SPY_CTRL.INITIALIZE_SPY_MEMORY  <=  reg_data(8192)( 3);               
-  Ctrl.FREEZE_MASK_0                   <=  reg_data(8193)(31 downto  0);     
-  Ctrl.FREEZE_MASK_1                   <=  reg_data(8194)(31 downto  0);     
-  Ctrl.PLAYBACK_MASK_0                 <=  reg_data(8195)(31 downto  0);     
-  Ctrl.PLAYBACK_MASK_1                 <=  reg_data(8196)(31 downto  0);     
+  Ctrl.SPY_CTRL.GLOBAL_FREEZE          <=  reg_data(24576)( 0);               
+  Ctrl.SPY_CTRL.GLOBAL_PLAYBACK_MODE   <=  reg_data(24576)( 2 downto  1);     
+  Ctrl.SPY_CTRL.INITIALIZE_SPY_MEMORY  <=  reg_data(24576)( 3);               
+  Ctrl.FREEZE_MASK_0                   <=  reg_data(24577)(31 downto  0);     
+  Ctrl.FREEZE_MASK_1                   <=  reg_data(24578)(31 downto  0);     
+  Ctrl.PLAYBACK_MASK_0                 <=  reg_data(24579)(31 downto  0);     
+  Ctrl.PLAYBACK_MASK_1                 <=  reg_data(24580)(31 downto  0);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data(8192)( 0)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_FREEZE;
-      reg_data(8192)( 2 downto  1)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_PLAYBACK_MODE;
-      reg_data(8192)( 3)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.INITIALIZE_SPY_MEMORY;
-      reg_data(8193)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_0;
-      reg_data(8194)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_1;
-      reg_data(8195)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_0;
-      reg_data(8196)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_1;
+      reg_data(24576)( 0)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_FREEZE;
+      reg_data(24576)( 2 downto  1)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_PLAYBACK_MODE;
+      reg_data(24576)( 3)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.INITIALIZE_SPY_MEMORY;
+      reg_data(24577)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_0;
+      reg_data(24578)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_1;
+      reg_data(24579)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_0;
+      reg_data(24580)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_1;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       
@@ -390,18 +390,18 @@ elsif BRAM_MISO(43).rd_data_valid = '1' then
       
       if localWrEn = '1' then
         case to_integer(unsigned(localAddress(14 downto 0))) is
-        when 8192 => --0x2000
-          reg_data(8192)( 0)            <=  localWrData( 0);                --
-          reg_data(8192)( 2 downto  1)  <=  localWrData( 2 downto  1);      --
-          reg_data(8192)( 3)            <=  localWrData( 3);                --
-        when 8193 => --0x2001
-          reg_data(8193)(31 downto  0)  <=  localWrData(31 downto  0);      --
-        when 8194 => --0x2002
-          reg_data(8194)(31 downto  0)  <=  localWrData(31 downto  0);      --
-        when 8195 => --0x2003
-          reg_data(8195)(31 downto  0)  <=  localWrData(31 downto  0);      --
-        when 8196 => --0x2004
-          reg_data(8196)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 24576 => --0x6000
+          reg_data(24576)( 0)            <=  localWrData( 0);                --
+          reg_data(24576)( 2 downto  1)  <=  localWrData( 2 downto  1);      --
+          reg_data(24576)( 3)            <=  localWrData( 3);                --
+        when 24577 => --0x6001
+          reg_data(24577)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 24578 => --0x6002
+          reg_data(24578)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 24579 => --0x6003
+          reg_data(24579)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 24580 => --0x6004
+          reg_data(24580)(31 downto  0)  <=  localWrData(31 downto  0);      --
 
           when others => null;
         end case;

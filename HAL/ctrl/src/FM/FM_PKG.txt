@@ -417,11 +417,6 @@ E            wr_enable: logic
 E            address: logic['9 -1', 0]
 E            wr_data: logic['32 -1', 0]
 
-R   FM_SPY_CTRL_CTRL_t:
-E      GLOBAL_FREEZE: logic
-E      GLOBAL_PLAYBACK_MODE: logic['2 - 1', 0]
-E      INITIALIZE_SPY_MEMORY: logic
-
 R   FM_SB16_SB_MEM_MOSI_t:
 E      clk: logic
 E      enable: logic
@@ -1150,6 +1145,11 @@ E            wr_enable: logic
 E            address: logic['9 -1', 0]
 E            wr_data: logic['32 -1', 0]
 
+R   FM_SPY_CTRL_CTRL_t:
+E      GLOBAL_FREEZE: logic
+E      GLOBAL_PLAYBACK_MODE: logic['2 - 1', 0]
+E      INITIALIZE_SPY_MEMORY: logic
+
 R   FM_MON_t:
 E      SB0: FM_SB0_MON_t
 R         FM_SB0_MON_t:
@@ -1561,11 +1561,6 @@ E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
 E                  wr_data: logic['32 -1', 0]
-E      SPY_CTRL: FM_SPY_CTRL_CTRL_t
-R         FM_SPY_CTRL_CTRL_t:
-E            GLOBAL_FREEZE: logic
-E            GLOBAL_PLAYBACK_MODE: logic['2 - 1', 0]
-E            INITIALIZE_SPY_MEMORY: logic
 E      SB16: FM_SB16_CTRL_t
 R         FM_SB16_CTRL_t:
 E            SB_MEM: FM_SB16_SB_MEM_MOSI_t
@@ -1575,10 +1570,6 @@ E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
 E                  wr_data: logic['32 -1', 0]
-E      FREEZE_MASK_0: logic['32 - 1', 0]
-E      FREEZE_MASK_1: logic['32 - 1', 0]
-E      PLAYBACK_MASK_0: logic['32 - 1', 0]
-E      PLAYBACK_MASK_1: logic['32 - 1', 0]
 E      SB17: FM_SB17_CTRL_t
 R         FM_SB17_CTRL_t:
 E            SB_MEM: FM_SB17_SB_MEM_MOSI_t
@@ -1822,3 +1813,12 @@ E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
 E                  wr_data: logic['32 -1', 0]
+E      SPY_CTRL: FM_SPY_CTRL_CTRL_t
+R         FM_SPY_CTRL_CTRL_t:
+E            GLOBAL_FREEZE: logic
+E            GLOBAL_PLAYBACK_MODE: logic['2 - 1', 0]
+E            INITIALIZE_SPY_MEMORY: logic
+E      FREEZE_MASK_0: logic['32 - 1', 0]
+E      FREEZE_MASK_1: logic['32 - 1', 0]
+E      PLAYBACK_MASK_0: logic['32 - 1', 0]
+E      PLAYBACK_MASK_1: logic['32 - 1', 0]

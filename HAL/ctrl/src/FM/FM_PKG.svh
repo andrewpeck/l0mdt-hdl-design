@@ -346,12 +346,6 @@ package FM_CTRL;
    } FM_SB15_CTRL_t ;
 
    typedef struct packed {
-      logic  GLOBAL_FREEZE;
-      logic [2 - 1:0] GLOBAL_PLAYBACK_MODE;
-      logic  INITIALIZE_SPY_MEMORY;
-   } FM_SPY_CTRL_CTRL_t ;
-
-   typedef struct packed {
       logic  clk;
       logic  enable;
       logic  wr_enable;
@@ -940,6 +934,12 @@ package FM_CTRL;
    } FM_SB43_CTRL_t ;
 
    typedef struct packed {
+      logic  GLOBAL_FREEZE;
+      logic [2 - 1:0] GLOBAL_PLAYBACK_MODE;
+      logic  INITIALIZE_SPY_MEMORY;
+   } FM_SPY_CTRL_CTRL_t ;
+
+   typedef struct packed {
       FM_SB0_MON_t  SB0;
       FM_SB1_MON_t  SB1;
       FM_SB2_MON_t  SB2;
@@ -1003,12 +1003,7 @@ package FM_CTRL;
       FM_SB13_CTRL_t  SB13;
       FM_SB14_CTRL_t  SB14;
       FM_SB15_CTRL_t  SB15;
-      FM_SPY_CTRL_CTRL_t  SPY_CTRL;
       FM_SB16_CTRL_t  SB16;
-      logic [32 - 1:0] FREEZE_MASK_0;
-      logic [32 - 1:0] FREEZE_MASK_1;
-      logic [32 - 1:0] PLAYBACK_MASK_0;
-      logic [32 - 1:0] PLAYBACK_MASK_1;
       FM_SB17_CTRL_t  SB17;
       FM_SB18_CTRL_t  SB18;
       FM_SB19_CTRL_t  SB19;
@@ -1036,6 +1031,11 @@ package FM_CTRL;
       FM_SB41_CTRL_t  SB41;
       FM_SB42_CTRL_t  SB42;
       FM_SB43_CTRL_t  SB43;
+      FM_SPY_CTRL_CTRL_t  SPY_CTRL;
+      logic [32 - 1:0] FREEZE_MASK_0;
+      logic [32 - 1:0] FREEZE_MASK_1;
+      logic [32 - 1:0] PLAYBACK_MASK_0;
+      logic [32 - 1:0] PLAYBACK_MASK_1;
    } FM_CTRL_t ;
 
 endpackage : FM_CTRL

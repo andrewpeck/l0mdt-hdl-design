@@ -111,7 +111,7 @@ def create_fm_xml(list):
     [total_l0mdt_sb, sb_total_dummy] = list
     with open("FM_template.xml","r") as fxml_template:
         template_lines  = fxml_template.readlines(); 
-    fxml_w = open("fm.xml","w")
+    fxml_w = open("FM.xml","w")
     address_block = 512
     mem_size        = 32
     address     = 0
@@ -132,7 +132,7 @@ def create_fm_xml(list):
         else:
             for i in range(total_l0mdt_sb+sb_total_dummy) :
                 fxml_w.write("  <node id=\"SB"+str(i)+"\" address=\""+hex(address)+"\"> !-- df  = \""+df[i]+"\" >\n")
-                fxml_w.write("   <node id=\"SB_MEM\" address=\"0x0\" mode=\"incremental\" size=\""+hex(mem_size)+"\"  fwinfo=\"type=mem32_"+hex(mem_size)+"\"/>\n")
+                fxml_w.write("   <node id=\"SB_MEM\" address=\"0x0\" mode=\"incremental\" size=\""+hex(address_block)+"\"  fwinfo=\"type=mem32_"+hex(address_block)+"\"/>\n")
                 fxml_w.write("  </node>\n")
                 address = address + address_block
 def main():

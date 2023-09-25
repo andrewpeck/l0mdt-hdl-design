@@ -167,11 +167,6 @@ package FM_CTRL_DEF is
   constant DEFAULT_FM_SB15_CTRL_t : FM_SB15_CTRL_t := (
                                                        SB_MEM => Default_FM_SB15_SB_MEM_MOSI_t
                                                       );
-  constant DEFAULT_FM_SPY_CTRL_CTRL_t : FM_SPY_CTRL_CTRL_t := (
-                                                               GLOBAL_FREEZE => '1',
-                                                               GLOBAL_PLAYBACK_MODE => "00",
-                                                               INITIALIZE_SPY_MEMORY => '1'
-                                                              );
   constant Default_FM_SB16_SB_MEM_MOSI_t : FM_SB16_SB_MEM_MOSI_t := ( 
                                                      clk       => '0',
                                                      enable    => '0',
@@ -452,6 +447,11 @@ package FM_CTRL_DEF is
   constant DEFAULT_FM_SB43_CTRL_t : FM_SB43_CTRL_t := (
                                                        SB_MEM => Default_FM_SB43_SB_MEM_MOSI_t
                                                       );
+  constant DEFAULT_FM_SPY_CTRL_CTRL_t : FM_SPY_CTRL_CTRL_t := (
+                                                               GLOBAL_FREEZE => '1',
+                                                               GLOBAL_PLAYBACK_MODE => "00",
+                                                               INITIALIZE_SPY_MEMORY => '1'
+                                                              );
   constant DEFAULT_FM_CTRL_t : FM_CTRL_t := (
                                              SB0 => DEFAULT_FM_SB0_CTRL_t,
                                              SB1 => DEFAULT_FM_SB1_CTRL_t,
@@ -469,12 +469,7 @@ package FM_CTRL_DEF is
                                              SB13 => DEFAULT_FM_SB13_CTRL_t,
                                              SB14 => DEFAULT_FM_SB14_CTRL_t,
                                              SB15 => DEFAULT_FM_SB15_CTRL_t,
-                                             SPY_CTRL => DEFAULT_FM_SPY_CTRL_CTRL_t,
                                              SB16 => DEFAULT_FM_SB16_CTRL_t,
-                                             FREEZE_MASK_0 => x"00000000",
-                                             FREEZE_MASK_1 => x"00000000",
-                                             PLAYBACK_MASK_0 => x"f7ffffff",
-                                             PLAYBACK_MASK_1 => x"ffffffff",
                                              SB17 => DEFAULT_FM_SB17_CTRL_t,
                                              SB18 => DEFAULT_FM_SB18_CTRL_t,
                                              SB19 => DEFAULT_FM_SB19_CTRL_t,
@@ -501,7 +496,12 @@ package FM_CTRL_DEF is
                                              SB40 => DEFAULT_FM_SB40_CTRL_t,
                                              SB41 => DEFAULT_FM_SB41_CTRL_t,
                                              SB42 => DEFAULT_FM_SB42_CTRL_t,
-                                             SB43 => DEFAULT_FM_SB43_CTRL_t
+                                             SB43 => DEFAULT_FM_SB43_CTRL_t,
+                                             SPY_CTRL => DEFAULT_FM_SPY_CTRL_CTRL_t,
+                                             FREEZE_MASK_0 => x"00000000",
+                                             FREEZE_MASK_1 => x"00000000",
+                                             PLAYBACK_MASK_0 => x"f7ffffff",
+                                             PLAYBACK_MASK_1 => x"ffffffff"
                                             );
 
 end package FM_CTRL_DEF;

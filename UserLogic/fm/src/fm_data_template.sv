@@ -19,7 +19,7 @@ module fm_data #(
 	       input 			       FM_CTRL_t fm_ctrl_in,
 	       input 			       fm_rt ult_mon_data[total_l0mdt_sb] ,
 	       output 			       FM_MON_t fm_mon_out,
-	       output 			       fm_rt ult_data[total_l0mdt_sb]
+	       output 			       fm_rt fm_playback_data[total_l0mdt_sb]
 	       );
    localparam axi_dw = axi_dw;
    genvar 	      sb_i;
@@ -51,7 +51,7 @@ module fm_data #(
      generate
       for (sb_i = 0; sb_i < total_l0mdt_sb; sb_i = sb_i+1)
 	begin
-	   assign ult_data[sb_i] = fm_passthrough_data[sb_i];	   
+	   assign fm_playback_data[sb_i] = fm_passthrough_data[sb_i];	   
 	end
      endgenerate
    
@@ -239,12 +239,17 @@ assign axi_sb_enable_internal                =  (init_spy_mem_internal == 1)? '1
 
 
 
-
+   logic [mon_dw_max-1 : 0] tp_write_data[sb_mapped_n];
    generate
    for(sb_i =0; sb_i < sb_mapped_n; sb_i = sb_i+1)
      begin: l0mdt_spybuffers
+	if(sb_dw[sb_i] < mon_dw_max)
+	  begin
+	     assign fm_passthrough_data[sb_i].fm_data[mon_dw_max-1: sb_dw[sb_i]] = 'b0;
+	  end
 
-	assign fm_passthrough_data[sb_i].fm_data[mon_dw_max-1: sb_dw[sb_i]-1] = 'b0;
+	assign tp_write_data[sb_i] = fm_mon_data[sb_i].fm_data & {sb_tp_dw[sb_i]{1'b1}};
+	
 	
 	   SpyBuffer #(
 		       .DATA_WIDTH_A(sb_dw[sb_i]),
@@ -256,7 +261,7 @@ assign axi_sb_enable_internal                =  (init_spy_mem_internal == 1)? '1
 
 		       .FC_FIFO_WIDTH(4),
 
-		       .EL_MEM_WIDTH(8), //axi_sm_addr_width[sb_i]),
+		       .EL_MEM_WIDTH(8), //Size of SPY META - not used
 
 
 		       .PASSTHROUGH(1)
@@ -274,7 +279,7 @@ assign axi_sb_enable_internal                =  (init_spy_mem_internal == 1)? '1
 		 .wclock(clk_hs),
 		 .rresetbar(~rst_hs),
 		 .wresetbar(~rst_hs),
-		 .write_data({'b0,fm_mon_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]}), //CHECK IF ALWAYS VALID
+		 .write_data(tp_write_data[sb_i]), //{'b0,fm_mon_data[sb_i].fm_data[sb_tp_dw[sb_i]-1 : 0]} & sb_dw[sb_i]{1'b1}), //CHECK IF ALWAYS VALID
 		 .write_enable(fm_mon_data[sb_i].fm_vld),
 		 .read_enable(1'b1),
 		 .read_data(fm_passthrough_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]),

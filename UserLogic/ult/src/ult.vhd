@@ -44,7 +44,7 @@ library ctrl_lib;
 library vamc_lib;
 
 library fm_lib;
-  use fm_lib.fm_common_types.all;
+  use fm_lib.fm_types.all;
 
 entity ult is
   generic (
@@ -268,12 +268,12 @@ architecture behavioral of ult is
   signal mpl_sump : std_logic := '1';
 
   -- FAST MONITORING  
-  signal ucm_fm_mon     : fm_ucm_fm_mon_data;
-  signal ucm2hps_fm_mon : fm_ucm2hps_station_mon( 0 to stations_n-1);
-  signal h2s_fm_mon      : h2s_mon_data( 0 to stations_n-1);
-  signal h2s_fm_mon_v  : std_logic_vector(width(h2s_fm_mon)-1 downto 0);           
-  signal ucm_fm_mon_v : std_logic_vector(width(ucm_fm_mon)-1 downto 0);
-  signal ucm2hps_fm_mon_v: std_logic_vector(width(ucm2hps_fm_mon)-1 downto 0);
+  signal ucm_fm_mon_r     : fm_ucm_mon_data;
+ 
+  signal h2s_fm_mon_r      : fm_hps_mon;
+  signal h2s_fm_mon_v  : std_logic_vector(fm_hps_mon'w-1 downto 0);           
+  signal ucm_fm_mon_v : std_logic_vector(fm_ucm_mon_data'w-1 downto 0);
+
 begin
 
   -- -- ctrl/mon
@@ -408,8 +408,8 @@ begin
     end generate hps_ext;
 
     ucm_gen : if c_UCM_ENABLED = '1' generate
-      ucm_fm_mon <= convert(ucm_fm_mon_v, ucm_fm_mon);
-      ucm2hps_fm_mon <= convert(ucm2hps_fm_mon_v, ucm2hps_fm_mon);
+      ucm_fm_mon_r <= convert(ucm_fm_mon_v, ucm_fm_mon_r);
+
       
       -- block
       ult_ucm : entity ult_lib.candidate_manager
@@ -433,8 +433,8 @@ begin
           -- pipeline
           o_ucm2pl_av => ucm2pl_av,
           --Fast Monitoring
-         o_ucm_fm_mon_v => ucm_fm_mon_v,
-         o_ucm2hps_fm_mon_v => ucm2hps_fm_mon_v
+         o_ucm_fm_mon_v => ucm_fm_mon_v
+         
         );
 
     else generate
@@ -594,7 +594,7 @@ begin
     -- end process;
 
     h2s_gen : if c_H2S_ENABLED = '1' generate
-      h2s_fm_mon <= convert(h2s_fm_mon_v, h2s_fm_mon);
+      h2s_fm_mon_r <= convert(h2s_fm_mon_v, h2s_fm_mon_r);
       ult_h2s : entity ult_lib.hits_to_segments
         port map (
           -- clock, control, and monitoring
@@ -610,7 +610,7 @@ begin
           ext_ctrl_v => hps_ext_ctrl_v,
           ext_mon_v  => hps_ext_mon_v,
           --
-          h2s_fm_data_v => h2s_fm_mon_v,
+          fm_hps_mon_v => h2s_fm_mon_v,
           -- inputs from hal
           i_inn_tar_hits_av => ult_inn_tar_hits_in_av,
           i_mid_tar_hits_av => ult_mid_tar_hits_in_av,
@@ -1020,9 +1020,8 @@ begin
           ctrl_v                      => fm_ctrl_v,
           mon_v                    => fm_mon_v,
           --  inputs
-          ucm_fm_mon         => ucm_fm_mon,
-          ucm2hps_fm_mon => ucm2hps_fm_mon,
-          h2s_fm_mon          => h2s_fm_mon
+          ucm_fm_mon         => ucm_fm_mon_r,          
+          h2s_fm_mon          => h2s_fm_mon_r
         );
 
     else generate

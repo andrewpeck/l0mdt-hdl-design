@@ -30,7 +30,7 @@ library ctrl_lib;
 use ctrl_lib.UCM_CTRL.all;
 
 library fm_lib;
-use fm_lib.fm_common_types.all;
+use fm_lib.fm_types.all;
 
 entity candidate_manager is
   port (
@@ -53,15 +53,15 @@ entity candidate_manager is
       o_uCM2pl_av             : out ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
       --Fast Monitoring
-      o_ucm_fm_mon_v      : out std_logic_vector;
-      o_ucm2hps_fm_mon_v : out std_logic_vector
+      o_ucm_fm_mon_v      : out std_logic_vector
+
       );
 end entity candidate_manager;
 
 architecture beh of candidate_manager is
   signal glob_en : std_logic;
-  signal ucm_fm_mon  : fm_ucm_fm_mon_data;
-  signal ucm2hps_fm_mon : fm_ucm2hps_station_mon( 0 to stations_n-1);
+  signal ucm_fm_mon_r  : fm_ucm_mon_data;
+
 begin
 
   glob_en <= '1';
@@ -95,32 +95,32 @@ begin
   -- end generate;
 
   --FM Monitoting
-    o_ucm_fm_mon_v <= convert(ucm_fm_mon, o_ucm_fm_mon_v);
-  o_ucm2hps_fm_mon_v <= convert(ucm2hps_fm_mon, o_ucm2hps_fm_mon_v);
+    o_ucm_fm_mon_v <= convert(ucm_fm_mon_r, o_ucm_fm_mon_v);
+  
   -- SL Candidates
   FM_SL_CANDIDATES: for I in 0 to 2  generate
-  ucm_fm_mon.fm_ucm_slc_rx_mon(I).fm_data    <= (mon_dw_max-1 downto  slc_rx_rt'w => '0') & i_slc_data_mainA_av(I);
-  ucm_fm_mon.fm_ucm_slc_rx_mon(I).fm_vld   <=  i_slc_data_mainA_av(I)( slc_rx_rt'w-1);
+  ucm_fm_mon_r.fm_ucm_slc_rx_mon(I).fm_data    <= (mon_dw_max-1 downto  slc_rx_rt'w => '0') & i_slc_data_mainA_av(I);
+  ucm_fm_mon_r.fm_ucm_slc_rx_mon(I).fm_vld   <=  i_slc_data_mainA_av(I)( slc_rx_rt'w-1);
   end generate;
   --UCM2HPS
   FM_UCM2HPS_INN: for I in 0 to c_NUM_THREADS - 1 generate
-   ucm2hps_fm_mon(FM_INN)(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_inn_av(I);
-    ucm2hps_fm_mon(FM_INN)(I).fm_vld   <= o_uCM2hps_inn_av(I)( ucm2hps_rt'w -1) ;
+    ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_inn(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_inn_av(I);
+    ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_inn(I).fm_vld   <= o_uCM2hps_inn_av(I)( ucm2hps_rt'w -1) ;
     end generate;
 
      FM_UCM2HPS_MID: for I in 0 to c_NUM_THREADS - 1 generate
-    ucm2hps_fm_mon(FM_MID)(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_mid_av(I);
-    ucm2hps_fm_mon(FM_MID)(I).fm_vld   <= o_uCM2hps_mid_av(I)( ucm2hps_rt'w -1) ;
+    ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_mid(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_mid_av(I);
+    ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_mid(I).fm_vld   <= o_uCM2hps_mid_av(I)( ucm2hps_rt'w -1) ;
     end generate;
 
       FM_UCM2HPS_OUT: for I in 0 to c_NUM_THREADS - 1 generate
-    ucm2hps_fm_mon(FM_OUT)(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_out_av(I);
-    ucm2hps_fm_mon(FM_OUT)(I).fm_vld   <= o_uCM2hps_out_av(I)( ucm2hps_rt'w -1) ;
+    ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_out(I).fm_data <= (mon_dw_max-1 downto  ucm2hps_rt'w => '0') & o_uCM2hps_out_av(I);
+    ucm_fm_mon_r.fm_ucm2hps.fm_ucm2hps_out(I).fm_vld   <= o_uCM2hps_out_av(I)( ucm2hps_rt'w -1) ;
     end generate;
 
     FM_UCM2PL: for I in 0 to c_MAX_NUM_SL - 1 generate
-      ucm_fm_mon.fm_ucm2pl_mon(I).fm_data <= (mon_dw_max-1 downto  ucm2pl_rt'w => '0') & o_ucm2pl_av(I);
-      ucm_fm_mon.fm_ucm2pl_mon(I).fm_vld   <=o_ucm2pl_av(I)(ucm2pl_rt'w-1);
+      ucm_fm_mon_r.fm_ucm2pl_mon(I).fm_data <= (mon_dw_max-1 downto  ucm2pl_rt'w => '0') & o_ucm2pl_av(I);
+      ucm_fm_mon_r.fm_ucm2pl_mon(I).fm_vld   <=o_ucm2pl_av(I)(ucm2pl_rt'w-1);
       end generate;
   
 end architecture beh;

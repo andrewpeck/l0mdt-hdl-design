@@ -12,7 +12,7 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 
-package fm_common_types is
+package fm_types is
 
    -- Custom types and functions --
 
@@ -80,58 +80,37 @@ package fm_common_types is
    function convert(x: fm_art; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: fm_art) return fm_art;
 
-   subtype fm_vt is std_logic_vector(fm_rt'w-1 downto 0);
-   attribute w of fm_vt : subtype is 257;
+   type fm_hps_sf_mon is array(0 to sf_sb_n * threads_n -1) of fm_rt;
+   attribute w of fm_hps_sf_mon : type is 2313;
+   function width(x: fm_hps_sf_mon) return integer;
+   function convert(x: fm_hps_sf_mon; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: fm_hps_sf_mon) return fm_hps_sf_mon;
+   function zero(tpl: fm_hps_sf_mon) return fm_hps_sf_mon;
+   function convert(x: fm_hps_sf_mon; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: fm_hps_sf_mon) return fm_hps_sf_mon;
 
-   type fm_avt is array(integer range <>) of fm_vt;
-   function width(x: fm_avt) return integer;
-   function convert(x: fm_avt; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: fm_avt) return fm_avt;
-   function zero(tpl: fm_avt) return fm_avt;
-   function convert(x: fm_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: fm_avt) return fm_avt;
+   type fm_sf_mon is array(0 to sf_sb_n -1) of fm_rt;
+   attribute w of fm_sf_mon : type is 771;
+   function width(x: fm_sf_mon) return integer;
+   function convert(x: fm_sf_mon; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: fm_sf_mon) return fm_sf_mon;
+   function zero(tpl: fm_sf_mon) return fm_sf_mon;
+   function convert(x: fm_sf_mon; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: fm_sf_mon) return fm_sf_mon;
 
-   type fm_aart is array(integer range <>) of fm_art;
-   function width(x: fm_aart) return integer;
-   function convert(x: fm_aart; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: fm_aart) return fm_aart;
-   function zero(tpl: fm_aart) return fm_aart;
-   function convert(x: fm_aart; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: fm_aart) return fm_aart;
+   type fm_hps_mon is record
+      fm_hps_mon_inn : fm_hps_sf_mon;
+      fm_hps_mon_mid : fm_hps_sf_mon;
+      fm_hps_mon_out : fm_hps_sf_mon;
+   end record fm_hps_mon;
+   attribute w of fm_hps_mon : type is 6939;
+   function width(x: fm_hps_mon) return natural;
+   function convert(x: fm_hps_mon; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: fm_hps_mon) return fm_hps_mon;
+   function zero(tpl: fm_hps_mon) return fm_hps_mon;
 
-   type fm_aaart is array(integer range <>) of fm_art;
-   function width(x: fm_aaart) return integer;
-   function convert(x: fm_aaart; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: fm_aaart) return fm_aaart;
-   function zero(tpl: fm_aaart) return fm_aaart;
-   function convert(x: fm_aaart; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: fm_aaart) return fm_aaart;
-
-   type sf_mon_data is array(integer range <>) of fm_rt;
-   function width(x: sf_mon_data) return integer;
-   function convert(x: sf_mon_data; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: sf_mon_data) return sf_mon_data;
-   function zero(tpl: sf_mon_data) return sf_mon_data;
-   function convert(x: sf_mon_data; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: sf_mon_data) return sf_mon_data;
-
-   type h2s_mon_per_station is array(integer range <>) of sf_mon_data(0 to sf_sb_n-1);
-   function width(x: h2s_mon_per_station) return integer;
-   function convert(x: h2s_mon_per_station; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: h2s_mon_per_station) return h2s_mon_per_station;
-   function zero(tpl: h2s_mon_per_station) return h2s_mon_per_station;
-   function convert(x: h2s_mon_per_station; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: h2s_mon_per_station) return h2s_mon_per_station;
-
-   type h2s_mon_data is array(integer range <>) of h2s_mon_per_station(0 to threads_n-1);
-   function width(x: h2s_mon_data) return integer;
-   function convert(x: h2s_mon_data; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: h2s_mon_data) return h2s_mon_data;
-   function zero(tpl: h2s_mon_data) return h2s_mon_data;
-   function convert(x: h2s_mon_data; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: h2s_mon_data) return h2s_mon_data;
-
-   type fm_ucm2hps_thread_mon is array(integer range <>) of fm_rt;
+   type fm_ucm2hps_thread_mon is array(0 to threads_n-1) of fm_rt;
+   attribute w of fm_ucm2hps_thread_mon : type is 771;
    function width(x: fm_ucm2hps_thread_mon) return integer;
    function convert(x: fm_ucm2hps_thread_mon; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: fm_ucm2hps_thread_mon) return fm_ucm2hps_thread_mon;
@@ -139,24 +118,47 @@ package fm_common_types is
    function convert(x: fm_ucm2hps_thread_mon; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: fm_ucm2hps_thread_mon) return fm_ucm2hps_thread_mon;
 
-   type fm_ucm2hps_station_mon is array(integer range <>) of fm_ucm2hps_thread_mon(0 to threads_n-1);
-   function width(x: fm_ucm2hps_station_mon) return integer;
-   function convert(x: fm_ucm2hps_station_mon; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: fm_ucm2hps_station_mon) return fm_ucm2hps_station_mon;
-   function zero(tpl: fm_ucm2hps_station_mon) return fm_ucm2hps_station_mon;
-   function convert(x: fm_ucm2hps_station_mon; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: fm_ucm2hps_station_mon) return fm_ucm2hps_station_mon;
+   type fm_ucm_slc_rx is array(0 to primary_sl_n -1) of fm_rt;
+   attribute w of fm_ucm_slc_rx : type is 771;
+   function width(x: fm_ucm_slc_rx) return integer;
+   function convert(x: fm_ucm_slc_rx; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: fm_ucm_slc_rx) return fm_ucm_slc_rx;
+   function zero(tpl: fm_ucm_slc_rx) return fm_ucm_slc_rx;
+   function convert(x: fm_ucm_slc_rx; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: fm_ucm_slc_rx) return fm_ucm_slc_rx;
 
-   type fm_ucm_fm_mon_data is record
-      fm_ucm_slc_rx_mon : fm_art(0 to primary_sl_n-1);
-      fm_ucm2pl_mon : fm_art(0 to primary_sl_n-1);
-   end record fm_ucm_fm_mon_data;
-   function width(x: fm_ucm_fm_mon_data) return natural;
-   function convert(x: fm_ucm_fm_mon_data; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: fm_ucm_fm_mon_data) return fm_ucm_fm_mon_data;
-   function zero(tpl: fm_ucm_fm_mon_data) return fm_ucm_fm_mon_data;
+   type fm_ucm2pl is array(0 to primary_sl_n -1) of fm_rt;
+   attribute w of fm_ucm2pl : type is 771;
+   function width(x: fm_ucm2pl) return integer;
+   function convert(x: fm_ucm2pl; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: fm_ucm2pl) return fm_ucm2pl;
+   function zero(tpl: fm_ucm2pl) return fm_ucm2pl;
+   function convert(x: fm_ucm2pl; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: fm_ucm2pl) return fm_ucm2pl;
 
-end package fm_common_types;
+   type fm_ucm2hps is record
+      fm_ucm2hps_inn : fm_ucm2hps_thread_mon;
+      fm_ucm2hps_mid : fm_ucm2hps_thread_mon;
+      fm_ucm2hps_out : fm_ucm2hps_thread_mon;
+   end record fm_ucm2hps;
+   attribute w of fm_ucm2hps : type is 2313;
+   function width(x: fm_ucm2hps) return natural;
+   function convert(x: fm_ucm2hps; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: fm_ucm2hps) return fm_ucm2hps;
+   function zero(tpl: fm_ucm2hps) return fm_ucm2hps;
+
+   type fm_ucm_mon_data is record
+      fm_ucm_slc_rx_mon : fm_ucm_slc_rx;
+      fm_ucm2pl_mon : fm_ucm2pl;
+      fm_ucm2hps : fm_ucm2hps;
+   end record fm_ucm_mon_data;
+   attribute w of fm_ucm_mon_data : type is 3855;
+   function width(x: fm_ucm_mon_data) return natural;
+   function convert(x: fm_ucm_mon_data; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: fm_ucm_mon_data) return fm_ucm_mon_data;
+   function zero(tpl: fm_ucm_mon_data) return fm_ucm_mon_data;
+
+end package fm_types;
 
 ------------------------------------------------------------
 
@@ -171,7 +173,7 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 
-package body fm_common_types is
+package body fm_types is
 
    -- Custom types and functions --
 
@@ -300,7 +302,7 @@ package body fm_common_types is
       return y;
    end function convert;
 
-   function width(x: fm_avt) return integer is
+   function width(x: fm_hps_sf_mon) return integer is
       variable w : integer;
    begin
       if x'length < 1 then
@@ -310,7 +312,7 @@ package body fm_common_types is
       end if;
       return w;
    end function width;
-   function convert(x: fm_avt; tpl: std_logic_vector) return std_logic_vector is
+   function convert(x: fm_hps_sf_mon; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
       constant W : natural := width(x(x'low));
       variable a : integer;
@@ -331,8 +333,8 @@ package body fm_common_types is
       end if;
       return y;
    end function convert;
-   function convert(x: std_logic_vector; tpl: fm_avt) return fm_avt is
-      variable y : fm_avt(tpl'range);
+   function convert(x: std_logic_vector; tpl: fm_hps_sf_mon) return fm_hps_sf_mon is
+      variable y : fm_hps_sf_mon;
       constant W : natural := width(y(y'low));
       variable a : integer;
       variable b : integer;
@@ -352,11 +354,11 @@ package body fm_common_types is
       end if;
       return y;
    end function convert;
-   function zero(tpl: fm_avt) return fm_avt is
+   function zero(tpl: fm_hps_sf_mon) return fm_hps_sf_mon is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
-   function convert(x: fm_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
+   function convert(x: fm_hps_sf_mon; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
    begin
       for j in y'range loop
@@ -364,8 +366,8 @@ package body fm_common_types is
       end loop;
       return y;
    end function convert;
-   function convert(x: std_logic_vector_array; tpl: fm_avt) return fm_avt is
-      variable y : fm_avt(tpl'range);
+   function convert(x: std_logic_vector_array; tpl: fm_hps_sf_mon) return fm_hps_sf_mon is
+      variable y : fm_hps_sf_mon;
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -373,7 +375,7 @@ package body fm_common_types is
       return y;
    end function convert;
 
-   function width(x: fm_aart) return integer is
+   function width(x: fm_sf_mon) return integer is
       variable w : integer;
    begin
       if x'length < 1 then
@@ -383,7 +385,7 @@ package body fm_common_types is
       end if;
       return w;
    end function width;
-   function convert(x: fm_aart; tpl: std_logic_vector) return std_logic_vector is
+   function convert(x: fm_sf_mon; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
       constant W : natural := width(x(x'low));
       variable a : integer;
@@ -404,8 +406,8 @@ package body fm_common_types is
       end if;
       return y;
    end function convert;
-   function convert(x: std_logic_vector; tpl: fm_aart) return fm_aart is
-      variable y : fm_aart(tpl'range);
+   function convert(x: std_logic_vector; tpl: fm_sf_mon) return fm_sf_mon is
+      variable y : fm_sf_mon;
       constant W : natural := width(y(y'low));
       variable a : integer;
       variable b : integer;
@@ -425,11 +427,11 @@ package body fm_common_types is
       end if;
       return y;
    end function convert;
-   function zero(tpl: fm_aart) return fm_aart is
+   function zero(tpl: fm_sf_mon) return fm_sf_mon is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
-   function convert(x: fm_aart; tpl: std_logic_vector_array) return std_logic_vector_array is
+   function convert(x: fm_sf_mon; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
    begin
       for j in y'range loop
@@ -437,8 +439,8 @@ package body fm_common_types is
       end loop;
       return y;
    end function convert;
-   function convert(x: std_logic_vector_array; tpl: fm_aart) return fm_aart is
-      variable y : fm_aart(tpl'range);
+   function convert(x: std_logic_vector_array; tpl: fm_sf_mon) return fm_sf_mon is
+      variable y : fm_sf_mon;
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -446,297 +448,70 @@ package body fm_common_types is
       return y;
    end function convert;
 
-   function width(x: fm_aaart) return integer is
-      variable w : integer;
+   function width(x: fm_hps_mon) return natural is
+      variable w : natural := 0;
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
+      w := w + width(x.fm_hps_mon_inn);
+      w := w + width(x.fm_hps_mon_mid);
+      w := w + width(x.fm_hps_mon_out);
       return w;
    end function width;
-   function convert(x: fm_aaart; tpl: std_logic_vector) return std_logic_vector is
+   function convert(x: fm_hps_mon; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
+      variable w : integer;
+      variable u : integer := tpl'left;
    begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
+      if tpl'ascending then
+         w := width(x.fm_hps_mon_inn);
+         y(u to u+w-1) := convert(x.fm_hps_mon_inn, y(u to u+w-1));
+         u := u + w;
+         w := width(x.fm_hps_mon_mid);
+         y(u to u+w-1) := convert(x.fm_hps_mon_mid, y(u to u+w-1));
+         u := u + w;
+         w := width(x.fm_hps_mon_out);
+         y(u to u+w-1) := convert(x.fm_hps_mon_out, y(u to u+w-1));
       else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
+         w := width(x.fm_hps_mon_inn);
+         y(u downto u-w+1) := convert(x.fm_hps_mon_inn, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.fm_hps_mon_mid);
+         y(u downto u-w+1) := convert(x.fm_hps_mon_mid, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.fm_hps_mon_out);
+         y(u downto u-w+1) := convert(x.fm_hps_mon_out, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
-   function convert(x: std_logic_vector; tpl: fm_aaart) return fm_aaart is
-      variable y : fm_aaart(tpl'range);
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
+   function convert(x: std_logic_vector; tpl: fm_hps_mon) return fm_hps_mon is
+      variable y : fm_hps_mon;
+      variable w : integer;
+      variable u : integer := x'left;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
+         w := width(tpl.fm_hps_mon_inn);
+         y.fm_hps_mon_inn := convert(x(u to u+w-1), tpl.fm_hps_mon_inn);
+         u := u + w;
+         w := width(tpl.fm_hps_mon_mid);
+         y.fm_hps_mon_mid := convert(x(u to u+w-1), tpl.fm_hps_mon_mid);
+         u := u + w;
+         w := width(tpl.fm_hps_mon_out);
+         y.fm_hps_mon_out := convert(x(u to u+w-1), tpl.fm_hps_mon_out);
       else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
+         w := width(tpl.fm_hps_mon_inn);
+         y.fm_hps_mon_inn := convert(x(u downto u-w+1), tpl.fm_hps_mon_inn);
+         u := u - w;
+         w := width(tpl.fm_hps_mon_mid);
+         y.fm_hps_mon_mid := convert(x(u downto u-w+1), tpl.fm_hps_mon_mid);
+         u := u - w;
+         w := width(tpl.fm_hps_mon_out);
+         y.fm_hps_mon_out := convert(x(u downto u-w+1), tpl.fm_hps_mon_out);
       end if;
       return y;
    end function convert;
-   function zero(tpl: fm_aaart) return fm_aaart is
+   function zero(tpl: fm_hps_mon) return fm_hps_mon is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
-   function convert(x: fm_aaart; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: fm_aaart) return fm_aaart is
-      variable y : fm_aaart(tpl'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
-
-   function width(x: sf_mon_data) return integer is
-      variable w : integer;
-   begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
-   end function width;
-   function convert(x: sf_mon_data; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
-      else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: sf_mon_data) return sf_mon_data is
-      variable y : sf_mon_data(tpl'range);
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
-      else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: sf_mon_data) return sf_mon_data is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-   function convert(x: sf_mon_data; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: sf_mon_data) return sf_mon_data is
-      variable y : sf_mon_data(tpl'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
-
-   function width(x: h2s_mon_per_station) return integer is
-      variable w : integer;
-   begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
-   end function width;
-   function convert(x: h2s_mon_per_station; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
-      else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: h2s_mon_per_station) return h2s_mon_per_station is
-      variable y : h2s_mon_per_station(tpl'range);
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
-      else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: h2s_mon_per_station) return h2s_mon_per_station is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-   function convert(x: h2s_mon_per_station; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: h2s_mon_per_station) return h2s_mon_per_station is
-      variable y : h2s_mon_per_station(tpl'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
-
-   function width(x: h2s_mon_data) return integer is
-      variable w : integer;
-   begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
-   end function width;
-   function convert(x: h2s_mon_data; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
-      else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: h2s_mon_data) return h2s_mon_data is
-      variable y : h2s_mon_data(tpl'range);
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
-      else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: h2s_mon_data) return h2s_mon_data is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-   function convert(x: h2s_mon_data; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: h2s_mon_data) return h2s_mon_data is
-      variable y : h2s_mon_data(tpl'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
 
    function width(x: fm_ucm2hps_thread_mon) return integer is
       variable w : integer;
@@ -770,7 +545,7 @@ package body fm_common_types is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: fm_ucm2hps_thread_mon) return fm_ucm2hps_thread_mon is
-      variable y : fm_ucm2hps_thread_mon(tpl'range);
+      variable y : fm_ucm2hps_thread_mon;
       constant W : natural := width(y(y'low));
       variable a : integer;
       variable b : integer;
@@ -803,7 +578,7 @@ package body fm_common_types is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: fm_ucm2hps_thread_mon) return fm_ucm2hps_thread_mon is
-      variable y : fm_ucm2hps_thread_mon(tpl'range);
+      variable y : fm_ucm2hps_thread_mon;
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -811,7 +586,7 @@ package body fm_common_types is
       return y;
    end function convert;
 
-   function width(x: fm_ucm2hps_station_mon) return integer is
+   function width(x: fm_ucm_slc_rx) return integer is
       variable w : integer;
    begin
       if x'length < 1 then
@@ -821,7 +596,7 @@ package body fm_common_types is
       end if;
       return w;
    end function width;
-   function convert(x: fm_ucm2hps_station_mon; tpl: std_logic_vector) return std_logic_vector is
+   function convert(x: fm_ucm_slc_rx; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
       constant W : natural := width(x(x'low));
       variable a : integer;
@@ -842,8 +617,8 @@ package body fm_common_types is
       end if;
       return y;
    end function convert;
-   function convert(x: std_logic_vector; tpl: fm_ucm2hps_station_mon) return fm_ucm2hps_station_mon is
-      variable y : fm_ucm2hps_station_mon(tpl'range);
+   function convert(x: std_logic_vector; tpl: fm_ucm_slc_rx) return fm_ucm_slc_rx is
+      variable y : fm_ucm_slc_rx;
       constant W : natural := width(y(y'low));
       variable a : integer;
       variable b : integer;
@@ -863,11 +638,11 @@ package body fm_common_types is
       end if;
       return y;
    end function convert;
-   function zero(tpl: fm_ucm2hps_station_mon) return fm_ucm2hps_station_mon is
+   function zero(tpl: fm_ucm_slc_rx) return fm_ucm_slc_rx is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
-   function convert(x: fm_ucm2hps_station_mon; tpl: std_logic_vector_array) return std_logic_vector_array is
+   function convert(x: fm_ucm_slc_rx; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
    begin
       for j in y'range loop
@@ -875,8 +650,8 @@ package body fm_common_types is
       end loop;
       return y;
    end function convert;
-   function convert(x: std_logic_vector_array; tpl: fm_ucm2hps_station_mon) return fm_ucm2hps_station_mon is
-      variable y : fm_ucm2hps_station_mon(tpl'range);
+   function convert(x: std_logic_vector_array; tpl: fm_ucm_slc_rx) return fm_ucm_slc_rx is
+      variable y : fm_ucm_slc_rx;
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -884,14 +659,153 @@ package body fm_common_types is
       return y;
    end function convert;
 
-   function width(x: fm_ucm_fm_mon_data) return natural is
+   function width(x: fm_ucm2pl) return integer is
+      variable w : integer;
+   begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
+      return w;
+   end function width;
+   function convert(x: fm_ucm2pl; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: fm_ucm2pl) return fm_ucm2pl is
+      variable y : fm_ucm2pl;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: fm_ucm2pl) return fm_ucm2pl is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: fm_ucm2pl; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: fm_ucm2pl) return fm_ucm2pl is
+      variable y : fm_ucm2pl;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
+   function width(x: fm_ucm2hps) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.fm_ucm2hps_inn);
+      w := w + width(x.fm_ucm2hps_mid);
+      w := w + width(x.fm_ucm2hps_out);
+      return w;
+   end function width;
+   function convert(x: fm_ucm2hps; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.fm_ucm2hps_inn);
+         y(u to u+w-1) := convert(x.fm_ucm2hps_inn, y(u to u+w-1));
+         u := u + w;
+         w := width(x.fm_ucm2hps_mid);
+         y(u to u+w-1) := convert(x.fm_ucm2hps_mid, y(u to u+w-1));
+         u := u + w;
+         w := width(x.fm_ucm2hps_out);
+         y(u to u+w-1) := convert(x.fm_ucm2hps_out, y(u to u+w-1));
+      else
+         w := width(x.fm_ucm2hps_inn);
+         y(u downto u-w+1) := convert(x.fm_ucm2hps_inn, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.fm_ucm2hps_mid);
+         y(u downto u-w+1) := convert(x.fm_ucm2hps_mid, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.fm_ucm2hps_out);
+         y(u downto u-w+1) := convert(x.fm_ucm2hps_out, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: fm_ucm2hps) return fm_ucm2hps is
+      variable y : fm_ucm2hps;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.fm_ucm2hps_inn);
+         y.fm_ucm2hps_inn := convert(x(u to u+w-1), tpl.fm_ucm2hps_inn);
+         u := u + w;
+         w := width(tpl.fm_ucm2hps_mid);
+         y.fm_ucm2hps_mid := convert(x(u to u+w-1), tpl.fm_ucm2hps_mid);
+         u := u + w;
+         w := width(tpl.fm_ucm2hps_out);
+         y.fm_ucm2hps_out := convert(x(u to u+w-1), tpl.fm_ucm2hps_out);
+      else
+         w := width(tpl.fm_ucm2hps_inn);
+         y.fm_ucm2hps_inn := convert(x(u downto u-w+1), tpl.fm_ucm2hps_inn);
+         u := u - w;
+         w := width(tpl.fm_ucm2hps_mid);
+         y.fm_ucm2hps_mid := convert(x(u downto u-w+1), tpl.fm_ucm2hps_mid);
+         u := u - w;
+         w := width(tpl.fm_ucm2hps_out);
+         y.fm_ucm2hps_out := convert(x(u downto u-w+1), tpl.fm_ucm2hps_out);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: fm_ucm2hps) return fm_ucm2hps is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: fm_ucm_mon_data) return natural is
       variable w : natural := 0;
    begin
       w := w + width(x.fm_ucm_slc_rx_mon);
       w := w + width(x.fm_ucm2pl_mon);
+      w := w + width(x.fm_ucm2hps);
       return w;
    end function width;
-   function convert(x: fm_ucm_fm_mon_data; tpl: std_logic_vector) return std_logic_vector is
+   function convert(x: fm_ucm_mon_data; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
       variable w : integer;
       variable u : integer := tpl'left;
@@ -902,17 +816,23 @@ package body fm_common_types is
          u := u + w;
          w := width(x.fm_ucm2pl_mon);
          y(u to u+w-1) := convert(x.fm_ucm2pl_mon, y(u to u+w-1));
+         u := u + w;
+         w := width(x.fm_ucm2hps);
+         y(u to u+w-1) := convert(x.fm_ucm2hps, y(u to u+w-1));
       else
          w := width(x.fm_ucm_slc_rx_mon);
          y(u downto u-w+1) := convert(x.fm_ucm_slc_rx_mon, y(u downto u-w+1));
          u := u - w;
          w := width(x.fm_ucm2pl_mon);
          y(u downto u-w+1) := convert(x.fm_ucm2pl_mon, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.fm_ucm2hps);
+         y(u downto u-w+1) := convert(x.fm_ucm2hps, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
-   function convert(x: std_logic_vector; tpl: fm_ucm_fm_mon_data) return fm_ucm_fm_mon_data is
-      variable y : fm_ucm_fm_mon_data; --((fm_ucm_slc_rx_mon)fm_ucm2pl_mon);
+   function convert(x: std_logic_vector; tpl: fm_ucm_mon_data) return fm_ucm_mon_data is
+      variable y : fm_ucm_mon_data;
       variable w : integer;
       variable u : integer := x'left;
    begin
@@ -922,18 +842,24 @@ package body fm_common_types is
          u := u + w;
          w := width(tpl.fm_ucm2pl_mon);
          y.fm_ucm2pl_mon := convert(x(u to u+w-1), tpl.fm_ucm2pl_mon);
+         u := u + w;
+         w := width(tpl.fm_ucm2hps);
+         y.fm_ucm2hps := convert(x(u to u+w-1), tpl.fm_ucm2hps);
       else
          w := width(tpl.fm_ucm_slc_rx_mon);
          y.fm_ucm_slc_rx_mon := convert(x(u downto u-w+1), tpl.fm_ucm_slc_rx_mon);
          u := u - w;
          w := width(tpl.fm_ucm2pl_mon);
          y.fm_ucm2pl_mon := convert(x(u downto u-w+1), tpl.fm_ucm2pl_mon);
+         u := u - w;
+         w := width(tpl.fm_ucm2hps);
+         y.fm_ucm2hps := convert(x(u downto u-w+1), tpl.fm_ucm2hps);
       end if;
       return y;
    end function convert;
-   function zero(tpl: fm_ucm_fm_mon_data) return fm_ucm_fm_mon_data is
+   function zero(tpl: fm_ucm_mon_data) return fm_ucm_mon_data is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
-end package body fm_common_types;
+end package body fm_types;

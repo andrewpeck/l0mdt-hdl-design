@@ -669,17 +669,6 @@ package FM_CTRL is
    function convert(x: std_logic_vector; tpl: FM_SB15_CTRL_t) return FM_SB15_CTRL_t;
    function zero(tpl: FM_SB15_CTRL_t) return FM_SB15_CTRL_t;
 
-   type FM_SPY_CTRL_CTRL_t is record
-      GLOBAL_FREEZE : std_logic;
-      GLOBAL_PLAYBACK_MODE : std_logic_vector(2 - 1 downto 0);
-      INITIALIZE_SPY_MEMORY : std_logic;
-   end record FM_SPY_CTRL_CTRL_t;
-   attribute w of FM_SPY_CTRL_CTRL_t : type is 4;
-   function width(x: FM_SPY_CTRL_CTRL_t) return natural;
-   function convert(x: FM_SPY_CTRL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: FM_SPY_CTRL_CTRL_t) return FM_SPY_CTRL_CTRL_t;
-   function zero(tpl: FM_SPY_CTRL_CTRL_t) return FM_SPY_CTRL_CTRL_t;
-
    type FM_SB16_SB_MEM_MOSI_t is record
       clk : std_logic;
       enable : std_logic;
@@ -1828,6 +1817,17 @@ package FM_CTRL is
    function convert(x: std_logic_vector; tpl: FM_SB43_CTRL_t) return FM_SB43_CTRL_t;
    function zero(tpl: FM_SB43_CTRL_t) return FM_SB43_CTRL_t;
 
+   type FM_SPY_CTRL_CTRL_t is record
+      GLOBAL_FREEZE : std_logic;
+      GLOBAL_PLAYBACK_MODE : std_logic_vector(2 - 1 downto 0);
+      INITIALIZE_SPY_MEMORY : std_logic;
+   end record FM_SPY_CTRL_CTRL_t;
+   attribute w of FM_SPY_CTRL_CTRL_t : type is 4;
+   function width(x: FM_SPY_CTRL_CTRL_t) return natural;
+   function convert(x: FM_SPY_CTRL_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SPY_CTRL_CTRL_t) return FM_SPY_CTRL_CTRL_t;
+   function zero(tpl: FM_SPY_CTRL_CTRL_t) return FM_SPY_CTRL_CTRL_t;
+
    type FM_MON_t is record
       SB0 : FM_SB0_MON_t;
       SB1 : FM_SB1_MON_t;
@@ -1897,12 +1897,7 @@ package FM_CTRL is
       SB13 : FM_SB13_CTRL_t;
       SB14 : FM_SB14_CTRL_t;
       SB15 : FM_SB15_CTRL_t;
-      SPY_CTRL : FM_SPY_CTRL_CTRL_t;
       SB16 : FM_SB16_CTRL_t;
-      FREEZE_MASK_0 : std_logic_vector(32 - 1 downto 0);
-      FREEZE_MASK_1 : std_logic_vector(32 - 1 downto 0);
-      PLAYBACK_MASK_0 : std_logic_vector(32 - 1 downto 0);
-      PLAYBACK_MASK_1 : std_logic_vector(32 - 1 downto 0);
       SB17 : FM_SB17_CTRL_t;
       SB18 : FM_SB18_CTRL_t;
       SB19 : FM_SB19_CTRL_t;
@@ -1930,6 +1925,11 @@ package FM_CTRL is
       SB41 : FM_SB41_CTRL_t;
       SB42 : FM_SB42_CTRL_t;
       SB43 : FM_SB43_CTRL_t;
+      SPY_CTRL : FM_SPY_CTRL_CTRL_t;
+      FREEZE_MASK_0 : std_logic_vector(32 - 1 downto 0);
+      FREEZE_MASK_1 : std_logic_vector(32 - 1 downto 0);
+      PLAYBACK_MASK_0 : std_logic_vector(32 - 1 downto 0);
+      PLAYBACK_MASK_1 : std_logic_vector(32 - 1 downto 0);
    end record FM_CTRL_t;
    attribute w of FM_CTRL_t : type is 2068;
    function width(x: FM_CTRL_t) return natural;
@@ -5485,71 +5485,6 @@ package body FM_CTRL is
       return y;
    end function convert;
    function zero(tpl: FM_SB15_CTRL_t) return FM_SB15_CTRL_t is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-
-   function width(x: FM_SPY_CTRL_CTRL_t) return natural is
-      variable w : natural := 0;
-   begin
-      w := w + width(x.GLOBAL_FREEZE);
-      w := w + width(x.GLOBAL_PLAYBACK_MODE);
-      w := w + width(x.INITIALIZE_SPY_MEMORY);
-      return w;
-   end function width;
-   function convert(x: FM_SPY_CTRL_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      variable w : integer;
-      variable u : integer := tpl'left;
-   begin
-      if tpl'ascending then
-         w := width(x.GLOBAL_FREEZE);
-         y(u to u+w-1) := convert(x.GLOBAL_FREEZE, y(u to u+w-1));
-         u := u + w;
-         w := width(x.GLOBAL_PLAYBACK_MODE);
-         y(u to u+w-1) := convert(x.GLOBAL_PLAYBACK_MODE, y(u to u+w-1));
-         u := u + w;
-         w := width(x.INITIALIZE_SPY_MEMORY);
-         y(u to u+w-1) := convert(x.INITIALIZE_SPY_MEMORY, y(u to u+w-1));
-      else
-         w := width(x.GLOBAL_FREEZE);
-         y(u downto u-w+1) := convert(x.GLOBAL_FREEZE, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.GLOBAL_PLAYBACK_MODE);
-         y(u downto u-w+1) := convert(x.GLOBAL_PLAYBACK_MODE, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.INITIALIZE_SPY_MEMORY);
-         y(u downto u-w+1) := convert(x.INITIALIZE_SPY_MEMORY, y(u downto u-w+1));
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: FM_SPY_CTRL_CTRL_t) return FM_SPY_CTRL_CTRL_t is
-      variable y : FM_SPY_CTRL_CTRL_t;
-      variable w : integer;
-      variable u : integer := x'left;
-   begin
-      if x'ascending then
-         w := width(tpl.GLOBAL_FREEZE);
-         y.GLOBAL_FREEZE := convert(x(u to u+w-1), tpl.GLOBAL_FREEZE);
-         u := u + w;
-         w := width(tpl.GLOBAL_PLAYBACK_MODE);
-         y.GLOBAL_PLAYBACK_MODE := convert(x(u to u+w-1), tpl.GLOBAL_PLAYBACK_MODE);
-         u := u + w;
-         w := width(tpl.INITIALIZE_SPY_MEMORY);
-         y.INITIALIZE_SPY_MEMORY := convert(x(u to u+w-1), tpl.INITIALIZE_SPY_MEMORY);
-      else
-         w := width(tpl.GLOBAL_FREEZE);
-         y.GLOBAL_FREEZE := convert(x(u downto u-w+1), tpl.GLOBAL_FREEZE);
-         u := u - w;
-         w := width(tpl.GLOBAL_PLAYBACK_MODE);
-         y.GLOBAL_PLAYBACK_MODE := convert(x(u downto u-w+1), tpl.GLOBAL_PLAYBACK_MODE);
-         u := u - w;
-         w := width(tpl.INITIALIZE_SPY_MEMORY);
-         y.INITIALIZE_SPY_MEMORY := convert(x(u downto u-w+1), tpl.INITIALIZE_SPY_MEMORY);
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: FM_SPY_CTRL_CTRL_t) return FM_SPY_CTRL_CTRL_t is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
@@ -11742,6 +11677,71 @@ package body FM_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
+   function width(x: FM_SPY_CTRL_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.GLOBAL_FREEZE);
+      w := w + width(x.GLOBAL_PLAYBACK_MODE);
+      w := w + width(x.INITIALIZE_SPY_MEMORY);
+      return w;
+   end function width;
+   function convert(x: FM_SPY_CTRL_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.GLOBAL_FREEZE);
+         y(u to u+w-1) := convert(x.GLOBAL_FREEZE, y(u to u+w-1));
+         u := u + w;
+         w := width(x.GLOBAL_PLAYBACK_MODE);
+         y(u to u+w-1) := convert(x.GLOBAL_PLAYBACK_MODE, y(u to u+w-1));
+         u := u + w;
+         w := width(x.INITIALIZE_SPY_MEMORY);
+         y(u to u+w-1) := convert(x.INITIALIZE_SPY_MEMORY, y(u to u+w-1));
+      else
+         w := width(x.GLOBAL_FREEZE);
+         y(u downto u-w+1) := convert(x.GLOBAL_FREEZE, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.GLOBAL_PLAYBACK_MODE);
+         y(u downto u-w+1) := convert(x.GLOBAL_PLAYBACK_MODE, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.INITIALIZE_SPY_MEMORY);
+         y(u downto u-w+1) := convert(x.INITIALIZE_SPY_MEMORY, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SPY_CTRL_CTRL_t) return FM_SPY_CTRL_CTRL_t is
+      variable y : FM_SPY_CTRL_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.GLOBAL_FREEZE);
+         y.GLOBAL_FREEZE := convert(x(u to u+w-1), tpl.GLOBAL_FREEZE);
+         u := u + w;
+         w := width(tpl.GLOBAL_PLAYBACK_MODE);
+         y.GLOBAL_PLAYBACK_MODE := convert(x(u to u+w-1), tpl.GLOBAL_PLAYBACK_MODE);
+         u := u + w;
+         w := width(tpl.INITIALIZE_SPY_MEMORY);
+         y.INITIALIZE_SPY_MEMORY := convert(x(u to u+w-1), tpl.INITIALIZE_SPY_MEMORY);
+      else
+         w := width(tpl.GLOBAL_FREEZE);
+         y.GLOBAL_FREEZE := convert(x(u downto u-w+1), tpl.GLOBAL_FREEZE);
+         u := u - w;
+         w := width(tpl.GLOBAL_PLAYBACK_MODE);
+         y.GLOBAL_PLAYBACK_MODE := convert(x(u downto u-w+1), tpl.GLOBAL_PLAYBACK_MODE);
+         u := u - w;
+         w := width(tpl.INITIALIZE_SPY_MEMORY);
+         y.INITIALIZE_SPY_MEMORY := convert(x(u downto u-w+1), tpl.INITIALIZE_SPY_MEMORY);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SPY_CTRL_CTRL_t) return FM_SPY_CTRL_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
    function width(x: FM_MON_t) return natural is
       variable w : natural := 0;
    begin
@@ -12359,12 +12359,7 @@ package body FM_CTRL is
       w := w + width(x.SB13);
       w := w + width(x.SB14);
       w := w + width(x.SB15);
-      w := w + width(x.SPY_CTRL);
       w := w + width(x.SB16);
-      w := w + width(x.FREEZE_MASK_0);
-      w := w + width(x.FREEZE_MASK_1);
-      w := w + width(x.PLAYBACK_MASK_0);
-      w := w + width(x.PLAYBACK_MASK_1);
       w := w + width(x.SB17);
       w := w + width(x.SB18);
       w := w + width(x.SB19);
@@ -12392,6 +12387,11 @@ package body FM_CTRL is
       w := w + width(x.SB41);
       w := w + width(x.SB42);
       w := w + width(x.SB43);
+      w := w + width(x.SPY_CTRL);
+      w := w + width(x.FREEZE_MASK_0);
+      w := w + width(x.FREEZE_MASK_1);
+      w := w + width(x.PLAYBACK_MASK_0);
+      w := w + width(x.PLAYBACK_MASK_1);
       return w;
    end function width;
    function convert(x: FM_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -12448,23 +12448,8 @@ package body FM_CTRL is
          w := width(x.SB15);
          y(u to u+w-1) := convert(x.SB15, y(u to u+w-1));
          u := u + w;
-         w := width(x.SPY_CTRL);
-         y(u to u+w-1) := convert(x.SPY_CTRL, y(u to u+w-1));
-         u := u + w;
          w := width(x.SB16);
          y(u to u+w-1) := convert(x.SB16, y(u to u+w-1));
-         u := u + w;
-         w := width(x.FREEZE_MASK_0);
-         y(u to u+w-1) := convert(x.FREEZE_MASK_0, y(u to u+w-1));
-         u := u + w;
-         w := width(x.FREEZE_MASK_1);
-         y(u to u+w-1) := convert(x.FREEZE_MASK_1, y(u to u+w-1));
-         u := u + w;
-         w := width(x.PLAYBACK_MASK_0);
-         y(u to u+w-1) := convert(x.PLAYBACK_MASK_0, y(u to u+w-1));
-         u := u + w;
-         w := width(x.PLAYBACK_MASK_1);
-         y(u to u+w-1) := convert(x.PLAYBACK_MASK_1, y(u to u+w-1));
          u := u + w;
          w := width(x.SB17);
          y(u to u+w-1) := convert(x.SB17, y(u to u+w-1));
@@ -12546,6 +12531,21 @@ package body FM_CTRL is
          u := u + w;
          w := width(x.SB43);
          y(u to u+w-1) := convert(x.SB43, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SPY_CTRL);
+         y(u to u+w-1) := convert(x.SPY_CTRL, y(u to u+w-1));
+         u := u + w;
+         w := width(x.FREEZE_MASK_0);
+         y(u to u+w-1) := convert(x.FREEZE_MASK_0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.FREEZE_MASK_1);
+         y(u to u+w-1) := convert(x.FREEZE_MASK_1, y(u to u+w-1));
+         u := u + w;
+         w := width(x.PLAYBACK_MASK_0);
+         y(u to u+w-1) := convert(x.PLAYBACK_MASK_0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.PLAYBACK_MASK_1);
+         y(u to u+w-1) := convert(x.PLAYBACK_MASK_1, y(u to u+w-1));
       else
          w := width(x.SB0);
          y(u downto u-w+1) := convert(x.SB0, y(u downto u-w+1));
@@ -12595,23 +12595,8 @@ package body FM_CTRL is
          w := width(x.SB15);
          y(u downto u-w+1) := convert(x.SB15, y(u downto u-w+1));
          u := u - w;
-         w := width(x.SPY_CTRL);
-         y(u downto u-w+1) := convert(x.SPY_CTRL, y(u downto u-w+1));
-         u := u - w;
          w := width(x.SB16);
          y(u downto u-w+1) := convert(x.SB16, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.FREEZE_MASK_0);
-         y(u downto u-w+1) := convert(x.FREEZE_MASK_0, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.FREEZE_MASK_1);
-         y(u downto u-w+1) := convert(x.FREEZE_MASK_1, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.PLAYBACK_MASK_0);
-         y(u downto u-w+1) := convert(x.PLAYBACK_MASK_0, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.PLAYBACK_MASK_1);
-         y(u downto u-w+1) := convert(x.PLAYBACK_MASK_1, y(u downto u-w+1));
          u := u - w;
          w := width(x.SB17);
          y(u downto u-w+1) := convert(x.SB17, y(u downto u-w+1));
@@ -12693,6 +12678,21 @@ package body FM_CTRL is
          u := u - w;
          w := width(x.SB43);
          y(u downto u-w+1) := convert(x.SB43, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SPY_CTRL);
+         y(u downto u-w+1) := convert(x.SPY_CTRL, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.FREEZE_MASK_0);
+         y(u downto u-w+1) := convert(x.FREEZE_MASK_0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.FREEZE_MASK_1);
+         y(u downto u-w+1) := convert(x.FREEZE_MASK_1, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.PLAYBACK_MASK_0);
+         y(u downto u-w+1) := convert(x.PLAYBACK_MASK_0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.PLAYBACK_MASK_1);
+         y(u downto u-w+1) := convert(x.PLAYBACK_MASK_1, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -12750,23 +12750,8 @@ package body FM_CTRL is
          w := width(tpl.SB15);
          y.SB15 := convert(x(u to u+w-1), tpl.SB15);
          u := u + w;
-         w := width(tpl.SPY_CTRL);
-         y.SPY_CTRL := convert(x(u to u+w-1), tpl.SPY_CTRL);
-         u := u + w;
          w := width(tpl.SB16);
          y.SB16 := convert(x(u to u+w-1), tpl.SB16);
-         u := u + w;
-         w := width(tpl.FREEZE_MASK_0);
-         y.FREEZE_MASK_0 := convert(x(u to u+w-1), tpl.FREEZE_MASK_0);
-         u := u + w;
-         w := width(tpl.FREEZE_MASK_1);
-         y.FREEZE_MASK_1 := convert(x(u to u+w-1), tpl.FREEZE_MASK_1);
-         u := u + w;
-         w := width(tpl.PLAYBACK_MASK_0);
-         y.PLAYBACK_MASK_0 := convert(x(u to u+w-1), tpl.PLAYBACK_MASK_0);
-         u := u + w;
-         w := width(tpl.PLAYBACK_MASK_1);
-         y.PLAYBACK_MASK_1 := convert(x(u to u+w-1), tpl.PLAYBACK_MASK_1);
          u := u + w;
          w := width(tpl.SB17);
          y.SB17 := convert(x(u to u+w-1), tpl.SB17);
@@ -12848,6 +12833,21 @@ package body FM_CTRL is
          u := u + w;
          w := width(tpl.SB43);
          y.SB43 := convert(x(u to u+w-1), tpl.SB43);
+         u := u + w;
+         w := width(tpl.SPY_CTRL);
+         y.SPY_CTRL := convert(x(u to u+w-1), tpl.SPY_CTRL);
+         u := u + w;
+         w := width(tpl.FREEZE_MASK_0);
+         y.FREEZE_MASK_0 := convert(x(u to u+w-1), tpl.FREEZE_MASK_0);
+         u := u + w;
+         w := width(tpl.FREEZE_MASK_1);
+         y.FREEZE_MASK_1 := convert(x(u to u+w-1), tpl.FREEZE_MASK_1);
+         u := u + w;
+         w := width(tpl.PLAYBACK_MASK_0);
+         y.PLAYBACK_MASK_0 := convert(x(u to u+w-1), tpl.PLAYBACK_MASK_0);
+         u := u + w;
+         w := width(tpl.PLAYBACK_MASK_1);
+         y.PLAYBACK_MASK_1 := convert(x(u to u+w-1), tpl.PLAYBACK_MASK_1);
       else
          w := width(tpl.SB0);
          y.SB0 := convert(x(u downto u-w+1), tpl.SB0);
@@ -12897,23 +12897,8 @@ package body FM_CTRL is
          w := width(tpl.SB15);
          y.SB15 := convert(x(u downto u-w+1), tpl.SB15);
          u := u - w;
-         w := width(tpl.SPY_CTRL);
-         y.SPY_CTRL := convert(x(u downto u-w+1), tpl.SPY_CTRL);
-         u := u - w;
          w := width(tpl.SB16);
          y.SB16 := convert(x(u downto u-w+1), tpl.SB16);
-         u := u - w;
-         w := width(tpl.FREEZE_MASK_0);
-         y.FREEZE_MASK_0 := convert(x(u downto u-w+1), tpl.FREEZE_MASK_0);
-         u := u - w;
-         w := width(tpl.FREEZE_MASK_1);
-         y.FREEZE_MASK_1 := convert(x(u downto u-w+1), tpl.FREEZE_MASK_1);
-         u := u - w;
-         w := width(tpl.PLAYBACK_MASK_0);
-         y.PLAYBACK_MASK_0 := convert(x(u downto u-w+1), tpl.PLAYBACK_MASK_0);
-         u := u - w;
-         w := width(tpl.PLAYBACK_MASK_1);
-         y.PLAYBACK_MASK_1 := convert(x(u downto u-w+1), tpl.PLAYBACK_MASK_1);
          u := u - w;
          w := width(tpl.SB17);
          y.SB17 := convert(x(u downto u-w+1), tpl.SB17);
@@ -12995,6 +12980,21 @@ package body FM_CTRL is
          u := u - w;
          w := width(tpl.SB43);
          y.SB43 := convert(x(u downto u-w+1), tpl.SB43);
+         u := u - w;
+         w := width(tpl.SPY_CTRL);
+         y.SPY_CTRL := convert(x(u downto u-w+1), tpl.SPY_CTRL);
+         u := u - w;
+         w := width(tpl.FREEZE_MASK_0);
+         y.FREEZE_MASK_0 := convert(x(u downto u-w+1), tpl.FREEZE_MASK_0);
+         u := u - w;
+         w := width(tpl.FREEZE_MASK_1);
+         y.FREEZE_MASK_1 := convert(x(u downto u-w+1), tpl.FREEZE_MASK_1);
+         u := u - w;
+         w := width(tpl.PLAYBACK_MASK_0);
+         y.PLAYBACK_MASK_0 := convert(x(u downto u-w+1), tpl.PLAYBACK_MASK_0);
+         u := u - w;
+         w := width(tpl.PLAYBACK_MASK_1);
+         y.PLAYBACK_MASK_1 := convert(x(u downto u-w+1), tpl.PLAYBACK_MASK_1);
       end if;
       return y;
    end function convert;

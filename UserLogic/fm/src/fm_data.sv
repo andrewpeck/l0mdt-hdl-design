@@ -9,34 +9,34 @@ import fm_sb_pkg::*;
 module fm_data #(
 		 parameter total_l0mdt_sb = 27
 		 )(
-	       input logic 		       clk_hs,
-	       input logic 		       rst_hs,
-	       input logic 		       spy_clock,
-	       input logic 		       axi_reset_n,
-	       input logic [sb_mapped_n-1:0]   freeze,
-	       input logic 		       init_spy_mem,
-	       input logic [pb_mode_width-1:0] playback_mode[sb_mapped_n],
-	       input 			       FM_CTRL_t fm_ctrl_in,
-	       input 			       fm_rt ult_mon_data[total_l0mdt_sb] ,
-	       output 			       FM_MON_t fm_mon_out,
-	       output 			       fm_rt fm_playback_data[total_l0mdt_sb]
+		   input logic 			   clk_hs,
+		   input logic 			   rst_hs,
+		   input logic 			   spy_clock,
+		   input logic 			   axi_reset_n,
+		   input logic [sb_mapped_n-1:0]   freeze,
+		   input logic 			   init_spy_mem,
+		   input logic [pb_mode_width-1:0] playback_mode[sb_mapped_n],
+		   input 			   FM_CTRL_t fm_ctrl_in,
+		   input 			   fm_rt ult_mon_data[total_l0mdt_sb] ,
+		   output 			   FM_MON_t fm_mon_out,
+		   output 			   fm_rt fm_playback_data[total_l0mdt_sb]
 	       );
    localparam axi_dw = axi_dw;
-   genvar 	      sb_i;
-   logic [sb_mapped_n-1 :0] axi_spy_rd_vld;
-   logic [sb_mapped_n-1 :0] axi_spy_meta_rd_vld;
-   logic [axi_dw-1:0] 	 axi_spy_data[sb_mapped_n];
-   logic [axi_dw-1:0] 	 axi_spy_data_i[sb_mapped_n];
-   logic [axi_dw-1:0] 	 axi_spy_meta_data[sb_mapped_n];
-   logic [0:sb_mapped_n-1] axi_sb_enable;
-   logic [0:sb_mapped_n-1] axi_sb_enable_internal;
-   logic 		   axi_sm_enable[sb_mapped_n];
-   logic [0:sb_mapped_n-1] axi_sb_wr_enable;
-   logic 		   axi_sm_wr_enable[sb_mapped_n];
-   logic [axi_dw-1:0] 	 axi_sb_wr_data[sb_mapped_n] ;
-   logic [axi_dw-1:0] 	 axi_sm_wr_data[sb_mapped_n];
-   logic [15:0] 	 axi_sb_addr[sb_mapped_n] ;
-   logic [15:0] 	 axi_sm_addr[sb_mapped_n] ;
+   genvar 					   sb_i;
+   logic [sb_mapped_n-1 :0] 			   axi_spy_rd_vld;
+   logic [sb_mapped_n-1 :0] 			   axi_spy_meta_rd_vld;
+   logic [axi_dw-1:0] 				   axi_spy_data[sb_mapped_n];
+   logic [axi_dw-1:0] 				   axi_spy_data_i[sb_mapped_n];
+   logic [axi_dw-1:0] 				   axi_spy_meta_data[sb_mapped_n];
+   logic [0:sb_mapped_n-1] 			   axi_sb_enable;
+   logic [0:sb_mapped_n-1] 			   axi_sb_enable_internal;
+   logic 					   axi_sm_enable[sb_mapped_n];
+   logic [0:sb_mapped_n-1] 			   axi_sb_wr_enable;
+   logic 					   axi_sm_wr_enable[sb_mapped_n];
+   logic [axi_dw-1:0] 				   axi_sb_wr_data[sb_mapped_n] ;
+   logic [axi_dw-1:0] 				   axi_sm_wr_data[sb_mapped_n];
+   logic [15:0] 				   axi_sb_addr[sb_mapped_n] ;
+   logic [15:0] 				   axi_sm_addr[sb_mapped_n] ;
    
    logic [15:0] 	 axi_sb_init_addr[sb_mapped_n]  = '{default:0};
    logic [axi_dw-1:0] 	 axi_sb_init_wr_data[sb_mapped_n] = '{default:0} ;
@@ -470,12 +470,17 @@ assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data
 
 
 
-
+   logic [mon_dw_max-1 : 0] tp_write_data[sb_mapped_n];
    generate
    for(sb_i =0; sb_i < sb_mapped_n; sb_i = sb_i+1)
      begin: l0mdt_spybuffers
+	if(sb_dw[sb_i] < mon_dw_max)
+	  begin
+	     assign fm_passthrough_data[sb_i].fm_data[mon_dw_max-1: sb_dw[sb_i]] = 'b0;
+	  end
 
-	assign fm_passthrough_data[sb_i].fm_data[mon_dw_max-1: sb_dw[sb_i]-1] = 'b0;
+	assign tp_write_data[sb_i] = fm_mon_data[sb_i].fm_data & {sb_tp_dw[sb_i]{1'b1}};
+	
 	
 	   SpyBuffer #(
 		       .DATA_WIDTH_A(sb_dw[sb_i]),
@@ -505,7 +510,7 @@ assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data
 		 .wclock(clk_hs),
 		 .rresetbar(~rst_hs),
 		 .wresetbar(~rst_hs),
-		 .write_data({'b0,fm_mon_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]}), //CHECK IF ALWAYS VALID
+		 .write_data(tp_write_data[sb_i]), //{'b0,fm_mon_data[sb_i].fm_data[sb_tp_dw[sb_i]-1 : 0]} & sb_dw[sb_i]{1'b1}), //CHECK IF ALWAYS VALID
 		 .write_enable(fm_mon_data[sb_i].fm_vld),
 		 .read_enable(1'b1),
 		 .read_data(fm_passthrough_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]),
@@ -612,7 +617,7 @@ assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data
 		    )fm_dummy_block_master(
 					   .clk(clk_hs), //spy_clock),
 					   .rst(rst_hs),  //~axi_reset_n),
-					   .dummy_input(0),
+					   .dummy_input('b0),
 					   .dummy_input_vld(0),
 					   .dummy_mon_data(dummy_mon_data[0]),
 					   .dummy_mon_vld(dummy_mon_vld[0])

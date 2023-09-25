@@ -17,7 +17,7 @@ library shared_lib;
 use shared_lib.common_types_pkg.all;
 
 library fm_lib;
-use fm_lib.fm_ult_pkg.all;
+use fm_lib.fm_types.all;
 
 library xil_defaultlib;
 use xil_defaultlib.AXISlaveAddrPkg.all;
@@ -109,8 +109,8 @@ architecture behavioral of FM_map_vhdl_wrapper is
   signal fm_ctrl_v : std_logic_vector(width(fm_ctrl) -1 downto 0);
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
-  signal h2s_fm_data       : fm_mon_data; --fm_rt_array(0  to total_l0mdt_sb -1);
-  
+  signal h2s_fm_data       : fm_hps_mon; --fm_rt_array(0  to total_l0mdt_sb -1);
+  signal ucm_fm_mon      : fm_ucm_mon_data;   
 begin  -- architecture behavioral
 
   --fm_mon.SB0.SB_MEM.rd_data       <= x"00000000";
@@ -207,7 +207,8 @@ begin  -- architecture behavioral
         mon_v             => fm_mon_v,
         axi_reset_n       => reset_axi_n,
         --  inputs
-        ult_fm_mon_data   => h2s_fm_data
+        h2s_fm_mon   => h2s_fm_data,
+        ucm_fm_mon          => ucm_fm_mon  
 --        ult_fm_data      => ult_fm_data
       );
 

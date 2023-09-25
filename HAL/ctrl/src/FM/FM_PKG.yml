@@ -313,12 +313,6 @@ types:
   - SB_MEM : { type: FM_SB15_SB_MEM_MOSI_t }
 
 
-- FM_SPY_CTRL_CTRL_t:
-  - GLOBAL_FREEZE : { type: logic }
-  - GLOBAL_PLAYBACK_MODE : { type: logic, range : [ 2 - 1 , 0 ] }
-  - INITIALIZE_SPY_MEMORY : { type: logic }
-
-
 - FM_SB16_SB_MEM_MOSI_t:
   - clk       : { type: logic }
   - enable    : { type: logic }
@@ -851,6 +845,12 @@ types:
   - SB_MEM : { type: FM_SB43_SB_MEM_MOSI_t }
 
 
+- FM_SPY_CTRL_CTRL_t:
+  - GLOBAL_FREEZE : { type: logic }
+  - GLOBAL_PLAYBACK_MODE : { type: logic, range : [ 2 - 1 , 0 ] }
+  - INITIALIZE_SPY_MEMORY : { type: logic }
+
+
 - FM_MON_t:
   - SB0 : { type: FM_SB0_MON_t }
   - SB1 : { type: FM_SB1_MON_t }
@@ -915,12 +915,7 @@ types:
   - SB13 : { type: FM_SB13_CTRL_t }
   - SB14 : { type: FM_SB14_CTRL_t }
   - SB15 : { type: FM_SB15_CTRL_t }
-  - SPY_CTRL : { type: FM_SPY_CTRL_CTRL_t }
   - SB16 : { type: FM_SB16_CTRL_t }
-  - FREEZE_MASK_0 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - FREEZE_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - PLAYBACK_MASK_0 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - PLAYBACK_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }
   - SB17 : { type: FM_SB17_CTRL_t }
   - SB18 : { type: FM_SB18_CTRL_t }
   - SB19 : { type: FM_SB19_CTRL_t }
@@ -948,5 +943,10 @@ types:
   - SB41 : { type: FM_SB41_CTRL_t }
   - SB42 : { type: FM_SB42_CTRL_t }
   - SB43 : { type: FM_SB43_CTRL_t }
+  - SPY_CTRL : { type: FM_SPY_CTRL_CTRL_t }
+  - FREEZE_MASK_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - FREEZE_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PLAYBACK_MASK_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PLAYBACK_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }
 
 

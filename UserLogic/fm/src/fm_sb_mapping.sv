@@ -121,7 +121,8 @@ parameter integer sb_tp_dw[sb_mapped_n] = {
 		,UCM2PL_LEN
 		,UCM2PL_LEN
 			};
-parameter integer sb_dw[sb_mapped_n] = {
+
+parameter sb_dw[sb_mapped_n] = {
 		 find_ceil(HEG2SFSLC_LEN, axi_dw) * axi_dw
 		,find_ceil(HEG2SFHIT_LEN, axi_dw) * axi_dw
 		,find_ceil(SF2PTCALC_LEN, axi_dw) * axi_dw
