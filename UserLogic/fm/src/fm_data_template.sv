@@ -19,7 +19,7 @@ module fm_data #(
 	       input 			       FM_CTRL_t fm_ctrl_in,
 	       input 			       fm_rt ult_mon_data[total_l0mdt_sb] ,
 	       output 			       FM_MON_t fm_mon_out,
-	       output 			       fm_rt fm_playback_data[total_l0mdt_sb]
+	       output logic [mon_dw_max-1 : 0] fm_playback_data[total_l0mdt_sb]
 	       );
    localparam axi_dw = axi_dw;
    genvar 	      sb_i;
@@ -51,7 +51,7 @@ module fm_data #(
      generate
       for (sb_i = 0; sb_i < total_l0mdt_sb; sb_i = sb_i+1)
 	begin
-	   assign fm_playback_data[sb_i] = fm_passthrough_data[sb_i];	   
+	   assign fm_playback_data[sb_i] = fm_passthrough_data[sb_i].fm_data;	   
 	end
      endgenerate
    

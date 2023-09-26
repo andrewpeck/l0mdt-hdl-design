@@ -53,7 +53,8 @@ entity candidate_manager is
       o_uCM2pl_av             : out ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
       --Fast Monitoring
-      o_ucm_fm_mon_v      : out std_logic_vector
+      o_ucm_fm_mon_v      : out std_logic_vector;
+      i_ucm_fm_slc_rx_pb_v : in slc_rx_avt(2 downto 0)
 
       );
 end entity candidate_manager;
@@ -79,7 +80,7 @@ begin
       ctrl_v                    => ctrl_v,
       mon_v                     => mon_v,
       -- SLc in
-      i_slc_data_mainA_av     => i_slc_data_mainA_av,
+      i_slc_data_mainA_av     => i_ucm_fm_slc_rx_pb_v, --i_slc_data_mainA_av,
       i_slc_data_mainB_av     => i_slc_data_mainB_av,
       i_slc_data_neighborA_v => i_slc_data_neighborA_v,
       i_slc_data_neighborB_v => i_slc_data_neighborB_v,

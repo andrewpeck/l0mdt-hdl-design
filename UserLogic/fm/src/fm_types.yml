@@ -2,7 +2,7 @@ config:
    basic_functions: False
    packages:
       - ieee: [std_logic_1164, numeric_std, math_real]
-      - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg]
+      - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
 
 types:
 - mon_dw_max: {qualifier: constant , type: integer, value: 256}
@@ -63,5 +63,7 @@ types:
   - fm_ucm2hps                       : {type: 'fm_ucm2hps'}
  
 
+#- fm_pb_data: {type: slc_rx_rt}
+- fm_pb: {array: [0, total_l0mdt_sb -1], type: logic, range: [mon_dw_max-1, 0]}
 
-  
+

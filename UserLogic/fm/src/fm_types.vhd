@@ -11,6 +11,7 @@ use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
 
 package fm_types is
 
@@ -158,6 +159,15 @@ package fm_types is
    function convert(x: std_logic_vector; tpl: fm_ucm_mon_data) return fm_ucm_mon_data;
    function zero(tpl: fm_ucm_mon_data) return fm_ucm_mon_data;
 
+   type fm_pb is array(0 to total_l0mdt_sb -1) of std_logic_vector(mon_dw_max-1 downto 0);
+   attribute w of fm_pb : type is 10752;
+   function width(x: fm_pb) return integer;
+   function convert(x: fm_pb; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: fm_pb) return fm_pb;
+   function zero(tpl: fm_pb) return fm_pb;
+   function convert(x: fm_pb; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: fm_pb) return fm_pb;
+
 end package fm_types;
 
 ------------------------------------------------------------
@@ -172,6 +182,7 @@ use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
 
 package body fm_types is
 
@@ -861,5 +872,78 @@ package body fm_types is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
+
+   function width(x: fm_pb) return integer is
+      variable w : integer;
+   begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
+      return w;
+   end function width;
+   function convert(x: fm_pb; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: fm_pb) return fm_pb is
+      variable y : fm_pb;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: fm_pb) return fm_pb is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: fm_pb; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: fm_pb) return fm_pb is
+      variable y : fm_pb;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
 
 end package body fm_types;

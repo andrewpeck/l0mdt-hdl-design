@@ -9,34 +9,34 @@ import fm_sb_pkg::*;
 module fm_data #(
 		 parameter total_l0mdt_sb = 27
 		 )(
-		   input logic 			   clk_hs,
-		   input logic 			   rst_hs,
-		   input logic 			   spy_clock,
-		   input logic 			   axi_reset_n,
-		   input logic [sb_mapped_n-1:0]   freeze,
-		   input logic 			   init_spy_mem,
-		   input logic [pb_mode_width-1:0] playback_mode[sb_mapped_n],
-		   input 			   FM_CTRL_t fm_ctrl_in,
-		   input 			   fm_rt ult_mon_data[total_l0mdt_sb] ,
-		   output 			   FM_MON_t fm_mon_out,
-		   output 			   fm_rt fm_playback_data[total_l0mdt_sb]
+	       input logic 		       clk_hs,
+	       input logic 		       rst_hs,
+	       input logic 		       spy_clock,
+	       input logic 		       axi_reset_n,
+	       input logic [sb_mapped_n-1:0]   freeze,
+	       input logic 		       init_spy_mem,
+	       input logic [pb_mode_width-1:0] playback_mode[sb_mapped_n],
+	       input 			       FM_CTRL_t fm_ctrl_in,
+	       input 			       fm_rt ult_mon_data[total_l0mdt_sb] ,
+	       output 			       FM_MON_t fm_mon_out,
+	       output logic [mon_dw_max-1 : 0] fm_playback_data[total_l0mdt_sb]
 	       );
    localparam axi_dw = axi_dw;
-   genvar 					   sb_i;
-   logic [sb_mapped_n-1 :0] 			   axi_spy_rd_vld;
-   logic [sb_mapped_n-1 :0] 			   axi_spy_meta_rd_vld;
-   logic [axi_dw-1:0] 				   axi_spy_data[sb_mapped_n];
-   logic [axi_dw-1:0] 				   axi_spy_data_i[sb_mapped_n];
-   logic [axi_dw-1:0] 				   axi_spy_meta_data[sb_mapped_n];
-   logic [0:sb_mapped_n-1] 			   axi_sb_enable;
-   logic [0:sb_mapped_n-1] 			   axi_sb_enable_internal;
-   logic 					   axi_sm_enable[sb_mapped_n];
-   logic [0:sb_mapped_n-1] 			   axi_sb_wr_enable;
-   logic 					   axi_sm_wr_enable[sb_mapped_n];
-   logic [axi_dw-1:0] 				   axi_sb_wr_data[sb_mapped_n] ;
-   logic [axi_dw-1:0] 				   axi_sm_wr_data[sb_mapped_n];
-   logic [15:0] 				   axi_sb_addr[sb_mapped_n] ;
-   logic [15:0] 				   axi_sm_addr[sb_mapped_n] ;
+   genvar 	      sb_i;
+   logic [sb_mapped_n-1 :0] axi_spy_rd_vld;
+   logic [sb_mapped_n-1 :0] axi_spy_meta_rd_vld;
+   logic [axi_dw-1:0] 	 axi_spy_data[sb_mapped_n];
+   logic [axi_dw-1:0] 	 axi_spy_data_i[sb_mapped_n];
+   logic [axi_dw-1:0] 	 axi_spy_meta_data[sb_mapped_n];
+   logic [0:sb_mapped_n-1] axi_sb_enable;
+   logic [0:sb_mapped_n-1] axi_sb_enable_internal;
+   logic 		   axi_sm_enable[sb_mapped_n];
+   logic [0:sb_mapped_n-1] axi_sb_wr_enable;
+   logic 		   axi_sm_wr_enable[sb_mapped_n];
+   logic [axi_dw-1:0] 	 axi_sb_wr_data[sb_mapped_n] ;
+   logic [axi_dw-1:0] 	 axi_sm_wr_data[sb_mapped_n];
+   logic [15:0] 	 axi_sb_addr[sb_mapped_n] ;
+   logic [15:0] 	 axi_sm_addr[sb_mapped_n] ;
    
    logic [15:0] 	 axi_sb_init_addr[sb_mapped_n]  = '{default:0};
    logic [axi_dw-1:0] 	 axi_sb_init_wr_data[sb_mapped_n] = '{default:0} ;
@@ -51,7 +51,7 @@ module fm_data #(
      generate
       for (sb_i = 0; sb_i < total_l0mdt_sb; sb_i = sb_i+1)
 	begin
-	   assign fm_playback_data[sb_i] = fm_passthrough_data[sb_i];	   
+	   assign fm_playback_data[sb_i] = fm_passthrough_data[sb_i].fm_data;	   
 	end
      endgenerate
    

@@ -269,6 +269,7 @@ architecture behavioral of ult is
 
   -- FAST MONITORING  
   signal ucm_fm_mon_r     : fm_ucm_mon_data;
+  signal fm_slc_rx_pb_v     : slc_rx_avt(2 downto 0);
  
   signal h2s_fm_mon_r      : fm_hps_mon;
   signal h2s_fm_mon_v  : std_logic_vector(fm_hps_mon'w-1 downto 0);           
@@ -433,7 +434,8 @@ begin
           -- pipeline
           o_ucm2pl_av => ucm2pl_av,
           --Fast Monitoring
-         o_ucm_fm_mon_v => ucm_fm_mon_v
+          o_ucm_fm_mon_v => ucm_fm_mon_v,
+          i_ucm_fm_slc_rx_pb_v => fm_slc_rx_pb_v
          
         );
 
@@ -1021,7 +1023,8 @@ begin
           mon_v                    => fm_mon_v,
           --  inputs
           ucm_fm_mon         => ucm_fm_mon_r,          
-          h2s_fm_mon          => h2s_fm_mon_r
+          h2s_fm_mon          => h2s_fm_mon_r,
+          fm_ucm_slc_rx_pb => fm_slc_rx_pb_v
         );
 
     else generate

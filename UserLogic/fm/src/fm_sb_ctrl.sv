@@ -13,12 +13,12 @@ module fm_sb_ctrl(
 		  output logic [pb_mode_width-1:0] playback_mode[sb_mapped_n],
 		  output logic 			   init_spy_mem
 		  );
-
-   logic 				  global_freeze;
-   logic [pb_mode_width-1:0] 		  global_pb_mode;
+   
+   logic 					   global_freeze;
+   logic [pb_mode_width-1:0] 			   global_pb_mode;
    
    
-   logic [axi_dw-1:0] 			  freeze_mask;
+   logic [axi_dw-1:0] 				   freeze_mask;
 
 
 
@@ -86,7 +86,7 @@ module fm_sb_ctrl(
 		    end // if (i < 32)
 		  else if (i < 64 )
 		    begin
-		         if(fm_ctrl_in.PLAYBACK_MASK_1[i>>5] == 0)
+		         if(fm_ctrl_in.PLAYBACK_MASK_1[i-32] == 0)
 			 begin
 			    playback_mode[i] <= global_pb_mode;
 			 end
