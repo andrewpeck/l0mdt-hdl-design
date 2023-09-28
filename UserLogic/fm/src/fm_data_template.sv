@@ -15,6 +15,7 @@ module fm_data #(
 	       input logic 		       axi_reset_n,
 	       input logic [sb_mapped_n-1:0]   freeze,
 	       input logic 		       init_spy_mem,
+	       input logic [sb_mapped_n-1:0]   sb_reset,
 	       input logic [pb_mode_width-1:0] playback_mode[sb_mapped_n],
 	       input 			       FM_CTRL_t fm_ctrl_in,
 	       input 			       fm_rt ult_mon_data[total_l0mdt_sb] ,
@@ -277,8 +278,8 @@ assign axi_sb_enable_internal                =  (init_spy_mem_internal == 1)? '1
 		  */
 		 .rclock(clk_hs),
 		 .wclock(clk_hs),
-		 .rresetbar(~rst_hs),
-		 .wresetbar(~rst_hs),
+		 .rresetbar(~(rst_hs | sb_reset[sb_i])),
+		 .wresetbar(~(rst_hs | sb_reset[sb_i])),
 		 .write_data(tp_write_data[sb_i]), //{'b0,fm_mon_data[sb_i].fm_data[sb_tp_dw[sb_i]-1 : 0]} & sb_dw[sb_i]{1'b1}), //CHECK IF ALWAYS VALID
 		 .write_enable(fm_mon_data[sb_i].fm_vld),
 		 .read_enable(1'b1),
@@ -385,7 +386,7 @@ assign axi_sb_enable_internal                =  (init_spy_mem_internal == 1)? '1
 		    .data_width(SB_DUMMY_LEN)
 		    )fm_dummy_block_master(
 					   .clk(clk_hs), //spy_clock),
-					   .rst(rst_hs),  //~axi_reset_n),
+					   .rst(rst_hs | sb_reset[sb_master_dummy_index]),  //~axi_reset_n),
 					   .dummy_input('b0),
 					   .dummy_input_vld(0),
 					   .dummy_mon_data(dummy_mon_data[0]),
@@ -396,7 +397,7 @@ assign axi_sb_enable_internal                =  (init_spy_mem_internal == 1)? '1
 		    .data_width(SB_DUMMY_LEN)
 		    )fm_dummy_block_slave(
 					  .clk(clk_hs), //spy_clock),
-					  .rst(rst_hs), //~axi_reset_n),
+					  .rst(rst_hs | sb_reset[sb_slave_dummy_index]), //~axi_reset_n),
 					  .dummy_input(fm_passthrough_data[sb_master_dummy_index].fm_data[SB_DUMMY_LEN-1:0]),
 					  .dummy_input_vld(fm_passthrough_data[sb_master_dummy_index].fm_vld),
 					  .dummy_mon_data(dummy_mon_data[1]),

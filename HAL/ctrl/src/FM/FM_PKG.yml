@@ -948,5 +948,7 @@ types:
   - FREEZE_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }
   - PLAYBACK_MASK_0 : { type: logic, range : [ 32 - 1 , 0 ] }
   - PLAYBACK_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - SB_RESET_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - SB_RESET_1 : { type: logic, range : [ 32 - 1 , 0 ] }
 
 

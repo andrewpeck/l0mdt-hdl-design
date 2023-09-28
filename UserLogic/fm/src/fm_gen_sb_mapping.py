@@ -1,4 +1,14 @@
 #!/usr/bin/env python3
+l0mdt_TP_width = {
+    "HEG2SFSLC" : 128,
+    "HEG2SFHIT" : 64,
+    "SF2PTCALC" : 64,
+    "SLC_RX"       : 256,
+    "UCM2HPS"   : 64,
+    "UCM2PL"      : 256,
+    "SB_DUMMY" : 64
+}
+
 def create_fm_sb_pkg():
     with open("fm_sb_pkg_template.sv","r") as f_template:
         template_lines  = f_template.readlines(); #[line.rstrip('\n') for line in f_template]
@@ -109,6 +119,7 @@ def create_fm_data(list):
 
 def create_fm_xml(list):
     [total_l0mdt_sb, sb_total_dummy] = list
+    print("\n**********************\n      create_fm_xml: Note: Need to Manually check to ensure no overlap between register and bram address mapping    \n**************\n")
     with open("FM_template.xml","r") as fxml_template:
         template_lines  = fxml_template.readlines(); 
     fxml_w = open("FM.xml","w")
@@ -131,7 +142,7 @@ def create_fm_xml(list):
             fxml_w.write(x_ln)
         else:
             for i in range(total_l0mdt_sb+sb_total_dummy) :
-                fxml_w.write("  <node id=\"SB"+str(i)+"\" address=\""+hex(address)+"\"> !-- df  = \""+df[i]+"\" >\n")
+                fxml_w.write("  <node id=\"SB"+str(i)+"\" address=\""+hex(address)+"\" description =\" width="+str(l0mdt_TP_width[df[i]])+" df="+df[i]+"\" >\n")
                 fxml_w.write("   <node id=\"SB_MEM\" address=\"0x0\" mode=\"incremental\" size=\""+hex(address_block)+"\"  fwinfo=\"type=mem32_"+hex(address_block)+"\"/>\n")
                 fxml_w.write("  </node>\n")
                 address = address + address_block

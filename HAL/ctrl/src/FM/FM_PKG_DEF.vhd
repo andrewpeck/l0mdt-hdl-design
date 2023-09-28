@@ -500,8 +500,10 @@ package FM_CTRL_DEF is
                                              SPY_CTRL => DEFAULT_FM_SPY_CTRL_CTRL_t,
                                              FREEZE_MASK_0 => x"00000000",
                                              FREEZE_MASK_1 => x"00000000",
-                                             PLAYBACK_MASK_0 => x"f7ffffff",
-                                             PLAYBACK_MASK_1 => x"ffffffff"
+                                             PLAYBACK_MASK_0 => x"ffffffff",
+                                             PLAYBACK_MASK_1 => x"ffffffff",
+                                             SB_RESET_0 => x"00000000",
+                                             SB_RESET_1 => x"00000000"
                                             );
 
 end package FM_CTRL_DEF;

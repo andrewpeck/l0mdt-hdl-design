@@ -1036,6 +1036,8 @@ package FM_CTRL;
       logic [32 - 1:0] FREEZE_MASK_1;
       logic [32 - 1:0] PLAYBACK_MASK_0;
       logic [32 - 1:0] PLAYBACK_MASK_1;
+      logic [32 - 1:0] SB_RESET_0;
+      logic [32 - 1:0] SB_RESET_1;
    } FM_CTRL_t ;
 
 endpackage : FM_CTRL

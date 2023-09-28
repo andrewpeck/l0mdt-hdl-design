@@ -1930,8 +1930,10 @@ package FM_CTRL is
       FREEZE_MASK_1 : std_logic_vector(32 - 1 downto 0);
       PLAYBACK_MASK_0 : std_logic_vector(32 - 1 downto 0);
       PLAYBACK_MASK_1 : std_logic_vector(32 - 1 downto 0);
+      SB_RESET_0 : std_logic_vector(32 - 1 downto 0);
+      SB_RESET_1 : std_logic_vector(32 - 1 downto 0);
    end record FM_CTRL_t;
-   attribute w of FM_CTRL_t : type is 2068;
+   attribute w of FM_CTRL_t : type is 2132;
    function width(x: FM_CTRL_t) return natural;
    function convert(x: FM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_CTRL_t) return FM_CTRL_t;
@@ -12392,6 +12394,8 @@ package body FM_CTRL is
       w := w + width(x.FREEZE_MASK_1);
       w := w + width(x.PLAYBACK_MASK_0);
       w := w + width(x.PLAYBACK_MASK_1);
+      w := w + width(x.SB_RESET_0);
+      w := w + width(x.SB_RESET_1);
       return w;
    end function width;
    function convert(x: FM_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -12546,6 +12550,12 @@ package body FM_CTRL is
          u := u + w;
          w := width(x.PLAYBACK_MASK_1);
          y(u to u+w-1) := convert(x.PLAYBACK_MASK_1, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB_RESET_0);
+         y(u to u+w-1) := convert(x.SB_RESET_0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB_RESET_1);
+         y(u to u+w-1) := convert(x.SB_RESET_1, y(u to u+w-1));
       else
          w := width(x.SB0);
          y(u downto u-w+1) := convert(x.SB0, y(u downto u-w+1));
@@ -12693,6 +12703,12 @@ package body FM_CTRL is
          u := u - w;
          w := width(x.PLAYBACK_MASK_1);
          y(u downto u-w+1) := convert(x.PLAYBACK_MASK_1, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB_RESET_0);
+         y(u downto u-w+1) := convert(x.SB_RESET_0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB_RESET_1);
+         y(u downto u-w+1) := convert(x.SB_RESET_1, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -12848,6 +12864,12 @@ package body FM_CTRL is
          u := u + w;
          w := width(tpl.PLAYBACK_MASK_1);
          y.PLAYBACK_MASK_1 := convert(x(u to u+w-1), tpl.PLAYBACK_MASK_1);
+         u := u + w;
+         w := width(tpl.SB_RESET_0);
+         y.SB_RESET_0 := convert(x(u to u+w-1), tpl.SB_RESET_0);
+         u := u + w;
+         w := width(tpl.SB_RESET_1);
+         y.SB_RESET_1 := convert(x(u to u+w-1), tpl.SB_RESET_1);
       else
          w := width(tpl.SB0);
          y.SB0 := convert(x(u downto u-w+1), tpl.SB0);
@@ -12995,6 +13017,12 @@ package body FM_CTRL is
          u := u - w;
          w := width(tpl.PLAYBACK_MASK_1);
          y.PLAYBACK_MASK_1 := convert(x(u downto u-w+1), tpl.PLAYBACK_MASK_1);
+         u := u - w;
+         w := width(tpl.SB_RESET_0);
+         y.SB_RESET_0 := convert(x(u downto u-w+1), tpl.SB_RESET_0);
+         u := u - w;
+         w := width(tpl.SB_RESET_1);
+         y.SB_RESET_1 := convert(x(u downto u-w+1), tpl.SB_RESET_1);
       end if;
       return y;
    end function convert;

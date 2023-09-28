@@ -138,19 +138,19 @@ architecture behavioral of FM_map is
   signal BRAM_MISO          : BRAMPortMISO_array_t(0 to BRAM_COUNT-1);
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 24580);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 24580) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 24582);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 24582) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*24580) <= ALLOCATED_MEMORY_RANGE)
-    report "FM: Regmap addressing range " & integer'image(4*24580) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*24582) <= ALLOCATED_MEMORY_RANGE)
+    report "FM: Regmap addressing range " & integer'image(4*24582) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity ERROR;
-  assert ((4*24580) > ALLOCATED_MEMORY_RANGE)
-    report "FM: Regmap addressing range " & integer'image(4*24580) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*24582) > ALLOCATED_MEMORY_RANGE)
+    report "FM: Regmap addressing range " & integer'image(4*24582) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity NOTE;
 
   AXIRegBridge : entity work.axiLiteRegBlocking
@@ -347,6 +347,10 @@ elsif BRAM_MISO(43).rd_data_valid = '1' then
           localRdData(31 downto  0)  <=  reg_data(24579)(31 downto  0);      --
         when 24580 => --0x6004
           localRdData(31 downto  0)  <=  reg_data(24580)(31 downto  0);      --
+        when 24581 => --0x6005
+          localRdData(31 downto  0)  <=  reg_data(24581)(31 downto  0);      --
+        when 24582 => --0x6006
+          localRdData(31 downto  0)  <=  reg_data(24582)(31 downto  0);      --
 
 
           when others =>
@@ -371,6 +375,8 @@ elsif BRAM_MISO(43).rd_data_valid = '1' then
   Ctrl.FREEZE_MASK_1                   <=  reg_data(24578)(31 downto  0);     
   Ctrl.PLAYBACK_MASK_0                 <=  reg_data(24579)(31 downto  0);     
   Ctrl.PLAYBACK_MASK_1                 <=  reg_data(24580)(31 downto  0);     
+  Ctrl.SB_RESET_0                      <=  reg_data(24581)(31 downto  0);     
+  Ctrl.SB_RESET_1                      <=  reg_data(24582)(31 downto  0);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
@@ -383,6 +389,8 @@ elsif BRAM_MISO(43).rd_data_valid = '1' then
       reg_data(24578)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_1;
       reg_data(24579)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_0;
       reg_data(24580)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_1;
+      reg_data(24581)(31 downto  0)  <= DEFAULT_FM_CTRL_t.SB_RESET_0;
+      reg_data(24582)(31 downto  0)  <= DEFAULT_FM_CTRL_t.SB_RESET_1;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       
@@ -402,6 +410,10 @@ elsif BRAM_MISO(43).rd_data_valid = '1' then
           reg_data(24579)(31 downto  0)  <=  localWrData(31 downto  0);      --
         when 24580 => --0x6004
           reg_data(24580)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 24581 => --0x6005
+          reg_data(24581)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 24582 => --0x6006
+          reg_data(24582)(31 downto  0)  <=  localWrData(31 downto  0);      --
 
           when others => null;
         end case;

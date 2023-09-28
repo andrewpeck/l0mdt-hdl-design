@@ -6,8 +6,10 @@
   </node>
   <node id="FREEZE_MASK_0" address="0x6001" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0" />
   <node id="FREEZE_MASK_1" address="0x6002" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
-  <node id="PLAYBACK_MASK_0" address="0x6003" permission="rw" mask="0xFFFFFFFF" parameters="default=0xF7FFFFFF"/> !--SB_DUMMY0 playback mask = 0xF7FFFFFF"/>
+  <node id="PLAYBACK_MASK_0" address="0x6003" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/> 
   <node id="PLAYBACK_MASK_1" address="0x6004" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
+  <node id="SB_RESET_0" address="0x6005" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/> 
+  <node id="SB_RESET_1" address="0x6006" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
   
 <!-- INSERT HERE-->
  

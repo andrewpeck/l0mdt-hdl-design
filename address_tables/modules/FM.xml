@@ -6,139 +6,141 @@
   </node>
   <node id="FREEZE_MASK_0" address="0x6001" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0" />
   <node id="FREEZE_MASK_1" address="0x6002" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
-  <node id="PLAYBACK_MASK_0" address="0x6003" permission="rw" mask="0xFFFFFFFF" parameters="default=0xF7FFFFFF"/> !--SB_DUMMY0 playback mask = 0xF7FFFFFF"/>
+  <node id="PLAYBACK_MASK_0" address="0x6003" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/> 
   <node id="PLAYBACK_MASK_1" address="0x6004" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
+  <node id="SB_RESET_0" address="0x6005" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/> 
+  <node id="SB_RESET_1" address="0x6006" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
   
-  <node id="SB0" address="0x0"> !-- df  = "HEG2SFSLC" >
+  <node id="SB0" address="0x0" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB1" address="0x200"> !-- df  = "HEG2SFHIT" >
+  <node id="SB1" address="0x200" description =" width=64 df=HEG2SFHIT" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB2" address="0x400"> !-- df  = "SF2PTCALC" >
+  <node id="SB2" address="0x400" description =" width=64 df=SF2PTCALC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB3" address="0x600"> !-- df  = "HEG2SFSLC" >
+  <node id="SB3" address="0x600" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB4" address="0x800"> !-- df  = "HEG2SFHIT" >
+  <node id="SB4" address="0x800" description =" width=64 df=HEG2SFHIT" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB5" address="0xa00"> !-- df  = "SF2PTCALC" >
+  <node id="SB5" address="0xa00" description =" width=64 df=SF2PTCALC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB6" address="0xc00"> !-- df  = "HEG2SFSLC" >
+  <node id="SB6" address="0xc00" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB7" address="0xe00"> !-- df  = "HEG2SFHIT" >
+  <node id="SB7" address="0xe00" description =" width=64 df=HEG2SFHIT" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB8" address="0x1000"> !-- df  = "SF2PTCALC" >
+  <node id="SB8" address="0x1000" description =" width=64 df=SF2PTCALC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB9" address="0x1200"> !-- df  = "HEG2SFSLC" >
+  <node id="SB9" address="0x1200" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB10" address="0x1400"> !-- df  = "HEG2SFHIT" >
+  <node id="SB10" address="0x1400" description =" width=64 df=HEG2SFHIT" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB11" address="0x1600"> !-- df  = "SF2PTCALC" >
+  <node id="SB11" address="0x1600" description =" width=64 df=SF2PTCALC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB12" address="0x1800"> !-- df  = "HEG2SFSLC" >
+  <node id="SB12" address="0x1800" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB13" address="0x1a00"> !-- df  = "HEG2SFHIT" >
+  <node id="SB13" address="0x1a00" description =" width=64 df=HEG2SFHIT" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB14" address="0x1c00"> !-- df  = "SF2PTCALC" >
+  <node id="SB14" address="0x1c00" description =" width=64 df=SF2PTCALC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB15" address="0x1e00"> !-- df  = "HEG2SFSLC" >
+  <node id="SB15" address="0x1e00" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB16" address="0x2000"> !-- df  = "HEG2SFHIT" >
+  <node id="SB16" address="0x2000" description =" width=64 df=HEG2SFHIT" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB17" address="0x2200"> !-- df  = "SF2PTCALC" >
+  <node id="SB17" address="0x2200" description =" width=64 df=SF2PTCALC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB18" address="0x2400"> !-- df  = "HEG2SFSLC" >
+  <node id="SB18" address="0x2400" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB19" address="0x2600"> !-- df  = "HEG2SFHIT" >
+  <node id="SB19" address="0x2600" description =" width=64 df=HEG2SFHIT" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB20" address="0x2800"> !-- df  = "SF2PTCALC" >
+  <node id="SB20" address="0x2800" description =" width=64 df=SF2PTCALC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB21" address="0x2a00"> !-- df  = "HEG2SFSLC" >
+  <node id="SB21" address="0x2a00" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB22" address="0x2c00"> !-- df  = "HEG2SFHIT" >
+  <node id="SB22" address="0x2c00" description =" width=64 df=HEG2SFHIT" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB23" address="0x2e00"> !-- df  = "SF2PTCALC" >
+  <node id="SB23" address="0x2e00" description =" width=64 df=SF2PTCALC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB24" address="0x3000"> !-- df  = "HEG2SFSLC" >
+  <node id="SB24" address="0x3000" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB25" address="0x3200"> !-- df  = "HEG2SFHIT" >
+  <node id="SB25" address="0x3200" description =" width=64 df=HEG2SFHIT" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB26" address="0x3400"> !-- df  = "SF2PTCALC" >
+  <node id="SB26" address="0x3400" description =" width=64 df=SF2PTCALC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB27" address="0x3600"> !-- df  = "SLC_RX" >
+  <node id="SB27" address="0x3600" description =" width=256 df=SLC_RX" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB28" address="0x3800"> !-- df  = "SLC_RX" >
+  <node id="SB28" address="0x3800" description =" width=256 df=SLC_RX" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB29" address="0x3a00"> !-- df  = "SLC_RX" >
+  <node id="SB29" address="0x3a00" description =" width=256 df=SLC_RX" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB30" address="0x3c00"> !-- df  = "UCM2HPS" >
+  <node id="SB30" address="0x3c00" description =" width=64 df=UCM2HPS" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB31" address="0x3e00"> !-- df  = "UCM2HPS" >
+  <node id="SB31" address="0x3e00" description =" width=64 df=UCM2HPS" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB32" address="0x4000"> !-- df  = "UCM2HPS" >
+  <node id="SB32" address="0x4000" description =" width=64 df=UCM2HPS" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB33" address="0x4200"> !-- df  = "UCM2HPS" >
+  <node id="SB33" address="0x4200" description =" width=64 df=UCM2HPS" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB34" address="0x4400"> !-- df  = "UCM2HPS" >
+  <node id="SB34" address="0x4400" description =" width=64 df=UCM2HPS" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB35" address="0x4600"> !-- df  = "UCM2HPS" >
+  <node id="SB35" address="0x4600" description =" width=64 df=UCM2HPS" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB36" address="0x4800"> !-- df  = "UCM2HPS" >
+  <node id="SB36" address="0x4800" description =" width=64 df=UCM2HPS" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB37" address="0x4a00"> !-- df  = "UCM2HPS" >
+  <node id="SB37" address="0x4a00" description =" width=64 df=UCM2HPS" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB38" address="0x4c00"> !-- df  = "UCM2HPS" >
+  <node id="SB38" address="0x4c00" description =" width=64 df=UCM2HPS" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB39" address="0x4e00"> !-- df  = "UCM2PL" >
+  <node id="SB39" address="0x4e00" description =" width=256 df=UCM2PL" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB40" address="0x5000"> !-- df  = "UCM2PL" >
+  <node id="SB40" address="0x5000" description =" width=256 df=UCM2PL" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB41" address="0x5200"> !-- df  = "UCM2PL" >
+  <node id="SB41" address="0x5200" description =" width=256 df=UCM2PL" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB42" address="0x5400"> !-- df  = "SB_DUMMY" >
+  <node id="SB42" address="0x5400" description =" width=64 df=SB_DUMMY" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB43" address="0x5600"> !-- df  = "SB_DUMMY" >
+  <node id="SB43" address="0x5600" description =" width=64 df=SB_DUMMY" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
  
