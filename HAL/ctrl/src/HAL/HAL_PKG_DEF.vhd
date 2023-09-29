@@ -70,11 +70,22 @@ package HAL_CTRL_DEF is
   constant DEFAULT_HAL_CSM_CTRL_t : HAL_CSM_CTRL_t := (
                                                        CSM => (others => DEFAULT_HAL_CSM_CSM_CTRL_t )
                                                       );
+  constant DEFAULT_HAL_SL_RESET_CTRL_t : HAL_SL_RESET_CTRL_t := (
+                                                                 rx_comma => '0',
+                                                                 rx_packet_former => '0',
+                                                                 rx_counter => '0'
+                                                                );
+  constant DEFAULT_HAL_SL_CTRL_t : HAL_SL_CTRL_t := (
+                                                     TX_ENA_TEST_PATTERN => x"000",
+                                                     COMMA_EVEN_SLIDES => x"000",
+                                                     RESET => DEFAULT_HAL_SL_RESET_CTRL_t
+                                                    );
   constant DEFAULT_HAL_CTRL_t : HAL_CTRL_t := (
                                                RESET_DOWNLINKS => '0',
                                                RESET_UPLINKS => '0',
                                                RESET_COUNTERS => '0',
-                                               CSM => DEFAULT_HAL_CSM_CTRL_t
+                                               CSM => DEFAULT_HAL_CSM_CTRL_t,
+                                               SL => DEFAULT_HAL_SL_CTRL_t
                                               );
 
 end package HAL_CTRL_DEF;

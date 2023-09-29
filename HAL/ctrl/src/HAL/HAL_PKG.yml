@@ -180,8 +180,34 @@ types:
   - CSM : { type: HAL_CSM_CSM_CTRL_t_ARRAY }
 
 
+- HAL_SL_RESET_CTRL_t:
+  - rx_comma : { type: logic }
+  - rx_packet_former : { type: logic }
+  - rx_counter : { type: logic }
+
+
+- HAL_SL_SL_TEST_MON_t:
+  - ERROR_COUNTER : { type: logic, range : [ 32 - 1 , 0 ] }
+  - WORD_COUNTER_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - WORD_COUNTER_1 : { type: logic, range : [ 32 - 1 , 0 ] }
+
+- HAL_SL_SL_TEST_MON_t_ARRAY: {array : [ 12 -1 , 0 ], type : HAL_SL_SL_TEST_MON_t}
+
+- HAL_SL_MON_t:
+  - RX_COMMA_LOCK : { type: logic, range : [ 12 - 1 , 0 ] }
+  - RX_PACKET_LOCKED : { type: logic, range : [ 12 - 1 , 0 ] }
+  - SL_TEST : { type: HAL_SL_SL_TEST_MON_t_ARRAY }
+
+
+- HAL_SL_CTRL_t:
+  - TX_ENA_TEST_PATTERN : { type: logic, range : [ 12 - 1 , 0 ] }
+  - COMMA_EVEN_SLIDES : { type: logic, range : [ 12 - 1 , 0 ] }
+  - RESET : { type: HAL_SL_RESET_CTRL_t }
+
+
 - HAL_MON_t:
   - CSM : { type: HAL_CSM_MON_t }
+  - SL : { type: HAL_SL_MON_t }
 
 
 - HAL_CTRL_t:
@@ -189,5 +215,6 @@ types:
   - RESET_UPLINKS : { type: logic }
   - RESET_COUNTERS : { type: logic }
   - CSM : { type: HAL_CSM_CTRL_t }
+  - SL : { type: HAL_SL_CTRL_t }
 
 

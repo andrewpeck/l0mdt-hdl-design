@@ -151,7 +151,7 @@ BEGIN
               seed         <= seed_i;
               locseg       <= locseg_i;
               chamber_ieta <= STD_LOGIC_VECTOR(seed_i.mdtid.chamber_ieta);
-              vec_pos      <= shift_right(resize(seed_i.hewindow_pos, SF2PTCALC_SEGPOS_LEN), HE_POS_SHIFT);
+              vec_pos      <= resize(shift_right(seed_i.hewindow_pos, HE_POS_SHIFT), SF2PTCALC_SEGPOS_LEN);
             END IF;
 
             -- Clock 1
@@ -176,11 +176,12 @@ BEGIN
 
             globseg.segangle <= resize(unsigned(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
             globseg.muid     <= seed.muid;
-            IF locseg_ss.nhits > 1 THEN
-              globseg.segquality <= '1';
-            ELSE
-              globseg.segquality <= '0';
-            END IF;
+            -- IF locseg_ss.nhits > 1 THEN
+            --   globseg.segquality <= '1';
+            -- ELSE
+            --   globseg.segquality <= '0';
+            -- END IF;
+            globseg.segquality <= dv2;
             globseg.mdtid <= seed.mdtid;
 
           END IF;
