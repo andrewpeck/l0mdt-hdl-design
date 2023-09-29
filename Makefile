@@ -1,5 +1,7 @@
 SHELL:=/bin/bash
 
+H:=\# 
+
 MOD_NAME =
 LOG_FILE = make.log
 ################################################################################
@@ -25,7 +27,7 @@ endif
 ################################################################################
 
 list:
-	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$'
+	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/$H File/,/$H Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$'
 
 ################################################################################
 # Project creation / compilation
