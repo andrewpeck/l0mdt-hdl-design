@@ -2,8 +2,8 @@
 variables:
   HOG_CHECK_PROJVER: 1
   HOG_CHECK_SYNTAX: 1
-  HOG_SIMULATION_LIB_PATH: "/afs/cern.ch/work/l/l0mdtel/SimulationLib/"
-  HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/Xilinx/Vivado/2020.2/bin:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/:/opt/Xilinx/Vivado/2022.2/bin"
+  HOG_SIMULATION_LIB_PATH: "/home/dcieri/questa_lib_2022.2"
+  HOG_PATH: "/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/:/opt/Xilinx/Vivado/2022.2/bin/:/opt/questa/questasim/bin/"
   HOG_APPTAINER_IMAGE: "/Data/images/l0mdt_Ubuntu20.04.viv2022.2.sif"
 
 include:
@@ -20,12 +20,12 @@ generate:
   parallel:
     matrix:
       - PROVIDER: argos
-        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, ull/vu13p/ull_vu13_b3a_tar, l0mdt/ku15p/l0mdt_ku15p_ull_tar, l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps]
+        PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_tar, l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps]
         HOG_ONLY_SYNTH: 1
       - PROVIDER: "2022.2"
         PROJECT_NAME: [l0mdt/ku15p/l0mdt_ku15p_ull_ucm]
       - PROVIDER: argos
-        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty]
+        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty]
       - PROVIDER: "2022.2"
         PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_ucm_mpl, l0mdt/vu13p/l0mdt_vu13p_lsf_upt]
         HOG_ONLY_SYNTH: 1
