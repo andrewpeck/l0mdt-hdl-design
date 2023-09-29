@@ -287,11 +287,6 @@ check_auto_generated_code:
     - echo "Test vector file location on EOS is ${L0MDT_TESTVECTOR_EOS_DIR}"
     - xrdcp root://eosuser.cern.ch/${L0MDT_TESTVECTOR_EOS_DIR} tools/cocotb/l0mdt_tv/.
     # PYTHON
-    - export PATH="/home/l0mdtel/.pyenv/bin:$PATH"
-    - eval "$(pyenv init -)"
-    - eval "$(pyenv init --path)"
-    - eval "$(pyenv virtualenv-init -)"
-    - pyenv global 3.8.2
     - export TESTVECS_PATH="`pwd`/tools/cocotb/l0mdt_tv"
     - echo Print TESTVECS_PATH-----
     - echo $TESTVECS_PATH
