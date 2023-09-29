@@ -90,7 +90,7 @@ module TopLevel_csf #(
 	     .SPYBUFFER_EN(0)
 	     )csf_inst(
 		       .clk(clock),
-		       .i_rst(~reset_n),
+		       .rst(~reset_n),
 		       .i_seed(heg2sfslc),
 		       .i_mdt_hit(heg2sfhit),
 		       .i_eof(tb_i_eof),
