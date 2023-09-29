@@ -38,7 +38,7 @@ package HAL_CTRL_DEF is
                                                                                    TX_TRANSID => x"00",
                                                                                    TX_CHANNEL => x"00",
                                                                                    TX_DATA => x"00000000",
-                                                                                   SCA_ENABLE => "111",
+                                                                                   SCA_ENABLE => x"f",
                                                                                    START_RESET => '0',
                                                                                    START_CONNECT => '0',
                                                                                    START_COMMAND => '0',

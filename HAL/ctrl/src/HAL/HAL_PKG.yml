@@ -79,7 +79,7 @@ types:
   - RX_CHANNEL : { type: logic, range : [ 8 - 1 , 0 ] }
   - RX_DATA : { type: logic, range : [ 32 - 1 , 0 ] }
 
-- HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY: {array : [ 3 -1 , 0 ], type : HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t}
+- HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY: {array : [ 4 -1 , 0 ], type : HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t}
 
 - HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t:
   - RX : { type: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY }
@@ -99,7 +99,7 @@ types:
   - TX_TRANSID : { type: logic, range : [ 8 - 1 , 0 ] }
   - TX_CHANNEL : { type: logic, range : [ 8 - 1 , 0 ] }
   - TX_DATA : { type: logic, range : [ 32 - 1 , 0 ] }
-  - SCA_ENABLE : { type: logic, range : [ 3 - 1 , 0 ] }
+  - SCA_ENABLE : { type: logic, range : [ 4 - 1 , 0 ] }
   - START_RESET : { type: logic }
   - START_CONNECT : { type: logic }
   - START_COMMAND : { type: logic }
