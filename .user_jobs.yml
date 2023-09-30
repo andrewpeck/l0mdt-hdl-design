@@ -174,7 +174,7 @@ check_auto_generated_code:
   variables:
     <<: *riviera_vars
     HOG_SIMULATION_LIB_PATH: /home/dcieri/riviera_lib_2022.2/
-    HOG_PATH: "/opt/Aldec/Riviera-PRO-2022.10-x64/bin/:"
+    HOG_PATH: "/opt/Aldec/Riviera-PRO-2022.10-x64/bin/:/opt/Xilinx/Vivado/2022.2/bin/"
     HOG_CHECK_PROJVER: 0
   stage: generation_and_simulation
   script:
