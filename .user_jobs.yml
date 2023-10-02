@@ -22,10 +22,6 @@
   tags:
     - hog
 
-.tag-sr: &tag-sr
-  tags:
-    - docker
-
 .riviera_vars: &riviera_vars
   GIT_STRATEGY: clone
   GIT_SUBMODULE_STRATEGY: recursive
@@ -53,7 +49,6 @@
 
 check_submodule_status:
   <<: *only-default
-  <<: *tag-sr 
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:centos
   variables:
     <<: *chk_variables
