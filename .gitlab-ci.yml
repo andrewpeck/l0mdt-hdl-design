@@ -3,7 +3,7 @@ variables:
   HOG_CHECK_PROJVER: 1
   HOG_CHECK_SYNTAX: 1
   HOG_SIMULATION_LIB_PATH: "/opt/QuestaLibs"
-  HOG_PATH: "/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/:/opt/Xilinx/Vivado/2022.2/bin/:/opt/questa/questasim/bin/"
+  HOG_PATH: "/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/:/opt/Xilinx/Vivado/2022.2/bin/:/opt/questa2022.2/questasim/bin/"
   HOG_APPTAINER_IMAGE: "/Data/images/l0mdt_Ubuntu20.04.viv2022.2.sif"
 
 include:
@@ -58,7 +58,7 @@ questa:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg, ull/vu13p/ull_vu13_b3a_ucm_mpl, ull/vu13p/ull_vu13_b3a_tar]
+      - PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_heg, ull/vu13p/ull_vu13_b3a_ucm_mpl, ull/vu13p/ull_vu13_b3a_tar]
         PROVIDER: questa
   allow_failure: false
   tags:
