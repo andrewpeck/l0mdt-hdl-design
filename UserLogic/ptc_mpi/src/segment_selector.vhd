@@ -99,8 +99,10 @@ begin
     seg_I <= convert(i_seg_I,seg_I);
     seg_M <= convert(i_seg_M,seg_M);
     seg_O <= convert(i_seg_O,seg_O);
-    nsm_seg <= convert(i_nsm_seg(0),nsm_seg) when MDTTP_NEIGHBOURS = 1;
-    nsp_seg <= convert(i_nsp_seg(0),nsp_seg) when MDTTP_NEIGHBOURS = 1;
+      
+    
+    --nsm_seg <= convert(i_nsm_seg(0),nsm_seg) when MDTTP_NEIGHBOURS = 1;
+    --nsp_seg <= convert(i_nsp_seg(0),nsp_seg) when MDTTP_NEIGHBOURS = 1;
     
     o_seg_I <= convert(outseg_I,o_seg_I);
     o_seg_M <= convert(outseg_M,o_seg_M);
