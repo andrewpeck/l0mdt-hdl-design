@@ -1,6 +1,11 @@
 HAL/IP/vu13p/framework_mmcm/framework_mmcm.xci
 HAL/IP/vu13p/onboardclk/onboardclk.xci
 HAL/IP/vu13p/mgt_10g24_gty/mgt_10g24_gty.xci
+
+HAL/IP/ku15p/ila_downlink/ila_downlink.xci
+HAL/IP/ku15p/ila_lpgbt/ila_lpgbt.xci
+HAL/IP/ku15p/ila_0/ila_0.xci
+
 # MGT
 HAL/hal/src/mgt/mgt_sl_wrapper_vu.vhd
 # Sector Logic

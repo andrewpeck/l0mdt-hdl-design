@@ -136,12 +136,50 @@ begin
   
 --  sca0_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA0_UP);
 --  sca1_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA1_UP);
---  sca2_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA2_UP);
+--  sca2_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA2_UP);  
 
-  sca0_up_8bit <= uplink_data(0).data(143 downto 136);      --trying debugging with fixed bit assignment 
-  sca1_up_8bit <= uplink_data(0).data(95 downto 88);
-  sca2_up_8bit <= uplink_data(0).data(111 downto 104);
-  sca3_up_8bit <= uplink_data(0).data(127 downto 120);
+
+  sca0_up_8bit <= uplink_data(0).data(143 downto 136) when (ctrl.sc.frame_format='1') else uplink_data(0).data(143 downto 136);
+  sca1_up_8bit <= uplink_data(0).data(95 downto 88)   when (ctrl.sc.frame_format='1') else uplink_data(0).data(103 downto 96);
+  sca2_up_8bit <= uplink_data(0).data(111 downto 104) when (ctrl.sc.frame_format='1') else uplink_data(0).data(119 downto 112);
+  sca3_up_8bit <= uplink_data(0).data(127 downto 120) when (ctrl.sc.frame_format='1') else uplink_data(0).data(135 downto 128);
+
+--  downlink_data(0).data(27 downto 26) <= sca0_down when (ctrl.sc.frame_format='1') else ;      --trying debugging with fixed bit assignment 
+--  downlink_data(0).data(11 downto 10) <= sca1_down when (ctrl.sc.frame_format='1') else ;
+--  downlink_data(0).data(17 downto 16) <= sca2_down when (ctrl.sc.frame_format='1') else ;
+--  downlink_data(0).data(23 downto 22) <= sca3_down when (ctrl.sc.frame_format='1') else ;
+  
+  process(ctrl.sc.frame_format, sca0_down, sca1_down, sca2_down, sca3_down)
+	begin
+	case ctrl.sc.frame_format is
+		when '1' =>
+          downlink_data(0).data(27 downto 26) <= sca0_down;      --trying debugging with fixed bit assignment 
+          downlink_data(0).data(11 downto 10) <= sca1_down;
+          downlink_data(0).data(17 downto 16) <= sca2_down;
+          downlink_data(0).data(23 downto 22) <= sca3_down;
+		when others =>
+          downlink_data(0).data(23 downto 22) <= sca0_down;      --trying debugging with fixed bit assignment 
+          downlink_data(0).data(11 downto 10) <= sca1_down;
+          downlink_data(0).data(17 downto 16) <= sca2_down;
+          downlink_data(0).data(21 downto 20) <= sca3_down;
+	end case;
+	end process;
+
+--  process (ctrl.sc.frame_format) is
+--  begin
+--    if(ctrl.sc.frame_format == '1') then
+
+--      sca0_up_8bit <= uplink_data(0).data(143 downto 136);      --trying debugging with fixed bit assignment 
+--      sca1_up_8bit <= uplink_data(0).data(95 downto 88);
+--      sca2_up_8bit <= uplink_data(0).data(111 downto 104);
+--      sca3_up_8bit <= uplink_data(0).data(127 downto 120);
+      
+--      downlink_data(0).data(27 downto 26) <= sca0_down;      --trying debugging with fixed bit assignment 
+--      downlink_data(0).data(11 downto 10) <= sca1_down;
+--      downlink_data(0).data(17 downto 16) <= sca2_down;
+--      downlink_data(0).data(23 downto 22) <= sca3_down;
+--    end if;
+--  end process;
 
   sca0_up <= sca0_up_8bit(6) & sca0_up_8bit(2);
   sca1_up <= sca1_up_8bit(6) & sca1_up_8bit(2);
@@ -153,10 +191,7 @@ begin
 --  downlink_data(0).data(2*(CSM_SCA1_DOWN+1)-1 downto 2*(CSM_SCA1_DOWN)) <= sca1_down;
 --  downlink_data(0).data(2*(CSM_SCA2_DOWN+1)-1 downto 2*(CSM_SCA2_DOWN)) <= sca2_down;
 
-  downlink_data(0).data(27 downto 26) <= sca0_down;      --trying debugging with fixed bit assignment 
-  downlink_data(0).data(11 downto 10) <= sca1_down;
-  downlink_data(0).data(17 downto 16) <= sca2_down;
-  downlink_data(0).data(23 downto 22) <= sca3_down;
+
 
   -- Translates ctrl/mon record to serialised signal needed for csm
   gbt_controller_wrapper_inst : entity work.gbt_controller_wrapper

@@ -52,7 +52,6 @@ entity mgt_10g24_wrapper is
     qpll1outrefclk_out         : out std_logic;
 
     --
-
     txoutclk : out std_logic_vector(3 downto 0);
     rxoutclk : out std_logic_vector(3 downto 0);
 
@@ -118,14 +117,14 @@ begin
       port (
         gtwiz_userclk_tx_active_in         : in  std_logic_vector(0 downto 0);
         gtwiz_userclk_rx_active_in         : in  std_logic_vector(0 downto 0);
---        gtwiz_buffbypass_tx_reset_in       : in  std_logic_vector(0 downto 0);
---        gtwiz_buffbypass_tx_start_user_in  : in  std_logic_vector(0 downto 0);
---        gtwiz_buffbypass_tx_done_out       : out std_logic_vector(0 downto 0);
---        gtwiz_buffbypass_tx_error_out      : out std_logic_vector(0 downto 0);    
-        gtwiz_buffbypass_rx_reset_in       : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-        gtwiz_buffbypass_rx_start_user_in  : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-        gtwiz_buffbypass_rx_done_out       : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-        gtwiz_buffbypass_rx_error_out      : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+        gtwiz_buffbypass_tx_reset_in       : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_tx_start_user_in  : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_tx_done_out       : out std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_tx_error_out      : out std_logic_vector(0 downto 0);
+--        gtwiz_buffbypass_rx_reset_in       : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+--        gtwiz_buffbypass_rx_start_user_in  : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+--        gtwiz_buffbypass_rx_done_out       : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+--        gtwiz_buffbypass_rx_error_out      : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
             
         gtwiz_reset_clk_freerun_in         : in  std_logic_vector(0 downto 0);
         gtwiz_reset_all_in                 : in  std_logic_vector(0 downto 0);
@@ -139,11 +138,11 @@ begin
         gtwiz_userdata_tx_in               : in  std_logic_vector(127 downto 0);
         gtwiz_userdata_rx_out              : out std_logic_vector(127 downto 0);
         gtrefclk00_in                      : in  std_logic_vector(0 downto 0);
---        gtrefclk01_in                      : in  std_logic_vector(0 downto 0);
+        gtrefclk01_in                      : in  std_logic_vector(0 downto 0);
         qpll0outclk_out                    : out std_logic_vector(0 downto 0);
         qpll0outrefclk_out                 : out std_logic_vector(0 downto 0);
---        qpll1outclk_out                    : out std_logic_vector(0 downto 0);
---        qpll1outrefclk_out                 : out std_logic_vector(0 downto 0);
+        qpll1outclk_out                    : out std_logic_vector(0 downto 0);
+        qpll1outrefclk_out                 : out std_logic_vector(0 downto 0);
         drpaddr_in                         : in  std_logic_vector(39 downto 0);
         drpclk_in                          : in  std_logic_vector(3 downto 0);
         drpdi_in                           : in  std_logic_vector(63 downto 0);
@@ -165,8 +164,8 @@ begin
         rxpmaresetdone_out                 : out std_logic_vector(3 downto 0);
         txbufstatus_out                    : out std_logic_vector(7 downto 0);
         txoutclk_out                       : out std_logic_vector(3 downto 0);
-        txpmaresetdone_out                 : out std_logic_vector(3 downto 0)
---        txprgdivresetdone_out              : out std_logic_vector(3 downto 0)
+        txpmaresetdone_out                 : out std_logic_vector(3 downto 0);
+        txprgdivresetdone_out              : out std_logic_vector(3 downto 0)
         );
     end component;
     
@@ -220,15 +219,14 @@ begin
 
        
         -- buff bypass
---        gtwiz_buffbypass_tx_reset_in(0)       => buffbypass_tx_reset_i,
---        gtwiz_buffbypass_tx_start_user_in(0)  => buffbypass_tx_start_user_i,
---        gtwiz_buffbypass_tx_done_out(0)       => status_o(0).buffbypass_tx_done_out,
---        gtwiz_buffbypass_tx_error_out(0)      => status_o(0).buffbypass_tx_error_out,
-           
-        gtwiz_buffbypass_rx_reset_in(0)       => gtwiz_buffbypass_rx_reset_in_s,
-        gtwiz_buffbypass_rx_start_user_in(0)  => '0',
-        gtwiz_buffbypass_rx_done_out(0)       => rxfsm_reset_done,
-        gtwiz_buffbypass_rx_error_out         => open,
+        gtwiz_buffbypass_tx_reset_in(0)       => buffbypass_tx_reset_i,
+        gtwiz_buffbypass_tx_start_user_in(0)  => buffbypass_tx_start_user_i,
+        gtwiz_buffbypass_tx_done_out(0)       => status_o(0).buffbypass_tx_done_out,
+        gtwiz_buffbypass_tx_error_out(0)      => status_o(0).buffbypass_tx_error_out,
+--        gtwiz_buffbypass_rx_reset_in(0)       => gtwiz_buffbypass_rx_reset_in_s,
+--        gtwiz_buffbypass_rx_start_user_in(0)  => '0',
+--        gtwiz_buffbypass_rx_done_out(0)       => rxfsm_reset_done,
+--        gtwiz_buffbypass_rx_error_out         => open,
         -- resets
         gtwiz_reset_clk_freerun_in(0)         => free_clock,
         gtwiz_reset_all_in(0)                 => reset,
@@ -250,12 +248,12 @@ begin
         gtwiz_userdata_rx_out(127 downto 96) => mgt_word_o(3),
 
         gtrefclk00_in(0) => refclk0_i,
---        gtrefclk01_in(0) => refclk1_i,
+        gtrefclk01_in(0) => refclk1_i,
 
         qpll0outclk_out(0)    => qpll0outclk_out,
         qpll0outrefclk_out(0) => qpll0outrefclk_out,
---        qpll1outclk_out(0)    => qpll1outclk_out,
---        qpll1outrefclk_out(0) => qpll1outrefclk_out,
+        qpll1outclk_out(0)    => qpll1outclk_out,
+        qpll1outrefclk_out(0) => qpll1outrefclk_out,
 
         drpaddr_in => mgt_drp_i(3).drpaddr_in & mgt_drp_i(2).drpaddr_in & mgt_drp_i(1).drpaddr_in & mgt_drp_i(0).drpaddr_in,
         drpclk_in  => mgt_drp_i(3).drpclk_in  & mgt_drp_i(2).drpclk_in  & mgt_drp_i(1).drpclk_in  & mgt_drp_i(0).drpclk_in,
@@ -303,12 +301,12 @@ begin
         txpmaresetdone_out(0) => status_o(0).tx_pma_reset_done,
         txpmaresetdone_out(1) => status_o(1).tx_pma_reset_done,
         txpmaresetdone_out(2) => status_o(2).tx_pma_reset_done,
-        txpmaresetdone_out(3) => status_o(3).tx_pma_reset_done
+        txpmaresetdone_out(3) => status_o(3).tx_pma_reset_done,
 
---        txprgdivresetdone_out(0) => status_o(0).tx_prg_div_reset_done,
---        txprgdivresetdone_out(1) => status_o(1).tx_prg_div_reset_done,
---        txprgdivresetdone_out(2) => status_o(2).tx_prg_div_reset_done,
---        txprgdivresetdone_out(3) => status_o(3).tx_prg_div_reset_done
+        txprgdivresetdone_out(0) => status_o(0).tx_prg_div_reset_done,
+        txprgdivresetdone_out(1) => status_o(1).tx_prg_div_reset_done,
+        txprgdivresetdone_out(2) => status_o(2).tx_prg_div_reset_done,
+        txprgdivresetdone_out(3) => status_o(3).tx_prg_div_reset_done
         );
   end generate;
 
