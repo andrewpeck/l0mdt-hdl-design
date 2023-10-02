@@ -104,7 +104,6 @@ check_submodule_status:
 
 check_auto_generated_code:
   <<: *only-default
-  <<: *tag-sr
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:centos
   variables:
     <<: *chk_variables
@@ -229,7 +228,6 @@ check_auto_generated_code:
 
 .sim_comp: &sim_comp
   <<: *only-default
-  <<: *tag-sr
   variables:
     <<: *chk_variables
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
@@ -242,7 +240,6 @@ check_auto_generated_code:
 
 .sim_check: &sim_check
   <<: *only-default
-  <<: *tag-sr
   variables:
     <<: *chk_variables
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
