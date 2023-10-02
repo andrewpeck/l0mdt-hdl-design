@@ -18,7 +18,7 @@
             "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
             "testvector_file": "B_C_3.xz",
 	    "slc_rx_ii"      : 0,
-	    "ucm_latency"    : 100,
+	    "ucm_latency"    : 1000,
             "inputs": [
                 {
                     "tv_format": "SLC_RX",
