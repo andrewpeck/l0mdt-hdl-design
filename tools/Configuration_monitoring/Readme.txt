@@ -1,5 +1,5 @@
 RUN script over BUTool
-    1. cd l0mdt-sm-sw-core/ python3 l0mdt_IC.py /opt/address_table/connections.xml test.0
+    1. cd l0mdt-sm-sw-core/
     2. mkdir -p build/ 
     3. cd build/ 
     4. cmake3 -DNO_BOOST_LOGGING=1 -DCMAKE_PREFIX_PATH=/usr/local/lib/python3.6/site-packages/pybind11/share/cmake/pybind11/ -DBUILD_PYTHON_BINDINGS=1 .. 
