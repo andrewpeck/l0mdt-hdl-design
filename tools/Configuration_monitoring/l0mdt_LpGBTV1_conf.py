@@ -39,7 +39,7 @@ def write_lpgbt(master_slave, lpgbt_IIC):
 		tx_start = "HAL.CSM.CSM_0.SC."+master_slave+".IC.TX_START_WRITE"
 		SM.Write(tx_start,0x01)
 		SM.Write(tx_start,0x00)
-		time.sleep(0.01)
+#		time.sleep(1)
 		start_read = "HAL.CSM.CSM_0.SC."+master_slave+".IC.TX_START_READ"
 		SM.Write(start_read, 0x01)
 		SM.Write(start_read, 0x00)
@@ -60,10 +60,34 @@ def write_lpgbt(master_slave, lpgbt_IIC):
 		else:
 			print("Writing: ", text[6:10],"on register:", text[0:5])
 
+		print("Reading: ", data1Hex, "on register: ", data0Hex)
+
 	f.close()
 
 	if(error_address + error_data == 0):
 		print("No errors detected")
+
+	#Master LpGBT uplink does not align automaticaly and needs to send initially a clock pattern
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_GBTX_ADDR",0x75)
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_REGISTER_ADDR",0x128)
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_DATA_TO_GBTX",0x07)
+
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_WR",0x01)
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_WR",0x00)
+
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_START_WRITE",0x01)
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_START_WRITE",0x00)
+
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_GBTX_ADDR",0x75)
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_REGISTER_ADDR",0x128)
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_DATA_TO_GBTX",0x00)
+
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_WR",0x01)
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_WR",0x00)
+
+	time.sleep(1)
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_START_WRITE",0x01)
+	SM.Write("HAL.CSM.CSM_0.SC.MASTER.IC.TX_START_WRITE",0x00)
 
 def read_lpgbt(master_slave, lpgbt_IIC):
 
