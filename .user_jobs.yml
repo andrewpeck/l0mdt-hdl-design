@@ -185,7 +185,7 @@ check_auto_generated_code:
       else
         sed -i 's/questa/riviera/' ./Top/$PROJECT_NAME/list/project_lib.sim;
         sed -i 's/Questa/Riviera/' ./Top/$PROJECT_NAME/hog.conf;
-        ./Hog/LaunchSimulation.sh $PROJECT_NAME -recreate;
+        ./Hog/Do SIM $PROJECT_NAME -lib $HOG_SIMULATION_LIB_PATH -recrate;
       fi
     - if [ -f "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib/behav/riviera/simulate.log" ]; then
         if grep "Executing onerror command" "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib/behav/riviera/simulate.log"; then
