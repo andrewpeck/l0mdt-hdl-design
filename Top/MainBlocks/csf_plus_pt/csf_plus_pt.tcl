@@ -5,9 +5,9 @@ set USE_QUESTA_SIMULATOR 0
 ## FPGA and Vivado strategies and flows
 set FPGA xcku15p-ffva1760-2-e
 set SYNTH_STRATEGY "Flow_AreaOptimized_High"
-set SYNTH_FLOW "Vivado Synthesis 2020"
+set SYNTH_FLOW "Vivado Synthesis 2022"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
-set IMPL_FLOW "Vivado Implementation 2020"
+set IMPL_FLOW "Vivado Implementation 2022"
 set SIMULATOR "Xsim"
 
 ### Set Vivado Runs Properties ###
