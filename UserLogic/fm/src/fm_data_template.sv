@@ -52,7 +52,7 @@ module fm_data #(
      generate
       for (sb_i = 0; sb_i < total_l0mdt_sb; sb_i = sb_i+1)
 	begin
-	   assign fm_playback_data[sb_i] = fm_passthrough_data[sb_i].fm_data;	   
+	   assign fm_playback_data[sb_i] = (~sb_empty[sb_i])? fm_passthrough_data[sb_i].fm_data : 'b0;
 	end
      endgenerate
    
