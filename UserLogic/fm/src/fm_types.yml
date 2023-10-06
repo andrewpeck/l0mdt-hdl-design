@@ -38,9 +38,10 @@ types:
 
 - fm_art: {array: open, type: 'fm_rt'}
 
-- fm_hps_sf_mon: {array: [0, sf_sb_n * threads_n -1 ], type: 'fm_rt'}
-- fm_sf_mon: {array: [0, sf_sb_n -1 ], type: 'fm_rt'}
+#- fm_hps_sf_mon: {array: [0, sf_sb_n * threads_n -1 ], type: 'fm_rt'}
 
+- fm_sf_mon: {array: [0, sf_sb_n -1 ], type: 'fm_rt'}
+- fm_hps_sf_mon: {array: [0, threads_n -1 ], type: 'fm_sf_mon'}
 
 
 - fm_hps_mon:
@@ -62,8 +63,11 @@ types:
   - fm_ucm2pl_mon                 : {type: 'fm_ucm2pl'}
   - fm_ucm2hps                       : {type: 'fm_ucm2hps'}
  
+- fm_mon:
+  - fm_hps_mon   : {type: 'fm_hps_mon'}   
+  - fm_ucm_mon  : {type: 'fm_ucm_mon_data'}              
+
 
 #- fm_pb_data: {type: slc_rx_rt}
 - fm_pb: {array: [0, total_l0mdt_sb -1], type: logic, range: [mon_dw_max-1, 0]}
-
 

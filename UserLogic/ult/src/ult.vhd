@@ -268,10 +268,9 @@ architecture behavioral of ult is
   signal mpl_sump : std_logic := '1';
 
   -- FAST MONITORING  
-  signal ucm_fm_mon_r     : fm_ucm_mon_data;
-  signal fm_slc_rx_pb_v     : slc_rx_avt(2 downto 0);
- 
-  signal h2s_fm_mon_r      : fm_hps_mon;
+    signal fm_slc_rx_pb_v     : slc_rx_avt(2 downto 0);
+
+  signal fm_sb_mon_r        : fm_mon;
   signal h2s_fm_mon_v  : std_logic_vector(fm_hps_mon'w-1 downto 0);           
   signal ucm_fm_mon_v : std_logic_vector(fm_ucm_mon_data'w-1 downto 0);
 
@@ -409,7 +408,7 @@ begin
     end generate hps_ext;
 
     ucm_gen : if c_UCM_ENABLED = '1' generate
-      ucm_fm_mon_r <= convert(ucm_fm_mon_v, ucm_fm_mon_r);
+      fm_sb_mon_r.fm_ucm_mon <= convert(ucm_fm_mon_v, fm_sb_mon_r.fm_ucm_mon);
 
       
       -- block
@@ -434,8 +433,8 @@ begin
           -- pipeline
           o_ucm2pl_av => ucm2pl_av,
           --Fast Monitoring
-          o_ucm_fm_mon_v => ucm_fm_mon_v,
-          i_ucm_fm_slc_rx_pb_v => fm_slc_rx_pb_v
+          o_ucm_fm_mon_v => ucm_fm_mon_v, --Monitor
+          i_ucm_fm_slc_rx_pb_v => fm_slc_rx_pb_v -- Playback
          
         );
 
@@ -596,7 +595,7 @@ begin
     -- end process;
 
     h2s_gen : if c_H2S_ENABLED = '1' generate
-      h2s_fm_mon_r <= convert(h2s_fm_mon_v, h2s_fm_mon_r);
+      fm_sb_mon_r.fm_hps_mon <= convert(h2s_fm_mon_v, fm_sb_mon_r.fm_hps_mon );
       ult_h2s : entity ult_lib.hits_to_segments
         port map (
           -- clock, control, and monitoring
@@ -1022,8 +1021,7 @@ begin
           ctrl_v                      => fm_ctrl_v,
           mon_v                    => fm_mon_v,
           --  inputs
-          ucm_fm_mon         => ucm_fm_mon_r,          
-          h2s_fm_mon          => h2s_fm_mon_r,
+          fm_mon                  => fm_sb_mon_r,
           fm_ucm_slc_rx_pb => fm_slc_rx_pb_v
         );
 

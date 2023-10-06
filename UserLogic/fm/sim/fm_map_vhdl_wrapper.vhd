@@ -103,14 +103,15 @@ architecture behavioral of FM_map_vhdl_wrapper is
   signal  slave_writeMOSI : AXIWriteMOSI ;
   signal  slave_writeMISO : AXIWriteMISO ;
 
-  signal fm_mon : FM_MON_t;
+  signal fm_axi_mon : FM_MON_t;
   signal fm_ctrl: FM_CTRL_t:= DEFAULT_FM_CTRL_t;
-  signal fm_mon_v  : std_logic_vector(width(fm_mon) -1 downto 0);    
+  signal fm_axi_mon_v  : std_logic_vector(width(fm_axi_mon) -1 downto 0);    
   signal fm_ctrl_v : std_logic_vector(width(fm_ctrl) -1 downto 0);
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
-  signal h2s_fm_data       : fm_hps_mon; --fm_rt_array(0  to total_l0mdt_sb -1);
-  signal ucm_fm_mon      : fm_ucm_mon_data;   
+  --signal h2s_fm_data       : fm_hps_mon; --fm_rt_array(0  to total_l0mdt_sb -1);
+  --signal ucm_fm_mon      : fm_ucm_mon_data;
+  signal fm_sb_mon         : fm_mon;
 begin  -- architecture behavioral
 
   --fm_mon.SB0.SB_MEM.rd_data       <= x"00000000";
@@ -120,8 +121,9 @@ begin  -- architecture behavioral
   --fm_mon.SB1.SB_MEM.rd_data_valid <= fm_ctrl.SB1.SB_MEM.enable;
   clock_and_control.clk           <= clk_hs;
   clock_and_control.rst           <= reset_hs;
-  fm_mon                          <= convert(fm_mon_v, fm_mon);
+  fm_axi_mon                          <= convert(fm_axi_mon_v, fm_axi_mon);
   fm_ctrl_v                       <= convert(fm_ctrl, fm_ctrl_v);
+  fm_sb_mon                    <= zero(fm_sb_mon);
   
     --slave_readMOSI   : in  AXIReadMOSI;
     slave_readMOSI.address        <= slave_readMOSI_address; 
@@ -192,7 +194,7 @@ begin  -- architecture behavioral
         slave_writemiso => slave_writemiso,
 
         -- monitor signals in
-        mon  => fm_mon,
+        mon  => fm_axi_mon,
         -- control signals out
         Ctrl => fm_ctrl
         );
@@ -204,12 +206,10 @@ begin  -- architecture behavioral
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
         ctrl_v            => fm_ctrl_v,
-        mon_v             => fm_mon_v,
+        mon_v             => fm_axi_mon_v,
         axi_reset_n       => reset_axi_n,
         --  inputs
-        h2s_fm_mon   => h2s_fm_data,
-        ucm_fm_mon          => ucm_fm_mon  
---        ult_fm_data      => ult_fm_data
+        fm_mon   => fm_sb_mon
       );
 
 end architecture behavioral;          
