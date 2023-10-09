@@ -13,6 +13,7 @@ use hal.system_types_pkg.all;
 entity lpgbt_link_wrapper is
   generic (
     -- lpgbt controls
+    g_debug                             : boolean;
     g_LPGBT_BYPASS_INTERLEAVER          : std_logic := '0';
     g_LPGBT_BYPASS_FEC                  : std_logic := '0';
     g_LPGBT_BYPASS_SCRAMBLER            : std_logic := '0';
@@ -105,25 +106,45 @@ architecture Behavioral of lpgbt_link_wrapper is
 
   -- up/downlink ready flag
   signal downlink_ready : std_logic_vector (g_NUM_DOWNLINKS-1 downto 0);  --
-  signal uplink_ready   : std_logic_vector (g_NUM_UPLINKS-1 downto 0);
+  signal uplink_ready   : std_logic_vector (g_NUM_UPLINKS downto 0);
+  
+    component ila_lpgbt
+    PORT (
+        clk : IN STD_LOGIC;
+        probe0 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+        probe1 : IN STD_LOGIC_VECTOR(223 DOWNTO 0);
+        probe2 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+        probe3 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+        probe4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+        probe5 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+        probe6 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
+    );
+    END component;
+    
+    COMPONENT ila_downlink
+    PORT (
+        clk : IN STD_LOGIC;
+        probe0 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+        probe1 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+        probe2 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
+        probe3 : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
+    );
+    END COMPONENT;
 
 begin
 
   --------------------------------------------------------------------------------
   -- Downlink
   --------------------------------------------------------------------------------
-  uplink_ready_o    <= uplink_ready;
-  downlink_ready_o  <= downlink_ready;
-  
+
   downlink_gen : for I in 0 to g_NUM_DOWNLINKS-1 generate
 
     signal downlink_data  : lpgbt_downlink_data_rt;
     signal mgt_data       : std_logic_vector(31 downto 0);
-    signal downlink_reset : std_logic := '0'; --active low
+    signal downlink_reset : std_logic := '1';
 
   begin
 
-    
     downlink_reset_fanout : process (downlink_clk) is
     begin  -- process reset_fanout
       if rising_edge(downlink_clk) then  -- rising clock edge
@@ -182,6 +203,17 @@ begin
     mgtnolatch : if (not g_PIPELINE_MGT) generate
       downlink_mgt_word_array_o(I) <= mgt_data;
     end generate;
+    
+--    lpgbt_ila_downlink : if (g_debug) generate
+--        uplink_lpgbt_ila : ila_downlink 
+--        port map(
+--            clk => downlink_clk,
+--            probe0      => mgt_data,
+--            probe1      => downlink_data.data,
+--            probe2      => downlink_data.ec,
+--            probe3      => downlink_data.ic
+--        );    
+--    end generate;
 
   end generate;
 
@@ -201,7 +233,7 @@ begin
     signal iccorrected   : std_logic_vector (1 downto 0);
     signal eccorrected   : std_logic_vector (1 downto 0);
 
-    signal uplink_reset : std_logic := '0';
+    signal uplink_reset : std_logic := '1';
 
   begin
 
@@ -245,7 +277,21 @@ begin
         eccorrected_o              => eccorrected,
         rdy_o                      => uplink_ready(I)
         );
-
+        
+    lpgbt_ila_cores : if (g_debug) generate
+        uplink_lpgbt_ila : ila_lpgbt 
+        port map(
+            clk => uplink_clk,
+        
+            probe0      => mgt_data,
+            probe1      => uplink_data.data,
+            probe2      => uplink_data.ec,
+            probe3      => uplink_data.ic,
+            probe4(0)   => bitslip,
+            probe5(0)   => uplink_ready(I),
+            probe6(0)   => uplink_fec_err_o(I)
+        );
+    end generate;
     --------------------------------------------------------------------------------
     -- Error Counters
     --------------------------------------------------------------------------------

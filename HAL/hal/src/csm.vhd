@@ -108,15 +108,14 @@ architecture behavioral of csm is
   signal enc_o : std_logic := '0';
   
   -- SCA: Slow Control Asic
-  signal sca0_up_8bit, sca1_up_8bit, sca2_up_8bit : std_logic_vector (7 downto 0);
-  signal sca0_up, sca1_up, sca2_up                : std_logic_vector (1 downto 0);
-  signal sca0_down, sca1_down, sca2_down          : std_logic_vector (1 downto 0);
+  signal sca0_up_8bit, sca1_up_8bit, sca2_up_8bit, sca3_up_8bit : std_logic_vector (7 downto 0);
+  signal sca0_up, sca1_up, sca2_up, sca3_up                     : std_logic_vector (1 downto 0);
+  signal sca0_down, sca1_down, sca2_down, sca3_down             : std_logic_vector (1 downto 0);
 
   -- FEC: Forward Error Corrections (counters)
   type fec_err_cnt_type is array (g_NUM_UPLINKS-1 downto 0) of std_logic_vector(15 downto 0);
   signal fec_err_cnt : fec_err_cnt_type;
 
-  
   
 begin
 
@@ -134,22 +133,69 @@ begin
   -- sca0_up_8bit <= uplink_data(0).data(8*(CSM_SCA0_UP+1)-1 downto 8*(CSM_SCA0_UP));
   -- sca1_up_8bit <= uplink_data(0).data(8*(CSM_SCA1_UP+1)-1 downto 8*(CSM_SCA1_UP));
   -- sca2_up_8bit <= uplink_data(0).data(8*(CSM_SCA2_UP+1)-1 downto 8*(CSM_SCA2_UP));
-  sca0_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA0_UP);
-  sca1_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA1_UP);
-  sca2_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA2_UP);
+  
+--  sca0_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA0_UP);
+--  sca1_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA1_UP);
+--  sca2_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA2_UP);  
+
+
+  sca0_up_8bit <= uplink_data(0).data(143 downto 136) when (ctrl.sc.frame_format='1') else uplink_data(0).data(143 downto 136);
+  sca1_up_8bit <= uplink_data(0).data(95 downto 88)   when (ctrl.sc.frame_format='1') else uplink_data(0).data(103 downto 96);
+  sca2_up_8bit <= uplink_data(0).data(111 downto 104) when (ctrl.sc.frame_format='1') else uplink_data(0).data(119 downto 112);
+  sca3_up_8bit <= uplink_data(0).data(127 downto 120) when (ctrl.sc.frame_format='1') else uplink_data(0).data(135 downto 128);
+
+--  downlink_data(0).data(27 downto 26) <= sca0_down when (ctrl.sc.frame_format='1') else ;      --trying debugging with fixed bit assignment 
+--  downlink_data(0).data(11 downto 10) <= sca1_down when (ctrl.sc.frame_format='1') else ;
+--  downlink_data(0).data(17 downto 16) <= sca2_down when (ctrl.sc.frame_format='1') else ;
+--  downlink_data(0).data(23 downto 22) <= sca3_down when (ctrl.sc.frame_format='1') else ;
+  
+  process(ctrl.sc.frame_format, sca0_down, sca1_down, sca2_down, sca3_down)
+	begin
+	case ctrl.sc.frame_format is
+		when '1' =>
+          downlink_data(0).data(27 downto 26) <= sca0_down;      --trying debugging with fixed bit assignment 
+          downlink_data(0).data(11 downto 10) <= sca1_down;
+          downlink_data(0).data(17 downto 16) <= sca2_down;
+          downlink_data(0).data(23 downto 22) <= sca3_down;
+		when others =>
+          downlink_data(0).data(23 downto 22) <= sca0_down;      --trying debugging with fixed bit assignment 
+          downlink_data(0).data(11 downto 10) <= sca1_down;
+          downlink_data(0).data(17 downto 16) <= sca2_down;
+          downlink_data(0).data(21 downto 20) <= sca3_down;
+	end case;
+	end process;
+
+--  process (ctrl.sc.frame_format) is
+--  begin
+--    if(ctrl.sc.frame_format == '1') then
+
+--      sca0_up_8bit <= uplink_data(0).data(143 downto 136);      --trying debugging with fixed bit assignment 
+--      sca1_up_8bit <= uplink_data(0).data(95 downto 88);
+--      sca2_up_8bit <= uplink_data(0).data(111 downto 104);
+--      sca3_up_8bit <= uplink_data(0).data(127 downto 120);
+      
+--      downlink_data(0).data(27 downto 26) <= sca0_down;      --trying debugging with fixed bit assignment 
+--      downlink_data(0).data(11 downto 10) <= sca1_down;
+--      downlink_data(0).data(17 downto 16) <= sca2_down;
+--      downlink_data(0).data(23 downto 22) <= sca3_down;
+--    end if;
+--  end process;
 
   sca0_up <= sca0_up_8bit(6) & sca0_up_8bit(2);
   sca1_up <= sca1_up_8bit(6) & sca1_up_8bit(2);
   sca2_up <= sca2_up_8bit(6) & sca2_up_8bit(2);
+  sca3_up <= sca3_up_8bit(6) & sca3_up_8bit(2);
 
   -- downlinks are configured for 80 Mbps
-  downlink_data(0).data(2*(CSM_SCA0_DOWN+1)-1 downto 2*(CSM_SCA0_DOWN)) <= sca0_down;
-  downlink_data(0).data(2*(CSM_SCA1_DOWN+1)-1 downto 2*(CSM_SCA1_DOWN)) <= sca1_down;
-  downlink_data(0).data(2*(CSM_SCA2_DOWN+1)-1 downto 2*(CSM_SCA2_DOWN)) <= sca2_down;
+--  downlink_data(0).data(2*(CSM_SCA0_DOWN+1)-1 downto 2*(CSM_SCA0_DOWN)) <= sca0_down;
+--  downlink_data(0).data(2*(CSM_SCA1_DOWN+1)-1 downto 2*(CSM_SCA1_DOWN)) <= sca1_down;
+--  downlink_data(0).data(2*(CSM_SCA2_DOWN+1)-1 downto 2*(CSM_SCA2_DOWN)) <= sca2_down;
+
+
 
   -- Translates ctrl/mon record to serialised signal needed for csm
   gbt_controller_wrapper_inst : entity work.gbt_controller_wrapper
-    generic map (g_SCAS_PER_LPGBT => 3)
+    generic map (g_SCAS_PER_LPGBT => 4)
     port map (
 
       reset_i => reset_i,
@@ -164,15 +210,19 @@ begin
       -- to lpgbt downlink
       ic_data_o => downlink_data(0).ic,
       ec_data_o => downlink_data(0).ec,
+      
+      ic_data_i_s => uplink_data(1).ic,
 
       -- SCA Links
       sca0_data_i => sca0_up,
       sca1_data_i => sca1_up,
       sca2_data_i => sca2_up,
+      sca3_data_i => sca3_up,
 
       sca0_data_o => sca0_down,
       sca1_data_o => sca1_down,
-      sca2_data_o => sca2_down
+      sca2_data_o => sca2_down,
+      sca3_data_o => sca3_down
       );
 
   --------------------------------------------------------------------------------
@@ -195,6 +245,7 @@ begin
   
   lpgbt_links_inst : entity work.lpgbt_link_wrapper
     generic map (
+      g_debug                             => g_CSM_ID = 0 or g_CSM_ID = 1 or g_CSM_ID = 2 or g_CSM_ID = 3 or g_CSM_ID = 4 or g_CSM_ID = 5,    
       g_DOWNLINK_WORD_WIDTH               => c_DOWNLINK_WORD_WIDTH,
       g_DOWNLINK_MULTICYCLE_DELAY         => c_DOWNLINK_MULTICYCLE_DELAY,
       g_DOWNLINK_CLOCK_RATIO              => c_DOWNLINK_CLOCK_RATIO,
@@ -287,5 +338,7 @@ begin
       tdc_hits_o          => tdc_hits_to_polmux_o,
       read_done_i         => read_done_from_polmux_i
       );
+
+
 
 end behavioral;
