@@ -94,7 +94,7 @@ begin
   -- lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
   --
   lsf_mon_r <= zero(lsf_mon_r);
-  csf_mon_r <= zero(csf_mon_r);
+--  csf_mon_r <= zero(csf_mon_r);
   --
 
   fm_sf_mon_v <= convert(fm_sf_mon_r, fm_sf_mon_v);
@@ -124,7 +124,7 @@ begin
       --
       SF_TYPE : if c_SF_TYPE = '0' generate
 
-        csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
+--        csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
         lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
         
 
