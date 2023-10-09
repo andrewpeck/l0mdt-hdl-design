@@ -106,7 +106,7 @@ architecture Behavioral of lpgbt_link_wrapper is
 
   -- up/downlink ready flag
   signal downlink_ready : std_logic_vector (g_NUM_DOWNLINKS-1 downto 0);  --
-  signal uplink_ready   : std_logic_vector (g_NUM_UPLINKS downto 0);
+  signal uplink_ready   : std_logic_vector (g_NUM_UPLINKS-1 downto 0);
   
     component ila_lpgbt
     PORT (
@@ -133,6 +133,8 @@ architecture Behavioral of lpgbt_link_wrapper is
 
 begin
 
+  uplink_ready_o <= uplink_ready;
+  downlink_ready_o <= downlink_ready;
   --------------------------------------------------------------------------------
   -- Downlink
   --------------------------------------------------------------------------------
