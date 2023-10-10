@@ -10,10 +10,13 @@ library hal;
 use hal.lpgbt_pkg.all;
 use hal.system_types_pkg.all;
 
+library shared_lib;
+use shared_lib.config_pkg.all;
+
+
 entity lpgbt_link_wrapper is
   generic (
     -- lpgbt controls
-    g_debug                             : boolean;
     g_LPGBT_BYPASS_INTERLEAVER          : std_logic := '0';
     g_LPGBT_BYPASS_FEC                  : std_logic := '0';
     g_LPGBT_BYPASS_SCRAMBLER            : std_logic := '0';
@@ -280,7 +283,7 @@ begin
         rdy_o                      => uplink_ready(I)
         );
         
-    lpgbt_ila_cores : if (g_debug) generate
+    lpgbt_ila_cores : if (c_ENABLE_ILA = '1') generate
         uplink_lpgbt_ila : ila_lpgbt 
         port map(
             clk => uplink_clk,

@@ -136,6 +136,7 @@ proc update_prj_config {dest_file segment_finder pt_calc props} {
     set endcap 0
     set large 0
     set en_neighbors 0
+    set en_ila 0
 
     # module enables
     set en_daq 1
@@ -157,6 +158,7 @@ proc update_prj_config {dest_file segment_finder pt_calc props} {
     replace_prj_cfg_std_logic SF_TYPE ${sf_type} ${dest_file}
     replace_prj_cfg_std_logic PT_TYPE ${pt_type} ${dest_file}
     replace_prj_cfg_std_logic ENABLE_NEIGHBORS ${en_neighbors} ${dest_file}
+    replace_prj_cfg_std_logic ENABLE_ILA ${en_ila} ${dest_file}
     replace_prj_cfg_std_logic ENDCAP_nSMALL_LARGE ${large} ${dest_file}
     replace_prj_cfg_std_logic ST_nBARREL_ENDCAP ${endcap} ${dest_file}
 

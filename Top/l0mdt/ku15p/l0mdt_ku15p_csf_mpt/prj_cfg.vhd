@@ -22,7 +22,7 @@ package body prj_cfg is
   begin
 
     -- THESE VARIABLES ARE AUTO-SET FROM THE MDT FLAVORS SCRIPT
-
+    proj_cfg.ENABLE_ILA          := '0';
     -- sector configuration
     proj_cfg.SECTOR_ID           := 3;
     proj_cfg.SECTOR_SIDE         := 0;

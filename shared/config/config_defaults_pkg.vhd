@@ -29,6 +29,7 @@ package cfg_global_default_pkg is
     ST_nBARREL_ENDCAP             : std_logic;  -- selects the part of detector   - 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           : std_logic;  -- select the type of endcap      - 0: small     1: large
     ENABLE_NEIGHBORS              : std_logic;  -- enables or disables the processing of SL neighbors
+    ENABLE_ILA                    : std_logic;  -- enables the ILA debug cores for the MGT
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
