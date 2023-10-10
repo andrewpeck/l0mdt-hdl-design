@@ -158,8 +158,10 @@ begin
 
         end loop;
 
-        minus_neighbor_segments_sump(I) <= xor_reduce(i_minus_neighbor_segments);
-        plus_neighbor_segments_sump(I) <= xor_reduce(i_plus_neighbor_segments);
+
+        minus_neighbor_segments_sump <= xor_reduce(i_minus_neighbor_segments);
+        plus_neighbor_segments_sump <= xor_reduce(i_plus_neighbor_segments);
+
 
         pl_loop : for I in 0 to c_NUM_THREADS - 1 loop
 
