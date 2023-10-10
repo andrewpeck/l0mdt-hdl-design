@@ -82,10 +82,12 @@ architecture behavioral of  tb_ult_pt_mpl_mtc_primary is
   --ACCESS attribute
     signal mtc_mon_v             : std_logic_vector(MTC_MON_t'w -1 downto 0);--  : out MTC_MON_t;
     signal mpl_mon_v             : std_logic_vector(MPL_MON_t'w -1 downto 0);-- : out MPL_MON_t; 
-    signal tf_mon_v              : std_logic_vector(TF_MON_t'w * c_NUM_THREADS-1 downto 0);-- : out TF_MON_t;
+  --signal tf_mon_v              : std_logic_vector(TF_MON_t'w * c_NUM_THREADS-1 downto 0);-- : out TF_MON_t;
+    signal tf_mon_v              : std_logic_vector(TF_MON_t'w -1 downto 0);-- : out TF_MON_t;
     signal mtc_ctrl_v            : std_logic_vector(MTC_CTRL_t'w -1 downto 0):= (others => '0'); --  : in  MTC_CTRL_t;
     signal mpl_ctrl_v            : std_logic_vector(MPL_CTRL_t'w -1 downto 0):= (others => '0');-- : out MPL_MON_t;
-    signal tf_ctrl_v             : std_logic_vector(TF_CTRL_t'w * c_NUM_THREADS-1 downto 0):= (others => '0');-- : out TF_MON_t;
+  --signal tf_ctrl_v             : std_logic_vector(TF_CTRL_t'w * c_NUM_THREADS-1 downto 0):= (others => '0');-- : out TF_MON_t;
+    signal tf_ctrl_v             : std_logic_vector(TF_CTRL_t'w-1 downto 0):= (others => '0');-- : out TF_MON_t;
 
 
     signal clock_and_control : l0mdt_control_rt;

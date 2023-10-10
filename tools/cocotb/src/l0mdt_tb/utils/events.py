@@ -588,23 +588,21 @@ def parse_tvlist(
 
                 cocotb.log.debug(f"Events.py: tvformat = {tvformat}  my_port = {my_port}, station_ID {this_station_ID}")
 
-                ### Check if events has SLc in this sector, 
-                ### This check is useless and can probably be removed with new TV output files (saved per sector).
-                if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_cnd_thrd_id[my_port], station_ID=this_station_ID):
-                    if this_station_ID=="EXT":
-                        # EXT does not exist in TV, set everything to 0 for the moment
-                        tv[my_port][valid_events]=0
-                    else:
-                        tv[my_port][valid_events] = get_bitfield(events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type, port=my_port, keep_bitfieldword=keep_bitfieldword)
-                        event_found_for_port_interface = 1
-                    
-                        # Increase dimensionality if scalar type and need to do padding
-                        if tv_type == 'value' and (zero_padding_size > 0 or prepend_zeros > 0):
-                            tv[my_port][valid_events] = [tv[my_port][valid_events]]
+                
+                if this_station_ID=="EXT":
+                    # EXT does not exist in TV, set everything to 0 for the moment
+                    tv[my_port][valid_events]=0
+                else:
+                    tv[my_port][valid_events] = get_bitfield(events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type, port=my_port, keep_bitfieldword=keep_bitfieldword)
+                    event_found_for_port_interface = 1
+                    if type(tv[my_port][valid_events]) is str:
+                        print(f"SECTOR OK - TVFORMAT = {tvformat} tv[{my_port}][{valid_events}]={tv[my_port][valid_events]} is string type")
+                    # Increase dimensionality if scalar type and need to do padding
+                    if tv_type == 'value' and (zero_padding_size > 0 or prepend_zeros > 0):
+                        tv[my_port][valid_events] = [tv[my_port][valid_events]]
 
-                    cocotb.log.debug(f"SECTOR OK - TVFORMAT = {tvformat} tv[{my_port}][{valid_events}]={tv[my_port][valid_events]}")
+                cocotb.log.debug(f"SECTOR OK - TVFORMAT = {tvformat} tv[{my_port}][{valid_events}]={tv[my_port][valid_events]}")
 
-                            
             ### Prepend zeros
             if prepend_zeros > 0:
                 for my_port in range(n_ports):
@@ -614,6 +612,7 @@ def parse_tvlist(
             ### Append zeros
             if zero_padding_size > 0:
                 for my_port in range(n_ports):
+                    cocotb.log.debug(f"TV tv[{my_port}][{valid_events}] = {tv[my_port][valid_events]}")
                     if station_ID[my_port] != "EXT":
                         n_to_append = zero_padding_size - len(tv[my_port][valid_events])
                         if n_to_append < 0:

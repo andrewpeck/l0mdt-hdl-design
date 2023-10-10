@@ -80,7 +80,7 @@ function python3_available {
 
     $(python3 -c "import sys; sys.exit({True:0,False:1}[sys.version_info[1]>=${required_python_version_minor}]);")
     if [ $? -eq 1 ]; then
-        echo "ERROR You must have python version >=3.6, you have $(python3 -V) (checked with: \"python3 -V\")"
+        echo "ERROR You must have python version >= ${required_python_version_major}.${required_python_version_minor}, you have $(python3 -V) (checked with: \"python3 -V\")"
         return 1
     fi
     return 0
@@ -306,10 +306,12 @@ function main {
             ;;
             -l)
                 export XILINX_LIB_DIR=$2
+                export XILINX_SIM_LIB=$2
                 shift
             ;;
             --xilinxlibs)
                 export XILINX_LIB_DIR=$2
+                export XILINX_SIM_LIB=$2
                 shift
             ;;
             -x)

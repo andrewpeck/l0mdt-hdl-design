@@ -2,7 +2,7 @@
     "testbench_config": {
         "test_name": "polmux",
         "input_args": {
-            "n_events": 3,
+            "n_events": 5,
             "event_detail": false,
             "clock_period": 3.125,
             "clock_input_data_period": 62.5,

@@ -55,12 +55,12 @@ entity ucm_top_tb is
 end entity ucm_top_tb;
 
 architecture beh of ucm_top_tb is
-   signal ctrl : UCM_CTRL_t;
-   signal mon  : UCM_MON_t;
+   signal ctrl_r : UCM_CTRL_t;
+   signal mon_r  : UCM_MON_t;
    signal ttc_commands            : l0mdt_ttc_rt;
    signal ctrl_len : natural;
-   signal ctrl_v : std_logic_vector(width(ctrl)-1 downto 0) := (others => '0');
-   signal mon_v  : std_logic_vector(width(mon)-1 downto 0);
+   signal ctrl_v : std_logic_vector(width(ctrl_r)-1 downto 0) := (others => '0');
+   signal mon_v  : std_logic_vector(width(mon_r)-1 downto 0);
   -- signal o_uCM2hps_inn_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   -- signal o_uCM2hps_mid_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   -- signal o_uCM2hps_out_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -69,8 +69,8 @@ architecture beh of ucm_top_tb is
   -- signal o_uCM2pl_av           : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
 begin
-   --ctrl_len <= width(ctrl);
-   --ctrl_v(width(ctrl)-1 downto width(ctrl)-12 ) <= x"03e";
+   --ctrl_len <= width(ctrl_r);
+   --ctrl_v(width(ctrl_r)-1 downto width(ctrl_r)-12 ) <= x"03e";
    --ttc_commands.bcr <= '0'
     --ocr : std_logic;
     --ecr : std_logic;
@@ -80,7 +80,14 @@ begin
     --evid : evid_t;
     --orid : orid_t;
 
-
+  
+  ttc_commands <= zero(ttc_commands);
+  ctrl_r <= zero(ctrl_r);
+  ctrl_v <= convert(ctrl_r,ctrl_v);
+  mon_r <= convert(mon_v,mon_r);
+  
+  
+  
   UCM : entity ucm_lib.ucm
   port map(
     clk                     => clk,

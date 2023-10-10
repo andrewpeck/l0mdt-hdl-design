@@ -59,7 +59,7 @@ class MtcWrapper(block_wrapper.BlockWrapper):
             for iword, word in enumerate(port_tv_list):
                 flow_kwargs = flow_interface_kwargs
 
-                #print("WORDS %x %x %x"%(event[iword], words[iword], word))
+                #print("WORDS %x %x"%(iword, word))
                 # delays are entered at event boundaries
                 hook = (
                     Event()
@@ -67,6 +67,7 @@ class MtcWrapper(block_wrapper.BlockWrapper):
                 driver.append(word, event=hook, **flow_kwargs)
             if hook:
                 hooks.append(hook.wait())
+        #print(f" HOOKS len {len(hooks)} {hooks}")
 
         return hooks
 
@@ -76,12 +77,14 @@ class MtcWrapper(block_wrapper.BlockWrapper):
     ):
         hooks = []
         index = 0
-        my_hooks = [[0 for x in range(total_input_interfaces)] for y in range(n_to_send)]
-        for x in range(total_input_interfaces):
+        my_hooks = [[0 for y in range(n_to_send)] for x in range(total_input_interfaces)]
+        for x in range(total_input_interfaces):            
+            cocotb.log.debug(f"sending input to interface {x}: {input_testvector_list[x]}")
             my_hooks[x] =  self.send_input_events( input_testvector_list[x], x, n_to_send)
 
         for x in range(total_input_interfaces):
-            for y in range(n_to_send):
+            #for y in range(n_to_send):
+            for y in range(self._n_input_ports[x]):
                 hooks.append(my_hooks[x][y])
                 #index = index+1
 

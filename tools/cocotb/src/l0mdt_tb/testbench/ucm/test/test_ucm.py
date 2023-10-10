@@ -25,6 +25,23 @@ from l0mdt_tb.utils import test_config
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
+import logging
+cocotb.log.setLevel(logging.DEBUG)
+
+from pprint import pprint
+
+def listtohex(listofint):
+    new = []
+    for j in listofint:
+        if type(j) is int:
+            new.append(hex(j))
+        elif type(j) is list:
+            new.append(listtohex(j))
+        else:
+            ### Try to read repr
+            new.append(hex(int(str(j),2)))
+    return new
+
 
 def initialize_spybuffers(fifos=[]):
 
@@ -242,11 +259,14 @@ def ucm_test(dut):
         n_to_load=num_events_to_process
         )
 
+    
+
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list                  =  []
     single_interface_list          = []
     single_interface_list_ii_delay =  []
     single_interface_list_iii_delay =  []
+    cocotb.log.debug("\n\n\n\n\Get Input Test Vector List for Ports across all input interfaces")
     for n_ip_intf in range(UcmPorts.n_input_interfaces): # Add concept of interface
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
@@ -257,38 +277,59 @@ def ucm_test(dut):
             cnd_thrd_id = inputs_thread_n[n_ip_intf]
             ))
         
+
+        print(f"EXP events (pre-padding) port n. {n_ip_intf}",end="   ")
+        pprint(listtohex(single_interface_list))
         
         single_interface_list_ii_delay  = events.modify_tv(single_interface_list, slc_rx_ii)
         single_interface_list_iii_delay = events.modify_tv_padzeroes(single_interface_list_ii_delay,'end',[1,1,1,1]);
         for io in range(UcmPorts.get_input_interface_ports(n_ip_intf)):
             input_tv_list.append(single_interface_list_iii_delay[io])
+        #input_tv_list=[ [single_interface_list[i][0] for _ in range(20)] for i in range(len(single_interface_list))]
    
+
+    print(f"EXP events (post-padding) port n. {n_ip_intf}",end="   ")
+    pprint(listtohex(input_tv_list))
+        
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
+    cocotb.log.debug("\n\n\n\n\nGet Output Test Vector List for Ports across all output interfaces")
     for n_op_intf in range(UcmPorts.n_output_interfaces): # Add concept of interface
+        if "EXT" in outputs_station_id[n_op_intf]:
+            continue
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
             tvformat=output_tvformats[n_op_intf],
             n_ports = UcmPorts.get_output_interface_ports(n_op_intf),
             n_to_load=num_events_to_process,
-            tv_type="value"
+            station_ID=outputs_station_id[n_op_intf],
+            tv_type="list"
             ))
         output_tv_list.append(single_interface_list)
 
 
-    print("Debug: Printing bitfields of input testvectors across all ports:")
-    print("*************************************************************")
-    #events.print_tv_bitfields(input_tvformats, input_tv_list, UcmPorts.n_input_interfaces, UcmPorts.get_all_input_interface_ports(), num_events_to_process)
-    input_tvRTL_list = events.fill_tv_rtl(
-        input_tvformats,
-        input_tv_list, UcmPorts.n_input_interfaces, 
-        UcmPorts.get_all_input_interface_ports(), 
-        num_events_to_process,
-        inputs_station_id
-    )
-    events.print_tv_bitfields(input_tvRTL_list)
-    print("*************************************************************")
+    print(f"Dumping input events (post-padding) ", input_tv_list)
+
+
+    print("Dumping EXP output events")
+    for i in range(len(output_tv_list)):
+        pprint( listtohex(output_tv_list[i]))    
+
+
+
+    # print("Debug: Printing bitfields of input testvectors across all ports:")
+    # print("*************************************************************")
+    # #events.print_tv_bitfields(input_tvformats, input_tv_list, UcmPorts.n_input_interfaces, UcmPorts.get_all_input_interface_ports(), num_events_to_process)
+    # input_tvRTL_list = events.fill_tv_rtl(
+    #     input_tvformats,
+    #     input_tv_list, UcmPorts.n_input_interfaces, 
+    #     UcmPorts.get_all_input_interface_ports(), 
+    #     num_events_to_process,
+    #     inputs_station_id
+    # )
+    # events.print_tv_bitfields(input_tvRTL_list)
+    # print("*************************************************************")
  
     ##
     ## send input events
@@ -358,6 +399,10 @@ def ucm_test(dut):
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
 
+    print("Dumping RTL events")
+    for n_op_intf in range (UcmPorts.n_output_interfaces):
+        pprint( listtohex(recvd_events_intf[n_op_intf]))    
+
 
     for n_op_intf in range (UcmPorts.n_output_interfaces):
         events_are_equal, pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(
@@ -396,3 +441,5 @@ def ucm_test(dut):
         all_tests_passed
     ]
     raise cocotb_result
+
+

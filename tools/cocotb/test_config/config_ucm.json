@@ -2,7 +2,7 @@
     "testbench_config": {
         "test_name": "ucm",
         "input_args": {
-            "n_events": 1,
+            "n_events": 5,
             "event_detail": false,
             "clock_period": 5,
             "clock_time_unit": "ns",
@@ -18,7 +18,7 @@
             "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
             "testvector_file": "B_C_3.xz",
 	    "slc_rx_ii"      : 0,
-	    "ucm_latency"    : 100,
+	    "ucm_latency"    : 1000,
             "inputs": [
                 {
                     "tv_format": "SLC_RX",

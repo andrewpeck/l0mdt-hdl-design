@@ -24,7 +24,7 @@ entity tb_ptcalc is
     clock                            : in  std_logic;
         rst                                : in std_logic;
         ttc_commands              : in  l0mdt_ttc_rt;
-        ctrl_v                    : in std_logic_vector; --  : in  TF_CTRL_t;
+        --ctrl_v                    : in std_logic_vector; --  : in  TF_CTRL_t;
         mon_v                     : out std_logic_vector;-- : out TF_MON_t;
         i_inn_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
         i_mid_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
@@ -43,8 +43,17 @@ entity tb_ptcalc is
 
  architecture behavioral of tb_ptcalc is
       signal   clock_and_control         :       l0mdt_control_rt;
+      signal ctrl_v     : TF_CTRL_t;
+      signal tf_ctrl_v  : std_logic_vector(width(ctrl_v) - 1 downto 0);
+      
+      
       begin
 
+        ctrl_v.ENABLE <= '1';
+        ctrl_v.RESET <= rst;
+        tf_ctrl_v <= convert(ctrl_v,tf_ctrl_v);
+        
+        
         clock_and_control.clk <= clock;
           clock_and_control.rst  <= rst;
 
@@ -53,7 +62,7 @@ entity tb_ptcalc is
                               -- clock, control, and monitoring
                               clock_and_control         => clock_and_control,
                                       ttc_commands              => ttc_commands,
-                                      ctrl_v                             => ctrl_v,
+                                      ctrl_v                             => tf_ctrl_v,
                                       mon_v                           => mon_v,
                                       --  segments from neighbors
                                       i_plus_neighbor_segments  => i_plus_neighbor_segments,

@@ -79,7 +79,7 @@ module TopLevel_ult_pt #(
    //
    
    localparam THREADS_n  = 3;
-
+   
    localparam STATIONS_n = 3;
 
 
@@ -100,6 +100,7 @@ module TopLevel_ult_pt #(
 
 
    wire                      dummy_in[THREADS_n];
+   //wire                      dummy_in[THREADS_n-1];
 
    wire                      dummy_out[THREADS_n];
 
@@ -132,34 +133,48 @@ module TopLevel_ult_pt #(
 
    assign pl2pt[2]           = BLOCK_input_data[11];
 
-   
+
    for( genvar i=0; i < THREADS_n; i++)
      begin
-	assign dummy_in[i]   = 0;
-	assign sf2pt_EXT[i]  = 0;
+   	assign dummy_in[i]   = 0;
+   	assign sf2pt_EXT[i]  = 0;
      end
+
    
+   // for( genvar i=0; i < THREADS_n; i++)
+   //   begin
+   // 	assign sf2pt_EXT[i]  = 0;
+   //   end
+   
+   // for( genvar i=0; i < THREADS_n-1; i++)
+   //   begin
+   //       assign dummy_in[i]   = 0;
+   //   end
+
+   
+   	
+
    tb_ptcalc tb_ptcalc_inst
        (
-	      .clock(clock),
-	      .rst(~reset_n),
-	      .ttc_commands(),
-	      .ctrl_v(dummy_in),
-	      .mon_v(dummy_out),
-	//        --  segments from neighbors
-	      .i_plus_neighbor_segments(),
-	      .i_minus_neighbor_segments(),
-	//        -- segments from hps
-	      .i_inn_segments(sf2pt_INN),
-	      .i_mid_segments(sf2pt_MID),
-	      .i_out_segments(sf2pt_OUT),
-	      .i_ext_segments(sf2pt_EXT),
-	//   -- from pipeline
-	      .i_pl2pt_av(pl2pt),
-	//   -- to mtc
-	      .o_pt2mtc(pt2mtc),
-	      .o_sump()
-	);
+   	      .clock(clock),
+   	      .rst(~reset_n),
+   	      .ttc_commands(),
+   	//.ctrl_v(dummy_in),
+   	      .mon_v(dummy_out),
+   	//        --  segments from neighbors
+   	      .i_plus_neighbor_segments(),
+   	      .i_minus_neighbor_segments(),
+   	//        -- segments from hps
+   	      .i_inn_segments(sf2pt_INN),
+   	      .i_mid_segments(sf2pt_MID),
+   	      .i_out_segments(sf2pt_OUT),
+   	      .i_ext_segments(sf2pt_EXT),
+   	//   -- from pipeline
+   	      .i_pl2pt_av(pl2pt),
+   	//   -- to mtc
+   	      .o_pt2mtc(pt2mtc),
+   	      .o_sump()
+   	);
 
 
    assign BLOCK_output_data[0][PTCALC2MTC_LEN-1:0]                     = pt2mtc[0];
