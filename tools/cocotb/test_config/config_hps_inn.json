@@ -2,7 +2,7 @@
     "testbench_config": {
         "test_name": "hps",
         "input_args": {
-            "n_events": 2,
+            "n_events": 5,
             "event_detail": false,
             "clock_period": 3.125,
             "clock_time_unit": "ns",
@@ -21,7 +21,7 @@
                 {
                     "tv_format": "UCM2HPS",
                     "ports": 3,
-                    "ucm2hps_ii"   : 50,
+                    "ucm2hps_ii"   : 100,
 		    "ucm2hps_setup": 10,
 		    "station_ID": ["INN","INN","INN"],
 		    "tv_df_type":"SL",
