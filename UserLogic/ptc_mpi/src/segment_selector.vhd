@@ -60,8 +60,8 @@ entity segment_selector is
         i_seg_I          : in  sf2ptcalc_vt;
         i_seg_M          : in  sf2ptcalc_vt;
         i_seg_O          : in  sf2ptcalc_vt;
-        i_nsp_seg        : in  sf2ptcalc_avt;
-        i_nsm_seg        : in  sf2ptcalc_avt;
+        i_nsp_seg        : in  sf2ptcalc_vt;
+        i_nsm_seg        : in  sf2ptcalc_vt;
         o_seg_I          : out sf2ptcalc_vt;
         o_seg_M          : out sf2ptcalc_vt;
         o_seg_O          : out sf2ptcalc_vt

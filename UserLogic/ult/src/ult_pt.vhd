@@ -42,8 +42,8 @@ entity ptcalc is
     i_mid_segments            : in    sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
     i_out_segments            : in    sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
     i_ext_segments            : in    sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
-    i_minus_neighbor_segments : in    sf2ptcalc_avt;
-    i_plus_neighbor_segments  : in    sf2ptcalc_avt;
+    i_minus_neighbor_segments : in    sf2ptcalc_vt;
+    i_plus_neighbor_segments  : in    sf2ptcalc_vt;
     i_pl2pt_av                : in    pl2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
 
     o_pt2mtc : out   ptcalc2mtc_avt(c_NUM_THREADS - 1 downto 0);
@@ -74,8 +74,7 @@ begin
 
       mpt : entity ptc_lib.top_ptc_mpi
         generic map (
-          num_threads      => c_NUM_THREADS,
-          mdttp_neighbours => c_NUM_SF_INPUTS
+          num_threads      => c_NUM_THREADS
         )
         port map (
           clk          => clock_and_control.clk,
@@ -157,11 +156,6 @@ begin
           ext_segments_sump(I) <= xor_reduce(i_ext_segments(I));
 
         end loop;
-
-
-        minus_neighbor_segments_sump <= xor_reduce(i_minus_neighbor_segments);
-        plus_neighbor_segments_sump <= xor_reduce(i_plus_neighbor_segments);
-
 
         pl_loop : for I in 0 to c_NUM_THREADS - 1 loop
 

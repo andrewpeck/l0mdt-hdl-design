@@ -49,7 +49,7 @@ library ctrl_lib;
 
 entity top_ptc_mpi is
   generic (
-    num_threads      : integer := 3;
+    num_threads      : integer := 3
   );
   port (
     clk          : in    std_logic;
@@ -61,8 +61,8 @@ entity top_ptc_mpi is
     i_segments_i : in    sf2ptcalc_avt(num_threads - 1 downto 0);
     i_segments_m : in    sf2ptcalc_avt(num_threads - 1 downto 0);
     i_segments_o : in    sf2ptcalc_avt(num_threads - 1 downto 0);
-    i_nsp_segs   : in    sf2ptcalc_avt;
-    i_nsm_segs   : in    sf2ptcalc_avt;
+    i_nsp_segs   : in    sf2ptcalc_vt;
+    i_nsm_segs   : in    sf2ptcalc_vt;
     o_mtcs       : out   ptcalc2mtc_avt(num_threads - 1 downto 0)
   );
 end entity top_ptc_mpi;

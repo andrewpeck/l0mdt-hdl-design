@@ -39,8 +39,8 @@ entity ptc_sump is
     i_mid_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
     i_out_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
     i_ext_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
-    i_minus_neighbor_segments : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_plus_neighbor_segments  : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_minus_neighbor_segments : in  sf2ptcalc_vt;
+    i_plus_neighbor_segments  : in  sf2ptcalc_vt;
     i_pl2pt_av                : in  pl2ptcalc_avt(c_NUM_THREADS-1 downto 0);
 
     o_pt2mtc                  : out ptcalc2mtc_avt(c_NUM_THREADS -1 downto 0);
@@ -71,10 +71,10 @@ begin
       ext_segments(I) <= xor_reduce(i_ext_segments(I));
       pl2pt_av(I) <= xor_reduce(i_pl2pt_av(I));
     end generate;
-    SF_LOOP: for I in 0 to c_NUM_SF_INPUTS -1 generate
-      minus_neighbor_segments(I) <= xor_reduce(i_minus_neighbor_segments(I));
-      plus_neighbor_segments(I) <= xor_reduce(i_plus_neighbor_segments(I));
-    end generate;
+--    SF_LOOP: for I in 0 to c_NUM_SF_INPUTS -1 generate
+--      minus_neighbor_segments(I) <= xor_reduce(i_minus_neighbor_segments(I));
+--      plus_neighbor_segments(I) <= xor_reduce(i_plus_neighbor_segments(I));
+--    end generate;
     -- MDT_INN_SUMP: for I in 0 to 2 generate
     --   pl2pt_av(I) <= xor_reduce(i_pl2pt_av(I));
     -- end generate;
