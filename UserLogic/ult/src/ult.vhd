@@ -117,8 +117,8 @@ entity ult is
     i_minus_neighbor_slc : in    slc_rx_vt;
 
     -- Segments in from neighbor
-    i_plus_neighbor_segments  : in    sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_minus_neighbor_segments : in    sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments  : in    sf2ptcalc_vt;
+    i_minus_neighbor_segments : in    sf2ptcalc_vt;
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
     -- o_daq_streams : out felix_stream_avt (c_HPS_NUM_MDT_CH_INN
