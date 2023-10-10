@@ -158,6 +158,7 @@ ku15p_ull_empty:
       endcap: 0
       large: 0
       en_neighbors: 0
+      en_ila: 1
       hog_only_synth: 0
       hog_no_bitstream: 0
       en_fm: 0
@@ -192,6 +193,7 @@ vu13p_ull_empty:
       en_neighbors: 0
       hog_only_synth: 0
       hog_no_bitstream: 0
+      en_ila: 1
       en_fm: 0
       en_tar: 0
       en_h2s: 0

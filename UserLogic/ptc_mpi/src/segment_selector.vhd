@@ -55,16 +55,13 @@ use ptc_lib.pt_params_pkg.all;
 -- use pt_lib.pt_pkg.all;
 
 entity segment_selector is
-    generic(
-        MDTTP_NEIGHBOURS : integer := 0
-    );
     port (
         clk               : in std_logic;
         i_seg_I          : in  sf2ptcalc_vt;
         i_seg_M          : in  sf2ptcalc_vt;
         i_seg_O          : in  sf2ptcalc_vt;
-        i_nsp_seg        : in  sf2ptcalc_avt(MDTTP_NEIGHBOURS-1 downto 0);
-        i_nsm_seg        : in  sf2ptcalc_avt(MDTTP_NEIGHBOURS-1 downto 0);
+        i_nsp_seg        : in  sf2ptcalc_avt;
+        i_nsm_seg        : in  sf2ptcalc_avt;
         o_seg_I          : out sf2ptcalc_vt;
         o_seg_M          : out sf2ptcalc_vt;
         o_seg_O          : out sf2ptcalc_vt
@@ -101,8 +98,8 @@ begin
     seg_O <= convert(i_seg_O,seg_O);
       
     
-    --nsm_seg <= convert(i_nsm_seg(0),nsm_seg) when MDTTP_NEIGHBOURS = 1;
-    --nsp_seg <= convert(i_nsp_seg(0),nsp_seg) when MDTTP_NEIGHBOURS = 1;
+    nsm_seg <= convert(i_nsm_seg,nsm_seg) when c_ENABLE_NEIGHBORS = '1';
+    nsp_seg <= convert(i_nsp_seg,nsp_seg) when c_ENABLE_NEIGHBORS = '1';
     
     o_seg_I <= convert(outseg_I,o_seg_I);
     o_seg_M <= convert(outseg_M,o_seg_M);
