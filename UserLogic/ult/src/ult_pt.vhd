@@ -42,8 +42,8 @@ entity ptcalc is
     i_mid_segments            : in    sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
     i_out_segments            : in    sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
     i_ext_segments            : in    sf2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
-    i_minus_neighbor_segments : in    sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_plus_neighbor_segments  : in    sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_minus_neighbor_segments : in    sf2ptcalc_avt;
+    i_plus_neighbor_segments  : in    sf2ptcalc_avt;
     i_pl2pt_av                : in    pl2ptcalc_avt(c_NUM_THREADS - 1 downto 0);
 
     o_pt2mtc : out   ptcalc2mtc_avt(c_NUM_THREADS - 1 downto 0);
@@ -119,8 +119,8 @@ begin
     signal mid_segments_sump            : std_logic_vector(c_NUM_THREADS - 1 downto 0);
     signal out_segments_sump            : std_logic_vector(c_NUM_THREADS - 1 downto 0);
     signal ext_segments_sump            : std_logic_vector(c_NUM_THREADS - 1 downto 0);
-    signal minus_neighbor_segments_sump : std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);
-    signal plus_neighbor_segments_sump  : std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);
+    signal minus_neighbor_segments_sump : std_logic_vector(0 downto 0);
+    signal plus_neighbor_segments_sump  : std_logic_vector(0 downto 0);
     signal pl2pt_sump                   : std_logic_vector(c_NUM_THREADS - 1 downto 0);
     signal l0mdt_ttc_v                  : l0mdt_ttc_vt;
     signal l0mdt_control_v              : l0mdt_control_vt;
@@ -158,17 +158,8 @@ begin
 
         end loop;
 
-        minus_loop : for I in 0 to c_NUM_SF_INPUTS - 1 loop
-
-          minus_neighbor_segments_sump(I) <= xor_reduce(i_minus_neighbor_segments(I));
-
-        end loop;
-
-        plus_loop : for I in 0 to c_NUM_SF_INPUTS - 1 loop
-
-          plus_neighbor_segments_sump(I) <= xor_reduce(i_plus_neighbor_segments(I));
-
-        end loop;
+        minus_neighbor_segments_sump(I) <= xor_reduce(i_minus_neighbor_segments);
+        plus_neighbor_segments_sump(I) <= xor_reduce(i_plus_neighbor_segments);
 
         pl_loop : for I in 0 to c_NUM_THREADS - 1 loop
 
