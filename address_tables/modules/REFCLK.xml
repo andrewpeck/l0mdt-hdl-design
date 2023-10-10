@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="REFCLK" permission="rw">
-  <node id="FREQ"        address="0x0" permission="r" mask="0x1fffffff" description="Reference clock frequency in Hz"/>
+  <node id="FREQ"        address="0x0" permission="r" mask="0x1fffffff" description="Reference clock frequency in Hz" parameters="Table=REFCLK;Row=_2_3;Column=FREQ;Status=2;Show=nz;Format=m_1_1_1000000_1_0_1"/>
   <node id="REFCLK_TYPE" address="0x0" permission="r" mask="0xe0000000" description="Reference clock type (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_NIL)"/>
 </node>

@@ -40,8 +40,14 @@ package board_pkg is
   constant c_CLK_FREQ : integer := 200; --! Clk frequency of the onboard oscillator
 
   -- choose the nth felix RX link which should be used as the clock recovery source and connected to the LPGBT
-  constant c_FELIX_RECCLK_SRC : integer := 0; -- choose the nth felix RX link which should be used as the clock recovery source and connected to the LPGBT TODO: find this from the mgt map with a function
+  -- becuase of the parsing function, it has to be a MGT_TTC mgt_type
+  constant c_FELIX_RECCLK_SRC : integer := 8; -- choose the nth felix RX link which should be used as the clock recovery source and connected to the LPGBT TODO: find this from the mgt map with a function
 
+  -- override recovered clock to be connected to c_FELIX_RECCLK_SRC  if it is not a MGT_TTC mgt_type
+  -- this shoul be always false unless you know what you are doing
+  -- also this will only output a clock, of course no TTC will be used.
+  constant c_OVERRIDE_REC_CLK : boolean := true;
+  
   constant c_MGT_MAP : mgt_inst_array_t (c_NUM_MGTS-1 downto 0) := (
     --! Mapping of MGT to type, refclk and location
     --! mgt#    => (mgt_type         , refclk , gt_type, x , y)
@@ -50,10 +56,10 @@ package board_pkg is
     1      => (MGT_NIL         ,  0     , GTY    , 0 ,  1) , -- BANK 120 ; debug
     2      => (MGT_NIL         ,  0     , GTY    , 0 ,  2) , -- BANK 120 ; debug
     3      => (MGT_NIL         ,  0     , GTY    , 0 ,  3) , -- BANK 120 ; debug
-    4      => (MGT_SL          ,  1     , GTY    , 0 ,  4) , -- BANK 121
-    5      => (MGT_SL          ,  1     , GTY    , 0 ,  5) , -- BANK 121
-    6      => (MGT_SL          ,  1     , GTY    , 0 ,  6) , -- BANK 121
-    7      => (MGT_SL          ,  1     , GTY    , 0 ,  7) , -- BANK 121
+    4      => (MGT_NIL          ,  1     , GTY    , 0 ,  4) , -- BANK 121
+    5      => (MGT_NIL          ,  1     , GTY    , 0 ,  5) , -- BANK 121
+    6      => (MGT_NIL          ,  1     , GTY    , 0 ,  6) , -- BANK 121
+    7      => (MGT_NIL          ,  1     , GTY    , 0 ,  7) , -- BANK 121
     8      => (MGT_SL          ,  2     , GTY    , 0 ,  8) , -- BANK 122
     9      => (MGT_SL          ,  2     , GTY    , 0 ,  9) , -- BANK 122
     10     => (MGT_SL          ,  2     , GTY    , 0 , 10) , -- BANK 122
@@ -184,10 +190,10 @@ package board_pkg is
     121    => (MGT_FELIX       ,  30    , GTY    , 1 , 57) , -- BANK 234
     122    => (MGT_FELIX       ,  30    , GTY    , 1 , 58) , -- BANK 234
     123    => (MGT_FELIX       ,  30    , GTY    , 1 , 59) , -- BANK 234
-    124    => (MGT_FELIX       ,  31    , GTY    , 1 , 60) , -- BANK 235
-    125    => (MGT_FELIX       ,  31    , GTY    , 1 , 61) , -- BANK 235
-    126    => (MGT_FELIX       ,  31    , GTY    , 1 , 62) , -- BANK 235
-    127    => (MGT_FELIX       ,  31    , GTY    , 1 , 63) , -- BANK 235
+    124    => (MGT_NIL       ,  31    , GTY    , 1 , 60) , -- BANK 235
+    125    => (MGT_NIL       ,  31    , GTY    , 1 , 61) , -- BANK 235
+    126    => (MGT_NIL       ,  31    , GTY    , 1 , 62) , -- BANK 235
+    127    => (MGT_NIL       ,  31    , GTY    , 1 , 63) , -- BANK 235
     others => MGT_NIL_MAP
     );
 

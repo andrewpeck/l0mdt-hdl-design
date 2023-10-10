@@ -34,7 +34,7 @@ entity mgt_sl_wrapper is
 
     mgt_refclk_i_p : in std_logic;
     mgt_refclk_i_n : in std_logic;
-
+    refclk_mirror  : out std_logic;
     rxctrl_out : out sl_rx_ctrl_rt_array(3 downto 0);
     txctrl_in  : in  sl_tx_ctrl_rt_array(3 downto 0);
 
@@ -44,7 +44,7 @@ entity mgt_sl_wrapper is
     re_channel_i : in std_logic_vector(3 downto 0);
 
     -- Done 
-    rx_init_done_o : out std_logic;
+    rx_init_done_o : out std_logic_vector(3 downto 0);
 
     --=============--
     -- status      --
@@ -184,9 +184,10 @@ architecture Behavioral of mgt_sl_wrapper is
       );
   end component;
 
+
   signal xilinx_one  : std_logic_vector (0 downto 0) := (others => '1');
   signal xilinx_zero : std_logic_vector (0 downto 0) := (others => '0');
-
+  signal rx_init_done_int : std_logic_vector (3 downto 0);
 begin
 
   nil_gen : if (gt_type = GT_NIL) generate
@@ -197,7 +198,7 @@ begin
     assert false report "GENERATING GTH link not supported for Sector Logic" severity error;
   end generate gth_gen;
 
-  gty_gen : if (gt_type = GTY) generate
+  gty_gen_all : if (gt_type = GTY) generate
 
     signal txoutclk_int : std_logic;
 
@@ -211,6 +212,7 @@ begin
   begin
 
     txoutclk <= (others => txoutclk_int);
+
 
     MGT_GEN : gty_fixed_latency_example_top
       port map (
@@ -361,9 +363,14 @@ begin
         hb_gtwiz_reset_all_in         => reset_i,
         hb_gtwiz_reset_channel_in     => re_channel_i,
       
-        rx_init_done_out => rx_init_done_o
+        rx_init_done_out => rx_init_done_int(0)
         );
+        rx_init_done_int(1) <= rx_init_done_int(0);
+        rx_init_done_int(2) <= rx_init_done_int(0);
+        rx_init_done_int(3) <= rx_init_done_int(0);
+  end generate gty_gen_all;
+  
+  rx_init_done_o <= rx_init_done_int;
 
-  end generate;
 
 end Behavioral;
