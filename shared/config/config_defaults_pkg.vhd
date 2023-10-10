@@ -102,6 +102,7 @@ package cfg_global_default_pkg is
     ST_nBARREL_ENDCAP             => '0', -- 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           => '0', -- 0: small     1: large
     ENABLE_NEIGHBORS              => '1', -- 0: disabled  1: enabled
+    ENABLE_ILA                    => '0',
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
