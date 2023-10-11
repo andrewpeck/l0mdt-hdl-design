@@ -80,14 +80,21 @@ PORT (
 	probe20 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
 	probe21 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
 	probe22 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe23 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-	probe24 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-	probe25 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-	probe26 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-	probe27 : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
-	probe28 : IN STD_LOGIC_VECTOR(1 DOWNTO 0)
+	probe23 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe24 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+	probe25 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+	probe26 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+	probe27 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+	probe28 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+	probe29 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe30 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+	probe31 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+	probe32 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+	probe33 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe34 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+	probe35 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
 );
-END COMPONENT  ;
+END COMPONENT;
 
   -- master
   signal master_rx_frame, slave_rx_frame
@@ -391,14 +398,14 @@ begin
       gbt_frame_format_i   => lpgbt_version,
       frame_i              => master_rx_frame,
       valid_i              => not master_rx_empty, --tx_rd, --not master_rx_empty,
-      data_o               => mon.master.ic.rx_data,
-      chip_adr_o           => mon.master.ic.rx_chip_adr,
-      length_o             => mon.master.ic.rx_length,
-      reg_adr_o            => mon.master.ic.rx_reg_adr,
-      uplink_parity_ok_o   => mon.master.ic.rx_up_parity_ok,
-      downlink_parity_ok_o => mon.master.ic.rx_down_parity_ok,
+      data_o               => mon.master.ic.rx_data, --32
+      chip_adr_o           => mon.master.ic.rx_chip_adr,--16 
+      length_o             => mon.master.ic.rx_length,--16
+      reg_adr_o            => mon.master.ic.rx_reg_adr,--16
+      uplink_parity_ok_o   => mon.master.ic.rx_up_parity_ok,--1 
+      downlink_parity_ok_o => mon.master.ic.rx_down_parity_ok,--1
       err_o                => mon.master.ic.rx_err,
-      valid_o              => mon.master.ic.rx_valid
+      valid_o              => mon.master.ic.rx_valid--1
       );
 
   gbt_ic_rx_s : entity work.gbt_ic_rx
@@ -450,7 +457,14 @@ ilagen: if c_ENABLE_ILA = '1' generate
         probe25   => sca2_data_i_int,
         probe26   => ic_data_i_s,
         probe27   => sca3_data_o_int,
-        probe28   => sca3_data_i_int
+        probe28   => sca3_data_i_int,
+        probe29               => mon.master.ic.rx_data, --32
+        probe30           => mon.master.ic.rx_chip_adr,--16 
+      probe31             => mon.master.ic.rx_length,--16
+      probe32            => mon.master.ic.rx_reg_adr,--16
+      probe33   => mon.master.ic.rx_up_parity_ok,--1 
+      probe34 => mon.master.ic.rx_down_parity_ok,--1
+      probe35              => mon.master.ic.rx_valid--1 
     );
 end generate;      
 
