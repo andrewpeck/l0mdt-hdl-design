@@ -47,7 +47,7 @@
         "RX_INT_DATA_WIDTH": [ { "value": "32", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "RX_BUFFER_MODE": [ { "value": "0", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "RX_QPLL_FRACN_NUMERATOR": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "RX_EQ_MODE": [ { "value": "AUTO", "resolve_type": "user", "usage": "all" } ],
+        "RX_EQ_MODE": [ { "value": "LPM", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
         "RX_JTOL_FC": [ { "value": "6.1427714", "value_src": "user", "resolve_type": "user", "format": "float", "usage": "all" } ],
         "RX_JTOL_LF_SLOPE": [ { "value": "-20", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "RX_OUTCLK_SOURCE": [ { "value": "RXOUTCLKPMA", "resolve_type": "user", "usage": "all" } ],
