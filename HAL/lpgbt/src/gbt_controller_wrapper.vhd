@@ -87,7 +87,7 @@ PORT (
 	probe27 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
 	probe28 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
 	probe29 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
-	probe30 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+	probe30 : IN STD_LOGIC_VECTOR(6 DOWNTO 0); 
 	probe31 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
 	probe32 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
 	probe33 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
@@ -405,7 +405,7 @@ begin
       uplink_parity_ok_o   => mon.master.ic.rx_up_parity_ok,--1 
       downlink_parity_ok_o => mon.master.ic.rx_down_parity_ok,--1
       err_o                => mon.master.ic.rx_err,
-      valid_o              => mon.master.ic.rx_valid--1
+      valid_o              => mon.master.ic.rx_valid --1
       );
 
   gbt_ic_rx_s : entity work.gbt_ic_rx
@@ -462,9 +462,9 @@ ilagen: if c_ENABLE_ILA = '1' generate
         probe30           => mon.master.ic.rx_chip_adr,--16 
       probe31             => mon.master.ic.rx_length,--16
       probe32            => mon.master.ic.rx_reg_adr,--16
-      probe33   => mon.master.ic.rx_up_parity_ok,--1 
-      probe34 => mon.master.ic.rx_down_parity_ok,--1
-      probe35              => mon.master.ic.rx_valid--1 
+      probe33(0)   => mon.master.ic.rx_up_parity_ok,--1 
+      probe34(0) => mon.master.ic.rx_down_parity_ok,--1
+      probe35(0)              => mon.master.ic.rx_valid --1 
     );
 end generate;      
 
