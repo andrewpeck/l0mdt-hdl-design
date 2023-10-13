@@ -5,8 +5,8 @@ variables:
   HOG_SIMULATION_LIB_PATH: "/opt/QuestaLibs"
   HOG_PATH: "/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/:/opt/Xilinx/Vivado/2022.2/bin/:/opt/questa2022.2/questasim/bin/"
   HOG_APPTAINER_IMAGE: "/Data/images/l0mdt_Ubuntu20.04.viv2022.2.sif"
-  HOG_LOGGER: "ENABLED"
-  HOG_COLORED: "ENABLED"
+  HOG_LOGGER: ""
+  HOG_COLORED: ""
 
 include:
   - project: 'hog/Hog'
