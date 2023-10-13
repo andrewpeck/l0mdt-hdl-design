@@ -204,16 +204,16 @@ begin
       downlink_mgt_word_array_o(I) <= mgt_data;
     end generate;
     
---    lpgbt_ila_downlink : if (g_debug) generate
---        uplink_lpgbt_ila : ila_downlink 
---        port map(
---            clk => downlink_clk,
---            probe0      => mgt_data,
---            probe1      => downlink_data.data,
---            probe2      => downlink_data.ec,
---            probe3      => downlink_data.ic
---        );    
---    end generate;
+    lpgbt_ila_downlink : if (g_debug) generate
+        uplink_lpgbt_ila : ila_downlink 
+        port map(
+            clk => downlink_clk,
+            probe0      => mgt_data,
+            probe1      => downlink_data.data,
+            probe2      => downlink_data.ec,
+            probe3      => downlink_data.ic
+        );    
+    end generate;
 
   end generate;
 
