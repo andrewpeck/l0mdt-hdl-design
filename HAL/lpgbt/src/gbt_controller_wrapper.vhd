@@ -217,12 +217,10 @@ begin
     generic map (
       g_IC_FIFO_DEPTH => 8,
       g_ToLpGBT       => 1,             -- 1 = LPGBT, 0=GBTX
-      g_SCA_COUNT     => 0
+      g_SCA_COUNT     => 0,
+      g_LPGBT_VERS    => '0'
       )
     port map (
-
-      -- lpGBT Version
-      lpgbt_vers_i => ctrl_s.frame_format,
 
       -- tx to lpgbt etc
       tx_clk_i  => clk40,
@@ -297,12 +295,10 @@ begin
     generic map (
       g_IC_FIFO_DEPTH => 8,
       g_ToLpGBT       => 1,             -- 1 = LPGBT, 0=GBTX
-      g_SCA_COUNT     => g_SCAS_PER_LPGBT
+      g_SCA_COUNT     => g_SCAS_PER_LPGBT,
+      g_LPGBT_VERS    => '0'
       )
     port map (
-
-      -- lpGBT Version
-      lpgbt_vers_i => ctrl_s.frame_format,
 
       -- tx to lpgbt etc
       tx_clk_i  => clk40,
@@ -399,13 +395,14 @@ begin
       rx_transID_o(3)  => mon.master.sca_rx.rx(3).rx_transID
       );
 
-  lpgbt_version <= "01" when (ctrl_s.frame_format='0') else "10";
+  --lpgbt_version <= "01" when (ctrl_s.frame_format='0') else "10";
+
 
   gbt_ic_rx_m : entity work.gbt_ic_rx
     port map (
       clock_i              => clk40,
       reset_i              => reset_i,
-      gbt_frame_format_i   => lpgbt_version,
+      gbt_frame_format_i   => "01",
       frame_i              => master_rx_frame,
       valid_i              => not master_rx_empty, --tx_rd, --not master_rx_empty,
       data_o               => mon.master.ic.rx_data, --32
@@ -422,7 +419,7 @@ begin
     port map (
       clock_i              => clk40,
       reset_i              => reset_i,
-      gbt_frame_format_i   => lpgbt_version,
+      gbt_frame_format_i   => "01",
       frame_i              => slave_rx_frame,
       valid_i              => not slave_rx_empty,
       data_o               => mon.slave.ic.rx_data,
