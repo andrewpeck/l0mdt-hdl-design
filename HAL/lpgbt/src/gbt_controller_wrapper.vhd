@@ -472,7 +472,7 @@ ilagen: if c_ENABLE_ILA = '1' generate
         probe35(0) => mon.master.ic.rx_valid, --1
         probe36    => ctrl.master.ic.tx_data_to_gbtx,
         probe37    => ctrl.master.ic.tx_register_addr,
-        probe38    => ctrl.master.ic.tx_num_bytes_to_read
+        probe38    => ctrl.master.ic.tx_num_bytes_to_read,
         probe39(0) => ctrl.master.tx_reset,
         probe40(0) => ctrl.master.rx_reset
     );
