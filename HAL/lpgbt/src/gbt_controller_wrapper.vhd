@@ -460,11 +460,11 @@ ilagen: if c_ENABLE_ILA = '1' generate
         probe28   => sca3_data_i_int,
         probe29               => mon.master.ic.rx_data, --32
         probe30           => mon.master.ic.rx_chip_adr,--16 
-      probe31             => mon.master.ic.rx_length,--16
-      probe32            => mon.master.ic.rx_reg_adr,--16
-      probe33(0)   => mon.master.ic.rx_up_parity_ok,--1 
-      probe34(0) => mon.master.ic.rx_down_parity_ok,--1
-      probe35(0)              => mon.master.ic.rx_valid --1 
+        probe31             => mon.master.ic.rx_length,--16
+        probe32            => mon.master.ic.rx_reg_adr,--16
+        probe33(0)   => mon.master.ic.rx_up_parity_ok,--1 
+        probe34(0) => mon.master.ic.rx_down_parity_ok,--1
+        probe35(0)              => mon.master.ic.rx_valid --1 
     );
 end generate;      
 
