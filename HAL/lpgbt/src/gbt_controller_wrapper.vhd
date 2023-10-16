@@ -185,6 +185,9 @@ END COMPONENT;
   signal vio_tx_num_bytes_to_read : std_logic_vector(15 downto 0);
   signal vio_tx_wr : std_logic;
   signal vio_tx_data_to_gbtx : std_logic_vector(7 downto 0);
+  signal ctrl_reg : HAL_CSM_CSM_SC_CTRL_t;
+  signal ctrl_s : HAL_CSM_CSM_SC_CTRL_t;
+  
 
 begin
 
@@ -254,6 +257,9 @@ begin
       sca_connect_reg       <= ctrl.master.start_connect;
       sca_connect           <= ctrl.master.start_connect and (not sca_connect_reg);
 
+      ctrl_reg              <= ctrl;
+      ctrl_s                <= ctrl_reg;
+
     end if;
   end process;
 
@@ -270,7 +276,6 @@ begin
       g_ToLpGBT       => 1,             -- 1 = LPGBT, 0=GBTX
       g_SCA_COUNT     => 0,
       g_LPGBT_VERS    => '0'
-
       )
     port map (
 
@@ -295,22 +300,22 @@ begin
       ec_data_o => open,
 
       -- reset
-      rx_reset_i => reset_i or ctrl.slave.rx_reset,
-      tx_reset_i => reset_i or ctrl.slave.tx_reset,
+      rx_reset_i => reset_i or ctrl_s.slave.rx_reset,
+      tx_reset_i => reset_i or ctrl_s.slave.tx_reset,
 
       -- connect all of the following to AXI slave
 
       tx_start_write_i => tx_start_write_s, --ctrl.slave.ic.tx_start_write,
       tx_start_read_i  => tx_start_read_s, --ctrl.slave.ic.tx_start_read,
 
-      tx_gbtx_address_i  => ctrl.slave.ic.tx_gbtx_addr,
-      tx_register_addr_i => ctrl.slave.ic.tx_register_addr,
-      tx_nb_to_be_read_i => ctrl.slave.ic.tx_num_bytes_to_read,
+      tx_gbtx_address_i  => ctrl_s.slave.ic.tx_gbtx_addr,
+      tx_register_addr_i => ctrl_s.slave.ic.tx_register_addr,
+      tx_nb_to_be_read_i => ctrl_s.slave.ic.tx_num_bytes_to_read,
 
       -- ic tx
       wr_clk_i          => clk40,
       tx_wr_i           => tx_wr_s, --ctrl.slave.ic.tx_wr, 
-      tx_data_to_gbtx_i => ctrl.slave.ic.tx_data_to_gbtx,
+      tx_data_to_gbtx_i => ctrl_s.slave.ic.tx_data_to_gbtx,
       tx_ready_o        => mon.slave.ic.tx_ready,  --! IC core ready for a transaction
 
       -- ic rx
@@ -380,22 +385,22 @@ begin
       ec_data_i(3) => sca3_data_i_int,
 
       -- reset
-      rx_reset_i => reset_i or ctrl.master.rx_reset,
-      tx_reset_i => reset_i or ctrl.master.tx_reset,
+      rx_reset_i => reset_i or ctrl_s.master.rx_reset,
+      tx_reset_i => reset_i or ctrl_s.master.tx_reset,
 
       -- connect all of the following to AXI slave
 
       tx_start_write_i => tx_start_write_m, --ctrl.master.ic.tx_start_write,
       tx_start_read_i  => tx_start_read_m,  --ctrl.master.ic.tx_start_read,
 
-      tx_gbtx_address_i  => ctrl.master.ic.tx_gbtx_addr,
-      tx_register_addr_i => ctrl.master.ic.tx_register_addr,
-      tx_nb_to_be_read_i => ctrl.master.ic.tx_num_bytes_to_read,
+      tx_gbtx_address_i  => ctrl_s.master.ic.tx_gbtx_addr,
+      tx_register_addr_i => ctrl_s.master.ic.tx_register_addr,
+      tx_nb_to_be_read_i => ctrl_s.master.ic.tx_num_bytes_to_read,
 
       -- ic tx
       wr_clk_i          => clk40,
       tx_wr_i           => tx_wr_m, -- ctrl.master.ic.tx_wr,  --Panos use of one clock cycle signal
-      tx_data_to_gbtx_i => ctrl.master.ic.tx_data_to_gbtx,
+      tx_data_to_gbtx_i => ctrl_s.master.ic.tx_data_to_gbtx,
       tx_ready_o        => mon.master.ic.tx_ready,  --! IC core ready for a transaction
 
       -- ic rx
@@ -404,16 +409,16 @@ begin
       rx_data_from_gbtx_o => master_rx_frame,
       rx_empty_o          => master_rx_empty,
 
-      sca_enable_i        => ctrl.master.sca_enable,
-      start_reset_cmd_i   => sca_reset, --ctrl.master.start_reset,
-      start_connect_cmd_i => sca_connect, --ctrl.master.start_connect,
-      start_command_i     => sca_command, --ctrl.master.start_command,
-      inject_crc_error    => ctrl.master.inj_crc_err,
-      tx_address_i        => ctrl.master.tx_address,
-      tx_transID_i        => ctrl.master.tx_transID,
-      tx_channel_i        => ctrl.master.tx_channel,
-      tx_command_i        => ctrl.master.tx_cmd,
-      tx_data_i           => ctrl.master.tx_data,
+      sca_enable_i        => ctrl_s.master.sca_enable,
+      start_reset_cmd_i   => sca_reset, --ctrl_s.master.start_reset,
+      start_connect_cmd_i => sca_connect, --ctrl_s.master.start_connect,
+      start_command_i     => sca_command, --ctrl_s.master.start_command,
+      inject_crc_error    => ctrl_s.master.inj_crc_err,
+      tx_address_i        => ctrl_s.master.tx_address,
+      tx_transID_i        => ctrl_s.master.tx_transID,
+      tx_channel_i        => ctrl_s.master.tx_channel,
+      tx_command_i        => ctrl_s.master.tx_cmd,
+      tx_data_i           => ctrl_s.master.tx_data,
 
       -- SCA Command
       rx_address_o(0)  => mon.master.sca_rx.rx(0).rx_address,
@@ -450,7 +455,12 @@ begin
       rx_transID_o(3)  => mon.master.sca_rx.rx(3).rx_transID
       );
 
+<<<<<<< HEAD
   --lpgbt_version <= "01" when (ctrl.frame_format='0') else "10";
+=======
+  --lpgbt_version <= "01" when (ctrl_s.frame_format='0') else "10";
+
+>>>>>>> origin/fix_csm_ips
 
   gbt_ic_rx_m : entity work.gbt_ic_rx
     port map (

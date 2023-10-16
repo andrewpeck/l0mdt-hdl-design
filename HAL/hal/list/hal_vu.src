@@ -5,7 +5,9 @@ HAL/IP/vu13p/mgt_10g24_gty/mgt_10g24_gty.xci
 HAL/IP/vu13p/ila_downlink/ila_downlink.xci
 HAL/IP/vu13p/ila_lpgbt/ila_lpgbt.xci
 HAL/IP/vu13p/ila_0/ila_0.xci
+
 HAL/IP/vu13p/vio_gbt/vio_gbt.xci
+HAL/IP/vu13p/ila_gbt_ic_rx/ila_gbt_ic_rx.xci
 
 # MGT
 HAL/hal/src/mgt/mgt_sl_wrapper_vu.vhd

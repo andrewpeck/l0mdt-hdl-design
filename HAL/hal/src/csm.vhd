@@ -74,6 +74,8 @@ entity csm is
     tdc_hits_to_polmux_o    : out tdcpolmux2tar_avt (g_TDC_CNT-1 downto 0);
     read_done_from_polmux_i : in  std_logic_vector (g_TDC_CNT-1 downto 0);
 
+
+    -- AXI CTRL/MON signals
     ctrl : in  HAL_CSM_CSM_CTRL_t;
     mon  : out HAL_CSM_CSM_MON_t
     );
