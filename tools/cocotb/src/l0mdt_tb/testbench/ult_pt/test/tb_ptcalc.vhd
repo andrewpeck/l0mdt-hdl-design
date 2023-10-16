@@ -30,8 +30,8 @@ entity tb_ptcalc is
         i_mid_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
         i_out_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
         i_ext_segments            : in  sf2ptcalc_avt(c_NUM_THREADS-1 downto 0);
-        i_minus_neighbor_segments : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
-        i_plus_neighbor_segments  : in  sf2ptcalc_avt(c_NUM_SF_INPUTS - 1 downto 0);
+        i_minus_neighbor_segments : in  sf2ptcalc_vt;
+        i_plus_neighbor_segments  : in  sf2ptcalc_vt;
         i_pl2pt_av                : in  pl2ptcalc_avt(c_NUM_THREADS-1 downto 0);
 
         o_pt2mtc                  : out ptcalc2mtc_avt(c_NUM_THREADS -1 downto 0);
