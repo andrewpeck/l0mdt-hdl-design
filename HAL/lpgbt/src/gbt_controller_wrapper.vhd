@@ -55,46 +55,70 @@ end gbt_controller_wrapper;
 architecture structural of gbt_controller_wrapper is
 
 COMPONENT ila_0
+
 PORT (
-	clk : IN STD_LOGIC;
-	probe0 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe1 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe2 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe3 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe4 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe5 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
-	probe6 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe7 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe8 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe9 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe10 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe11 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe12 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe13 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
-	probe14 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe15 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe16 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe17 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
-	probe18 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe19 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe20 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe21 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe22 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe23 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe24 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe25 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe26 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe27 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe28 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
-	probe29 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
-	probe30 : IN STD_LOGIC_VECTOR(6 DOWNTO 0); 
-	probe31 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
-	probe32 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
-	probe33 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
-	probe34 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-	probe35 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
+  clk : IN STD_LOGIC;
+  probe0 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+  probe1 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe2 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+  probe3 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+  probe4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe5 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe6 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe7 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe8 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe9 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+  probe10 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+  probe11 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+  probe12 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+  probe13 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+  probe14 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+  probe15 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
 );
-END COMPONENT;
+END COMPONENT ;
+
+
+--COMPONENT ila_0
+--PORT (
+--	clk : IN STD_LOGIC;
+--	probe0 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe1 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe2 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe3 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe4 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe5 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+--	probe6 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe7 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe8 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe9 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe10 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe11 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe12 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe13 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+--	probe14 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe15 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe16 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe17 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+--	probe18 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe19 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe20 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe21 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe22 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe23 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe24 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe25 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe26 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe27 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe28 : IN STD_LOGIC_VECTOR(1 DOWNTO 0); 
+--	probe29 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+--	probe30 : IN STD_LOGIC_VECTOR(6 DOWNTO 0); 
+--	probe31 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+--	probe32 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+--	probe33 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe34 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+--	probe35 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
+--);
+--END COMPONENT;
 
 COMPONENT vio_gbt
   PORT (
@@ -463,46 +487,68 @@ begin
       );
       
 ilagen: if c_ENABLE_ILA = '1' generate
+    --ila_scm_ctrl_c2c : ila_0
+    --PORT MAP (
+    --    clk    => clk40,
+    --    probe0 => sca0_data_o_int,
+    --    probe1 => sca1_data_o_int, 
+    --    probe2 => sca2_data_o_int, 
+    --    probe3 => sca0_data_i_int, 
+    --    probe4 => ic_data_o_int, -- 2 
+    --    probe5 => ctrl.master.sca_enable, 
+    --    probe6(0) => sca_reset, --ctrl.master.start_reset,
+    --    probe7(0) => sca_connect, --ctrl.master.start_connect,
+    --    probe8(0) => sca_command, --ctrl.master.start_command,
+    --    probe9(0) => reset_i, -- 1
+    --    probe10   => ic_data_i_int, -- 2
+    --    probe11(0)=> slave_rx_empty, 
+    --    probe12(0)=> tx_start_read_s, 
+    --    probe13   => master_rx_frame, -- 8
+    --    probe14(0)=> mon.master.ic.rx_err, -- 1
+    --    probe15(0)=> mon.slave.ic.rx_err,
+    --    probe16(0)=> master_rx_empty, -- 1
+    --    probe17   => slave_rx_frame,
+    --    probe18   => ec_data_i_int,
+    --    probe19   => ec_data_o_int,
+    --    probe20(0)=> vio_tx_start_write, -- 1
+    --    probe21(0)=> tx_start_write_s,
+    --    probe22(0)=> vio_tx_wr, -- 1
+    --    probe23(0)=> vio_tx_start_read, -- 1
+    --    probe24   => sca1_data_i_int,
+    --    probe25   => sca2_data_i_int,
+    --    probe26   => ic_data_i_s,
+    --    probe27   => sca3_data_o_int,
+    --    probe28   => sca3_data_i_int,
+    --    probe29               => mon.master.ic.rx_data, --32
+    --    probe30           => mon.master.ic.rx_chip_adr,--16 
+    --  probe31             => mon.master.ic.rx_length,--16
+    --  probe32            => mon.master.ic.rx_reg_adr,--16
+    --  probe33(0)   => mon.master.ic.rx_up_parity_ok,--1 
+    --  probe34(0) => mon.master.ic.rx_down_parity_ok,--1
+    --  probe35(0)              => mon.master.ic.rx_valid --1 
+    --);
+    --
     ila_scm_ctrl_c2c : ila_0
     PORT MAP (
-        clk    => clk40,
-        probe0 => sca0_data_o_int, 
-        probe1 => sca1_data_o_int, 
-        probe2 => sca2_data_o_int, 
-        probe3 => sca0_data_i_int, 
-        probe4 => ic_data_o_int, 
-        probe5 => ctrl.master.sca_enable, 
-        probe6(0) => sca_reset, --ctrl.master.start_reset,
-        probe7(0) => sca_connect, --ctrl.master.start_connect,
-        probe8(0) => sca_command, --ctrl.master.start_command,
-        probe9(0) => reset_i,
-        probe10   => ic_data_i_int,
-        probe11(0)=> slave_rx_empty,
-        probe12(0)=> tx_start_read_s,
-        probe13   => master_rx_frame,
-        probe14(0)=> mon.master.ic.rx_err,
-        probe15(0)=> mon.slave.ic.rx_err,
-        probe16(0)=> master_rx_empty,
-        probe17   => slave_rx_frame,
-        probe18   => ec_data_i_int,
-        probe19   => ec_data_o_int,
-        probe20(0)=> vio_tx_start_write,
-        probe21(0)=> tx_start_write_s,
-        probe22(0)=> vio_tx_wr,
-        probe23(0)=> vio_tx_start_read,
-        probe24   => sca1_data_i_int,
-        probe25   => sca2_data_i_int,
-        probe26   => ic_data_i_s,
-        probe27   => sca3_data_o_int,
-        probe28   => sca3_data_i_int,
-        probe29               => mon.master.ic.rx_data, --32
-        probe30           => mon.master.ic.rx_chip_adr,--16 
-      probe31             => mon.master.ic.rx_length,--16
-      probe32            => mon.master.ic.rx_reg_adr,--16
-      probe33(0)   => mon.master.ic.rx_up_parity_ok,--1 
-      probe34(0) => mon.master.ic.rx_down_parity_ok,--1
-      probe35(0)              => mon.master.ic.rx_valid --1 
-    );
+    clk => clk,
+    probe0 => ic_data_o_int, 
+    probe1(0) => reset_i, 
+    probe2 => ic_data_i_int, 
+    probe3 => master_rx_frame, 
+    probe4(0) => mon.master.ic.rx_err, 
+    probe5(0) => master_rx_empty, 
+    probe6 => open, 
+    probe7 => open, 
+    probe8 => open, 
+    probe9 => mon.master.ic.rx_data, 
+    probe10 => mon.master.ic.rx_chip_adr, 
+    probe11 => mon.master.ic.rx_length, 
+    probe12 => mon.master.ic.rx_reg_adr, 
+    probe13 => mon.master.ic.rx_up_parity_ok, 
+    probe14 => mon.master.ic.rx_down_parity_ok,
+    probe15 => mon.master.ic.rx_valid 
+  );
+
 end generate;      
 
 end structural;

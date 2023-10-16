@@ -209,7 +209,7 @@ begin
       downlink_mgt_word_array_o(I) <= mgt_data;
     end generate;
     
-    lpgbt_ila_downlink : if (c_ENABLE_ILA = '1') generate
+    lpgbt_ila_downlink : if (false) generate
         uplink_lpgbt_ila : ila_downlink 
         port map(
             clk => downlink_clk,
@@ -283,7 +283,7 @@ begin
         rdy_o                      => uplink_ready(I)
         );
         
-    lpgbt_ila_cores : if (c_ENABLE_ILA = '1') generate
+    lpgbt_ila_cores : if (false) generate
         uplink_lpgbt_ila : ila_lpgbt 
         port map(
             clk => uplink_clk,
