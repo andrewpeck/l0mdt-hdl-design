@@ -68,7 +68,7 @@ PORT (
   probe7 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
   probe8 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
   probe9 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
-  probe10 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+  probe10 : IN STD_LOGIC_VECTOR(6 DOWNTO 0); 
   probe11 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
   probe12 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
   probe13 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
@@ -188,19 +188,19 @@ END COMPONENT;
 
 begin
 
-  VIO : vio_gbt
-  PORT MAP (
-    clk => clk40,
-    probe_out0(0) => vio_rx_reset,
-    probe_out1(0) => vio_tx_reset,
-    probe_out2(0) => vio_tx_start_write,
-    probe_out3(0) => vio_tx_start_read,
-    probe_out4 => vio_tx_gbtx_address,
-    probe_out5 => vio_tx_register_addr,
-    probe_out6 => vio_tx_num_bytes_to_read,
-    probe_out7(0) => vio_tx_wr,
-    probe_out8 => vio_tx_data_to_gbtx
-  );
+--  VIO : vio_gbt
+--  PORT MAP (
+--    clk => clk40,
+--    probe_out0(0) => vio_rx_reset,
+--    probe_out1(0) => vio_tx_reset,
+--    probe_out2(0) => vio_tx_start_write,
+--    probe_out3(0) => vio_tx_start_read,
+--    probe_out4 => vio_tx_gbtx_address,
+--    probe_out5 => vio_tx_register_addr,
+--    probe_out6 => vio_tx_num_bytes_to_read,
+--    probe_out7(0) => vio_tx_wr,
+--    probe_out8 => vio_tx_data_to_gbtx
+--  );
 
   mon.master.ic.rx_data_from_gbtx   <= master_rx_frame;
   mon.slave.ic.rx_data_from_gbtx    <= slave_rx_frame;
@@ -380,22 +380,22 @@ begin
       ec_data_i(3) => sca3_data_i_int,
 
       -- reset
-      rx_reset_i => reset_i or vio_rx_reset, -- ctrl.master.rx_reset,
-      tx_reset_i => reset_i or vio_tx_reset, -- ctrl.master.tx_reset,
+      rx_reset_i => reset_i or ctrl.master.rx_reset,
+      tx_reset_i => reset_i or ctrl.master.tx_reset,
 
       -- connect all of the following to AXI slave
 
-      tx_start_write_i => vio_tx_start_write, --tx_start_write_m, --ctrl.master.ic.tx_start_write,
-      tx_start_read_i  => vio_tx_start_read, -- tx_start_read_m,  --ctrl.master.ic.tx_start_read,
+      tx_start_write_i => tx_start_write_m, --ctrl.master.ic.tx_start_write,
+      tx_start_read_i  => tx_start_read_m,  --ctrl.master.ic.tx_start_read,
 
-      tx_gbtx_address_i  => vio_tx_gbtx_address, -- ctrl.master.ic.tx_gbtx_addr,
-      tx_register_addr_i => vio_tx_register_addr, -- ctrl.master.ic.tx_register_addr,
-      tx_nb_to_be_read_i => vio_tx_num_bytes_to_read, -- ctrl.master.ic.tx_num_bytes_to_read,
+      tx_gbtx_address_i  => ctrl.master.ic.tx_gbtx_addr,
+      tx_register_addr_i => ctrl.master.ic.tx_register_addr,
+      tx_nb_to_be_read_i => ctrl.master.ic.tx_num_bytes_to_read,
 
       -- ic tx
       wr_clk_i          => clk40,
-      tx_wr_i           => vio_tx_wr, -- tx_wr_m, -- ctrl.master.ic.tx_wr,  --Panos use of one clock cycle signal
-      tx_data_to_gbtx_i => vio_tx_data_to_gbtx, --  ctrl.master.ic.tx_data_to_gbtx,
+      tx_wr_i           => tx_wr_m, -- ctrl.master.ic.tx_wr,  --Panos use of one clock cycle signal
+      tx_data_to_gbtx_i => ctrl.master.ic.tx_data_to_gbtx,
       tx_ready_o        => mon.master.ic.tx_ready,  --! IC core ready for a transaction
 
       -- ic rx
@@ -520,7 +520,7 @@ ilagen: if c_ENABLE_ILA = '1' generate
     --    probe27   => sca3_data_o_int,
     --    probe28   => sca3_data_i_int,
     --    probe29               => mon.master.ic.rx_data, --32
-    --    probe30           => mon.master.ic.rx_chip_adr,--16 
+    --    probe30           => mon.master.ic.rx_chip_adr,--7 
     --  probe31             => mon.master.ic.rx_length,--16
     --  probe32            => mon.master.ic.rx_reg_adr,--16
     --  probe33(0)   => mon.master.ic.rx_up_parity_ok,--1 
@@ -530,23 +530,23 @@ ilagen: if c_ENABLE_ILA = '1' generate
     --
     ila_scm_ctrl_c2c : ila_0
     PORT MAP (
-    clk => clk,
+    clk => clk40,
     probe0 => ic_data_o_int, 
     probe1(0) => reset_i, 
     probe2 => ic_data_i_int, 
     probe3 => master_rx_frame, 
     probe4(0) => mon.master.ic.rx_err, 
     probe5(0) => master_rx_empty, 
-    probe6 => open, 
-    probe7 => open, 
-    probe8 => open, 
+    probe6(0) => tx_wr_m, 
+    probe7(0) => tx_start_write_m, 
+    probe8(0) => tx_start_read_m, 
     probe9 => mon.master.ic.rx_data, 
     probe10 => mon.master.ic.rx_chip_adr, 
     probe11 => mon.master.ic.rx_length, 
     probe12 => mon.master.ic.rx_reg_adr, 
-    probe13 => mon.master.ic.rx_up_parity_ok, 
-    probe14 => mon.master.ic.rx_down_parity_ok,
-    probe15 => mon.master.ic.rx_valid 
+    probe13(0) => mon.master.ic.rx_up_parity_ok, 
+    probe14(0) => mon.master.ic.rx_down_parity_ok,
+    probe15(0) => mon.master.ic.rx_valid 
   );
 
 end generate;      
