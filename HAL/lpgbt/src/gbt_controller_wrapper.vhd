@@ -96,6 +96,21 @@ PORT (
 );
 END COMPONENT;
 
+COMPONENT vio_gbt
+  PORT (
+    clk : IN STD_LOGIC;
+    probe_out0 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    probe_out1 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    probe_out2 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    probe_out3 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    probe_out4 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    probe_out5 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+    probe_out6 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+    probe_out7 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    probe_out8 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0) 
+  );
+END COMPONENT;
+
   -- master
   signal master_rx_frame, slave_rx_frame
     : std_logic_vector (7 downto 0) := (others => '0');
@@ -136,10 +151,32 @@ END COMPONENT;
   signal sca_command_reg : std_logic;
   signal sca_connect : std_logic;
   signal sca_connect_reg : std_logic;
-  
-  
+
+  signal vio_rx_reset : std_logic;
+  signal vio_tx_reset : std_logic;
+  signal vio_tx_start_write : std_logic;
+  signal vio_tx_start_read : std_logic;
+  signal vio_tx_gbtx_address : std_logic_vector(7 downto 0);
+  signal vio_tx_register_addr : std_logic_vector(15 downto 0);
+  signal vio_tx_num_bytes_to_read : std_logic_vector(15 downto 0);
+  signal vio_tx_wr : std_logic;
+  signal vio_tx_data_to_gbtx : std_logic_vector(7 downto 0);
 
 begin
+
+  VIO : vio_gbt
+  PORT MAP (
+    clk => clk40,
+    probe_out0(0) => vio_rx_reset,
+    probe_out1(0) => vio_tx_reset,
+    probe_out2(0) => vio_tx_start_write,
+    probe_out3(0) => vio_tx_start_read,
+    probe_out4 => vio_tx_gbtx_address,
+    probe_out5 => vio_tx_register_addr,
+    probe_out6 => vio_tx_num_bytes_to_read,
+    probe_out7(0) => vio_tx_wr,
+    probe_out8 => vio_tx_data_to_gbtx
+  );
 
   mon.master.ic.rx_data_from_gbtx   <= master_rx_frame;
   mon.slave.ic.rx_data_from_gbtx    <= slave_rx_frame;
@@ -319,22 +356,22 @@ begin
       ec_data_i(3) => sca3_data_i_int,
 
       -- reset
-      rx_reset_i => reset_i or ctrl.master.rx_reset,
-      tx_reset_i => reset_i or ctrl.master.tx_reset,
+      rx_reset_i => reset_i or vio_rx_reset, -- ctrl.master.rx_reset,
+      tx_reset_i => reset_i or vio_tx_reset, -- ctrl.master.tx_reset,
 
       -- connect all of the following to AXI slave
 
-      tx_start_write_i => tx_start_write_m, --ctrl.master.ic.tx_start_write,
-      tx_start_read_i  => tx_start_read_m,  --ctrl.master.ic.tx_start_read,
+      tx_start_write_i => vio_tx_start_write, --tx_start_write_m, --ctrl.master.ic.tx_start_write,
+      tx_start_read_i  => vio_tx_start_read, -- tx_start_read_m,  --ctrl.master.ic.tx_start_read,
 
-      tx_gbtx_address_i  => ctrl.master.ic.tx_gbtx_addr,
-      tx_register_addr_i => ctrl.master.ic.tx_register_addr,
-      tx_nb_to_be_read_i => ctrl.master.ic.tx_num_bytes_to_read,
+      tx_gbtx_address_i  => vio_tx_gbtx_address, -- ctrl.master.ic.tx_gbtx_addr,
+      tx_register_addr_i => vio_tx_register_addr, -- ctrl.master.ic.tx_register_addr,
+      tx_nb_to_be_read_i => vio_tx_num_bytes_to_read, -- ctrl.master.ic.tx_num_bytes_to_read,
 
       -- ic tx
       wr_clk_i          => clk40,
-      tx_wr_i           => tx_wr_m, -- ctrl.master.ic.tx_wr,  --Panos use of one clock cycle signal
-      tx_data_to_gbtx_i => ctrl.master.ic.tx_data_to_gbtx,
+      tx_wr_i           => vio_tx_wr, -- tx_wr_m, -- ctrl.master.ic.tx_wr,  --Panos use of one clock cycle signal
+      tx_data_to_gbtx_i => vio_tx_data_to_gbtx, --  ctrl.master.ic.tx_data_to_gbtx,
       tx_ready_o        => mon.master.ic.tx_ready,  --! IC core ready for a transaction
 
       -- ic rx
