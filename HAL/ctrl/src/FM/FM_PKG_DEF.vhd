@@ -503,7 +503,10 @@ package FM_CTRL_DEF is
                                              PLAYBACK_MASK_0 => x"ffffffff",
                                              PLAYBACK_MASK_1 => x"ffffffff",
                                              SB_RESET_0 => x"00000000",
-                                             SB_RESET_1 => x"00000000"
+                                             SB_RESET_1 => x"00000000",
+                                             SB_TEST_A => x"00000000",
+                                             SB_TEST_B => x"00000000",
+                                             SB_TEST_C => x"00000000"
                                             );
 
 end package FM_CTRL_DEF;

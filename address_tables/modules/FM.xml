@@ -10,6 +10,9 @@
   <node id="PLAYBACK_MASK_1" address="0x6004" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
   <node id="SB_RESET_0" address="0x6005" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/> 
   <node id="SB_RESET_1" address="0x6006" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="SB_TEST_A" address="0x6006" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="SB_TEST_B" address="0x6007" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="SB_TEST_C" address="0x6008" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
   
   <node id="SB0" address="0x0" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>

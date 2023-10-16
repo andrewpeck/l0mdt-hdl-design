@@ -950,5 +950,8 @@ types:
   - PLAYBACK_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }
   - SB_RESET_0 : { type: logic, range : [ 32 - 1 , 0 ] }
   - SB_RESET_1 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - SB_TEST_A : { type: logic, range : [ 32 - 1 , 0 ] }
+  - SB_TEST_B : { type: logic, range : [ 32 - 1 , 0 ] }
+  - SB_TEST_C : { type: logic, range : [ 32 - 1 , 0 ] }
 
 
