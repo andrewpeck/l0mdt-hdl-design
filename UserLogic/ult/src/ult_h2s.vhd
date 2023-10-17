@@ -99,6 +99,7 @@ architecture beh of hits_to_segments is
   signal fm_hps_sf_mon_inn_v : std_logic_vector(fm_hps_sf_mon'w-1 downto 0);
   signal fm_hps_sf_mon_mid_v : std_logic_vector(fm_hps_sf_mon'w-1 downto 0);
   signal fm_hps_sf_mon_out_v : std_logic_vector(fm_hps_sf_mon'w-1 downto 0);     
+  signal fm_hps_sf_mon_ext_v : std_logic_vector(fm_hps_sf_mon'w-1 downto 0);
   
   attribute MAX_FANOUT              : string;
   attribute MAX_FANOUT of inn_reset : signal is "256";
@@ -112,6 +113,7 @@ begin
   fm_hps_mon_r.fm_hps_mon_inn   <= convert(fm_hps_sf_mon_inn_v, fm_hps_mon_r.fm_hps_mon_inn );
   fm_hps_mon_r.fm_hps_mon_mid  <= convert(fm_hps_sf_mon_mid_v, fm_hps_mon_r.fm_hps_mon_mid);
   fm_hps_mon_r.fm_hps_mon_out  <= convert( fm_hps_sf_mon_out_v,   fm_hps_mon_r.fm_hps_mon_out );
+  
   fm_hps_mon_v <= convert(fm_hps_mon_r, fm_hps_mon_v);
 
   process (clock_and_control.clk) is
@@ -248,7 +250,7 @@ begin
 
         ctrl_v      => ext_ctrl_v,
         mon_v       => ext_mon_v,
-        fm_hps_mon_v => open, -- Need to inser SB for EXT 
+        fm_hps_mon_v => fm_hps_sf_mon_ext_v, -- placeholder - Need to insert SB for EXT 
 
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
