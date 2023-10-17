@@ -186,7 +186,7 @@ END COMPONENT;
   signal vio_tx_wr : std_logic;
   signal vio_tx_data_to_gbtx : std_logic_vector(7 downto 0);
   signal ctrl_reg : HAL_CSM_CSM_SC_CTRL_t;
-  signal ctrl : HAL_CSM_CSM_SC_CTRL_t;
+  signal ctrl_s : HAL_CSM_CSM_SC_CTRL_t;
   
 
 begin
@@ -257,8 +257,8 @@ begin
       sca_connect_reg       <= ctrl.master.start_connect;
       sca_connect           <= ctrl.master.start_connect and (not sca_connect_reg);
 
-      ctrl_reg              <= ctrl;
-      ctrl                <= ctrl_reg;
+--      ctrl_reg              <= ctrl;
+--      ctrl                <= ctrl_reg;
 
     end if;
   end process;
