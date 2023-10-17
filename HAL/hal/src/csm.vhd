@@ -10,6 +10,7 @@ use ctrl_lib.axiRegPkg.all;
 library shared_lib;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
 library hal;
 use hal.all;
