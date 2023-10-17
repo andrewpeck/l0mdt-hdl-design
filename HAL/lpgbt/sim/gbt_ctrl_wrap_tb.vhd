@@ -12,6 +12,8 @@ use ctrl_lib.HAL_CTRL.all;
 library shared_lib;
 use shared_lib.config_pkg.all;
 
+library hal;
+
 entity gbt_ctrl_wrap_tb is
 
 end gbt_ctrl_wrap_tb;
@@ -50,10 +52,10 @@ begin
 	clock <= not clock after 1.25 ns;
 
 
-	gbt_controller_wrapper_inst : entity work.gbt_controller_wrapper 
+	gbt_controller_wrapper_inst : entity hal.gbt_controller_wrapper 
 	generic map (
-    	g_CLK_FREQ       : integer := 40;
-    	g_SCAS_PER_LPGBT : integer := 4
+    	g_CLK_FREQ        => 40,
+    	g_SCAS_PER_LPGBT  => 4
     )
   	port map(
     -- reset
@@ -96,7 +98,7 @@ begin
 		wait for clk_period;
 		ctrl.master.ic.tx_num_bytes_to_read <= x"0001";
 		wait for clk_period;
-		ctrl.master.ic.tx_data_to_gbtx <= x"0010";
+		ctrl.master.ic.tx_data_to_gbtx <= x"10";
 		wait for clk_period;
 		ctrl.master.ic.tx_wr <= '1';
 		wait for clk_period;
