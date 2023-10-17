@@ -458,10 +458,6 @@ begin
 
   --lpgbt_version <= "01" when (ctrl.frame_format='0') else "10";
 
-  --lpgbt_version <= "01" when (ctrl_s.frame_format='0') else "10";
-
-
-
   gbt_ic_rx_m : entity work.gbt_ic_rx
     port map (
       clock_i              => clk40,
