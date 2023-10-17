@@ -141,10 +141,10 @@ begin
 --  sca2_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA2_UP);  
 
 
-  sca0_up_8bit <= uplink_data(0).data(143 downto 136) when (ctrl.sc.frame_format='1') else uplink_data(0).data(143 downto 136);
-  sca1_up_8bit <= uplink_data(0).data(95 downto 88)   when (ctrl.sc.frame_format='1') else uplink_data(0).data(103 downto 96);
-  sca2_up_8bit <= uplink_data(0).data(111 downto 104) when (ctrl.sc.frame_format='1') else uplink_data(0).data(119 downto 112);
-  sca3_up_8bit <= uplink_data(0).data(127 downto 120) when (ctrl.sc.frame_format='1') else uplink_data(0).data(135 downto 128);
+  sca0_up_8bit <= uplink_data(0).data(143 downto 136) when c_LPGBT_VER = '1' else uplink_data(0).data(143 downto 136);
+  sca1_up_8bit <= uplink_data(0).data(95 downto 88)   when c_LPGBT_VER = '1' else uplink_data(0).data(103 downto 96);
+  sca2_up_8bit <= uplink_data(0).data(111 downto 104) when c_LPGBT_VER = '1' else uplink_data(0).data(119 downto 112);
+  sca3_up_8bit <= uplink_data(0).data(127 downto 120) when c_LPGBT_VER = '1' else uplink_data(0).data(135 downto 128);
 
 --  downlink_data(0).data(27 downto 26) <= sca0_down when (ctrl.sc.frame_format='1') else ;      --trying debugging with fixed bit assignment 
 --  downlink_data(0).data(11 downto 10) <= sca1_down when (ctrl.sc.frame_format='1') else ;

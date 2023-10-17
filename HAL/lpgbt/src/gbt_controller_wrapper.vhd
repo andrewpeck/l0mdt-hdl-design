@@ -456,13 +456,13 @@ begin
       );
 
 
-  --lpgbt_version <= "01" when (ctrl.frame_format='0') else "10";
+  lpgbt_version <= "01" when c_LPGBT_VER = '0' else "10";
 
   gbt_ic_rx_m : entity work.gbt_ic_rx
     port map (
       clock_i              => clk40,
       reset_i              => reset_i,
-      gbt_frame_format_i   => "01",
+      gbt_frame_format_i   => lpgbt_version,
       frame_i              => master_rx_frame,
       valid_i              => not master_rx_empty, --tx_rd, --not master_rx_empty,
       data_o               => mon.master.ic.rx_data, --32
@@ -479,7 +479,7 @@ begin
     port map (
       clock_i              => clk40,
       reset_i              => reset_i,
-      gbt_frame_format_i   => "01",
+      gbt_frame_format_i   => lpgbt_version,
       frame_i              => slave_rx_frame,
       valid_i              => not slave_rx_empty,
       data_o               => mon.slave.ic.rx_data,
