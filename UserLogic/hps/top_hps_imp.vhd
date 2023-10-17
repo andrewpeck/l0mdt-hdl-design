@@ -58,6 +58,9 @@ use work.hps_imp_pkg.all;
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
 
+library fm_lib;
+use fm_lib.fm_types.all;
+
 entity top_hps is
   generic(
     -- g_HPS_MAX_HP : integer := 6;
@@ -99,8 +102,9 @@ begin
       signal mon_v          : std_logic_vector(c_MON_LEN -1 downto 0);
     
       signal uCM2hps_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-      signal mdt_tar_av        : tar2hps_avt(c_HP_NUM_SECTOR_STATION(st_i) -1 downto 0);
-      signal sf2pt_av          : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+      signal mdt_tar_av          : tar2hps_avt(c_HP_NUM_SECTOR_STATION(st_i) -1 downto 0);
+      signal sf2pt_av               : sf2ptcalc_avt(c_NUM_THREADS -1 downto 0);
+      signal fm_hps_sf_mon_inn_v : std_logic_vector(fm_hps_sf_mon'w-1 downto 0);
     begin
       ctrl : entity shared_lib.vhdl_utils_deserializer 
         generic map (g_DATA_WIDTH => c_CTRL_LEN) 
@@ -134,6 +138,7 @@ begin
           -- configuration & control
           ctrl_v              => ctrl_v,
           mon_v               => mon_v,
+          fm_hps_mon_v =>  fm_hps_sf_mon_inn_v,
           -- SLc
           i_uCM2hps_av        => uCM2hps_av,
           -- MDT hit
