@@ -49,8 +49,13 @@ architecture gbt_ctrl_wrap_tb_arc of gbt_ctrl_wrap_tb is
 
 begin
 
-	clock <= not clock after 1.25 ns;
-
+    CLK_process : PROCESS
+    BEGIN
+        clock <= '0';
+    WAIT FOR CLK_period/2;
+        clock <= '1';
+    WAIT FOR CLK_period/2;
+    END PROCESS;
 
 	gbt_controller_wrapper_inst : entity hal.gbt_controller_wrapper 
 	generic map (
@@ -91,6 +96,18 @@ begin
 
   	Pulse : PROCESS
   	BEGIN
+  	    ctrl.master.ic.tx_start_write <= '0';
+		ctrl.master.ic.tx_wr <= '0';
+		ctrl.master.ic.tx_data_to_gbtx <= x"00";
+		ctrl.master.ic.tx_gbtx_addr <= x"00";
+		ctrl.master.ic.tx_register_addr <= x"0000";
+		ctrl.master.ic.tx_num_bytes_to_read <= x"0000";
+		ctrl.master.rx_reset <= '1';
+		ctrl.master.tx_reset <= '1';
+        reset <= '0';
+        wait for clk_period;
+        ctrl.master.rx_reset <= '0';
+		ctrl.master.tx_reset <= '0';
   	    WAIT FOR clk_period * 5;
   	    ctrl.master.ic.tx_gbtx_addr <= x"75";
   	    wait for clk_period;
