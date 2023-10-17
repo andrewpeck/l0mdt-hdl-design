@@ -455,12 +455,10 @@ begin
       rx_transID_o(3)  => mon.master.sca_rx.rx(3).rx_transID
       );
 
-<<<<<<< HEAD
+
   --lpgbt_version <= "01" when (ctrl.frame_format='0') else "10";
-=======
   --lpgbt_version <= "01" when (ctrl_s.frame_format='0') else "10";
 
->>>>>>> origin/fix_csm_ips
 
   gbt_ic_rx_m : entity work.gbt_ic_rx
     port map (
