@@ -22,6 +22,11 @@ package cfg_global_default_pkg is
 
   type cfg_rt is record
     --------------------------------------------------------------------------------
+    -- CSM Configuration
+    --------------------------------------------------------------------------------
+    ENABLE_ILA                    : std_logic;  -- enables the ILA debug cores for the MGT
+    LPGBT_VER                     : std_logic;  -- Lpgbt Ver (0 or 1)
+    --------------------------------------------------------------------------------
     -- Sector information
     --------------------------------------------------------------------------------
     SECTOR_ID                     : integer;    -- selects the number of sector
@@ -29,7 +34,6 @@ package cfg_global_default_pkg is
     ST_nBARREL_ENDCAP             : std_logic;  -- selects the part of detector   - 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           : std_logic;  -- select the type of endcap      - 0: small     1: large
     ENABLE_NEIGHBORS              : std_logic;  -- enables or disables the processing of SL neighbors
-    ENABLE_ILA                    : std_logic;  -- enables the ILA debug cores for the MGT
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
@@ -95,6 +99,12 @@ package cfg_global_default_pkg is
 
   constant CFG_DEFAULTS : cfg_rt :=(
     --------------------------------------------------------------------------------
+    -- CSM Configuration
+    --------------------------------------------------------------------------------
+    ENABLE_ILA                    => '0',
+    LPGBT_VER                     => '1',
+
+    --------------------------------------------------------------------------------
     -- Sector information
     --------------------------------------------------------------------------------
     SECTOR_ID                     => 3,   -- default sector 3
@@ -102,7 +112,6 @@ package cfg_global_default_pkg is
     ST_nBARREL_ENDCAP             => '0', -- 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           => '0', -- 0: small     1: large
     ENABLE_NEIGHBORS              => '1', -- 0: disabled  1: enabled
-    ENABLE_ILA                    => '0',
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------

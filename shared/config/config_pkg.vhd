@@ -51,6 +51,10 @@ package config_pkg is
 -- =============================================================================
 -- SETTING CONSTANTS FROM CONFIGURATION FILE
 -- =============================================================================
+
+ 
+  constant c_ENABLE_ILA           : std_logic := CFG.ENABLE_ILA;  -- 0: disabled 1: enabled
+  constant c_LPGBT_VER            : std_logic := CFG.LPGBT_VER; -- 0: ver0 1: ver1 
   --------------------------------------------------------------------------------
   -- Sector information
   --------------------------------------------------------------------------------
@@ -64,7 +68,6 @@ package config_pkg is
   constant c_ST_nBARREL_ENDCAP    : std_logic := CFG.ST_nBARREL_ENDCAP;   -- 0: barrel    1: Endcap
   constant c_ENDCAP_nSMALL_LARGE  : std_logic := CFG.ENDCAP_nSMALL_LARGE; -- 0: small     1: large
   constant c_ENABLE_NEIGHBORS     : std_logic := CFG.ENABLE_NEIGHBORS;   -- 0: disabled  1: enabled
-  constant c_ENABLE_ILA           : std_logic := CFG.ENABLE_ILA;  -- 0: disabled 1: enabled
 
   -- physical values
 

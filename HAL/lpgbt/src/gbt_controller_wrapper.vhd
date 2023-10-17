@@ -275,7 +275,7 @@ begin
       g_IC_FIFO_DEPTH => 8,
       g_ToLpGBT       => 1,             -- 1 = LPGBT, 0=GBTX
       g_SCA_COUNT     => 0,
-      g_LPGBT_VERS    => '0'
+      g_LPGBT_VERS    => c_LPGBT_VER
       )
     port map (
 
@@ -493,47 +493,7 @@ begin
       );
       
 ilagen: if c_ENABLE_ILA = '1' generate
-    --ila_scm_ctrl_c2c : ila_0
-    --PORT MAP (
-    --    clk    => clk40,
-    --    probe0 => sca0_data_o_int,
-    --    probe1 => sca1_data_o_int, 
-    --    probe2 => sca2_data_o_int, 
-    --    probe3 => sca0_data_i_int, 
-    --    probe4 => ic_data_o_int, -- 2 
-    --    probe5 => ctrl.master.sca_enable, 
-    --    probe6(0) => sca_reset, --ctrl.master.start_reset,
-    --    probe7(0) => sca_connect, --ctrl.master.start_connect,
-    --    probe8(0) => sca_command, --ctrl.master.start_command,
-    --    probe9(0) => reset_i, -- 1
-    --    probe10   => ic_data_i_int, -- 2
-    --    probe11(0)=> slave_rx_empty, 
-    --    probe12(0)=> tx_start_read_s, 
-    --    probe13   => master_rx_frame, -- 8
-    --    probe14(0)=> mon.master.ic.rx_err, -- 1
-    --    probe15(0)=> mon.slave.ic.rx_err,
-    --    probe16(0)=> master_rx_empty, -- 1
-    --    probe17   => slave_rx_frame,
-    --    probe18   => ec_data_i_int,
-    --    probe19   => ec_data_o_int,
-    --    probe20(0)=> vio_tx_start_write, -- 1
-    --    probe21(0)=> tx_start_write_s,
-    --    probe22(0)=> vio_tx_wr, -- 1
-    --    probe23(0)=> vio_tx_start_read, -- 1
-    --    probe24   => sca1_data_i_int,
-    --    probe25   => sca2_data_i_int,
-    --    probe26   => ic_data_i_s,
-    --    probe27   => sca3_data_o_int,
-    --    probe28   => sca3_data_i_int,
-    --    probe29               => mon.master.ic.rx_data, --32
-    --    probe30           => mon.master.ic.rx_chip_adr,--7 
-    --  probe31             => mon.master.ic.rx_length,--16
-    --  probe32            => mon.master.ic.rx_reg_adr,--16
-    --  probe33(0)   => mon.master.ic.rx_up_parity_ok,--1 
-    --  probe34(0) => mon.master.ic.rx_down_parity_ok,--1
-    --  probe35(0)              => mon.master.ic.rx_valid --1 
-    --);
-    --
+
     ila_scm_ctrl_c2c : ila_0
     PORT MAP (
     clk => clk40,
