@@ -6,5 +6,5 @@ HAL/flx/src/flx_link_wrapper.vhd
 HAL/flx/src/flx_link.vhd
 HAL/flx/src/flx_tx.vhd
 # IP
-HAL/IP/vu13p/flx_link/flx_link.xci
-HAL/IP/vu13p/fifo1KB_34bit/fifo1KB_34bit.xci
+HAL/IP/ku15p/flx_link/flx_link.xci
+HAL/IP/ku15p/fifo1KB_34bit/fifo1KB_34bit.xci
