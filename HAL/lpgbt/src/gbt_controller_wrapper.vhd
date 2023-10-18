@@ -89,21 +89,6 @@ PORT (
 );
 END COMPONENT;
 
-COMPONENT vio_gbt
-  PORT (
-    clk : IN STD_LOGIC;
-    probe_out0 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    probe_out1 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    probe_out2 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    probe_out3 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    probe_out4 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-    probe_out5 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-    probe_out6 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-    probe_out7 : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    probe_out8 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0) 
-  );
-END COMPONENT;
-
   -- master
   signal master_rx_frame, slave_rx_frame
     : std_logic_vector (7 downto 0) := (others => '0');
@@ -325,7 +310,7 @@ begin
       g_IC_FIFO_DEPTH => 8,
       g_ToLpGBT       => 1,             -- 1 = LPGBT, 0=GBTX
       g_SCA_COUNT     => g_SCAS_PER_LPGBT,
-      g_LPGBT_VERS    => '0'
+      g_LPGBT_VERS    => c_LPGBT_VER
       )
     port map (
 

@@ -210,7 +210,7 @@ begin
     end generate;
     
 
-    lpgbt_ila_downlink : if false generate
+    lpgbt_ila_downlink : if c_ENABLE_ILA = '1' generate
         uplink_lpgbt_ila : ila_downlink 
         port map(
             clk => downlink_clk,
@@ -285,7 +285,7 @@ begin
         );
         
 
-    lpgbt_ila_cores : if false generate
+    lpgbt_ila_cores : if c_ENABLE_ILA = '1' generate
 
         uplink_lpgbt_ila : ila_lpgbt 
         port map(
