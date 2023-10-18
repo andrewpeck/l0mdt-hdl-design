@@ -393,7 +393,6 @@ begin
       daq_stream_ctrl_vi => daq_stream_ctrl_v, -- : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
       daq_stream_wren_vi => daq_stream_wren_v, -- : in std_logic_vector(c_DAQ_LINKS-1 downto 0);
 
-
       sump => hal_sump
       );
 
