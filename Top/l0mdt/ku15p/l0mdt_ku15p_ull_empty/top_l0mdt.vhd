@@ -214,7 +214,11 @@ architecture structural of top_l0mdt is
   --                                            + c_HPS_MAX_HP_MID
   --                                            + c_HPS_MAX_HP_OUT - 1 downto 0);
 
-  signal daq_streams : felix_stream_avt(c_DAQ_LINKS-1 downto 0);
+  --signal daq_streams : felix_stream_avt(c_DAQ_LINKS-1 downto 0);
+  signal daq_stream_data_v : std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+  signal daq_stream_ctrl_v : std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+  signal daq_stream_wren_v : std_logic_vector(c_DAQ_LINKS-1 downto 0);
+
 
   -- NSP + MUCTPI
 
@@ -387,7 +391,10 @@ begin
       mtc_i => mtc,
       nsp_i => nsp,
 
-      daq_streams => daq_streams,
+      -- daq_streams => daq_streams,
+      daq_stream_data_vi => daq_stream_data_v, -- : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+      daq_stream_ctrl_vi => daq_stream_ctrl_v, -- : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+      daq_stream_wren_vi => daq_stream_wren_v, -- : in std_logic_vector(c_DAQ_LINKS-1 downto 0);
 
       sump => hal_sump
       );
@@ -418,7 +425,10 @@ begin
       o_mtc => mtc,
       o_nsp => nsp,
 
-      o_daq_streams => daq_streams,
+      -- o_daq_streams => daq_streams,
+      daq_stream_data_vo => daq_stream_data_v, -- : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+      daq_stream_ctrl_vo => daq_stream_ctrl_v, -- : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+      daq_stream_wren_vo => daq_stream_wren_v, -- : in std_logic_vector(c_DAQ_LINKS-1 downto 0);
 
       -- Control and Monitoring
 
