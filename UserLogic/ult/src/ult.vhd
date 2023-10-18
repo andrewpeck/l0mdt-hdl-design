@@ -126,7 +126,10 @@ entity ult is
     --                                           + c_HPS_NUM_MDT_CH_OUT - 1 downto 0);
     -- o_daq_streams             : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
     -- o_daq_streams             : out felix_data_avt(4-1 downto 0);
-    o_daq_streams : out   felix_stream_avt(c_DAQ_LINKS - 1 downto 0);
+
+    daq_stream_data_vo : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+    daq_stream_ctrl_vo : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+    daq_stream_wren_vo : out std_logic_vector(c_DAQ_LINKS-1 downto 0);
 
     -- Segments Out to Neighbor
     o_plus_neighbor_segments_av  : out   sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
@@ -966,8 +969,9 @@ begin
           -- Tracks from MTC
           -- ???
 
-          -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
-          o_daq_streams => o_daq_streams
+          o_daq_stream_data_v => daq_stream_data_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+          o_daq_stream_ctrl_v => daq_stream_ctrl_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+          o_daq_stream_wren_v => daq_stream_wren_vo  -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0);
 
         -- o_sump => daq_sump
         );
@@ -994,9 +998,11 @@ begin
           -- Tracks from MTC
           -- ???
 
-          -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
-          o_daq_streams => o_daq_streams,
-
+          -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT 
+          o_daq_stream_data_v => daq_stream_data_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+          o_daq_stream_ctrl_v => daq_stream_ctrl_vo, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+          o_daq_stream_wren_v => daq_stream_wren_vo,  -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0);
+          
           o_sump => daq_sump
         );
 

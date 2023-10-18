@@ -97,16 +97,6 @@ architecture RTL of FullModeTransceivers is
 begin
 
   GEN_REFCLK : for ii in 0 to NLINKS/4-1 generate
-    refclk_ibuf: IBUFDS_GTE4
-      generic map (REFCLK_EN_TX_PATH  => '0',
-                   REFCLK_HROW_CK_SEL => "00",
-                   REFCLK_ICNTL_RX    => "00")
-      port map (o     => gtrefclk01_v(ii)    ,
-                odiv2 => open             ,
-                ceb   => '0'              ,
-                i     => gtrefclk01_vpi(ii),
-                ib    => gtrefclk01_vni(ii));
-
     rxusrclk_bufg : BUFG
       port map(i => rxoutclk_v(ii),
                o => rxusrclk_v(ii));

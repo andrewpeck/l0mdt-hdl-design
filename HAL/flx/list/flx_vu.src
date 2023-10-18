@@ -1,10 +1,9 @@
 HAL/flx/src/crc.vhd
-HAL/flx/src/FIFO34to34b.vhd
+Hal/flx/src/fifo34to34.vhd
 HAL/flx/src/FMchannelTXctrl.vhd
-HAL/flx/src/fullmode_pkg.vhd
-HAL/flx/src/FullModeTransceivers.vhd
 HAL/flx/src/pulse_pdxx_pwxx.vhd
-HAL/flx/src/wrapper.vhd
+HAL/flx/src/flx_link_wrapper.vhd
+HAL/flx/src/flx_link.vhd
 # IP
-HAL/IP/vu13p/felixtransceivers/felixtransceivers.xci
+HAL/IP/vu13p/flx_link/flx_link.xci
 HAL/IP/vu13p/fifo1KB_34bit/fifo1KB_34bit.xci

@@ -58,6 +58,7 @@ entity top_clocking is
     b2b_locked_o      : out std_logic;
     axiclock_o        : out std_logic;
     clock40_o         : out std_logic;
+    clock240_o        : out std_logic;
     clock320_o        : out std_logic;
     clock_userlogic_o : out std_logic;
 
@@ -74,7 +75,7 @@ end entity top_clocking;
 
 architecture behavioral of top_clocking is
 
-  signal clk50, clk40, clk320 : std_logic;
+  signal clk50, clk40, clk240, clk320 : std_logic;
   signal clock_async_i        : std_logic;
   signal clock_async          : std_logic;
 
@@ -93,6 +94,7 @@ architecture behavioral of top_clocking is
     port (
       -- Clock out ports
       clk320_o  : out std_logic;
+      clk240_o  : out std_logic;
       clk40_o   : out std_logic;
       -- Status and control signals
       reset     : in  std_logic;
@@ -111,6 +113,7 @@ begin  -- architecture behavioral
 
   axiclock_o        <= clk50;
   clock40_o         <= clk40;
+  clock240_o        <= clk240;
   clock320_o        <= clk320;
   clock_userlogic_o <= clk320;
 
@@ -151,6 +154,7 @@ begin  -- architecture behavioral
       clk_in1_n => clock_i_n,
       reset     => reset_lhc_mmcm_i,
       clk320_o  => clk320,
+      clk240_o  => clk240,
       clk40_o   => clk40,
       locked_o  => lhc_locked_o
       );

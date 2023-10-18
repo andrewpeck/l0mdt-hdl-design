@@ -57,7 +57,10 @@ entity daq is
     i_mid_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID-1 downto 0);
     i_out_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_OUT-1 downto 0);
     i_ext_tdc_hits_av : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT-1 downto 0);
-    o_daq_streams     : out felix_stream_avt(c_DAQ_LINKS-1 downto 0)
+    ----------------------------------------------------------------------
+    o_daq_stream_data_v : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+    o_daq_stream_ctrl_v : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+    o_daq_stream_wren_v : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
     -- o_sump            : out std_logic
   );
 end entity daq;
@@ -118,7 +121,7 @@ architecture behavioral of daq is
                                                   + EXTRA_USR_HDR'length - 1 downto 0)
     := INNER_USR_HDR & MIDDLE_USR_HDR & OUTER_USR_HDR & EXTRA_USR_HDR;
 
-    
+
   signal wm_sys_hdr        : std_logic_vector(31 downto 0);
   signal wm_event_id       : unsigned(31 downto 0);
   signal wm_user_header    : std_logic_vector(req_input_pkt_headers'range);
@@ -132,10 +135,10 @@ architecture behavioral of daq is
   signal wm_closing_offset : unsigned(11 downto 0);
   signal wm_window_timeout : unsigned(11 downto 0);
   signal wm_busy_threshold : unsigned( 7 downto 0);
-  
-  signal daq_streams_ar : felix_stream_art(c_DAQ_LINKS-1 downto 0);
-  signal daq_streams_v  : std_logic_vector(daq_streams_ar'length*felix_stream_rt'w-1 downto 0);
-  
+
+  signal daq_stream_ar : felix_stream_art(c_DAQ_LINKS-1 downto 0);
+  signal daq_stream_v  : std_logic_vector(daq_stream_ar'length*felix_stream_rt'w-1 downto 0);
+
   -- emulation
 
   -- -- signal ptcalc_sump         : std_logic_vector (c_NUM_THREADS -1 downto 0);
@@ -165,15 +168,15 @@ architecture behavioral of daq is
 
   signal ctrl_r : DAQ_CTRL_t;
   signal mon_r  : DAQ_MON_t;
-  
+
 begin
 
   ctrl_r <= convert(ctrl_v, ctrl_r);
    mon_v <= convert( mon_r,  mon_v);
-  
 
-  daq_streams_v <= convert(daq_streams_ar, daq_streams_v);
-  o_daq_streams <= convert(daq_streams_v, o_daq_streams);
+
+  -- daq_stream_v <= convert(daq_stream_ar, daq_stream_v);
+  -- o_daq_stream <= convert(daq_stream_v, o_daq_stream);
 
   (wm_inner_usr_hdr, wm_middle_usr_hdr, wm_outer_usr_hdr, wm_extra_usr_hdr) <= wm_user_header;
 
@@ -196,10 +199,10 @@ begin
       mon_r.status.busy       <= or(busy);
     end if; -- clk
 
-    
-    
+
+
   end process;
-  
+
   DAQ_GEN : if c_DAQ_ENABLED generate
 
     req_input_sys_hdr <= "00"
@@ -248,11 +251,18 @@ begin
 
 
     GEN_INNER : if c_DAQ_INN_LINKS > 0 generate
-  
+      constant MAX : natural := c_DAQ_INN_LINKS;
+      constant MIN : natural := 0;
+      signal flx_stream_hfull_bus   : std_logic_vector(0 to c_DAQ_INN_LINKS-1);
+      signal flx_stream_wr_strb_bus : std_logic_vector(0 to c_DAQ_INN_LINKS-1);
+      signal flx_stream_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_INN_LINKS-1)(1 downto 0);
+      signal flx_stream_payload_bus : std_logic_vector_array(0 to c_DAQ_INN_LINKS-1)(31 downto 0);
+    begin
+
       u_daq_inner :  entity daq_lib.daq_station
         generic map (g_DELAY        =>             100, -- : integer := 100; -- number of LHC clocks
                      g_PIPELINES    =>              32, -- : integer :=  32;
-                     g_OUTPUT_LINKS => c_DAQ_INN_LINKS) -- : integer := 3); 
+                     g_OUTPUT_LINKS => c_DAQ_INN_LINKS) -- : integer := 3);
         port map (clock_and_control                 => clock_and_control , -- : in  l0mdt_control_rt;
                   ------------------------------------------------------------------------------------
                   o_busy => busy(0),
@@ -279,22 +289,29 @@ begin
                   i_station_usr_hdr                 => wm_inner_usr_hdr  , -- : in  std_logic_vector := (15 downto 0 => '0');
                   i_station_tdc_hits_av             => i_inn_tdc_hits_av , -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
                   ---------------------------------------------------------------------------------------------------
-                  i_station_flx_streams_hfull_bus   => inner_flx_streams_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
-                  o_station_flx_streams_wr_strb_bus => inner_flx_streams_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);
-                  o_station_flx_streams_ctrl_bus    => inner_flx_streams_ctrl_bus   , -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(1 downto 0);
-                  o_station_flx_streams_payload_bus => inner_flx_streams_payload_bus); -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(31 downto 0));
-     
-      daq_streams_ar(c_DAQ_INN_LINKS-1 downto 0)
-        <= streamify_output(inner_flx_streams_wr_strb_bus, inner_flx_streams_ctrl_bus, inner_flx_streams_payload_bus);
-     
+                  i_station_flx_streams_hfull_bus   => flx_stream_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
+                  o_station_flx_streams_wr_strb_bus => flx_stream_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);
+                  o_station_flx_streams_ctrl_bus    => flx_stream_ctrl_bus   , -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(1 downto 0);
+                  o_station_flx_streams_payload_bus => flx_stream_payload_bus); -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(31 downto 0));
+
+      o_daq_stream_data_v(MAX-1 downto MIN) <= flx_stream_payload_bus;
+      o_daq_stream_ctrl_v(MAX-1 downto MIN) <= flx_stream_ctrl_bus;
+      o_daq_stream_wren_v(MAX-1 downto MIN) <= flx_stream_wr_strb_bus;
+
     end generate GEN_INNER;
-  
+
     GEN_MIDDLE : if c_DAQ_MID_LINKS > 0 generate
-     
+      constant MAX : natural := c_DAQ_INN_LINKS+c_DAQ_MID_LINKS;
+      constant MIN : natural := c_DAQ_INN_LINKS;
+      signal flx_stream_hfull_bus   : std_logic_vector(0 to c_DAQ_MID_LINKS-1);
+      signal flx_stream_wr_strb_bus : std_logic_vector(0 to c_DAQ_MID_LINKS-1);
+      signal flx_stream_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_MID_LINKS-1)(1 downto 0);
+      signal flx_stream_payload_bus : std_logic_vector_array(0 to c_DAQ_MID_LINKS-1)(31 downto 0);
+    begin
       u_daq_middle :  entity daq_lib.daq_station
         generic map (g_DELAY        =>             100, -- : integer := 100; -- number of LHC clocks
                      g_PIPELINES    =>              32, -- : integer :=  32;
-                     g_OUTPUT_LINKS => c_DAQ_MID_LINKS) -- : integer := 3); 
+                     g_OUTPUT_LINKS => c_DAQ_MID_LINKS) -- : integer := 3);
         port map (clock_and_control                 => clock_and_control                , -- : in  l0mdt_control_rt;
                   ------------------------------------------------------------------------------------
                   o_busy => busy(1),
@@ -321,22 +338,30 @@ begin
                   i_station_usr_hdr                 => wm_middle_usr_hdr                 , -- : in  std_logic_vector := (15 downto 0 => '0');
                   i_station_tdc_hits_av             => i_mid_tdc_hits_av                , -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
                   ---------------------------------------------------------------------------------------------------
-                  i_station_flx_streams_hfull_bus   => middle_flx_streams_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
-                  o_station_flx_streams_wr_strb_bus => middle_flx_streams_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);
-                  o_station_flx_streams_ctrl_bus    => middle_flx_streams_ctrl_bus   , -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(1 downto 0);
-                  o_station_flx_streams_payload_bus => middle_flx_streams_payload_bus); -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(31 downto 0));
+                  i_station_flx_streams_hfull_bus   => flx_stream_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
+                  o_station_flx_streams_wr_strb_bus => flx_stream_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);
+                  o_station_flx_streams_ctrl_bus    => flx_stream_ctrl_bus   , -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(1 downto 0);
+                  o_station_flx_streams_payload_bus => flx_stream_payload_bus); -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(31 downto 0));
 
-      daq_streams_ar(c_DAQ_INN_LINKS+c_DAQ_MID_LINKS-1 downto c_DAQ_INN_LINKS)
-        <= streamify_output(middle_flx_streams_wr_strb_bus, middle_flx_streams_ctrl_bus, middle_flx_streams_payload_bus);
+      o_daq_stream_data_v(MAX-1 downto MIN) <= flx_stream_payload_bus;
+      o_daq_stream_ctrl_v(MAX-1 downto MIN) <= flx_stream_ctrl_bus;
+      o_daq_stream_wren_v(MAX-1 downto MIN) <= flx_stream_wr_strb_bus;
 
     end generate GEN_MIDDLE;
 
     GEN_OUTER : if c_DAQ_OUT_LINKS > 0 generate
-   
+      constant MAX : natural := c_DAQ_INN_LINKS+c_DAQ_MID_LINKS+c_DAQ_OUT_LINKS;
+      constant MIN : natural := c_DAQ_INN_LINKS+c_DAQ_MID_LINKS;
+      signal flx_stream_hfull_bus   : std_logic_vector(0 to c_DAQ_OUT_LINKS-1);
+      signal flx_stream_wr_strb_bus : std_logic_vector(0 to c_DAQ_OUT_LINKS-1);
+      signal flx_stream_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_OUT_LINKS-1)(1 downto 0);
+      signal flx_stream_payload_bus : std_logic_vector_array(0 to c_DAQ_OUT_LINKS-1)(31 downto 0);
+    begin
+
       u_daq_outer :  entity daq_lib.daq_station
         generic map (g_DELAY        =>             100, -- : integer := 100; -- number of LHC clocks
                      g_PIPELINES    =>              32, -- : integer :=  32;
-                     g_OUTPUT_LINKS => c_DAQ_OUT_LINKS) -- : integer := 3); 
+                     g_OUTPUT_LINKS => c_DAQ_OUT_LINKS) -- : integer := 3);
         port map (clock_and_control                 => clock_and_control, -- : in  l0mdt_control_rt;
                   ------------------------------------------------------------------------------------
                   o_busy => busy(2),
@@ -363,21 +388,29 @@ begin
                   i_station_usr_hdr                 => wm_outer_usr_hdr, -- : in  std_logic_vector := (15 downto 0 => '0');
                   i_station_tdc_hits_av             => i_out_tdc_hits_av, -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
                   ---------------------------------------------------------------------------------------------------
-                  i_station_flx_streams_hfull_bus   => outer_flx_streams_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
-                  o_station_flx_streams_wr_strb_bus => outer_flx_streams_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);
-                  o_station_flx_streams_ctrl_bus    => outer_flx_streams_ctrl_bus   , -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(1 downto 0);
-                  o_station_flx_streams_payload_bus => outer_flx_streams_payload_bus); -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(31 downto 0));
+                  i_station_flx_streams_hfull_bus   => flx_stream_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
+                  o_station_flx_streams_wr_strb_bus => flx_stream_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);
+                  o_station_flx_streams_ctrl_bus    => flx_stream_ctrl_bus   , -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(1 downto 0);
+                  o_station_flx_streams_payload_bus => flx_stream_payload_bus); -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(31 downto 0));
 
-      daq_streams_ar(c_DAQ_INN_LINKS+c_DAQ_MID_LINKS+c_DAQ_OUT_LINKS-1 downto c_DAQ_INN_LINKS+c_DAQ_MID_LINKS)
-        <= streamify_output(outer_flx_streams_wr_strb_bus, outer_flx_streams_ctrl_bus, outer_flx_streams_payload_bus);
+      o_daq_stream_data_v(MAX-1 downto MIN) <= flx_stream_payload_bus;
+      o_daq_stream_ctrl_v(MAX-1 downto MIN) <= flx_stream_ctrl_bus;
+      o_daq_stream_wren_v(MAX-1 downto MIN) <= flx_stream_wr_strb_bus;
 
     end generate GEN_OUTER;
 
     GEN_EXTRA: if c_DAQ_EXT_LINKS > 0 generate
+      constant MAX : natural := c_DAQ_INN_LINKS+c_DAQ_MID_LINKS+c_DAQ_OUT_LINKS+c_DAQ_EXT_LINKS;
+      constant MIN : natural := c_DAQ_INN_LINKS+c_DAQ_MID_LINKS+c_DAQ_OUT_LINKS;
+      signal flx_stream_hfull_bus   : std_logic_vector(0 to c_DAQ_EXT_LINKS-1);
+      signal flx_stream_wr_strb_bus : std_logic_vector(0 to c_DAQ_EXT_LINKS-1);
+      signal flx_stream_ctrl_bus    : std_logic_vector_array(0 to c_DAQ_EXT_LINKS-1)(1 downto 0);
+      signal flx_stream_payload_bus : std_logic_vector_array(0 to c_DAQ_EXT_LINKS-1)(31 downto 0);
+    begin
       u_daq_extra :  entity daq_lib.daq_station
         generic map (g_DELAY        =>             100, -- : integer := 100; -- number of LHC clocks
                      g_PIPELINES    =>              32, -- : integer :=  32;
-                     g_OUTPUT_LINKS => c_DAQ_ext_LINKS) -- : integer := 3); 
+                     g_OUTPUT_LINKS => c_DAQ_ext_LINKS) -- : integer := 3);
         port map (clock_and_control                 => clock_and_control                , -- : in  l0mdt_control_rt;
                   ------------------------------------------------------------------------------------
                   o_busy => busy(3),
@@ -404,34 +437,35 @@ begin
                   i_station_usr_hdr                 => wm_extra_usr_hdr                    , -- : in  std_logic_vector := (15 downto 0 => '0');
                   i_station_tdc_hits_av             => i_ext_tdc_hits_av                , -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
                   ---------------------------------------------------------------------------------------------------
-                  i_station_flx_streams_hfull_bus   => extra_flx_streams_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
-                  o_station_flx_streams_wr_strb_bus => extra_flx_streams_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);
-                  o_station_flx_streams_ctrl_bus    => extra_flx_streams_ctrl_bus   , -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(1 downto 0);
-                  o_station_flx_streams_payload_bus => extra_flx_streams_payload_bus); -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(31 downto 0));
+                  i_station_flx_streams_hfull_bus   => flx_stream_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
+                  o_station_flx_streams_wr_strb_bus => flx_stream_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);
+                  o_station_flx_streams_ctrl_bus    => flx_stream_ctrl_bus   , -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(1 downto 0);
+                  o_station_flx_streams_payload_bus => flx_stream_payload_bus); -- : out std_logic_vector_array(0 to g_OUTPUT_LINKS-1)(31 downto 0));
 
 
-      daq_streams_ar(c_DAQ_INN_LINKS+c_DAQ_MID_LINKS+c_DAQ_out_LINKS+c_DAQ_ext_LINKS-1 downto c_DAQ_INN_LINKS+c_DAQ_MID_LINKS+c_DAQ_out_LINKS)
-        <= streamify_output(extra_flx_streams_wr_strb_bus, extra_flx_streams_ctrl_bus, extra_flx_streams_payload_bus);
+      o_daq_stream_data_v(MAX-1 downto MIN) <= flx_stream_payload_bus;
+      o_daq_stream_ctrl_v(MAX-1 downto MIN) <= flx_stream_ctrl_bus;
+      o_daq_stream_wren_v(MAX-1 downto MIN) <= flx_stream_wr_strb_bus; 
 
     end generate GEN_EXTRA;
 
   end generate DAQ_GEN;
-             
+
   -- -- DAQ_EMU : if not c_DAQ_ENABLED generate
   -- -- end generate;
 
   -------------------------------------------------------------------------
 
   --# Thu 29 Dec 2022 11:54:35 PM -03
-  --# ctrl2mon : entity shared_lib.vhdl_utils_deserializer 
-  --#   generic map (g_DATA_WIDTH => mon_v'length) 
+  --# ctrl2mon : entity shared_lib.vhdl_utils_deserializer
+  --#   generic map (g_DATA_WIDTH => mon_v'length)
   --#   port map(
   --#     clk     => clock_and_control.clk,
   --#     rst     => clock_and_control.rst,
   --#     i_data  => xor_reduce(ctrl_v),
   --#     o_data  => mon_v
   --# );
-  --# 
+  --#
   --# inn_xor : for i in c_HPS_NUM_MDT_CH_INN -1 downto 0 generate
   --#   inn_tdc_hits_ab(i) <= xor_reduce(i_inn_tdc_hits_av(i));
   --# end generate ; -- inn_xor
@@ -444,21 +478,21 @@ begin
   --# -- ext_xor : for i in c_HPS_NUM_MDT_CH_ext -1 downto 0 generate
   --# --   ext_tdc_hits_ab <= xor_reduce(i_ext_tdc_hits_av(i));
   --# -- end generate ; -- ext_xor
-  --# 
-  --# daq_streams_ab <= inn_tdc_hits_ab & mid_tdc_hits_ab & out_tdc_hits_ab;
-  --# 
+  --#
+  --# daq_stream_ab <= inn_tdc_hits_ab & mid_tdc_hits_ab & out_tdc_hits_ab;
+  --#
   --# daq_o : for i in c_HPS_NUM_MDT_CH_INN + c_HPS_NUM_MDT_CH_MID + c_HPS_NUM_MDT_CH_OUT - 1 downto 0 generate
-  --#   daq_o : entity shared_lib.vhdl_utils_deserializer 
-  --#   generic map (g_DATA_WIDTH => o_daq_streams(i)'length) 
+  --#   daq_o : entity shared_lib.vhdl_utils_deserializer
+  --#   generic map (g_DATA_WIDTH => o_daq_stream(i)'length)
   --#   port map(
   --#     clk     => clock_and_control.clk,
   --#     rst     => clock_and_control.rst,
-  --#     i_data  => daq_streams_ab(i),
-  --#     o_data  => o_daq_streams(i)
+  --#     i_data  => daq_stream_ab(i),
+  --#     o_data  => o_daq_stream(i)
   --# );
   --# end generate ; -- daq_o
 
-    
+
 
 
 end behavioral;

@@ -21,6 +21,11 @@ use work.display_board_cfg_pkg.all;
 library ctrl_lib;
 use ctrl_lib.CORE_CTRL.all;
 
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+
+library flx;
+
 entity mgt_wrapper is
   port(
 
@@ -82,8 +87,9 @@ entity mgt_wrapper is
     --------------------------------------------------------------------------------
 
     -- 32 bits / clock to mgt
-    felix_uplink_mgt_word_array_i : in  std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
-    felix_mgt_txusrclk_o          : out std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
+    flx_mgt_word_vi   : in  std_logic_vector_array (c_NUM_FELIX_UPLINKS-1 downto 0)(31 downto 0);
+    flx_mgt_usrclk_vo : out std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
+    flx_mgt_word_vo   : out std_logic_vector_array (c_NUM_FELIX_UPLINKS-1 downto 0)(19 downto 0);
 
     --------------------------------------------------------------------------------
     -- Sector Logic
@@ -141,6 +147,15 @@ architecture Behavioral of mgt_wrapper is
   -- Sector Logic
   signal  sl_tx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal  sl_rx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+
+  signal rx_srcclk  : std_logic;
+  signal rx_usrclk  : std_logic;
+  signal rx_usrclk2 : std_logic;
+
+  signal tx_srcclk  : std_logic;
+  signal tx_usrclk  : std_logic;
+  signal tx_usrclk2 : std_logic;
+  
 begin
 
 
@@ -332,15 +347,14 @@ begin
       " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) severity note;
 
     --------------------------------------------------------------------------------
-    -- LPGBT+Emulator+Felix Type Transceiver Generation
+    -- LPGBT+Emulator Type Transceiver Generation
     --------------------------------------------------------------------------------
     -- Get lpgbt signals in group of four and excldue the not-active 
     lpgbt_gen : if ((I mod 4 = 0) and c2c_idx_array(I) = -1 and sl_idx_array(I) = -1 and
-                    c_MGT_MAP(I).mgt_type /= MGT_NIL and
+                    felix_idx_array(I) = -1 and c_MGT_MAP(I).mgt_type /= MGT_NIL and
                     (ttc_idx_array(I) /= -1 or ttc_idx_array(I+1) /= -1 or
                      ttc_idx_array(I+2) /= -1 or ttc_idx_array(I+3) /= -1 or
-                     lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or
-                     felix_idx_array(I) /= -1 ))
+                     lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1))
     generate
 
       attribute X_LOC             : integer;
@@ -353,7 +367,7 @@ begin
       signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0) := (others => '0');
 
       signal rxslide  : std_logic_vector (3 downto 0) := (others => '0');
-      signal rxoutclk : std_logic_vector (3 downto 0) := (others => '0');
+      signal rxclkout_v : std_logic_vector (3 downto 0) := (others => '0');
 
       -- data
       signal tx_data : std32_array_t (3 downto 0);
@@ -454,7 +468,7 @@ begin
           qpll1outclk_out    => open,
           qpll1outrefclk_out => open,
 
-          rxoutclk => rxoutclk(3 downto 0),
+          rxoutclk => rxclkout_v(3 downto 0),
 
           --------------------------------------------------------------------------------
           -- DRP & Status
@@ -522,30 +536,137 @@ begin
 
         end generate;
 
-        --------------------------------------------------------------------------------
-        -- FELIX LPGBT (to be moved to full-mode connection)
-        --------------------------------------------------------------------------------
-
-        felix_gen : if (ttc_idx_array(I) /= -1) generate
-          constant downlink_idx : integer := ttc_idx_array(I);
-        begin
-
-          -- FELIX Recovered Clock
-          tx_data(LINK_0_TO_3)  <= ttc_mgt_word_i;
-          recclk_out_gen : if (downlink_idx + LINK_0_TO_3 = c_FELIX_RECCLK_SRC) generate
-            rxslide (LINK_0_TO_3) <= ttc_bitslip_i;
-            recclk                <= rxoutclk(LINK_0_TO_3);
-            ttc_mgt_word_o        <= rx_data(LINK_0_TO_3);
-          end generate recclk_out_gen;
-
-        end generate felix_gen;
-
-
       end generate channel_loop;
     end generate;
 
 
-    
+    --------------------------------------------------------------------------------
+    -- LPGBT+Emulator+Felix Type Transceiver Generation
+    --------------------------------------------------------------------------------
+    -- Get lpgbt signals in group of four and excldue the not-active 
+    flx_gen : if ((I mod 4 = 0) and felix_idx_array(I) /= -1)
+
+    generate
+
+      attribute X_LOC             : integer;
+      attribute Y_LOC             : integer;
+      attribute X_LOC of MGT_INST : label is c_MGT_MAP(I).x_loc;
+      attribute Y_LOC of MGT_INST : label is c_MGT_MAP(I).y_loc;
+      
+      attribute DONT_TOUCH of MGT_INST : label is "true";
+
+      signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0) := (others => '0');
+
+      signal rxslide                   : std_logic_vector (3 downto 0) := (others => '0');
+      signal rxoutclk_v                : std_logic_vector (3 downto 0) := (others => '0');
+                                       
+      signal tx_data                   : std_logic_vector_array(3 downto 0)(31 downto 0);
+      signal rx_data                   : std_logic_vector_array(3 downto 0)(19 downto 0);
+
+      signal sys_rst                   : std_logic;
+      signal reset_rx_datapath         : std_logic;
+      signal reset_rx_pll_and_datapath : std_logic;
+      signal reset_tx_datapath         : std_logic;
+      signal reset_tx_pll_and_datapath : std_logic;
+
+      constant c_FLX_IDX : integer := felix_idx_array(I);
+      
+    begin
+
+      assert true report
+        "GENERATING FELIX TYPE LINK ON MGT=" & integer'image(I)
+        & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
+        & " FLX_LINK_CNT=" & integer'image(c_FLX_IDX) severity note;
+
+      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_SYNC240)
+        report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
+      
+      -- just set a flag to 1 to indicate that this transceiver was enabled, which we can read from software
+      mon.mgt(I).config.is_active <= '1';
+
+      sys_rst <= '1' when (reset_tree(I) = '1'
+                           or ctrl.mgt(I).reset_all = '1'
+                           or ctrl.mgt(I+1).reset_all = '1'
+                           or ctrl.mgt(I+2).reset_all = '1'
+                           or ctrl.mgt(I+3).reset_all = '1')
+                 else '0';
+
+      
+      reset_rx_datapath <= '1' when (ctrl.mgt(I).rx_resets.reset_datapath = '1'
+                                     or ctrl.mgt(I+1).rx_resets.reset_datapath = '1'
+                                     or ctrl.mgt(I+2).rx_resets.reset_datapath = '1'
+                                     or ctrl.mgt(I+3).rx_resets.reset_datapath = '1')
+                           else '0';
+      
+      reset_rx_pll_and_datapath <= '1' when (ctrl.mgt(I).rx_resets.reset_pll_and_datapath = '1'
+                                             or ctrl.mgt(I+1).rx_resets.reset_pll_and_datapath = '1'
+                                             or ctrl.mgt(I+2).rx_resets.reset_pll_and_datapath = '1'
+                                             or ctrl.mgt(I+3).rx_resets.reset_pll_and_datapath = '1')
+                                   else '0';
+
+      reset_tx_datapath <= '1' when (ctrl.mgt(I).tx_resets.reset_datapath = '1'
+                                     or ctrl.mgt(I+1).tx_resets.reset_datapath = '1'
+                                     or ctrl.mgt(I+2).tx_resets.reset_datapath = '1'
+                                     or ctrl.mgt(I+3).tx_resets.reset_datapath = '1') 
+                           else '0';
+      
+      reset_tx_pll_and_datapath <= '1' when (ctrl.mgt(I).tx_resets.reset_pll_and_datapath = '1'
+                                             or ctrl.mgt(I+1).tx_resets.reset_pll_and_datapath = '1'
+                                             or ctrl.mgt(I+2).tx_resets.reset_pll_and_datapath = '1'
+                                             or ctrl.mgt(I+3).tx_resets.reset_pll_and_datapath = '1')
+                                   else '0';
+      
+      MGT_INST : entity flx.flx_link_wrapper
+        generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
+        port map (clk_freerun_i                 => axiclock                                      -- : in  std_logic  
+                  , sys_rst_i                   => sys_rst                                       -- : in  std_logic
+                                                                                                 
+                  , refclk0_i                   => refclk_i_p(c_MGT_MAP(I).refclk)               -- : in  std_logic
+                                                                                                 
+                  , rx_srcclk_o                 => rx_srcclk                                     -- : out std_logic
+                  , rx_usrclk_o                 => rx_usrclk                                     -- : out std_logic
+                  , rx_usrclk2_o                => rx_usrclk2                                    -- : out std_logic
+                                                                                                   
+                  , tx_srcclk_o                 => tx_srcclk                                     -- : out std_logic
+                  , tx_usrclk_o                 => tx_usrclk                                     -- : out std_logic
+                  , tx_usrclk2_o                => tx_usrclk2                                    -- : out std_logic
+                                                                                                 
+                  , rxoutclk_vo                 => rxoutclk_v                                    -- : out std_logic_vector(3 downto 0)
+                                                                                                 
+                  , reset_tx_done_vo            => open                                          -- : out std_logic_vector(3 downto 0)
+                  , reset_rx_done_vo            => open                                          -- : out std_logic_vector(3 downto 0)
+                                                                                                 
+                  , reset_rx_datapath_i         => reset_rx_datapath                             -- : in   std_logic
+                  , reset_rx_pll_and_datapath_i => reset_rx_pll_and_datapath                     -- : in   std_logic
+                                                                                                 
+                  , reset_tx_datapath_i         => reset_tx_datapath                             -- : in   std_logic
+                  , reset_tx_pll_and_datapath_i => reset_tx_pll_and_datapath                     -- : in   std_logic
+                                                    
+                  , mgt_word_vi                 => flx_mgt_word_vi(c_FLX_IDX+3 downto c_FLX_IDX) -- : in  std_logic_vector_array(3 downto 0)(31 downto 0)
+                  , mgt_word_vo                 => flx_mgt_word_vo(c_FLX_IDX+3 downto c_FLX_IDX) -- : out std_logic_vector_array(3 downto 0)(19 downto 0)
+                                                            
+                  , qpll1outclk_o               => open                                          -- : out std_logic
+                  , qpll1outrefclk_o            => open                                          -- : out std_logic
+                                                                                                 
+                  , gty_rx_vni                  => rx_p                                          -- : in   std_logic_vector(3 downto 0)
+                  , gty_rx_vpi                  => rx_n                                          -- : in   std_logic_vector(3 downto 0)
+                  , gty_tx_vno                  => tx_p                                          -- : out  std_logic_vector(3 downto 0)
+                  , gty_tx_vpo                  => tx_n);                                        -- : out  std_logic_vector(3 downto 0));
+  
+
+      channel_loop : for jj in 0 to 3 generate
+      begin
+        flx_routing : if (ttc_idx_array(I+jj) /= -1) generate
+          constant idx : integer := ttc_idx_array(I+jj);
+        begin
+          recclk_gen : if (idx + jj = c_FELIX_RECCLK_SRC) generate
+            recclk <= rxoutclk_v(jj); -- FELIX Recovered Clock
+          end generate recclk_gen;
+        end generate flx_routing;
+      end generate channel_loop;
+
+    end generate flx_gen;
+      
     --------------------------------------------------------------------------------
     -- Sector Logic Type
     --------------------------------------------------------------------------------
