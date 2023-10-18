@@ -4,7 +4,7 @@
     "xci_name": "ila_0",
     "component_reference": "xilinx.com:ip:ila:6.2",
     "ip_revision": "12",
-    "gen_directory": "../../../../l0mdt_ku15p_ull_empty.gen/sources_1/ip/ila_0",
+    "gen_directory": ".",
     "parameters": {
       "component_parameters": {
         "C_PROBE1023_TYPE": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
@@ -3124,7 +3124,7 @@
         "C_XLNX_HW_PROBE_INFO_DUMMY2": [ { "value": "DEFAULT", "resolve_type": "generated", "usage": "all" } ],
         "C_XLNX_HW_PROBE_INFO_DUMMY3": [ { "value": "DEFAULT", "resolve_type": "generated", "usage": "all" } ],
         "C_XLNX_HW_PROBE_INFO_DUMMY4": [ { "value": "DEFAULT", "resolve_type": "generated", "usage": "all" } ],
-        "C_XDEVICEFAMILY": [ { "value": "kintexuplus", "resolve_type": "generated", "usage": "all" } ],
+        "C_XDEVICEFAMILY": [ { "value": "virtexuplus", "resolve_type": "generated", "usage": "all" } ],
         "C_CORE_TYPE": [ { "value": "1", "format": "long", "usage": "all" } ],
         "C_CORE_INFO1": [ { "value": "0", "format": "long", "usage": "all" } ],
         "C_CORE_INFO2": [ { "value": "0", "format": "long", "usage": "all" } ],
@@ -6245,11 +6245,11 @@
         "C_CLKOUT0_DIVIDE_F": [ { "value": "10", "resolve_type": "generated", "format": "float", "usage": "all" } ]
       },
       "project_parameters": {
-        "ARCHITECTURE": [ { "value": "kintexuplus" } ],
+        "ARCHITECTURE": [ { "value": "virtexuplus" } ],
         "BASE_BOARD_PART": [ { "value": "" } ],
         "BOARD_CONNECTIONS": [ { "value": "" } ],
-        "DEVICE": [ { "value": "xcku15p" } ],
-        "PACKAGE": [ { "value": "ffva1760" } ],
+        "DEVICE": [ { "value": "xcvu13p" } ],
+        "PACKAGE": [ { "value": "flga2577" } ],
         "PREFHDL": [ { "value": "VHDL" } ],
         "SILICON_REVISION": [ { "value": "" } ],
         "SIMULATOR_LANGUAGE": [ { "value": "MIXED" } ],
@@ -6263,7 +6263,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "12" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../l0mdt_ku15p_ull_empty.gen/sources_1/ip/ila_0" } ],
+        "OUTPUTDIR": [ { "value": "." } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2022.2" } ],
