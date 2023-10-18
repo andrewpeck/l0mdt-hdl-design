@@ -96,7 +96,7 @@ begin
   -- lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
   --
   lsf_mon_r <= zero(lsf_mon_r);
-  csf_mon_r <= zero(csf_mon_r);
+--  csf_mon_r <= zero(csf_mon_r);
   --
   sf_fm_data(0).fm_data <= (mon_dw_max-1 downto lc_HEG2SFSLC_LEN => '0') & i_slc_data_v;
   sf_fm_data(0).fm_vld  <= i_slc_data_v(lc_HEG2SFSLC_LEN-1);
@@ -123,7 +123,7 @@ begin
       --
       SF_TYPE : if c_SF_TYPE = '0' generate
 
-        csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
+--        csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
         lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
         
 

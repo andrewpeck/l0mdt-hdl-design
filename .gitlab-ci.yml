@@ -2,14 +2,14 @@
 variables:
   HOG_CHECK_PROJVER: 1
   HOG_CHECK_SYNTAX: 1
-  HOG_SIMULATION_LIB_PATH: "/afs/cern.ch/work/l/l0mdtel/SimulationLib/"
-  HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/Xilinx/Vivado/2020.2/bin:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/"
-  HOG_APPTAINER_IMAGE: "/Data/images/l0mdt_Ubuntu20.04.sif"
+  HOG_SIMULATION_LIB_PATH: "/opt/QuestaLibs"
+  HOG_PATH: "/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/:/opt/dtc/:/opt/Xilinx/Vivado/2022.2/bin/:/opt/questa2022.2/questasim/bin/"
+  HOG_APPTAINER_IMAGE: "/Data/images/l0mdt_Ubuntu20.04.viv2022.2.sif"
 
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
-    ref: 'Hog2023.2'
+    ref: 'Hog2023.2-3'
   - local: "/.user_jobs.yml"
   - local: '/.devel_to_master.yml'
 
@@ -20,14 +20,17 @@ generate:
   parallel:
     matrix:
       - PROVIDER: argos
-        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_lsf_upt, ull/vu13p/ull_vu13_b3a_tar, l0mdt/ku15p/l0mdt_ku15p_ull_tar, l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps]
+        PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_tar, l0mdt/vu13p/l0mdt_vu13p_ba3_ucm_mpl_tar_hps]
+        HOG_ONLY_SYNTH: 1
+      - PROVIDER: "2022.2"
+        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_lsf_upt]
         HOG_ONLY_SYNTH: 1
       - PROVIDER: argos
-        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty]
-      - PROVIDER: mdt-1
-        PROJECT_NAME: [ull/vu13p/ull_vu13_b3a_ucm_mpl, l0mdt/ku15p/l0mdt_ku15p_ull_ucm]
+        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty]
+      - PROVIDER: "2022.2"
+        PROJECT_NAME: [l0mdt/ku15p/l0mdt_ku15p_ull_ucm, ull/vu13p/ull_vu13_b3a_ucm_mpl]
         HOG_ONLY_SYNTH: 1
-      - PROVIDER: normal-ops
+      - PROVIDER: "2022.2"
         PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg]
         HOG_ONLY_SYNTH: 1
   tags:
@@ -56,7 +59,7 @@ questa:
     extends: .vars
   parallel:
     matrix:
-      - PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_hps_csf_bp, MainBlocks/BA3_heg, ull/vu13p/ull_vu13_b3a_ucm_mpl, ull/vu13p/ull_vu13_b3a_tar]
+      - PROJECT_NAME: [MainBlocks/BA3_tar, MainBlocks/BA3_ucm, MainBlocks/BA3_ucm_divIP, MainBlocks/BA3_heg, ull/vu13p/ull_vu13_b3a_ucm_mpl, ull/vu13p/ull_vu13_b3a_tar]
         PROVIDER: questa
   allow_failure: false
   tags:

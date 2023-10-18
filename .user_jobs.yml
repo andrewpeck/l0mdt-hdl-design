@@ -22,10 +22,6 @@
   tags:
     - hog
 
-.tag-sr: &tag-sr
-  tags:
-    - docker
-
 .riviera_vars: &riviera_vars
   GIT_STRATEGY: clone
   GIT_SUBMODULE_STRATEGY: recursive
@@ -53,7 +49,6 @@
 
 check_submodule_status:
   <<: *only-default
-  <<: *tag-sr 
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:centos
   variables:
     <<: *chk_variables
@@ -109,7 +104,6 @@ check_submodule_status:
 
 check_auto_generated_code:
   <<: *only-default
-  <<: *tag-sr
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:centos
   variables:
     <<: *chk_variables
@@ -173,8 +167,8 @@ check_auto_generated_code:
     - riviera
   variables:
     <<: *riviera_vars
-    HOG_SIMULATION_LIB_PATH: /home/l0mdtel/RivieraLib
-    HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/mnt/vd/Xilinx/Vivado/2020.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
+    HOG_SIMULATION_LIB_PATH: /opt/RivieraLibs
+    HOG_PATH: "/opt/Aldec/Riviera-PRO-2022.10-x64/bin/:/opt/Xilinx/Vivado/2022.2/bin/"
     HOG_CHECK_PROJVER: 0
   stage: generation_and_simulation
   script:
@@ -191,7 +185,7 @@ check_auto_generated_code:
       else
         sed -i 's/questa/riviera/' ./Top/$PROJECT_NAME/list/project_lib.sim;
         sed -i 's/Questa/Riviera/' ./Top/$PROJECT_NAME/hog.conf;
-        ./Hog/LaunchSimulation.sh $PROJECT_NAME -recreate;
+        ./Hog/Do SIM $PROJECT_NAME -lib $HOG_SIMULATION_LIB_PATH -recreate;
       fi
     - if [ -f "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib/behav/riviera/simulate.log" ]; then
         if grep "Executing onerror command" "./Projects/${PROJECT_NAME}/$(basename ${PROJECT_NAME}).sim/project_lib/behav/riviera/simulate.log"; then
@@ -234,7 +228,6 @@ check_auto_generated_code:
 
 .sim_comp: &sim_comp
   <<: *only-default
-  <<: *tag-sr
   variables:
     <<: *chk_variables
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
@@ -247,7 +240,6 @@ check_auto_generated_code:
 
 .sim_check: &sim_check
   <<: *only-default
-  <<: *tag-sr
   variables:
     <<: *chk_variables
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
@@ -287,11 +279,6 @@ check_auto_generated_code:
     - echo "Test vector file location on EOS is ${L0MDT_TESTVECTOR_EOS_DIR}"
     - xrdcp root://eosuser.cern.ch/${L0MDT_TESTVECTOR_EOS_DIR} tools/cocotb/l0mdt_tv/.
     # PYTHON
-    - export PATH="/home/l0mdtel/.pyenv/bin:$PATH"
-    - eval "$(pyenv init -)"
-    - eval "$(pyenv init --path)"
-    - eval "$(pyenv virtualenv-init -)"
-    - pyenv global 3.8.2
     - export TESTVECS_PATH="`pwd`/tools/cocotb/l0mdt_tv"
     - echo Print TESTVECS_PATH-----
     - echo $TESTVECS_PATH
