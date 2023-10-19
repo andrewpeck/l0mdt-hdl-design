@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="TOP"> 
- <node id="KINTEX_SYS_MGMT"  address="0x80000000"   module="file://KINTEX_SYS_MGMT.xml" />
- <node id="CORE"        address="0x81000000"  module="file://CORE.xml"/>
- <node id="FW_INFO"    address="0x82000000"  module="file://FW_INFO.xml"/>
- <node id="HAL"             address="0x83000000"  module="file://HAL.xml"/>
- <node id="C2C_INTFS"      address="0x86000000"  module="file://C2C_INTFS.xml"/>
- <node id="FM"              address="0x85000000"  module="file://FM.xml"/>
- <node id="HOG"              address="0x89000000"  module="file://HOG.xml"/>
+ <node id="FM"  address="0x80000000"   module="file://FM.xml" />
+<node id="KINTEX_SYS_MGMT"  address="0x81001000"   module="file://KINTEX_SYS_MGMT.xml" />
+<node id="FW_INFO"    address="0x81003000"  module="file://FW_INFO.xml"/>
+<node id="CORE"        address="0x81000000"  module="file://CORE.xml"/>
+<node id="HAL"             address="0x83000000"  module="file://HAL.xml"/>
+<node id="C2C_INTFS"      address="0x81100000"  module="file://C2C_INTFS.xml"/>
+<node id="HOG"              address="0x81300000"  module="file://HOG.xml"/>
 </node>
+
