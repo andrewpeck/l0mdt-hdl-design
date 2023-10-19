@@ -144,29 +144,29 @@ package board_pkg is
     -- B2B = AXI c2c
     -- C2C = sf c2c
     -- CM2CM = goes to firely
-    0  => (FREQ => REF_NIL     ) , -- C2C_REF0
-    1  => (FREQ => REF_NIL     ) , -- CM2CM_REF0
-    2  => (FREQ => REF_SYNC240 ) , -- SL_REF0
-    3  => (FREQ => REF_SYNC240 ) , -- SL_REF1
-    4  => (FREQ => REF_SYNC240 ) , -- SL_REF2
-    5  => (FREQ => REF_SYNC320 ) , -- FELIX_REF0
-    6  => (FREQ => REF_SYNC320 ) , -- FELIX_REF1
-    7  => (FREQ => REF_SYNC320 ) , -- FELIX_REF2
-    8  => (FREQ => REF_NIL     ) , -- AD_CLK2_KUP , muxed as C2c or Spare
-    9  => (FREQ => REF_AXI_C2C ) , -- B2B_REF0 to SM
- --   9  => (FREQ => REF_NIL ) , 
-    10 => (FREQ => REF_NIL     ) , -- AD_CLK3_KUP , muxed as sma or spare
-    11 => (FREQ => REF_NIL     ) , -- B2B_REF2 to SM
-    12 => (FREQ => REF_SYNC320 ) , -- FE_REF0
-    13 => (FREQ => REF_SYNC320 ) , -- FE_REF1
-    14 => (FREQ => REF_SYNC320 ) , -- FE_REF2
-    15 => (FREQ => REF_NIL     ) , -- SPARE_REF1
-    16 => (FREQ => REF_SYNC320 ) , -- FE_REF3
-    17 => (FREQ => REF_NIL     ) , -- SPARE_REF2
-    18 => (FREQ => REF_SYNC320 ) , -- FE_REF4
-    19 => (FREQ => REF_SYNC320 ) , -- FE_REF5
-    20 => (FREQ => REF_SYNC320 ) , -- FE_REF6
-    21 => (FREQ => REF_SYNC320 ) , -- FE_REF7
+    0  => (FREQ => REF_NIL    ) , -- C2C_REF0
+    1  => (FREQ => REF_NIL    ) , -- CM2CM_REF0
+    2  => (FREQ => REF_SYNC240) , -- SL_REF0
+    3  => (FREQ => REF_SYNC240) , -- SL_REF1
+    4  => (FREQ => REF_SYNC240) , -- SL_REF2
+    5  => (FREQ => REF_SYNC240) , -- FELIX_REF0
+    6  => (FREQ => REF_SYNC240) , -- FELIX_REF1
+    7  => (FREQ => REF_SYNC240) , -- FELIX_REF2
+    8  => (FREQ => REF_NIL    ) , -- AD_CLK2_KUP , muxed as C2c or Spare
+    9  => (FREQ => REF_AXI_C2C) , -- B2B_REF0 to SM
+ --   9  => (FREQ => REF_NIL ), 
+    10 => (FREQ => REF_NIL    ) , -- AD_CLK3_KUP , muxed as sma or spare
+    11 => (FREQ => REF_NIL    ) , -- B2B_REF2 to SM
+    12 => (FREQ => REF_SYNC320) , -- FE_REF0
+    13 => (FREQ => REF_SYNC320) , -- FE_REF1
+    14 => (FREQ => REF_SYNC320) , -- FE_REF2
+    15 => (FREQ => REF_NIL    ) , -- SPARE_REF1
+    16 => (FREQ => REF_SYNC320) , -- FE_REF3
+    17 => (FREQ => REF_NIL    ) , -- SPARE_REF2
+    18 => (FREQ => REF_SYNC320) , -- FE_REF4
+    19 => (FREQ => REF_SYNC320) , -- FE_REF5
+    20 => (FREQ => REF_SYNC320) , -- FE_REF6
+    21 => (FREQ => REF_SYNC320) , -- FE_REF7
     others => REFCLK_NIL_MAP
     );
 
