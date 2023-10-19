@@ -116,7 +116,7 @@ AXI_SLAVES:
       axi_control: "${::AXI_MASTER_CTRL}"
       remote_slave: "1"
       addr:
-        offset: "0x01004000"
+        offset: "0x01000000"
         range: "8K"
     XML: "address_table/modules/CORE.xml"
     UHAL_BASE: 0x81000000
@@ -131,7 +131,7 @@ AXI_SLAVES:
 #      axi_control: "${::AXI_LHC_CTRL}"
       remote_slave: "1"
       addr:
-        offset: "0x01010000"
+        offset: "0x03000000"
         range: "32K"
     XML: "address_table/modules/HAL.xml"
     UHAL_BASE: 0x83000000
