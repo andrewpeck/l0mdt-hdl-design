@@ -216,7 +216,7 @@ package board_pkg is
     11 => (FREQ => REF_SYNC320),
     12 => (FREQ => REF_SYNC320),
     13 => (FREQ => REF_SYNC320),
-    14 => (FREQ => REF_SYNC320),
+    14 => (FREQ => REF_SYNC240),
     15 => (FREQ => REF_SYNC320),
 
     16 => (FREQ => REF_SYNC320),
@@ -225,15 +225,15 @@ package board_pkg is
     19 => (FREQ => REF_SYNC320),
     20 => (FREQ => REF_SYNC320),
     21 => (FREQ => REF_SYNC320),
-    22 => (FREQ => REF_SYNC320),
-    23 => (FREQ => REF_SYNC320),
+    22 => (FREQ => REF_SYNC240),
+    23 => (FREQ => REF_SYNC240),
     24 => (FREQ => REF_SYNC320),
     25 => (FREQ => REF_SYNC320),
     26 => (FREQ => REF_SYNC320),
     27 => (FREQ => REF_SYNC320),
     28 => (FREQ => REF_SYNC320),
     29 => (FREQ => REF_SYNC320),
-    30 => (FREQ => REF_SYNC320),
+    30 => (FREQ => REF_SYNC240),
     31 => (FREQ => REF_SYNC320),
 
     others => REFCLK_NIL_MAP

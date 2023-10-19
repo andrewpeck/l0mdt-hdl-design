@@ -541,12 +541,8 @@ begin
 
 
     --------------------------------------------------------------------------------
-    -- LPGBT+Emulator+Felix Type Transceiver Generation
-    --------------------------------------------------------------------------------
-    -- Get lpgbt signals in group of four and excldue the not-active 
-    flx_gen : if ((I mod 4 = 0) and felix_idx_array(I) /= -1)
-
-    generate
+    -- flx_gen : if ((I mod 4 = 0) and felix_idx_array(I) /= -1)
+    flx_gen : if ((I mod 4 = 0) and c_MGT_MAP(I).mgt_type = MGT_FELIX) generate
 
       attribute X_LOC             : integer;
       attribute Y_LOC             : integer;
@@ -573,12 +569,12 @@ begin
       
     begin
 
-      assert true report
+      assert false report
         "GENERATING FELIX TYPE LINK ON MGT=" & integer'image(I)
         & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
         & " FLX_LINK_CNT=" & integer'image(c_FLX_IDX) severity note;
 
-      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq /= REF_SYNC240)
+      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_SYNC240)
         report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
       
       -- just set a flag to 1 to indicate that this transceiver was enabled, which we can read from software
@@ -660,6 +656,7 @@ begin
           constant idx : integer := ttc_idx_array(I+jj);
         begin
           recclk_gen : if (idx + jj = c_FELIX_RECCLK_SRC) generate
+            assert false report "Using ref clock of MGT#" & integer'image(I) & " quad." severity error;
             recclk <= rxoutclk_v(jj); -- FELIX Recovered Clock
           end generate recclk_gen;
         end generate flx_routing;
