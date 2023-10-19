@@ -578,7 +578,7 @@ begin
         & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
         & " FLX_LINK_CNT=" & integer'image(c_FLX_IDX) severity note;
 
-      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_SYNC240)
+      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq /= REF_SYNC240)
         report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
       
       -- just set a flag to 1 to indicate that this transceiver was enabled, which we can read from software
