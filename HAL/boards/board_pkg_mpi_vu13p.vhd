@@ -217,7 +217,7 @@ package board_pkg is
     12 => (FREQ => REF_SYNC320),
     13 => (FREQ => REF_SYNC320),
     14 => (FREQ => REF_SYNC240),
-    15 => (FREQ => REF_SYNC320),
+    15 => (FREQ => REF_SYNC240),
 
     16 => (FREQ => REF_SYNC320),
     17 => (FREQ => REF_SYNC320),
