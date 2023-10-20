@@ -210,30 +210,30 @@ begin
         o_result    => mult_zz(hit_i),
         o_dv        => mult_zz_dv(hit_i)
       );
-    end generate SQR_LOOP;
+      end generate SQR_LOOP;
     SUM_Z_ENT : entity shared_lib.VU_generic_pipelined_MATH
-    generic map(
-      g_OPERATION => "+++",
-      g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 1,
-      g_in_A_WIDTH => rpc_Z_a(0)'length,
-      g_in_B_WIDTH => rpc_Z_a(1)'length,
-      g_in_C_WIDTH => rpc_Z_a(2)'length,
-      g_in_D_WIDTH => rpc_Z_a(3)'length
-    )
-    port map(
-      clk         => clk,
-      rst         => rst,
-      --
-      i_in_A      => std_logic_vector(rpc_Z_a(0)),
-      i_in_B      => std_logic_vector(rpc_Z_a(1)),
-      i_in_C      => std_logic_vector(rpc_Z_a(2)),
-      i_in_D      => std_logic_vector(rpc_Z_a(3)),
-      i_dv        => set_data_dv,
-      --
-      o_result    => sum_z,
-      o_dv        => sum_z_dv
-    );
+      generic map(
+        g_OPERATION => "+++",
+        g_IN_PIPE_STAGES  => 0,
+        g_OUT_PIPE_STAGES => 1,
+        g_in_A_WIDTH => rpc_Z_a(0)'length,
+        g_in_B_WIDTH => rpc_Z_a(1)'length,
+        g_in_C_WIDTH => rpc_Z_a(2)'length,
+        g_in_D_WIDTH => rpc_Z_a(3)'length
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        --
+        i_in_A      => std_logic_vector(rpc_Z_a(0)),
+        i_in_B      => std_logic_vector(rpc_Z_a(1)),
+        i_in_C      => std_logic_vector(rpc_Z_a(2)),
+        i_in_D      => std_logic_vector(rpc_Z_a(3)),
+        i_dv        => set_data_dv,
+        --
+        o_result    => sum_z,
+        o_dv        => sum_z_dv
+      );
   --------------------------------
   -- prep
   --------------------------------
