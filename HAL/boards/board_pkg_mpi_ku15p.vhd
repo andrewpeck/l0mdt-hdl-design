@@ -149,9 +149,9 @@ package board_pkg is
     2  => (FREQ => REF_SYNC240) , -- SL_REF0
     3  => (FREQ => REF_SYNC240) , -- SL_REF1
     4  => (FREQ => REF_SYNC240) , -- SL_REF2
-    5  => (FREQ => REF_SYNC240) , -- FELIX_REF0
-    6  => (FREQ => REF_SYNC240) , -- FELIX_REF1
-    7  => (FREQ => REF_SYNC240) , -- FELIX_REF2
+    5  => (FREQ => REF_SYNC240_FLX) , -- FELIX_REF0
+    6  => (FREQ => REF_SYNC240_FLX) , -- FELIX_REF1
+    7  => (FREQ => REF_SYNC240_FLX) , -- FELIX_REF2
     8  => (FREQ => REF_NIL    ) , -- AD_CLK2_KUP , muxed as C2c or Spare
     9  => (FREQ => REF_AXI_C2C) , -- B2B_REF0 to SM
  --   9  => (FREQ => REF_NIL ), 

@@ -574,7 +574,7 @@ begin
         & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
         & " FLX_LINK_CNT=" & integer'image(c_FLX_IDX) severity note;
 
-      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_SYNC240)
+      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_SYNC240_FLX)
         report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
       
       -- just set a flag to 1 to indicate that this transceiver was enabled, which we can read from software
@@ -617,7 +617,7 @@ begin
         port map (clk_freerun_i                 => axiclock                                      -- : in  std_logic  
                   , sys_rst_i                   => sys_rst                                       -- : in  std_logic
                                                                                                  
-                  , refclk0_i                   => refclk_i_p(c_MGT_MAP(I).refclk)               -- : in  std_logic
+                  , refclk0_i                   => refclk(c_MGT_MAP(I).refclk)                   -- : in  std_logic
                                                                                                  
                   , rx_srcclk_o                 => rx_srcclk                                     -- : out std_logic
                   , rx_usrclk_o                 => rx_usrclk                                     -- : out std_logic
