@@ -147,8 +147,8 @@ package board_pkg is
     0  => (FREQ => REF_NIL    ) , -- C2C_REF0
     1  => (FREQ => REF_NIL    ) , -- CM2CM_REF0
     2  => (FREQ => REF_SYNC240) , -- SL_REF0
-    3  => (FREQ => REF_SYNC240) , -- SL_REF1
-    4  => (FREQ => REF_SYNC240) , -- SL_REF2
+    3  => (FREQ => REF_SYNC240_FLX) , -- SL_REF1 -- see comment on table above
+    4  => (FREQ => REF_SYNC240_FLX) , -- SL_REF2 -- see comment on table above
     5  => (FREQ => REF_SYNC240_FLX) , -- FELIX_REF0
     6  => (FREQ => REF_SYNC240_FLX) , -- FELIX_REF1
     7  => (FREQ => REF_SYNC240_FLX) , -- FELIX_REF2
