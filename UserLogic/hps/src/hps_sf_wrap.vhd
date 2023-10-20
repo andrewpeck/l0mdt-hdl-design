@@ -43,7 +43,7 @@ library lsf_lib;
 use lsf_lib.all;
 
 library fm_lib;
-use fm_lib.fm_ult_pkg.all;
+use fm_lib.fm_types.all;
 
 
 entity hps_sf_wrap is
@@ -62,7 +62,7 @@ entity hps_sf_wrap is
     lsf_ctrl_v : in  std_logic_vector;--HPS_LSF_LSF_CTRL_t;
     lsf_mon_v  : out std_logic_vector;--HPS_LSF_LSF_MON_t;
 
-    sf_fm_data : out fm_rt_array( 0 to sf_sb_n - 1);
+    fm_sf_mon_v : out std_logic_vector; --out fm_sf_mon(0 to sf_sb_n-1); 
     -- configuration
     i_control_v  : in  heg_ctrl2sf_vt;
     i_slc_data_v : in  heg2sfslc_vt;
@@ -81,10 +81,8 @@ architecture beh of hps_sf_wrap is
   signal lsf_mon_r  : HPS_LSF_LSF_MON_t;
 
   signal sf_data_v : std_logic_vector(o_sf_data_v'length -1 downto 0);
-
-  constant lc_HEG2SFSLC_LEN : integer := i_slc_data_v'length;--len():
-  constant lc_HEG2SFHIT_LEN : integer := i_mdt_data_v'length;--len():
-  constant lc_SF2PTCALC_LEN : integer := o_sf_data_v'length;--len():
+  signal  fm_sf_mon_r : fm_sf_mon;
+  
 
 begin
 
@@ -98,14 +96,17 @@ begin
   lsf_mon_r <= zero(lsf_mon_r);
 --  csf_mon_r <= zero(csf_mon_r);
   --
-  sf_fm_data(0).fm_data <= (mon_dw_max-1 downto lc_HEG2SFSLC_LEN => '0') & i_slc_data_v;
-  sf_fm_data(0).fm_vld  <= i_slc_data_v(lc_HEG2SFSLC_LEN-1);
 
-  sf_fm_data(1).fm_data <= (mon_dw_max-1 downto lc_HEG2SFHIT_LEN => '0') & i_mdt_data_v;
-  sf_fm_data(1).fm_vld  <= i_mdt_data_v(lc_HEG2SFHIT_LEN-1);
+  fm_sf_mon_v <= convert(fm_sf_mon_r, fm_sf_mon_v);
+  
+  fm_sf_mon_r(0).fm_data <= (mon_dw_max-1 downto  heg2sfslc_rt'w => '0') & i_slc_data_v;
+  fm_sf_mon_r(0).fm_vld   <= i_slc_data_v(heg2sfslc_rt'w-1);
 
-  sf_fm_data(2).fm_data <= (mon_dw_max-1 downto lc_SF2PTCALC_LEN => '0') & o_sf_data_v;
-  sf_fm_data(2).fm_vld  <= o_sf_data_v(lc_SF2PTCALC_LEN -1);
+  fm_sf_mon_r(1).fm_data <= (mon_dw_max-1 downto  heg2sfhit_rt'w => '0') & i_mdt_data_v;
+  fm_sf_mon_r(1).fm_vld  <= i_mdt_data_v(heg2sfhit_rt'w-1);
+
+  fm_sf_mon_r(2).fm_data <= (mon_dw_max-1 downto  sf2ptcalc_rt'w => '0') & o_sf_data_v;
+  fm_sf_mon_r(2).fm_vld  <= o_sf_data_v(sf2ptcalc_rt'w -1);
 
 
   EN_SF : if c_SF_ENABLED = '1' generate

@@ -1,3 +1,6 @@
+python ../../../../tools/yml2hdl/yml2hdl.py -v  fm_types.yml -f
+
+
 --Autgeneration of FM_PKG from address map - Re-run when changing address map
 
 ./build_vhdl_packages.py -x ../address_tables/modules/FM.xml -o ../HAL/ctrl/src/FM --mapTemplate templates/axi_generic/template_map_withbram.vhd FM
