@@ -4,6 +4,8 @@ module fm_map_wrapper #(
   )
    (
     input wire 			       clk_axi,
+    input wire 			       clk_hs,
+    input wire 			       reset_hs,
     input wire 			       reset_axi_n,
     //slave_readMOSI   : in  AXIReadMOSI;
     input wire [AXI_ADDR_WIDTH-1:0]    slave_readMOSI_address, // : std_wire_vector(AXI_ADDR_WIDTH-1 downto 0); -- ARADDR
@@ -75,6 +77,8 @@ module fm_map_wrapper #(
    fm_map_vhdl_wrapper    fm_map_vhdl_wrapper_inst(
     .clk_axi(clk_axi),
     .reset_axi_n(reset_axi_n),
+						   .clk_hs(clk_hs),
+						   .reset_hs(reset_hs),
     //slave_readMOSI   : in  AXIReadMOSI;
     .slave_readMOSI_address(slave_readMOSI_address), // : std_wire_vector(AXI_ADDR_WIDTH-1 downto 0); -- ARADDR
     .slave_readMOSI_address_ID(slave_readMOSI_address_ID), // : std_wire_vector(AXI_ID_BIT_COUNT-1 downto 0); --ARID

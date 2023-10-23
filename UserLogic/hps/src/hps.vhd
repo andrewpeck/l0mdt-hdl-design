@@ -40,7 +40,7 @@ library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
 
 library fm_lib;
-use fm_lib.fm_ult_pkg.all;
+use fm_lib.fm_types.all;
 
 entity hps is
   generic(
@@ -55,7 +55,7 @@ entity hps is
     -- control
     ctrl_v            : in std_logic_vector;-- HPS_CTRL_t;
     mon_v             : out std_logic_vector;--HPS_MON_t;
-    h2s_fm_data       : out fm_rt_array(0 to h2s_sb_single_station_n - 1);
+    fm_hps_mon_v       : out std_logic_vector; -- fm_hps_sf_mon ; --fm_rt_array(0 to h2s_sb_single_station_n - 1);
     -- SLc
     i_uCM2hps_av      : in  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- MDT hit
@@ -105,6 +105,7 @@ architecture beh of hps is
   type heg_ctrl_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(HPS_HEG_HEG_CTRL_t'w -1 downto 0);
   type heg_mon_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(HPS_HEG_HEG_MON_t'w -1 downto 0);
 
+  
   signal heg_ctrl_av : heg_ctrl_avt;
   signal heg_mon_av : heg_mon_avt;
 
@@ -120,8 +121,11 @@ architecture beh of hps is
   signal heg2sfslc_av   : heg2sfslc_avt(c_NUM_THREADS -1 downto 0);
   signal heg2sfhit_av   : heg2sfhit_avt(c_NUM_THREADS -1 downto 0);
 
+  signal fm_hps_sf_mon_a :  fm_hps_sf_mon;
+  signal fm_sf_mon_v        :  std_logic_vector_array(0 to threads_n-1)(width(fm_hps_sf_mon_a(0))-1 downto 0);
 
-  signal sf_fm_data_th  : sf_single_station_array;
+   
+
 begin
 
   ctrl_r <= convert(ctrl_v,ctrl_r);
@@ -135,12 +139,8 @@ begin
   mon_r.MDT_T0.MDT_T0 <= convert(pc_t0_mon_v,mon_r.MDT_T0.MDT_T0);
   mon_r.MDT_TC.MDT_TC <= convert(pc_tc_mon_v,mon_r.MDT_TC.MDT_TC);
 
-  h2s_fm_gen: for th_i in c_NUM_THREADS -1 downto 0 generate
-    h2s_fm_data(th_i*sf_sb_n to (th_i+1)*sf_sb_n - 1)   <= sf_fm_data_th(th_i)(0 to sf_sb_n -1);
-  end generate h2s_fm_gen;
-  --h2s_fm_data(0 to sf_sb_n - 1)             <= sf_fm_data_th(0)(0 to sf_sb_n -1);
-  --h2s_fm_data( sf_sb_n to 2*sf_sb_n - 1)    <= sf_fm_data_th(1)(0 to sf_sb_n -1);
-  --h2s_fm_data(2* sf_sb_n to 3*sf_sb_n - 1)  <= sf_fm_data_th(2)(0 to sf_sb_n -1);
+  fm_hps_mon_v <= convert(fm_hps_sf_mon_a, fm_hps_mon_v);
+  
 
 
   CM_for_gen: for th_i in c_NUM_THREADS -1 downto 0 generate
@@ -194,7 +194,8 @@ begin
 
     heg_ctrl_av(th_i) <= convert(ctrl_r.heg.heg(th_i),heg_ctrl_av(th_i));
     mon_r.heg.heg(th_i) <= convert(heg_mon_av(th_i),mon_r.heg.heg(th_i));
-
+    fm_hps_sf_mon_a(th_i) <= convert(fm_sf_mon_v(th_i), fm_hps_sf_mon_a(th_i));
+    
     HEG : entity heg_lib.heg
       generic map(
         g_STATION_RADIUS => g_STATION_RADIUS,
@@ -233,8 +234,8 @@ begin
 
         csf_ctrl_v => csf_ctrl_av(th_i),--ctrl_r.csf.csf(th_i),
         csf_mon_v  => csf_mon_av(th_i),--mon_r.csf.csf(th_i),
-
-        sf_fm_data => sf_fm_data_th(th_i),
+        
+        fm_sf_mon_v => fm_sf_mon_v(th_i), 
         -- to Segment finder
         i_control_v   => heg2sf_ctrl_av(th_i),
         i_slc_data_v  => heg2sfslc_av(th_i),
@@ -242,6 +243,7 @@ begin
         --
         o_sf_data_v   => o_sf2pt_av(th_i)
         );
+
 
   end generate;
 

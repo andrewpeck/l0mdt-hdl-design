@@ -2,17 +2,18 @@
 
 
 module fm_dummy_block #(
-			parameter dummy_master = 1
+			parameter dummy_master = 1,
+			parameter data_width = 32
 			)(
 		       input logic 	   clk,
 		       input logic 	   rst,
-		       input logic [31:0]  dummy_input,
+		       input logic [data_width-1:0]  dummy_input,
 		       input logic 	   dummy_input_vld,
-		       output logic [31:0] dummy_mon_data,
+		       output logic [data_width-1:0] dummy_mon_data,
 		       output logic 	   dummy_mon_vld
 		       );
-   logic [31:0] 			   dummy_val[5] = {32'h80000BAD, 32'h80000BEE, 32'h8000D0E5, 32'h80000FAB, 32'h8000DEED};
-   logic [5:0] 				   count;
+   logic [data_width-2:0] 		   dummy_val[5] = {'h40000BAD, 'h60000BEE, 'h7000D0E5, 'h78000FAB, 'h7C00DEED};
+   logic [5:0] 		   		           count;
    
    always @ (posedge clk)
      begin
@@ -30,7 +31,8 @@ module fm_dummy_block #(
 		  
 		  if(count < 5)
 		    begin
-		       dummy_mon_data <=  dummy_val[count];
+		       dummy_mon_data[data_width-2:0] <=  dummy_val[count];
+		       dummy_mon_data[data_width-1]     <= 1'b1;		       
 		       dummy_mon_vld    <= 1'b1;		  
 		    end
 		  else
