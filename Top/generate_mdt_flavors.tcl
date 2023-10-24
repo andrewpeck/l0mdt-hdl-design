@@ -15,7 +15,7 @@ proc Sed {regex file} {
     }
 }
 
-proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
+proc update_trigger_libs {lib pt_calc segment_finder fpga_short en_ila} {
 
     puts "INFO: UPDATING TRIGGER LIBS"
     puts "INFO: FPGA type: ${fpga_short}"
@@ -23,6 +23,11 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
     Sed  "s/ku15p/${fpga_short}/g" $lib
 
     Sed  "s/hal_.*.src/hal_[string range ${fpga_short} 0 1].src/g" $lib
+    Sed  "s/ila_.*.src/ila_[string range ${fpga_short} 0 1].src/g" $lib    
+    if {$en_ila == 0} {
+        Sed  "s/^.*ila_.*/#&/g" $lib
+    }
+
 
     if {[string compare "upt" $pt_calc]==0} {
         # enable upt
@@ -187,6 +192,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     set hog_chk 0
     set hog_tag "heavy-duty"
     set zynq_target usp
+    set en_ila 0
 
     # destructure the input properties into variables
     foreach prop [huddle keys $props] {
@@ -254,7 +260,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # update the libraries
     update_trigger_libs "$dest_path/list/l0mdt.src" \
-        $pt_calc $segment_finder $fpga_shortname
+        $pt_calc $segment_finder $fpga_shortname $en_ila
 
     # update the board package
     set board_pkg_dir {HAL/boards/}
