@@ -456,6 +456,7 @@ begin  -- architecture behavioral
 
       -- clocks
       axiclock   => axiclock,
+      clock240_i => clk240,
       clock320   => clk320,
       lhc_locked => lhc_locked,
       refclk_mirrors_out => refclk_mirrors,
