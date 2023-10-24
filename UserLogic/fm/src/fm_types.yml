@@ -1,0 +1,73 @@
+config:
+   basic_functions: False
+   packages:
+      - ieee: [std_logic_1164, numeric_std, math_real]
+      - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
+
+types:
+- mon_dw_max: {qualifier: constant , type: integer, value: 256}
+- stations_n: {qualifier: constant , type: integer, value: 3}     
+- threads_n: {qualifier: constant , type: integer, value: 3}
+- primary_sl_n: {qualifier: constant , type: integer, value: 3}
+- FM_INN: {qualifier: constant , type: integer, value: 0}
+- FM_MID: {qualifier: constant , type: integer, value: 1}
+- FM_OUT: {qualifier: constant , type: integer, value: 2}
+- FM_EXT: {qualifier: constant , type: integer, value: 3}
+
+- sf_sb_n: {qualifier: constant , type: integer, value: 3}
+- sf_sb_single_station_n: {qualifier: constant , type: integer, value: sf_sb_n * threads_n}
+- h2s_sb_single_station_n: {qualifier: constant , type: integer, value: sf_sb_single_station_n, comment: there may be SB outside of SF in H2S block}
+- h2s_sb_all_station_n: {qualifier: constant , type: integer, value: h2s_sb_single_station_n * stations_n}
+
+ #SpyBuffers for UCM
+  #Adding SB in UCM to monitor
+  #   1. Three  Candidates from primary SL (slc_rx_avt),
+  #   2. Three Output SLC to inner chamber (ucm2hps)
+  #   3. Three Output SLC to middle chamber (ucm2hps)
+  #   4. Three Output SLC to outer chamber (ucm2hps)
+  #  5. Three UCM2PL Ouput to pipeline - Should eventually pick from c_MAX_NUM_SL
+- ucm2hps_sb_n : {qualifier: constant , type: integer, value: stations_n*threads_n }
+- ucm_sb_n : {qualifier: constant , type: integer, value: primary_sl_n + ucm2hps_sb_n + primary_sl_n }
+
+- total_l0mdt_sb : {qualifier: constant , type: integer, value: h2s_sb_all_station_n + ucm_sb_n }
+
+
+- fm_rt:
+  - fm_data: {type: logic, range: [mon_dw_max-1,0]}
+  - fm_vld  : {type: logic}
+
+- fm_art: {array: open, type: 'fm_rt'}
+
+#- fm_hps_sf_mon: {array: [0, sf_sb_n * threads_n -1 ], type: 'fm_rt'}
+
+- fm_sf_mon: {array: [0, sf_sb_n -1 ], type: 'fm_rt'}
+- fm_hps_sf_mon: {array: [0, threads_n -1 ], type: 'fm_sf_mon'}
+
+
+- fm_hps_mon:
+  - fm_hps_mon_inn : {type: fm_hps_sf_mon}
+  - fm_hps_mon_mid : {type: fm_hps_sf_mon}
+  - fm_hps_mon_out : {type: fm_hps_sf_mon}
+
+- fm_ucm2hps_thread_mon: {array: [0, threads_n-1], type: 'fm_rt'}
+
+- fm_ucm_slc_rx: {array: [0, primary_sl_n -1], type: 'fm_rt'}
+- fm_ucm2pl      : {array: [0, primary_sl_n -1], type: 'fm_rt'}
+- fm_ucm2hps:
+  - fm_ucm2hps_inn : {type: fm_ucm2hps_thread_mon}
+  - fm_ucm2hps_mid : {type: fm_ucm2hps_thread_mon}
+  - fm_ucm2hps_out : {type: fm_ucm2hps_thread_mon}
+  
+- fm_ucm_mon_data:
+  - fm_ucm_slc_rx_mon           : {type: 'fm_ucm_slc_rx'}
+  - fm_ucm2pl_mon                 : {type: 'fm_ucm2pl'}
+  - fm_ucm2hps                       : {type: 'fm_ucm2hps'}
+ 
+- fm_mon:
+  - fm_hps_mon   : {type: 'fm_hps_mon'}   
+  - fm_ucm_mon  : {type: 'fm_ucm_mon_data'}              
+
+
+#- fm_pb_data: {type: slc_rx_rt}
+- fm_pb: {array: [0, total_l0mdt_sb -1], type: logic, range: [mon_dw_max-1, 0]}
+

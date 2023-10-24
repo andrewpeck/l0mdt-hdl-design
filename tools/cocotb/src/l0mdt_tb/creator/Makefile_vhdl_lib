@@ -439,7 +439,7 @@ VHDL_SOURCES_ult_lib =\
 
 
 VHDL_SOURCES_fm_lib = \
-    $(FMDIR)/fm_ult_pkg.vhd
+    $(FMDIR)/fm_types.vhd
 
 VHDL_SOURCES_mtc_lib = \
     $(MTCDIR)/../top_mtc_wrapper.vhd

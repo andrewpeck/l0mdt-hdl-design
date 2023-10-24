@@ -17,7 +17,10 @@ library shared_lib;
 use shared_lib.common_types_pkg.all;
 
 library fm_lib;
-use fm_lib.fm_ult_pkg.all;
+use fm_lib.fm_types.all;
+
+library xil_defaultlib;
+use xil_defaultlib.AXISlaveAddrPkg.all;
 
 entity FM_map_vhdl_wrapper is
   generic (
@@ -26,6 +29,9 @@ entity FM_map_vhdl_wrapper is
   port (
     clk_axi          : in  std_logic;
     reset_axi_n      : in  std_logic;
+    clk_hs          : in  std_logic;
+    reset_hs      : in  std_logic;
+
     --slave_readMOSI   : in  AXIReadMOSI;
    slave_readMOSI_address : in std_logic_vector(AXI_ADDR_WIDTH-1 downto 0); -- ARADDR
    slave_readMOSI_address_ID : in std_logic_vector(AXI_ID_BIT_COUNT-1 downto 0); --ARID
@@ -97,14 +103,15 @@ architecture behavioral of FM_map_vhdl_wrapper is
   signal  slave_writeMOSI : AXIWriteMOSI ;
   signal  slave_writeMISO : AXIWriteMISO ;
 
-  signal fm_mon : FM_MON_t;
+  signal fm_axi_mon : FM_MON_t;
   signal fm_ctrl: FM_CTRL_t:= DEFAULT_FM_CTRL_t;
-  signal fm_mon_v  : std_logic_vector(width(fm_mon) -1 downto 0);    
+  signal fm_axi_mon_v  : std_logic_vector(width(fm_axi_mon) -1 downto 0);    
   signal fm_ctrl_v : std_logic_vector(width(fm_ctrl) -1 downto 0);
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
-  signal h2s_fm_data       : fm_rt_array(0  to h2s_sb_all_station_n -1);
-  
+  --signal h2s_fm_data       : fm_hps_mon; --fm_rt_array(0  to total_l0mdt_sb -1);
+  --signal ucm_fm_mon      : fm_ucm_mon_data;
+  signal fm_sb_mon         : fm_mon;
 begin  -- architecture behavioral
 
   --fm_mon.SB0.SB_MEM.rd_data       <= x"00000000";
@@ -112,10 +119,11 @@ begin  -- architecture behavioral
 
   --fm_mon.SB1.SB_MEM.rd_data       <= x"00000000";
   --fm_mon.SB1.SB_MEM.rd_data_valid <= fm_ctrl.SB1.SB_MEM.enable;
-  clock_and_control.clk           <= clk_axi;
-  clock_and_control.rst           <= NOT(reset_axi_n);
-  fm_mon                          <= convert(fm_mon_v, fm_mon);
+  clock_and_control.clk           <= clk_hs;
+  clock_and_control.rst           <= reset_hs;
+  fm_axi_mon                          <= convert(fm_axi_mon_v, fm_axi_mon);
   fm_ctrl_v                       <= convert(fm_ctrl, fm_ctrl_v);
+  fm_sb_mon                    <= zero(fm_sb_mon);
   
     --slave_readMOSI   : in  AXIReadMOSI;
     slave_readMOSI.address        <= slave_readMOSI_address; 
@@ -174,7 +182,9 @@ begin  -- architecture behavioral
     slave_writeMISO_response_user      <= slave_writeMISO.response_user           ;
     
     fm_map_inst : entity ctrl_lib.FM_map
-      
+       generic map(
+        ALLOCATED_MEMORY_RANGE => to_integer(AXI_RANGE_FM)
+        )
       port map (
         clk_axi         => clk_axi,
         reset_axi_n     => reset_axi_n,
@@ -184,7 +194,7 @@ begin  -- architecture behavioral
         slave_writemiso => slave_writemiso,
 
         -- monitor signals in
-        mon  => fm_mon,
+        mon  => fm_axi_mon,
         -- control signals out
         Ctrl => fm_ctrl
         );
@@ -196,11 +206,10 @@ begin  -- architecture behavioral
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
         ctrl_v            => fm_ctrl_v,
-        mon_v             => fm_mon_v,
+        mon_v             => fm_axi_mon_v,
         axi_reset_n       => reset_axi_n,
         --  inputs
-        h2s_fm_data   => h2s_fm_data
---        ult_fm_data      => ult_fm_data
+        fm_mon   => fm_sb_mon
       );
 
 end architecture behavioral;          

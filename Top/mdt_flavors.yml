@@ -98,7 +98,7 @@ ku15p_ull_fm:
       en_fm: 1
       en_tar: 0
       en_h2s: 1
-      en_ucm: 0
+      en_ucm: 1
       en_mpl: 0
       en_sf: 1
       en_pt: 0

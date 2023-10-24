@@ -12,19 +12,18 @@ module fm #(
 	      input logic 			 rst_hs,
 	      input logic 			 axi_reset_n,
 	      output logic [$bits(FM_MON_t)-1:0] fm_mon_v,
-	      input logic [$bits(fm_rt)-1 :0 ] 	 ult_fm_data_v[total_l0mdt_sb]
+	      input logic [$bits(fm_rt)-1 :0 ] 	 ult_fm_data_v[total_l0mdt_sb],
+	      output logic [mon_dw_max-1 : 0] 	 fm_pb_v[total_l0mdt_sb]
 	  );
    logic 					 axi_clock;
-   genvar 					 sb_t;
-   
+   logic 					 init_spy_mem;   
+   logic [sb_mapped_n-1:0] 			 sb_reset;
    logic [sb_mapped_n-1:0] 			 freeze;
    logic [pb_mode_width-1:0] 			 playback_mode[sb_mapped_n];
-   logic 					 init_spy_mem;
-   
    FM_MON_t fm_mon_out;
    FM_CTRL_t fm_ctrl_in;
    fm_rt     ult_fm_data[total_l0mdt_sb];
-   
+   genvar 					 sb_t;
 
    assign fm_ctrl_in   = fm_ctrl_v;
    assign fm_mon_v     = fm_mon_out;
@@ -41,6 +40,7 @@ module fm #(
 			      .axi_reset_n(axi_reset_n),
 			      .axi_clk(axi_clock),
 			      .freeze(freeze),
+			      .sb_reset(sb_reset),
 			      .playback_mode(playback_mode),
 			      .init_spy_mem(init_spy_mem)
 			);
@@ -48,17 +48,19 @@ module fm #(
    fm_data  #(
 	      .total_l0mdt_sb(total_l0mdt_sb)
 	      )fm_data_inst(
-			.clk_hs(clk_hs),
-			.rst_hs(rst_hs),
-			.axi_reset_n(axi_reset_n),
-			.spy_clock(axi_clock),
-			.freeze(freeze),
-			.playback_mode(playback_mode),
+			    .clk_hs(clk_hs),
+			    .rst_hs(rst_hs),
+			    .axi_reset_n(axi_reset_n),
+			    .spy_clock(axi_clock),
+			    .freeze(freeze),
+			    .sb_reset(sb_reset),
+			    .playback_mode(playback_mode),
 			    .init_spy_mem(init_spy_mem),
-			.fm_ctrl_in(fm_ctrl_in),
-			.ult_mon_data(ult_fm_data),
-			.fm_mon_out(fm_mon_out)
-			);
+			    .fm_ctrl_in(fm_ctrl_in),
+			    .ult_mon_data(ult_fm_data),
+			    .fm_mon_out(fm_mon_out),
+			    .fm_playback_data(fm_pb_v)
+			    );
 
    
 
