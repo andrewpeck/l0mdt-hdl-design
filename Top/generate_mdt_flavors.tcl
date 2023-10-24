@@ -7,55 +7,62 @@ set repo_path $script_path/..
 
 source $script_path/create_top_modules.tcl
 
+proc Sed {regex file} {
+    if {$::tcl_platform(os) == "Darwin"} {
+        exec sed -i "" $regex $file 
+    } else {
+        exec sed -i $regex $file
+    }
+}
 
 proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 
     puts "INFO: UPDATING TRIGGER LIBS"
     puts "INFO: FPGA type: ${fpga_short}"
 
-    exec sed -i  "s/ku15p/${fpga_short}/g" $lib
+    Sed  "s/ku15p/${fpga_short}/g" $lib
 
-    exec sed -i  "s/hal_.*.src/hal_[string range ${fpga_short} 0 1].src/g" $lib
+    Sed  "s/hal_.*.src/hal_[string range ${fpga_short} 0 1].src/g" $lib
 
     if {[string compare "upt" $pt_calc]==0} {
         # enable upt
-        exec sed -i  "s/^#\\(UserLogic.*upt_lib_${fpga_short}.src\\)/\\1/g" $lib
+        Sed  "s/^#\\(UserLogic.*upt_lib_${fpga_short}.src\\)/\\1/g" $lib
         # disable upt empty
-        exec sed -i  "s/^UserLogic.*upt_lib_empty.src/#&/g" $lib
+        Sed  "s/^UserLogic.*upt_lib_empty.src/#&/g" $lib
         # enable ptc_lib empty
-        exec sed -i  "s/^#\\(UserLogic.*ptc_lib_empty.src\\)/\\1/g" $lib
+        Sed  "s/^#\\(UserLogic.*ptc_lib_empty.src\\)/\\1/g" $lib
     } else {
         # disable upt
-        exec sed -i  "s/^UserLogic.*upt_lib_${fpga_short}.src/#&/g" $lib
+        Sed  "s/^UserLogic.*upt_lib_${fpga_short}.src/#&/g" $lib
         # enable upt empty
-        exec sed -i  "s/^#\\(UserLogic.*upt_lib_empty.src\\)/\\1/g" $lib
+        Sed  "s/^#\\(UserLogic.*upt_lib_empty.src\\)/\\1/g" $lib
     }
 
     if {[string compare "mpt" $pt_calc]==0} {
         # enable ptc
-        exec sed -i  "s/^#\\(UserLogic.*ptc_lib.src\\)/\\1/g" $lib
+        Sed  "s/^#\\(UserLogic.*ptc_lib.src\\)/\\1/g" $lib
     } else {
         # disable ptc
-        exec sed -i  "s/^UserLogic.*ptc_lib.src/#&/g" $lib
+        Sed  "s/^UserLogic.*ptc_lib.src/#&/g" $lib
     }
 
     if {[string compare "lsf" $segment_finder]==0} {
         # enable lsf
-        exec sed -i  "s/^#\\(UserLogic.*lsf_lib_${fpga_short}.src\\)/\\1/g" $lib
+        Sed  "s/^#\\(UserLogic.*lsf_lib_${fpga_short}.src\\)/\\1/g" $lib
         # disable lsf empty
-        exec sed -i  "s/^UserLogic.*lsf_lib_empty.src/#&/g" $lib
+        Sed  "s/^UserLogic.*lsf_lib_empty.src/#&/g" $lib
     } else {
         # disable lsf
-        exec sed -i  "s/^UserLogic.*lsf_lib_${fpga_short}.src/#&/g" $lib
+        Sed  "s/^UserLogic.*lsf_lib_${fpga_short}.src/#&/g" $lib
         # enable empty lsf
-        exec sed -i  "s/^#\\(UserLogic.*lsf_lib_empty.src\\)/\\1/g" $lib
+        Sed  "s/^#\\(UserLogic.*lsf_lib_empty.src\\)/\\1/g" $lib
     }
 
     if {[string compare "ku15p" $fpga_short]==0} {
       # disable vu13
-      exec sed -i  "s/^UserLogic.*ucm_lib_vu13.src/#&/g" $lib
+      Sed  "s/^UserLogic.*ucm_lib_vu13.src/#&/g" $lib
       # enable ku15
-      exec sed -i  "s/^#\\(UserLogic.*ucm_lib_ku15.src\\)/\\1/g" $lib
+      Sed  "s/^#\\(UserLogic.*ucm_lib_ku15.src\\)/\\1/g" $lib
       
     }
 
@@ -69,23 +76,23 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
     #
     # if {[string compare "csf" $segment_finder]==0} {
     #     # enable csf
-    #     exec sed -i  "s/^#\\(UserLogic.*csf_lib.src\\)/\\1/g" $lib
+    #     Sed  "s/^#\\(UserLogic.*csf_lib.src\\)/\\1/g" $lib
     # } else {
     #     # disable csf
-    #     exec sed -i  "s/^UserLogic.*csf_lib.src/#&/g" $lib
+    #     Sed  "s/^UserLogic.*csf_lib.src/#&/g" $lib
     # }
 }
 
 proc replace_prj_cfg_std_logic {entry new_value dest_file} {
-    exec sed -i s|\\(proj_cfg.${entry}\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${new_value}|g $dest_file
+    Sed s|\\(proj_cfg.${entry}\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${new_value}|g $dest_file
 }
 
 proc replace_prj_cfg_int {entry new_value dest_file} {
-    exec sed -i s,\\(proj_cfg.${entry}\\s*:=\\s*\\)\\(\[0-9\]*\\),\\1${new_value},g $dest_file
+    Sed s,\\(proj_cfg.${entry}\\s*:=\\s*\\)\\(\[0-9\]*\\),\\1${new_value},g $dest_file
 }
 
 proc replace_constant_int {entry new_value dest_file} {
-    exec sed -i s,\\(constant\\s*${entry}\\s*:\\s*integer\\s*:=\\s*\\)\\(\\-\\?\[0-9\]*\\),\\1${new_value},g $dest_file
+    Sed s,\\(constant\\s*${entry}\\s*:\\s*integer\\s*:=\\s*\\)\\(\\-\\?\[0-9\]*\\),\\1${new_value},g $dest_file
     # puts sed -i s,\\(constant\\s*${entry}\\s*:\\s*integer\\s*:=\\s*\\)\\(-\?\[0-9\]*\\),\\1${new_value},g $dest_file
 }
 
@@ -208,28 +215,28 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     }
 
     # update the link mapping
-    exec sed -i "s|HAL/link_maps/.*$|HAL/link_maps/${link_map}.vhd|g" "$dest_path/list/hal.src"
+    Sed "s|HAL/link_maps/.*$|HAL/link_maps/${link_map}.vhd|g" "$dest_path/list/hal.src"
 
     # update hog.conf
     file rename -force "$dest_path/hog.conf" "$dest_path/hog.conf"
 
     # replace fpga shortname
-    exec sed -i "s/ku15p/${fpga_shortname}/g" "$dest_path/hog.conf"
+    Sed "s/ku15p/${fpga_shortname}/g" "$dest_path/hog.conf"
 
     # update fpga part number
-    exec sed -i "s|PART=.*$|PART=$fpga|g" "$dest_path/hog.conf"
+    Sed "s|PART=.*$|PART=$fpga|g" "$dest_path/hog.conf"
 
     if {$fpga_shortname == "vu13p"} {
-        exec sed -i "s|KINTEX|VIRTEX|g" "$dest_path/address_tables/address_apollo.xml"       
-        exec sed -i "s|KINTEX|VIRTEX|g" "$dest_path/slaves.yaml"
+        Sed "s|KINTEX|VIRTEX|g" "$dest_path/address_tables/address_apollo.xml"       
+        Sed "s|KINTEX|VIRTEX|g" "$dest_path/slaves.yaml"
     }
 
     # update zynq target
     if {$zynq_target == "usp"} {
-        exec sed -i "s|^set.*::AXI_BASE_ADDRESS.*0x.*|set ::AXI_BASE_ADDRESS 0xB0000000 ; # USP|g" "$dest_path/post-creation.tcl"
+        Sed "s|^set.*::AXI_BASE_ADDRESS.*0x.*|set ::AXI_BASE_ADDRESS 0xB0000000 ; # USP|g" "$dest_path/post-creation.tcl"
     } elseif {$zynq_target == "7s"} {
-        exec sed -i "s|^set.*::AXI_BASE_ADDRESS.+0x.*|set ::AXI_BASE_ADDRESS 0x80000000 ; # 7-Series|g" "$dest_path/post-creation.tcl"
-        exec sed -i "s|set REMOTE_C2C_64 1||g" "$dest_path/post-creation.tcl"
+        Sed "s|^set.*::AXI_BASE_ADDRESS.+0x.*|set ::AXI_BASE_ADDRESS 0x80000000 ; # 7-Series|g" "$dest_path/post-creation.tcl"
+        Sed "s|set REMOTE_C2C_64 1||g" "$dest_path/post-creation.tcl"
     } else {
         error "Unrecognized zynq target \"$zynq_target\""
     }
@@ -250,23 +257,23 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     set foo ${board_pkg_dir}.*board_pkg.*.vhd
     set bar ${board_pkg_dir}${board_pkg}.vhd
     set re "s|${foo}|${bar}|g"
-    exec sed -i $re "$dest_path/list/hal.src"
+    Sed $re "$dest_path/list/hal.src"
 
     # update the project/hal configs
     update_prj_config "$dest_path/prj_cfg.vhd" $segment_finder $pt_calc $props
     update_hal_config "$dest_path/user_pkg.vhd" $props
 
     # update the hal.src file
-    exec sed -i "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/hal.src"
+    Sed "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/hal.src"
 
     # update the ctrl_lib.src file
-    # exec sed -i "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/ctrl_lib.src"
+    # Sed "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/ctrl_lib.src"
 
     # update the l0mdt.src file
-    exec sed -i "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/l0mdt.src"
+    Sed "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/l0mdt.src"
 
     # update the project_lib.src file
-    exec sed -i "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/project_lib.src"
+    Sed "s|base_l0mdt|l0mdt/$fpga_shortname/$name|g" "$dest_path/list/project_lib.src"
 }
 
 

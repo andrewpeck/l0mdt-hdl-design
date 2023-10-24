@@ -37,6 +37,11 @@ use work.board_pkg_common.all;
 
 library sl;
 
+library ctrl_lib;
+use ctrl_lib.hal_ctrl.all;
+
+library xil_defaultlib;
+
 entity sector_logic_link_wrapper is
   generic (
     NUMBER_OF_WORDS_IN_A_PACKET : integer := 6;
@@ -50,6 +55,7 @@ entity sector_logic_link_wrapper is
     clk40          : in std_logic;
     pipeline_clock : in std_logic;
     reset          : in std_logic;
+    refclk_mirrors_in    : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
     -- 32 bits / usrclk from mgt
     sl_rx_mgt_word_array_i : in  std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
@@ -65,14 +71,17 @@ entity sector_logic_link_wrapper is
     -- from mgt
     sl_rx_ctrl_i : in sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
-    sl_rx_init_done_i : in std_logic;
+    sl_rx_init_done_i : in std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
     -- to mgt
     sl_tx_ctrl_o : out sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
     sl_rx_slide_o : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
-    sl_re_channel_o : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
+    sl_re_channel_o : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+
+    ctrl : in HAL_SL_CTRL_t;
+    mon  : out HAL_SL_MON_t
 
     );
 end sector_logic_link_wrapper;
@@ -91,6 +100,8 @@ architecture Behavioral of sector_logic_link_wrapper is
   -- the l0mdt firmware uses two's complement internally, so this function was written to
   -- convert between the two representations
 
+  signal reset_int : std_logic;
+  
   function signed_mag_to_signed (data : std_logic_vector) return signed is
     alias sv                 : std_logic_vector (data'length-1 downto 0) is data;
     variable twos_complement : std_logic_vector(data'length-1 downto 0);
@@ -110,8 +121,64 @@ architecture Behavioral of sector_logic_link_wrapper is
     result := signed(twos_complement);
     return result;
   end;
+
+  
+--  signal rate_rx_clk0 : std_logic_vector(31 downto 0);
+--  signal rate_tx_clk0 : std_logic_vector(31 downto 0);
+
+  COMPONENT ila_sl_tx
+PORT (
+	clk : IN STD_LOGIC;
+
+
+
+	probe0 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe1 : IN STD_LOGIC_VECTOR(191 DOWNTO 0); 
+	probe2 : IN STD_LOGIC_VECTOR(23 DOWNTO 0); 
+	probe3 : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+	probe4 : IN STD_LOGIC_VECTOR(23 DOWNTO 0)
+);
+END COMPONENT  ;
+COMPONENT ila_sl_rx
+
+PORT (
+	clk : IN STD_LOGIC;
+
+
+
+	probe0 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe1 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+	probe2 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+	probe3 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe4 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+	probe5 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+	probe6 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe7 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe8 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe9 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe10 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe11 : IN STD_LOGIC_VECTOR(23 DOWNTO 0); 
+	probe12 : IN STD_LOGIC_VECTOR(23 DOWNTO 0); 
+	probe13 : IN STD_LOGIC_VECTOR(23 DOWNTO 0); 
+	probe14 : IN STD_LOGIC_VECTOR(23 DOWNTO 0); 
+	probe15 : IN STD_LOGIC_VECTOR(191 DOWNTO 0); 
+	probe16 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe17 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+	probe18 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
+);
+END COMPONENT  ;
+
 begin
 
+  process (clk40) begin
+     if (clk40'event and clk40 = '1') then
+      if reset = '0' then
+         reset_int <= '0';
+      else
+         reset_int <= '1';
+      end if;
+   end if;
+  end process;
   --------------------------------------------------------------------------------
   -- TX Dataformat Mapping
   --------------------------------------------------------------------------------
@@ -160,17 +227,17 @@ begin
         sl_tx_data(I).data(159 downto 32)  <= data;
         sl_tx_data(I).data(191 downto 160) <= trailer;
 
-      end generate;
+      end generate; --sl
 
       -- drive disconnected SL links with all zero
       nosl : if (I >= c_NUM_MTC) generate
         sl_tx_data(I).data  <= (others => '0');
         sl_tx_data(I).valid <= '0';
-      end generate;
+      end generate; -- nosl
 
-    end generate;
+    end generate; -- mgt_tag
 
-  end generate;
+  end generate; -- tx_assignment
 
   --------------------------------------------------------------------------------
   -- RX Dataformat Mapping
@@ -241,11 +308,11 @@ begin
 
       sl_data.data_valid <= sl_rx_data(I).valid;
 
-    end generate;
-  end generate;
+    end generate; -- mgt_tag
+  end generate; -- rx_assignment
 
   sl_gen : for I in 0 to c_NUM_MGTS-1 generate
-    constant mgt_idx : integer := get_sl_mgt_num(I, c_MGT_MAP);
+    constant mgt_idx : integer := get_sl_mgt_num(sl_idx_array(I), c_MGT_MAP);
   begin
 
     mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
@@ -260,10 +327,43 @@ begin
         signal txctrl0 : std_logic_vector (3 downto 0);
         signal txctrl1 : std_logic_vector (3 downto 0);
         signal txctrl2 : std_logic_vector (3 downto 0);
+        -- TX pattern generator
+        signal test_tx_packet_valid_i : std_logic;
+        signal test_packet_userdata_tx_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD*8-1 downto 0);
+        signal test_packet_txctrl0_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal test_packet_txctrl1_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal test_packet_txctrl2_i : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+    
+        signal tx_packet_valid_mux : std_logic;
+        signal packet_userdata_tx_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD*8-1 downto 0);
+        signal packet_txctrl0_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_txctrl1_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_txctrl2_mux : std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+
+        signal mux_ctrl_test_enabled : std_logic := ctrl.TX_ENA_TEST_PATTERN(idx); -- to be connected to a register
       begin
 
         assert false report "generating SL TX #" & integer'image(idx) & " on MGT#"
           & integer'image(I) severity note;
+          patgen_inst : entity sl.tx_test_pattern_generator2
+          generic map (
+            NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
+            NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)
+          port map (
+            reset           => reset_int,
+            tx_usrclk2      => tx_clk(idx),
+            packet_valid    => test_tx_packet_valid_i,
+            packet_userdata => test_packet_userdata_tx_i,
+            packet_txctrl0  => test_packet_txctrl0_i,
+            packet_txctrl1  => test_packet_txctrl1_i,
+            packet_txctrl2  => test_packet_txctrl2_i);
+    
+        -- select if we want to output a test parttern or not with TX_ENA_TEST_PATTERN
+        tx_packet_valid_mux     <= test_tx_packet_valid_i       when mux_ctrl_test_enabled else sl_tx_data_post_cdc(idx).valid;
+        packet_userdata_tx_mux  <= test_packet_userdata_tx_i    when mux_ctrl_test_enabled else sl_tx_data_post_cdc(idx).data;
+        packet_txctrl0_mux      <= test_packet_txctrl0_i        when mux_ctrl_test_enabled else std_logic_vector'(x"000000");
+        packet_txctrl1_mux      <= test_packet_txctrl1_i        when mux_ctrl_test_enabled else std_logic_vector'(x"000000");
+        packet_txctrl2_mux      <= test_packet_txctrl2_i        when mux_ctrl_test_enabled else std_logic_vector'(x"100000");
 
         sector_logic_tx_packet_former_inst : entity sl.sector_logic_tx_packet_former
           generic map (
@@ -275,11 +375,11 @@ begin
             txctrl0         => txctrl0,                       -- 4 bit to mgt
             txctrl1         => txctrl1,                       -- 4 bit to mgt
             txctrl2         => txctrl2,                       -- 4 bit to mgt
-            packet_userdata => sl_tx_data_post_cdc(idx).data,
-            packet_valid    => sl_tx_data_post_cdc(idx).valid,
-            packet_txctrl0  => std_logic_vector'(x"000000"),  --
-            packet_txctrl1  => std_logic_vector'(x"000000"),  --
-            packet_txctrl2  => std_logic_vector'(x"100000")   --
+            packet_userdata => packet_userdata_tx_mux,
+            packet_valid    => tx_packet_valid_mux,
+            packet_txctrl0  => packet_txctrl0_mux,  --
+            packet_txctrl1  => packet_txctrl1_mux,  --
+            packet_txctrl2  => packet_txctrl2_mux   --
             );
 
         sl_tx_ctrl_o(idx).ctrl0 <= x"000" & txctrl0;
@@ -299,7 +399,24 @@ begin
             data_o  => sl_tx_data_post_cdc(idx).data
             );
 
-      end generate;
+          ---------------------
+          -- ILA
+          --------------------
+--          tx_ila_gen: if (I = 8) generate
+--            assert false report "TX ILA generated for link " & integer'image(I) 
+--                        & " sl_link# " & integer'image(idx)
+--                        severity note;
+--            ila_sl_tx_inst : ila_sl_tx
+--            PORT MAP (
+--                clk => refclk_mirrors_in(I/4),
+--                probe0(0) => tx_packet_valid_mux, 
+--                probe1 => packet_userdata_tx_mux, 
+--                probe2 => packet_txctrl0_mux, 
+--                probe3 => packet_txctrl1_mux,
+--                probe4 => packet_txctrl2_mux
+--            );
+--        end generate; -- tx_ila_gen
+      end generate; -- tx_gen
 
       --------------------------------------------------------------------------------
       -- RX Decoder Instantiation
@@ -314,6 +431,11 @@ begin
         signal rxctrl1         : std_logic_vector (3 downto 0);
         signal sl_pre_cdc_vec  : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
         signal sl_post_cdc_vec : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
+        signal packet_rxctrl0_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_rxctrl1_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_rxctrl2_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal packet_rxctrl3_i: std_logic_vector(NUMBER_OF_WORDS_IN_A_PACKET*NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal comma_pulse_i   : std_logic;
       begin
 
         assert false report "generating SL RX #" & integer'image(idx) & " on MGT#"
@@ -323,12 +445,12 @@ begin
         rxctrl1 <= sl_rx_ctrl_i(idx).ctrl1(3 downto 0);
 
         -- decode 8b10b words
-        rx_comma_detector_inst : entity sl.rx_comma_detection
+        rx_comma_detector_inst : entity sl.rx_comma_detection_okumura
           generic map (
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
           port map (
-            reset               => reset,
+            reset               => reset_int OR ctrl.reset.rx_comma,
             clk_in              => rx_clk(idx),
             rx_data_in          => sl_rx_mgt_word_array_i(idx),  -- 32 bit from mgt
             rx_ctrl0_in         => rxctrl0,                      -- 4 bit from mgt
@@ -336,11 +458,12 @@ begin
             decoded_data_out    => dec_userdata,                 -- 32 bit to packet former
             decoded_charisk_out => dec_rxctrl0,                  -- 4 bit to packet former
             decoded_iscomma_out => dec_rxctrl2,                  -- 4 bit to packet former
-            comma_pulse_out     => open,                         -- not used in my-sl-gty
-            lock_out            => open,                         -- not used in my-sl-gty
+            comma_pulse_out     => comma_pulse_i,                         -- not used in my-sl-gty
+            lock_out            => Mon.RX_COMMA_LOCK(idx),                         -- not used in my-sl-gty
             rxslide_out         => sl_rx_slide_o(idx),           -- 1 bit to mgt
             rereset_out         => sl_re_channel_o(idx),         -- 1 bit to mgt
-            rx_init_done_in     => sl_rx_init_done_i             -- 1 bit from mgt
+            rx_init_done_in     => sl_rx_init_done_i(idx),            -- 1 bit from mgt
+            even_slides_in      => ctrl.COMMA_EVEN_SLIDES(idx)                           -- 1 bit setting
             );
 
         -- form 192 bit packets
@@ -350,7 +473,7 @@ begin
             NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
             NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
           port map (
-            reset => reset,
+            reset => reset_int OR ctrl.reset.rx_packet_former,
 
             rx_usrclk2 => rx_clk(idx),
 
@@ -363,10 +486,10 @@ begin
             rxctrl3 => (others => '0'),
 
             -- 23 downto 0
-            packet_rxctrl0 => open,     -- my-sl-gty just connects to led sump
-            packet_rxctrl1 => open,     -- my-sl-gty just connects to led sump
-            packet_rxctrl2 => open,     -- my-sl-gty just connects to led sump
-            packet_rxctrl3 => open,     -- my-sl-gty just connects to led sump
+            packet_rxctrl0 => packet_rxctrl0_i,     
+            packet_rxctrl1 => packet_rxctrl1_i,     
+            packet_rxctrl2 => packet_rxctrl2_i,     
+            packet_rxctrl3 => packet_rxctrl3_i,     
 
             packet_userdata       => sl_rx_data_pre_cdc(idx).data,
             packet_locked         => sl_rx_data_pre_cdc(idx).locked,
@@ -375,6 +498,33 @@ begin
 
             );
 
+          Mon.RX_PACKET_LOCKED(idx) <= sl_rx_data_pre_cdc(idx).locked;
+
+        --------------------------------------------------------------------------------
+        -- RX test pattern checker
+        -- - There is no need to disable this module, it does not affect the firmware behavior
+        --------------------------------------------------------------------------------        
+          rx_test_pattern_checker_inst : entity sl.rx_test_pattern_checker
+          generic map(
+            NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
+            NUMBER_OF_BYTES_IN_A_WORD => NUMBER_OF_BYTES_IN_A_WORD)        
+          port map(
+            reset         => reset_int OR ctrl.reset.rx_counter,
+            rx_usrclk2    => rx_clk(idx),
+
+            packet_rxctrl0 => packet_rxctrl0_i,
+            packet_rxctrl1 => packet_rxctrl1_i,
+            packet_rxctrl2 => packet_rxctrl2_i,
+            packet_rxctrl3 => packet_rxctrl3_i,
+
+            packet_userdata   => sl_rx_data_pre_cdc(idx).data,
+            packet_locked     => sl_rx_data_pre_cdc(idx).locked,
+            packet_valid      => sl_rx_data_pre_cdc(idx).valid,
+
+            error_counter_out => mon.sl_test(idx).error_counter,                -- to be connected to a register
+            word_counter_out (63 downto 32) => mon.sl_test(idx).WORD_COUNTER_1,
+            word_counter_out (31 downto  0) => mon.sl_test(idx).WORD_COUNTER_0);               -- to be connected to a register
+    
         --------------------------------------------------------------------------------
         -- RX Clock Domain Crossing
         --------------------------------------------------------------------------------
@@ -399,9 +549,40 @@ begin
         sl_rx_data(idx).err    <= sl_post_cdc_vec(1);
         sl_rx_data(idx).locked <= sl_post_cdc_vec(0);
 
-      end generate;
-    end generate;
-  end generate;
+      ---------------------
+      -- ILA
+      --------------------
+--        rx_ila_gen: if (I = 8) generate
+--        assert false report " RX ILA generated for link " & integer'image(I) 
+--                    & " sl_link# " & integer'image(idx)
+--                    severity note;
+--        ila_sl_rx_inst : ila_sl_rx
+--            PORT MAP (
+--                clk => rx_clk(idx),
+--                probe0 => sl_rx_mgt_word_array_i(idx), 
+--                probe1 => rxctrl0, 
+--                probe2 => rxctrl1, 
+--                probe3 => dec_userdata, 
+--                probe4 => dec_rxctrl0, 
+--                probe5 => dec_rxctrl2, 
+--                probe6(0) => comma_pulse_i, 
+--                probe7(0) => Mon.RX_COMMA_LOCK(idx), 
+--                probe8(0) => sl_rx_slide_o(idx), 
+--                probe9(0) => sl_re_channel_o(idx), 
+--                probe10(0) => sl_rx_init_done_i(idx), 
+--                probe11 => packet_rxctrl0_i, 
+--                probe12 => packet_rxctrl1_i, 
+--                probe13 => packet_rxctrl2_i, 
+--                probe14 => packet_rxctrl3_i, 
+--                probe15 => sl_rx_data_pre_cdc(idx).data, 
+--                probe16(0) => sl_rx_data_pre_cdc(idx).locked, 
+--                probe17(0) => sl_rx_data_pre_cdc(idx).valid,
+--                probe18(0) => sl_rx_data_pre_cdc(idx).err
+--            );
+--        end generate; -- rx_ila_gen
+      end generate; --rx_gen
+    end generate; -- mgt_tag
+  end generate; -- sl_gen
 
   --------------------------------------------------------------------------------
   -- Asserts
@@ -432,5 +613,30 @@ begin
   assert 3 = to_integer(signed_mag_to_signed("111"))
     report "failure in signed magnutude conversion of  3 get="
     & integer'image (to_integer(signed_mag_to_signed("111"))) severity error;
+
+
+
+--      rx_clk_frequency : entity work.clk_frequency
+--        generic map (
+--          clk_a_freq => 40_000_000
+--          )
+--        port map (
+--          reset => reset_int,
+--          clk_a => clk40,
+--          clk_b => rx_clk(0),
+--          rate  => rate_rx_clk0
+--          );
+--      tx_clk_frequency : entity work.clk_frequency
+--        generic map (
+--          clk_a_freq => 40_000_000
+--          )
+--        port map (
+--          reset => reset_int,
+--          clk_a => clk40,
+--          clk_b => tx_clk(0),
+--          rate  => rate_tx_clk0
+--          );
+
+
 
 end Behavioral;

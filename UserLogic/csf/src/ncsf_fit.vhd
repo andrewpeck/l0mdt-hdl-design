@@ -103,9 +103,9 @@ ARCHITECTURE Behavioral OF ncsf_fit IS
 
   -- Fit result signals
   signal dv_slope, dv_intercept : STD_LOGIC;
-  SIGNAL mfit_full : std_logic_vector(MFIT_FULL_LEN - RECIPROCAL_LEN - 1 DOWNTO 0)
+  SIGNAL mfit : std_logic_vector(CSF_SEG_M_LEN - 1 DOWNTO 0)
   := (OTHERS => '0');
-  SIGNAL bfit_full : std_logic_vector(BFIT_FULL_LEN - RECIPROCAL_LEN - 1 DOWNTO 0)
+  SIGNAL bfit : std_logic_vector(CSF_SEG_B_LEN - 1 DOWNTO 0)
   := (OTHERS => '0');
 
   -- DSP valid signals
@@ -154,7 +154,8 @@ BEGIN
     g_NUMERATOR_LEN => NUM_M_LEN - SHIFT_NUM_M,
     g_DENOMINATOR_LEN => DEN_LEN - SHIFT_DEN,
     g_DIVIDER_LEN => RECIPROCAL_LEN,
-    g_QUOTIENT_LEN => MFIT_FULL_LEN - RECIPROCAL_LEN,
+    g_QUOTIENT_LEN => CSF_SEG_M_LEN,
+    g_MULTIPLIER_LEN => MFIT_MULTI_LEN + SHIFT_NUM_M - SHIFT_DEN,
     g_IS_SIGNED => '1',
     g_ROM_FILE => "fitter_reciprocal.mem"
   )
@@ -165,7 +166,7 @@ BEGIN
     i_numerator => std_logic_vector(numerator_m_red_s),
     i_denominator => reciprocal_addr,
     o_valid => dv_slope,
-    o_quotient => mfit_full
+    o_quotient => mfit
   );
 
   divider_b : entity shared_lib.divider
@@ -173,7 +174,8 @@ BEGIN
     g_NUMERATOR_LEN => NUM_B_LEN - SHIFT_NUM_B,
     g_DENOMINATOR_LEN => DEN_LEN - SHIFT_DEN,
     g_DIVIDER_LEN => RECIPROCAL_LEN,
-    g_QUOTIENT_LEN => BFIT_FULL_LEN - RECIPROCAL_LEN,
+    g_QUOTIENT_LEN => CSF_SEG_B_LEN,
+    g_MULTIPLIER_LEN => SHIFT_NUM_B - SHIFT_DEN + B_OVER_Z_MULTI_LEN,
     g_IS_SIGNED => '1',
     g_ROM_FILE => "fitter_reciprocal.mem"
   )
@@ -184,7 +186,7 @@ BEGIN
     i_numerator => std_logic_vector(numerator_b_red_s),
     i_denominator => reciprocal_addr,
     o_valid => dv_intercept,
-    o_quotient => bfit_full
+    o_quotient => bfit
   );
 
   clust_loop_gen : FOR i_c IN CSF_MAX_CLUSTERS - 1 DOWNTO 0 GENERATE
@@ -299,21 +301,8 @@ BEGIN
 
       -- Clock 11
       output_seg.valid <= dv_slope and dv_intercept;
-      output_seg.m     <=
-      resize(
-      shift_left(
-      signed(mfit_full),
-      - SHIFT_DEN + SHIFT_NUM_M + MFIT_MULTI_LEN
-      ),
-      CSF_SEG_M_LEN);
-
-      output_seg.b <=
-      resize(
-      shift_left(
-      signed(bfit_full),
-      - SHIFT_DEN + SHIFT_NUM_B + B_OVER_Z_MULTI_LEN
-      ),
-      CSF_SEG_B_LEN);
+      output_seg.m     <= signed(mfit);
+      output_seg.b <= signed(bfit);
 
     END IF;
   END PROCESS; -- Fitter

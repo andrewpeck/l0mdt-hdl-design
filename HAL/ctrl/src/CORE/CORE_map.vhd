@@ -44,19 +44,19 @@ architecture behavioral of CORE_map is
 
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 1071);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 1071) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 1075);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 1075) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*1071) <= ALLOCATED_MEMORY_RANGE)
-    report "CORE: Regmap addressing range " & integer'image(4*1071) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*1075) <= ALLOCATED_MEMORY_RANGE)
+    report "CORE: Regmap addressing range " & integer'image(4*1075) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity ERROR;
-  assert ((4*1071) > ALLOCATED_MEMORY_RANGE)
-    report "CORE: Regmap addressing range " & integer'image(4*1071) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*1075) > ALLOCATED_MEMORY_RANGE)
+    report "CORE: Regmap addressing range " & integer'image(4*1075) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity NOTE;
 
   AXIRegBridge : entity work.axiLiteRegBlocking
@@ -116,7 +116,7 @@ begin  -- architecture behavioral
         when 2 => --0x2
           localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK40_FREQ;                              --LHC 40MHz clock freq
         when 3 => --0x3
-          localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK320_FREQ;                             --LHC 320MHz clock freq 
+          localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK320_FREQ;                             --LHC 320MHz clock freq
         when 4 => --0x4
           localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK50_FREQ;                              --System 50 MHz clock freq
         when 16 => --0x10
@@ -4695,6 +4695,9 @@ begin  -- architecture behavioral
         when 1071 => --0x42f
           localRdData(28 downto  0)  <=  Mon.MGT.REFCLK(31).FREQ;                              --Reference clock frequency in Hz
           localRdData(31 downto 29)  <=  Mon.MGT.REFCLK(31).REFCLK_TYPE;                       --Reference clock type (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_NIL)
+        when 1075 => --0x433
+          localRdData(28 downto  0)  <=  Mon.MGT.RECCLK_out.FREQ;                              --Reference clock frequency in Hz
+          localRdData(31 downto 29)  <=  Mon.MGT.RECCLK_out.REFCLK_TYPE;                       --Reference clock type (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_NIL)
 
 
           when others =>

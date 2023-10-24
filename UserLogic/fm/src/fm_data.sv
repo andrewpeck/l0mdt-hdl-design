@@ -15,11 +15,12 @@ module fm_data #(
 	       input logic 		       axi_reset_n,
 	       input logic [sb_mapped_n-1:0]   freeze,
 	       input logic 		       init_spy_mem,
+	       input logic [sb_mapped_n-1:0]   sb_reset,
 	       input logic [pb_mode_width-1:0] playback_mode[sb_mapped_n],
 	       input 			       FM_CTRL_t fm_ctrl_in,
 	       input 			       fm_rt ult_mon_data[total_l0mdt_sb] ,
 	       output 			       FM_MON_t fm_mon_out,
-	       output 			       fm_rt ult_data[total_l0mdt_sb]
+	       output logic [mon_dw_max-1 : 0] fm_playback_data[total_l0mdt_sb]
 	       );
    localparam axi_dw = axi_dw;
    genvar 	      sb_i;
@@ -51,14 +52,14 @@ module fm_data #(
      generate
       for (sb_i = 0; sb_i < total_l0mdt_sb; sb_i = sb_i+1)
 	begin
-	   assign ult_data[sb_i] = fm_passthrough_data[sb_i];	   
+	   assign fm_playback_data[sb_i] = (~sb_empty[sb_i])? fm_passthrough_data[sb_i].fm_data : 'b0;
 	end
      endgenerate
    
      generate
       for (sb_i = 0; sb_i < sb_mapped_n; sb_i = sb_i+1)
 	begin
-	   assign  fm_passthrough_data[sb_i].fm_vld = fm_passthrough_data[sb_i].fm_data[sb_dw[sb_i]-1] & ~sb_empty[sb_i];
+	   assign  fm_passthrough_data[sb_i].fm_vld = fm_passthrough_data[sb_i].fm_data[sb_tp_dw[sb_i]-1] & ~sb_empty[sb_i];
 	   
 	end
      endgenerate
@@ -95,80 +96,246 @@ module fm_data #(
 
 
 
+assign axi_sb_enable_internal                =  (init_spy_mem_internal == 1)? '1:axi_sb_enable;
+
+
+assign fm_mon_out.SB0.SB_MEM = (axi_spy_rd_vld[0] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[0], rd_data_valid:axi_spy_rd_vld[0]};
+assign fm_mon_out.SB1.SB_MEM = (axi_spy_rd_vld[1] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[1], rd_data_valid:axi_spy_rd_vld[1]};
+assign fm_mon_out.SB2.SB_MEM = (axi_spy_rd_vld[2] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[2], rd_data_valid:axi_spy_rd_vld[2]};
+assign fm_mon_out.SB3.SB_MEM = (axi_spy_rd_vld[3] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[3], rd_data_valid:axi_spy_rd_vld[3]};
+assign fm_mon_out.SB4.SB_MEM = (axi_spy_rd_vld[4] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[4], rd_data_valid:axi_spy_rd_vld[4]};
+assign fm_mon_out.SB5.SB_MEM = (axi_spy_rd_vld[5] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[5], rd_data_valid:axi_spy_rd_vld[5]};
+assign fm_mon_out.SB6.SB_MEM = (axi_spy_rd_vld[6] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[6], rd_data_valid:axi_spy_rd_vld[6]};
+assign fm_mon_out.SB7.SB_MEM = (axi_spy_rd_vld[7] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[7], rd_data_valid:axi_spy_rd_vld[7]};
+assign fm_mon_out.SB8.SB_MEM = (axi_spy_rd_vld[8] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[8], rd_data_valid:axi_spy_rd_vld[8]};
+assign fm_mon_out.SB9.SB_MEM = (axi_spy_rd_vld[9] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[9], rd_data_valid:axi_spy_rd_vld[9]};
+assign fm_mon_out.SB10.SB_MEM = (axi_spy_rd_vld[10] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[10], rd_data_valid:axi_spy_rd_vld[10]};
+assign fm_mon_out.SB11.SB_MEM = (axi_spy_rd_vld[11] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[11], rd_data_valid:axi_spy_rd_vld[11]};
+assign fm_mon_out.SB12.SB_MEM = (axi_spy_rd_vld[12] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[12], rd_data_valid:axi_spy_rd_vld[12]};
+assign fm_mon_out.SB13.SB_MEM = (axi_spy_rd_vld[13] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[13], rd_data_valid:axi_spy_rd_vld[13]};
+assign fm_mon_out.SB14.SB_MEM = (axi_spy_rd_vld[14] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[14], rd_data_valid:axi_spy_rd_vld[14]};
+assign fm_mon_out.SB15.SB_MEM = (axi_spy_rd_vld[15] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[15], rd_data_valid:axi_spy_rd_vld[15]};
+assign fm_mon_out.SB16.SB_MEM = (axi_spy_rd_vld[16] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[16], rd_data_valid:axi_spy_rd_vld[16]};
+assign fm_mon_out.SB17.SB_MEM = (axi_spy_rd_vld[17] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[17], rd_data_valid:axi_spy_rd_vld[17]};
+assign fm_mon_out.SB18.SB_MEM = (axi_spy_rd_vld[18] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[18], rd_data_valid:axi_spy_rd_vld[18]};
+assign fm_mon_out.SB19.SB_MEM = (axi_spy_rd_vld[19] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[19], rd_data_valid:axi_spy_rd_vld[19]};
+assign fm_mon_out.SB20.SB_MEM = (axi_spy_rd_vld[20] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[20], rd_data_valid:axi_spy_rd_vld[20]};
+assign fm_mon_out.SB21.SB_MEM = (axi_spy_rd_vld[21] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[21], rd_data_valid:axi_spy_rd_vld[21]};
+assign fm_mon_out.SB22.SB_MEM = (axi_spy_rd_vld[22] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[22], rd_data_valid:axi_spy_rd_vld[22]};
+assign fm_mon_out.SB23.SB_MEM = (axi_spy_rd_vld[23] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[23], rd_data_valid:axi_spy_rd_vld[23]};
+assign fm_mon_out.SB24.SB_MEM = (axi_spy_rd_vld[24] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[24], rd_data_valid:axi_spy_rd_vld[24]};
+assign fm_mon_out.SB25.SB_MEM = (axi_spy_rd_vld[25] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[25], rd_data_valid:axi_spy_rd_vld[25]};
+assign fm_mon_out.SB26.SB_MEM = (axi_spy_rd_vld[26] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[26], rd_data_valid:axi_spy_rd_vld[26]};
+assign fm_mon_out.SB27.SB_MEM = (axi_spy_rd_vld[27] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[27], rd_data_valid:axi_spy_rd_vld[27]};
+assign fm_mon_out.SB28.SB_MEM = (axi_spy_rd_vld[28] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[28], rd_data_valid:axi_spy_rd_vld[28]};
+assign fm_mon_out.SB29.SB_MEM = (axi_spy_rd_vld[29] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[29], rd_data_valid:axi_spy_rd_vld[29]};
+assign fm_mon_out.SB30.SB_MEM = (axi_spy_rd_vld[30] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[30], rd_data_valid:axi_spy_rd_vld[30]};
+assign fm_mon_out.SB31.SB_MEM = (axi_spy_rd_vld[31] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[31], rd_data_valid:axi_spy_rd_vld[31]};
+assign fm_mon_out.SB32.SB_MEM = (axi_spy_rd_vld[32] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[32], rd_data_valid:axi_spy_rd_vld[32]};
+assign fm_mon_out.SB33.SB_MEM = (axi_spy_rd_vld[33] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[33], rd_data_valid:axi_spy_rd_vld[33]};
+assign fm_mon_out.SB34.SB_MEM = (axi_spy_rd_vld[34] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[34], rd_data_valid:axi_spy_rd_vld[34]};
+assign fm_mon_out.SB35.SB_MEM = (axi_spy_rd_vld[35] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[35], rd_data_valid:axi_spy_rd_vld[35]};
+assign fm_mon_out.SB36.SB_MEM = (axi_spy_rd_vld[36] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[36], rd_data_valid:axi_spy_rd_vld[36]};
+assign fm_mon_out.SB37.SB_MEM = (axi_spy_rd_vld[37] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[37], rd_data_valid:axi_spy_rd_vld[37]};
+assign fm_mon_out.SB38.SB_MEM = (axi_spy_rd_vld[38] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[38], rd_data_valid:axi_spy_rd_vld[38]};
+assign fm_mon_out.SB39.SB_MEM = (axi_spy_rd_vld[39] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[39], rd_data_valid:axi_spy_rd_vld[39]};
+assign fm_mon_out.SB40.SB_MEM = (axi_spy_rd_vld[40] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[40], rd_data_valid:axi_spy_rd_vld[40]};
+assign fm_mon_out.SB41.SB_MEM = (axi_spy_rd_vld[41] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[41], rd_data_valid:axi_spy_rd_vld[41]};
+assign fm_mon_out.SB42.SB_MEM = (axi_spy_rd_vld[42] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[42], rd_data_valid:axi_spy_rd_vld[42]};
+assign fm_mon_out.SB43.SB_MEM = (axi_spy_rd_vld[43] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[43], rd_data_valid:axi_spy_rd_vld[43]};
+
+assign  axi_sb_addr       = (init_spy_mem_internal)? axi_sb_init_addr : {
+	fm_ctrl_in.SB0.SB_MEM.address,
+	fm_ctrl_in.SB1.SB_MEM.address,
+	fm_ctrl_in.SB2.SB_MEM.address,
+	fm_ctrl_in.SB3.SB_MEM.address,
+	fm_ctrl_in.SB4.SB_MEM.address,
+	fm_ctrl_in.SB5.SB_MEM.address,
+	fm_ctrl_in.SB6.SB_MEM.address,
+	fm_ctrl_in.SB7.SB_MEM.address,
+	fm_ctrl_in.SB8.SB_MEM.address,
+	fm_ctrl_in.SB9.SB_MEM.address,
+	fm_ctrl_in.SB10.SB_MEM.address,
+	fm_ctrl_in.SB11.SB_MEM.address,
+	fm_ctrl_in.SB12.SB_MEM.address,
+	fm_ctrl_in.SB13.SB_MEM.address,
+	fm_ctrl_in.SB14.SB_MEM.address,
+	fm_ctrl_in.SB15.SB_MEM.address,
+	fm_ctrl_in.SB16.SB_MEM.address,
+	fm_ctrl_in.SB17.SB_MEM.address,
+	fm_ctrl_in.SB18.SB_MEM.address,
+	fm_ctrl_in.SB19.SB_MEM.address,
+	fm_ctrl_in.SB20.SB_MEM.address,
+	fm_ctrl_in.SB21.SB_MEM.address,
+	fm_ctrl_in.SB22.SB_MEM.address,
+	fm_ctrl_in.SB23.SB_MEM.address,
+	fm_ctrl_in.SB24.SB_MEM.address,
+	fm_ctrl_in.SB25.SB_MEM.address,
+	fm_ctrl_in.SB26.SB_MEM.address,
+	fm_ctrl_in.SB27.SB_MEM.address,
+	fm_ctrl_in.SB28.SB_MEM.address,
+	fm_ctrl_in.SB29.SB_MEM.address,
+	fm_ctrl_in.SB30.SB_MEM.address,
+	fm_ctrl_in.SB31.SB_MEM.address,
+	fm_ctrl_in.SB32.SB_MEM.address,
+	fm_ctrl_in.SB33.SB_MEM.address,
+	fm_ctrl_in.SB34.SB_MEM.address,
+	fm_ctrl_in.SB35.SB_MEM.address,
+	fm_ctrl_in.SB36.SB_MEM.address,
+	fm_ctrl_in.SB37.SB_MEM.address,
+	fm_ctrl_in.SB38.SB_MEM.address,
+	fm_ctrl_in.SB39.SB_MEM.address,
+	fm_ctrl_in.SB40.SB_MEM.address,
+	fm_ctrl_in.SB41.SB_MEM.address,
+	fm_ctrl_in.SB42.SB_MEM.address,
+	fm_ctrl_in.SB43.SB_MEM.address
+		};
+
+assign  axi_sb_enable       =  {
+	fm_ctrl_in.SB0.SB_MEM.enable,
+	fm_ctrl_in.SB1.SB_MEM.enable,
+	fm_ctrl_in.SB2.SB_MEM.enable,
+	fm_ctrl_in.SB3.SB_MEM.enable,
+	fm_ctrl_in.SB4.SB_MEM.enable,
+	fm_ctrl_in.SB5.SB_MEM.enable,
+	fm_ctrl_in.SB6.SB_MEM.enable,
+	fm_ctrl_in.SB7.SB_MEM.enable,
+	fm_ctrl_in.SB8.SB_MEM.enable,
+	fm_ctrl_in.SB9.SB_MEM.enable,
+	fm_ctrl_in.SB10.SB_MEM.enable,
+	fm_ctrl_in.SB11.SB_MEM.enable,
+	fm_ctrl_in.SB12.SB_MEM.enable,
+	fm_ctrl_in.SB13.SB_MEM.enable,
+	fm_ctrl_in.SB14.SB_MEM.enable,
+	fm_ctrl_in.SB15.SB_MEM.enable,
+	fm_ctrl_in.SB16.SB_MEM.enable,
+	fm_ctrl_in.SB17.SB_MEM.enable,
+	fm_ctrl_in.SB18.SB_MEM.enable,
+	fm_ctrl_in.SB19.SB_MEM.enable,
+	fm_ctrl_in.SB20.SB_MEM.enable,
+	fm_ctrl_in.SB21.SB_MEM.enable,
+	fm_ctrl_in.SB22.SB_MEM.enable,
+	fm_ctrl_in.SB23.SB_MEM.enable,
+	fm_ctrl_in.SB24.SB_MEM.enable,
+	fm_ctrl_in.SB25.SB_MEM.enable,
+	fm_ctrl_in.SB26.SB_MEM.enable,
+	fm_ctrl_in.SB27.SB_MEM.enable,
+	fm_ctrl_in.SB28.SB_MEM.enable,
+	fm_ctrl_in.SB29.SB_MEM.enable,
+	fm_ctrl_in.SB30.SB_MEM.enable,
+	fm_ctrl_in.SB31.SB_MEM.enable,
+	fm_ctrl_in.SB32.SB_MEM.enable,
+	fm_ctrl_in.SB33.SB_MEM.enable,
+	fm_ctrl_in.SB34.SB_MEM.enable,
+	fm_ctrl_in.SB35.SB_MEM.enable,
+	fm_ctrl_in.SB36.SB_MEM.enable,
+	fm_ctrl_in.SB37.SB_MEM.enable,
+	fm_ctrl_in.SB38.SB_MEM.enable,
+	fm_ctrl_in.SB39.SB_MEM.enable,
+	fm_ctrl_in.SB40.SB_MEM.enable,
+	fm_ctrl_in.SB41.SB_MEM.enable,
+	fm_ctrl_in.SB42.SB_MEM.enable,
+	fm_ctrl_in.SB43.SB_MEM.enable
+		};
+
+assign  axi_sb_wr_enable       = (init_spy_mem_internal == 1)? '1: { 
+	fm_ctrl_in.SB0.SB_MEM.wr_enable,
+	fm_ctrl_in.SB1.SB_MEM.wr_enable,
+	fm_ctrl_in.SB2.SB_MEM.wr_enable,
+	fm_ctrl_in.SB3.SB_MEM.wr_enable,
+	fm_ctrl_in.SB4.SB_MEM.wr_enable,
+	fm_ctrl_in.SB5.SB_MEM.wr_enable,
+	fm_ctrl_in.SB6.SB_MEM.wr_enable,
+	fm_ctrl_in.SB7.SB_MEM.wr_enable,
+	fm_ctrl_in.SB8.SB_MEM.wr_enable,
+	fm_ctrl_in.SB9.SB_MEM.wr_enable,
+	fm_ctrl_in.SB10.SB_MEM.wr_enable,
+	fm_ctrl_in.SB11.SB_MEM.wr_enable,
+	fm_ctrl_in.SB12.SB_MEM.wr_enable,
+	fm_ctrl_in.SB13.SB_MEM.wr_enable,
+	fm_ctrl_in.SB14.SB_MEM.wr_enable,
+	fm_ctrl_in.SB15.SB_MEM.wr_enable,
+	fm_ctrl_in.SB16.SB_MEM.wr_enable,
+	fm_ctrl_in.SB17.SB_MEM.wr_enable,
+	fm_ctrl_in.SB18.SB_MEM.wr_enable,
+	fm_ctrl_in.SB19.SB_MEM.wr_enable,
+	fm_ctrl_in.SB20.SB_MEM.wr_enable,
+	fm_ctrl_in.SB21.SB_MEM.wr_enable,
+	fm_ctrl_in.SB22.SB_MEM.wr_enable,
+	fm_ctrl_in.SB23.SB_MEM.wr_enable,
+	fm_ctrl_in.SB24.SB_MEM.wr_enable,
+	fm_ctrl_in.SB25.SB_MEM.wr_enable,
+	fm_ctrl_in.SB26.SB_MEM.wr_enable,
+	fm_ctrl_in.SB27.SB_MEM.wr_enable,
+	fm_ctrl_in.SB28.SB_MEM.wr_enable,
+	fm_ctrl_in.SB29.SB_MEM.wr_enable,
+	fm_ctrl_in.SB30.SB_MEM.wr_enable,
+	fm_ctrl_in.SB31.SB_MEM.wr_enable,
+	fm_ctrl_in.SB32.SB_MEM.wr_enable,
+	fm_ctrl_in.SB33.SB_MEM.wr_enable,
+	fm_ctrl_in.SB34.SB_MEM.wr_enable,
+	fm_ctrl_in.SB35.SB_MEM.wr_enable,
+	fm_ctrl_in.SB36.SB_MEM.wr_enable,
+	fm_ctrl_in.SB37.SB_MEM.wr_enable,
+	fm_ctrl_in.SB38.SB_MEM.wr_enable,
+	fm_ctrl_in.SB39.SB_MEM.wr_enable,
+	fm_ctrl_in.SB40.SB_MEM.wr_enable,
+	fm_ctrl_in.SB41.SB_MEM.wr_enable,
+	fm_ctrl_in.SB42.SB_MEM.wr_enable,
+	fm_ctrl_in.SB43.SB_MEM.wr_enable
+		};
+
+assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data: { 
+	fm_ctrl_in.SB0.SB_MEM.wr_data,
+	fm_ctrl_in.SB1.SB_MEM.wr_data,
+	fm_ctrl_in.SB2.SB_MEM.wr_data,
+	fm_ctrl_in.SB3.SB_MEM.wr_data,
+	fm_ctrl_in.SB4.SB_MEM.wr_data,
+	fm_ctrl_in.SB5.SB_MEM.wr_data,
+	fm_ctrl_in.SB6.SB_MEM.wr_data,
+	fm_ctrl_in.SB7.SB_MEM.wr_data,
+	fm_ctrl_in.SB8.SB_MEM.wr_data,
+	fm_ctrl_in.SB9.SB_MEM.wr_data,
+	fm_ctrl_in.SB10.SB_MEM.wr_data,
+	fm_ctrl_in.SB11.SB_MEM.wr_data,
+	fm_ctrl_in.SB12.SB_MEM.wr_data,
+	fm_ctrl_in.SB13.SB_MEM.wr_data,
+	fm_ctrl_in.SB14.SB_MEM.wr_data,
+	fm_ctrl_in.SB15.SB_MEM.wr_data,
+	fm_ctrl_in.SB16.SB_MEM.wr_data,
+	fm_ctrl_in.SB17.SB_MEM.wr_data,
+	fm_ctrl_in.SB18.SB_MEM.wr_data,
+	fm_ctrl_in.SB19.SB_MEM.wr_data,
+	fm_ctrl_in.SB20.SB_MEM.wr_data,
+	fm_ctrl_in.SB21.SB_MEM.wr_data,
+	fm_ctrl_in.SB22.SB_MEM.wr_data,
+	fm_ctrl_in.SB23.SB_MEM.wr_data,
+	fm_ctrl_in.SB24.SB_MEM.wr_data,
+	fm_ctrl_in.SB25.SB_MEM.wr_data,
+	fm_ctrl_in.SB26.SB_MEM.wr_data,
+	fm_ctrl_in.SB27.SB_MEM.wr_data,
+	fm_ctrl_in.SB28.SB_MEM.wr_data,
+	fm_ctrl_in.SB29.SB_MEM.wr_data,
+	fm_ctrl_in.SB30.SB_MEM.wr_data,
+	fm_ctrl_in.SB31.SB_MEM.wr_data,
+	fm_ctrl_in.SB32.SB_MEM.wr_data,
+	fm_ctrl_in.SB33.SB_MEM.wr_data,
+	fm_ctrl_in.SB34.SB_MEM.wr_data,
+	fm_ctrl_in.SB35.SB_MEM.wr_data,
+	fm_ctrl_in.SB36.SB_MEM.wr_data,
+	fm_ctrl_in.SB37.SB_MEM.wr_data,
+	fm_ctrl_in.SB38.SB_MEM.wr_data,
+	fm_ctrl_in.SB39.SB_MEM.wr_data,
+	fm_ctrl_in.SB40.SB_MEM.wr_data,
+	fm_ctrl_in.SB41.SB_MEM.wr_data,
+	fm_ctrl_in.SB42.SB_MEM.wr_data,
+	fm_ctrl_in.SB43.SB_MEM.wr_data
+	};
 
 
 
 
-
-
-
-
-   assign fm_mon_out.SB0.SB_MEM = (axi_spy_rd_vld[0] == 0)? '{rd_data:'b0, rd_data_valid:0} :  '{rd_data:axi_spy_data[0], rd_data_valid:axi_spy_rd_vld[0]};
-   assign fm_mon_out.SB1.SB_MEM = (axi_spy_rd_vld[1] == 0)? '{rd_data:'b0, rd_data_valid:0} : '{rd_data:axi_spy_data[1], rd_data_valid:axi_spy_rd_vld[1]};
-   assign fm_mon_out.SB2.SB_MEM = (axi_spy_rd_vld[2] == 0)? '{rd_data:'b0, rd_data_valid:0} : '{rd_data:axi_spy_data[2], rd_data_valid:axi_spy_rd_vld[2]};
-   assign fm_mon_out.SB3.SB_MEM = (axi_spy_rd_vld[3] == 0)? '{rd_data:'b0, rd_data_valid:0} : '{rd_data:axi_spy_data[3], rd_data_valid:axi_spy_rd_vld[3]};
-   assign fm_mon_out.SB4.SB_MEM = (axi_spy_rd_vld[4] == 0)? '{rd_data:'b0, rd_data_valid:0} : '{rd_data:axi_spy_data[4], rd_data_valid:axi_spy_rd_vld[4]};
-   assign fm_mon_out.SB5.SB_MEM = (axi_spy_rd_vld[5] == 0)? '{rd_data:'b0, rd_data_valid:0} : '{rd_data:axi_spy_data[5], rd_data_valid:axi_spy_rd_vld[5]};
-   assign fm_mon_out.SB6.SB_MEM = (axi_spy_rd_vld[6] == 0)? '{rd_data:'b0, rd_data_valid:0} : '{rd_data:axi_spy_data[6], rd_data_valid:axi_spy_rd_vld[6]};
-   assign fm_mon_out.SB7.SB_MEM = (axi_spy_rd_vld[7] == 0)? '{rd_data:'b0, rd_data_valid:0} : '{rd_data:axi_spy_data[7], rd_data_valid:axi_spy_rd_vld[7]};
-   assign fm_mon_out.SB8.SB_MEM = (axi_spy_rd_vld[8] == 0)? '{rd_data:'b0, rd_data_valid:0} : '{rd_data:axi_spy_data[8], rd_data_valid:axi_spy_rd_vld[8]};
-   assign fm_mon_out.SB9.SB_MEM = (axi_spy_rd_vld[9] == 0)? '{rd_data:'b0, rd_data_valid:0} : '{rd_data:axi_spy_data[9], rd_data_valid:axi_spy_rd_vld[9]};
-   assign fm_mon_out.SB10.SB_MEM = (axi_spy_rd_vld[10] == 0)? '{rd_data:'b0, rd_data_valid:0} : '{rd_data:axi_spy_data[10], rd_data_valid:axi_spy_rd_vld[10]};
-   assign fm_mon_out.SB11.SB_MEM = (axi_spy_rd_vld[11] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[11], rd_data_valid:axi_spy_rd_vld[11]};
-   assign fm_mon_out.SB12.SB_MEM = (axi_spy_rd_vld[12] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[12], rd_data_valid:axi_spy_rd_vld[12]};
-   assign fm_mon_out.SB13.SB_MEM = (axi_spy_rd_vld[13] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[13], rd_data_valid:axi_spy_rd_vld[13]};
-   assign fm_mon_out.SB14.SB_MEM = (axi_spy_rd_vld[14] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[14], rd_data_valid:axi_spy_rd_vld[14]};
-   assign fm_mon_out.SB15.SB_MEM = (axi_spy_rd_vld[15] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[15], rd_data_valid:axi_spy_rd_vld[15]};
-   assign fm_mon_out.SB16.SB_MEM = (axi_spy_rd_vld[16] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[16], rd_data_valid:axi_spy_rd_vld[16]};
-   assign fm_mon_out.SB17.SB_MEM = (axi_spy_rd_vld[17] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[17], rd_data_valid:axi_spy_rd_vld[17]};
-   assign fm_mon_out.SB18.SB_MEM = (axi_spy_rd_vld[18] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[18], rd_data_valid:axi_spy_rd_vld[18]};
-   assign fm_mon_out.SB19.SB_MEM = (axi_spy_rd_vld[19] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[19], rd_data_valid:axi_spy_rd_vld[19]};
-   assign fm_mon_out.SB20.SB_MEM = (axi_spy_rd_vld[20] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[20], rd_data_valid:axi_spy_rd_vld[20]};
-   assign fm_mon_out.SB21.SB_MEM = (axi_spy_rd_vld[21] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[21], rd_data_valid:axi_spy_rd_vld[21]};
-   assign fm_mon_out.SB22.SB_MEM = (axi_spy_rd_vld[22] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[22], rd_data_valid:axi_spy_rd_vld[22]};
-   assign fm_mon_out.SB23.SB_MEM = (axi_spy_rd_vld[23] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[23], rd_data_valid:axi_spy_rd_vld[23]};
-   assign fm_mon_out.SB24.SB_MEM = (axi_spy_rd_vld[24] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[24], rd_data_valid:axi_spy_rd_vld[24]};
-   assign fm_mon_out.SB25.SB_MEM = (axi_spy_rd_vld[25] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[25], rd_data_valid:axi_spy_rd_vld[25]};
-   assign fm_mon_out.SB26.SB_MEM = (axi_spy_rd_vld[26] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[26], rd_data_valid:axi_spy_rd_vld[26]};
-   assign fm_mon_out.SB_DUMMY0.SB_MEM = (axi_spy_rd_vld[sb_master_dummy_index] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[sb_master_dummy_index], rd_data_valid:axi_spy_rd_vld[sb_master_dummy_index]};
-   assign fm_mon_out.SB_DUMMY1.SB_MEM = (axi_spy_rd_vld[sb_slave_dummy_index] == 0)? '{rd_data:'b0, rd_data_valid:0} :'{rd_data:axi_spy_data[sb_slave_dummy_index], rd_data_valid:axi_spy_rd_vld[sb_slave_dummy_index]};
-
-
-
-
-
-   assign  axi_sb_addr       = (init_spy_mem_internal)? axi_sb_init_addr : {
-									    fm_ctrl_in.SB0.SB_MEM.address,
-									    fm_ctrl_in.SB1.SB_MEM.address,
-									    fm_ctrl_in.SB2.SB_MEM.address,
-									    fm_ctrl_in.SB3.SB_MEM.address,
-									    fm_ctrl_in.SB4.SB_MEM.address,
-									    fm_ctrl_in.SB5.SB_MEM.address,
-									    fm_ctrl_in.SB6.SB_MEM.address,
-									    fm_ctrl_in.SB7.SB_MEM.address,
-									    fm_ctrl_in.SB8.SB_MEM.address,
-									    fm_ctrl_in.SB9.SB_MEM.address,
-									    fm_ctrl_in.SB10.SB_MEM.address,
-									    fm_ctrl_in.SB11.SB_MEM.address,
-									    fm_ctrl_in.SB12.SB_MEM.address,
-									    fm_ctrl_in.SB13.SB_MEM.address,
-									    fm_ctrl_in.SB14.SB_MEM.address,
-									    fm_ctrl_in.SB15.SB_MEM.address,
-									    fm_ctrl_in.SB16.SB_MEM.address,
-									    fm_ctrl_in.SB17.SB_MEM.address,
-									    fm_ctrl_in.SB18.SB_MEM.address,
-									    fm_ctrl_in.SB19.SB_MEM.address,
-									    fm_ctrl_in.SB20.SB_MEM.address,
-									    fm_ctrl_in.SB21.SB_MEM.address,
-									    fm_ctrl_in.SB22.SB_MEM.address,
-									    fm_ctrl_in.SB23.SB_MEM.address,
-									    fm_ctrl_in.SB24.SB_MEM.address,
-									    fm_ctrl_in.SB25.SB_MEM.address,
-									    fm_ctrl_in.SB26.SB_MEM.address,
-									    fm_ctrl_in.SB_DUMMY0.SB_MEM.address,
-									    fm_ctrl_in.SB_DUMMY1.SB_MEM.address
-				};
-
+  
 /* -----\/----- EXCLUDED -----\/-----
     assign  axi_sm_addr       = {
 				fm_ctrl_in.SB0.SB_META.address,
@@ -201,44 +368,7 @@ module fm_data #(
                                 fm_ctrl_in.SB_DUMMY0.SB_META.address
                                 fm_ctrl_in.SB_DUMMY1.SB_META.address
 				};
- -----/\----- EXCLUDED -----/\----- */
 
-
-   assign axi_sb_enable                =   {
-					    fm_ctrl_in.SB0.SB_MEM.enable,
-					    fm_ctrl_in.SB1.SB_MEM.enable,
-					    fm_ctrl_in.SB2.SB_MEM.enable,
-					    fm_ctrl_in.SB3.SB_MEM.enable,
-					    fm_ctrl_in.SB4.SB_MEM.enable,
-					    fm_ctrl_in.SB5.SB_MEM.enable,
-					    fm_ctrl_in.SB6.SB_MEM.enable,
-					    fm_ctrl_in.SB7.SB_MEM.enable,
-					    fm_ctrl_in.SB8.SB_MEM.enable,
-					    fm_ctrl_in.SB9.SB_MEM.enable,
-					    fm_ctrl_in.SB10.SB_MEM.enable,
-					    fm_ctrl_in.SB11.SB_MEM.enable,
-					    fm_ctrl_in.SB12.SB_MEM.enable,
-					    fm_ctrl_in.SB13.SB_MEM.enable,
-					    fm_ctrl_in.SB14.SB_MEM.enable,
-					    fm_ctrl_in.SB15.SB_MEM.enable,
-					    fm_ctrl_in.SB16.SB_MEM.enable,
-					    fm_ctrl_in.SB17.SB_MEM.enable,
-					    fm_ctrl_in.SB18.SB_MEM.enable,
-					    fm_ctrl_in.SB19.SB_MEM.enable,
-					    fm_ctrl_in.SB20.SB_MEM.enable,
-					    fm_ctrl_in.SB21.SB_MEM.enable,
-					    fm_ctrl_in.SB22.SB_MEM.enable,
-					    fm_ctrl_in.SB23.SB_MEM.enable,
-					    fm_ctrl_in.SB24.SB_MEM.enable,
-					    fm_ctrl_in.SB25.SB_MEM.enable,
-					    fm_ctrl_in.SB26.SB_MEM.enable,
-					    fm_ctrl_in.SB_DUMMY0.SB_MEM.enable,
-					    fm_ctrl_in.SB_DUMMY1.SB_MEM.enable					     
-					    };
-   assign axi_sb_enable_internal                =  (init_spy_mem_internal == 1)? '1:axi_sb_enable;
-   
-
-/* -----\/----- EXCLUDED -----\/-----
    assign axi_sm_enable                = {
 					  fm_ctrl_in.SB0.SB_META.enable,
 					  fm_ctrl_in.SB1.SB_META.enable,
@@ -270,42 +400,7 @@ module fm_data #(
  					  fm_ctrl_in.SB_DUMMY0.SB_META.enable,
   					  fm_ctrl_in.SB_DUMMY1.SB_META.enable
 					  };
- -----/\----- EXCLUDED -----/\----- */
 
-
-   assign axi_sb_wr_enable                = (init_spy_mem_internal == 1)? '1: {
-									       fm_ctrl_in.SB0.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB1.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB2.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB3.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB4.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB5.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB6.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB7.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB8.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB9.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB10.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB11.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB12.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB13.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB14.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB15.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB16.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB17.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB18.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB19.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB20.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB21.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB22.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB23.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB24.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB25.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB26.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB_DUMMY0.SB_MEM.wr_enable,
-									       fm_ctrl_in.SB_DUMMY1.SB_MEM.wr_enable
-									       };
-
-/* -----\/----- EXCLUDED -----\/-----
    assign axi_sm_wr_enable                = {
 					     fm_ctrl_in.SB0.SB_META.wr_enable,
 					     fm_ctrl_in.SB1.SB_META.wr_enable,
@@ -337,45 +432,7 @@ module fm_data #(
  					     fm_ctrl_in.SB_DUMMY0.SB_META.wr_enable,
   					     fm_ctrl_in.SB_DUMMY1.SB_META.wr_enable
  };
- -----/\----- EXCLUDED -----/\----- */
-   
-   
-   
-   
-   assign axi_sb_wr_data               =  (init_spy_mem_internal==1)? axi_sb_init_wr_data : {
-											     fm_ctrl_in.SB0.SB_MEM.wr_data,
-											     fm_ctrl_in.SB1.SB_MEM.wr_data,
-											     fm_ctrl_in.SB2.SB_MEM.wr_data,
-											     fm_ctrl_in.SB3.SB_MEM.wr_data,
-											     fm_ctrl_in.SB4.SB_MEM.wr_data,
-											     fm_ctrl_in.SB5.SB_MEM.wr_data,
-											     fm_ctrl_in.SB6.SB_MEM.wr_data,
-											     fm_ctrl_in.SB7.SB_MEM.wr_data,
-											     fm_ctrl_in.SB8.SB_MEM.wr_data,
-											     fm_ctrl_in.SB9.SB_MEM.wr_data,
-											     fm_ctrl_in.SB10.SB_MEM.wr_data,
-											     fm_ctrl_in.SB11.SB_MEM.wr_data,
-											     fm_ctrl_in.SB12.SB_MEM.wr_data,
-											     fm_ctrl_in.SB13.SB_MEM.wr_data,
-											     fm_ctrl_in.SB14.SB_MEM.wr_data,
-											     fm_ctrl_in.SB15.SB_MEM.wr_data,
-											     fm_ctrl_in.SB16.SB_MEM.wr_data,
-											     fm_ctrl_in.SB17.SB_MEM.wr_data,
-											     fm_ctrl_in.SB18.SB_MEM.wr_data,
-											     fm_ctrl_in.SB19.SB_MEM.wr_data,
-											     fm_ctrl_in.SB20.SB_MEM.wr_data,
-											     fm_ctrl_in.SB21.SB_MEM.wr_data,
-											     fm_ctrl_in.SB22.SB_MEM.wr_data,
-											     fm_ctrl_in.SB23.SB_MEM.wr_data,
-											     fm_ctrl_in.SB24.SB_MEM.wr_data,
-											     fm_ctrl_in.SB25.SB_MEM.wr_data,
-											     fm_ctrl_in.SB26.SB_MEM.wr_data,
-											     fm_ctrl_in.SB_DUMMY0.SB_MEM.wr_data,
-											     fm_ctrl_in.SB_DUMMY1.SB_MEM.wr_data
-											     
-											     };
 
-/* -----\/----- EXCLUDED -----\/-----
      assign axi_sm_wr_data               = {
 					  fm_ctrl_in.SB0.SB_META.wr_data,
 					  fm_ctrl_in.SB1.SB_META.wr_data,
@@ -414,12 +471,17 @@ module fm_data #(
 
 
 
-
+   logic [mon_dw_max-1 : 0] tp_write_data[sb_mapped_n];
    generate
    for(sb_i =0; sb_i < sb_mapped_n; sb_i = sb_i+1)
      begin: l0mdt_spybuffers
+	if(sb_dw[sb_i] < mon_dw_max)
+	  begin
+	     assign fm_passthrough_data[sb_i].fm_data[mon_dw_max-1: sb_dw[sb_i]] = 'b0;
+	  end
 
-	assign fm_passthrough_data[sb_i].fm_data[mon_dw_max-1: sb_dw[sb_i]] = 'b0;
+	assign tp_write_data[sb_i] = fm_mon_data[sb_i].fm_data & {sb_tp_dw[sb_i]{1'b1}};
+	
 	
 	   SpyBuffer #(
 		       .DATA_WIDTH_A(sb_dw[sb_i]),
@@ -431,18 +493,25 @@ module fm_data #(
 
 		       .FC_FIFO_WIDTH(4),
 
-		       .EL_MEM_WIDTH(8), //axi_sm_addr_width[sb_i]),
+		       .EL_MEM_WIDTH(8), //Size of SPY META - not used
 
 
 		       .PASSTHROUGH(1)
 		       )
 	   fm_spybuffer_inst
 		(
+		 /*
+		  //TEST SpyBuffer IN SINGLE CLOCK DOMAIN
 		 .rclock((sb_i == sb_master_dummy_index || sb_i == sb_slave_dummy_index)? spy_clock:clk_hs),
 		 .wclock((sb_i == sb_master_dummy_index || sb_i == sb_slave_dummy_index)? spy_clock:clk_hs),
 		 .rresetbar((sb_i == sb_master_dummy_index || sb_i == sb_slave_dummy_index)? axi_reset_n:~rst_hs),
 		 .wresetbar((sb_i == sb_master_dummy_index || sb_i == sb_slave_dummy_index)? axi_reset_n:~rst_hs),
-		 .write_data(fm_mon_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]), //CHECK IF ALWAYS VALID
+		  */
+		 .rclock(clk_hs),
+		 .wclock(clk_hs),
+		 .rresetbar(~(rst_hs | sb_reset[sb_i])),
+		 .wresetbar(~(rst_hs | sb_reset[sb_i])),
+		 .write_data(tp_write_data[sb_i]), //{'b0,fm_mon_data[sb_i].fm_data[sb_tp_dw[sb_i]-1 : 0]} & sb_dw[sb_i]{1'b1}), //CHECK IF ALWAYS VALID
 		 .write_enable(fm_mon_data[sb_i].fm_vld),
 		 .read_enable(1'b1),
 		 .read_data(fm_passthrough_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]),
@@ -544,21 +613,23 @@ module fm_data #(
 
    //Debug
    fm_dummy_block #(
-		    .dummy_master(1)
+		    .dummy_master(1),
+		    .data_width(SB_DUMMY_LEN)
 		    )fm_dummy_block_master(
-					   .clk(spy_clock),
-					   .rst(~axi_reset_n),
-					   .dummy_input(0),
+					   .clk(clk_hs), //spy_clock),
+					   .rst(rst_hs | sb_reset[sb_master_dummy_index]),  //~axi_reset_n),
+					   .dummy_input('b0),
 					   .dummy_input_vld(0),
 					   .dummy_mon_data(dummy_mon_data[0]),
 					   .dummy_mon_vld(dummy_mon_vld[0])
 					   );
    fm_dummy_block #(
-		    .dummy_master(0)
+		    .dummy_master(0),
+		    .data_width(SB_DUMMY_LEN)
 		    )fm_dummy_block_slave(
-					  .clk(spy_clock),
-					  .rst(~axi_reset_n),
-					  .dummy_input(fm_passthrough_data[sb_master_dummy_index].fm_data[31:0]),
+					  .clk(clk_hs), //spy_clock),
+					  .rst(rst_hs | sb_reset[sb_slave_dummy_index]), //~axi_reset_n),
+					  .dummy_input(fm_passthrough_data[sb_master_dummy_index].fm_data[SB_DUMMY_LEN-1:0]),
 					  .dummy_input_vld(fm_passthrough_data[sb_master_dummy_index].fm_vld),
 					  .dummy_mon_data(dummy_mon_data[1]),
 					  .dummy_mon_vld(dummy_mon_vld[1])

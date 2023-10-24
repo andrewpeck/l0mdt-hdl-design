@@ -218,6 +218,25 @@ VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/DAQ/DAQ_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/DAQ/DAQ_map.vhd 
 
+VHDL_SOURCES_lpgbt_fpga = \
+			 $(HAL)/lpgbt/src/lpgbt-fpga/lpgbtfpga_package.vhd
+
+VHDL_SOURCES_hal = \
+		 $(HAL)/hal/src/board_pkg_common.vhd \
+		 $(HAL)/boards/board_pkg_mpi_ku15p.vhd \
+		 $(HAL)/hal/src/system_types_pkg.vhd \
+		 $(HAL)/hal/src/user_pkg.vhd \
+		 $(HAL)/link_maps/link_map_ku15p.vhd \
+		 $(HAL)/hal/src/constants_pkg.vhd \
+		 $(HAL)/lpgbt/src/lpgbt_pkg.vhd
+
+VHDL_SOURCES_hal_polmux = \
+		 $(HAL)/hal/src/polmux_wrapper.vhd
+
+VHDL_SOURCES_tdc = \
+		  $(HAL)/tdc/src/csm_pkg.vhd \
+		  $(HAL)/tdc/src/polling_mux.vhd \
+		  $(HAL)/tdc/src/fifo_async.vhd
 
 VHDL_SOURCES_xpm = \
 	$(XILINX_HOME)/data/ip/xpm/xpm_VCOMP.vhd
@@ -420,7 +439,7 @@ VHDL_SOURCES_ult_lib =\
 
 
 VHDL_SOURCES_fm_lib = \
-    $(FMDIR)/fm_ult_pkg.vhd
+    $(FMDIR)/fm_types.vhd
 
 VHDL_SOURCES_mtc_lib = \
     $(MTCDIR)/../top_mtc_wrapper.vhd
@@ -466,6 +485,10 @@ VHDL_LIB_ORDER = xpm \
 	project_lib \
         dp_repo_lib \
 	shared_lib \
+	lpgbt_fpga \
+	hal \
+	tdc \
+	hal_polmux \
 	ctrl_lib \
 	apbus_lib \
 	vamc_lib \

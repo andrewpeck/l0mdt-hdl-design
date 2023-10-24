@@ -28,7 +28,7 @@ entity mgt_wrapper is
     axiclock   : in std_logic;
     clock320   : in std_logic;
     lhc_locked : in std_logic;
-
+    refclk_mirrors_out    : out std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     -- Reset
     reset : in std_logic;
 
@@ -106,7 +106,7 @@ entity mgt_wrapper is
     sl_re_channel : in std_logic_vector(c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     
     -- done
-    sl_rx_init_done : out std_logic
+    sl_rx_init_done : out std_logic_vector(c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
 
     );
 end mgt_wrapper;
@@ -122,7 +122,8 @@ architecture Behavioral of mgt_wrapper is
   signal recclk_sync_clr: std_logic;
   signal recclk_sync_ce : std_logic;
   signal recclk         : std_logic;
-
+  signal recclk_freq    : std_logic_vector(31 downto 0);
+ 
   -- Reference clock
   signal refclk         : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
   signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
@@ -138,11 +139,11 @@ architecture Behavioral of mgt_wrapper is
   signal status_2d : mgt_status_rt_array (c_NUM_MGTS-1 downto 0);
 
   -- Sector Logic
-  signal sl_rx_init_done_s : std_logic_vector(c_NUM_MGTS-1 downto 0);
-
+  signal  sl_tx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal  sl_rx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 begin
 
-  sl_rx_init_done <= AND(sl_rx_init_done_s);
+
 
   --------------------------------------------------------------------------------
   -- Configuration Asserts
@@ -180,26 +181,40 @@ begin
 
   -- https://support.xilinx.com/s/question/0D52E00006hpdNNSAY/rxoutclk-routing-error?language=en_US
 
-  recclk_BUFG_GT_SYNC_inst : BUFG_GT_SYNC
-  port map (
-    CESYNC  => recclk_sync_ce,          -- 1-bit output: Synchronized CE
-    CLRSYNC => recclk_sync_clr,         -- 1-bit output: Synchronized CLR
-    CE      => '1',                     -- 1-bit input: Asynchronous enable
-    CLK     => recclk,                  -- 1-bit input: Clock
-    CLR     => '0'                      -- 1-bit input: Asynchronous clear
-    );
+      recclk_BUFG_GT_SYNC_inst : BUFG_GT_SYNC
+      port map (
+        CESYNC  => recclk_sync_ce,          -- 1-bit output: Synchronized CE
+        CLRSYNC => recclk_sync_clr,         -- 1-bit output: Synchronized CLR
+        CE      => '1',                     -- 1-bit input: Asynchronous enable
+        CLK     => recclk,                  -- 1-bit input: Clock
+        CLR     => '0'                      -- 1-bit input: Asynchronous clear
+        );
+    
+      recclk_BUFG_GT_inst : BUFG_GT
+      port map (
+        O       => ttc_recclk_o,            -- 1-bit output: Buffer
+        CE      => recclk_sync_ce,          -- 1-bit input: Buffer enable
+        CEMASK  => '0',                     -- 1-bit input: CE Mask
+        CLR     => recclk_sync_clr,         -- 1-bit input: Asynchronous clear
+        CLRMASK => '0',                     -- 1-bit input: CLR Mask
+        DIV     => "000",                   -- 3-bit input: Dynamic divide Value
+        I       => recclk                   -- 1-bit input: Buffer
+      );
 
-  recclk_BUFG_GT_inst : BUFG_GT
-  port map (
-    O       => ttc_recclk_o,            -- 1-bit output: Buffer
-    CE      => recclk_sync_ce,          -- 1-bit input: Buffer enable
-    CEMASK  => '0',                     -- 1-bit input: CE Mask
-    CLR     => recclk_sync_clr,         -- 1-bit input: Asynchronous clear
-    CLRMASK => '0',                     -- 1-bit input: CLR Mask
-    DIV     => "000",                   -- 3-bit input: Dynamic divide Value
-    I       => recclk                   -- 1-bit input: Buffer
-  );
-
+      rec_clk_frequency : entity work.clk_frequency
+        generic map (
+          clk_a_freq => 50_000_000
+          )
+        port map (
+          reset => reset ,
+          clk_a => axiclock,
+          clk_b => ttc_recclk_o,
+          rate  => recclk_freq
+          );
+          
+      mon.recclk_out.freq        <= recclk_freq(mon.recclk_out.freq'range);
+      mon.recclk_out.refclk_type <=
+        std_logic_vector(to_unsigned(refclk_freqs_t'POS(REF_NIL), 3));
   --------------------------------------------------------------------------------
   -- REFCLK
   --------------------------------------------------------------------------------
@@ -239,6 +254,7 @@ begin
           IB    => refclk_i_n(I)
           );
     end generate;
+    
 
   end generate;
 
@@ -520,18 +536,19 @@ begin
             rxslide (LINK_0_TO_3) <= ttc_bitslip_i;
             recclk                <= rxoutclk(LINK_0_TO_3);
             ttc_mgt_word_o        <= rx_data(LINK_0_TO_3);
-          end generate;
+          end generate recclk_out_gen;
 
-        end generate;
+        end generate felix_gen;
 
 
-      end generate;
+      end generate channel_loop;
     end generate;
 
+
+    
     --------------------------------------------------------------------------------
     -- Sector Logic Type
     --------------------------------------------------------------------------------
-
     sl_gen : if (sl_idx_array(I) /= -1 and (I mod 4 = 0)) generate  -- only generate for the quad
 
       attribute X_LOC             : integer;
@@ -544,12 +561,16 @@ begin
       constant idx : integer := sl_idx_array(I);
 
       signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0) := (others => '0');
-
+    signal ce_tx, clr_tx, ce_rx, clr_rx   : std_logic;
     begin
 
       -- just set a flag to 1 to indicate that this transceiver was enabled, which we can read from software
       mon.mgt(I).config.is_active <= '1';
 
+      -- for the new generation of the GTY, the clock include already a BUFG
+      sl_tx_clk(idx + 3 downto idx) <= sl_tx_clk_int(idx + 3 downto idx);
+      sl_rx_clk(idx + 3 downto idx) <= sl_rx_clk_int(idx + 3 downto idx);
+       
       assert true report
         "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I)
         & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
@@ -566,17 +587,22 @@ begin
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
           clock          => axiclock,  -- FIXME: check this clock frequency against IP core
-          reset_i        => reset_tree(I),
+          reset_i        => reset_tree(I) or
+                   ctrl.mgt(I).reset_all or
+                   ctrl.mgt(I+1).reset_all or
+                   ctrl.mgt(I+2).reset_all or
+                   ctrl.mgt(I+3).reset_all,
           mgt_refclk_i_p => refclk_i_p(c_MGT_MAP(I).refclk),
           mgt_refclk_i_n => refclk_i_n(c_MGT_MAP(I).refclk),
-          rxoutclk       => sl_rx_clk(idx + 3 downto idx),
-          txoutclk       => sl_tx_clk(idx + 3 downto idx),
+          refclk_mirror  => refclk_mirrors(c_MGT_MAP(I).refclk),
+          rxoutclk       => sl_rx_clk_int(idx + 3 downto idx),
+          txoutclk       => sl_tx_clk_int(idx + 3 downto idx),
           status_o       => status(I+3 downto I),
           txctrl_in      => sl_tx_ctrl_i(idx+3 downto idx),
           rxctrl_out     => sl_rx_ctrl_o(idx+3 downto idx),
           rx_slide_i     => sl_rx_slide_i(idx+3 downto idx),
           re_channel_i   => sl_re_channel(idx+3 downto idx),
-          rx_init_done_o => sl_rx_init_done_s(I),
+          rx_init_done_o => sl_rx_init_done(idx+3 downto idx),
           mgt_word_i     => sl_tx_mgt_word_array_i(idx+3 downto idx),
           mgt_word_o     => sl_rx_mgt_word_array_o(idx+3 downto idx),
           rxp_i          => rx_p,
@@ -587,6 +613,32 @@ begin
           mgt_drp_o      => drp_o(I+3 downto I)
           );
 
+    ---------------------------------------------------
+    -- OVERRIDE recovered clock
+    ---------------------------------------------------
+    recclk_out_override_gen: if (c_OVERRIDE_REC_CLK = true) and (I = c_FELIX_RECCLK_SRC) generate
+        signal d, nd : std_logic;
+        begin 
+            assert false report "overriding recovered clock to fixed MGT quad122, link " & integer'image(I)  severity warning;
+            recclk <= d;
+            nd <= not d;
+            ttc_recclk_inst : FDCE
+           generic map (
+              INIT => '0',            -- Initial value of register, '0', '1'
+              -- Programmable Inversion Attributes: Specifies the use of the built-in programmable inversion
+              IS_CLR_INVERTED => '0', -- Optional inversion for CLR
+              IS_C_INVERTED => '0',   -- Optional inversion for C
+              IS_D_INVERTED => '0'    -- Optional inversion for D
+           )
+           port map (
+              Q => d,     -- 1-bit output: Data
+              C => sl_rx_clk(idx),     -- 1-bit input: Clock
+              CE => '1',   -- 1-bit input: Clock enable
+              CLR => reset, -- 1-bit input: Asynchronous clear
+              D => nd      -- 1-bit input: Data
+           );
+        end generate;
+    
     end generate sl_gen;
 
   end generate mgt_gen;
@@ -595,7 +647,7 @@ begin
   -- Refclk Monitors
   --------------------------------------------------------------------------------
 
-  refclk_mirror : for I in 0 to c_NUM_REFCLKS-2 generate
+  refclk_mirror : for I in 0 to c_NUM_REFCLKS-1 generate
     signal clk_freq : std_logic_vector (31 downto 0) := (others => '0');
     signal ce, clr  : std_logic;
 
@@ -605,7 +657,6 @@ begin
     -- be centralized
     -- Move to a package
     constant axi_refclk_freq : integer := 50_000_000;
-
   begin
 
     -- NOTE: the AXI C2C conflicts with this and generates an error, so only
@@ -615,7 +666,9 @@ begin
       mon.refclk(I).freq <= std_logic_vector(to_unsigned(axi_refclk_freq, mon.refclk(I).freq'length));
     end generate;
 
-    no_axi : if (c_REFCLK_MAP(I).freq /= REF_AXI_C2C) generate
+    no_axi : if (c_REFCLK_MAP(I).freq /= REF_AXI_C2C  -- and
+                 --  c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
+                   ) generate
 
       mon.refclk(I).freq        <= clk_freq(mon.refclk(I).freq'range);
       mon.refclk(I).refclk_type <=
@@ -626,6 +679,8 @@ begin
       -- design.", this does not appear to be true, and required manual
       -- instantiation. Previously it would generate an error at DRC complaining
       -- that the CE/CLR pins are not driven by a BUFG_GT_SYNC.
+
+      refclk_mirrors_out <= refclk_bufg;
 
       BUFG_GT_SYNC_inst : BUFG_GT_SYNC
         port map (
@@ -652,13 +707,14 @@ begin
           clk_a_freq => 50_000_000
           )
         port map (
-          reset => reset,
+          reset => reset_tree(I) ,
           clk_a => axiclock,
           clk_b => refclk_bufg(I),
           rate  => clk_freq
           );
-    end generate;
+    end generate no_axi;
 
-  end generate;
+  end generate refclk_mirror;
+
 
 end Behavioral;
