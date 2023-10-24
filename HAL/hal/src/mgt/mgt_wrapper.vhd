@@ -31,6 +31,7 @@ entity mgt_wrapper is
 
     -- Clock
     axiclock   : in std_logic;
+    clock240_i : in std_logic;
     clock320   : in std_logic;
     lhc_locked : in std_logic;
     refclk_mirrors_out    : out std_logic_vector (c_NUM_REFCLKS-1 downto 0);
@@ -619,6 +620,11 @@ begin
                                                                                                  
                   , refclk0_i                   => refclk(c_MGT_MAP(I).refclk)                   -- : in  std_logic
                                                                                                  
+                  , rx_usrclk_i                 => clock240_i                                    -- : in  std_logic
+                  , rx_usrclk_active_i          => lhc_locked                                    -- : in  std_logic
+                  , tx_usrclk_i                 => clock240_i                                    -- : in  std_logic
+                  , tx_usrclk_active_i          => lhc_locked                                    -- : in  std_logic
+
                   , rx_srcclk_o                 => rx_srcclk                                     -- : out std_logic
                   , rx_usrclk_o                 => rx_usrclk                                     -- : out std_logic
                   , rx_usrclk2_o                => rx_usrclk2                                    -- : out std_logic
@@ -652,8 +658,8 @@ begin
 
       channel_loop : for jj in 0 to 3 generate
       begin
-        flx_routing : if (ttc_idx_array(I+jj) /= -1) generate
-          constant idx : integer := ttc_idx_array(I+jj);
+        flx_routing : if (felix_idx_array(I+jj) /= -1) generate
+          constant idx : integer := felix_idx_array(I+jj);
         begin
           recclk_gen : if (idx + jj = c_FELIX_RECCLK_SRC) generate
             assert false report "Using ref clock of MGT#" & integer'image(I) & " quad." severity error;
