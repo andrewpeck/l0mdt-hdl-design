@@ -299,13 +299,6 @@ def polmux_test(dut):
 
     """
     
-
-    # input_tv_hack = [[0 for _ in range(10)] for _ in range(480)]
-    # input_tv_hack[0][0]=  (0b1 << 41) + 0xAAA #CSM 0 -> port 0
-    # input_tv_hack[140][0]=(0b1 << 41) + 0xBBB ### # station 1 csm 1 (port 7)
-    # input_tv_hack[300][0]=(0b1 << 41) + 0xCCC ### station 2 csm 3   (port 15)
-    # input_tv_list = input_tv_hack
-
     ## send input events
     dut._log.info("Sending input events")
     send_finished_signal = polmux_wrapper.send_input_events(
