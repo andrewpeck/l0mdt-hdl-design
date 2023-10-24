@@ -234,7 +234,7 @@ def print_tv_list(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process
     print_tv_bitfields(tvRTL_list) #, print_this_event = event_number)
     
             
-def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tolerances,output_path="./",stationNum=[-99], tv_thread_mapping=[0,1,2], tv_type="value",tv_df_type="SL",pad_size=0):
+def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tolerances,output_path="./",stationNum=[-99], tv_thread_mapping=None, tv_type="value",tv_df_type="SL",pad_size=0):
 
     """
     Extracts BitFieldWord objects from simulated TV (using get_bitfield) and compares them with output TV from RTL.
@@ -289,15 +289,15 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
                                   df_type=tv_df_type, 
                                   port=iPort,
                                   keep_bitfieldword=True)
-            
+
+            ### Add one layer, to behave identically in case of lists or scalars
+            if not (tv_type == "list" or tv_type=="list_nested_tdc" or tv_type=="list_nested_tdc_per_mezz"):
+                l_EXP_BF = [l_EXP_BF]                
+
             cocotb.log.debug(f"event {iEvent} port {iPort} expected {len(l_EXP_BF)} events")
             if not l_EXP_BF==[0]:
                 cocotb.log.debug(f"Printing expected events | {[x.get_bitwordvalue() for x in l_EXP_BF]}")
             cocotb.log.debug(f"RTL output rtl_tv[{iPort}]| {[int(x) for x in rtl_tv[iPort]]}")
-
-            ### Add one layer, to behave identically in case of lists or scalars
-            if not (tv_type == "list" or tv_type=="list_nested_tdc" or tv_type=="list_nested_tdc_per_mezz"):
-                l_EXP_BF = [EXP_BF]                
             
             ### Skip empty events
             if l_EXP_BF==[0]: 
@@ -555,7 +555,7 @@ def parse_tvlist(
         
     events_list = tv_bcid_list
 
-    
+    cocotb.log.info(f"\n\n\n{80*'-'}\n Called parse_tvlist tvformat-{tvformat} / tv type {tv_type} / df_type {tv_df_type} \n{80*'-'}")
 
     tv = [["" for x in range(n_to_load)] for y in range(n_ports)]
     my_cnd_thrd_id = [0 for x in range(n_ports)] 
@@ -593,7 +593,14 @@ def parse_tvlist(
                     # EXT does not exist in TV, set everything to 0 for the moment
                     tv[my_port][valid_events]=0
                 else:
-                    tv[my_port][valid_events] = get_bitfield(events_list[ievent], tvformat, my_cnd_thrd_id[my_port], this_station_ID, tv_type = tv_type , df_type=tv_df_type, port=my_port, keep_bitfieldword=keep_bitfieldword)
+                    tv[my_port][valid_events] = get_bitfield(event=events_list[ievent], 
+                                                             bitfieldname=tvformat, 
+                                                             candidate=my_cnd_thrd_id[my_port], 
+                                                             station_id=this_station_ID,
+                                                             tv_type=tv_type, 
+                                                             df_type=tv_df_type, 
+                                                             port=my_port, 
+                                                             keep_bitfieldword=keep_bitfieldword)
                     event_found_for_port_interface = 1
                     if type(tv[my_port][valid_events]) is str:
                         print(f"SECTOR OK - TVFORMAT = {tvformat} tv[{my_port}][{valid_events}]={tv[my_port][valid_events]} is string type")

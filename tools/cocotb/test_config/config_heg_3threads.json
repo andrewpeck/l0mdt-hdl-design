@@ -1,0 +1,61 @@
+{
+    "testbench_config": {
+        "test_name": "heg_3threads",
+        "input_args": {
+            "n_events": 1,
+            "event_detail": false,
+            "clock_period": 5,
+            "clock_time_unit": "ns",
+            "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
+        },
+        "run_config": {
+            "output_directory_name": "heg_3threads",
+            "test_location": "src/l0mdt_tb/testbench/heg_3threads/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "${XILINX_LIB_DIR}",
+            "configure_rtl": true,
+            "pt_type": "upt"
+        },
+        "testvectors": {
+            "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
+            "testvector_file": "B_C_3.xz",
+            "inputs": [
+                {
+                    "tv_format": "UCM2HPS",
+                    "ports": 3,
+                    "ucm2hps_ii"   : 100,
+		    "ucm2hps_setup": 10,
+		    "station_ID": ["INN","INN","INN"],
+		    "tv_df_type":"SL",
+                    "thread_n"   : [0,1,2],
+                    "tv_type": "value"
+                },
+                {
+                    "tv_format": "TAR2HPS",
+                    "ports": 6,
+		    "station_ID": ["INN","INN","INN","INN","INN","INN"],
+                    "tv_type": "list_nested_tdc",
+		    "tv_df_type":"MDT"
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "HEG2SFSLC",
+                    "ports": 3,
+                    "station_ID": ["INN","INN","INN"],
+                    "thread_n" : [0,1,2],
+                    "tv_type": "value",
+		    "tv_df_type":"SL"
+                },
+                {
+                    "tv_format": "HEG2SFHIT",
+                    "ports": 3,
+                    "station_ID": ["INN","INN","INN"],
+                    "thread_n" : [0,1,2],
+                    "tv_type": "list",
+		    "tv_df_type":"SL"
+                } 
+            ]
+        }
+    }
+}

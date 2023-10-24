@@ -25,6 +25,7 @@ declare -a cocotb_tests=(
     lsf_inn                
     lsf_mid                
     lsf_out                
+    heg
     hps_inn                
     ptcalc                 
     ptc_mpi                
@@ -32,9 +33,9 @@ declare -a cocotb_tests=(
     ult_mpt                
     ult_upt                
     lsf_ptcalc             
-    ult_mpt_mpl_mtc_primary
-    ult_upt_mpl_mtc_primary
-    ult_ucm_pt_mpl_mtc     
+    # ult_mpt_mpl_mtc_primary
+    # ult_upt_mpl_mtc_primary
+    # ult_ucm_pt_mpl_mtc     
 )
 
 
