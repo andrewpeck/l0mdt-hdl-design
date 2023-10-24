@@ -49,8 +49,8 @@ use hps_lib.hps_pkg.all;
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
 
-library fm_lib;
-use fm_lib.fm_ult_pkg.all;
+--library fm_lib;
+--use fm_lib.fm_ult_pkg.all;
 
 entity heg_top_tb is
   generic(
@@ -136,7 +136,6 @@ architecture beh of heg_top_tb is
   signal heg2sfhit_av   : heg2sfhit_avt(c_NUM_THREADS -1 downto 0);
 
 
-  signal sf_fm_data_th  : sf_single_station_array;
 begin
 
   o_heg2sfslc_av <= heg2sfslc_av;
@@ -152,14 +151,6 @@ begin
   pc_tc_ctrl_v <= convert(ctrl_r.MDT_TC.MDT_TC,pc_tc_ctrl_v);
   mon_r.MDT_T0.MDT_T0 <= convert(pc_t0_mon_v,mon_r.MDT_T0.MDT_T0);
   mon_r.MDT_TC.MDT_TC <= convert(pc_tc_mon_v,mon_r.MDT_TC.MDT_TC);
-
-  h2s_fm_gen: for th_i in c_NUM_THREADS -1 downto 0 generate
-    h2s_fm_data(th_i*sf_sb_n to (th_i+1)*sf_sb_n - 1)   <= sf_fm_data_th(th_i)(0 to sf_sb_n -1);
-  end generate h2s_fm_gen;
-  --h2s_fm_data(0 to sf_sb_n - 1)             <= sf_fm_data_th(0)(0 to sf_sb_n -1);
-  --h2s_fm_data( sf_sb_n to 2*sf_sb_n - 1)    <= sf_fm_data_th(1)(0 to sf_sb_n -1);
-  --h2s_fm_data(2* sf_sb_n to 3*sf_sb_n - 1)  <= sf_fm_data_th(2)(0 to sf_sb_n -1);
-
 
   CM_for_gen: for th_i in c_NUM_THREADS -1 downto 0 generate
     csf_ctrl_av(th_i)   <= convert(ctrl_r.csf.csf(th_i),csf_ctrl_av(th_i));
