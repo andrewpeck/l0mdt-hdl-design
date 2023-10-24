@@ -281,50 +281,51 @@ begin
     o_vec_z_pos_dv  => vec_pos_a_dv
   );
 
-    SLOPE_CALC : entity ucm_lib.ucm_cvp_b_slope
-    port map(
-      clk           => clk,
-      rst           => local_rst,
-      ena           => ena,
-      --
-      i_rpc_rad_a   => rpc_radius_av,
-      i_cointype    => int_data_r.cointype,
-      i_data_v      => int_data_r.specific,
-      --
-      i_data_Valid  => rpc_radius_dv,--int_data_r.data_valid,
-      o_offset      => offset,
-      o_slope       => slope,
-      o_data_valid  => slope_dv
-    );
+    -- SLOPE_CALC : entity ucm_lib.ucm_cvp_b_slope
+    -- port map(
+    --   clk           => clk,
+    --   rst           => local_rst,
+    --   ena           => ena,
+    --   --
+    --   i_rpc_rad_a   => rpc_radius_av,
+    --   i_cointype    => int_data_r.cointype,
+    --   i_data_v      => int_data_r.specific,
+    --   --
+    --   i_data_Valid  => rpc_radius_dv,--int_data_r.data_valid,
+    --   o_offset      => offset,
+    --   o_slope       => slope,
+    --   o_data_valid  => slope_dv
+    -- );
 
     ----------------------------------------------------------
 
-    Z_CALC_LOOP : for st_i in 0 to 3 -1 generate
-      Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
-        Z_CALC : entity ucm_lib.ucm_cvp_z_calc
-        generic map(
-          g_STATION_RADIUS    => st_i,
-          g_INPUT_RESOLUTION  => SLC_Z_RPC_MULT,
-          g_OUTPUT_RESOLUTION => 1.0,
-          g_OUTPUT_WIDTH      => vec_pos_array(st_i)'length
-        )
-        port map(
-          clk           => clk,
-          rst           => local_rst,
-          ena           => ena,
-          --
-          i_mdt_R       => mdt_radius_av(st_i),
-          i_mdt_R_dv    => mdt_radius_dv,
-          -- i_chamb_ieta  => chamber_ieta_r(st_i),
-          i_offset      => offset,
-          i_slope       => slope,
-          i_data_valid  => slope_dv,
-          --
-          o_vec_z_pos     => vec_pos_array(st_i),
-          o_vec_z_pos_dv  => vec_z_pos_dv(st_i)
-        );
-      end generate;
-    end generate;
+    -- Z_CALC_LOOP : for st_i in 0 to 3 -1 generate
+    --   Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
+    --     Z_CALC : entity ucm_lib.ucm_cvp_z_calc
+    --     generic map(
+    --       g_STATION_RADIUS    => st_i,
+    --       g_INPUT_RESOLUTION  => SLC_Z_RPC_MULT,
+    --       g_OUTPUT_RESOLUTION => 1.0,
+    --       g_OUTPUT_WIDTH      => vec_pos_array(st_i)'length
+    --     )
+    --     port map(
+    --       clk           => clk,
+    --       rst           => local_rst,
+    --       ena           => ena,
+    --       --
+    --       i_mdt_R       => mdt_radius_av(st_i),
+    --       i_mdt_R_dv    => mdt_radius_dv,
+    --       -- i_chamb_ieta  => chamber_ieta_r(st_i),
+    --       i_offset      => offset,
+    --       i_slope       => slope,
+    --       i_data_valid  => slope_dv,
+    --       --
+    --       o_vec_z_pos     => vec_pos_array(st_i),
+    --       o_vec_z_pos_dv  => vec_z_pos_dv(st_i)
+    --     );
+    --   end generate;
+    -- end generate;
+    vec_pos_array <= vec_pos_a;
 
     IETA_INN : entity ucm_lib.ucm_ieta_calc
     generic map(

@@ -85,40 +85,43 @@ architecture beh of ucm_cvp_pc_core is
   signal mult_zz    : mult_zy_art;
   signal mult_zz_dv : std_logic_vector(3 downto 0);
 
-  signal sum_z      : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0);
+  signal sum_z      : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0); --16
   signal sum_z_dv   : std_logic;
-  signal sum_z_pl   : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0);
+  signal sum_z_pl   : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0); --16
   signal sum_z_pl_dv : std_logic;
-  signal sum_y      : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0);
-  signal sum_y_sc   : std_logic_vector(27 -1 downto 0);--(4 + sum_y'length -1 downto 0);
+  signal sum_y      : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0); --16
+  -- signal sum_y_sc   : std_logic_vector(27 -1 downto 0);--(4 + sum_y'length -1 downto 0);
   signal sum_y_dv   : std_logic;
-  signal sum_zy     : std_logic_vector(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
+  signal sum_zy     : std_logic_vector(SLC_Z_RPC_LEN*2 + 4 -1 downto 0); --28
   signal sum_zy_dv  : std_logic;
-  signal sum_zz     : std_logic_vector(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
+  signal sum_zz     : std_logic_vector(SLC_Z_RPC_LEN*2 + 4 -1 downto 0); --28
   signal sum_zz_dv  : std_logic;
 
-  signal sqr_zz         : std_logic_vector(sum_z'length*2 -1 downto 0);
+  signal sqr_zz         : std_logic_vector(sum_z'length*2 -1 downto 0); --32
   signal sqr_zz_dv      : std_logic;
-  signal mult_n_szz     : std_logic_vector(4 + sum_zy'length -1 downto 0);
+  signal mult_n_szz     : std_logic_vector(4 + sum_zy'length -1 downto 0); --32
   signal mult_n_szz_dv  : std_logic;
-  signal param_c        : std_logic_vector(max(sqr_zz'length,mult_n_szz'length) -1 downto 0);
+  signal param_c        : std_logic_vector(max(sqr_zz'length,mult_n_szz'length) -1 downto 0); --32
   signal param_c_dv     : std_logic;
 
-  signal mult_sy_szz    : std_logic_vector(sum_zz'length + sum_y'length -1 downto 0);
+  signal mult_sy_szz    : std_logic_vector(sum_zz'length + sum_y'length -1 downto 0); --28
   signal mult_sy_szz_dv : std_logic;
-  signal mult_sz_szy    : std_logic_vector(sum_z'length + sum_zy'length -1 downto 0);
+  signal mult_sz_szy    : std_logic_vector(sum_z'length + sum_zy'length -1 downto 0); --28
   signal mult_sz_szy_dv : std_logic;
-  signal param_b        : std_logic_vector(max(mult_sy_szz'length,mult_sz_szy'length) -1 downto 0);
+  signal param_b        : std_logic_vector(max(mult_sy_szz'length,mult_sz_szy'length) -1 downto 0); --28
   signal param_b_dv     : std_logic;
 
-  signal mult_n_szy     : std_logic_vector(4 + sum_zy'length -1 downto 0);
+  signal mult_n_szy     : std_logic_vector(4 + sum_zy'length -1 downto 0); --32
   signal mult_n_szy_dv  : std_logic;
-  signal mult_sz_sy     : std_logic_vector(sum_z'length + sum_y'length -1 downto 0);
+  signal mult_sz_sy     : std_logic_vector(sum_z'length + sum_y'length -1 downto 0); --32
   signal mult_sz_sy_dv  : std_logic;
-  signal param_a        : std_logic_vector(max(mult_sz_sy'length,mult_n_szy'length) -1 downto 0);
+  signal param_a        : std_logic_vector(max(mult_sz_sy'length,mult_n_szy'length) -1 downto 0); --32
   signal param_a_dv     : std_logic;
 
-  signal slope_bnom_sc    : std_logic_vector(32 -1 downto 0);
+  constant scale_nom : integer := 0;
+
+  signal slope_bnom_sc    : std_logic_vector(param_a'length + scale_nom -1 downto 0);
+  signal slope_bden_sc : std_logic_vector(24 -1 downto 0);
   signal slope_div_dout_tvalid : STD_LOGIC;
   signal slope_div_dout_tdata : STD_LOGIC_VECTOR(55 DOWNTO 0);
   signal slope_div_dout_tdata_q : std_logic_vector(31 downto 0);-- := (others => '0');
@@ -518,7 +521,14 @@ begin
   --------------------------------
   -- S
   --------------------------------
-  slope_bnom_sc <= param_a & "00000000000"; --11:2048
+  -- slope_bnom_sc <= param_a ;--& "00000000000"; --11:2048
+  param_a_sc : if (slope_bnom_sc'length - param_a'length) = 0 generate
+    slope_bnom_sc <= param_a;
+  else generate
+    slope_bnom_sc <= param_a & ((slope_bnom_sc'length - param_a'length - 1) downto 0 => '0');
+  end generate;
+  -- slope_bnom_sc <= param_a & ((slope_bnom_sc'length - param_a'length - 1) downto 0 => '0');
+  slope_bden_sc <= std_logic_vector(resize(signed(param_c),slope_bden_sc'length));
   MAIN_DIV_IPR2: if g_SLOPE_DIV_IPR2_ENABLE generate
     COMPONENT div_gen_r2s_v1
       PORT (
@@ -540,7 +550,7 @@ begin
         aclken => ena,
         aresetn => not rst,
         s_axis_divisor_tvalid => param_c_dv,
-        s_axis_divisor_tdata => param_c,
+        s_axis_divisor_tdata => slope_bden_sc,
         s_axis_dividend_tvalid => param_a_dv,
         s_axis_dividend_tdata => slope_bnom_sc,
         m_axis_dout_tvalid => slope_div_dout_tvalid,
