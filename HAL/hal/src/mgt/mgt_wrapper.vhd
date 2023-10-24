@@ -662,7 +662,7 @@ begin
           constant idx : integer := felix_idx_array(I+jj);
         begin
           recclk_gen : if (idx + jj = c_FELIX_RECCLK_SRC) generate
-            assert false report "Using ref clock of MGT#" & integer'image(I) & " quad." severity error;
+            assert false report "Using ref clock of MGT#" & integer'image(I+jj) severity note;
             recclk <= rxoutclk_v(jj); -- FELIX Recovered Clock
           end generate recclk_gen;
         end generate flx_routing;
