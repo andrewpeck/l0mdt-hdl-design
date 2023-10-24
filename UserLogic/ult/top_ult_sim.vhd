@@ -47,7 +47,8 @@ use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.FM_CTRL.all;
 
 library fm_lib;
-use fm_lib.fm_ult_pkg.all;
+use fm_lib.fm_types.all;
+
 
 entity ult_tb is
   generic (

@@ -43,7 +43,7 @@ package body prj_cfg is
     proj_cfg.ENABLE_SF           := '1';
     proj_cfg.ENABLE_FM           := '1';
     proj_cfg.ENABLE_PT           := '0';
-    proj_cfg.ENABLE_UCM          := '0';
+    proj_cfg.ENABLE_UCM          := '1';
     proj_cfg.ENABLE_H2S          := '1';
     proj_cfg.ENABLE_MPL          := '0';
     proj_cfg.ENABLE_MTC          := '0';
