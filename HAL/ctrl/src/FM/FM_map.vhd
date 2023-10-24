@@ -396,7 +396,7 @@ elsif BRAM_MISO(43).rd_data_valid = '1' then
     if reset_axi_n = '0' then
       reg_dummy <= (others => '1');
     elsif clk_axi'event and clk_axi = '1' then
-      reg_dummy <= reg_data(24583)(0) and reg_data(24582)(0);
+      reg_dummy <= reg_data(24583) and reg_data(24582);
     end if;
   end process my_proc;
       
