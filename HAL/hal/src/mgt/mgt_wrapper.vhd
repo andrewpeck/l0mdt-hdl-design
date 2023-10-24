@@ -657,15 +657,12 @@ begin
   
 
       channel_loop : for jj in 0 to 3 generate
+        constant idx : integer := felix_idx_array(I+jj);
       begin
-        flx_routing : if (felix_idx_array(I+jj) /= -1) generate
-          constant idx : integer := felix_idx_array(I+jj);
-        begin
-          recclk_gen : if (idx + jj = c_FELIX_RECCLK_SRC) generate
-            assert false report "Using ref clock of MGT#" & integer'image(I+jj) severity note;
-            recclk <= rxoutclk_v(jj); -- FELIX Recovered Clock
-          end generate recclk_gen;
-        end generate flx_routing;
+        recclk_gen : if c_OVERRIDE_REC_CLK = false and idx = c_FELIX_RECCLK_SRC generate
+          assert false report "Using ref clock from MGT#" & integer'image(I+jj) severity note;
+          recclk <= rxoutclk_v(jj); -- FELIX Recovered Clock
+        end generate recclk_gen;
       end generate channel_loop;
 
     end generate flx_gen;

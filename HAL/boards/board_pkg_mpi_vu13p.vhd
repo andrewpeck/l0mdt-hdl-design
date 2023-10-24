@@ -46,7 +46,7 @@ package board_pkg is
   -- override recovered clock to be connected to c_FELIX_RECCLK_SRC  if it is not a MGT_TTC mgt_type
   -- this shoul be always false unless you know what you are doing
   -- also this will only output a clock, of course no TTC will be used.
-  constant c_OVERRIDE_REC_CLK : boolean := true;
+  constant c_OVERRIDE_REC_CLK : boolean := false;
   
   constant c_MGT_MAP : mgt_inst_array_t (c_NUM_MGTS-1 downto 0) := (
     --! Mapping of MGT to type, refclk and location
