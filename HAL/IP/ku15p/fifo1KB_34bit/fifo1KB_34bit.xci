@@ -4,7 +4,7 @@
     "xci_name": "fifo1KB_34bit",
     "component_reference": "xilinx.com:ip:fifo_generator:13.2",
     "ip_revision": "7",
-    "gen_directory": "../../../../FM_VU13P.gen/sources_1/ip/fifo1KB_34bit",
+    "gen_directory": ".",
     "parameters": {
       "component_parameters": {
         "Component_Name": [ { "value": "fifo1KB_34bit", "resolve_type": "user", "usage": "all" } ],
@@ -399,7 +399,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "7" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../FM_VU13P.gen/sources_1/ip/fifo1KB_34bit" } ],
+        "OUTPUTDIR": [ { "value": "." } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2022.2" } ],

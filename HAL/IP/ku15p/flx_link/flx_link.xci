@@ -4,7 +4,7 @@
     "xci_name": "flx_link",
     "component_reference": "xilinx.com:ip:gtwizard_ultrascale:1.7",
     "ip_revision": "14",
-    "gen_directory": "../../../../Projects/l0mdt/ku15p/l0mdt_ku15p_ull_empty/l0mdt_ku15p_ull_empty.gen/sources_1/ip/flx_link",
+    "gen_directory": ".",
     "parameters": {
       "component_parameters": {
         "GT_TYPE": [ { "value": "GTY", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
@@ -840,7 +840,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "14" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../Projects/l0mdt/ku15p/l0mdt_ku15p_ull_empty/l0mdt_ku15p_ull_empty.gen/sources_1/ip/flx_link" } ],
+        "OUTPUTDIR": [ { "value": "." } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2022.2" } ],
