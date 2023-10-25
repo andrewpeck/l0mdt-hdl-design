@@ -76,3 +76,8 @@ make.log
 Doc/
 .questa.gcc*
 modelsim.ini.bak
+
+project_1.gen
+FM_VU13P.gen
+
+**/.emacs*

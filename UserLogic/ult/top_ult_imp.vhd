@@ -253,8 +253,12 @@ architecture behavioral of top_ult is
   signal i_plus_neighbor_segments_av  : sf2pt_bus_std_avt(c_NUM_SF_INPUTS - 1 downto 0);
   signal i_minus_neighbor_segments_av : sf2pt_bus_std_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
-  signal o_daq_streams     : felix_stream_avt (c_DAQ_LINKS- 1 downto 0);
+  -- signal o_daq_streams     : felix_stream_avt (c_DAQ_LINKS- 1 downto 0);
+  signal daq_stream_data_v : std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+  signal daq_stream_ctrl_v : std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+  signal daq_stream_wren_v : std_logic_vector(c_DAQ_LINKS-1 downto 0);
 
+  
   signal o_plus_neighbor_segments  : sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
   signal o_minus_neighbor_segments : sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
@@ -359,7 +363,8 @@ begin
   end generate;
   --------------------------------------------------------------
   daq: for i_d in c_DAQ_LINKS - 1 downto 0 generate
-    o_daq_streams_ab(i_d) <= xor_reduce(o_daq_streams(i_d));
+    -- o_daq_streams_ab(i_d) <= xor_reduce(o_daq_streams(i_d));
+    o_daq_streams_ab(i_d) <= xor_reduce(daq_stream_data_v(i_d));
   end generate;
   --------------------------------------------------------------
   -- o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2ptcalc_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
@@ -446,7 +451,11 @@ begin
 
       
       -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-      o_daq_streams => o_daq_streams,
+      -- o_daq_streams => o_daq_streams,
+      daq_stream_data_vo => daq_stream_data_v, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+      daq_stream_ctrl_vo => daq_stream_ctrl_v, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+      daq_stream_wren_vo => daq_stream_wren_v, -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0);
+
 
       -- Segments Out to Neighbor
       o_plus_neighbor_segments_av  => o_plus_neighbor_segments,

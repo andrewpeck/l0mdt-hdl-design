@@ -46,7 +46,7 @@ package board_pkg is
   -- override recovered clock to be connected to c_FELIX_RECCLK_SRC  if it is not a MGT_TTC mgt_type
   -- this shoul be always false unless you know what you are doing
   -- also this will only output a clock, of course no TTC will be used.
-  constant c_OVERRIDE_REC_CLK : boolean := true;
+  constant c_OVERRIDE_REC_CLK : boolean := false;
   
   constant c_MGT_MAP : mgt_inst_array_t (c_NUM_MGTS-1 downto 0) := (
     --! Mapping of MGT to type, refclk and location
@@ -216,8 +216,8 @@ package board_pkg is
     11 => (FREQ => REF_SYNC320),
     12 => (FREQ => REF_SYNC320),
     13 => (FREQ => REF_SYNC320),
-    14 => (FREQ => REF_SYNC320),
-    15 => (FREQ => REF_SYNC320),
+    14 => (FREQ => REF_SYNC240_FLX),
+    15 => (FREQ => REF_SYNC240_FLX),
 
     16 => (FREQ => REF_SYNC320),
     17 => (FREQ => REF_SYNC320),
@@ -225,15 +225,15 @@ package board_pkg is
     19 => (FREQ => REF_SYNC320),
     20 => (FREQ => REF_SYNC320),
     21 => (FREQ => REF_SYNC320),
-    22 => (FREQ => REF_SYNC320),
-    23 => (FREQ => REF_SYNC320),
+    22 => (FREQ => REF_SYNC240_FLX),
+    23 => (FREQ => REF_SYNC240_FLX),
     24 => (FREQ => REF_SYNC320),
     25 => (FREQ => REF_SYNC320),
     26 => (FREQ => REF_SYNC320),
     27 => (FREQ => REF_SYNC320),
     28 => (FREQ => REF_SYNC320),
     29 => (FREQ => REF_SYNC320),
-    30 => (FREQ => REF_SYNC320),
+    30 => (FREQ => REF_SYNC240_FLX),
     31 => (FREQ => REF_SYNC320),
 
     others => REFCLK_NIL_MAP

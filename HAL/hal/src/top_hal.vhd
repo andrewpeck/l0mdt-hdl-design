@@ -20,6 +20,8 @@ use hal.board_pkg.all;
 use hal.board_pkg_common.all;
 use hal.link_map.all;
 
+library flx;
+
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
@@ -123,7 +125,9 @@ entity top_hal is
     --                                        + c_HPS_MAX_HP_MID
     --                                        + c_HPS_MAX_HP_OUT - 1 downto 0);
 
-    daq_streams : in felix_stream_avt(c_DAQ_LINKS-1 downto 0);
+    daq_stream_data_vi : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+    daq_stream_ctrl_vi : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+    daq_stream_wren_vi : in std_logic_vector(c_DAQ_LINKS-1 downto 0);
     
     --------------------------------------------------------------------------------
     -- AXI
@@ -156,7 +160,8 @@ architecture behavioral of top_hal is
   --------------------------------------------------------------------------------
 
   signal axiclock        : std_logic; -- 50MHz AXI user clock
-  signal clk40           : std_logic; -- 40 MHz LHC clock
+  signal clk40           : std_logic; -- 40 MHz LHC clock 
+  signal clk240          : std_logic; -- 240 MHz LHC clock
   signal clk320          : std_logic; -- 320 MHz multiplied LHC clock
   signal clock_userlogic : std_logic; -- User logic clock (nominally 320 MHz)
   signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0); --reclock mirrors from BUFG
@@ -172,7 +177,7 @@ architecture behavioral of top_hal is
   signal strobe_userclk : std_logic;
   signal strobe_320     : std_logic;
 
-  signal felix_valid : std_logic;
+  signal flx_valid : std_logic;
 
   signal ttc_commands : l0mdt_ttc_rt;
 
@@ -225,8 +230,9 @@ architecture behavioral of top_hal is
   signal ttc_bitslip  : std_logic;                       -- bitslip from felix rx core to felix transceiver
   signal lhc_recclk   : std_logic;                       -- recovered clock from felix
 
-  signal felix_uplink_mgt_word_array : std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
-  signal felix_mgt_txusrclk          : std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_mgt_tx_word_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(31 downto 0);
+  signal flx_mgt_tx_usrclk_v : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_mgt_rx_word_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(19 downto 0);
 
   --------------------------------------------------------------------------------
   -- Sector Logic Glue MGT <-> SL Core
@@ -289,6 +295,7 @@ architecture behavioral of top_hal is
   attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;
   attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
 
+  
 begin  -- architecture behavioral
 
   --------------------------------------------------------------------------------
@@ -391,6 +398,7 @@ begin  -- architecture behavioral
       b2b_locked_o      => b2b_locked,
       axiclock_o        => axiclock,
       clock40_o         => clk40,
+      clock240_o        => clk240,
       clock320_o        => clk320,
       clock_userlogic_o => clock_userlogic
 
@@ -448,6 +456,7 @@ begin  -- architecture behavioral
 
       -- clocks
       axiclock   => axiclock,
+      clock240_i => clk240,
       clock320   => clk320,
       lhc_locked => lhc_locked,
       refclk_mirrors_out => refclk_mirrors,
@@ -490,8 +499,9 @@ begin  -- architecture behavioral
       ttc_recclk_o   => lhc_recclk,
 
       -- Felix DAQ
-      felix_uplink_mgt_word_array_i => felix_uplink_mgt_word_array,
-      felix_mgt_txusrclk_o          => felix_mgt_txusrclk
+      flx_mgt_word_vi   => flx_mgt_tx_word_v,
+      flx_mgt_usrclk_vo => flx_mgt_tx_usrclk_v,
+      flx_mgt_word_vo   => flx_mgt_rx_word_v
       );
 
   -- FIXME: this should come from an ODDR (output double data rate buffer).
@@ -718,24 +728,24 @@ begin  -- architecture behavioral
   -- Felix
   --------------------------------------------------------------------------------
 
-  -- Felix Receiver
-
-  felix_decoder_inst : entity work.felix_decoder
-    port map (
-      clock320 => clk320, -- felix downlink clock
-      clock40  => clk40, -- 40mhz system clock
-
-      reset => reset_clk320,
-
-      ttc_mgt_data_i    => ttc_mgt_word,
-      ttc_mgt_bitslip_o => ttc_bitslip,
-
-      strobe_pipeline => strobe_userclk,
-      strobe_320      => strobe_320,
-
-      l0mdt_ttc_40m => ttc_commands, -- copies of outputs stable for 25ns
-      valid_o       => felix_valid
-      );
+  -- -- Felix Receiver
+  -- 
+  -- felix_decoder_inst : entity work.felix_decoder
+  --   port map (
+  --     clock320 => clk320, -- felix downlink clock
+  --     clock40  => clk40, -- 40mhz system clock
+  -- 
+  --     reset => reset_clk320,
+  -- 
+  --     ttc_mgt_data_i    => ttc_mgt_word,
+  --     ttc_mgt_bitslip_o => ttc_bitslip,
+  -- 
+  --     strobe_pipeline => strobe_userclk,
+  --     strobe_320      => strobe_320,
+  -- 
+  --     l0mdt_ttc_40m => ttc_commands, -- copies of outputs stable for 25ns
+  --     valid_o       => felix_valid
+  --     );
 
   ttc_commands_o <= ttc_commands;
 
@@ -747,34 +757,49 @@ begin  -- architecture behavioral
                               & " c_NUM_FELIX_UPLINKS=" & integer'image(c_NUM_FELIX_UPLINKS)
                               severity error;
 
-  felix_tx_inst : entity work.felix_tx
-    generic map (
-      g_NUM_UPLINKS => c_DAQ_LINKS -- c_NUM_DAQ_STREAMS
-      )
-    port map (
-      clk320           => clk320,
-      clk40            => clk40,
-      reset_i          => reset_clk40,
 
-      -- FIXME:
-      --
-      -- daq streams is always length 18, and these are picked out incorrectly
-      --
-      -- this is due to a deliberate bug in the user logic where the constant
-      -- c_NUM_DAQ_STREAMS was commented out in favor of
-      -- c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT
-      --
-      -- so now the calculation of which daq link is which is completely wrong
-      -- this needs some kind of translation layer to map user logic daq links
-      -- onto felix links
 
-      daq_streams      => daq_streams, -- (c_NUM_DAQ_STREAMS-1 downto 0),
-      mgt_word_array_o => felix_uplink_mgt_word_array(c_DAQ_LINKS-1 downto 0),
-      -- mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
-      ready_o          => open,
-      was_not_ready_o  => open,
-      strobe_320       => strobe_320
-      );
+  u_flx_tx : entity flx.flx_tx
+  generic map (NLINKS => c_DAQ_LINKS) -- : natural);
+  port map (clk240_i              => clk240 -- : in  std_logic
+            , clk320_i            => clk320 -- : in  std_logic
+            , rst_i               => reset_clk40 -- : in  std_logic
+
+            , busy_i              => '0' -- : in std_logic
+
+            , usr_data_vi => daq_stream_data_vi -- : in  std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0)
+            , usr_ctrl_vi => daq_stream_ctrl_vi -- : in  std_logic_vector_array(NLINKS-1 downto 0)(1 downto 0)
+            , usr_wren_vi => daq_stream_wren_vi -- : in  std_logic_vector(NLINKS-1 downto 0)
+            , mgt_data_vo => flx_mgt_tx_word_v(c_DAQ_LINKS-1 downto 0)); -- : out std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0));
+
+  --felix_tx_inst : entity work.felix_tx
+  --  generic map (
+  --    g_NUM_UPLINKS => c_DAQ_LINKS -- c_NUM_DAQ_STREAMS
+  --    )
+  --  port map (
+  --    clk320           => clk320,
+  --    clk40            => clk40,
+  --    reset_i          => reset_clk40,
+  --
+  --    -- FIXME:
+  --    --
+  --    -- daq streams is always length 18, and these are picked out incorrectly
+  --    --
+  --    -- this is due to a deliberate bug in the user logic where the constant
+  --    -- c_NUM_DAQ_STREAMS was commented out in favor of
+  --    -- c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT
+  --    --
+  --    -- so now the calculation of which daq link is which is completely wrong
+  --    -- this needs some kind of translation layer to map user logic daq links
+  --    -- onto felix links
+  --
+  --    daq_streams      => daq_streams, -- (c_NUM_DAQ_STREAMS-1 downto 0),
+  --    mgt_word_array_o => felix_uplink_mgt_word_array(c_DAQ_LINKS-1 downto 0),
+  --    -- mgt_word_array_o => felix_uplink_mgt_word_array(c_NUM_DAQ_STREAMS-1 downto 0),
+  --    ready_o          => open,
+  --    was_not_ready_o  => open,
+  --    strobe_320       => strobe_320
+  --    );
 
   --------------------------------------------------------------------------------
   -- Sumps to prevent trimming... TODO remove later once actual logic is connected
@@ -803,7 +828,7 @@ begin  -- architecture behavioral
   -- This was there to don't make Vivado optimise away the ULL. Now that it is actually connected
   -- we can disable it. Keep it there, just in case
   sump_gen : if (false) generate
-    signal daq_sump                     : std_logic_vector (daq_streams'length-1 downto 0);
+    signal daq_sump                     : std_logic_vector (daq_stream_data_vi'length-1 downto 0);
     signal mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
     signal nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);
     signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
@@ -816,8 +841,8 @@ begin  -- architecture behavioral
       if (rising_edge(clock_userlogic)) then
 
         daqsump_loop :
-        for I in 0 to daq_streams'length-1 loop
-          daq_sump(I) <= xor_reduce(daq_streams(I));
+        for I in 0 to daq_stream_data_vi'length-1 loop
+          daq_sump(I) <= xor_reduce(daq_stream_data_vi(I));
         end loop;
         mtc_sump_loop : for I in 0 to c_NUM_MTC-1 loop
           mtc_sump(I) <= xor_reduce(mtc_i(I));
