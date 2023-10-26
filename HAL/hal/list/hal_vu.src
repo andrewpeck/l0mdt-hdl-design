@@ -7,3 +7,6 @@ HAL/IP/vu13p/mgt_10g24_gty/mgt_10g24_gty.xci
 HAL/hal/src/mgt/mgt_sl_wrapper_vu.vhd
 # Sector Logic
 HAL/sl/list/sl_vu.src lib=sl
+
+# FELIX
+HAL/flx/list/flx_vu.src lib=flx

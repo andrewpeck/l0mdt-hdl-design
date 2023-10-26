@@ -43,7 +43,7 @@ package board_pkg_common is
   -- REFCLK Mapping
   --------------------------------------------------------------------------------
 
-  type refclk_freqs_t is (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_NIL);
+  type refclk_freqs_t is (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_SYNC240_FLX, REF_NIL);
 
   type refclk_map_t is record
     FREQ      : refclk_freqs_t;

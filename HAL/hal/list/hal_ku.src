@@ -7,3 +7,9 @@ HAL/hal/src/mgt/mgt_sl_wrapper_ku.vhd
 # Sector Logic
 HAL/sl/list/sl_ku.src lib=sl
 
+# FELIX
+# HAL/hal/src/felix_decoder.vhd
+# HAL/hal/src/felix_tx.vhd
+# HAL/lpgbt/src/lpgbt_10g_tx.vhd
+HAL/flx/list/flx_ku.src lib=flx
+
