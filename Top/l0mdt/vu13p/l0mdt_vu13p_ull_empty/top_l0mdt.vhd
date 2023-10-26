@@ -213,7 +213,6 @@ architecture structural of top_l0mdt is
   -- signal daq_streams : felix_stream_avt (c_HPS_MAX_HP_INN
   --                                            + c_HPS_MAX_HP_MID
   --                                            + c_HPS_MAX_HP_OUT - 1 downto 0);
-
   signal daq_stream_data_v : std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
   signal daq_stream_ctrl_v : std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
   signal daq_stream_wren_v : std_logic_vector(c_DAQ_LINKS-1 downto 0);
@@ -392,6 +391,7 @@ begin
       daq_stream_data_vi => daq_stream_data_v, -- : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
       daq_stream_ctrl_vi => daq_stream_ctrl_v, -- : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
       daq_stream_wren_vi => daq_stream_wren_v, -- : in std_logic_vector(c_DAQ_LINKS-1 downto 0);
+
 
       sump => hal_sump
       );
