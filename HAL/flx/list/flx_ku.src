@@ -8,5 +8,5 @@ HAL/flx/src/flx_tx.vhd
 # IP
 HAL/IP/ku15p/flx_link/flx_link.xci
 HAL/IP/ku15p/fifo1KB_34bit/fifo1KB_34bit.xci
-HAL/IP/ku15p/flx_link_vio_0/flx_linkvio_0.xci
-HAL/IP/ku15p/flx_link_vio_1/flx_linkvio_1.xci
+HAL/IP/ku15p/flx_link_vio_0/flx_link_vio_0.xci
+HAL/IP/ku15p/flx_link_vio_1/flx_link_vio_1.xci
