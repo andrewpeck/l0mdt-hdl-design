@@ -149,14 +149,6 @@ architecture Behavioral of mgt_wrapper is
   signal  sl_tx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal  sl_rx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
-  signal rx_srcclk  : std_logic;
-  signal rx_usrclk  : std_logic;
-  signal rx_usrclk2 : std_logic;
-
-  signal tx_srcclk  : std_logic;
-  signal tx_usrclk  : std_logic;
-  signal tx_usrclk2 : std_logic;
-  
 begin
 
 
@@ -568,6 +560,14 @@ begin
 
       constant c_FLX_IDX : integer := felix_idx_array(I);
       
+      signal rx_srcclk  : std_logic;
+      signal rx_usrclk  : std_logic;
+      signal rx_usrclk2 : std_logic;
+      
+      signal tx_srcclk  : std_logic;
+      signal tx_usrclk  : std_logic;
+      signal tx_usrclk2 : std_logic;
+  
     begin
 
       assert false report
