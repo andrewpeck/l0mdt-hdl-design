@@ -24,6 +24,10 @@ package common_ieee_pkg is
 
    function convert(x: std_logic_vector; t: std_logic_vector) return std_logic_vector;
 
+   function convert(x: std_logic_vector_array; t: std_logic_vector) return std_logic_vector;
+
+   function convert(x: std_logic_vector; t: std_logic_vector_array) return std_logic_vector_array;
+
    function width(x: std_logic) return natural;
    function width(x: std_logic_vector) return natural;
    function width(x: unsigned) return natural;
@@ -75,6 +79,36 @@ package body common_ieee_pkg is
       assign(y, x);
       return y;
    end function convert;
+
+   function convert(x: std_logic_vector_array; t: std_logic_vector) return std_logic_vector is
+      variable y  : std_logic_vector(t'range);
+      constant ll : natural := x(x'low)'length;
+   begin
+      for ii in x'range loop
+         if y'ascending = true then
+            assign(y(ii*ll to ll*(ii+1)-1), x(ii));
+         else
+            assign(y(ll*(ii+1)-1 downto ii*ll), x(ii));
+         end if;
+      end loop;
+      return y;
+   end function convert;
+
+
+   function convert(x: std_logic_vector; t: std_logic_vector_array) return std_logic_vector_array is
+      variable y  : std_logic_vector_array(t'range)(t(t'low)'range);
+      constant ll : natural := t(t'low)'length;
+   begin
+      for ii in t'range loop
+         if x'ascending then
+            assign(y(ii), x(ii*ll to ll*(ii+1)-1));
+         else
+            assign(y(ii), x(ll*(ii+1)-1 downto ll*ii));
+         end if;
+      end loop;
+      return y;
+   end function convert;
+
    function width(x: std_logic) return natural is
    begin
       return 1;

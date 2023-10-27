@@ -176,14 +176,14 @@ entity top_l0mdt is
 end top_l0mdt;
 
 architecture structural of top_l0mdt is
-  
+
   --------------------------------------------------------------------------------
   -- Clock + TTC
   --------------------------------------------------------------------------------
 
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
-  -- TO-DO: Trigger Throttling System (to signal FELIX about full DAQ buffers) 
+  -- TO-DO: Trigger Throttling System (to signal FELIX about full DAQ buffers)
   -- signal tts_commands          : TTS_CMD_rt;
 
   --------------------------------------------------------------------------------
@@ -214,6 +214,7 @@ architecture structural of top_l0mdt is
   --                                            + c_HPS_MAX_HP_MID
   --                                            + c_HPS_MAX_HP_OUT - 1 downto 0);
 
+  -- signal daq_streams : felix_stream_avt(c_DAQ_LINKS-1 downto 0);
   signal daq_stream_data_v : std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
   signal daq_stream_ctrl_v : std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
   signal daq_stream_wren_v : std_logic_vector(c_DAQ_LINKS-1 downto 0);
@@ -378,7 +379,7 @@ begin
 
       clk40_o  => clk40,
 
-      clk50_o => clk_50, 
+      clk50_o => clk_50,
 
       core_ctrl => CORE_ctrl_r,
       core_mon  => CORE_mon_r,
@@ -389,6 +390,7 @@ begin
       mtc_i => mtc,
       nsp_i => nsp,
 
+      -- daq_streams => daq_streams,
       daq_stream_data_vi => daq_stream_data_v, -- : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
       daq_stream_ctrl_vi => daq_stream_ctrl_v, -- : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
       daq_stream_wren_vi => daq_stream_wren_v, -- : in std_logic_vector(c_DAQ_LINKS-1 downto 0);
@@ -422,6 +424,7 @@ begin
       o_mtc => mtc,
       o_nsp => nsp,
 
+      -- o_daq_streams => daq_streams,
       daq_stream_data_vo => daq_stream_data_v, -- : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
       daq_stream_ctrl_vo => daq_stream_ctrl_v, -- : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
       daq_stream_wren_vo => daq_stream_wren_v, -- : in std_logic_vector(c_DAQ_LINKS-1 downto 0);
@@ -457,7 +460,7 @@ begin
       mpl_ctrl_v => mpl_ctrl_v,
       mpl_mon_v  => mpl_mon_v,
       fm_ctrl_v  => fm_ctrl_v,
-      fm_mon_v   => fm_mon_v,     
+      fm_mon_v   => fm_mon_v,
       --
 
       sump => user_sump
@@ -515,7 +518,7 @@ begin
       c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC),  -- c2c_refclkp,
       c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC),  --c2c_refclkn,
       axi_reset_n => axi_reset_n,
-      
+
       -- START: ULT_IO :: DO NOT EDIT
       fw_info_mon            => fw_info_mon_r,
       fm_mon            => fm_mon_r,
@@ -526,11 +529,11 @@ begin
       hal_ctrl           => hal_ctrl_r,
       hog_mon            => hog_mon_r,
       -- END: ULT_IO :: DO NOT EDIT
-       
+
       -- axi common
       clk40                   => clk40,
       clk_user                => clock_and_control.clk,
-      axi_clk                 => clk_50, 
+      axi_clk                 => clk_50,
       clk40_rstn              => lhc_locked and b2b_locked,
       reset_n                 => b2b_locked,
       sys_mgmt_alarm          => open,
