@@ -614,7 +614,7 @@ begin
                                    else '0';
       
       MGT_INST : entity flx.flx_link_wrapper
-        generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
+        generic map (g_INDEX => I, g_GT_TYPE => c_MGT_MAP(I).gt_type, g_DEBUG => true)
         port map (clk_freerun_i                 => axiclock                                      -- : in  std_logic  
                   , sys_rst_i                   => sys_rst                                       -- : in  std_logic
                                                                                                  
@@ -635,8 +635,8 @@ begin
                                                                                                  
                   , rxoutclk_vo                 => rxoutclk_v                                    -- : out std_logic_vector(3 downto 0)
                                                                                                  
-                  , reset_tx_done_vo            => open                                          -- : out std_logic_vector(3 downto 0)
-                  , reset_rx_done_vo            => open                                          -- : out std_logic_vector(3 downto 0)
+                  , pma_reset_tx_done_vo        => open                                          -- : out std_logic_vector(3 downto 0)
+                  , pma_reset_rx_done_vo        => open                                          -- : out std_logic_vector(3 downto 0)
                                                                                                  
                   , reset_rx_datapath_i         => reset_rx_datapath                             -- : in   std_logic
                   , reset_rx_pll_and_datapath_i => reset_rx_pll_and_datapath                     -- : in   std_logic
