@@ -4,6 +4,7 @@ UserLogic/daq/daq-lxa-core/autogen/daq_v3.vhd
 UserLogic/daq/daq-lxa-core/pkg/daq_defs.vhd
 UserLogic/daq/daq-lxa-core/pkg/daq_version.vhd
 
+UserLogic/daq/daq-lxa-core/src/daq_xpm_fifo.vhd
 UserLogic/daq/daq-lxa-core/src/daq_fifo.vhd
 UserLogic/daq/daq-lxa-core/src/daq_data_node.vhd
 UserLogic/daq/daq-lxa-core/src/daq_head_node.vhd
