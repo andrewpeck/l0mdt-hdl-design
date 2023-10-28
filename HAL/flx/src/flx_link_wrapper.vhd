@@ -241,36 +241,36 @@ begin
       --             , clk_b => qpll1outrefclk        -- : in  std_logic;
       --             , rate  => qpll1outrefclk_freq); -- : out std_logic_vector(31 downto 0) := (others => '0')
       
-      GEN_RXOUTCLK_FREQ : for ii in rxoutclk_v'range generate
-        u_clk_freq_rxoutclk : entity work.clk_frequency
-          generic map (clk_a_freq => 50_000_000)     -- : natural := 31250000
-          port map (reset   => '0'                   -- : in  std_logic;
-                    , clk_a => clk_freerun_i         -- : in  std_logic;
-                    , clk_b => rxoutclk_v(ii)        -- : in  std_logic;
-                    , rate  => rxoutclk_freq_v(ii)); -- : out std_logic_vector(31 downto 0) := (others => '0')
-      end generate GEN_RXOUTCLK_FREQ;
-
-      GEN_TXOUTCLK_FREQ : for ii in txoutclk_v'range generate
-        u_clk_freq_txoutclk : entity work.clk_frequency
-          generic map (clk_a_freq => 50_000_000)     -- : natural := 31250000
-          port map (reset   => '0'                   -- : in  std_logic;
-                    , clk_a => clk_freerun_i         -- : in  std_logic;
-                    , clk_b => txoutclk_v(ii)        -- : in  std_logic;
-                    , rate  => txoutclk_freq_v(ii)); -- : out std_logic_vector(31 downto 0) := (others => '0')
-      end generate GEN_TXOUTCLK_FREQ;
-
-      u_flx_link_vio_1 : component flx_link_vio_1
-        port map (clk         => clk_freerun_i        -- : in std_logic
-                  , probe_in0 => (others => '0')      -- : in std_logic_vector(31 downto 0)
-                  , probe_in1 => (others => '0')      -- : in std_logic_vector(31 downto 0)
-                  , probe_in2 => rxoutclk_freq_v(0)   -- : in std_logic_vector(31 downto 0)
-                  , probe_in3 => rxoutclk_freq_v(1)   -- : in std_logic_vector(31 downto 0)
-                  , probe_in4 => rxoutclk_freq_v(2)   -- : in std_logic_vector(31 downto 0)
-                  , probe_in5 => rxoutclk_freq_v(3)   -- : in std_logic_vector(31 downto 0)
-                  , probe_in6 => txoutclk_freq_v(0)   -- : in std_logic_vector(31 downto 0)
-                  , probe_in7 => txoutclk_freq_v(1)   -- : in std_logic_vector(31 downto 0)
-                  , probe_in8 => txoutclk_freq_v(2)   -- : in std_logic_vector(31 downto 0)
-                  , probe_in9 => txoutclk_freq_v(3)); -- : in std_logic_vector(31 downto 0));
+      -- GEN_RXOUTCLK_FREQ : for ii in rxoutclk_v'range generate
+      --   u_clk_freq_rxoutclk : entity work.clk_frequency
+      --     generic map (clk_a_freq => 50_000_000)     -- : natural := 31250000
+      --     port map (reset   => '0'                   -- : in  std_logic;
+      --               , clk_a => clk_freerun_i         -- : in  std_logic;
+      --               , clk_b => rxoutclk_v(ii)        -- : in  std_logic;
+      --               , rate  => rxoutclk_freq_v(ii)); -- : out std_logic_vector(31 downto 0) := (others => '0')
+      -- end generate GEN_RXOUTCLK_FREQ;
+      -- 
+      -- GEN_TXOUTCLK_FREQ : for ii in txoutclk_v'range generate
+      --   u_clk_freq_txoutclk : entity work.clk_frequency
+      --     generic map (clk_a_freq => 50_000_000)     -- : natural := 31250000
+      --     port map (reset   => '0'                   -- : in  std_logic;
+      --               , clk_a => clk_freerun_i         -- : in  std_logic;
+      --               , clk_b => txoutclk_v(ii)        -- : in  std_logic;
+      --               , rate  => txoutclk_freq_v(ii)); -- : out std_logic_vector(31 downto 0) := (others => '0')
+      -- end generate GEN_TXOUTCLK_FREQ;
+      -- 
+      -- u_flx_link_vio_1 : component flx_link_vio_1
+      --   port map (clk         => clk_freerun_i        -- : in std_logic
+      --             , probe_in0 => (others => '0')      -- : in std_logic_vector(31 downto 0)
+      --             , probe_in1 => (others => '0')      -- : in std_logic_vector(31 downto 0)
+      --             , probe_in2 => rxoutclk_freq_v(0)   -- : in std_logic_vector(31 downto 0)
+      --             , probe_in3 => rxoutclk_freq_v(1)   -- : in std_logic_vector(31 downto 0)
+      --             , probe_in4 => rxoutclk_freq_v(2)   -- : in std_logic_vector(31 downto 0)
+      --             , probe_in5 => rxoutclk_freq_v(3)   -- : in std_logic_vector(31 downto 0)
+      --             , probe_in6 => txoutclk_freq_v(0)   -- : in std_logic_vector(31 downto 0)
+      --             , probe_in7 => txoutclk_freq_v(1)   -- : in std_logic_vector(31 downto 0)
+      --             , probe_in8 => txoutclk_freq_v(2)   -- : in std_logic_vector(31 downto 0)
+      --             , probe_in9 => txoutclk_freq_v(3)); -- : in std_logic_vector(31 downto 0));
 
     end generate GEN_DEBUG;
     
