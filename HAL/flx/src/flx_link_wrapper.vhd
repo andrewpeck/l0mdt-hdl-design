@@ -227,19 +227,19 @@ begin
                   , probe_out1   => txctrl1             -- : out std_logic_vector(63 downto 0)
                   , probe_out2   => txctrl2);           -- : out std_logic_vector(31 downto 0));
 
-      u_clk_freq_qpll1outclk : entity work.clk_frequency
-        generic map (clk_a_freq => 50_000_000)  -- : natural := 31250000
-        port map (reset   => '0'                -- : in  std_logic;
-                  , clk_a => clk_freerun_i      -- : in  std_logic;
-                  , clk_b => qpll1outclk        -- : in  std_logic;
-                  , rate  => qpll1outclk_freq); -- : out std_logic_vector(31 downto 0) := (others => '0')
-      
-      u_clk_freq_qpll1outrefclk : entity work.clk_frequency
-        generic map (clk_a_freq => 50_000_000)     -- : natural := 31250000
-        port map (reset   => '0'                   -- : in  std_logic;
-                  , clk_a => clk_freerun_i         -- : in  std_logic;
-                  , clk_b => qpll1outrefclk        -- : in  std_logic;
-                  , rate  => qpll1outrefclk_freq); -- : out std_logic_vector(31 downto 0) := (others => '0')
+      -- u_clk_freq_qpll1outclk : entity work.clk_frequency
+      --   generic map (clk_a_freq => 50_000_000)  -- : natural := 31250000
+      --   port map (reset   => '0'                -- : in  std_logic;
+      --             , clk_a => clk_freerun_i      -- : in  std_logic;
+      --             , clk_b => qpll1outclk        -- : in  std_logic;
+      --             , rate  => qpll1outclk_freq); -- : out std_logic_vector(31 downto 0) := (others => '0')
+      -- 
+      -- u_clk_freq_qpll1outrefclk : entity work.clk_frequency
+      --   generic map (clk_a_freq => 50_000_000)     -- : natural := 31250000
+      --   port map (reset   => '0'                   -- : in  std_logic;
+      --             , clk_a => clk_freerun_i         -- : in  std_logic;
+      --             , clk_b => qpll1outrefclk        -- : in  std_logic;
+      --             , rate  => qpll1outrefclk_freq); -- : out std_logic_vector(31 downto 0) := (others => '0')
       
       GEN_RXOUTCLK_FREQ : for ii in rxoutclk_v'range generate
         u_clk_freq_rxoutclk : entity work.clk_frequency
@@ -261,8 +261,8 @@ begin
 
       u_flx_link_vio_1 : component flx_link_vio_1
         port map (clk         => clk_freerun_i        -- : in std_logic
-                  , probe_in0 => qpll1outclk_freq     -- : in std_logic_vector(31 downto 0)
-                  , probe_in1 => qpll1outrefclk_freq  -- : in std_logic_vector(31 downto 0)
+                  , probe_in0 => (others => '0')      -- : in std_logic_vector(31 downto 0)
+                  , probe_in1 => (others => '0')      -- : in std_logic_vector(31 downto 0)
                   , probe_in2 => rxoutclk_freq_v(0)   -- : in std_logic_vector(31 downto 0)
                   , probe_in3 => rxoutclk_freq_v(1)   -- : in std_logic_vector(31 downto 0)
                   , probe_in4 => rxoutclk_freq_v(2)   -- : in std_logic_vector(31 downto 0)
