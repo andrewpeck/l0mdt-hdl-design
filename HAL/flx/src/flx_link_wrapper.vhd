@@ -125,6 +125,11 @@ begin
     signal rxoutclk_v : std_logic_vector(3 downto 0);
     signal txoutclk_v : std_logic_vector(3 downto 0);
 
+    signal rxoutclk_freq_v     : std_logic_vector_array(rxoutclk_v'range)(31 downto 0);
+    signal txoutclk_freq_v     : std_logic_vector_array(txoutclk_v'range)(31 downto 0);
+    signal qpll1outclk_freq    : std_logic_vector(31 downto 0);
+    signal qpll1outrefclk_freq : std_logic_vector(31 downto 0);
+
     component flx_link_vio_0
       port (clk        : in  std_logic
             ; probe_in0  : in  std_logic_vector( 0 downto 0)
@@ -139,11 +144,6 @@ begin
             ; probe_out1 : out std_logic_vector(63 downto 0)
             ; probe_out2 : out std_logic_vector(31 downto 0));
     end component flx_link_vio_0;
-
-    signal qpll1outclk_freq    : std_logic_vector(31 downto 0);
-    signal qpll1outrefclk_freq : std_logic_vector(31 downto 0);
-    signal rxoutclk_freq_v     : std_logic_vector_array(rxoutclk_v'range)(31 downto 0);
-    signal txoutclk_freq_v     : std_logic_vector_array(txoutclk_v'range)(31 downto 0);
 
     component flx_link_vio_1
       port (clk         : in std_logic
@@ -218,8 +218,8 @@ begin
                   , probe_in0(0) => reset_rx_cdr_stable -- : in  std_logic_vector( 0 downto 0)
                   , probe_in1(0) => reset_tx_done       -- : in  std_logic_vector( 0 downto 0)
                   , probe_in2(0) => reset_rx_done       -- : in  std_logic_vector( 0 downto 0)
-                  , probe_in3(0) => qpll1outclk         -- : in  std_logic_vector( 0 downto 0)
-                  , probe_in4(0) => qpll1outrefclk      -- : in  std_logic_vector( 0 downto 0)
+                  , probe_in3(0) => '0'                 -- : in  std_logic_vector( 0 downto 0)
+                  , probe_in4(0) => '0'                 -- : in  std_logic_vector( 0 downto 0)
                   , probe_in5    => gtpowergood_v       -- : in  std_logic_vector( 3 downto 0)
                   , probe_in6    => rxpmaresetdone_v    -- : in  std_logic_vector( 3 downto 0)
                   , probe_in7    => txpmaresetdone_v    -- : in  std_logic_vector( 3 downto 0)
