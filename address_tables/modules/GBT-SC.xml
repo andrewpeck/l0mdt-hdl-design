@@ -26,14 +26,15 @@
             <node id="RX_0" address="0x0" fwinfo="type=array" module="file://SCA_RX.xml"/>
             <node id="RX_1" address="0x3" fwinfo="type=array" module="file://SCA_RX.xml"/>
             <node id="RX_2" address="0x6" fwinfo="type=array" module="file://SCA_RX.xml"/>
+            <node id="RX_3" address="0x9" fwinfo="type=array" module="file://SCA_RX.xml"/>
         </node>
 
         <!--SCA Control -->
-        <node id="SCA_ENABLE"     address="0x15" mask="0x7" permission="rw" parameters="default=0x7" description="Enable flag to select SCAs"/> <!--size = to # of scas-->
-        <node id="START_RESET"    address="0x16" mask="0x1" permission="rw" parameters="default=0" description="Send a reset command to the enabled SCAs"/> <!--ACTION-->
-        <node id="START_CONNECT"  address="0x16" mask="0x2" permission="rw" parameters="default=0" description="Send a connect command to the enabled SCAs"/> <!--ACTION-->
-        <node id="START_COMMAND"  address="0x16" mask="0x4" permission="rw" parameters="default=0" description="Send the command set in input to the enabled SCAs"/> <!--ACTION-->
-        <node id="INJ_CRC_ERR"    address="0x16" mask="0x8" permission="rw" parameters="default=0" description="Emulate a CRC error"/> <!--ACTION-->
+        <node id="SCA_ENABLE"     address="0x17" mask="0xf" permission="rw" parameters="default=0xf" description="Enable flag to select SCAs"/> <!--size = to # of scas-->
+        <node id="START_RESET"    address="0x18" mask="0x1" permission="rw" parameters="default=0" description="Send a reset command to the enabled SCAs"/> <!--ACTION-->
+        <node id="START_CONNECT"  address="0x18" mask="0x2" permission="rw" parameters="default=0" description="Send a connect command to the enabled SCAs"/> <!--ACTION-->
+        <node id="START_COMMAND"  address="0x18" mask="0x4" permission="rw" parameters="default=0" description="Send the command set in input to the enabled SCAs"/> <!--ACTION-->
+        <node id="INJ_CRC_ERR"    address="0x18" mask="0x8" permission="rw" parameters="default=0" description="Emulate a CRC error"/> <!--ACTION-->
 
     </node> <!-- Master -->
 

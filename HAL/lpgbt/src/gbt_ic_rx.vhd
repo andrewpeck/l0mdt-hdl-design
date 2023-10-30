@@ -67,6 +67,9 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
+library shared_lib;
+use shared_lib.config_pkg.all;
+
 entity gbt_ic_rx is
   port(
     clock_i : in std_logic;             -- 40MHz clock
@@ -111,6 +114,25 @@ architecture Behavioral of gbt_ic_rx is
   signal watchdog_reset     : std_logic                           := '0';
 
   signal data_frame_cnt : integer range 0 to 2**16-1;
+  signal cnt            : integer range 0 to 5 := 0;
+  signal state_fsm      : std_logic_vector(3 downto 0);
+  
+--  COMPONENT ila_gbt_ic_rx
+
+--PORT (
+--	clk : IN STD_LOGIC;
+--	probe0 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+--	probe1 : IN STD_LOGIC_VECTOR(3 DOWNTO 0); 
+--	probe2 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe3 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe5 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+--	probe6 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+--	probe7 : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+--	probe8 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+--	probe9 : IN STD_LOGIC_VECTOR(6 DOWNTO 0)
+--);
+--END COMPONENT  ;
 
 begin
 
@@ -165,6 +187,7 @@ begin
             -- not included in parity check
             else                        -- lpGBT v1 and others
               -- first frame is I2C_ADR, then go to CMD
+              state_fsm <= "0000";
               rx_state <= CMD;
 
               chip_adr_int <= frame_i(7 downto 1);
@@ -180,6 +203,7 @@ begin
 
             chip_adr_int <= frame_i(7 downto 1);
             rw_bit_int   <= frame_i(0);
+            state_fsm <= "0001";
           -- not included in parity check
           end if;
 
@@ -187,20 +211,26 @@ begin
 
           if (valid_i = '1') then
             rx_state <= CMD;
+            state_fsm <= "0010";
           end if;
 
         when CMD =>
 
           if (valid_i = '1') then
-            rx_state               <= LENGTH0;
-            downlink_parity_ok_int <= frame_i(0);
-
-            if (gbt_frame_format_i = "00") or (gbt_frame_format_i = "01") then  -- GBTx and lpGBT v0
-              parity_int <= frame_i;    -- start parity check
-            else                        -- lpGBT v1 and others
-              parity_int <= parity_int xor frame_i;  -- continue parity check
-            end if;
-
+--            if cnt = 1 then                 --had to add a delay to sample the data correctly for LpGBT V1
+--                cnt <= 0;
+                rx_state               <= LENGTH0;
+                downlink_parity_ok_int <= frame_i(0);
+    
+                if (gbt_frame_format_i = "00") or (gbt_frame_format_i = "01") then  -- GBTx and lpGBT v0
+                  parity_int <= frame_i;    -- start parity check
+                else                        -- lpGBT v1 and others
+                  parity_int <= parity_int xor frame_i;  -- continue parity check
+                  state_fsm <= "0011";
+                end if;
+--            else
+--                cnt <= cnt + 1;
+--            end if;
           end if;
 
         when LENGTH0 =>
@@ -209,6 +239,7 @@ begin
             rx_state               <= LENGTH1;
             length_int(7 downto 0) <= frame_i;
             parity_int             <= parity_int xor frame_i;
+            state_fsm <= "0100";
           end if;
 
         when LENGTH1 =>
@@ -217,6 +248,7 @@ begin
             rx_state                <= REG_ADR0;
             length_int(15 downto 8) <= frame_i;
             parity_int              <= parity_int xor frame_i;
+            state_fsm <= "0101";
           end if;
 
         when REG_ADR0 =>
@@ -225,6 +257,7 @@ begin
             rx_state                <= REG_ADR1;
             reg_adr_int(7 downto 0) <= frame_i;
             parity_int              <= parity_int xor frame_i;
+            state_fsm <= "0110";
           end if;
 
         when REG_ADR1 =>
@@ -233,6 +266,7 @@ begin
             reg_adr_int(15 downto 8) <= frame_i;
             parity_int               <= parity_int xor frame_i;
             rx_state                 <= DATA;
+            state_fsm <= "0111";
           end if;
 
         when DATA =>
@@ -250,8 +284,10 @@ begin
             if (std_logic_vector(to_unsigned(data_frame_cnt+1, length_int'length)) = length_int) then
               rx_state       <= PARITY;
               data_frame_cnt <= 0;
+              state_fsm <= "1000";
             else
               data_frame_cnt <= data_frame_cnt + 1;
+              state_fsm <= "1001";
             end if;
           end if;
 
@@ -261,6 +297,7 @@ begin
             rx_state      <= OUTPUT;
             parity_int    <= parity_int;
             parity_rx_int <= frame_i;
+            state_fsm     <= "1010";
           end if;
 
         when OUTPUT =>
@@ -277,6 +314,7 @@ begin
           reg_adr_o            <= reg_adr_int;
           data_o               <= data_int;
           valid_o              <= '1';
+          state_fsm            <= "1011";
 
           rx_state <= IDLE;
 
@@ -284,9 +322,11 @@ begin
 
           err_o    <= '1';
           rx_state <= IDLE;
+          state_fsm            <= "1100";
 
         when others =>
           rx_state <= IDLE;
+          state_fsm            <= "1101";
 
       end case;
 
@@ -317,5 +357,24 @@ begin
 
     end if;
   end process;
+
+--ilagen: if c_ENABLE_ILA = '1' generate
+
+--    ila_gbt_ic_rx_inst : ila_gbt_ic_rx
+--    PORT MAP (
+--        clk => clock_i,
+--        probe0 => frame_i, 
+--        probe1 => state_fsm, 
+--        probe2(0) => valid_i, 
+--        probe3(0) => uplink_parity_ok_o,
+--        probe4(0) => reset_i,
+--        probe5(0) => valid_o,
+--        probe6     => data_o,
+--        probe7     => reg_adr_o,
+--        probe8     => length_o,
+--        probe9     => chip_adr_o
+--    );  
+--end generate;
+  
 
 end Behavioral;

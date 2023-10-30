@@ -51,6 +51,10 @@ package config_pkg is
 -- =============================================================================
 -- SETTING CONSTANTS FROM CONFIGURATION FILE
 -- =============================================================================
+
+ 
+  constant c_ENABLE_ILA           : std_logic := CFG.ENABLE_ILA;  -- 0: disabled 1: enabled
+  constant c_LPGBT_VER            : std_logic := CFG.LPGBT_VER; -- 0: ver0 1: ver1 
   --------------------------------------------------------------------------------
   -- Sector information
   --------------------------------------------------------------------------------

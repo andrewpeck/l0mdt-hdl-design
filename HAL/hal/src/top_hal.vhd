@@ -624,6 +624,8 @@ begin  -- architecture behavioral
             -- outputs to polmux
             tdc_hits_to_polmux_o    => tdc_hits_to_polmux (hi downto lo), -- Big vector of all TDC data, hi-lo give the range of the vector corresponding to a particular CSM
             read_done_from_polmux_i => read_done_from_polmux (hi downto lo),
+
+            --
             ctrl                    => csm_ctrl_r(CSM),
             mon                     => csm_mon_r(CSM)
             );

@@ -204,3 +204,4 @@ set_false_path -to [get_pins -filter {REF_PIN_NAME=~*PRE} -of_objects [get_cells
 set_false_path -to [get_pins -filter {REF_PIN_NAME=~*CLR} -of_objects [get_cells -hierarchical -filter {NAME =~ *reset_synchronizer*inst/rst_in_*}]]
 #set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] -to [get_pins {top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_comma_detector_inst/rereset_i0*}]
 #set_false_path -from [get_pins top_hal/sector_logic_link_wrapper_inst/reset_int_reg/C] -to [get_pins {top_hal/sector_logic_link_wrapper_inst/sl_gen*.mgt_tag*.rx_gen.rx_test_pattern_checker_inst/reset0}]
+set_max_delay -from [get_pins top_hal/reset_clk40_reg/C] -to [get_pins {top_hal/csm_gen[0].csm_ifgen.mgt_tag[32].csm_inst/lpgbt_links_inst/downlink_gen[0].downlink_reset_reg/D}] 2.5
