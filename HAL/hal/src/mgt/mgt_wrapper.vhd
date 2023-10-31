@@ -149,14 +149,6 @@ architecture Behavioral of mgt_wrapper is
   signal  sl_tx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal  sl_rx_clk_int : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
-  signal rx_srcclk  : std_logic;
-  signal rx_usrclk  : std_logic;
-  signal rx_usrclk2 : std_logic;
-
-  signal tx_srcclk  : std_logic;
-  signal tx_usrclk  : std_logic;
-  signal tx_usrclk2 : std_logic;
-  
 begin
 
 
@@ -568,6 +560,14 @@ begin
 
       constant c_FLX_IDX : integer := felix_idx_array(I);
       
+      signal rx_srcclk  : std_logic;
+      signal rx_usrclk  : std_logic;
+      signal rx_usrclk2 : std_logic;
+      
+      signal tx_srcclk  : std_logic;
+      signal tx_usrclk  : std_logic;
+      signal tx_usrclk2 : std_logic;
+  
     begin
 
       assert false report
@@ -614,7 +614,7 @@ begin
                                    else '0';
       
       MGT_INST : entity flx.flx_link_wrapper
-        generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
+        generic map (g_INDEX => I, g_GT_TYPE => c_MGT_MAP(I).gt_type, g_DEBUG => true)
         port map (clk_freerun_i                 => axiclock                                      -- : in  std_logic  
                   , sys_rst_i                   => sys_rst                                       -- : in  std_logic
                                                                                                  
@@ -635,8 +635,8 @@ begin
                                                                                                  
                   , rxoutclk_vo                 => rxoutclk_v                                    -- : out std_logic_vector(3 downto 0)
                                                                                                  
-                  , reset_tx_done_vo            => open                                          -- : out std_logic_vector(3 downto 0)
-                  , reset_rx_done_vo            => open                                          -- : out std_logic_vector(3 downto 0)
+                  , pma_reset_tx_done_vo        => open                                          -- : out std_logic_vector(3 downto 0)
+                  , pma_reset_rx_done_vo        => open                                          -- : out std_logic_vector(3 downto 0)
                                                                                                  
                   , reset_rx_datapath_i         => reset_rx_datapath                             -- : in   std_logic
                   , reset_rx_pll_and_datapath_i => reset_rx_pll_and_datapath                     -- : in   std_logic

@@ -273,7 +273,7 @@ begin
               i_stream_enable_array        => (0 => '1'),
               i_stream_payload_emurray     => station_payload_v,
               ------------------------------------------------------------------
-              i_f2e_hfull_array   => i_station_flx_streams_hfull_bus, -- : in  std_logic;
+              i_f2e_pfull_array   => i_station_flx_streams_hfull_bus, -- : in  std_logic;
               o_f2e_ctrl_array    => station_flx_streams_ctrl_bus, -- : out std_logic_vector(1 downto 0);
               o_f2e_wr_strb_array => o_station_flx_streams_wr_strb_bus, -- : out std_logic;
               o_f2e_payload_array => station_flx_streams_payload_bus); -- : out std_logic_vector);
