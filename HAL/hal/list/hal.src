@@ -23,6 +23,8 @@ HAL/hal/src/clk_frequency.vhd
 HAL/hal/src/mgt/mgt_pkg.vhd
 HAL/hal/src/mgt/mgt_10g24_wrapper.vhd
 HAL/hal/src/mgt/mgt_wrapper.vhd
+HAL/hal/src/mgt/xlx_ku_mgt_ip_reset_synchronizer.vhd
+
 
 
 # LPGBT

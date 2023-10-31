@@ -7,6 +7,7 @@ HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 # HAL
 HAL/hal/list/hal.src lib=hal
 HAL/hal/list/hal_vu.src lib=hal
+#HAL/hal/list/ila_vu.src 
 
 # User Logic Libraries
 UserLogic/hp/hp_lib.src   lib=hp_lib

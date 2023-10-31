@@ -158,6 +158,7 @@ ku15p_ull_empty:
       endcap: 0
       large: 0
       en_neighbors: 0
+      en_ila: 1
       hog_only_synth: 0
       hog_no_bitstream: 0
       en_fm: 0
@@ -192,6 +193,7 @@ vu13p_ull_empty:
       en_neighbors: 0
       hog_only_synth: 0
       hog_no_bitstream: 0
+      en_ila: 1
       en_fm: 0
       en_tar: 0
       en_h2s: 0
@@ -205,6 +207,74 @@ vu13p_ull_empty:
       tdc_links: 18
       hog_tag: "argos"
       # hog_tag: "mdt-2"
+
+vu13p_ull_empty_lpgbt_v0:
+  fpga: xcvu13p-flga2577-2-e
+  board_pkg: board_pkg_mpi_vu13p
+  sf: csf
+  pt: mpt
+  constraints:
+    - "pinouts_mpi_vu13p.xdc"
+  variants:
+    default:
+      link_map: "link_map_vu13p"
+      zynq_target: usp  # 7s or usp
+      sector_id: 3
+      sector_side: 0
+      endcap: 0
+      large: 0
+      en_neighbors: 0
+      hog_only_synth: 0
+      hog_no_bitstream: 0
+      en_ila: 1
+      en_fm: 0
+      en_tar: 0
+      en_h2s: 0
+      en_ucm: 0
+      en_mpl: 0
+      en_sf: 0
+      en_pt: 0
+      en_daq: 0
+      en_mtc: 0
+      csm_links: 1
+      tdc_links: 18
+      lpgbt_ver: 0
+      hog_tag: "argos"
+
+
+ku15p_ull_empty_lpgbt_v0:
+  fpga: xcku15p-ffva1760-2-e
+  board_pkg: board_pkg_mpi_ku15p
+  sf: csf
+  pt: mpt
+  constraints:
+    - "pinouts_mpi_ku15p.xdc"
+  variants:
+    default:
+      link_map: "link_map_ku15p"
+      zynq_target: usp  # 7s or usp
+      sector_id: 3
+      sector_side: 0
+      endcap: 0
+      large: 0
+      en_neighbors: 0
+      en_ila: 1
+      hog_only_synth: 0
+      hog_no_bitstream: 0
+      en_fm: 0
+      en_tar: 0
+      en_h2s: 0
+      en_ucm: 0
+      en_mpl: 0
+      en_sf: 0
+      en_pt: 0
+      en_daq: 0
+      en_mtc: 0
+      csm_links: 1
+      tdc_links: 18
+      lpgbt_ver: 0
+      hog_tag: "argos"
+      # hog_tag: "mdt-1"
 
 ###################################################
 #           EMPTY ULL PROJECTS
