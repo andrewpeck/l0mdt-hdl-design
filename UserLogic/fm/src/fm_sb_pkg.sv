@@ -15,13 +15,8 @@ package fm_sb_pkg;
    parameter mon_dw_max         = 256;
    parameter pb_mode_width     = 2;
    parameter SB_DUMMY_LEN     = 51;
-
-
- 
+   parameter CUSTOM_CSM_UPLINK_DATA_LEN = 32;
    
-   
-  
-
    FM_CTRL_t FM_CTRL;
    FM_MON_t FM_MON;
 
@@ -39,7 +34,7 @@ package fm_sb_pkg;
 
       logic 	      spy_clock;
 
-parameter total_l0mdt_sb    = 42;
+parameter total_l0mdt_sb    = 97;
 parameter sb_total_dummy = 2;
 parameter sb_mapped_n      = total_l0mdt_sb + sb_total_dummy;
 
@@ -86,6 +81,61 @@ parameter integer sb_tp_dw[sb_mapped_n] = {
 		,UCM2PL_LEN
 		,UCM2PL_LEN
 		,UCM2PL_LEN
+		,MTC2SL_LEN
+		,MTC2SL_LEN
+		,MTC2SL_LEN
+		,MTC2SL_LEN
+		,MTC2SL_LEN
+		,MTC2SL_LEN
+		,MTC2SL_LEN
+		,MTC2SL_LEN
+		,MTC2SL_LEN
+		,CUSTOM_CSM_UPLINK_DATA_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
+		,TDCPOLMUX2TAR_LEN
 		,SB_DUMMY_LEN
 		,SB_DUMMY_LEN
 			};
@@ -132,6 +182,61 @@ parameter integer sb_dw[sb_mapped_n] = {
 		,find_sb_dw(UCM2PL_LEN, axi_dw)
 		,find_sb_dw(UCM2PL_LEN, axi_dw)
 		,find_sb_dw(UCM2PL_LEN, axi_dw)
+		,find_sb_dw(MTC2SL_LEN, axi_dw)
+		,find_sb_dw(MTC2SL_LEN, axi_dw)
+		,find_sb_dw(MTC2SL_LEN, axi_dw)
+		,find_sb_dw(MTC2SL_LEN, axi_dw)
+		,find_sb_dw(MTC2SL_LEN, axi_dw)
+		,find_sb_dw(MTC2SL_LEN, axi_dw)
+		,find_sb_dw(MTC2SL_LEN, axi_dw)
+		,find_sb_dw(MTC2SL_LEN, axi_dw)
+		,find_sb_dw(MTC2SL_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_CSM_UPLINK_DATA_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
 		,find_sb_dw(SB_DUMMY_LEN, axi_dw)
 		,find_sb_dw(SB_DUMMY_LEN, axi_dw)
 			};
@@ -179,7 +284,62 @@ parameter integer sb_dw[sb_mapped_n] = {
 		$bits(FM_CTRL.SB40.SB_MEM.address),
 		$bits(FM_CTRL.SB41.SB_MEM.address),
 		$bits(FM_CTRL.SB42.SB_MEM.address),
-		$bits(FM_CTRL.SB43.SB_MEM.address)			};
+		$bits(FM_CTRL.SB43.SB_MEM.address),
+		$bits(FM_CTRL.SB44.SB_MEM.address),
+		$bits(FM_CTRL.SB45.SB_MEM.address),
+		$bits(FM_CTRL.SB46.SB_MEM.address),
+		$bits(FM_CTRL.SB47.SB_MEM.address),
+		$bits(FM_CTRL.SB48.SB_MEM.address),
+		$bits(FM_CTRL.SB49.SB_MEM.address),
+		$bits(FM_CTRL.SB50.SB_MEM.address),
+		$bits(FM_CTRL.SB51.SB_MEM.address),
+		$bits(FM_CTRL.SB52.SB_MEM.address),
+		$bits(FM_CTRL.SB53.SB_MEM.address),
+		$bits(FM_CTRL.SB54.SB_MEM.address),
+		$bits(FM_CTRL.SB55.SB_MEM.address),
+		$bits(FM_CTRL.SB56.SB_MEM.address),
+		$bits(FM_CTRL.SB57.SB_MEM.address),
+		$bits(FM_CTRL.SB58.SB_MEM.address),
+		$bits(FM_CTRL.SB59.SB_MEM.address),
+		$bits(FM_CTRL.SB60.SB_MEM.address),
+		$bits(FM_CTRL.SB61.SB_MEM.address),
+		$bits(FM_CTRL.SB62.SB_MEM.address),
+		$bits(FM_CTRL.SB63.SB_MEM.address),
+		$bits(FM_CTRL.SB64.SB_MEM.address),
+		$bits(FM_CTRL.SB65.SB_MEM.address),
+		$bits(FM_CTRL.SB66.SB_MEM.address),
+		$bits(FM_CTRL.SB67.SB_MEM.address),
+		$bits(FM_CTRL.SB68.SB_MEM.address),
+		$bits(FM_CTRL.SB69.SB_MEM.address),
+		$bits(FM_CTRL.SB70.SB_MEM.address),
+		$bits(FM_CTRL.SB71.SB_MEM.address),
+		$bits(FM_CTRL.SB72.SB_MEM.address),
+		$bits(FM_CTRL.SB73.SB_MEM.address),
+		$bits(FM_CTRL.SB74.SB_MEM.address),
+		$bits(FM_CTRL.SB75.SB_MEM.address),
+		$bits(FM_CTRL.SB76.SB_MEM.address),
+		$bits(FM_CTRL.SB77.SB_MEM.address),
+		$bits(FM_CTRL.SB78.SB_MEM.address),
+		$bits(FM_CTRL.SB79.SB_MEM.address),
+		$bits(FM_CTRL.SB80.SB_MEM.address),
+		$bits(FM_CTRL.SB81.SB_MEM.address),
+		$bits(FM_CTRL.SB82.SB_MEM.address),
+		$bits(FM_CTRL.SB83.SB_MEM.address),
+		$bits(FM_CTRL.SB84.SB_MEM.address),
+		$bits(FM_CTRL.SB85.SB_MEM.address),
+		$bits(FM_CTRL.SB86.SB_MEM.address),
+		$bits(FM_CTRL.SB87.SB_MEM.address),
+		$bits(FM_CTRL.SB88.SB_MEM.address),
+		$bits(FM_CTRL.SB89.SB_MEM.address),
+		$bits(FM_CTRL.SB90.SB_MEM.address),
+		$bits(FM_CTRL.SB91.SB_MEM.address),
+		$bits(FM_CTRL.SB92.SB_MEM.address),
+		$bits(FM_CTRL.SB93.SB_MEM.address),
+		$bits(FM_CTRL.SB94.SB_MEM.address),
+		$bits(FM_CTRL.SB95.SB_MEM.address),
+		$bits(FM_CTRL.SB96.SB_MEM.address),
+		$bits(FM_CTRL.SB97.SB_MEM.address),
+		$bits(FM_CTRL.SB98.SB_MEM.address)			};
 
   //Need to update sb_mapped_n manually from fm_ult_pkg.vhd (total_sb + 2 dummy sb)
    parameter sb_master_dummy_index    = total_l0mdt_sb ;

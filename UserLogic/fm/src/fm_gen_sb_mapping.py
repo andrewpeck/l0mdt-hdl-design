@@ -6,7 +6,10 @@ l0mdt_TP_width = {
     "SLC_RX"       : 256,
     "UCM2HPS"   : 64,
     "UCM2PL"      : 256,
-    "SB_DUMMY" : 64
+    "SB_DUMMY" : 64,
+    "TDCPOLMUX2TAR" : 64,
+    "MTC2SL" : 256,
+    "CUSTOM_CSM_UPLINK_DATA" : 32
 }
 
 def create_fm_sb_pkg():

@@ -29,7 +29,19 @@ types:
 - ucm2hps_sb_n : {qualifier: constant , type: integer, value: stations_n*threads_n }
 - ucm_sb_n : {qualifier: constant , type: integer, value: primary_sl_n + ucm2hps_sb_n + primary_sl_n }
 
-- total_l0mdt_sb : {qualifier: constant , type: integer, value: h2s_sb_all_station_n + ucm_sb_n }
+#SpyBuffers for CSM
+- csm_polmux_in_sb_n : {qualifier: constant , type: integer, value: 9 }
+- csm_custom_sb_n : {qualifier: constant , type: integer, value: 1 }
+
+#SpyBuffers for TAR
+- tar_sb_n   : {qualifier: constant , type: integer, value: 12 }
+- tar_sb_all_stations_n   : {qualifier: constant , type: integer, value: tar_sb_n * stations_n}
+
+#SpyBuffers for MTC
+- mtc_sb_n  : {qualifier: constant , type: integer, value: 3 }
+- mtc_sb_all_stations_n   : {qualifier: constant , type: integer, value: mtc_sb_n * stations_n}
+
+- total_l0mdt_sb : {qualifier: constant , type: integer, value: h2s_sb_all_station_n + ucm_sb_n + csm_polmux_in_sb_n + csm_custom_sb_n + tar_sb_all_stations_n + mtc_sb_all_stations_n }
 
 
 - fm_rt:
@@ -63,11 +75,28 @@ types:
   - fm_ucm2pl_mon                 : {type: 'fm_ucm2pl'}
   - fm_ucm2hps                       : {type: 'fm_ucm2hps'}
  
+- fm_csm_to_polmux: {array: [0, csm_polmux_in_sb_n], type: 'fm_rt'}
+  
+- fm_csm_mon_data:
+  - fm_csm_uplink_data          : {type: 'fm_rt'}
+  - fm_csm_to_polmux            : {type: 'fm_csm_to_polmux'}
+
+- fm_tar_mon_data : {array: [0, tar_sb_n-1], type: 'fm_rt'}
+
+- fm_mtc_mon_data : {array: [0, tar_sb_n-1], type: 'fm_rt'}
+
 - fm_mon:
   - fm_hps_mon   : {type: 'fm_hps_mon'}   
-  - fm_ucm_mon  : {type: 'fm_ucm_mon_data'}              
+  - fm_ucm_mon  : {type: 'fm_ucm_mon_data'}         
+  - fm_csm_mon_data : {type: 'fm_csm_mon_data'}
+  - fm_tar_mon_data   : {array: [0 , stations_n-1], type: 'fm_tar_mon_data'}
+  - fm_mtc_mon_data : {array: [0 , stations_n-1], type: 'fm_mtc_mon_data'}
+  
+     
 
 
 #- fm_pb_data: {type: slc_rx_rt}
 - fm_pb: {array: [0, total_l0mdt_sb -1], type: logic, range: [mon_dw_max-1, 0]}
+
+
 
