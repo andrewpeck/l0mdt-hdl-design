@@ -19,6 +19,9 @@ from l0mdt_tb.utils import test_config
 from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
+import logging
+#cocotb.log.setLevel(logging.DEBUG)
+cocotb.log.getChild('driver.FifoDriver').setLevel(logging.WARNING)
 
 def initialize_spybuffers(fifos=[]):
 
@@ -102,6 +105,8 @@ def CREATORTESTNAME_test(dut):
     testvector_config                = config["testvectors"]
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
+    inputs_tv_df_type= [["" for x in range(CREATORCLASSNAMEPorts.get_input_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_input_interfaces)]
+    outputs_tv_df_type= [["" for x in range(CREATORCLASSNAMEPorts.get_output_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_output_interfaces)]
     inputs_station_id= [["" for x in range(CREATORCLASSNAMEPorts.get_input_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_input_interfaces)]
     inputs_thread_n= [[0 for x in range(CREATORCLASSNAMEPorts.get_input_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_input_interfaces)]
     outputs_station_id= [["" for x in range(CREATORCLASSNAMEPorts.get_output_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_output_interfaces)]
@@ -112,18 +117,24 @@ def CREATORTESTNAME_test(dut):
             inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
         if "thread_n" in testvector_config_inputs[i]:
             inputs_thread_n[i]   = testvector_config_inputs[i]["thread_n"]
+        if "tv_df_type" in testvector_config_inputs[i]:
+            inputs_tv_df_type[i] = testvector_config_inputs[i]["tv_df_type"]
+        else:
+            inputs_tv_df_type[i] = "SL"
     for i in range(CREATORCLASSNAMEPorts.n_output_interfaces):
         if "station_ID" in testvector_config_outputs[i] :
             outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
-      
         if "thread_n" in testvector_config_outputs[i]:
-            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]
- 
-
+            outputs_thread_n[i]   = testvector_config_outputs[i]["thread_n"]        
         if "tolerance" in testvector_config_outputs[i] :
             tolerance[i] = testvector_config_outputs[i]["tolerance"]
         else:
             tolerance[i] = {"": ["",""]}
+        if "tv_df_type" in testvector_config_outputs[i]:
+            outputs_tv_df_type[i] = testvector_config_outputs[i]["tv_df_type"]
+        else:
+            outputs_tv_df_type[i] = "SL"
+
 
     # CREATORSOFTWAREBLOCK##
     # CREATORSOFTWAREBLOCK## start the software block instance
@@ -180,17 +191,11 @@ def CREATORTESTNAME_test(dut):
     )
 
     ##
-    ## get testvector format
+    ## get testvector format, type
     ##
-    (
-        input_tvformats,
-        output_tvformats,
-    ) = test_config.get_tvformats_from_config(config)
-
-
-    (
-        input_tvtype
-    ) = test_config.get_tvtype_from_config(config)
+    input_tvformats, output_tvformats = test_config.get_tvformats_from_config(config)    
+    input_tvtype = test_config.get_tvtype_from_config(config)
+    output_tvtype = test_config.get_tvtype_from_config(config,"outputs")
 
     sb_iport_index = 0
     for n_ip_intf in range(CREATORCLASSNAMEPorts.n_input_interfaces): # Add concept of interface
@@ -242,26 +247,12 @@ def CREATORTESTNAME_test(dut):
             n_to_load=num_events_to_process,
             station_ID=inputs_station_id[n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
+            tv_df_type=inputs_tv_df_type[n_ip_intf],
             cnd_thrd_id = inputs_thread_n[n_ip_intf]
             ))
-        for io in range(CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
+        for io in range(CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf)): #Outputs):            
             input_tv_list.append(single_interface_list[io])
-
-   ###Get Output Test Vector List for Ports across all output interfaces##
-    output_tv_list        =  []
-    single_interface_list = []
-    for n_op_intf in range(CREATORCLASSNAMEPorts.n_output_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_tvlist(
-            tv_bcid_list,
-            tvformat=output_tvformats[n_op_intf],
-            n_ports = CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf),
-            n_to_load=num_events_to_process,
-            station_ID=outputs_station_id[n_op_intf],
-            tv_type="value",
-            cnd_thrd_id = outputs_thread_n[n_op_intf]
-            ))
-        output_tv_list.append(single_interface_list)
-
+            cocotb.log.debug(f"Interface {n_ip_intf} input port {io} TV added {single_interface_list[io]}")
 
 
     ##
@@ -287,7 +278,10 @@ def CREATORTESTNAME_test(dut):
 
 
     #Block Latency
-    yield ClockCycles(dut.clock, 100)
+    n_cycles_to_wait = 500+num_events_to_process*2
+    cocotb.log.info(f"Sending {n_cycles_to_wait} clock cycles")
+    yield ClockCycles(dut.clock, n_cycles_to_wait)
+    
     ##
 
     ##
@@ -296,6 +290,7 @@ def CREATORTESTNAME_test(dut):
     all_tests_passed = True
     all_test_results = []
     recvd_events_intf = []
+    recvd_valid = False
     for n_op_intf in range(CREATORCLASSNAMEPorts.n_output_interfaces):
         recvd_events     = [["" for x in range(num_events_to_process)]for y in range(CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf))]
         recvd_time     = [["" for x in range(num_events_to_process)]for y in range(CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf))]
@@ -309,26 +304,15 @@ def CREATORTESTNAME_test(dut):
             time  = monitor.observed_time
             recvd_events[n_oport] = words
             recvd_time[n_oport]   = time
-            cocotb.log.info(
-                f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
-            )
+            if len(recvd_events[n_oport])>0:
+                recvd_valid = True
+            cocotb.log.info(f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events")
         o_recvd_events = events.time_ordering(recvd_events, recvd_time, num_events_to_process)
         recvd_events_intf.append(o_recvd_events)
 
-    ##
-    ## extract the expected data for this output
-    ##
-    if config["run_config"]["expected_is_observed"]:
-    # map the "expected" to be the same as the "observed"
-        dut._log.warning(
-            "WARNING Taking expected events to be the same as the observed events!"
-        )
-        output_testvector_file = "expected_is_observed"
-        expected_output_events = recvd_events_intf
-    else:
-        output_testvector_file = master_tv_file
-        expected_output_events = output_tv_list
-
+    if not recvd_valid:
+        cocotb.log.fatal('No valid output received from RTL')
+        raise cocotb.result.TestFailure
 
     pass_count = 0
     fail_count = 0
@@ -339,7 +323,7 @@ def CREATORTESTNAME_test(dut):
 
 
     for n_op_intf in range (CREATORCLASSNAMEPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields(
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i  = events.compare_BitFields_new(
             tv_bcid_list, 
             output_tvformats[n_op_intf],
             CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf) , 
@@ -347,8 +331,11 @@ def CREATORTESTNAME_test(dut):
             recvd_events_intf[n_op_intf],
             tolerance[n_op_intf],
             output_dir,
-            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf])
-        );
+            stationNum=events.station_list_name_to_id(outputs_station_id[n_op_intf]),
+            tv_thread_mapping=outputs_thread_n[n_op_intf],
+            tv_type=output_tvtype[n_op_intf],
+            tv_df_type=outputs_tv_df_type[n_op_intf]
+        )
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i

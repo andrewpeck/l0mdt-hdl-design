@@ -413,7 +413,6 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
     config_run_config = {
         "output_directory_name": test_name,
         "test_location"        : f"{str(p_test_dir)}/test",
-        "expected_is_observed" : False,
         "components_lib_dir"   : "${XILINX_LIB_DIR}",
         "configure_rtl"        :True,
         "pt_type"              : "upt",
