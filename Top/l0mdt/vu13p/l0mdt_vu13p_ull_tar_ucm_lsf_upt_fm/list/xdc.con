@@ -1,0 +1,6 @@
+HAL/constraints/timing.tcl nosynth
+#HAL/constraints/false_false_paths.tcl nosynth
+HAL/constraints/loc_mgts.tcl nosynth
+HAL/constraints/region_constraints_toolbox.tcl nosynth
+HAL/constraints/area_constraints.tcl nosynth
+HAL/constraints/lpgbt_multicycle.tcl
