@@ -29,7 +29,7 @@ from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
 import logging
-#cocotb.log.setLevel(logging.DEBUG)
+cocotb.log.setLevel(logging.DEBUG)
 cocotb.log.getChild('driver.FifoDriver').setLevel(logging.WARNING)
 
 def initialize_spybuffers(fifos=[]):
@@ -152,7 +152,7 @@ def polmux_tar_test(dut):
         else:
             outputs_tv_df_type[i] = "SL"
 
-
+    pad_size = config['testvectors']['inputs'][0]['padding_size']
     # CREATORSOFTWAREBLOCK##
     # CREATORSOFTWAREBLOCK## start the software block instance
     # CREATORSOFTWAREBLOCK##
@@ -269,7 +269,8 @@ def polmux_tar_test(dut):
             station_ID=inputs_station_id[n_ip_intf],
             tv_type=input_tvtype[n_ip_intf],
             tv_df_type=inputs_tv_df_type[n_ip_intf],
-            cnd_thrd_id = inputs_thread_n[n_ip_intf]
+            cnd_thrd_id = inputs_thread_n[n_ip_intf],
+            zero_padding_size = pad_size
             ))
         for io in range(PolmuxTarPorts.get_input_interface_ports(n_ip_intf)): #Outputs):            
             input_tv_list.append(single_interface_list[io])
