@@ -18,9 +18,10 @@ module TopLevel_polmux_tar #(
     parameter N_INPUTS = 480
 
 ) (
-    input wire clock,
-    input wire reset_n,
-    input wire [DATA_WIDTH-1:0] input_data [480],
+    input wire 			 clock,
+    input wire                   clock_sb_in,
+    input wire 			 reset_n,
+    input wire [DATA_WIDTH-1:0]  input_data [480],
     output wire [DATA_WIDTH-1:0] output_data [48]
 );
 
