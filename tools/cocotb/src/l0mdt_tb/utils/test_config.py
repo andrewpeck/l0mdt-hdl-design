@@ -156,15 +156,11 @@ def testbench_config_from_file(config_file):
         config_data = json.load(infile)
         config = config_data["testbench_config"]
 
-    try:
-        config["run_config"]["components_lib_dir"] = os.environ["COMPONENTS_LIB_DIR"]
-    except:
-        None
-    try:
-        config["testvectors"]["testvector_dir"] = os.environ["L0MDT_TESTVECTOR_DIR"]
-    except:
-        None
-
+    ### Overrides from current environ
+    config["run_config"]["components_lib_dir"] = os.getenv("COMPONENTS_LIB_DIR",
+                                                           config["run_config"]["components_lib_dir"])
+    config["testvectors"]["testvector_dir"] = os.getenv("L0MDT_TESTVECTOR_DIR",
+                                                        config["testvectors"]["testvector_dir"])
     return config
 
 
@@ -328,3 +324,49 @@ def rtl_configuration(prj_cfg, parameter, val, as_str=1):
 			print(line.strip())
 								
 	
+
+
+def read_io_config(tv_config, DUTports):
+    """
+    Retrieves specified configuration for input/output ports
+    as specified in the .json config file
+    Defaults are set for unspecified fields
+    --------------
+    Arguments:
+    tv_config : sub-dictionary "testvectors" from .json file
+    DUTports  : port descriptor (usually found under {test_name}/{test_name}_ports.py
+    """
+
+    DUTports.config_inputs['station_id']= [["" for x in range(DUTports.get_input_interface_ports(y))]for y in range(DUTports.n_input_interfaces)]
+    DUTports.config_inputs['thread_n']= [[0 for x in range(DUTports.get_input_interface_ports(y))]for y in range(DUTports.n_input_interfaces)]
+    DUTports.config_outputs['station_id']= [["" for x in range(DUTports.get_output_interface_ports(y))]for y in range(DUTports.n_output_interfaces)]
+    DUTports.config_outputs['thread_n']= [[0 for x in range(DUTports.get_output_interface_ports(y))]for y in range(DUTports.n_output_interfaces)]
+    DUTports.config_output['tolerance']= [["" for x in range(DUTports.get_output_interface_ports(y))]for y in range(DUTports.n_output_interfaces)]
+
+    
+    for i in range(DUTports.n_input_interfaces):
+        if "station_ID" in tv_config["inputs"][i] :
+            DUTports.config_inputs['station_id[i]'] = tv_config["inputs"][i]["station_ID"]
+        if "thread_n" in tv_config["inputs"][i]:
+            DUTports.config_inputs['thread_n[i]']   = tv_config["inputs"][i]["thread_n"]
+        if "tv_df_type" in tv_config["inputs"][i]:
+            DUTports.config_inputs['tv_df_type[i]'] = tv_config["inputs"][i]["tv_df_type"]
+        else:
+            DUTports.config_inputs['tv_df_type[i]'] = "SL"
+    for i in range(DUTports.n_output_interfaces):
+        if "station_ID" in tv_config["outputs"][i] :
+            DUTports.config_outputs['station_id[i]'] = tv_config["outputs"][i]["station_ID"]
+        if "thread_n" in tv_config["outputs"][i]:
+            DUTports.config_outputs['thread_n[i]']   = tv_config["outputs"][i]["thread_n"]        
+        if "tolerance" in tv_config["outputs"][i] :
+            DUTports.config_output['tolerance'][i] = tv_config["outputs"][i]["tolerance"]
+        else:
+            DUTports.config_output['tolerance'][i] = {"": ["",""]}
+        if "tv_df_type" in tv_config["outputs"][i]:
+            DUTports.config_outputs['tv_df_type[i]'] = tv_config["outputs"][i]["tv_df_type"]
+        else:
+            DUTports.config_outputs['tv_df_type[i]'] = "SL"
+
+
+    DUTports.
+    

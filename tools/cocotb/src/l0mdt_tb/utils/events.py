@@ -302,6 +302,7 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
             ### 
             if len(rtl_tv[iPort]) != len(l_EXP_BF):
                 cocotb.log.error(f"event {iEvent} port {iPort} expected {len(l_EXP_BF)} words, received {len(rtl_tv[iPort])}... Comparison will be skipped!")
+                events_are_equal = False
                 continue
 
 
@@ -368,7 +369,8 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
 
             # Increase offset with the size of this event
             rtl_iEvent_offset[iPort]+=len(l_EXP_BF)
-        #print('---------------------------------'+'\n'+f"event {iEvent} checked \n",rtl_iEvent_offset)
+
+            
     ### Save csv with per-station comparison data
     Path(output_path).mkdir(parents=True, exist_ok=True)    
     ##header = tvtools.get_pd_headers(EXP_BF, tv_df_type=="SL")
@@ -781,18 +783,18 @@ def station_id_to_name(station_id=0):
 
 
 def results_summary( total_events, total_pass, total_fail, total_dataformats, field_fail_header, field_fail_cnt, total_ports=1):
-    print ("\n=========================================================\n")
-    print ("\t\t\t TEST RESULTS SUMMARY\n")
-    print("Total Pass/Fail of Fields in DataFormats being tested -")
+    cocotb.log.info("\n=========================================================\n")
+    cocotb.log.info("\t\t\t TEST RESULTS SUMMARY\n")
+    cocotb.log.info("Total Pass/Fail of Fields in DataFormats being tested -")
     header_idx = 0
     for df_i in range (total_dataformats):
         for key in field_fail_cnt[df_i].keys():
             df_bitfield_errors = field_fail_cnt[df_i][key]
-            print(tabulate(df_bitfield_errors.items(), field_fail_header[header_idx], tablefmt="psql"))
+            cocotb.log.info(tabulate(df_bitfield_errors.items(), field_fail_header[header_idx], tablefmt="psql"))
             header_idx = header_idx + 1
 
-    print ("\t\t\t TEST RESULTS SUMMARY: Total Events=", total_events, "Total Ports = ",total_ports," Pass=",total_pass, "Fail=",total_fail,"\n")
-    print ("\n=========================================================\n")
+    cocotb.log.info("\t\t\t TEST RESULTS SUMMARY: Total Events=", total_events, "Total Ports = ",total_ports," Pass=",total_pass, "Fail=",total_fail,"\n")
+    cocotb.log.info("\n=========================================================\n")
 
 
 def get_hex_list(int_list):
