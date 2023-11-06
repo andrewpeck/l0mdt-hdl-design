@@ -49,8 +49,9 @@ use hps_lib.hps_pkg.all;
 library ctrl_lib;
 use ctrl_lib.HPS_CTRL.all;
 
---library fm_lib;
---use fm_lib.fm_ult_pkg.all;
+library fm_lib;
+use fm_lib.fm_types.all;
+
 
 entity heg_top_tb is
   generic(
@@ -63,7 +64,7 @@ entity heg_top_tb is
     glob_en : in std_logic;
 
     -- control
-    h2s_fm_data       : out fm_rt_array(0 to h2s_sb_single_station_n - 1);
+    h2s_fm_data       : out fm_rt;
     -- SLc
     i_uCM2hps_av      : in  ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- MDT hit

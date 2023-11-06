@@ -279,7 +279,7 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
     ### Loop over events, ports
     for iEvent in range(n_events):
         for iPort in range(n_ports):                
-            
+            cocotb.log.debug(f"Starting comparison for event {iEvent} port {iPort}")
             ### Retrieve expected bitfieldword
             l_EXP_BF = get_bitfield(tv_bcid_list[iEvent], 
                                   tvformat, 
@@ -298,7 +298,13 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
             if not l_EXP_BF==[0]:
                 cocotb.log.debug(f"Printing expected events | {[x.get_bitwordvalue() for x in l_EXP_BF]}")
             cocotb.log.debug(f"RTL output rtl_tv[{iPort}]| {[int(x) for x in rtl_tv[iPort]]}")
-            
+
+            ### 
+            if len(rtl_tv[iPort]) != len(l_EXP_BF):
+                cocotb.log.error(f"event {iEvent} port {iPort} expected {len(l_EXP_BF)} words, received {len(rtl_tv[iPort])}... Comparison will be skipped!")
+                continue
+
+
             ### Skip empty events
             if l_EXP_BF==[0]: 
                 continue
@@ -368,7 +374,8 @@ def compare_BitFields_new(tv_bcid_list, tvformat, n_ports, n_events, rtl_tv, tol
     ##header = tvtools.get_pd_headers(EXP_BF, tv_df_type=="SL")
     header = tvtools.get_pd_headers(EXP_BF, True)
     for station in station_failure_list.keys():
-        df_file_name =  os.path.join( output_path, "DF_" + tvformat + ( "_"+station if station!="NONE" else "") + ".csv" )
+        print(f"{output_path}, DF_ + {tvformat} + {station} + {'csv'}")
+        df_file_name =  os.path.join( output_path, "DF_" + tvformat + ( "_"+station if station!=-99 else "") + ".csv" )
         df_data = pd.DataFrame(station_failure_list[station], columns = header)        
         df_data.to_csv(df_file_name)
         cocotb.log.info(f"Saving comparison data to {df_file_name}")
