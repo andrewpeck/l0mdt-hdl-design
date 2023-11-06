@@ -53,7 +53,7 @@ proj_cfg.PT_TYPE := '1';
 --proj_cfg.EN_MDT_CH_OUT := (others => '0');
 --proj_cfg.ENABLE_ST_OUT := '0';
 
-proj_cfg.EN_MDT_CH_EXT := (others => '0');
+proj_cfg.EN_MDT_CH_EXT := (others => '1');
 proj_cfg.ENABLE_ST_EXT := '0';
 
 

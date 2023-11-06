@@ -223,7 +223,7 @@ def polmux_tar_test(dut):
         for io in range(PolmuxTarPorts.get_input_interface_ports(n_ip_intf)):
             driver = FifoDriver(
                 dut.input_spybuffers[sb_iport_index].spybuffer,
-                dut.clock,
+                dut.clock_sb_in,
                 "PolmuxTar",
                 input_tvformats[n_ip_intf],
                 str(io),
@@ -291,7 +291,7 @@ def polmux_tar_test(dut):
             f"ERROR Event sending timed out! Number of expected inputs with events = {len(send_finished_signal)}"
         )
     try:
-        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*2, "us")
+        yield with_timeout(Combine(*send_finished_signal),  num_events_to_process*2*pad_size, "us")
     except Exception as ex:
         raise cocotb.result.TestFailure(
             f"ERROR Timed out waiting for events to send: {ex}"
@@ -300,12 +300,11 @@ def polmux_tar_test(dut):
 
 
     #Block Latency
-    n_cycles_to_wait = 500+num_events_to_process*2
+    n_cycles_to_wait = 500+num_events_to_process*2*pad_size
     cocotb.log.info(f"Sending {n_cycles_to_wait} clock cycles")
-    yield ClockCycles(dut.clock, n_cycles_to_wait)
+    yield ClockCycles(dut.clock_sb_in, n_cycles_to_wait)
     
     ##
-
     ##
     ## perform testvector comparison test
     ##

@@ -72,10 +72,107 @@ module TopLevel_polmux_tar #(
          end
     endgenerate // end input_spybuffers generate
 
-    //
-    // Here place the DUT block(s)
-    //
+   //
+   // Inner wires
+   //
+   parameter c_HPS_MAX_HP = 6;
+   logic [TDCPOLMUX2TAR_LEN-1:0] i_tdc_hits_to_polmux_avt[360];
+   logic [TDCPOLMUX2TAR_LEN-1:0] polmux_inn_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] polmux_mid_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] polmux_out_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] polmux_ext_tdc_hits[6];
 
+   logic [TDCPOLMUX2TAR_LEN-1:0] o_daq_inn_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] o_daq_mid_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] o_daq_out_tdc_hits[6];
+   logic [TDCPOLMUX2TAR_LEN-1:0] o_daq_ext_tdc_hits[6];
+
+   logic [TAR2HPS_LEN-1:0] 	 o_hps_inn_tar_hits[6];
+   logic [TAR2HPS_LEN-1:0] 	 o_hps_mid_tar_hits[6];
+   logic [TAR2HPS_LEN-1:0] 	 o_hps_out_tar_hits[6];
+   logic [TAR2HPS_LEN-1:0] 	 o_hps_ext_tar_hits[6];
+
+   //
+   // Connecting input-outpot of TopLevel to inner wires
+   //
+   for(genvar i=0; i<360;i=i+1)
+     begin
+	assign i_tdc_hits_to_polmux_avt[360-1-i][TDCPOLMUX2TAR_LEN-1:0] = BLOCK_input_data[i][TDCPOLMUX2TAR_LEN-1:0];
+     end	
+
+   for(genvar i=0; i<c_HPS_MAX_HP;i=i+1)
+     begin
+	assign BLOCK_output_data[i][TDCPOLMUX2TAR_LEN-1:0]                      = o_daq_inn_tdc_hits[i];
+	assign BLOCK_output_data[i][255:TDCPOLMUX2TAR_LEN]                      = 0;
+	assign BLOCK_output_write_enable[i]                                     = o_daq_inn_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+
+	assign BLOCK_output_data[i + c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]       = o_daq_mid_tdc_hits[i];
+	assign BLOCK_output_data[i + c_HPS_MAX_HP][255:TDCPOLMUX2TAR_LEN]       = 0;
+	assign BLOCK_output_write_enable[i + c_HPS_MAX_HP]                      = o_daq_mid_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+
+	assign BLOCK_output_data[i + 2*c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]     = o_daq_out_tdc_hits[i];
+	assign BLOCK_output_data[i + 2*c_HPS_MAX_HP][255:TDCPOLMUX2TAR_LEN]     = 0;
+	assign BLOCK_output_write_enable[i + 2*c_HPS_MAX_HP]                    = o_daq_out_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+
+	assign BLOCK_output_data[i + 3*c_HPS_MAX_HP][TDCPOLMUX2TAR_LEN-1:0]     = o_daq_ext_tdc_hits[i];
+	assign BLOCK_output_data[i + 3*c_HPS_MAX_HP][255:TDCPOLMUX2TAR_LEN]     = 0;
+	assign BLOCK_output_write_enable[i + 3*c_HPS_MAX_HP]                    = o_daq_ext_tdc_hits[i][TDCPOLMUX2TAR_DATA_VALID_MSB];
+
+	
+	assign BLOCK_output_data[i + 4*c_HPS_MAX_HP][TAR2HPS_LEN-1:0]           = o_hps_inn_tar_hits[i];	  
+	assign BLOCK_output_data[i + 4*c_HPS_MAX_HP][255:TAR2HPS_LEN]           = 0;
+	assign BLOCK_output_write_enable[i + 4*c_HPS_MAX_HP]                    = o_hps_inn_tar_hits[i][TAR2HPS_DATA_VALID_MSB];
+
+
+	assign BLOCK_output_data[i + 5*c_HPS_MAX_HP][TAR2HPS_LEN-1:0]           = o_hps_mid_tar_hits[i];	  
+	assign BLOCK_output_data[i + 5*c_HPS_MAX_HP][255:TAR2HPS_LEN]           = 0;
+	assign BLOCK_output_write_enable[i + 5*c_HPS_MAX_HP]                    = o_hps_mid_tar_hits[i][TAR2HPS_DATA_VALID_MSB];
+
+	assign BLOCK_output_data[i + 6*c_HPS_MAX_HP][TAR2HPS_LEN-1:0]           = o_hps_out_tar_hits[i];	  
+	assign BLOCK_output_data[i + 6*c_HPS_MAX_HP][255:TAR2HPS_LEN]           = 0;
+	assign BLOCK_output_write_enable[i + 6*c_HPS_MAX_HP]                    = o_hps_out_tar_hits[i][TAR2HPS_DATA_VALID_MSB];
+
+	assign BLOCK_output_data[i + 7*c_HPS_MAX_HP][TAR2HPS_LEN-1:0]           = o_hps_ext_tar_hits[i];	  
+	assign BLOCK_output_data[i + 7*c_HPS_MAX_HP][255:TAR2HPS_LEN]           = 0;
+	assign BLOCK_output_write_enable[i + 7*c_HPS_MAX_HP]                    = o_hps_ext_tar_hits[i][TAR2HPS_DATA_VALID_MSB];
+	
+     end
+
+   //
+   // Instantiate the actual DUT block
+   //
+   tb_polmux polmux_inst(
+ 			 .clock(clock), // : in  l0mdt_control_rt;
+			 .clock_pipeline(clock_sb_in),
+ 			 .reset(~reset_n),
+ 			 .i_tdc_hits_to_polmux_avt(i_tdc_hits_to_polmux_avt),
+			 .o_inn_tdc_hits_av(polmux_inn_tdc_hits),
+			 .o_mid_tdc_hits_av(polmux_mid_tdc_hits),
+			 .o_out_tdc_hits_av(polmux_out_tdc_hits),
+			 .o_ext_tdc_hits_av(polmux_ext_tdc_hits) 
+ 			 );
+
+   tb_mdt_tar mdt_tar_inst(
+			   .clock(clock), 
+			   .reset(~reset_n),
+			   .i_inn_tdc_hits_av(polmux_inn_tdc_hits), 
+			   .i_mid_tdc_hits_av(polmux_mid_tdc_hits), 
+			   .i_out_tdc_hits_av(polmux_out_tdc_hits), 
+			   .i_ext_tdc_hits_av(polmux_ext_tdc_hits), 
+			   .o_inn_tdc_hits_av(o_daq_inn_tdc_hits), 
+			   .o_mid_tdc_hits_av(o_daq_mid_tdc_hits), 
+			   .o_out_tdc_hits_av(o_daq_out_tdc_hits), 
+			   .o_ext_tdc_hits_av(o_daq_ext_tdc_hits), 
+			   .o_inn_tar_hits_av(o_hps_inn_tar_hits), 
+			   .o_mid_tar_hits_av(o_hps_mid_tar_hits), 
+			   .o_out_tar_hits_av(o_hps_out_tar_hits), 
+			   .o_ext_tar_hits_av(o_hps_ext_tar_hits), 
+			   .o_sump()
+			   );
+
+
+
+   
     //
     // Output buffers
     //
