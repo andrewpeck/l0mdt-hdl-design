@@ -230,6 +230,7 @@ architecture behavioral of top_hal is
   signal ttc_bitslip  : std_logic;                       -- bitslip from felix rx core to felix transceiver
   signal lhc_recclk   : std_logic;                       -- recovered clock from felix
 
+  signal flx_mgt_tx_cisk_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)( 7 downto 0);
   signal flx_mgt_tx_word_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(31 downto 0);
   signal flx_mgt_tx_usrclk_v : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
   signal flx_mgt_rx_word_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(19 downto 0);
@@ -500,6 +501,7 @@ begin  -- architecture behavioral
       ttc_recclk_o   => lhc_recclk,
 
       -- Felix DAQ
+      flx_mgt_cisk_vi   => flx_mgt_tx_cisk_v,
       flx_mgt_word_vi   => flx_mgt_tx_word_v,
       flx_mgt_usrclk_vo => flx_mgt_tx_usrclk_v,
       flx_mgt_word_vo   => flx_mgt_rx_word_v
@@ -770,9 +772,10 @@ begin  -- architecture behavioral
 
             , busy_i              => '0' -- : in std_logic
 
-            , usr_data_vi => daq_stream_data_vi -- : in  std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0)
-            , usr_ctrl_vi => daq_stream_ctrl_vi -- : in  std_logic_vector_array(NLINKS-1 downto 0)(1 downto 0)
-            , usr_wren_vi => daq_stream_wren_vi -- : in  std_logic_vector(NLINKS-1 downto 0)
+            , usr_data_vi => daq_stream_data_vi                          -- : in  std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0)
+            , usr_ctrl_vi => daq_stream_ctrl_vi                          -- : in  std_logic_vector_array(NLINKS-1 downto 0)(1 downto 0)
+            , usr_wren_vi => daq_stream_wren_vi                          -- : in  std_logic_vector(NLINKS-1 downto 0)
+            , mgt_cisk_vo => flx_mgt_tx_cisk_v(c_DAQ_LINKS-1 downto 0)   -- : out std_logic_vector_array(NLINKS-1 downto 0)( 7 downto 0) -- char is k
             , mgt_data_vo => flx_mgt_tx_word_v(c_DAQ_LINKS-1 downto 0)); -- : out std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0));
 
   --felix_tx_inst : entity work.felix_tx

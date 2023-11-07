@@ -88,6 +88,7 @@ entity mgt_wrapper is
     --------------------------------------------------------------------------------
 
     -- 32 bits / clock to mgt
+    flx_mgt_cisk_vi   : in  std_logic_vector_array (c_NUM_FELIX_UPLINKS-1 downto 0)( 7 downto 0);
     flx_mgt_word_vi   : in  std_logic_vector_array (c_NUM_FELIX_UPLINKS-1 downto 0)(31 downto 0);
     flx_mgt_usrclk_vo : out std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
     flx_mgt_word_vo   : out std_logic_vector_array (c_NUM_FELIX_UPLINKS-1 downto 0)(19 downto 0);
@@ -644,6 +645,7 @@ begin
                   , reset_tx_datapath_i         => reset_tx_datapath                             -- : in   std_logic
                   , reset_tx_pll_and_datapath_i => reset_tx_pll_and_datapath                     -- : in   std_logic
                                                     
+                  , mgt_cisk_vi                 => flx_mgt_cisk_vi(c_FLX_IDX+3 downto c_FLX_IDX) -- : in  std_logic_vector_array(3 downto 0)( 7 downto 0)
                   , mgt_word_vi                 => flx_mgt_word_vi(c_FLX_IDX+3 downto c_FLX_IDX) -- : in  std_logic_vector_array(3 downto 0)(31 downto 0)
                   , mgt_word_vo                 => flx_mgt_word_vo(c_FLX_IDX+3 downto c_FLX_IDX) -- : out std_logic_vector_array(3 downto 0)(19 downto 0)
                                                             

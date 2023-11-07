@@ -44,6 +44,7 @@ entity flx_link_wrapper is
         ; reset_tx_datapath_i         : in  std_logic
         ; reset_tx_pll_and_datapath_i : in  std_logic
 
+        ; mgt_cisk_vi                 : in  std_logic_vector_array(3 downto 0)( 7 downto 0)
         ; mgt_word_vi                 : in  std_logic_vector_array(3 downto 0)(31 downto 0)
         ; mgt_word_vo                 : out std_logic_vector_array(3 downto 0)(19 downto 0)
 
@@ -117,7 +118,6 @@ begin
     signal qpll1outrefclk      : std_logic;
     signal txctrl0             : std_logic_vector(63 downto 0);
     signal txctrl1             : std_logic_vector(63 downto 0);
-    signal txctrl2             : std_logic_vector(31 downto 0);
     signal gtpowergood_v       : std_logic_vector( 3 downto 0);
     signal rxpmaresetdone_v    : std_logic_vector( 3 downto 0);
     signal txpmaresetdone_v    : std_logic_vector( 3 downto 0);
@@ -183,13 +183,13 @@ begin
                 , gtwiz_reset_tx_done_out(0)            => reset_tx_done               -- : out std_logic_vector(0 downto 0)
                 , gtwiz_reset_rx_done_out(0)            => reset_rx_done               -- : out std_logic_vector(0 downto 0)
                 , gtwiz_userdata_tx_in(31 downto 0)     => mgt_word_vi(0)              -- : in  std_logic_vector(127 downto 0)
-                , gtwiz_userdata_tx_in(63 downto 32)    => mgt_word_vi(1)              -- : in  std_logic_vector(127 downto 0)
-                , gtwiz_userdata_tx_in(95 downto 64)    => mgt_word_vi(2)              -- : in  std_logic_vector(127 downto 0)
-                , gtwiz_userdata_tx_in(127 downto 96)   => mgt_word_vi(3)              -- : in  std_logic_vector(127 downto 0)
+                , gtwiz_userdata_tx_in(63 downto 32)    => mgt_word_vi(1)              -- : 
+                , gtwiz_userdata_tx_in(95 downto 64)    => mgt_word_vi(2)              -- : 
+                , gtwiz_userdata_tx_in(127 downto 96)   => mgt_word_vi(3)              -- : 
                 , gtwiz_userdata_rx_out(19 downto 0)    => mgt_word_vo(0)              -- : out std_logic_vector(79 downto 0)
-                , gtwiz_userdata_rx_out(39 downto 20)   => mgt_word_vo(1)              -- : out std_logic_vector(79 downto 0)
-                , gtwiz_userdata_rx_out(59 downto 40)   => mgt_word_vo(2)              -- : out std_logic_vector(79 downto 0)
-                , gtwiz_userdata_rx_out(79 downto 60)   => mgt_word_vo(3)              -- : out std_logic_vector(79 downto 0)
+                , gtwiz_userdata_rx_out(39 downto 20)   => mgt_word_vo(1)              -- : 
+                , gtwiz_userdata_rx_out(59 downto 40)   => mgt_word_vo(2)              -- : 
+                , gtwiz_userdata_rx_out(79 downto 60)   => mgt_word_vo(3)              -- : 
                 , gtrefclk01_in(0)                      => refclk0_i                   -- : in  std_logic_vector(0 downto 0)
                 , qpll1outclk_out(0)                    => qpll1outclk                 -- : out std_logic_vector(0 downto 0)
                 , qpll1outrefclk_out(0)                 => qpll1outrefclk              -- : out std_logic_vector(0 downto 0)
@@ -200,7 +200,10 @@ begin
                 , tx8b10ben_in                          => (others => '1')             -- : in  std_logic_vector(3 downto 0)
                 , txctrl0_in                            => txctrl0                     -- : in  std_logic_vector(63 downto 0)
                 , txctrl1_in                            => txctrl1                     -- : in  std_logic_vector(63 downto 0)
-                , txctrl2_in                            => txctrl2                     -- : in  std_logic_vector(31 downto 0)
+                , txctrl2_in( 7 downto  0)              => mgt_cisk_vi(0)              -- : in  std_logic_vector(31 downto 0)
+                , txctrl2_in(15 downto  8)              => mgt_cisk_vi(1)              -- : 
+                , txctrl2_in(23 downto 16)              => mgt_cisk_vi(2)              -- : 
+                , txctrl2_in(31 downto 24)              => mgt_cisk_vi(3)              -- : 
                 , txusrclk_in                           => (others => tx_usrclk_i)     -- : in  std_logic_vector(  3 downto 0)
                 , txusrclk2_in                          => (others => tx_usrclk_i)     -- : in  std_logic_vector(  3 downto 0)
                 , gtpowergood_out                       => gtpowergood_v               -- : out std_logic_vector(3 downto 0)
@@ -225,7 +228,7 @@ begin
                   , probe_in7    => txpmaresetdone_v    -- : in  std_logic_vector( 3 downto 0)
                   , probe_out0   => txctrl0             -- : out std_logic_vector(63 downto 0)
                   , probe_out1   => txctrl1             -- : out std_logic_vector(63 downto 0)
-                  , probe_out2   => txctrl2);           -- : out std_logic_vector(31 downto 0));
+                  , probe_out2   => open);              -- : out std_logic_vector(31 downto 0));
 
       -- u_clk_freq_qpll1outclk : entity work.clk_frequency
       --   generic map (clk_a_freq => 50_000_000)  -- : natural := 31250000

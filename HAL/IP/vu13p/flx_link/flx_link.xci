@@ -70,7 +70,7 @@
         "RX_COMMA_P_VAL": [ { "value": "0101111100", "resolve_type": "user", "enabled": false, "usage": "all" } ],
         "RX_COMMA_M_VAL": [ { "value": "1010000011", "resolve_type": "user", "enabled": false, "usage": "all" } ],
         "RX_COMMA_MASK": [ { "value": "0000000000", "resolve_type": "user", "enabled": false, "usage": "all" } ],
-        "RX_COMMA_ALIGN_WORD": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "RX_COMMA_ALIGN_WORD": [ { "value": "4", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "RX_COMMA_SHOW_REALIGN_ENABLE": [ { "value": "true", "value_src": "user", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "RX_SLIDE_MODE": [ { "value": "AUTO", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
         "RX_CB_NUM_SEQ": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],

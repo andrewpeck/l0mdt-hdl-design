@@ -18,6 +18,7 @@ entity flx_tx is
         ; usr_data_vi : in  std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0)
         ; usr_ctrl_vi : in  std_logic_vector_array(NLINKS-1 downto 0)(1 downto 0)
         ; usr_wren_vi : in  std_logic_vector(NLINKS-1 downto 0)
+        ; mgt_cisk_vo : out std_logic_vector_array(NLINKS-1 downto 0)( 7 downto 0) -- char is k
         ; mgt_data_vo : out std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0));
 end entity flx_tx;
 
@@ -73,6 +74,8 @@ begin
                                                                               "1100000000000000000000000000000000");
     signal ptr : integer := 0;
     
+    signal fm_user_comma : std_logic_vector(3 downto 0);
+    
   begin
 
     process (clk320_i)
@@ -114,7 +117,8 @@ begin
                 , fifo_dtype => fifo_rd_dtype   -- : in  std_logic_vector(1 downto 0);
                 , fifo_empty => fifo_rd_empty   -- : in  std_logic;
                 , dout       => mgt_data_vo(ii) -- : out std_logic_vector(31 downto 0);
-                , kout       => open);          -- : out std_logic_vector(3 downto 0));
+                , kout       => fm_user_comma);          -- : out std_logic_vector(3 downto 0));
+    mgt_cisk_vo(ii) <= "0000" & fm_user_comma;
     
   end generate GEN_FM_PATHS;
 
