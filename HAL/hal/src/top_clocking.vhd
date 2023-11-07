@@ -67,6 +67,7 @@ entity top_clocking is
     clk50_freq  : out std_logic_vector (31 downto 0);
 
     clk40_freq  : out std_logic_vector (31 downto 0);
+    clk240_freq : out std_logic_vector (31 downto 0);
     clk320_freq : out std_logic_vector (31 downto 0)
 
     );
@@ -176,6 +177,15 @@ begin  -- architecture behavioral
       clk_a => clk50,
       clk_b => clk40,
       rate  => clk40_freq
+      );
+
+  clk240_frequency : entity work.clk_frequency
+    generic map (clk_a_freq => 50_000_000)
+    port map (
+      reset => '0',
+      clk_a => clk50,
+      clk_b => clk240,
+      rate  => clk240_freq
       );
 
   clk50_frequency : entity work.clk_frequency

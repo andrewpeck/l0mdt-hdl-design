@@ -391,6 +391,7 @@ begin  -- architecture behavioral
 
       clk50_freq  => core_mon.clocking.clk50_freq,
       clk40_freq  => core_mon.clocking.clk40_freq,
+      clk240_freq => core_mon.clocking.clk240_freq,
       clk320_freq => core_mon.clocking.clk320_freq,
 
       -- system clocks
