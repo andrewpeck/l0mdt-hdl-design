@@ -115,11 +115,12 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  reg_data( 1)( 1);                                     --LHC MMCM: Set 1 to reset the MMCM
         when 2 => --0x2
           localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK40_FREQ;                              --LHC 40MHz clock freq
-          localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK240_FREQ;                             --LHC 240MHz clock freq
         when 3 => --0x3
           localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK320_FREQ;                             --LHC 320MHz clock freq
         when 4 => --0x4
           localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK50_FREQ;                              --System 50 MHz clock freq
+        when 5 => --0x5
+          localRdData(31 downto  0)  <=  Mon.CLOCKING.CLK240_FREQ;                             --LHC 240MHz clock freq
         when 16 => --0x10
           localRdData( 0)            <=  reg_data(16)( 0);                                     --Reset transceiver
         when 17 => --0x11

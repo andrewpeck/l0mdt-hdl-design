@@ -12,9 +12,9 @@ types:
 - CORE_CLOCKING_MON_t:
   - MMCM_LOCKED : { type: logic }
   - CLK40_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
-  - CLK240_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
   - CLK320_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
   - CLK50_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
+  - CLK240_FREQ : { type: logic, range : [ 32 - 1 , 0 ] }
 
 
 - CORE_CLOCKING_CTRL_t:
