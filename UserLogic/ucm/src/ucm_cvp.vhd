@@ -104,7 +104,7 @@ architecture beh of ucm_cvp is
   signal int_data_r     : ucm_cde_rt;
   signal int_data_v     : ucm_cde_vt;
   signal barrel_r       : slc_barrel_rt;
-  signal rpc_Z_a        : rpc_pos_array_t(g_NUM_RPC_LAYERS -1 downto 0);
+  signal rpc_Z_a        : rpc_pos_oast(g_NUM_RPC_LAYERS -1 downto 0);
 
   signal vec_pos_a      : vec_pos_array_t(g_NUM_MDT_LAYERS-1 downto 0);
   signal vec_pos_a_dv   : std_logic;

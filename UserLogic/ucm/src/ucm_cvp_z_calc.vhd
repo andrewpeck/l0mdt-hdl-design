@@ -152,7 +152,7 @@ begin
 -- );
               
   mdt_R_sc <= mdt_R & "00000000000";
-  mult_int : entity shared_lib.generic_pipelined_MATH
+  mult_int : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 1,

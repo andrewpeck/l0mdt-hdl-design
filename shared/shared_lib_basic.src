@@ -17,8 +17,8 @@ shared/shared_lib_types.src
 #---------------------------------
 # VHDL2008 functions not implemented in Vivado
 #---------------------------------
-shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
-
+# shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
+shared/vhdl_utilities/pkg/vhdl2008_functions_pkg.vhd
 #-------------------
 # Detector parameters
 #-------------------

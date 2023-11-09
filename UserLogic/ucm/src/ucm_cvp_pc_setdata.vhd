@@ -51,7 +51,7 @@ entity ucm_cvp_pc_setdata is
     ena           : in std_logic;
     --
     i_cointype    : in std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
-    i_rpc_Z_a     : in rpc_pos_array_t(g_NUM_RPC_LAYERS -1 downto 0);
+    i_rpc_Z_a     : in rpc_pos_oast(g_NUM_RPC_LAYERS -1 downto 0);
     i_cand_dv    : in std_logic;
     -- i_data_v      : in std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
     -- i_data_valid  : in std_logic;
@@ -66,8 +66,8 @@ entity ucm_cvp_pc_setdata is
     -- i_data_valid  : in std_logic;
     --
     o_num_h_i       : out integer;
-    o_rpc_a         : out rpc_pos_art;
-    o_rad_a         : out rpc_rad_art;
+    o_rpc_a         : out rpc_pos_ast;
+    o_rad_a         : out rpc_rad_ast;
     o_set_data_dv   : out std_logic
     
   );
@@ -79,8 +79,8 @@ architecture beh of ucm_cvp_pc_setdata is
 
   signal num_h_i : integer := 0;
 
-  signal rpc_a : rpc_pos_art;
-  signal rad_a : rpc_rad_art;
+  signal rpc_a : rpc_pos_ast;
+  signal rad_a : rpc_rad_ast;
   signal set_data_dv : std_logic;
   
 begin
@@ -107,31 +107,31 @@ begin
             if or_reduce(std_logic_vector(i_rpc_Z_a(0))) = '0' then
               rad_a(0) <= (others => '0');
             else
-              rad_a(0) <= signed(i_rpc_R_a(0));
+              rad_a(0) <= resize(signed(i_rpc_R_a(0)),SLC_IN_RPC_LEN);
             end if;
             if or_reduce(std_logic_vector(i_rpc_Z_a(1))) = '0' then
               rad_a(1) <= (others => '0');
             else
-              rad_a(1) <= signed(i_rpc_R_a(1));
+              rad_a(1) <= resize(signed(i_rpc_R_a(1)),SLC_IN_RPC_LEN);
             end if;
             if or_reduce(std_logic_vector(i_rpc_Z_a(2))) = '0' then
               rad_a(2) <= (others => '0');
             else
-              rad_a(2) <= signed(i_rpc_R_a(2));
+              rad_a(2) <= resize(signed(i_rpc_R_a(2)),SLC_IN_RPC_LEN);
             end if;
             if or_reduce(std_logic_vector(i_rpc_Z_a(3))) = '0' then
               rad_a(3) <= (others => '0');
             else
-              rad_a(3) <= signed(i_rpc_R_a(3));
+              rad_a(3) <= resize(signed(i_rpc_R_a(3)),SLC_IN_RPC_LEN);
             end if;
             -- rad_a(1) <= signed(i_rpc_R_a(1));
             -- rad_a(2) <= signed(i_rpc_R_a(2));
             -- rad_a(3) <= signed(i_rpc_R_a(3));
 
-            rpc_a(0) <= i_rpc_Z_a(0);
-            rpc_a(1) <= i_rpc_Z_a(1);
-            rpc_a(2) <= i_rpc_Z_a(2);
-            rpc_a(3) <= i_rpc_Z_a(3);
+            rpc_a(0) <= resize(signed(i_rpc_Z_a(0)),SLC_IN_RPC_LEN);
+            rpc_a(1) <= resize(signed(i_rpc_Z_a(1)),SLC_IN_RPC_LEN);
+            rpc_a(2) <= resize(signed(i_rpc_Z_a(2)),SLC_IN_RPC_LEN);
+            rpc_a(3) <= resize(signed(i_rpc_Z_a(3)),SLC_IN_RPC_LEN);
 
             -- coin type
             case coin is

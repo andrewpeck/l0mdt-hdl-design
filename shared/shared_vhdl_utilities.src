@@ -1,7 +1,7 @@
 #---------------------------------
 # PKG
 #---------------------------------
-shared/vhdl_utilities/pkg/vhdl2008_functions_pkg.vhd
+# shared/vhdl_utilities/pkg/vhdl2008_functions_pkg.vhd
 
 #---------------------------------
 # entities

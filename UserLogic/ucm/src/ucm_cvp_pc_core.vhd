@@ -46,7 +46,9 @@ entity ucm_cvp_pc_core is
     g_DIV_VU_EN           : std_logic := '1';
     g_DIV_SEL             : string := "IPR2";
     g_DATA_SET_VERSION    : string := "v1";
-    g_SLOPE_DIV_IPR2_ENABLE : std_logic := '1'
+    g_SLOPE_DIV_IPR2_ENABLE : std_logic := '1';
+    g_off_DIV_IPR2_ENABLE : std_logic := '1'
+
   );
   port (
     clk           : in std_logic;
@@ -54,7 +56,7 @@ entity ucm_cvp_pc_core is
     ena           : in std_logic;
     --
     i_cointype    : in std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
-    i_rpc_Z_a     : in rpc_pos_array_t(g_NUM_RPC_LAYERS -1 downto 0);
+    i_rpc_Z_a     : in rpc_pos_oast(g_NUM_RPC_LAYERS -1 downto 0);
     i_data_valid  : in std_logic;
     --
     i_rpc_R_a     : in ucm_rpc_r_alt(g_NUM_RPC_LAYERS -1 downto 0);
@@ -63,7 +65,7 @@ entity ucm_cvp_pc_core is
     i_mdt_R_dv    : in std_logic;
 
     o_offset      : out signed(31 downto 0);--signed(126 -1 downto 0);
-    o_slope       : out signed(31 downto 0);--signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
+    o_slope       : out signed(31 downto 0);--signed((sig_SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
     o_vector_dv  : out std_logic;
 
     o_vec_z_pos     : out vec_pos_array_t(g_NUM_MDT_LAYERS-1 downto 0);
@@ -73,60 +75,65 @@ entity ucm_cvp_pc_core is
 end entity ucm_cvp_pc_core;
 
 architecture beh of ucm_cvp_pc_core is
+
+  constant sig_SLC_Z_RPC_LEN : integer := SLC_Z_RPC_LEN +1;
   
   signal num_h_i : integer;
-  signal rpc_Z_a : rpc_pos_art;
-  signal rpc_R_a : rpc_rad_art;
+  signal rpc_Z_a : rpc_pos_ast;
+  signal rpc_R_a : rpc_rad_ast;
   signal set_data_dv : std_logic;
 
-  type mult_zy_art is array ( 0 to 3) of std_logic_vector((SLC_Z_RPC_LEN * 2) - 1 downto 0);
-  signal mult_zy    : mult_zy_art;
+  type mult_zy_art is array ( 0 to 3) of std_logic_vector((sig_SLC_Z_RPC_LEN * 2) - 1 downto 0);
+  signal mult_xy    : mult_zy_art;
   signal mult_zy_dv : std_logic_vector(3 downto 0);
-  signal mult_zz    : mult_zy_art;
-  signal mult_zz_dv : std_logic_vector(3 downto 0);
+  signal mult_xx    : mult_zy_art;
+  signal mult_xx_dv : std_logic_vector(3 downto 0);
 
-  signal sum_z      : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0); --16
-  signal sum_z_dv   : std_logic;
-  signal sum_z_pl   : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0); --16
-  signal sum_z_pl_dv : std_logic;
-  signal sum_y      : std_logic_vector(SLC_Z_RPC_LEN + 4 -1 downto 0); --16
-  -- signal sum_y_sc   : std_logic_vector(27 -1 downto 0);--(4 + sum_y'length -1 downto 0);
+  signal sum_x      : std_logic_vector(sig_SLC_Z_RPC_LEN + 4 -1 downto 0); --16
+  signal sum_x_dv   : std_logic;
+  signal sum_y      : std_logic_vector(sig_SLC_Z_RPC_LEN + 4 -1 downto 0);
   signal sum_y_dv   : std_logic;
-  signal sum_zy     : std_logic_vector(SLC_Z_RPC_LEN*2 + 4 -1 downto 0); --28
-  signal sum_zy_dv  : std_logic;
-  signal sum_zz     : std_logic_vector(SLC_Z_RPC_LEN*2 + 4 -1 downto 0); --28
-  signal sum_zz_dv  : std_logic;
+  -- signal sum_z_pl   : std_logic_vector(sig_SLC_Z_RPC_LEN + 4 -1 downto 0); --16
+  -- signal sum_z_pl_dv : std_logic;
+   --16
+  -- signal sum_y_sc   : std_logic_vector(27 -1 downto 0);--(4 + sum_x'length -1 downto 0);
+  -- signal sum_x_dv   : std_logic;
+  signal sum_xy     : std_logic_vector(sig_SLC_Z_RPC_LEN*2 + 4 -1 downto 0); --28
+  signal sum_xy_dv  : std_logic;
+  signal sum_xx     : std_logic_vector(sig_SLC_Z_RPC_LEN*2 + 4 -1 downto 0); --28
+  signal sum_xx_dv  : std_logic;
 
-  signal sqr_zz         : std_logic_vector(sum_z'length*2 -1 downto 0); --32
-  signal sqr_zz_dv      : std_logic;
-  signal mult_n_szz     : std_logic_vector(4 + sum_zy'length -1 downto 0); --32
-  signal mult_n_szz_dv  : std_logic;
-  signal param_c        : std_logic_vector(max(sqr_zz'length,mult_n_szz'length) -1 downto 0); --32
+  signal SxSx         : std_logic_vector(sum_x'length*2 -1 downto 0); --32
+  signal SxSx_dv      : std_logic;
+  signal nSxx     : std_logic_vector(4 + sum_xy'length -1 downto 0); --32
+  signal nSxx_dv  : std_logic;
+  signal param_c        : std_logic_vector(max(SxSx'length,nSxx'length) -1 downto 0); --32
   signal param_c_dv     : std_logic;
 
-  signal mult_sy_szz    : std_logic_vector(sum_zz'length + sum_y'length -1 downto 0); --28
-  signal mult_sy_szz_dv : std_logic;
-  signal mult_sz_szy    : std_logic_vector(sum_z'length + sum_zy'length -1 downto 0); --28
-  signal mult_sz_szy_dv : std_logic;
-  signal param_b        : std_logic_vector(max(mult_sy_szz'length,mult_sz_szy'length) -1 downto 0); --28
+  signal SxxSy    : std_logic_vector(sum_xx'length + sum_x'length -1 downto 0); --28
+  signal SxxSy_dv : std_logic;
+  signal SxSxy    : std_logic_vector(sum_x'length + sum_xy'length -1 downto 0); --28
+  signal SxSxy_dv : std_logic;
+  signal param_b        : std_logic_vector(max(SxxSy'length,SxSxy'length) -1 downto 0); --28
   signal param_b_dv     : std_logic;
 
-  signal mult_n_szy     : std_logic_vector(4 + sum_zy'length -1 downto 0); --32
-  signal mult_n_szy_dv  : std_logic;
-  signal mult_sz_sy     : std_logic_vector(sum_z'length + sum_y'length -1 downto 0); --32
+  signal nSxy     : std_logic_vector(4 + sum_xy'length -1 downto 0); --32
+  signal nSxy_dv  : std_logic;
+  signal SxSy     : std_logic_vector(sum_x'length + sum_x'length -1 downto 0); --32
   signal mult_sz_sy_dv  : std_logic;
-  signal param_a        : std_logic_vector(max(mult_sz_sy'length,mult_n_szy'length) -1 downto 0); --32
+  signal param_a        : std_logic_vector(max(SxSy'length,nSxy'length) -1 downto 0); --32
   signal param_a_dv     : std_logic;
 
-  constant scale_nom : integer := 0;
+  constant scale_slope_nom : integer := 0;
 
-  signal slope_bnom_sc    : std_logic_vector(param_a'length + scale_nom -1 downto 0);
+  signal slope_bnom_sc    : std_logic_vector(param_a'length + scale_slope_nom -1 downto 0);
   signal slope_bden_sc : std_logic_vector(24 -1 downto 0);
+  signal slope_bdiv_sc : std_logic_vector(40 -1 downto 0);
   signal slope_div_dout_tvalid : STD_LOGIC;
-  signal slope_div_dout_tdata : STD_LOGIC_VECTOR(55 DOWNTO 0);
-  signal slope_div_dout_tdata_q : std_logic_vector(31 downto 0);-- := (others => '0');
+  signal slope_div_dout_tdata : STD_LOGIC_VECTOR(63 DOWNTO 0);
+  signal slope_div_dout_tdata_q : std_logic_vector(33 downto 0);-- := (others => '0');
   signal slope_div_dout_tdata_r : std_logic_vector(20 downto 0);-- := (others => '0');
-  signal slope_bdiv_ipr2    : std_logic_vector(32-1 downto 0);--(max(bden'length,bnom_sc'length) -1 downto 0);
+  signal slope_bdiv_ipr2    : std_logic_vector(34-1 downto 0);--(max(bden'length,bnom_sc'length) -1 downto 0);
   signal slope_bdiv_ipr2_dv : std_logic;
   -- signal slope_bdiv_vu      : std_logic_vector(max(bden'length,bnom_sc'length) -1 downto 0);
   -- signal slope_bdiv_vu_dv   : std_logic;
@@ -135,7 +142,20 @@ architecture beh of ucm_cvp_pc_core is
   signal slope_bdiv         : std_logic_vector(max(param_c'length,slope_bnom_sc'length) -1 downto 0);
   signal slope_bdiv_dv      : std_logic;
 
+  constant scale_off_nom : integer := 0;
 
+  signal off_nom_sc    : std_logic_vector(param_b'length + scale_off_nom -1 downto 0);
+  signal off_den_sc : std_logic_vector(24 -1 downto 0);
+  signal off_div_sc : std_logic_vector(40 -1 downto 0);
+  signal off_div_dout_tvalid : STD_LOGIC;
+  signal off_div_dout_tdata : STD_LOGIC_VECTOR(63 DOWNTO 0);
+  signal off_div_dout_tdata_q : std_logic_vector(33 downto 0);-- := (others => '0');
+  signal off_div_dout_tdata_r : std_logic_vector(20 downto 0);-- := (others => '0');
+  signal off_div_ipr2    : std_logic_vector(34-1 downto 0);--(max(bden'length,bnom_sc'length) -1 downto 0);
+  signal off_div_ipr2_dv : std_logic;
+
+  signal off_div         : std_logic_vector(max(param_c'length,slope_bnom_sc'length) -1 downto 0);
+  signal off_div_dv      : std_logic;
 
   signal vec_z_pos_dv_a : std_logic_vector(g_NUM_MDT_LAYERS -1 downto 0);
 
@@ -154,7 +174,6 @@ begin
         i_cointype  => i_cointype,
         i_rpc_Z_a   => i_rpc_Z_a,
         i_cand_dv   => i_data_valid,
-
         --
         i_rpc_R_a       => i_rpc_R_a ,
         i_rpc_R_dv      => i_rpc_R_dv,
@@ -169,9 +188,16 @@ begin
   
     end generate;
 
+  -- SQR_LOOP: for hit_i in 3 downto 0 generate
+  --   --   signal sig_rpc_Z_a
+  --   -- begin
+
+  --   end generate;
+  --xy
   SQR_LOOP: for hit_i in 3 downto 0 generate
-    MULT_ZY_ENT : entity shared_lib.VU_generic_pipelined_MATH
+    MULT_XY_ENT : entity shared_lib.VU_generic_pipelined_MATH
       generic map(
+        g_NAME => "XY",
         g_OPERATION => "*1",
         g_IN_PIPE_STAGES  => 0,
         g_OUT_PIPE_STAGES => 0,
@@ -189,33 +215,61 @@ begin
         -- i_in_D      => "0",
         i_dv        => set_data_dv,
         --
-        o_result    => mult_zy(hit_i),
+        o_result    => mult_xy(hit_i),
         o_dv        => mult_zy_dv(hit_i)
       );
-    MULT_ZZ_ENT : entity shared_lib.VU_generic_pipelined_MATH
+    --xx
+    MULT_XX_ENT : entity shared_lib.VU_generic_pipelined_MATH
       generic map(
+        g_NAME => "XX",
         g_OPERATION => "*2",
         g_IN_PIPE_STAGES  => 0,
         g_OUT_PIPE_STAGES => 0,
-        g_in_A_WIDTH => rpc_Z_a(hit_i)'length,
-        g_in_B_WIDTH => rpc_Z_a(hit_i)'length
+        g_in_A_WIDTH => rpc_R_a(hit_i)'length,
+        g_in_B_WIDTH => rpc_R_a(hit_i)'length
       )
       port map(
         clk         => clk,
         rst         => rst,
         --
-        i_in_A      => std_logic_vector(rpc_Z_a(hit_i)),
-        i_in_B      => std_logic_vector(rpc_Z_a(hit_i)),
+        i_in_A      => std_logic_vector(rpc_R_a(hit_i)),
+        i_in_B      => std_logic_vector(rpc_R_a(hit_i)),
         -- i_in_C      => "0",
         -- i_in_D      => "0",
         i_dv        => set_data_dv,
         --
-        o_result    => mult_zz(hit_i),
-        o_dv        => mult_zz_dv(hit_i)
+        o_result    => mult_xx(hit_i),
+        o_dv        => mult_xx_dv(hit_i)
       );
       end generate SQR_LOOP;
-    SUM_Z_ENT : entity shared_lib.VU_generic_pipelined_MATH
+    --Sy
+    SUM_X_ENT : entity shared_lib.VU_generic_pipelined_MATH
       generic map(
+        g_NAME => "SX",
+        g_OPERATION => "+++",
+        g_IN_PIPE_STAGES  => 0,
+        g_OUT_PIPE_STAGES => 1,
+        g_in_A_WIDTH => rpc_R_a(0)'length,
+        g_in_B_WIDTH => rpc_R_a(1)'length,
+        g_in_C_WIDTH => rpc_R_a(2)'length,
+        g_in_D_WIDTH => rpc_R_a(3)'length
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        --
+        i_in_A      => std_logic_vector(rpc_R_a(0)),
+        i_in_B      => std_logic_vector(rpc_R_a(1)),
+        i_in_C      => std_logic_vector(rpc_R_a(2)),
+        i_in_D      => std_logic_vector(rpc_R_a(3)),
+        i_dv        => set_data_dv,
+        --
+        o_result    => sum_x,
+        o_dv        => sum_x_dv
+      );
+    SUM_Y_ENT : entity shared_lib.VU_generic_pipelined_MATH
+      generic map(
+        g_NAME => "SY",
         g_OPERATION => "+++",
         g_IN_PIPE_STAGES  => 0,
         g_OUT_PIPE_STAGES => 1,
@@ -234,147 +288,127 @@ begin
         i_in_D      => std_logic_vector(rpc_Z_a(3)),
         i_dv        => set_data_dv,
         --
-        o_result    => sum_z,
-        o_dv        => sum_z_dv
+        o_result    => sum_y,
+        o_dv        => sum_y_dv
       );
   --------------------------------
   -- prep
   --------------------------------
-  SUM_Y_ENT : entity shared_lib.VU_generic_pipelined_MATH
+  SUM_XX_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
-      g_OPERATION => "+++",
-      g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 1,
-      g_in_A_WIDTH => rpc_R_a(0)'length,
-      g_in_B_WIDTH => rpc_R_a(1)'length,
-      g_in_C_WIDTH => rpc_R_a(2)'length,
-      g_in_D_WIDTH => rpc_R_a(3)'length
-    )
-    port map(
-      clk         => clk,
-      rst         => rst,
-      --
-      i_in_A      => std_logic_vector(rpc_R_a(0)),
-      i_in_B      => std_logic_vector(rpc_R_a(1)),
-      i_in_C      => std_logic_vector(rpc_R_a(2)),
-      i_in_D      => std_logic_vector(rpc_R_a(3)),
-      i_dv        => set_data_dv,
-      --
-      o_result    => sum_y,
-      o_dv        => sum_y_dv
-    );
-
-  SUM_ZY_ENT : entity shared_lib.VU_generic_pipelined_MATH
-    generic map(
-      g_OPERATION => "+++",
-      g_IN_PIPE_STAGES  => 0,
-      g_OUT_PIPE_STAGES => 0,
-      g_in_A_WIDTH => mult_zy(0)'length,
-      g_in_B_WIDTH => mult_zy(1)'length,
-      g_in_C_WIDTH => mult_zy(2)'length,
-      g_in_D_WIDTH => mult_zy(3)'length
-    )
-    port map(
-      clk         => clk,
-      rst         => rst,
-      --
-      i_in_A      => mult_zy(0),
-      i_in_B      => mult_zy(1),
-      i_in_C      => mult_zy(2),
-      i_in_D      => mult_zy(3),
-      i_dv        => or_reduce(mult_zy_dv),
-      --
-      o_result    => sum_zy,
-      o_dv        => sum_zy_dv
-    );
-  SUM_ZZ_ENT : entity shared_lib.VU_generic_pipelined_MATH
-    generic map(
+      g_NAME => "SXX",
       g_OPERATION => "+++",
       g_IN_PIPE_STAGES  => 1,
       g_OUT_PIPE_STAGES => 2,
-      g_in_A_WIDTH => mult_zz(0)'length,
-      g_in_B_WIDTH => mult_zz(1)'length,
-      g_in_C_WIDTH => mult_zz(2)'length,
-      g_in_D_WIDTH => mult_zz(3)'length
+      g_in_A_WIDTH => mult_xx(0)'length,
+      g_in_B_WIDTH => mult_xx(1)'length,
+      g_in_C_WIDTH => mult_xx(2)'length,
+      g_in_D_WIDTH => mult_xx(3)'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => mult_zz(0),
-      i_in_B      => mult_zz(1),
-      i_in_C      => mult_zz(2),
-      i_in_D      => mult_zz(3),
-      i_dv        => or_reduce(mult_zz_dv),
+      i_in_A      => mult_xx(0),
+      i_in_B      => mult_xx(1),
+      i_in_C      => mult_xx(2),
+      i_in_D      => mult_xx(3),
+      i_dv        => or_reduce(mult_xx_dv),
       --
-      o_result    => sum_zz,
-      o_dv        => sum_zz_dv
+      o_result    => sum_xx,
+      o_dv        => sum_xx_dv
     );
-
+  SUM_XY_ENT : entity shared_lib.VU_generic_pipelined_MATH
+    generic map(
+      g_NAME => "SXY",
+      g_OPERATION => "+++",
+      g_IN_PIPE_STAGES  => 0,
+      g_OUT_PIPE_STAGES => 0,
+      g_in_A_WIDTH => mult_xy(0)'length,
+      g_in_B_WIDTH => mult_xy(1)'length,
+      g_in_C_WIDTH => mult_xy(2)'length,
+      g_in_D_WIDTH => mult_xy(3)'length
+    )
+    port map(
+      clk         => clk,
+      rst         => rst,
+      --
+      i_in_A      => mult_xy(0),
+      i_in_B      => mult_xy(1),
+      i_in_C      => mult_xy(2),
+      i_in_D      => mult_xy(3),
+      i_dv        => or_reduce(mult_zy_dv),
+      --
+      o_result    => sum_xy,
+      o_dv        => sum_xy_dv
+    );
   --------------------------------
   -- C
   --------------------------------
-  MULT_N_SUM_ZZ_ENT : entity shared_lib.VU_generic_pipelined_MATH
+  MULT_N_SUM_xx_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
+      g_NAME => "nSxx",
       g_OPERATION => "*4",
       g_IN_PIPE_STAGES  => 1,
       g_OUT_PIPE_STAGES => 1,
       g_in_A_WIDTH => 4,
-      g_in_B_WIDTH => sum_zz'length
+      g_in_B_WIDTH => sum_xx'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
       i_in_A      => std_logic_vector(to_unsigned(num_h_i,4)),
-      i_in_B      => sum_zz,
+      i_in_B      => sum_xx,
       -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => sum_zz_dv,
+      i_dv        => sum_xx_dv,
       --
-      o_result    => mult_n_szz,
-      o_dv        => mult_n_szz_dv
+      o_result    => nSxx,
+      o_dv        => nSxx_dv
     );
 
-  SQR_ZZ_ENT : entity shared_lib.VU_generic_pipelined_MATH
+  SYSY_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
+      g_NAME => "SxSx",
       g_OPERATION => "*3",
       g_IN_PIPE_STAGES  => 1,
       g_OUT_PIPE_STAGES => 1,
-      g_in_A_WIDTH => sum_z'length,
-      g_in_B_WIDTH => sum_z'length
+      g_in_A_WIDTH => sum_x'length,
+      g_in_B_WIDTH => sum_x'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => sum_z,
-      i_in_B      => sum_z,
+      i_in_A      => sum_x,
+      i_in_B      => sum_x,
       -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => sum_z_dv,
+      i_dv        => sum_x_dv,
       --
-      o_result    => sqr_zz,
-      o_dv        => sqr_zz_dv
+      o_result    => SxSx,
+      o_dv        => SxSx_dv
     );
 
   SUBPARAM_C_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
+      g_NAME => "param_c",
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 0,
       g_OUT_PIPE_STAGES => 0,
-      g_in_A_WIDTH => mult_n_szz'length,
-      g_in_B_WIDTH => sqr_zz'length
+      g_in_A_WIDTH => nSxx'length,
+      g_in_B_WIDTH => SxSx'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => mult_n_szz,
-      i_in_B      => sqr_zz,
+      i_in_A      => nSxx,
+      i_in_B      => SxSx,
       -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => mult_n_szz_dv,
+      i_dv        => nSxx_dv,
       --
       o_result    => param_c,
       o_dv        => param_c_dv
@@ -385,65 +419,68 @@ begin
   --------------------------------
   MULT_SZZ_SY_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
+      g_NAME => "SxSxx",
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 1,
       g_OUT_PIPE_STAGES => 1,
       g_in_A_WIDTH => sum_y'length,
-      g_in_B_WIDTH => sum_zz'length
+      g_in_B_WIDTH => sum_xx'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
       i_in_A      => sum_y,
-      i_in_B      => sum_zz,
+      i_in_B      => sum_xx,
       -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => sum_zz_dv,
+      i_dv        => sum_xx_dv,
       --
-      o_result    => mult_sy_szz,
-      o_dv        => mult_sy_szz_dv
+      o_result    => SxxSy,
+      o_dv        => SxxSy_dv
     );
 
   MULT_SZ_SZY_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
+      g_NAME => "SxSxy",
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 1,
       g_OUT_PIPE_STAGES => 1,
-      g_in_A_WIDTH => sum_z'length,
-      g_in_B_WIDTH => sum_zy'length
+      g_in_A_WIDTH => sum_x'length,
+      g_in_B_WIDTH => sum_xy'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => sum_z,
-      i_in_B      => sum_zy,
+      i_in_A      => sum_x,
+      i_in_B      => sum_xy,
       -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => sum_z_dv,
+      i_dv        => sum_x_dv,
       --
-      o_result    => mult_sz_szy,
-      o_dv        => mult_sz_szy_dv
+      o_result    => SxSxy,
+      o_dv        => SxSxy_dv
     );
 
   SUBPARAM_B_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
+      g_NAME => "param_b",
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 0,
       g_OUT_PIPE_STAGES => 0,
-      g_in_A_WIDTH => mult_sy_szz'length,
-      g_in_B_WIDTH => mult_sz_szy'length
+      g_in_A_WIDTH => SxxSy'length,
+      g_in_B_WIDTH => SxSxy'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => mult_sy_szz,
-      i_in_B      => mult_sz_szy,
+      i_in_A      => SxxSy,
+      i_in_B      => SxSxy,
       -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => mult_sy_szz_dv,
+      i_dv        => SxxSy_dv,
       --
       o_result    => param_b,
       o_dv        => param_b_dv
@@ -452,67 +489,70 @@ begin
   --------------------------------
   -- A
   --------------------------------
-  MULT_N_SUM_ZY : entity shared_lib.VU_generic_pipelined_MATH
+  MULT_N_SUM_xY : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
+      g_NAME => "nSxy",
       g_OPERATION => "*4",
       g_IN_PIPE_STAGES  => 1,
       g_OUT_PIPE_STAGES => 1,
       g_in_A_WIDTH => 4,
-      g_in_B_WIDTH => sum_zy'length
+      g_in_B_WIDTH => sum_xy'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
       i_in_A      => std_logic_vector(to_unsigned(num_h_i,4)),
-      i_in_B      => sum_zy,
+      i_in_B      => sum_xy,
       -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => sum_zy_dv,
+      i_dv        => sum_xy_dv,
       --
-      o_result    => mult_n_szy,
-      o_dv        => mult_n_szy_dv
+      o_result    => nSxy,
+      o_dv        => nSxy_dv
     );
 
-  MULT_SZ_SY_ENT : entity shared_lib.VU_generic_pipelined_MATH
+  SXSY_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
+      g_NAME => "SxSy",
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 1,
       g_OUT_PIPE_STAGES => 1,
-      g_in_A_WIDTH => sum_z'length,
+      g_in_A_WIDTH => sum_x'length,
       g_in_B_WIDTH => sum_y'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => sum_z,
+      i_in_A      => sum_x,
       i_in_B      => sum_y,
       -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => sum_z_dv,
+      i_dv        => sum_x_dv,
       --
-      o_result    => mult_sz_sy,
+      o_result    => SxSy,
       o_dv        => mult_sz_sy_dv
     );
 
   SUBPARAM_A : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
+      g_NAME => "param_a",
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 0,
       g_OUT_PIPE_STAGES => 0,
-      g_in_A_WIDTH => mult_n_szy'length,
-      g_in_B_WIDTH => mult_sz_sy'length
+      g_in_A_WIDTH => nSxy'length,
+      g_in_B_WIDTH => SxSy'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => mult_n_szy,
-      i_in_B      => mult_sz_sy,
+      i_in_A      => nSxy,
+      i_in_B      => SxSy,
       -- i_in_C      => "0",
       -- i_in_D      => "0",
-      i_dv        => mult_n_szy_dv,
+      i_dv        => nSxy_dv,
       --
       o_result    => param_a,
       o_dv        => param_a_dv
@@ -529,8 +569,22 @@ begin
   end generate;
   -- slope_bnom_sc <= param_a & ((slope_bnom_sc'length - param_a'length - 1) downto 0 => '0');
   slope_bden_sc <= std_logic_vector(resize(signed(param_c),slope_bden_sc'length));
+  slope_bdiv_sc <= std_logic_vector(resize(signed(slope_bnom_sc),slope_bdiv_sc'length));
   MAIN_DIV_IPR2: if g_SLOPE_DIV_IPR2_ENABLE generate
-    COMPONENT div_gen_r2s_v1
+    -- COMPONENT div_gen_r2s_v1
+    --   PORT (
+    --     aclk : IN STD_LOGIC;
+    --     aclken : IN STD_LOGIC;
+    --     aresetn : IN STD_LOGIC;
+    --     s_axis_divisor_tvalid : IN STD_LOGIC;
+    --     s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+    --     s_axis_dividend_tvalid : IN STD_LOGIC;
+    --     s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(33 DOWNTO 0);
+    --     m_axis_dout_tvalid : OUT STD_LOGIC;
+    --     m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(55 DOWNTO 0)
+    --   );
+    -- END COMPONENT;
+    COMPONENT cvp_slope_r2s_v1
       PORT (
         aclk : IN STD_LOGIC;
         aclken : IN STD_LOGIC;
@@ -538,13 +592,14 @@ begin
         s_axis_divisor_tvalid : IN STD_LOGIC;
         s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
         s_axis_dividend_tvalid : IN STD_LOGIC;
-        s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+        s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(39 DOWNTO 0);
         m_axis_dout_tvalid : OUT STD_LOGIC;
-        m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(55 DOWNTO 0)
+        m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(63 DOWNTO 0) 
       );
     END COMPONENT;
+    
   begin
-    DIV_b_IP : div_gen_r2s_v1
+    DIV_b_IP : cvp_slope_r2s_v1
       PORT MAP (
         aclk => clk,
         aclken => ena,
@@ -552,14 +607,14 @@ begin
         s_axis_divisor_tvalid => param_c_dv,
         s_axis_divisor_tdata => slope_bden_sc,
         s_axis_dividend_tvalid => param_a_dv,
-        s_axis_dividend_tdata => slope_bnom_sc,
+        s_axis_dividend_tdata => slope_bdiv_sc,
         m_axis_dout_tvalid => slope_div_dout_tvalid,
         -- m_axis_dout_tuser => m_axis_dout_tuser,
         m_axis_dout_tdata => slope_div_dout_tdata
       );
     -- signal slope_div_dout_tdata_q : std_logic_vector(43 downto 0);-- := (others => '0');
     -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
-    slope_div_dout_tdata_q <= slope_div_dout_tdata(55 downto 24);
+    slope_div_dout_tdata_q <= slope_div_dout_tdata(57 downto 24);
     slope_div_dout_tdata_r <= slope_div_dout_tdata(20 downto 0);
     slope_bdiv_ipr2 <= slope_div_dout_tdata_q  when slope_div_dout_tvalid = '1' else (others => '0') ;
     slope_bdiv_ipr2_dv <= slope_div_dout_tvalid;
@@ -575,100 +630,161 @@ begin
   --------------------------------
   -- O
   --------------------------------
-
+  -- off_nom_sc <= param_b ;--& "00000000000"; --11:2048
+  param_b_sc : if (off_nom_sc'length - param_b'length) = 0 generate
+    off_nom_sc <= param_b;
+  else generate
+    off_nom_sc <= param_b & ((off_nom_sc'length - param_b'length - 1) downto 0 => '0');
+  end generate;
+  -- off_nom_sc <= param_a & ((off_nom_sc'length - param_a'length - 1) downto 0 => '0');
+  off_den_sc <= std_logic_vector(resize(signed(param_c),off_den_sc'length));
+  off_div_sc <= std_logic_vector(resize(signed(off_nom_sc),off_div_sc'length));
+  OFFSET_DIV_IPR2: if g_off_DIV_IPR2_ENABLE generate
+    COMPONENT cvp_offset_r2s_v1
+      PORT (
+        aclk : IN STD_LOGIC;
+        aclken : IN STD_LOGIC;
+        aresetn : IN STD_LOGIC;
+        s_axis_divisor_tvalid : IN STD_LOGIC;
+        s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
+        s_axis_dividend_tvalid : IN STD_LOGIC;
+        s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(39 DOWNTO 0);
+        m_axis_dout_tvalid : OUT STD_LOGIC;
+        m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(63 DOWNTO 0) 
+      );
+    END COMPONENT;
+    
+  begin
+    DIV_b_IP : cvp_offset_r2s_v1
+      PORT MAP (
+        aclk => clk,
+        aclken => ena,
+        aresetn => not rst,
+        s_axis_divisor_tvalid => param_c_dv,
+        s_axis_divisor_tdata => off_den_sc,
+        s_axis_dividend_tvalid => param_a_dv,
+        s_axis_dividend_tdata => off_div_sc,
+        m_axis_dout_tvalid => off_div_dout_tvalid,
+        -- m_axis_dout_tuser => m_axis_dout_tuser,
+        m_axis_dout_tdata => off_div_dout_tdata
+      );
+    -- signal off_div_dout_tdata_q : std_logic_vector(43 downto 0);-- := (others => '0');
+    -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
+    off_div_dout_tdata_q <= off_div_dout_tdata(57 downto 24);
+    off_div_dout_tdata_r <= off_div_dout_tdata(20 downto 0);
+    off_div_ipr2 <= off_div_dout_tdata_q  when off_div_dout_tvalid = '1' else (others => '0') ;
+    off_div_ipr2_dv <= off_div_dout_tvalid;
+  end generate;
+  
+  -- MAIN_DIV_SEL: if g_MAIN_DIV_SEL = "IPR2" generate
+    off_div <= off_div_ipr2;
+    off_div_dv <= off_div_ipr2_dv;
+  -- elsif g_MAIN_DIV_SEL = "LUT" generate
+  --   -- off_div <= bdiv_lut;
+  --   -- off_div_dv <= bdiv_lut_dv;
+  -- end generate MAIN_DIV_SEL;
   --------------------------------
   -- Zs 
   --------------------------------
 
   Y_EVAL : for i_mdt in g_NUM_MDT_LAYERS -1 downto 0 generate
-    signal mult_rc     : std_logic_vector(i_mdt_R_a(i_mdt)'length + param_c'length -1 downto 0);
-    signal mult_rc_dv  : std_logic;
-    signal sub_rc_b     : std_logic_vector(max(param_b'length,mult_rc'length) -1 downto 0);
-    signal sub_rc_b_dv  : std_logic;
-    signal div_out : std_logic_vector(79 downto 0);
-    signal div_quo : std_logic_vector(45 downto 0);
-    signal div_fra : std_logic_vector(31 downto 0);
+    signal mult_ra     : std_logic_vector(i_mdt_R_a(i_mdt)'length + param_c'length -1 downto 0);
+    signal mult_ra_dv  : std_logic;
+    signal sum_ax_b     : std_logic_vector(max(param_b'length,mult_ra'length) downto 0);
+    signal sum_ax_b_dv  : std_logic;
+    signal div_num : std_logic_vector(55 downto 0);
+    signal div_den : std_logic_vector(39 downto 0);
+    signal div_out : std_logic_vector(95 downto 0);
+    signal div_quo : std_logic_vector(50 downto 0);
+    signal div_fra : std_logic_vector(33 downto 0);
     signal div_out_dv  : std_logic;
 
-    signal sub_rc_b_scale : std_logic_vector(1 + sub_rc_b'length downto 0);
+    signal sum_ax_b_scale : std_logic_vector(1 + sum_ax_b'length downto 0);
 
-    COMPONENT cvp_pc_y_hr_div
+    COMPONENT zcalc_vec_pos_div
       PORT (
         aclk : IN STD_LOGIC;
+        aclken : IN STD_LOGIC;
+        aresetn : IN STD_LOGIC;
         s_axis_divisor_tvalid : IN STD_LOGIC;
-        s_axis_divisor_tready : OUT STD_LOGIC;
-        s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+        s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(39 DOWNTO 0);
         s_axis_dividend_tvalid : IN STD_LOGIC;
-        s_axis_dividend_tready : OUT STD_LOGIC;
-        s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(47 DOWNTO 0);
+        s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(55 DOWNTO 0);
         m_axis_dout_tvalid : OUT STD_LOGIC;
-        m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(79 DOWNTO 0)
+        m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(95 DOWNTO 0) 
       );
-      END COMPONENT;
+    END COMPONENT;
 
     begin
     
     MULT_R_C_ENT : entity shared_lib.VU_generic_pipelined_MATH
       generic map(
+        g_NAME => "a*x",
         g_OPERATION => "*",
         g_IN_PIPE_STAGES  => 1,
         g_OUT_PIPE_STAGES => 1,
         g_in_A_WIDTH => i_mdt_R_a(i_mdt)'length,
-        g_in_B_WIDTH => param_c'length
+        g_in_B_WIDTH => param_a'length
       )
       port map(
         clk         => clk,
         rst         => rst,
         --
         i_in_A      => std_logic_vector(i_mdt_R_a(i_mdt)),
-        i_in_B      => param_c,
+        i_in_B      => param_a,
         -- i_in_C      => "0",
         -- i_in_D      => "0",
         i_dv        => i_rpc_R_dv,
         --
-        o_result    => mult_rc,
-        o_dv        => mult_rc_dv
+        o_result    => mult_ra,
+        o_dv        => mult_ra_dv
       );
 
-    SUB_RC_B_ENT : entity shared_lib.VU_generic_pipelined_MATH
+    sum_ax_b_ENT : entity shared_lib.VU_generic_pipelined_MATH
       generic map(
-        g_OPERATION => "-",
+        g_NAME => "ax+b",
+        g_OPERATION => "+",
         g_IN_PIPE_STAGES  => 0,
         g_OUT_PIPE_STAGES => 0,
-        g_in_A_WIDTH => mult_rc'length,
+        g_in_A_WIDTH => mult_ra'length,
         g_in_B_WIDTH => param_b'length
       )
       port map(
         clk         => clk,
         rst         => rst,
         --
-        i_in_A      => mult_rc,
+        i_in_A      => mult_ra,
         i_in_B      => param_b,
         -- i_in_C      => "0",
         -- i_in_D      => "0",
-        i_dv        => mult_rc_dv,
+        i_dv        => mult_ra_dv,
         --
-        o_result    => sub_rc_b,
-        o_dv        => sub_rc_b_dv
+        o_result    => sum_ax_b,
+        o_dv        => sum_ax_b_dv
       );
 
-      sub_rc_b_scale <= std_logic_vector(resize(signed(sub_rc_b),sub_rc_b_scale'length));
-    DIV_Z_CALC : cvp_pc_y_hr_div
+      -- sum_ax_b_scale <= std_logic_vector(resize(signed(sum_ax_b),sum_ax_b_scale'length));
+
+    div_num <= std_logic_vector(resize(signed(sum_ax_b),div_num'length));
+    div_den <= std_logic_vector(resize(signed(param_c),div_den'length));
+    DIV_Z_CALC : zcalc_vec_pos_div
       PORT MAP (
         aclk => clk,
+        aclken => ena,
+        aresetn => not rst,
         s_axis_divisor_tvalid => param_a_dv,
         -- s_axis_divisor_tready => s_axis_divisor_tready,
-        s_axis_divisor_tdata => param_a,
-        s_axis_dividend_tvalid => sub_rc_b_dv,
+        s_axis_divisor_tdata => div_den,--param_a,
+        s_axis_dividend_tvalid => sum_ax_b_dv,
         -- s_axis_dividend_tready => s_axis_dividend_tready,
-        s_axis_dividend_tdata => sub_rc_b_scale,
+        s_axis_dividend_tdata => div_num,--sum_ax_b_scale,
         m_axis_dout_tvalid => div_out_dv,
         -- m_axis_dout_tuser => m_axis_dout_tuser,
         m_axis_dout_tdata => div_out
       );
 
-      div_quo <= div_out(77 downto 32);
-      div_fra <= div_out(31 downto 0);
+      div_quo <= div_out(90 downto 40);
+      div_fra <= div_out(33 downto 0);
 
       o_vec_z_pos(i_mdt) <= unsigned(div_quo(UCM2HPS_VEC_POS_LEN -1 downto 0));
       vec_z_pos_dv_a(i_mdt) <= div_out_dv;
@@ -679,8 +795,8 @@ begin
 
   --------------------------------  
   o_vec_z_pos_dv <= or_reduce(vec_z_pos_dv_a);
-  -- o_offset <= offset
-  o_slope <= signed(slope_bdiv);
+  o_offset <= resize(signed(off_div),32);
+  o_slope <= resize(signed(slope_bdiv),32);
 
 
 end architecture beh;

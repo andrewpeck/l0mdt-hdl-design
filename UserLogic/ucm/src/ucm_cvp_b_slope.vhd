@@ -84,9 +84,9 @@ architecture beh of ucm_cvp_b_slope is
   -- signal num_h_std : std_logic_vector(2 downto 0);
 
   -- type rpc_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
-  signal rpc_a : rpc_pos_art;
+  signal rpc_a : rpc_pos_ast;
   -- type rad_art is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
-  signal rad_a : rpc_rad_art;
+  signal rad_a : rpc_rad_ast;
   -- signal rad_comp_a : rad_art;
   -- signal rad_comp_dv : std_logic;
 
