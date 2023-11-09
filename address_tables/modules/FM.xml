@@ -4,12 +4,18 @@
     <node id="GLOBAL_PLAYBACK_MODE" address="0x0" permission="rw" mask="0x6" parameters="default=0" />
     <node id="INITIALIZE_SPY_MEMORY" address="0x0" permission="rw" mask="0x8" parameters="default=1"/>
   </node>
-  <node id="FREEZE_MASK_0" address="0x6001" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0" />
-  <node id="FREEZE_MASK_1" address="0x6002" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
-  <node id="PLAYBACK_MASK_0" address="0x6003" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/> 
-  <node id="PLAYBACK_MASK_1" address="0x6004" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
-  <node id="SB_RESET_0" address="0x6005" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/> 
-  <node id="SB_RESET_1" address="0x6006" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="FREEZE_MASK_0" address="0xff01" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0" />
+  <node id="FREEZE_MASK_1" address="0xff02" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="FREEZE_MASK_2" address="0xff03" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="FREEZE_MASK_3" address="0xff04" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="PLAYBACK_MASK_0" address="0xff05" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/> 
+  <node id="PLAYBACK_MASK_1" address="0xff06" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
+ <node id="PLAYBACK_MASK_2" address="0xff07" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
+ <node id="PLAYBACK_MASK_3" address="0xff08" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
+  <node id="SB_RESET_0" address="0xff09" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/> 
+  <node id="SB_RESET_1" address="0xff0a" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="SB_RESET_2" address="0xff0b" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>  
+  <node id="SB_RESET_3" address="0xff0c" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
   
   <node id="SB0" address="0x0" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
@@ -293,19 +299,64 @@
   <node id="SB93" address="0xba00" description =" width=64 df=TDCPOLMUX2TAR" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB94" address="0xbc00" description =" width=64 df=TDCPOLMUX2TAR" >
+  <node id="SB94" address="0xbc00" description =" width=64 df=CUSTOM_DAQ" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB95" address="0xbe00" description =" width=64 df=TDCPOLMUX2TAR" >
+  <node id="SB95" address="0xbe00" description =" width=64 df=CUSTOM_DAQ" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB96" address="0xc000" description =" width=64 df=TDCPOLMUX2TAR" >
+  <node id="SB96" address="0xc000" description =" width=64 df=CUSTOM_DAQ" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB97" address="0xc200" description =" width=64 df=SB_DUMMY" >
+  <node id="SB97" address="0xc200" description =" width=64 df=CUSTOM_DAQ" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB98" address="0xc400" description =" width=64 df=SB_DUMMY" >
+  <node id="SB98" address="0xc400" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB99" address="0xc600" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB100" address="0xc800" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB101" address="0xca00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB102" address="0xcc00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB103" address="0xce00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB104" address="0xd000" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB105" address="0xd200" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB106" address="0xd400" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB107" address="0xd600" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB108" address="0xd800" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB109" address="0xda00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB110" address="0xdc00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB111" address="0xde00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB112" address="0xe000" description =" width=64 df=SB_DUMMY" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB113" address="0xe200" description =" width=64 df=SB_DUMMY" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
  

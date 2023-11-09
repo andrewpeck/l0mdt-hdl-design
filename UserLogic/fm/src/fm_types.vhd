@@ -75,10 +75,13 @@ package fm_types is
    constant mtc_sb_n : integer := 3;
    attribute w of mtc_sb_n : constant is 32;
 
-   constant mtc_sb_all_stations_n : integer := 9; -- mtc_sb_n * stations_n
-   attribute w of mtc_sb_all_stations_n : constant is 32;
+   constant daq_sb_n : integer := 6;
+   attribute w of daq_sb_n : constant is 32;
 
-   constant total_l0mdt_sb : integer := 97; -- h2s_sb_all_station_n + ucm_sb_n + csm_polmux_in_sb_n + csm_custom_sb_n + tar_sb_all_stations_n + mtc_sb_all_stations_n
+   constant daq_sb_all_stations_n : integer := 18; -- daq_sb_n  * stations_n
+   attribute w of daq_sb_all_stations_n : constant is 32;
+
+   constant total_l0mdt_sb : integer := 109; -- h2s_sb_all_station_n + ucm_sb_n + csm_polmux_in_sb_n + csm_custom_sb_n + tar_sb_all_stations_n + mtc_sb_n + daq_sb_all_stations_n
    attribute w of total_l0mdt_sb : constant is 32;
 
    type fm_rt is record
@@ -177,8 +180,8 @@ package fm_types is
    function convert(x: std_logic_vector; tpl: fm_ucm_mon_data) return fm_ucm_mon_data;
    function zero(tpl: fm_ucm_mon_data) return fm_ucm_mon_data;
 
-   type fm_csm_to_polmux is array(0 to csm_polmux_in_sb_n) of fm_rt;
-   attribute w of fm_csm_to_polmux : type is 2570;
+   type fm_csm_to_polmux is array(0 to csm_polmux_in_sb_n-1) of fm_rt;
+   attribute w of fm_csm_to_polmux : type is 2313;
    function width(x: fm_csm_to_polmux) return integer;
    function convert(x: fm_csm_to_polmux; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: fm_csm_to_polmux) return fm_csm_to_polmux;
@@ -190,14 +193,23 @@ package fm_types is
       fm_csm_uplink_data : fm_rt;
       fm_csm_to_polmux : fm_csm_to_polmux;
    end record fm_csm_mon_data;
-   attribute w of fm_csm_mon_data : type is 2827;
+   attribute w of fm_csm_mon_data : type is 2570;
    function width(x: fm_csm_mon_data) return natural;
    function convert(x: fm_csm_mon_data; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: fm_csm_mon_data) return fm_csm_mon_data;
    function zero(tpl: fm_csm_mon_data) return fm_csm_mon_data;
 
-   type fm_tar_mon_data is array(0 to tar_sb_n-1) of fm_rt;
-   attribute w of fm_tar_mon_data : type is 3084;
+   type fm_tdcpolmux2tar is array(0 to tar_sb_n-1) of fm_rt;
+   attribute w of fm_tdcpolmux2tar : type is 3084;
+   function width(x: fm_tdcpolmux2tar) return integer;
+   function convert(x: fm_tdcpolmux2tar; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: fm_tdcpolmux2tar) return fm_tdcpolmux2tar;
+   function zero(tpl: fm_tdcpolmux2tar) return fm_tdcpolmux2tar;
+   function convert(x: fm_tdcpolmux2tar; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: fm_tdcpolmux2tar) return fm_tdcpolmux2tar;
+
+   type fm_tar_mon_data is array(0 to stations_n-1) of fm_tdcpolmux2tar;
+   attribute w of fm_tar_mon_data : type is 9252;
    function width(x: fm_tar_mon_data) return integer;
    function convert(x: fm_tar_mon_data; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: fm_tar_mon_data) return fm_tar_mon_data;
@@ -205,8 +217,8 @@ package fm_types is
    function convert(x: fm_tar_mon_data; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: fm_tar_mon_data) return fm_tar_mon_data;
 
-   type fm_mtc_mon_data is array(0 to tar_sb_n-1) of fm_rt;
-   attribute w of fm_mtc_mon_data : type is 3084;
+   type fm_mtc_mon_data is array(0 to mtc_sb_n-1) of fm_rt;
+   attribute w of fm_mtc_mon_data : type is 771;
    function width(x: fm_mtc_mon_data) return integer;
    function convert(x: fm_mtc_mon_data; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: fm_mtc_mon_data) return fm_mtc_mon_data;
@@ -214,21 +226,31 @@ package fm_types is
    function convert(x: fm_mtc_mon_data; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: fm_mtc_mon_data) return fm_mtc_mon_data;
 
+   type fm_daq_mon_data is array(0 to daq_sb_all_stations_n -1) of fm_rt;
+   attribute w of fm_daq_mon_data : type is 4626;
+   function width(x: fm_daq_mon_data) return integer;
+   function convert(x: fm_daq_mon_data; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: fm_daq_mon_data) return fm_daq_mon_data;
+   function zero(tpl: fm_daq_mon_data) return fm_daq_mon_data;
+   function convert(x: fm_daq_mon_data; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: fm_daq_mon_data) return fm_daq_mon_data;
+
    type fm_mon is record
       fm_hps_mon : fm_hps_mon;
       fm_ucm_mon : fm_ucm_mon_data;
-      fm_csm_mon_data : fm_csm_mon_data;
-      fm_tar_mon_data : fm_tar_mon_data(0 to stations_n-1);
-      fm_mtc_mon_data : fm_mtc_mon_data(0 to stations_n-1);
+      fm_csm_mon : fm_csm_mon_data;
+      fm_tar_mon : fm_tar_mon_data;
+      fm_mtc_mon : fm_mtc_mon_data;
+      fm_daq_mon : fm_daq_mon_data;
    end record fm_mon;
-   attribute w of fm_mon : type is 32125;
+   attribute w of fm_mon : type is 28013;
    function width(x: fm_mon) return natural;
    function convert(x: fm_mon; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: fm_mon) return fm_mon;
    function zero(tpl: fm_mon) return fm_mon;
 
    type fm_pb is array(0 to total_l0mdt_sb -1) of std_logic_vector(mon_dw_max-1 downto 0);
-   attribute w of fm_pb : type is 24832;
+   attribute w of fm_pb : type is 27904;
    function width(x: fm_pb) return integer;
    function convert(x: fm_pb; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: fm_pb) return fm_pb;
@@ -1066,6 +1088,79 @@ package body fm_types is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
+   function width(x: fm_tdcpolmux2tar) return integer is
+      variable w : integer;
+   begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
+      return w;
+   end function width;
+   function convert(x: fm_tdcpolmux2tar; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: fm_tdcpolmux2tar) return fm_tdcpolmux2tar is
+      variable y : fm_tdcpolmux2tar;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: fm_tdcpolmux2tar) return fm_tdcpolmux2tar is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: fm_tdcpolmux2tar; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: fm_tdcpolmux2tar) return fm_tdcpolmux2tar is
+      variable y : fm_tdcpolmux2tar;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
    function width(x: fm_tar_mon_data) return integer is
       variable w : integer;
    begin
@@ -1212,14 +1307,88 @@ package body fm_types is
       return y;
    end function convert;
 
+   function width(x: fm_daq_mon_data) return integer is
+      variable w : integer;
+   begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
+      return w;
+   end function width;
+   function convert(x: fm_daq_mon_data; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: fm_daq_mon_data) return fm_daq_mon_data is
+      variable y : fm_daq_mon_data;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: fm_daq_mon_data) return fm_daq_mon_data is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: fm_daq_mon_data; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: fm_daq_mon_data) return fm_daq_mon_data is
+      variable y : fm_daq_mon_data;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
    function width(x: fm_mon) return natural is
       variable w : natural := 0;
    begin
       w := w + width(x.fm_hps_mon);
       w := w + width(x.fm_ucm_mon);
-      w := w + width(x.fm_csm_mon_data);
-      w := w + width(x.fm_tar_mon_data);
-      w := w + width(x.fm_mtc_mon_data);
+      w := w + width(x.fm_csm_mon);
+      w := w + width(x.fm_tar_mon);
+      w := w + width(x.fm_mtc_mon);
+      w := w + width(x.fm_daq_mon);
       return w;
    end function width;
    function convert(x: fm_mon; tpl: std_logic_vector) return std_logic_vector is
@@ -1234,14 +1403,17 @@ package body fm_types is
          w := width(x.fm_ucm_mon);
          y(u to u+w-1) := convert(x.fm_ucm_mon, y(u to u+w-1));
          u := u + w;
-         w := width(x.fm_csm_mon_data);
-         y(u to u+w-1) := convert(x.fm_csm_mon_data, y(u to u+w-1));
+         w := width(x.fm_csm_mon);
+         y(u to u+w-1) := convert(x.fm_csm_mon, y(u to u+w-1));
          u := u + w;
-         w := width(x.fm_tar_mon_data);
-         y(u to u+w-1) := convert(x.fm_tar_mon_data, y(u to u+w-1));
+         w := width(x.fm_tar_mon);
+         y(u to u+w-1) := convert(x.fm_tar_mon, y(u to u+w-1));
          u := u + w;
-         w := width(x.fm_mtc_mon_data);
-         y(u to u+w-1) := convert(x.fm_mtc_mon_data, y(u to u+w-1));
+         w := width(x.fm_mtc_mon);
+         y(u to u+w-1) := convert(x.fm_mtc_mon, y(u to u+w-1));
+         u := u + w;
+         w := width(x.fm_daq_mon);
+         y(u to u+w-1) := convert(x.fm_daq_mon, y(u to u+w-1));
       else
          w := width(x.fm_hps_mon);
          y(u downto u-w+1) := convert(x.fm_hps_mon, y(u downto u-w+1));
@@ -1249,14 +1421,17 @@ package body fm_types is
          w := width(x.fm_ucm_mon);
          y(u downto u-w+1) := convert(x.fm_ucm_mon, y(u downto u-w+1));
          u := u - w;
-         w := width(x.fm_csm_mon_data);
-         y(u downto u-w+1) := convert(x.fm_csm_mon_data, y(u downto u-w+1));
+         w := width(x.fm_csm_mon);
+         y(u downto u-w+1) := convert(x.fm_csm_mon, y(u downto u-w+1));
          u := u - w;
-         w := width(x.fm_tar_mon_data);
-         y(u downto u-w+1) := convert(x.fm_tar_mon_data, y(u downto u-w+1));
+         w := width(x.fm_tar_mon);
+         y(u downto u-w+1) := convert(x.fm_tar_mon, y(u downto u-w+1));
          u := u - w;
-         w := width(x.fm_mtc_mon_data);
-         y(u downto u-w+1) := convert(x.fm_mtc_mon_data, y(u downto u-w+1));
+         w := width(x.fm_mtc_mon);
+         y(u downto u-w+1) := convert(x.fm_mtc_mon, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.fm_daq_mon);
+         y(u downto u-w+1) := convert(x.fm_daq_mon, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -1272,14 +1447,17 @@ package body fm_types is
          w := width(tpl.fm_ucm_mon);
          y.fm_ucm_mon := convert(x(u to u+w-1), tpl.fm_ucm_mon);
          u := u + w;
-         w := width(tpl.fm_csm_mon_data);
-         y.fm_csm_mon_data := convert(x(u to u+w-1), tpl.fm_csm_mon_data);
+         w := width(tpl.fm_csm_mon);
+         y.fm_csm_mon := convert(x(u to u+w-1), tpl.fm_csm_mon);
          u := u + w;
-         w := width(tpl.fm_tar_mon_data);
-         y.fm_tar_mon_data := convert(x(u to u+w-1), tpl.fm_tar_mon_data);
+         w := width(tpl.fm_tar_mon);
+         y.fm_tar_mon := convert(x(u to u+w-1), tpl.fm_tar_mon);
          u := u + w;
-         w := width(tpl.fm_mtc_mon_data);
-         y.fm_mtc_mon_data := convert(x(u to u+w-1), tpl.fm_mtc_mon_data);
+         w := width(tpl.fm_mtc_mon);
+         y.fm_mtc_mon := convert(x(u to u+w-1), tpl.fm_mtc_mon);
+         u := u + w;
+         w := width(tpl.fm_daq_mon);
+         y.fm_daq_mon := convert(x(u to u+w-1), tpl.fm_daq_mon);
       else
          w := width(tpl.fm_hps_mon);
          y.fm_hps_mon := convert(x(u downto u-w+1), tpl.fm_hps_mon);
@@ -1287,14 +1465,17 @@ package body fm_types is
          w := width(tpl.fm_ucm_mon);
          y.fm_ucm_mon := convert(x(u downto u-w+1), tpl.fm_ucm_mon);
          u := u - w;
-         w := width(tpl.fm_csm_mon_data);
-         y.fm_csm_mon_data := convert(x(u downto u-w+1), tpl.fm_csm_mon_data);
+         w := width(tpl.fm_csm_mon);
+         y.fm_csm_mon := convert(x(u downto u-w+1), tpl.fm_csm_mon);
          u := u - w;
-         w := width(tpl.fm_tar_mon_data);
-         y.fm_tar_mon_data := convert(x(u downto u-w+1), tpl.fm_tar_mon_data);
+         w := width(tpl.fm_tar_mon);
+         y.fm_tar_mon := convert(x(u downto u-w+1), tpl.fm_tar_mon);
          u := u - w;
-         w := width(tpl.fm_mtc_mon_data);
-         y.fm_mtc_mon_data := convert(x(u downto u-w+1), tpl.fm_mtc_mon_data);
+         w := width(tpl.fm_mtc_mon);
+         y.fm_mtc_mon := convert(x(u downto u-w+1), tpl.fm_mtc_mon);
+         u := u - w;
+         w := width(tpl.fm_daq_mon);
+         y.fm_daq_mon := convert(x(u downto u-w+1), tpl.fm_daq_mon);
       end if;
       return y;
    end function convert;

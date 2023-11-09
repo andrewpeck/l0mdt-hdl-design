@@ -38,6 +38,9 @@ use ctrl_lib.axiRegPkg.all;
 library xpm;
 use xpm.vcomponents.all;
 
+library fm_lib;
+use fm_lib.fm_types.all;
+
 entity top_hal is
 
   port (
@@ -140,6 +143,9 @@ entity top_hal is
     -- CORE takes care of basic infrastructure, running with the axi clk, e.g. transceivers
     Core_Mon  : out CORE_MON_t;
     Core_Ctrl : in  CORE_CTRL_t;
+
+    -- Fast Monitoring
+     fm_csm_mon_r :out  fm_csm_mon_data;
 
     clk50_o      : out std_logic; -- AXI user clock
     clk40_o      : out std_logic; -- 40 MHz LHC clock to AXI slaves
@@ -564,9 +570,14 @@ begin  -- architecture behavioral
     constant mgt_idx  : integer := c_MDT_CONFIG(CSM).mgt_id_m;
     constant mgt_id_m : integer := c_MDT_CONFIG(CSM).mgt_id_m;
     constant mgt_id_s : integer := c_MDT_CONFIG(CSM).mgt_id_s;
-     
+    signal fm_csm_uplink_data : fm_rt;
   begin
 
+    fm_mon: if CSM = 0 generate
+      fm_csm_mon_r.fm_csm_uplink_data <= fm_csm_uplink_data ;
+    
+    end generate;
+  
     csm_ifgen : if (CSM < c_NUM_CSMS_ACTIVE and tdc_cnt > 0) generate
       
     begin
@@ -602,6 +613,8 @@ begin  -- architecture behavioral
             strobe_320 => strobe_320,
             reset_i    => reset_clk40,
 
+            -- Fast Monitoring
+            fm_csm_mon => fm_csm_uplink_data,
             -- TTC signals
             -- TODO: axi generation of TTC signals
             trg_i => ttc_commands.l0a,
@@ -673,6 +686,9 @@ begin  -- architecture behavioral
 
       inner : if (STATION = 0) generate
         tdc_hits_inner(POLMUX) <= tdc_hits_o;
+        --Fast Monitoring 
+        fm_csm_mon_r.fm_csm_to_polmux(POLMUX).fm_data <= (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') &  tdc_hits_o;
+        fm_csm_mon_r.fm_csm_to_polmux(POLMUX).fm_vld   <= tdc_hits_o(tdcpolmux2tar_vt'w-1);
       end generate;
       middle : if (STATION = 1) generate
         tdc_hits_middle (POLMUX) <= tdc_hits_o;

@@ -48,10 +48,24 @@ entity ult_fm is
     signal sf_fm_inn                 : fm_hps_sf_mon; --fm_art(0  to sf_sb_single_station_n-1);
     signal sf_fm_mid                 : fm_hps_sf_mon; --fm_art(0  to sf_sb_single_station_n-1);
     signal sf_fm_out                 : fm_hps_sf_mon; --fm_art(0  to sf_sb_single_station_n-1);
+    signal csm_uplink_fm_data       : fm_rt;
+    signal csm_uplink_fm_data_d   : fm_rt;
+    signal csm_uplink_fm_data_2d : fm_rt;
+    signal csm2polmux_fm_data : fm_csm_to_polmux;  
+    signal tar_fm_data                  : fm_tar_mon_data;
+    signal mtc_fm_data                : fm_mtc_mon_data;
+    signal daq_fm_data                : fm_daq_mon_data;
+    
     signal sf_fm                          : fm_art(0  to h2s_sb_all_station_n-1);
     signal slc_rx_fm_data          : fm_art(0  to primary_sl_n  -1);
     signal ucm2hps_fm_data    : fm_art(0  to stations_n * threads_n -1);
     signal ucm2pl_fm_data       : fm_art(0  to c_MAX_NUM_SL -1);
+    signal fm_csm_custom_art  : fm_art(0 to 0);
+    signal fm_csm_art                : fm_art(0 to csm_polmux_in_sb_n-1);
+    signal fm_tar_art                  : fm_art(0 to tar_sb_all_stations_n-1);
+    signal fm_mtc_art                : fm_art(0 to mtc_sb_n -1);
+    signal fm_daq_art                : fm_art(0 to daq_sb_all_stations_n -1);
+    
    
   
 
@@ -108,18 +122,54 @@ entity ult_fm is
               ucm2pl_fm_data(I)  <= fm_mon.fm_ucm_mon.fm_ucm2pl_mon(I);
             end generate;
 
-            ult_fm_data <=  sf_fm &
-                         slc_rx_fm_data &
-                         ucm2hps_fm_data &
-                         ucm2pl_fm_data;
-            --FM_PROC : process (clock_and_control.clk, clock_and_control.rst) is
-            --begin
-            --  if(clock_and_control.rst) then
-            --    ult_fm_data <= zero(ult_fm_data);
-            --  elsif (rising_edge(clock_and_control.clk)) then  -- rising clock edge
+             
+             csm_uplink_fm_data   <= fm_mon.fm_csm_mon.fm_csm_uplink_data;
+             csm2polmux_fm_data <= fm_mon.fm_csm_mon.fm_csm_to_polmux;
+             tar_fm_data                 <= fm_mon.fm_tar_mon;             
+             mtc_fm_data               <= fm_mon.fm_mtc_mon;
+             
+             
+             FM_CSM  : for j in 0 to csm_polmux_in_sb_n-1 generate
+               fm_csm_art (j )                                               <= csm2polmux_fm_data(j);
+              end generate;
+
+         
+              FM_TAR_FLATTEN : for j in 0 to stations_n-1   generate
+                FM_TAR_BLOCK: for k in 0 to csm_polmux_in_sb_n-1   generate
+                  fm_tar_art(j *  csm_polmux_in_sb_n + k)  <= tar_fm_data(j)(k);
+                    end generate;
+             end generate;
+
+             FM_MTC: for j in 0 to mtc_sb_n-1 generate
+               fm_mtc_art(j) <= mtc_fm_data(j);
+             end generate;
+
+             FM_DAQ: for j in 0 to daq_sb_all_stations_n-1 generate
+               fm_daq_art(j) <= daq_fm_data(j);
+             end generate;
+               
+             ult_fm_data <=  sf_fm &
+                             slc_rx_fm_data &
+                             ucm2hps_fm_data &
+                             ucm2pl_fm_data &
+                             fm_csm_custom_art &
+                             fm_csm_art & 
+                             fm_tar_art & 
+                             fm_mtc_art &
+                             fm_daq_art     ;
+
+             fm_csm_custom_art(0) <= csm_uplink_fm_data_2d;
+            FM_CSM_HAL : process (clock_and_control.clk, clock_and_control.rst) is
+            begin
+              if(clock_and_control.rst) then
+                csm_uplink_fm_data_d    <= zero(csm_uplink_fm_data_d);
+                csm_uplink_fm_data_2d  <= zero(csm_uplink_fm_data_2d);
+            elsif (rising_edge(clock_and_control.clk)) then  -- rising clock edge
+              csm_uplink_fm_data_d    <= csm_uplink_fm_data;
+              csm_uplink_fm_data_2d   <= csm_uplink_fm_data_d;
             --    ult_fm_data <= sf_fm_inn & sf_fm_mid & sf_fm_out & slc_rx_fm_data & ucm2hps_fm_data & ucm2pl_fm_data;
-            --  end if;
-            --end process;
+            end if;
+            end process;
           
             FM_PB_UCM_SLC_RX:for I in 0 to primary_sl_n -1 generate
               fm_ucm_slc_rx_pb(I)  <= fm_pb_v(h2s_sb_all_station_n + I)(width(fm_ucm_slc_rx_pb(I)) - 1 downto 0);             

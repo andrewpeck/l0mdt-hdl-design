@@ -35,8 +35,8 @@ package body prj_cfg is
     proj_cfg.ENDCAP_nSMALL_LARGE := '0';  -- 0: small     1: large
 
     -- sf types
-    proj_cfg.SF_TYPE             := '0';  -- 0: CSF       1: LSF
-    proj_cfg.PT_TYPE             := '0';  -- 0: MPT       1: UPT
+    proj_cfg.SF_TYPE             := '1';  -- 0: CSF       1: LSF
+    proj_cfg.PT_TYPE             := '1';  -- 0: MPT       1: UPT
 
     -- enables
     proj_cfg.ENABLE_DAQ          := '0';

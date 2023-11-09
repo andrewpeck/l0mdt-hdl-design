@@ -4072,6 +4072,621 @@ package FM_CTRL is
    function convert(x: std_logic_vector; tpl: FM_SB98_CTRL_t) return FM_SB98_CTRL_t;
    function zero(tpl: FM_SB98_CTRL_t) return FM_SB98_CTRL_t;
 
+   type FM_SB99_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB99_SB_MEM_MOSI_t;
+   attribute w of FM_SB99_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB99_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB99_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB99_SB_MEM_MOSI_t) return FM_SB99_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB99_SB_MEM_MOSI_t) return FM_SB99_SB_MEM_MOSI_t;
+
+   type FM_SB99_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB99_SB_MEM_MISO_t;
+   attribute w of FM_SB99_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB99_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB99_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB99_SB_MEM_MISO_t) return FM_SB99_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB99_SB_MEM_MISO_t) return FM_SB99_SB_MEM_MISO_t;
+
+   type FM_SB99_MON_t is record
+      SB_MEM : FM_SB99_SB_MEM_MISO_t;
+   end record FM_SB99_MON_t;
+   attribute w of FM_SB99_MON_t : type is 33;
+   function width(x: FM_SB99_MON_t) return natural;
+   function convert(x: FM_SB99_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB99_MON_t) return FM_SB99_MON_t;
+   function zero(tpl: FM_SB99_MON_t) return FM_SB99_MON_t;
+
+   type FM_SB99_CTRL_t is record
+      SB_MEM : FM_SB99_SB_MEM_MOSI_t;
+   end record FM_SB99_CTRL_t;
+   attribute w of FM_SB99_CTRL_t : type is 44;
+   function width(x: FM_SB99_CTRL_t) return natural;
+   function convert(x: FM_SB99_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB99_CTRL_t) return FM_SB99_CTRL_t;
+   function zero(tpl: FM_SB99_CTRL_t) return FM_SB99_CTRL_t;
+
+   type FM_SB100_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB100_SB_MEM_MOSI_t;
+   attribute w of FM_SB100_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB100_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB100_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB100_SB_MEM_MOSI_t) return FM_SB100_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB100_SB_MEM_MOSI_t) return FM_SB100_SB_MEM_MOSI_t;
+
+   type FM_SB100_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB100_SB_MEM_MISO_t;
+   attribute w of FM_SB100_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB100_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB100_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB100_SB_MEM_MISO_t) return FM_SB100_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB100_SB_MEM_MISO_t) return FM_SB100_SB_MEM_MISO_t;
+
+   type FM_SB100_MON_t is record
+      SB_MEM : FM_SB100_SB_MEM_MISO_t;
+   end record FM_SB100_MON_t;
+   attribute w of FM_SB100_MON_t : type is 33;
+   function width(x: FM_SB100_MON_t) return natural;
+   function convert(x: FM_SB100_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB100_MON_t) return FM_SB100_MON_t;
+   function zero(tpl: FM_SB100_MON_t) return FM_SB100_MON_t;
+
+   type FM_SB100_CTRL_t is record
+      SB_MEM : FM_SB100_SB_MEM_MOSI_t;
+   end record FM_SB100_CTRL_t;
+   attribute w of FM_SB100_CTRL_t : type is 44;
+   function width(x: FM_SB100_CTRL_t) return natural;
+   function convert(x: FM_SB100_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB100_CTRL_t) return FM_SB100_CTRL_t;
+   function zero(tpl: FM_SB100_CTRL_t) return FM_SB100_CTRL_t;
+
+   type FM_SB101_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB101_SB_MEM_MOSI_t;
+   attribute w of FM_SB101_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB101_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB101_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB101_SB_MEM_MOSI_t) return FM_SB101_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB101_SB_MEM_MOSI_t) return FM_SB101_SB_MEM_MOSI_t;
+
+   type FM_SB101_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB101_SB_MEM_MISO_t;
+   attribute w of FM_SB101_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB101_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB101_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB101_SB_MEM_MISO_t) return FM_SB101_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB101_SB_MEM_MISO_t) return FM_SB101_SB_MEM_MISO_t;
+
+   type FM_SB101_MON_t is record
+      SB_MEM : FM_SB101_SB_MEM_MISO_t;
+   end record FM_SB101_MON_t;
+   attribute w of FM_SB101_MON_t : type is 33;
+   function width(x: FM_SB101_MON_t) return natural;
+   function convert(x: FM_SB101_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB101_MON_t) return FM_SB101_MON_t;
+   function zero(tpl: FM_SB101_MON_t) return FM_SB101_MON_t;
+
+   type FM_SB101_CTRL_t is record
+      SB_MEM : FM_SB101_SB_MEM_MOSI_t;
+   end record FM_SB101_CTRL_t;
+   attribute w of FM_SB101_CTRL_t : type is 44;
+   function width(x: FM_SB101_CTRL_t) return natural;
+   function convert(x: FM_SB101_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB101_CTRL_t) return FM_SB101_CTRL_t;
+   function zero(tpl: FM_SB101_CTRL_t) return FM_SB101_CTRL_t;
+
+   type FM_SB102_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB102_SB_MEM_MOSI_t;
+   attribute w of FM_SB102_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB102_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB102_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB102_SB_MEM_MOSI_t) return FM_SB102_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB102_SB_MEM_MOSI_t) return FM_SB102_SB_MEM_MOSI_t;
+
+   type FM_SB102_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB102_SB_MEM_MISO_t;
+   attribute w of FM_SB102_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB102_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB102_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB102_SB_MEM_MISO_t) return FM_SB102_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB102_SB_MEM_MISO_t) return FM_SB102_SB_MEM_MISO_t;
+
+   type FM_SB102_MON_t is record
+      SB_MEM : FM_SB102_SB_MEM_MISO_t;
+   end record FM_SB102_MON_t;
+   attribute w of FM_SB102_MON_t : type is 33;
+   function width(x: FM_SB102_MON_t) return natural;
+   function convert(x: FM_SB102_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB102_MON_t) return FM_SB102_MON_t;
+   function zero(tpl: FM_SB102_MON_t) return FM_SB102_MON_t;
+
+   type FM_SB102_CTRL_t is record
+      SB_MEM : FM_SB102_SB_MEM_MOSI_t;
+   end record FM_SB102_CTRL_t;
+   attribute w of FM_SB102_CTRL_t : type is 44;
+   function width(x: FM_SB102_CTRL_t) return natural;
+   function convert(x: FM_SB102_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB102_CTRL_t) return FM_SB102_CTRL_t;
+   function zero(tpl: FM_SB102_CTRL_t) return FM_SB102_CTRL_t;
+
+   type FM_SB103_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB103_SB_MEM_MOSI_t;
+   attribute w of FM_SB103_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB103_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB103_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB103_SB_MEM_MOSI_t) return FM_SB103_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB103_SB_MEM_MOSI_t) return FM_SB103_SB_MEM_MOSI_t;
+
+   type FM_SB103_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB103_SB_MEM_MISO_t;
+   attribute w of FM_SB103_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB103_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB103_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB103_SB_MEM_MISO_t) return FM_SB103_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB103_SB_MEM_MISO_t) return FM_SB103_SB_MEM_MISO_t;
+
+   type FM_SB103_MON_t is record
+      SB_MEM : FM_SB103_SB_MEM_MISO_t;
+   end record FM_SB103_MON_t;
+   attribute w of FM_SB103_MON_t : type is 33;
+   function width(x: FM_SB103_MON_t) return natural;
+   function convert(x: FM_SB103_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB103_MON_t) return FM_SB103_MON_t;
+   function zero(tpl: FM_SB103_MON_t) return FM_SB103_MON_t;
+
+   type FM_SB103_CTRL_t is record
+      SB_MEM : FM_SB103_SB_MEM_MOSI_t;
+   end record FM_SB103_CTRL_t;
+   attribute w of FM_SB103_CTRL_t : type is 44;
+   function width(x: FM_SB103_CTRL_t) return natural;
+   function convert(x: FM_SB103_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB103_CTRL_t) return FM_SB103_CTRL_t;
+   function zero(tpl: FM_SB103_CTRL_t) return FM_SB103_CTRL_t;
+
+   type FM_SB104_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB104_SB_MEM_MOSI_t;
+   attribute w of FM_SB104_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB104_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB104_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB104_SB_MEM_MOSI_t) return FM_SB104_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB104_SB_MEM_MOSI_t) return FM_SB104_SB_MEM_MOSI_t;
+
+   type FM_SB104_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB104_SB_MEM_MISO_t;
+   attribute w of FM_SB104_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB104_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB104_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB104_SB_MEM_MISO_t) return FM_SB104_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB104_SB_MEM_MISO_t) return FM_SB104_SB_MEM_MISO_t;
+
+   type FM_SB104_MON_t is record
+      SB_MEM : FM_SB104_SB_MEM_MISO_t;
+   end record FM_SB104_MON_t;
+   attribute w of FM_SB104_MON_t : type is 33;
+   function width(x: FM_SB104_MON_t) return natural;
+   function convert(x: FM_SB104_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB104_MON_t) return FM_SB104_MON_t;
+   function zero(tpl: FM_SB104_MON_t) return FM_SB104_MON_t;
+
+   type FM_SB104_CTRL_t is record
+      SB_MEM : FM_SB104_SB_MEM_MOSI_t;
+   end record FM_SB104_CTRL_t;
+   attribute w of FM_SB104_CTRL_t : type is 44;
+   function width(x: FM_SB104_CTRL_t) return natural;
+   function convert(x: FM_SB104_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB104_CTRL_t) return FM_SB104_CTRL_t;
+   function zero(tpl: FM_SB104_CTRL_t) return FM_SB104_CTRL_t;
+
+   type FM_SB105_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB105_SB_MEM_MOSI_t;
+   attribute w of FM_SB105_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB105_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB105_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB105_SB_MEM_MOSI_t) return FM_SB105_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB105_SB_MEM_MOSI_t) return FM_SB105_SB_MEM_MOSI_t;
+
+   type FM_SB105_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB105_SB_MEM_MISO_t;
+   attribute w of FM_SB105_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB105_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB105_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB105_SB_MEM_MISO_t) return FM_SB105_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB105_SB_MEM_MISO_t) return FM_SB105_SB_MEM_MISO_t;
+
+   type FM_SB105_MON_t is record
+      SB_MEM : FM_SB105_SB_MEM_MISO_t;
+   end record FM_SB105_MON_t;
+   attribute w of FM_SB105_MON_t : type is 33;
+   function width(x: FM_SB105_MON_t) return natural;
+   function convert(x: FM_SB105_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB105_MON_t) return FM_SB105_MON_t;
+   function zero(tpl: FM_SB105_MON_t) return FM_SB105_MON_t;
+
+   type FM_SB105_CTRL_t is record
+      SB_MEM : FM_SB105_SB_MEM_MOSI_t;
+   end record FM_SB105_CTRL_t;
+   attribute w of FM_SB105_CTRL_t : type is 44;
+   function width(x: FM_SB105_CTRL_t) return natural;
+   function convert(x: FM_SB105_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB105_CTRL_t) return FM_SB105_CTRL_t;
+   function zero(tpl: FM_SB105_CTRL_t) return FM_SB105_CTRL_t;
+
+   type FM_SB106_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB106_SB_MEM_MOSI_t;
+   attribute w of FM_SB106_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB106_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB106_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB106_SB_MEM_MOSI_t) return FM_SB106_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB106_SB_MEM_MOSI_t) return FM_SB106_SB_MEM_MOSI_t;
+
+   type FM_SB106_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB106_SB_MEM_MISO_t;
+   attribute w of FM_SB106_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB106_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB106_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB106_SB_MEM_MISO_t) return FM_SB106_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB106_SB_MEM_MISO_t) return FM_SB106_SB_MEM_MISO_t;
+
+   type FM_SB106_MON_t is record
+      SB_MEM : FM_SB106_SB_MEM_MISO_t;
+   end record FM_SB106_MON_t;
+   attribute w of FM_SB106_MON_t : type is 33;
+   function width(x: FM_SB106_MON_t) return natural;
+   function convert(x: FM_SB106_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB106_MON_t) return FM_SB106_MON_t;
+   function zero(tpl: FM_SB106_MON_t) return FM_SB106_MON_t;
+
+   type FM_SB106_CTRL_t is record
+      SB_MEM : FM_SB106_SB_MEM_MOSI_t;
+   end record FM_SB106_CTRL_t;
+   attribute w of FM_SB106_CTRL_t : type is 44;
+   function width(x: FM_SB106_CTRL_t) return natural;
+   function convert(x: FM_SB106_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB106_CTRL_t) return FM_SB106_CTRL_t;
+   function zero(tpl: FM_SB106_CTRL_t) return FM_SB106_CTRL_t;
+
+   type FM_SB107_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB107_SB_MEM_MOSI_t;
+   attribute w of FM_SB107_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB107_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB107_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB107_SB_MEM_MOSI_t) return FM_SB107_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB107_SB_MEM_MOSI_t) return FM_SB107_SB_MEM_MOSI_t;
+
+   type FM_SB107_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB107_SB_MEM_MISO_t;
+   attribute w of FM_SB107_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB107_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB107_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB107_SB_MEM_MISO_t) return FM_SB107_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB107_SB_MEM_MISO_t) return FM_SB107_SB_MEM_MISO_t;
+
+   type FM_SB107_MON_t is record
+      SB_MEM : FM_SB107_SB_MEM_MISO_t;
+   end record FM_SB107_MON_t;
+   attribute w of FM_SB107_MON_t : type is 33;
+   function width(x: FM_SB107_MON_t) return natural;
+   function convert(x: FM_SB107_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB107_MON_t) return FM_SB107_MON_t;
+   function zero(tpl: FM_SB107_MON_t) return FM_SB107_MON_t;
+
+   type FM_SB107_CTRL_t is record
+      SB_MEM : FM_SB107_SB_MEM_MOSI_t;
+   end record FM_SB107_CTRL_t;
+   attribute w of FM_SB107_CTRL_t : type is 44;
+   function width(x: FM_SB107_CTRL_t) return natural;
+   function convert(x: FM_SB107_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB107_CTRL_t) return FM_SB107_CTRL_t;
+   function zero(tpl: FM_SB107_CTRL_t) return FM_SB107_CTRL_t;
+
+   type FM_SB108_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB108_SB_MEM_MOSI_t;
+   attribute w of FM_SB108_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB108_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB108_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB108_SB_MEM_MOSI_t) return FM_SB108_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB108_SB_MEM_MOSI_t) return FM_SB108_SB_MEM_MOSI_t;
+
+   type FM_SB108_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB108_SB_MEM_MISO_t;
+   attribute w of FM_SB108_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB108_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB108_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB108_SB_MEM_MISO_t) return FM_SB108_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB108_SB_MEM_MISO_t) return FM_SB108_SB_MEM_MISO_t;
+
+   type FM_SB108_MON_t is record
+      SB_MEM : FM_SB108_SB_MEM_MISO_t;
+   end record FM_SB108_MON_t;
+   attribute w of FM_SB108_MON_t : type is 33;
+   function width(x: FM_SB108_MON_t) return natural;
+   function convert(x: FM_SB108_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB108_MON_t) return FM_SB108_MON_t;
+   function zero(tpl: FM_SB108_MON_t) return FM_SB108_MON_t;
+
+   type FM_SB108_CTRL_t is record
+      SB_MEM : FM_SB108_SB_MEM_MOSI_t;
+   end record FM_SB108_CTRL_t;
+   attribute w of FM_SB108_CTRL_t : type is 44;
+   function width(x: FM_SB108_CTRL_t) return natural;
+   function convert(x: FM_SB108_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB108_CTRL_t) return FM_SB108_CTRL_t;
+   function zero(tpl: FM_SB108_CTRL_t) return FM_SB108_CTRL_t;
+
+   type FM_SB109_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB109_SB_MEM_MOSI_t;
+   attribute w of FM_SB109_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB109_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB109_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB109_SB_MEM_MOSI_t) return FM_SB109_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB109_SB_MEM_MOSI_t) return FM_SB109_SB_MEM_MOSI_t;
+
+   type FM_SB109_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB109_SB_MEM_MISO_t;
+   attribute w of FM_SB109_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB109_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB109_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB109_SB_MEM_MISO_t) return FM_SB109_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB109_SB_MEM_MISO_t) return FM_SB109_SB_MEM_MISO_t;
+
+   type FM_SB109_MON_t is record
+      SB_MEM : FM_SB109_SB_MEM_MISO_t;
+   end record FM_SB109_MON_t;
+   attribute w of FM_SB109_MON_t : type is 33;
+   function width(x: FM_SB109_MON_t) return natural;
+   function convert(x: FM_SB109_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB109_MON_t) return FM_SB109_MON_t;
+   function zero(tpl: FM_SB109_MON_t) return FM_SB109_MON_t;
+
+   type FM_SB109_CTRL_t is record
+      SB_MEM : FM_SB109_SB_MEM_MOSI_t;
+   end record FM_SB109_CTRL_t;
+   attribute w of FM_SB109_CTRL_t : type is 44;
+   function width(x: FM_SB109_CTRL_t) return natural;
+   function convert(x: FM_SB109_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB109_CTRL_t) return FM_SB109_CTRL_t;
+   function zero(tpl: FM_SB109_CTRL_t) return FM_SB109_CTRL_t;
+
+   type FM_SB110_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB110_SB_MEM_MOSI_t;
+   attribute w of FM_SB110_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB110_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB110_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB110_SB_MEM_MOSI_t) return FM_SB110_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB110_SB_MEM_MOSI_t) return FM_SB110_SB_MEM_MOSI_t;
+
+   type FM_SB110_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB110_SB_MEM_MISO_t;
+   attribute w of FM_SB110_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB110_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB110_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB110_SB_MEM_MISO_t) return FM_SB110_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB110_SB_MEM_MISO_t) return FM_SB110_SB_MEM_MISO_t;
+
+   type FM_SB110_MON_t is record
+      SB_MEM : FM_SB110_SB_MEM_MISO_t;
+   end record FM_SB110_MON_t;
+   attribute w of FM_SB110_MON_t : type is 33;
+   function width(x: FM_SB110_MON_t) return natural;
+   function convert(x: FM_SB110_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB110_MON_t) return FM_SB110_MON_t;
+   function zero(tpl: FM_SB110_MON_t) return FM_SB110_MON_t;
+
+   type FM_SB110_CTRL_t is record
+      SB_MEM : FM_SB110_SB_MEM_MOSI_t;
+   end record FM_SB110_CTRL_t;
+   attribute w of FM_SB110_CTRL_t : type is 44;
+   function width(x: FM_SB110_CTRL_t) return natural;
+   function convert(x: FM_SB110_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB110_CTRL_t) return FM_SB110_CTRL_t;
+   function zero(tpl: FM_SB110_CTRL_t) return FM_SB110_CTRL_t;
+
+   type FM_SB111_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB111_SB_MEM_MOSI_t;
+   attribute w of FM_SB111_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB111_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB111_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB111_SB_MEM_MOSI_t) return FM_SB111_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB111_SB_MEM_MOSI_t) return FM_SB111_SB_MEM_MOSI_t;
+
+   type FM_SB111_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB111_SB_MEM_MISO_t;
+   attribute w of FM_SB111_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB111_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB111_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB111_SB_MEM_MISO_t) return FM_SB111_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB111_SB_MEM_MISO_t) return FM_SB111_SB_MEM_MISO_t;
+
+   type FM_SB111_MON_t is record
+      SB_MEM : FM_SB111_SB_MEM_MISO_t;
+   end record FM_SB111_MON_t;
+   attribute w of FM_SB111_MON_t : type is 33;
+   function width(x: FM_SB111_MON_t) return natural;
+   function convert(x: FM_SB111_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB111_MON_t) return FM_SB111_MON_t;
+   function zero(tpl: FM_SB111_MON_t) return FM_SB111_MON_t;
+
+   type FM_SB111_CTRL_t is record
+      SB_MEM : FM_SB111_SB_MEM_MOSI_t;
+   end record FM_SB111_CTRL_t;
+   attribute w of FM_SB111_CTRL_t : type is 44;
+   function width(x: FM_SB111_CTRL_t) return natural;
+   function convert(x: FM_SB111_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB111_CTRL_t) return FM_SB111_CTRL_t;
+   function zero(tpl: FM_SB111_CTRL_t) return FM_SB111_CTRL_t;
+
+   type FM_SB112_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB112_SB_MEM_MOSI_t;
+   attribute w of FM_SB112_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB112_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB112_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB112_SB_MEM_MOSI_t) return FM_SB112_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB112_SB_MEM_MOSI_t) return FM_SB112_SB_MEM_MOSI_t;
+
+   type FM_SB112_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB112_SB_MEM_MISO_t;
+   attribute w of FM_SB112_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB112_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB112_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB112_SB_MEM_MISO_t) return FM_SB112_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB112_SB_MEM_MISO_t) return FM_SB112_SB_MEM_MISO_t;
+
+   type FM_SB112_MON_t is record
+      SB_MEM : FM_SB112_SB_MEM_MISO_t;
+   end record FM_SB112_MON_t;
+   attribute w of FM_SB112_MON_t : type is 33;
+   function width(x: FM_SB112_MON_t) return natural;
+   function convert(x: FM_SB112_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB112_MON_t) return FM_SB112_MON_t;
+   function zero(tpl: FM_SB112_MON_t) return FM_SB112_MON_t;
+
+   type FM_SB112_CTRL_t is record
+      SB_MEM : FM_SB112_SB_MEM_MOSI_t;
+   end record FM_SB112_CTRL_t;
+   attribute w of FM_SB112_CTRL_t : type is 44;
+   function width(x: FM_SB112_CTRL_t) return natural;
+   function convert(x: FM_SB112_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB112_CTRL_t) return FM_SB112_CTRL_t;
+   function zero(tpl: FM_SB112_CTRL_t) return FM_SB112_CTRL_t;
+
+   type FM_SB113_SB_MEM_MOSI_t is record
+      clk : std_logic;
+      enable : std_logic;
+      wr_enable : std_logic;
+      address : std_logic_vector(9 -1 downto 0);
+      wr_data : std_logic_vector(32 -1 downto 0);
+   end record FM_SB113_SB_MEM_MOSI_t;
+   attribute w of FM_SB113_SB_MEM_MOSI_t : type is 44;
+   function width(x: FM_SB113_SB_MEM_MOSI_t) return natural;
+   function convert(x: FM_SB113_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB113_SB_MEM_MOSI_t) return FM_SB113_SB_MEM_MOSI_t;
+   function zero(tpl: FM_SB113_SB_MEM_MOSI_t) return FM_SB113_SB_MEM_MOSI_t;
+
+   type FM_SB113_SB_MEM_MISO_t is record
+      rd_data : std_logic_vector(32 -1 downto 0);
+      rd_data_valid : std_logic;
+   end record FM_SB113_SB_MEM_MISO_t;
+   attribute w of FM_SB113_SB_MEM_MISO_t : type is 33;
+   function width(x: FM_SB113_SB_MEM_MISO_t) return natural;
+   function convert(x: FM_SB113_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB113_SB_MEM_MISO_t) return FM_SB113_SB_MEM_MISO_t;
+   function zero(tpl: FM_SB113_SB_MEM_MISO_t) return FM_SB113_SB_MEM_MISO_t;
+
+   type FM_SB113_MON_t is record
+      SB_MEM : FM_SB113_SB_MEM_MISO_t;
+   end record FM_SB113_MON_t;
+   attribute w of FM_SB113_MON_t : type is 33;
+   function width(x: FM_SB113_MON_t) return natural;
+   function convert(x: FM_SB113_MON_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB113_MON_t) return FM_SB113_MON_t;
+   function zero(tpl: FM_SB113_MON_t) return FM_SB113_MON_t;
+
+   type FM_SB113_CTRL_t is record
+      SB_MEM : FM_SB113_SB_MEM_MOSI_t;
+   end record FM_SB113_CTRL_t;
+   attribute w of FM_SB113_CTRL_t : type is 44;
+   function width(x: FM_SB113_CTRL_t) return natural;
+   function convert(x: FM_SB113_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: FM_SB113_CTRL_t) return FM_SB113_CTRL_t;
+   function zero(tpl: FM_SB113_CTRL_t) return FM_SB113_CTRL_t;
+
    type FM_SPY_CTRL_CTRL_t is record
       GLOBAL_FREEZE : std_logic;
       GLOBAL_PLAYBACK_MODE : std_logic_vector(2 - 1 downto 0);
@@ -4183,8 +4798,23 @@ package FM_CTRL is
       SB96 : FM_SB96_MON_t;
       SB97 : FM_SB97_MON_t;
       SB98 : FM_SB98_MON_t;
+      SB99 : FM_SB99_MON_t;
+      SB100 : FM_SB100_MON_t;
+      SB101 : FM_SB101_MON_t;
+      SB102 : FM_SB102_MON_t;
+      SB103 : FM_SB103_MON_t;
+      SB104 : FM_SB104_MON_t;
+      SB105 : FM_SB105_MON_t;
+      SB106 : FM_SB106_MON_t;
+      SB107 : FM_SB107_MON_t;
+      SB108 : FM_SB108_MON_t;
+      SB109 : FM_SB109_MON_t;
+      SB110 : FM_SB110_MON_t;
+      SB111 : FM_SB111_MON_t;
+      SB112 : FM_SB112_MON_t;
+      SB113 : FM_SB113_MON_t;
    end record FM_MON_t;
-   attribute w of FM_MON_t : type is 3267;
+   attribute w of FM_MON_t : type is 3762;
    function width(x: FM_MON_t) return natural;
    function convert(x: FM_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_MON_t) return FM_MON_t;
@@ -4240,12 +4870,6 @@ package FM_CTRL is
       SB46 : FM_SB46_CTRL_t;
       SB47 : FM_SB47_CTRL_t;
       SB48 : FM_SB48_CTRL_t;
-      FREEZE_MASK_0 : std_logic_vector(32 - 1 downto 0);
-      FREEZE_MASK_1 : std_logic_vector(32 - 1 downto 0);
-      PLAYBACK_MASK_0 : std_logic_vector(32 - 1 downto 0);
-      PLAYBACK_MASK_1 : std_logic_vector(32 - 1 downto 0);
-      SB_RESET_0 : std_logic_vector(32 - 1 downto 0);
-      SB_RESET_1 : std_logic_vector(32 - 1 downto 0);
       SB49 : FM_SB49_CTRL_t;
       SB50 : FM_SB50_CTRL_t;
       SB51 : FM_SB51_CTRL_t;
@@ -4296,9 +4920,36 @@ package FM_CTRL is
       SB96 : FM_SB96_CTRL_t;
       SB97 : FM_SB97_CTRL_t;
       SB98 : FM_SB98_CTRL_t;
+      SB99 : FM_SB99_CTRL_t;
+      SB100 : FM_SB100_CTRL_t;
+      SB101 : FM_SB101_CTRL_t;
+      SB102 : FM_SB102_CTRL_t;
+      SB103 : FM_SB103_CTRL_t;
+      SB104 : FM_SB104_CTRL_t;
+      SB105 : FM_SB105_CTRL_t;
+      SB106 : FM_SB106_CTRL_t;
+      SB107 : FM_SB107_CTRL_t;
+      SB108 : FM_SB108_CTRL_t;
+      SB109 : FM_SB109_CTRL_t;
+      SB110 : FM_SB110_CTRL_t;
+      SB111 : FM_SB111_CTRL_t;
+      SB112 : FM_SB112_CTRL_t;
+      SB113 : FM_SB113_CTRL_t;
       SPY_CTRL : FM_SPY_CTRL_CTRL_t;
+      FREEZE_MASK_0 : std_logic_vector(32 - 1 downto 0);
+      FREEZE_MASK_1 : std_logic_vector(32 - 1 downto 0);
+      FREEZE_MASK_2 : std_logic_vector(32 - 1 downto 0);
+      FREEZE_MASK_3 : std_logic_vector(32 - 1 downto 0);
+      PLAYBACK_MASK_0 : std_logic_vector(32 - 1 downto 0);
+      PLAYBACK_MASK_1 : std_logic_vector(32 - 1 downto 0);
+      PLAYBACK_MASK_2 : std_logic_vector(32 - 1 downto 0);
+      PLAYBACK_MASK_3 : std_logic_vector(32 - 1 downto 0);
+      SB_RESET_0 : std_logic_vector(32 - 1 downto 0);
+      SB_RESET_1 : std_logic_vector(32 - 1 downto 0);
+      SB_RESET_2 : std_logic_vector(32 - 1 downto 0);
+      SB_RESET_3 : std_logic_vector(32 - 1 downto 0);
    end record FM_CTRL_t;
-   attribute w of FM_CTRL_t : type is 4552;
+   attribute w of FM_CTRL_t : type is 5404;
    function width(x: FM_CTRL_t) return natural;
    function convert(x: FM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: FM_CTRL_t) return FM_CTRL_t;
@@ -26199,6 +26850,3321 @@ package body FM_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
+   function width(x: FM_SB99_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB99_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB99_SB_MEM_MOSI_t) return FM_SB99_SB_MEM_MOSI_t is
+      variable y : FM_SB99_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB99_SB_MEM_MOSI_t) return FM_SB99_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB99_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB99_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB99_SB_MEM_MISO_t) return FM_SB99_SB_MEM_MISO_t is
+      variable y : FM_SB99_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB99_SB_MEM_MISO_t) return FM_SB99_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB99_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB99_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB99_MON_t) return FM_SB99_MON_t is
+      variable y : FM_SB99_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB99_MON_t) return FM_SB99_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB99_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB99_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB99_CTRL_t) return FM_SB99_CTRL_t is
+      variable y : FM_SB99_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB99_CTRL_t) return FM_SB99_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB100_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB100_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB100_SB_MEM_MOSI_t) return FM_SB100_SB_MEM_MOSI_t is
+      variable y : FM_SB100_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB100_SB_MEM_MOSI_t) return FM_SB100_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB100_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB100_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB100_SB_MEM_MISO_t) return FM_SB100_SB_MEM_MISO_t is
+      variable y : FM_SB100_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB100_SB_MEM_MISO_t) return FM_SB100_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB100_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB100_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB100_MON_t) return FM_SB100_MON_t is
+      variable y : FM_SB100_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB100_MON_t) return FM_SB100_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB100_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB100_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB100_CTRL_t) return FM_SB100_CTRL_t is
+      variable y : FM_SB100_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB100_CTRL_t) return FM_SB100_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB101_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB101_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB101_SB_MEM_MOSI_t) return FM_SB101_SB_MEM_MOSI_t is
+      variable y : FM_SB101_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB101_SB_MEM_MOSI_t) return FM_SB101_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB101_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB101_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB101_SB_MEM_MISO_t) return FM_SB101_SB_MEM_MISO_t is
+      variable y : FM_SB101_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB101_SB_MEM_MISO_t) return FM_SB101_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB101_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB101_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB101_MON_t) return FM_SB101_MON_t is
+      variable y : FM_SB101_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB101_MON_t) return FM_SB101_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB101_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB101_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB101_CTRL_t) return FM_SB101_CTRL_t is
+      variable y : FM_SB101_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB101_CTRL_t) return FM_SB101_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB102_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB102_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB102_SB_MEM_MOSI_t) return FM_SB102_SB_MEM_MOSI_t is
+      variable y : FM_SB102_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB102_SB_MEM_MOSI_t) return FM_SB102_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB102_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB102_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB102_SB_MEM_MISO_t) return FM_SB102_SB_MEM_MISO_t is
+      variable y : FM_SB102_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB102_SB_MEM_MISO_t) return FM_SB102_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB102_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB102_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB102_MON_t) return FM_SB102_MON_t is
+      variable y : FM_SB102_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB102_MON_t) return FM_SB102_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB102_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB102_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB102_CTRL_t) return FM_SB102_CTRL_t is
+      variable y : FM_SB102_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB102_CTRL_t) return FM_SB102_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB103_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB103_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB103_SB_MEM_MOSI_t) return FM_SB103_SB_MEM_MOSI_t is
+      variable y : FM_SB103_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB103_SB_MEM_MOSI_t) return FM_SB103_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB103_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB103_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB103_SB_MEM_MISO_t) return FM_SB103_SB_MEM_MISO_t is
+      variable y : FM_SB103_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB103_SB_MEM_MISO_t) return FM_SB103_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB103_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB103_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB103_MON_t) return FM_SB103_MON_t is
+      variable y : FM_SB103_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB103_MON_t) return FM_SB103_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB103_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB103_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB103_CTRL_t) return FM_SB103_CTRL_t is
+      variable y : FM_SB103_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB103_CTRL_t) return FM_SB103_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB104_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB104_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB104_SB_MEM_MOSI_t) return FM_SB104_SB_MEM_MOSI_t is
+      variable y : FM_SB104_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB104_SB_MEM_MOSI_t) return FM_SB104_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB104_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB104_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB104_SB_MEM_MISO_t) return FM_SB104_SB_MEM_MISO_t is
+      variable y : FM_SB104_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB104_SB_MEM_MISO_t) return FM_SB104_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB104_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB104_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB104_MON_t) return FM_SB104_MON_t is
+      variable y : FM_SB104_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB104_MON_t) return FM_SB104_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB104_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB104_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB104_CTRL_t) return FM_SB104_CTRL_t is
+      variable y : FM_SB104_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB104_CTRL_t) return FM_SB104_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB105_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB105_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB105_SB_MEM_MOSI_t) return FM_SB105_SB_MEM_MOSI_t is
+      variable y : FM_SB105_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB105_SB_MEM_MOSI_t) return FM_SB105_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB105_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB105_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB105_SB_MEM_MISO_t) return FM_SB105_SB_MEM_MISO_t is
+      variable y : FM_SB105_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB105_SB_MEM_MISO_t) return FM_SB105_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB105_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB105_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB105_MON_t) return FM_SB105_MON_t is
+      variable y : FM_SB105_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB105_MON_t) return FM_SB105_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB105_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB105_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB105_CTRL_t) return FM_SB105_CTRL_t is
+      variable y : FM_SB105_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB105_CTRL_t) return FM_SB105_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB106_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB106_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB106_SB_MEM_MOSI_t) return FM_SB106_SB_MEM_MOSI_t is
+      variable y : FM_SB106_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB106_SB_MEM_MOSI_t) return FM_SB106_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB106_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB106_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB106_SB_MEM_MISO_t) return FM_SB106_SB_MEM_MISO_t is
+      variable y : FM_SB106_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB106_SB_MEM_MISO_t) return FM_SB106_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB106_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB106_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB106_MON_t) return FM_SB106_MON_t is
+      variable y : FM_SB106_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB106_MON_t) return FM_SB106_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB106_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB106_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB106_CTRL_t) return FM_SB106_CTRL_t is
+      variable y : FM_SB106_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB106_CTRL_t) return FM_SB106_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB107_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB107_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB107_SB_MEM_MOSI_t) return FM_SB107_SB_MEM_MOSI_t is
+      variable y : FM_SB107_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB107_SB_MEM_MOSI_t) return FM_SB107_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB107_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB107_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB107_SB_MEM_MISO_t) return FM_SB107_SB_MEM_MISO_t is
+      variable y : FM_SB107_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB107_SB_MEM_MISO_t) return FM_SB107_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB107_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB107_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB107_MON_t) return FM_SB107_MON_t is
+      variable y : FM_SB107_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB107_MON_t) return FM_SB107_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB107_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB107_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB107_CTRL_t) return FM_SB107_CTRL_t is
+      variable y : FM_SB107_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB107_CTRL_t) return FM_SB107_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB108_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB108_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB108_SB_MEM_MOSI_t) return FM_SB108_SB_MEM_MOSI_t is
+      variable y : FM_SB108_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB108_SB_MEM_MOSI_t) return FM_SB108_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB108_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB108_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB108_SB_MEM_MISO_t) return FM_SB108_SB_MEM_MISO_t is
+      variable y : FM_SB108_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB108_SB_MEM_MISO_t) return FM_SB108_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB108_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB108_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB108_MON_t) return FM_SB108_MON_t is
+      variable y : FM_SB108_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB108_MON_t) return FM_SB108_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB108_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB108_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB108_CTRL_t) return FM_SB108_CTRL_t is
+      variable y : FM_SB108_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB108_CTRL_t) return FM_SB108_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB109_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB109_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB109_SB_MEM_MOSI_t) return FM_SB109_SB_MEM_MOSI_t is
+      variable y : FM_SB109_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB109_SB_MEM_MOSI_t) return FM_SB109_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB109_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB109_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB109_SB_MEM_MISO_t) return FM_SB109_SB_MEM_MISO_t is
+      variable y : FM_SB109_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB109_SB_MEM_MISO_t) return FM_SB109_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB109_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB109_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB109_MON_t) return FM_SB109_MON_t is
+      variable y : FM_SB109_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB109_MON_t) return FM_SB109_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB109_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB109_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB109_CTRL_t) return FM_SB109_CTRL_t is
+      variable y : FM_SB109_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB109_CTRL_t) return FM_SB109_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB110_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB110_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB110_SB_MEM_MOSI_t) return FM_SB110_SB_MEM_MOSI_t is
+      variable y : FM_SB110_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB110_SB_MEM_MOSI_t) return FM_SB110_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB110_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB110_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB110_SB_MEM_MISO_t) return FM_SB110_SB_MEM_MISO_t is
+      variable y : FM_SB110_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB110_SB_MEM_MISO_t) return FM_SB110_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB110_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB110_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB110_MON_t) return FM_SB110_MON_t is
+      variable y : FM_SB110_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB110_MON_t) return FM_SB110_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB110_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB110_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB110_CTRL_t) return FM_SB110_CTRL_t is
+      variable y : FM_SB110_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB110_CTRL_t) return FM_SB110_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB111_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB111_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB111_SB_MEM_MOSI_t) return FM_SB111_SB_MEM_MOSI_t is
+      variable y : FM_SB111_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB111_SB_MEM_MOSI_t) return FM_SB111_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB111_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB111_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB111_SB_MEM_MISO_t) return FM_SB111_SB_MEM_MISO_t is
+      variable y : FM_SB111_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB111_SB_MEM_MISO_t) return FM_SB111_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB111_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB111_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB111_MON_t) return FM_SB111_MON_t is
+      variable y : FM_SB111_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB111_MON_t) return FM_SB111_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB111_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB111_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB111_CTRL_t) return FM_SB111_CTRL_t is
+      variable y : FM_SB111_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB111_CTRL_t) return FM_SB111_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB112_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB112_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB112_SB_MEM_MOSI_t) return FM_SB112_SB_MEM_MOSI_t is
+      variable y : FM_SB112_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB112_SB_MEM_MOSI_t) return FM_SB112_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB112_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB112_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB112_SB_MEM_MISO_t) return FM_SB112_SB_MEM_MISO_t is
+      variable y : FM_SB112_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB112_SB_MEM_MISO_t) return FM_SB112_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB112_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB112_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB112_MON_t) return FM_SB112_MON_t is
+      variable y : FM_SB112_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB112_MON_t) return FM_SB112_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB112_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB112_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB112_CTRL_t) return FM_SB112_CTRL_t is
+      variable y : FM_SB112_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB112_CTRL_t) return FM_SB112_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB113_SB_MEM_MOSI_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.clk);
+      w := w + width(x.enable);
+      w := w + width(x.wr_enable);
+      w := w + width(x.address);
+      w := w + width(x.wr_data);
+      return w;
+   end function width;
+   function convert(x: FM_SB113_SB_MEM_MOSI_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.clk);
+         y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
+         u := u + w;
+         w := width(x.enable);
+         y(u to u+w-1) := convert(x.enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_enable);
+         y(u to u+w-1) := convert(x.wr_enable, y(u to u+w-1));
+         u := u + w;
+         w := width(x.address);
+         y(u to u+w-1) := convert(x.address, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr_data);
+         y(u to u+w-1) := convert(x.wr_data, y(u to u+w-1));
+      else
+         w := width(x.clk);
+         y(u downto u-w+1) := convert(x.clk, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.enable);
+         y(u downto u-w+1) := convert(x.enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_enable);
+         y(u downto u-w+1) := convert(x.wr_enable, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.address);
+         y(u downto u-w+1) := convert(x.address, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr_data);
+         y(u downto u-w+1) := convert(x.wr_data, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB113_SB_MEM_MOSI_t) return FM_SB113_SB_MEM_MOSI_t is
+      variable y : FM_SB113_SB_MEM_MOSI_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.clk);
+         y.clk := convert(x(u to u+w-1), tpl.clk);
+         u := u + w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u to u+w-1), tpl.enable);
+         u := u + w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u to u+w-1), tpl.wr_enable);
+         u := u + w;
+         w := width(tpl.address);
+         y.address := convert(x(u to u+w-1), tpl.address);
+         u := u + w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u to u+w-1), tpl.wr_data);
+      else
+         w := width(tpl.clk);
+         y.clk := convert(x(u downto u-w+1), tpl.clk);
+         u := u - w;
+         w := width(tpl.enable);
+         y.enable := convert(x(u downto u-w+1), tpl.enable);
+         u := u - w;
+         w := width(tpl.wr_enable);
+         y.wr_enable := convert(x(u downto u-w+1), tpl.wr_enable);
+         u := u - w;
+         w := width(tpl.address);
+         y.address := convert(x(u downto u-w+1), tpl.address);
+         u := u - w;
+         w := width(tpl.wr_data);
+         y.wr_data := convert(x(u downto u-w+1), tpl.wr_data);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB113_SB_MEM_MOSI_t) return FM_SB113_SB_MEM_MOSI_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB113_SB_MEM_MISO_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.rd_data);
+      w := w + width(x.rd_data_valid);
+      return w;
+   end function width;
+   function convert(x: FM_SB113_SB_MEM_MISO_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.rd_data);
+         y(u to u+w-1) := convert(x.rd_data, y(u to u+w-1));
+         u := u + w;
+         w := width(x.rd_data_valid);
+         y(u to u+w-1) := convert(x.rd_data_valid, y(u to u+w-1));
+      else
+         w := width(x.rd_data);
+         y(u downto u-w+1) := convert(x.rd_data, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.rd_data_valid);
+         y(u downto u-w+1) := convert(x.rd_data_valid, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB113_SB_MEM_MISO_t) return FM_SB113_SB_MEM_MISO_t is
+      variable y : FM_SB113_SB_MEM_MISO_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u to u+w-1), tpl.rd_data);
+         u := u + w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u to u+w-1), tpl.rd_data_valid);
+      else
+         w := width(tpl.rd_data);
+         y.rd_data := convert(x(u downto u-w+1), tpl.rd_data);
+         u := u - w;
+         w := width(tpl.rd_data_valid);
+         y.rd_data_valid := convert(x(u downto u-w+1), tpl.rd_data_valid);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB113_SB_MEM_MISO_t) return FM_SB113_SB_MEM_MISO_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB113_MON_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB113_MON_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB113_MON_t) return FM_SB113_MON_t is
+      variable y : FM_SB113_MON_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB113_MON_t) return FM_SB113_MON_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: FM_SB113_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.SB_MEM);
+      return w;
+   end function width;
+   function convert(x: FM_SB113_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.SB_MEM);
+         y(u to u+w-1) := convert(x.SB_MEM, y(u to u+w-1));
+      else
+         w := width(x.SB_MEM);
+         y(u downto u-w+1) := convert(x.SB_MEM, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: FM_SB113_CTRL_t) return FM_SB113_CTRL_t is
+      variable y : FM_SB113_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u to u+w-1), tpl.SB_MEM);
+      else
+         w := width(tpl.SB_MEM);
+         y.SB_MEM := convert(x(u downto u-w+1), tpl.SB_MEM);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: FM_SB113_CTRL_t) return FM_SB113_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
    function width(x: FM_SPY_CTRL_CTRL_t) return natural is
       variable w : natural := 0;
    begin
@@ -26366,6 +30332,21 @@ package body FM_CTRL is
       w := w + width(x.SB96);
       w := w + width(x.SB97);
       w := w + width(x.SB98);
+      w := w + width(x.SB99);
+      w := w + width(x.SB100);
+      w := w + width(x.SB101);
+      w := w + width(x.SB102);
+      w := w + width(x.SB103);
+      w := w + width(x.SB104);
+      w := w + width(x.SB105);
+      w := w + width(x.SB106);
+      w := w + width(x.SB107);
+      w := w + width(x.SB108);
+      w := w + width(x.SB109);
+      w := w + width(x.SB110);
+      w := w + width(x.SB111);
+      w := w + width(x.SB112);
+      w := w + width(x.SB113);
       return w;
    end function width;
    function convert(x: FM_MON_t; tpl: std_logic_vector) return std_logic_vector is
@@ -26670,6 +30651,51 @@ package body FM_CTRL is
          u := u + w;
          w := width(x.SB98);
          y(u to u+w-1) := convert(x.SB98, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB99);
+         y(u to u+w-1) := convert(x.SB99, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB100);
+         y(u to u+w-1) := convert(x.SB100, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB101);
+         y(u to u+w-1) := convert(x.SB101, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB102);
+         y(u to u+w-1) := convert(x.SB102, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB103);
+         y(u to u+w-1) := convert(x.SB103, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB104);
+         y(u to u+w-1) := convert(x.SB104, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB105);
+         y(u to u+w-1) := convert(x.SB105, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB106);
+         y(u to u+w-1) := convert(x.SB106, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB107);
+         y(u to u+w-1) := convert(x.SB107, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB108);
+         y(u to u+w-1) := convert(x.SB108, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB109);
+         y(u to u+w-1) := convert(x.SB109, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB110);
+         y(u to u+w-1) := convert(x.SB110, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB111);
+         y(u to u+w-1) := convert(x.SB111, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB112);
+         y(u to u+w-1) := convert(x.SB112, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB113);
+         y(u to u+w-1) := convert(x.SB113, y(u to u+w-1));
       else
          w := width(x.SB0);
          y(u downto u-w+1) := convert(x.SB0, y(u downto u-w+1));
@@ -26967,6 +30993,51 @@ package body FM_CTRL is
          u := u - w;
          w := width(x.SB98);
          y(u downto u-w+1) := convert(x.SB98, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB99);
+         y(u downto u-w+1) := convert(x.SB99, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB100);
+         y(u downto u-w+1) := convert(x.SB100, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB101);
+         y(u downto u-w+1) := convert(x.SB101, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB102);
+         y(u downto u-w+1) := convert(x.SB102, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB103);
+         y(u downto u-w+1) := convert(x.SB103, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB104);
+         y(u downto u-w+1) := convert(x.SB104, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB105);
+         y(u downto u-w+1) := convert(x.SB105, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB106);
+         y(u downto u-w+1) := convert(x.SB106, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB107);
+         y(u downto u-w+1) := convert(x.SB107, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB108);
+         y(u downto u-w+1) := convert(x.SB108, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB109);
+         y(u downto u-w+1) := convert(x.SB109, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB110);
+         y(u downto u-w+1) := convert(x.SB110, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB111);
+         y(u downto u-w+1) := convert(x.SB111, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB112);
+         y(u downto u-w+1) := convert(x.SB112, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB113);
+         y(u downto u-w+1) := convert(x.SB113, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -27272,6 +31343,51 @@ package body FM_CTRL is
          u := u + w;
          w := width(tpl.SB98);
          y.SB98 := convert(x(u to u+w-1), tpl.SB98);
+         u := u + w;
+         w := width(tpl.SB99);
+         y.SB99 := convert(x(u to u+w-1), tpl.SB99);
+         u := u + w;
+         w := width(tpl.SB100);
+         y.SB100 := convert(x(u to u+w-1), tpl.SB100);
+         u := u + w;
+         w := width(tpl.SB101);
+         y.SB101 := convert(x(u to u+w-1), tpl.SB101);
+         u := u + w;
+         w := width(tpl.SB102);
+         y.SB102 := convert(x(u to u+w-1), tpl.SB102);
+         u := u + w;
+         w := width(tpl.SB103);
+         y.SB103 := convert(x(u to u+w-1), tpl.SB103);
+         u := u + w;
+         w := width(tpl.SB104);
+         y.SB104 := convert(x(u to u+w-1), tpl.SB104);
+         u := u + w;
+         w := width(tpl.SB105);
+         y.SB105 := convert(x(u to u+w-1), tpl.SB105);
+         u := u + w;
+         w := width(tpl.SB106);
+         y.SB106 := convert(x(u to u+w-1), tpl.SB106);
+         u := u + w;
+         w := width(tpl.SB107);
+         y.SB107 := convert(x(u to u+w-1), tpl.SB107);
+         u := u + w;
+         w := width(tpl.SB108);
+         y.SB108 := convert(x(u to u+w-1), tpl.SB108);
+         u := u + w;
+         w := width(tpl.SB109);
+         y.SB109 := convert(x(u to u+w-1), tpl.SB109);
+         u := u + w;
+         w := width(tpl.SB110);
+         y.SB110 := convert(x(u to u+w-1), tpl.SB110);
+         u := u + w;
+         w := width(tpl.SB111);
+         y.SB111 := convert(x(u to u+w-1), tpl.SB111);
+         u := u + w;
+         w := width(tpl.SB112);
+         y.SB112 := convert(x(u to u+w-1), tpl.SB112);
+         u := u + w;
+         w := width(tpl.SB113);
+         y.SB113 := convert(x(u to u+w-1), tpl.SB113);
       else
          w := width(tpl.SB0);
          y.SB0 := convert(x(u downto u-w+1), tpl.SB0);
@@ -27569,6 +31685,51 @@ package body FM_CTRL is
          u := u - w;
          w := width(tpl.SB98);
          y.SB98 := convert(x(u downto u-w+1), tpl.SB98);
+         u := u - w;
+         w := width(tpl.SB99);
+         y.SB99 := convert(x(u downto u-w+1), tpl.SB99);
+         u := u - w;
+         w := width(tpl.SB100);
+         y.SB100 := convert(x(u downto u-w+1), tpl.SB100);
+         u := u - w;
+         w := width(tpl.SB101);
+         y.SB101 := convert(x(u downto u-w+1), tpl.SB101);
+         u := u - w;
+         w := width(tpl.SB102);
+         y.SB102 := convert(x(u downto u-w+1), tpl.SB102);
+         u := u - w;
+         w := width(tpl.SB103);
+         y.SB103 := convert(x(u downto u-w+1), tpl.SB103);
+         u := u - w;
+         w := width(tpl.SB104);
+         y.SB104 := convert(x(u downto u-w+1), tpl.SB104);
+         u := u - w;
+         w := width(tpl.SB105);
+         y.SB105 := convert(x(u downto u-w+1), tpl.SB105);
+         u := u - w;
+         w := width(tpl.SB106);
+         y.SB106 := convert(x(u downto u-w+1), tpl.SB106);
+         u := u - w;
+         w := width(tpl.SB107);
+         y.SB107 := convert(x(u downto u-w+1), tpl.SB107);
+         u := u - w;
+         w := width(tpl.SB108);
+         y.SB108 := convert(x(u downto u-w+1), tpl.SB108);
+         u := u - w;
+         w := width(tpl.SB109);
+         y.SB109 := convert(x(u downto u-w+1), tpl.SB109);
+         u := u - w;
+         w := width(tpl.SB110);
+         y.SB110 := convert(x(u downto u-w+1), tpl.SB110);
+         u := u - w;
+         w := width(tpl.SB111);
+         y.SB111 := convert(x(u downto u-w+1), tpl.SB111);
+         u := u - w;
+         w := width(tpl.SB112);
+         y.SB112 := convert(x(u downto u-w+1), tpl.SB112);
+         u := u - w;
+         w := width(tpl.SB113);
+         y.SB113 := convert(x(u downto u-w+1), tpl.SB113);
       end if;
       return y;
    end function convert;
@@ -27629,12 +31790,6 @@ package body FM_CTRL is
       w := w + width(x.SB46);
       w := w + width(x.SB47);
       w := w + width(x.SB48);
-      w := w + width(x.FREEZE_MASK_0);
-      w := w + width(x.FREEZE_MASK_1);
-      w := w + width(x.PLAYBACK_MASK_0);
-      w := w + width(x.PLAYBACK_MASK_1);
-      w := w + width(x.SB_RESET_0);
-      w := w + width(x.SB_RESET_1);
       w := w + width(x.SB49);
       w := w + width(x.SB50);
       w := w + width(x.SB51);
@@ -27685,7 +31840,34 @@ package body FM_CTRL is
       w := w + width(x.SB96);
       w := w + width(x.SB97);
       w := w + width(x.SB98);
+      w := w + width(x.SB99);
+      w := w + width(x.SB100);
+      w := w + width(x.SB101);
+      w := w + width(x.SB102);
+      w := w + width(x.SB103);
+      w := w + width(x.SB104);
+      w := w + width(x.SB105);
+      w := w + width(x.SB106);
+      w := w + width(x.SB107);
+      w := w + width(x.SB108);
+      w := w + width(x.SB109);
+      w := w + width(x.SB110);
+      w := w + width(x.SB111);
+      w := w + width(x.SB112);
+      w := w + width(x.SB113);
       w := w + width(x.SPY_CTRL);
+      w := w + width(x.FREEZE_MASK_0);
+      w := w + width(x.FREEZE_MASK_1);
+      w := w + width(x.FREEZE_MASK_2);
+      w := w + width(x.FREEZE_MASK_3);
+      w := w + width(x.PLAYBACK_MASK_0);
+      w := w + width(x.PLAYBACK_MASK_1);
+      w := w + width(x.PLAYBACK_MASK_2);
+      w := w + width(x.PLAYBACK_MASK_3);
+      w := w + width(x.SB_RESET_0);
+      w := w + width(x.SB_RESET_1);
+      w := w + width(x.SB_RESET_2);
+      w := w + width(x.SB_RESET_3);
       return w;
    end function width;
    function convert(x: FM_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -27841,24 +32023,6 @@ package body FM_CTRL is
          w := width(x.SB48);
          y(u to u+w-1) := convert(x.SB48, y(u to u+w-1));
          u := u + w;
-         w := width(x.FREEZE_MASK_0);
-         y(u to u+w-1) := convert(x.FREEZE_MASK_0, y(u to u+w-1));
-         u := u + w;
-         w := width(x.FREEZE_MASK_1);
-         y(u to u+w-1) := convert(x.FREEZE_MASK_1, y(u to u+w-1));
-         u := u + w;
-         w := width(x.PLAYBACK_MASK_0);
-         y(u to u+w-1) := convert(x.PLAYBACK_MASK_0, y(u to u+w-1));
-         u := u + w;
-         w := width(x.PLAYBACK_MASK_1);
-         y(u to u+w-1) := convert(x.PLAYBACK_MASK_1, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_RESET_0);
-         y(u to u+w-1) := convert(x.SB_RESET_0, y(u to u+w-1));
-         u := u + w;
-         w := width(x.SB_RESET_1);
-         y(u to u+w-1) := convert(x.SB_RESET_1, y(u to u+w-1));
-         u := u + w;
          w := width(x.SB49);
          y(u to u+w-1) := convert(x.SB49, y(u to u+w-1));
          u := u + w;
@@ -28009,8 +32173,89 @@ package body FM_CTRL is
          w := width(x.SB98);
          y(u to u+w-1) := convert(x.SB98, y(u to u+w-1));
          u := u + w;
+         w := width(x.SB99);
+         y(u to u+w-1) := convert(x.SB99, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB100);
+         y(u to u+w-1) := convert(x.SB100, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB101);
+         y(u to u+w-1) := convert(x.SB101, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB102);
+         y(u to u+w-1) := convert(x.SB102, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB103);
+         y(u to u+w-1) := convert(x.SB103, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB104);
+         y(u to u+w-1) := convert(x.SB104, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB105);
+         y(u to u+w-1) := convert(x.SB105, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB106);
+         y(u to u+w-1) := convert(x.SB106, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB107);
+         y(u to u+w-1) := convert(x.SB107, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB108);
+         y(u to u+w-1) := convert(x.SB108, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB109);
+         y(u to u+w-1) := convert(x.SB109, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB110);
+         y(u to u+w-1) := convert(x.SB110, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB111);
+         y(u to u+w-1) := convert(x.SB111, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB112);
+         y(u to u+w-1) := convert(x.SB112, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB113);
+         y(u to u+w-1) := convert(x.SB113, y(u to u+w-1));
+         u := u + w;
          w := width(x.SPY_CTRL);
          y(u to u+w-1) := convert(x.SPY_CTRL, y(u to u+w-1));
+         u := u + w;
+         w := width(x.FREEZE_MASK_0);
+         y(u to u+w-1) := convert(x.FREEZE_MASK_0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.FREEZE_MASK_1);
+         y(u to u+w-1) := convert(x.FREEZE_MASK_1, y(u to u+w-1));
+         u := u + w;
+         w := width(x.FREEZE_MASK_2);
+         y(u to u+w-1) := convert(x.FREEZE_MASK_2, y(u to u+w-1));
+         u := u + w;
+         w := width(x.FREEZE_MASK_3);
+         y(u to u+w-1) := convert(x.FREEZE_MASK_3, y(u to u+w-1));
+         u := u + w;
+         w := width(x.PLAYBACK_MASK_0);
+         y(u to u+w-1) := convert(x.PLAYBACK_MASK_0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.PLAYBACK_MASK_1);
+         y(u to u+w-1) := convert(x.PLAYBACK_MASK_1, y(u to u+w-1));
+         u := u + w;
+         w := width(x.PLAYBACK_MASK_2);
+         y(u to u+w-1) := convert(x.PLAYBACK_MASK_2, y(u to u+w-1));
+         u := u + w;
+         w := width(x.PLAYBACK_MASK_3);
+         y(u to u+w-1) := convert(x.PLAYBACK_MASK_3, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB_RESET_0);
+         y(u to u+w-1) := convert(x.SB_RESET_0, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB_RESET_1);
+         y(u to u+w-1) := convert(x.SB_RESET_1, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB_RESET_2);
+         y(u to u+w-1) := convert(x.SB_RESET_2, y(u to u+w-1));
+         u := u + w;
+         w := width(x.SB_RESET_3);
+         y(u to u+w-1) := convert(x.SB_RESET_3, y(u to u+w-1));
       else
          w := width(x.SB0);
          y(u downto u-w+1) := convert(x.SB0, y(u downto u-w+1));
@@ -28158,24 +32403,6 @@ package body FM_CTRL is
          u := u - w;
          w := width(x.SB48);
          y(u downto u-w+1) := convert(x.SB48, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.FREEZE_MASK_0);
-         y(u downto u-w+1) := convert(x.FREEZE_MASK_0, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.FREEZE_MASK_1);
-         y(u downto u-w+1) := convert(x.FREEZE_MASK_1, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.PLAYBACK_MASK_0);
-         y(u downto u-w+1) := convert(x.PLAYBACK_MASK_0, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.PLAYBACK_MASK_1);
-         y(u downto u-w+1) := convert(x.PLAYBACK_MASK_1, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_RESET_0);
-         y(u downto u-w+1) := convert(x.SB_RESET_0, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.SB_RESET_1);
-         y(u downto u-w+1) := convert(x.SB_RESET_1, y(u downto u-w+1));
          u := u - w;
          w := width(x.SB49);
          y(u downto u-w+1) := convert(x.SB49, y(u downto u-w+1));
@@ -28327,8 +32554,89 @@ package body FM_CTRL is
          w := width(x.SB98);
          y(u downto u-w+1) := convert(x.SB98, y(u downto u-w+1));
          u := u - w;
+         w := width(x.SB99);
+         y(u downto u-w+1) := convert(x.SB99, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB100);
+         y(u downto u-w+1) := convert(x.SB100, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB101);
+         y(u downto u-w+1) := convert(x.SB101, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB102);
+         y(u downto u-w+1) := convert(x.SB102, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB103);
+         y(u downto u-w+1) := convert(x.SB103, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB104);
+         y(u downto u-w+1) := convert(x.SB104, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB105);
+         y(u downto u-w+1) := convert(x.SB105, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB106);
+         y(u downto u-w+1) := convert(x.SB106, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB107);
+         y(u downto u-w+1) := convert(x.SB107, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB108);
+         y(u downto u-w+1) := convert(x.SB108, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB109);
+         y(u downto u-w+1) := convert(x.SB109, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB110);
+         y(u downto u-w+1) := convert(x.SB110, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB111);
+         y(u downto u-w+1) := convert(x.SB111, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB112);
+         y(u downto u-w+1) := convert(x.SB112, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB113);
+         y(u downto u-w+1) := convert(x.SB113, y(u downto u-w+1));
+         u := u - w;
          w := width(x.SPY_CTRL);
          y(u downto u-w+1) := convert(x.SPY_CTRL, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.FREEZE_MASK_0);
+         y(u downto u-w+1) := convert(x.FREEZE_MASK_0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.FREEZE_MASK_1);
+         y(u downto u-w+1) := convert(x.FREEZE_MASK_1, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.FREEZE_MASK_2);
+         y(u downto u-w+1) := convert(x.FREEZE_MASK_2, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.FREEZE_MASK_3);
+         y(u downto u-w+1) := convert(x.FREEZE_MASK_3, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.PLAYBACK_MASK_0);
+         y(u downto u-w+1) := convert(x.PLAYBACK_MASK_0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.PLAYBACK_MASK_1);
+         y(u downto u-w+1) := convert(x.PLAYBACK_MASK_1, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.PLAYBACK_MASK_2);
+         y(u downto u-w+1) := convert(x.PLAYBACK_MASK_2, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.PLAYBACK_MASK_3);
+         y(u downto u-w+1) := convert(x.PLAYBACK_MASK_3, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB_RESET_0);
+         y(u downto u-w+1) := convert(x.SB_RESET_0, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB_RESET_1);
+         y(u downto u-w+1) := convert(x.SB_RESET_1, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB_RESET_2);
+         y(u downto u-w+1) := convert(x.SB_RESET_2, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.SB_RESET_3);
+         y(u downto u-w+1) := convert(x.SB_RESET_3, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -28485,24 +32793,6 @@ package body FM_CTRL is
          w := width(tpl.SB48);
          y.SB48 := convert(x(u to u+w-1), tpl.SB48);
          u := u + w;
-         w := width(tpl.FREEZE_MASK_0);
-         y.FREEZE_MASK_0 := convert(x(u to u+w-1), tpl.FREEZE_MASK_0);
-         u := u + w;
-         w := width(tpl.FREEZE_MASK_1);
-         y.FREEZE_MASK_1 := convert(x(u to u+w-1), tpl.FREEZE_MASK_1);
-         u := u + w;
-         w := width(tpl.PLAYBACK_MASK_0);
-         y.PLAYBACK_MASK_0 := convert(x(u to u+w-1), tpl.PLAYBACK_MASK_0);
-         u := u + w;
-         w := width(tpl.PLAYBACK_MASK_1);
-         y.PLAYBACK_MASK_1 := convert(x(u to u+w-1), tpl.PLAYBACK_MASK_1);
-         u := u + w;
-         w := width(tpl.SB_RESET_0);
-         y.SB_RESET_0 := convert(x(u to u+w-1), tpl.SB_RESET_0);
-         u := u + w;
-         w := width(tpl.SB_RESET_1);
-         y.SB_RESET_1 := convert(x(u to u+w-1), tpl.SB_RESET_1);
-         u := u + w;
          w := width(tpl.SB49);
          y.SB49 := convert(x(u to u+w-1), tpl.SB49);
          u := u + w;
@@ -28653,8 +32943,89 @@ package body FM_CTRL is
          w := width(tpl.SB98);
          y.SB98 := convert(x(u to u+w-1), tpl.SB98);
          u := u + w;
+         w := width(tpl.SB99);
+         y.SB99 := convert(x(u to u+w-1), tpl.SB99);
+         u := u + w;
+         w := width(tpl.SB100);
+         y.SB100 := convert(x(u to u+w-1), tpl.SB100);
+         u := u + w;
+         w := width(tpl.SB101);
+         y.SB101 := convert(x(u to u+w-1), tpl.SB101);
+         u := u + w;
+         w := width(tpl.SB102);
+         y.SB102 := convert(x(u to u+w-1), tpl.SB102);
+         u := u + w;
+         w := width(tpl.SB103);
+         y.SB103 := convert(x(u to u+w-1), tpl.SB103);
+         u := u + w;
+         w := width(tpl.SB104);
+         y.SB104 := convert(x(u to u+w-1), tpl.SB104);
+         u := u + w;
+         w := width(tpl.SB105);
+         y.SB105 := convert(x(u to u+w-1), tpl.SB105);
+         u := u + w;
+         w := width(tpl.SB106);
+         y.SB106 := convert(x(u to u+w-1), tpl.SB106);
+         u := u + w;
+         w := width(tpl.SB107);
+         y.SB107 := convert(x(u to u+w-1), tpl.SB107);
+         u := u + w;
+         w := width(tpl.SB108);
+         y.SB108 := convert(x(u to u+w-1), tpl.SB108);
+         u := u + w;
+         w := width(tpl.SB109);
+         y.SB109 := convert(x(u to u+w-1), tpl.SB109);
+         u := u + w;
+         w := width(tpl.SB110);
+         y.SB110 := convert(x(u to u+w-1), tpl.SB110);
+         u := u + w;
+         w := width(tpl.SB111);
+         y.SB111 := convert(x(u to u+w-1), tpl.SB111);
+         u := u + w;
+         w := width(tpl.SB112);
+         y.SB112 := convert(x(u to u+w-1), tpl.SB112);
+         u := u + w;
+         w := width(tpl.SB113);
+         y.SB113 := convert(x(u to u+w-1), tpl.SB113);
+         u := u + w;
          w := width(tpl.SPY_CTRL);
          y.SPY_CTRL := convert(x(u to u+w-1), tpl.SPY_CTRL);
+         u := u + w;
+         w := width(tpl.FREEZE_MASK_0);
+         y.FREEZE_MASK_0 := convert(x(u to u+w-1), tpl.FREEZE_MASK_0);
+         u := u + w;
+         w := width(tpl.FREEZE_MASK_1);
+         y.FREEZE_MASK_1 := convert(x(u to u+w-1), tpl.FREEZE_MASK_1);
+         u := u + w;
+         w := width(tpl.FREEZE_MASK_2);
+         y.FREEZE_MASK_2 := convert(x(u to u+w-1), tpl.FREEZE_MASK_2);
+         u := u + w;
+         w := width(tpl.FREEZE_MASK_3);
+         y.FREEZE_MASK_3 := convert(x(u to u+w-1), tpl.FREEZE_MASK_3);
+         u := u + w;
+         w := width(tpl.PLAYBACK_MASK_0);
+         y.PLAYBACK_MASK_0 := convert(x(u to u+w-1), tpl.PLAYBACK_MASK_0);
+         u := u + w;
+         w := width(tpl.PLAYBACK_MASK_1);
+         y.PLAYBACK_MASK_1 := convert(x(u to u+w-1), tpl.PLAYBACK_MASK_1);
+         u := u + w;
+         w := width(tpl.PLAYBACK_MASK_2);
+         y.PLAYBACK_MASK_2 := convert(x(u to u+w-1), tpl.PLAYBACK_MASK_2);
+         u := u + w;
+         w := width(tpl.PLAYBACK_MASK_3);
+         y.PLAYBACK_MASK_3 := convert(x(u to u+w-1), tpl.PLAYBACK_MASK_3);
+         u := u + w;
+         w := width(tpl.SB_RESET_0);
+         y.SB_RESET_0 := convert(x(u to u+w-1), tpl.SB_RESET_0);
+         u := u + w;
+         w := width(tpl.SB_RESET_1);
+         y.SB_RESET_1 := convert(x(u to u+w-1), tpl.SB_RESET_1);
+         u := u + w;
+         w := width(tpl.SB_RESET_2);
+         y.SB_RESET_2 := convert(x(u to u+w-1), tpl.SB_RESET_2);
+         u := u + w;
+         w := width(tpl.SB_RESET_3);
+         y.SB_RESET_3 := convert(x(u to u+w-1), tpl.SB_RESET_3);
       else
          w := width(tpl.SB0);
          y.SB0 := convert(x(u downto u-w+1), tpl.SB0);
@@ -28802,24 +33173,6 @@ package body FM_CTRL is
          u := u - w;
          w := width(tpl.SB48);
          y.SB48 := convert(x(u downto u-w+1), tpl.SB48);
-         u := u - w;
-         w := width(tpl.FREEZE_MASK_0);
-         y.FREEZE_MASK_0 := convert(x(u downto u-w+1), tpl.FREEZE_MASK_0);
-         u := u - w;
-         w := width(tpl.FREEZE_MASK_1);
-         y.FREEZE_MASK_1 := convert(x(u downto u-w+1), tpl.FREEZE_MASK_1);
-         u := u - w;
-         w := width(tpl.PLAYBACK_MASK_0);
-         y.PLAYBACK_MASK_0 := convert(x(u downto u-w+1), tpl.PLAYBACK_MASK_0);
-         u := u - w;
-         w := width(tpl.PLAYBACK_MASK_1);
-         y.PLAYBACK_MASK_1 := convert(x(u downto u-w+1), tpl.PLAYBACK_MASK_1);
-         u := u - w;
-         w := width(tpl.SB_RESET_0);
-         y.SB_RESET_0 := convert(x(u downto u-w+1), tpl.SB_RESET_0);
-         u := u - w;
-         w := width(tpl.SB_RESET_1);
-         y.SB_RESET_1 := convert(x(u downto u-w+1), tpl.SB_RESET_1);
          u := u - w;
          w := width(tpl.SB49);
          y.SB49 := convert(x(u downto u-w+1), tpl.SB49);
@@ -28971,8 +33324,89 @@ package body FM_CTRL is
          w := width(tpl.SB98);
          y.SB98 := convert(x(u downto u-w+1), tpl.SB98);
          u := u - w;
+         w := width(tpl.SB99);
+         y.SB99 := convert(x(u downto u-w+1), tpl.SB99);
+         u := u - w;
+         w := width(tpl.SB100);
+         y.SB100 := convert(x(u downto u-w+1), tpl.SB100);
+         u := u - w;
+         w := width(tpl.SB101);
+         y.SB101 := convert(x(u downto u-w+1), tpl.SB101);
+         u := u - w;
+         w := width(tpl.SB102);
+         y.SB102 := convert(x(u downto u-w+1), tpl.SB102);
+         u := u - w;
+         w := width(tpl.SB103);
+         y.SB103 := convert(x(u downto u-w+1), tpl.SB103);
+         u := u - w;
+         w := width(tpl.SB104);
+         y.SB104 := convert(x(u downto u-w+1), tpl.SB104);
+         u := u - w;
+         w := width(tpl.SB105);
+         y.SB105 := convert(x(u downto u-w+1), tpl.SB105);
+         u := u - w;
+         w := width(tpl.SB106);
+         y.SB106 := convert(x(u downto u-w+1), tpl.SB106);
+         u := u - w;
+         w := width(tpl.SB107);
+         y.SB107 := convert(x(u downto u-w+1), tpl.SB107);
+         u := u - w;
+         w := width(tpl.SB108);
+         y.SB108 := convert(x(u downto u-w+1), tpl.SB108);
+         u := u - w;
+         w := width(tpl.SB109);
+         y.SB109 := convert(x(u downto u-w+1), tpl.SB109);
+         u := u - w;
+         w := width(tpl.SB110);
+         y.SB110 := convert(x(u downto u-w+1), tpl.SB110);
+         u := u - w;
+         w := width(tpl.SB111);
+         y.SB111 := convert(x(u downto u-w+1), tpl.SB111);
+         u := u - w;
+         w := width(tpl.SB112);
+         y.SB112 := convert(x(u downto u-w+1), tpl.SB112);
+         u := u - w;
+         w := width(tpl.SB113);
+         y.SB113 := convert(x(u downto u-w+1), tpl.SB113);
+         u := u - w;
          w := width(tpl.SPY_CTRL);
          y.SPY_CTRL := convert(x(u downto u-w+1), tpl.SPY_CTRL);
+         u := u - w;
+         w := width(tpl.FREEZE_MASK_0);
+         y.FREEZE_MASK_0 := convert(x(u downto u-w+1), tpl.FREEZE_MASK_0);
+         u := u - w;
+         w := width(tpl.FREEZE_MASK_1);
+         y.FREEZE_MASK_1 := convert(x(u downto u-w+1), tpl.FREEZE_MASK_1);
+         u := u - w;
+         w := width(tpl.FREEZE_MASK_2);
+         y.FREEZE_MASK_2 := convert(x(u downto u-w+1), tpl.FREEZE_MASK_2);
+         u := u - w;
+         w := width(tpl.FREEZE_MASK_3);
+         y.FREEZE_MASK_3 := convert(x(u downto u-w+1), tpl.FREEZE_MASK_3);
+         u := u - w;
+         w := width(tpl.PLAYBACK_MASK_0);
+         y.PLAYBACK_MASK_0 := convert(x(u downto u-w+1), tpl.PLAYBACK_MASK_0);
+         u := u - w;
+         w := width(tpl.PLAYBACK_MASK_1);
+         y.PLAYBACK_MASK_1 := convert(x(u downto u-w+1), tpl.PLAYBACK_MASK_1);
+         u := u - w;
+         w := width(tpl.PLAYBACK_MASK_2);
+         y.PLAYBACK_MASK_2 := convert(x(u downto u-w+1), tpl.PLAYBACK_MASK_2);
+         u := u - w;
+         w := width(tpl.PLAYBACK_MASK_3);
+         y.PLAYBACK_MASK_3 := convert(x(u downto u-w+1), tpl.PLAYBACK_MASK_3);
+         u := u - w;
+         w := width(tpl.SB_RESET_0);
+         y.SB_RESET_0 := convert(x(u downto u-w+1), tpl.SB_RESET_0);
+         u := u - w;
+         w := width(tpl.SB_RESET_1);
+         y.SB_RESET_1 := convert(x(u downto u-w+1), tpl.SB_RESET_1);
+         u := u - w;
+         w := width(tpl.SB_RESET_2);
+         y.SB_RESET_2 := convert(x(u downto u-w+1), tpl.SB_RESET_2);
+         u := u - w;
+         w := width(tpl.SB_RESET_3);
+         y.SB_RESET_3 := convert(x(u downto u-w+1), tpl.SB_RESET_3);
       end if;
       return y;
    end function convert;

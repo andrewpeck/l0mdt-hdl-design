@@ -997,6 +997,156 @@ package FM_CTRL_DEF is
   constant DEFAULT_FM_SB98_CTRL_t : FM_SB98_CTRL_t := (
                                                        SB_MEM => Default_FM_SB98_SB_MEM_MOSI_t
                                                       );
+  constant Default_FM_SB99_SB_MEM_MOSI_t : FM_SB99_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB99_CTRL_t : FM_SB99_CTRL_t := (
+                                                       SB_MEM => Default_FM_SB99_SB_MEM_MOSI_t
+                                                      );
+  constant Default_FM_SB100_SB_MEM_MOSI_t : FM_SB100_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB100_CTRL_t : FM_SB100_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB100_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB101_SB_MEM_MOSI_t : FM_SB101_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB101_CTRL_t : FM_SB101_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB101_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB102_SB_MEM_MOSI_t : FM_SB102_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB102_CTRL_t : FM_SB102_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB102_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB103_SB_MEM_MOSI_t : FM_SB103_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB103_CTRL_t : FM_SB103_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB103_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB104_SB_MEM_MOSI_t : FM_SB104_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB104_CTRL_t : FM_SB104_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB104_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB105_SB_MEM_MOSI_t : FM_SB105_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB105_CTRL_t : FM_SB105_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB105_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB106_SB_MEM_MOSI_t : FM_SB106_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB106_CTRL_t : FM_SB106_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB106_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB107_SB_MEM_MOSI_t : FM_SB107_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB107_CTRL_t : FM_SB107_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB107_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB108_SB_MEM_MOSI_t : FM_SB108_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB108_CTRL_t : FM_SB108_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB108_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB109_SB_MEM_MOSI_t : FM_SB109_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB109_CTRL_t : FM_SB109_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB109_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB110_SB_MEM_MOSI_t : FM_SB110_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB110_CTRL_t : FM_SB110_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB110_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB111_SB_MEM_MOSI_t : FM_SB111_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB111_CTRL_t : FM_SB111_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB111_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB112_SB_MEM_MOSI_t : FM_SB112_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB112_CTRL_t : FM_SB112_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB112_SB_MEM_MOSI_t
+                                                        );
+  constant Default_FM_SB113_SB_MEM_MOSI_t : FM_SB113_SB_MEM_MOSI_t := ( 
+                                                     clk       => '0',
+                                                     enable    => '0',
+                                                     wr_enable => '0',
+                                                     address   => (others => '0'),
+                                                     wr_data   => (others => '0')
+  );
+  constant DEFAULT_FM_SB113_CTRL_t : FM_SB113_CTRL_t := (
+                                                         SB_MEM => Default_FM_SB113_SB_MEM_MOSI_t
+                                                        );
   constant DEFAULT_FM_SPY_CTRL_CTRL_t : FM_SPY_CTRL_CTRL_t := (
                                                                GLOBAL_FREEZE => '1',
                                                                GLOBAL_PLAYBACK_MODE => "00",
@@ -1052,12 +1202,6 @@ package FM_CTRL_DEF is
                                              SB46 => DEFAULT_FM_SB46_CTRL_t,
                                              SB47 => DEFAULT_FM_SB47_CTRL_t,
                                              SB48 => DEFAULT_FM_SB48_CTRL_t,
-                                             FREEZE_MASK_0 => x"00000000",
-                                             FREEZE_MASK_1 => x"00000000",
-                                             PLAYBACK_MASK_0 => x"ffffffff",
-                                             PLAYBACK_MASK_1 => x"ffffffff",
-                                             SB_RESET_0 => x"00000000",
-                                             SB_RESET_1 => x"00000000",
                                              SB49 => DEFAULT_FM_SB49_CTRL_t,
                                              SB50 => DEFAULT_FM_SB50_CTRL_t,
                                              SB51 => DEFAULT_FM_SB51_CTRL_t,
@@ -1108,7 +1252,34 @@ package FM_CTRL_DEF is
                                              SB96 => DEFAULT_FM_SB96_CTRL_t,
                                              SB97 => DEFAULT_FM_SB97_CTRL_t,
                                              SB98 => DEFAULT_FM_SB98_CTRL_t,
-                                             SPY_CTRL => DEFAULT_FM_SPY_CTRL_CTRL_t
+                                             SB99 => DEFAULT_FM_SB99_CTRL_t,
+                                             SB100 => DEFAULT_FM_SB100_CTRL_t,
+                                             SB101 => DEFAULT_FM_SB101_CTRL_t,
+                                             SB102 => DEFAULT_FM_SB102_CTRL_t,
+                                             SB103 => DEFAULT_FM_SB103_CTRL_t,
+                                             SB104 => DEFAULT_FM_SB104_CTRL_t,
+                                             SB105 => DEFAULT_FM_SB105_CTRL_t,
+                                             SB106 => DEFAULT_FM_SB106_CTRL_t,
+                                             SB107 => DEFAULT_FM_SB107_CTRL_t,
+                                             SB108 => DEFAULT_FM_SB108_CTRL_t,
+                                             SB109 => DEFAULT_FM_SB109_CTRL_t,
+                                             SB110 => DEFAULT_FM_SB110_CTRL_t,
+                                             SB111 => DEFAULT_FM_SB111_CTRL_t,
+                                             SB112 => DEFAULT_FM_SB112_CTRL_t,
+                                             SB113 => DEFAULT_FM_SB113_CTRL_t,
+                                             SPY_CTRL => DEFAULT_FM_SPY_CTRL_CTRL_t,
+                                             FREEZE_MASK_0 => x"00000000",
+                                             FREEZE_MASK_1 => x"00000000",
+                                             FREEZE_MASK_2 => x"00000000",
+                                             FREEZE_MASK_3 => x"00000000",
+                                             PLAYBACK_MASK_0 => x"ffffffff",
+                                             PLAYBACK_MASK_1 => x"ffffffff",
+                                             PLAYBACK_MASK_2 => x"ffffffff",
+                                             PLAYBACK_MASK_3 => x"ffffffff",
+                                             SB_RESET_0 => x"00000000",
+                                             SB_RESET_1 => x"00000000",
+                                             SB_RESET_2 => x"00000000",
+                                             SB_RESET_3 => x"00000000"
                                             );
 
 end package FM_CTRL_DEF;

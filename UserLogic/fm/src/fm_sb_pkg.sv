@@ -16,6 +16,8 @@ package fm_sb_pkg;
    parameter pb_mode_width     = 2;
    parameter SB_DUMMY_LEN     = 51;
    parameter CUSTOM_CSM_UPLINK_DATA_LEN = 32;
+   parameter CUSTOM_DAQ_LEN = 35;
+   
    
    FM_CTRL_t FM_CTRL;
    FM_MON_t FM_MON;
@@ -34,7 +36,7 @@ package fm_sb_pkg;
 
       logic 	      spy_clock;
 
-parameter total_l0mdt_sb    = 97;
+parameter total_l0mdt_sb    = 112;
 parameter sb_total_dummy = 2;
 parameter sb_mapped_n      = total_l0mdt_sb + sb_total_dummy;
 
@@ -133,9 +135,24 @@ parameter integer sb_tp_dw[sb_mapped_n] = {
 		,TDCPOLMUX2TAR_LEN
 		,TDCPOLMUX2TAR_LEN
 		,TDCPOLMUX2TAR_LEN
-		,TDCPOLMUX2TAR_LEN
-		,TDCPOLMUX2TAR_LEN
-		,TDCPOLMUX2TAR_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
+		,CUSTOM_DAQ_LEN
 		,SB_DUMMY_LEN
 		,SB_DUMMY_LEN
 			};
@@ -234,9 +251,24 @@ parameter integer sb_dw[sb_mapped_n] = {
 		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
 		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
 		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
-		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
-		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
-		,find_sb_dw(TDCPOLMUX2TAR_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
+		,find_sb_dw(CUSTOM_DAQ_LEN, axi_dw)
 		,find_sb_dw(SB_DUMMY_LEN, axi_dw)
 		,find_sb_dw(SB_DUMMY_LEN, axi_dw)
 			};
@@ -339,7 +371,22 @@ parameter integer sb_dw[sb_mapped_n] = {
 		$bits(FM_CTRL.SB95.SB_MEM.address),
 		$bits(FM_CTRL.SB96.SB_MEM.address),
 		$bits(FM_CTRL.SB97.SB_MEM.address),
-		$bits(FM_CTRL.SB98.SB_MEM.address)			};
+		$bits(FM_CTRL.SB98.SB_MEM.address),
+		$bits(FM_CTRL.SB99.SB_MEM.address),
+		$bits(FM_CTRL.SB100.SB_MEM.address),
+		$bits(FM_CTRL.SB101.SB_MEM.address),
+		$bits(FM_CTRL.SB102.SB_MEM.address),
+		$bits(FM_CTRL.SB103.SB_MEM.address),
+		$bits(FM_CTRL.SB104.SB_MEM.address),
+		$bits(FM_CTRL.SB105.SB_MEM.address),
+		$bits(FM_CTRL.SB106.SB_MEM.address),
+		$bits(FM_CTRL.SB107.SB_MEM.address),
+		$bits(FM_CTRL.SB108.SB_MEM.address),
+		$bits(FM_CTRL.SB109.SB_MEM.address),
+		$bits(FM_CTRL.SB110.SB_MEM.address),
+		$bits(FM_CTRL.SB111.SB_MEM.address),
+		$bits(FM_CTRL.SB112.SB_MEM.address),
+		$bits(FM_CTRL.SB113.SB_MEM.address)			};
 
   //Need to update sb_mapped_n manually from fm_ult_pkg.vhd (total_sb + 2 dummy sb)
    parameter sb_master_dummy_index    = total_l0mdt_sb ;
@@ -413,13 +460,36 @@ parameter integer sb_dw[sb_mapped_n] = {
       integer 		     i_floor;
       integer 		     res;
       
-      begin
+	 begin
+
+	    if(sb_dw <= 32)
+	      begin
+		 res = axi_dw;
+	      end
+	    else if (sb_dw <= 64)
+	      begin
+		 res = 64;		 
+	      end
+	    else if (sb_dw <= 128)
+	      begin
+		 res = 128;
+	      end
+	    else  if (sb_dw <= 256)
+	      begin
+		 res = 256;
+	      end
+	    else
+	      begin
+		 //Error
+		  $display("ERROR in find_sb_dw, unsupported width(%d)",sb_dw);
+	      end
+	    /*
 	 i_floor = find_floor(sb_dw, axi_dw);
 	 i_ceil   = find_ceil (sb_dw, i_floor * axi_dw);
 	 
-	 res       = i_ceil * i_floor * axi_dw;
-	 
-	 find_sb_dw = res;
+	 res       = i_ceil * i_floor * axi_dw;	
+	     */
+	    find_sb_dw = res;
       end
    endfunction // if
    

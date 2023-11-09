@@ -16,6 +16,8 @@ package fm_sb_pkg;
    parameter pb_mode_width     = 2;
    parameter SB_DUMMY_LEN     = 51;
    parameter CUSTOM_CSM_UPLINK_DATA_LEN = 32;
+   parameter CUSTOM_DAQ_LEN = 35;
+   
    
    FM_CTRL_t FM_CTRL;
    FM_MON_t FM_MON;
@@ -108,13 +110,36 @@ package fm_sb_pkg;
       integer 		     i_floor;
       integer 		     res;
       
-      begin
+	 begin
+
+	    if(sb_dw <= 32)
+	      begin
+		 res = axi_dw;
+	      end
+	    else if (sb_dw <= 64)
+	      begin
+		 res = 64;		 
+	      end
+	    else if (sb_dw <= 128)
+	      begin
+		 res = 128;
+	      end
+	    else  if (sb_dw <= 256)
+	      begin
+		 res = 256;
+	      end
+	    else
+	      begin
+		 //Error
+		  $display("ERROR in find_sb_dw, unsupported width(%d)",sb_dw);
+	      end
+	    /*
 	 i_floor = find_floor(sb_dw, axi_dw);
 	 i_ceil   = find_ceil (sb_dw, i_floor * axi_dw);
 	 
-	 res       = i_ceil * i_floor * axi_dw;
-	 
-	 find_sb_dw = res;
+	 res       = i_ceil * i_floor * axi_dw;	
+	     */
+	    find_sb_dw = res;
       end
    endfunction // if
    

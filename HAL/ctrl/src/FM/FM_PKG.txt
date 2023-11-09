@@ -2575,6 +2575,396 @@ E            wr_enable: logic
 E            address: logic['9 -1', 0]
 E            wr_data: logic['32 -1', 0]
 
+R   FM_SB99_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB99_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB99_MON_t:
+E      SB_MEM: FM_SB99_SB_MEM_MISO_t
+R         FM_SB99_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB99_CTRL_t:
+E      SB_MEM: FM_SB99_SB_MEM_MOSI_t
+R         FM_SB99_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB100_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB100_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB100_MON_t:
+E      SB_MEM: FM_SB100_SB_MEM_MISO_t
+R         FM_SB100_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB100_CTRL_t:
+E      SB_MEM: FM_SB100_SB_MEM_MOSI_t
+R         FM_SB100_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB101_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB101_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB101_MON_t:
+E      SB_MEM: FM_SB101_SB_MEM_MISO_t
+R         FM_SB101_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB101_CTRL_t:
+E      SB_MEM: FM_SB101_SB_MEM_MOSI_t
+R         FM_SB101_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB102_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB102_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB102_MON_t:
+E      SB_MEM: FM_SB102_SB_MEM_MISO_t
+R         FM_SB102_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB102_CTRL_t:
+E      SB_MEM: FM_SB102_SB_MEM_MOSI_t
+R         FM_SB102_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB103_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB103_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB103_MON_t:
+E      SB_MEM: FM_SB103_SB_MEM_MISO_t
+R         FM_SB103_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB103_CTRL_t:
+E      SB_MEM: FM_SB103_SB_MEM_MOSI_t
+R         FM_SB103_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB104_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB104_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB104_MON_t:
+E      SB_MEM: FM_SB104_SB_MEM_MISO_t
+R         FM_SB104_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB104_CTRL_t:
+E      SB_MEM: FM_SB104_SB_MEM_MOSI_t
+R         FM_SB104_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB105_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB105_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB105_MON_t:
+E      SB_MEM: FM_SB105_SB_MEM_MISO_t
+R         FM_SB105_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB105_CTRL_t:
+E      SB_MEM: FM_SB105_SB_MEM_MOSI_t
+R         FM_SB105_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB106_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB106_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB106_MON_t:
+E      SB_MEM: FM_SB106_SB_MEM_MISO_t
+R         FM_SB106_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB106_CTRL_t:
+E      SB_MEM: FM_SB106_SB_MEM_MOSI_t
+R         FM_SB106_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB107_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB107_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB107_MON_t:
+E      SB_MEM: FM_SB107_SB_MEM_MISO_t
+R         FM_SB107_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB107_CTRL_t:
+E      SB_MEM: FM_SB107_SB_MEM_MOSI_t
+R         FM_SB107_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB108_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB108_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB108_MON_t:
+E      SB_MEM: FM_SB108_SB_MEM_MISO_t
+R         FM_SB108_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB108_CTRL_t:
+E      SB_MEM: FM_SB108_SB_MEM_MOSI_t
+R         FM_SB108_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB109_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB109_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB109_MON_t:
+E      SB_MEM: FM_SB109_SB_MEM_MISO_t
+R         FM_SB109_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB109_CTRL_t:
+E      SB_MEM: FM_SB109_SB_MEM_MOSI_t
+R         FM_SB109_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB110_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB110_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB110_MON_t:
+E      SB_MEM: FM_SB110_SB_MEM_MISO_t
+R         FM_SB110_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB110_CTRL_t:
+E      SB_MEM: FM_SB110_SB_MEM_MOSI_t
+R         FM_SB110_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB111_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB111_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB111_MON_t:
+E      SB_MEM: FM_SB111_SB_MEM_MISO_t
+R         FM_SB111_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB111_CTRL_t:
+E      SB_MEM: FM_SB111_SB_MEM_MOSI_t
+R         FM_SB111_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB112_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB112_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB112_MON_t:
+E      SB_MEM: FM_SB112_SB_MEM_MISO_t
+R         FM_SB112_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB112_CTRL_t:
+E      SB_MEM: FM_SB112_SB_MEM_MOSI_t
+R         FM_SB112_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
+R   FM_SB113_SB_MEM_MOSI_t:
+E      clk: logic
+E      enable: logic
+E      wr_enable: logic
+E      address: logic['9 -1', 0]
+E      wr_data: logic['32 -1', 0]
+
+R   FM_SB113_SB_MEM_MISO_t:
+E      rd_data: logic['32 -1', 0]
+E      rd_data_valid: logic
+
+R   FM_SB113_MON_t:
+E      SB_MEM: FM_SB113_SB_MEM_MISO_t
+R         FM_SB113_SB_MEM_MISO_t:
+E            rd_data: logic['32 -1', 0]
+E            rd_data_valid: logic
+
+R   FM_SB113_CTRL_t:
+E      SB_MEM: FM_SB113_SB_MEM_MOSI_t
+R         FM_SB113_SB_MEM_MOSI_t:
+E            clk: logic
+E            enable: logic
+E            wr_enable: logic
+E            address: logic['9 -1', 0]
+E            wr_data: logic['32 -1', 0]
+
 R   FM_SPY_CTRL_CTRL_t:
 E      GLOBAL_FREEZE: logic
 E      GLOBAL_PLAYBACK_MODE: logic['2 - 1', 0]
@@ -3175,6 +3565,96 @@ E            SB_MEM: FM_SB98_SB_MEM_MISO_t
 R               FM_SB98_SB_MEM_MISO_t:
 E                  rd_data: logic['32 -1', 0]
 E                  rd_data_valid: logic
+E      SB99: FM_SB99_MON_t
+R         FM_SB99_MON_t:
+E            SB_MEM: FM_SB99_SB_MEM_MISO_t
+R               FM_SB99_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB100: FM_SB100_MON_t
+R         FM_SB100_MON_t:
+E            SB_MEM: FM_SB100_SB_MEM_MISO_t
+R               FM_SB100_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB101: FM_SB101_MON_t
+R         FM_SB101_MON_t:
+E            SB_MEM: FM_SB101_SB_MEM_MISO_t
+R               FM_SB101_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB102: FM_SB102_MON_t
+R         FM_SB102_MON_t:
+E            SB_MEM: FM_SB102_SB_MEM_MISO_t
+R               FM_SB102_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB103: FM_SB103_MON_t
+R         FM_SB103_MON_t:
+E            SB_MEM: FM_SB103_SB_MEM_MISO_t
+R               FM_SB103_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB104: FM_SB104_MON_t
+R         FM_SB104_MON_t:
+E            SB_MEM: FM_SB104_SB_MEM_MISO_t
+R               FM_SB104_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB105: FM_SB105_MON_t
+R         FM_SB105_MON_t:
+E            SB_MEM: FM_SB105_SB_MEM_MISO_t
+R               FM_SB105_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB106: FM_SB106_MON_t
+R         FM_SB106_MON_t:
+E            SB_MEM: FM_SB106_SB_MEM_MISO_t
+R               FM_SB106_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB107: FM_SB107_MON_t
+R         FM_SB107_MON_t:
+E            SB_MEM: FM_SB107_SB_MEM_MISO_t
+R               FM_SB107_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB108: FM_SB108_MON_t
+R         FM_SB108_MON_t:
+E            SB_MEM: FM_SB108_SB_MEM_MISO_t
+R               FM_SB108_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB109: FM_SB109_MON_t
+R         FM_SB109_MON_t:
+E            SB_MEM: FM_SB109_SB_MEM_MISO_t
+R               FM_SB109_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB110: FM_SB110_MON_t
+R         FM_SB110_MON_t:
+E            SB_MEM: FM_SB110_SB_MEM_MISO_t
+R               FM_SB110_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB111: FM_SB111_MON_t
+R         FM_SB111_MON_t:
+E            SB_MEM: FM_SB111_SB_MEM_MISO_t
+R               FM_SB111_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB112: FM_SB112_MON_t
+R         FM_SB112_MON_t:
+E            SB_MEM: FM_SB112_SB_MEM_MISO_t
+R               FM_SB112_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
+E      SB113: FM_SB113_MON_t
+R         FM_SB113_MON_t:
+E            SB_MEM: FM_SB113_SB_MEM_MISO_t
+R               FM_SB113_SB_MEM_MISO_t:
+E                  rd_data: logic['32 -1', 0]
+E                  rd_data_valid: logic
 
 R   FM_CTRL_t:
 E      SB0: FM_SB0_CTRL_t
@@ -3618,12 +4098,6 @@ E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
 E                  wr_data: logic['32 -1', 0]
-E      FREEZE_MASK_0: logic['32 - 1', 0]
-E      FREEZE_MASK_1: logic['32 - 1', 0]
-E      PLAYBACK_MASK_0: logic['32 - 1', 0]
-E      PLAYBACK_MASK_1: logic['32 - 1', 0]
-E      SB_RESET_0: logic['32 - 1', 0]
-E      SB_RESET_1: logic['32 - 1', 0]
 E      SB49: FM_SB49_CTRL_t
 R         FM_SB49_CTRL_t:
 E            SB_MEM: FM_SB49_SB_MEM_MOSI_t
@@ -4074,8 +4548,155 @@ E                  enable: logic
 E                  wr_enable: logic
 E                  address: logic['9 -1', 0]
 E                  wr_data: logic['32 -1', 0]
+E      SB99: FM_SB99_CTRL_t
+R         FM_SB99_CTRL_t:
+E            SB_MEM: FM_SB99_SB_MEM_MOSI_t
+R               FM_SB99_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB100: FM_SB100_CTRL_t
+R         FM_SB100_CTRL_t:
+E            SB_MEM: FM_SB100_SB_MEM_MOSI_t
+R               FM_SB100_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB101: FM_SB101_CTRL_t
+R         FM_SB101_CTRL_t:
+E            SB_MEM: FM_SB101_SB_MEM_MOSI_t
+R               FM_SB101_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB102: FM_SB102_CTRL_t
+R         FM_SB102_CTRL_t:
+E            SB_MEM: FM_SB102_SB_MEM_MOSI_t
+R               FM_SB102_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB103: FM_SB103_CTRL_t
+R         FM_SB103_CTRL_t:
+E            SB_MEM: FM_SB103_SB_MEM_MOSI_t
+R               FM_SB103_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB104: FM_SB104_CTRL_t
+R         FM_SB104_CTRL_t:
+E            SB_MEM: FM_SB104_SB_MEM_MOSI_t
+R               FM_SB104_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB105: FM_SB105_CTRL_t
+R         FM_SB105_CTRL_t:
+E            SB_MEM: FM_SB105_SB_MEM_MOSI_t
+R               FM_SB105_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB106: FM_SB106_CTRL_t
+R         FM_SB106_CTRL_t:
+E            SB_MEM: FM_SB106_SB_MEM_MOSI_t
+R               FM_SB106_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB107: FM_SB107_CTRL_t
+R         FM_SB107_CTRL_t:
+E            SB_MEM: FM_SB107_SB_MEM_MOSI_t
+R               FM_SB107_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB108: FM_SB108_CTRL_t
+R         FM_SB108_CTRL_t:
+E            SB_MEM: FM_SB108_SB_MEM_MOSI_t
+R               FM_SB108_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB109: FM_SB109_CTRL_t
+R         FM_SB109_CTRL_t:
+E            SB_MEM: FM_SB109_SB_MEM_MOSI_t
+R               FM_SB109_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB110: FM_SB110_CTRL_t
+R         FM_SB110_CTRL_t:
+E            SB_MEM: FM_SB110_SB_MEM_MOSI_t
+R               FM_SB110_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB111: FM_SB111_CTRL_t
+R         FM_SB111_CTRL_t:
+E            SB_MEM: FM_SB111_SB_MEM_MOSI_t
+R               FM_SB111_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB112: FM_SB112_CTRL_t
+R         FM_SB112_CTRL_t:
+E            SB_MEM: FM_SB112_SB_MEM_MOSI_t
+R               FM_SB112_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
+E      SB113: FM_SB113_CTRL_t
+R         FM_SB113_CTRL_t:
+E            SB_MEM: FM_SB113_SB_MEM_MOSI_t
+R               FM_SB113_SB_MEM_MOSI_t:
+E                  clk: logic
+E                  enable: logic
+E                  wr_enable: logic
+E                  address: logic['9 -1', 0]
+E                  wr_data: logic['32 -1', 0]
 E      SPY_CTRL: FM_SPY_CTRL_CTRL_t
 R         FM_SPY_CTRL_CTRL_t:
 E            GLOBAL_FREEZE: logic
 E            GLOBAL_PLAYBACK_MODE: logic['2 - 1', 0]
 E            INITIALIZE_SPY_MEMORY: logic
+E      FREEZE_MASK_0: logic['32 - 1', 0]
+E      FREEZE_MASK_1: logic['32 - 1', 0]
+E      FREEZE_MASK_2: logic['32 - 1', 0]
+E      FREEZE_MASK_3: logic['32 - 1', 0]
+E      PLAYBACK_MASK_0: logic['32 - 1', 0]
+E      PLAYBACK_MASK_1: logic['32 - 1', 0]
+E      PLAYBACK_MASK_2: logic['32 - 1', 0]
+E      PLAYBACK_MASK_3: logic['32 - 1', 0]
+E      SB_RESET_0: logic['32 - 1', 0]
+E      SB_RESET_1: logic['32 - 1', 0]
+E      SB_RESET_2: logic['32 - 1', 0]
+E      SB_RESET_3: logic['32 - 1', 0]

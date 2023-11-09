@@ -43,7 +43,7 @@ architecture behavioral of FM_map is
   signal regRdAck           : std_logic;
 
   
-  constant BRAM_COUNT       : integer := 99;
+  constant BRAM_COUNT       : integer := 114;
 --  signal latchBRAM          : std_logic_vector(BRAM_COUNT-1 downto 0);
 --  signal delayLatchBRAM          : std_logic_vector(BRAM_COUNT-1 downto 0);
   constant BRAM_range       : int_array_t(0 to BRAM_COUNT-1) := (0 => 9
@@ -144,7 +144,22 @@ architecture behavioral of FM_map is
 ,			95 => 9
 ,			96 => 9
 ,			97 => 9
-,			98 => 9);
+,			98 => 9
+,			99 => 9
+,			100 => 9
+,			101 => 9
+,			102 => 9
+,			103 => 9
+,			104 => 9
+,			105 => 9
+,			106 => 9
+,			107 => 9
+,			108 => 9
+,			109 => 9
+,			110 => 9
+,			111 => 9
+,			112 => 9
+,			113 => 9);
   constant BRAM_addr        : slv32_array_t(0 to BRAM_COUNT-1) := (0 => x"00000000"
 ,			1 => x"00000200"
 ,			2 => x"00000400"
@@ -243,24 +258,39 @@ architecture behavioral of FM_map is
 ,			95 => x"0000BE00"
 ,			96 => x"0000C000"
 ,			97 => x"0000C200"
-,			98 => x"0000C400");
+,			98 => x"0000C400"
+,			99 => x"0000C600"
+,			100 => x"0000C800"
+,			101 => x"0000CA00"
+,			102 => x"0000CC00"
+,			103 => x"0000CE00"
+,			104 => x"0000D000"
+,			105 => x"0000D200"
+,			106 => x"0000D400"
+,			107 => x"0000D600"
+,			108 => x"0000D800"
+,			109 => x"0000DA00"
+,			110 => x"0000DC00"
+,			111 => x"0000DE00"
+,			112 => x"0000E000"
+,			113 => x"0000E200");
   signal BRAM_MOSI          : BRAMPortMOSI_array_t(0 to BRAM_COUNT-1);
   signal BRAM_MISO          : BRAMPortMISO_array_t(0 to BRAM_COUNT-1);
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 65280);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 65280) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 65292);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 65292) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*65280) <= ALLOCATED_MEMORY_RANGE)
-    report "FM: Regmap addressing range " & integer'image(4*65280) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*65292) <= ALLOCATED_MEMORY_RANGE)
+    report "FM: Regmap addressing range " & integer'image(4*65292) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity ERROR;
-  assert ((4*65280) > ALLOCATED_MEMORY_RANGE)
-    report "FM: Regmap addressing range " & integer'image(4*65280) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*65292) > ALLOCATED_MEMORY_RANGE)
+    report "FM: Regmap addressing range " & integer'image(4*65292) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity NOTE;
 
   AXIRegBridge : entity work.axiLiteRegBlocking
@@ -593,6 +623,51 @@ elsif BRAM_MISO(97).rd_data_valid = '1' then
 elsif BRAM_MISO(98).rd_data_valid = '1' then
         localRdAck <= '1';
         localRdData_latch <= BRAM_MISO(98).rd_data;
+elsif BRAM_MISO(99).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(99).rd_data;
+elsif BRAM_MISO(100).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(100).rd_data;
+elsif BRAM_MISO(101).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(101).rd_data;
+elsif BRAM_MISO(102).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(102).rd_data;
+elsif BRAM_MISO(103).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(103).rd_data;
+elsif BRAM_MISO(104).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(104).rd_data;
+elsif BRAM_MISO(105).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(105).rd_data;
+elsif BRAM_MISO(106).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(106).rd_data;
+elsif BRAM_MISO(107).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(107).rd_data;
+elsif BRAM_MISO(108).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(108).rd_data;
+elsif BRAM_MISO(109).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(109).rd_data;
+elsif BRAM_MISO(110).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(110).rd_data;
+elsif BRAM_MISO(111).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(111).rd_data;
+elsif BRAM_MISO(112).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(112).rd_data;
+elsif BRAM_MISO(113).rd_data_valid = '1' then
+        localRdAck <= '1';
+        localRdData_latch <= BRAM_MISO(113).rd_data;
 
       end if;
     end if;
@@ -610,22 +685,34 @@ elsif BRAM_MISO(98).rd_data_valid = '1' then
         regRdAck  <= '1';
         case to_integer(unsigned(localAddress(15 downto 0))) is
           
-        when 24577 => --0x6001
-          localRdData(31 downto  0)  <=  reg_data(24577)(31 downto  0);      --
-        when 24578 => --0x6002
-          localRdData(31 downto  0)  <=  reg_data(24578)(31 downto  0);      --
-        when 24579 => --0x6003
-          localRdData(31 downto  0)  <=  reg_data(24579)(31 downto  0);      --
-        when 24580 => --0x6004
-          localRdData(31 downto  0)  <=  reg_data(24580)(31 downto  0);      --
-        when 24581 => --0x6005
-          localRdData(31 downto  0)  <=  reg_data(24581)(31 downto  0);      --
-        when 24582 => --0x6006
-          localRdData(31 downto  0)  <=  reg_data(24582)(31 downto  0);      --
         when 65280 => --0xff00
           localRdData( 0)            <=  reg_data(65280)( 0);                --
           localRdData( 2 downto  1)  <=  reg_data(65280)( 2 downto  1);      --
           localRdData( 3)            <=  reg_data(65280)( 3);                --
+        when 65281 => --0xff01
+          localRdData(31 downto  0)  <=  reg_data(65281)(31 downto  0);      --
+        when 65282 => --0xff02
+          localRdData(31 downto  0)  <=  reg_data(65282)(31 downto  0);      --
+        when 65283 => --0xff03
+          localRdData(31 downto  0)  <=  reg_data(65283)(31 downto  0);      --
+        when 65284 => --0xff04
+          localRdData(31 downto  0)  <=  reg_data(65284)(31 downto  0);      --
+        when 65285 => --0xff05
+          localRdData(31 downto  0)  <=  reg_data(65285)(31 downto  0);      --
+        when 65286 => --0xff06
+          localRdData(31 downto  0)  <=  reg_data(65286)(31 downto  0);      --
+        when 65287 => --0xff07
+          localRdData(31 downto  0)  <=  reg_data(65287)(31 downto  0);      --
+        when 65288 => --0xff08
+          localRdData(31 downto  0)  <=  reg_data(65288)(31 downto  0);      --
+        when 65289 => --0xff09
+          localRdData(31 downto  0)  <=  reg_data(65289)(31 downto  0);      --
+        when 65290 => --0xff0a
+          localRdData(31 downto  0)  <=  reg_data(65290)(31 downto  0);      --
+        when 65291 => --0xff0b
+          localRdData(31 downto  0)  <=  reg_data(65291)(31 downto  0);      --
+        when 65292 => --0xff0c
+          localRdData(31 downto  0)  <=  reg_data(65292)(31 downto  0);      --
 
 
           when others =>
@@ -643,29 +730,41 @@ elsif BRAM_MISO(98).rd_data_valid = '1' then
   -------------------------------------------------------------------------------
 
   -- Register mapping to ctrl structures
-  Ctrl.FREEZE_MASK_0                   <=  reg_data(24577)(31 downto  0);     
-  Ctrl.FREEZE_MASK_1                   <=  reg_data(24578)(31 downto  0);     
-  Ctrl.PLAYBACK_MASK_0                 <=  reg_data(24579)(31 downto  0);     
-  Ctrl.PLAYBACK_MASK_1                 <=  reg_data(24580)(31 downto  0);     
-  Ctrl.SB_RESET_0                      <=  reg_data(24581)(31 downto  0);     
-  Ctrl.SB_RESET_1                      <=  reg_data(24582)(31 downto  0);     
   Ctrl.SPY_CTRL.GLOBAL_FREEZE          <=  reg_data(65280)( 0);               
   Ctrl.SPY_CTRL.GLOBAL_PLAYBACK_MODE   <=  reg_data(65280)( 2 downto  1);     
   Ctrl.SPY_CTRL.INITIALIZE_SPY_MEMORY  <=  reg_data(65280)( 3);               
+  Ctrl.FREEZE_MASK_0                   <=  reg_data(65281)(31 downto  0);     
+  Ctrl.FREEZE_MASK_1                   <=  reg_data(65282)(31 downto  0);     
+  Ctrl.FREEZE_MASK_2                   <=  reg_data(65283)(31 downto  0);     
+  Ctrl.FREEZE_MASK_3                   <=  reg_data(65284)(31 downto  0);     
+  Ctrl.PLAYBACK_MASK_0                 <=  reg_data(65285)(31 downto  0);     
+  Ctrl.PLAYBACK_MASK_1                 <=  reg_data(65286)(31 downto  0);     
+  Ctrl.PLAYBACK_MASK_2                 <=  reg_data(65287)(31 downto  0);     
+  Ctrl.PLAYBACK_MASK_3                 <=  reg_data(65288)(31 downto  0);     
+  Ctrl.SB_RESET_0                      <=  reg_data(65289)(31 downto  0);     
+  Ctrl.SB_RESET_1                      <=  reg_data(65290)(31 downto  0);     
+  Ctrl.SB_RESET_2                      <=  reg_data(65291)(31 downto  0);     
+  Ctrl.SB_RESET_3                      <=  reg_data(65292)(31 downto  0);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data(24577)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_0;
-      reg_data(24578)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_1;
-      reg_data(24579)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_0;
-      reg_data(24580)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_1;
-      reg_data(24581)(31 downto  0)  <= DEFAULT_FM_CTRL_t.SB_RESET_0;
-      reg_data(24582)(31 downto  0)  <= DEFAULT_FM_CTRL_t.SB_RESET_1;
       reg_data(65280)( 0)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_FREEZE;
       reg_data(65280)( 2 downto  1)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.GLOBAL_PLAYBACK_MODE;
       reg_data(65280)( 3)  <= DEFAULT_FM_CTRL_t.SPY_CTRL.INITIALIZE_SPY_MEMORY;
+      reg_data(65281)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_0;
+      reg_data(65282)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_1;
+      reg_data(65283)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_2;
+      reg_data(65284)(31 downto  0)  <= DEFAULT_FM_CTRL_t.FREEZE_MASK_3;
+      reg_data(65285)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_0;
+      reg_data(65286)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_1;
+      reg_data(65287)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_2;
+      reg_data(65288)(31 downto  0)  <= DEFAULT_FM_CTRL_t.PLAYBACK_MASK_3;
+      reg_data(65289)(31 downto  0)  <= DEFAULT_FM_CTRL_t.SB_RESET_0;
+      reg_data(65290)(31 downto  0)  <= DEFAULT_FM_CTRL_t.SB_RESET_1;
+      reg_data(65291)(31 downto  0)  <= DEFAULT_FM_CTRL_t.SB_RESET_2;
+      reg_data(65292)(31 downto  0)  <= DEFAULT_FM_CTRL_t.SB_RESET_3;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       
@@ -673,22 +772,34 @@ elsif BRAM_MISO(98).rd_data_valid = '1' then
       
       if localWrEn = '1' then
         case to_integer(unsigned(localAddress(15 downto 0))) is
-        when 24577 => --0x6001
-          reg_data(24577)(31 downto  0)  <=  localWrData(31 downto  0);      --
-        when 24578 => --0x6002
-          reg_data(24578)(31 downto  0)  <=  localWrData(31 downto  0);      --
-        when 24579 => --0x6003
-          reg_data(24579)(31 downto  0)  <=  localWrData(31 downto  0);      --
-        when 24580 => --0x6004
-          reg_data(24580)(31 downto  0)  <=  localWrData(31 downto  0);      --
-        when 24581 => --0x6005
-          reg_data(24581)(31 downto  0)  <=  localWrData(31 downto  0);      --
-        when 24582 => --0x6006
-          reg_data(24582)(31 downto  0)  <=  localWrData(31 downto  0);      --
         when 65280 => --0xff00
           reg_data(65280)( 0)            <=  localWrData( 0);                --
           reg_data(65280)( 2 downto  1)  <=  localWrData( 2 downto  1);      --
           reg_data(65280)( 3)            <=  localWrData( 3);                --
+        when 65281 => --0xff01
+          reg_data(65281)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 65282 => --0xff02
+          reg_data(65282)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 65283 => --0xff03
+          reg_data(65283)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 65284 => --0xff04
+          reg_data(65284)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 65285 => --0xff05
+          reg_data(65285)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 65286 => --0xff06
+          reg_data(65286)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 65287 => --0xff07
+          reg_data(65287)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 65288 => --0xff08
+          reg_data(65288)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 65289 => --0xff09
+          reg_data(65289)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 65290 => --0xff0a
+          reg_data(65290)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 65291 => --0xff0b
+          reg_data(65291)(31 downto  0)  <=  localWrData(31 downto  0);      --
+        when 65292 => --0xff0c
+          reg_data(65292)(31 downto  0)  <=  localWrData(31 downto  0);      --
 
           when others => null;
         end case;
@@ -1324,6 +1435,96 @@ elsif BRAM_MISO(98).rd_data_valid = '1' then
   Ctrl.SB98.SB_MEM.address   <=  BRAM_MOSI(98).address(9-1 downto 0);
   Ctrl.SB98.SB_MEM.wr_data   <=  BRAM_MOSI(98).wr_data(32-1 downto 0);
 
+  Ctrl.SB99.SB_MEM.clk       <=  BRAM_MOSI(99).clk;
+  Ctrl.SB99.SB_MEM.enable    <=  BRAM_MOSI(99).enable;
+  Ctrl.SB99.SB_MEM.wr_enable <=  BRAM_MOSI(99).wr_enable;
+  Ctrl.SB99.SB_MEM.address   <=  BRAM_MOSI(99).address(9-1 downto 0);
+  Ctrl.SB99.SB_MEM.wr_data   <=  BRAM_MOSI(99).wr_data(32-1 downto 0);
+
+  Ctrl.SB100.SB_MEM.clk       <=  BRAM_MOSI(100).clk;
+  Ctrl.SB100.SB_MEM.enable    <=  BRAM_MOSI(100).enable;
+  Ctrl.SB100.SB_MEM.wr_enable <=  BRAM_MOSI(100).wr_enable;
+  Ctrl.SB100.SB_MEM.address   <=  BRAM_MOSI(100).address(9-1 downto 0);
+  Ctrl.SB100.SB_MEM.wr_data   <=  BRAM_MOSI(100).wr_data(32-1 downto 0);
+
+  Ctrl.SB101.SB_MEM.clk       <=  BRAM_MOSI(101).clk;
+  Ctrl.SB101.SB_MEM.enable    <=  BRAM_MOSI(101).enable;
+  Ctrl.SB101.SB_MEM.wr_enable <=  BRAM_MOSI(101).wr_enable;
+  Ctrl.SB101.SB_MEM.address   <=  BRAM_MOSI(101).address(9-1 downto 0);
+  Ctrl.SB101.SB_MEM.wr_data   <=  BRAM_MOSI(101).wr_data(32-1 downto 0);
+
+  Ctrl.SB102.SB_MEM.clk       <=  BRAM_MOSI(102).clk;
+  Ctrl.SB102.SB_MEM.enable    <=  BRAM_MOSI(102).enable;
+  Ctrl.SB102.SB_MEM.wr_enable <=  BRAM_MOSI(102).wr_enable;
+  Ctrl.SB102.SB_MEM.address   <=  BRAM_MOSI(102).address(9-1 downto 0);
+  Ctrl.SB102.SB_MEM.wr_data   <=  BRAM_MOSI(102).wr_data(32-1 downto 0);
+
+  Ctrl.SB103.SB_MEM.clk       <=  BRAM_MOSI(103).clk;
+  Ctrl.SB103.SB_MEM.enable    <=  BRAM_MOSI(103).enable;
+  Ctrl.SB103.SB_MEM.wr_enable <=  BRAM_MOSI(103).wr_enable;
+  Ctrl.SB103.SB_MEM.address   <=  BRAM_MOSI(103).address(9-1 downto 0);
+  Ctrl.SB103.SB_MEM.wr_data   <=  BRAM_MOSI(103).wr_data(32-1 downto 0);
+
+  Ctrl.SB104.SB_MEM.clk       <=  BRAM_MOSI(104).clk;
+  Ctrl.SB104.SB_MEM.enable    <=  BRAM_MOSI(104).enable;
+  Ctrl.SB104.SB_MEM.wr_enable <=  BRAM_MOSI(104).wr_enable;
+  Ctrl.SB104.SB_MEM.address   <=  BRAM_MOSI(104).address(9-1 downto 0);
+  Ctrl.SB104.SB_MEM.wr_data   <=  BRAM_MOSI(104).wr_data(32-1 downto 0);
+
+  Ctrl.SB105.SB_MEM.clk       <=  BRAM_MOSI(105).clk;
+  Ctrl.SB105.SB_MEM.enable    <=  BRAM_MOSI(105).enable;
+  Ctrl.SB105.SB_MEM.wr_enable <=  BRAM_MOSI(105).wr_enable;
+  Ctrl.SB105.SB_MEM.address   <=  BRAM_MOSI(105).address(9-1 downto 0);
+  Ctrl.SB105.SB_MEM.wr_data   <=  BRAM_MOSI(105).wr_data(32-1 downto 0);
+
+  Ctrl.SB106.SB_MEM.clk       <=  BRAM_MOSI(106).clk;
+  Ctrl.SB106.SB_MEM.enable    <=  BRAM_MOSI(106).enable;
+  Ctrl.SB106.SB_MEM.wr_enable <=  BRAM_MOSI(106).wr_enable;
+  Ctrl.SB106.SB_MEM.address   <=  BRAM_MOSI(106).address(9-1 downto 0);
+  Ctrl.SB106.SB_MEM.wr_data   <=  BRAM_MOSI(106).wr_data(32-1 downto 0);
+
+  Ctrl.SB107.SB_MEM.clk       <=  BRAM_MOSI(107).clk;
+  Ctrl.SB107.SB_MEM.enable    <=  BRAM_MOSI(107).enable;
+  Ctrl.SB107.SB_MEM.wr_enable <=  BRAM_MOSI(107).wr_enable;
+  Ctrl.SB107.SB_MEM.address   <=  BRAM_MOSI(107).address(9-1 downto 0);
+  Ctrl.SB107.SB_MEM.wr_data   <=  BRAM_MOSI(107).wr_data(32-1 downto 0);
+
+  Ctrl.SB108.SB_MEM.clk       <=  BRAM_MOSI(108).clk;
+  Ctrl.SB108.SB_MEM.enable    <=  BRAM_MOSI(108).enable;
+  Ctrl.SB108.SB_MEM.wr_enable <=  BRAM_MOSI(108).wr_enable;
+  Ctrl.SB108.SB_MEM.address   <=  BRAM_MOSI(108).address(9-1 downto 0);
+  Ctrl.SB108.SB_MEM.wr_data   <=  BRAM_MOSI(108).wr_data(32-1 downto 0);
+
+  Ctrl.SB109.SB_MEM.clk       <=  BRAM_MOSI(109).clk;
+  Ctrl.SB109.SB_MEM.enable    <=  BRAM_MOSI(109).enable;
+  Ctrl.SB109.SB_MEM.wr_enable <=  BRAM_MOSI(109).wr_enable;
+  Ctrl.SB109.SB_MEM.address   <=  BRAM_MOSI(109).address(9-1 downto 0);
+  Ctrl.SB109.SB_MEM.wr_data   <=  BRAM_MOSI(109).wr_data(32-1 downto 0);
+
+  Ctrl.SB110.SB_MEM.clk       <=  BRAM_MOSI(110).clk;
+  Ctrl.SB110.SB_MEM.enable    <=  BRAM_MOSI(110).enable;
+  Ctrl.SB110.SB_MEM.wr_enable <=  BRAM_MOSI(110).wr_enable;
+  Ctrl.SB110.SB_MEM.address   <=  BRAM_MOSI(110).address(9-1 downto 0);
+  Ctrl.SB110.SB_MEM.wr_data   <=  BRAM_MOSI(110).wr_data(32-1 downto 0);
+
+  Ctrl.SB111.SB_MEM.clk       <=  BRAM_MOSI(111).clk;
+  Ctrl.SB111.SB_MEM.enable    <=  BRAM_MOSI(111).enable;
+  Ctrl.SB111.SB_MEM.wr_enable <=  BRAM_MOSI(111).wr_enable;
+  Ctrl.SB111.SB_MEM.address   <=  BRAM_MOSI(111).address(9-1 downto 0);
+  Ctrl.SB111.SB_MEM.wr_data   <=  BRAM_MOSI(111).wr_data(32-1 downto 0);
+
+  Ctrl.SB112.SB_MEM.clk       <=  BRAM_MOSI(112).clk;
+  Ctrl.SB112.SB_MEM.enable    <=  BRAM_MOSI(112).enable;
+  Ctrl.SB112.SB_MEM.wr_enable <=  BRAM_MOSI(112).wr_enable;
+  Ctrl.SB112.SB_MEM.address   <=  BRAM_MOSI(112).address(9-1 downto 0);
+  Ctrl.SB112.SB_MEM.wr_data   <=  BRAM_MOSI(112).wr_data(32-1 downto 0);
+
+  Ctrl.SB113.SB_MEM.clk       <=  BRAM_MOSI(113).clk;
+  Ctrl.SB113.SB_MEM.enable    <=  BRAM_MOSI(113).enable;
+  Ctrl.SB113.SB_MEM.wr_enable <=  BRAM_MOSI(113).wr_enable;
+  Ctrl.SB113.SB_MEM.address   <=  BRAM_MOSI(113).address(9-1 downto 0);
+  Ctrl.SB113.SB_MEM.wr_data   <=  BRAM_MOSI(113).wr_data(32-1 downto 0);
+
 
   BRAM_MISO(0).rd_data(32-1 downto 0) <= Mon.SB0.SB_MEM.rd_data;
   BRAM_MISO(0).rd_data(31 downto 32) <= (others => '0');
@@ -1720,6 +1921,66 @@ elsif BRAM_MISO(98).rd_data_valid = '1' then
   BRAM_MISO(98).rd_data(32-1 downto 0) <= Mon.SB98.SB_MEM.rd_data;
   BRAM_MISO(98).rd_data(31 downto 32) <= (others => '0');
   BRAM_MISO(98).rd_data_valid <= Mon.SB98.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(99).rd_data(32-1 downto 0) <= Mon.SB99.SB_MEM.rd_data;
+  BRAM_MISO(99).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(99).rd_data_valid <= Mon.SB99.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(100).rd_data(32-1 downto 0) <= Mon.SB100.SB_MEM.rd_data;
+  BRAM_MISO(100).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(100).rd_data_valid <= Mon.SB100.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(101).rd_data(32-1 downto 0) <= Mon.SB101.SB_MEM.rd_data;
+  BRAM_MISO(101).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(101).rd_data_valid <= Mon.SB101.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(102).rd_data(32-1 downto 0) <= Mon.SB102.SB_MEM.rd_data;
+  BRAM_MISO(102).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(102).rd_data_valid <= Mon.SB102.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(103).rd_data(32-1 downto 0) <= Mon.SB103.SB_MEM.rd_data;
+  BRAM_MISO(103).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(103).rd_data_valid <= Mon.SB103.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(104).rd_data(32-1 downto 0) <= Mon.SB104.SB_MEM.rd_data;
+  BRAM_MISO(104).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(104).rd_data_valid <= Mon.SB104.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(105).rd_data(32-1 downto 0) <= Mon.SB105.SB_MEM.rd_data;
+  BRAM_MISO(105).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(105).rd_data_valid <= Mon.SB105.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(106).rd_data(32-1 downto 0) <= Mon.SB106.SB_MEM.rd_data;
+  BRAM_MISO(106).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(106).rd_data_valid <= Mon.SB106.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(107).rd_data(32-1 downto 0) <= Mon.SB107.SB_MEM.rd_data;
+  BRAM_MISO(107).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(107).rd_data_valid <= Mon.SB107.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(108).rd_data(32-1 downto 0) <= Mon.SB108.SB_MEM.rd_data;
+  BRAM_MISO(108).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(108).rd_data_valid <= Mon.SB108.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(109).rd_data(32-1 downto 0) <= Mon.SB109.SB_MEM.rd_data;
+  BRAM_MISO(109).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(109).rd_data_valid <= Mon.SB109.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(110).rd_data(32-1 downto 0) <= Mon.SB110.SB_MEM.rd_data;
+  BRAM_MISO(110).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(110).rd_data_valid <= Mon.SB110.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(111).rd_data(32-1 downto 0) <= Mon.SB111.SB_MEM.rd_data;
+  BRAM_MISO(111).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(111).rd_data_valid <= Mon.SB111.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(112).rd_data(32-1 downto 0) <= Mon.SB112.SB_MEM.rd_data;
+  BRAM_MISO(112).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(112).rd_data_valid <= Mon.SB112.SB_MEM.rd_data_valid;
+
+  BRAM_MISO(113).rd_data(32-1 downto 0) <= Mon.SB113.SB_MEM.rd_data;
+  BRAM_MISO(113).rd_data(31 downto 32) <= (others => '0');
+  BRAM_MISO(113).rd_data_valid <= Mon.SB113.SB_MEM.rd_data_valid;
 
     
 

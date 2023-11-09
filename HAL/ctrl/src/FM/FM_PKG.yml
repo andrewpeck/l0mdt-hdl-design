@@ -1890,6 +1890,291 @@ types:
   - SB_MEM : { type: FM_SB98_SB_MEM_MOSI_t }
 
 
+- FM_SB99_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB99_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB99_MON_t:
+  - SB_MEM : { type: FM_SB99_SB_MEM_MISO_t }
+
+
+- FM_SB99_CTRL_t:
+  - SB_MEM : { type: FM_SB99_SB_MEM_MOSI_t }
+
+
+- FM_SB100_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB100_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB100_MON_t:
+  - SB_MEM : { type: FM_SB100_SB_MEM_MISO_t }
+
+
+- FM_SB100_CTRL_t:
+  - SB_MEM : { type: FM_SB100_SB_MEM_MOSI_t }
+
+
+- FM_SB101_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB101_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB101_MON_t:
+  - SB_MEM : { type: FM_SB101_SB_MEM_MISO_t }
+
+
+- FM_SB101_CTRL_t:
+  - SB_MEM : { type: FM_SB101_SB_MEM_MOSI_t }
+
+
+- FM_SB102_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB102_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB102_MON_t:
+  - SB_MEM : { type: FM_SB102_SB_MEM_MISO_t }
+
+
+- FM_SB102_CTRL_t:
+  - SB_MEM : { type: FM_SB102_SB_MEM_MOSI_t }
+
+
+- FM_SB103_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB103_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB103_MON_t:
+  - SB_MEM : { type: FM_SB103_SB_MEM_MISO_t }
+
+
+- FM_SB103_CTRL_t:
+  - SB_MEM : { type: FM_SB103_SB_MEM_MOSI_t }
+
+
+- FM_SB104_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB104_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB104_MON_t:
+  - SB_MEM : { type: FM_SB104_SB_MEM_MISO_t }
+
+
+- FM_SB104_CTRL_t:
+  - SB_MEM : { type: FM_SB104_SB_MEM_MOSI_t }
+
+
+- FM_SB105_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB105_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB105_MON_t:
+  - SB_MEM : { type: FM_SB105_SB_MEM_MISO_t }
+
+
+- FM_SB105_CTRL_t:
+  - SB_MEM : { type: FM_SB105_SB_MEM_MOSI_t }
+
+
+- FM_SB106_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB106_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB106_MON_t:
+  - SB_MEM : { type: FM_SB106_SB_MEM_MISO_t }
+
+
+- FM_SB106_CTRL_t:
+  - SB_MEM : { type: FM_SB106_SB_MEM_MOSI_t }
+
+
+- FM_SB107_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB107_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB107_MON_t:
+  - SB_MEM : { type: FM_SB107_SB_MEM_MISO_t }
+
+
+- FM_SB107_CTRL_t:
+  - SB_MEM : { type: FM_SB107_SB_MEM_MOSI_t }
+
+
+- FM_SB108_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB108_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB108_MON_t:
+  - SB_MEM : { type: FM_SB108_SB_MEM_MISO_t }
+
+
+- FM_SB108_CTRL_t:
+  - SB_MEM : { type: FM_SB108_SB_MEM_MOSI_t }
+
+
+- FM_SB109_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB109_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB109_MON_t:
+  - SB_MEM : { type: FM_SB109_SB_MEM_MISO_t }
+
+
+- FM_SB109_CTRL_t:
+  - SB_MEM : { type: FM_SB109_SB_MEM_MOSI_t }
+
+
+- FM_SB110_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB110_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB110_MON_t:
+  - SB_MEM : { type: FM_SB110_SB_MEM_MISO_t }
+
+
+- FM_SB110_CTRL_t:
+  - SB_MEM : { type: FM_SB110_SB_MEM_MOSI_t }
+
+
+- FM_SB111_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB111_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB111_MON_t:
+  - SB_MEM : { type: FM_SB111_SB_MEM_MISO_t }
+
+
+- FM_SB111_CTRL_t:
+  - SB_MEM : { type: FM_SB111_SB_MEM_MOSI_t }
+
+
+- FM_SB112_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB112_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB112_MON_t:
+  - SB_MEM : { type: FM_SB112_SB_MEM_MISO_t }
+
+
+- FM_SB112_CTRL_t:
+  - SB_MEM : { type: FM_SB112_SB_MEM_MOSI_t }
+
+
+- FM_SB113_SB_MEM_MOSI_t:
+  - clk       : { type: logic }
+  - enable    : { type: logic }
+  - wr_enable : { type: logic }
+  - address   : { type : logic, range : [ 9 -1 , 0] }
+  - wr_data   : { type : logic, range : [ 32 -1 , 0] }
+
+- FM_SB113_SB_MEM_MISO_t:
+  - rd_data       : { type : logic, range : [ 32 -1 , 0] }
+  - rd_data_valid : { type : logic }
+
+- FM_SB113_MON_t:
+  - SB_MEM : { type: FM_SB113_SB_MEM_MISO_t }
+
+
+- FM_SB113_CTRL_t:
+  - SB_MEM : { type: FM_SB113_SB_MEM_MOSI_t }
+
+
 - FM_SPY_CTRL_CTRL_t:
   - GLOBAL_FREEZE : { type: logic }
   - GLOBAL_PLAYBACK_MODE : { type: logic, range : [ 2 - 1 , 0 ] }
@@ -1996,6 +2281,21 @@ types:
   - SB96 : { type: FM_SB96_MON_t }
   - SB97 : { type: FM_SB97_MON_t }
   - SB98 : { type: FM_SB98_MON_t }
+  - SB99 : { type: FM_SB99_MON_t }
+  - SB100 : { type: FM_SB100_MON_t }
+  - SB101 : { type: FM_SB101_MON_t }
+  - SB102 : { type: FM_SB102_MON_t }
+  - SB103 : { type: FM_SB103_MON_t }
+  - SB104 : { type: FM_SB104_MON_t }
+  - SB105 : { type: FM_SB105_MON_t }
+  - SB106 : { type: FM_SB106_MON_t }
+  - SB107 : { type: FM_SB107_MON_t }
+  - SB108 : { type: FM_SB108_MON_t }
+  - SB109 : { type: FM_SB109_MON_t }
+  - SB110 : { type: FM_SB110_MON_t }
+  - SB111 : { type: FM_SB111_MON_t }
+  - SB112 : { type: FM_SB112_MON_t }
+  - SB113 : { type: FM_SB113_MON_t }
 
 
 - FM_CTRL_t:
@@ -2048,12 +2348,6 @@ types:
   - SB46 : { type: FM_SB46_CTRL_t }
   - SB47 : { type: FM_SB47_CTRL_t }
   - SB48 : { type: FM_SB48_CTRL_t }
-  - FREEZE_MASK_0 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - FREEZE_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - PLAYBACK_MASK_0 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - PLAYBACK_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - SB_RESET_0 : { type: logic, range : [ 32 - 1 , 0 ] }
-  - SB_RESET_1 : { type: logic, range : [ 32 - 1 , 0 ] }
   - SB49 : { type: FM_SB49_CTRL_t }
   - SB50 : { type: FM_SB50_CTRL_t }
   - SB51 : { type: FM_SB51_CTRL_t }
@@ -2104,6 +2398,33 @@ types:
   - SB96 : { type: FM_SB96_CTRL_t }
   - SB97 : { type: FM_SB97_CTRL_t }
   - SB98 : { type: FM_SB98_CTRL_t }
+  - SB99 : { type: FM_SB99_CTRL_t }
+  - SB100 : { type: FM_SB100_CTRL_t }
+  - SB101 : { type: FM_SB101_CTRL_t }
+  - SB102 : { type: FM_SB102_CTRL_t }
+  - SB103 : { type: FM_SB103_CTRL_t }
+  - SB104 : { type: FM_SB104_CTRL_t }
+  - SB105 : { type: FM_SB105_CTRL_t }
+  - SB106 : { type: FM_SB106_CTRL_t }
+  - SB107 : { type: FM_SB107_CTRL_t }
+  - SB108 : { type: FM_SB108_CTRL_t }
+  - SB109 : { type: FM_SB109_CTRL_t }
+  - SB110 : { type: FM_SB110_CTRL_t }
+  - SB111 : { type: FM_SB111_CTRL_t }
+  - SB112 : { type: FM_SB112_CTRL_t }
+  - SB113 : { type: FM_SB113_CTRL_t }
   - SPY_CTRL : { type: FM_SPY_CTRL_CTRL_t }
+  - FREEZE_MASK_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - FREEZE_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - FREEZE_MASK_2 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - FREEZE_MASK_3 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PLAYBACK_MASK_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PLAYBACK_MASK_1 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PLAYBACK_MASK_2 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - PLAYBACK_MASK_3 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - SB_RESET_0 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - SB_RESET_1 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - SB_RESET_2 : { type: logic, range : [ 32 - 1 , 0 ] }
+  - SB_RESET_3 : { type: logic, range : [ 32 - 1 , 0 ] }
 
 

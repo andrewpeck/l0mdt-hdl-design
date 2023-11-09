@@ -42,6 +42,9 @@ library ult_lib;
 library xil_defaultlib;
 use xil_defaultlib.all;
 
+library fm_lib;
+use fm_lib.fm_types.all;
+
 entity top_l0mdt is
   generic (
     -- these generics get set by hog at synthesis
@@ -278,6 +281,7 @@ architecture structural of top_l0mdt is
   signal CORE_mon_r  : CORE_MON_t;
   signal CORE_ctrl_r : CORE_CTRL_t;
 
+  signal fm_csm_mon_r : fm_csm_mon_data;
   signal hps_inn_ctrl_v : std_logic_vector(width(hps_inn_ctrl_r) -1 downto 0);
   signal hps_inn_mon_v  : std_logic_vector(width(hps_inn_mon_r) -1 downto 0);
   signal hps_mid_ctrl_v : std_logic_vector(width(hps_mid_ctrl_r) -1 downto 0);
@@ -312,6 +316,8 @@ architecture structural of top_l0mdt is
 
   signal hal_ctrl_v : std_logic_vector(width(hal_ctrl_r) -1 downto 0);
   signal hal_mon_v  : std_logic_vector(width(hal_mon_r) -1 downto 0);
+
+  signal csm_fm_mon_v : std_logic_vector(width(fm_csm_mon_r)-1 downto 0);
   --------------------------------------------------------------------------------
   -- Sumps
   --------------------------------------------------------------------------------
@@ -463,6 +469,8 @@ begin
       fm_mon_v   => fm_mon_v,
       --
 
+      -- Fast Monitoring
+      csm_fm_mon_v => csm_fm_mon_v,
       sump => user_sump
       );
 
