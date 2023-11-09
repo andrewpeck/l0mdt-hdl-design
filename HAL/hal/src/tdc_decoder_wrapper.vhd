@@ -48,8 +48,94 @@ architecture behavioral of tdc_decoder_wrapper is
 
   type err_cnt_array_t is array (integer range <>) of std_logic_vector(15 downto 0);
   signal err_cnt : err_cnt_array_t (g_NUM_TDCS-1 downto 0) := (others => (others => '0'));
+  
+COMPONENT ila_tdc
+
+PORT (
+	clk : IN STD_LOGIC;
+	probe0 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+	probe1 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe2 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe3 : IN STD_LOGIC_VECTOR(9 DOWNTO 0); 
+	probe4 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe5 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe6 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe7 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe8 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe9 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe10 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe11 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe12 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe13 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe14 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe15 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe16 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe17 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe18 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe19 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe20 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe21 : IN STD_LOGIC_VECTOR(7 DOWNTO 0); 
+	probe22 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe23 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe24 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe25 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe26 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe27 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe28 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe29 : IN STD_LOGIC_VECTOR(31 DOWNTO 0); 
+	probe30 : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+	probe31 : IN STD_LOGIC_VECTOR(31 DOWNTO 0)
+);
+END COMPONENT  ;
+  
+    
+    type lpgbt_data is array (integer range 0 to 9) of  std_logic_vector (7 downto 0);
+    type tdc_data is array (integer range 0 to 9) of  std_logic_vector (31 downto 0);
+
+    signal even_data_a : lpgbt_data;
+    signal odd_data_a : lpgbt_data;
+    signal tdc_word_a : tdc_data;
+    signal tdc_valid_a : std_logic_vector(9 downto 0);
 
 begin
+ 
+   ila_tdc_inst : ila_tdc
+   PORT MAP (
+      clk => clock,
+      probe0(0) => lpgbt_uplink_data_i(0).valid, 
+      probe1 => even_data_a(0), 
+      probe2 => odd_data_a(0), 
+      probe3 => tdc_valid_a,
+      probe4 => even_data_a(1),
+      probe5 => odd_data_a(1),
+      probe6 => even_data_a(2),
+      probe7 => odd_data_a(2),
+      probe8 => even_data_a(3),
+      probe9 => odd_data_a(3),
+      probe10 => even_data_a(4),
+      probe11 => odd_data_a(4),
+      probe12 => even_data_a(5),
+      probe13 => odd_data_a(5),
+      probe14 => even_data_a(6),
+      probe15 => odd_data_a(6),
+      probe16 => even_data_a(7),
+      probe17 => odd_data_a(7),
+      probe18 => even_data_a(8),
+      probe19 => odd_data_a(8),
+      probe20 => even_data_a(9),
+      probe21 => odd_data_a(9),
+      probe22 => tdc_word_a(0),
+      probe23 => tdc_word_a(1),
+      probe24 => tdc_word_a(2),
+      probe25 => tdc_word_a(3),
+      probe26 => tdc_word_a(4),
+      probe27 => tdc_word_a(5),
+      probe28 => tdc_word_a(6),
+      probe29 => tdc_word_a(7),
+      probe30 => tdc_word_a(8),
+      probe31 => tdc_word_a(9)
+   );
+
 
   tdc_loop : for I in g_ENABLE_MASK'range generate
   begin
@@ -72,7 +158,7 @@ begin
 
       signal tdc_hit : tdcpolmux2tar_rt;
 
-      -- given a std_logic_vector A such as 111011, and a position index POS,
+     -- given a std_logic_vector A such as 111011, and a position index POS,
       -- this function returns the zero supressed count of the set bit
       -- bits which are not set will return -1.
       --
@@ -133,6 +219,15 @@ begin
       tdc_hit.tdcid      <= to_unsigned(I, tdc_hit.tdcid'length);
       tdc_hit.tdc        <= convert(tdc_word,tdc_hit.tdc);
       tdc_hit.data_valid <= tdc_valid;
+        
+      ila_gen: if (I < 10) generate
+      begin
+        even_data_a(I) <= even_data;
+        odd_data_a(I) <= odd_data;
+        tdc_valid_a(I) <= tdc_valid;
+        tdc_word_a(I) <= tdc_word;
+      end generate;
+
 
       tdc_hits_o(idx) <= convert (tdc_hit,tdc_hits_o(idx));
 
@@ -157,6 +252,8 @@ begin
             tdc_err_o   => err
             );
       end generate;  -- new TDC gen
+
+
 
       --------------------------------------------------------------------------------
       -- Legacy TDC
