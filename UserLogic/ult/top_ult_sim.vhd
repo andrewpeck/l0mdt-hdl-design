@@ -179,6 +179,8 @@ architecture beh of ult_tb is
   signal fm_ctrl_v             : std_logic_vector(FM_CTRL_t'w -1 downto 0);
   signal fm_mon_v              : std_logic_vector(FM_MON_t'w -1 downto 0);
 
+   signal csm_fm_mon_v : std_logic_vector(width(fm_csm_mon_r)-1 downto 0);
+  
   -- signal o_daq_streams     : felix_stream_avt (c_DAQ_LINKS - 1 downto 0);
   signal daq_stream_data_v : std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
   signal daq_stream_ctrl_v : std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
@@ -271,7 +273,8 @@ begin
     fm_ctrl_v  => fm_ctrl_v,
     fm_mon_v   => fm_mon_v,
 
-    
+        -- Fast Monitoring
+      csm_fm_mon_v => csm_fm_mon_v,
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
     -- o_daq_streams => o_daq_streams,
     daq_stream_data_vo => daq_stream_data_v, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
