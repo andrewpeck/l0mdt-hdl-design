@@ -55,7 +55,7 @@ entity top_hal is
     clock_i_n : in std_logic;
 
     -- 320MHz clock out (recovered clock)
-    -- TODO: This should eventually become a 40 MHz clock, aligned with the data stream 
+    -- TODO: This should eventually become a 40 MHz clock, aligned with the data stream
     -- See example in TCLink core
     lhc_refclk_o_p : out std_logic;
     lhc_refclk_o_n : out std_logic;
@@ -128,15 +128,38 @@ entity top_hal is
     daq_stream_data_vi : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
     daq_stream_ctrl_vi : in std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
     daq_stream_wren_vi : in std_logic_vector(c_DAQ_LINKS-1 downto 0);
+
+    flx_mt_o               : out std_logic;
+    flx_pt_o               : out std_logic;
+    flx_partition_o        : out std_logic_vector(1 downto 0);
+    flx_bcid_o             : out std_logic_vector(11 downto 0);
+    flx_sync_user_data_o   : out std_logic_vector(15 downto 0);
+    flx_sync_global_data_o : out std_logic_vector(15 downto 0);
+    flx_ts_o               : out std_logic;
+    flx_error_flags_o      : out std_logic_vector(3 downto 0);
+    flx_sl0id_o            : out std_logic; 
+    flx_sorb_o             : out std_logic; 
+    flx_sync_o             : out std_logic; 
+    flx_grst_o             : out std_logic; 
+    flx_l0a_o              : out std_logic; 
+    flx_l0id_o             : out std_logic_vector(37 downto 0);
+    flx_orbid_o            : out std_logic_vector(31 downto 0);
+    flx_trigger_type_o     : out std_logic_vector(15 downto 0);
+    flx_lbid_o             : out std_logic_vector(15 downto 0);
+    flx_async_user_data_o  : out std_logic_vector(63 downto 0);
+    flx_lti_dec_aligned_o  : out std_logic;
+    flx_lti_crc_valid_o    : out std_logic;
+    flx_clk40_ttc_o        : out std_logic;
+    flx_clk40_ttc_ready_o  : out std_logic;
     
     --------------------------------------------------------------------------------
     -- AXI
     --------------------------------------------------------------------------------
-    
+
     -- HAL control runs with the LHC clock, and monitors/controls anything sync to it, e.g. CSM, FELIX, SL
     Mon_v  : out std_logic_vector; --out HAL_MON_t;
     Ctrl_v : in std_logic_vector; -- in  HAL_CTRL_t;
-    
+
     -- CORE takes care of basic infrastructure, running with the axi clk, e.g. transceivers
     Core_Mon  : out CORE_MON_t;
     Core_Ctrl : in  CORE_CTRL_t;
@@ -160,12 +183,12 @@ architecture behavioral of top_hal is
   --------------------------------------------------------------------------------
 
   signal axiclock        : std_logic; -- 50MHz AXI user clock
-  signal clk40           : std_logic; -- 40 MHz LHC clock 
+  signal clk40           : std_logic; -- 40 MHz LHC clock
   signal clk240          : std_logic; -- 240 MHz LHC clock
   signal clk320          : std_logic; -- 320 MHz multiplied LHC clock
   signal clock_userlogic : std_logic; -- User logic clock (nominally 320 MHz)
   signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0); --reclock mirrors from BUFG
-  
+
   -- Synchronized resets
   signal lhc_locked    : std_logic;
   signal b2b_locked    : std_logic;
@@ -173,7 +196,7 @@ architecture behavioral of top_hal is
   signal reset_clk320  : std_logic;
   signal reset_clk40   : std_logic;
   signal reset_axi     : std_logic;
-  
+
   signal strobe_userclk : std_logic;
   signal strobe_320     : std_logic;
 
@@ -233,7 +256,8 @@ architecture behavioral of top_hal is
   signal flx_mgt_tx_cisk_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)( 7 downto 0);
   signal flx_mgt_tx_word_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(31 downto 0);
   signal flx_mgt_tx_usrclk_v : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
-  signal flx_mgt_rx_word_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(19 downto 0);
+  signal flx_mgt_rx_word_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(31 downto 0);
+  signal flx_mgt_rx_cisk_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)( 7 downto 0);
 
   --------------------------------------------------------------------------------
   -- Sector Logic Glue MGT <-> SL Core
@@ -267,12 +291,41 @@ architecture behavioral of top_hal is
 
   signal csm_ctrl_r : HAL_CSM_CSM_CTRL_t_ARRAY;
   signal csm_mon_r  : HAL_CSM_CSM_MON_t_ARRAY;
-  
+
 
   signal csm_ctrl_v : std_logic_vector(width(csm_ctrl_r) - 1 downto 0);
   signal csm_mon_v  : std_logic_vector(width(csm_mon_r ) - 1 downto 0);
 
- 
+
+  signal flx_mt_v                : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_pt_v                : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_partition_v         : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(1 downto 0);
+  signal flx_bcid_v              : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(11 downto 0);
+  signal flx_sync_user_data_v    : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(15 downto 0);
+  signal flx_sync_global_data_v  : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(15 downto 0);
+  signal flx_ts_v                : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_error_flags_v       : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(3 downto 0);
+
+  signal flx_sl0id_v             : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_sorb_v              : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_sync_v              : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_grst_v              : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_l0a_v               : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_l0id_v              : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(37 downto 0);
+  signal flx_orbid_v             : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(31 downto 0);
+  signal flx_trigger_type_v      : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(15 downto 0);
+  signal flx_lbid_v              : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(15 downto 0);
+
+  signal flx_async_user_data_v   : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(63 downto 0);
+
+  signal flx_lti_dec_aligned_v   : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_lti_crc_valid_v     : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+
+  signal flx_clk40_ttc_v         : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal flx_clk40_ttc_ready_v   : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
+
+
+  
   --------------------------------------------------------------------------------
   -- Attributes for synthesis
   --------------------------------------------------------------------------------
@@ -296,7 +349,7 @@ architecture behavioral of top_hal is
   attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;
   attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
 
-  
+
 begin  -- architecture behavioral
 
   --------------------------------------------------------------------------------
@@ -350,15 +403,15 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
 
-  
+
   mon_v         <= convert(mon_r,mon_v);
   ctrl_r        <= convert(ctrl_v,ctrl_r);
- 
+
   csm_mon_v     <= convert(csm_mon_r, csm_mon_v);
- 
-  
-  
-  
+
+
+
+
 
   clk50_o      <= axiclock;             -- AXI user clock
   clk40_o      <= clk40;                -- LHC 40 MHz clock
@@ -520,7 +573,7 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
   -- FIXME: just use 1 instance of the emulator and mux the downlink data to each
-  -- 
+  --
   lpgbtemul_wrapper_inst : entity hal.lpgbtemul_wrapper
     port map (
       reset                           => reset_clk40,
@@ -567,11 +620,11 @@ begin  -- architecture behavioral
     constant mgt_idx  : integer := c_MDT_CONFIG(CSM).mgt_id_m;
     constant mgt_id_m : integer := c_MDT_CONFIG(CSM).mgt_id_m;
     constant mgt_id_s : integer := c_MDT_CONFIG(CSM).mgt_id_s;
-     
+
   begin
 
     csm_ifgen : if (CSM < c_NUM_CSMS_ACTIVE and tdc_cnt > 0) generate
-      
+
     begin
       assert c_MGT_MAP(mgt_id_m).mgt_type=MGT_LPGBT
         report "CSM Master assigned to non-lpgbt link!" severity error;
@@ -582,7 +635,7 @@ begin  -- architecture behavioral
 
       csm_ctrl_r(CSM)    <= ctrl_r.csm.csm(CSM);
       mon_r.csm.csm(CSM) <= csm_mon_r(CSM);
-      
+
       mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
       begin
 
@@ -705,8 +758,8 @@ begin  -- architecture behavioral
       clk40          => clk40,
       reset          => reset_clk40,
       refclk_mirrors_in => refclk_mirrors,
-        
-      sl_rx_mgt_word_array_i => sl_rx_mgt_word_array, -- SLC 
+
+      sl_rx_mgt_word_array_i => sl_rx_mgt_word_array, -- SLC
       sl_tx_mgt_word_array_o => sl_tx_mgt_word_array, -- MTC
 
       sl_data_o => sl_rx_data,
@@ -734,20 +787,20 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
   -- -- Felix Receiver
-  -- 
+  --
   -- felix_decoder_inst : entity work.felix_decoder
   --   port map (
   --     clock320 => clk320, -- felix downlink clock
   --     clock40  => clk40, -- 40mhz system clock
-  -- 
+  --
   --     reset => reset_clk320,
-  -- 
+  --
   --     ttc_mgt_data_i    => ttc_mgt_word,
   --     ttc_mgt_bitslip_o => ttc_bitslip,
-  -- 
+  --
   --     strobe_pipeline => strobe_userclk,
   --     strobe_320      => strobe_320,
-  -- 
+  --
   --     l0mdt_ttc_40m => ttc_commands, -- copies of outputs stable for 25ns
   --     valid_o       => felix_valid
   --     );
@@ -777,6 +830,67 @@ begin  -- architecture behavioral
             , usr_wren_vi => daq_stream_wren_vi                          -- : in  std_logic_vector(NLINKS-1 downto 0)
             , mgt_cisk_vo => flx_mgt_tx_cisk_v(c_DAQ_LINKS-1 downto 0)   -- : out std_logic_vector_array(NLINKS-1 downto 0)( 7 downto 0) -- char is k
             , mgt_data_vo => flx_mgt_tx_word_v(c_DAQ_LINKS-1 downto 0)); -- : out std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0));
+
+  u_flx_rx : entity flx.flx_rx
+    port map (rst_i                    => reset_clk40                                     -- : in  std_logic
+              , clk240_i               => clk240                                          -- : in  std_logic
+              , rxdata_vi              => flx_mgt_rx_word_v(c_DAQ_LINKS-1 downto 0)       -- : in  std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(31 downto 0)
+              , rxcisk_vi              => flx_mgt_rx_cisk_v(c_DAQ_LINKS-1 downto 0)       -- : in  std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(3 downto 0)
+
+              , mt_vo                  => flx_mt_v(c_DAQ_LINKS-1 downto 0)                -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
+              , pt_vo                  => flx_pt_v(c_DAQ_LINKS-1 downto 0)                -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
+              , partition_vo           => flx_partition_v(c_DAQ_LINKS-1 downto 0)         -- : out std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(1 downto 0)
+              , bcid_vo                => flx_bcid_v(c_DAQ_LINKS-1 downto 0)              -- : out std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(11 downto 0)
+              , sync_user_data_vo      => flx_sync_user_data_v(c_DAQ_LINKS-1 downto 0)    -- : out std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(15 downto 0)
+              , sync_global_data_vo    => flx_sync_global_data_v(c_DAQ_LINKS-1 downto 0)  -- : out std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(15 downto 0)
+              , ts_vo                  => flx_ts_v(c_DAQ_LINKS-1 downto 0)                -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
+              , error_flags_vo         => flx_error_flags_v(c_DAQ_LINKS-1 downto 0)       -- : out std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(3 downto 0)
+              -- TTC Message
+              , sl0id_vo               => flx_sl0id_v(c_DAQ_LINKS-1 downto 0)             -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
+              , sorb_vo                => flx_sorb_v(c_DAQ_LINKS-1 downto 0)              -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
+              , sync_vo                => flx_sync_v(c_DAQ_LINKS-1 downto 0)              -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
+              , grst_vo                => flx_grst_v(c_DAQ_LINKS-1 downto 0)              -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
+              , l0a_vo                 => flx_l0a_v(c_DAQ_LINKS-1 downto 0)               -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
+              , l0id_vo                => flx_l0id_v(c_DAQ_LINKS-1 downto 0)              -- : out std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(37 downto 0)
+              , orbid_vo               => flx_orbid_v(c_DAQ_LINKS-1 downto 0)             -- : out std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(31 downto 0)
+              , trigger_type_vo        => flx_trigger_type_v(c_DAQ_LINKS-1 downto 0)      -- : out std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(15 downto 0)
+              , lbid_vo                => flx_lbid_v(c_DAQ_LINKS-1 downto 0)              -- : out std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(15 downto 0)
+              -- User message
+              , async_user_data_vo     => flx_async_user_data_v(c_DAQ_LINKS-1 downto 0)   -- : out std_logic_vector_array(c_DAQ_LINK1-1 downto 0)(63 downto 0)
+
+              , lti_dec_aligned_vo     => flx_lti_dec_aligned_v(c_DAQ_LINKS-1 downto 0)   -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
+              , lti_crc_valid_vo       => flx_lti_crc_valid_v(c_DAQ_LINKS-1 downto 0)     -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
+
+              , clk40_ttc_vo           => flx_clk40_ttc_v(c_DAQ_LINKS-1 downto 0)         -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0) 
+              , clk40_ttc_ready_vo     => flx_clk40_ttc_ready_v(c_DAQ_LINKS-1 downto 0)); -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0));
+
+    flx_mt_o                  <= flx_mt_v(c_FELIX_RECCLK_SRC-1);
+    flx_pt_o                  <= flx_pt_v(c_FELIX_RECCLK_SRC-1);
+    flx_partition_o           <= flx_partition_v(c_FELIX_RECCLK_SRC-1);
+    flx_bcid_o                <= flx_bcid_v(c_FELIX_RECCLK_SRC-1);
+    flx_sync_user_data_o      <= flx_sync_user_data_v(c_FELIX_RECCLK_SRC-1);
+    flx_sync_global_data_o    <= flx_sync_global_data_v(c_FELIX_RECCLK_SRC-1);
+    flx_ts_o                  <= flx_ts_v(c_FELIX_RECCLK_SRC-1);
+    flx_error_flags_o         <= flx_error_flags_v(c_FELIX_RECCLK_SRC-1);
+    flx_sl0id_o               <= flx_sl0id_v(c_FELIX_RECCLK_SRC-1);
+    flx_sorb_o                <= flx_sorb_v(c_FELIX_RECCLK_SRC-1);
+    flx_sync_o                <= flx_sync_v(c_FELIX_RECCLK_SRC-1);
+    flx_grst_o                <= flx_grst_v(c_FELIX_RECCLK_SRC-1);
+    flx_l0a_o                 <= flx_l0a_v(c_FELIX_RECCLK_SRC-1);
+    flx_l0id_o                <= flx_l0id_v(c_FELIX_RECCLK_SRC-1);
+    flx_orbid_o               <= flx_orbid_v(c_FELIX_RECCLK_SRC-1);
+    flx_trigger_type_o        <= flx_trigger_type_v(c_FELIX_RECCLK_SRC-1);
+    flx_lbid_o                <= flx_lbid_v(c_FELIX_RECCLK_SRC-1);
+    flx_async_user_data_o     <= flx_async_user_data_v(c_FELIX_RECCLK_SRC-1);
+    flx_lti_dec_aligned_o     <= flx_lti_dec_aligned_v(c_FELIX_RECCLK_SRC-1);
+    flx_lti_crc_valid_o       <= flx_lti_crc_valid_v(c_FELIX_RECCLK_SRC-1);
+    flx_clk40_ttc_o           <= flx_clk40_ttc_v(c_FELIX_RECCLK_SRC-1);
+    flx_clk40_ttc_ready_o     <= flx_clk40_ttc_ready_v(c_FELIX_RECCLK_SRC-1);
+
+
+
+
+
 
   --felix_tx_inst : entity work.felix_tx
   --  generic map (

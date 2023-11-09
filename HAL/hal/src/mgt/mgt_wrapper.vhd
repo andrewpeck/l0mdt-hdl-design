@@ -91,7 +91,7 @@ entity mgt_wrapper is
     flx_mgt_cisk_vi   : in  std_logic_vector_array (c_NUM_FELIX_UPLINKS-1 downto 0)( 7 downto 0);
     flx_mgt_word_vi   : in  std_logic_vector_array (c_NUM_FELIX_UPLINKS-1 downto 0)(31 downto 0);
     flx_mgt_usrclk_vo : out std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
-    flx_mgt_word_vo   : out std_logic_vector_array (c_NUM_FELIX_UPLINKS-1 downto 0)(19 downto 0);
+    flx_mgt_word_vo   : out std_logic_vector_array (c_NUM_FELIX_UPLINKS-1 downto 0)(31 downto 0);
 
     --------------------------------------------------------------------------------
     -- Sector Logic

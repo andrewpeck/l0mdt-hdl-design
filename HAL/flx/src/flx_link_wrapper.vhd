@@ -46,7 +46,8 @@ entity flx_link_wrapper is
 
         ; mgt_cisk_vi                 : in  std_logic_vector_array(3 downto 0)( 7 downto 0)
         ; mgt_word_vi                 : in  std_logic_vector_array(3 downto 0)(31 downto 0)
-        ; mgt_word_vo                 : out std_logic_vector_array(3 downto 0)(19 downto 0)
+        ; mgt_cisk_vo                 : out std_logic_vector_array(3 downto 0)( 7 downto 0)
+        ; mgt_word_vo                 : out std_logic_vector_array(3 downto 0)(31 downto 0)
 
         ; qpll1outclk_o               : out std_logic
         ; qpll1outrefclk_o            : out std_logic
@@ -75,8 +76,9 @@ begin
     attribute NUM_MGTS            : integer;              -- need it somewhere more handy actually...
     attribute NUM_MGTS of MGT_GEN : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
 
-    component flx_link is
-      port (gtwiz_userclk_tx_active_in         : in  std_logic_vector(  0 downto 0)
+
+    component flx_link
+      port (gtwiz_userclk_tx_active_in           : in  std_logic_vector(  0 downto 0)
             ; gtwiz_userclk_rx_active_in         : in  std_logic_vector(  0 downto 0)
             ; gtwiz_reset_clk_freerun_in         : in  std_logic_vector(  0 downto 0)
             ; gtwiz_reset_all_in                 : in  std_logic_vector(  0 downto 0)
@@ -88,12 +90,13 @@ begin
             ; gtwiz_reset_tx_done_out            : out std_logic_vector(  0 downto 0)
             ; gtwiz_reset_rx_done_out            : out std_logic_vector(  0 downto 0)
             ; gtwiz_userdata_tx_in               : in  std_logic_vector(127 downto 0)
-            ; gtwiz_userdata_rx_out              : out std_logic_vector( 79 downto 0)
+            ; gtwiz_userdata_rx_out              : out std_logic_vector(127 downto 0)
             ; gtrefclk01_in                      : in  std_logic_vector(  0 downto 0)
             ; qpll1outclk_out                    : out std_logic_vector(  0 downto 0)
             ; qpll1outrefclk_out                 : out std_logic_vector(  0 downto 0)
             ; gtyrxn_in                          : in  std_logic_vector(  3 downto 0)
             ; gtyrxp_in                          : in  std_logic_vector(  3 downto 0)
+            ; rx8b10ben_in                       : in  std_logic_vector(  3 downto 0)
             ; rxusrclk_in                        : in  std_logic_vector(  3 downto 0)
             ; rxusrclk2_in                       : in  std_logic_vector(  3 downto 0)
             ; tx8b10ben_in                       : in  std_logic_vector(  3 downto 0)
@@ -105,11 +108,15 @@ begin
             ; gtpowergood_out                    : out std_logic_vector(  3 downto 0)
             ; gtytxn_out                         : out std_logic_vector(  3 downto 0)
             ; gtytxp_out                         : out std_logic_vector(  3 downto 0)
+            ; rxctrl0_out                        : out std_logic_vector( 63 downto 0)
+            ; rxctrl1_out                        : out std_logic_vector( 63 downto 0)
+            ; rxctrl2_out                        : out std_logic_vector( 31 downto 0)
+            ; rxctrl3_out                        : out std_logic_vector( 31 downto 0)
             ; rxoutclk_out                       : out std_logic_vector(  3 downto 0)
             ; rxpmaresetdone_out                 : out std_logic_vector(  3 downto 0)
             ; txoutclk_out                       : out std_logic_vector(  3 downto 0)
             ; txpmaresetdone_out                 : out std_logic_vector(  3 downto 0));
-      end component flx_link;
+    end component;
 
     signal reset_rx_cdr_stable : std_logic;
     signal reset_tx_done       : std_logic;
@@ -182,19 +189,20 @@ begin
                 , gtwiz_reset_rx_cdr_stable_out(0)      => reset_rx_cdr_stable         -- : out std_logic_vector(0 downto 0)
                 , gtwiz_reset_tx_done_out(0)            => reset_tx_done               -- : out std_logic_vector(0 downto 0)
                 , gtwiz_reset_rx_done_out(0)            => reset_rx_done               -- : out std_logic_vector(0 downto 0)
-                , gtwiz_userdata_tx_in(31 downto 0)     => mgt_word_vi(0)              -- : in  std_logic_vector(127 downto 0)
-                , gtwiz_userdata_tx_in(63 downto 32)    => mgt_word_vi(1)              -- : 
-                , gtwiz_userdata_tx_in(95 downto 64)    => mgt_word_vi(2)              -- : 
+                , gtwiz_userdata_tx_in( 31 downto  0)   => mgt_word_vi(0)              -- : in  std_logic_vector(127 downto 0)
+                , gtwiz_userdata_tx_in( 63 downto 32)   => mgt_word_vi(1)              -- : 
+                , gtwiz_userdata_tx_in( 95 downto 64)   => mgt_word_vi(2)              -- : 
                 , gtwiz_userdata_tx_in(127 downto 96)   => mgt_word_vi(3)              -- : 
-                , gtwiz_userdata_rx_out(19 downto 0)    => mgt_word_vo(0)              -- : out std_logic_vector(79 downto 0)
-                , gtwiz_userdata_rx_out(39 downto 20)   => mgt_word_vo(1)              -- : 
-                , gtwiz_userdata_rx_out(59 downto 40)   => mgt_word_vo(2)              -- : 
-                , gtwiz_userdata_rx_out(79 downto 60)   => mgt_word_vo(3)              -- : 
+                , gtwiz_userdata_rx_out( 31 downto  0)  => mgt_word_vo(0)              -- : out std_logic_vector(127 downto 0)
+                , gtwiz_userdata_rx_out( 63 downto 32)  => mgt_word_vo(1)              -- : 
+                , gtwiz_userdata_rx_out( 95 downto 64)  => mgt_word_vo(2)              -- : 
+                , gtwiz_userdata_rx_out(127 downto 96)  => mgt_word_vo(3)              -- : 
                 , gtrefclk01_in(0)                      => refclk0_i                   -- : in  std_logic_vector(0 downto 0)
                 , qpll1outclk_out(0)                    => qpll1outclk                 -- : out std_logic_vector(0 downto 0)
                 , qpll1outrefclk_out(0)                 => qpll1outrefclk              -- : out std_logic_vector(0 downto 0)
                 , gtyrxn_in                             => gty_rx_vni                  -- : in  std_logic_vector(3 downto 0)
                 , gtyrxp_in                             => gty_rx_vpi                  -- : in  std_logic_vector(3 downto 0)
+                , rx8b10ben_in                          => (others => '1')             -- : in  std_logic_vector(3 downto 0)
                 , rxusrclk_in                           => (others => rx_usrclk_i)     -- : in  std_logic_vector(  3 downto 0)
                 , rxusrclk2_in                          => (others => rx_usrclk_i)     -- : in  std_logic_vector(  3 downto 0)
                 , tx8b10ben_in                          => (others => '1')             -- : in  std_logic_vector(3 downto 0)
@@ -209,6 +217,14 @@ begin
                 , gtpowergood_out                       => gtpowergood_v               -- : out std_logic_vector(3 downto 0)
                 , gtytxn_out                            => gty_tx_vno                  -- : out std_logic_vector(3 downto 0)
                 , gtytxp_out                            => gty_tx_vpo                  -- : out std_logic_vector(3 downto 0)
+                , rxctrl0_out( 7 downto 0)              => mgt_cisk_vo(0) -- : out std_logic_vector( 63 downto 0)
+                , rxctrl0_out(15 downto 8)              => mgt_cisk_vo(1) -- : out std_logic_vector( 63 downto 0)
+                , rxctrl0_out(23 downto 16)             => mgt_cisk_vo(2) -- : out std_logic_vector( 63 downto 0)
+                , rxctrl0_out(31 downto 24)             => mgt_cisk_vo(3) -- : out std_logic_vector( 63 downto 0)
+                , rxctrl0_out(63 downto 32)             => open -- : out std_logic_vector( 63 downto 0)
+                , rxctrl1_out                           => open -- : out std_logic_vector( 63 downto 0)
+                , rxctrl2_out                           => open -- : out std_logic_vector( 31 downto 0)
+                , rxctrl3_out                           => open -- : out std_logic_vector( 31 downto 0)
                 , rxoutclk_out                          => rxoutclk_v                  -- : out std_logic_vector(3 downto 0)
                 , rxpmaresetdone_out                    => rxpmaresetdone_v            -- : out std_logic_vector(3 downto 0)
                 , txoutclk_out                          => txoutclk_v                  -- : out std_logic_vector(3 downto 0)
