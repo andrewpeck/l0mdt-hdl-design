@@ -142,9 +142,9 @@ begin
       o_tar_hits_av  => o_mid_tar_hits_av
     );
     FM_MID_TAR: for k in 0 to csm_polmux_in_sb_n/2-1  generate
-        fm_tar_mon_r(1)(k).fm_data <= i_mid_tdc_hits_av(k);
+        fm_tar_mon_r(1)(k).fm_data <= (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') &  i_mid_tdc_hits_av(k);
         fm_tar_mon_r(1)(k).fm_vld   <= i_mid_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
-        fm_tar_mon_r(1)(csm_polmux_in_sb_n/2 + k).fm_data <= o_mid_tdc_hits_av(k);
+        fm_tar_mon_r(1)(csm_polmux_in_sb_n/2 + k).fm_data <=  (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') &  o_mid_tdc_hits_av(k);
         fm_tar_mon_r(1)(csm_polmux_in_sb_n/2 + k).fm_vld   <= o_mid_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
       end generate;
   end generate;
@@ -171,9 +171,9 @@ begin
       o_tar_hits_av  => o_out_tar_hits_av
     );
    FM_OUT_TAR: for k in 0 to csm_polmux_in_sb_n/2-1  generate
-        fm_tar_mon_r(2)(k).fm_data <= i_out_tdc_hits_av(k);
+        fm_tar_mon_r(2)(k).fm_data <= (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') & i_out_tdc_hits_av(k);
         fm_tar_mon_r(2)(k).fm_vld   <= i_out_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
-        fm_tar_mon_r(2)(csm_polmux_in_sb_n/2 + k).fm_data <= o_out_tdc_hits_av(k);
+        fm_tar_mon_r(2)(csm_polmux_in_sb_n/2 + k).fm_data <=  (mon_dw_max-1 downto  tdcpolmux2tar_vt'w => '0') &  o_out_tdc_hits_av(k);
         fm_tar_mon_r(2)(csm_polmux_in_sb_n/2 + k).fm_vld   <= o_out_tdc_hits_av(k)(tdcpolmux2tar_vt'w-1);
       end generate;
     

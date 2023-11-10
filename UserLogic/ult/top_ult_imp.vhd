@@ -175,7 +175,7 @@ architecture behavioral of top_ult is
   signal mpl_mon_r             : MPL_MON_t;
   signal fm_ctrl_r             : FM_CTRL_t;
   signal fm_mon_r              : FM_MON_t;
-
+  signal fm_csm_mon_r : fm_csm_mon_data;
   signal hps_inn_ctrl_v        : std_logic_vector(HPS_CTRL_t'w -1 downto 0); -- : in  H2S_CTRL_t;
   signal hps_inn_mon_v         : std_logic_vector(HPS_MON_t'w -1 downto 0);--  : out H2S_MON_t;
   signal hps_mid_ctrl_v        : std_logic_vector(HPS_CTRL_t'w -1 downto 0); -- : in  H2S_CTRL_t;

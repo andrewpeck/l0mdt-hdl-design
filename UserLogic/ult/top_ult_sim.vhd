@@ -177,8 +177,8 @@ architecture beh of ult_tb is
   signal mpl_mon_v             : std_logic_vector(MPL_MON_t'w -1 downto 0);
   
   signal fm_ctrl_v             : std_logic_vector(FM_CTRL_t'w -1 downto 0);
-  signal fm_mon_v              : std_logic_vector(FM_MON_t'w -1 downto 0);
-
+  signal fm_mon_v           : std_logic_vector(FM_MON_t'w -1 downto 0);
+  signal fm_csm_mon_r   : fm_csm_mon_data;
    signal csm_fm_mon_v : std_logic_vector(width(fm_csm_mon_r)-1 downto 0);
   
   -- signal o_daq_streams     : felix_stream_avt (c_DAQ_LINKS - 1 downto 0);
