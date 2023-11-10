@@ -1,17 +1,21 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: csv_reader_slc.vhd
+-- Module: <<moduleName>>
+-- File PATH: /csv_reader_slc.vhd
+-- -----
+-- File Created: 2020.11.24 3:06:53 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Friday, 10th November 2023 10:08:37 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
+-- 2023-11-10	GLdL	adapting to new simCheck framework
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger
---  Module: Test Bench Module for Logic Trigger Path
---  Description: SLC input vector reader and injector
---
---------------------------------------------------------------------------------
---  Revisions:
---      2020.11.24 Creation 
---
---------------------------------------------------------------------------------
+
+
 
 library ieee;
 use ieee.std_logic_misc.all;
@@ -43,7 +47,7 @@ use shared_lib.vhdl_textio_csv_pkg.all;
 
 entity csv_reader_slc is
   generic (
-    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.csv";
+    IN_SLC_FILE         : string  := "empty";
     g_verbose         : integer := 1
   );
   port (
