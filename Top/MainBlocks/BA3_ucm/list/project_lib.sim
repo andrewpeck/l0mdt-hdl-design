@@ -10,3 +10,4 @@ shared/sim/waves/BA3_ucm_ta.do
 
 #IV
 shared/sim/vhdl_input_vect/BA3_20220915_120534/slc_A3_Barrel.csv
+shared/sim/vhdl_input_vect/generated/slc_A3_Barrel_as.csv

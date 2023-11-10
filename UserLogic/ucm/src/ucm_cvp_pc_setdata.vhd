@@ -78,6 +78,9 @@ architecture beh of ucm_cvp_pc_setdata is
   signal coin : integer;
 
   signal num_h_i : integer := 0;
+  
+  signal pl_rpc_Z_a : rpc_pos_oast(g_NUM_RPC_LAYERS -1 downto 0);
+  signal pl_cand_dv : std_logic;
 
   signal rpc_a : rpc_pos_ast;
   signal rad_a : rpc_rad_ast;
@@ -101,25 +104,26 @@ begin
         rpc_a <= (others => (others => '0'));
         num_h_i <= 0;
       else
+        pl_rpc_Z_a <= i_rpc_Z_a;
+        pl_cand_dv <= i_cand_dv;
         if ena =  '1' then
-
-          if i_cand_dv = '1' then
-            if or_reduce(std_logic_vector(i_rpc_Z_a(0))) = '0' then
+          -- if i_cand_dv = '1' then
+            if or_reduce(std_logic_vector(pl_rpc_Z_a(0))) = '0' then
               rad_a(0) <= (others => '0');
             else
               rad_a(0) <= resize(signed(i_rpc_R_a(0)),SLC_IN_RPC_LEN);
             end if;
-            if or_reduce(std_logic_vector(i_rpc_Z_a(1))) = '0' then
+            if or_reduce(std_logic_vector(pl_rpc_Z_a(1))) = '0' then
               rad_a(1) <= (others => '0');
             else
               rad_a(1) <= resize(signed(i_rpc_R_a(1)),SLC_IN_RPC_LEN);
             end if;
-            if or_reduce(std_logic_vector(i_rpc_Z_a(2))) = '0' then
+            if or_reduce(std_logic_vector(pl_rpc_Z_a(2))) = '0' then
               rad_a(2) <= (others => '0');
             else
               rad_a(2) <= resize(signed(i_rpc_R_a(2)),SLC_IN_RPC_LEN);
             end if;
-            if or_reduce(std_logic_vector(i_rpc_Z_a(3))) = '0' then
+            if to_integer(signed(pl_rpc_Z_a(3))) = 0 then
               rad_a(3) <= (others => '0');
             else
               rad_a(3) <= resize(signed(i_rpc_R_a(3)),SLC_IN_RPC_LEN);
@@ -128,10 +132,10 @@ begin
             -- rad_a(2) <= signed(i_rpc_R_a(2));
             -- rad_a(3) <= signed(i_rpc_R_a(3));
 
-            rpc_a(0) <= resize(signed(i_rpc_Z_a(0)),SLC_IN_RPC_LEN);
-            rpc_a(1) <= resize(signed(i_rpc_Z_a(1)),SLC_IN_RPC_LEN);
-            rpc_a(2) <= resize(signed(i_rpc_Z_a(2)),SLC_IN_RPC_LEN);
-            rpc_a(3) <= resize(signed(i_rpc_Z_a(3)),SLC_IN_RPC_LEN);
+            rpc_a(0) <= resize(signed(pl_rpc_Z_a(0)),SLC_IN_RPC_LEN);
+            rpc_a(1) <= resize(signed(pl_rpc_Z_a(1)),SLC_IN_RPC_LEN);
+            rpc_a(2) <= resize(signed(pl_rpc_Z_a(2)),SLC_IN_RPC_LEN);
+            rpc_a(3) <= resize(signed(pl_rpc_Z_a(3)),SLC_IN_RPC_LEN);
 
             -- coin type
             case coin is
@@ -143,7 +147,7 @@ begin
               when 5 => num_h_i <=  4;
               when others =>
             end case;
-
+          if pl_cand_dv = '1' then
             set_data_dv  <= '1';
           else
             set_data_dv  <= '0';

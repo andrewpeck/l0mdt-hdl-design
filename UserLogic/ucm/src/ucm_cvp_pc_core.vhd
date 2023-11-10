@@ -85,7 +85,7 @@ architecture beh of ucm_cvp_pc_core is
 
   type mult_zy_art is array ( 0 to 3) of std_logic_vector((sig_SLC_Z_RPC_LEN * 2) - 1 downto 0);
   signal mult_xy    : mult_zy_art;
-  signal mult_zy_dv : std_logic_vector(3 downto 0);
+  signal mult_xy_dv : std_logic_vector(3 downto 0);
   signal mult_xx    : mult_zy_art;
   signal mult_xx_dv : std_logic_vector(3 downto 0);
 
@@ -216,7 +216,7 @@ begin
         i_dv        => set_data_dv,
         --
         o_result    => mult_xy(hit_i),
-        o_dv        => mult_zy_dv(hit_i)
+        o_dv        => mult_xy_dv(hit_i)
       );
     --xx
     MULT_XX_ENT : entity shared_lib.VU_generic_pipelined_MATH
@@ -299,7 +299,7 @@ begin
       g_NAME => "SXX",
       g_OPERATION => "+++",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 2,
+      g_OUT_PIPE_STAGES => 1,
       g_in_A_WIDTH => mult_xx(0)'length,
       g_in_B_WIDTH => mult_xx(1)'length,
       g_in_C_WIDTH => mult_xx(2)'length,
@@ -337,7 +337,7 @@ begin
       i_in_B      => mult_xy(1),
       i_in_C      => mult_xy(2),
       i_in_D      => mult_xy(3),
-      i_dv        => or_reduce(mult_zy_dv),
+      i_dv        => or_reduce(mult_xy_dv),
       --
       o_result    => sum_xy,
       o_dv        => sum_xy_dv
@@ -349,8 +349,8 @@ begin
     generic map(
       g_NAME => "nSxx",
       g_OPERATION => "*4",
-      g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1,
+      g_IN_PIPE_STAGES  => 0,
+      g_OUT_PIPE_STAGES => 0,
       g_in_A_WIDTH => 4,
       g_in_B_WIDTH => sum_xx'length
     )
@@ -417,6 +417,21 @@ begin
   --------------------------------
   -- B
   --------------------------------
+  -- Sx_PL_1 : entity vamc_lib.vamc_spl
+  --   generic map(
+  --     g_DELAY_CYCLES  => 48,
+  --     g_PIPELINE_WIDTH    => sum_Z'length
+  --   )
+  --   port map(
+  --     clk         => clk,
+  --     rst         => rst,
+  --     ena         => ena,
+  --     --
+  --     i_data      => sum_z,
+  --     i_dv        => sum_z_dv,
+  --     o_data      => sum_z_pl,
+  --     o_dv        => sum_z_pl_dv
+  --   );
   MULT_SZZ_SY_ENT : entity shared_lib.VU_generic_pipelined_MATH
     generic map(
       g_NAME => "SxSxx",
@@ -571,19 +586,6 @@ begin
   slope_bden_sc <= std_logic_vector(resize(signed(param_c),slope_bden_sc'length));
   slope_bdiv_sc <= std_logic_vector(resize(signed(slope_bnom_sc),slope_bdiv_sc'length));
   MAIN_DIV_IPR2: if g_SLOPE_DIV_IPR2_ENABLE generate
-    -- COMPONENT div_gen_r2s_v1
-    --   PORT (
-    --     aclk : IN STD_LOGIC;
-    --     aclken : IN STD_LOGIC;
-    --     aresetn : IN STD_LOGIC;
-    --     s_axis_divisor_tvalid : IN STD_LOGIC;
-    --     s_axis_divisor_tdata : IN STD_LOGIC_VECTOR(23 DOWNTO 0);
-    --     s_axis_dividend_tvalid : IN STD_LOGIC;
-    --     s_axis_dividend_tdata : IN STD_LOGIC_VECTOR(33 DOWNTO 0);
-    --     m_axis_dout_tvalid : OUT STD_LOGIC;
-    --     m_axis_dout_tdata : OUT STD_LOGIC_VECTOR(55 DOWNTO 0)
-    --   );
-    -- END COMPONENT;
     COMPONENT cvp_slope_r2s_v1
       PORT (
         aclk : IN STD_LOGIC;
@@ -616,7 +618,7 @@ begin
     -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
     slope_div_dout_tdata_q <= slope_div_dout_tdata(57 downto 24);
     slope_div_dout_tdata_r <= slope_div_dout_tdata(20 downto 0);
-    slope_bdiv_ipr2 <= slope_div_dout_tdata_q  when slope_div_dout_tvalid = '1' else (others => '0') ;
+    slope_bdiv_ipr2 <= slope_div_dout_tdata_q;--  when slope_div_dout_tvalid = '1' else (others => '0') ;
     slope_bdiv_ipr2_dv <= slope_div_dout_tvalid;
   end generate MAIN_DIV_IPR2;
   
@@ -672,7 +674,7 @@ begin
     -- signal div_dout_tdata_r : std_logic_vector(31 downto 0);-- := (others => '0');
     off_div_dout_tdata_q <= off_div_dout_tdata(57 downto 24);
     off_div_dout_tdata_r <= off_div_dout_tdata(20 downto 0);
-    off_div_ipr2 <= off_div_dout_tdata_q  when off_div_dout_tvalid = '1' else (others => '0') ;
+    off_div_ipr2 <= off_div_dout_tdata_q;--  when off_div_dout_tvalid = '1' else (others => '0') ;
     off_div_ipr2_dv <= off_div_dout_tvalid;
   end generate;
   
@@ -797,6 +799,7 @@ begin
   o_vec_z_pos_dv <= or_reduce(vec_z_pos_dv_a);
   o_offset <= resize(signed(off_div),32);
   o_slope <= resize(signed(slope_bdiv),32);
+  o_vector_dv <= slope_bdiv_dv and off_div_dv;
 
 
 end architecture beh;
