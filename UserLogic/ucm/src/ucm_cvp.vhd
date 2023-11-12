@@ -148,8 +148,8 @@ architecture beh of ucm_cvp is
   signal atan_dv      : std_logic;
 
   -- type vec_pos_array_ut  is array (0 to g_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
-  signal vec_pos_array  : vec_pos_array_ut(g_NUM_MDT_LAYERS-1 downto 0);
-  signal vec_z_pos_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
+  -- signal vec_pos_array  : vec_pos_array_ut(g_NUM_MDT_LAYERS-1 downto 0);
+  -- signal vec_z_pos_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
 
   
 
@@ -333,13 +333,13 @@ begin
     --     );
     --   end generate;
     -- end generate;
-    vec_pos_array <= vec_pos_a;
+    -- vec_pos_array <= vec_pos_a;
 
     IETA_INN : entity ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION => 0,
       g_RESOLUTION_SCALE => UCM2HPS_VEC_POS_MULT,
-      g_INPUT_WIDTH => vec_pos_array(0)'length
+      g_INPUT_WIDTH => vec_pos_a(0)'length
 
     )
     port map(
@@ -348,8 +348,8 @@ begin
       --
       i_chamber_z_org_bus => i_chamber_z_org_bus(0),
       --
-      i_z           => vec_pos_array(0),
-      i_z_dv        => vec_z_pos_dv(0),
+      i_z           => vec_pos_a(0),
+      i_z_dv        => vec_pos_a_dv,
       --
       o_ieta        => new_chamb_ieta_a(0),
       o_ieta_dv     => new_chamb_ieta_dv(0)
@@ -359,7 +359,7 @@ begin
     generic map(
       g_STATION => 1,
       g_RESOLUTION_SCALE => UCM2HPS_VEC_POS_MULT,
-      g_INPUT_WIDTH => vec_pos_array(1)'length
+      g_INPUT_WIDTH => vec_pos_a(1)'length
     )
     port map(
       clk           => clk,
@@ -367,8 +367,8 @@ begin
       --
       i_chamber_z_org_bus => i_chamber_z_org_bus(1),
       --
-      i_z           => vec_pos_array(1),
-      i_z_dv        => vec_z_pos_dv(1),
+      i_z           => vec_pos_a(1),
+      i_z_dv        => vec_pos_a_dv,
       --
       o_ieta        => new_chamb_ieta_a(1),
       o_ieta_dv     => new_chamb_ieta_dv(1)
@@ -378,7 +378,7 @@ begin
     generic map(
       g_STATION => 2,
       g_RESOLUTION_SCALE => UCM2HPS_VEC_POS_MULT,
-      g_INPUT_WIDTH => vec_pos_array(2)'length
+      g_INPUT_WIDTH => vec_pos_a(2)'length
     )
     port map(
       clk           => clk,
@@ -386,8 +386,8 @@ begin
       --
       i_chamber_z_org_bus => i_chamber_z_org_bus(2),
       --
-      i_z           => vec_pos_array(2),
-      i_z_dv        => vec_z_pos_dv(2),
+      i_z           => vec_pos_a(2),
+      i_z_dv        => vec_pos_a_dv,
       --
       o_ieta        => new_chamb_ieta_a(2),
       o_ieta_dv     => new_chamb_ieta_dv(2)
@@ -445,10 +445,10 @@ begin
           end loop;
         end if;
 
-        if or_reduce(vec_z_pos_dv) = '1' then
+        if vec_pos_a_dv = '1' then
           for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
             if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-              ucm2hps_buff_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
+              ucm2hps_buff_ar(hps_i).vec_pos <= vec_pos_a(hps_i);
             -- else
             --   ucm2hps_ar(hps_i).vec_pos             <=(others => '0');
 

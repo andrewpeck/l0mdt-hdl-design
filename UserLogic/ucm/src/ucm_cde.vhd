@@ -55,8 +55,8 @@ entity ucm_cde is
     -- pam out
     o_cde_data_v          : out ucm_cde_vt;
     -- to pipeline
-    o_pl_phimod           : out std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
-    o_pl_phimod_dv        : out std_logic;
+    -- o_pl_phimod           : out std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
+    -- o_pl_phimod_dv        : out std_logic;
 
     o_ucm2pl_v            : out ucm2pl_vt
   );
@@ -93,6 +93,7 @@ architecture beh of ucm_cde is
   -- signal int_phimod_abs : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_abs_pl : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_pl: std_logic_vector(UCM2PL_PHIMOD_LEN - 1 downto 0);--(12 -1 downto 0);
+  signal int_phimod_pl_dv : std_logic;
   signal int_abs_dv : std_logic;
 
   -----------------
@@ -120,7 +121,7 @@ begin
       o_data      => int_slc_data_v
   );
 
-  PHIMOID_EN: if phimod_ena = '1' generate
+  -- PHIMOID_EN: if phimod_ena = '1' generate
     
     B_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
 
@@ -147,59 +148,8 @@ begin
           o_phimod_abs => int_phimod_abs_pl,
           o_abs_dv    => int_abs_dv,
           o_phimod    => int_phimod_pl,
-          o_dv        => o_pl_phimod_dv
+          o_dv        => int_phimod_pl_dv
       );
-
-      o_pl_phimod <= int_phimod_pl;
-
-      -- phimod_proc : process(clk)
-      -- begin
-      --   if rising_edge(clk) then
-      --     if rst = '1' then
-      --       int_phimod      <= (others => '0');
-      --       int_phimod_abs  <= (others => '0');
-      --       int_phimod_dv <= '0';
-      --     else
-      --       int_phimod_dv <= i_slc_data_r.data_valid ;
-      --       int_phimod_abs_pl <= int_phimod_abs;
-      --       if i_slc_data_r.data_valid = '1' then
-      --         int_phimod      <= std_logic_vector(resize(signed('0'&slc_posphi) - signed('0'&i_phicenter),SLC_COMMON_POSPHI_LEN));
-      --         int_phimod_abs  <= std_logic_vector(resize(abs(signed('0'&slc_posphi) - signed('0'&i_phicenter)),SLC_COMMON_POSPHI_LEN));
-      --       else
-      --         int_phimod      <= (others => '0');
-      --         int_phimod_abs  <= (others => '0');
-      --       end if;
-      --     end if;
-      --   end if;
-      -- end process;
-
-
-      -- PHIMOD_SCALE : entity shared_lib.generic_pipelined_MATH
-      --   generic map(
-      --     g_OPERATION => "*",
-      --     g_IN_PIPE_STAGES  => 2,
-      --     -- g_OPERAND_A_WIDTH => SLC_COMMON_POSPHI_LEN,
-      --     -- g_OPERAND_B_WIDTH => 3,
-      --     g_OUT_PIPE_STAGES => 2
-      --   )
-      --   port map(
-      --     clk         => clk,
-      --     rst         => rst,
-      --     --
-      --     i_in_A      => int_phimod,
-      --     i_in_B      => std_logic_vector(to_unsigned(integer(3),3)),
-      --     i_in_C      => "0",
-      --     i_in_D      => "0",
-      --     i_dv        => int_phimod_dv,
-      --     --
-      --     o_result    => int_phimod_pl,
-      --     o_dv        => o_pl_phimod_dv
-      -- );
-
-      -- o_pl_phimod	<= std_logic_vector(resize(signed(int_phimod_pl),UCM2PL_PHIMOD_LEN));
-
-
-
 
       int_slc_data_r <= convert(int_slc_data_v,int_slc_data_r);
 
@@ -306,26 +256,6 @@ begin
               o_cde_data_r.posphi       <= int_slc_data_r.common.posphi;
               o_cde_data_r.chamb_ieta   <= int_chamb_ieta;
               o_cde_data_r.phimod       <= std_logic_vector(resize(signed(int_phimod_abs_pl),5));
-
-
-              -- -- INN
-              -- ch_i := 0;
-              -- rpc_i := 0;
-              -- o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,0,to_integer(rpc_z_a(0)),SLC_Z_RPC_MULT);
-              -- -- MID 1
-              -- ch_i := 1;
-              -- rpc_i := 1;
-              -- o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,1,to_integer(rpc_z_a(1)),SLC_Z_RPC_MULT);
-              -- -- MID 2
-              -- ch_i := 1;
-              -- rpc_i := 2;
-              -- o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,1,to_integer(rpc_z_a(2)),SLC_Z_RPC_MULT);
-              -- -- OUT
-              -- ch_i := 2;
-              -- rpc_i := 3;
-              -- o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,2,to_integer(rpc_z_a(3)),SLC_Z_RPC_MULT);
-
-
             else
               -- o_cde_data_r <= zero(o_cde_data_r);
               -- o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
@@ -342,14 +272,14 @@ begin
 
     end generate;
 
-  end generate PHIMOID_EN;
+  -- end generate PHIMOID_EN;
   ---------------------------------------------------------------
   --
   ---------------------------------------------------------------
 
    
 
-  BYPASS_GEN: if bypass = '1' generate
+  -- BYPASS_GEN: if bypass = '1' generate
     SLC_OUT_PL : entity vamc_lib.vamc_spl
     generic map(
       g_DELAY_CYCLES  => 4,
@@ -387,20 +317,20 @@ begin
             o_uCM2pl_r.data_valid   <= int2_slc_data_r.data_valid;
             -- o_uCM2pl_r.posphi       <= int2_slc_data_r.common.posphi;
             -- o_uCM2pl_r.chamb_ieta   <= int2_chamb_ieta;
-            if ena = '1' then
+            -- if ena = '1' then
               o_uCM2pl_r.phimod       <= resize(signed(int_phimod_pl),UCM2PL_PHIMOD_LEN);
-            else
-              o_uCM2pl_r.phimod       <= (others => '0');
-            end if;
+            -- else
+            --   o_uCM2pl_r.phimod       <= (others => '0');
+            -- end if;
 
           else
-            o_uCM2pl_r <= zero(o_uCM2pl_r);
+            -- o_uCM2pl_r <= zero(o_uCM2pl_r);
             -- o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
             -- o_cde_data_r.muid.slid    <= o_cde_data_null.muid.slid ;
             -- o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;
             -- o_cde_data_r.cointype     <= o_cde_data_null.cointype  ;
             -- o_cde_data_r.specific     <= o_cde_data_null.specific  ;
-            -- o_cde_data_r.data_valid   <= '0';--o_cde_data_null.data_valid;
+            o_cde_data_r.data_valid   <= '0';--o_cde_data_null.data_valid;
             -- o_cde_data_r.posphi       <= o_cde_data_null.posphi    ;
           end if;
         end if;
@@ -408,7 +338,7 @@ begin
     end process;
 
     o_uCM2pl_v <= convert(o_uCM2pl_r,o_uCM2pl_v);
-  end generate BYPASS_GEN;
+  -- end generate BYPASS_GEN;
 
   
 
