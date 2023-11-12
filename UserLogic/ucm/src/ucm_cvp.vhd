@@ -106,6 +106,12 @@ architecture beh of ucm_cvp is
   signal barrel_r       : slc_barrel_rt;
   signal rpc_Z_a        : rpc_pos_oast(g_NUM_RPC_LAYERS -1 downto 0);
 
+  signal offset       : signed(31 downto 0);--signed(126 -1 downto 0);
+  signal slope        : signed(31 downto 0);-- 
+
+  signal offset_dv     : std_logic;
+  signal slope_dv     : std_logic;
+
   signal vec_pos_a      : vec_pos_array_ut(g_NUM_MDT_LAYERS-1 downto 0);
   signal vec_pos_a_dv   : std_logic;
 
@@ -130,10 +136,11 @@ architecture beh of ucm_cvp is
   signal new_chamb_ieta_a : new_chamb_ieta_art;
   signal new_chamb_ieta_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
 
-  signal offset       : signed(31 downto 0);--signed(126 -1 downto 0);
-  signal slope        : signed(31 downto 0);-- 
-  -- signal slope_org : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
-  signal slope_dv     : std_logic;
+  -- signal offset       : signed(31 downto 0);--signed(126 -1 downto 0);
+  -- signal slope        : signed(31 downto 0);-- 
+  -- -- signal slope_org : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
+  -- signal offset_dv     : std_logic;
+  -- signal slope_dv     : std_logic;
 
   constant ATAN_SLOPE_LEN : integer := 20;
   signal atan_slope   : unsigned(ATAN_SLOPE_LEN - 1 downto 0);
@@ -274,8 +281,9 @@ begin
     i_mdt_R_dv    => mdt_radius_dv,
     --
     o_offset      => offset,
+    o_offset_dv   => offset_dv,
     o_slope       => slope,
-    o_vector_dv   => slope_dv,
+    o_slope_dv    => slope_dv,
     --
     o_vec_z_pos     => vec_pos_a,
     o_vec_z_pos_dv  => vec_pos_a_dv
