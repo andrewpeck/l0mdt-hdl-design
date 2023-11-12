@@ -161,8 +161,27 @@ package common_types_pkg is
    function convert(x: tar2hps_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: tar2hps_avt) return tar2hps_avt;
 
+   subtype ucm2tar_vt is std_logic_vector(ucm2tar_rt'w-1 downto 0);
+   attribute w of ucm2tar_vt : subtype is 13;
+
+   type ucm2tar_art is array(integer range <>) of ucm2tar_rt;
+   function width(x: ucm2tar_art) return integer;
+   function convert(x: ucm2tar_art; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: ucm2tar_art) return ucm2tar_art;
+   function zero(tpl: ucm2tar_art) return ucm2tar_art;
+   function convert(x: ucm2tar_art; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: ucm2tar_art) return ucm2tar_art;
+
+   type ucm2tar_avt is array(integer range <>) of ucm2tar_vt;
+   function width(x: ucm2tar_avt) return integer;
+   function convert(x: ucm2tar_avt; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: ucm2tar_avt) return ucm2tar_avt;
+   function zero(tpl: ucm2tar_avt) return ucm2tar_avt;
+   function convert(x: ucm2tar_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: ucm2tar_avt) return ucm2tar_avt;
+
    subtype ucm2hps_vt is std_logic_vector(ucm2hps_rt'w-1 downto 0);
-   attribute w of ucm2hps_vt : subtype is 58;
+   attribute w of ucm2hps_vt : subtype is 66;
 
    type ucm2hps_art is array(integer range <>) of ucm2hps_rt;
    function width(x: ucm2hps_art) return integer;
@@ -1398,6 +1417,152 @@ package body common_types_pkg is
    end function convert;
    function convert(x: std_logic_vector_array; tpl: tar2hps_avt) return tar2hps_avt is
       variable y : tar2hps_avt(tpl'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
+   function width(x: ucm2tar_art) return integer is
+      variable w : integer;
+   begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
+      return w;
+   end function width;
+   function convert(x: ucm2tar_art; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: ucm2tar_art) return ucm2tar_art is
+      variable y : ucm2tar_art(tpl'range);
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: ucm2tar_art) return ucm2tar_art is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: ucm2tar_art; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: ucm2tar_art) return ucm2tar_art is
+      variable y : ucm2tar_art(tpl'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
+   function width(x: ucm2tar_avt) return integer is
+      variable w : integer;
+   begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
+      return w;
+   end function width;
+   function convert(x: ucm2tar_avt; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: ucm2tar_avt) return ucm2tar_avt is
+      variable y : ucm2tar_avt(tpl'range);
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: ucm2tar_avt) return ucm2tar_avt is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: ucm2tar_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: ucm2tar_avt) return ucm2tar_avt is
+      variable y : ucm2tar_avt(tpl'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
