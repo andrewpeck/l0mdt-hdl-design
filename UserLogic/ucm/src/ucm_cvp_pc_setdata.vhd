@@ -76,6 +76,7 @@ end entity ucm_cvp_pc_setdata;
 architecture beh of ucm_cvp_pc_setdata is
 
   signal coin : integer;
+  signal coin_pl : integer;
 
   signal num_h_i : integer := 0;
   
@@ -95,7 +96,7 @@ begin
 
   -- barrel_r <= convert(i_data_v,barrel_r);
 
-  coin <= to_integer(unsigned(i_cointype));
+  -- coin <= to_integer(unsigned(i_cointype));
   
   set_data: process(clk) begin
     if rising_edge(clk) then
@@ -104,6 +105,10 @@ begin
         rpc_a <= (others => (others => '0'));
         num_h_i <= 0;
       else
+        if i_cand_dv = '1' then
+          coin <= to_integer(unsigned(i_cointype));
+        end if;
+        -- coin_pl <= coin;
         pl_rpc_Z_a <= i_rpc_Z_a;
         pl_cand_dv <= i_cand_dv;
         if ena =  '1' then

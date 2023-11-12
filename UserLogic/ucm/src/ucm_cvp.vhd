@@ -106,7 +106,7 @@ architecture beh of ucm_cvp is
   signal barrel_r       : slc_barrel_rt;
   signal rpc_Z_a        : rpc_pos_oast(g_NUM_RPC_LAYERS -1 downto 0);
 
-  signal vec_pos_a      : vec_pos_array_t(g_NUM_MDT_LAYERS-1 downto 0);
+  signal vec_pos_a      : vec_pos_array_ut(g_NUM_MDT_LAYERS-1 downto 0);
   signal vec_pos_a_dv   : std_logic;
 
   ----------------------------------
@@ -140,8 +140,8 @@ architecture beh of ucm_cvp is
   -- signal atan_mbar    : unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
   signal atan_dv      : std_logic;
 
-  -- type vec_pos_array_t  is array (0 to g_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
-  signal vec_pos_array  : vec_pos_array_t(g_NUM_MDT_LAYERS-1 downto 0);
+  -- type vec_pos_array_ut  is array (0 to g_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
+  signal vec_pos_array  : vec_pos_array_ut(g_NUM_MDT_LAYERS-1 downto 0);
   signal vec_z_pos_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
 
   

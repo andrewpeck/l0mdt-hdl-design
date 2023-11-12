@@ -211,7 +211,6 @@ begin
 
   --------------------------------
 
-
   SLC_BoEs : if c_ST_nBARREL_ENDCAP = '0' or c_ENDCAP_nSMALL_LARGE = '0' generate
     i_slc_data_av(c_MAX_NUM_SL -1) <= i_slc_data_mainA_av(2);
     i_slc_data_av(c_MAX_NUM_SL -2) <= i_slc_data_mainA_av(1);

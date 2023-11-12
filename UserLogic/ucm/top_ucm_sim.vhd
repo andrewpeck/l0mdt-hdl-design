@@ -59,24 +59,24 @@ architecture beh of ucm_tb is
   ---------------------------------------------------------------------------
   -- AXI clk & rst
   signal axi_rst      : std_logic := '0';
-  signal clk_axi      : std_logic := '0';
+  signal clk_axi      : std_logic := '1';
   signal clk_axi_cnt  : integer;
   -- constant c_CLK_AXI_MULT : integer := 5; 
   -- clk
   constant clk_time_period : time := 1 ns;  -- 1Ghz
-  signal clk_time : std_logic := '0';
+  signal clk_time : std_logic := '1';
   signal tb_curr_time : unsigned(63 downto 0) := (others => '0');
   -- clk 0.78125
   constant clk_tdc_time_period : time := 0.78125 ns;  
-  signal clk_tdc_time : std_logic := '0';
+  signal clk_tdc_time : std_logic := '1';
   signal tb_curr_tdc_time : unsigned(63 downto 0) := (others => '0');
   -- clk 100ps
   constant clk_sim_time_period : time := 100 ps;  
-  signal clk_sim_time : std_logic := '0';
+  signal clk_sim_time : std_logic := '1';
   signal tb_curr_sim_time : unsigned(63 downto 0) := (others => '0');
   -- clk
   constant clk_period : time := 3.125 ns;  -- 320Mhz
-  signal clk : std_logic := '0';
+  signal clk : std_logic := '1';
   -- rest
   constant reset_init_cycles : integer := 3;
   signal rst: std_logic;
@@ -149,27 +149,27 @@ begin
 	-- clock Generator
 	-------------------------------------------------------------------------------------
   CLK_RT : process begin
-    clk_time <= '0';
-    wait for CLK_time_period/2;
     clk_time <= '1';
+    wait for CLK_time_period/2;
+    clk_time <= '0';
     wait for CLK_time_period/2;
   end process;
   -------------------------------------------------------------------------------------
 	-- clock Sim Generator
 	-------------------------------------------------------------------------------------
   CLK_SIM : process begin
-    clk_sim_time <= '0';
-    wait for clk_sim_time_period/2;
     clk_sim_time <= '1';
+    wait for clk_sim_time_period/2;
+    clk_sim_time <= '0';
     wait for clk_sim_time_period/2;
   end process;
   -------------------------------------------------------------------------------------
 	-- clock tdc Generator
 	-------------------------------------------------------------------------------------
   CLK_TDC : process begin
-    clk_tdc_time <= '0';
-    wait for CLK_tdc_time_period/2;
     clk_tdc_time <= '1';
+    wait for CLK_tdc_time_period/2;
+    clk_tdc_time <= '0';
     wait for CLK_tdc_time_period/2;
   end process;
   -- clock_and_control.clk <= clk;
@@ -177,9 +177,9 @@ begin
 	-- Main FPGA clock
 	-------------------------------------------------------------------------------------
   CLK_MAIN : process begin
-    clk <= '0';
-    wait for CLK_period/2;
     clk <= '1';
+    wait for CLK_period/2;
+    clk <= '0';
     wait for CLK_period/2;
   end process;
   -- clk <= clk;
@@ -207,9 +207,9 @@ begin
 	-------------------------------------------------------------------------------------
 	rst_process: process begin
 		rst<='0';
-		wait for CLK_period;
+		wait for 5 ns;
 		rst<='1';
-		wait for CLK_period*reset_init_cycles;
+		wait for 5 ns; --CLK_period*reset_init_cycles;
 		rst<= '0';
 		wait;
   end process;
