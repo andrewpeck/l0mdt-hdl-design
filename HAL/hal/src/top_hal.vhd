@@ -137,11 +137,11 @@ entity top_hal is
     flx_sync_global_data_o : out std_logic_vector(15 downto 0);
     flx_ts_o               : out std_logic;
     flx_error_flags_o      : out std_logic_vector(3 downto 0);
-    flx_sl0id_o            : out std_logic; 
-    flx_sorb_o             : out std_logic; 
-    flx_sync_o             : out std_logic; 
-    flx_grst_o             : out std_logic; 
-    flx_l0a_o              : out std_logic; 
+    flx_sl0id_o            : out std_logic;
+    flx_sorb_o             : out std_logic;
+    flx_sync_o             : out std_logic;
+    flx_grst_o             : out std_logic;
+    flx_l0a_o              : out std_logic;
     flx_l0id_o             : out std_logic_vector(37 downto 0);
     flx_orbid_o            : out std_logic_vector(31 downto 0);
     flx_trigger_type_o     : out std_logic_vector(15 downto 0);
@@ -151,7 +151,7 @@ entity top_hal is
     flx_lti_crc_valid_o    : out std_logic;
     flx_clk40_ttc_o        : out std_logic;
     flx_clk40_ttc_ready_o  : out std_logic;
-    
+
     --------------------------------------------------------------------------------
     -- AXI
     --------------------------------------------------------------------------------
@@ -297,6 +297,10 @@ architecture behavioral of top_hal is
   signal csm_mon_v  : std_logic_vector(width(csm_mon_r ) - 1 downto 0);
 
 
+  --------------------------------------------------------------------------------
+  -- FELIX RX (LTI)
+  --------------------------------------------------------------------------------
+
   signal flx_mt_v                : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
   signal flx_pt_v                : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
   signal flx_partition_v         : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(1 downto 0);
@@ -324,8 +328,9 @@ architecture behavioral of top_hal is
   signal flx_clk40_ttc_v         : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
   signal flx_clk40_ttc_ready_v   : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
 
+  signal flx_loopback_data_v : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(33 downto 0)
 
-  
+
   --------------------------------------------------------------------------------
   -- Attributes for synthesis
   --------------------------------------------------------------------------------
@@ -818,7 +823,8 @@ begin  -- architecture behavioral
 
 
   u_flx_tx : entity flx.flx_tx
-  generic map (NLINKS => c_DAQ_LINKS) -- : natural);
+  generic map (g_NLINKS     => c_DAQ_LINKS
+               , g_LOOPBACK => true       ) -- : natural);
   port map (clk240_i              => clk240 -- : in  std_logic
             , clk320_i            => clk320 -- : in  std_logic
             , rst_i               => reset_clk40 -- : in  std_logic
@@ -828,6 +834,9 @@ begin  -- architecture behavioral
             , usr_data_vi => daq_stream_data_vi                          -- : in  std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0)
             , usr_ctrl_vi => daq_stream_ctrl_vi                          -- : in  std_logic_vector_array(NLINKS-1 downto 0)(1 downto 0)
             , usr_wren_vi => daq_stream_wren_vi                          -- : in  std_logic_vector(NLINKS-1 downto 0)
+
+            , loopback_data_vi => flx_loopback_data_v                    -- : in  std_logic_vector_array(NLINKS-1 downto 0)(34 downto 0);
+
             , mgt_cisk_vo => flx_mgt_tx_cisk_v(c_DAQ_LINKS-1 downto 0)   -- : out std_logic_vector_array(NLINKS-1 downto 0)( 7 downto 0) -- char is k
             , mgt_data_vo => flx_mgt_tx_word_v(c_DAQ_LINKS-1 downto 0)); -- : out std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0));
 
@@ -861,8 +870,12 @@ begin  -- architecture behavioral
               , lti_dec_aligned_vo     => flx_lti_dec_aligned_v(c_DAQ_LINKS-1 downto 0)   -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
               , lti_crc_valid_vo       => flx_lti_crc_valid_v(c_DAQ_LINKS-1 downto 0)     -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
 
-              , clk40_ttc_vo           => flx_clk40_ttc_v(c_DAQ_LINKS-1 downto 0)         -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0) 
+              , clk40_ttc_vo           => flx_clk40_ttc_v(c_DAQ_LINKS-1 downto 0)         -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0)
               , clk40_ttc_ready_vo     => flx_clk40_ttc_ready_v(c_DAQ_LINKS-1 downto 0)); -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0));
+
+  GEN_FLX_LOOPBACK_TEST : for ii in 0 to c_DAQ_LINKS-1 generate
+      flx_loopback_data_v(ii) <= flx_async_user_data_v(ii)(33 downto 0);
+  end generate GEN_FLX_LOOPBACK_TEST;
 
     flx_mt_o                  <= flx_mt_v(c_FELIX_RECCLK_SRC-1);
     flx_pt_o                  <= flx_pt_v(c_FELIX_RECCLK_SRC-1);

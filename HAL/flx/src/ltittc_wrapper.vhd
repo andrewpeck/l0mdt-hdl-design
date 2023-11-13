@@ -38,7 +38,7 @@ entity ltittc_wrapper is
         rxcharisk_in                : in std_logic_vector(3 downto 0);  --! 8b10b CharIsK indication
         TTC_out                     : out TTC_data_type;                --! Decoded record containing all available TTC information
         clk40_ttc_out               : out std_logic; --! TTC 40 MHz clock from clk240_rx_ttc_in
-        clk40_ttc_ready_out         : out std_logic  --! Indication that 40 MHz clock is valid. 
+        clk40_ttc_ready_out         : out std_logic  --! Indication that 40 MHz clock is valid.
     );
 
 end ltittc_wrapper;
@@ -159,7 +159,8 @@ begin
     orbitid           <= TTC_data_decoder_i(31+3*32 downto  0+3*32) when typemsg = '0' else orbitid_r;
     ttype             <= TTC_data_decoder_i(31+4*32 downto 16+4*32) when typemsg = '0' else ttype_r;
     lbid              <= TTC_data_decoder_i(15+4*32 downto  0+4*32) when typemsg = '0' else lbid_r;
-    asyncusrdata      <= TTC_data_decoder_i(31+4*32 downto  0+3*32) when typemsg = '1' else asyncusrdata_r;
+    -- asyncusrdata      <= TTC_data_decoder_i(31+4*32 downto  0+3*32) when typemsg = '1' else asyncusrdata_r;
+    asyncusrdata      <= TTC_data_decoder_i(31+4*32 downto  0+3*32) when typemsg = '1' else (others => '1');
     --CRC is checked in ltittc_decoder
     --crc               <= TTC_data_decoder_i(31+5*32 downto 16+5*32);
 

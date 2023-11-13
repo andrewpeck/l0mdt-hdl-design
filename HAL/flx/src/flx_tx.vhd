@@ -8,24 +8,28 @@ library shared_lib;
 use shared_lib.common_ieee_pkg.all;
 
 entity flx_tx is
-  generic (NLINKS : natural := 20);
+  generic (g_NLINKS       : natural :=    20
+           ; g_LOOPBACK : boolean := false);
   port (clk240_i              : in  std_logic
         ; clk320_i            : in  std_logic
         ; rst_i               : in  std_logic
 
         ; busy_i              : in  std_logic
 
-        ; usr_data_vi : in  std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0)
-        ; usr_ctrl_vi : in  std_logic_vector_array(NLINKS-1 downto 0)(1 downto 0)
-        ; usr_wren_vi : in  std_logic_vector(NLINKS-1 downto 0)
-        ; mgt_cisk_vo : out std_logic_vector_array(NLINKS-1 downto 0)( 7 downto 0) -- char is k
-        ; mgt_data_vo : out std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0));
+        ; usr_data_vi         : in  std_logic_vector_array(g_NLINKS-1 downto 0)(31 downto 0)
+        ; usr_ctrl_vi         : in  std_logic_vector_array(g_NLINKS-1 downto 0)(1 downto 0)
+        ; usr_wren_vi         : in  std_logic_vector(g_NLINKS-1 downto 0)
+
+        ; loopback_data_vi    : in  std_logic_vector_array(g_NLINKS-1 downto 0)(33 downto 0);
+
+        ; mgt_cisk_vo         : out std_logic_vector_array(g_NLINKS-1 downto 0)( 7 downto 0) -- char is k
+        ; mgt_data_vo         : out std_logic_vector_array(g_NLINKS-1 downto 0)(31 downto 0));
 end entity flx_tx;
 
 architecture logic of flx_tx is
 begin
 
-  GEN_FM_PATHS : for ii in 0 to NLINKS-1 generate
+  GEN_FM_PATHS : for ii in 0 to g_NLINKS-1 generate
     signal fifo_rd_clk   : std_logic;
     signal fifo_rd_en    : std_logic;
     signal fifo_rd_dbody : std_logic_vector(31 downto 0);
@@ -73,9 +77,9 @@ begin
                                                                               "1100000000000000000000000000000000",
                                                                               "1100000000000000000000000000000000");
     signal ptr : integer := 0;
-    
+
     signal fm_user_comma : std_logic_vector(3 downto 0);
-    
+
   begin
 
     process (clk320_i)
@@ -93,19 +97,38 @@ begin
         end if;
       end if;
     end process;
-    
-    u_fifo34to34b : entity work.fifo34to34b
-      port map (rst            => rst_i             -- : in  std_logic);
-                , fifo34_wclk  => clk320_i          -- : in  std_logic;
-                , fifo34b_we   => fifo34b_we        -- usr_wren_vi(ii)   -- : in  std_logic;
-                , fifo34_dtype => rom(ptr)(33 downto 32) -- usr_ctrl_vi(ii)   -- : in  std_logic_vector(1 downto 0);
-                , fifo34_din   => rom(ptr)(31 downto  0) -- usr_data_vi(ii)   -- : in  std_logic_vector(31 downto 0);
-                , fifo34_full  => fifo34_full       -- : out std_logic;
-                , fifo34_rclk  => fifo_rd_clk       -- : in  std_logic;
-                , fifo34_re    => fifo_rd_en        -- : in  std_logic;
-                , fifo34_empty => fifo_rd_empty     -- : out std_logic;
-                , fifo34_dout  => fifo_rd_dbody     -- : out std_logic_vector(31 downto 0);
-                , fifo_dtype   => fifo_rd_dtype);   -- : out std_logic_vector(1 downto 0);
+
+    GEN_LOOPBACK : if g_LOOPBACK = true generate
+
+      u_fifo34to34b : entity work.fifo34to34b
+        port map (rst            => rst_i             -- : in  std_logic);
+                  , fifo34_wclk  => clk320_i          -- : in  std_logic;
+                  , fifo34b_we   => fifo34b_we        -- usr_wren_vi(ii)   -- : in  std_logic;
+                  , fifo34_dtype => loopback_data_vi(ii)(33 downto 32)   -- : in  std_logic_vector(1 downto 0);
+                  , fifo34_din   => loopback_data_vi(ii)(31 downto  0) -- usr_data_vi(ii)   -- : in  std_logic_vector(31 downto 0);
+                  , fifo34_full  => fifo34_full       -- : out std_logic;
+                  , fifo34_rclk  => fifo_rd_clk       -- : in  std_logic;
+                  , fifo34_re    => fifo_rd_en        -- : in  std_logic;
+                  , fifo34_empty => fifo_rd_empty     -- : out std_logic;
+                  , fifo34_dout  => fifo_rd_dbody     -- : out std_logic_vector(31 downto 0);
+                  , fifo_dtype   => fifo_rd_dtype);   -- : out std_logic_vector(1 downto 0);
+
+    else generate
+
+      u_fifo34to34b : entity work.fifo34to34b
+        port map (rst            => rst_i             -- : in  std_logic);
+                  , fifo34_wclk  => clk320_i          -- : in  std_logic;
+                  , fifo34b_we   => fifo34b_we        -- usr_wren_vi(ii)   -- : in  std_logic;
+                  , fifo34_dtype => rom(ptr)(33 downto 32) -- usr_ctrl_vi(ii)   -- : in  std_logic_vector(1 downto 0);
+                  , fifo34_din   => rom(ptr)(31 downto  0) -- usr_data_vi(ii)   -- : in  std_logic_vector(31 downto 0);
+                  , fifo34_full  => fifo34_full       -- : out std_logic;
+                  , fifo34_rclk  => fifo_rd_clk       -- : in  std_logic;
+                  , fifo34_re    => fifo_rd_en        -- : in  std_logic;
+                  , fifo34_empty => fifo_rd_empty     -- : out std_logic;
+                  , fifo34_dout  => fifo_rd_dbody     -- : out std_logic_vector(31 downto 0);
+                  , fifo_dtype   => fifo_rd_dtype);   -- : out std_logic_vector(1 downto 0);
+
+    end generate GEN_LOOPBACK;
 
     u_FMchannelTXctrl : entity work.FMchannelTXctrl
       port map (rst          => rst_i           -- : in  std_logic;
@@ -119,7 +142,7 @@ begin
                 , dout       => mgt_data_vo(ii) -- : out std_logic_vector(31 downto 0);
                 , kout       => fm_user_comma);          -- : out std_logic_vector(3 downto 0));
     mgt_cisk_vo(ii) <= "0000" & fm_user_comma;
-    
+
   end generate GEN_FM_PATHS;
 
 end architecture logic;
