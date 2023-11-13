@@ -831,14 +831,14 @@ begin  -- architecture behavioral
 
             , busy_i              => '0' -- : in std_logic
 
-            , usr_data_vi => daq_stream_data_vi                          -- : in  std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0)
-            , usr_ctrl_vi => daq_stream_ctrl_vi                          -- : in  std_logic_vector_array(NLINKS-1 downto 0)(1 downto 0)
-            , usr_wren_vi => daq_stream_wren_vi                          -- : in  std_logic_vector(NLINKS-1 downto 0)
+            , usr_data_vi => daq_stream_data_vi                               -- : in  std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0)
+            , usr_ctrl_vi => daq_stream_ctrl_vi                               -- : in  std_logic_vector_array(NLINKS-1 downto 0)(1 downto 0)
+            , usr_wren_vi => daq_stream_wren_vi                               -- : in  std_logic_vector(NLINKS-1 downto 0)
 
-            , loopback_data_vi => flx_loopback_data_v                    -- : in  std_logic_vector_array(NLINKS-1 downto 0)(34 downto 0);
+            , loopback_data_vi => flx_loopback_data_v(c_DAQ_LINKS-1 downto 0) -- : in  std_logic_vector_array(NLINKS-1 downto 0)(34 downto 0);
 
-            , mgt_cisk_vo => flx_mgt_tx_cisk_v(c_DAQ_LINKS-1 downto 0)   -- : out std_logic_vector_array(NLINKS-1 downto 0)( 7 downto 0) -- char is k
-            , mgt_data_vo => flx_mgt_tx_word_v(c_DAQ_LINKS-1 downto 0)); -- : out std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0));
+            , mgt_cisk_vo => flx_mgt_tx_cisk_v(c_DAQ_LINKS-1 downto 0)        -- : out std_logic_vector_array(NLINKS-1 downto 0)( 7 downto 0) -- char is k
+            , mgt_data_vo => flx_mgt_tx_word_v(c_DAQ_LINKS-1 downto 0));      -- : out std_logic_vector_array(NLINKS-1 downto 0)(31 downto 0));
 
   u_flx_rx : entity flx.flx_rx
     port map (rst_i                    => reset_clk40                                     -- : in  std_logic
