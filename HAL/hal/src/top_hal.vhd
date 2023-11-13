@@ -328,7 +328,7 @@ architecture behavioral of top_hal is
   signal flx_clk40_ttc_v         : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
   signal flx_clk40_ttc_ready_v   : std_logic_vector(c_NUM_FELIX_UPLINKS-1 downto 0);
 
-  signal flx_loopback_data_v : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(33 downto 0)
+  signal flx_loopback_data_v : std_logic_vector_array(c_NUM_FELIX_UPLINKS-1 downto 0)(33 downto 0);
 
 
   --------------------------------------------------------------------------------

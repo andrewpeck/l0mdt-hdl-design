@@ -20,7 +20,7 @@ entity flx_tx is
         ; usr_ctrl_vi         : in  std_logic_vector_array(g_NLINKS-1 downto 0)(1 downto 0)
         ; usr_wren_vi         : in  std_logic_vector(g_NLINKS-1 downto 0)
 
-        ; loopback_data_vi    : in  std_logic_vector_array(g_NLINKS-1 downto 0)(33 downto 0);
+        ; loopback_data_vi    : in  std_logic_vector_array(g_NLINKS-1 downto 0)(33 downto 0)
 
         ; mgt_cisk_vo         : out std_logic_vector_array(g_NLINKS-1 downto 0)( 7 downto 0) -- char is k
         ; mgt_data_vo         : out std_logic_vector_array(g_NLINKS-1 downto 0)(31 downto 0));
