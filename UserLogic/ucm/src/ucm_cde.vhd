@@ -330,7 +330,7 @@ begin
             -- o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;
             -- o_cde_data_r.cointype     <= o_cde_data_null.cointype  ;
             -- o_cde_data_r.specific     <= o_cde_data_null.specific  ;
-            o_cde_data_r.data_valid   <= '0';--o_cde_data_null.data_valid;
+            o_uCM2pl_r.data_valid   <= '0';--o_cde_data_null.data_valid;
             -- o_cde_data_r.posphi       <= o_cde_data_null.posphi    ;
           end if;
         end if;

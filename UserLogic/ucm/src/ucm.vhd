@@ -51,6 +51,11 @@ entity ucm is
     i_slc_data_mainB_av     : in slc_rx_avt(2 downto 0);
     i_slc_data_neighborA_v  : in slc_rx_vt;
     i_slc_data_neighborB_v  : in slc_rx_vt;
+    -- to TAR
+    o_uCM2tar_inn_av        : out ucm2tar_vt;
+    o_uCM2tar_mid_av        : out ucm2tar_vt;
+    o_uCM2tar_out_av        : out ucm2tar_vt;
+    o_uCM2tar_ext_av        : out ucm2tar_vt;
     -- to hps
     o_uCM2hps_inn_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     o_uCM2hps_mid_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);

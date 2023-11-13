@@ -134,7 +134,7 @@ architecture beh of ucm_cvp is
 
   type new_chamb_ieta_art is array(g_MAX_POSSIBLE_HPS -1 downto 0) of unsigned(4-1 downto 0);
   signal new_chamb_ieta_a : new_chamb_ieta_art;
-  signal new_chamb_ieta_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
+  signal new_chamb_ieta_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0) := (others => '0');
 
   -- signal offset       : signed(31 downto 0);--signed(126 -1 downto 0);
   -- signal slope        : signed(31 downto 0);-- 
@@ -224,27 +224,27 @@ begin
       end generate;
     
 
-    RPC_R : entity ucm_lib.ucm_rpc_R_comp_top
-      generic map(
-        g_MODE =>  "RPC",
-        g_OUTPUT_WIDTH => SLC_Z_RPC_LEN
-      )
-      port map(
-        clk         => clk,
-        rst         => local_rst,
-        ena         => ena,
-        --
-        ctrl_v      => rpc_R_ctrl_v,
-        mon_v       => rpc_R_mon_v,
-        --
-        i_phimod    => i_data_r.phimod,
-        i_dv        => i_data_r.data_valid,
-        --
-        o_radius    => rpc_radius_av,
-        o_dv        => rpc_radius_dv
-    );
+  RPC_R : entity ucm_lib.ucm_rpc_R_comp_top
+    generic map(
+      g_MODE =>  "RPC",
+      g_OUTPUT_WIDTH => SLC_Z_RPC_LEN
+    )
+    port map(
+      clk         => clk,
+      rst         => local_rst,
+      ena         => ena,
+      --
+      ctrl_v      => rpc_R_ctrl_v,
+      mon_v       => rpc_R_mon_v,
+      --
+      i_phimod    => i_data_r.phimod,
+      i_dv        => i_data_r.data_valid,
+      --
+      o_radius    => rpc_radius_av,
+      o_dv        => rpc_radius_dv
+  );
 
-    MDT_R : entity ucm_lib.ucm_mdt_R_comp_top
+  MDT_R : entity ucm_lib.ucm_mdt_R_comp_top
     generic map(
       g_MODE =>  "MDT",
       g_STATION_LAYERS => 3,
@@ -263,7 +263,7 @@ begin
       --
       o_radius    => mdt_radius_av,
       o_dv        => mdt_radius_dv
-  );
+    );
 
   PARAM_CALC : entity ucm_lib.ucm_cvp_pc_core
   port map(
@@ -289,53 +289,7 @@ begin
     o_vec_z_pos_dv  => vec_pos_a_dv
   );
 
-    -- SLOPE_CALC : entity ucm_lib.ucm_cvp_b_slope
-    -- port map(
-    --   clk           => clk,
-    --   rst           => local_rst,
-    --   ena           => ena,
-    --   --
-    --   i_rpc_rad_a   => rpc_radius_av,
-    --   i_cointype    => int_data_r.cointype,
-    --   i_data_v      => int_data_r.specific,
-    --   --
-    --   i_data_Valid  => rpc_radius_dv,--int_data_r.data_valid,
-    --   o_offset      => offset,
-    --   o_slope       => slope,
-    --   o_data_valid  => slope_dv
-    -- );
-
-    ----------------------------------------------------------
-
-    -- Z_CALC_LOOP : for st_i in 0 to 3 -1 generate
-    --   Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
-    --     Z_CALC : entity ucm_lib.ucm_cvp_z_calc
-    --     generic map(
-    --       g_STATION_RADIUS    => st_i,
-    --       g_INPUT_RESOLUTION  => SLC_Z_RPC_MULT,
-    --       g_OUTPUT_RESOLUTION => 1.0,
-    --       g_OUTPUT_WIDTH      => vec_pos_array(st_i)'length
-    --     )
-    --     port map(
-    --       clk           => clk,
-    --       rst           => local_rst,
-    --       ena           => ena,
-    --       --
-    --       i_mdt_R       => mdt_radius_av(st_i),
-    --       i_mdt_R_dv    => mdt_radius_dv,
-    --       -- i_chamb_ieta  => chamber_ieta_r(st_i),
-    --       i_offset      => offset,
-    --       i_slope       => slope,
-    --       i_data_valid  => slope_dv,
-    --       --
-    --       o_vec_z_pos     => vec_pos_array(st_i),
-    --       o_vec_z_pos_dv  => vec_z_pos_dv(st_i)
-    --     );
-    --   end generate;
-    -- end generate;
-    -- vec_pos_array <= vec_pos_a;
-
-    IETA_INN : entity ucm_lib.ucm_ieta_calc
+  IETA_INN : entity ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION => 0,
       g_RESOLUTION_SCALE => UCM2HPS_VEC_POS_MULT,
@@ -488,12 +442,12 @@ begin
                     ucm2hps_ar(hps_i).data_valid          <= '1';
                   
                   else
-                    -- ucm2hps_ar(hps_i).data_valid    <= '0';
+                    ucm2hps_ar(hps_i).data_valid    <= '0';
                     -- ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '0'); -- COMO SE CALCULA ESTO?
                     -- ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= (others => '0'); 
                     -- ucm2hps_ar(hps_i).mdtid.chamber_id    <= (others => '0'); 
 
-                    ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
+                    -- ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
 
                     -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
                     --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));

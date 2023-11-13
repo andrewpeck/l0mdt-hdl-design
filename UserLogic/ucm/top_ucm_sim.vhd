@@ -99,6 +99,11 @@ architecture beh of ucm_tb is
   signal i_slc_data_mainB_av      : slc_rx_avt(2 downto 0);
   signal i_slc_data_neighborA_v   : slc_rx_vt;
   signal i_slc_data_neighborB_v   : slc_rx_vt;
+  -- to TAR
+  signal o_uCM2tar_inn_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2tar_mid_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2tar_out_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2tar_ext_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
   -- to hps
   signal o_uCM2hps_inn_av         : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   signal o_uCM2hps_mid_av         : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
@@ -310,10 +315,17 @@ begin
     in_offset_cvp             => alias_offset_cvp,
     in_slope_cvp              => alias_slope_cvp,
     --
+    -- pam out
+    o_uCM2tar_inn_av        => o_uCM2tar_inn_av,
+    o_uCM2tar_mid_av        => o_uCM2tar_mid_av,
+    o_uCM2tar_out_av        => o_uCM2tar_out_av,
+    o_uCM2tar_ext_av        => o_uCM2tar_ext_av,
+    --
     inn_slc_to_h2s_av         => o_uCM2hps_inn_av,
     mid_slc_to_h2s_av         => o_uCM2hps_mid_av,
     out_slc_to_h2s_av         => o_uCM2hps_out_av,
     ext_slc_to_h2s_av         => o_uCM2hps_ext_av,
+    --
     ucm2pl_av                 => o_uCM2pl_av
   );
 
