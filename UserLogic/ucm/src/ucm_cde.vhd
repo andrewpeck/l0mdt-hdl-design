@@ -255,7 +255,7 @@ begin
               o_cde_data_r.data_valid   <= int_slc_data_r.data_valid;
               o_cde_data_r.posphi       <= int_slc_data_r.common.posphi;
               o_cde_data_r.chamb_ieta   <= int_chamb_ieta;
-              o_cde_data_r.phimod       <= std_logic_vector(resize(signed(int_phimod_abs_pl),5));
+              o_cde_data_r.phimod       <= std_logic_vector(resize(signed(int_phimod_abs_pl),UCM_CDE2CVP_PHIMOD_LEN));
             else
               -- o_cde_data_r <= zero(o_cde_data_r);
               -- o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;

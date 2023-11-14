@@ -99,7 +99,7 @@ package common_constants_pkg is
    constant SF_SEG_ANG_MULTI_LEN : integer := 12;
    attribute w of SF_SEG_ANG_MULTI_LEN : constant is 32;
 
-   constant UCM_PT_PHIMOD_LEN : integer := 8; -- UCM2PL_PHIMOD_LEN
+   constant UCM_PT_PHIMOD_LEN : integer := 7; -- UCM2PL_PHIMOD_LEN
    attribute w of UCM_PT_PHIMOD_LEN : constant is 32;
 
    constant MTC_ETA_LEN : integer := 14; -- PTCALC2MTC_MDT_ETA_LEN

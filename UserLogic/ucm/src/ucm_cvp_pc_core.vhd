@@ -622,7 +622,8 @@ begin
   slope_div_dout_tdata_r <= slope_div_dout_tdata(20 downto 0);
     -- slope_div_ipr2 <= slope_div_dout_tdata_q;--  when slope_div_dout_tvalid = '1' else (others => '0') ;
     -- slope_div_ipr2_dv <= slope_div_dout_tvalid;
-  slope_div <= std_logic_vector(resize(signed(slope_div_dout_tdata_q(slope_div_dout_tdata_q'length -1 downto scale_slope_nom )),slope_div'length));
+  -- slope_div <= std_logic_vector(resize(signed(slope_div_dout_tdata_q(slope_div_dout_tdata_q'length -1 downto scale_slope_nom )),slope_div'length));
+  slope_div <= std_logic_vector(resize(signed(slope_div_dout_tdata_q),slope_div'length));
   slope_div_dv <= slope_div_dout_tvalid;
   -- end generate MAIN_DIV_IPR2;
   
@@ -732,7 +733,7 @@ begin
         i_in_B      => param_a_red,
         -- i_in_C      => "0",
         -- i_in_D      => "0",
-        i_dv        => i_rpc_R_dv,
+        i_dv        => param_a_dv,
         --
         o_result    => mult_ra,
         o_dv        => mult_ra_dv

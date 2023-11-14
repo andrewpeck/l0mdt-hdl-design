@@ -141,6 +141,10 @@ begin
     i_slc_data_neighborA_v  => i_slc_data_neighborA_v,
     i_slc_data_neighborB_v  => i_slc_data_neighborB_v,
     -- pam out
+    o_uCM2tar_inn_av        => o_uCM2tar_inn_av,
+    o_uCM2tar_mid_av        => o_uCM2tar_mid_av,
+    o_uCM2tar_out_av        => o_uCM2tar_out_av,
+    o_uCM2tar_ext_av        => o_uCM2tar_ext_av,
     -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
     o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
     o_uCM2hps_mid_av        => o_uCM2hps_mid_av,

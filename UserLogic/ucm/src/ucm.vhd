@@ -52,10 +52,10 @@ entity ucm is
     i_slc_data_neighborA_v  : in slc_rx_vt;
     i_slc_data_neighborB_v  : in slc_rx_vt;
     -- to TAR
-    o_uCM2tar_inn_av        : out ucm2tar_vt;
-    o_uCM2tar_mid_av        : out ucm2tar_vt;
-    o_uCM2tar_out_av        : out ucm2tar_vt;
-    o_uCM2tar_ext_av        : out ucm2tar_vt;
+    o_uCM2tar_inn_av        : out ucm2tar_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2tar_mid_av        : out ucm2tar_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2tar_out_av        : out ucm2tar_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2tar_ext_av        : out ucm2tar_avt(c_NUM_THREADS -1 downto 0);
     -- to hps
     o_uCM2hps_inn_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     o_uCM2hps_mid_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
@@ -397,16 +397,32 @@ begin
 
   -- PAM cross switch
   SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw
-  port map(
-    clk         => clk,
-    rst         => local_rst,
-    glob_en     => local_en,
-    
-    i_control   => pam_CSW_control,
-    -- data
-    i_data      => cpam_in_av,
-    o_data      => cpam_out_av
-  );
+    port map(
+      clk         => clk,
+      rst         => local_rst,
+      glob_en     => local_en,
+      
+      i_control   => pam_CSW_control,
+      -- data
+      i_data      => cpam_in_av,
+      o_data      => cpam_out_av
+    );
+
+  OUT2TAR : entity ucm_lib.ucm_out2tar
+    port map(
+      clk           => clk,
+      rst           => local_rst,
+      ena           => local_en,
+      --
+      -- ctrl_v              => r_phi_comp_ctrl_v,
+      -- mon_v               => r_phi_comp_mon_av(vp_i),
+      --
+      o_uCM2tar_inn_av  => o_uCM2tar_inn_av,
+      o_uCM2tar_mid_av  => o_uCM2tar_mid_av,
+      o_uCM2tar_out_av  => o_uCM2tar_out_av,
+      o_uCM2tar_ext_av  => o_uCM2tar_ext_av
+
+    );
 
 
   -- vector processors

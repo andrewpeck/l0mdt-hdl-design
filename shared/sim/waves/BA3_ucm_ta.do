@@ -206,25 +206,42 @@ add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/S
 add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/i_chamber_z_org_bus
 add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/i_proc_info_v
 add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/i_slc_data_v
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_cde_data_v
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_ucm2pl_v
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/i_proc_info_r
 add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/i_slc_data_r
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_slc_data_v
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int2_slc_data_v
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_slc_data_r
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int2_slc_data_r
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_cde_data_r
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/barrel_r
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/dv_bus
+add wave -noupdate -group ucm_cde_4 -expand /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/barrel_r
 add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/rpc_z_a
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_chamb_ieta
 add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/slc_posphi
+add wave -noupdate -group ucm_cde_4 -expand /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/i_proc_info_r
+add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_slc_data_v
+add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_slc_data_r
+add wave -noupdate -group ucm_cde_4 -expand /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_cde_data_r
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/clk
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/rst
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/ena
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/i_phicenter
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/i_posphi
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/i_dv
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/o_phimod_abs
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/o_abs_dv
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/o_phimod
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/o_dv
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/int_phicenter
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/int_posphi
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/int_phimod_s
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/int_phimod
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/int_phimod_pl
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/int_posphi_pl_dv
+add wave -noupdate -group ucm_cde_4 -group phimod /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/B_GEN/phimod/int_phimod_dv
+add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/dv_bus
+add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_chamb_ieta
 add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_phimod_abs_pl
 add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_phimod_pl
+add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int2_slc_data_v
+add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int2_slc_data_r
 add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_phimod_pl_dv
 add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_abs_dv
-add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_uCM2pl_r
+add wave -noupdate -group ucm_cde_4 -expand /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_uCM2pl_r
+add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_cde_data_v
+add wave -noupdate -group ucm_cde_4 /ucm_tb/UCM_DUT/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_ucm2pl_v
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/g_MAX_POSSIBLE_HPS
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/g_NUM_MDT_LAYERS
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/g_NUM_RPC_LAYERS
@@ -253,146 +270,185 @@ add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/mdt_radius_av
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/mdt_radius_dv
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/i_data_r
-add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/int_data_r
-add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/int_data_v
+add wave -noupdate -expand -group slc_vp_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/pl_data_v
+add wave -noupdate -expand -group slc_vp_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/pl_data_v_dv
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/barrel_r
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/clk
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/rst
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/ena
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_cointype
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal -childformat {{/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(3) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(2) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(1) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(0) -radix decimal}} -subitemconfig {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(3) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(2) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(1) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(0) {-height 17 -radix decimal}} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_data_valid
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_R_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_R_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_mdt_R_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_mdt_R_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/clk
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/rst
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/ena
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/i_cointype
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/i_rpc_Z_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/i_cand_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/i_rpc_R_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/i_rpc_R_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/coin
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/num_h_i
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/rpc_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/rad_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/set_data_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/o_num_h_i
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/o_rpc_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/o_rad_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/o_set_data_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_NUM_RPC_LAYERS
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_INPUT_RESOLUTION
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_OUTPUT_RESOLUTION
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_OUTPUT_WIDTH
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_DIV_IP_R2_EN
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_DIV_VU_EN
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_DIV_SEL
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -color Coral -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/num_h_i
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -color Coral -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/rpc_Z_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -color Coral -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/rpc_R_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -color Coral -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/set_data_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xy
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xy_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal -childformat {{/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(3) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(2) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(1) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(0) -radix decimal}} -subitemconfig {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(3) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(2) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(1) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(0) {-height 17 -radix decimal}} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -color Orchid -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -color Orchid -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x_pl1
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x_pl1_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y_pl1
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y_pl1_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -color Orchid -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xy
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -color Orchid -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xy_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xx
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xx_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSx
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSx_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSy
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSy_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxx
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxx_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxxSy
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxxSy_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSxy
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSxy_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxy
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxy_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a_red
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_b
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_b_red
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_b_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_c
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_c_red
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_c_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_nom_sc
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_den_sc
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_sc
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tvalid
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tdata
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tdata_q
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tdata_r
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_nom_sc
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_den_sc
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_sc
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tvalid
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tdata
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tdata_q
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tdata_r
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/vec_z_pos_dv_a
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/mult_ra
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/mult_ra_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/sum_ax_b
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/sum_ax_b_sc
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/sum_ax_b_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/zc_div_num
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/zc_div_den
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/div_out
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/div_quo
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/div_fra
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/div_out_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/sum_ax_b_scale
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/mult_ra
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/mult_ra_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/sum_ax_b
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/sum_ax_b_sc
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/sum_ax_b_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/zc_div_num
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/zc_div_den
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/div_out
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/div_quo
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/div_fra
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/div_out_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/sum_ax_b_scale
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/mult_ra
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/mult_ra_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/sum_ax_b
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/sum_ax_b_sc
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/sum_ax_b_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/zc_div_num
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/zc_div_den
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/div_out
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/div_quo
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/div_fra
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/div_out_dv
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -expand -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/sum_ax_b_scale
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_offset
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_slope
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_vec_z_pos
-add wave -noupdate -expand -group slc_vp_2 -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_vec_z_pos_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/clk
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/rst
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/ena
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_cointype
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal -childformat {{/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(3) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(2) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(1) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(0) -radix decimal}} -subitemconfig {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(3) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(2) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(1) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a(0) {-height 17 -radix decimal}} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_data_valid
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_R_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_R_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_mdt_R_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_mdt_R_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/clk
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/rst
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/ena
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/i_cointype
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/i_rpc_Z_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/i_cand_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/i_rpc_R_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/i_rpc_R_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/coin
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/num_h_i
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/rpc_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/rad_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/set_data_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/o_num_h_i
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/o_rpc_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/o_rad_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/o_set_data_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_NUM_RPC_LAYERS
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_INPUT_RESOLUTION
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_OUTPUT_RESOLUTION
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_OUTPUT_WIDTH
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_DIV_IP_R2_EN
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_DIV_VU_EN
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group data_set -expand -group gens /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/data_set/DATA_SET_ENT/g_DIV_SEL
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -color Coral -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/num_h_i
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -color Coral -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/rpc_Z_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -color Coral -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/rpc_R_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -color Coral -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/set_data_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xy
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xy_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal -childformat {{/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(3) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(2) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(1) -radix decimal} {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(0) -radix decimal}} -subitemconfig {/ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(3) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(2) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(1) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv(0) {-height 17 -radix decimal}} /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -color Orchid -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -color Orchid -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x_pl1
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x_pl1_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y_pl1
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y_pl1_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -color Orchid -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xy
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -color Orchid -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xy_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xx
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xx_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSx
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSx_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSy
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSy_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxx
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxx_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxxSy
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxxSy_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSxy
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSxy_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxy
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxy_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a_red
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_b
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_b_red
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_b_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_c
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_c_red
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_c_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_nom_sc
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_den_sc
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_sc
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tvalid
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tdata
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tdata_q
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tdata_r
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_nom_sc
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_den_sc
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_sc
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tvalid
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tdata
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tdata_q
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tdata_r
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/vec_z_pos_dv_a
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/mult_ra
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/mult_ra_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/sum_ax_b
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/sum_ax_b_sc
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/sum_ax_b_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/zc_div_num
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/zc_div_den
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/div_out
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/div_quo
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/div_fra
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/div_out_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -expand -group Y_eval_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(2)/sum_ax_b_scale
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/mult_ra
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/mult_ra_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/sum_ax_b
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/sum_ax_b_sc
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/sum_ax_b_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/zc_div_num
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/zc_div_den
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/div_out
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/div_quo
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/div_fra
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/div_out_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group Y_eval_1 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(1)/sum_ax_b_scale
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/mult_ra
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/mult_ra_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/sum_ax_b
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/sum_ax_b_sc
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/sum_ax_b_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/zc_div_num
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/zc_div_den
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/div_out
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/div_quo
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/div_fra
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/div_out_dv
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -group y_eval_0 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/Y_EVAL(0)/sum_ax_b_scale
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_offset
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_slope
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_vec_z_pos
+add wave -noupdate -expand -group slc_vp_2 -expand -group b_param_calc -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_vec_z_pos_dv
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/rpc_Z_a
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/vec_pos_a
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/vec_pos_a_dv
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/g_STATION
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/g_RESOLUTION_SCALE
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/g_INPUT_WIDTH
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/clk
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/rst
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/i_chamber_z_org_bus
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/i_z
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/i_z_dv
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/chamber_z_org_a
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/wr_addr
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/found_u
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/o_ieta
+add wave -noupdate -expand -group slc_vp_2 -group ieta_inn /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_INN/o_ieta_dv
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/g_STATION
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/g_RESOLUTION_SCALE
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/g_INPUT_WIDTH
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/clk
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/rst
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/i_chamber_z_org_bus
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/i_z
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/i_z_dv
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/chamber_z_org_a
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/wr_addr
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/found_u
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/o_ieta
+add wave -noupdate -expand -group slc_vp_2 -group ieta_mid /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_MID/o_ieta_dv
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/g_STATION
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/g_RESOLUTION_SCALE
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/g_INPUT_WIDTH
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/clk
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/rst
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/i_chamber_z_org_bus
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/i_z
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/i_z_dv
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/chamber_z_org_a
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/wr_addr
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/found_u
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/o_ieta
+add wave -noupdate -expand -group slc_vp_2 -group ieta_out /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/BARREL/IETA_OUT/o_ieta_dv
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/new_chamb_ieta_a
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/new_chamb_ieta_dv
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/offset
@@ -400,14 +456,11 @@ add wave -noupdate -expand -group slc_vp_2 /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/of
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/slope
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/slope_dv
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/atan_slope
-add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/atan_dv
-add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/vec_ang_pl
-add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ATAN_SLOPE_LEN
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_buff_ar
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/ucm2hps_ar
 add wave -noupdate -expand -group slc_vp_2 -radix decimal /ucm_tb/UCM_DUT/SLC_VP_A(2)/SLC_VP/o_ucm2hps_av
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1512695133 fs} 0}
+WaveRestoreCursors {{Cursor 1} {1480121139 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 185
 configure wave -valuecolwidth 170
@@ -423,4 +476,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1311398782 fs} {2242007297 fs}
+WaveRestoreZoom {1425194536 fs} {1564873894 fs}

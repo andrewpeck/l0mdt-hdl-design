@@ -1,16 +1,19 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  guillermo.ldl@cern.ch
+-- UMass , Physics Department
+-- Project: src
+-- File: ucm_ieta_calc.vhd
+-- Module: <<moduleName>>
+-- File PATH: /ucm_ieta_calc.vhd
+-- -----
+-- File Created: Wednesday, 24th May 2023 8:11:53 am
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Tuesday, 14th November 2023 11:27:20 am
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+-- HISTORY:
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: phimod calculator
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;

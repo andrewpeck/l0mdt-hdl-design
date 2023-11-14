@@ -6,9 +6,9 @@ config:
       - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
 types:
    - SLC_SPECIFIC_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 48}
-   - UCM_CDE2CVP_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 5}
-   - UCM_CDE2CVP_PHIMOD_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 12.0}
-   - UCM_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 5}
+   - UCM_CDE2CVP_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 7}
+   - UCM_CDE2CVP_PHIMOD_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 64.0}
+  #  - UCM_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 5}
    - ucm_prepro2ctrl_rt:
       - data_valid: {'type': 'logic'}
    - ucm_prepro2ctrl_vt: {'type': 'logic', 'range': ['ucm_prepro2ctrl_rt-1', 0]}

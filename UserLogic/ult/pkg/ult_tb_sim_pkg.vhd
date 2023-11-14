@@ -155,7 +155,7 @@ package ult_tb_sim_pkg is
       thread : unsigned(4-1 downto 0);
       data : pl2ptcalc_rt;
    end record in_pt_mpl_sim_rt;
-   attribute w of in_pt_mpl_sim_rt : type is 126;
+   attribute w of in_pt_mpl_sim_rt : type is 125;
    function width(x: in_pt_mpl_sim_rt) return natural;
    function convert(x: in_pt_mpl_sim_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: in_pt_mpl_sim_rt) return in_pt_mpl_sim_rt;

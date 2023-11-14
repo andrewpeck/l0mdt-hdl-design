@@ -28,14 +28,14 @@ package mpl_pkg is
       nswseg_posphi : unsigned(SLC_ENDCAP_NSWSEG_POSPHI_LEN-1 downto 0);
       nswseg_angdtheta : signed(SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN-1 downto 0);
    end record mpl2csw_ptcalc_rt;
-   attribute w of mpl2csw_ptcalc_rt : type is 63;
+   attribute w of mpl2csw_ptcalc_rt : type is 62;
    function width(x: mpl2csw_ptcalc_rt) return natural;
    function convert(x: mpl2csw_ptcalc_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: mpl2csw_ptcalc_rt) return mpl2csw_ptcalc_rt;
    function zero(tpl: mpl2csw_ptcalc_rt) return mpl2csw_ptcalc_rt;
 
    subtype mpl2csw_ptcalc_vt is std_logic_vector(mpl2csw_ptcalc_rt'w-1 downto 0);
-   attribute w of mpl2csw_ptcalc_vt : subtype is 63;
+   attribute w of mpl2csw_ptcalc_vt : subtype is 62;
 
    type mpl2csw_ptcalc_art is array(integer range <>) of mpl2csw_ptcalc_rt;
    function width(x: mpl2csw_ptcalc_art) return integer;

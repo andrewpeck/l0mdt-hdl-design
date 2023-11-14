@@ -45,7 +45,7 @@ entity ucm_rpc_R_comp is
     ctrl_v        : in std_logic_vector;
     mon_v         : out std_logic_vector;
     --
-    i_phimod      : in std_logic_vector(5 - 1 downto 0);
+    i_phimod      : in std_logic_vector(UCM_CDE2CVP_PHIMOD_LEN - 1 downto 0);
     i_dv          : in std_logic;
     --
     o_radius      : out std_logic_vector(g_OUTPUT_WIDTH - 1 downto 0);
