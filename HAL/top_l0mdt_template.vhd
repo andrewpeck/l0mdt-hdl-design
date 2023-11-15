@@ -317,7 +317,7 @@ architecture structural of top_l0mdt is
   signal hal_ctrl_v : std_logic_vector(width(hal_ctrl_r) -1 downto 0);
   signal hal_mon_v  : std_logic_vector(width(hal_mon_r) -1 downto 0);
 
-  signal csm_fm_mon_v : std_logic_vector(width(fm_csm_mon_r)-1 downto 0);
+  signal fm_csm_mon_v : std_logic_vector(width(fm_csm_mon_r)-1 downto 0);
   --------------------------------------------------------------------------------
   -- Sumps
   --------------------------------------------------------------------------------
@@ -392,6 +392,8 @@ begin
 
       ctrl_v => hal_ctrl_v,
       mon_v  => hal_mon_v,
+
+      fm_csm_mon_r => fm_csm_mon_r,
 
       mtc_i => mtc,
       nsp_i => nsp,
@@ -470,7 +472,7 @@ begin
       --
 
       -- Fast Monitoring
-      csm_fm_mon_v => csm_fm_mon_v,
+      csm_fm_mon_v => fm_csm_mon_v,
       sump => user_sump
       );
 
@@ -510,6 +512,7 @@ begin
   hal_ctrl_v     <= convert(hal_ctrl_r, hal_ctrl_v);
   hal_mon_r      <= convert(hal_mon_v, hal_mon_r);
 
+  fm_csm_mon_v     <= convert(fm_csm_mon_r, fm_csm_mon_v);
   top_control_inst : entity work.top_control
     port map (
 
