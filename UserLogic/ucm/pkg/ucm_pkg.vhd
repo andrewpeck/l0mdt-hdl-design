@@ -65,8 +65,8 @@ package ucm_pkg is
    function convert(x: ucm_rpc_r_alt; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: ucm_rpc_r_alt) return ucm_rpc_r_alt;
 
-   subtype ucm_mdt_lt is std_logic_vector(UCM_Z_ROI_LEN -1 downto 0);
-   attribute w of ucm_mdt_lt : subtype is 14;
+   subtype ucm_mdt_lt is std_logic_vector(UCM_R_MDT_LEN -1 downto 0);
+   attribute w of ucm_mdt_lt : subtype is 15;
 
    type ucm_mdt_r_alt is array(integer range <>) of ucm_mdt_lt;
    function width(x: ucm_mdt_r_alt) return integer;

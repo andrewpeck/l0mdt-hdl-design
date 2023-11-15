@@ -124,6 +124,8 @@ architecture beh of ucm_cvp is
 
   signal vec_pos_a      : vec_pos_array_ut(g_NUM_MDT_LAYERS-1 downto 0);
   signal vec_pos_a_dv   : std_logic;
+  signal pl_vec_pos_a      : vec_pos_array_ut(g_NUM_MDT_LAYERS-1 downto 0);
+  signal pl_vec_pos_a_dv   : std_logic;
 
   ----------------------------------
   -- OLD SIGNALS
@@ -219,7 +221,7 @@ begin
     generic map(
       g_MODE =>  "MDT",
       g_STATION_LAYERS => 3,
-      g_OUTPUT_WIDTH => UCM_Z_ROI_LEN
+      g_OUTPUT_WIDTH => UCM_R_MDT_LEN
     )
     port map(
       clk         => clk,
@@ -349,7 +351,7 @@ begin
 
   DATA_PL1 : entity vamc_lib.vamc_spl
     generic map(
-      g_DELAY_CYCLES  => 60,
+      g_DELAY_CYCLES  => 72,
       g_PIPELINE_WIDTH    => i_data_v'length
     )
     port map(
@@ -364,7 +366,7 @@ begin
 
   SLOPE_PL1 : entity vamc_lib.vamc_spl
     generic map(
-      g_DELAY_CYCLES  => 15,
+      g_DELAY_CYCLES  => 23,
       g_PIPELINE_WIDTH    => atan_slope'length
     )
     port map(
@@ -382,15 +384,18 @@ begin
     XYZ : for hps_i in c_MAX_POSSIBLE_HPS - 1 downto 0 generate
       ZZZ : if c_STATIONS_IN_SECTOR(hps_i) = '1'  generate
         ucm2hps_buff_ar(hps_i).muid <= pl_data_r.muid;
+        ucm2hps_buff_ar(hps_i).mdtseg_dest<= (others => '1'); 
         ucm2hps_buff_ar(hps_i).phimod <= pl_data_r.phimod;
         ucm2hps_buff_ar(hps_i).data_valid <= pl_data_r.data_valid;
-        ucm2hps_buff_ar(hps_i).vec_pos <= vec_pos_a(hps_i);
+        ucm2hps_buff_ar(hps_i).vec_pos <= pl_vec_pos_a(hps_i);
         ucm2hps_buff_ar(hps_i).vec_ang <= pl_atan_slope;
       end generate;
     end generate;
 
   UCM_CVP_OUT : process(local_rst,clk) begin
     if rising_edge(clk) then
+
+      pl_vec_pos_a <= vec_pos_a;
 
       if local_rst= '1' then
         -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
@@ -399,41 +404,6 @@ begin
         --   -- ucm2hps_ar(hps_i).data_valid    <= '0';
         -- end loop;
       else 
-
-        -- if i_data_r.data_valid = '1' then
-        --   -- for hps_i in c_MAX_POSSIBLE_HPS - 1 downto 0 loop
-        --   --   if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-        --   --     ucm2hps_buff_ar(hps_i).muid <= i_data_r.muid;
-        --   --     ucm2hps_buff_ar(hps_i).data_valid <= i_data_r.data_valid;
-        --     -- else
-        --     --   ucm2hps_ar(hps_i).muid <= (others => (others => '0'));
-
-        --     end if;
-        --   end loop;
-        -- end if;
-
-        -- if vec_pos_a_dv = '1' then
-        --   -- for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
-        --   --   if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-        --   --     ucm2hps_buff_ar(hps_i).vec_pos <= vec_pos_a(hps_i);
-        --   --   -- else
-        --   --   --   ucm2hps_ar(hps_i).vec_pos             <=(others => '0');
-
-        --   --   end if;
-        --   -- end loop;
-        -- end if;
-
-        -- if atan_slope_dv = '1' then
-        --   -- for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
-        --   --   if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-        --   --     ucm2hps_buff_ar(hps_i).vec_ang <= atan_slope;
-        --   --   -- else
-        --   --   --   ucm2hps_ar(hps_i).vec_pos             <=(others => '0');
-
-        --   --   end if;
-        --   -- end loop;
-        -- end if;
-
         if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
           -- if c_SF_TYPE = '0' then --CSF
             -- if i_data_r.data_valid = '1' then

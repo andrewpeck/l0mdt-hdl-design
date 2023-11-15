@@ -35,7 +35,7 @@ entity ucm_mdt_R_comp_top is
     g_MODE                : string := "MDT";
     -- g_STATION_RADIUS      : integer := 0; 
     g_STATION_LAYERS       : integer := 3; -- only for RPC
-    g_OUTPUT_WIDTH        : integer := UCM_Z_ROI_LEN
+    g_OUTPUT_WIDTH        : integer := UCM_R_MDT_LEN
   );
   port (
     clk           : in std_logic;
@@ -117,27 +117,6 @@ begin
       o_radius    => o_radius(1),
       o_dv        => dv(1)
   );
-
-  -- MID1 : entity ucm_lib.ucm_mdt_R_comp
-  --   generic map(
-  --     g_STATION_RADIUS =>  1,
-  --     g_STATION_LAYERS  =>  1,
-  --     g_OUTPUT_WIDTH   => g_OUTPUT_WIDTH
-  --   )
-  --   port map(
-  --     clk         => clk,
-  --     rst         => rst,
-  --     ena         => ena,
-  --     --
-  --     ctrl_v      => ctrl_v,
-  --     mon_v       => mon_av(2),
-  --     --
-  --     i_phimod    => i_phimod,
-  --     i_dv        => i_dv,
-  --     --
-  --     o_radius    => o_radius(2),
-  --     o_dv        => dv(2)
-  -- );
 
   OUT0 : entity ucm_lib.ucm_mdt_R_comp
     generic map(

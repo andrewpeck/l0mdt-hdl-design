@@ -246,8 +246,8 @@ begin  -- architecture behavioral
           localRdData(13)            <=  Mon.R_PHI_COMP.MDT.MEM_INTERFACE.rd_rdy;                        --Read ready
           localRdData(20 downto 16)  <=  reg_data(134)(20 downto 16);                                    --Read Address
         when 135 => --0x87
-          localRdData(13 downto  0)  <=  Mon.R_PHI_COMP.MDT.MEM_INTERFACE.rd_data;                       --Read Data
-          localRdData(29 downto 16)  <=  reg_data(135)(29 downto 16);                                    --Write Data
+          localRdData(14 downto  0)  <=  Mon.R_PHI_COMP.MDT.MEM_INTERFACE.rd_data;                       --Read Data
+          localRdData(30 downto 16)  <=  reg_data(135)(30 downto 16);                                    --Write Data
 
 
           when others =>
@@ -330,7 +330,7 @@ begin  -- architecture behavioral
   Ctrl.R_PHI_COMP.MDT.ext_ctrl                                <=  reg_data(132)(12);                
   Ctrl.R_PHI_COMP.MDT.MEM_INTERFACE.wr_addr                   <=  reg_data(134)( 4 downto  0);      
   Ctrl.R_PHI_COMP.MDT.MEM_INTERFACE.rd_addr                   <=  reg_data(134)(20 downto 16);      
-  Ctrl.R_PHI_COMP.MDT.MEM_INTERFACE.wr_data                   <=  reg_data(135)(29 downto 16);      
+  Ctrl.R_PHI_COMP.MDT.MEM_INTERFACE.wr_data                   <=  reg_data(135)(30 downto 16);      
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
@@ -443,7 +443,7 @@ begin  -- architecture behavioral
       reg_data(133)( 1)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.MEM_INTERFACE.rd_req;
       reg_data(134)( 4 downto  0)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.MEM_INTERFACE.wr_addr;
       reg_data(134)(20 downto 16)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.MEM_INTERFACE.rd_addr;
-      reg_data(135)(29 downto 16)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.MEM_INTERFACE.wr_data;
+      reg_data(135)(30 downto 16)  <= DEFAULT_UCM_CTRL_t.R_PHI_COMP.MDT.MEM_INTERFACE.wr_data;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       Ctrl.SUPER.ACTIONS.RESET <= '0';
@@ -636,7 +636,7 @@ begin  -- architecture behavioral
           reg_data(134)( 4 downto  0)                             <=  localWrData( 4 downto  0);      --Write Address
           reg_data(134)(20 downto 16)                             <=  localWrData(20 downto 16);      --Read Address
         when 135 => --0x87
-          reg_data(135)(29 downto 16)                             <=  localWrData(29 downto 16);      --Write Data
+          reg_data(135)(30 downto 16)                             <=  localWrData(30 downto 16);      --Write Data
 
           when others => null;
         end case;

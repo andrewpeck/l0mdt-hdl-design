@@ -141,6 +141,9 @@ package common_constants_pkg is
    constant c_CLK_AXI_MULT : integer := 8;
    attribute w of c_CLK_AXI_MULT : constant is 32;
 
+   constant UCM_R_MDT_LEN : integer := 15;
+   attribute w of UCM_R_MDT_LEN : constant is 32;
+
 end package common_constants_pkg;
 
 ------------------------------------------------------------

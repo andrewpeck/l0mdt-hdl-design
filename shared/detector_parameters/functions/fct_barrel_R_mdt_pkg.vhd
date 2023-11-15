@@ -30,7 +30,7 @@ use dp_repo_lib.barrel_R_mdt_pkg.all;
 
 package fct_barrel_R_mdt_pkg is
 
-  type barrel_R_mdt_avt is array (0 to 31) of std_logic_vector(UCM_Z_ROI_LEN - 1 downto 0);
+  type barrel_R_mdt_avt is array (0 to 31) of std_logic_vector(UCM_R_MDT_LEN - 1 downto 0);
 
 
   -- type barrel_R_mdt_aft is array (0 to 31 ) of real;

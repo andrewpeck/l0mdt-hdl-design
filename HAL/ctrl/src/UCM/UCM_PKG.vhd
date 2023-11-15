@@ -341,9 +341,9 @@ package UCM_CTRL is
 
    type UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is record
       rd_rdy : std_logic;
-      rd_data : std_logic_vector(14 - 1 downto 0);
+      rd_data : std_logic_vector(15 - 1 downto 0);
    end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
-   attribute w of UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t : type is 15;
+   attribute w of UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t : type is 16;
    function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural;
    function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
@@ -354,9 +354,9 @@ package UCM_CTRL is
       rd_req : std_logic;
       wr_addr : std_logic_vector(5 - 1 downto 0);
       rd_addr : std_logic_vector(5 - 1 downto 0);
-      wr_data : std_logic_vector(14 - 1 downto 0);
+      wr_data : std_logic_vector(15 - 1 downto 0);
    end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
-   attribute w of UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t : type is 26;
+   attribute w of UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t : type is 27;
    function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural;
    function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
@@ -365,7 +365,7 @@ package UCM_CTRL is
    type UCM_R_PHI_COMP_MDT_MON_t is record
       MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
    end record UCM_R_PHI_COMP_MDT_MON_t;
-   attribute w of UCM_R_PHI_COMP_MDT_MON_t : type is 15;
+   attribute w of UCM_R_PHI_COMP_MDT_MON_t : type is 16;
    function width(x: UCM_R_PHI_COMP_MDT_MON_t) return natural;
    function convert(x: UCM_R_PHI_COMP_MDT_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
@@ -378,7 +378,7 @@ package UCM_CTRL is
       ext_ctrl : std_logic;
       MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
    end record UCM_R_PHI_COMP_MDT_CTRL_t;
-   attribute w of UCM_R_PHI_COMP_MDT_CTRL_t : type is 39;
+   attribute w of UCM_R_PHI_COMP_MDT_CTRL_t : type is 40;
    function width(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural;
    function convert(x: UCM_R_PHI_COMP_MDT_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
@@ -388,7 +388,7 @@ package UCM_CTRL is
       RPC : UCM_R_PHI_COMP_RPC_MON_t;
       MDT : UCM_R_PHI_COMP_MDT_MON_t;
    end record UCM_R_PHI_COMP_MON_t;
-   attribute w of UCM_R_PHI_COMP_MON_t : type is 28;
+   attribute w of UCM_R_PHI_COMP_MON_t : type is 29;
    function width(x: UCM_R_PHI_COMP_MON_t) return natural;
    function convert(x: UCM_R_PHI_COMP_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
@@ -398,7 +398,7 @@ package UCM_CTRL is
       RPC : UCM_R_PHI_COMP_RPC_CTRL_t;
       MDT : UCM_R_PHI_COMP_MDT_CTRL_t;
    end record UCM_R_PHI_COMP_CTRL_t;
-   attribute w of UCM_R_PHI_COMP_CTRL_t : type is 76;
+   attribute w of UCM_R_PHI_COMP_CTRL_t : type is 77;
    function width(x: UCM_R_PHI_COMP_CTRL_t) return natural;
    function convert(x: UCM_R_PHI_COMP_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
@@ -408,7 +408,7 @@ package UCM_CTRL is
       SUPER : UCM_SUPER_MON_t;
       R_PHI_COMP : UCM_R_PHI_COMP_MON_t;
    end record UCM_MON_t;
-   attribute w of UCM_MON_t : type is 192;
+   attribute w of UCM_MON_t : type is 193;
    function width(x: UCM_MON_t) return natural;
    function convert(x: UCM_MON_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_MON_t) return UCM_MON_t;
@@ -418,7 +418,7 @@ package UCM_CTRL is
       SUPER : UCM_SUPER_CTRL_t;
       R_PHI_COMP : UCM_R_PHI_COMP_CTRL_t;
    end record UCM_CTRL_t;
-   attribute w of UCM_CTRL_t : type is 426;
+   attribute w of UCM_CTRL_t : type is 427;
    function width(x: UCM_CTRL_t) return natural;
    function convert(x: UCM_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: UCM_CTRL_t) return UCM_CTRL_t;

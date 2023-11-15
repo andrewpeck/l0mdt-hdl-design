@@ -170,7 +170,7 @@ types:
 
 - UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t:
   - rd_rdy : { type: logic }
-  - rd_data : { type: logic, range : [ 14 - 1 , 0 ] }
+  - rd_data : { type: logic, range : [ 15 - 1 , 0 ] }
 
 
 - UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t:
@@ -178,7 +178,7 @@ types:
   - rd_req : { type: logic }
   - wr_addr : { type: logic, range : [ 5 - 1 , 0 ] }
   - rd_addr : { type: logic, range : [ 5 - 1 , 0 ] }
-  - wr_data : { type: logic, range : [ 14 - 1 , 0 ] }
+  - wr_data : { type: logic, range : [ 15 - 1 , 0 ] }
 
 
 - UCM_R_PHI_COMP_MDT_MON_t:

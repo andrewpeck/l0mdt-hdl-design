@@ -5,6 +5,7 @@ config:
       - ieee: [std_logic_1164, numeric_std, math_real]
       - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
 types:
+   
    - SLC_SPECIFIC_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 48}
    - UCM_CDE2CVP_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 7}
    - UCM_CDE2CVP_PHIMOD_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 64.0}
@@ -16,7 +17,7 @@ types:
    - ucm_prepro2ctrl_avt: {'array': 'open', 'type': 'ucm_prepro2ctrl_vt'}
    - ucm_rpc_lt: {'type': 'logic', 'range': ['SLC_Z_RPC_LEN -1', 0]}
    - ucm_rpc_r_alt: {'array': 'open', 'type': 'ucm_rpc_lt'}
-   - ucm_mdt_lt: {'type': 'logic', 'range': ['UCM_Z_ROI_LEN -1', 0]}
+   - ucm_mdt_lt: {'type': 'logic', 'range': ['UCM_R_MDT_LEN -1', 0]}
    - ucm_mdt_r_alt: {'array': 'open', 'type': 'ucm_mdt_lt'}
    - chamb_ieta_rpc_ut: {'type': 'unsigned', 'range': ['4-1', 0]}
    - chamb_ieta_rpc_aut: {'array': ['4-1', 0], 'type': 'chamb_ieta_rpc_ut'}

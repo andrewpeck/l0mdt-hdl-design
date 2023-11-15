@@ -105,33 +105,39 @@ architecture beh of ucm_cvp_pc_core is
   signal sum_xx     : std_logic_vector(sig_SLC_Z_RPC_LEN*2 + 4 -1 downto 0); --28
   signal sum_xx_dv  : std_logic;
 
-  signal SxSx         : std_logic_vector(sum_x'length*2 -1 downto 0); --32
-  signal SxSx_dv      : std_logic;
-  signal nSxx     : std_logic_vector(4 + sum_xy'length -1 downto 0); --32
-  signal nSxx_dv  : std_logic;
+  signal SxSx           : std_logic_vector(sum_x'length*2 -1 downto 0); --32
+  signal SxSx_dv        : std_logic;
+  signal nSxx           : std_logic_vector(4 + sum_xy'length -1 downto 0); --32
+  signal nSxx_dv        : std_logic;
   signal param_c        : std_logic_vector(max(SxSx'length,nSxx'length) -1 downto 0); --32
   signal param_c_red    : std_logic_vector(22 -1 downto 0);
   signal param_c_dv     : std_logic;
+  signal pl_param_c_red : std_logic_vector(22 -1 downto 0);
+  signal pl_param_c_dv  : std_logic;
 
-  signal SxxSy    : std_logic_vector(sum_xx'length + sum_x'length -1 downto 0); --28
-  signal SxxSy_dv : std_logic;
-  signal SxSxy    : std_logic_vector(sum_x'length + sum_xy'length -1 downto 0); --28
-  signal SxSxy_dv : std_logic;
+  signal SxxSy          : std_logic_vector(sum_xx'length + sum_x'length -1 downto 0); --28
+  signal SxxSy_dv       : std_logic;
+  signal SxSxy          : std_logic_vector(sum_x'length + sum_xy'length -1 downto 0); --28
+  signal SxSxy_dv       : std_logic;
   signal param_b        : std_logic_vector(max(SxxSy'length,SxSxy'length) -1 downto 0); --28
   signal param_b_red    : std_logic_vector(31 -1 downto 0);
   signal param_b_dv     : std_logic;
+  signal plz_param_b    : std_logic_vector(param_b'length - 1 downto 0);
+  signal plz_param_b_dv : std_logic;
 
-  signal nSxy     : std_logic_vector(4 + sum_xy'length -1 downto 0); --32
-  signal nSxy_dv  : std_logic;
-  signal SxSy     : std_logic_vector(sum_x'length + sum_x'length -1 downto 0); --32
-  signal SxSy_dv  : std_logic;
-  signal param_a        : std_logic_vector(max(SxSy'length,nSxy'length) -1 downto 0);
-  signal param_a_red    : std_logic_vector(23 -1 downto 0);
-  signal param_a_dv     : std_logic;
+  signal nSxy             : std_logic_vector(4 + sum_xy'length -1 downto 0); --32
+  signal nSxy_dv          : std_logic;
+  signal SxSy             : std_logic_vector(sum_x'length + sum_x'length -1 downto 0); --32
+  signal SxSy_dv          : std_logic;
+  signal param_a          : std_logic_vector(max(SxSy'length,nSxy'length) -1 downto 0);
+  signal param_a_red      : std_logic_vector(23 -1 downto 0);
+  signal param_a_dv       : std_logic;
+  signal param_a_red_pl1  : std_logic_vector(param_a_red'length -1 downto 0);
+  signal param_a_pl_dv    : std_logic;
 
   constant scale_slope_nom : integer := 10;
 
-  signal slope_nom_sc    : std_logic_vector(param_a_red'length + scale_slope_nom -1 downto 0);
+  signal param_a_sc    : std_logic_vector(param_a_red'length + scale_slope_nom -1 downto 0);
   signal slope_den_sc : std_logic_vector(24 -1 downto 0);
   signal slope_div_sc : std_logic_vector(39 downto 0);
   signal slope_div_dout_tvalid : STD_LOGIC;
@@ -155,16 +161,18 @@ architecture beh of ucm_cvp_pc_core is
     );
   END COMPONENT;
 
-  signal slope_div         : std_logic_vector(max(param_c_red'length,slope_nom_sc'length) -1 downto 0);
+  signal slope_div         : std_logic_vector(max(param_c_red'length,param_a_sc'length) -1 downto 0);
   signal slope_div_dv      : std_logic;
 
   constant scale_off_nom : integer := 10;
 
-  signal off_nom_sc    : std_logic_vector(param_b_red'length + scale_off_nom -1 downto 0);
-  signal off_den_sc : std_logic_vector(23 downto 0);
-  signal off_div_sc : std_logic_vector(47 downto 0);
-  signal off_div_dout_tvalid : STD_LOGIC;
-  signal off_div_dout_tdata : STD_LOGIC_VECTOR(71 DOWNTO 0);
+  signal param_b_sc           : std_logic_vector(param_b_red'length + scale_off_nom -1 downto 0);
+  -- signal plz_param_b_sc        : std_logic_vector(param_b_red'length + scale_off_nom -1 downto 0);
+  -- signal plz_param_b_dv        : std_logic;
+  signal off_den_sc           : std_logic_vector(23 downto 0);
+  signal off_div_sc           : std_logic_vector(47 downto 0);
+  signal off_div_dout_tvalid  : STD_LOGIC;
+  signal off_div_dout_tdata   : STD_LOGIC_VECTOR(71 DOWNTO 0);
   signal off_div_dout_tdata_q : std_logic_vector(33 downto 0);-- := (others => '0');
   signal off_div_dout_tdata_r : std_logic_vector(20 downto 0);-- := (others => '0');
   -- signal off_div_ipr2    : std_logic_vector(34-1 downto 0);--(max(bden'length,bnom_sc'length) -1 downto 0);
@@ -184,10 +192,13 @@ architecture beh of ucm_cvp_pc_core is
     );
   END COMPONENT;
 
-  signal off_div         : std_logic_vector(max(param_c'length,slope_nom_sc'length) -1 downto 0);
+  signal off_div         : std_logic_vector(max(param_c'length,param_a_sc'length) -1 downto 0);
   signal off_div_dv      : std_logic;
 
   constant scale_Z_nom : integer := 10;
+
+  signal pl_mdt_R_a     : ucm_mdt_r_alt(g_NUM_MDT_LAYERS-1 downto 0);
+  -- signal pl_mdt_R_dv    : std_logic;
 
   signal vec_z_pos_dv_a : std_logic_vector(g_NUM_MDT_LAYERS -1 downto 0);
 
@@ -590,18 +601,18 @@ begin
   --------------------------------
   -- S
   --------------------------------
-  -- slope_nom_sc <= param_a ;--& "00000000000"; --11:2048
-  param_a_sc : if (slope_nom_sc'length - param_a'length) = 0 generate
-    slope_nom_sc <= param_a_red;
+  -- param_a_sc <= param_a ;--& "00000000000"; --11:2048
+  gen_a_sc : if (param_a_sc'length - param_a'length) = 0 generate
+    param_a_sc <= param_a_red;
   else generate
-    slope_nom_sc <= param_a_red & ((slope_nom_sc'length - param_a_red'length - 1) downto 0 => '0');
+    param_a_sc <= param_a_red & ((param_a_sc'length - param_a_red'length - 1) downto 0 => '0');
   end generate;
 
   -- assert slope_den_sc'length < param_c'length report "Error: slope_den_sc'length " & integer'image(slope_den_sc'length) & "< param_c'length " & integer'image(param_c'length) & " report" severity error;
-  -- assert slope_div_sc'length < slope_nom_sc'length report "Error: slope_div_sc'length " & integer'image(slope_div_sc'length) & " < slope_nom_sc'length " & integer'image(slope_nom_sc'length) & " report" severity error;
-  -- slope_nom_sc <= param_a & ((slope_nom_sc'length - param_a'length - 1) downto 0 => '0');
+  -- assert slope_div_sc'length < param_a_sc'length report "Error: slope_div_sc'length " & integer'image(slope_div_sc'length) & " < param_a_sc'length " & integer'image(param_a_sc'length) & " report" severity error;
+  -- param_a_sc <= param_a & ((param_a_sc'length - param_a'length - 1) downto 0 => '0');
   slope_den_sc <= std_logic_vector(resize(signed(param_c_red),slope_den_sc'length));
-  slope_div_sc <= std_logic_vector(resize(signed(slope_nom_sc),slope_div_sc'length));
+  slope_div_sc <= std_logic_vector(resize(signed(param_a_sc),slope_div_sc'length));
 
   SLOPE_DIV_IP : cvp_slope_r2s_v1
     PORT MAP (
@@ -638,17 +649,17 @@ begin
   --------------------------------
   -- O
   --------------------------------
-  -- off_nom_sc <= param_b ;--& "00000000000"; --11:2048
-  param_b_sc : if (off_nom_sc'length - param_b'length) = 0 generate
-    off_nom_sc <= param_b_red;
+  -- param_b_sc <= param_b ;--& "00000000000"; --11:2048
+  gen_b_sc : if (param_b_sc'length - param_b'length) = 0 generate
+    param_b_sc <= param_b_red;
   else generate
-    off_nom_sc <= param_b_red & ((off_nom_sc'length - param_b_red'length - 1) downto 0 => '0');
+    param_b_sc <= param_b_red & ((param_b_sc'length - param_b_red'length - 1) downto 0 => '0');
   end generate;
   -- assert off_den_sc'length < param_c'length report "Error: off_den_sc'length " & integer'image(off_den_sc'length) & " < param_c'length " & integer'image(param_c'length) & " report" severity error;
-  -- assert off_div_sc'length < off_nom_sc'length report "Error: off_div_sc'length " & integer'image(off_div_sc'length) & "< off_nom_sc'length " & integer'image(off_nom_sc'length) & " report" severity error;
-  -- off_nom_sc <= param_a & ((off_nom_sc'length - param_a'length - 1) downto 0 => '0');
+  -- assert off_div_sc'length < param_b_sc'length report "Error: off_div_sc'length " & integer'image(off_div_sc'length) & "< param_b_sc'length " & integer'image(param_b_sc'length) & " report" severity error;
+  -- param_b_sc <= param_a & ((param_b_sc'length - param_a'length - 1) downto 0 => '0');
   off_den_sc <= std_logic_vector(resize(signed(param_c_red),off_den_sc'length));
-  off_div_sc <= std_logic_vector(resize(signed(off_nom_sc),off_div_sc'length));
+  off_div_sc <= std_logic_vector(resize(signed(param_b_sc),off_div_sc'length));
 
   OFF_DIV_IP : cvp_offset_r2s_v1
     PORT MAP (
@@ -684,21 +695,51 @@ begin
   --------------------------------
   -- Zs 
   --------------------------------
+  B_PL_1 : entity vamc_lib.vamc_spl
+    generic map(
+      g_DELAY_CYCLES  => 3,
+      g_PIPELINE_WIDTH    => param_b'length
+    )
+    port map(
+      clk         => clk,
+      rst         => rst,
+      ena         => ena,
+      i_data      => param_b,
+      i_dv        => param_b_dv,
+      o_data      => plz_param_b,  
+      o_dv        => plz_param_b_dv 
+    );
+  C_PL_1 : entity vamc_lib.vamc_spl
+    generic map(
+      g_DELAY_CYCLES  => 6,
+      g_PIPELINE_WIDTH    => param_c_red'length
+    )
+    port map(
+      clk         => clk,
+      rst         => rst,
+      ena         => ena,
+      i_data      => param_c_red,
+      i_dv        => param_c_dv,
+      o_data      => pl_param_c_red,  
+      o_dv        => pl_param_c_dv 
+    );
 
   Y_EVAL : for i_mdt in g_NUM_MDT_LAYERS -1 downto 0 generate
-    signal mult_ra     : std_logic_vector(i_mdt_R_a(i_mdt)'length + param_a_red'length -1 downto 0);
-    signal mult_ra_dv  : std_logic;
-    signal sum_ax_b     : std_logic_vector(max(param_b_red'length,mult_ra'length) downto 0);
-    signal sum_ax_b_sc  : std_logic_vector(sum_ax_b'length + scale_Z_nom downto 0);
-    signal sum_ax_b_dv  : std_logic;
-    signal zc_div_num : std_logic_vector(55 downto 0);
-    signal zc_div_den : std_logic_vector(39 downto 0);
-    signal div_out : std_logic_vector(95 downto 0);
-    signal div_quo : std_logic_vector(50 downto 0);
-    signal div_fra : std_logic_vector(33 downto 0);
-    signal div_out_dv  : std_logic;
+    signal pl_mdt_R_dv    : std_logic;
+    -- signal pl_mdt_R_a_sc  : std_logic_vector(pl_mdt_R_a(i_mdt)'length + scale_Z_nom -1 downto 0);
+    signal mult_ra        : std_logic_vector(i_mdt_R_a(i_mdt)'length + param_a'length -1 downto 0);
+    signal mult_ra_dv     : std_logic;
+    signal sum_ax_b       : std_logic_vector(max(param_b_sc'length,mult_ra'length) downto 0);
+    signal sum_ax_b_sc    : std_logic_vector(sum_ax_b'length + scale_Z_nom - 1 downto 0);
+    signal sum_ax_b_dv    : std_logic;
+    signal zc_div_num     : std_logic_vector(55 downto 0);
+    signal zc_div_den     : std_logic_vector(39 downto 0);
+    signal div_out        : std_logic_vector(95 downto 0);
+    signal div_quo        : std_logic_vector(50 downto 0);
+    signal div_fra        : std_logic_vector(33 downto 0);
+    signal div_out_dv     : std_logic;
 
-    signal sum_ax_b_scale : std_logic_vector(1 + sum_ax_b'length downto 0);
+    -- signal sum_ax_b_scale : std_logic_vector(1 + sum_ax_b'length downto 0);
 
     COMPONENT zcalc_vec_pos_div
       PORT (
@@ -715,47 +756,66 @@ begin
     END COMPONENT;
 
     begin
+
+    MDT_PL_1 : entity vamc_lib.vamc_spl
+      generic map(
+        g_DELAY_CYCLES  => 9,
+        g_PIPELINE_WIDTH    => i_mdt_R_a(i_mdt)'length
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => ena,
+        i_data      => i_mdt_R_a(i_mdt),
+        i_dv        => i_mdt_R_dv,
+        o_data      => pl_mdt_R_a(i_mdt),  
+        o_dv        => pl_mdt_R_dv 
+      );
     
+    -- gen_b_sc : if (pl_mdt_R_a_sc'length - pl_mdt_R_a(i_mdt)'length) = 0 generate
+    --     pl_mdt_R_a_sc <= pl_mdt_R_a(i_mdt);
+    --   else generate
+    --     pl_mdt_R_a_sc <= pl_mdt_R_a(i_mdt) & ((pl_mdt_R_a_sc'length - pl_mdt_R_a(i_mdt)'length - 1) downto 0 => '0');
+    --   end generate;
+
     MULT_R_C_ENT : entity shared_lib.VU_generic_pipelined_MATH
       generic map(
         g_NAME => "a*x",
         g_OPERATION => "*",
         g_IN_PIPE_STAGES  => 1,
         g_OUT_PIPE_STAGES => 1,
-        g_in_A_WIDTH => i_mdt_R_a(i_mdt)'length,
-        g_in_B_WIDTH => param_a_red'length
+        g_in_A_WIDTH => pl_mdt_R_a(i_mdt)'length,
+        g_in_B_WIDTH => param_a'length
       )
       port map(
         clk         => clk,
         rst         => rst,
         --
-        i_in_A      => std_logic_vector(i_mdt_R_a(i_mdt)),
-        i_in_B      => param_a_red,
-        -- i_in_C      => "0",
-        -- i_in_D      => "0",
+        i_in_A      => pl_mdt_R_a(i_mdt),
+        i_in_B      => param_a,
         i_dv        => param_a_dv,
         --
         o_result    => mult_ra,
         o_dv        => mult_ra_dv
       );
 
+    
+
     sum_ax_b_ENT : entity shared_lib.VU_generic_pipelined_MATH
       generic map(
         g_NAME => "ax+b",
         g_OPERATION => "+",
-        g_IN_PIPE_STAGES  => 0,
-        g_OUT_PIPE_STAGES => 0,
+        g_IN_PIPE_STAGES  => 1,
+        g_OUT_PIPE_STAGES => 1,
         g_in_A_WIDTH => mult_ra'length,
-        g_in_B_WIDTH => param_b_red'length
+        g_in_B_WIDTH => plz_param_b'length
       )
       port map(
         clk         => clk,
         rst         => rst,
         --
         i_in_A      => mult_ra,
-        i_in_B      => param_b_red,
-        -- i_in_C      => "0",
-        -- i_in_D      => "0",
+        i_in_B      => plz_param_b,
         i_dv        => mult_ra_dv,
         --
         o_result    => sum_ax_b,
@@ -763,6 +823,8 @@ begin
       );
 
       -- sum_ax_b_scale <= std_logic_vector(resize(signed(sum_ax_b),sum_ax_b_scale'length));
+
+    
       
     param_z_sc : if (sum_ax_b_sc'length - sum_ax_b'length) = 0 generate
       sum_ax_b_sc <= sum_ax_b;
@@ -772,14 +834,14 @@ begin
     -- assert zc_div_num'length < sum_ax_b_sc'length report "Error: zc_div_num'length " & integer'image(zc_div_num'length ) & " < sum_ax_b_sc'length " & integer'image(sum_ax_b_sc'length) & " report" severity error;
     -- assert zc_div_den'length < param_c'length report "Error: zc_div_denv'length " & integer'image(zc_div_den'length) & " < param_c'length " & integer'image(param_c'length) & " report" severity error;
     zc_div_num <= std_logic_vector(resize(signed(sum_ax_b_sc),zc_div_num'length));
-    zc_div_den <= std_logic_vector(resize(signed(param_c_red),zc_div_den'length));
+    zc_div_den <= std_logic_vector(resize(signed(pl_param_c_red),zc_div_den'length));
 
     DIV_Z_CALC : zcalc_vec_pos_div
       PORT MAP (
         aclk => clk,
         aclken => ena,
         aresetn => not rst,
-        s_axis_divisor_tvalid => param_a_dv,
+        s_axis_divisor_tvalid => pl_param_c_dv,
         -- s_axis_divisor_tready => s_axis_divisor_tready,
         s_axis_divisor_tdata => zc_div_den,--param_a,
         s_axis_dividend_tvalid => sum_ax_b_dv,
