@@ -130,40 +130,14 @@ architecture beh of ucm_cvp is
   ----------------------------------
   -- OLD SIGNALS
   ---------------------------------
-  
-  -- signal data_v       : ucm_cde_vt;
-  -- signal data_r       : ucm_cde_rt;
 
-  -- signal data_v_2     : ucm_cde_vt;
-  -- signal data_r_2       : ucm_cde_rt;
-  
   signal ucm2hps_buff_ar   : ucm2hps_art(c_MAX_NUM_HPS -1 downto 0);
   signal ucm2hps_ar   : ucm2hps_art(c_MAX_NUM_HPS -1 downto 0);
-
-
-  -- signal chamber_ieta_v : std_logic_vector(15 downto 0);
-  -- signal chamber_ieta_r : chamb_ieta_rpc_aut;
 
   type new_chamb_ieta_art is array(g_MAX_POSSIBLE_HPS -1 downto 0) of unsigned(4-1 downto 0);
   signal new_chamb_ieta_a : new_chamb_ieta_art;
   signal new_chamb_ieta_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0) := (others => '0');
 
-  -- signal offset       : signed(31 downto 0);--signed(126 -1 downto 0);
-  -- signal slope        : signed(31 downto 0);-- 
-  -- -- signal slope_org : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
-  -- signal offset_dv     : std_logic;
-  -- signal slope_dv     : std_logic;
-
-  
-
-  -- type vec_pos_array_ut  is array (0 to g_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
-  -- signal vec_pos_array  : vec_pos_array_ut(g_NUM_MDT_LAYERS-1 downto 0);
-  -- signal vec_z_pos_dv : std_logic_vector(g_MAX_POSSIBLE_HPS -1 downto 0);
-
-  
-
-  -- signal atan_slope : unsigned(UCM2HPS_VEC_ANG_LEN-1 downto 0);
-  
 begin
 
   local_rst <= rst or i_local_rst;
@@ -381,124 +355,37 @@ begin
 
     pl_data_r <= convert(pl_data_v,pl_data_r);
 
-    -- XYZ : for hps_i in c_MAX_POSSIBLE_HPS - 1 downto 0 generate
-    --   ZZZ : if c_STATIONS_IN_SECTOR(hps_i) = '1'  generate
-    --     ucm2hps_buff_ar(hps_i).muid <= pl_data_r.muid;
-    --     ucm2hps_buff_ar(hps_i).mdtseg_dest<= (others => '1'); 
-    --     ucm2hps_buff_ar(hps_i).phimod <= pl_data_r.phimod;
-    --     ucm2hps_buff_ar(hps_i).data_valid <= pl_data_r.data_valid;
-    --     ucm2hps_buff_ar(hps_i).vec_pos <= pl_vec_pos_a(hps_i);
-    --     ucm2hps_buff_ar(hps_i).vec_ang <= pl_atan_slope;
-    --     -- ucm2hps_buff_ar(hps_i).mdtid.chamber_ieta  <= new_chamb_ieta_a(hps_i); 
-    --     -- ucm2hps_buff_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(get_b_chamber_type(c_SECTOR_ID,hps_i,to_integer(new_chamb_ieta_a(hps_i))),VEC_MDTID_CHAMBER_ID_LEN);
-    --   end generate;
-    -- end generate;
-
   UCM_CVP_OUT : process(clk) begin
     if rising_edge(clk) then
 
       pl_vec_pos_a <= vec_pos_a;
-
-      if local_rst= '1' then
-        -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-        --   ucm2hps_buff_ar(hps_i) <= zero(ucm2hps_buff_ar(hps_i));
-        --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
-        --   -- ucm2hps_ar(hps_i).data_valid    <= '0';
-        -- end loop;
+      if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
         for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
           if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-            ucm2hps_ar(hps_i).data_valid    <= '0';
+            if local_rst= '1' then
+              -- ucm2hps_ar(hps_i).data_valid    <= '0';
+              ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
+            else 
+              if pl_data_r.data_valid = '1' then
+              -- if or_reduce(new_chamb_ieta_dv) = '1' then
+                ucm2hps_ar(hps_i).muid    <= pl_data_r.muid;
+                ucm2hps_ar(hps_i).vec_pos <= pl_vec_pos_a(hps_i);
+                ucm2hps_ar(hps_i).vec_ang <= pl_atan_slope;
+                ucm2hps_ar(hps_i).phimod <= pl_data_r.phimod;
+                ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
+                ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= new_chamb_ieta_a(hps_i);
+                ucm2hps_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(get_b_chamber_type(c_SECTOR_ID,hps_i,to_integer(new_chamb_ieta_a(hps_i))),VEC_MDTID_CHAMBER_ID_LEN);
+                ucm2hps_ar(hps_i).data_valid          <= '1';
+              else
+                ucm2hps_ar(hps_i).data_valid    <= '0';
+              end if;
+            end if;
           end if;
         end loop;
-          
-      else 
-        if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
-          -- if c_SF_TYPE = '0' then --CSF
-            -- if i_data_r.data_valid = '1' then
-              for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
-                if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-
-                  if pl_data_r.data_valid = '1' then
-                  -- if or_reduce(new_chamb_ieta_dv) = '1' then
-                    ucm2hps_ar(hps_i).muid    <= pl_data_r.muid;
-                    ucm2hps_ar(hps_i).vec_pos <= pl_vec_pos_a(hps_i);
-                    ucm2hps_ar(hps_i).vec_ang <= pl_atan_slope;
-                    ucm2hps_ar(hps_i).phimod <= pl_data_r.phimod;
-                    -- ucm2hps_ar(hps_i).muid                <= data_r_2.muid;
-                    ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
-                    ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= new_chamb_ieta_a(hps_i);
-                    ucm2hps_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(get_b_chamber_type(c_SECTOR_ID,hps_i,to_integer(new_chamb_ieta_a(hps_i))),VEC_MDTID_CHAMBER_ID_LEN);
-                    -- ucm2hps_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
-                    -- ucm2hps_ar(hps_i).vec_ang             <= atan_slope;
-                    ucm2hps_ar(hps_i).data_valid          <= '1';
-                  else
-                    ucm2hps_ar(hps_i).data_valid    <= '0';
-                    -- ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '0'); -- COMO SE CALCULA ESTO?
-                    -- ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= (others => '0'); 
-                    -- ucm2hps_ar(hps_i).mdtid.chamber_id    <= (others => '0'); 
-                    -- ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
-                    -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-                    --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
-                    -- end loop;
-                  end if;
-                end if;
-              end loop;
-        else -- Endcap
-        end if;
+      else -- Endcap
       end if;
+      
     end if;
   end process;
-
-  -- SIMPLE_PL : process(clk) begin
-  --   if rising_edge(clk) then
-  --     pl_vec_pos_a <= vec_pos_a;
-  -- end process;
-
-  -- XYZ : for hps_i in c_MAX_POSSIBLE_HPS - 1 downto 0 generate
-  --   ZZZ : if c_STATIONS_IN_SECTOR(hps_i) = '1'  generate
-  --     UCM_CVP_OUT : process(local_rst,clk) begin
-  --       if rising_edge(clk) then
-  --         pl_vec_pos_a <= vec_pos_a;
-  --         if local_rst= '1' then
-  --           ucm2hps_ar(hps_i).data_valid    <= '0';
-  --         else 
-  --           if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
-  --             -- if c_SF_TYPE = '0' then --CSF
-  --               -- if i_data_r.data_valid = '1' then
-  --                 for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
-  --                   if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-    
-  --                     if pl_data_r.data_valid = '1' then
-  --                     -- if or_reduce(new_chamb_ieta_dv) = '1' then
-  --                       ucm2hps_ar(hps_i).muid    <= pl_data_r.muid;
-  --                       ucm2hps_ar(hps_i).vec_pos <= pl_vec_pos_a(hps_i);
-  --                       ucm2hps_ar(hps_i).vec_ang <= pl_atan_slope;
-  --                       ucm2hps_ar(hps_i).phimod <= pl_data_r.phimod;
-  --                       -- ucm2hps_ar(hps_i).muid                <= data_r_2.muid;
-  --                       ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
-  --                       ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= new_chamb_ieta_a(hps_i);
-  --                       ucm2hps_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(get_b_chamber_type(c_SECTOR_ID,hps_i,to_integer(new_chamb_ieta_a(hps_i))),VEC_MDTID_CHAMBER_ID_LEN);
-  --                       -- ucm2hps_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
-  --                       -- ucm2hps_ar(hps_i).vec_ang             <= atan_slope;
-  --                       ucm2hps_ar(hps_i).data_valid          <= '1';
-  --                     else
-  --                       ucm2hps_ar(hps_i).data_valid    <= '0';
-  --                       -- ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '0'); -- COMO SE CALCULA ESTO?
-  --                       -- ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= (others => '0'); 
-  --                       -- ucm2hps_ar(hps_i).mdtid.chamber_id    <= (others => '0'); 
-  --                       -- ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
-  --                       -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-  --                       --   ucm2hps_ar(hps_i) <= zero(ucm2hps_ar(hps_i));
-  --                       -- end loop;
-  --                     end if;
-  --                   end if;
-  --                 end loop;
-  --           else -- Endcap
-  --           end if;
-  --         end if;
-  --       end if;
-  --     end process;
-  --   end generate;
-  -- end generate;
 
 end beh;

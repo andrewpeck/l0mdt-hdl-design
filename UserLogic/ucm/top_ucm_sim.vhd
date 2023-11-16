@@ -100,15 +100,15 @@ architecture beh of ucm_tb is
   signal i_slc_data_neighborA_v   : slc_rx_vt;
   signal i_slc_data_neighborB_v   : slc_rx_vt;
   -- to TAR
-  signal o_uCM2tar_inn_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2tar_mid_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2tar_out_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2tar_ext_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2tar_inn_av        : ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2tar_mid_av        : ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2tar_out_av        : ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2tar_ext_av        : ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
   -- to hps
-  signal o_uCM2hps_inn_av         : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_mid_av         : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_out_av         : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_ext_av         : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_inn_av         : ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2hps_mid_av         : ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2hps_out_av         : ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2hps_ext_av         : ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
   -- pipeline
   signal o_uCM2pl_av              : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
@@ -121,8 +121,8 @@ architecture beh of ucm_tb is
 
   signal files_str  : string(1 to LINE_LENGTH_MAX);
 
-  signal alias_offset_cvp : offset_art(c_NUM_THREADS -1 downto 0);
-  signal alias_slope_cvp : slope_art(c_NUM_THREADS -1 downto 0);
+  signal alias_offset_cvp : offset_art(c_NUM_ACCEPTS -1 downto 0);
+  signal alias_slope_cvp : slope_art(c_NUM_ACCEPTS -1 downto 0);
 
 begin
 
@@ -281,11 +281,11 @@ begin
   --   wait;
   -- end process f_t_p;
 
-  TH_GEN: for th_i in 0 to c_NUM_THREADS-1 generate
+  TH_GEN: for th_i in 0 to c_NUM_ACCEPTS-1 generate
     alias temp_alias_offset_cvp is << signal.ucm_tb.UCM_DUT.SLC_VP_A(th_i).SLC_VP.offset : signed(31 downto 0) >>;
     alias temp_alias_slope_cvp is << signal.ucm_tb.UCM_DUT.SLC_VP_A(th_i).SLC_VP.slope : signed(31 downto 0) >>;
   begin
-    -- HP_GEN: for th_i in 0 to c_NUM_THREADS-1 generate
+    -- HP_GEN: for th_i in 0 to c_NUM_ACCEPTS-1 generate
       alias_offset_cvp(th_i) <= temp_alias_offset_cvp;
       alias_slope_cvp(th_i) <= temp_alias_slope_cvp;
     -- end generate HP_GEN;

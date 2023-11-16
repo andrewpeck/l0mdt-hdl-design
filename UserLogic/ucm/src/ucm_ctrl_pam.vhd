@@ -44,47 +44,47 @@ entity ucm_ctrl_pam is
     i_num_cand          : in unsigned(3 downto 0);
     i_pam_update        : in std_logic;
     --
-    o_pam_ctrl          : out ucm_pam_control_art(c_NUM_THREADS -1 downto 0);
+    o_pam_ctrl          : out ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
     o_pam_ctrl_dv       : out std_logic;
-    -- o_proc_info_ar         : out ucm_proc_info_art(c_NUM_THREADS -1 downto 0);
-    o_proc_info_av      : out ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
+    -- o_proc_info_ar         : out ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0);
+    o_proc_info_av      : out ucm_proc_info_avt(c_NUM_ACCEPTS -1 downto 0);
     
     --
-    o_cvp_rst           : out std_logic_vector(c_NUM_THREADS -1 downto 0);
-    o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
+    o_cvp_rst           : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+    o_cvp_ctrl          : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0)
   );
 end entity ucm_ctrl_pam;
 
 architecture beh of ucm_ctrl_pam is
 
-  signal int_pam_ctrl_ar    : ucm_pam_control_art(c_NUM_THREADS -1 downto 0);
-  signal int_proc_info_ar   : ucm_proc_info_art(c_NUM_THREADS -1 downto 0);
+  signal int_pam_ctrl_ar    : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
+  signal int_proc_info_ar   : ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0);
 
-  signal int_pam_ctrl_av  , o_pam_ctrl_av   : ucm_pam_control_avt(c_NUM_THREADS -1 downto 0);
-  signal int_proc_info_av : ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
+  signal int_pam_ctrl_av  , o_pam_ctrl_av   : ucm_pam_control_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal int_proc_info_av : ucm_proc_info_avt(c_NUM_ACCEPTS -1 downto 0);
 
-  signal int_cvp_rst_v           : std_logic_vector(c_NUM_THREADS -1 downto 0);
-  signal int_cvp_ctrl_v          : std_logic_vector(c_NUM_THREADS -1 downto 0);
+  signal int_cvp_rst_v           : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+  signal int_cvp_ctrl_v          : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
   
-  signal ch_busy  : std_logic_vector(c_NUM_THREADS -1 downto 0);
+  signal ch_busy  : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
 
   constant proc_info_init  : ucm_proc_info_rt := ( ch => (others => '0') ,
                                                       processed => '0',
                                                       dv => '0');
-  signal proc_info_ar    : ucm_proc_info_art(c_NUM_THREADS -1 downto 0) := (others =>proc_info_init  );
-  signal o_proc_info_ar  : ucm_proc_info_art(c_NUM_THREADS -1 downto 0);
+  signal proc_info_ar    : ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0) := (others =>proc_info_init  );
+  signal o_proc_info_ar  : ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0);
   
   type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
-  signal ch_count_av     : ch_count_avt(c_NUM_THREADS -1 downto 0);
+  signal ch_count_av     : ch_count_avt(c_NUM_ACCEPTS -1 downto 0);
 
   signal processing   : integer;
   signal processed_s : integer;
 
-  signal buff_pam_ctrl_ar : ucm_pam_control_art(c_NUM_THREADS -1 downto 0);
+  signal buff_pam_ctrl_ar : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
 
 begin
 
-  -- for heg_i in c_NUM_THREADS -1 downto 0 generate
+  -- for heg_i in c_NUM_ACCEPTS -1 downto 0 generate
   --   -- o_pam2heg.data_present(heg_i) <= 
   --   -- o_pam2heg.addr_
   -- end generate;
@@ -113,13 +113,13 @@ begin
 
         processed := 0;
         busy := 0;
-        for ch_i in c_NUM_THREADS -1 downto 0 loop
+        for ch_i in c_NUM_ACCEPTS -1 downto 0 loop
           proc_info_ar(ch_i).dv <= '0';
         end loop;
-        for ch_i in c_NUM_THREADS -1 downto 0 loop
+        for ch_i in c_NUM_ACCEPTS -1 downto 0 loop
           if ch_busy(ch_i) = '1' then
-            -- proc_info_ar(c_NUM_THREADS -1 - busy).ch <= (others => '0');
-            -- proc_info_ar(c_NUM_THREADS -1 - busy).processed <= '1';
+            -- proc_info_ar(c_NUM_ACCEPTS -1 - busy).ch <= (others => '0');
+            -- proc_info_ar(c_NUM_ACCEPTS -1 - busy).processed <= '1';
             -- int_cvp_ctrl_v(ch_i) <= '0';
             -- processed := processed + 1;
             busy := busy + 1;
@@ -155,27 +155,27 @@ begin
             proc_info_ar(ch_i).processed <= '0';
 
 
-            -- for uc_i in c_NUM_THREADS loop
+            -- for uc_i in c_NUM_ACCEPTS loop
               
             -- end loop;
             
             if i_pam_update = '1' then
               
-              if processed < to_integer(i_num_cand) and processed < (c_NUM_THREADS - busy) then
+              if processed < to_integer(i_num_cand) and processed < (c_NUM_ACCEPTS - busy) then
                 int_cvp_ctrl_v(ch_i) <= '1';
                 buff_pam_ctrl_ar(ch_i).data_present <= '1';
-                buff_pam_ctrl_ar(ch_i).addr_dest <= std_logic_vector(to_unsigned(c_NUM_THREADS -1 - processed,4));
-                proc_info_ar(c_NUM_THREADS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
-                proc_info_ar(c_NUM_THREADS -1 - processed).processed <= '1';
-                proc_info_ar(c_NUM_THREADS -1 - processed).dv <= '1';
+                buff_pam_ctrl_ar(ch_i).addr_dest <= std_logic_vector(to_unsigned(c_NUM_ACCEPTS -1 - processed,4));
+                proc_info_ar(c_NUM_ACCEPTS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
+                proc_info_ar(c_NUM_ACCEPTS -1 - processed).processed <= '1';
+                proc_info_ar(c_NUM_ACCEPTS -1 - processed).dv <= '1';
                 ch_busy(ch_i) <= '1';
                 processed := processed + 1;
               else
-                -- proc_info_ar(c_NUM_THREADS -1 - processed).dv <= '0';
+                -- proc_info_ar(c_NUM_ACCEPTS -1 - processed).dv <= '0';
               end if;
             else
-              -- proc_info_ar(c_NUM_THREADS -1 - processed).ch <= (others => '0');
-              -- proc_info_ar(c_NUM_THREADS -1 - processed).processed <= '0';
+              -- proc_info_ar(c_NUM_ACCEPTS -1 - processed).ch <= (others => '0');
+              -- proc_info_ar(c_NUM_ACCEPTS -1 - processed).processed <= '0';
             end if;
           end if;
         end loop;
@@ -215,7 +215,7 @@ begin
         o_data      => o_cvp_ctrl
     );
 
-  TH_GEN: for th_i in c_NUM_THREADS -1 downto 0 generate
+  TH_GEN: for th_i in c_NUM_ACCEPTS -1 downto 0 generate
 
     int_proc_info_av(th_i) <= convert(int_proc_info_ar(th_i),int_proc_info_av(th_i));
     PL_PROC_INFO : entity vamc_lib.vamc_spl

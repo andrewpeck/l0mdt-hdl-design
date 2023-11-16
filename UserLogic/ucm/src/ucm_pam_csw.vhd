@@ -38,8 +38,8 @@ entity ucm_pam_csw is
     --
     i_control           : in ucm_pam_control_art;
     --
-    i_data              : in  ucm_cde_avt(c_NUM_THREADS -1 downto 0);
-    o_data              : out ucm_cde_avt(c_NUM_THREADS -1 downto 0)
+    i_data              : in  ucm_cde_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_data              : out ucm_cde_avt(c_NUM_ACCEPTS -1 downto 0)
   );
 end entity ucm_pam_csw;
 
@@ -51,7 +51,7 @@ begin
       if(rst= '1') then
         o_data <= (others => (others => '0'));
       else
-        for csw_i in c_NUM_THREADS -1 downto 0 loop
+        for csw_i in c_NUM_ACCEPTS -1 downto 0 loop
           if i_control(csw_i).data_present = '1' then
             o_data(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_dest)));
           else

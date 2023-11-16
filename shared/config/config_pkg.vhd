@@ -149,17 +149,20 @@ package config_pkg is
   -- Blocks configuration
   --------------------------------------------------------------------------------
   constant c_TAR_ENABLED            : std_logic := CFG.ENABLE_TAR;
-  
-  -- constant c_TAR_INSEL              : std_logic := '1';
-  -- constant c_EN_MDT_HITS            : integer   := to_integer(unsigned'('0' & c_TAR_INSEL));
-  -- constant c_EN_TAR_HITS            : integer   := to_integer(unsigned'('0' & (not c_TAR_INSEL)));
- 
-  constant c_UCM_ENABLED            : std_logic := CFG.ENABLE_UCM;
+  constant c_TAR_VERSION            : string := CFG.VERSION_TAR;
 
+  constant c_UCM_ENABLED            : std_logic := CFG.ENABLE_UCM;
+  constant c_UCM_VERSION            : string := CFG.VERSION_UCM;
 
   constant c_H2S_ENABLED            : std_logic := CFG.ENABLE_H2S;
+  constant c_HPS_VERSION            : string := CFG.VERSION_HPS;
+  constant c_HEG_VERSION            : string := CFG.VERSION_HEG;
+  constant c_HP_VERSION             : string := CFG.VERSION_HP;
 
   constant c_MPL_ENABLED            : std_logic := CFG.ENABLE_MPL;
+  constant c_MPL_VERSION            : string := CFG.VERSION_MPL;
+  constant c_CPS_ENABLED            : std_logic := CFG.ENABLE_CPS;
+  constant c_CPS_VERSION            : string := CFG.VERSION_CPS;
   --
   constant c_SF_ENABLED             : std_logic := CFG.ENABLE_SF;
   constant c_SF_TYPE                : std_logic := CFG.SF_TYPE; -- 0: CSF 1:LSF
@@ -209,6 +212,7 @@ package config_pkg is
 
   -- parallel channels
   constant c_NUM_THREADS  : integer := CFG.NUM_THREADS;
+  constant c_NUM_ACCEPTS  : integer := CFG.NUM_ACCEPTS;
   constant c_NUM_MTC      : integer := CFG.NUM_MTC; --1;
   ---------------------------------------------------------
   -- DELAYS & TIME CONSTANTS

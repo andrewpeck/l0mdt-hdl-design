@@ -54,15 +54,15 @@ entity top_ucm is
     i_slc_data_neighborA_b  : in std_logic;
     i_slc_data_neighborB_b  : in std_logic;
     -- -- to tar
-    o_uCM2tar_inn_ab        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
-    o_uCM2tar_mid_ab        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
-    o_uCM2tar_out_ab        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
-    o_uCM2tar_ext_ab        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
+    o_uCM2tar_inn_ab        : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_mid_ab        : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_out_ab        : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_ext_ab        : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
     -- -- to hps
-    o_uCM2hps_inn_ab        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_mid_ab        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_out_ab        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_ext_ab        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_inn_ab        : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2hps_mid_ab        : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2hps_out_ab        : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2hps_ext_ab        : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
     -- -- pipeline
     o_uCM2pl_ab             : out std_logic_vector(c_MAX_NUM_SL -1 downto 0)
     -- o_sump                      :  out std_logic
@@ -82,14 +82,14 @@ architecture beh of top_ucm is
   signal i_slc_data_mainB_av     : slc_rx_avt(2 downto 0);
   signal i_slc_data_neighborA_v  : slc_rx_vt;
   signal i_slc_data_neighborB_v  : slc_rx_vt;
-  signal o_uCM2tar_inn_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2tar_mid_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2tar_out_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2tar_ext_av        : ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_inn_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_mid_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_out_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_ext_av        : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2tar_inn_av        : ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2tar_mid_av        : ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2tar_out_av        : ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2tar_ext_av        : ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2hps_inn_av        : ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2hps_mid_av        : ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2hps_out_av        : ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2hps_ext_av        : ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
   signal o_uCM2pl_av             : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
   
@@ -128,19 +128,19 @@ begin
   generic map (g_DATA_WIDTH => i_slc_data_neighborB_v'length)
     port map(clk => clk,rst  => rst,i_data => i_slc_data_neighborB_b,o_data => i_slc_data_neighborB_v );
   --------------------------------------------------------------
-  HPS_INN: for i_th in c_NUM_THREADS - 1 downto 0 generate
+  HPS_INN: for i_th in c_NUM_ACCEPTS - 1 downto 0 generate
     o_uCM2hps_inn_ab(i_th) <= xor_reduce(o_uCM2hps_inn_av(i_th));
     o_uCM2tar_inn_ab(i_th) <= xor_reduce(o_uCM2tar_inn_av(i_th));
   end generate;
-  HPS_mid: for i_th in c_NUM_THREADS - 1 downto 0 generate
+  HPS_mid: for i_th in c_NUM_ACCEPTS - 1 downto 0 generate
     o_uCM2hps_mid_ab(i_th) <= xor_reduce(o_uCM2hps_mid_av(i_th));
     o_uCM2tar_mid_ab(i_th) <= xor_reduce(o_uCM2tar_mid_av(i_th));
   end generate;
-  HPS_out: for i_th in c_NUM_THREADS - 1 downto 0 generate
+  HPS_out: for i_th in c_NUM_ACCEPTS - 1 downto 0 generate
     o_uCM2hps_out_ab(i_th) <= xor_reduce(o_uCM2hps_out_av(i_th));
     o_uCM2tar_out_ab(i_th) <= xor_reduce(o_uCM2tar_out_av(i_th));
   end generate;
-  HPS_ext: for i_th in c_NUM_THREADS - 1 downto 0 generate
+  HPS_ext: for i_th in c_NUM_ACCEPTS - 1 downto 0 generate
     o_uCM2hps_ext_ab(i_th) <= xor_reduce(o_uCM2hps_ext_av(i_th));
     o_uCM2tar_ext_ab(i_th) <= xor_reduce(o_uCM2tar_ext_av(i_th));
   end generate;

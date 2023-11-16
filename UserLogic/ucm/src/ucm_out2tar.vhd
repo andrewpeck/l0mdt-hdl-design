@@ -40,10 +40,10 @@ entity ucm_out2tar is
     --
 
     -- 
-    o_uCM2tar_inn_av        : out ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2tar_mid_av        : out ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2tar_out_av        : out ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2tar_ext_av        : out ucm2tar_avt(c_NUM_THREADS -1 downto 0)
+    o_uCM2tar_inn_av        : out ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_mid_av        : out ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_out_av        : out ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_ext_av        : out ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0)
   );
 end entity;
 
