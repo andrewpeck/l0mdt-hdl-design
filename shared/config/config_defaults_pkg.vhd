@@ -41,11 +41,9 @@ package cfg_global_default_pkg is
     -- blocks configuration
     --------------------------------------------------------------------------------
     
-    -- tube address remap
-    ENABLE_TAR                    : std_logic;
-    VERSION_TAR                   : string;
+    
     -- muon control manager
-    ENABLE_UCM                    : std_logic;  -- enable or disable the muon control manager
+    ENABLE_UCM                    : std_logic;  -- enable or disable the muon 
     VERSION_UCM                   : string;
     -- main pipeline
     ENABLE_MPL                    : std_logic;
@@ -53,10 +51,13 @@ package cfg_global_default_pkg is
     -- candiadte synchronizer
     ENABLE_CPS                    : std_logic;
     VERSION_CPS                   : string;
+    -- tube address remap
+    ENABLE_TAR                    : std_logic;
+    VERSION_TAR                   : string;
     -- Hit 2 Segment MacroBlock
     ENABLE_H2S                    : std_logic;
     VERSION_HPS                   : string;
-    VERSION_HEG                   : string;
+    VERSION_HEG                   : string; 
     VERSION_HP                    : string;
     -- Segment Finder
     ENABLE_SF                     : std_logic;  -- enable or disable the segment finder block
@@ -92,9 +93,9 @@ package cfg_global_default_pkg is
     -- NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
     -- stations in current fpga
     FPGA_EN_ST_INN                : std_logic;
-    FPGA_EN_ST_EXT                : std_logic;
     FPGA_EN_ST_MID                : std_logic;
     FPGA_EN_ST_OUT                : std_logic;
+    FPGA_EN_ST_EXT                : std_logic;
     -- number of parallel processing threads
     NUM_THREADS                   : integer;
     -- number of parallel candidates to process
@@ -105,10 +106,6 @@ package cfg_global_default_pkg is
     --
     UPT_LATENCY                   : integer;
     MPT_LATENCY                   : integer;  
-
-    --------------------------------------------------------------------------------
-    -- mdt hardware interface config
-    --------------------------------------------------------------------------------
 
   end record;
 
