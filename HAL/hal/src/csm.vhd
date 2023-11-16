@@ -207,7 +207,7 @@ begin
 
   -- Translates ctrl/mon record to serialised signal needed for csm
   gbt_controller_wrapper_inst : entity work.gbt_controller_wrapper
-    generic map (g_SCAS_PER_LPGBT => 4)
+    generic map (g_SCAS_PER_LPGBT => 4, g_CSM_ID => g_CSM_ID)
     port map (
 
       reset_i => reset_i,
@@ -274,7 +274,8 @@ begin
       g_NUM_UPLINKS                       => g_NUM_UPLINKS,
       g_PIPELINE_BITSLIP                  => true,
       g_PIPELINE_LPGBT                    => true,
-      g_PIPELINE_MGT                      => true)
+      g_PIPELINE_MGT                      => true,
+      g_CSM_ID                            => g_CSM_ID)
     port map (
       reset => reset_i,                 -- TODO: axi OR
 
@@ -337,7 +338,7 @@ begin
     generic map (
       g_ENABLE_MASK => g_ENABLE_MASK,
       g_LEGACY_FLAG => g_LEGACY_FLAG,
-      g_CSM         => g_CSM_ID,
+      g_CSM         => c_MDT_CONFIG(g_CSM_ID).csm_id,
       g_NUM_TDCS    => g_TDC_CNT,
       g_NUM_UPLINKS => g_NUM_UPLINKS
       )
