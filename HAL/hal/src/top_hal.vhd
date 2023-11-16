@@ -591,7 +591,7 @@ begin  -- architecture behavioral
 
         csm_inst : entity work.csm
           generic map (
-            g_CSM_ID      => c_MDT_CONFIG(CSM).csm_id,
+            g_CSM_ID      => CSM,
             g_TDC_CNT     => tdc_cnt,
             g_ENABLE_MASK => c_MDT_CONFIG(CSM).en,
             g_LEGACY_FLAG => c_MDT_CONFIG(CSM).legacy

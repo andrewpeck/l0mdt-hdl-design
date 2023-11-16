@@ -11,7 +11,7 @@ variables:
 include:
   - project: 'hog/Hog'
     file: '/hog.yml'
-    ref: 'v7.22.0'
+    ref: 'v7.23.0'
   - local: "/.user_jobs.yml"
   - local: '/.devel_to_master.yml'
 
@@ -28,7 +28,7 @@ generate:
         PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_lsf_upt]
         HOG_ONLY_SYNTH: 1
       - PROVIDER: argos
-        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty, l0mdt/vu13p/l0mdt_vu13p_ull_empty_lpgbt_v0, l0mdt/ku15p/l0mdt_ku15p_ull_fm, l0mdt/ku15p/l0mdt_ku15p_ull_empty_lpgbt_v0]
+        PROJECT_NAME: [l0mdt/vu13p/l0mdt_vu13p_csf_mpt, l0mdt/vu13p/l0mdt_vu13p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_empty, l0mdt/ku15p/l0mdt_ku15p_ull_fm, l0mdt/vu13p/l0mdt_vu13p_hal_all_csm]
       - PROVIDER: "2022.2"
         PROJECT_NAME: [l0mdt/ku15p/l0mdt_ku15p_ull_ucm, ull/vu13p/ull_vu13_b3a_ucm_mpl]
         HOG_ONLY_SYNTH: 1
