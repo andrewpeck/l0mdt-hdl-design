@@ -47,18 +47,18 @@ package cfg_global_default_pkg is
     VERSION_UCM                   : string;
     -- main pipeline
     ENABLE_MPL                    : std_logic;
-    VERSION_MPL                   : string;
+    -- VERSION_MPL                   : string;
     -- candiadte synchronizer
     ENABLE_CPS                    : std_logic;
-    VERSION_CPS                   : string;
+    -- VERSION_CPS                   : string;
     -- tube address remap
     ENABLE_TAR                    : std_logic;
-    VERSION_TAR                   : string;
+    -- VERSION_TAR                   : string;
     -- Hit 2 Segment MacroBlock
     ENABLE_H2S                    : std_logic;
-    VERSION_HPS                   : string;
-    VERSION_HEG                   : string; 
-    VERSION_HP                    : string;
+    -- VERSION_HPS                   : string;
+    -- VERSION_HEG                   : string; 
+    -- VERSION_HP                    : string;
     -- Segment Finder
     ENABLE_SF                     : std_logic;  -- enable or disable the segment finder block
     SF_TYPE                       : std_logic;  -- select the type of segment finder
@@ -133,18 +133,18 @@ package cfg_global_default_pkg is
     VERSION_UCM                   => "1.0",
     -- Candidate Main Pipeline
     ENABLE_MPL                    => '1',
-    VERSION_MPL                   => "1.0",
+    -- VERSION_MPL                   => "1.0",
     -- Candidate 
     ENABLE_CPS                    => '1',
-    VERSION_CPS                   => "1.0",
+    -- VERSION_CPS                   => "1.0",
     -- tube address remap
     ENABLE_TAR                    => '1',
-    VERSION_TAR                   => "1.0",
+    -- VERSION_TAR                   => "1.0",
     -- Hit 2 Segment
     ENABLE_H2S                    => '1',
-    VERSION_HPS                   => "1.0",
-    VERSION_HEG                   => "1.0",
-    VERSION_HP                    => "1.0",
+    -- VERSION_HPS                   => "1.0",
+    -- VERSION_HEG                   => "1.0",
+    -- VERSION_HP                    => "1.0",
     -- Segment Finder
     ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
     SF_TYPE                       => '0', -- default CSF
