@@ -162,7 +162,7 @@ package common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: tar2hps_avt) return tar2hps_avt;
 
    subtype ucm2tar_vt is std_logic_vector(ucm2tar_rt'w-1 downto 0);
-   attribute w of ucm2tar_vt : subtype is 13;
+   attribute w of ucm2tar_vt : subtype is 17;
 
    type ucm2tar_art is array(integer range <>) of ucm2tar_rt;
    function width(x: ucm2tar_art) return integer;

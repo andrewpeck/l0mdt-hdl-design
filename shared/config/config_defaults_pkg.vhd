@@ -133,21 +133,21 @@ package cfg_global_default_pkg is
     -- Candidate path
     -- muon control manager
     ENABLE_UCM                    => '1', -- 0: disabled  1: enabled -- default enabled
-    VERSION_UCM                   => "1",
+    VERSION_UCM                   => "1.0",
     -- Candidate Main Pipeline
     ENABLE_MPL                    => '1',
-    VERSION_MPL                   => "1",
+    VERSION_MPL                   => "1.0",
     -- Candidate 
     ENABLE_CPS                    => '1',
-    VERSION_CPS                   => "1",
+    VERSION_CPS                   => "1.0",
     -- tube address remap
     ENABLE_TAR                    => '1',
-    VERSION_TAR                   => "1",
+    VERSION_TAR                   => "1.0",
     -- Hit 2 Segment
     ENABLE_H2S                    => '1',
-    VERSION_HPS                   => "1",
-    VERSION_HEG                   => "1",
-    VERSION_HP                    => "1",
+    VERSION_HPS                   => "1.0",
+    VERSION_HEG                   => "1.0",
+    VERSION_HP                    => "1.0",
     -- Segment Finder
     ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
     SF_TYPE                       => '0', -- default CSF
@@ -185,7 +185,7 @@ package cfg_global_default_pkg is
     FPGA_EN_ST_OUT                => '1',
     FPGA_EN_ST_EXT                => '0',
     -- 
-    NUM_THREADS                   => 4,   -- default 3
+    NUM_THREADS                   => 3,   -- default 3
     NUM_ACCEPTS                   => 3,
     -- MTC configuration based on links to primary, neighboring sectors
     -- (barrel, endcap)
