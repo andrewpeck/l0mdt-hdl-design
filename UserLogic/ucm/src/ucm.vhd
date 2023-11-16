@@ -72,7 +72,7 @@ architecture beh of ucm is
 
 begin
 
-  UCM_V1_0 : if c_UCM_VERSION = "1.0" generate
+  UCM_VER : if c_UCM_VERSION = "1.0" generate
     UCM : entity ucm_lib.ucm_v1_0
       port map(
         clk                     => clk,
@@ -100,9 +100,7 @@ begin
         -- MDT hit
         o_uCM2pl_av             => o_uCM2pl_av
       );
-    end generate;
-  
-  UCM_V1_2 : if c_UCM_VERSION = "1.2" generate
+  elsif c_UCM_VERSION = "1.2" generate
     UCM : entity ucm_lib.ucm_v1_2
       port map(
         clk                     => clk,

@@ -152,7 +152,7 @@ package config_pkg is
   -- constant c_TAR_VERSION            : string := CFG.VERSION_TAR;
 
   constant c_UCM_ENABLED            : std_logic := CFG.ENABLE_UCM;
-  constant c_UCM_VERSION            : string := CFG.VERSION_UCM;
+  constant c_UCM_VERSION            : string := "1.2";--CFG.VERSION_UCM;
 
   constant c_H2S_ENABLED            : std_logic := CFG.ENABLE_H2S;
   -- constant c_HPS_VERSION            : string := CFG.VERSION_HPS;
@@ -206,6 +206,7 @@ package config_pkg is
   constant c_NUM_SF_INPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHBORS));
   constant c_NUM_SF_OUTPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHBORS));
 
+  constant c_NUM_NEIGHBORS : integer := to_integer(unsigned'("" & CFG.ENABLE_NEIGHBORS))*2;
   constant c_MAX_NUM_SL   : integer := 3 +
   to_integer(unsigned'("" & CFG.ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & CFG.ENDCAP_nSMALL_LARGE))*3 +
   to_integer(unsigned'("" & CFG.ENABLE_NEIGHBORS))*2;

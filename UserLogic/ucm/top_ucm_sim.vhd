@@ -282,8 +282,8 @@ begin
   -- end process f_t_p;
 
   TH_GEN: for th_i in 0 to c_NUM_ACCEPTS-1 generate
-    alias temp_alias_offset_cvp is << signal.ucm_tb.UCM_DUT.SLC_VP_A(th_i).SLC_VP.offset : signed(31 downto 0) >>;
-    alias temp_alias_slope_cvp is << signal.ucm_tb.UCM_DUT.SLC_VP_A(th_i).SLC_VP.slope : signed(31 downto 0) >>;
+    alias temp_alias_offset_cvp is << signal.ucm_tb.UCM_DUT.UCM_VER.UCM.SLC_VP_A(th_i).SLC_VP.offset : signed(31 downto 0) >>;
+    alias temp_alias_slope_cvp is << signal.ucm_tb.UCM_DUT.UCM_VER.UCM.SLC_VP_A(th_i).SLC_VP.slope : signed(31 downto 0) >>;
   begin
     -- HP_GEN: for th_i in 0 to c_NUM_ACCEPTS-1 generate
       alias_offset_cvp(th_i) <= temp_alias_offset_cvp;

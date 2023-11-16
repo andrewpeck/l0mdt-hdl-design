@@ -227,7 +227,7 @@ begin
               -- o_main_primary_slc(wr_i) <= convert(slc_main_prim_fifo(wr_i)(0));
               o_main_primary_slc(wr_i) <= convert(event_main_prim_fifo(wr_i)(0).slc,o_main_primary_slc(wr_i));
               --
-              slc_event_ai(wr_i + 2) <= event_main_prim_fifo(wr_i)(0).event;
+              slc_event_ai(wr_i + c_NUM_NEIGHBORS) <= event_main_prim_fifo(wr_i)(0).event;
               -- for test input read
               -- o_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
               --
@@ -236,7 +236,7 @@ begin
               end loop;
               v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
             else
-              slc_event_ai(wr_i + 2) <= (others => '0');
+              slc_event_ai(wr_i + c_NUM_NEIGHBORS) <= (others => '0');
               o_main_primary_slc(wr_i) <= zero(o_main_primary_slc(wr_i));
               -- o_main_primary_slc_ar(wr_i) <= zero(o_main_primary_slc_ar(wr_i));
             end if;

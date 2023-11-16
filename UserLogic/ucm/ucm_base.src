@@ -40,8 +40,8 @@ UserLogic/ucm/src/ucm_cvp_phimod.vhd
 # UserLogic/ucm/src/ucm_cvp_phi_comp.vhd
 # UserLogic/ucm/src/ucm_cvp_atan.vhd
 
-UserLogic/ucm/src/ucm.vhd
 UserLogic/ucm/src/ucm_v1_0.vhd
 UserLogic/ucm/src/ucm_v1_2.vhd
+UserLogic/ucm/src/ucm.vhd
 
-UserLogic/ucm/mems/main_div.mem
+# UserLogic/ucm/mems/main_div.mem

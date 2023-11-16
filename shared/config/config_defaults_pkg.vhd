@@ -44,7 +44,7 @@ package cfg_global_default_pkg is
     
     -- muon control manager
     ENABLE_UCM                    : std_logic;  -- enable or disable the muon 
-    VERSION_UCM                   : string;
+    VERSION_UCM                   : string(1 to 3);
     -- main pipeline
     ENABLE_MPL                    : std_logic;
     -- VERSION_MPL                   : string;
@@ -186,7 +186,7 @@ package cfg_global_default_pkg is
     NUM_ACCEPTS                   => 3,
     -- MTC configuration based on links to primary, neighboring sectors
     -- (barrel, endcap)
-    NUM_MTC                       => 3 ,   -- default 3, connecting to primary SL
+    NUM_MTC                       => 3,   -- default 3, connecting to primary SL
     MPT_LATENCY                   => 17,
     UPT_LATENCY                   => 24
   );

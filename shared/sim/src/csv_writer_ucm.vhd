@@ -70,18 +70,18 @@ entity csv_writer_ucm is
     --
     slc_event_ai          : in event_xaut;
     --
-    in_offset_cvp         : in offset_art(c_NUM_THREADS -1 downto 0) := (others => (others => '0'));
-    in_slope_cvp          : in slope_art(c_NUM_THREADS -1 downto 0) := (others => (others => '0'));
+    in_offset_cvp         : in offset_art(c_NUM_ACCEPTS -1 downto 0) := (others => (others => '0'));
+    in_slope_cvp          : in slope_art(c_NUM_ACCEPTS -1 downto 0) := (others => (others => '0'));
     -- to TAR
-    o_uCM2tar_inn_av      : in ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2tar_mid_av      : in ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2tar_out_av      : in ucm2tar_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2tar_ext_av      : in ucm2tar_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2tar_inn_av      : in ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_mid_av      : in ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_out_av      : in ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_uCM2tar_ext_av      : in ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
     --
-    inn_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    mid_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    out_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    ext_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    inn_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+    mid_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+    out_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
+    ext_slc_to_h2s_av     : in ucm2hps_avt(c_NUM_ACCEPTS -1 downto 0);
     --
     ucm2pl_av             : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0)
 
@@ -114,10 +114,10 @@ architecture sim of csv_writer_ucm is
   signal slc_event_u2m_au        : event_xat(c_MAX_NUM_SL -1 downto 0);
   signal slc_event_u2h_au        : event_xat(c_MAX_NUM_SL -1 downto 0);
 
-  signal inn_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
-  signal mid_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
-  signal out_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
-  signal ext_ucm2hps_bus_ar : ucm2hps_art(c_NUM_THREADS-1 downto 0);
+  signal inn_ucm2hps_bus_ar : ucm2hps_art(c_NUM_ACCEPTS-1 downto 0);
+  signal mid_ucm2hps_bus_ar : ucm2hps_art(c_NUM_ACCEPTS-1 downto 0);
+  signal out_ucm2hps_bus_ar : ucm2hps_art(c_NUM_ACCEPTS-1 downto 0);
+  signal ext_ucm2hps_bus_ar : ucm2hps_art(c_NUM_ACCEPTS-1 downto 0);
 
 
 
@@ -229,7 +229,7 @@ begin
     );
   end generate;
 
-    th_loop : for i in c_NUM_THREADS-1 downto 0 generate
+    th_loop : for i in c_NUM_ACCEPTS-1 downto 0 generate
       inn_ucm2hps_bus_ar(i) <= convert(inn_slc_to_h2s_av(i),inn_ucm2hps_bus_ar(i));
       mid_ucm2hps_bus_ar(i) <= convert(mid_slc_to_h2s_av(i),mid_ucm2hps_bus_ar(i));
       out_ucm2hps_bus_ar(i) <= convert(out_slc_to_h2s_av(i),out_ucm2hps_bus_ar(i));
@@ -250,7 +250,7 @@ begin
       else     
         if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
           thread_counter := 0;
-          for th_i in c_NUM_THREADS -1 downto 0 loop
+          for th_i in c_NUM_ACCEPTS -1 downto 0 loop
             -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
             if inn_ucm2hps_bus_ar(th_i).data_valid = '1' then
               -- puts(" hello ",th_i);
@@ -303,7 +303,7 @@ begin
 
         if c_STATIONS_IN_SECTOR(1) = '1' then -- INN
           thread_counter := 0;
-          for th_i in c_NUM_THREADS -1 downto 0 loop
+          for th_i in c_NUM_ACCEPTS -1 downto 0 loop
             -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
             if mid_ucm2hps_bus_ar(th_i).data_valid = '1' then
               -- puts(" hello ",th_i);
@@ -358,7 +358,7 @@ begin
         if c_STATIONS_IN_SECTOR(2) = '1' then -- INN
           thread_counter := 0;
 
-          for th_i in c_NUM_THREADS -1 downto 0 loop
+          for th_i in c_NUM_ACCEPTS -1 downto 0 loop
             -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
             if out_ucm2hps_bus_ar(th_i).data_valid = '1' then
               -- puts(" hello ",th_i);
@@ -412,7 +412,7 @@ begin
         if c_STATIONS_IN_SECTOR(3) = '1' then -- INN
           thread_counter := 0;
 
-          for th_i in c_NUM_THREADS -1 downto 0 loop
+          for th_i in c_NUM_ACCEPTS -1 downto 0 loop
             -- read_slc := convert(heg2sf_inn_slc_av(heg_i));
             if ext_ucm2hps_bus_ar(th_i).data_valid = '1' then
               -- puts(" hello ",th_i);
