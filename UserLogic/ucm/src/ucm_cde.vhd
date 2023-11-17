@@ -49,7 +49,7 @@ entity ucm_cde is
     i_phicenter           : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_chamber_z_org_bus   : in b_chamber_z_origin_station_avt;
     -- PAM
-    i_proc_info_v         : in ucm_proc_info_vt := (others => '0');
+    -- i_proc_info_v         : in ucm_proc_info_vt := (others => '0');
     -- SLc in
     i_slc_data_v          : in slc_rx_vt;
     -- pam out
@@ -65,7 +65,7 @@ end entity ucm_cde;
 architecture beh of ucm_cde is
 
     
-  signal i_proc_info_r           : ucm_proc_info_rt;
+  -- signal i_proc_info_r           : ucm_proc_info_rt;
   
   signal i_slc_data_r     : slc_rx_rt;
 
@@ -79,12 +79,12 @@ architecture beh of ucm_cde is
 
   signal barrel_r : slc_barrel_rt;
 
-  signal dv_bus : std_logic_vector(3 downto 0);
+  -- signal dv_bus : std_logic_vector(3 downto 0);
 
   type rpc_z_art is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   signal rpc_z_a : rpc_z_art;
 
-  signal  int_chamb_ieta : chamb_ieta_rpc_aut;
+  -- signal  int_chamb_ieta : chamb_ieta_rpc_aut;
 
   -- constant phicenter : std_logic_vector
 
@@ -97,11 +97,11 @@ architecture beh of ucm_cde is
   signal int_abs_dv : std_logic;
 
   -----------------
-  signal o_uCM2pl_r : ucm2pl_rt;
+  signal o_uCM2pl_r : ucm_cde2pl_rt;
 
 begin
 
-  i_proc_info_r <= convert(i_proc_info_v,i_proc_info_r);
+  -- i_proc_info_r <= convert(i_proc_info_v,i_proc_info_r);
   
   i_slc_data_r <= convert(i_slc_data_v,i_slc_data_r);
   o_cde_data_v <= convert(o_cde_data_r,o_cde_data_v);
@@ -152,84 +152,7 @@ begin
       );
 
       int_slc_data_r <= convert(int_slc_data_v,int_slc_data_r);
-/*
-      IETA_INN : entity ucm_lib.ucm_ieta_calc
-        generic map(
-          g_STATION => 0,
-          g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
-          g_INPUT_WIDTH => rpc_z_a(0)'length
-
-        )
-        port map(
-          clk           => clk,
-          rst           => rst,
-          --
-          i_chamber_z_org_bus => i_chamber_z_org_bus(0),
-          --
-          i_z           => rpc_z_a(0),
-          i_z_dv        => int_slc_data_r.data_valid,
-          --
-          o_ieta        => int_chamb_ieta(0),
-          o_ieta_dv     => dv_bus(0)
-      );
-
-      IETA_MID0 : entity ucm_lib.ucm_ieta_calc
-        generic map(
-          g_STATION => 1,
-          g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
-          g_INPUT_WIDTH => rpc_z_a(1)'length
-        )
-        port map(
-          clk           => clk,
-          rst           => rst,
-          --
-          i_chamber_z_org_bus => i_chamber_z_org_bus(1),
-          --
-          i_z           => rpc_z_a(1),
-          i_z_dv        => int_slc_data_r.data_valid,
-          --
-          o_ieta        => int_chamb_ieta(1),
-          o_ieta_dv     => dv_bus(1)
-      );
-
-      IETA_MID1 : entity ucm_lib.ucm_ieta_calc
-        generic map(
-          g_STATION => 1,
-          g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
-          g_INPUT_WIDTH => rpc_z_a(2)'length
-        )
-        port map(
-          clk           => clk,
-          rst           => rst,
-          --
-          i_chamber_z_org_bus => i_chamber_z_org_bus(1),
-          --
-          i_z           => rpc_z_a(2),
-          i_z_dv        => int_slc_data_r.data_valid,
-          --
-          o_ieta        => int_chamb_ieta(2),
-          o_ieta_dv     => dv_bus(2)
-      );
-
-      IETA_OUT : entity ucm_lib.ucm_ieta_calc
-        generic map(
-          g_STATION => 2,
-          g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
-          g_INPUT_WIDTH => rpc_z_a(3)'length
-        )
-        port map(
-          clk           => clk,
-          rst           => rst,
-          --
-          i_chamber_z_org_bus => i_chamber_z_org_bus(2),
-          --
-          i_z           => rpc_z_a(3),
-          i_z_dv        => int_slc_data_r.data_valid,
-          --
-          o_ieta        => int_chamb_ieta(3),
-          o_ieta_dv     => dv_bus(3)
-      );
-*/
+ 
       UCM_CDE2CVP_PROC : process(rst,clk) 
         variable ch_i : integer;
         variable rpc_i : integer;
@@ -308,14 +231,14 @@ begin
           o_uCM2pl_r <= zero(o_uCM2pl_r);
         else
           if int2_slc_data_r.data_valid = '1' then
-            o_uCM2pl_r.busy        <= i_proc_info_r.processed;
-            o_uCM2pl_r.process_ch   <= i_proc_info_r.ch;
+            -- o_uCM2pl_r.busy        <= i_proc_info_r.processed;
+            -- o_uCM2pl_r.process_ch   <= i_proc_info_r.ch;
 
             o_uCM2pl_r.common   <= int2_slc_data_r.common;
 
             -- o_uCM2pl_r.specific     <= int2_slc_data_r.specific;
             o_uCM2pl_r.data_valid   <= int2_slc_data_r.data_valid;
-            -- o_uCM2pl_r.posphi       <= int2_slc_data_r.common.posphi;
+            o_uCM2pl_r.phimod       <= signed(int_phimod_pl);
             -- o_uCM2pl_r.chamb_ieta   <= int2_chamb_ieta;
             -- if ena = '1' then
             o_uCM2pl_r.phimod       <= resize(signed(int_phimod_pl),UCM2PL_PHIMOD_LEN);
@@ -337,7 +260,7 @@ begin
       end if;
     end process;
 
-    -- o_uCM2pl_v <= convert(o_uCM2pl_r,o_uCM2pl_v);
+    o_uCM2pl_v <= convert(o_uCM2pl_r,o_uCM2pl_v);
   -- end generate BYPASS_GEN;
 
   
@@ -346,3 +269,84 @@ begin
   -- falta el calculo de sl destino?
 
 end beh;
+
+
+     
+/*
+      IETA_INN : entity ucm_lib.ucm_ieta_calc
+        generic map(
+          g_STATION => 0,
+          g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
+          g_INPUT_WIDTH => rpc_z_a(0)'length
+
+        )
+        port map(
+          clk           => clk,
+          rst           => rst,
+          --
+          i_chamber_z_org_bus => i_chamber_z_org_bus(0),
+          --
+          i_z           => rpc_z_a(0),
+          i_z_dv        => int_slc_data_r.data_valid,
+          --
+          o_ieta        => int_chamb_ieta(0),
+          o_ieta_dv     => dv_bus(0)
+      );
+
+      IETA_MID0 : entity ucm_lib.ucm_ieta_calc
+        generic map(
+          g_STATION => 1,
+          g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
+          g_INPUT_WIDTH => rpc_z_a(1)'length
+        )
+        port map(
+          clk           => clk,
+          rst           => rst,
+          --
+          i_chamber_z_org_bus => i_chamber_z_org_bus(1),
+          --
+          i_z           => rpc_z_a(1),
+          i_z_dv        => int_slc_data_r.data_valid,
+          --
+          o_ieta        => int_chamb_ieta(1),
+          o_ieta_dv     => dv_bus(1)
+      );
+
+      IETA_MID1 : entity ucm_lib.ucm_ieta_calc
+        generic map(
+          g_STATION => 1,
+          g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
+          g_INPUT_WIDTH => rpc_z_a(2)'length
+        )
+        port map(
+          clk           => clk,
+          rst           => rst,
+          --
+          i_chamber_z_org_bus => i_chamber_z_org_bus(1),
+          --
+          i_z           => rpc_z_a(2),
+          i_z_dv        => int_slc_data_r.data_valid,
+          --
+          o_ieta        => int_chamb_ieta(2),
+          o_ieta_dv     => dv_bus(2)
+      );
+
+      IETA_OUT : entity ucm_lib.ucm_ieta_calc
+        generic map(
+          g_STATION => 2,
+          g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
+          g_INPUT_WIDTH => rpc_z_a(3)'length
+        )
+        port map(
+          clk           => clk,
+          rst           => rst,
+          --
+          i_chamber_z_org_bus => i_chamber_z_org_bus(2),
+          --
+          i_z           => rpc_z_a(3),
+          i_z_dv        => int_slc_data_r.data_valid,
+          --
+          o_ieta        => int_chamb_ieta(3),
+          o_ieta_dv     => dv_bus(3)
+      );
+*/

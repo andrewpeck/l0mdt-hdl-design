@@ -398,6 +398,7 @@ begin
       -- ctrl_v              => r_phi_comp_ctrl_v,
       -- mon_v               => r_phi_comp_mon_av(vp_i),
       --
+      i_proc_info_av  => proc_info_av,
       --
       o_uCM2tar_inn_av  => o_uCM2tar_inn_av,
       o_uCM2tar_mid_av  => o_uCM2tar_mid_av,
