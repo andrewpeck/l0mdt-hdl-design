@@ -356,10 +356,10 @@ begin
       ttc_commands_o      => ttc_commands,
 
       --  tdc data
-      tdc_hits_inner  => inner_tdc_hits,
-      tdc_hits_middle => middle_tdc_hits,
-      tdc_hits_outer  => outer_tdc_hits,
-      tdc_hits_extra  => extra_tdc_hits,
+      --- tdc_hits_inner  => inner_tdc_hits,
+      --- tdc_hits_middle => middle_tdc_hits,
+      --- tdc_hits_outer  => outer_tdc_hits,
+      --- tdc_hits_extra  => extra_tdc_hits,
 
       -- SLC
       main_primary_slc   => main_primary_slc,
@@ -405,10 +405,10 @@ begin
       axi_reset_n       => axi_reset_n,
       ttc_commands      => ttc_commands,
 
-      --- i_inn_tdc_hits_av => inner_tdc_hits,
-      --- i_mid_tdc_hits_av => middle_tdc_hits,
-      --- i_out_tdc_hits_av => outer_tdc_hits,
-      --- i_ext_tdc_hits_av => extra_tdc_hits,
+      i_inn_tdc_hits_av => inner_tdc_hits,
+      i_mid_tdc_hits_av => middle_tdc_hits,
+      i_out_tdc_hits_av => outer_tdc_hits,
+      i_ext_tdc_hits_av => extra_tdc_hits,
 
       i_plus_neighbor_segments     => plus_neighbor_segments_i,
       i_minus_neighbor_segments    => minus_neighbor_segments_i,

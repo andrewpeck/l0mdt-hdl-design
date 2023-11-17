@@ -356,10 +356,10 @@ begin
       ttc_commands_o      => ttc_commands,
 
       --  tdc data
-      tdc_hits_inner  => inner_tdc_hits,
-      tdc_hits_middle => middle_tdc_hits,
-      tdc_hits_outer  => outer_tdc_hits,
-      tdc_hits_extra  => extra_tdc_hits,
+      --- tdc_hits_inner  => inner_tdc_hits,
+      --- tdc_hits_middle => middle_tdc_hits,
+      --- tdc_hits_outer  => outer_tdc_hits,
+      --- tdc_hits_extra  => extra_tdc_hits,
 
       -- SLC
       main_primary_slc   => main_primary_slc,
