@@ -29,6 +29,7 @@ use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.sl2mdt_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
@@ -265,7 +266,7 @@ begin
             Phi         := csv_file.read_real;
             pT_thr      := csv_file.read_integer;
             Charge      := csv_file.read_integer;
-            Coincidence := csv_file.read_integer;
+            Coincidence := csv_file.read_integer; 
             z_RPC0      := csv_file.read_integer;
             z_RPC1      := csv_file.read_integer;
             z_RPC2      := csv_file.read_integer;
@@ -319,8 +320,10 @@ begin
               header      => header,
               slcid       => to_unsigned(TC_id, SL_HEADER_NSLC_LEN),
               tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
-              poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
-              posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+              poseta      => to_signed(integer(Eta / SL2MDT_SLC_COMMON_POSETA_RES ), SLC_COMMON_POSETA_LEN) ,
+              -- poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
+              posphi      => to_unsigned(integer((Phi * SL2MDT_SLC_COMMON_POSPHI_RES/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+                  -- posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
               sl_pt       => ( others => '0'),
               sl_ptthresh => to_unsigned(pT_thr, SLC_COMMON_SL_PTTHRESH_LEN) , 
               sl_charge   => std_logic(to_unsigned(Charge,1)(0)), 
@@ -448,8 +451,10 @@ begin
                   header      => header,
                   slcid       => to_unsigned(TC_id, SL_HEADER_NSLC_LEN),
                   tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
-                  poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
-                  posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+                  poseta      => to_signed(integer(Eta / SL2MDT_SLC_COMMON_POSETA_RES ), SLC_COMMON_POSETA_LEN) ,
+              -- poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
+                  posphi      => to_unsigned(integer((Phi * SL2MDT_SLC_COMMON_POSPHI_RES/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+                  -- posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
                   sl_pt       => ( others => '0'),
                   sl_ptthresh => to_unsigned(pT_thr, SLC_COMMON_SL_PTTHRESH_LEN) , 
                   sl_charge   => std_logic(to_unsigned(Charge,1)(0)), 

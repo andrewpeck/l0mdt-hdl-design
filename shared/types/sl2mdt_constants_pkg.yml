@@ -33,8 +33,10 @@ types:
    - SL2MDT_SLC_COMMON_TCSENT_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 1.0}
    - SL2MDT_SLC_COMMON_POSETA_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 14}
    - SL2MDT_SLC_COMMON_POSETA_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 4096.0}
+   - SL2MDT_SLC_COMMON_POSETA_RES: {'qualifier': 'constant', 'type': 'real', 'value': 0.00033}
    - SL2MDT_SLC_COMMON_POSPHI_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 9}
    - SL2MDT_SLC_COMMON_POSPHI_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 0.0625}
+   - SL2MDT_SLC_COMMON_POSPHI_RES: {'qualifier': 'constant', 'type': 'real', 'value': 0.012}
    - SL2MDT_SLC_COMMON_SL_PT_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 8}
    - SL2MDT_SLC_COMMON_SL_PT_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 2.0}
    - SL2MDT_SLC_COMMON_SL_PTTHRESH_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 4}
