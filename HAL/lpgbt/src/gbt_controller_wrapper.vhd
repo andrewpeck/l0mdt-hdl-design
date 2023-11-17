@@ -16,7 +16,8 @@ use shared_lib.config_pkg.all;
 entity gbt_controller_wrapper is
   generic(
     g_CLK_FREQ       : integer := 40;
-    g_SCAS_PER_LPGBT : integer := 4
+    g_SCAS_PER_LPGBT : integer := 4;
+    g_CSM_ID         : integer := 0
     );
   port(
     -- reset
@@ -446,7 +447,7 @@ begin
       valid_o              => mon.slave.ic.rx_valid
       );
       
-ilagen: if c_ENABLE_ILA = '1' generate
+ilagen: if c_ENABLE_ILA = '1' and g_CSM_ID = 0 generate
 
     ila_scm_ctrl_c2c : ila_0
     PORT MAP (
