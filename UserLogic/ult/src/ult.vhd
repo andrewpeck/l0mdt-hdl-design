@@ -273,15 +273,17 @@ architecture behavioral of ult is
   signal mpl_sump : std_logic := '1';
 
   -- FAST MONITORING  
-    signal fm_slc_rx_pb_v     : slc_rx_avt(2 downto 0);
-
+  signal fm_slc_rx_pb_v                  : slc_rx_avt(2 downto 0);
+  signal fm_tar_polmux2tar_pb_v  : tdcpolmux2tar_avt(tar_sb_all_stations_n-1 downto 0);
+  signal fm_mtc2sl_pb_v                : mtc_out_avt(mtc_sb_n-1 downto 0);
+    
   signal fm_sb_mon_r        : fm_mon;
   signal h2s_fm_mon_v  : std_logic_vector(fm_hps_mon'w-1 downto 0);           
   signal ucm_fm_mon_v : std_logic_vector(fm_ucm_mon_data'w-1 downto 0);
   signal tar_fm_mon_v   : std_logic_vector(fm_tar_mon_data'w-1 downto 0);
   signal mtc_fm_mon_v : std_logic_vector(fm_mtc_mon_data'w-1 downto 0);
   signal daq_fm_mon_v : std_logic_vector(fm_daq_mon_data'w-1 downto 0);
-  
+ 
 begin
 
   -- -- ctrl/mon
@@ -319,6 +321,7 @@ begin
 
           -- Fast Monitoring
           fm_tar_mon_v   => tar_fm_mon_v,
+          fm_tar_polmux2tar_pb_v => fm_tar_polmux2tar_pb_v,
           -- TDC Hits from Polmux
           i_inn_tdc_hits_av => int_inn_tdc_hits_av,
           i_mid_tdc_hits_av => int_mid_tdc_hits_av,
@@ -919,9 +922,10 @@ begin
           clock_and_control => clock_and_control,
           ttc_commands      => ttc_commands,
           ctrl_v            => mtc_ctrl_v,
-          mon_v             => mtc_mon_v,
+          mon_v          => mtc_mon_v,
           --Fast Monitoring
-          fm_mtc_mon_v => mtc_fm_mon_v,
+          fm_mtc_mon_v    => mtc_fm_mon_v,
+          fm_mtc2sl_pb_v  => fm_mtc2sl_pb_v,
           --  inputs
           i_ptcalc => pt2mtc_av,
           i_pl2mtc => pl2mtc_av,
@@ -1038,7 +1042,9 @@ begin
           mon_v                    => fm_mon_v,
           --  inputs
           fm_mon                  => fm_sb_mon_r,
-          fm_ucm_slc_rx_pb => fm_slc_rx_pb_v
+          fm_ucm_slc_rx_pb => fm_slc_rx_pb_v,
+          fm_tar_polmux2tar_pb => fm_tar_polmux2tar_pb_v,
+          fm_mtc2sl_pb                => fm_mtc2sl_pb_v
         );
 
     else generate

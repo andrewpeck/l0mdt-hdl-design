@@ -28,12 +28,13 @@ entity ult_fm is
   port(
    clock_and_control : in  l0mdt_control_rt;
    ttc_commands       : in  l0mdt_ttc_rt;
-   axi_reset_n        : in std_logic;
+   axi_reset_n            : in std_logic;
    ctrl_v                      : in std_logic_vector; --FM_CTRL_t;
    mon_v                    : out std_logic_vector; --FM_MON_t;
-   fm_mon                 : in fm_mon;
-   fm_ucm_slc_rx_pb           : out slc_rx_avt(2 downto 0)
-  
+   fm_mon                  : in fm_mon;
+   fm_ucm_slc_rx_pb           : out slc_rx_avt(2 downto 0);
+   fm_tar_polmux2tar_pb    :  out tdcpolmux2tar_avt(tar_sb_all_stations_n-1 downto 0);
+   fm_mtc2sl_pb                  : out mtc_out_avt(mtc_sb_n-1 downto 0)
     );
   end entity ult_fm;
 
@@ -174,8 +175,14 @@ entity ult_fm is
             FM_PB_UCM_SLC_RX:for I in 0 to primary_sl_n -1 generate
               fm_ucm_slc_rx_pb(I)  <= fm_pb_v(h2s_sb_all_station_n + I)(width(fm_ucm_slc_rx_pb(I)) - 1 downto 0);             
             end generate;
- 
 
+             FM_PB_TAR_INPUT:for I in 0 to tar_sb_all_stations_n -1 generate
+              fm_tar_polmux2tar_pb(I)  <= fm_pb_v(h2s_sb_all_station_n + ucm_sb_n + csm_polmux_in_sb_n + csm_custom_sb_n + I)(width(fm_tar_polmux2tar_pb(I)) - 1 downto 0);             
+            end generate;
+
+             FM_PB_MTC_OUTPUT: for I in 0 to mtc_sb_n-1 generate
+               fm_mtc2sl_pb (I) <= fm_pb_v(h2s_sb_all_station_n + ucm_sb_n + csm_polmux_in_sb_n + csm_custom_sb_n + tar_sb_all_stations_n + I)(width(fm_mtc2sl_pb (I)) - 1 downto 0);
+             end generate;
 
      ult_fm_data_flatten: for sb_i in 0 to total_l0mdt_sb-1 generate     
         ult_fm_data_avt(sb_i) <= convert (ult_fm_data(sb_i), ult_fm_data_avt(sb_i));           
