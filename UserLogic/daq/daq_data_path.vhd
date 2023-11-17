@@ -147,7 +147,7 @@ architecture behavioral of daq_data_path is
 
 begin
 
-  o_busy <= or(busy)
+  o_busy <= or(busy);
             
   (wm_inner_usr_hdr, wm_middle_usr_hdr, wm_outer_usr_hdr, wm_extra_usr_hdr) <= wm_user_header;
 
