@@ -71,6 +71,7 @@ begin
 
   DAQ_GEN : if c_DAQ_ENABLED generate
 
+    signal ctrl_bcid_offset    : unsigned(11 downto 0);
     signal ctrl_opening_offset : unsigned(11 downto 0);
     signal ctrl_request_offset : unsigned(11 downto 0);
     signal ctrl_closing_offset : unsigned(11 downto 0);
@@ -91,11 +92,12 @@ begin
     begin
       if rising_edge(clock_and_control.clk) then
         if ctrl_r.action.wr_en = '1' then
-          ctrl_opening_offset <= unsigned(ctrl_r.wr0.opening_offset);
-          ctrl_request_offset <= unsigned(ctrl_r.wr0.request_offset);
-          ctrl_closing_offset <= unsigned(ctrl_r.wr1.closing_offset);
-          ctrl_window_timeout <= unsigned(ctrl_r.wr1.window_timeout);
-          ctrl_busy_threshold <= unsigned(ctrl_r.wr1.busy_threshold);
+          ctrl_opening_offset   <= unsigned(ctrl_r.wr0.opening_offset);
+          ctrl_request_offset   <= unsigned(ctrl_r.wr0.request_offset);
+          ctrl_closing_offset   <= unsigned(ctrl_r.wr1.closing_offset);
+          ctrl_window_timeout   <= unsigned(ctrl_r.wr1.window_timeout);
+          ctrl_busy_threshold   <= unsigned(ctrl_r.wr1.busy_threshold);
+          ctrl_ctrl_bcid_offset <= unsigned(ctrl_r.wr2.ctrl_bcid_offset);
         end if; -- wr en
         mon_r.rd0.opening_offset <= std_logic_vector(ctrl_opening_offset);
         mon_r.rd0.request_offset <= std_logic_vector(ctrl_request_offset);
@@ -117,6 +119,7 @@ begin
                 i_ecr                 => ttc_commands.ecr     , -- : in  std_logic;                   
                 i_bcid                => ttc_commands.bcid    , -- : in  unsigned(11 downto 0);       
                 -----------------------------------------------------
+                i_ctrl_bcid_offset    => ctrl_bcid_offset     , -- : in  unsigned(11 downto 0);
                 i_ctrl_opening_offset => ctrl_opening_offset  , -- : in  unsigned(11 downto 0);   
                 i_ctrl_request_offset => ctrl_request_offset  , -- : in  unsigned(11 downto 0);   
                 i_ctrl_closing_offset => ctrl_closing_offset  , -- : in  unsigned(11 downto 0);   

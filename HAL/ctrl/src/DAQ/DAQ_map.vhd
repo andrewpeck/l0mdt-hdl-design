@@ -117,6 +117,7 @@ begin  -- architecture behavioral
           localRdData(23 downto 12)  <=  reg_data( 2)(23 downto 12);      --
           localRdData(31 downto 24)  <=  reg_data( 2)(31 downto 24);      --
         when 3 => --0x3
+          localRdData(11 downto  0)  <=  reg_data( 3)(11 downto  0);      --
           localRdData(11 downto  0)  <=  Mon.rd0.opening_offset;          --
           localRdData(23 downto 12)  <=  Mon.rd0.request_offset;          --
         when 4 => --0x4
@@ -142,11 +143,12 @@ begin  -- architecture behavioral
   -------------------------------------------------------------------------------
 
   -- Register mapping to ctrl structures
-  Ctrl.wr0.opening_offset  <=  reg_data( 1)(11 downto  0);     
-  Ctrl.wr0.request_offset  <=  reg_data( 1)(23 downto 12);     
-  Ctrl.wr1.closing_offset  <=  reg_data( 2)(11 downto  0);     
-  Ctrl.wr1.window_timeout  <=  reg_data( 2)(23 downto 12);     
-  Ctrl.wr1.busy_threshold  <=  reg_data( 2)(31 downto 24);     
+  Ctrl.wr0.opening_offset    <=  reg_data( 1)(11 downto  0);     
+  Ctrl.wr0.request_offset    <=  reg_data( 1)(23 downto 12);     
+  Ctrl.wr1.closing_offset    <=  reg_data( 2)(11 downto  0);     
+  Ctrl.wr1.window_timeout    <=  reg_data( 2)(23 downto 12);     
+  Ctrl.wr1.busy_threshold    <=  reg_data( 2)(31 downto 24);     
+  Ctrl.wr2.ctrl_bcid_offset  <=  reg_data( 3)(11 downto  0);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
@@ -159,6 +161,7 @@ begin  -- architecture behavioral
       reg_data( 2)(11 downto  0)  <= DEFAULT_DAQ_CTRL_t.wr1.closing_offset;
       reg_data( 2)(23 downto 12)  <= DEFAULT_DAQ_CTRL_t.wr1.window_timeout;
       reg_data( 2)(31 downto 24)  <= DEFAULT_DAQ_CTRL_t.wr1.busy_threshold;
+      reg_data( 3)(11 downto  0)  <= DEFAULT_DAQ_CTRL_t.wr2.ctrl_bcid_offset;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       Ctrl.action.RESET <= '0';
@@ -178,6 +181,8 @@ begin  -- architecture behavioral
           reg_data( 2)(11 downto  0)  <=  localWrData(11 downto  0);      --
           reg_data( 2)(23 downto 12)  <=  localWrData(23 downto 12);      --
           reg_data( 2)(31 downto 24)  <=  localWrData(31 downto 24);      --
+        when 3 => --0x3
+          reg_data( 3)(11 downto  0)  <=  localWrData(11 downto  0);      --
 
           when others => null;
         end case;

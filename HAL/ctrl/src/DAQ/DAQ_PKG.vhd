@@ -44,6 +44,15 @@ package DAQ_CTRL is
    function convert(x: std_logic_vector; tpl: DAQ_wr1_CTRL_t) return DAQ_wr1_CTRL_t;
    function zero(tpl: DAQ_wr1_CTRL_t) return DAQ_wr1_CTRL_t;
 
+   type DAQ_wr2_CTRL_t is record
+      ctrl_bcid_offset : std_logic_vector(12 - 1 downto 0);
+   end record DAQ_wr2_CTRL_t;
+   attribute w of DAQ_wr2_CTRL_t : type is 12;
+   function width(x: DAQ_wr2_CTRL_t) return natural;
+   function convert(x: DAQ_wr2_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: DAQ_wr2_CTRL_t) return DAQ_wr2_CTRL_t;
+   function zero(tpl: DAQ_wr2_CTRL_t) return DAQ_wr2_CTRL_t;
+
    type DAQ_rd0_MON_t is record
       opening_offset : std_logic_vector(12 - 1 downto 0);
       request_offset : std_logic_vector(12 - 1 downto 0);
@@ -89,8 +98,9 @@ package DAQ_CTRL is
       action : DAQ_action_CTRL_t;
       wr0 : DAQ_wr0_CTRL_t;
       wr1 : DAQ_wr1_CTRL_t;
+      wr2 : DAQ_wr2_CTRL_t;
    end record DAQ_CTRL_t;
-   attribute w of DAQ_CTRL_t : type is 58;
+   attribute w of DAQ_CTRL_t : type is 70;
    function width(x: DAQ_CTRL_t) return natural;
    function convert(x: DAQ_CTRL_t; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: DAQ_CTRL_t) return DAQ_CTRL_t;
@@ -277,6 +287,45 @@ package body DAQ_CTRL is
       return y;
    end function convert;
    function zero(tpl: DAQ_wr1_CTRL_t) return DAQ_wr1_CTRL_t is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+
+   function width(x: DAQ_wr2_CTRL_t) return natural is
+      variable w : natural := 0;
+   begin
+      w := w + width(x.ctrl_bcid_offset);
+      return w;
+   end function width;
+   function convert(x: DAQ_wr2_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable w : integer;
+      variable u : integer := tpl'left;
+   begin
+      if tpl'ascending then
+         w := width(x.ctrl_bcid_offset);
+         y(u to u+w-1) := convert(x.ctrl_bcid_offset, y(u to u+w-1));
+      else
+         w := width(x.ctrl_bcid_offset);
+         y(u downto u-w+1) := convert(x.ctrl_bcid_offset, y(u downto u-w+1));
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: DAQ_wr2_CTRL_t) return DAQ_wr2_CTRL_t is
+      variable y : DAQ_wr2_CTRL_t;
+      variable w : integer;
+      variable u : integer := x'left;
+   begin
+      if x'ascending then
+         w := width(tpl.ctrl_bcid_offset);
+         y.ctrl_bcid_offset := convert(x(u to u+w-1), tpl.ctrl_bcid_offset);
+      else
+         w := width(tpl.ctrl_bcid_offset);
+         y.ctrl_bcid_offset := convert(x(u downto u-w+1), tpl.ctrl_bcid_offset);
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: DAQ_wr2_CTRL_t) return DAQ_wr2_CTRL_t is
    begin
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
@@ -508,6 +557,7 @@ package body DAQ_CTRL is
       w := w + width(x.action);
       w := w + width(x.wr0);
       w := w + width(x.wr1);
+      w := w + width(x.wr2);
       return w;
    end function width;
    function convert(x: DAQ_CTRL_t; tpl: std_logic_vector) return std_logic_vector is
@@ -524,6 +574,9 @@ package body DAQ_CTRL is
          u := u + w;
          w := width(x.wr1);
          y(u to u+w-1) := convert(x.wr1, y(u to u+w-1));
+         u := u + w;
+         w := width(x.wr2);
+         y(u to u+w-1) := convert(x.wr2, y(u to u+w-1));
       else
          w := width(x.action);
          y(u downto u-w+1) := convert(x.action, y(u downto u-w+1));
@@ -533,6 +586,9 @@ package body DAQ_CTRL is
          u := u - w;
          w := width(x.wr1);
          y(u downto u-w+1) := convert(x.wr1, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.wr2);
+         y(u downto u-w+1) := convert(x.wr2, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -550,6 +606,9 @@ package body DAQ_CTRL is
          u := u + w;
          w := width(tpl.wr1);
          y.wr1 := convert(x(u to u+w-1), tpl.wr1);
+         u := u + w;
+         w := width(tpl.wr2);
+         y.wr2 := convert(x(u to u+w-1), tpl.wr2);
       else
          w := width(tpl.action);
          y.action := convert(x(u downto u-w+1), tpl.action);
@@ -559,6 +618,9 @@ package body DAQ_CTRL is
          u := u - w;
          w := width(tpl.wr1);
          y.wr1 := convert(x(u downto u-w+1), tpl.wr1);
+         u := u - w;
+         w := width(tpl.wr2);
+         y.wr2 := convert(x(u downto u-w+1), tpl.wr2);
       end if;
       return y;
    end function convert;

@@ -25,6 +25,10 @@ types:
   - busy_threshold : { type: logic, range : [ 8 - 1 , 0 ] }
 
 
+- DAQ_wr2_CTRL_t:
+  - ctrl_bcid_offset : { type: logic, range : [ 12 - 1 , 0 ] }
+
+
 - DAQ_rd0_MON_t:
   - opening_offset : { type: logic, range : [ 12 - 1 , 0 ] }
   - request_offset : { type: logic, range : [ 12 - 1 , 0 ] }
@@ -50,5 +54,6 @@ types:
   - action : { type: DAQ_action_CTRL_t }
   - wr0 : { type: DAQ_wr0_CTRL_t }
   - wr1 : { type: DAQ_wr1_CTRL_t }
+  - wr2 : { type: DAQ_wr2_CTRL_t }
 
 

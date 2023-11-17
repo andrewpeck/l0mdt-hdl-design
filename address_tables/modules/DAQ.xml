@@ -14,6 +14,9 @@
     <node id="window_timeout" mask="0x00FFF000" permission="rw"/>
     <node id="busy_threshold" mask="0xFF000000" permission="rw"/>
   </node>
+  <node id="wr2" address="0x00000003">
+    <node id="ctrl_bcid_offset" mask="0x00000FFF" permission="rw"/>
+  </node>
   <node id="rd0" address="0x00000003">
     <!-- 12-bit registers --> 
     <node id="opening_offset" mask="0x00000FFF" permission="r"/>

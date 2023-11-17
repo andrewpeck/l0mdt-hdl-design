@@ -28,6 +28,7 @@ entity daq_data_path is
         i_ecr             : in  std_logic;
         i_bcid            : in  unsigned(11 downto 0);
         ----------------------------------------------------------------------
+        i_ctrl_bcid_offset    : in  unsigned(11 downto 0);
         i_ctrl_opening_offset : in  unsigned(11 downto 0);
         i_ctrl_request_offset : in  unsigned(11 downto 0);
         i_ctrl_closing_offset : in  unsigned(11 downto 0);
@@ -216,16 +217,17 @@ begin
                 o_busy => busy(0),
                 o_wme_available => wme_available(0),
                 ------------------------------------------------------------------------------------
-                i_req_strb                        => wm_req_strb          , -- : in std_logic;
+                i_req_strb                        => wm_req_strb      , -- : in std_logic;
                 i_win_opening_cnt                 => wm_opening_cnt   , -- : in unsigned(11 downto 0);
                 i_win_request_cnt                 => wm_request_cnt   , -- : in unsigned(11 downto 0);
                 i_win_closing_cnt                 => wm_closing_cnt   , -- : in unsigned(11 downto 0);
                 ------------------------------------------------------------------------------------
-                i_win_opening_offset              => wm_opening_offset, -- : in unsigned(11 downto 0);
-                i_win_request_offset              => wm_request_offset, -- : in unsigned(11 downto 0);
-                i_win_closing_offset              => wm_closing_offset, -- : in unsigned(11 downto 0);
-                i_win_window_timeout              => wm_window_timeout, -- : in unsigned(11 downto 0);
-                i_win_busy_threshold              => wm_busy_threshold,
+                i_ctrl_bcid_offset                => i_ctrl_bcid_offset , -- : in unsigned(11 downto 0);
+                i_win_opening_offset              => wm_opening_offset  , -- : in unsigned(11 downto 0);
+                i_win_request_offset              => wm_request_offset  , -- : in unsigned(11 downto 0);
+                i_win_closing_offset              => wm_closing_offset  , -- : in unsigned(11 downto 0);
+                i_win_window_timeout              => wm_window_timeout  , -- : in unsigned(11 downto 0);
+                i_win_busy_threshold              => wm_busy_threshold  , -- : in unsigned( 7 downto 0);
                 ------------------------------------------------------------------------------------
                 i_curr_bcid                       => wm_curr_bcid,
                 ------------------------------------------------------------------------------------
@@ -272,6 +274,7 @@ begin
                 i_win_request_cnt                 => wm_request_cnt                  , -- : in unsigned(11 downto 0);
                 i_win_closing_cnt                 => wm_closing_cnt                  , -- : in unsigned(11 downto 0);
                 ---------------------------------------------------------------------------------------------------
+                i_ctrl_bcid_offset                => i_ctrl_bcid_offset              , -- : in unsigned(11 downto 0);
                 i_win_opening_offset              => wm_opening_offset               , -- : in unsigned(11 downto 0);
                 i_win_request_offset              => wm_request_offset               , -- : in unsigned(11 downto 0);
                 i_win_closing_offset              => wm_closing_offset               , -- : in unsigned(11 downto 0);
@@ -324,11 +327,12 @@ begin
                 i_win_request_cnt                 => wm_request_cnt, -- : in unsigned(11 downto 0);
                 i_win_closing_cnt                 => wm_closing_cnt, -- : in unsigned(11 downto 0);
                 ---------------------------------------------------------------------------------------------------
-                i_win_opening_offset              => wm_opening_offset, -- : in unsigned(11 downto 0);
-                i_win_request_offset              => wm_request_offset, -- : in unsigned(11 downto 0);
-                i_win_closing_offset              => wm_closing_offset, -- : in unsigned(11 downto 0);
-                i_win_window_timeout              => wm_window_timeout, -- : in unsigned(11 downto 0);
-                i_win_busy_threshold              => wm_busy_threshold,
+                i_ctrl_bcid_offset                => i_ctrl_bcid_offset , -- : in unsigned(11 downto 0);
+                i_win_opening_offset              => wm_opening_offset  , -- : in unsigned(11 downto 0);
+                i_win_request_offset              => wm_request_offset  , -- : in unsigned(11 downto 0);
+                i_win_closing_offset              => wm_closing_offset  , -- : in unsigned(11 downto 0);
+                i_win_window_timeout              => wm_window_timeout  , -- : in unsigned(11 downto 0);
+                i_win_busy_threshold              => wm_busy_threshold  ,
                 ---------------------------------------------------------------------------------------------------
                 i_curr_bcid                       => wm_curr_bcid,
                 ------------------------------------------------------------------------------------
@@ -375,6 +379,7 @@ begin
                 i_win_request_cnt                 => wm_request_cnt                  , -- : in unsigned(11 downto 0);
                 i_win_closing_cnt                 => wm_closing_cnt                  , -- : in unsigned(11 downto 0);
                 ---------------------------------------------------------------------------------------------------
+                i_ctrl_bcid_offset                => i_ctrl_bcid_offset              , -- : in unsigned(11 downto 0);
                 i_win_opening_offset              => wm_opening_offset               , -- : in unsigned(11 downto 0);
                 i_win_request_offset              => wm_request_offset               , -- : in unsigned(11 downto 0);
                 i_win_closing_offset              => wm_closing_offset               , -- : in unsigned(11 downto 0);
