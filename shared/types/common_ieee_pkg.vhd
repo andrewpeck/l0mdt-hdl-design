@@ -121,7 +121,11 @@ package body common_ieee_pkg is
 
    function width(x: std_logic_vector_array) return natural is
    begin
-      return x(x'low)'length*x'length;
+      if x'low > x'high then
+         return 0;
+      else
+         return x(x'low)'length*x'length;
+      end if;
    end function width;
    function width(x: std_logic) return natural is
    begin
