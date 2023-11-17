@@ -4,7 +4,7 @@ UserLogic/daq/daq_fifo.vhd
 UserLogic/daq/daq_fifo_pipeline.vhd
 UserLogic/daq/daq_station.vhd
 
-# UserLogic/daq/daq_data_path.vhd
+UserLogic/daq/daq_data_path.vhd
 # UserLogic/daq/daq_trigger_path.vhd
 
 # UserLogic/daq/ttc_def.src               lib=ttc_def

@@ -80,6 +80,8 @@ begin
     signal ctrl_r : DAQ_CTRL_t;
     signal mon_r  : DAQ_MON_t;
 
+    signal busy : std_logic;
+    
   begin
     
     ctrl_r <= convert(ctrl_v, ctrl_r);
@@ -100,7 +102,7 @@ begin
         mon_r.rd1.closing_offset <= std_logic_vector(ctrl_closing_offset);
         mon_r.rd1.window_timeout <= std_logic_vector(ctrl_window_timeout);
         mon_r.rd1.busy_threshold <= std_logic_vector(ctrl_busy_threshold);
-        mon_r.status.busy       <= or(busy);
+        mon_r.status.busy       <= busy;
       end if; -- clk
     end process;
 
