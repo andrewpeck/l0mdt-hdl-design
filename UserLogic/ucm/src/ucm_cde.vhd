@@ -58,7 +58,7 @@ entity ucm_cde is
     -- o_pl_phimod           : out std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
     -- o_pl_phimod_dv        : out std_logic;
 
-    o_ucm2pl_v            : out ucm2pl_vt
+    o_ucm2pl_v            : out ucm_cde2pl_vt
   );
 end entity ucm_cde;
 
@@ -152,7 +152,7 @@ begin
       );
 
       int_slc_data_r <= convert(int_slc_data_v,int_slc_data_r);
-
+/*
       IETA_INN : entity ucm_lib.ucm_ieta_calc
         generic map(
           g_STATION => 0,
@@ -229,7 +229,7 @@ begin
           o_ieta        => int_chamb_ieta(3),
           o_ieta_dv     => dv_bus(3)
       );
-
+*/
       UCM_CDE2CVP_PROC : process(rst,clk) 
         variable ch_i : integer;
         variable rpc_i : integer;
@@ -253,8 +253,8 @@ begin
               o_cde_data_r.cointype     <= int_slc_data_r.common.cointype;
               o_cde_data_r.specific     <= int_slc_data_r.specific;
               o_cde_data_r.data_valid   <= int_slc_data_r.data_valid;
-              o_cde_data_r.posphi       <= int_slc_data_r.common.posphi;
-              o_cde_data_r.chamb_ieta   <= int_chamb_ieta;
+              -- o_cde_data_r.posphi       <= int_slc_data_r.common.posphi;
+              -- o_cde_data_r.chamb_ieta   <= int_chamb_ieta;
               o_cde_data_r.phimod       <= std_logic_vector(resize(signed(int_phimod_abs_pl),UCM_CDE2CVP_PHIMOD_LEN));
             else
               -- o_cde_data_r <= zero(o_cde_data_r);
@@ -318,7 +318,7 @@ begin
             -- o_uCM2pl_r.posphi       <= int2_slc_data_r.common.posphi;
             -- o_uCM2pl_r.chamb_ieta   <= int2_chamb_ieta;
             -- if ena = '1' then
-              o_uCM2pl_r.phimod       <= resize(signed(int_phimod_pl),UCM2PL_PHIMOD_LEN);
+            o_uCM2pl_r.phimod       <= resize(signed(int_phimod_pl),UCM2PL_PHIMOD_LEN);
             -- else
             --   o_uCM2pl_r.phimod       <= (others => '0');
             -- end if;
@@ -337,7 +337,7 @@ begin
       end if;
     end process;
 
-    o_uCM2pl_v <= convert(o_uCM2pl_r,o_uCM2pl_v);
+    -- o_uCM2pl_v <= convert(o_uCM2pl_r,o_uCM2pl_v);
   -- end generate BYPASS_GEN;
 
   

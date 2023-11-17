@@ -47,7 +47,7 @@ entity ucm_ctrl_pam is
     o_pam_ctrl          : out ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
     o_pam_ctrl_dv       : out std_logic;
     -- o_proc_info_ar         : out ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0);
-    o_proc_info_av      : out ucm_proc_info_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_proc_info_av      : out ucm_proc_info_avt(c_MAX_NUM_SL -1 downto 0);
     
     --
     o_cvp_rst           : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);

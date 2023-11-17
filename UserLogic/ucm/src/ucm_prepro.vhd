@@ -99,6 +99,7 @@ begin
     o_barrel.rpc0_posz  <= i_barrel.rpc0_posz;
 
     o_prepro2ctrl_r.data_valid <= i_slc_data_r.data_valid;
+    o_prepro2ctrl_r.poseta <= i_slc_data_r.common.poseta;
 
   end generate;
   
@@ -128,31 +129,12 @@ begin
       rst         => rst,
       ena         => ena,
       --
-      i_data      => prepro_data_v,
+      i_data      => i_slc_data_v,
       i_dv        => i_slc_data_r.data_valid,
       o_data      => o_prepro_data_v,
       o_dv        => o_prepro_data_dv
     );
 
-  -- UCM_PRE_PROC : process(rst,clk) begin
-  --   if rising_edge(clk) then
-  --     if(rst= '1') then
-  --       prepro_data_r <= zero(prepro_data_r);
-  --     else
-  --       if i_slc_data_r.data_valid = '1' then
-  --         -- prepro_data_r.muid        <= i_slc_data_r.muid;
-  --         -- prepro_data_r.chambers    <= i_slc_data_r.chambers;
-  --         -- prepro_data_r.common      <= i_slc_data_r.common;
-  --         -- prepro_data_r.specific    <= i_slc_data_r.slc_specific;
-  --         prepro_data_r.data_valid  <= i_slc_data_r.data_valid;
-  --       else
-  --         prepro_data_r <= zero(prepro_data_r);
-  --       end if;
-  --     end if;
-  --   end if;
-  -- end process;
 
-  -- fala el calculo de phimod 
-  -- falta el calculo de sl destino
 
 end beh;

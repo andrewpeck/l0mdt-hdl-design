@@ -33,10 +33,10 @@ package body prj_cfg is
     variable proj_cfg : cfg_rt := CFG_DEFAULTS;
   begin
 
-    proj_cfg.ENABLE_NEIGHBORS  := '0';
-    proj_cfg.VERSION_UCM       := "1.2";
+    proj_cfg.ENABLE_NEIGHBORS  := '1';
+    -- proj_cfg.VERSION_UCM       := "1.2";
     proj_cfg.NUM_THREADS       := 4;
-    proj_cfg.NUM_ACCEPTS       := 3;
+    proj_cfg.NUM_ACCEPTS       := 2;
 
     return proj_cfg;
   end function set_project_cfg;

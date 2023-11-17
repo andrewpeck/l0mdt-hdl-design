@@ -44,7 +44,7 @@ package cfg_global_default_pkg is
     
     -- muon control manager
     ENABLE_UCM                    : std_logic;  -- enable or disable the muon 
-    VERSION_UCM                   : string(1 to 3);
+    -- VERSION_UCM                   : string(1 to 3);
     -- main pipeline
     ENABLE_MPL                    : std_logic;
     -- VERSION_MPL                   : string;
@@ -130,7 +130,7 @@ package cfg_global_default_pkg is
     -- Candidate path
     -- muon control manager
     ENABLE_UCM                    => '1', -- 0: disabled  1: enabled -- default enabled
-    VERSION_UCM                   => "1.0",
+    -- VERSION_UCM                   => "1.0",
     -- Candidate Main Pipeline
     ENABLE_MPL                    => '1',
     -- VERSION_MPL                   => "1.0",

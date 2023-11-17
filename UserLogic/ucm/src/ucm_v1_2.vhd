@@ -171,10 +171,12 @@ architecture beh of ucm_v1_2 is
   -- signal cvp_cz0_a : cvp_cz0_art;
 
   signal aux_uCM2hps_inn_r  : ucm2hps_rt;
-  signal o_uCM2hps_inn_ar  : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
-  signal o_uCM2hps_mid_ar  : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
-  signal o_uCM2hps_out_ar  : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
-  signal o_uCM2hps_ext_ar  : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2hps_inn_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2hps_mid_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2hps_out_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2hps_ext_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
+  signal o_uCM2pl_ar        : ucm2pl_art(c_MAX_NUM_SL -1 downto 0);
+  
 
 begin
 
@@ -331,13 +333,13 @@ begin
         --
         i_slc_data_v          => csw_main_out_av(sl_i),
         --
-        o_cde_data_v          => cpam_in_av(sl_i - (c_MAX_NUM_SL - c_NUM_ACCEPTS) ),
+        o_cde_data_v          => cpam_in_av(sl_i - (c_MAX_NUM_SL - c_NUM_ACCEPTS) )
         -- o_cde_data_v          => cpam_in_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_ACCEPTS - 1) - 2),
         --
         -- o_pl_phimod           => cde_phimod(sl_i),
         -- o_pl_phimod_dv        => 
 
-        o_ucm2pl_v => o_uCM2pl_av(sl_i)
+        -- o_ucm2pl_v => o_uCM2pl_av(sl_i)
       );
     else generate
       SLC_CDE : entity ucm_lib.ucm_cde
@@ -366,34 +368,6 @@ begin
 
     end generate SLC_CDE_TH;
   end generate;
-
-  -- PAM_CSW: for heg_i in c_NUM_ACCEPTS -1 downto 0 generate
-  --   cde_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - ((c_NUM_ACCEPTS - 1) - heg_i) - 1);
-  --   -- cpam_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - c_NUM_ACCEPTS + heg_i);
-  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_ACCEPTS + heg_i).processed <= proc_info_av(heg_i).processed;
-  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_ACCEPTS + heg_i).processed <= proc_info_av(heg_i).ch;
-  -- end generate;
-
-  -- Candidate Data Extractor
-  -- SLC_CDE_A : for th_i in c_NUM_ACCEPTS -1 downto 0 generate
-  --   SLC_CDE : entity ucm_lib.ucm_cde
-  --   port map(
-  --     clk                   => clk,
-  --     rst                   => local_rst,
-  --     ena               => local_en,
-  --     --
-  --     i_phicenter           => phicenter,
-  --     i_chamber_z_org_bus   => cde_chamber_z_org_bus,
-  --     --
-  --     i_slc_data_v          => cde_in_av(th_i),
-  --     o_cde_data_v          => cpam_in_av(th_i),
-  --     --
-  --     o_pl_phimod           => cde_phimod(th_i)
-  --     -- o_pl_phimod_dv        => 
-  --   );
-  -- end generate;
-
-  -- mon.DP_CHAMB_Z0.DP_CHAMB_Z0 <= cde_cz0_a(0);
 
   -- PAM cross switch
   SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw
@@ -482,119 +456,26 @@ begin
       -- o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
     end generate;
   -- end generate;
-  -- o_uCM2hps_inn_ar <= convert(o_uCM2hps_inn_av);
-  -- o_uCM2hps_mid_ar <= convert(o_uCM2hps_mid_av);
-  -- o_uCM2hps_out_ar <= convert(o_uCM2hps_out_av);
-  -- o_uCM2hps_ext_ar <= convert(o_uCM2hps_ext_av);
+  -- o_uCM2hps_inn_ar <= convert(o_uCM2hps_inn_av,o_uCM2hps_inn_ar);
+  -- o_uCM2hps_mid_ar <= convert(o_uCM2hps_mid_av,o_uCM2hps_mid_ar);
+  -- o_uCM2hps_out_ar <= convert(o_uCM2hps_out_av,o_uCM2hps_out_ar);
+  -- o_uCM2hps_ext_ar <= convert(o_uCM2hps_ext_av,o_uCM2hps_ext_ar);
+  -- o_uCM2pl_ar <= convert(o_uCM2pl_av,o_uCM2pl_ar);
+
+  OUT2CPL : entity ucm_lib.ucm_out2cpl
+    port map(
+      clk           => clk,
+      rst           => local_rst,
+      ena           => local_en,
+      --
+      -- ctrl_v              => r_phi_comp_ctrl_v,
+      -- mon_v               => r_phi_comp_mon_av(vp_i),
+      --
+      i_proc_info_av => proc_info_av,
+      i_data_av        => csw_main_out_av,
+      --
+      o_uCM2pl_av => o_uCM2pl_av
+    );
   
 
-  -- PAM_CSW: for heg_i in c_NUM_ACCEPTS -1 downto 0 generate
-  --   cde_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - ((c_NUM_ACCEPTS - 1) - heg_i) - 1);
-  --   -- cpam_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - c_NUM_ACCEPTS + heg_i);
-  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_ACCEPTS + heg_i).processed <= proc_info_av(heg_i).processed;
-  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_ACCEPTS + heg_i).processed <= proc_info_av(heg_i).ch;
-  -- end generate;
-
-/*
-  PRE_OUTPL_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    csw_main_out_ar(sl_i)         <= convert(csw_main_out_av(sl_i),csw_main_out_ar(sl_i));
-    
-    BARREL_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
-      -- slc_endcap_ar(sl_i)                 <= convert(csw_main_out_ar(sl_i).specific);
-      int_uCM2pl_ar(sl_i).nswseg_poseta     <= (others => '0');--slc_endcap_ar(sl_i).nswseg_poseta;
-      int_uCM2pl_ar(sl_i).nswseg_posphi     <= (others => '0');--slc_endcap_ar(sl_i).nswseg_posphi;
-      int_uCM2pl_ar(sl_i).nswseg_angdtheta  <= (others => '0');--slc_endcap_ar(sl_i).nswseg_angdtheta;
-    end generate;
-
-    ENCAP_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
-      slc_endcap_ar(sl_i)                 <= convert(csw_main_out_ar(sl_i).specific,slc_endcap_ar(sl_i));
-      int_uCM2pl_ar(sl_i).nswseg_poseta     <= slc_endcap_ar(sl_i).nswseg_poseta;
-      int_uCM2pl_ar(sl_i).nswseg_posphi     <= slc_endcap_ar(sl_i).nswseg_posphi;
-      int_uCM2pl_ar(sl_i).nswseg_angdtheta  <= slc_endcap_ar(sl_i).nswseg_angdtheta;
-    end generate;
-
-    -- int_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;
-    int_uCM2pl_ar(sl_i).common      <= csw_main_out_ar(sl_i).common;
-    -- if proc_info_av(sl_i - (c_MAX_NUM_SL - c_NUM_ACCEPTS)).processed = '1' then
-    int_uCM2pl_ar(sl_i).phimod <= (others => '0');
-    -- int_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
-    int_uCM2pl_ar(sl_i).data_valid  <= csw_main_out_ar(sl_i).data_valid;
-
-    -- PRE_PL_IF_0: if sl_i >= c_MAX_NUM_SL - c_NUM_ACCEPTS generate
-    --   int_uCM2pl_ar(sl_i).busy        <= proc_info_av(sl_i - (c_MAX_NUM_SL - c_NUM_ACCEPTS)).processed;
-    --   int_uCM2pl_ar(sl_i).process_ch  <= proc_info_av(sl_i - (c_MAX_NUM_SL - c_NUM_ACCEPTS)).ch;
-    --   -- int_uCM2pl_ar(sl_i).phimod      <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_ACCEPTS));
-    -- end generate;
-    -- PRE_PL_IF_1: if sl_i < c_MAX_NUM_SL - c_NUM_ACCEPTS generate
-    --   int_uCM2pl_ar(sl_i).busy   <= '0';
-    --   int_uCM2pl_ar(sl_i).process_ch  <= (others => '0');
-    --   -- int_uCM2pl_ar(sl_i).phimod <= (others => '0');
-
-    -- end generate;
-
-    int_uCM2pl_av(sl_i) <= convert(int_uCM2pl_ar(sl_i),int_uCM2pl_av(sl_i));
-
-  end generate;
-*/
-  -- output pipelines
-  /*
-  SLC_OUT_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    -- SLC_OUT_PL : entity shared_lib.std_pipeline
-    -- generic map(
-    --   g_DELAY_CYCLES  => 3,
-    --   g_PIPELINE_WIDTH    => int_uCM2pl_av(sl_i)'length
-    -- )
-    -- port map(
-    --   clk         => clk,
-    --   rst         => local_rst,
-    --   glob_en     => local_en,
-    --   --
-    --   i_data      => int_uCM2pl_av(sl_i),
-    --   i_dv        => int_uCM2pl_ar(sl_i).data_valid,
-    --   o_data      => pl_o_uCM2pl_av(sl_i),
-    --   o_dv        => o_uCM2pl_ar(sl_i).data_valid
-    -- );
-    SLC_OUT_PL : entity vamc_lib.vamc_spl
-    generic map(
-      g_DELAY_CYCLES  => 3,
-      g_PIPELINE_WIDTH    => int_uCM2pl_av(sl_i)'length
-    )
-    port map(
-      clk         => clk,
-      rst         => local_rst,
-      ena         => local_en,
-      --
-      i_data      => int_uCM2pl_av(sl_i),
-      i_dv        => int_uCM2pl_ar(sl_i).data_valid,
-      o_data      => pl_o_uCM2pl_av(sl_i),
-      o_dv        => o_uCM2pl_ar(sl_i).data_valid
-    );
-  end generate;
-
-  POST_OUTPL_LOOP_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    pl_o_uCM2pl_ar(sl_i) <= convert(pl_o_uCM2pl_av(sl_i),pl_o_uCM2pl_ar(sl_i));
-    --
-    -- o_uCM2pl_ar(sl_i).data_valid  <= pl_o_uCM2pl_ar(sl_i).data_valid;
-    o_uCM2pl_ar(sl_i).busy        <= pl_o_uCM2pl_ar(sl_i).busy;
-    o_uCM2pl_ar(sl_i).process_ch  <= pl_o_uCM2pl_ar(sl_i).process_ch ;
-    o_uCM2pl_ar(sl_i).common      <= pl_o_uCM2pl_ar(sl_i).common;
-    -- o_uCM2pl_ar(sl_i).phimod      <= pl_o_uCM2pl_ar(sl_i).phimod;
-    PHIMOD_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_ACCEPTS generate
-      o_uCM2pl_ar(sl_i).phimod    <= signed(cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_ACCEPTS)));
-    end generate;
-    PHIMOD_NOPROC_IF: if sl_i < c_MAX_NUM_SL - c_NUM_ACCEPTS generate
-      o_uCM2pl_ar(sl_i).phimod    <=(others => '0');
-    end generate;
-    -- ENCAP_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
-      -- slc_endcap_ar(sl_i)                 <= convert(csw_main_out_ar(sl_i).specific);
-      o_uCM2pl_ar(sl_i).nswseg_poseta     <= pl_o_uCM2pl_ar(sl_i).nswseg_poseta;
-      o_uCM2pl_ar(sl_i).nswseg_posphi     <= pl_o_uCM2pl_ar(sl_i).nswseg_posphi;
-      o_uCM2pl_ar(sl_i).nswseg_angdtheta  <= pl_o_uCM2pl_ar(sl_i).nswseg_angdtheta;
-    -- end generate;
-
-    --
-    -- o_uCM2pl_av(sl_i) <= convert(o_uCM2pl_ar(sl_i));
-
-  end generate;
-*/
 end beh;

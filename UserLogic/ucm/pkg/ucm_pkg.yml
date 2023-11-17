@@ -1,53 +1,66 @@
 # yml2hdl v0.3
 config:
-   basic_functions: False
-   packages:
-      - ieee: [std_logic_1164, numeric_std, math_real]
-      - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg]
+  basic_functions: False
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee_pkg, l0mdt_constants_pkg, l0mdt_dataformats_pkg, common_constants_pkg, common_types_pkg,sl2mdt_constants_pkg]
 types:
    
-   - SLC_SPECIFIC_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 48}
-   - UCM_CDE2CVP_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 7}
-   - UCM_CDE2CVP_PHIMOD_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 64.0}
-  #  - UCM_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 5}
-   - ucm_prepro2ctrl_rt:
-      - data_valid: {'type': 'logic'}
-   - ucm_prepro2ctrl_vt: {'type': 'logic', 'range': ['ucm_prepro2ctrl_rt-1', 0]}
-   - ucm_prepro2ctrl_art: {'array': 'open', 'type': 'ucm_prepro2ctrl_rt'}
-   - ucm_prepro2ctrl_avt: {'array': 'open', 'type': 'ucm_prepro2ctrl_vt'}
-   - ucm_rpc_lt: {'type': 'logic', 'range': ['SLC_Z_RPC_LEN -1', 0]}
-   - ucm_rpc_r_alt: {'array': 'open', 'type': 'ucm_rpc_lt'}
-   - ucm_mdt_lt: {'type': 'logic', 'range': ['UCM_R_MDT_LEN -1', 0]}
-   - ucm_mdt_r_alt: {'array': 'open', 'type': 'ucm_mdt_lt'}
-   - chamb_ieta_rpc_ut: {'type': 'unsigned', 'range': ['4-1', 0]}
-   - chamb_ieta_rpc_aut: {'array': ['4-1', 0], 'type': 'chamb_ieta_rpc_ut'}
-   - ucm_cde_rt:
-      - muid: {'type': 'slc_muid_rt'}
-      - chamb_ieta: {'type': 'chamb_ieta_rpc_aut'}
-      - cointype: {'type': 'logic', 'range': ['SLC_COMMON_COINTYPE_LEN - 1', 0]}
-      - posphi: {'type': 'unsigned', 'range': ['SLC_COMMON_POSPHI_LEN -1', 0]}
-      - phimod: {'type': 'logic', 'range': ['UCM_CDE2CVP_PHIMOD_LEN -1', 0]}
-      - specific: {'type': 'logic', 'range': ['SLC_SPECIFIC_LEN -1', 0]}
-      - data_valid: {'type': 'logic'}
-   - ucm_cde_vt: {'type': 'logic', 'range': ['ucm_cde_rt-1', 0]}
-   - ucm_cde_art: {'array': 'open', 'type': 'ucm_cde_rt'}
-   - ucm_cde_avt: {'array': 'open', 'type': 'ucm_cde_vt'}
-   - ucm_csw_control_rt:
-      - data_present: {'type': 'logic'}
-      - addr_dest: {'type': 'logic', 'range': ['4-1', 0]}
-   - ucm_csw_control_vt: {'type': 'logic', 'range': ['ucm_csw_control_rt-1', 0]}
-   - ucm_csw_control_art: {'array': 'open', 'type': 'ucm_csw_control_rt'}
-   - ucm_csw_control_avt: {'array': 'open', 'type': 'ucm_csw_control_vt'}
-   - ucm_pam_control_rt:
-      - data_present: {'type': 'logic'}
-      - addr_dest: {'type': 'logic', 'range': ['4-1', 0]}
-   - ucm_pam_control_vt: {'type': 'logic', 'range': ['ucm_pam_control_rt-1', 0]}
-   - ucm_pam_control_art: {'array': 'open', 'type': 'ucm_pam_control_rt'}
-   - ucm_pam_control_avt: {'array': 'open', 'type': 'ucm_pam_control_vt'}
-   - ucm_proc_info_rt:
-      - ch: {'type': 'logic', 'range': ['4-1', 0]}
-      - processed: {'type': 'logic'}
-      - dv: {'type': 'logic'}
-   - ucm_proc_info_vt: {'type': 'logic', 'range': ['ucm_proc_info_rt-1', 0]}
-   - ucm_proc_info_art: {'array': 'open', 'type': 'ucm_proc_info_rt'}
-   - ucm_proc_info_avt: {'array': 'open', 'type': 'ucm_proc_info_vt'}
+  - SLC_SPECIFIC_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 48}
+  - UCM_CDE2CVP_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 7}
+  - UCM_CDE2CVP_PHIMOD_MULT: {'qualifier': 'constant', 'type': 'real', 'value': 64.0}
+#  - UCM_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 5}
+  - ucm_prepro2ctrl_rt:
+    - data_valid: {'type': 'logic'}
+    - poseta: {'type': 'signed', 'range': ['SL2MDT_SLC_COMMON_POSETA_LEN-1', 0]}
+  - ucm_prepro2ctrl_vt: {'type': 'logic', 'range': ['ucm_prepro2ctrl_rt-1', 0]}
+  - ucm_prepro2ctrl_art: {'array': 'open', 'type': 'ucm_prepro2ctrl_rt'}
+  - ucm_prepro2ctrl_avt: {'array': 'open', 'type': 'ucm_prepro2ctrl_vt'}
+  - ucm_rpc_lt: {'type': 'logic', 'range': ['SLC_Z_RPC_LEN -1', 0]}
+  - ucm_rpc_r_alt: {'array': 'open', 'type': 'ucm_rpc_lt'}
+  - ucm_mdt_lt: {'type': 'logic', 'range': ['UCM_R_MDT_LEN -1', 0]}
+  - ucm_mdt_r_alt: {'array': 'open', 'type': 'ucm_mdt_lt'}
+  - chamb_ieta_rpc_ut: {'type': 'unsigned', 'range': ['4-1', 0]}
+  - chamb_ieta_rpc_aut: {'array': ['4-1', 0], 'type': 'chamb_ieta_rpc_ut'}
+  - ucm_cde_rt:
+    - muid: {'type': 'slc_muid_rt'}
+    # - chamb_ieta: {'type': 'chamb_ieta_rpc_aut'}
+    - cointype: {'type': 'logic', 'range': ['SLC_COMMON_COINTYPE_LEN - 1', 0]}
+    # - posphi: {'type': 'unsigned', 'range': ['SLC_COMMON_POSPHI_LEN -1', 0]}
+    - phimod: {'type': 'logic', 'range': ['UCM_CDE2CVP_PHIMOD_LEN -1', 0]}
+    - specific: {'type': 'logic', 'range': ['SLC_SPECIFIC_LEN -1', 0]}
+    - data_valid: {'type': 'logic'}
+  - ucm_cde_vt: {'type': 'logic', 'range': ['ucm_cde_rt-1', 0]}
+  - ucm_cde_art: {'array': 'open', 'type': 'ucm_cde_rt'}
+  - ucm_cde_avt: {'array': 'open', 'type': 'ucm_cde_vt'}
+  - ucm_cde2pl_rt:
+    - data_valid:  {'type' : 'logic'}
+    # - busy:  {'type' : 'logic'}
+    # - process_ch:  {'type' : 'logic' , 'range' : ['UCM2PL_PROCESS_CH_LEN-1', 0]}
+    - common:  {'type' : 'slc_common_rt'}
+    - phimod:  {'type' : 'signed' , 'range' : ['UCM2PL_PHIMOD_LEN-1', 0]}
+    - nswseg_angdtheta:  {'type' : 'signed' , 'range' : ['SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN-1', 0]}
+    - nswseg_posphi:  {'type' : 'unsigned' , 'range' : ['SLC_ENDCAP_NSWSEG_POSPHI_LEN-1', 0]}
+    - nswseg_poseta:  {'type' : 'unsigned' , 'range' : ['SLC_ENDCAP_NSWSEG_POSETA_LEN-1', 0]}
+  - ucm_cde2pl_vt: {'type': 'logic', 'range': ['ucm_cde2pl_rt-1', 0]}
+  - ucm_cde2pl_art: {'array': 'open', 'type': 'ucm_cde2pl_rt'}
+  - ucm_cde2pl_avt: {'array': 'open', 'type': 'ucm_cde2pl_vt'}
+  - ucm_csw_control_rt:
+    - data_present: {'type': 'logic'}
+    - addr_dest: {'type': 'logic', 'range': ['4-1', 0]}
+  - ucm_csw_control_vt: {'type': 'logic', 'range': ['ucm_csw_control_rt-1', 0]}
+  - ucm_csw_control_art: {'array': 'open', 'type': 'ucm_csw_control_rt'}
+  - ucm_csw_control_avt: {'array': 'open', 'type': 'ucm_csw_control_vt'}
+  - ucm_pam_control_rt:
+    - data_present: {'type': 'logic'}
+    - addr_dest: {'type': 'logic', 'range': ['4-1', 0]}
+  - ucm_pam_control_vt: {'type': 'logic', 'range': ['ucm_pam_control_rt-1', 0]}
+  - ucm_pam_control_art: {'array': 'open', 'type': 'ucm_pam_control_rt'}
+  - ucm_pam_control_avt: {'array': 'open', 'type': 'ucm_pam_control_vt'}
+  - ucm_proc_info_rt:
+    - ch: {'type': 'logic', 'range': ['4-1', 0]}
+    - processed: {'type': 'logic'}
+    - dv: {'type': 'logic'}
+  - ucm_proc_info_vt: {'type': 'logic', 'range': ['ucm_proc_info_rt-1', 0]}
+  - ucm_proc_info_art: {'array': 'open', 'type': 'ucm_proc_info_rt'}
+  - ucm_proc_info_avt: {'array': 'open', 'type': 'ucm_proc_info_vt'}

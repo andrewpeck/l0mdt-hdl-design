@@ -152,7 +152,7 @@ package config_pkg is
   -- constant c_TAR_VERSION            : string := CFG.VERSION_TAR;
 
   constant c_UCM_ENABLED            : std_logic := CFG.ENABLE_UCM;
-  constant c_UCM_VERSION            : string := "1.2";--CFG.VERSION_UCM;
+  -- constant c_UCM_VERSION            : string := "1.2";--CFG.VERSION_UCM;
 
   constant c_H2S_ENABLED            : std_logic := CFG.ENABLE_H2S;
   -- constant c_HPS_VERSION            : string := CFG.VERSION_HPS;

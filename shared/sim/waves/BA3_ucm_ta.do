@@ -104,171 +104,75 @@ add wave -noupdate -group ucm_tb /ucm_tb/slc_file_ts
 add wave -noupdate -group ucm_tb /ucm_tb/slc_event_ai
 add wave -noupdate -group ucm_tb /ucm_tb/files_str
 add wave -noupdate -group ucm_tb /ucm_tb/reset_init_cycles
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/clk
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/rst
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/glob_en
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/ttc_commands
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/ctrl_v
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/mon_v
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/ctrl_r
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/mon_r
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/super_ctrl_r
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/super_mon_r
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/super_ctrl_v
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/super_mon_v
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/r_phi_comp_ctrl_r
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/r_phi_comp_ctrl_v
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/r_phi_comp_mon_r
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/r_phi_comp_mon_av
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/r_phi_comp_mon_null
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/rpc_R_mon_r
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/rpc_R_mon_v
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/rpc_mon_a
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/rpc_mon_av
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/rpc_mon_null
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/mdt_R_mon_r
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/mdt_R_mon_v
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/mdt_mon_a
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/mdt_mon_av
-add wave -noupdate -group UCM_top -group c&m /ucm_tb/UCM_DUT/UCM_VER/UCM/mdt_mon_null
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/i_slc_data_mainA_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/i_slc_data_mainB_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/i_slc_data_neighborA_v
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/i_slc_data_neighborB_v
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/local_en
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/local_rst
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/i_slc_data_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/prepro2ctrl_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/csw_main_in_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/csw_ctrl_dv
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/csw_main_out_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/csw_main_out_dv
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/slc_endcap_ar
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/cpam_in_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/cpam_out_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/csw_control_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/pam_CSW_control
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/proc_info_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/cvp_in_en
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/cvp_loc_rst
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/uCM2hps_data
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/cde_chamber_z_org_bus
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/cvp_chamber_z_org_bus
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/phicenter
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/aux_uCM2hps_inn_r
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2hps_inn_ar
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2hps_mid_ar
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2hps_out_ar
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2hps_ext_ar
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2tar_inn_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2tar_mid_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2tar_out_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2tar_ext_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2hps_inn_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2hps_mid_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2hps_out_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2hps_ext_av
-add wave -noupdate -group UCM_top /ucm_tb/UCM_DUT/UCM_VER/UCM/o_uCM2pl_av
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/g_NUM_RPC_LAYERS
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/g_NUM_MDT_LAYERS
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/g_INPUT_RESOLUTION
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/g_OUTPUT_RESOLUTION
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/g_OUTPUT_WIDTH
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/g_DIV_IP_R2_EN
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/g_DIV_VU_EN
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/g_DIV_SEL
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/g_DATA_SET_VERSION
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/g_SLOPE_DIV_IPR2_ENABLE
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/g_off_DIV_IPR2_ENABLE
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/clk
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/rst
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/ena
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_cointype
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_Z_a
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_data_valid
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_R_a
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_rpc_R_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_mdt_R_a
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/i_mdt_R_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_offset
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_offset_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_slope
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_slope_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_vec_z_pos
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/o_vec_z_pos_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/num_h_i
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/rpc_Z_a
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/rpc_R_a
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/set_data_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xy
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xy_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/mult_xx_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x_pl1
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_x_pl1_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y_pl1
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_y_pl1_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xy
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xy_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xx
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sum_xx_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSx
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSx_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxx
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxx_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_c
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_c_red
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_c_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/pl_param_c_red
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/pl_param_c_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxxSy
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxxSy_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSxy
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSxy_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_b
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_b_red
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_b_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/plz_param_b
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/plz_param_b_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxy
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/nSxy_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSy
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/SxSy_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a_red
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a_red_pl1
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a_pl_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_a_sc
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_den_sc
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_sc
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tvalid
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tdata
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tdata_q
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dout_tdata_r
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/slope_div_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/param_b_sc
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_den_sc
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_sc
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tvalid
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tdata
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tdata_q
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dout_tdata_r
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/off_div_dv
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/pl_mdt_R_a
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/vec_z_pos_dv_a
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/sig_SLC_Z_RPC_LEN
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/scale_slope_nom
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/scale_off_nom
-add wave -noupdate /ucm_tb/UCM_DUT/UCM_VER/UCM/SLC_VP_A(2)/SLC_VP/BARREL/PARAM_CALC/scale_Z_nom
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/clk
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/rst
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/glob_en
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/ttc_commands
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/ctrl_v
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/mon_v
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/i_slc_data_mainA_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/i_slc_data_mainB_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/i_slc_data_neighborA_v
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/i_slc_data_neighborB_v
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2tar_inn_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2tar_mid_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2tar_out_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2tar_ext_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2hps_inn_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2hps_mid_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2hps_out_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2hps_ext_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2pl_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/ctrl_r
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/mon_r
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/super_ctrl_r
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/super_mon_r
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/super_ctrl_v
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/super_mon_v
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/r_phi_comp_ctrl_r
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/r_phi_comp_ctrl_v
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/r_phi_comp_mon_r
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/r_phi_comp_mon_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/r_phi_comp_mon_null
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/rpc_R_mon_r
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/rpc_R_mon_v
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/rpc_mon_a
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/rpc_mon_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/rpc_mon_null
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/mdt_R_mon_r
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/mdt_R_mon_v
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/mdt_mon_a
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/mdt_mon_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/mdt_mon_null
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/local_en
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/local_rst
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/i_slc_data_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/prepro2ctrl_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/csw_main_in_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/csw_ctrl_dv
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/csw_main_out_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/csw_main_out_dv
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/slc_endcap_ar
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/cpam_in_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/cpam_out_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/csw_control_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/pam_CSW_control
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/proc_info_av
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/cvp_in_en
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/cvp_loc_rst
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/uCM2hps_data
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/cde_chamber_z_org_bus
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/cvp_chamber_z_org_bus
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/phicenter
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/aux_uCM2hps_inn_r
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2hps_inn_ar
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2hps_mid_ar
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2hps_out_ar
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2hps_ext_ar
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/o_uCM2pl_ar
+add wave -noupdate -expand -group UCM_DUT /ucm_tb/UCM_DUT/int_uCM2pl_av
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {9935182152 fs} 0}
+WaveRestoreCursors {{Cursor 1} {2072986577 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 185
 configure wave -valuecolwidth 170
@@ -284,4 +188,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {9927615866 fs} {10003809692 fs}
+WaveRestoreZoom {0 fs} {10500 ns}
