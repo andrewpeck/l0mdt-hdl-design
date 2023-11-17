@@ -79,10 +79,10 @@ entity top_hal is
     --------------------------------------------------------------------------------
 
     -- TDC hits from CSM
-    tdc_hits_inner  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
-    tdc_hits_middle : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
-    tdc_hits_outer  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
-    tdc_hits_extra  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
+    --- tdc_hits_inner  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+    --- tdc_hits_middle : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+    --- tdc_hits_outer  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+    --- tdc_hits_extra  : out tdcpolmux2tar_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- SLC
@@ -732,18 +732,18 @@ begin  -- architecture behavioral
           tdc_hits_o     => tdc_hits_o
           );
 
-      inner : if (STATION = 0) generate
-        tdc_hits_inner(POLMUX) <= tdc_hits_o;
-      end generate;
-      middle : if (STATION = 1) generate
-        tdc_hits_middle (POLMUX) <= tdc_hits_o;
-      end generate;
-      outer : if (STATION = 2) generate
-        tdc_hits_outer (POLMUX) <= tdc_hits_o;
-      end generate;
-      extra : if (STATION = 3) generate
-        tdc_hits_extra(POLMUX) <= tdc_hits_o;
-      end generate;
+      --- inner : if (STATION = 0) generate
+      ---   tdc_hits_inner(POLMUX) <= tdc_hits_o;
+      --- end generate;
+      --- middle : if (STATION = 1) generate
+      ---   tdc_hits_middle (POLMUX) <= tdc_hits_o;
+      --- end generate;
+      --- outer : if (STATION = 2) generate
+      ---   tdc_hits_outer (POLMUX) <= tdc_hits_o;
+      --- end generate;
+      --- extra : if (STATION = 3) generate
+      ---   tdc_hits_extra(POLMUX) <= tdc_hits_o;
+      --- end generate;
 
     end generate;
 

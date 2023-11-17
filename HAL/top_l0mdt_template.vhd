@@ -405,10 +405,10 @@ begin
       axi_reset_n       => axi_reset_n,
       ttc_commands      => ttc_commands,
 
-      i_inn_tdc_hits_av => inner_tdc_hits,
-      i_mid_tdc_hits_av => middle_tdc_hits,
-      i_out_tdc_hits_av => outer_tdc_hits,
-      i_ext_tdc_hits_av => extra_tdc_hits,
+      --- i_inn_tdc_hits_av => inner_tdc_hits,
+      --- i_mid_tdc_hits_av => middle_tdc_hits,
+      --- i_out_tdc_hits_av => outer_tdc_hits,
+      --- i_ext_tdc_hits_av => extra_tdc_hits,
 
       i_plus_neighbor_segments     => plus_neighbor_segments_i,
       i_minus_neighbor_segments    => minus_neighbor_segments_i,
