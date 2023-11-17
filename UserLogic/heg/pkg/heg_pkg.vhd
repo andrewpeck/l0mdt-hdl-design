@@ -36,7 +36,7 @@ package heg_pkg is
    subtype heg_roi_center_ut is unsigned(MDT_TUBE_LEN - 1 downto 0);
    attribute w of heg_roi_center_ut : subtype is 9;
 
-   type heg_roi_center_aut is array(integer range <>) of heg_roi_center_ut(MDT_TUBE_LEN - 1 downto 0);
+   type heg_roi_center_aut is array(integer range <>) of heg_roi_center_ut;
    function width(x: heg_roi_center_aut) return integer;
    function convert(x: heg_roi_center_aut; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: heg_roi_center_aut) return heg_roi_center_aut;

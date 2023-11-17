@@ -64,7 +64,7 @@ package ucm_pkg is
    subtype chamb_ieta_rpc_ut is unsigned(4-1 downto 0);
    attribute w of chamb_ieta_rpc_ut : subtype is 4;
 
-   type chamb_ieta_rpc_aut is array(4-1 downto 0) of chamb_ieta_rpc_ut(4-1 downto 0);
+   type chamb_ieta_rpc_aut is array(4-1 downto 0) of chamb_ieta_rpc_ut;
    attribute w of chamb_ieta_rpc_aut : type is 16;
    function width(x: chamb_ieta_rpc_aut) return integer;
    function convert(x: chamb_ieta_rpc_aut; tpl: std_logic_vector) return std_logic_vector;
