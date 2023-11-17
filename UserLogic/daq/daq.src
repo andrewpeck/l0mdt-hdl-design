@@ -2,7 +2,7 @@ UserLogic/daq/daq_core.src lib=daq_core
 
 UserLogic/daq/daq_fifo.vhd
 UserLogic/daq/daq_fifo_pipeline.vhd
-UserLogic/daq/daq-station.vhd
+UserLogic/daq/daq_station.vhd
 
 # UserLogic/daq/daq_data_path.vhd
 # UserLogic/daq/daq_trigger_path.vhd
