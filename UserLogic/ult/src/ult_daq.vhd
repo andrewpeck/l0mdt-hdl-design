@@ -85,9 +85,9 @@ begin
     ctrl_r <= convert(ctrl_v, ctrl_r);
     mon_v <= convert( mon_r,  mon_v);
 
-    process(i_clk)
+    process(clock_and_control.clk)
     begin
-      if rising_edge(i_clk) then
+      if rising_edge(clock_and_control.clk) then
         if ctrl_r.action.wr_en = '1' then
           ctrl_opening_offset <= unsigned(ctrl_r.wr0.opening_offset);
           ctrl_request_offset <= unsigned(ctrl_r.wr0.request_offset);
@@ -121,19 +121,21 @@ begin
                 i_ctrl_window_timeout => ctrl_window_timeout  , -- : in  unsigned(11 downto 0);   
                 i_ctrl_busy_threshold => ctrl_busy_threshold  , -- : in  unsigned(11 downto 0);   
                 ----------------------------------------------------------------------
-                i_flags             => i_flags            , -- : in  std_logic_vector(6 downto 0);
-                i_ec                => i_ec               , -- : in  std_logic;
-                i_sector_id         => i_sector_id        , -- : in  std_logic_vector(3 downto 0);
-                i_frag_id           => i_frag_id          , -- : in  std_logic_vector(3 downto 0);
-                ----------------------------------------  ------------------------------
-                i_inn_tdc_hits_av   => i_inn_tdc_hits_av  , -- : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_INN-1 downto 0);
-                i_mid_tdc_hits_av   => i_mid_tdc_hits_av  , -- : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID-1 downto 0);
-                i_out_tdc_hits_av   => i_out_tdc_hits_av  , -- : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_OUT-1 downto 0);
-                i_ext_tdc_hits_av   => i_ext_tdc_hits_av  , -- : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT-1 downto 0);
+                o_busy                => busy                 , -- : in  std_logic;
                 ----------------------------------------------------------------------
-                o_daq_stream_data_v => o_daq_stream_data_v, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
-                o_daq_stream_ctrl_v => o_daq_stream_ctrl_v, -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
-                o_daq_stream_wren_v => o_daq_stream_wren_v, -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0));
+                i_flags             => i_flags                , -- : in  std_logic_vector(6 downto 0);
+                i_ec                => i_ec                   , -- : in  std_logic;
+                i_sector_id         => i_sector_id            , -- : in  std_logic_vector(3 downto 0);
+                i_frag_id           => i_frag_id              , -- : in  std_logic_vector(3 downto 0);
+                ----------------------------------------  ------------------------------
+                i_inn_tdc_hits_av   => i_inn_tdc_hits_av      , -- : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_INN-1 downto 0);
+                i_mid_tdc_hits_av   => i_mid_tdc_hits_av      , -- : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_MID-1 downto 0);
+                i_out_tdc_hits_av   => i_out_tdc_hits_av      , -- : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+                i_ext_tdc_hits_av   => i_ext_tdc_hits_av      , -- : in  tdcpolmux2tar_avt(c_HPS_NUM_MDT_CH_EXT-1 downto 0);
+                ----------------------------------------------------------------------
+                o_daq_stream_data_v => o_daq_stream_data_v    , -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)(31 downto 0);
+                o_daq_stream_ctrl_v => o_daq_stream_ctrl_v    , -- : out std_logic_vector_array(c_DAQ_LINKS-1 downto 0)( 1 downto 0);
+                o_daq_stream_wren_v => o_daq_stream_wren_v    ); -- : out std_logic_vector(c_DAQ_LINKS-1 downto 0));
 
   end generate DAQ_GEN;
 

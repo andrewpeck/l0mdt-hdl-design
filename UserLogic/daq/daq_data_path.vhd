@@ -34,6 +34,8 @@ entity daq_data_path is
         i_ctrl_window_timeout : in  unsigned(11 downto 0);
         i_ctrl_busy_threshold : in  unsigned( 7 downto 0);
         ----------------------------------------------------------------------
+        o_busy : out std_logic;
+        ----------------------------------------------------------------------
         i_flags           : in  std_logic_vector(6 downto 0);
         i_ec              : in  std_logic;
         i_sector_id       : in  std_logic_vector(3 downto 0);
@@ -145,6 +147,8 @@ architecture behavioral of daq_data_path is
 
 begin
 
+  o_busy <= or(busy)
+            
   (wm_inner_usr_hdr, wm_middle_usr_hdr, wm_outer_usr_hdr, wm_extra_usr_hdr) <= wm_user_header;
 
   req_input_sys_hdr <= "00"
