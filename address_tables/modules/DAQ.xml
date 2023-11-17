@@ -17,17 +17,17 @@
   <node id="wr2" address="0x00000003">
     <node id="ctrl_bcid_offset" mask="0x00000FFF" permission="rw"/>
   </node>
-  <node id="rd0" address="0x00000003">
+  <node id="rd0" address="0x00000004">
     <!-- 12-bit registers --> 
     <node id="opening_offset" mask="0x00000FFF" permission="r"/>
     <node id="request_offset" mask="0x00FFF000" permission="r"/>
   </node>
-  <node id="rd1" address="0x00000004">
+  <node id="rd1" address="0x00000005">
     <node id="closing_offset" mask="0x00000FFF" permission="r"/>
     <node id="window_timeout" mask="0x00FFF000" permission="r"/>
     <node id="busy_threshold" mask="0xFF000000" permission="r"/>
   </node>
-  <node id="status" address="0x00000005">
+  <node id="status" address="0x00000006">
     <node id="busy" mask="0x1" permission="r"/>    
   </node>
 </node>

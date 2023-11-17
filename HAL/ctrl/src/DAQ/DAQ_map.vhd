@@ -44,19 +44,19 @@ architecture behavioral of DAQ_map is
 
   
   
-  signal reg_data :  slv32_array_t(integer range 0 to 5);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 5) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 6);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 6) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  assert ((4*5) <= ALLOCATED_MEMORY_RANGE)
-    report "DAQ: Regmap addressing range " & integer'image(4*5) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*6) <= ALLOCATED_MEMORY_RANGE)
+    report "DAQ: Regmap addressing range " & integer'image(4*6) & " is outside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity ERROR;
-  assert ((4*5) > ALLOCATED_MEMORY_RANGE)
-    report "DAQ: Regmap addressing range " & integer'image(4*5) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
+  assert ((4*6) > ALLOCATED_MEMORY_RANGE)
+    report "DAQ: Regmap addressing range " & integer'image(4*6) & " is inside of AXI mapped range " & integer'image(ALLOCATED_MEMORY_RANGE)
   severity NOTE;
 
   AXIRegBridge : entity work.axiLiteRegBlocking
@@ -118,13 +118,14 @@ begin  -- architecture behavioral
           localRdData(31 downto 24)  <=  reg_data( 2)(31 downto 24);      --
         when 3 => --0x3
           localRdData(11 downto  0)  <=  reg_data( 3)(11 downto  0);      --
+        when 4 => --0x4
           localRdData(11 downto  0)  <=  Mon.rd0.opening_offset;          --
           localRdData(23 downto 12)  <=  Mon.rd0.request_offset;          --
-        when 4 => --0x4
+        when 5 => --0x5
           localRdData(11 downto  0)  <=  Mon.rd1.closing_offset;          --
           localRdData(23 downto 12)  <=  Mon.rd1.window_timeout;          --
           localRdData(31 downto 24)  <=  Mon.rd1.busy_threshold;          --
-        when 5 => --0x5
+        when 6 => --0x6
           localRdData( 0)            <=  Mon.status.busy;                 --
 
 
