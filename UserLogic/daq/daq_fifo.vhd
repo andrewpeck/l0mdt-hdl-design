@@ -35,19 +35,37 @@ architecture V1 of daq_fifo is
   -- signal wr_count    : std_logic_vector(WRITE_DATA_COUNT_WIDTH-1 downto 0);
   signal wr_rst_busy : std_logic;
   signal rd_en       : std_logic;
-  signal rst         : std_logic;
   signal wr_en       : std_logic;
 
   signal empty_d1 : std_logic;
 
+  signal cntr : integer := 0;
+
 begin
 
-  wr_en <= i_src_wr_strb when rst = '0' and wr_rst_busy = '0' else '0';
+  wr_en <= i_src_wr_strb when i_sys_rst = '0' and wr_rst_busy = '0' else '0';
 
-  rd_en <= i_dst_rd_strb when rst = '0' and rd_rst_busy = '0' else '0';
+  rd_en <= i_dst_rd_strb when i_sys_rst = '0' and rd_rst_busy = '0' else '0';
   
-  o_dst_nempty <= '1' when empty = '0' and rd_rst_busy = '0' else '0';
+  -- o_dst_nempty <= '1' when empty = '0' and rd_rst_busy = '0' else '0';
+  o_dst_nempty <= '1' when empty = '0' and cntr > 0 else '0';
+  
+  process (i_sys_clk_fast)
+  begin
+    if rising_edge(i_sys_clk_fast) then
+      if i_sys_rst = '1' then
+        cntr <= 0;
+      else
+        if wr_en = '1' then
+          cntr <= cntr + 1;
+        elsif rd_en = '1' and cntr > 0 then
+          cntr <= cntr - 1;
+        end if;
+      end if;
+    end if;
+  end process;
 
+  
   -- o_dst_wr_count(WRITE_DATA_COUNT_WIDTH-1 downto 0) <= wr_count(WRITE_DATA_COUNT_WIDTH-1 downto 0);
 
   -----------------------------------------
@@ -94,8 +112,8 @@ begin
       din           => i_src_payload,
       injectdbiterr => '0',
       injectsbiterr => '0',
-      rd_en         => i_dst_rd_strb,
-      rst           => rst,
+      rd_en         => rd_en,
+      rst           => i_sys_rst,
       sleep         => '0',
       wr_clk        => i_sys_clk_fast,
       wr_en         => wr_en);

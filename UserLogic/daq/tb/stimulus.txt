@@ -1,0 +1,7 @@
+# this is a file test
+# in the future, it will become a link to the actual file used as stimulus.
+# opening_offset request_offset closing_offset window_timeout busy_threshold
+12 10 8 20 32 
+# lhc_time inn_tdc_hits mid_tdc_hits out_tdc_hits ext_tdc_hits
+10000000 1 2 3 4
+20000000 5 6 7 8
