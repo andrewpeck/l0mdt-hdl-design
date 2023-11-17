@@ -97,7 +97,7 @@ begin
           ctrl_closing_offset   <= unsigned(ctrl_r.wr1.closing_offset);
           ctrl_window_timeout   <= unsigned(ctrl_r.wr1.window_timeout);
           ctrl_busy_threshold   <= unsigned(ctrl_r.wr1.busy_threshold);
-          ctrl_ctrl_bcid_offset <= unsigned(ctrl_r.wr2.ctrl_bcid_offset);
+          ctrl_bcid_offset <= unsigned(ctrl_r.wr2.ctrl_bcid_offset);
         end if; -- wr en
         mon_r.rd0.opening_offset <= std_logic_vector(ctrl_opening_offset);
         mon_r.rd0.request_offset <= std_logic_vector(ctrl_request_offset);
