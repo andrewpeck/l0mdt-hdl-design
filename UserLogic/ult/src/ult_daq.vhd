@@ -109,7 +109,7 @@ begin
     end process;
 
 
-    u_daq_data_path : entity daq_data_path
+    u_daq_data_path : entity daq.daq_data_path
       port map (i_clk                 => clock_and_control.clk, -- : in  std_logic;                   
                 i_rst                 => clock_and_control.rst, -- : in  std_logic;                   
                 i_bx                  => clock_and_control.bx , -- : in  std_logic;                   
