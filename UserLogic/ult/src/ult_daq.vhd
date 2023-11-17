@@ -110,6 +110,11 @@ begin
 
 
     u_daq_data_path : entity daq_lib.daq_data_path
+      generic map (g_DAQ_LINKS     => c_DAQ_LINKS    , -- : integer;
+                   g_DAQ_INN_LINKS => c_DAQ_INN_LINKS, -- : integer;
+                   g_DAQ_MID_LINKS => c_DAQ_MID_LINKS, -- : integer;
+                   g_DAQ_OUT_LINKS => c_DAQ_OUT_LINKS, -- : integer;
+                   g_DAQ_EXT_LINKS => c_DAQ_EXT_LINKS) -- : integer)
       port map (i_clk                 => clock_and_control.clk, -- : in  std_logic;                   
                 i_rst                 => clock_and_control.rst, -- : in  std_logic;                   
                 i_bx                  => clock_and_control.bx , -- : in  std_logic;                   
