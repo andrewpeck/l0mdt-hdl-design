@@ -23,7 +23,7 @@ entity daq_data_path is
         i_rst             : in  std_logic;
         i_bx              : in  std_logic;
         ----------------------------------------------------------------------
-        i_orid            : in  std_logic_vector(1 downto 0);
+        i_orid            : in  unsigned(1 downto 0);
         i_l0a             : in  std_logic;
         i_ecr             : in  std_logic;
         i_bcid            : in  unsigned(11 downto 0);
