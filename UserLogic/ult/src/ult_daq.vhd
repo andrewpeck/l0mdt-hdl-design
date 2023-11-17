@@ -120,7 +120,7 @@ begin
                 i_bx                  => clock_and_control.bx , -- : in  std_logic;                   
                 -----------------------------------------------------
                 i_orid                => ttc_commands.orid    , -- : in  std_logic_vector(1 downto 0);
-                i_l1a                 => ttc_commands.l1a     , -- : in  std_logic;                   
+                i_l0a                 => ttc_commands.l0a     , -- : in  std_logic;                   
                 i_ecr                 => ttc_commands.ecr     , -- : in  std_logic;                   
                 i_bcid                => ttc_commands.bcid    , -- : in  unsigned(11 downto 0);       
                 -----------------------------------------------------
