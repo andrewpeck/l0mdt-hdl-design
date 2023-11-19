@@ -42,10 +42,10 @@ entity daq_data_path is
         i_sector_id       : in  std_logic_vector(3 downto 0);
         i_frag_id         : in  std_logic_vector(3 downto 0);
         ----------------------------------------------------------------------
-        i_inn_tdc_hits_av : in  std_logic_vector_array;
-        i_mid_tdc_hits_av : in  std_logic_vector_array;
-        i_out_tdc_hits_av : in  std_logic_vector_array;
-        i_ext_tdc_hits_av : in  std_logic_vector_array;
+        i_inn_tdc_hits_av : in  tdcpolmux2tar_avt;
+        i_mid_tdc_hits_av : in  tdcpolmux2tar_avt;
+        i_out_tdc_hits_av : in  tdcpolmux2tar_avt;
+        i_ext_tdc_hits_av : in  tdcpolmux2tar_avt;
         ----------------------------------------------------------------------
         o_daq_stream_data_v : out std_logic_vector_array(g_DAQ_LINKS-1 downto 0)(31 downto 0);
         o_daq_stream_ctrl_v : out std_logic_vector_array(g_DAQ_LINKS-1 downto 0)( 1 downto 0);
@@ -53,6 +53,11 @@ entity daq_data_path is
 end entity daq_data_path;
 
 architecture behavioral of daq_data_path is
+  
+  signal inn_tdc_hits_av : std_logic_vector_array(i_inn_tdc_hits_av'range)(i_inn_tdc_hits_av'range(1));
+  signal mid_tdc_hits_av : std_logic_vector_array(i_mid_tdc_hits_av'range)(i_mid_tdc_hits_av'range(1));
+  signal out_tdc_hits_av : std_logic_vector_array(i_out_tdc_hits_av'range)(i_out_tdc_hits_av'range(1));
+  signal ext_tdc_hits_av : std_logic_vector_array(i_ext_tdc_hits_av'range)(i_ext_tdc_hits_av'range(1));
 
   signal req_cnt : unsigned(11 downto 0);
 
@@ -196,6 +201,10 @@ begin
               o_wm_window_timeout => wm_window_timeout, -- : out unsigned(11 downto 0);x
               o_wm_busy_threshold => wm_busy_threshold); -- : out unsigned( 7 downto 0);x
 
+  inn_tdc_hits_av <= convert(i_inn_tdc_hits_av, inn_tdc_hits_av);
+  mid_tdc_hits_av <= convert(i_mid_tdc_hits_av, mid_tdc_hits_av);
+  out_tdc_hits_av <= convert(i_out_tdc_hits_av, out_tdc_hits_av);
+  ext_tdc_hits_av <= convert(i_ext_tdc_hits_av, ext_tdc_hits_av);
 
   GEN_INNER : if g_DAQ_INN_LINKS > 0 generate
     constant MAX : natural := g_DAQ_INN_LINKS;
@@ -237,7 +246,7 @@ begin
                 ------------------------------------------------------------------------------------
                 i_sys_hdr                         => wm_sys_hdr , -- : in  std_logic_vector := (31 downto 0 => '0');
                 i_station_usr_hdr                 => wm_inner_usr_hdr  , -- : in  std_logic_vector := (15 downto 0 => '0');
-                i_station_tdc_hits_av             => i_inn_tdc_hits_av , -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
+                i_station_tdc_hits_av             => inn_tdc_hits_av , -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
                 ---------------------------------------------------------------------------------------------------
                 i_station_flx_streams_hfull_bus   => flx_stream_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
                 o_station_flx_streams_wr_strb_bus => flx_stream_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);
@@ -289,7 +298,7 @@ begin
                 ---------------------------------------------------------------------------------------------------
                 i_sys_hdr                         => wm_sys_hdr                , -- : in  std_logic_vector := (31 downto 0 => '0');
                 i_station_usr_hdr                 => wm_middle_usr_hdr                 , -- : in  std_logic_vector := (15 downto 0 => '0');
-                i_station_tdc_hits_av             => i_mid_tdc_hits_av                , -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
+                i_station_tdc_hits_av             => mid_tdc_hits_av                , -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
                 ---------------------------------------------------------------------------------------------------
                 i_station_flx_streams_hfull_bus   => flx_stream_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
                 o_station_flx_streams_wr_strb_bus => flx_stream_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);
@@ -342,7 +351,7 @@ begin
                 ---------------------------------------------------------------------------------------------------
                 i_sys_hdr                         => wm_sys_hdr, -- : in  std_logic_vector := (31 downto 0 => '0');
                 i_station_usr_hdr                 => wm_outer_usr_hdr, -- : in  std_logic_vector := (15 downto 0 => '0');
-                i_station_tdc_hits_av             => i_out_tdc_hits_av, -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
+                i_station_tdc_hits_av             => out_tdc_hits_av, -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
                 ---------------------------------------------------------------------------------------------------
                 i_station_flx_streams_hfull_bus   => flx_stream_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
                 o_station_flx_streams_wr_strb_bus => flx_stream_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);
@@ -394,7 +403,7 @@ begin
                 ---------------------------------------------------------------------------------------------------
                 i_sys_hdr                         => wm_sys_hdr                , -- : in  std_logic_vector := (31 downto 0 => '0');
                 i_station_usr_hdr                 => wm_extra_usr_hdr                    , -- : in  std_logic_vector := (15 downto 0 => '0');
-                i_station_tdc_hits_av             => i_ext_tdc_hits_av                , -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
+                i_station_tdc_hits_av             => ext_tdc_hits_av                , -- : in  tdcpolmux2tar_avt := (5 downto 0 => (tdcpolmux2tar_vt'range => '0'));
                 ---------------------------------------------------------------------------------------------------
                 i_station_flx_streams_hfull_bus   => flx_stream_hfull_bus  , -- : in  std_logic_vector(0 to g_OUTPUT_LINKS-1);
                 o_station_flx_streams_wr_strb_bus => flx_stream_wr_strb_bus, -- : out std_logic_vector(0 to g_OUTPUT_LINKS-1);

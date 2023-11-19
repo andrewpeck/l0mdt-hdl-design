@@ -81,7 +81,7 @@ package body common_ieee_pkg is
       variable y : std_logic_vector(t'range);
    begin
       assign(y, x);
-      return y;
+      return x;
    end function convert;
 
    function convert(x: std_logic_vector_array; t: std_logic_vector_array) return std_logic_vector_array is
@@ -91,7 +91,7 @@ package body common_ieee_pkg is
 
    function convert(x: std_logic_vector_array; t: std_logic_vector) return std_logic_vector is
       variable y  : std_logic_vector(t'range);
-      constant ll : natural := x(x'low)'length;
+      constant ll : natural := x'length(1);
    begin
       for ii in x'range loop
          if y'ascending = true then
@@ -105,8 +105,8 @@ package body common_ieee_pkg is
 
 
    function convert(x: std_logic_vector; t: std_logic_vector_array) return std_logic_vector_array is
-      variable y  : std_logic_vector_array(t'range)(t(t'low)'range);
-      constant ll : natural := t(t'low)'length;
+      variable y  : std_logic_vector_array(t'range)(t'range(1));
+      constant ll : natural := t'length(1);
    begin
       for ii in t'range loop
          if x'ascending then
@@ -124,7 +124,7 @@ package body common_ieee_pkg is
       if x'low > x'high then
          return 0;
       else
-         return x(x'low)'length*x'length;
+         return x'length(1)*x'length;
       end if;
    end function width;
    function width(x: std_logic) return natural is

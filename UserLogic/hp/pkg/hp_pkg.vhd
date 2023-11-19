@@ -38,7 +38,13 @@ package hp_pkg is
    function convert(x: hp_win_tubes_art; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: hp_win_tubes_art) return hp_win_tubes_art;
 
-   subtype hp_win_tubes_avt is std_logic_vector_array(open)(hp_win_tubes_rt'w-1 downto 0);
+   type hp_win_tubes_avt is array(integer range <>) of hp_win_tubes_vt;
+   function width(x: hp_win_tubes_avt) return integer;
+   function convert(x: hp_win_tubes_avt; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: hp_win_tubes_avt) return hp_win_tubes_avt;
+   function zero(tpl: hp_win_tubes_avt) return hp_win_tubes_avt;
+   function convert(x: hp_win_tubes_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: hp_win_tubes_avt) return hp_win_tubes_avt;
 
    type hp_win_tubes_limits_rt is record
       hi : signed(MDT_TUBE_LEN-1 downto 0);
@@ -61,7 +67,13 @@ package hp_pkg is
    function convert(x: hp_win_tubes_limits_art; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: hp_win_tubes_limits_art) return hp_win_tubes_limits_art;
 
-   subtype hp_win_tubes_limits_avt is std_logic_vector_array(open)(hp_win_tubes_limits_rt'w-1 downto 0);
+   type hp_win_tubes_limits_avt is array(integer range <>) of hp_win_tubes_limits_vt;
+   function width(x: hp_win_tubes_limits_avt) return integer;
+   function convert(x: hp_win_tubes_limits_avt; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt;
+   function zero(tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt;
+   function convert(x: hp_win_tubes_limits_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt;
 
    type hp_heg2hp_slc_b_rt is record
       roi_z : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
@@ -98,7 +110,13 @@ package hp_pkg is
    function convert(x: hp_heg2hp_slc_art; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: hp_heg2hp_slc_art) return hp_heg2hp_slc_art;
 
-   subtype hp_heg2hp_slc_avt is std_logic_vector_array(open)(hp_heg2hp_slc_rt'w-1 downto 0);
+   type hp_heg2hp_slc_avt is array(integer range <>) of hp_heg2hp_slc_vt;
+   function width(x: hp_heg2hp_slc_avt) return integer;
+   function convert(x: hp_heg2hp_slc_avt; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt;
+   function zero(tpl: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt;
+   function convert(x: hp_heg2hp_slc_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt;
 
    type hp_hpsPc2hp_rt is record
       tube : unsigned(MDT_TUBE_LEN-1 downto 0);
@@ -140,7 +158,13 @@ package hp_pkg is
    function convert(x: hp_hp2sf_data_art; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: hp_hp2sf_data_art) return hp_hp2sf_data_art;
 
-   subtype hp_hp2sf_data_avt is std_logic_vector_array(open)(hp_hp2sf_data_rt'w-1 downto 0);
+   type hp_hp2sf_data_avt is array(integer range <>) of hp_hp2sf_data_vt;
+   function width(x: hp_hp2sf_data_avt) return integer;
+   function convert(x: hp_hp2sf_data_avt; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: hp_hp2sf_data_avt) return hp_hp2sf_data_avt;
+   function zero(tpl: hp_hp2sf_data_avt) return hp_hp2sf_data_avt;
+   function convert(x: hp_hp2sf_data_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: hp_hp2sf_data_avt) return hp_hp2sf_data_avt;
 
    type hp_hp2bm_rt is record
       data : hp_hp2sf_data_rt;
@@ -229,29 +253,26 @@ package body hp_pkg is
    end function zero;
 
    function width(x: hp_win_tubes_art) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: hp_win_tubes_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -261,18 +282,19 @@ package body hp_pkg is
    end function convert;
    function convert(x: std_logic_vector; tpl: hp_win_tubes_art) return hp_win_tubes_art is
       variable y : hp_win_tubes_art(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -285,7 +307,7 @@ package body hp_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_win_tubes_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
@@ -294,6 +316,77 @@ package body hp_pkg is
    end function convert;
    function convert(x: std_logic_vector_array; tpl: hp_win_tubes_art) return hp_win_tubes_art is
       variable y : hp_win_tubes_art(tpl'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
+   function width(x: hp_win_tubes_avt) return integer is
+      variable aux : x'element;
+      constant w : integer := width(aux);
+   begin
+      return x'length * w;
+   end function width;
+   function convert(x: hp_win_tubes_avt; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable aux : x'element;
+      constant W : natural := width(aux);
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in x'range loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in x'range loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: hp_win_tubes_avt) return hp_win_tubes_avt is
+      variable y : hp_win_tubes_avt(tpl'range);
+      variable aux : y'element;
+      constant W : natural := width(aux);
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in y'range loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in y'range loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: hp_win_tubes_avt) return hp_win_tubes_avt is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: hp_win_tubes_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: hp_win_tubes_avt) return hp_win_tubes_avt is
+      variable y : hp_win_tubes_avt(tpl'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -354,29 +447,26 @@ package body hp_pkg is
    end function zero;
 
    function width(x: hp_win_tubes_limits_art) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: hp_win_tubes_limits_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -386,18 +476,19 @@ package body hp_pkg is
    end function convert;
    function convert(x: std_logic_vector; tpl: hp_win_tubes_limits_art) return hp_win_tubes_limits_art is
       variable y : hp_win_tubes_limits_art(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -410,7 +501,7 @@ package body hp_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_win_tubes_limits_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
@@ -419,6 +510,77 @@ package body hp_pkg is
    end function convert;
    function convert(x: std_logic_vector_array; tpl: hp_win_tubes_limits_art) return hp_win_tubes_limits_art is
       variable y : hp_win_tubes_limits_art(tpl'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
+   function width(x: hp_win_tubes_limits_avt) return integer is
+      variable aux : x'element;
+      constant w : integer := width(aux);
+   begin
+      return x'length * w;
+   end function width;
+   function convert(x: hp_win_tubes_limits_avt; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable aux : x'element;
+      constant W : natural := width(aux);
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in x'range loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in x'range loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
+      variable y : hp_win_tubes_limits_avt(tpl'range);
+      variable aux : y'element;
+      constant W : natural := width(aux);
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in y'range loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in y'range loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: hp_win_tubes_limits_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
+      variable y : hp_win_tubes_limits_avt(tpl'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -544,29 +706,26 @@ package body hp_pkg is
    end function zero;
 
    function width(x: hp_heg2hp_slc_art) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: hp_heg2hp_slc_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -576,18 +735,19 @@ package body hp_pkg is
    end function convert;
    function convert(x: std_logic_vector; tpl: hp_heg2hp_slc_art) return hp_heg2hp_slc_art is
       variable y : hp_heg2hp_slc_art(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -600,7 +760,7 @@ package body hp_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_heg2hp_slc_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
@@ -609,6 +769,77 @@ package body hp_pkg is
    end function convert;
    function convert(x: std_logic_vector_array; tpl: hp_heg2hp_slc_art) return hp_heg2hp_slc_art is
       variable y : hp_heg2hp_slc_art(tpl'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
+   function width(x: hp_heg2hp_slc_avt) return integer is
+      variable aux : x'element;
+      constant w : integer := width(aux);
+   begin
+      return x'length * w;
+   end function width;
+   function convert(x: hp_heg2hp_slc_avt; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable aux : x'element;
+      constant W : natural := width(aux);
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in x'range loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in x'range loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt is
+      variable y : hp_heg2hp_slc_avt(tpl'range);
+      variable aux : y'element;
+      constant W : natural := width(aux);
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in y'range loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in y'range loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: hp_heg2hp_slc_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt is
+      variable y : hp_heg2hp_slc_avt(tpl'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -799,29 +1030,26 @@ package body hp_pkg is
    end function zero;
 
    function width(x: hp_hp2sf_data_art) return integer is
-      variable w : integer;
+      variable aux : x'element;
+      constant w : integer := width(aux);
    begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
+      return x'length * w;
    end function width;
    function convert(x: hp_hp2sf_data_art; tpl: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
+      variable aux : x'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if y'ascending then
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(b to a), convert(x(i+x'low), y(b to a)));
          end loop;
       else
-         for i in 0 to x'length-1 loop
+         for i in x'range loop
             a := W*i + y'low + W - 1;
             b := W*i + y'low;
             assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
@@ -831,18 +1059,19 @@ package body hp_pkg is
    end function convert;
    function convert(x: std_logic_vector; tpl: hp_hp2sf_data_art) return hp_hp2sf_data_art is
       variable y : hp_hp2sf_data_art(tpl'range);
-      constant W : natural := width(y(y'low));
+      variable aux : y'element;
+      constant W : natural := width(aux);
       variable a : integer;
       variable b : integer;
    begin
       if x'ascending then
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(b to a), y(i+y'low));
          end loop;
       else
-         for i in 0 to y'length-1 loop
+         for i in y'range loop
             a := W*i + x'low + W - 1;
             b := W*i + x'low;
             y(i+y'low) := convert(x(a downto b), y(i+y'low));
@@ -855,7 +1084,7 @@ package body hp_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_hp2sf_data_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+      variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
@@ -864,6 +1093,77 @@ package body hp_pkg is
    end function convert;
    function convert(x: std_logic_vector_array; tpl: hp_hp2sf_data_art) return hp_hp2sf_data_art is
       variable y : hp_hp2sf_data_art(tpl'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
+   function width(x: hp_hp2sf_data_avt) return integer is
+      variable aux : x'element;
+      constant w : integer := width(aux);
+   begin
+      return x'length * w;
+   end function width;
+   function convert(x: hp_hp2sf_data_avt; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      variable aux : x'element;
+      constant W : natural := width(aux);
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in x'range loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in x'range loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: hp_hp2sf_data_avt) return hp_hp2sf_data_avt is
+      variable y : hp_hp2sf_data_avt(tpl'range);
+      variable aux : y'element;
+      constant W : natural := width(aux);
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in y'range loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in y'range loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: hp_hp2sf_data_avt) return hp_hp2sf_data_avt is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: hp_hp2sf_data_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: hp_hp2sf_data_avt) return hp_hp2sf_data_avt is
+      variable y : hp_hp2sf_data_avt(tpl'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
