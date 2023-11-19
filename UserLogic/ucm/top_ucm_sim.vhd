@@ -28,6 +28,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
+use shared_lib.cfg_display_pkg.all;
 
 use shared_lib.l0mdt_sim_cstm_pkg.all;
 use shared_lib.vhdl_textio_csv_pkg.all;
@@ -125,6 +126,10 @@ architecture beh of ucm_tb is
   signal alias_slope_cvp : slope_art(c_NUM_ACCEPTS -1 downto 0);
 
 begin
+
+  -- display_gw_cfg(true);
+  report_cfg(true,true);
+
 
   UCM_DUT : entity ucm_lib.ucm
   port map(

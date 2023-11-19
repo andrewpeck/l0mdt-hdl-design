@@ -30,7 +30,7 @@ use ucm_lib.ucm_pkg.all;
 
 library  vamc_lib;
 
-entity ucm_ctrl_pam is
+entity ucm_ctrl_pam_main is
   generic(
     g_PAM_CTRL_PL : integer := 2;
     g_PAM_INFO_PL : integer := 2;
@@ -53,9 +53,9 @@ entity ucm_ctrl_pam is
     o_cvp_rst           : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
     o_cvp_ctrl          : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0)
   );
-end entity ucm_ctrl_pam;
+end entity ucm_ctrl_pam_main;
 
-architecture beh of ucm_ctrl_pam is
+architecture beh of ucm_ctrl_pam_main is
 
   signal int_pam_ctrl_ar    : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
   signal int_proc_info_ar   : ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0);

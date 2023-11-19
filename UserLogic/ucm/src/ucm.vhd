@@ -22,6 +22,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+-- use work.display_board_cfg_pkg.all;
+
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
@@ -29,6 +31,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.vhdl_tb_utils_pkg.all;
 
 use shared_lib.fct_barrel_chamb_z2origin_pkg.all;
  
@@ -117,13 +120,16 @@ architecture beh of ucm is
 
   -- signals
 
+  signal num_cand         : unsigned(3 downto 0);
+  signal pam_update       : std_logic;
+
   signal i_slc_data_av        : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
   --
   signal prepro2ctrl_av       : ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
   --
   -- signal ucm_prepro_av        : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
-  signal csw_main_in_av       : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal csw_main_in_av       : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csw_main_in_dv      : std_logic;
   signal csw_ctrl_dv      : std_logic;
   
@@ -182,6 +188,8 @@ architecture beh of ucm is
   
   signal int_uCM2pl_av : ucm_cde2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
+  signal condition : boolean := true;
+
 begin
 
   -- SC
@@ -196,13 +204,9 @@ begin
   super_ctrl_v <= convert(super_ctrl_r,super_ctrl_v);
   super_mon_r <= convert(super_mon_v,super_mon_r);
 
-
   r_phi_comp_ctrl_r <= ctrl_r.R_PHI_COMP;
   r_phi_comp_ctrl_v <= convert(r_phi_comp_ctrl_r,r_phi_comp_ctrl_v);
   
-
-
-
   mon_arrays: for th_i in 0 to c_NUM_ACCEPTS - 1 generate
     mdt_mon_av(th_i) <= convert(convert(r_phi_comp_mon_av(th_i),r_phi_comp_mon_r).mdt,mdt_mon_av(th_i));
     rpc_mon_av(th_i) <= convert(convert(r_phi_comp_mon_av(th_i),r_phi_comp_mon_r).rpc,rpc_mon_av(th_i));
@@ -238,7 +242,7 @@ begin
   UCM_SUPERVISOR : entity ucm_lib.ucm_supervisor
   port map(
     clk               => clk,
-    rst               => rst,
+    rst               => local_rst,
     glob_en           => glob_en,      
     -- AXI to SoC
     ctrl_v              => super_ctrl_v,
@@ -253,41 +257,55 @@ begin
   );
 
   --control
-  SLC_CTRL : entity ucm_lib.ucm_ctrl_top
+  SLC_CTRL : entity ucm_lib.ucm_ctrl_slc_top
   port map(
-    clk               => clk,
-    rst               => local_rst,
-    ena               => local_en,
+    clk           => clk,
+    rst           => local_rst,
+    ena           => local_en,
     --
-    i_prepro2ctrl_av  => prepro2ctrl_av,
+    i_slc_data_av => i_slc_data_av,
     --
-    o_csw_ctrl_av     => csw_control_av,
-    o_csw_ctrl_dv     => csw_ctrl_dv,
-    o_pam_ctrl        => pam_CSW_control,
-    -- o_proc_info       => proc_info_av,
-    o_proc_info_av    => proc_info_av,
+    o_num_cand    => num_cand,
+    o_pam_update  => pam_update,
     --
-    o_cvp_rst         => cvp_loc_rst,
-    o_cvp_ctrl        => cvp_in_en
-    -- o_pam2heg         => o_uCM2hps_pam_ar
+    o_data_av     => csw_main_out_av,
+    o_dv          => csw_main_out_dv
   );
+  -- SLC_CTRL : entity ucm_lib.ucm_ctrl_top
+  -- port map(
+  --   clk               => clk,
+  --   rst               => local_rst,
+  --   ena               => local_en,
+  --   --
+  --   i_prepro2ctrl_av  => prepro2ctrl_av,
+  --   --
+  --   o_csw_ctrl_av     => csw_control_av,
+  --   o_csw_ctrl_dv     => csw_ctrl_dv,
+  --   o_pam_ctrl        => pam_CSW_control,
+  --   -- o_proc_info       => proc_info_av,
+  --   o_proc_info_av    => proc_info_av,
+  --   --
+  --   o_cvp_rst         => cvp_loc_rst,
+  --   o_cvp_ctrl        => cvp_in_en
+  --   -- o_pam2heg         => o_uCM2hps_pam_ar
+  -- );
 
   --input pre processor
-  SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    SLC_PP : entity ucm_lib.ucm_prepro
-    generic map(
-      g_DELAY_CYCLES  => 2
-    )
-    port map(
-      clk               => clk,
-      rst               => local_rst,
-      ena               => local_en,
-      --                =>
-      i_slc_data_v      => i_slc_data_av(sl_i),
-      o_prepro2ctrl_v   => prepro2ctrl_av(sl_i),
-      o_prepro_data_v   => csw_main_in_av(sl_i)
-    );
-  end generate;
+  -- SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+  --   SLC_PP : entity ucm_lib.ucm_prepro
+  --   generic map(
+  --     g_DELAY_CYCLES  => 2
+  --   )
+  --   port map(
+  --     clk               => clk,
+  --     rst               => local_rst,
+  --     ena               => local_en,
+  --     --                =>
+  --     i_slc_data_v      => i_slc_data_av(sl_i),
+  --     o_prepro2ctrl_v   => prepro2ctrl_av(sl_i),
+  --     o_prepro_data_v   => csw_main_in_av(sl_i)
+  --   );
+  -- end generate;
 
   -- input pipelines
   -- SLC_IN_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
@@ -308,19 +326,19 @@ begin
 
   -- main cross switch
   -- csw_main_in_dv <= or_reduce(csw_control_av); 
-  SLC_CSW : entity ucm_lib.ucm_csw
-  port map(
-    clk         => clk,
-    rst         => local_rst,
-    glob_en     => local_en,
+  -- SLC_CSW : entity ucm_lib.ucm_csw_main
+  -- port map(
+  --   clk         => clk,
+  --   rst         => local_rst,
+  --   glob_en     => local_en,
     
-    i_control_av   => csw_control_av,
-    -- data
-    i_data_av   => csw_main_in_av,
-    i_dv        => csw_ctrl_dv,
-    o_data_av   => csw_main_out_av,
-    o_dv        => csw_main_out_dv
-  );
+  --   i_control_av   => csw_control_av,
+  --   -- data
+  --   i_data_av   => i_slc_data_av,--csw_main_in_av,
+  --   i_dv        => csw_ctrl_dv,
+  --   o_data_av   => csw_main_out_av,
+  --   o_dv        => csw_main_out_dv
+  -- );
 
 
   SLC_CDE_LOOP : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
@@ -377,17 +395,33 @@ begin
   end generate;
 
   -- PAM cross switch
-  SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw
+  SLC_PAM_CSW : entity ucm_lib.ucm_ctrl_pam_top
     port map(
-      clk         => clk,
-      rst         => local_rst,
-      glob_en     => local_en,
-      
-      i_control   => pam_CSW_control,
+      clk             => clk,
+      rst             => local_rst,
+      ena             => local_en,
+      --
+      i_num_cand      => num_cand,
+      i_pam_update    => pam_update,
+      --
+      o_proc_info_av  => proc_info_av,
+      o_cvp_rst         => cvp_loc_rst,
+      o_cvp_ctrl        => cvp_in_en,
       -- data
-      i_data      => cpam_in_av(c_MAX_NUM_SL - 1 downto c_MAX_NUM_SL -c_NUM_ACCEPTS),
-      o_data      => cpam_out_av
+      i_data          => cpam_in_av(c_MAX_NUM_SL - 1 downto c_MAX_NUM_SL -c_NUM_ACCEPTS),
+      o_data          => cpam_out_av
     );
+  -- SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw
+  --   port map(
+  --     clk         => clk,
+  --     rst         => local_rst,
+  --     glob_en     => local_en,
+      
+  --     i_control   => pam_CSW_control,
+  --     -- data
+  --     i_data      => cpam_in_av(c_MAX_NUM_SL - 1 downto c_MAX_NUM_SL -c_NUM_ACCEPTS),
+  --     o_data      => cpam_out_av
+  --   );
 
   OUT2TAR : entity ucm_lib.ucm_out2tar
     port map(

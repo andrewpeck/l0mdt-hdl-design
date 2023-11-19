@@ -98,6 +98,7 @@ package cfg_global_default_pkg is
     FPGA_EN_ST_EXT                : std_logic;
     -- number of parallel processing threads
     NUM_THREADS                   : integer;
+    NUM_SUBTHREADS                : integer;
     -- number of parallel candidates to process
     NUM_ACCEPTS                   : integer;
     -- MTC configuration based on links to primary, neighboring sectors
@@ -183,6 +184,7 @@ package cfg_global_default_pkg is
     FPGA_EN_ST_EXT                => '0',
     -- 
     NUM_THREADS                   => 3,   -- default 3
+    NUM_SUBTHREADS                => 7,   -- default 3
     NUM_ACCEPTS                   => 3,
     -- MTC configuration based on links to primary, neighboring sectors
     -- (barrel, endcap)

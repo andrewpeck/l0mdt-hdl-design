@@ -96,7 +96,8 @@ architecture beh of top_ucm is
 
 begin
 
-  report_cfg(true);
+  report_cfg(true, false);
+  -- display_gw_cfg(true);
 
   ctrl : entity shared_lib.vhdl_utils_deserializer 
   generic map (g_DATA_WIDTH => UCM_CTRL_t'w) 

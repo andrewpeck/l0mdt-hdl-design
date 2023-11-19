@@ -11,15 +11,21 @@ UserLogic/ucm/pkg/ucm_time_pkg.vhd
 # UserLogic/ucm/IPs/vu13/zcalc_vec_pos_div/zcalc_vec_pos_div.xci
 
 
-UserLogic/ucm/src/ucm_prepro.vhd
+# UserLogic/ucm/src/ucm_prepro.vhd
 
 UserLogic/ucm/src/ucm_supervisor.vhd
 UserLogic/ucm/src/ucm_ctrl_top.vhd
-UserLogic/ucm/src/ucm_ctrl_main.vhd
-UserLogic/ucm/src/ucm_ctrl_pam.vhd
 
-UserLogic/ucm/src/ucm_csw.vhd
-UserLogic/ucm/src/ucm_pam_csw.vhd
+UserLogic/ucm/src/ucm_ctrl_slc_top.vhd
+UserLogic/ucm/src/ucm_ctrl_slc_main.vhd
+UserLogic/ucm/src/ucm_ctrl_slc_csw.vhd
+
+UserLogic/ucm/src/ucm_ctrl_pam_top.vhd
+UserLogic/ucm/src/ucm_ctrl_pam_main.vhd
+UserLogic/ucm/src/ucm_ctrl_pam_csw.vhd
+
+# UserLogic/ucm/src/ucm_csw.vhd
+# UserLogic/ucm/src/ucm_pam_csw.vhd
 UserLogic/ucm/src/ucm_ieta_calc.vhd
 UserLogic/ucm/src/ucm_out2tar.vhd
 UserLogic/ucm/src/ucm_out2cpl.vhd

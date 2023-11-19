@@ -33,6 +33,7 @@ use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
 use shared_lib.fct_barrel_R_rpc_pkg.all;
+use shared_lib.vhdl_tb_utils_pkg.all;
 
 
 library shared_cfg_def_lib;
@@ -43,6 +44,9 @@ library project_lib;
 use project_lib.prj_cfg.all;
 
 package config_pkg is
+
+  
+
 
   constant CFG : cfg_rt := set_project_cfg;
 
@@ -56,12 +60,12 @@ package config_pkg is
   constant c_ENABLE_ILA           : std_logic := CFG.ENABLE_ILA;  -- 0: disabled 1: enabled
   constant c_LPGBT_VER            : std_logic := CFG.LPGBT_VER; -- 0: ver0 1: ver1 
   --------------------------------------------------------------------------------
-  -- Sector information
+  -- Layer configuration
   --------------------------------------------------------------------------------
   constant MAIN_CFG_COMPILE_HW         : std_logic := CFG.HW_PRESENT;
   constant MAIN_CFG_COMPILE_UL         : std_logic := CFG.UL_PRESENT;
   --------------------------------------------------------------------------------
-  -- Sector information
+  -- Sector configuration
   --------------------------------------------------------------------------------
   constant c_SECTOR_ID            : integer := CFG.SECTOR_ID;
   constant c_SECTOR_SIDE          : integer := CFG.SECTOR_SIDE;         -- 0:A          1:C
@@ -213,6 +217,7 @@ package config_pkg is
 
   -- parallel channels
   constant c_NUM_THREADS  : integer := CFG.NUM_THREADS;
+  constant c_NUM_SUBTHREADS  : integer := CFG.NUM_SUBTHREADS;
   constant c_NUM_ACCEPTS  : integer := CFG.NUM_ACCEPTS;
   constant c_NUM_MTC      : integer := CFG.NUM_MTC; --1;
   ---------------------------------------------------------
@@ -249,7 +254,7 @@ package config_pkg is
   constant c_DAQ_OUT_LINKS : integer := 3;
   constant c_DAQ_EXT_LINKS : integer := 0;
   constant c_DAQ_LINKS : integer := c_DAQ_INN_LINKS + c_DAQ_MID_LINKS + c_DAQ_OUT_LINKS + c_DAQ_EXT_LINKS;
-  
+
  
 end package config_pkg;
 

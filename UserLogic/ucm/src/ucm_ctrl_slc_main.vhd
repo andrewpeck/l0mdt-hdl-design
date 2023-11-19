@@ -26,14 +26,14 @@ use shared_lib.config_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
-entity ucm_ctrl_main is
+entity ucm_ctrl_slc_main is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
     ena                 : in std_logic;
     -- extrnals
     i_data              : in ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
-    o_csw_ctrl          : out ucm_csw_control_art(c_MAX_NUM_SL -1 downto 0);
+    o_csw_ctrl_av       : out ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
     o_csw_ctrl_dv       : out std_logic;
 
     -- internals
@@ -43,9 +43,9 @@ entity ucm_ctrl_main is
 
 
   );
-end entity ucm_ctrl_main;
+end entity ucm_ctrl_slc_main;
 
-architecture beh of ucm_ctrl_main is
+architecture beh of ucm_ctrl_slc_main is
   type alg_status_t is (
 		ALG_IDLE, ALG_RUN, ALG_SET
   );
@@ -58,6 +58,7 @@ architecture beh of ucm_ctrl_main is
 
   -- signal o_num_cand     : unsigned(3 downto 0);
   -- signal o_pam_update   : std_logic;
+    signal o_csw_ctrl_ar   : ucm_csw_control_art(c_MAX_NUM_SL -1 downto 0);
 
   
 begin
@@ -65,6 +66,7 @@ begin
   pre_op: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     i_data_ar(sl_i) <= convert(i_data(sl_i),i_data_ar(sl_i));
     input_Valids(sl_i) <= i_data_ar(sl_i).data_valid;
+    o_csw_ctrl_av(sl_i) <= convert(o_csw_ctrl_ar(sl_i),o_csw_ctrl_av(sl_i));
   end generate;
 
   Ctrl_logic : process(rst,clk) 
@@ -77,7 +79,7 @@ begin
     if rising_edge(clk) then
       if rst= '1' then
         alg_Status <= ALG_IDLE;
-        o_csw_ctrl <= zero(o_csw_ctrl);--((others => '0'), (others => ( others => '0')));
+        o_csw_ctrl_ar <= zero(o_csw_ctrl_ar);--((others => '0'), (others => ( others => '0')));
         o_pam_update <= '0';
         o_num_cand <= (others => '0');
         data_ar <= zero(data_ar);
@@ -89,7 +91,7 @@ begin
             if or_reduce(input_Valids) = '1' then
               -- here goes the algorithm
               data_ar <= i_data_ar;
-              o_csw_ctrl <= zero(o_csw_ctrl);-- ((others => '0'), (others => ( others => '0')));
+              o_csw_ctrl_ar <= zero(o_csw_ctrl_ar);-- ((others => '0'), (others => ( others => '0')));
               pl_o := c_MAX_NUM_SL -1;
               num_hits := 0;
               o_pam_update <= '0';
@@ -99,8 +101,8 @@ begin
             for sl_i in c_MAX_NUM_SL -1 downto 0 loop
               if c_ST_nBARREL_ENDCAP = '0'  then --or c_ENDCAP_nSMALL_LARGE = '0'
                 if data_ar(sl_i).data_valid = '1' then
-                  o_csw_ctrl(sl_i).data_present <= '1';
-                  o_csw_ctrl(sl_i).addr_dest <= std_logic_vector(to_unsigned(pl_o,4));
+                  o_csw_ctrl_ar(sl_i).data_present <= '1';
+                  o_csw_ctrl_ar(sl_i).addr_dest <= std_logic_vector(to_unsigned(pl_o,4));
                   pl_o := pl_o - 1;
                   num_hits := num_hits + 1;
                 end if;
@@ -118,18 +120,18 @@ begin
             -- if (c_ST_nBARREL_ENDCAP and c_ENDCAP_nSMALL_LARGE) = '0' then -- 3+1+1
             --   -- barrel or small endcap
             --   if data_ar(c_MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- x1xxx
-            --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-            --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).addr_dest <= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 2 - pl_o,4));
+            --     o_csw_ctrl_ar(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+            --     o_csw_ctrl_ar(c_MAX_NUM_SL - 1 - pl_o).addr_dest <= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 2 - pl_o,4));
             --     pl_o := pl_o + 1;
             --   end if;
             --   if data_ar(c_MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xx1xx
-            --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-            --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).addr_dest <= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 2 - pl_o,4));
+            --     o_csw_ctrl_ar(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+            --     o_csw_ctrl_ar(c_MAX_NUM_SL - 1 - pl_o).addr_dest <= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 2 - pl_o,4));
             --     pl_o := pl_o + 1;
             --   end if;
             --   if data_ar(c_MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xxx1x
-            --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-            --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).addr_dest<= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 2 - pl_o,4));
+            --     o_csw_ctrl_ar(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+            --     o_csw_ctrl_ar(c_MAX_NUM_SL - 1 - pl_o).addr_dest<= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 2 - pl_o,4));
             --     pl_o := pl_o + 1;
             --   end if;
             -- else 
@@ -139,13 +141,13 @@ begin
             -- if  c_ENABLE_NEIGHBORS = '1' then -- with neigbors
 
             --   if data_ar(c_MAX_NUM_SL - 1).data_valid = '1' then -- xxx1x
-            --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-            --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).addr_dest <= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 1,4));
+            --     o_csw_ctrl_ar(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+            --     o_csw_ctrl_ar(c_MAX_NUM_SL - 1 - pl_o).addr_dest <= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 1,4));
             --     pl_o := pl_o + 1;
             --   end if;
             --   if data_ar(0).data_valid = '1' then -- xxx1x
-            --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-            --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).addr_dest <= std_logic_vector(to_unsigned(0,4));
+            --     o_csw_ctrl_ar(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+            --     o_csw_ctrl_ar(c_MAX_NUM_SL - 1 - pl_o).addr_dest <= std_logic_vector(to_unsigned(0,4));
             --     pl_o := pl_o + 1;
             --   end if;
 
@@ -162,7 +164,7 @@ begin
             -- reset internals
             alg_Status <= ALG_IDLE;
             o_csw_ctrl_dv <= '0';
-            o_csw_ctrl <= zero(o_csw_ctrl); -- ((others => '0'), (others => ( others => '0')));
+            o_csw_ctrl_ar <= zero(o_csw_ctrl_ar); -- ((others => '0'), (others => ( others => '0')));
             o_pam_update <= '0';
             o_num_cand <= (others => '0');
             alg_Status <= ALG_IDLE;

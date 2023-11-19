@@ -26,7 +26,7 @@ use shared_lib.config_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
-entity ucm_csw is
+entity ucm_ctrl_slc_csw is
   -- generic(
   --   g_DELAY_CYCLES          : integer; 
   --   num_bits            : integer
@@ -43,9 +43,9 @@ entity ucm_csw is
     o_data_av           : out slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
     o_dv                : out std_logic
   );
-end entity ucm_csw;
+end entity ucm_ctrl_slc_csw;
 
-architecture beh of ucm_csw is
+architecture beh of ucm_ctrl_slc_csw is
   signal control_ar : ucm_csw_control_art(c_MAX_NUM_SL -1 downto 0);
   
   -- signal o_data_ar : slc_rx_art(c_MAX_NUM_SL -1 downto 0);

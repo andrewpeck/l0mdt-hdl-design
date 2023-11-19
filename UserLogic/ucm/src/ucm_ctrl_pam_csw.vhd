@@ -26,7 +26,7 @@ use shared_lib.config_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
-entity ucm_pam_csw is
+entity ucm_ctrl_pam_csw is
   -- generic(
   --   g_DELAY_CYCLES          : integer; 
   --   num_bits            : integer
@@ -41,9 +41,9 @@ entity ucm_pam_csw is
     i_data              : in  ucm_cde_avt(c_NUM_ACCEPTS -1 downto 0);
     o_data              : out ucm_cde_avt(c_NUM_ACCEPTS -1 downto 0)
   );
-end entity ucm_pam_csw;
+end entity ucm_ctrl_pam_csw;
 
-architecture beh of ucm_pam_csw is
+architecture beh of ucm_ctrl_pam_csw is
 
 begin
   UCM_PAM_CS : process(rst,clk) begin
