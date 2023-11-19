@@ -411,7 +411,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of integer_bus";
       return x'length * w;
    end function width;
    function convert(x: integer_bus; tpl: std_logic_vector) return std_logic_vector is
@@ -421,7 +420,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening integer_bus";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -444,7 +442,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring integer_bus";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -462,13 +459,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: integer_bus) return integer_bus is
    begin
-      report "... zeroing integer_bus";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: integer_bus; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray integer_bus";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -477,7 +472,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: integer_bus) return integer_bus is
       variable y : integer_bus(tpl'range);
    begin
-      report "... structuring varray integer_bus";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -487,7 +481,6 @@ package body common_types_pkg is
    function width(x: l0mdt_control_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of l0mdt_control_rt";
       w := w + width(x.clk);
       w := w + width(x.rst);
       w := w + width(x.bx);
@@ -498,7 +491,6 @@ package body common_types_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening l0mdt_control_rt";
       if tpl'ascending then
          w := width(x.clk);
          y(u to u+w-1) := convert(x.clk, y(u to u+w-1));
@@ -525,7 +517,6 @@ package body common_types_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring l0mdt_control_rt";
       if x'ascending then
          w := width(tpl.clk);
          y.clk := convert(x(u to u+w-1), tpl.clk);
@@ -549,14 +540,12 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: l0mdt_control_rt) return l0mdt_control_rt is
    begin
-      report "... zeroing l0mdt_control_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: l0mdt_ttc_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of l0mdt_ttc_rt";
       w := w + width(x.bcr);
       w := w + width(x.ocr);
       w := w + width(x.ecr);
@@ -572,7 +561,6 @@ package body common_types_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening l0mdt_ttc_rt";
       if tpl'ascending then
          w := width(x.bcr);
          y(u to u+w-1) := convert(x.bcr, y(u to u+w-1));
@@ -629,7 +617,6 @@ package body common_types_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring l0mdt_ttc_rt";
       if x'ascending then
          w := width(tpl.bcr);
          y.bcr := convert(x(u to u+w-1), tpl.bcr);
@@ -683,7 +670,6 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: l0mdt_ttc_rt) return l0mdt_ttc_rt is
    begin
-      report "... zeroing l0mdt_ttc_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -691,7 +677,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of slc_rx_art";
       return x'length * w;
    end function width;
    function convert(x: slc_rx_art; tpl: std_logic_vector) return std_logic_vector is
@@ -701,7 +686,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening slc_rx_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -724,7 +708,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring slc_rx_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -742,13 +725,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: slc_rx_art) return slc_rx_art is
    begin
-      report "... zeroing slc_rx_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: slc_rx_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray slc_rx_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -757,7 +738,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: slc_rx_art) return slc_rx_art is
       variable y : slc_rx_art(tpl'range);
    begin
-      report "... structuring varray slc_rx_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -768,7 +748,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of slc_rx_avt";
       return x'length * w;
    end function width;
    function convert(x: slc_rx_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -778,7 +757,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening slc_rx_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -801,7 +779,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring slc_rx_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -819,13 +796,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: slc_rx_avt) return slc_rx_avt is
    begin
-      report "... zeroing slc_rx_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: slc_rx_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray slc_rx_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -834,7 +809,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: slc_rx_avt) return slc_rx_avt is
       variable y : slc_rx_avt(tpl'range);
    begin
-      report "... structuring varray slc_rx_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -845,7 +819,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of slc_endcap_art";
       return x'length * w;
    end function width;
    function convert(x: slc_endcap_art; tpl: std_logic_vector) return std_logic_vector is
@@ -855,7 +828,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening slc_endcap_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -878,7 +850,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring slc_endcap_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -896,13 +867,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: slc_endcap_art) return slc_endcap_art is
    begin
-      report "... zeroing slc_endcap_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: slc_endcap_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray slc_endcap_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -911,7 +880,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: slc_endcap_art) return slc_endcap_art is
       variable y : slc_endcap_art(tpl'range);
    begin
-      report "... structuring varray slc_endcap_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -922,7 +890,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of slc_endcap_avt";
       return x'length * w;
    end function width;
    function convert(x: slc_endcap_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -932,7 +899,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening slc_endcap_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -955,7 +921,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring slc_endcap_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -973,13 +938,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: slc_endcap_avt) return slc_endcap_avt is
    begin
-      report "... zeroing slc_endcap_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: slc_endcap_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray slc_endcap_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -988,7 +951,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: slc_endcap_avt) return slc_endcap_avt is
       variable y : slc_endcap_avt(tpl'range);
    begin
-      report "... structuring varray slc_endcap_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -999,7 +961,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of slc_barrel_art";
       return x'length * w;
    end function width;
    function convert(x: slc_barrel_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1009,7 +970,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening slc_barrel_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1032,7 +992,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring slc_barrel_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1050,13 +1009,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: slc_barrel_art) return slc_barrel_art is
    begin
-      report "... zeroing slc_barrel_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: slc_barrel_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray slc_barrel_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1065,7 +1022,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: slc_barrel_art) return slc_barrel_art is
       variable y : slc_barrel_art(tpl'range);
    begin
-      report "... structuring varray slc_barrel_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1076,7 +1032,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of slc_barrel_avt";
       return x'length * w;
    end function width;
    function convert(x: slc_barrel_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1086,7 +1041,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening slc_barrel_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1109,7 +1063,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring slc_barrel_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1127,13 +1080,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: slc_barrel_avt) return slc_barrel_avt is
    begin
-      report "... zeroing slc_barrel_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: slc_barrel_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray slc_barrel_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1142,7 +1093,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: slc_barrel_avt) return slc_barrel_avt is
       variable y : slc_barrel_avt(tpl'range);
    begin
-      report "... structuring varray slc_barrel_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1153,7 +1103,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of tdcpolmux2tar_art";
       return x'length * w;
    end function width;
    function convert(x: tdcpolmux2tar_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1163,7 +1112,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening tdcpolmux2tar_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1186,7 +1134,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring tdcpolmux2tar_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1204,13 +1151,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: tdcpolmux2tar_art) return tdcpolmux2tar_art is
    begin
-      report "... zeroing tdcpolmux2tar_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: tdcpolmux2tar_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray tdcpolmux2tar_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1219,7 +1164,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: tdcpolmux2tar_art) return tdcpolmux2tar_art is
       variable y : tdcpolmux2tar_art(tpl'range);
    begin
-      report "... structuring varray tdcpolmux2tar_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1230,7 +1174,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of tdcpolmux2tar_avt";
       return x'length * w;
    end function width;
    function convert(x: tdcpolmux2tar_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1240,7 +1183,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening tdcpolmux2tar_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1263,7 +1205,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring tdcpolmux2tar_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1281,13 +1222,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: tdcpolmux2tar_avt) return tdcpolmux2tar_avt is
    begin
-      report "... zeroing tdcpolmux2tar_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: tdcpolmux2tar_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray tdcpolmux2tar_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1296,7 +1235,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: tdcpolmux2tar_avt) return tdcpolmux2tar_avt is
       variable y : tdcpolmux2tar_avt(tpl'range);
    begin
-      report "... structuring varray tdcpolmux2tar_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1307,7 +1245,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of tar2hps_art";
       return x'length * w;
    end function width;
    function convert(x: tar2hps_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1317,7 +1254,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening tar2hps_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1340,7 +1276,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring tar2hps_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1358,13 +1293,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: tar2hps_art) return tar2hps_art is
    begin
-      report "... zeroing tar2hps_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: tar2hps_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray tar2hps_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1373,7 +1306,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: tar2hps_art) return tar2hps_art is
       variable y : tar2hps_art(tpl'range);
    begin
-      report "... structuring varray tar2hps_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1384,7 +1316,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of tar2hps_avt";
       return x'length * w;
    end function width;
    function convert(x: tar2hps_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1394,7 +1325,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening tar2hps_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1417,7 +1347,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring tar2hps_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1435,13 +1364,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: tar2hps_avt) return tar2hps_avt is
    begin
-      report "... zeroing tar2hps_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: tar2hps_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray tar2hps_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1450,7 +1377,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: tar2hps_avt) return tar2hps_avt is
       variable y : tar2hps_avt(tpl'range);
    begin
-      report "... structuring varray tar2hps_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1461,7 +1387,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of ucm2hps_art";
       return x'length * w;
    end function width;
    function convert(x: ucm2hps_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1471,7 +1396,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening ucm2hps_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1494,7 +1418,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring ucm2hps_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1512,13 +1435,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: ucm2hps_art) return ucm2hps_art is
    begin
-      report "... zeroing ucm2hps_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm2hps_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray ucm2hps_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1527,7 +1448,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: ucm2hps_art) return ucm2hps_art is
       variable y : ucm2hps_art(tpl'range);
    begin
-      report "... structuring varray ucm2hps_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1538,7 +1458,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of ucm2hps_avt";
       return x'length * w;
    end function width;
    function convert(x: ucm2hps_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1548,7 +1467,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening ucm2hps_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1571,7 +1489,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring ucm2hps_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1589,13 +1506,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: ucm2hps_avt) return ucm2hps_avt is
    begin
-      report "... zeroing ucm2hps_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm2hps_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray ucm2hps_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1604,7 +1519,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: ucm2hps_avt) return ucm2hps_avt is
       variable y : ucm2hps_avt(tpl'range);
    begin
-      report "... structuring varray ucm2hps_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1615,7 +1529,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of heg2sfslc_art";
       return x'length * w;
    end function width;
    function convert(x: heg2sfslc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1625,7 +1538,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening heg2sfslc_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1648,7 +1560,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring heg2sfslc_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1666,13 +1577,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: heg2sfslc_art) return heg2sfslc_art is
    begin
-      report "... zeroing heg2sfslc_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg2sfslc_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray heg2sfslc_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1681,7 +1590,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: heg2sfslc_art) return heg2sfslc_art is
       variable y : heg2sfslc_art(tpl'range);
    begin
-      report "... structuring varray heg2sfslc_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1692,7 +1600,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of heg2sfslc_avt";
       return x'length * w;
    end function width;
    function convert(x: heg2sfslc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1702,7 +1609,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening heg2sfslc_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1725,7 +1631,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring heg2sfslc_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1743,13 +1648,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: heg2sfslc_avt) return heg2sfslc_avt is
    begin
-      report "... zeroing heg2sfslc_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg2sfslc_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray heg2sfslc_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1758,7 +1661,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: heg2sfslc_avt) return heg2sfslc_avt is
       variable y : heg2sfslc_avt(tpl'range);
    begin
-      report "... structuring varray heg2sfslc_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1769,7 +1671,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of heg2sfhit_art";
       return x'length * w;
    end function width;
    function convert(x: heg2sfhit_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1779,7 +1680,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening heg2sfhit_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1802,7 +1702,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring heg2sfhit_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1820,13 +1719,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: heg2sfhit_art) return heg2sfhit_art is
    begin
-      report "... zeroing heg2sfhit_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg2sfhit_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray heg2sfhit_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1835,7 +1732,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: heg2sfhit_art) return heg2sfhit_art is
       variable y : heg2sfhit_art(tpl'range);
    begin
-      report "... structuring varray heg2sfhit_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1846,7 +1742,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of heg2sfhit_avt";
       return x'length * w;
    end function width;
    function convert(x: heg2sfhit_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1856,7 +1751,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening heg2sfhit_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1879,7 +1773,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring heg2sfhit_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1897,13 +1790,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: heg2sfhit_avt) return heg2sfhit_avt is
    begin
-      report "... zeroing heg2sfhit_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: heg2sfhit_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray heg2sfhit_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1912,7 +1803,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: heg2sfhit_avt) return heg2sfhit_avt is
       variable y : heg2sfhit_avt(tpl'range);
    begin
-      report "... structuring varray heg2sfhit_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1923,7 +1813,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of sf2ptcalc_art";
       return x'length * w;
    end function width;
    function convert(x: sf2ptcalc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1933,7 +1822,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening sf2ptcalc_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1956,7 +1844,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring sf2ptcalc_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1974,13 +1861,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: sf2ptcalc_art) return sf2ptcalc_art is
    begin
-      report "... zeroing sf2ptcalc_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: sf2ptcalc_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray sf2ptcalc_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1989,7 +1874,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: sf2ptcalc_art) return sf2ptcalc_art is
       variable y : sf2ptcalc_art(tpl'range);
    begin
-      report "... structuring varray sf2ptcalc_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2000,7 +1884,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of sf2ptcalc_avt";
       return x'length * w;
    end function width;
    function convert(x: sf2ptcalc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2010,7 +1893,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening sf2ptcalc_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2033,7 +1915,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring sf2ptcalc_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2051,13 +1932,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: sf2ptcalc_avt) return sf2ptcalc_avt is
    begin
-      report "... zeroing sf2ptcalc_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: sf2ptcalc_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray sf2ptcalc_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2066,7 +1945,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: sf2ptcalc_avt) return sf2ptcalc_avt is
       variable y : sf2ptcalc_avt(tpl'range);
    begin
-      report "... structuring varray sf2ptcalc_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2077,7 +1955,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of ucm2pl_art";
       return x'length * w;
    end function width;
    function convert(x: ucm2pl_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2087,7 +1964,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening ucm2pl_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2110,7 +1986,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring ucm2pl_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2128,13 +2003,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: ucm2pl_art) return ucm2pl_art is
    begin
-      report "... zeroing ucm2pl_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm2pl_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray ucm2pl_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2143,7 +2016,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: ucm2pl_art) return ucm2pl_art is
       variable y : ucm2pl_art(tpl'range);
    begin
-      report "... structuring varray ucm2pl_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2154,7 +2026,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of ucm2pl_avt";
       return x'length * w;
    end function width;
    function convert(x: ucm2pl_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2164,7 +2035,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening ucm2pl_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2187,7 +2057,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring ucm2pl_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2205,13 +2074,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: ucm2pl_avt) return ucm2pl_avt is
    begin
-      report "... zeroing ucm2pl_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm2pl_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray ucm2pl_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2220,7 +2087,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: ucm2pl_avt) return ucm2pl_avt is
       variable y : ucm2pl_avt(tpl'range);
    begin
-      report "... structuring varray ucm2pl_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2231,7 +2097,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of pl2ptcalc_art";
       return x'length * w;
    end function width;
    function convert(x: pl2ptcalc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2241,7 +2106,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening pl2ptcalc_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2264,7 +2128,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring pl2ptcalc_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2282,13 +2145,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: pl2ptcalc_art) return pl2ptcalc_art is
    begin
-      report "... zeroing pl2ptcalc_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: pl2ptcalc_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray pl2ptcalc_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2297,7 +2158,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: pl2ptcalc_art) return pl2ptcalc_art is
       variable y : pl2ptcalc_art(tpl'range);
    begin
-      report "... structuring varray pl2ptcalc_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2308,7 +2168,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of pl2ptcalc_avt";
       return x'length * w;
    end function width;
    function convert(x: pl2ptcalc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2318,7 +2177,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening pl2ptcalc_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2341,7 +2199,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring pl2ptcalc_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2359,13 +2216,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: pl2ptcalc_avt) return pl2ptcalc_avt is
    begin
-      report "... zeroing pl2ptcalc_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: pl2ptcalc_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray pl2ptcalc_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2374,7 +2229,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: pl2ptcalc_avt) return pl2ptcalc_avt is
       variable y : pl2ptcalc_avt(tpl'range);
    begin
-      report "... structuring varray pl2ptcalc_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2385,7 +2239,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of pl2mtc_art";
       return x'length * w;
    end function width;
    function convert(x: pl2mtc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2395,7 +2248,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening pl2mtc_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2418,7 +2270,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring pl2mtc_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2436,13 +2287,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: pl2mtc_art) return pl2mtc_art is
    begin
-      report "... zeroing pl2mtc_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: pl2mtc_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray pl2mtc_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2451,7 +2300,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: pl2mtc_art) return pl2mtc_art is
       variable y : pl2mtc_art(tpl'range);
    begin
-      report "... structuring varray pl2mtc_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2462,7 +2310,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of pl2mtc_avt";
       return x'length * w;
    end function width;
    function convert(x: pl2mtc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2472,7 +2319,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening pl2mtc_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2495,7 +2341,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring pl2mtc_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2513,13 +2358,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: pl2mtc_avt) return pl2mtc_avt is
    begin
-      report "... zeroing pl2mtc_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: pl2mtc_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray pl2mtc_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2528,7 +2371,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: pl2mtc_avt) return pl2mtc_avt is
       variable y : pl2mtc_avt(tpl'range);
    begin
-      report "... structuring varray pl2mtc_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2539,7 +2381,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of ptcalc2mtc_art";
       return x'length * w;
    end function width;
    function convert(x: ptcalc2mtc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2549,7 +2390,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening ptcalc2mtc_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2572,7 +2412,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring ptcalc2mtc_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2590,13 +2429,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: ptcalc2mtc_art) return ptcalc2mtc_art is
    begin
-      report "... zeroing ptcalc2mtc_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ptcalc2mtc_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray ptcalc2mtc_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2605,7 +2442,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: ptcalc2mtc_art) return ptcalc2mtc_art is
       variable y : ptcalc2mtc_art(tpl'range);
    begin
-      report "... structuring varray ptcalc2mtc_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2616,7 +2452,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of ptcalc2mtc_avt";
       return x'length * w;
    end function width;
    function convert(x: ptcalc2mtc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2626,7 +2461,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening ptcalc2mtc_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2649,7 +2483,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring ptcalc2mtc_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2667,13 +2500,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: ptcalc2mtc_avt) return ptcalc2mtc_avt is
    begin
-      report "... zeroing ptcalc2mtc_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ptcalc2mtc_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray ptcalc2mtc_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2682,7 +2513,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: ptcalc2mtc_avt) return ptcalc2mtc_avt is
       variable y : ptcalc2mtc_avt(tpl'range);
    begin
-      report "... structuring varray ptcalc2mtc_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2693,7 +2523,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of mtc_out_art";
       return x'length * w;
    end function width;
    function convert(x: mtc_out_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2703,7 +2532,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening mtc_out_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2726,7 +2554,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring mtc_out_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2744,13 +2571,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: mtc_out_art) return mtc_out_art is
    begin
-      report "... zeroing mtc_out_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: mtc_out_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray mtc_out_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2759,7 +2584,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: mtc_out_art) return mtc_out_art is
       variable y : mtc_out_art(tpl'range);
    begin
-      report "... structuring varray mtc_out_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2770,7 +2594,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of mtc_out_avt";
       return x'length * w;
    end function width;
    function convert(x: mtc_out_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2780,7 +2603,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening mtc_out_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2803,7 +2625,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring mtc_out_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2821,13 +2642,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: mtc_out_avt) return mtc_out_avt is
    begin
-      report "... zeroing mtc_out_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: mtc_out_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray mtc_out_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2836,7 +2655,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: mtc_out_avt) return mtc_out_avt is
       variable y : mtc_out_avt(tpl'range);
    begin
-      report "... structuring varray mtc_out_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2847,7 +2665,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of mtc2nsp_art";
       return x'length * w;
    end function width;
    function convert(x: mtc2nsp_art; tpl: std_logic_vector) return std_logic_vector is
@@ -2857,7 +2674,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening mtc2nsp_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2880,7 +2696,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring mtc2nsp_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2898,13 +2713,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: mtc2nsp_art) return mtc2nsp_art is
    begin
-      report "... zeroing mtc2nsp_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: mtc2nsp_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray mtc2nsp_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2913,7 +2726,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: mtc2nsp_art) return mtc2nsp_art is
       variable y : mtc2nsp_art(tpl'range);
    begin
-      report "... structuring varray mtc2nsp_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -2924,7 +2736,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of mtc2nsp_avt";
       return x'length * w;
    end function width;
    function convert(x: mtc2nsp_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -2934,7 +2745,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening mtc2nsp_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -2957,7 +2767,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring mtc2nsp_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -2975,13 +2784,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: mtc2nsp_avt) return mtc2nsp_avt is
    begin
-      report "... zeroing mtc2nsp_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: mtc2nsp_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray mtc2nsp_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -2990,7 +2797,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: mtc2nsp_avt) return mtc2nsp_avt is
       variable y : mtc2nsp_avt(tpl'range);
    begin
-      report "... structuring varray mtc2nsp_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -3001,7 +2807,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of felix_data_avt";
       return x'length * w;
    end function width;
    function convert(x: felix_data_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -3011,7 +2816,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening felix_data_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -3034,7 +2838,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring felix_data_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -3052,13 +2855,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: felix_data_avt) return felix_data_avt is
    begin
-      report "... zeroing felix_data_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: felix_data_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray felix_data_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -3067,7 +2868,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: felix_data_avt) return felix_data_avt is
       variable y : felix_data_avt(tpl'range);
    begin
-      report "... structuring varray felix_data_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -3077,7 +2877,6 @@ package body common_types_pkg is
    function width(x: felix_stream_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of felix_stream_rt";
       w := w + width(x.valid);
       w := w + width(x.data);
       return w;
@@ -3087,7 +2886,6 @@ package body common_types_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening felix_stream_rt";
       if tpl'ascending then
          w := width(x.valid);
          y(u to u+w-1) := convert(x.valid, y(u to u+w-1));
@@ -3108,7 +2906,6 @@ package body common_types_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring felix_stream_rt";
       if x'ascending then
          w := width(tpl.valid);
          y.valid := convert(x(u to u+w-1), tpl.valid);
@@ -3126,7 +2923,6 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: felix_stream_rt) return felix_stream_rt is
    begin
-      report "... zeroing felix_stream_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -3134,7 +2930,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of felix_stream_art";
       return x'length * w;
    end function width;
    function convert(x: felix_stream_art; tpl: std_logic_vector) return std_logic_vector is
@@ -3144,7 +2939,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening felix_stream_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -3167,7 +2961,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring felix_stream_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -3185,13 +2978,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: felix_stream_art) return felix_stream_art is
    begin
-      report "... zeroing felix_stream_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: felix_stream_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray felix_stream_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -3200,7 +2991,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: felix_stream_art) return felix_stream_art is
       variable y : felix_stream_art(tpl'range);
    begin
-      report "... structuring varray felix_stream_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -3211,7 +3001,6 @@ package body common_types_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of felix_stream_avt";
       return x'length * w;
    end function width;
    function convert(x: felix_stream_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -3221,7 +3010,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening felix_stream_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -3244,7 +3032,6 @@ package body common_types_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring felix_stream_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -3262,13 +3049,11 @@ package body common_types_pkg is
    end function convert;
    function zero(tpl: felix_stream_avt) return felix_stream_avt is
    begin
-      report "... zeroing felix_stream_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: felix_stream_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray felix_stream_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -3277,7 +3062,6 @@ package body common_types_pkg is
    function convert(x: std_logic_vector_array; tpl: felix_stream_avt) return felix_stream_avt is
       variable y : felix_stream_avt(tpl'range);
    begin
-      report "... structuring varray felix_stream_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;

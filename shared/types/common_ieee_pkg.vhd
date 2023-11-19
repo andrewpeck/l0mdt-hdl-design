@@ -93,7 +93,6 @@ package body common_ieee_pkg is
       variable y  : std_logic_vector(t'range);
       constant ll : natural := x'length(1);
    begin
-      report "... convert std_logic_vector_array to std_logic_vector";
       for ii in x'range loop
          if y'ascending = true then
             assign(y(ii*ll to ll*(ii+1)-1), x(ii));
@@ -109,7 +108,6 @@ package body common_ieee_pkg is
       variable y  : std_logic_vector_array(t'range)(t'range(1));
       constant ll : natural := t'length(1);
    begin
-      report "... convert std_logic_vector to std_logic_vector_array";
       for ii in t'range loop
          if x'ascending then
             assign(y(ii), x(ii*ll to ll*(ii+1)-1));
@@ -123,7 +121,6 @@ package body common_ieee_pkg is
 
    function width(x: std_logic_vector_array) return natural is
    begin
-      report "... size of std_logic_vector_array";
       if x'low > x'high then
          return 0;
       else
@@ -132,107 +129,89 @@ package body common_ieee_pkg is
    end function width;
    function width(x: std_logic) return natural is
    begin
-      report "... size of std_logic";
       return 1;
    end function width;
    function width(x: std_logic_vector) return natural is
    begin
-      report "... size of std_logic_vector";
       return x'length;
    end function width;
    function width(x: unsigned) return natural is
    begin
-      report "... size of unsigned";
       return x'length;
    end function width;
    function width(x: signed) return natural is
    begin
-      report "... size of signed";
       return x'length;
    end function width;
    function width(x: integer) return natural is
    begin
-      report "... size of integer";
       return 32;
    end function width;
 
    function convert(x: std_logic_vector; t: signed) return signed is
       variable y: signed(t'range);
    begin
-      report "... structuring signed ";
       y := signed(x);
       return y;
    end function convert;
    function convert(x: std_logic_vector; t: unsigned) return unsigned is
       variable y: unsigned(t'range);
    begin
-      report "... structuring unsigned ";
       y := unsigned(x);
       return y;
    end function convert;
    function convert(x: std_logic_vector; t: integer) return integer is
       variable y: integer;
    begin
-      report "... structuring integer ";
       y := to_integer(signed(x));
       return y;
    end function convert;
    function convert(x: std_logic_vector; t: std_logic) return std_logic is
       variable y: std_logic;
    begin
-      report "... structuring std_logic ";
       y := x(x'low);
       return y;
    end function convert;
 
    function convert(x: signed; t: std_logic_vector) return std_logic_vector is
    begin
-      report "... flattening signed ";
       return std_logic_vector(x);
    end function convert;
    function convert(x: unsigned; t: std_logic_vector) return std_logic_vector is
    begin
-      report "... flattening unsigned ";
       return std_logic_vector(x);
    end function convert;
    function convert(x: integer; t: std_logic_vector) return std_logic_vector is
       variable y : std_logic_vector(t'range);
    begin
-      report "... flattening integer ";
       assign(y, std_logic_vector(to_signed(x, 32)));
       return y;
    end function convert;
    function convert(x: std_logic; t: std_logic_vector) return std_logic_vector is
       variable y: std_logic_vector(t'range);
    begin
-      report "... flattening std_logic ";
       y(y'low) := x;
       return y;
    end function convert;
 
    function zero(y: std_logic) return std_logic is
    begin
-      report "... zeroing std_logic ";
       return '0';
    end function zero;
    function zero(y: std_logic_vector) return std_logic_vector is
    begin
-      report "... zeroing std_logic_vector ";
       return (y'range => '0');
    end function zero;
    function zero(y: unsigned) return unsigned is
    begin
-      report "... zeroing unsigned ";
       return to_unsigned(0, y'length);
    end function zero;
    function zero(y: signed) return signed is
    begin
-      report "... zeroing signed ";
       return to_signed(0, y'length);
    end function zero;
    function zero(y: integer) return integer is
    begin
-      report "... zeroing integer";
       return 0;
    end function zero;
 

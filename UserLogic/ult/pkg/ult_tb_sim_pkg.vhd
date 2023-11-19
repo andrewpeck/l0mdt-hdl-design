@@ -215,7 +215,6 @@ package body ult_tb_sim_pkg is
    function width(x: input_mdt_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of input_mdt_rt";
       w := w + width(x.ToA);
       w := w + width(x.station);
       w := w + width(x.chamber);
@@ -228,7 +227,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening input_mdt_rt";
       if tpl'ascending then
          w := width(x.ToA);
          y(u to u+w-1) := convert(x.ToA, y(u to u+w-1));
@@ -267,7 +265,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring input_mdt_rt";
       if x'ascending then
          w := width(tpl.ToA);
          y.ToA := convert(x(u to u+w-1), tpl.ToA);
@@ -303,7 +300,6 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: input_mdt_rt) return input_mdt_rt is
    begin
-      report "... zeroing input_mdt_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -311,7 +307,6 @@ package body ult_tb_sim_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of input_mdt_art";
       return x'length * w;
    end function width;
    function convert(x: input_mdt_art; tpl: std_logic_vector) return std_logic_vector is
@@ -321,7 +316,6 @@ package body ult_tb_sim_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening input_mdt_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -344,7 +338,6 @@ package body ult_tb_sim_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring input_mdt_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -362,13 +355,11 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: input_mdt_art) return input_mdt_art is
    begin
-      report "... zeroing input_mdt_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: input_mdt_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray input_mdt_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -377,7 +368,6 @@ package body ult_tb_sim_pkg is
    function convert(x: std_logic_vector_array; tpl: input_mdt_art) return input_mdt_art is
       variable y : input_mdt_art;
    begin
-      report "... structuring varray input_mdt_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -388,7 +378,6 @@ package body ult_tb_sim_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of tar2hps_tb";
       return x'length * w;
    end function width;
    function convert(x: tar2hps_tb; tpl: std_logic_vector) return std_logic_vector is
@@ -398,7 +387,6 @@ package body ult_tb_sim_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening tar2hps_tb";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -421,7 +409,6 @@ package body ult_tb_sim_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring tar2hps_tb";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -439,13 +426,11 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: tar2hps_tb) return tar2hps_tb is
    begin
-      report "... zeroing tar2hps_tb";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: tar2hps_tb; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray tar2hps_tb";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -454,7 +439,6 @@ package body ult_tb_sim_pkg is
    function convert(x: std_logic_vector_array; tpl: tar2hps_tb) return tar2hps_tb is
       variable y : tar2hps_tb;
    begin
-      report "... structuring varray tar2hps_tb";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -465,7 +449,6 @@ package body ult_tb_sim_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of pol2tar_tb";
       return x'length * w;
    end function width;
    function convert(x: pol2tar_tb; tpl: std_logic_vector) return std_logic_vector is
@@ -475,7 +458,6 @@ package body ult_tb_sim_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening pol2tar_tb";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -498,7 +480,6 @@ package body ult_tb_sim_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring pol2tar_tb";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -516,13 +497,11 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: pol2tar_tb) return pol2tar_tb is
    begin
-      report "... zeroing pol2tar_tb";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: pol2tar_tb; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray pol2tar_tb";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -531,7 +510,6 @@ package body ult_tb_sim_pkg is
    function convert(x: std_logic_vector_array; tpl: pol2tar_tb) return pol2tar_tb is
       variable y : pol2tar_tb;
    begin
-      report "... structuring varray pol2tar_tb";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -541,7 +519,6 @@ package body ult_tb_sim_pkg is
    function width(x: input_slc_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of input_slc_rt";
       w := w + width(x.ToA);
       w := w + width(x.event);
       w := w + width(x.slc);
@@ -552,7 +529,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening input_slc_rt";
       if tpl'ascending then
          w := width(x.ToA);
          y(u to u+w-1) := convert(x.ToA, y(u to u+w-1));
@@ -579,7 +555,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring input_slc_rt";
       if x'ascending then
          w := width(tpl.ToA);
          y.ToA := convert(x(u to u+w-1), tpl.ToA);
@@ -603,7 +578,6 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: input_slc_rt) return input_slc_rt is
    begin
-      report "... zeroing input_slc_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -611,7 +585,6 @@ package body ult_tb_sim_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of input_slc_art";
       return x'length * w;
    end function width;
    function convert(x: input_slc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -621,7 +594,6 @@ package body ult_tb_sim_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening input_slc_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -644,7 +616,6 @@ package body ult_tb_sim_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring input_slc_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -662,13 +633,11 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: input_slc_art) return input_slc_art is
    begin
-      report "... zeroing input_slc_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: input_slc_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray input_slc_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -677,7 +646,6 @@ package body ult_tb_sim_pkg is
    function convert(x: std_logic_vector_array; tpl: input_slc_art) return input_slc_art is
       variable y : input_slc_art;
    begin
-      report "... structuring varray input_slc_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -688,7 +656,6 @@ package body ult_tb_sim_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of slc_tb_art";
       return x'length * w;
    end function width;
    function convert(x: slc_tb_art; tpl: std_logic_vector) return std_logic_vector is
@@ -698,7 +665,6 @@ package body ult_tb_sim_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening slc_tb_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -721,7 +687,6 @@ package body ult_tb_sim_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring slc_tb_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -739,13 +704,11 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: slc_tb_art) return slc_tb_art is
    begin
-      report "... zeroing slc_tb_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: slc_tb_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray slc_tb_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -754,7 +717,6 @@ package body ult_tb_sim_pkg is
    function convert(x: std_logic_vector_array; tpl: slc_tb_art) return slc_tb_art is
       variable y : slc_tb_art;
    begin
-      report "... structuring varray slc_tb_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -764,7 +726,6 @@ package body ult_tb_sim_pkg is
    function width(x: out_heg_bm_hit_sim_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of out_heg_bm_hit_sim_rt";
       w := w + width(x.ToA);
       w := w + width(x.station);
       w := w + width(x.thread);
@@ -776,7 +737,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening out_heg_bm_hit_sim_rt";
       if tpl'ascending then
          w := width(x.ToA);
          y(u to u+w-1) := convert(x.ToA, y(u to u+w-1));
@@ -809,7 +769,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring out_heg_bm_hit_sim_rt";
       if x'ascending then
          w := width(tpl.ToA);
          y.ToA := convert(x(u to u+w-1), tpl.ToA);
@@ -839,14 +798,12 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: out_heg_bm_hit_sim_rt) return out_heg_bm_hit_sim_rt is
    begin
-      report "... zeroing out_heg_bm_hit_sim_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: out_heg_bm_slc_sim_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of out_heg_bm_slc_sim_rt";
       w := w + width(x.ToA);
       w := w + width(x.station);
       w := w + width(x.thread);
@@ -858,7 +815,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening out_heg_bm_slc_sim_rt";
       if tpl'ascending then
          w := width(x.ToA);
          y(u to u+w-1) := convert(x.ToA, y(u to u+w-1));
@@ -891,7 +847,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring out_heg_bm_slc_sim_rt";
       if x'ascending then
          w := width(tpl.ToA);
          y.ToA := convert(x(u to u+w-1), tpl.ToA);
@@ -921,14 +876,12 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: out_heg_bm_slc_sim_rt) return out_heg_bm_slc_sim_rt is
    begin
-      report "... zeroing out_heg_bm_slc_sim_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: out_heg_bm_ctrl_sim_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of out_heg_bm_ctrl_sim_rt";
       w := w + width(x.ToA);
       w := w + width(x.station);
       w := w + width(x.thread);
@@ -941,7 +894,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening out_heg_bm_ctrl_sim_rt";
       if tpl'ascending then
          w := width(x.ToA);
          y(u to u+w-1) := convert(x.ToA, y(u to u+w-1));
@@ -980,7 +932,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring out_heg_bm_ctrl_sim_rt";
       if x'ascending then
          w := width(tpl.ToA);
          y.ToA := convert(x(u to u+w-1), tpl.ToA);
@@ -1016,14 +967,12 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: out_heg_bm_ctrl_sim_rt) return out_heg_bm_ctrl_sim_rt is
    begin
-      report "... zeroing out_heg_bm_ctrl_sim_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: in_pt_pt2sf_sim_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of in_pt_pt2sf_sim_rt";
       w := w + width(x.ToA);
       w := w + width(x.station);
       w := w + width(x.thread);
@@ -1035,7 +984,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening in_pt_pt2sf_sim_rt";
       if tpl'ascending then
          w := width(x.ToA);
          y(u to u+w-1) := convert(x.ToA, y(u to u+w-1));
@@ -1068,7 +1016,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring in_pt_pt2sf_sim_rt";
       if x'ascending then
          w := width(tpl.ToA);
          y.ToA := convert(x(u to u+w-1), tpl.ToA);
@@ -1098,14 +1045,12 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: in_pt_pt2sf_sim_rt) return in_pt_pt2sf_sim_rt is
    begin
-      report "... zeroing in_pt_pt2sf_sim_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: in_pt_mpl_sim_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of in_pt_mpl_sim_rt";
       w := w + width(x.ToA);
       w := w + width(x.thread);
       w := w + width(x.data);
@@ -1116,7 +1061,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening in_pt_mpl_sim_rt";
       if tpl'ascending then
          w := width(x.ToA);
          y(u to u+w-1) := convert(x.ToA, y(u to u+w-1));
@@ -1143,7 +1087,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring in_pt_mpl_sim_rt";
       if x'ascending then
          w := width(tpl.ToA);
          y.ToA := convert(x(u to u+w-1), tpl.ToA);
@@ -1167,14 +1110,12 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: in_pt_mpl_sim_rt) return in_pt_mpl_sim_rt is
    begin
-      report "... zeroing in_pt_mpl_sim_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: in_mtc_pt_sim_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of in_mtc_pt_sim_rt";
       w := w + width(x.ToA);
       w := w + width(x.thread);
       w := w + width(x.data);
@@ -1185,7 +1126,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening in_mtc_pt_sim_rt";
       if tpl'ascending then
          w := width(x.ToA);
          y(u to u+w-1) := convert(x.ToA, y(u to u+w-1));
@@ -1212,7 +1152,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring in_mtc_pt_sim_rt";
       if x'ascending then
          w := width(tpl.ToA);
          y.ToA := convert(x(u to u+w-1), tpl.ToA);
@@ -1236,14 +1175,12 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: in_mtc_pt_sim_rt) return in_mtc_pt_sim_rt is
    begin
-      report "... zeroing in_mtc_pt_sim_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: in_mtc_mpl_sim_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of in_mtc_mpl_sim_rt";
       w := w + width(x.ToA);
       w := w + width(x.thread);
       w := w + width(x.data);
@@ -1254,7 +1191,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening in_mtc_mpl_sim_rt";
       if tpl'ascending then
          w := width(x.ToA);
          y(u to u+w-1) := convert(x.ToA, y(u to u+w-1));
@@ -1281,7 +1217,6 @@ package body ult_tb_sim_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring in_mtc_mpl_sim_rt";
       if x'ascending then
          w := width(tpl.ToA);
          y.ToA := convert(x(u to u+w-1), tpl.ToA);
@@ -1305,7 +1240,6 @@ package body ult_tb_sim_pkg is
    end function convert;
    function zero(tpl: in_mtc_mpl_sim_rt) return in_mtc_mpl_sim_rt is
    begin
-      report "... zeroing in_mtc_mpl_sim_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 

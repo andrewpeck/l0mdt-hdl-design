@@ -69,7 +69,6 @@ package body hps_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of hps_ctrl2sf_art";
       return x'length * w;
    end function width;
    function convert(x: hps_ctrl2sf_art; tpl: std_logic_vector) return std_logic_vector is
@@ -79,7 +78,6 @@ package body hps_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening hps_ctrl2sf_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -102,7 +100,6 @@ package body hps_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring hps_ctrl2sf_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -120,13 +117,11 @@ package body hps_pkg is
    end function convert;
    function zero(tpl: hps_ctrl2sf_art) return hps_ctrl2sf_art is
    begin
-      report "... zeroing hps_ctrl2sf_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hps_ctrl2sf_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray hps_ctrl2sf_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -135,7 +130,6 @@ package body hps_pkg is
    function convert(x: std_logic_vector_array; tpl: hps_ctrl2sf_art) return hps_ctrl2sf_art is
       variable y : hps_ctrl2sf_art(tpl'range);
    begin
-      report "... structuring varray hps_ctrl2sf_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -146,7 +140,6 @@ package body hps_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of hps_ctrl2sf_avt";
       return x'length * w;
    end function width;
    function convert(x: hps_ctrl2sf_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -156,7 +149,6 @@ package body hps_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening hps_ctrl2sf_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -179,7 +171,6 @@ package body hps_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring hps_ctrl2sf_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -197,13 +188,11 @@ package body hps_pkg is
    end function convert;
    function zero(tpl: hps_ctrl2sf_avt) return hps_ctrl2sf_avt is
    begin
-      report "... zeroing hps_ctrl2sf_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hps_ctrl2sf_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray hps_ctrl2sf_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -212,7 +201,6 @@ package body hps_pkg is
    function convert(x: std_logic_vector_array; tpl: hps_ctrl2sf_avt) return hps_ctrl2sf_avt is
       variable y : hps_ctrl2sf_avt(tpl'range);
    begin
-      report "... structuring varray hps_ctrl2sf_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;

@@ -187,7 +187,6 @@ package body sl2mdt_dataformats_pkg is
    function width(x: SL2MDT_header_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of SL2MDT_header_rt";
       w := w + width(x.h_reserved);
       w := w + width(x.tcoverflow);
       w := w + width(x.nmtc_sl);
@@ -201,7 +200,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening SL2MDT_header_rt";
       if tpl'ascending then
          w := width(x.h_reserved);
          y(u to u+w-1) := convert(x.h_reserved, y(u to u+w-1));
@@ -246,7 +244,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring SL2MDT_header_rt";
       if x'ascending then
          w := width(tpl.h_reserved);
          y.h_reserved := convert(x(u to u+w-1), tpl.h_reserved);
@@ -288,14 +285,12 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: SL2MDT_header_rt) return SL2MDT_header_rt is
    begin
-      report "... zeroing SL2MDT_header_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: SL2MDT_trailer_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of SL2MDT_trailer_rt";
       w := w + width(x.t_reserved);
       w := w + width(x.crc);
       w := w + width(x.fiberid);
@@ -308,7 +303,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening SL2MDT_trailer_rt";
       if tpl'ascending then
          w := width(x.t_reserved);
          y(u to u+w-1) := convert(x.t_reserved, y(u to u+w-1));
@@ -347,7 +341,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring SL2MDT_trailer_rt";
       if x'ascending then
          w := width(tpl.t_reserved);
          y.t_reserved := convert(x(u to u+w-1), tpl.t_reserved);
@@ -383,14 +376,12 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: SL2MDT_trailer_rt) return SL2MDT_trailer_rt is
    begin
-      report "... zeroing SL2MDT_trailer_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: SL2MDT_slc_common_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of SL2MDT_slc_common_rt";
       w := w + width(x.header);
       w := w + width(x.slcid);
       w := w + width(x.tcsent);
@@ -408,7 +399,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening SL2MDT_slc_common_rt";
       if tpl'ascending then
          w := width(x.header);
          y(u to u+w-1) := convert(x.header, y(u to u+w-1));
@@ -477,7 +467,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring SL2MDT_slc_common_rt";
       if x'ascending then
          w := width(tpl.header);
          y.header := convert(x(u to u+w-1), tpl.header);
@@ -543,14 +532,12 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: SL2MDT_slc_common_rt) return SL2MDT_slc_common_rt is
    begin
-      report "... zeroing SL2MDT_slc_common_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: SL2MDT_slc_endcap_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of SL2MDT_slc_endcap_rt";
       w := w + width(x.e_reserved);
       w := w + width(x.nswseg_mon);
       w := w + width(x.nswseg_angdtheta);
@@ -565,7 +552,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening SL2MDT_slc_endcap_rt";
       if tpl'ascending then
          w := width(x.e_reserved);
          y(u to u+w-1) := convert(x.e_reserved, y(u to u+w-1));
@@ -616,7 +602,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring SL2MDT_slc_endcap_rt";
       if x'ascending then
          w := width(tpl.e_reserved);
          y.e_reserved := convert(x(u to u+w-1), tpl.e_reserved);
@@ -664,14 +649,12 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: SL2MDT_slc_endcap_rt) return SL2MDT_slc_endcap_rt is
    begin
-      report "... zeroing SL2MDT_slc_endcap_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: SL2MDT_slc_barrel_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of SL2MDT_slc_barrel_rt";
       w := w + width(x.b_reserved);
       w := w + width(x.rpc3_posz);
       w := w + width(x.rpc2_posz);
@@ -684,7 +667,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening SL2MDT_slc_barrel_rt";
       if tpl'ascending then
          w := width(x.b_reserved);
          y(u to u+w-1) := convert(x.b_reserved, y(u to u+w-1));
@@ -723,7 +705,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring SL2MDT_slc_barrel_rt";
       if x'ascending then
          w := width(tpl.b_reserved);
          y.b_reserved := convert(x(u to u+w-1), tpl.b_reserved);
@@ -759,14 +740,12 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: SL2MDT_slc_barrel_rt) return SL2MDT_slc_barrel_rt is
    begin
-      report "... zeroing SL2MDT_slc_barrel_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: SL2MDT_slc_rx_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of SL2MDT_slc_rx_rt";
       w := w + width(x.data_valid);
       w := w + width(x.common);
       w := w + width(x.specific);
@@ -777,7 +756,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening SL2MDT_slc_rx_rt";
       if tpl'ascending then
          w := width(x.data_valid);
          y(u to u+w-1) := convert(x.data_valid, y(u to u+w-1));
@@ -804,7 +782,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring SL2MDT_slc_rx_rt";
       if x'ascending then
          w := width(tpl.data_valid);
          y.data_valid := convert(x(u to u+w-1), tpl.data_valid);
@@ -828,7 +805,6 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: SL2MDT_slc_rx_rt) return SL2MDT_slc_rx_rt is
    begin
-      report "... zeroing SL2MDT_slc_rx_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -836,7 +812,6 @@ package body sl2mdt_dataformats_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of SL2MDT_slc_rx_bus";
       return x'length * w;
    end function width;
    function convert(x: SL2MDT_slc_rx_bus; tpl: std_logic_vector) return std_logic_vector is
@@ -846,7 +821,6 @@ package body sl2mdt_dataformats_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening SL2MDT_slc_rx_bus";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -869,7 +843,6 @@ package body sl2mdt_dataformats_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring SL2MDT_slc_rx_bus";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -887,13 +860,11 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: SL2MDT_slc_rx_bus) return SL2MDT_slc_rx_bus is
    begin
-      report "... zeroing SL2MDT_slc_rx_bus";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: SL2MDT_slc_rx_bus; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray SL2MDT_slc_rx_bus";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -902,7 +873,6 @@ package body sl2mdt_dataformats_pkg is
    function convert(x: std_logic_vector_array; tpl: SL2MDT_slc_rx_bus) return SL2MDT_slc_rx_bus is
       variable y : SL2MDT_slc_rx_bus(tpl'range);
    begin
-      report "... structuring varray SL2MDT_slc_rx_bus";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -913,7 +883,6 @@ package body sl2mdt_dataformats_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of SL2MDT_slc_endcap_bus";
       return x'length * w;
    end function width;
    function convert(x: SL2MDT_slc_endcap_bus; tpl: std_logic_vector) return std_logic_vector is
@@ -923,7 +892,6 @@ package body sl2mdt_dataformats_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening SL2MDT_slc_endcap_bus";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -946,7 +914,6 @@ package body sl2mdt_dataformats_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring SL2MDT_slc_endcap_bus";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -964,13 +931,11 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: SL2MDT_slc_endcap_bus) return SL2MDT_slc_endcap_bus is
    begin
-      report "... zeroing SL2MDT_slc_endcap_bus";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: SL2MDT_slc_endcap_bus; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray SL2MDT_slc_endcap_bus";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -979,7 +944,6 @@ package body sl2mdt_dataformats_pkg is
    function convert(x: std_logic_vector_array; tpl: SL2MDT_slc_endcap_bus) return SL2MDT_slc_endcap_bus is
       variable y : SL2MDT_slc_endcap_bus(tpl'range);
    begin
-      report "... structuring varray SL2MDT_slc_endcap_bus";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -989,7 +953,6 @@ package body sl2mdt_dataformats_pkg is
    function width(x: SL2MDT_slc_muid_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of SL2MDT_slc_muid_rt";
       w := w + width(x.slcid);
       w := w + width(x.slid);
       w := w + width(x.bcid);
@@ -1000,7 +963,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening SL2MDT_slc_muid_rt";
       if tpl'ascending then
          w := width(x.slcid);
          y(u to u+w-1) := convert(x.slcid, y(u to u+w-1));
@@ -1027,7 +989,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring SL2MDT_slc_muid_rt";
       if x'ascending then
          w := width(tpl.slcid);
          y.slcid := convert(x(u to u+w-1), tpl.slcid);
@@ -1051,14 +1012,12 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: SL2MDT_slc_muid_rt) return SL2MDT_slc_muid_rt is
    begin
-      report "... zeroing SL2MDT_slc_muid_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: vec_mdtid_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of vec_mdtid_rt";
       w := w + width(x.chamber_id);
       w := w + width(x.chamber_ieta);
       return w;
@@ -1068,7 +1027,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening vec_mdtid_rt";
       if tpl'ascending then
          w := width(x.chamber_id);
          y(u to u+w-1) := convert(x.chamber_id, y(u to u+w-1));
@@ -1089,7 +1047,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring vec_mdtid_rt";
       if x'ascending then
          w := width(tpl.chamber_id);
          y.chamber_id := convert(x(u to u+w-1), tpl.chamber_id);
@@ -1107,14 +1064,12 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: vec_mdtid_rt) return vec_mdtid_rt is
    begin
-      report "... zeroing vec_mdtid_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: sl2mdt_mtc2sl_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of sl2mdt_mtc2sl_rt";
       w := w + width(x.data_valid);
       w := w + width(x.common);
       w := w + width(x.mdt_eta);
@@ -1132,7 +1087,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening sl2mdt_mtc2sl_rt";
       if tpl'ascending then
          w := width(x.data_valid);
          y(u to u+w-1) := convert(x.data_valid, y(u to u+w-1));
@@ -1201,7 +1155,6 @@ package body sl2mdt_dataformats_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring sl2mdt_mtc2sl_rt";
       if x'ascending then
          w := width(tpl.data_valid);
          y.data_valid := convert(x(u to u+w-1), tpl.data_valid);
@@ -1267,7 +1220,6 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: sl2mdt_mtc2sl_rt) return sl2mdt_mtc2sl_rt is
    begin
-      report "... zeroing sl2mdt_mtc2sl_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -1275,7 +1227,6 @@ package body sl2mdt_dataformats_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of sl2mdt_mtc_out_bus";
       return x'length * w;
    end function width;
    function convert(x: sl2mdt_mtc_out_bus; tpl: std_logic_vector) return std_logic_vector is
@@ -1285,7 +1236,6 @@ package body sl2mdt_dataformats_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening sl2mdt_mtc_out_bus";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1308,7 +1258,6 @@ package body sl2mdt_dataformats_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring sl2mdt_mtc_out_bus";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1326,13 +1275,11 @@ package body sl2mdt_dataformats_pkg is
    end function convert;
    function zero(tpl: sl2mdt_mtc_out_bus) return sl2mdt_mtc_out_bus is
    begin
-      report "... zeroing sl2mdt_mtc_out_bus";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: sl2mdt_mtc_out_bus; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray sl2mdt_mtc_out_bus";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1341,7 +1288,6 @@ package body sl2mdt_dataformats_pkg is
    function convert(x: std_logic_vector_array; tpl: sl2mdt_mtc_out_bus) return sl2mdt_mtc_out_bus is
       variable y : sl2mdt_mtc_out_bus(tpl'range);
    begin
-      report "... structuring varray sl2mdt_mtc_out_bus";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;

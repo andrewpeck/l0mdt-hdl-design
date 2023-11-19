@@ -82,7 +82,6 @@ package body mpl_pkg is
    function width(x: mpl2csw_ptcalc_rt) return natural is
       variable w : natural := 0;
    begin
-      report "... size of mpl2csw_ptcalc_rt";
       w := w + width(x.data_valid);
       w := w + width(x.busy);
       w := w + width(x.process_ch);
@@ -99,7 +98,6 @@ package body mpl_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
-      report "... flattening mpl2csw_ptcalc_rt";
       if tpl'ascending then
          w := width(x.data_valid);
          y(u to u+w-1) := convert(x.data_valid, y(u to u+w-1));
@@ -162,7 +160,6 @@ package body mpl_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
-      report "... structuring mpl2csw_ptcalc_rt";
       if x'ascending then
          w := width(tpl.data_valid);
          y.data_valid := convert(x(u to u+w-1), tpl.data_valid);
@@ -222,7 +219,6 @@ package body mpl_pkg is
    end function convert;
    function zero(tpl: mpl2csw_ptcalc_rt) return mpl2csw_ptcalc_rt is
    begin
-      report "... zeroing mpl2csw_ptcalc_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -230,7 +226,6 @@ package body mpl_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of mpl2csw_ptcalc_art";
       return x'length * w;
    end function width;
    function convert(x: mpl2csw_ptcalc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -240,7 +235,6 @@ package body mpl_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening mpl2csw_ptcalc_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -263,7 +257,6 @@ package body mpl_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring mpl2csw_ptcalc_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -281,13 +274,11 @@ package body mpl_pkg is
    end function convert;
    function zero(tpl: mpl2csw_ptcalc_art) return mpl2csw_ptcalc_art is
    begin
-      report "... zeroing mpl2csw_ptcalc_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: mpl2csw_ptcalc_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray mpl2csw_ptcalc_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -296,7 +287,6 @@ package body mpl_pkg is
    function convert(x: std_logic_vector_array; tpl: mpl2csw_ptcalc_art) return mpl2csw_ptcalc_art is
       variable y : mpl2csw_ptcalc_art(tpl'range);
    begin
-      report "... structuring varray mpl2csw_ptcalc_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -307,7 +297,6 @@ package body mpl_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
-      report "... size of mpl2csw_ptcalc_avt";
       return x'length * w;
    end function width;
    function convert(x: mpl2csw_ptcalc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -317,7 +306,6 @@ package body mpl_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... flattening mpl2csw_ptcalc_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -340,7 +328,6 @@ package body mpl_pkg is
       variable a : integer;
       variable b : integer;
    begin
-      report "... structuring mpl2csw_ptcalc_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -358,13 +345,11 @@ package body mpl_pkg is
    end function convert;
    function zero(tpl: mpl2csw_ptcalc_avt) return mpl2csw_ptcalc_avt is
    begin
-      report "... zeroing mpl2csw_ptcalc_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: mpl2csw_ptcalc_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
-      report "... flattening varray mpl2csw_ptcalc_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -373,7 +358,6 @@ package body mpl_pkg is
    function convert(x: std_logic_vector_array; tpl: mpl2csw_ptcalc_avt) return mpl2csw_ptcalc_avt is
       variable y : mpl2csw_ptcalc_avt(tpl'range);
    begin
-      report "... structuring varray mpl2csw_ptcalc_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
