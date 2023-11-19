@@ -1471,6 +1471,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_MDT_TC_MDT_TC_MON_t_ARRAY) return HPS_MDT_TC_MDT_TC_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1497,7 +1498,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_MDT_TC_MDT_TC_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1505,6 +1507,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_MDT_TC_MDT_TC_MON_t_ARRAY) return HPS_MDT_TC_MDT_TC_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -1620,6 +1623,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY) return HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1646,7 +1650,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1654,6 +1659,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY) return HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
    begin
       for j in y'range loop
@@ -2068,6 +2074,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_MDT_T0_MDT_T0_MON_t_ARRAY) return HPS_MDT_T0_MDT_T0_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_MDT_T0_MDT_T0_MON_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -2094,7 +2101,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_MDT_T0_MDT_T0_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -2102,6 +2110,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_MDT_T0_MDT_T0_MON_t_ARRAY) return HPS_MDT_T0_MDT_T0_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_MDT_T0_MDT_T0_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -2217,6 +2226,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY) return HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -2243,7 +2253,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -2251,6 +2262,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY) return HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
    begin
       for j in y'range loop
@@ -3796,6 +3808,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_HP_HP_MON_t_ARRAY) return HPS_HEG_HEG_HP_HP_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_HEG_HEG_HP_HP_MON_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -3822,7 +3835,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_HEG_HEG_HP_HP_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -3830,6 +3844,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_HEG_HEG_HP_HP_MON_t_ARRAY) return HPS_HEG_HEG_HP_HP_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_HEG_HEG_HP_HP_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -3932,6 +3947,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY) return HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -3958,7 +3974,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -3966,6 +3983,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY) return HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY;
    begin
       for j in y'range loop
@@ -4146,6 +4164,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_MON_t_ARRAY) return HPS_HEG_HEG_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_HEG_HEG_MON_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -4172,7 +4191,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_HEG_HEG_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -4180,6 +4200,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_HEG_HEG_MON_t_ARRAY) return HPS_HEG_HEG_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_HEG_HEG_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -4282,6 +4303,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_HEG_HEG_CTRL_t_ARRAY) return HPS_HEG_HEG_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_HEG_HEG_CTRL_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -4308,7 +4330,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_HEG_HEG_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -4316,6 +4339,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_HEG_HEG_CTRL_t_ARRAY) return HPS_HEG_HEG_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_HEG_HEG_CTRL_t_ARRAY;
    begin
       for j in y'range loop
@@ -4496,6 +4520,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_LSF_LSF_MON_t_ARRAY) return HPS_LSF_LSF_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_LSF_LSF_MON_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -4522,7 +4547,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_LSF_LSF_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -4530,6 +4556,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_LSF_LSF_MON_t_ARRAY) return HPS_LSF_LSF_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_LSF_LSF_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -4658,6 +4685,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_LSF_LSF_CTRL_t_ARRAY) return HPS_LSF_LSF_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_LSF_LSF_CTRL_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -4684,7 +4712,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_LSF_LSF_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -4692,6 +4721,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_LSF_LSF_CTRL_t_ARRAY) return HPS_LSF_LSF_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_LSF_LSF_CTRL_t_ARRAY;
    begin
       for j in y'range loop
@@ -4989,6 +5019,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_CSF_CSF_MON_t_ARRAY) return HPS_CSF_CSF_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_CSF_CSF_MON_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -5015,7 +5046,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_CSF_CSF_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -5023,6 +5055,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_CSF_CSF_MON_t_ARRAY) return HPS_CSF_CSF_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_CSF_CSF_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -5099,6 +5132,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: HPS_CSF_CSF_CTRL_t_ARRAY) return HPS_CSF_CSF_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_CSF_CSF_CTRL_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -5125,7 +5159,8 @@ package body HPS_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: HPS_CSF_CSF_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -5133,6 +5168,7 @@ package body HPS_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: HPS_CSF_CSF_CTRL_t_ARRAY) return HPS_CSF_CSF_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : HPS_CSF_CSF_CTRL_t_ARRAY;
    begin
       for j in y'range loop

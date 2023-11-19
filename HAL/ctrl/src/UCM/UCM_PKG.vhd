@@ -1080,6 +1080,7 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1106,7 +1107,8 @@ package body UCM_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1114,6 +1116,7 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -1229,6 +1232,7 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1255,7 +1259,8 @@ package body UCM_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1263,6 +1268,7 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
    begin
       for j in y'range loop
@@ -1677,6 +1683,7 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1703,7 +1710,8 @@ package body UCM_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1711,6 +1719,7 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
    begin
       for j in y'range loop
@@ -1826,6 +1835,7 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1852,7 +1862,8 @@ package body UCM_CTRL is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1860,6 +1871,7 @@ package body UCM_CTRL is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
+      variable e : tpl'element;
       variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
    begin
       for j in y'range loop

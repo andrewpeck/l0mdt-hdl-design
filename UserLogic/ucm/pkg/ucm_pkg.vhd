@@ -301,6 +301,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_prepro2ctrl_art) return ucm_prepro2ctrl_art is
+      variable e : tpl'element;
       variable y : ucm_prepro2ctrl_art(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -327,7 +328,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_prepro2ctrl_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -335,6 +337,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_prepro2ctrl_art) return ucm_prepro2ctrl_art is
+      variable e : tpl'element;
       variable y : ucm_prepro2ctrl_art(tpl'range);
    begin
       for j in y'range loop
@@ -372,6 +375,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt is
+      variable e : tpl'element;
       variable y : ucm_prepro2ctrl_avt(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -398,7 +402,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_prepro2ctrl_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -406,6 +411,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt is
+      variable e : tpl'element;
       variable y : ucm_prepro2ctrl_avt(tpl'range);
    begin
       for j in y'range loop
@@ -443,6 +449,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_rpc_r_alt) return ucm_rpc_r_alt is
+      variable e : tpl'element;
       variable y : ucm_rpc_r_alt(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -469,7 +476,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_rpc_r_alt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -477,6 +485,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_rpc_r_alt) return ucm_rpc_r_alt is
+      variable e : tpl'element;
       variable y : ucm_rpc_r_alt(tpl'range);
    begin
       for j in y'range loop
@@ -514,6 +523,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_mdt_r_alt) return ucm_mdt_r_alt is
+      variable e : tpl'element;
       variable y : ucm_mdt_r_alt(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -540,7 +550,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_mdt_r_alt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -548,6 +559,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_mdt_r_alt) return ucm_mdt_r_alt is
+      variable e : tpl'element;
       variable y : ucm_mdt_r_alt(tpl'range);
    begin
       for j in y'range loop
@@ -585,6 +597,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: chamb_ieta_rpc_aut) return chamb_ieta_rpc_aut is
+      variable e : tpl'element;
       variable y : chamb_ieta_rpc_aut;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -611,7 +624,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: chamb_ieta_rpc_aut; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -619,6 +633,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: chamb_ieta_rpc_aut) return chamb_ieta_rpc_aut is
+      variable e : tpl'element;
       variable y : chamb_ieta_rpc_aut;
    begin
       for j in y'range loop
@@ -773,6 +788,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_cde_art) return ucm_cde_art is
+      variable e : tpl'element;
       variable y : ucm_cde_art(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -799,7 +815,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_cde_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -807,6 +824,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_cde_art) return ucm_cde_art is
+      variable e : tpl'element;
       variable y : ucm_cde_art(tpl'range);
    begin
       for j in y'range loop
@@ -844,6 +862,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_cde_avt) return ucm_cde_avt is
+      variable e : tpl'element;
       variable y : ucm_cde_avt(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -870,7 +889,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_cde_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -878,6 +898,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_cde_avt) return ucm_cde_avt is
+      variable e : tpl'element;
       variable y : ucm_cde_avt(tpl'range);
    begin
       for j in y'range loop
@@ -967,6 +988,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_csw_control_art) return ucm_csw_control_art is
+      variable e : tpl'element;
       variable y : ucm_csw_control_art(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -993,7 +1015,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_csw_control_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1001,6 +1024,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_csw_control_art) return ucm_csw_control_art is
+      variable e : tpl'element;
       variable y : ucm_csw_control_art(tpl'range);
    begin
       for j in y'range loop
@@ -1038,6 +1062,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_csw_control_avt) return ucm_csw_control_avt is
+      variable e : tpl'element;
       variable y : ucm_csw_control_avt(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1064,7 +1089,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_csw_control_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1072,6 +1098,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_csw_control_avt) return ucm_csw_control_avt is
+      variable e : tpl'element;
       variable y : ucm_csw_control_avt(tpl'range);
    begin
       for j in y'range loop
@@ -1161,6 +1188,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_pam_control_art) return ucm_pam_control_art is
+      variable e : tpl'element;
       variable y : ucm_pam_control_art(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1187,7 +1215,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_pam_control_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1195,6 +1224,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_pam_control_art) return ucm_pam_control_art is
+      variable e : tpl'element;
       variable y : ucm_pam_control_art(tpl'range);
    begin
       for j in y'range loop
@@ -1232,6 +1262,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_pam_control_avt) return ucm_pam_control_avt is
+      variable e : tpl'element;
       variable y : ucm_pam_control_avt(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1258,7 +1289,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_pam_control_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1266,6 +1298,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_pam_control_avt) return ucm_pam_control_avt is
+      variable e : tpl'element;
       variable y : ucm_pam_control_avt(tpl'range);
    begin
       for j in y'range loop
@@ -1368,6 +1401,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_proc_info_art) return ucm_proc_info_art is
+      variable e : tpl'element;
       variable y : ucm_proc_info_art(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1394,7 +1428,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_proc_info_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1402,6 +1437,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_proc_info_art) return ucm_proc_info_art is
+      variable e : tpl'element;
       variable y : ucm_proc_info_art(tpl'range);
    begin
       for j in y'range loop
@@ -1439,6 +1475,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: ucm_proc_info_avt) return ucm_proc_info_avt is
+      variable e : tpl'element;
       variable y : ucm_proc_info_avt(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1465,7 +1502,8 @@ package body ucm_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: ucm_proc_info_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1473,6 +1511,7 @@ package body ucm_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_proc_info_avt) return ucm_proc_info_avt is
+      variable e : tpl'element;
       variable y : ucm_proc_info_avt(tpl'range);
    begin
       for j in y'range loop

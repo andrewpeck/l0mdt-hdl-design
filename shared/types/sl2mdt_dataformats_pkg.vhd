@@ -837,6 +837,7 @@ package body sl2mdt_dataformats_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: SL2MDT_slc_rx_bus) return SL2MDT_slc_rx_bus is
+      variable e : tpl'element;
       variable y : SL2MDT_slc_rx_bus(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -863,7 +864,8 @@ package body sl2mdt_dataformats_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: SL2MDT_slc_rx_bus; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -871,6 +873,7 @@ package body sl2mdt_dataformats_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: SL2MDT_slc_rx_bus) return SL2MDT_slc_rx_bus is
+      variable e : tpl'element;
       variable y : SL2MDT_slc_rx_bus(tpl'range);
    begin
       for j in y'range loop
@@ -908,6 +911,7 @@ package body sl2mdt_dataformats_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: SL2MDT_slc_endcap_bus) return SL2MDT_slc_endcap_bus is
+      variable e : tpl'element;
       variable y : SL2MDT_slc_endcap_bus(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -934,7 +938,8 @@ package body sl2mdt_dataformats_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: SL2MDT_slc_endcap_bus; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -942,6 +947,7 @@ package body sl2mdt_dataformats_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: SL2MDT_slc_endcap_bus) return SL2MDT_slc_endcap_bus is
+      variable e : tpl'element;
       variable y : SL2MDT_slc_endcap_bus(tpl'range);
    begin
       for j in y'range loop
@@ -1252,6 +1258,7 @@ package body sl2mdt_dataformats_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: sl2mdt_mtc_out_bus) return sl2mdt_mtc_out_bus is
+      variable e : tpl'element;
       variable y : sl2mdt_mtc_out_bus(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -1278,7 +1285,8 @@ package body sl2mdt_dataformats_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: sl2mdt_mtc_out_bus; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -1286,6 +1294,7 @@ package body sl2mdt_dataformats_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: sl2mdt_mtc_out_bus) return sl2mdt_mtc_out_bus is
+      variable e : tpl'element;
       variable y : sl2mdt_mtc_out_bus(tpl'range);
    begin
       for j in y'range loop

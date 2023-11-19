@@ -53,11 +53,15 @@ entity daq_data_path is
 end entity daq_data_path;
 
 architecture behavioral of daq_data_path is
-  
-  signal inn_tdc_hits_av : std_logic_vector_array(i_inn_tdc_hits_av'range)(i_inn_tdc_hits_av'range(1));
-  signal mid_tdc_hits_av : std_logic_vector_array(i_mid_tdc_hits_av'range)(i_mid_tdc_hits_av'range(1));
-  signal out_tdc_hits_av : std_logic_vector_array(i_out_tdc_hits_av'range)(i_out_tdc_hits_av'range(1));
-  signal ext_tdc_hits_av : std_logic_vector_array(i_ext_tdc_hits_av'range)(i_ext_tdc_hits_av'range(1));
+
+  signal inn_tdc_hits_av_element : i_inn_tdc_hits_av'element;
+  signal mid_tdc_hits_av_element : i_mid_tdc_hits_av'element;
+  signal out_tdc_hits_av_element : i_out_tdc_hits_av'element;
+  signal ext_tdc_hits_av_element : i_ext_tdc_hits_av'element;
+  signal inn_tdc_hits_av : std_logic_vector_array(i_inn_tdc_hits_av'range)(inn_tdc_hits_av_element'range);
+  signal mid_tdc_hits_av : std_logic_vector_array(i_mid_tdc_hits_av'range)(mid_tdc_hits_av_element'range);
+  signal out_tdc_hits_av : std_logic_vector_array(i_out_tdc_hits_av'range)(out_tdc_hits_av_element'range);
+  signal ext_tdc_hits_av : std_logic_vector_array(i_ext_tdc_hits_av'range)(ext_tdc_hits_av_element'range); 
 
   signal req_cnt : unsigned(11 downto 0);
 
@@ -151,7 +155,13 @@ architecture behavioral of daq_data_path is
   signal wme_available : std_logic_vector(0 to 3) := (others => '1');
   signal busy          : std_logic_vector(0 to 3) := (others => '0');
 
+  signal aux : i_inn_tdc_hits_av'element;
+  
 begin
+
+  -- assert false
+  --   report "element'left: " & integer'image((i_inn_tdc_hits_av'element)'left) & "; element'right: " & integer'image(aux'right)
+  --   severity error;
 
   o_busy <= or(busy);
             

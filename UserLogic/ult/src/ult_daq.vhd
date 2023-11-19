@@ -119,10 +119,10 @@ begin
                 i_rst                 => clock_and_control.rst, -- : in  std_logic;                   
                 i_bx                  => clock_and_control.bx , -- : in  std_logic;                   
                 -----------------------------------------------------
-                i_orid                => ttc_commands.orid    , -- : in  std_logic_vector(1 downto 0);
-                i_l0a                 => ttc_commands.l0a     , -- : in  std_logic;                   
-                i_ecr                 => ttc_commands.ecr     , -- : in  std_logic;                   
-                i_bcid                => ttc_commands.bcid    , -- : in  unsigned(11 downto 0);       
+                i_orid                => ttc_commands.orid(1 downto 0), -- : in  std_logic_vector(1 downto 0);
+                i_l0a                 => ttc_commands.l0a             , -- : in  std_logic;                   
+                i_ecr                 => ttc_commands.ecr             , -- : in  std_logic;                   
+                i_bcid                => ttc_commands.bcid            , -- : in  unsigned(11 downto 0);       
                 -----------------------------------------------------
                 i_ctrl_bcid_offset    => ctrl_bcid_offset     , -- : in  unsigned(11 downto 0);
                 i_ctrl_opening_offset => ctrl_opening_offset  , -- : in  unsigned(11 downto 0);   

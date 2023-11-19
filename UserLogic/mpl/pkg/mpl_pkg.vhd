@@ -251,6 +251,7 @@ package body mpl_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: mpl2csw_ptcalc_art) return mpl2csw_ptcalc_art is
+      variable e : tpl'element;
       variable y : mpl2csw_ptcalc_art(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -277,7 +278,8 @@ package body mpl_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: mpl2csw_ptcalc_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -285,6 +287,7 @@ package body mpl_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: mpl2csw_ptcalc_art) return mpl2csw_ptcalc_art is
+      variable e : tpl'element;
       variable y : mpl2csw_ptcalc_art(tpl'range);
    begin
       for j in y'range loop
@@ -322,6 +325,7 @@ package body mpl_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: mpl2csw_ptcalc_avt) return mpl2csw_ptcalc_avt is
+      variable e : tpl'element;
       variable y : mpl2csw_ptcalc_avt(tpl'range);
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -348,7 +352,8 @@ package body mpl_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: mpl2csw_ptcalc_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -356,6 +361,7 @@ package body mpl_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: mpl2csw_ptcalc_avt) return mpl2csw_ptcalc_avt is
+      variable e : tpl'element;
       variable y : mpl2csw_ptcalc_avt(tpl'range);
    begin
       for j in y'range loop

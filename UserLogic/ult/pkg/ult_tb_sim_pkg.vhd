@@ -332,6 +332,7 @@ package body ult_tb_sim_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: input_mdt_art) return input_mdt_art is
+      variable e : tpl'element;
       variable y : input_mdt_art;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -358,7 +359,8 @@ package body ult_tb_sim_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: input_mdt_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -366,6 +368,7 @@ package body ult_tb_sim_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: input_mdt_art) return input_mdt_art is
+      variable e : tpl'element;
       variable y : input_mdt_art;
    begin
       for j in y'range loop
@@ -403,6 +406,7 @@ package body ult_tb_sim_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: tar2hps_tb) return tar2hps_tb is
+      variable e : tpl'element;
       variable y : tar2hps_tb;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -429,7 +433,8 @@ package body ult_tb_sim_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: tar2hps_tb; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -437,6 +442,7 @@ package body ult_tb_sim_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: tar2hps_tb) return tar2hps_tb is
+      variable e : tpl'element;
       variable y : tar2hps_tb;
    begin
       for j in y'range loop
@@ -474,6 +480,7 @@ package body ult_tb_sim_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: pol2tar_tb) return pol2tar_tb is
+      variable e : tpl'element;
       variable y : pol2tar_tb;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -500,7 +507,8 @@ package body ult_tb_sim_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: pol2tar_tb; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -508,6 +516,7 @@ package body ult_tb_sim_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: pol2tar_tb) return pol2tar_tb is
+      variable e : tpl'element;
       variable y : pol2tar_tb;
    begin
       for j in y'range loop
@@ -610,6 +619,7 @@ package body ult_tb_sim_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: input_slc_art) return input_slc_art is
+      variable e : tpl'element;
       variable y : input_slc_art;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -636,7 +646,8 @@ package body ult_tb_sim_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: input_slc_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -644,6 +655,7 @@ package body ult_tb_sim_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: input_slc_art) return input_slc_art is
+      variable e : tpl'element;
       variable y : input_slc_art;
    begin
       for j in y'range loop
@@ -681,6 +693,7 @@ package body ult_tb_sim_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector; tpl: slc_tb_art) return slc_tb_art is
+      variable e : tpl'element;
       variable y : slc_tb_art;
       variable aux : y'element;
       constant W : natural := width(aux);
@@ -707,7 +720,8 @@ package body ult_tb_sim_pkg is
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: slc_tb_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl'range(1));
+      variable e : tpl'element;
+      variable y : std_logic_vector_array(tpl'range)(e'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -715,6 +729,7 @@ package body ult_tb_sim_pkg is
       return y;
    end function convert;
    function convert(x: std_logic_vector_array; tpl: slc_tb_art) return slc_tb_art is
+      variable e : tpl'element;
       variable y : slc_tb_art;
    begin
       for j in y'range loop
