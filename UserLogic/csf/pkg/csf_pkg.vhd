@@ -222,6 +222,7 @@ package body csf_pkg is
    function width(x: csf_seed_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of csf_seed_rt";
       w := w + width(x.muid);
       w := w + width(x.mbar);
       w := w + width(x.pos);
@@ -235,6 +236,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening csf_seed_rt";
       if tpl'ascending then
          w := width(x.muid);
          y(u to u+w-1) := convert(x.muid, y(u to u+w-1));
@@ -279,6 +281,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring csf_seed_rt";
       if x'ascending then
          w := width(tpl.muid);
          y.muid := convert(x(u to u+w-1), tpl.muid);
@@ -320,12 +323,14 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: csf_seed_rt) return csf_seed_rt is
    begin
+      report "... zeroing csf_seed_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: csf_hit_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of csf_hit_rt";
       w := w + width(x.valid);
       w := w + width(x.x);
       w := w + width(x.y);
@@ -336,6 +341,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening csf_hit_rt";
       if tpl'ascending then
          w := width(x.valid);
          y(u to u+w-1) := convert(x.valid, y(u to u+w-1));
@@ -362,6 +368,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring csf_hit_rt";
       if x'ascending then
          w := width(tpl.valid);
          y.valid := convert(x(u to u+w-1), tpl.valid);
@@ -385,6 +392,7 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: csf_hit_rt) return csf_hit_rt is
    begin
+      report "... zeroing csf_hit_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -392,6 +400,7 @@ package body csf_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of csf_hit_art";
       return x'length * w;
    end function width;
    function convert(x: csf_hit_art; tpl: std_logic_vector) return std_logic_vector is
@@ -401,6 +410,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening csf_hit_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -423,6 +433,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring csf_hit_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -440,11 +451,13 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: csf_hit_art) return csf_hit_art is
    begin
+      report "... zeroing csf_hit_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_hit_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray csf_hit_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -453,6 +466,7 @@ package body csf_pkg is
    function convert(x: std_logic_vector_array; tpl: csf_hit_art) return csf_hit_art is
       variable y : csf_hit_art(tpl'range);
    begin
+      report "... structuring varray csf_hit_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -463,6 +477,7 @@ package body csf_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of csf_hit_avt";
       return x'length * w;
    end function width;
    function convert(x: csf_hit_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -472,6 +487,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening csf_hit_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -494,6 +510,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring csf_hit_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -511,11 +528,13 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: csf_hit_avt) return csf_hit_avt is
    begin
+      report "... zeroing csf_hit_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_hit_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray csf_hit_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -524,6 +543,7 @@ package body csf_pkg is
    function convert(x: std_logic_vector_array; tpl: csf_hit_avt) return csf_hit_avt is
       variable y : csf_hit_avt(tpl'range);
    begin
+      report "... structuring varray csf_hit_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -533,6 +553,7 @@ package body csf_pkg is
    function width(x: csf_locseg_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of csf_locseg_rt";
       w := w + width(x.valid);
       w := w + width(x.b);
       w := w + width(x.m);
@@ -545,6 +566,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening csf_locseg_rt";
       if tpl'ascending then
          w := width(x.valid);
          y(u to u+w-1) := convert(x.valid, y(u to u+w-1));
@@ -583,6 +605,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring csf_locseg_rt";
       if x'ascending then
          w := width(tpl.valid);
          y.valid := convert(x(u to u+w-1), tpl.valid);
@@ -618,6 +641,7 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: csf_locseg_rt) return csf_locseg_rt is
    begin
+      report "... zeroing csf_locseg_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -625,6 +649,7 @@ package body csf_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of csf_locseg_art";
       return x'length * w;
    end function width;
    function convert(x: csf_locseg_art; tpl: std_logic_vector) return std_logic_vector is
@@ -634,6 +659,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening csf_locseg_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -656,6 +682,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring csf_locseg_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -673,11 +700,13 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: csf_locseg_art) return csf_locseg_art is
    begin
+      report "... zeroing csf_locseg_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_locseg_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray csf_locseg_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -686,6 +715,7 @@ package body csf_pkg is
    function convert(x: std_logic_vector_array; tpl: csf_locseg_art) return csf_locseg_art is
       variable y : csf_locseg_art(tpl'range);
    begin
+      report "... structuring varray csf_locseg_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -696,6 +726,7 @@ package body csf_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of csf_locseg_avt";
       return x'length * w;
    end function width;
    function convert(x: csf_locseg_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -705,6 +736,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening csf_locseg_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -727,6 +759,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring csf_locseg_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -744,11 +777,13 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: csf_locseg_avt) return csf_locseg_avt is
    begin
+      report "... zeroing csf_locseg_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_locseg_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray csf_locseg_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -757,6 +792,7 @@ package body csf_pkg is
    function convert(x: std_logic_vector_array; tpl: csf_locseg_avt) return csf_locseg_avt is
       variable y : csf_locseg_avt(tpl'range);
    begin
+      report "... structuring varray csf_locseg_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -766,6 +802,7 @@ package body csf_pkg is
    function width(x: csf_sums_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of csf_sums_rt";
       w := w + width(x.valid);
       w := w + width(x.xy);
       w := w + width(x.y);
@@ -779,6 +816,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening csf_sums_rt";
       if tpl'ascending then
          w := width(x.valid);
          y(u to u+w-1) := convert(x.valid, y(u to u+w-1));
@@ -823,6 +861,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring csf_sums_rt";
       if x'ascending then
          w := width(tpl.valid);
          y.valid := convert(x(u to u+w-1), tpl.valid);
@@ -864,6 +903,7 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: csf_sums_rt) return csf_sums_rt is
    begin
+      report "... zeroing csf_sums_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -871,6 +911,7 @@ package body csf_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of csf_sums_art";
       return x'length * w;
    end function width;
    function convert(x: csf_sums_art; tpl: std_logic_vector) return std_logic_vector is
@@ -880,6 +921,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening csf_sums_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -902,6 +944,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring csf_sums_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -919,11 +962,13 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: csf_sums_art) return csf_sums_art is
    begin
+      report "... zeroing csf_sums_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_sums_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray csf_sums_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -932,6 +977,7 @@ package body csf_pkg is
    function convert(x: std_logic_vector_array; tpl: csf_sums_art) return csf_sums_art is
       variable y : csf_sums_art(tpl'range);
    begin
+      report "... structuring varray csf_sums_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -942,6 +988,7 @@ package body csf_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of csf_sums_avt";
       return x'length * w;
    end function width;
    function convert(x: csf_sums_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -951,6 +998,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening csf_sums_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -973,6 +1021,7 @@ package body csf_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring csf_sums_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -990,11 +1039,13 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: csf_sums_avt) return csf_sums_avt is
    begin
+      report "... zeroing csf_sums_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: csf_sums_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray csf_sums_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1003,6 +1054,7 @@ package body csf_pkg is
    function convert(x: std_logic_vector_array; tpl: csf_sums_avt) return csf_sums_avt is
       variable y : csf_sums_avt(tpl'range);
    begin
+      report "... structuring varray csf_sums_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1012,6 +1064,7 @@ package body csf_pkg is
    function width(x: sf_seg_data_barrel_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of sf_seg_data_barrel_rt";
       w := w + width(x.data_valid);
       w := w + width(x.muid);
       w := w + width(x.mdtid);
@@ -1025,6 +1078,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening sf_seg_data_barrel_rt";
       if tpl'ascending then
          w := width(x.data_valid);
          y(u to u+w-1) := convert(x.data_valid, y(u to u+w-1));
@@ -1069,6 +1123,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring sf_seg_data_barrel_rt";
       if x'ascending then
          w := width(tpl.data_valid);
          y.data_valid := convert(x(u to u+w-1), tpl.data_valid);
@@ -1110,12 +1165,14 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt is
    begin
+      report "... zeroing sf_seg_data_barrel_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: sf_seg_data_endcap_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of sf_seg_data_endcap_rt";
       w := w + width(x.data_valid);
       w := w + width(x.muid);
       w := w + width(x.mdtid);
@@ -1129,6 +1186,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening sf_seg_data_endcap_rt";
       if tpl'ascending then
          w := width(x.data_valid);
          y(u to u+w-1) := convert(x.data_valid, y(u to u+w-1));
@@ -1173,6 +1231,7 @@ package body csf_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring sf_seg_data_endcap_rt";
       if x'ascending then
          w := width(tpl.data_valid);
          y.data_valid := convert(x(u to u+w-1), tpl.data_valid);
@@ -1214,6 +1273,7 @@ package body csf_pkg is
    end function convert;
    function zero(tpl: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt is
    begin
+      report "... zeroing sf_seg_data_endcap_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 

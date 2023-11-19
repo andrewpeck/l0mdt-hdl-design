@@ -203,6 +203,7 @@ package body hp_pkg is
    function width(x: hp_win_tubes_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of hp_win_tubes_rt";
       w := w + width(x.hi);
       w := w + width(x.lo);
       return w;
@@ -212,6 +213,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening hp_win_tubes_rt";
       if tpl'ascending then
          w := width(x.hi);
          y(u to u+w-1) := convert(x.hi, y(u to u+w-1));
@@ -232,6 +234,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring hp_win_tubes_rt";
       if x'ascending then
          w := width(tpl.hi);
          y.hi := convert(x(u to u+w-1), tpl.hi);
@@ -249,6 +252,7 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_win_tubes_rt) return hp_win_tubes_rt is
    begin
+      report "... zeroing hp_win_tubes_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -256,6 +260,7 @@ package body hp_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of hp_win_tubes_art";
       return x'length * w;
    end function width;
    function convert(x: hp_win_tubes_art; tpl: std_logic_vector) return std_logic_vector is
@@ -265,6 +270,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening hp_win_tubes_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -287,6 +293,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring hp_win_tubes_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -304,11 +311,13 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_win_tubes_art) return hp_win_tubes_art is
    begin
+      report "... zeroing hp_win_tubes_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_win_tubes_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray hp_win_tubes_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -317,6 +326,7 @@ package body hp_pkg is
    function convert(x: std_logic_vector_array; tpl: hp_win_tubes_art) return hp_win_tubes_art is
       variable y : hp_win_tubes_art(tpl'range);
    begin
+      report "... structuring varray hp_win_tubes_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -327,6 +337,7 @@ package body hp_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of hp_win_tubes_avt";
       return x'length * w;
    end function width;
    function convert(x: hp_win_tubes_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -336,6 +347,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening hp_win_tubes_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -358,6 +370,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring hp_win_tubes_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -375,11 +388,13 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_win_tubes_avt) return hp_win_tubes_avt is
    begin
+      report "... zeroing hp_win_tubes_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_win_tubes_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray hp_win_tubes_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -388,6 +403,7 @@ package body hp_pkg is
    function convert(x: std_logic_vector_array; tpl: hp_win_tubes_avt) return hp_win_tubes_avt is
       variable y : hp_win_tubes_avt(tpl'range);
    begin
+      report "... structuring varray hp_win_tubes_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -397,6 +413,7 @@ package body hp_pkg is
    function width(x: hp_win_tubes_limits_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of hp_win_tubes_limits_rt";
       w := w + width(x.hi);
       w := w + width(x.lo);
       return w;
@@ -406,6 +423,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening hp_win_tubes_limits_rt";
       if tpl'ascending then
          w := width(x.hi);
          y(u to u+w-1) := convert(x.hi, y(u to u+w-1));
@@ -426,6 +444,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring hp_win_tubes_limits_rt";
       if x'ascending then
          w := width(tpl.hi);
          y.hi := convert(x(u to u+w-1), tpl.hi);
@@ -443,6 +462,7 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt is
    begin
+      report "... zeroing hp_win_tubes_limits_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -450,6 +470,7 @@ package body hp_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of hp_win_tubes_limits_art";
       return x'length * w;
    end function width;
    function convert(x: hp_win_tubes_limits_art; tpl: std_logic_vector) return std_logic_vector is
@@ -459,6 +480,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening hp_win_tubes_limits_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -481,6 +503,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring hp_win_tubes_limits_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -498,11 +521,13 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_win_tubes_limits_art) return hp_win_tubes_limits_art is
    begin
+      report "... zeroing hp_win_tubes_limits_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_win_tubes_limits_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray hp_win_tubes_limits_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -511,6 +536,7 @@ package body hp_pkg is
    function convert(x: std_logic_vector_array; tpl: hp_win_tubes_limits_art) return hp_win_tubes_limits_art is
       variable y : hp_win_tubes_limits_art(tpl'range);
    begin
+      report "... structuring varray hp_win_tubes_limits_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -521,6 +547,7 @@ package body hp_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of hp_win_tubes_limits_avt";
       return x'length * w;
    end function width;
    function convert(x: hp_win_tubes_limits_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -530,6 +557,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening hp_win_tubes_limits_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -552,6 +580,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring hp_win_tubes_limits_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -569,11 +598,13 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
    begin
+      report "... zeroing hp_win_tubes_limits_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_win_tubes_limits_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray hp_win_tubes_limits_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -582,6 +613,7 @@ package body hp_pkg is
    function convert(x: std_logic_vector_array; tpl: hp_win_tubes_limits_avt) return hp_win_tubes_limits_avt is
       variable y : hp_win_tubes_limits_avt(tpl'range);
    begin
+      report "... structuring varray hp_win_tubes_limits_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -591,6 +623,7 @@ package body hp_pkg is
    function width(x: hp_heg2hp_slc_b_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of hp_heg2hp_slc_b_rt";
       w := w + width(x.roi_z);
       w := w + width(x.roi_x);
       return w;
@@ -600,6 +633,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening hp_heg2hp_slc_b_rt";
       if tpl'ascending then
          w := width(x.roi_z);
          y(u to u+w-1) := convert(x.roi_z, y(u to u+w-1));
@@ -620,6 +654,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring hp_heg2hp_slc_b_rt";
       if x'ascending then
          w := width(tpl.roi_z);
          y.roi_z := convert(x(u to u+w-1), tpl.roi_z);
@@ -637,12 +672,14 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt is
    begin
+      report "... zeroing hp_heg2hp_slc_b_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: hp_heg2hp_slc_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of hp_heg2hp_slc_rt";
       w := w + width(x.bcid);
       w := w + width(x.specific);
       w := w + width(x.data_valid);
@@ -653,6 +690,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening hp_heg2hp_slc_rt";
       if tpl'ascending then
          w := width(x.bcid);
          y(u to u+w-1) := convert(x.bcid, y(u to u+w-1));
@@ -679,6 +717,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring hp_heg2hp_slc_rt";
       if x'ascending then
          w := width(tpl.bcid);
          y.bcid := convert(x(u to u+w-1), tpl.bcid);
@@ -702,6 +741,7 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt is
    begin
+      report "... zeroing hp_heg2hp_slc_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -709,6 +749,7 @@ package body hp_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of hp_heg2hp_slc_art";
       return x'length * w;
    end function width;
    function convert(x: hp_heg2hp_slc_art; tpl: std_logic_vector) return std_logic_vector is
@@ -718,6 +759,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening hp_heg2hp_slc_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -740,6 +782,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring hp_heg2hp_slc_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -757,11 +800,13 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_heg2hp_slc_art) return hp_heg2hp_slc_art is
    begin
+      report "... zeroing hp_heg2hp_slc_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_heg2hp_slc_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray hp_heg2hp_slc_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -770,6 +815,7 @@ package body hp_pkg is
    function convert(x: std_logic_vector_array; tpl: hp_heg2hp_slc_art) return hp_heg2hp_slc_art is
       variable y : hp_heg2hp_slc_art(tpl'range);
    begin
+      report "... structuring varray hp_heg2hp_slc_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -780,6 +826,7 @@ package body hp_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of hp_heg2hp_slc_avt";
       return x'length * w;
    end function width;
    function convert(x: hp_heg2hp_slc_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -789,6 +836,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening hp_heg2hp_slc_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -811,6 +859,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring hp_heg2hp_slc_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -828,11 +877,13 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt is
    begin
+      report "... zeroing hp_heg2hp_slc_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_heg2hp_slc_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray hp_heg2hp_slc_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -841,6 +892,7 @@ package body hp_pkg is
    function convert(x: std_logic_vector_array; tpl: hp_heg2hp_slc_avt) return hp_heg2hp_slc_avt is
       variable y : hp_heg2hp_slc_avt(tpl'range);
    begin
+      report "... structuring varray hp_heg2hp_slc_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -850,6 +902,7 @@ package body hp_pkg is
    function width(x: hp_hpsPc2hp_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of hp_hpsPc2hp_rt";
       w := w + width(x.tube);
       w := w + width(x.layer);
       w := w + width(x.time_t0);
@@ -863,6 +916,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening hp_hpsPc2hp_rt";
       if tpl'ascending then
          w := width(x.tube);
          y(u to u+w-1) := convert(x.tube, y(u to u+w-1));
@@ -907,6 +961,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring hp_hpsPc2hp_rt";
       if x'ascending then
          w := width(tpl.tube);
          y.tube := convert(x(u to u+w-1), tpl.tube);
@@ -948,12 +1003,14 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt is
    begin
+      report "... zeroing hp_hpsPc2hp_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
    function width(x: hp_hp2sf_data_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of hp_hp2sf_data_rt";
       w := w + width(x.local_y);
       w := w + width(x.local_x);
       w := w + width(x.radius);
@@ -965,6 +1022,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening hp_hp2sf_data_rt";
       if tpl'ascending then
          w := width(x.local_y);
          y(u to u+w-1) := convert(x.local_y, y(u to u+w-1));
@@ -997,6 +1055,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring hp_hp2sf_data_rt";
       if x'ascending then
          w := width(tpl.local_y);
          y.local_y := convert(x(u to u+w-1), tpl.local_y);
@@ -1026,6 +1085,7 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_hp2sf_data_rt) return hp_hp2sf_data_rt is
    begin
+      report "... zeroing hp_hp2sf_data_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
@@ -1033,6 +1093,7 @@ package body hp_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of hp_hp2sf_data_art";
       return x'length * w;
    end function width;
    function convert(x: hp_hp2sf_data_art; tpl: std_logic_vector) return std_logic_vector is
@@ -1042,6 +1103,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening hp_hp2sf_data_art";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1064,6 +1126,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring hp_hp2sf_data_art";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1081,11 +1144,13 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_hp2sf_data_art) return hp_hp2sf_data_art is
    begin
+      report "... zeroing hp_hp2sf_data_art";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_hp2sf_data_art; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray hp_hp2sf_data_art";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1094,6 +1159,7 @@ package body hp_pkg is
    function convert(x: std_logic_vector_array; tpl: hp_hp2sf_data_art) return hp_hp2sf_data_art is
       variable y : hp_hp2sf_data_art(tpl'range);
    begin
+      report "... structuring varray hp_hp2sf_data_art";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1104,6 +1170,7 @@ package body hp_pkg is
       variable aux : x'element;
       constant w : integer := width(aux);
    begin
+      report "... size of hp_hp2sf_data_avt";
       return x'length * w;
    end function width;
    function convert(x: hp_hp2sf_data_avt; tpl: std_logic_vector) return std_logic_vector is
@@ -1113,6 +1180,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... flattening hp_hp2sf_data_avt";
       if y'ascending then
          for i in x'range loop
             a := W*i + y'low + W - 1;
@@ -1135,6 +1203,7 @@ package body hp_pkg is
       variable a : integer;
       variable b : integer;
    begin
+      report "... structuring hp_hp2sf_data_avt";
       if x'ascending then
          for i in y'range loop
             a := W*i + x'low + W - 1;
@@ -1152,11 +1221,13 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_hp2sf_data_avt) return hp_hp2sf_data_avt is
    begin
+      report "... zeroing hp_hp2sf_data_avt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
    function convert(x: hp_hp2sf_data_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
       variable y : std_logic_vector_array(tpl'range)(tpl'element'range);
    begin
+      report "... flattening varray hp_hp2sf_data_avt";
       for j in y'range loop
           y(j) := convert(x(j), (y(j)'range => '0'));
       end loop;
@@ -1165,6 +1236,7 @@ package body hp_pkg is
    function convert(x: std_logic_vector_array; tpl: hp_hp2sf_data_avt) return hp_hp2sf_data_avt is
       variable y : hp_hp2sf_data_avt(tpl'range);
    begin
+      report "... structuring varray hp_hp2sf_data_avt";
       for j in y'range loop
           y(j) := convert(x(j), y(j));
       end loop;
@@ -1174,6 +1246,7 @@ package body hp_pkg is
    function width(x: hp_hp2bm_rt) return natural is
       variable w : natural := 0;
    begin
+      report "... size of hp_hp2bm_rt";
       w := w + width(x.data);
       w := w + width(x.mdt_valid);
       w := w + width(x.data_valid);
@@ -1184,6 +1257,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := tpl'left;
    begin
+      report "... flattening hp_hp2bm_rt";
       if tpl'ascending then
          w := width(x.data);
          y(u to u+w-1) := convert(x.data, y(u to u+w-1));
@@ -1210,6 +1284,7 @@ package body hp_pkg is
       variable w : integer;
       variable u : integer := x'left;
    begin
+      report "... structuring hp_hp2bm_rt";
       if x'ascending then
          w := width(tpl.data);
          y.data := convert(x(u to u+w-1), tpl.data);
@@ -1233,6 +1308,7 @@ package body hp_pkg is
    end function convert;
    function zero(tpl: hp_hp2bm_rt) return hp_hp2bm_rt is
    begin
+      report "... zeroing hp_hp2bm_rt";
       return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
    end function zero;
 
