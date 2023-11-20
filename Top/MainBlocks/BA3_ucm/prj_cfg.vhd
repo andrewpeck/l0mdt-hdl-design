@@ -36,7 +36,7 @@ package body prj_cfg is
     proj_cfg.ENABLE_NEIGHBORS  := '1';
     -- proj_cfg.VERSION_UCM       := "1.2";
     proj_cfg.NUM_THREADS       := 4;
-    proj_cfg.NUM_ACCEPTS       := 2;
+    proj_cfg.NUM_ACCEPTS       := 3;
 
     return proj_cfg;
   end function set_project_cfg;

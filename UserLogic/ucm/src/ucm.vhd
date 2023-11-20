@@ -242,7 +242,7 @@ begin
   UCM_SUPERVISOR : entity ucm_lib.ucm_supervisor
   port map(
     clk               => clk,
-    rst               => local_rst,
+    rst               => rst,
     glob_en           => glob_en,      
     -- AXI to SoC
     ctrl_v              => super_ctrl_v,
@@ -395,7 +395,7 @@ begin
   end generate;
 
   -- PAM cross switch
-  SLC_PAM_CSW : entity ucm_lib.ucm_ctrl_pam_top
+  PAM_CTRL : entity ucm_lib.ucm_ctrl_pam_top
     port map(
       clk             => clk,
       rst             => local_rst,

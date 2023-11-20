@@ -12,7 +12,7 @@ types:
 #  - UCM_PHIMOD_LEN: {'qualifier': 'constant', 'type': 'integer', 'value': 5}
   - ucm_prepro2ctrl_rt:
     - data_valid: {'type': 'logic'}
-    - poseta: {'type': 'signed', 'range': ['SL2MDT_SLC_COMMON_POSETA_LEN-1', 0]}
+    # - poseta: {'type': 'signed', 'range': ['SL2MDT_SLC_COMMON_POSETA_LEN-1', 0]}
   - ucm_prepro2ctrl_vt: {'type': 'logic', 'range': ['ucm_prepro2ctrl_rt-1', 0]}
   - ucm_prepro2ctrl_art: {'array': 'open', 'type': 'ucm_prepro2ctrl_rt'}
   - ucm_prepro2ctrl_avt: {'array': 'open', 'type': 'ucm_prepro2ctrl_vt'}

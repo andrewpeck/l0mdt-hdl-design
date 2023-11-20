@@ -57,6 +57,7 @@ architecture beh of ucm_ctrl_slc_top is
   signal i_slc_data_ar        : slc_rx_art(c_MAX_NUM_SL -1 downto 0);
 
   signal prepro2ctrl_av       : ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
+  signal prepro2ctrl_ar       : ucm_prepro2ctrl_art(c_MAX_NUM_SL -1 downto 0);
 
   signal csw_ctrl_av    : ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
   signal csw_ctrl_dv    : std_logic;
@@ -70,7 +71,12 @@ begin
 
   I_SLC_CONV: for sl_i in 0 to c_MAX_NUM_SL - 1 generate
     i_slc_data_ar(sl_i)<= convert(i_slc_data_av(sl_i),i_slc_data_ar(sl_i));
+    prepro2ctrl_ar(sl_i).data_valid <= i_slc_data_ar(sl_i).data_valid;
+    prepro2ctrl_av(sl_i)<= convert(prepro2ctrl_ar(sl_i),prepro2ctrl_av(sl_i));
+
   end generate;
+
+  
 
 
   MAIN_CTRL : entity ucm_lib.ucm_ctrl_slc_main
@@ -91,7 +97,7 @@ begin
   SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     PL_slope : entity vamc_lib.vamc_spl
     generic map(
-      g_DELAY_CYCLES    => 1,
+      g_DELAY_CYCLES    => 2,
       g_PIPELINE_WIDTH  => i_slc_data_av(sl_i)'length
     )
     port map(

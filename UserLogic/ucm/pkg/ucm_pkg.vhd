@@ -29,16 +29,15 @@ package ucm_pkg is
 
    type ucm_prepro2ctrl_rt is record
       data_valid : std_logic;
-      poseta : signed(SL2MDT_SLC_COMMON_POSETA_LEN-1 downto 0);
    end record ucm_prepro2ctrl_rt;
-   attribute w of ucm_prepro2ctrl_rt : type is 15;
+   attribute w of ucm_prepro2ctrl_rt : type is 1;
    function width(x: ucm_prepro2ctrl_rt) return natural;
    function convert(x: ucm_prepro2ctrl_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: ucm_prepro2ctrl_rt) return ucm_prepro2ctrl_rt;
    function zero(tpl: ucm_prepro2ctrl_rt) return ucm_prepro2ctrl_rt;
 
-   subtype ucm_prepro2ctrl_vt is std_logic_vector(ucm_prepro2ctrl_rt'w-1 downto 0);
-   attribute w of ucm_prepro2ctrl_vt : subtype is 15;
+   subtype ucm_prepro2ctrl_vt is std_logic_vector(ucm_prepro2ctrl_rt'w-1 to 0);
+   attribute w of ucm_prepro2ctrl_vt : subtype is 1;
 
    type ucm_prepro2ctrl_art is array(integer range <>) of ucm_prepro2ctrl_rt;
    function width(x: ucm_prepro2ctrl_art) return integer;
@@ -268,7 +267,6 @@ package body ucm_pkg is
       variable w : natural := 0;
    begin
       w := w + width(x.data_valid);
-      w := w + width(x.poseta);
       return w;
    end function width;
    function convert(x: ucm_prepro2ctrl_rt; tpl: std_logic_vector) return std_logic_vector is
@@ -279,15 +277,9 @@ package body ucm_pkg is
       if tpl'ascending then
          w := width(x.data_valid);
          y(u to u+w-1) := convert(x.data_valid, y(u to u+w-1));
-         u := u + w;
-         w := width(x.poseta);
-         y(u to u+w-1) := convert(x.poseta, y(u to u+w-1));
       else
          w := width(x.data_valid);
          y(u downto u-w+1) := convert(x.data_valid, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.poseta);
-         y(u downto u-w+1) := convert(x.poseta, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -299,15 +291,9 @@ package body ucm_pkg is
       if x'ascending then
          w := width(tpl.data_valid);
          y.data_valid := convert(x(u to u+w-1), tpl.data_valid);
-         u := u + w;
-         w := width(tpl.poseta);
-         y.poseta := convert(x(u to u+w-1), tpl.poseta);
       else
          w := width(tpl.data_valid);
          y.data_valid := convert(x(u downto u-w+1), tpl.data_valid);
-         u := u - w;
-         w := width(tpl.poseta);
-         y.poseta := convert(x(u downto u-w+1), tpl.poseta);
       end if;
       return y;
    end function convert;

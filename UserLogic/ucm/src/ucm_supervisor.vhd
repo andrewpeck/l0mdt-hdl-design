@@ -55,7 +55,7 @@ entity ucm_supervisor is
     o_cde_chamber_z_org_av : out b_chamber_z_origin_station_avt;
     o_cvp_chamber_z_org_av : out b_chamber_z_origin_station_avt;
     --
-    i_freeze      : in std_logic := '0';
+    i_freeze            : in std_logic := '0';
     o_freeze            : out std_logic;
     --
     o_local_en            : out std_logic;
@@ -80,8 +80,8 @@ architecture beh of ucm_supervisor is
 
   constant apb_clk_lat : integer := c_CLK_AXI_MULT;
   signal  apb_clk_cnt : integer;
-  signal axi_cnt_reset    : std_logic;
-  signal axi_rep_clk      : std_logic;
+  signal axi_cnt_reset    : std_logic := '0';
+  signal axi_rep_clk      : std_logic := '0';
 
   --
   signal phicenter  : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID,SLC_COMMON_POSPHI_LEN);
@@ -142,6 +142,8 @@ begin
         int_en <= '1';
         int_rst <= rst;
         apb_clk_cnt <= 0;
+        int_freeze <= '0';
+        axi_cnt_reset <= '0';
       else
         --------------------------------------------
         --    AXI CLK CTRL
