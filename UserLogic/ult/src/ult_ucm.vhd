@@ -61,13 +61,17 @@ end entity candidate_manager;
 
 architecture beh of candidate_manager is
   signal glob_en : std_logic;
-  signal ucm_fm_mon_r  : fm_ucm_mon_data;
-
+  signal ucm_fm_mon_r              : fm_ucm_mon_data;
+  signal slc_data_mainA_av     : slc_rx_avt(2 downto 0);
 begin
 
   glob_en <= '1';
 
- 
+  fm_gen: if c_FM_ENABLED = '1' generate
+     slc_data_mainA_av <= i_ucm_fm_slc_rx_pb_v;
+  else generate
+      slc_data_mainA_av <= i_slc_data_mainA_av;
+  end generate fm_gen;
   -- UCM : if c_UCM_ENABLED = '1' generate
   
     UCM : entity ucm_lib.ucm
@@ -80,7 +84,7 @@ begin
       ctrl_v                    => ctrl_v,
       mon_v                     => mon_v,
       -- SLc in
-      i_slc_data_mainA_av     => i_ucm_fm_slc_rx_pb_v, --i_slc_data_mainA_av,
+      i_slc_data_mainA_av     => slc_data_mainA_av, --i_slc_data_mainA_av,
       i_slc_data_mainB_av     => i_slc_data_mainB_av,
       i_slc_data_neighborA_v => i_slc_data_neighborA_v,
       i_slc_data_neighborB_v => i_slc_data_neighborB_v,

@@ -1050,6 +1050,9 @@ begin
     else generate
 
       fm_mon_v <= (fm_mon_v'length - 1 downto 0 => '0');
+      fm_tar_polmux2tar_pb_v(c_HPS_NUM_MDT_CH_INN -1 downto 0) <= i_inn_tdc_hits_av;
+      fm_tar_polmux2tar_pb_v(csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_MID -1 downto csm_polmux_in_sb_n) <= i_mid_tdc_hits_av;
+      fm_tar_polmux2tar_pb_v(2*csm_polmux_in_sb_n + c_HPS_NUM_MDT_CH_OUT  -1 downto 2*csm_polmux_in_sb_n) <= i_out_tdc_hits_av;
     end generate fm_gen;
 
     sump <= tar_sump xor ucm_sump xor h2s_sump xor pt_sump xor mtc_sump xor daq_sump xor mpl_sump;

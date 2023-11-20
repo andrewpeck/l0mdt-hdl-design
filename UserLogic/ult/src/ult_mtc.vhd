@@ -55,7 +55,11 @@ architecture behavioral of mtc_builder is
 begin
 
   fm_mtc_mon_v <= convert(fm_mtc_mon_r, fm_mtc_mon_v);
-  o_mtc                <= fm_mtc2sl_pb_v;
+  fm_gen: if c_FM_ENABLED = '1' generate
+    o_mtc                <= fm_mtc2sl_pb_v;
+  else generate
+    o_mtc           <= mtc2sl;
+  end generate fm_gen;
   
   MTC_GEN : if c_MTC_ENABLED = '1' generate
     MTC: entity mtc_lib.top_mtc_wrapper
