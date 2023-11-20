@@ -176,7 +176,7 @@ begin
               o_cde_data_r.cointype     <= int_slc_data_r.common.cointype;
               o_cde_data_r.specific     <= int_slc_data_r.specific;
               o_cde_data_r.data_valid   <= int_slc_data_r.data_valid;
-              -- o_cde_data_r.posphi       <= int_slc_data_r.common.posphi;
+              o_cde_data_r.poseta       <= int_slc_data_r.common.poseta;
               -- o_cde_data_r.chamb_ieta   <= int_chamb_ieta;
               o_cde_data_r.phimod       <= std_logic_vector(resize(signed(int_phimod_abs_pl),UCM_CDE2CVP_PHIMOD_LEN));
             else

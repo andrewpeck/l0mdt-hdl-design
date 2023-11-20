@@ -183,9 +183,9 @@ package cfg_global_default_pkg is
     FPGA_EN_ST_OUT                => '1',
     FPGA_EN_ST_EXT                => '0',
     -- 
-    NUM_THREADS                   => 3,   -- default 3
-    NUM_SUBTHREADS                => 7,   -- default 3
-    NUM_ACCEPTS                   => 3,
+    NUM_THREADS                   => 3,   -- default 3 - number of muons can be processed simultaneiusly
+    NUM_SUBTHREADS                => 18,  -- default 16 - Number of HP in 1 station
+    NUM_ACCEPTS                   => 3,   -- default 3 - max number of candidates that UCM can accept to process
     -- MTC configuration based on links to primary, neighboring sectors
     -- (barrel, endcap)
     NUM_MTC                       => 3,   -- default 3, connecting to primary SL

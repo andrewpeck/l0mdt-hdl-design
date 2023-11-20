@@ -16,6 +16,12 @@ types:
   - ucm_prepro2ctrl_vt: {'type': 'logic', 'range': ['ucm_prepro2ctrl_rt-1', 0]}
   - ucm_prepro2ctrl_art: {'array': 'open', 'type': 'ucm_prepro2ctrl_rt'}
   - ucm_prepro2ctrl_avt: {'array': 'open', 'type': 'ucm_prepro2ctrl_vt'}
+  - ucm_data2pamctrl_rt:
+    - data_valid: {'type': 'logic'}
+    - poseta: {'type': 'signed', 'range': ['SL2MDT_SLC_COMMON_POSETA_LEN-1', 0]}
+  - ucm_data2pamctrl_vt: {'type': 'logic', 'range': ['ucm_data2pamctrl_rt-1', 0]}
+  - ucm_data2pamctrl_art: {'array': 'open', 'type': 'ucm_data2pamctrl_rt'}
+  - ucm_data2pamctrl_avt: {'array': 'open', 'type': 'ucm_data2pamctrl_vt'}
   - ucm_rpc_lt: {'type': 'logic', 'range': ['SLC_Z_RPC_LEN -1', 0]}
   - ucm_rpc_r_alt: {'array': 'open', 'type': 'ucm_rpc_lt'}
   - ucm_mdt_lt: {'type': 'logic', 'range': ['UCM_R_MDT_LEN -1', 0]}
@@ -26,6 +32,7 @@ types:
     - muid: {'type': 'slc_muid_rt'}
     # - chamb_ieta: {'type': 'chamb_ieta_rpc_aut'}
     - cointype: {'type': 'logic', 'range': ['SLC_COMMON_COINTYPE_LEN - 1', 0]}
+    - poseta: {'type': 'signed', 'range': ['SL2MDT_SLC_COMMON_POSETA_LEN-1', 0]}
     # - posphi: {'type': 'unsigned', 'range': ['SLC_COMMON_POSPHI_LEN -1', 0]}
     - phimod: {'type': 'logic', 'range': ['UCM_CDE2CVP_PHIMOD_LEN -1', 0]}
     - specific: {'type': 'logic', 'range': ['SLC_SPECIFIC_LEN -1', 0]}

@@ -408,8 +408,8 @@ begin
       o_cvp_rst         => cvp_loc_rst,
       o_cvp_ctrl        => cvp_in_en,
       -- data
-      i_data          => cpam_in_av(c_MAX_NUM_SL - 1 downto c_MAX_NUM_SL -c_NUM_ACCEPTS),
-      o_data          => cpam_out_av
+      i_data_av          => cpam_in_av(c_MAX_NUM_SL - 1 downto c_MAX_NUM_SL -c_NUM_ACCEPTS),
+      o_data_av          => cpam_out_av
     );
   -- SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw
   --   port map(

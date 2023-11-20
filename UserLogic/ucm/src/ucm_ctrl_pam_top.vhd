@@ -45,17 +45,30 @@ entity ucm_ctrl_pam_top is
     o_cvp_rst           : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
     o_cvp_ctrl          : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
     -- Data
-    i_data              : in  ucm_cde_avt(c_NUM_ACCEPTS -1 downto 0);
-    o_data              : out ucm_cde_avt(c_NUM_ACCEPTS -1 downto 0)
+    i_data_av           : in  ucm_cde_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_data_av           : out ucm_cde_avt(c_NUM_ACCEPTS -1 downto 0)
     
   );
 end entity;
 
 architecture rtl of ucm_ctrl_pam_top is
+  signal i_data_ar    : ucm_cde_art(c_NUM_ACCEPTS -1 downto 0);
+  -- signal i_barrel_ar  : slc_barrel_art(c_NUM_ACCEPTS -1 downto 0);
+
+  signal data2pamctrl_av       : ucm_data2pamctrl_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal data2pamctrl_ar       : ucm_data2pamctrl_art(c_NUM_ACCEPTS -1 downto 0);
+
   signal pam_CSW_control      : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
   signal pam_CSW_control_dv  : std_logic;
 
 begin
+
+  I_SLC_CONV: for sl_i in 0 to c_NUM_ACCEPTS - 1 generate
+    i_data_ar(sl_i)<= convert(i_data_av(sl_i),i_data_ar(sl_i));
+    data2pamctrl_ar(sl_i).data_valid <= i_data_ar(sl_i).data_valid;
+    data2pamctrl_ar(sl_i).poseta <= i_data_ar(sl_i).poseta;
+    data2pamctrl_av(sl_i)<= convert(data2pamctrl_ar(sl_i),data2pamctrl_av(sl_i));
+  end generate;
 
   PAM_CTRL : entity ucm_lib.ucm_ctrl_pam_main
   port map(
@@ -65,6 +78,7 @@ begin
     --
     i_num_cand          => i_num_cand,
     i_pam_update        => i_pam_update,
+    i_pam_ctrl_av       => data2pamctrl_av,
     --
     o_pam_ctrl          => pam_CSW_control,
     o_pam_ctrl_dv       => pam_CSW_control_dv,
@@ -82,8 +96,8 @@ begin
       
       i_control   => pam_CSW_control,
       -- data
-      i_data      => i_data,
-      o_data      => o_data
+      i_data_av      => i_data_av,
+      o_data_av      => o_data_av
     );
 
 end architecture;
