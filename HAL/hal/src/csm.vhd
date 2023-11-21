@@ -118,6 +118,18 @@ architecture behavioral of csm is
   -- FEC: Forward Error Corrections (counters)
   type fec_err_cnt_type is array (g_NUM_UPLINKS-1 downto 0) of std_logic_vector(15 downto 0);
   signal fec_err_cnt : fec_err_cnt_type;
+  
+  COMPONENT ila_enc
+
+  PORT (
+    clk : IN STD_LOGIC;
+    probe0 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+    probe1 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+    probe2 : IN STD_LOGIC_VECTOR(0 DOWNTO 0); 
+    probe3 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    probe4 : IN STD_LOGIC_VECTOR(0 DOWNTO 0)
+  ); 
+  END COMPONENT  ;
 
   
 begin
@@ -242,6 +254,19 @@ begin
       gsr_i => gsr_i,
       enc_o => enc_o                    -- puts out 1 bit every 25ns, needs 3 bx for a command
       );
+
+  enc_ila_gen : if c_ENABLE_ILA = '1' and g_CSM_ID = 0 generate
+    enc_ila : ila_enc
+    PORT MAP (
+      clk => clk40,
+      probe0(0) => trg_i, 
+      probe1(0) => bcr_i, 
+      probe2(0) => ecr_i, 
+      probe3(0) => gsr_i,
+      probe4(0) => enc_o
+    );
+
+  end generate;
 
   downlink_data(0).data((enc_elink+1)*2-1 downto 2*enc_elink) <= enc_o & enc_o;  -- 40 mb to 80 mb replication
   downlink_reset(0) <= ctrl.lpgbt.downlink.reset;
