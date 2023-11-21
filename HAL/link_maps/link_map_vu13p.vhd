@@ -12,7 +12,7 @@ package link_map is
     --sector logic / c2c / felix
 
     --SLR1
-    0  => (mgt_id_m => 32,  mgt_id_s => 33, station_id => INNER,  csm_id => 0, polmux_id => 0,  en => "00000000011111111100", legacy => "00000000000000000000"),
+    0  => (mgt_id_m => 32,  mgt_id_s => 33, station_id => INNER,  csm_id => 0, polmux_id => 0,  en => "00000000011111111111", legacy => "00000000000000000000"),
     1  => (mgt_id_m => 34,  mgt_id_s => 35, station_id => INNER,  csm_id => 1, polmux_id => 0,  en => "11111111100000000000", legacy => "00000000000000000000"),
     2  => (mgt_id_m => 36,  mgt_id_s => 37, station_id => INNER,  csm_id => 2, polmux_id => 1,  en => "00000000011111111100", legacy => "00000000000000000000"),
     3  => (mgt_id_m => 38,  mgt_id_s => 39, station_id => INNER,  csm_id => 3, polmux_id => 1,  en => "11111111100000000000", legacy => "00000000000000000000"),
