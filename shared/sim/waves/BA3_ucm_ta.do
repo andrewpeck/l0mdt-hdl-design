@@ -183,7 +183,7 @@ add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/ena
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/i_num_cand
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/i_pam_update
 add wave -noupdate -group PAM_CTRL -radix decimal /ucm_tb/UCM_DUT/PAM_CTRL/i_data_av
-add wave -noupdate -group PAM_CTRL -radix decimal -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2) -radix decimal -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).muid -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).cointype -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).poseta -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).phimod -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).specific -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).data_valid -radix decimal}}} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(1) -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(0) -radix decimal}} -expand -subitemconfig {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2) {-height 17 -radix decimal -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).muid -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).cointype -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).poseta -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).phimod -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).specific -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).data_valid -radix decimal}} -expand} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).muid {-height 17 -radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).cointype {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).poseta {-height 17 -radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).phimod {-height 17 -radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).specific {-height 17 -radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).data_valid {-height 17 -radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(1) {-radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(0) {-radix decimal}} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar
+add wave -noupdate -group PAM_CTRL -radix decimal -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2) -radix decimal -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).muid -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).cointype -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).poseta -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).phimod -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).specific -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).data_valid -radix decimal}}} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(1) -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(0) -radix decimal}} -expand -subitemconfig {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2) {-height 17 -radix decimal -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).muid -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).cointype -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).poseta -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).phimod -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).specific -radix decimal} {/ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).data_valid -radix decimal}} -expand} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).muid {-height 17 -radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).cointype {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).poseta {-height 17 -radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).phimod {-height 17 -radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).specific {-height 17 -radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(2).data_valid {-height 17 -radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(1) {-height 17 -radix decimal} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar(0) {-height 17 -radix decimal}} /ucm_tb/UCM_DUT/PAM_CTRL/i_data_ar
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/data2pamctrl_av
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/data2pamctrl_ar
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/pam_CSW_control
@@ -192,36 +192,57 @@ add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/o_data_av
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/o_proc_info_av
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/o_cvp_rst
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/o_cvp_ctrl
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/g_PAM_CTRL_PL
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/g_PAM_INFO_PL
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/g_CVP_PL
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/clk
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/rst
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/ena
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/i_num_cand
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/i_pam_update
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/o_pam_ctrl
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/o_pam_ctrl_dv
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/o_proc_info_av
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/o_cvp_rst
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/o_cvp_ctrl
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/int_pam_ctrl_ar
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/int_proc_info_ar
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/int_pam_ctrl_av
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/o_pam_ctrl_av
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/int_proc_info_av
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/int_cvp_rst_v
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/int_cvp_ctrl_v
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/ch_busy
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/proc_info_ar
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/o_proc_info_ar
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/ch_count_av
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/processing
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/processed_s
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/buff_pam_ctrl_ar
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL/proc_info_init
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/g_PAM_CTRL_PL
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/g_PAM_INFO_PL
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/g_CVP_PL
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/clk
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/rst
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ena
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_num_cand
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_update
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_av
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/eta_lower_lim
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/eta_upper_lim
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/max_num
+add wave -noupdate -expand -group PAM_CTRL_MAIN -divider {New Divider}
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_pam_ctrl_ar
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_proc_info_ar
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_pam_ctrl_av
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_pam_ctrl_av
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_proc_info_av
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_cvp_rst_v
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_cvp_ctrl_v
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ch_busy
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/proc_info_ar
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_proc_info_ar
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ch_count_av
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/processing
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/processed_s
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/buff_pam_ctrl_ar
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/proc_info_init
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_pam_ctrl
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_pam_ctrl_dv
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_proc_info_av
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_cvp_rst
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_cvp_ctrl
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/g_NUM_CHAMBERS
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/g_LOWER_LIM
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/g_UPPER_LIM
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/clk
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/rst
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/ena
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/i_poseta
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/i_dv
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/i_poseta_i
+add wave -noupdate -group ACCEPT2_INN -radix binary /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/chamber
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/ch_dv
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_min_ch
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_max_ch
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_num_ch
+add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_dv
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1413818503 fs} 0}
+WaveRestoreCursors {{Cursor 1} {1559033989 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 185
 configure wave -valuecolwidth 170
@@ -237,4 +258,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {5250 ns}
+WaveRestoreZoom {0 fs} {17111806798 fs}

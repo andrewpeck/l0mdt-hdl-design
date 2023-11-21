@@ -70,7 +70,7 @@ begin
     data2pamctrl_av(sl_i)<= convert(data2pamctrl_ar(sl_i),data2pamctrl_av(sl_i));
   end generate;
 
-  PAM_CTRL : entity ucm_lib.ucm_ctrl_pam_main
+  PAM_CTRL_CORE : entity ucm_lib.ucm_ctrl_pam_main
   port map(
     clk                 => clk,
     rst                 => rst,

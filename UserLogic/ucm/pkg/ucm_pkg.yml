@@ -71,3 +71,6 @@ types:
   - ucm_proc_info_vt: {'type': 'logic', 'range': ['ucm_proc_info_rt-1', 0]}
   - ucm_proc_info_art: {'array': 'open', 'type': 'ucm_proc_info_rt'}
   - ucm_proc_info_avt: {'array': 'open', 'type': 'ucm_proc_info_vt'}
+
+  # - ucm_eta_lim_art:
+  # - ucm_eta_lim_aut: {'array': 'open', 'type': 'unsigned','range' : [SL2MDT_SLC_COMMON_POSETA_LEN-1, 0]}
