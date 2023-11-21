@@ -159,18 +159,18 @@ entity ult_fm is
                              fm_mtc_art &
                              fm_daq_art     ;
 
-             fm_csm_custom_art(0) <= csm_uplink_fm_data_2d;
-            FM_CSM_HAL : process (clock_and_control.clk, clock_and_control.rst) is
-            begin
-              if(clock_and_control.rst) then
-                csm_uplink_fm_data_d    <= zero(csm_uplink_fm_data_d);
-                csm_uplink_fm_data_2d  <= zero(csm_uplink_fm_data_2d);
-            elsif (rising_edge(clock_and_control.clk)) then  -- rising clock edge
-              csm_uplink_fm_data_d    <= csm_uplink_fm_data;
-              csm_uplink_fm_data_2d   <= csm_uplink_fm_data_d;
-            --    ult_fm_data <= sf_fm_inn & sf_fm_mid & sf_fm_out & slc_rx_fm_data & ucm2hps_fm_data & ucm2pl_fm_data;
-            end if;
-            end process;
+             fm_csm_custom_art(0) <= csm_uplink_fm_data;  --csm_uplink_fm_data_2d;
+            --FM_CSM_HAL : process (clock_and_control.clk, clock_and_control.rst) is
+            --begin
+            --  if(clock_and_control.rst) then
+            --    csm_uplink_fm_data_d    <= zero(csm_uplink_fm_data_d);
+            --    csm_uplink_fm_data_2d  <= zero(csm_uplink_fm_data_2d);
+            --elsif (rising_edge(clock_and_control.clk)) then  -- rising clock edge
+            --  csm_uplink_fm_data_d    <= csm_uplink_fm_data;
+            --  csm_uplink_fm_data_2d   <= csm_uplink_fm_data_d;
+            ----    ult_fm_data <= sf_fm_inn & sf_fm_mid & sf_fm_out & slc_rx_fm_data & ucm2hps_fm_data & ucm2pl_fm_data;
+            --end if;
+            --end process;
           
             FM_PB_UCM_SLC_RX:for I in 0 to primary_sl_n -1 generate
               fm_ucm_slc_rx_pb(I)  <= fm_pb_v(h2s_sb_all_station_n + I)(width(fm_ucm_slc_rx_pb(I)) - 1 downto 0);             

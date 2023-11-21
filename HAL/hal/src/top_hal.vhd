@@ -169,13 +169,13 @@ architecture behavioral of top_hal is
   signal clk40           : std_logic; -- 40 MHz LHC clock 
   signal clk240          : std_logic; -- 240 MHz LHC clock
   signal clk320          : std_logic; -- 320 MHz multiplied LHC clock
-  signal clock_userlogic : std_logic; -- User logic clock (nominally 320 MHz)
+  --signal clock_userlogic : std_logic; -- User logic clock (nominally 320 MHz)
   signal refclk_mirrors : std_logic_vector (c_NUM_REFCLKS-1 downto 0); --reclock mirrors from BUFG
   
   -- Synchronized resets
   signal lhc_locked    : std_logic;
   signal b2b_locked    : std_logic;
-  signal reset_userclk : std_logic;
+  --signal reset_userclk : std_logic;
   signal reset_clk320  : std_logic;
   signal reset_clk40   : std_logic;
   signal reset_axi     : std_logic;
@@ -290,7 +290,7 @@ architecture behavioral of top_hal is
 
   attribute MAX_FANOUT of strobe_320 : signal is "20";
 
-  attribute MAX_FANOUT of reset_userclk : signal is "32";
+  --attribute MAX_FANOUT of reset_userclk : signal is "32";
   attribute MAX_FANOUT of reset_clk320  : signal is "32";
   attribute MAX_FANOUT of reset_clk40   : signal is "32";
   attribute MAX_FANOUT of reset_axi     : signal is "32";
@@ -343,12 +343,12 @@ begin  -- architecture behavioral
       dest_clk => clk320,
       src_rst  => reset_clk40);
 
-  userclk_rst_bit_synchronizer : xpm_cdc_sync_rst
-    generic map (DEST_SYNC_FF => 5, INIT => 1, INIT_SYNC_FF => 1)
-    port map (
-      dest_rst => reset_userclk,
-      dest_clk => clock_userlogic,
-      src_rst  => reset_clk40);
+  --userclk_rst_bit_synchronizer : xpm_cdc_sync_rst
+  --  generic map (DEST_SYNC_FF => 5, INIT => 1, INIT_SYNC_FF => 1)
+  --  port map (
+  --    dest_rst => reset_userclk,
+  --    dest_clk => clock_userlogic,
+  --    src_rst  => reset_clk40);
 
   --------------------------------------------------------------------------------
   -- Signal Aliasing
@@ -406,7 +406,7 @@ begin  -- architecture behavioral
       clock40_o         => clk40,
       clock240_o        => clk240,
       clock320_o        => clk320,
-      clock_userlogic_o => clock_userlogic
+      clock_userlogic_o => open  --clock_userlogic
 
       );
 
@@ -445,12 +445,12 @@ begin  -- architecture behavioral
   clock_strobe_userlogic : entity work.clock_strobe
     generic map (RATIO => 8)
     port map (
-      fast_clk_i => clock_userlogic,
+      fast_clk_i => clk320, --clock_userlogic,
       slow_clk_i => clk40,
       strobe_o   => strobe_userclk);
 
-  clock_and_control_o.rst <= reset_userclk;
-  clock_and_control_o.clk <= clock_userlogic;
+  clock_and_control_o.rst <= reset_clk320; --reset_userclk;
+  clock_and_control_o.clk <= clk320; --clock_userlogic;
   clock_and_control_o.bx  <= strobe_userclk;
 
   --------------------------------------------------------------------------------
@@ -677,7 +677,7 @@ begin  -- architecture behavioral
           )
         port map (
           clock          => clk320,
-          pipeline_clock => clock_userlogic,
+          pipeline_clock => clk320, --clock_userlogic,
           reset          => reset_clk320,
           tdc_hits_i     => tdc_hits_to_polmux (hi downto lo),
           read_done_o    => read_done_from_polmux (hi downto lo),
@@ -714,7 +714,7 @@ begin  -- architecture behavioral
 
       tx_clk         => sl_tx_clks,
       rx_clk         => sl_rx_clks,
-      pipeline_clock => clock_userlogic,
+      pipeline_clock => clk320, --clock_userlogic,
       clk40          => clk40,
       reset          => reset_clk40,
       refclk_mirrors_in => refclk_mirrors,
@@ -853,10 +853,10 @@ begin  -- architecture behavioral
     signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
   begin
 
-    process (clock_userlogic) is
+    process (clk320) is  --clock_userlogic) is
     begin
 
-      if (rising_edge(clock_userlogic)) then
+      if (rising_edge(clk320) )then --clock_userlogic)) then
 
         daqsump_loop :
         for I in 0 to daq_stream_data_vi'length-1 loop

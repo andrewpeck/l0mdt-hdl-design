@@ -896,7 +896,7 @@ assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data
 
   
 
-   always @(posedge spy_clock)
+   always @(posedge spy_clock  or negedge axi_reset_n)
      begin
 	if(~axi_reset_n)
 	  begin
@@ -934,7 +934,7 @@ assign  axi_sb_wr_data       = (init_spy_mem_internal == 1)? axi_sb_init_wr_data
 
 
 
-    always @(posedge spy_clock)
+    always @(posedge spy_clock  or negedge axi_reset_n)
      begin
 	if(~axi_reset_n)
 	  begin
