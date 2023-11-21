@@ -1,15 +1,21 @@
 <node id="FM">
-  <node id="SPY_CTRL"  address="0x6000">
+  <node id="SPY_CTRL"  address="0xFF00">
     <node id="GLOBAL_FREEZE" address = "0x0" permission="rw" mask="0x1" parameters="default=1" />
     <node id="GLOBAL_PLAYBACK_MODE" address="0x0" permission="rw" mask="0x6" parameters="default=0" />
     <node id="INITIALIZE_SPY_MEMORY" address="0x0" permission="rw" mask="0x8" parameters="default=1"/>
   </node>
-  <node id="FREEZE_MASK_0" address="0x6001" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0" />
-  <node id="FREEZE_MASK_1" address="0x6002" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
-  <node id="PLAYBACK_MASK_0" address="0x6003" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/> 
-  <node id="PLAYBACK_MASK_1" address="0x6004" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
-  <node id="SB_RESET_0" address="0x6005" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/> 
-  <node id="SB_RESET_1" address="0x6006" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="FREEZE_MASK_0" address="0xff01" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0" />
+  <node id="FREEZE_MASK_1" address="0xff02" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="FREEZE_MASK_2" address="0xff03" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="FREEZE_MASK_3" address="0xff04" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="PLAYBACK_MASK_0" address="0xff05" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/> 
+  <node id="PLAYBACK_MASK_1" address="0xff06" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
+ <node id="PLAYBACK_MASK_2" address="0xff07" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
+ <node id="PLAYBACK_MASK_3" address="0xff08" permission="rw" mask="0xFFFFFFFF" parameters="default=0xFFFFFFFF"/>
+  <node id="SB_RESET_0" address="0xff09" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/> 
+  <node id="SB_RESET_1" address="0xff0a" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
+  <node id="SB_RESET_2" address="0xff0b" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>  
+  <node id="SB_RESET_3" address="0xff0c" permission="rw" mask="0xFFFFFFFF" parameters="default=0x0"/>
   
   <node id="SB0" address="0x0" description =" width=128 df=HEG2SFSLC" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
@@ -137,10 +143,220 @@
   <node id="SB41" address="0x5200" description =" width=256 df=UCM2PL" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB42" address="0x5400" description =" width=64 df=SB_DUMMY" >
+  <node id="SB42" address="0x5400" description =" width=256 df=MTC2SL" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
-  <node id="SB43" address="0x5600" description =" width=64 df=SB_DUMMY" >
+  <node id="SB43" address="0x5600" description =" width=256 df=MTC2SL" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB44" address="0x5800" description =" width=256 df=MTC2SL" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB45" address="0x5a00" description =" width=256 df=MTC2SL" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB46" address="0x5c00" description =" width=256 df=MTC2SL" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB47" address="0x5e00" description =" width=256 df=MTC2SL" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB48" address="0x6000" description =" width=256 df=MTC2SL" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB49" address="0x6200" description =" width=256 df=MTC2SL" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB50" address="0x6400" description =" width=256 df=MTC2SL" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB51" address="0x6600" description =" width=32 df=CUSTOM_CSM_UPLINK_DATA" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB52" address="0x6800" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB53" address="0x6a00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB54" address="0x6c00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB55" address="0x6e00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB56" address="0x7000" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB57" address="0x7200" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB58" address="0x7400" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB59" address="0x7600" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB60" address="0x7800" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB61" address="0x7a00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB62" address="0x7c00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB63" address="0x7e00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB64" address="0x8000" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB65" address="0x8200" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB66" address="0x8400" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB67" address="0x8600" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB68" address="0x8800" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB69" address="0x8a00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB70" address="0x8c00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB71" address="0x8e00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB72" address="0x9000" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB73" address="0x9200" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB74" address="0x9400" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB75" address="0x9600" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB76" address="0x9800" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB77" address="0x9a00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB78" address="0x9c00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB79" address="0x9e00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB80" address="0xa000" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB81" address="0xa200" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB82" address="0xa400" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB83" address="0xa600" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB84" address="0xa800" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB85" address="0xaa00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB86" address="0xac00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB87" address="0xae00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB88" address="0xb000" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB89" address="0xb200" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB90" address="0xb400" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB91" address="0xb600" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB92" address="0xb800" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB93" address="0xba00" description =" width=64 df=TDCPOLMUX2TAR" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB94" address="0xbc00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB95" address="0xbe00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB96" address="0xc000" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB97" address="0xc200" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB98" address="0xc400" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB99" address="0xc600" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB100" address="0xc800" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB101" address="0xca00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB102" address="0xcc00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB103" address="0xce00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB104" address="0xd000" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB105" address="0xd200" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB106" address="0xd400" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB107" address="0xd600" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB108" address="0xd800" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB109" address="0xda00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB110" address="0xdc00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB111" address="0xde00" description =" width=64 df=CUSTOM_DAQ" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB112" address="0xe000" description =" width=64 df=SB_DUMMY" >
+   <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
+  </node>
+  <node id="SB113" address="0xe200" description =" width=64 df=SB_DUMMY" >
    <node id="SB_MEM" address="0x0" mode="incremental" size="0x200"  fwinfo="type=mem32_0x200"/>
   </node>
  

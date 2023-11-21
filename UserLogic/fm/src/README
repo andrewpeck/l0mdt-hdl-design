@@ -8,3 +8,8 @@ python ../../../../tools/yml2hdl/yml2hdl.py -v  fm_types.yml -f
 ./build_vhdl_packages.py -x ../address_tables/modules/FM.xml -o ../HAL/ctrl/src/FM  --yaml 2 --mapTemplate templates/axi_generic/template_map_withbram.vhd FM
 cd ..
 python3 tools/yml2hdl/yml2hdl.py HAL/ctrl/src/FM/FM_PKG.yml
+
+
+#Automatic generation of AXI interface
+1. Edit fm_sb_mapping.txt to include all spybuffers that need to be inferred
+2. Run python script - "python fm_gen_sb_mapping.py"
