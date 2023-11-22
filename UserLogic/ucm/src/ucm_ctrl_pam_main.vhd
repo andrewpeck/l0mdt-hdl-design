@@ -72,12 +72,26 @@ architecture beh of ucm_ctrl_pam_main is
   constant eta_lower_lim : ucm_eta_lim_aait(0 to 3) := f_get_eta_lim_i('1');
   constant eta_upper_lim : ucm_eta_lim_aait(0 to 3) := f_get_eta_lim_i('0');
 
+  signal num_cand : unsigned(3 downto 0);
+  signal nc_dv : std_logic;
+
   signal i_pam_ctrl_ar       : ucm_data2pamctrl_art(c_NUM_ACCEPTS -1 downto 0);
   type ch_lim_aut is array (integer range<>) of unsigned(3 downto 0);
   signal max_num : ch_lim_aut(c_NUM_ACCEPTS -1 downto 0);
   -- signal ch_l_lim_au : ch_lim_aut(5 downto 0);
   -- signal ch_u_lim_au : ch_lim_aut(5 downto 0);
   -- signal ch_lim_dv : std_logic_vector(5 downto 0);
+  signal th_busy  : std_logic_vector(c_NUM_THREADS -1 downto 0);
+  signal th_load  : std_logic_vector(c_NUM_THREADS -1 downto 0);
+  signal th_free : integer;
+  signal th_next : integer;
+  type th_time_org_ait is array (c_NUM_THREADS -1 downto 0) of integer;
+  signal th_time_org_ai : th_time_org_ait;
+
+  signal sth_busy  : std_logic_vector(c_NUM_SUBTHREADS -1 downto 0);
+
+  signal main_count : integer;
+
 ---------------------------------------
   
   signal int_pam_ctrl_ar    : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
@@ -89,7 +103,7 @@ architecture beh of ucm_ctrl_pam_main is
   signal int_cvp_rst_v           : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
   signal int_cvp_ctrl_v          : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
   
-  signal ch_busy  : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+  -- signal ch_busy  : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
 
   constant proc_info_init  : ucm_proc_info_rt := ( ch => (others => '0') ,
                                                       processed => '0',
@@ -137,7 +151,7 @@ begin
       end generate;
     end generate;
 
-    process (clk)
+    GET_MAX_PROC : process (clk)
       variable max_num_vu : unsigned(3 downto 0);
     begin
       if rising_edge(clk) then
@@ -152,16 +166,112 @@ begin
         end if;
       end if;
     end process;
+
   end generate;
 
-    process (clk)
+  TH_ASS_PROC : process (clk)
+    variable v_th_next : integer;
+    variable v_th_free : integer;
     begin
       if rising_edge(clk) then
         if rst = '1' then
+          num_cand <= x"0";
+          th_free <= c_NUM_THREADS;
+          th_next <= 0;
+          th_load <= (others => '0');
+        else
+          nc_dv <= i_pam_update;
+          if i_pam_update = '1' then
+            num_cand <= i_num_cand;
+          end if;
+          for th_i in c_NUM_THREADS -1 downto 0 loop
+            if th_busy(th_i) = '1' then
+              th_load(th_i) <= '0';
+            end if;
+          end loop;
+          for slc_i in 0 to c_NUM_ACCEPTS - 1 loop -- loop possible slc
+            o_cvp_ctrl(slc_i) <= '0';
+          end loop;
+          if nc_dv = '1' then
+            if and_reduce(th_busy) = '0' then
+              v_th_next := th_next;
+              v_th_free := th_free;
+              for slc_i in 0 to c_NUM_ACCEPTS - 1 loop -- loop possible slc
+                -- if v_th_free > 0 then
+                if th_busy(v_th_next) = '0' then
+                  if slc_i < to_integer(num_cand) then
+                    th_load(v_th_next) <= '1';
+                    o_cvp_ctrl(slc_i) <= '1';
+                    v_th_free := v_th_free - 1;
+                    if v_th_next = c_NUM_THREADS -1 then
+                      v_th_next := 0;
+                    else
+                      v_th_next := v_th_next + 1;
+                    end if;
+                  end if;
+                end if;
+              end loop;
+              th_next <= v_th_next;
+              th_free <= v_th_free;
+            end if;
+          end if;
+          -- if and_reduce(th_busy) = '0' then -- not all busy
+          --   -- for th_i in c_NUM_THREADS -1 downto 0 loop
+          --   --   if th_load(th_i) = '1' then
+          --   --     th_load(th_i) <= '0';
+          --   --   end if;
+          --   -- end loop;
+          --   -- for slc_i in 0 to c_NUM_ACCEPTS - 1 loop -- loop possible slc
+          --   --   if slc_i < to_integer(num_cand) then
+          --   --     for th_i in c_NUM_THREADS -1 downto 0 loop
+          --   --       if th_busy(th_i) = '0' then
+                    
+          --   --       end if;
+          --   --     end loop;
+          --   --   end if;
+          --   -- end loop;
+          -- end if;
+        end if;
+      end if;
+    end process;
+
+  process (clk)
+    begin
+      if rising_edge(clk) then
+        if rst='1' then
+          main_count <= c_TOTAL_THREAD_USAGE_LATENCY;
+        else
+          if main_count = 0 then
+            main_count <= c_TOTAL_THREAD_USAGE_LATENCY;
+          else
+            main_count <= main_count - 1;
+          end if;
+        end if;
+      end if;
+    end process;
+
+  TH_CTRL_FOR_GEN : for th_i in c_NUM_THREADS -1 downto 0 generate
+    process (clk)
+    begin
+      if rising_edge(clk) then
+        if rst='1' then
+          th_busy(th_i) <= '0';
+          th_time_org_ai(th_i) <= 0;
+        else
+          if th_busy(th_i) = '1' then
+          else
+            if th_load(th_i) = '1' then 
+              th_busy(th_i) <= '1';
+              th_time_org_ai(th_i) <= main_count;
+            end if;
+          end if;
+       
           
         end if;
       end if;
     end process;
+  end generate;
+    
 
   
 
@@ -175,7 +285,7 @@ begin
 
 
 
-    -- o_proc_info_av <= convert(o_proc_info_ar,o_proc_info_av)
+  --   -- o_proc_info_av <= convert(o_proc_info_ar,o_proc_info_av)
 
   -- -- for heg_i in c_NUM_ACCEPTS -1 downto 0 generate
   -- --   -- o_pam2heg.data_present(heg_i) <= 

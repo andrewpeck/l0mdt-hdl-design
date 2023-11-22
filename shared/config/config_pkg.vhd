@@ -233,6 +233,8 @@ package config_pkg is
 
   constant c_HEG_PROC_TIME : integer := c_HEG_TIME_UNLOAD + get_sf_time(CFG.SF_TYPE,CSF_POST_PROCESSING,LSF_POST_PROCESSING);
 
+  constant c_TOTAL_THREAD_USAGE_LATENCY : integer := c_HEG_PROC_TIME - c_UCM_2HPS_LATENCY;
+
   --constant c_MPL_PL_A_LATENCY   : integer := c_HEG_PROC_TIME;
 
   constant c_MPL_PL_B_LATENCY   : integer := get_pt_latency(CFG.PT_TYPE,CFG.UPT_LATENCY, CFG.MPT_LATENCY) ; 
