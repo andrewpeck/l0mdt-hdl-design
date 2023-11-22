@@ -153,10 +153,10 @@ entity ult_fm is
                              slc_rx_fm_data &
                              ucm2hps_fm_data &
                              ucm2pl_fm_data &
+                             fm_mtc_art &
                              fm_csm_custom_art &
                              fm_csm_art & 
-                             fm_tar_art & 
-                             fm_mtc_art &
+                             fm_tar_art &                              
                              fm_daq_art     ;
 
              fm_csm_custom_art(0) <= csm_uplink_fm_data;  --csm_uplink_fm_data_2d;
