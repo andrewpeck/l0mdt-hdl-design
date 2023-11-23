@@ -86,8 +86,8 @@ begin
     i_pam_update        => i_pam_update,
     i_pam_ctrl_av       => data2pamctrl_av,
     --
-    o_pam_ctrl          => pam_CSW_control,
-    o_pam_ctrl_dv       => pam_CSW_control_dv,
+    -- o_pam_ctrl          => pam_CSW_control,
+    -- o_pam_ctrl_dv       => pam_CSW_control_dv,
     --
     o_pam2tar_av        => o_pam2tar_av,
     o_pam2cpl_av        => o_pam2cpl_av,

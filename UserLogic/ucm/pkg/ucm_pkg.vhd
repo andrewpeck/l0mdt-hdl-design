@@ -281,19 +281,29 @@ package ucm_pkg is
    function convert(x: p2tar_ch_aut; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: p2tar_ch_aut) return p2tar_ch_aut;
 
+   type ch_map_avt is array(3 downto 0) of std_logic_vector(6-1 downto 0);
+   attribute w of ch_map_avt : type is 24;
+   function width(x: ch_map_avt) return integer;
+   function convert(x: ch_map_avt; tpl: std_logic_vector) return std_logic_vector;
+   function convert(x: std_logic_vector; tpl: ch_map_avt) return ch_map_avt;
+   function zero(tpl: ch_map_avt) return ch_map_avt;
+   function convert(x: ch_map_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
+   function convert(x: std_logic_vector_array; tpl: ch_map_avt) return ch_map_avt;
+
    type ucm_pam2tar_rt is record
-      ch : p2tar_ch_aut;
+      ch_map : ch_map_avt;
       th : unsigned(4-1 downto 0);
       action : std_logic_vector(4-1 downto 0);
+      dv : std_logic;
    end record ucm_pam2tar_rt;
-   attribute w of ucm_pam2tar_rt : type is 16;
+   attribute w of ucm_pam2tar_rt : type is 33;
    function width(x: ucm_pam2tar_rt) return natural;
    function convert(x: ucm_pam2tar_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: ucm_pam2tar_rt) return ucm_pam2tar_rt;
    function zero(tpl: ucm_pam2tar_rt) return ucm_pam2tar_rt;
 
    subtype ucm_pam2tar_vt is std_logic_vector(ucm_pam2tar_rt'w-1 downto 0);
-   attribute w of ucm_pam2tar_vt : subtype is 16;
+   attribute w of ucm_pam2tar_vt : subtype is 33;
 
    type ucm_pam2tar_art is array(integer range <>) of ucm_pam2tar_rt;
    function width(x: ucm_pam2tar_art) return integer;
@@ -2114,12 +2124,86 @@ package body ucm_pkg is
       return y;
    end function convert;
 
+   function width(x: ch_map_avt) return integer is
+      variable w : integer;
+   begin
+      if x'length < 1 then
+        w := 0;
+      else
+        w := x'length * width(x(x'low));
+      end if;
+      return w;
+   end function width;
+   function convert(x: ch_map_avt; tpl: std_logic_vector) return std_logic_vector is
+      variable y : std_logic_vector(tpl'range);
+      constant W : natural := width(x(x'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if y'ascending then
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(b to a), convert(x(i+x'low), y(b to a)));
+         end loop;
+      else
+         for i in 0 to x'length-1 loop
+            a := W*i + y'low + W - 1;
+            b := W*i + y'low;
+            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector; tpl: ch_map_avt) return ch_map_avt is
+      variable y : ch_map_avt;
+      constant W : natural := width(y(y'low));
+      variable a : integer;
+      variable b : integer;
+   begin
+      if x'ascending then
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(b to a), y(i+y'low));
+         end loop;
+      else
+         for i in 0 to y'length-1 loop
+            a := W*i + x'low + W - 1;
+            b := W*i + x'low;
+            y(i+y'low) := convert(x(a downto b), y(i+y'low));
+         end loop;
+      end if;
+      return y;
+   end function convert;
+   function zero(tpl: ch_map_avt) return ch_map_avt is
+   begin
+      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
+   end function zero;
+   function convert(x: ch_map_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
+      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), (y(j)'range => '0'));
+      end loop;
+      return y;
+   end function convert;
+   function convert(x: std_logic_vector_array; tpl: ch_map_avt) return ch_map_avt is
+      variable y : ch_map_avt;
+   begin
+      for j in y'range loop
+          y(j) := convert(x(j), y(j));
+      end loop;
+      return y;
+   end function convert;
+
    function width(x: ucm_pam2tar_rt) return natural is
       variable w : natural := 0;
    begin
-      w := w + width(x.ch);
+      w := w + width(x.ch_map);
       w := w + width(x.th);
       w := w + width(x.action);
+      w := w + width(x.dv);
       return w;
    end function width;
    function convert(x: ucm_pam2tar_rt; tpl: std_logic_vector) return std_logic_vector is
@@ -2128,23 +2212,29 @@ package body ucm_pkg is
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
-         w := width(x.ch);
-         y(u to u+w-1) := convert(x.ch, y(u to u+w-1));
+         w := width(x.ch_map);
+         y(u to u+w-1) := convert(x.ch_map, y(u to u+w-1));
          u := u + w;
          w := width(x.th);
          y(u to u+w-1) := convert(x.th, y(u to u+w-1));
          u := u + w;
          w := width(x.action);
          y(u to u+w-1) := convert(x.action, y(u to u+w-1));
+         u := u + w;
+         w := width(x.dv);
+         y(u to u+w-1) := convert(x.dv, y(u to u+w-1));
       else
-         w := width(x.ch);
-         y(u downto u-w+1) := convert(x.ch, y(u downto u-w+1));
+         w := width(x.ch_map);
+         y(u downto u-w+1) := convert(x.ch_map, y(u downto u-w+1));
          u := u - w;
          w := width(x.th);
          y(u downto u-w+1) := convert(x.th, y(u downto u-w+1));
          u := u - w;
          w := width(x.action);
          y(u downto u-w+1) := convert(x.action, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.dv);
+         y(u downto u-w+1) := convert(x.dv, y(u downto u-w+1));
       end if;
       return y;
    end function convert;
@@ -2154,23 +2244,29 @@ package body ucm_pkg is
       variable u : integer := x'left;
    begin
       if x'ascending then
-         w := width(tpl.ch);
-         y.ch := convert(x(u to u+w-1), tpl.ch);
+         w := width(tpl.ch_map);
+         y.ch_map := convert(x(u to u+w-1), tpl.ch_map);
          u := u + w;
          w := width(tpl.th);
          y.th := convert(x(u to u+w-1), tpl.th);
          u := u + w;
          w := width(tpl.action);
          y.action := convert(x(u to u+w-1), tpl.action);
+         u := u + w;
+         w := width(tpl.dv);
+         y.dv := convert(x(u to u+w-1), tpl.dv);
       else
-         w := width(tpl.ch);
-         y.ch := convert(x(u downto u-w+1), tpl.ch);
+         w := width(tpl.ch_map);
+         y.ch_map := convert(x(u downto u-w+1), tpl.ch_map);
          u := u - w;
          w := width(tpl.th);
          y.th := convert(x(u downto u-w+1), tpl.th);
          u := u - w;
          w := width(tpl.action);
          y.action := convert(x(u downto u-w+1), tpl.action);
+         u := u - w;
+         w := width(tpl.dv);
+         y.dv := convert(x(u downto u-w+1), tpl.dv);
       end if;
       return y;
    end function convert;

@@ -61,6 +61,7 @@ entity ucm_ctrl_pam_subth is
     o_num_ch            : out unsigned(3 downto 0);
     o_min_ch            : out unsigned(3 downto 0);
     o_max_ch            : out unsigned(3 downto 0);
+    o_ch_map            : out std_logic_vector(c_TOTAL_MAX_NUM_HP - 1 downto 0);
     o_dv                : out std_logic
   );
 end entity;
@@ -128,6 +129,7 @@ begin
         o_min_ch <= (others => '0');
         o_max_ch <= (others => '0');
         o_num_ch <= (others => '0');
+        o_ch_map <= (others => '0');
         o_dv <= '0';  
       else
         o_dv <= ch_dv;
@@ -152,6 +154,7 @@ begin
           o_num_ch <= cnt_ch;
           o_min_ch <= min_ch;
           o_max_ch <= max_ch;
+          o_ch_map <= chamber;
         end if;
       end if;
     end if;

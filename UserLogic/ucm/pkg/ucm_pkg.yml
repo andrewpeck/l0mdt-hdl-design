@@ -75,10 +75,14 @@ types:
   # - ucm_eta_lim_art:
   # - ucm_eta_lim_aut: {'array': 'open', 'type': 'unsigned','range' : [SL2MDT_SLC_COMMON_POSETA_LEN-1, 0]}
   - p2tar_ch_aut: {'array': [1,0], 'type': 'unsigned', 'range': ['4-1', 0]}
+  - ch_map_avt: {'array': [3,0], 'type': 'logic', 'range': ['6-1', 0]}
   - ucm_pam2tar_rt:
-    - ch: { 'type': 'p2tar_ch_aut'}
+    # - ch_map: { 'type': 'logic', 'range': ['6-1', 0]} #c_TOTAL_MAX_NUM_HP
+    - ch_map: { 'type': 'ch_map_avt'} #c_TOTAL_MAX_NUM_HP
+    # - ch: { 'type': 'p2tar_ch_aut'}
     - th: { 'type': 'unsigned', 'range': ['4-1', 0]}
     - action: {'type': 'logic', 'range': ['4-1', 0]}
+    - dv: {'type': 'logic'}
   - ucm_pam2tar_vt: {'type': 'logic', 'range': ['ucm_pam2tar_rt-1', 0]}
   - ucm_pam2tar_art: {'array': 'open', 'type': 'ucm_pam2tar_rt'}
   - ucm_pam2tar_avt: {'array': 'open', 'type': 'ucm_pam2tar_vt'}

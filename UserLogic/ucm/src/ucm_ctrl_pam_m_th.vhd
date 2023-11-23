@@ -49,7 +49,7 @@ entity ucm_ctrl_pam_m_th is
     --
     i_main_count_i      : in integer;
     i_load              : in std_logic;
-    i_slc               : in integer;
+    -- i_slc               : in integer;
     --    
     
     o_busy              : out std_logic
