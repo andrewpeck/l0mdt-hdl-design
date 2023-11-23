@@ -38,7 +38,7 @@ entity ucm_out2tar is
     -- ctrl_v              : in std_logic_vector;
     -- mon_v               : out std_logic_vector;
     --
-    i_proc_info_av      : in ucm_proc_info_avt(c_MAX_NUM_SL -1 downto 0);
+    i_proc_info_av      : in ucm_pam2tar_avt(c_NUM_ACCEPTS -1 downto 0);
     -- 
     o_uCM2tar_inn_av        : out ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);
     o_uCM2tar_mid_av        : out ucm2tar_avt(c_NUM_ACCEPTS -1 downto 0);

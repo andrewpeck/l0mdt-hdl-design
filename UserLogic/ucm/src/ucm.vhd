@@ -156,8 +156,8 @@ architecture beh of ucm is
 
   signal csw_control_av       : ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
   signal pam_CSW_control      : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
-  signal proc_info_av          : ucm_proc_info_avt(c_MAX_NUM_SL -1 downto 0);
-
+  signal pam2cpl_av          : ucm_proc_info_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal pam2tar_av           : ucm_pam2tar_avt(c_NUM_ACCEPTS -1 downto 0);
   signal cvp_in_en            : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
   signal cvp_loc_rst          : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
 
@@ -282,8 +282,8 @@ begin
   --   o_csw_ctrl_av     => csw_control_av,
   --   o_csw_ctrl_dv     => csw_ctrl_dv,
   --   o_pam_ctrl        => pam_CSW_control,
-  --   -- o_proc_info       => proc_info_av,
-  --   o_proc_info_av    => proc_info_av,
+  --   -- o_proc_info       => pam2cpl_av,
+  --   o_proc_info_av    => pam2cpl_av,
   --   --
   --   o_cvp_rst         => cvp_loc_rst,
   --   o_cvp_ctrl        => cvp_in_en
@@ -352,9 +352,9 @@ begin
         i_phicenter           => phicenter,
         i_chamber_z_org_bus   => cde_chamber_z_org_bus,
         --
-        -- i_proc_info_v         => proc_info_av(sl_i),-- - (c_MAX_NUM_SL - c_NUM_ACCEPTS) ),
-        -- i_proc_info_v         => proc_info_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_ACCEPTS - 1) - 2),
-        -- i_proc_info_v         => proc_info_av(sl_i),
+        -- i_proc_info_v         => pam2cpl_av(sl_i),-- - (c_MAX_NUM_SL - c_NUM_ACCEPTS) ),
+        -- i_proc_info_v         => pam2cpl_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_ACCEPTS - 1) - 2),
+        -- i_proc_info_v         => pam2cpl_av(sl_i),
         --
         i_slc_data_v          => csw_main_out_av(sl_i),
         --
@@ -379,7 +379,7 @@ begin
     --     i_phicenter           => phicenter,
     --     i_chamber_z_org_bus   => cde_chamber_z_org_bus,
     --     --
-    --     -- i_proc_info_v         => proc_info_av(sl_i),
+    --     -- i_proc_info_v         => pam2cpl_av(sl_i),
     --     --
     --     i_slc_data_v          => csw_main_out_av(sl_i),
     --     --
@@ -404,9 +404,11 @@ begin
       i_num_cand      => num_cand,
       i_pam_update    => pam_update,
       --
-      o_proc_info_av  => proc_info_av,
       o_cvp_rst         => cvp_loc_rst,
       o_cvp_ctrl        => cvp_in_en,
+      --
+      o_pam2tar_av        => pam2tar_av,
+      o_pam2cpl_av        => pam2cpl_av,
       -- data
       i_data_av          => cpam_in_av(c_MAX_NUM_SL - 1 downto c_MAX_NUM_SL -c_NUM_ACCEPTS),
       o_data_av          => cpam_out_av
@@ -432,7 +434,7 @@ begin
       -- ctrl_v              => r_phi_comp_ctrl_v,
       -- mon_v               => r_phi_comp_mon_av(vp_i),
       --
-      i_proc_info_av  => proc_info_av,
+      i_proc_info_av  => pam2tar_av,
       --
       o_uCM2tar_inn_av  => o_uCM2tar_inn_av,
       o_uCM2tar_mid_av  => o_uCM2tar_mid_av,
@@ -514,7 +516,7 @@ begin
       -- ctrl_v              => r_phi_comp_ctrl_v,
       -- mon_v               => r_phi_comp_mon_av(vp_i),
       --
-      i_proc_info_av  => proc_info_av,
+      i_proc_info_av  => pam2cpl_av,
       i_data_av       => int_uCM2pl_av,
       --
       o_uCM2pl_av => o_uCM2pl_av

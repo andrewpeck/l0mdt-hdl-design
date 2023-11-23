@@ -74,3 +74,10 @@ types:
 
   # - ucm_eta_lim_art:
   # - ucm_eta_lim_aut: {'array': 'open', 'type': 'unsigned','range' : [SL2MDT_SLC_COMMON_POSETA_LEN-1, 0]}
+  - p2tar_ch_aut: {'array': [1,0], 'type': 'unsigned', 'range': ['4-1', 0]}
+  - ucm_pam2tar_rt:
+    - ch: { 'type': 'p2tar_ch_aut'}
+    - action: {'type': 'logic', 'range': ['4-1', 0]}
+  - ucm_pam2tar_vt: {'type': 'logic', 'range': ['ucm_pam2tar_rt-1', 0]}
+  - ucm_pam2tar_art: {'array': 'open', 'type': 'ucm_pam2tar_rt'}
+  - ucm_pam2tar_avt: {'array': 'open', 'type': 'ucm_pam2tar_vt'}

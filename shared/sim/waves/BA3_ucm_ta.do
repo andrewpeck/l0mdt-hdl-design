@@ -195,14 +195,14 @@ add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/o_cvp_ctrl
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/g_PAM_CTRL_PL
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/g_PAM_INFO_PL
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/g_CVP_PL
+add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/eta_lower_lim
+add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/eta_upper_lim
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/clk
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/rst
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ena
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_num_cand
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_update
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_av
-add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/eta_lower_lim
-add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/eta_upper_lim
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2) -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).data_valid -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).poseta -radix unsigned}}} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(1) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(0) -radix unsigned}} -subitemconfig {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2) {-height 17 -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).data_valid -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).poseta -radix unsigned}} -expand} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).data_valid {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).poseta {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(1) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(0) {-height 17 -radix unsigned}} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/max_num
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_busy
@@ -213,7 +213,7 @@ add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_load
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_free
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_next
-add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(3) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(2) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(1) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(0) -radix unsigned}} -expand -subitemconfig {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(3) {-radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(2) {-radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(1) {-radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(0) {-radix unsigned}} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai
+add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(3) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(2) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(1) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(0) -radix unsigned}} -expand -subitemconfig {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(3) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(2) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(1) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(0) {-height 17 -radix unsigned}} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai
 add wave -noupdate -expand -group PAM_CTRL_MAIN -divider {New Divider}
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_pam_ctrl_ar
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_proc_info_ar
@@ -284,7 +284,7 @@ add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_main_secondary_slc
 add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_plus_neighbor_slc
 add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_minus_neighbor_slc
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1477648709 fs} 0}
+WaveRestoreCursors {{Cursor 1} {1431484233 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 185
 configure wave -valuecolwidth 170
@@ -300,4 +300,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1273980176 fs} {1790984913 fs}
+WaveRestoreZoom {1410483155 fs} {1500539859 fs}

@@ -21,6 +21,7 @@ UserLogic/ucm/src/ucm_ctrl_slc_main.vhd
 UserLogic/ucm/src/ucm_ctrl_slc_csw.vhd
 
 UserLogic/ucm/src/ucm_ctrl_pam_top.vhd
+UserLogic/ucm/src/ucm_ctrl_pam_m_th.vhd
 UserLogic/ucm/src/ucm_ctrl_pam_main.vhd
 UserLogic/ucm/src/ucm_ctrl_pam_csw.vhd
 UserLogic/ucm/src/ucm_ctrl_pam_subth.vhd

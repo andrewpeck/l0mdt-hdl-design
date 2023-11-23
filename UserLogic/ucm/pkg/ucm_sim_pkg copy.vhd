@@ -12,7 +12,6 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-use shared_lib.sl2mdt_constants_pkg.all;
 
 package ucm_pkg is
 
@@ -21,11 +20,14 @@ package ucm_pkg is
    constant SLC_SPECIFIC_LEN : integer := 48;
    attribute w of SLC_SPECIFIC_LEN : constant is 32;
 
-   constant UCM_CDE2CVP_PHIMOD_LEN : integer := 7;
+   constant UCM_CDE2CVP_PHIMOD_LEN : integer := 5;
    attribute w of UCM_CDE2CVP_PHIMOD_LEN : constant is 32;
 
-   constant UCM_CDE2CVP_PHIMOD_MULT : real := 64.0;
+   constant UCM_CDE2CVP_PHIMOD_MULT : real := 12.0;
    attribute w of UCM_CDE2CVP_PHIMOD_MULT : constant is 32;
+
+   constant UCM_PHIMOD_LEN : integer := 5;
+   attribute w of UCM_PHIMOD_LEN : constant is 32;
 
    type ucm_prepro2ctrl_rt is record
       data_valid : std_logic;
@@ -55,35 +57,6 @@ package ucm_pkg is
    function convert(x: ucm_prepro2ctrl_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt;
 
-   type ucm_data2pamctrl_rt is record
-      data_valid : std_logic;
-      poseta : signed(SL2MDT_SLC_COMMON_POSETA_LEN-1 downto 0);
-   end record ucm_data2pamctrl_rt;
-   attribute w of ucm_data2pamctrl_rt : type is 15;
-   function width(x: ucm_data2pamctrl_rt) return natural;
-   function convert(x: ucm_data2pamctrl_rt; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: ucm_data2pamctrl_rt) return ucm_data2pamctrl_rt;
-   function zero(tpl: ucm_data2pamctrl_rt) return ucm_data2pamctrl_rt;
-
-   subtype ucm_data2pamctrl_vt is std_logic_vector(ucm_data2pamctrl_rt'w-1 downto 0);
-   attribute w of ucm_data2pamctrl_vt : subtype is 15;
-
-   type ucm_data2pamctrl_art is array(integer range <>) of ucm_data2pamctrl_rt;
-   function width(x: ucm_data2pamctrl_art) return integer;
-   function convert(x: ucm_data2pamctrl_art; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: ucm_data2pamctrl_art) return ucm_data2pamctrl_art;
-   function zero(tpl: ucm_data2pamctrl_art) return ucm_data2pamctrl_art;
-   function convert(x: ucm_data2pamctrl_art; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: ucm_data2pamctrl_art) return ucm_data2pamctrl_art;
-
-   type ucm_data2pamctrl_avt is array(integer range <>) of ucm_data2pamctrl_vt;
-   function width(x: ucm_data2pamctrl_avt) return integer;
-   function convert(x: ucm_data2pamctrl_avt; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: ucm_data2pamctrl_avt) return ucm_data2pamctrl_avt;
-   function zero(tpl: ucm_data2pamctrl_avt) return ucm_data2pamctrl_avt;
-   function convert(x: ucm_data2pamctrl_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: ucm_data2pamctrl_avt) return ucm_data2pamctrl_avt;
-
    subtype ucm_rpc_lt is std_logic_vector(SLC_Z_RPC_LEN -1 downto 0);
    attribute w of ucm_rpc_lt : subtype is 12;
 
@@ -95,8 +68,8 @@ package ucm_pkg is
    function convert(x: ucm_rpc_r_alt; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: ucm_rpc_r_alt) return ucm_rpc_r_alt;
 
-   subtype ucm_mdt_lt is std_logic_vector(UCM_R_MDT_LEN -1 downto 0);
-   attribute w of ucm_mdt_lt : subtype is 15;
+   subtype ucm_mdt_lt is std_logic_vector(UCM_Z_ROI_LEN -1 downto 0);
+   attribute w of ucm_mdt_lt : subtype is 14;
 
    type ucm_mdt_r_alt is array(integer range <>) of ucm_mdt_lt;
    function width(x: ucm_mdt_r_alt) return integer;
@@ -120,20 +93,21 @@ package ucm_pkg is
 
    type ucm_cde_rt is record
       muid : slc_muid_rt;
+      chamb_ieta : chamb_ieta_rpc_aut;
       cointype : std_logic_vector(SLC_COMMON_COINTYPE_LEN - 1 downto 0);
-      poseta : signed(SL2MDT_SLC_COMMON_POSETA_LEN-1 downto 0);
+      posphi : unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
       phimod : std_logic_vector(UCM_CDE2CVP_PHIMOD_LEN -1 downto 0);
       specific : std_logic_vector(SLC_SPECIFIC_LEN -1 downto 0);
       data_valid : std_logic;
    end record ucm_cde_rt;
-   attribute w of ucm_cde_rt : type is 94;
+   attribute w of ucm_cde_rt : type is 103;
    function width(x: ucm_cde_rt) return natural;
    function convert(x: ucm_cde_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: ucm_cde_rt) return ucm_cde_rt;
    function zero(tpl: ucm_cde_rt) return ucm_cde_rt;
 
    subtype ucm_cde_vt is std_logic_vector(ucm_cde_rt'w-1 downto 0);
-   attribute w of ucm_cde_vt : subtype is 94;
+   attribute w of ucm_cde_vt : subtype is 103;
 
    type ucm_cde_art is array(integer range <>) of ucm_cde_rt;
    function width(x: ucm_cde_art) return integer;
@@ -150,39 +124,6 @@ package ucm_pkg is
    function zero(tpl: ucm_cde_avt) return ucm_cde_avt;
    function convert(x: ucm_cde_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: ucm_cde_avt) return ucm_cde_avt;
-
-   type ucm_cde2pl_rt is record
-      data_valid : std_logic;
-      common : slc_common_rt;
-      phimod : signed(UCM2PL_PHIMOD_LEN-1 downto 0);
-      nswseg_angdtheta : signed(SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN-1 downto 0);
-      nswseg_posphi : unsigned(SLC_ENDCAP_NSWSEG_POSPHI_LEN-1 downto 0);
-      nswseg_poseta : unsigned(SLC_ENDCAP_NSWSEG_POSETA_LEN-1 downto 0);
-   end record ucm_cde2pl_rt;
-   attribute w of ucm_cde2pl_rt : type is 142;
-   function width(x: ucm_cde2pl_rt) return natural;
-   function convert(x: ucm_cde2pl_rt; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: ucm_cde2pl_rt) return ucm_cde2pl_rt;
-   function zero(tpl: ucm_cde2pl_rt) return ucm_cde2pl_rt;
-
-   subtype ucm_cde2pl_vt is std_logic_vector(ucm_cde2pl_rt'w-1 downto 0);
-   attribute w of ucm_cde2pl_vt : subtype is 142;
-
-   type ucm_cde2pl_art is array(integer range <>) of ucm_cde2pl_rt;
-   function width(x: ucm_cde2pl_art) return integer;
-   function convert(x: ucm_cde2pl_art; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: ucm_cde2pl_art) return ucm_cde2pl_art;
-   function zero(tpl: ucm_cde2pl_art) return ucm_cde2pl_art;
-   function convert(x: ucm_cde2pl_art; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: ucm_cde2pl_art) return ucm_cde2pl_art;
-
-   type ucm_cde2pl_avt is array(integer range <>) of ucm_cde2pl_vt;
-   function width(x: ucm_cde2pl_avt) return integer;
-   function convert(x: ucm_cde2pl_avt; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: ucm_cde2pl_avt) return ucm_cde2pl_avt;
-   function zero(tpl: ucm_cde2pl_avt) return ucm_cde2pl_avt;
-   function convert(x: ucm_cde2pl_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: ucm_cde2pl_avt) return ucm_cde2pl_avt;
 
    type ucm_csw_control_rt is record
       data_present : std_logic;
@@ -272,44 +213,6 @@ package ucm_pkg is
    function convert(x: ucm_proc_info_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
    function convert(x: std_logic_vector_array; tpl: ucm_proc_info_avt) return ucm_proc_info_avt;
 
-   type p2tar_ch_aut is array(1 downto 0) of unsigned(4-1 downto 0);
-   attribute w of p2tar_ch_aut : type is 8;
-   function width(x: p2tar_ch_aut) return integer;
-   function convert(x: p2tar_ch_aut; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: p2tar_ch_aut) return p2tar_ch_aut;
-   function zero(tpl: p2tar_ch_aut) return p2tar_ch_aut;
-   function convert(x: p2tar_ch_aut; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: p2tar_ch_aut) return p2tar_ch_aut;
-
-   type ucm_pam2tar_rt is record
-      ch : p2tar_ch_aut;
-      action : std_logic_vector(4-1 downto 0);
-   end record ucm_pam2tar_rt;
-   attribute w of ucm_pam2tar_rt : type is 12;
-   function width(x: ucm_pam2tar_rt) return natural;
-   function convert(x: ucm_pam2tar_rt; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: ucm_pam2tar_rt) return ucm_pam2tar_rt;
-   function zero(tpl: ucm_pam2tar_rt) return ucm_pam2tar_rt;
-
-   subtype ucm_pam2tar_vt is std_logic_vector(ucm_pam2tar_rt'w-1 downto 0);
-   attribute w of ucm_pam2tar_vt : subtype is 12;
-
-   type ucm_pam2tar_art is array(integer range <>) of ucm_pam2tar_rt;
-   function width(x: ucm_pam2tar_art) return integer;
-   function convert(x: ucm_pam2tar_art; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: ucm_pam2tar_art) return ucm_pam2tar_art;
-   function zero(tpl: ucm_pam2tar_art) return ucm_pam2tar_art;
-   function convert(x: ucm_pam2tar_art; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: ucm_pam2tar_art) return ucm_pam2tar_art;
-
-   type ucm_pam2tar_avt is array(integer range <>) of ucm_pam2tar_vt;
-   function width(x: ucm_pam2tar_avt) return integer;
-   function convert(x: ucm_pam2tar_avt; tpl: std_logic_vector) return std_logic_vector;
-   function convert(x: std_logic_vector; tpl: ucm_pam2tar_avt) return ucm_pam2tar_avt;
-   function zero(tpl: ucm_pam2tar_avt) return ucm_pam2tar_avt;
-   function convert(x: ucm_pam2tar_avt; tpl: std_logic_vector_array) return std_logic_vector_array;
-   function convert(x: std_logic_vector_array; tpl: ucm_pam2tar_avt) return ucm_pam2tar_avt;
-
 end package ucm_pkg;
 
 ------------------------------------------------------------
@@ -325,7 +228,6 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-use shared_lib.sl2mdt_constants_pkg.all;
 
 package body ucm_pkg is
 
@@ -509,204 +411,6 @@ package body ucm_pkg is
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_prepro2ctrl_avt) return ucm_prepro2ctrl_avt is
       variable y : ucm_prepro2ctrl_avt(tpl'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
-
-   function width(x: ucm_data2pamctrl_rt) return natural is
-      variable w : natural := 0;
-   begin
-      w := w + width(x.data_valid);
-      w := w + width(x.poseta);
-      return w;
-   end function width;
-   function convert(x: ucm_data2pamctrl_rt; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      variable w : integer;
-      variable u : integer := tpl'left;
-   begin
-      if tpl'ascending then
-         w := width(x.data_valid);
-         y(u to u+w-1) := convert(x.data_valid, y(u to u+w-1));
-         u := u + w;
-         w := width(x.poseta);
-         y(u to u+w-1) := convert(x.poseta, y(u to u+w-1));
-      else
-         w := width(x.data_valid);
-         y(u downto u-w+1) := convert(x.data_valid, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.poseta);
-         y(u downto u-w+1) := convert(x.poseta, y(u downto u-w+1));
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: ucm_data2pamctrl_rt) return ucm_data2pamctrl_rt is
-      variable y : ucm_data2pamctrl_rt;
-      variable w : integer;
-      variable u : integer := x'left;
-   begin
-      if x'ascending then
-         w := width(tpl.data_valid);
-         y.data_valid := convert(x(u to u+w-1), tpl.data_valid);
-         u := u + w;
-         w := width(tpl.poseta);
-         y.poseta := convert(x(u to u+w-1), tpl.poseta);
-      else
-         w := width(tpl.data_valid);
-         y.data_valid := convert(x(u downto u-w+1), tpl.data_valid);
-         u := u - w;
-         w := width(tpl.poseta);
-         y.poseta := convert(x(u downto u-w+1), tpl.poseta);
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: ucm_data2pamctrl_rt) return ucm_data2pamctrl_rt is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-
-   function width(x: ucm_data2pamctrl_art) return integer is
-      variable w : integer;
-   begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
-   end function width;
-   function convert(x: ucm_data2pamctrl_art; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
-      else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: ucm_data2pamctrl_art) return ucm_data2pamctrl_art is
-      variable y : ucm_data2pamctrl_art(tpl'range);
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
-      else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: ucm_data2pamctrl_art) return ucm_data2pamctrl_art is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-   function convert(x: ucm_data2pamctrl_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: ucm_data2pamctrl_art) return ucm_data2pamctrl_art is
-      variable y : ucm_data2pamctrl_art(tpl'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
-
-   function width(x: ucm_data2pamctrl_avt) return integer is
-      variable w : integer;
-   begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
-   end function width;
-   function convert(x: ucm_data2pamctrl_avt; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
-      else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: ucm_data2pamctrl_avt) return ucm_data2pamctrl_avt is
-      variable y : ucm_data2pamctrl_avt(tpl'range);
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
-      else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: ucm_data2pamctrl_avt) return ucm_data2pamctrl_avt is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-   function convert(x: ucm_data2pamctrl_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: ucm_data2pamctrl_avt) return ucm_data2pamctrl_avt is
-      variable y : ucm_data2pamctrl_avt(tpl'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -937,8 +641,9 @@ package body ucm_pkg is
       variable w : natural := 0;
    begin
       w := w + width(x.muid);
+      w := w + width(x.chamb_ieta);
       w := w + width(x.cointype);
-      w := w + width(x.poseta);
+      w := w + width(x.posphi);
       w := w + width(x.phimod);
       w := w + width(x.specific);
       w := w + width(x.data_valid);
@@ -953,11 +658,14 @@ package body ucm_pkg is
          w := width(x.muid);
          y(u to u+w-1) := convert(x.muid, y(u to u+w-1));
          u := u + w;
+         w := width(x.chamb_ieta);
+         y(u to u+w-1) := convert(x.chamb_ieta, y(u to u+w-1));
+         u := u + w;
          w := width(x.cointype);
          y(u to u+w-1) := convert(x.cointype, y(u to u+w-1));
          u := u + w;
-         w := width(x.poseta);
-         y(u to u+w-1) := convert(x.poseta, y(u to u+w-1));
+         w := width(x.posphi);
+         y(u to u+w-1) := convert(x.posphi, y(u to u+w-1));
          u := u + w;
          w := width(x.phimod);
          y(u to u+w-1) := convert(x.phimod, y(u to u+w-1));
@@ -971,11 +679,14 @@ package body ucm_pkg is
          w := width(x.muid);
          y(u downto u-w+1) := convert(x.muid, y(u downto u-w+1));
          u := u - w;
+         w := width(x.chamb_ieta);
+         y(u downto u-w+1) := convert(x.chamb_ieta, y(u downto u-w+1));
+         u := u - w;
          w := width(x.cointype);
          y(u downto u-w+1) := convert(x.cointype, y(u downto u-w+1));
          u := u - w;
-         w := width(x.poseta);
-         y(u downto u-w+1) := convert(x.poseta, y(u downto u-w+1));
+         w := width(x.posphi);
+         y(u downto u-w+1) := convert(x.posphi, y(u downto u-w+1));
          u := u - w;
          w := width(x.phimod);
          y(u downto u-w+1) := convert(x.phimod, y(u downto u-w+1));
@@ -997,11 +708,14 @@ package body ucm_pkg is
          w := width(tpl.muid);
          y.muid := convert(x(u to u+w-1), tpl.muid);
          u := u + w;
+         w := width(tpl.chamb_ieta);
+         y.chamb_ieta := convert(x(u to u+w-1), tpl.chamb_ieta);
+         u := u + w;
          w := width(tpl.cointype);
          y.cointype := convert(x(u to u+w-1), tpl.cointype);
          u := u + w;
-         w := width(tpl.poseta);
-         y.poseta := convert(x(u to u+w-1), tpl.poseta);
+         w := width(tpl.posphi);
+         y.posphi := convert(x(u to u+w-1), tpl.posphi);
          u := u + w;
          w := width(tpl.phimod);
          y.phimod := convert(x(u to u+w-1), tpl.phimod);
@@ -1015,11 +729,14 @@ package body ucm_pkg is
          w := width(tpl.muid);
          y.muid := convert(x(u downto u-w+1), tpl.muid);
          u := u - w;
+         w := width(tpl.chamb_ieta);
+         y.chamb_ieta := convert(x(u downto u-w+1), tpl.chamb_ieta);
+         u := u - w;
          w := width(tpl.cointype);
          y.cointype := convert(x(u downto u-w+1), tpl.cointype);
          u := u - w;
-         w := width(tpl.poseta);
-         y.poseta := convert(x(u downto u-w+1), tpl.poseta);
+         w := width(tpl.posphi);
+         y.posphi := convert(x(u downto u-w+1), tpl.posphi);
          u := u - w;
          w := width(tpl.phimod);
          y.phimod := convert(x(u downto u-w+1), tpl.phimod);
@@ -1176,256 +893,6 @@ package body ucm_pkg is
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_cde_avt) return ucm_cde_avt is
       variable y : ucm_cde_avt(tpl'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
-
-   function width(x: ucm_cde2pl_rt) return natural is
-      variable w : natural := 0;
-   begin
-      w := w + width(x.data_valid);
-      w := w + width(x.common);
-      w := w + width(x.phimod);
-      w := w + width(x.nswseg_angdtheta);
-      w := w + width(x.nswseg_posphi);
-      w := w + width(x.nswseg_poseta);
-      return w;
-   end function width;
-   function convert(x: ucm_cde2pl_rt; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      variable w : integer;
-      variable u : integer := tpl'left;
-   begin
-      if tpl'ascending then
-         w := width(x.data_valid);
-         y(u to u+w-1) := convert(x.data_valid, y(u to u+w-1));
-         u := u + w;
-         w := width(x.common);
-         y(u to u+w-1) := convert(x.common, y(u to u+w-1));
-         u := u + w;
-         w := width(x.phimod);
-         y(u to u+w-1) := convert(x.phimod, y(u to u+w-1));
-         u := u + w;
-         w := width(x.nswseg_angdtheta);
-         y(u to u+w-1) := convert(x.nswseg_angdtheta, y(u to u+w-1));
-         u := u + w;
-         w := width(x.nswseg_posphi);
-         y(u to u+w-1) := convert(x.nswseg_posphi, y(u to u+w-1));
-         u := u + w;
-         w := width(x.nswseg_poseta);
-         y(u to u+w-1) := convert(x.nswseg_poseta, y(u to u+w-1));
-      else
-         w := width(x.data_valid);
-         y(u downto u-w+1) := convert(x.data_valid, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.common);
-         y(u downto u-w+1) := convert(x.common, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.phimod);
-         y(u downto u-w+1) := convert(x.phimod, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.nswseg_angdtheta);
-         y(u downto u-w+1) := convert(x.nswseg_angdtheta, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.nswseg_posphi);
-         y(u downto u-w+1) := convert(x.nswseg_posphi, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.nswseg_poseta);
-         y(u downto u-w+1) := convert(x.nswseg_poseta, y(u downto u-w+1));
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: ucm_cde2pl_rt) return ucm_cde2pl_rt is
-      variable y : ucm_cde2pl_rt;
-      variable w : integer;
-      variable u : integer := x'left;
-   begin
-      if x'ascending then
-         w := width(tpl.data_valid);
-         y.data_valid := convert(x(u to u+w-1), tpl.data_valid);
-         u := u + w;
-         w := width(tpl.common);
-         y.common := convert(x(u to u+w-1), tpl.common);
-         u := u + w;
-         w := width(tpl.phimod);
-         y.phimod := convert(x(u to u+w-1), tpl.phimod);
-         u := u + w;
-         w := width(tpl.nswseg_angdtheta);
-         y.nswseg_angdtheta := convert(x(u to u+w-1), tpl.nswseg_angdtheta);
-         u := u + w;
-         w := width(tpl.nswseg_posphi);
-         y.nswseg_posphi := convert(x(u to u+w-1), tpl.nswseg_posphi);
-         u := u + w;
-         w := width(tpl.nswseg_poseta);
-         y.nswseg_poseta := convert(x(u to u+w-1), tpl.nswseg_poseta);
-      else
-         w := width(tpl.data_valid);
-         y.data_valid := convert(x(u downto u-w+1), tpl.data_valid);
-         u := u - w;
-         w := width(tpl.common);
-         y.common := convert(x(u downto u-w+1), tpl.common);
-         u := u - w;
-         w := width(tpl.phimod);
-         y.phimod := convert(x(u downto u-w+1), tpl.phimod);
-         u := u - w;
-         w := width(tpl.nswseg_angdtheta);
-         y.nswseg_angdtheta := convert(x(u downto u-w+1), tpl.nswseg_angdtheta);
-         u := u - w;
-         w := width(tpl.nswseg_posphi);
-         y.nswseg_posphi := convert(x(u downto u-w+1), tpl.nswseg_posphi);
-         u := u - w;
-         w := width(tpl.nswseg_poseta);
-         y.nswseg_poseta := convert(x(u downto u-w+1), tpl.nswseg_poseta);
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: ucm_cde2pl_rt) return ucm_cde2pl_rt is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-
-   function width(x: ucm_cde2pl_art) return integer is
-      variable w : integer;
-   begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
-   end function width;
-   function convert(x: ucm_cde2pl_art; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
-      else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: ucm_cde2pl_art) return ucm_cde2pl_art is
-      variable y : ucm_cde2pl_art(tpl'range);
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
-      else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: ucm_cde2pl_art) return ucm_cde2pl_art is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-   function convert(x: ucm_cde2pl_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: ucm_cde2pl_art) return ucm_cde2pl_art is
-      variable y : ucm_cde2pl_art(tpl'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
-
-   function width(x: ucm_cde2pl_avt) return integer is
-      variable w : integer;
-   begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
-   end function width;
-   function convert(x: ucm_cde2pl_avt; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
-      else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: ucm_cde2pl_avt) return ucm_cde2pl_avt is
-      variable y : ucm_cde2pl_avt(tpl'range);
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
-      else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: ucm_cde2pl_avt) return ucm_cde2pl_avt is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-   function convert(x: ucm_cde2pl_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: ucm_cde2pl_avt) return ucm_cde2pl_avt is
-      variable y : ucm_cde2pl_avt(tpl'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));
@@ -2033,277 +1500,6 @@ package body ucm_pkg is
    end function convert;
    function convert(x: std_logic_vector_array; tpl: ucm_proc_info_avt) return ucm_proc_info_avt is
       variable y : ucm_proc_info_avt(tpl'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
-
-   function width(x: p2tar_ch_aut) return integer is
-      variable w : integer;
-   begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
-   end function width;
-   function convert(x: p2tar_ch_aut; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
-      else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: p2tar_ch_aut) return p2tar_ch_aut is
-      variable y : p2tar_ch_aut;
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
-      else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: p2tar_ch_aut) return p2tar_ch_aut is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-   function convert(x: p2tar_ch_aut; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: p2tar_ch_aut) return p2tar_ch_aut is
-      variable y : p2tar_ch_aut;
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
-
-   function width(x: ucm_pam2tar_rt) return natural is
-      variable w : natural := 0;
-   begin
-      w := w + width(x.ch);
-      w := w + width(x.action);
-      return w;
-   end function width;
-   function convert(x: ucm_pam2tar_rt; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      variable w : integer;
-      variable u : integer := tpl'left;
-   begin
-      if tpl'ascending then
-         w := width(x.ch);
-         y(u to u+w-1) := convert(x.ch, y(u to u+w-1));
-         u := u + w;
-         w := width(x.action);
-         y(u to u+w-1) := convert(x.action, y(u to u+w-1));
-      else
-         w := width(x.ch);
-         y(u downto u-w+1) := convert(x.ch, y(u downto u-w+1));
-         u := u - w;
-         w := width(x.action);
-         y(u downto u-w+1) := convert(x.action, y(u downto u-w+1));
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: ucm_pam2tar_rt) return ucm_pam2tar_rt is
-      variable y : ucm_pam2tar_rt;
-      variable w : integer;
-      variable u : integer := x'left;
-   begin
-      if x'ascending then
-         w := width(tpl.ch);
-         y.ch := convert(x(u to u+w-1), tpl.ch);
-         u := u + w;
-         w := width(tpl.action);
-         y.action := convert(x(u to u+w-1), tpl.action);
-      else
-         w := width(tpl.ch);
-         y.ch := convert(x(u downto u-w+1), tpl.ch);
-         u := u - w;
-         w := width(tpl.action);
-         y.action := convert(x(u downto u-w+1), tpl.action);
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: ucm_pam2tar_rt) return ucm_pam2tar_rt is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-
-   function width(x: ucm_pam2tar_art) return integer is
-      variable w : integer;
-   begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
-   end function width;
-   function convert(x: ucm_pam2tar_art; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
-      else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: ucm_pam2tar_art) return ucm_pam2tar_art is
-      variable y : ucm_pam2tar_art(tpl'range);
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
-      else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: ucm_pam2tar_art) return ucm_pam2tar_art is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-   function convert(x: ucm_pam2tar_art; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: ucm_pam2tar_art) return ucm_pam2tar_art is
-      variable y : ucm_pam2tar_art(tpl'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), y(j));
-      end loop;
-      return y;
-   end function convert;
-
-   function width(x: ucm_pam2tar_avt) return integer is
-      variable w : integer;
-   begin
-      if x'length < 1 then
-        w := 0;
-      else
-        w := x'length * width(x(x'low));
-      end if;
-      return w;
-   end function width;
-   function convert(x: ucm_pam2tar_avt; tpl: std_logic_vector) return std_logic_vector is
-      variable y : std_logic_vector(tpl'range);
-      constant W : natural := width(x(x'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if y'ascending then
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(b to a), convert(x(i+x'low), y(b to a)));
-         end loop;
-      else
-         for i in 0 to x'length-1 loop
-            a := W*i + y'low + W - 1;
-            b := W*i + y'low;
-            assign(y(a downto b), convert(x(i+x'low), y(a downto b)));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector; tpl: ucm_pam2tar_avt) return ucm_pam2tar_avt is
-      variable y : ucm_pam2tar_avt(tpl'range);
-      constant W : natural := width(y(y'low));
-      variable a : integer;
-      variable b : integer;
-   begin
-      if x'ascending then
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(b to a), y(i+y'low));
-         end loop;
-      else
-         for i in 0 to y'length-1 loop
-            a := W*i + x'low + W - 1;
-            b := W*i + x'low;
-            y(i+y'low) := convert(x(a downto b), y(i+y'low));
-         end loop;
-      end if;
-      return y;
-   end function convert;
-   function zero(tpl: ucm_pam2tar_avt) return ucm_pam2tar_avt is
-   begin
-      return convert(std_logic_vector'(width(tpl)-1 downto 0 => '0'), tpl);
-   end function zero;
-   function convert(x: ucm_pam2tar_avt; tpl: std_logic_vector_array) return std_logic_vector_array is
-      variable y : std_logic_vector_array(tpl'range)(tpl(tpl'low)'range);
-   begin
-      for j in y'range loop
-          y(j) := convert(x(j), (y(j)'range => '0'));
-      end loop;
-      return y;
-   end function convert;
-   function convert(x: std_logic_vector_array; tpl: ucm_pam2tar_avt) return ucm_pam2tar_avt is
-      variable y : ucm_pam2tar_avt(tpl'range);
    begin
       for j in y'range loop
           y(j) := convert(x(j), y(j));

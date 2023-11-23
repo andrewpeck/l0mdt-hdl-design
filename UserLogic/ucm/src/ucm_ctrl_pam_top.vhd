@@ -41,9 +41,13 @@ entity ucm_ctrl_pam_top is
     -- Ctrl
     i_num_cand          : in unsigned(3 downto 0);
     i_pam_update        : in std_logic;
-    o_proc_info_av      : out ucm_proc_info_avt(c_MAX_NUM_SL -1 downto 0);
+    --
     o_cvp_rst           : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
     o_cvp_ctrl          : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+    --
+    o_pam2tar_av      : out ucm_pam2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_pam2cpl_av      : out ucm_proc_info_avt(c_NUM_ACCEPTS -1 downto 0);
+
     -- Data
     i_data_av           : in  ucm_cde_avt(c_NUM_ACCEPTS -1 downto 0);
     o_data_av           : out ucm_cde_avt(c_NUM_ACCEPTS -1 downto 0)
@@ -60,6 +64,8 @@ architecture rtl of ucm_ctrl_pam_top is
 
   signal pam_CSW_control      : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
   signal pam_CSW_control_dv  : std_logic;
+
+  signal spl_o_dv : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
 
 begin
 
@@ -82,22 +88,41 @@ begin
     --
     o_pam_ctrl          => pam_CSW_control,
     o_pam_ctrl_dv       => pam_CSW_control_dv,
-    o_proc_info_av      => o_proc_info_av,
+    --
+    o_pam2tar_av        => o_pam2tar_av,
+    o_pam2cpl_av        => o_pam2cpl_av,
     --
     o_cvp_rst           => o_cvp_rst,
     o_cvp_ctrl          => o_cvp_ctrl
   );
 
-  SLC_PAM_CSW : entity ucm_lib.ucm_ctrl_pam_csw
+  -- SLC_PAM_CSW : entity ucm_lib.ucm_ctrl_pam_csw
+  --   port map(
+  --     clk         => clk,
+  --     rst         => rst,
+  --     glob_en     => ena,
+      
+  --     i_control   => pam_CSW_control,
+  --     -- data
+  --     i_data_av      => i_data_av,
+  --     o_data_av      => o_data_av
+  --   );
+  SLC_PP_A : for sl_i in c_NUM_ACCEPTS -1 downto 0 generate
+    PL_slope : entity vamc_lib.vamc_spl
+    generic map(
+      g_DELAY_CYCLES    => 2,
+      g_PIPELINE_WIDTH  => i_data_av(sl_i)'length
+    )
     port map(
       clk         => clk,
       rst         => rst,
-      glob_en     => ena,
-      
-      i_control   => pam_CSW_control,
-      -- data
-      i_data_av      => i_data_av,
-      o_data_av      => o_data_av
+      ena         => ena,
+      --
+      i_data      => i_data_av(sl_i),
+      i_dv        => i_data_ar(sl_i).data_valid,
+      o_data      => o_data_av(sl_i),
+      o_dv        => spl_o_dv(sl_i)
     );
+  end generate;
 
 end architecture;

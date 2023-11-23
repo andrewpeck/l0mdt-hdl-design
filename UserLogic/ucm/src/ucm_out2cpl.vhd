@@ -38,7 +38,7 @@ entity ucm_out2cpl is
     -- ctrl_v              : in std_logic_vector;
     -- mon_v               : out std_logic_vector;
     --
-    i_proc_info_av      : in ucm_proc_info_avt(c_MAX_NUM_SL -1 downto 0);
+    i_proc_info_av      : in ucm_proc_info_avt(c_NUM_ACCEPTS -1 downto 0);
     i_data_av           : in ucm_cde2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
     -- 
@@ -63,12 +63,21 @@ begin
 
 
   MPL_ASSIGN : for i_sl in c_MAX_NUM_SL -1 downto 0 generate
-    i_proc_info_ar(i_sl) <= convert(i_proc_info_av(i_sl),i_proc_info_ar(i_sl));
+    PAM2CPL : if i_sl >= c_MAX_NUM_SL - c_NUM_ACCEPTS generate
+      i_proc_info_ar(i_sl - (c_MAX_NUM_SL - c_NUM_ACCEPTS)) <= convert(i_proc_info_av(i_sl - (c_MAX_NUM_SL - c_NUM_ACCEPTS)),i_proc_info_ar(i_sl - (c_MAX_NUM_SL - c_NUM_ACCEPTS)));
+      o_uCM2pl_ar(i_sl).busy <= i_proc_info_ar(i_sl - (c_MAX_NUM_SL - c_NUM_ACCEPTS)).processed;
+      o_uCM2pl_ar(i_sl).process_ch <= i_proc_info_ar(i_sl - (c_MAX_NUM_SL - c_NUM_ACCEPTS)).ch;
+    else generate
+      
+      o_uCM2pl_ar(i_sl).busy <= '0';
+      o_uCM2pl_ar(i_sl).process_ch <= (others => '0') ;
+    end generate;
+    
+
     i_data_ar(i_sl) <= convert(i_data_av(i_sl),i_data_ar(i_sl));
     o_uCM2pl_av(i_sl) <= convert(o_uCM2pl_ar(i_sl),o_uCM2pl_av(i_sl));
 
-    o_uCM2pl_ar(i_sl).busy <= i_proc_info_ar(i_sl).processed;
-    o_uCM2pl_ar(i_sl).process_ch <= i_proc_info_ar(i_sl).ch;
+    
     o_uCM2pl_ar(i_sl).data_valid <= i_data_ar(i_sl).data_valid;
     o_uCM2pl_ar(i_sl).common <= i_data_ar(i_sl).common;
     o_uCM2pl_ar(i_sl).phimod <= i_data_ar(i_sl).phimod;

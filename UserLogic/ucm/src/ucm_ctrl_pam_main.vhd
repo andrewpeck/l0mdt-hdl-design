@@ -28,18 +28,18 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-use shared_lib.detector_param_pkg.all;
-use shared_lib.detector_time_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_time_param_pkg.all;
 -- use shared_lib.barrel_eta2chamber_pkg.all;
 
-library dp_repo_lib;
-use dp_repo_lib.barrel_eta2chamber_pkg.all;
+-- library dp_repo_lib;
+-- use dp_repo_lib.barrel_eta2chamber_pkg.all;
 
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 use ucm_lib.ucm_vhdl_pkg.all;
 
-library  vamc_lib;
+-- library  vamc_lib;
 
 entity ucm_ctrl_pam_main is
   generic(
@@ -59,7 +59,8 @@ entity ucm_ctrl_pam_main is
     o_pam_ctrl          : out ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
     o_pam_ctrl_dv       : out std_logic;
     -- o_proc_info_ar         : out ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0);
-    o_proc_info_av      : out ucm_proc_info_avt(c_MAX_NUM_SL -1 downto 0);
+    o_pam2tar_av      : out ucm_pam2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+    o_pam2cpl_av      : out ucm_proc_info_avt(c_NUM_ACCEPTS -1 downto 0);
     
     --
     o_cvp_rst           : out std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
@@ -85,8 +86,10 @@ architecture beh of ucm_ctrl_pam_main is
   signal th_load  : std_logic_vector(c_NUM_THREADS -1 downto 0);
   signal th_free : integer;
   signal th_next : integer;
+
   type th_time_org_ait is array (c_NUM_THREADS -1 downto 0) of integer;
   signal th_time_org_ai : th_time_org_ait;
+  signal th_cvp : th_time_org_ait;
 
   signal sth_busy  : std_logic_vector(c_NUM_SUBTHREADS -1 downto 0);
 
@@ -94,30 +97,30 @@ architecture beh of ucm_ctrl_pam_main is
 
 ---------------------------------------
   
-  signal int_pam_ctrl_ar    : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
-  signal int_proc_info_ar   : ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0);
+  -- signal int_pam_ctrl_ar    : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
+  -- signal int_proc_info_ar   : ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0);
 
-  signal int_pam_ctrl_av  , o_pam_ctrl_av   : ucm_pam_control_avt(c_NUM_ACCEPTS -1 downto 0);
-  signal int_proc_info_av : ucm_proc_info_avt(c_NUM_ACCEPTS -1 downto 0);
+  -- signal int_pam_ctrl_av  , o_pam_ctrl_av   : ucm_pam_control_avt(c_NUM_ACCEPTS -1 downto 0);
+  -- signal int_proc_info_av : ucm_proc_info_avt(c_NUM_ACCEPTS -1 downto 0);
 
-  signal int_cvp_rst_v           : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
-  signal int_cvp_ctrl_v          : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+  -- signal int_cvp_rst_v           : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+  -- signal int_cvp_ctrl_v          : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
   
-  -- signal ch_busy  : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
+  -- -- signal ch_busy  : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
 
-  constant proc_info_init  : ucm_proc_info_rt := ( ch => (others => '0') ,
-                                                      processed => '0',
-                                                      dv => '0');
-  signal proc_info_ar    : ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0) := (others =>proc_info_init  );
-  signal o_proc_info_ar  : ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0);
+  -- constant proc_info_init  : ucm_proc_info_rt := ( ch => (others => '0') ,
+  --                                                     processed => '0',
+  --                                                     dv => '0');
+  -- signal proc_info_ar    : ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0) := (others =>proc_info_init  );
+  -- signal o_proc_info_ar  : ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0);
   
-  type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
-  signal ch_count_av     : ch_count_avt(c_NUM_ACCEPTS -1 downto 0);
+  -- type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
+  -- signal ch_count_av     : ch_count_avt(c_NUM_ACCEPTS -1 downto 0);
 
-  signal processing   : integer;
-  signal processed_s : integer;
+  -- signal processing   : integer;
+  -- signal processed_s : integer;
 
-  signal buff_pam_ctrl_ar : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
+  -- signal buff_pam_ctrl_ar : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
 
 begin
 
@@ -251,25 +254,40 @@ begin
     end process;
 
   TH_CTRL_FOR_GEN : for th_i in c_NUM_THREADS -1 downto 0 generate
-    process (clk)
-    begin
-      if rising_edge(clk) then
-        if rst='1' then
-          th_busy(th_i) <= '0';
-          th_time_org_ai(th_i) <= 0;
-        else
-          if th_busy(th_i) = '1' then
-          else
-            if th_load(th_i) = '1' then 
-              th_busy(th_i) <= '1';
-              th_time_org_ai(th_i) <= main_count;
-            end if;
-          end if;
+    TH_CTRL : entity ucm_lib.ucm_ctrl_pam_main
+      port map(
+        clk                 => clk,
+        rst                 => rst,
+        ena                 => ena,
+        --
+        i_main_count_i      => main_count,
+        i_load              => th_load(th_i),
+        i_slc               => th_cvp(th_i),
+        --
+        o_busy          => th_busy(th_i) 
+      );  
+    -- process (clk)
+    -- begin
+    --   if rising_edge(clk) then
+    --     if rst='1' then
+    --       th_busy(th_i) <= '0';
+    --       th_time_org_ai(th_i) <= 0;
+    --     else
+    --       if th_busy(th_i) = '1' then
+    --         if main_count = th_time_org_ai(th_i) then
+              
+    --         end if;
+    --       else
+    --         if th_load(th_i) = '1' then 
+    --           th_busy(th_i) <= '1';
+    --           th_time_org_ai(th_i) <= main_count;
+    --         end if;
+    --       end if;
        
           
-        end if;
-      end if;
-    end process;
+    --     end if;
+    --   end if;
+    -- end process;
   end generate;
     
 
