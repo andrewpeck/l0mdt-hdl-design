@@ -46,41 +46,37 @@ entity ucm_ctrl_pam_m_th is
     clk                 : in std_logic;
     rst                 : in std_logic;
     ena                 : in std_logic;
-
+    --
     i_main_count_i      : in integer;
     i_load              : in std_logic;
     i_slc               : in integer;
-
+    --    
     
-
     o_busy              : out std_logic
     
   );
 end entity;
 
 architecture beh of ucm_ctrl_pam_m_th is
-
+  signal time_org : integer;
 begin
-
   process (clk)
   begin
     if rising_edge(clk) then
       if rst='1' then
-        th_busy(th_i) <= '0';
-        th_time_org_ai(th_i) <= 0;
+        o_busy <= '0';
+        time_org <= 0;
       else
-        if th_busy(th_i) = '1' then
-          if main_count = th_time_org_ai(th_i) then
-            
+        if o_busy = '1' then
+          if i_main_count_i = time_org then
+            o_busy <= '0';
           end if;
         else
-          if th_load(th_i) = '1' then 
-            th_busy(th_i) <= '1';
-            th_time_org_ai(th_i) <= main_count;
+          if i_load = '1' then 
+            o_busy <= '1';
+            time_org <= i_main_count_i;
           end if;
         end if;
-     
-        
       end if;
     end if;
   end process;

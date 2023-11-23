@@ -38,6 +38,40 @@ add wave -noupdate -group TB /ucm_tb/slc_event_ai
 add wave -noupdate -group TB /ucm_tb/files_str
 add wave -noupdate -group TB /ucm_tb/alias_offset_cvp
 add wave -noupdate -group TB /ucm_tb/alias_slope_cvp
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/IN_SLC_FILE
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/g_verbose
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/clk
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/rst
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/enable
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/tb_curr_tdc_time
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/temp_slc_rx_vt
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_element_temp
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_element
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/event_element_temp
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/event_element
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_event_r
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_new_event
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/event_main_prim_fifo
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_event_ai
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_main_prim_fifo
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_main_seco_fifo
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_neig_plus_fifo
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_neig_minu_fifo
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_main_prim_counts
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_main_seco_counts
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_neig_plus_counts
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_neig_minu_counts
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/csv_file
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/file_open
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/file_ts
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/SLC_RX_LEN
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_file_ok
+add wave -noupdate -group TB_SLC_IN -expand /ucm_tb/CSV_SLC_IN/o_file_ts
+add wave -noupdate -group TB_SLC_IN -expand /ucm_tb/CSV_SLC_IN/o_slc_event_ai
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_main_primary_slc
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_main_secondary_slc
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_plus_neighbor_slc
+add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_minus_neighbor_slc
 add wave -noupdate -group UCM /ucm_tb/UCM_DUT/clk
 add wave -noupdate -group UCM /ucm_tb/UCM_DUT/rst
 add wave -noupdate -group UCM /ucm_tb/UCM_DUT/glob_en
@@ -62,7 +96,6 @@ add wave -noupdate -group UCM /ucm_tb/UCM_DUT/cpam_in_av
 add wave -noupdate -group UCM /ucm_tb/UCM_DUT/cpam_out_av
 add wave -noupdate -group UCM /ucm_tb/UCM_DUT/csw_control_av
 add wave -noupdate -group UCM /ucm_tb/UCM_DUT/pam_CSW_control
-add wave -noupdate -group UCM /ucm_tb/UCM_DUT/proc_info_av
 add wave -noupdate -group UCM /ucm_tb/UCM_DUT/cvp_in_en
 add wave -noupdate -group UCM /ucm_tb/UCM_DUT/cvp_loc_rst
 add wave -noupdate -group UCM /ucm_tb/UCM_DUT/uCM2hps_data
@@ -189,7 +222,6 @@ add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/data2pamctrl_ar
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/pam_CSW_control
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/pam_CSW_control_dv
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/o_data_av
-add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/o_proc_info_av
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/o_cvp_rst
 add wave -noupdate -group PAM_CTRL /ucm_tb/UCM_DUT/PAM_CTRL/o_cvp_ctrl
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/g_PAM_CTRL_PL
@@ -203,91 +235,58 @@ add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTR
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_num_cand
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_update
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_av
-add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2) -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).data_valid -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).poseta -radix unsigned}}} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(1) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(0) -radix unsigned}} -subitemconfig {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2) {-height 17 -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).data_valid -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).poseta -radix unsigned}} -expand} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).data_valid {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).poseta {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(1) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(0) {-height 17 -radix unsigned}} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar
-add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/max_num
-add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_busy
+add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2) -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).data_valid -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).poseta -radix unsigned}}} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(1) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(0) -radix unsigned}} -subitemconfig {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2) {-height 17 -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).data_valid -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).poseta -radix unsigned}}} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).data_valid {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(2).poseta {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(1) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar(0) {-height 17 -radix unsigned}} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/i_pam_ctrl_ar
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/g_NUM_CHAMBERS
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/g_LOWER_LIM
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/g_UPPER_LIM
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/clk
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/rst
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/ena
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/i_poseta
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/i_dv
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/i_poseta_i
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN -radix binary /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/chamber
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/ch_dv
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_min_ch
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_max_ch
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_num_ch
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_dv
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ch_l_lim_aau
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ch_u_lim_aau
+add wave -noupdate -expand -group PAM_CTRL_MAIN -expand /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ch_num_aau
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ch_lim_adv
+add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/max_num(2) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/max_num(1) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/max_num(0) -radix unsigned}} -expand -subitemconfig {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/max_num(2) {-radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/max_num(1) {-radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/max_num(0) {-radix unsigned}} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/max_num
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/sth_busy
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/main_count
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/num_cand
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/nc_dv
+add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_busy(3) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_busy(2) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_busy(1) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_busy(0) -radix unsigned}} -subitemconfig {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_busy(3) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_busy(2) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_busy(1) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_busy(0) {-height 17 -radix unsigned}} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_busy
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_load
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_free
 add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_next
-add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(3) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(2) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(1) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(0) -radix unsigned}} -expand -subitemconfig {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(3) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(2) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(1) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(0) {-height 17 -radix unsigned}} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai
-add wave -noupdate -expand -group PAM_CTRL_MAIN -divider {New Divider}
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_pam_ctrl_ar
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_proc_info_ar
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_pam_ctrl_av
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_pam_ctrl_av
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_proc_info_av
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_cvp_rst_v
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/int_cvp_ctrl_v
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/proc_info_ar
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_proc_info_ar
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ch_count_av
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/processing
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/processed_s
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/buff_pam_ctrl_ar
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/proc_info_init
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_cvp
+add wave -noupdate -expand -group PAM_CTRL_MAIN -radix unsigned -childformat {{/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(3) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(2) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(1) -radix unsigned} {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(0) -radix unsigned}} -subitemconfig {/ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(3) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(2) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(1) {-height 17 -radix unsigned} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai(0) {-height 17 -radix unsigned}} /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/th_time_org_ai
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group PAM_CTRL_MAIN_TH /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/TH_CTRL_FOR_GEN(2)/TH_CTRL/clk
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group PAM_CTRL_MAIN_TH /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/TH_CTRL_FOR_GEN(2)/TH_CTRL/rst
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group PAM_CTRL_MAIN_TH /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/TH_CTRL_FOR_GEN(2)/TH_CTRL/ena
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group PAM_CTRL_MAIN_TH /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/TH_CTRL_FOR_GEN(2)/TH_CTRL/i_main_count_i
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group PAM_CTRL_MAIN_TH /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/TH_CTRL_FOR_GEN(2)/TH_CTRL/i_load
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group PAM_CTRL_MAIN_TH /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/TH_CTRL_FOR_GEN(2)/TH_CTRL/i_slc
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group PAM_CTRL_MAIN_TH /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/TH_CTRL_FOR_GEN(2)/TH_CTRL/o_busy
+add wave -noupdate -expand -group PAM_CTRL_MAIN -group PAM_CTRL_MAIN_TH /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/TH_CTRL_FOR_GEN(2)/TH_CTRL/time_org
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/pam2tar_av
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/pam2tar_ar
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_pam_ctrl
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_pam_ctrl_dv
-add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_proc_info_av
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_pam2tar_av
+add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_pam2cpl_av
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_cvp_rst
 add wave -noupdate -expand -group PAM_CTRL_MAIN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/o_cvp_ctrl
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/g_NUM_CHAMBERS
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/g_LOWER_LIM
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/g_UPPER_LIM
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/clk
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/rst
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/ena
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/i_poseta
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/i_dv
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/i_poseta_i
-add wave -noupdate -group ACCEPT2_INN -radix binary /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/chamber
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/ch_dv
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_min_ch
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_max_ch
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_num_ch
-add wave -noupdate -group ACCEPT2_INN /ucm_tb/UCM_DUT/PAM_CTRL/PAM_CTRL_CORE/ACCEPT_FOR_GEN(2)/ETA2CH_FOR_GEN(0)/ST_IF_GEN/ETA2CH_ENT/o_dv
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/IN_SLC_FILE
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/g_verbose
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/clk
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/rst
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/enable
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/tb_curr_tdc_time
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/temp_slc_rx_vt
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_element_temp
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_element
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/event_element_temp
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/event_element
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_event_r
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_new_event
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/event_main_prim_fifo
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_event_ai
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_main_prim_fifo
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_main_seco_fifo
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_neig_plus_fifo
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_neig_minu_fifo
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_main_prim_counts
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_main_seco_counts
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_neig_plus_counts
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/slc_neig_minu_counts
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/csv_file
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/file_open
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/file_ts
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/SLC_RX_LEN
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_file_ok
-add wave -noupdate -group TB_SLC_IN -expand /ucm_tb/CSV_SLC_IN/o_file_ts
-add wave -noupdate -group TB_SLC_IN -expand /ucm_tb/CSV_SLC_IN/o_slc_event_ai
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_main_primary_slc
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_main_secondary_slc
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_plus_neighbor_slc
-add wave -noupdate -group TB_SLC_IN /ucm_tb/CSV_SLC_IN/o_minus_neighbor_slc
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1431484233 fs} 0}
+WaveRestoreCursors {{Cursor 1} {1418551378 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 185
-configure wave -valuecolwidth 170
+configure wave -valuecolwidth 68
 configure wave -justifyvalue left
 configure wave -signalnamewidth 1
 configure wave -snapdistance 10
@@ -300,4 +299,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1410483155 fs} {1500539859 fs}
+WaveRestoreZoom {1406623166 fs} {1484222815 fs}

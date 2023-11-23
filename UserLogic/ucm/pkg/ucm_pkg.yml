@@ -77,6 +77,7 @@ types:
   - p2tar_ch_aut: {'array': [1,0], 'type': 'unsigned', 'range': ['4-1', 0]}
   - ucm_pam2tar_rt:
     - ch: { 'type': 'p2tar_ch_aut'}
+    - th: { 'type': 'unsigned', 'range': ['4-1', 0]}
     - action: {'type': 'logic', 'range': ['4-1', 0]}
   - ucm_pam2tar_vt: {'type': 'logic', 'range': ['ucm_pam2tar_rt-1', 0]}
   - ucm_pam2tar_art: {'array': 'open', 'type': 'ucm_pam2tar_rt'}

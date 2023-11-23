@@ -283,16 +283,17 @@ package ucm_pkg is
 
    type ucm_pam2tar_rt is record
       ch : p2tar_ch_aut;
+      th : unsigned(4-1 downto 0);
       action : std_logic_vector(4-1 downto 0);
    end record ucm_pam2tar_rt;
-   attribute w of ucm_pam2tar_rt : type is 12;
+   attribute w of ucm_pam2tar_rt : type is 16;
    function width(x: ucm_pam2tar_rt) return natural;
    function convert(x: ucm_pam2tar_rt; tpl: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector; tpl: ucm_pam2tar_rt) return ucm_pam2tar_rt;
    function zero(tpl: ucm_pam2tar_rt) return ucm_pam2tar_rt;
 
    subtype ucm_pam2tar_vt is std_logic_vector(ucm_pam2tar_rt'w-1 downto 0);
-   attribute w of ucm_pam2tar_vt : subtype is 12;
+   attribute w of ucm_pam2tar_vt : subtype is 16;
 
    type ucm_pam2tar_art is array(integer range <>) of ucm_pam2tar_rt;
    function width(x: ucm_pam2tar_art) return integer;
@@ -2117,6 +2118,7 @@ package body ucm_pkg is
       variable w : natural := 0;
    begin
       w := w + width(x.ch);
+      w := w + width(x.th);
       w := w + width(x.action);
       return w;
    end function width;
@@ -2129,11 +2131,17 @@ package body ucm_pkg is
          w := width(x.ch);
          y(u to u+w-1) := convert(x.ch, y(u to u+w-1));
          u := u + w;
+         w := width(x.th);
+         y(u to u+w-1) := convert(x.th, y(u to u+w-1));
+         u := u + w;
          w := width(x.action);
          y(u to u+w-1) := convert(x.action, y(u to u+w-1));
       else
          w := width(x.ch);
          y(u downto u-w+1) := convert(x.ch, y(u downto u-w+1));
+         u := u - w;
+         w := width(x.th);
+         y(u downto u-w+1) := convert(x.th, y(u downto u-w+1));
          u := u - w;
          w := width(x.action);
          y(u downto u-w+1) := convert(x.action, y(u downto u-w+1));
@@ -2149,11 +2157,17 @@ package body ucm_pkg is
          w := width(tpl.ch);
          y.ch := convert(x(u to u+w-1), tpl.ch);
          u := u + w;
+         w := width(tpl.th);
+         y.th := convert(x(u to u+w-1), tpl.th);
+         u := u + w;
          w := width(tpl.action);
          y.action := convert(x(u to u+w-1), tpl.action);
       else
          w := width(tpl.ch);
          y.ch := convert(x(u downto u-w+1), tpl.ch);
+         u := u - w;
+         w := width(tpl.th);
+         y.th := convert(x(u downto u-w+1), tpl.th);
          u := u - w;
          w := width(tpl.action);
          y.action := convert(x(u downto u-w+1), tpl.action);

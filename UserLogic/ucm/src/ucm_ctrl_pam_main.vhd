@@ -32,8 +32,8 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.detector_time_param_pkg.all;
 -- use shared_lib.barrel_eta2chamber_pkg.all;
 
--- library dp_repo_lib;
--- use dp_repo_lib.barrel_eta2chamber_pkg.all;
+library dp_repo_lib;
+use dp_repo_lib.barrel_eta2chamber_pkg.all;
 
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -77,11 +77,16 @@ architecture beh of ucm_ctrl_pam_main is
   signal nc_dv : std_logic;
 
   signal i_pam_ctrl_ar       : ucm_data2pamctrl_art(c_NUM_ACCEPTS -1 downto 0);
+
   type ch_lim_aut is array (integer range<>) of unsigned(3 downto 0);
   signal max_num : ch_lim_aut(c_NUM_ACCEPTS -1 downto 0);
-  -- signal ch_l_lim_au : ch_lim_aut(5 downto 0);
-  -- signal ch_u_lim_au : ch_lim_aut(5 downto 0);
-  -- signal ch_lim_dv : std_logic_vector(5 downto 0);
+  type ch_lim_aaut is array (integer range<>) of ch_lim_aut(c_MAX_NUM_HPS -1 downto 0);
+  signal ch_l_lim_aau : ch_lim_aaut(c_NUM_ACCEPTS -1 downto 0);
+  signal ch_u_lim_aau : ch_lim_aaut(c_NUM_ACCEPTS -1 downto 0);
+  signal ch_num_aau : ch_lim_aaut(c_NUM_ACCEPTS -1 downto 0);
+  type ch_num_dvt is array (natural range<>) of std_logic_vector(c_MAX_NUM_HPS -1 downto 0);
+  signal ch_lim_adv : ch_num_dvt(c_NUM_ACCEPTS -1 downto 0);
+
   signal th_busy  : std_logic_vector(c_NUM_THREADS -1 downto 0);
   signal th_load  : std_logic_vector(c_NUM_THREADS -1 downto 0);
   signal th_free : integer;
@@ -91,9 +96,12 @@ architecture beh of ucm_ctrl_pam_main is
   signal th_time_org_ai : th_time_org_ait;
   signal th_cvp : th_time_org_ait;
 
-  signal sth_busy  : std_logic_vector(c_NUM_SUBTHREADS -1 downto 0);
+  -- signal sth_busy  : std_logic_vector(c_NUM_SUBTHREADS -1 downto 0);
 
   signal main_count : integer;
+  signal pam2tar_av : ucm_pam2tar_avt(c_NUM_ACCEPTS -1 downto 0);
+  signal pam2tar_ar : ucm_pam2tar_art(c_NUM_ACCEPTS -1 downto 0);
+  
 
 ---------------------------------------
   
@@ -125,11 +133,11 @@ architecture beh of ucm_ctrl_pam_main is
 begin
 
   ACCEPT_FOR_GEN: for sl_i in 0 to c_NUM_ACCEPTS - 1 generate
-    signal ch_l_lim_au : ch_lim_aut(5 downto 0);
-    signal ch_u_lim_au : ch_lim_aut(5 downto 0);
-    signal ch_num_au : ch_lim_aut(5 downto 0);
-    signal ch_lim_dv : std_logic_vector(5 downto 0);
-  begin
+    -- signal ch_l_lim_aau : ch_lim_aut(5 downto 0);
+    -- signal ch_u_lim_aau : ch_lim_aut(5 downto 0);
+    -- signal ch_num_aau : ch_lim_aut(5 downto 0);
+    -- signal ch_lim_adv : std_logic_vector(5 downto 0);
+  -- begin
     i_pam_ctrl_ar(sl_i)<= convert(i_pam_ctrl_av(sl_i),i_pam_ctrl_ar(sl_i));
     ETA2CH_FOR_GEN : for st_i in c_MAX_NUM_HPS -1 downto 0 generate
       ST_IF_GEN : if c_ENABLED_ST(st_i) = '1' generate
@@ -146,27 +154,37 @@ begin
             i_poseta    => i_pam_ctrl_ar(sl_i).poseta,
             i_dv        => i_pam_ctrl_ar(sl_i).data_valid,
             --
-            o_num_ch    => ch_num_au(st_i),
-            o_min_ch    => ch_l_lim_au(st_i),
-            o_max_ch    => ch_u_lim_au(st_i),
-            o_dv        => ch_lim_dv(st_i)
+            o_num_ch    => ch_num_aau(sl_i)(st_i),
+            o_min_ch    => ch_l_lim_aau(sl_i)(st_i),
+            o_max_ch    => ch_u_lim_aau(sl_i)(st_i),
+            o_dv        => ch_lim_adv(sl_i)(st_i)
           );
       end generate;
     end generate;
 
     GET_MAX_PROC : process (clk)
-      variable max_num_vu : unsigned(3 downto 0);
+      variable max_num_au : ch_lim_aut(c_NUM_ACCEPTS -1 downto 0);
     begin
       if rising_edge(clk) then
-        if or_reduce(ch_lim_dv) = '1' then
-          max_num_vu := x"0";
-          for st_i in c_MAX_NUM_HPS -1 downto 0 loop
-            if ch_num_au(st_i) > max_num_vu then
-              max_num_vu := ch_num_au(st_i);
-            end if;
-          end loop;
-          max_num(sl_i) <= max_num_vu;
+        if rst = '1' then
+          max_num <= (others => (others => '0') ) ;
+        else
+          if or_reduce(ch_lim_adv(sl_i)) = '1' then
+            
+            for sl_i in c_NUM_ACCEPTS - 1 downto 0 loop
+              for st_i in c_MAX_NUM_HPS -1 downto 0 loop
+                if ch_num_aau(sl_i)(st_i) > max_num_au(sl_i) then
+                  max_num_au(sl_i) := ch_num_aau(sl_i)(st_i);
+                end if;
+              end loop;
+            end loop;
+            
+            max_num <= max_num_au;
+          else
+            max_num_au := (others => (others => '0') ) ;
+          end if;
         end if;
+        
       end if;
     end process;
 
@@ -192,20 +210,21 @@ begin
               th_load(th_i) <= '0';
             end if;
           end loop;
-          for slc_i in 0 to c_NUM_ACCEPTS - 1 loop -- loop possible slc
+          for slc_i in c_NUM_ACCEPTS - 1 downto 0 loop -- loop possible slc
             o_cvp_ctrl(slc_i) <= '0';
           end loop;
           if nc_dv = '1' then
             if and_reduce(th_busy) = '0' then
               v_th_next := th_next;
-              v_th_free := th_free;
-              for slc_i in 0 to c_NUM_ACCEPTS - 1 loop -- loop possible slc
+              -- v_th_free := th_free;
+              for slc_i in c_NUM_ACCEPTS - 1 downto 0 loop -- loop possible slc
                 -- if v_th_free > 0 then
                 if th_busy(v_th_next) = '0' then
-                  if slc_i < to_integer(num_cand) then
+                  if c_NUM_ACCEPTS - 1 - slc_i < to_integer(num_cand) then
                     th_load(v_th_next) <= '1';
                     o_cvp_ctrl(slc_i) <= '1';
-                    v_th_free := v_th_free - 1;
+                    
+                    -- v_th_free := v_th_free - 1;
                     if v_th_next = c_NUM_THREADS -1 then
                       v_th_next := 0;
                     else
@@ -215,25 +234,9 @@ begin
                 end if;
               end loop;
               th_next <= v_th_next;
-              th_free <= v_th_free;
+              -- th_free <= v_th_free;
             end if;
           end if;
-          -- if and_reduce(th_busy) = '0' then -- not all busy
-          --   -- for th_i in c_NUM_THREADS -1 downto 0 loop
-          --   --   if th_load(th_i) = '1' then
-          --   --     th_load(th_i) <= '0';
-          --   --   end if;
-          --   -- end loop;
-          --   -- for slc_i in 0 to c_NUM_ACCEPTS - 1 loop -- loop possible slc
-          --   --   if slc_i < to_integer(num_cand) then
-          --   --     for th_i in c_NUM_THREADS -1 downto 0 loop
-          --   --       if th_busy(th_i) = '0' then
-                    
-          --   --       end if;
-          --   --     end loop;
-          --   --   end if;
-          --   -- end loop;
-          -- end if;
         end if;
       end if;
     end process;
@@ -254,7 +257,7 @@ begin
     end process;
 
   TH_CTRL_FOR_GEN : for th_i in c_NUM_THREADS -1 downto 0 generate
-    TH_CTRL : entity ucm_lib.ucm_ctrl_pam_main
+    TH_CTRL : entity ucm_lib.ucm_ctrl_pam_m_th
       port map(
         clk                 => clk,
         rst                 => rst,
@@ -266,28 +269,6 @@ begin
         --
         o_busy          => th_busy(th_i) 
       );  
-    -- process (clk)
-    -- begin
-    --   if rising_edge(clk) then
-    --     if rst='1' then
-    --       th_busy(th_i) <= '0';
-    --       th_time_org_ai(th_i) <= 0;
-    --     else
-    --       if th_busy(th_i) = '1' then
-    --         if main_count = th_time_org_ai(th_i) then
-              
-    --         end if;
-    --       else
-    --         if th_load(th_i) = '1' then 
-    --           th_busy(th_i) <= '1';
-    --           th_time_org_ai(th_i) <= main_count;
-    --         end if;
-    --       end if;
-       
-          
-    --     end if;
-    --   end if;
-    -- end process;
   end generate;
     
 
