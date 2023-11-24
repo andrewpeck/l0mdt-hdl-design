@@ -311,15 +311,15 @@ VHDL_SOURCES_upt_lib = \
 
 VERILOG_SOURCES_lsf_lib = \
     $(DFDIR)/l0mdt_buses_constants.svh \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_0.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_1.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_2.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_3.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_4.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_5.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_0_ROM_2P_AUTO_1R.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_1_ROM_2P_AUTO_1R.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_2_ROM_2P_AUTO_1R.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_3_ROM_2P_AUTO_1R.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_4_ROM_2P_AUTO_1R.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_5_ROM_2P_AUTO_1R.v \
     $(GET_TRIG_VALS_HLS_IP)/get_trig_vals.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_6.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_7.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_6_ROM_2P_AUTO_1R.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_7_ROM_2P_AUTO_1R.v \
     $(LSFSIMDIR)/dist_mem_gen_v8_0.v \
     $(LSFSIMDIR)/histogram_memory_128x4.v \
     $(LSFDIR)/compute_r_bins.sv \
@@ -327,16 +327,16 @@ VERILOG_SOURCES_lsf_lib = \
     $(LSFDIR)/update_histogram_dmem.sv \
     $(LSFDIR)/update_histogram_reg_2clk.sv \
     $(FIND_MAX_BIN_HLS_IP)/find_max_bin.v \
-    $(FIND_MAX_BIN_HLS_IP)/find_max_bin_mul_mul_13ns_15ns_27_4_1.v \
-    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_18s_15ns_33_4_1.v \
+    $(FIND_MAX_BIN_HLS_IP)/find_max_bin_mul_mul_13ns_14ns_27_4_1.v \
+    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_18s_14ns_33_4_1.v \
     $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_26ns_18ns_32_4_1.v \
-    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_lut_divider_barrel_V.v \
+    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_lut_divider_barrel_V_ROM_AUTO_1R.v \
     $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_18s_18s_35_4_1.v \
     $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel.v \
     $(CALC_LE_R_OFFSET_BARREL_HLS_IP)/calc_LE_r_offset_barrel_mac_muladd_18s_15s_33s_34_4_1.v \
     $(CALC_LE_R_OFFSET_BARREL_HLS_IP)/calc_LE_r_offset_barrel_mul_mul_18s_15s_33_4_1.v \
     $(CALC_LE_R_OFFSET_BARREL_HLS_IP)/calc_LE_r_offset_barrel.v \
-    $(LOAD_LE_REFPOS)/load_LE_refPos_lut_mdt_ref_pos_V.v \
+    $(LOAD_LE_REFPOS)/load_LE_refPos_lut_mdt_ref_pos_V_ROM_2P_BRAM_1R.v \
     $(LOAD_LE_REFPOS)/load_LE_refPos.v \
     $(LSFDIR)/legendreEngine.sv \
     $(LSFDIR)/legendreEngine_2clk.sv \
@@ -401,7 +401,7 @@ $(DAQDIR)/daq-lxa-core/autogen/yml2hdl.vhd \
 $(DAQDIR)/daq-lxa-core/autogen/daq_v3.vhd \
 $(DAQDIR)/daq-lxa-core/pkg/daq_defs.vhd \
 $(DAQDIR)/daq-lxa-core/src/daq_fifo.vhd \
-$(DAQDIR)/daq-lxa-core/src/daq_node_fifo.vhd \
+$(DAQDIR)/daq-lxa-core/src/daq_xpm_fifo.vhd \
 $(DAQDIR)/daq-lxa-core/src/daq_data_node.vhd \
 $(DAQDIR)/daq-lxa-core/src/daq_head_node.vhd \
 $(DAQDIR)/daq-lxa-core/src/daq_win_matching.vhd \
