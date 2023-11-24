@@ -63,8 +63,8 @@ architecture rtl of ucm_ctrl_pam_top is
   signal data2pamctrl_av       : ucm_data2pamctrl_avt(c_NUM_ACCEPTS -1 downto 0);
   signal data2pamctrl_ar       : ucm_data2pamctrl_art(c_NUM_ACCEPTS -1 downto 0);
 
-  signal pam_CSW_control      : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
-  signal pam_CSW_control_dv  : std_logic;
+  -- signal pam_CSW_control      : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
+  -- signal pam_CSW_control_dv  : std_logic;
 
   signal spl_o_dv : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
 

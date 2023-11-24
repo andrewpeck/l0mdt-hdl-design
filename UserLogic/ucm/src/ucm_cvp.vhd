@@ -344,13 +344,13 @@ begin
   DATA_PL1 : entity vamc_lib.vamc_spl
     generic map(
       g_DELAY_CYCLES  => 72,
-      g_PIPELINE_WIDTH    => i_data_v'length
+      g_PIPELINE_WIDTH    => int_i_data_v'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       ena         => ena,
-      i_data      => i_data_v,
+      i_data      => int_i_data_v,
       i_dv        => i_data_r.data_valid,
       o_data      => pl_data_v,
       o_dv        => pl_data_v_dv
