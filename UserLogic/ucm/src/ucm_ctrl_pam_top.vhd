@@ -58,6 +58,7 @@ end entity;
 architecture rtl of ucm_ctrl_pam_top is
   signal i_data_ar    : ucm_cde_art(c_NUM_ACCEPTS -1 downto 0);
   -- signal i_barrel_ar  : slc_barrel_art(c_NUM_ACCEPTS -1 downto 0);
+  signal int_cvp_ctrl          : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
 
   signal data2pamctrl_av       : ucm_data2pamctrl_avt(c_NUM_ACCEPTS -1 downto 0);
   signal data2pamctrl_ar       : ucm_data2pamctrl_art(c_NUM_ACCEPTS -1 downto 0);
@@ -68,6 +69,9 @@ architecture rtl of ucm_ctrl_pam_top is
   signal spl_o_dv : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
 
 begin
+
+  o_data_av <= i_data_av;
+
 
   I_SLC_CONV: for sl_i in 0 to c_NUM_ACCEPTS - 1 generate
     i_data_ar(sl_i)<= convert(i_data_av(sl_i),i_data_ar(sl_i));
@@ -93,7 +97,7 @@ begin
     o_pam2cpl_av        => o_pam2cpl_av,
     --
     o_cvp_rst           => o_cvp_rst,
-    o_cvp_ctrl          => o_cvp_ctrl
+    o_cvp_ctrl          => int_cvp_ctrl
   );
 
   -- SLC_PAM_CSW : entity ucm_lib.ucm_ctrl_pam_csw
@@ -107,22 +111,24 @@ begin
   --     i_data_av      => i_data_av,
   --     o_data_av      => o_data_av
   --   );
-  SLC_PP_A : for sl_i in c_NUM_ACCEPTS -1 downto 0 generate
+  -- SLC_PP_A : for sl_i in c_NUM_ACCEPTS -1 downto 0 generate
     PL_slope : entity vamc_lib.vamc_spl
     generic map(
       g_DELAY_CYCLES    => 2,
-      g_PIPELINE_WIDTH  => i_data_av(sl_i)'length
+      g_PL_DV => '0',
+      g_PIPELINE_WIDTH  => int_cvp_ctrl'length
     )
     port map(
       clk         => clk,
       rst         => rst,
       ena         => ena,
       --
-      i_data      => i_data_av(sl_i),
-      i_dv        => i_data_ar(sl_i).data_valid,
-      o_data      => o_data_av(sl_i),
-      o_dv        => spl_o_dv(sl_i)
+      i_data      => int_cvp_ctrl,
+      -- i_dv        => i_data_ar(sl_i).data_valid,
+      o_data      => o_cvp_ctrl
+      -- o_dv        => spl_o_dv(sl_i)
     );
-  end generate;
+  -- end generate;
+
 
 end architecture;

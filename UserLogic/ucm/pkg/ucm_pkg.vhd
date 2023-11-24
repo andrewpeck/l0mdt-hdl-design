@@ -243,7 +243,7 @@ package ucm_pkg is
    function convert(x: std_logic_vector_array; tpl: ucm_pam_control_avt) return ucm_pam_control_avt;
 
    type ucm_proc_info_rt is record
-      ch : std_logic_vector(4-1 downto 0);
+      th : std_logic_vector(4-1 downto 0);
       processed : std_logic;
       dv : std_logic;
    end record ucm_proc_info_rt;
@@ -1843,7 +1843,7 @@ package body ucm_pkg is
    function width(x: ucm_proc_info_rt) return natural is
       variable w : natural := 0;
    begin
-      w := w + width(x.ch);
+      w := w + width(x.th);
       w := w + width(x.processed);
       w := w + width(x.dv);
       return w;
@@ -1854,8 +1854,8 @@ package body ucm_pkg is
       variable u : integer := tpl'left;
    begin
       if tpl'ascending then
-         w := width(x.ch);
-         y(u to u+w-1) := convert(x.ch, y(u to u+w-1));
+         w := width(x.th);
+         y(u to u+w-1) := convert(x.th, y(u to u+w-1));
          u := u + w;
          w := width(x.processed);
          y(u to u+w-1) := convert(x.processed, y(u to u+w-1));
@@ -1863,8 +1863,8 @@ package body ucm_pkg is
          w := width(x.dv);
          y(u to u+w-1) := convert(x.dv, y(u to u+w-1));
       else
-         w := width(x.ch);
-         y(u downto u-w+1) := convert(x.ch, y(u downto u-w+1));
+         w := width(x.th);
+         y(u downto u-w+1) := convert(x.th, y(u downto u-w+1));
          u := u - w;
          w := width(x.processed);
          y(u downto u-w+1) := convert(x.processed, y(u downto u-w+1));
@@ -1880,8 +1880,8 @@ package body ucm_pkg is
       variable u : integer := x'left;
    begin
       if x'ascending then
-         w := width(tpl.ch);
-         y.ch := convert(x(u to u+w-1), tpl.ch);
+         w := width(tpl.th);
+         y.th := convert(x(u to u+w-1), tpl.th);
          u := u + w;
          w := width(tpl.processed);
          y.processed := convert(x(u to u+w-1), tpl.processed);
@@ -1889,8 +1889,8 @@ package body ucm_pkg is
          w := width(tpl.dv);
          y.dv := convert(x(u to u+w-1), tpl.dv);
       else
-         w := width(tpl.ch);
-         y.ch := convert(x(u downto u-w+1), tpl.ch);
+         w := width(tpl.th);
+         y.th := convert(x(u downto u-w+1), tpl.th);
          u := u - w;
          w := width(tpl.processed);
          y.processed := convert(x(u downto u-w+1), tpl.processed);

@@ -125,13 +125,13 @@ architecture beh of ucm is
 
   signal i_slc_data_av        : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
   --
-  signal prepro2ctrl_av       : ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal prepro2ctrl_av       : ucm_prepro2ctrl_avt(c_MAX_NUM_SL -1 downto 0);
   --
   -- signal ucm_prepro_av        : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csw_main_in_av       : slc_rx_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csw_main_in_dv      : std_logic;
-  signal csw_ctrl_dv      : std_logic;
+  -- signal csw_ctrl_dv      : std_logic;
   
   
   -- signal csw_main_out_ar      : slc_rx_art(c_MAX_NUM_SL -1 downto 0);
@@ -154,8 +154,8 @@ architecture beh of ucm is
 
   -- signal uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
-  signal csw_control_av       : ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
-  signal pam_CSW_control      : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
+  -- signal csw_control_av       : ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal pam_CSW_control      : ucm_pam_control_art(c_NUM_ACCEPTS -1 downto 0);
   signal pam2cpl_av          : ucm_proc_info_avt(c_NUM_ACCEPTS -1 downto 0);
   signal pam2tar_av           : ucm_pam2tar_avt(c_NUM_ACCEPTS -1 downto 0);
   signal cvp_in_en            : std_logic_vector(c_NUM_ACCEPTS -1 downto 0);
@@ -179,12 +179,12 @@ architecture beh of ucm is
   -- type cvp_cz0_art is array(c_NUM_ACCEPTS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
   -- signal cvp_cz0_a : cvp_cz0_art;
 
-  signal aux_uCM2hps_inn_r  : ucm2hps_rt;
-  signal o_uCM2hps_inn_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
-  signal o_uCM2hps_mid_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
-  signal o_uCM2hps_out_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
-  signal o_uCM2hps_ext_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
-  signal o_uCM2pl_ar        : ucm2pl_art(c_MAX_NUM_SL -1 downto 0);
+  -- signal aux_uCM2hps_inn_r  : ucm2hps_rt;
+  -- signal o_uCM2hps_inn_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
+  -- signal o_uCM2hps_mid_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
+  -- signal o_uCM2hps_out_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
+  -- signal o_uCM2hps_ext_ar   : ucm2hps_art(c_NUM_ACCEPTS -1 downto 0);
+  -- signal o_uCM2pl_ar        : ucm2pl_art(c_MAX_NUM_SL -1 downto 0);
   
   signal int_uCM2pl_av : ucm_cde2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
@@ -271,74 +271,6 @@ begin
     o_data_av     => csw_main_out_av,
     o_dv          => csw_main_out_dv
   );
-  -- SLC_CTRL : entity ucm_lib.ucm_ctrl_top
-  -- port map(
-  --   clk               => clk,
-  --   rst               => local_rst,
-  --   ena               => local_en,
-  --   --
-  --   i_prepro2ctrl_av  => prepro2ctrl_av,
-  --   --
-  --   o_csw_ctrl_av     => csw_control_av,
-  --   o_csw_ctrl_dv     => csw_ctrl_dv,
-  --   o_pam_ctrl        => pam_CSW_control,
-  --   -- o_proc_info       => pam2cpl_av,
-  --   o_proc_info_av    => pam2cpl_av,
-  --   --
-  --   o_cvp_rst         => cvp_loc_rst,
-  --   o_cvp_ctrl        => cvp_in_en
-  --   -- o_pam2heg         => o_uCM2hps_pam_ar
-  -- );
-
-  --input pre processor
-  -- SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-  --   SLC_PP : entity ucm_lib.ucm_prepro
-  --   generic map(
-  --     g_DELAY_CYCLES  => 2
-  --   )
-  --   port map(
-  --     clk               => clk,
-  --     rst               => local_rst,
-  --     ena               => local_en,
-  --     --                =>
-  --     i_slc_data_v      => i_slc_data_av(sl_i),
-  --     o_prepro2ctrl_v   => prepro2ctrl_av(sl_i),
-  --     o_prepro_data_v   => csw_main_in_av(sl_i)
-  --   );
-  -- end generate;
-
-  -- input pipelines
-  -- SLC_IN_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-  --   SLC_IN_PL : entity vamc_lib.vamc_spl
-  --   generic map(
-  --     g_DELAY_CYCLES  => 2,
-  --     g_PIPELINE_WIDTH    => SLC_RX_LEN
-  --   )
-  --   port map(
-  --     clk         => clk,
-  --     rst         => local_rst,
-  --     ena         => local_en,
-  --     --
-  --     i_data      => ucm_prepro_av(sl_i),
-  --     o_data      => csw_main_in_av(sl_i)
-  --   );
-  -- end generate;
-
-  -- main cross switch
-  -- csw_main_in_dv <= or_reduce(csw_control_av); 
-  -- SLC_CSW : entity ucm_lib.ucm_csw_main
-  -- port map(
-  --   clk         => clk,
-  --   rst         => local_rst,
-  --   glob_en     => local_en,
-    
-  --   i_control_av   => csw_control_av,
-  --   -- data
-  --   i_data_av   => i_slc_data_av,--csw_main_in_av,
-  --   i_dv        => csw_ctrl_dv,
-  --   o_data_av   => csw_main_out_av,
-  --   o_dv        => csw_main_out_dv
-  -- );
 
 
   SLC_CDE_LOOP : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
@@ -351,47 +283,14 @@ begin
         --
         i_phicenter           => phicenter,
         i_chamber_z_org_bus   => cde_chamber_z_org_bus,
-        --
-        -- i_proc_info_v         => pam2cpl_av(sl_i),-- - (c_MAX_NUM_SL - c_NUM_ACCEPTS) ),
-        -- i_proc_info_v         => pam2cpl_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_ACCEPTS - 1) - 2),
-        -- i_proc_info_v         => pam2cpl_av(sl_i),
-        --
+
         i_slc_data_v          => csw_main_out_av(sl_i),
         --
         o_cde_data_v          => cpam_in_av(sl_i),-- - (c_MAX_NUM_SL - c_NUM_ACCEPTS) )
-        -- o_cde_data_v          => cpam_in_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_ACCEPTS - 1) - 2),
-        --
-        -- o_pl_phimod           => cde_phimod(sl_i),
-        -- o_pl_phimod_dv        => 
 
         o_ucm2pl_v => int_uCM2pl_av(sl_i)
       );
-    -- else generate
-    --   SLC_CDE : entity ucm_lib.ucm_cde
-    --   generic map(
-    --     phimod_ena =>  '0'
-    --   )
-    --   port map(
-    --     clk                   => clk,
-    --     rst                   => local_rst,
-    --     ena                   => local_en,
-    --     --
-    --     i_phicenter           => phicenter,
-    --     i_chamber_z_org_bus   => cde_chamber_z_org_bus,
-    --     --
-    --     -- i_proc_info_v         => pam2cpl_av(sl_i),
-    --     --
-    --     i_slc_data_v          => csw_main_out_av(sl_i),
-    --     --
-    --     o_cde_data_v          => cpam_in_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_ACCEPTS - 1) - 1)
-    --     --
-    --     -- o_pl_phimod           => cde_phimod(sl_i),
-    --     -- o_pl_phimod_dv        => 
 
-    --     -- o_ucm2pl_v => o_uCM2pl_av(sl_i)
-    --   );
-
-    -- end generate;
   end generate;
 
   -- PAM cross switch
@@ -413,17 +312,6 @@ begin
       i_data_av          => cpam_in_av(c_MAX_NUM_SL - 1 downto c_MAX_NUM_SL -c_NUM_ACCEPTS),
       o_data_av          => cpam_out_av
     );
-  -- SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw
-  --   port map(
-  --     clk         => clk,
-  --     rst         => local_rst,
-  --     glob_en     => local_en,
-      
-  --     i_control   => pam_CSW_control,
-  --     -- data
-  --     i_data      => cpam_in_av(c_MAX_NUM_SL - 1 downto c_MAX_NUM_SL -c_NUM_ACCEPTS),
-  --     o_data      => cpam_out_av
-  --   );
 
   OUT2TAR : entity ucm_lib.ucm_out2tar
     port map(
@@ -468,18 +356,10 @@ begin
     );
   end generate;
 
-  -- -- output pipelines
-  -- o_uCM2pl_av <= convert(o_uCM2pl_av);
-
-  -- VP2HPS: for hps_i in c_MAX_NUM_HPS -1 downto 0 generate
     VP2HEG: for th_i in c_NUM_ACCEPTS -1 downto 0 generate
-      -- shared variable v_aux_uCM2hps_inn_r  : ucm2hps_rt;
     begin
       VP2HPS_INN : if c_HPS_ENABLE_ST_INN generate
         o_uCM2hps_inn_av(th_i) <= uCM2hps_data(th_i)(0);
-        -- v_aux_uCM2hps_inn_r := convert(uCM2hps_data(th_i)(0));
-        -- o_uCM2hps_inn_ar(th_i) <= v_aux_uCM2hps_inn_r;
-        -- o_uCM2hps_inn_ar(th_i) <= convert(ucm2hps_vt(uCM2hps_data(th_i)(0)));
       end generate;
       VP2HPS_MID : if c_HPS_ENABLE_ST_MID generate
         o_uCM2hps_mid_av(th_i) <= uCM2hps_data(th_i)(1);
@@ -493,19 +373,8 @@ begin
       VP2HPS_EXT_DIS : if not c_HPS_ENABLE_ST_EXT generate
         o_uCM2hps_ext_av(th_i) <= (others => '0');
       end generate;
-      
-      --convert(o_uCM2hps_inn_av(th_i));
-      -- o_uCM2hps_mid_ar(th_i) <= convert(o_uCM2hps_mid_av(th_i));
-      -- o_uCM2hps_out_ar(th_i) <= convert(o_uCM2hps_out_av(th_i));
-      -- o_uCM2hps_ext_ar(th_i) <= convert(o_uCM2hps_ext_av(th_i));
-      -- o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
+
     end generate;
-  -- end generate;
-  -- o_uCM2hps_inn_ar <= convert(o_uCM2hps_inn_av,o_uCM2hps_inn_ar);
-  -- o_uCM2hps_mid_ar <= convert(o_uCM2hps_mid_av,o_uCM2hps_mid_ar);
-  -- o_uCM2hps_out_ar <= convert(o_uCM2hps_out_av,o_uCM2hps_out_ar);
-  -- o_uCM2hps_ext_ar <= convert(o_uCM2hps_ext_av,o_uCM2hps_ext_ar);
-  -- o_uCM2pl_ar <= convert(o_uCM2pl_av,o_uCM2pl_ar);
 
   OUT2CPL : entity ucm_lib.ucm_out2cpl
     port map(

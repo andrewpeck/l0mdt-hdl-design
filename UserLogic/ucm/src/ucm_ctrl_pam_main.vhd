@@ -14,7 +14,7 @@
 -- HISTORY:
 --------------------------------------------------------------------------------
 
-library ieee, shared_lib;
+library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.numeric_std_unsigned.all;
@@ -103,6 +103,7 @@ architecture beh of ucm_ctrl_pam_main is
   signal main_count : integer;
   signal pam2tar_av : ucm_pam2tar_avt(c_NUM_ACCEPTS -1 downto 0);
   signal pam2tar_ar : ucm_pam2tar_art(c_NUM_ACCEPTS -1 downto 0);
+  signal pam2cpl_ar : ucm_proc_info_art(c_NUM_ACCEPTS -1 downto 0);
   
 begin
 
@@ -173,6 +174,11 @@ begin
           th_load <= (others => '0');
           o_cvp_ctrl <= (others => '0');
           o_cvp_rst <= (others => '0');
+          for slc_i in c_NUM_ACCEPTS - 1 downto 0 loop
+            pam2cpl_ar(slc_i).dv <= '0';
+            pam2cpl_ar(slc_i).th <= (others => '0') ;
+            pam2cpl_ar(slc_i).processed <= '0';
+          end loop;
         else
           nc_dv <= i_pam_update;
           if i_pam_update = '1' then
@@ -185,6 +191,7 @@ begin
           end loop;
           for slc_i in c_NUM_ACCEPTS - 1 downto 0 loop -- loop possible slc
             o_cvp_ctrl(slc_i) <= '0';
+            pam2cpl_ar(slc_i).dv <= '0';
           end loop;
           if nc_dv = '1' then
             if and_reduce(th_busy) = '0' then
@@ -195,7 +202,9 @@ begin
                     th_load(v_th_next) <= '1';
                     o_cvp_ctrl(slc_i) <= '1';
                     pl0_sl_th_au(slc_i)<= to_unsigned(v_th_next,4);
-                    -- pam2tar_ar(slc_i).th <= to_unsigned(v_th_next,4);
+                    pam2cpl_ar(slc_i).dv <= '1';
+                    pam2cpl_ar(slc_i).th <= std_logic_vector(to_unsigned(v_th_next,4));
+                    pam2cpl_ar(slc_i).processed <= '1';
                     if v_th_next = c_NUM_THREADS -1 then
                       v_th_next := 0;
                     else
@@ -276,6 +285,7 @@ begin
               pam2tar_ar(sl_i).th <= unsigned(pl0_sl_th_av(sl_i));
               pam2tar_ar(sl_i).action <= x"1";
               pam2tar_ar(sl_i).dv <= '1';
+              
               if c_ENABLED_ST(st_i) = '1'then
                 pam2tar_ar(sl_i).ch_map(st_i) <= ch_map_av(sl_i)(st_i);
               else
@@ -296,8 +306,8 @@ begin
 
   OUT2TAR_GEN : for sl_i in c_NUM_ACCEPTS - 1 downto 0 generate
     o_pam2tar_av(sl_i) <= convert(pam2tar_ar(sl_i),o_pam2tar_av(sl_i));
+    o_pam2cpl_av(sl_i) <= convert(pam2cpl_ar(sl_i),o_pam2cpl_av(sl_i));
   end generate;
-
-
-
-
+    
+  
+end architecture;

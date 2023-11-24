@@ -75,6 +75,8 @@ architecture beh of ucm_cvp is
   
   signal local_rst : std_logic;
 
+  signal int_i_data_v            : ucm_cde_vt;
+
   -- C&M
   signal ctrl_r : UCM_R_PHI_COMP_CTRL_t;
   signal mon_r  : UCM_R_PHI_COMP_MON_t;
@@ -110,11 +112,11 @@ architecture beh of ucm_cvp is
 
   signal offset       : signed(31 downto 0);--signed(126 -1 downto 0);
   signal slope        : signed(31 downto 0);
-  signal pl_slope        : signed(31 downto 0);
+  -- signal pl_slope        : signed(31 downto 0);
 
   signal offset_dv        : std_logic;
   signal slope_dv         : std_logic;
-  signal pl_slope_dv      : std_logic;
+  -- signal pl_slope_dv      : std_logic;
 
   -- constant ATAN_SLOPE_LEN : integer := 20;
   signal atan_slope       : std_logic_vector(UCM2HPS_VEC_ANG_LEN - 1 downto 0);
@@ -131,7 +133,7 @@ architecture beh of ucm_cvp is
   -- OLD SIGNALS
   ---------------------------------
 
-  signal ucm2hps_buff_ar   : ucm2hps_art(c_MAX_NUM_HPS -1 downto 0);
+  -- signal ucm2hps_buff_ar   : ucm2hps_art(c_MAX_NUM_HPS -1 downto 0);
   signal ucm2hps_ar   : ucm2hps_art(c_MAX_NUM_HPS -1 downto 0);
 
   type new_chamb_ieta_art is array(g_MAX_POSSIBLE_HPS -1 downto 0) of unsigned(4-1 downto 0);
@@ -141,7 +143,23 @@ architecture beh of ucm_cvp is
 begin
 
   local_rst <= rst or i_local_rst;
-  i_data_r <= convert(i_data_v,i_data_r);
+
+  process (clk)
+  begin
+    if rising_edge(clk) then
+      if rst='1' then
+        int_i_data_v <= (others => '0') ;
+      else
+        if i_in_en = '1' then
+          int_i_data_v <= i_data_v;
+        else
+          int_i_data_v <= (others => '0') ;
+        end if;
+      end if;
+    end if;
+  end process;
+
+  i_data_r <= convert(int_i_data_v,i_data_r);
   -- int_data_r <= convert(i_data_v,int_data_r);
 
   

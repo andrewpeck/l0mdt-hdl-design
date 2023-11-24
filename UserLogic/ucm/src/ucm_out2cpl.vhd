@@ -66,7 +66,7 @@ begin
     PAM2CPL : if i_sl >= c_MAX_NUM_SL - c_NUM_ACCEPTS generate
       i_proc_info_ar(i_sl - (c_MAX_NUM_SL - c_NUM_ACCEPTS)) <= convert(i_proc_info_av(i_sl - (c_MAX_NUM_SL - c_NUM_ACCEPTS)),i_proc_info_ar(i_sl - (c_MAX_NUM_SL - c_NUM_ACCEPTS)));
       o_uCM2pl_ar(i_sl).busy <= i_proc_info_ar(i_sl - (c_MAX_NUM_SL - c_NUM_ACCEPTS)).processed;
-      o_uCM2pl_ar(i_sl).process_ch <= i_proc_info_ar(i_sl - (c_MAX_NUM_SL - c_NUM_ACCEPTS)).ch;
+      o_uCM2pl_ar(i_sl).process_ch <= i_proc_info_ar(i_sl - (c_MAX_NUM_SL - c_NUM_ACCEPTS)).th;
     else generate
       
       o_uCM2pl_ar(i_sl).busy <= '0';

@@ -602,10 +602,11 @@ begin
   -- S
   --------------------------------
   -- param_a_sc <= param_a ;--& "00000000000"; --11:2048
-  gen_a_sc : if (param_a_sc'length - param_a'length) = 0 generate
+  gen_a_sc : if param_a_sc'length = param_a_red'length generate
     param_a_sc <= param_a_red;
   else generate
-    param_a_sc <= param_a_red & ((param_a_sc'length - param_a_red'length - 1) downto 0 => '0');
+    -- param_a_sc <= param_a_red & ((param_a_sc'length - param_a_red'length - 1) downto 0 => '0');
+    param_a_sc <= param_a_red & (0 to (param_a_sc'length - param_a_red'length - 1) => '0');
   end generate;
 
   -- assert slope_den_sc'length < param_c'length report "Error: slope_den_sc'length " & integer'image(slope_den_sc'length) & "< param_c'length " & integer'image(param_c'length) & " report" severity error;
@@ -650,10 +651,11 @@ begin
   -- O
   --------------------------------
   -- param_b_sc <= param_b ;--& "00000000000"; --11:2048
-  gen_b_sc : if (param_b_sc'length - param_b'length) = 0 generate
+  gen_b_sc : if param_b_sc'length = param_b_red'length generate
     param_b_sc <= param_b_red;
   else generate
-    param_b_sc <= param_b_red & ((param_b_sc'length - param_b_red'length - 1) downto 0 => '0');
+    -- param_b_sc <= param_b_red & ((param_b_sc'length - param_b_red'length - 1) downto 0 => '0');
+    param_b_sc <= param_b_red & (0 to (param_b_sc'length - param_b_red'length - 1) => '0');
   end generate;
   -- assert off_den_sc'length < param_c'length report "Error: off_den_sc'length " & integer'image(off_den_sc'length) & " < param_c'length " & integer'image(param_c'length) & " report" severity error;
   -- assert off_div_sc'length < param_b_sc'length report "Error: off_div_sc'length " & integer'image(off_div_sc'length) & "< param_b_sc'length " & integer'image(param_b_sc'length) & " report" severity error;

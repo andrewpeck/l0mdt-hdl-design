@@ -65,7 +65,7 @@ types:
   - ucm_pam_control_art: {'array': 'open', 'type': 'ucm_pam_control_rt'}
   - ucm_pam_control_avt: {'array': 'open', 'type': 'ucm_pam_control_vt'}
   - ucm_proc_info_rt:
-    - ch: {'type': 'logic', 'range': ['4-1', 0]}
+    - th: {'type': 'logic', 'range': ['4-1', 0]}
     - processed: {'type': 'logic'}
     - dv: {'type': 'logic'}
   - ucm_proc_info_vt: {'type': 'logic', 'range': ['ucm_proc_info_rt-1', 0]}
