@@ -61,10 +61,10 @@ entity ult_fm is
     signal slc_rx_fm_data          : fm_art(0  to primary_sl_n  -1);
     signal ucm2hps_fm_data    : fm_art(0  to stations_n * threads_n -1);
     signal ucm2pl_fm_data       : fm_art(0  to c_MAX_NUM_SL -1);
+    signal fm_mtc_art                : fm_art(0 to mtc_sb_n -1);
     signal fm_csm_custom_art  : fm_art(0 to 0);
     signal fm_csm_art                : fm_art(0 to csm_polmux_in_sb_n-1);
     signal fm_tar_art                  : fm_art(0 to tar_sb_all_stations_n-1);
-    signal fm_mtc_art                : fm_art(0 to mtc_sb_n -1);
     signal fm_daq_art                : fm_art(0 to daq_sb_all_stations_n -1);
     
    
@@ -128,7 +128,7 @@ entity ult_fm is
              csm2polmux_fm_data <= fm_mon.fm_csm_mon.fm_csm_to_polmux;
              tar_fm_data                 <= fm_mon.fm_tar_mon;             
              mtc_fm_data               <= fm_mon.fm_mtc_mon;
-             
+             daq_fm_data               <= fm_mon.fm_daq_mon;
              
              FM_CSM  : for j in 0 to csm_polmux_in_sb_n-1 generate
                fm_csm_art (j )                                               <= csm2polmux_fm_data(j);
@@ -136,8 +136,11 @@ entity ult_fm is
 
          
               FM_TAR_FLATTEN : for j in 0 to stations_n-1   generate
-                FM_TAR_BLOCK: for k in 0 to csm_polmux_in_sb_n-1   generate
-                  fm_tar_art(j *  csm_polmux_in_sb_n + k)  <= tar_fm_data(j)(k);
+                FM_TAR_INPUT_BLOCK: for k in 0 to tar_sb_n/2-1   generate
+                  fm_tar_art(j *  tar_sb_n + k)  <= tar_fm_data(j)(k);
+                    end generate;
+                  FM_TAR_OUTPUT_BLOCK: for k in  tar_sb_n/2 to tar_sb_n-1   generate
+                  fm_tar_art(j *  tar_sb_n + k)  <= tar_fm_data(j)(k);
                     end generate;
              end generate;
 

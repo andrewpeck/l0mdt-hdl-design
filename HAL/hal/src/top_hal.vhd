@@ -337,7 +337,8 @@ begin  -- architecture behavioral
   end process;
 
   rst_bit_synchronizer : xpm_cdc_sync_rst
-    generic map (DEST_SYNC_FF => 4, INIT => 1, INIT_SYNC_FF => 1)
+--   generic map (DEST_SYNC_FF => 4, INIT => 1, INIT_SYNC_FF => 1)
+    generic map (DEST_SYNC_FF => 5, INIT => 1, INIT_SYNC_FF => 1)
     port map (
       dest_rst => reset_clk320,
       dest_clk => clk320,
