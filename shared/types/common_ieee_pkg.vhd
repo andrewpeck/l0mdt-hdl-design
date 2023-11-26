@@ -25,11 +25,10 @@ package common_ieee_pkg is
    function convert(x: std_logic_vector; t: std_logic_vector) return std_logic_vector;
 
    function convert(x: std_logic_vector_array; t: std_logic_vector_array) return std_logic_vector_array;
-
+   function convert_inner(x: std_logic_vector_array; t: std_logic_vector) return std_logic_vector;
    function convert(x: std_logic_vector_array; t: std_logic_vector) return std_logic_vector;
-
    function convert(x: std_logic_vector; t: std_logic_vector_array) return std_logic_vector_array;
-
+   function width_inner(x: std_logic_vector_array) return natural;
    function width(x: std_logic_vector_array) return natural;
 
    function width(x: std_logic) return natural;
@@ -85,13 +84,18 @@ package body common_ieee_pkg is
    end function convert;
 
    function convert(x: std_logic_vector_array; t: std_logic_vector_array) return std_logic_vector_array is
+       variable e: t'element;
+       variable y: std_logic_vector_array(t'range)(e'range);
    begin
-      return x;
+      for ii in y'range loop
+         y(ii) := x(ii);
+      end loop;
+      return y;
    end function convert;
-
-   function convert(x: std_logic_vector_array; t: std_logic_vector) return std_logic_vector is
+   function convert_inner(x: std_logic_vector_array; t: std_logic_vector) return std_logic_vector is
       variable y  : std_logic_vector(t'range);
-      constant ll : natural := x'length(1);
+      variable e  : x'element;
+      constant ll : natural := e'length;
    begin
       for ii in x'range loop
          if y'ascending = true then
@@ -101,12 +105,19 @@ package body common_ieee_pkg is
          end if;
       end loop;
       return y;
+   end function convert_inner;
+   function convert(x: std_logic_vector_array; t: std_logic_vector) return std_logic_vector is
+   begin
+      if t'length = 0 or x'length = 0 then
+         return "";
+      else
+         return convert_inner(x, t);
+      end if;
    end function convert;
-
-
    function convert(x: std_logic_vector; t: std_logic_vector_array) return std_logic_vector_array is
-      variable y  : std_logic_vector_array(t'range)(t'range(1));
-      constant ll : natural := t'length(1);
+      variable e  : t'element;
+      variable y  : std_logic_vector_array(t'range)(e'range);
+      constant ll : natural := e'length;
    begin
       for ii in t'range loop
          if x'ascending then
@@ -117,16 +128,20 @@ package body common_ieee_pkg is
       end loop;
       return y;
    end function convert;
-
-
+   function width_inner(x: std_logic_vector_array) return natural is
+      variable e : x'element;
+   begin
+      return x'length * e'length;
+   end function width_inner;
    function width(x: std_logic_vector_array) return natural is
    begin
-      if x'low > x'high then
+      if x'length = 0 then
          return 0;
       else
-         return x'length(1)*x'length;
+         return width_inner(x);
       end if;
    end function width;
+
    function width(x: std_logic) return natural is
    begin
       return 1;
